@@ -161,7 +161,7 @@ namespace WowPacketParser.Parsing.Parsers
                     Console.WriteLine("Icon: " + icon);
 
                     var box = packet.ReadSByte();
-                    Console.WriteLine("Box: " + (box ? "true" : "false"));
+                    Console.WriteLine("Box: " + box);
 
                     var boxMoney = packet.ReadUInt32();
                     if (box) // Only print if there's a box. avaliable.
@@ -196,7 +196,7 @@ namespace WowPacketParser.Parsing.Parsers
                     Console.WriteLine("\tFlags: " + flags);
 
                     var unk1 = packet.ReadBoolean();
-                    Console.WriteLine("\tUnknown bool: " + (unk1 ? "true" : "false"));
+                    Console.WriteLine("\tUnknown bool: " + unk1);
 
                     var title = packet.ReadCString();
                     Console.WriteLine("\tTitle: " + title);
