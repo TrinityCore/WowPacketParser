@@ -177,32 +177,30 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             var questgossips = packet.ReadUInt32();
-            Console.WriteLine("\nAmount of Quest gossips: " + questgossips);
+            Console.WriteLine("\n\tAmount of Quest gossips: " + questgossips);
 
             if (questgossips > 0)
             {
-                Console.WriteLine("----------------------------");
                 for (var i = 0; i < questgossips; i++)
                 {
                     var questID = packet.ReadUInt32();
-                    Console.WriteLine("Quest ID: " + questID);
+                    Console.WriteLine("\tQuest ID: " + questID);
 
                     var questicon = packet.ReadUInt32();
-                    Console.WriteLine("Icon: " + questicon);
+                    Console.WriteLine("\tIcon: " + questicon);
 
                     var questlevel = packet.ReadUInt32();
-                    Console.WriteLine("Level: " + questlevel);
+                    Console.WriteLine("\tLevel: " + questlevel);
 
                     var flags = (QuestFlag)(packet.ReadUInt32() | 0xFFFF);
-                    Console.WriteLine("Flags: " + flags);
+                    Console.WriteLine("\tFlags: " + flags);
 
                     var unk1 = packet.ReadBoolean();
-                    Console.WriteLine("Unknown bool: " + (unk1 ? "true" : "false"));
+                    Console.WriteLine("\tUnknown bool: " + (unk1 ? "true" : "false"));
 
                     var title = packet.ReadCString();
-                    Console.WriteLine("Title: " + title);
+                    Console.WriteLine("\tTitle: " + title);
                 }
-                Console.WriteLine("----------------------------");
             }
         }
     }
