@@ -8,6 +8,13 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class PetHandler
     {
+        static class Constants
+        {
+            public const int MaxDeclinedNameCases = 5;
+            public const int CreatureMaxSpells = 8;
+            public const int PetSpellsOffset = 8;
+        }
+
         [Parser(Opcode.SMSG_PET_SPELLS)]
         public static void HandlePetSpells(Packet packet)
         {
@@ -33,13 +40,13 @@ namespace WowPacketParser.Parsing.Parsers
             var unk2 = packet.ReadUInt16();
             Console.WriteLine("Unknow 2: " + unk1);
 
-            for (var i = 0; i < 10; i++) // Read vehicle spell ids
+            for (var i = 1; i <= Constants.CreatureMaxSpells + 1; i++) // Read vehicle spell ids
             {
                 var spell16 = packet.ReadUInt16();
                 var spell8 = packet.ReadSByte();
                 var spellid = spell16 | spell8;
                 var slotid = packet.ReadSByte();
-                slotid -= 8 - 1;
+                slotid -= Constants.PetSpellsOffset;
                 Console.WriteLine("Spell " + slotid + ": " + spellid);
             }
 
@@ -59,6 +66,31 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Cooldown count: " + cdcount);
 
             // not finished
+        }
+
+        [Parser(Opcode.SMSG_PET_NAME_QUERY_RESPONSE)]
+        public static void HandlePetNameQueryResponce(Packet packet)
+        {
+            var petNumber = packet.ReadInt32();
+            Console.WriteLine("Pet number: " + petNumber);
+
+            var petName = packet.ReadCString();
+            if (petName == string.Empty)
+            {
+                packet.ReadBytes(7); // 0s
+                return;
+            }
+            Console.WriteLine("Pet name: " + petName);
+
+            var time = packet.ReadTime();
+            Console.WriteLine("Time: " + time);
+
+            var declined = packet.ReadBoolean();
+            Console.WriteLine("Declined? " + (declined ? "yes" : "no"));
+
+            if (declined)
+                for (int i = 0; i < Constants.MaxDeclinedNameCases; i++)
+                    Console.WriteLine("Declined name " + i + ": " + packet.ReadCString());
         }
     }
 }
