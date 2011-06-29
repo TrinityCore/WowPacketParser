@@ -115,7 +115,7 @@ namespace WowPacketParser.Parsing
                 Console.WriteLine(Utilities.DumpPacketAsHex(packet));
 
 #if DEBUG
-            if (handlerFound && packet.GetPosition() < packet.GetLength())
+            if (packet.GetPosition() < packet.GetLength())
             {
                 Console.ForegroundColor = ConsoleColor.Red;
 

@@ -177,12 +177,7 @@
     <Compile Include="Enums\WardenOpcode.cs" />
     <Compile Include="Enums\WeatherState.cs" />
     <Compile Include="Loading\LoaderAttribute.cs" />
-    <Compile Include="Loading\Loaders\KSnifferZackLoader.cs" />
     <Compile Include="Loading\Loaders\KSnifferZorLoader.cs" />
-    <Compile Include="Loading\Loaders\SniffitztLoader.cs" />
-    <Compile Include="Loading\Loaders\TiawpsLoader.cs" />
-    <Compile Include="Loading\Loaders\WlpLoader.cs" />
-    <Compile Include="Loading\Loaders\ZorLoader.cs" />
     <Compile Include="Loading\Reader.cs" />
     <Compile Include="Misc\CharacterInfo.cs" />
     <Compile Include="Misc\CommandLine.cs" />

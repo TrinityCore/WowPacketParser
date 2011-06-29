@@ -27,7 +27,6 @@ namespace WowPacketParser
             CmdLine = new CommandLine(args);
 
             string file;
-            string loader;
             string filters;
             string sqloutput;
             string nodump;
@@ -35,7 +34,6 @@ namespace WowPacketParser
             try
             {
                 file = CmdLine.GetValue("-file");
-                loader = CmdLine.GetValue("-loader");
                 filters = CmdLine.GetValue("-filters");
                 sqloutput = CmdLine.GetValue("-sql");
                 nodump = CmdLine.GetValue("-nodump");
@@ -48,7 +46,7 @@ namespace WowPacketParser
 
             try
             {
-                var packets = Reader.Read(loader, file);
+                var packets = Reader.Read("kszor", file);
                 if (packets == null)
                 {
                     PrintUsage("Could not open file " + file + " for reading.");
@@ -102,10 +100,9 @@ namespace WowPacketParser
             if (!string.IsNullOrEmpty(error))
                 Console.WriteLine(error + n);
 
-            var usage = "Usage: WoWPacketParser -file <input file> -loader <loader type> " +
+            var usage = "Usage: WoWPacketParser -file <input file> " +
                 "[-filters opcode1,opcode2,...] [-sql <boolean>] [-nodump <boolean>]" + n + n +
                 "-file\t\tThe file to read packets from." + n +
-                "-loader\t\tThe loader to use (kszack/kszor/sniffitzt/tiawps/wlp/zor)." + n +
                 "-filters\tComma-separated list of opcodes to parse." + n +
                 "-sql\t\tSet to True to Activate SQL dumping." + n +
                 "-nodump\t\tSet to True to disable file logging.";
