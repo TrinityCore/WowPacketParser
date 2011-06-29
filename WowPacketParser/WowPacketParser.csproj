@@ -47,6 +47,7 @@
       <HintPath>Dependencies\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -238,6 +239,7 @@
     <Compile Include="Misc\Vector3.cs" />
     <Compile Include="Misc\Vector4.cs" />
     <Compile Include="Storing\CommandBuilder.cs" />
+    <Compile Include="Storing\Database\SQLConnector.cs" />
     <Compile Include="Storing\Store.cs" />
     <Compile Include="Storing\Stores\CreatureSpawnStore.cs" />
     <Compile Include="Storing\Stores\CreatureSpawnUpdateStore.cs" />
@@ -258,6 +260,9 @@
     <Compile Include="Storing\Stores\StartSpellStore.cs" />
     <Compile Include="Storing\Stores\TrainerSpellStore.cs" />
     <Compile Include="Storing\Stores\VendorItemStore.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

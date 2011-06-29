@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using WowPacketParser.Enums;
 using WowPacketParser.Loading;
-using WowPacketParser.Loading.Loaders;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Storing;
+using WowPacketParser.Storing.Database;
 
 namespace WowPacketParser
 {
@@ -37,6 +32,8 @@ namespace WowPacketParser
                 filters = CmdLine.GetValue("-filters");
                 sqloutput = CmdLine.GetValue("-sql");
                 nodump = CmdLine.GetValue("-nodump");
+
+                SQLConnector.StartSQL();
             }
             catch (IndexOutOfRangeException)
             {
