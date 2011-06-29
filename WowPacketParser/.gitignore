@@ -1,0 +1,11 @@
+
+bin/*
+obj/*
+*.obj
+*.exe
+*.pdb
+*.bak
+*.cache
+*.ilk
+*.log
+_ReSharper*/
