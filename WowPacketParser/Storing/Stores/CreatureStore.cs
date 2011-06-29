@@ -20,18 +20,8 @@ namespace WowPacketParser.Storing.Stores
             for (var i = 0; i < 2; i++)
                 builder.AddColumnValue("KillCredit" + (i + 1), killCredit[i]);
 
-            if (Store.Format == SqlFormat.Trinity)
-            {
-                for (var i = 0; i < 4; i++)
-                    builder.AddColumnValue("modelid" + (i + 1), dispId[i]);
-            }
-            else
-            {
-                builder.AddColumnValue("modelid_A", dispId[0]);
-                builder.AddColumnValue("modelid_A2", dispId[1]);
-                builder.AddColumnValue("modelid_H", dispId[2]);
-                builder.AddColumnValue("modelid_H2", dispId[3]);
-            }
+            for (var i = 0; i < 4; i++)
+                builder.AddColumnValue("modelid" + (i + 1), dispId[i]);
 
             builder.AddColumnValue("name", name);
             builder.AddColumnValue("subname", subName);
@@ -39,18 +29,7 @@ namespace WowPacketParser.Storing.Stores
             builder.AddColumnValue("gossip_menu_id", 0);
             builder.AddColumnValue("minlevel", 1);
             builder.AddColumnValue("maxlevel", 1);
-
-            if (Store.Format != SqlFormat.Trinity)
-            {
-                builder.AddColumnValue("minhealth", 0);
-                builder.AddColumnValue("maxhealth", 0);
-                builder.AddColumnValue("minmana", 0);
-                builder.AddColumnValue("maxmana", 0);
-                builder.AddColumnValue("armor", 0);
-            }
-            else
-                builder.AddColumnValue("exp", 0);
-
+            builder.AddColumnValue("exp", 0);
             builder.AddColumnValue("faction_A", 35);
             builder.AddColumnValue("faction_H", 35);
             builder.AddColumnValue("npcflag", 0);
@@ -85,36 +64,19 @@ namespace WowPacketParser.Storing.Stores
             for (var i = 0; i < 6; i++)
                 builder.AddColumnValue("resistance" + (i + 1), 0);
 
-            var spellI = 4;
-            if (Store.Format == SqlFormat.Trinity)
-                spellI = 8;
-
-            for (var i = 0; i < spellI; i++)
+            for (var i = 0; i < 8; i++)
                 builder.AddColumnValue("spell" + (i + 1), 0);
 
             builder.AddColumnValue("PetSpellDataId", 0);
-
-            if (Store.Format == SqlFormat.Trinity)
-                builder.AddColumnValue("VehicleId", 0);
-
+            builder.AddColumnValue("VehicleId", 0);
             builder.AddColumnValue("mingold", 0);
             builder.AddColumnValue("maxgold", 0);
             builder.AddColumnValue("AIName", string.Empty);
             builder.AddColumnValue("MovementType", 0);
             builder.AddColumnValue("InhabitType", 0);
-
-            if (Store.Format == SqlFormat.Trinity)
-            {
-                builder.AddColumnValue("Health_mod", mod1);
-                builder.AddColumnValue("Mana_mod", mod2);
-                builder.AddColumnValue("Armor_mod", 1);
-            }
-            else
-            {
-                builder.AddColumnValue("unk16", mod1);
-                builder.AddColumnValue("unk17", mod2);
-            }
-
+            builder.AddColumnValue("Health_mod", mod1);
+            builder.AddColumnValue("Mana_mod", mod2);
+            builder.AddColumnValue("Armor_mod", 1);
             builder.AddColumnValue("RacialLeader", racialLeader.ToByte());
 
             for (var i = 0; i < 6; i++)

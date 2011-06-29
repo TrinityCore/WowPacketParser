@@ -10,24 +10,15 @@ namespace WowPacketParser.Storing
     {
         private static StreamWriter _file;
 
-        public static SqlFormat Format;
-
         private static readonly List<string> Sqls = new List<string>();
 
-        public static void Initialize(string file, string format)
-        {
-            if (string.IsNullOrEmpty((format)))
-                return;
+        private static bool _output;
 
-            try
-            {
-                Format = (SqlFormat)Enum.Parse(typeof(SqlFormat), format, true);
-            }
-            catch (Exception)
-            {
-                Program.PrintUsage("The SQL format " + format + " was not recognized.");
+        public static void Initialize(string file, string output)
+        {
+            _output = output.Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase);
+            if (!_output)
                 return;
-            }
 
             File.Delete(file);
             _file = new StreamWriter(file, true);

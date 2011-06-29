@@ -161,7 +161,6 @@
     <Compile Include="Enums\SpeedType.cs" />
     <Compile Include="Enums\SpellCastFailureReason.cs" />
     <Compile Include="Enums\SplineFlag.cs" />
-    <Compile Include="Enums\SqlFormat.cs" />
     <Compile Include="Enums\StatType.cs" />
     <Compile Include="Enums\TargetFlag.cs" />
     <Compile Include="Enums\TeamType.cs" />

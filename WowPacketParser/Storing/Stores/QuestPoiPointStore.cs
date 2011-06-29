@@ -9,12 +9,7 @@ namespace WowPacketParser.Storing.Stores
             var builder = new CommandBuilder("quest_poi_points");
 
             builder.AddColumnValue("questId", questId);
-
-            if (Store.Format == SqlFormat.Trinity)
-                builder.AddColumnValue("id", idx);
-            else
-                builder.AddColumnValue("objIndex", objIndex);
-
+            builder.AddColumnValue("id", idx);
             builder.AddColumnValue("x", pointX);
             builder.AddColumnValue("y", pointY);
 

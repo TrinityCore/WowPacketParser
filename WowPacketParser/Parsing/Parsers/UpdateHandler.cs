@@ -224,28 +224,6 @@ namespace WowPacketParser.Parsing.Parsers
                             fieldName = "faction_A = " + val.Int32Value + ", faction_H";
                             break;
                         }
-                        case UnitField.UNIT_FIELD_BASE_HEALTH:
-                        {
-                            if (Store.Format == SqlFormat.Trinity)
-                            {
-                                shouldCommit = false;
-                                break;
-                            }
-
-                            fieldName = "minhealth = " + val.Int32Value + ", maxhealth";
-                            break;
-                        }
-                        case UnitField.UNIT_FIELD_BASE_MANA:
-                        {
-                            if (Store.Format == SqlFormat.Trinity)
-                            {
-                                shouldCommit = false;
-                                break;
-                            }
-
-                            fieldName = "minmana = " + val.Int32Value + ", maxmana";
-                            break;
-                        }
                         default:
                         {
                             shouldCommit = false;
@@ -493,9 +471,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 var vehFacing = packet.ReadSingle();
                 Console.WriteLine("Vehicle Orientation: " + vehFacing);
-
-                if (Store.Format == SqlFormat.Trinity)
-                    Store.WriteData(Store.CreatureUpdates.GetCommand("VehicleId", guid.GetEntry(), vehId));
+                Store.WriteData(Store.CreatureUpdates.GetCommand("VehicleId", guid.GetEntry(), vehId));
             }
 
             if (flags.HasFlag(UpdateFlag.GORotation))

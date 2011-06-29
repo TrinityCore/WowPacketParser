@@ -31,13 +31,8 @@ namespace WowPacketParser.Storing.Stores
             builder.AddColumnValue("RequiredSkillValue", 0);
             builder.AddColumnValue("RepObjectiveFaction", factId[0]);
             builder.AddColumnValue("RepObjectiveValue", factRep[0]);
-
-            if (Store.Format == SqlFormat.Trinity)
-            {
-                builder.AddColumnValue("RepObjectiveFaction2", factId[1]);
-                builder.AddColumnValue("RepObjectiveValue2", factRep[1]);
-            }
-
+            builder.AddColumnValue("RepObjectiveFaction2", factId[1]);
+            builder.AddColumnValue("RepObjectiveValue2", factRep[1]);
             builder.AddColumnValue("RequiredMinRepFaction", 0);
             builder.AddColumnValue("RequiredMinRepValue", 0);
             builder.AddColumnValue("RequiredMaxRepFaction", 0);
@@ -49,10 +44,7 @@ namespace WowPacketParser.Storing.Stores
             builder.AddColumnValue("CharTitleId", titleId);
             builder.AddColumnValue("PlayersSlain", reqPlayerKills);
             builder.AddColumnValue("BonusTalents", bonusTalents);
-
-            if (Store.Format == SqlFormat.Trinity)
-                builder.AddColumnValue("BonusArenaPoints", bonusArenaPoints);
-
+            builder.AddColumnValue("BonusArenaPoints", bonusArenaPoints);
             builder.AddColumnValue("PrevQuestId", 0);
             builder.AddColumnValue("NextQuestId", 0);
             builder.AddColumnValue("ExclusiveGroup", 0);
@@ -117,10 +109,7 @@ namespace WowPacketParser.Storing.Stores
 
             builder.AddColumnValue("RewHonorAddition", rewHonor);
             builder.AddColumnValue("RewHonorMultiplier", rewHonorBonus);
-
-            if (Store.Format == SqlFormat.Trinity)
-                builder.AddColumnValue("unk0", bonusUnk);
-
+            builder.AddColumnValue("unk0", bonusUnk);
             builder.AddColumnValue("RewOrReqMoney", rewReqMoney);
             builder.AddColumnValue("RewMoneyMaxLevel", rewMoneyMaxLvl);
             builder.AddColumnValue("RewSpell", rewSpell);

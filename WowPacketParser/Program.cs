@@ -29,7 +29,7 @@ namespace WowPacketParser
             string file;
             string loader;
             string filters;
-            string format;
+            string sqloutput;
             string nodump;
 
             try
@@ -37,7 +37,7 @@ namespace WowPacketParser
                 file = CmdLine.GetValue("-file");
                 loader = CmdLine.GetValue("-loader");
                 filters = CmdLine.GetValue("-filters");
-                format = CmdLine.GetValue("-sql");
+                sqloutput = CmdLine.GetValue("-sql");
                 nodump = CmdLine.GetValue("-nodump");
             }
             catch (IndexOutOfRangeException)
@@ -59,7 +59,7 @@ namespace WowPacketParser
                 {
                     var fullPath = Utilities.GetPathFromFullPath(file);
                     Handler.InitializeLogFile(Path.Combine(fullPath, file + ".txt"), nodump);
-                    Store.Initialize(Path.Combine(fullPath, file + ".sql"), format);
+                    Store.Initialize(Path.Combine(fullPath, file + ".sql"), sqloutput);
 
                     var appliedFilters = filters.Split(',');
 
@@ -103,11 +103,11 @@ namespace WowPacketParser
                 Console.WriteLine(error + n);
 
             var usage = "Usage: WoWPacketParser -file <input file> -loader <loader type> " +
-                "[-filters opcode1,opcode2,...] [-sql <SQL format>] [-nodump <boolean>]" + n + n +
+                "[-filters opcode1,opcode2,...] [-sql <boolean>] [-nodump <boolean>]" + n + n +
                 "-file\t\tThe file to read packets from." + n +
                 "-loader\t\tThe loader to use (kszack/kszor/sniffitzt/tiawps/wlp/zor)." + n +
                 "-filters\tComma-separated list of opcodes to parse." + n +
-                "-sql\t\tSQL query format (Mangos/Trinity). Activates SQL dumping." + n +
+                "-sql\t\tSet to True to Activate SQL dumping." + n +
                 "-nodump\t\tSet to True to disable file logging.";
 
             Console.WriteLine(usage);

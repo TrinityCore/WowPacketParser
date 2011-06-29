@@ -46,12 +46,7 @@ namespace WowPacketParser.Storing.Stores
             builder.AddColumnValue("RequiredReputationFaction", reqRepFaction);
             builder.AddColumnValue("RequiredReputationRank", reqRepValue);
             builder.AddColumnValue("maxcount", maxCount);
-
-            var stackVal = stacks;
-            if (Store.Format == SqlFormat.Mangos && stacks > 1000)
-                stackVal = -1;
-
-            builder.AddColumnValue("stackable", stackVal);
+            builder.AddColumnValue("stackable", stacks);
             builder.AddColumnValue("ContainerSlots", contSlots);
             builder.AddColumnValue("StatsCount", statsCount);
 
