@@ -148,59 +148,59 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Text id: " + textid);
 
             var count = packet.ReadUInt32();
-            Console.WriteLine("Amount of Options: " + count);
+            Console.WriteLine("- Amount of Options: " + count);
 
-            if (count > 0)
+            for (var i = 0; i < count; i++)
             {
-                for (var i = 0; i < count; i++)
-                {
-                    var index = packet.ReadUInt32();
-                    Console.WriteLine("Index: " + index);
+                if (i != 0)
+                    Console.WriteLine("\t--");
 
-                    var icon = packet.ReadSByte();
-                    Console.WriteLine("Icon: " + icon);
+                var index = packet.ReadUInt32();
+                Console.WriteLine("\tIndex: " + index);
 
-                    var box = packet.ReadSByte();
-                    Console.WriteLine("Box: " + (box ? "true" : "false"));
+                var icon = packet.ReadSByte();
+                Console.WriteLine("\tIcon: " + icon);
 
-                    var boxMoney = packet.ReadUInt32();
-                    if (box) // Only print if there's a box. avaliable.
-                        Console.WriteLine("Required money: " + boxMoney);
+                var box = packet.ReadBoolean();
+                Console.WriteLine("\tBox: " + box);
 
-                    var text = packet.ReadCString();
-                    Console.WriteLine("Text: " + text);
+                var boxMoney = packet.ReadUInt32();
+                if (box) // Only print if there's a box. avaliable.
+                    Console.WriteLine("\tRequired money: " + boxMoney);
 
-                    var boxText = packet.ReadCString();
-                    if (box) // Only print if there's a box avaliable.
-                        Console.WriteLine("Box text: " + boxText);
-                }
+                var text = packet.ReadCString();
+                Console.WriteLine("\tText: " + text);
+
+                var boxText = packet.ReadCString();
+                if (box) // Only print if there's a box avaliable.
+                    Console.WriteLine("\tBox text: " + boxText);
             }
 
             var questgossips = packet.ReadUInt32();
-            Console.WriteLine("\n\tAmount of Quest gossips: " + questgossips);
+            Console.WriteLine("- Amount of Quest gossips: " + questgossips);
 
-            if (questgossips > 0)
+            for (var i = 0; i < questgossips; i++)
             {
-                for (var i = 0; i < questgossips; i++)
-                {
-                    var questID = packet.ReadUInt32();
-                    Console.WriteLine("\tQuest ID: " + questID);
+                if (i != 0)
+                    Console.WriteLine("\t--");
 
-                    var questicon = packet.ReadUInt32();
-                    Console.WriteLine("\tIcon: " + questicon);
+                var questID = packet.ReadUInt32();
+                Console.WriteLine("\tQuest ID: " + questID);
 
-                    var questlevel = packet.ReadUInt32();
-                    Console.WriteLine("\tLevel: " + questlevel);
+                var questicon = packet.ReadUInt32();
+                Console.WriteLine("\tIcon: " + questicon);
 
-                    var flags = (QuestFlag)(packet.ReadUInt32() | 0xFFFF);
-                    Console.WriteLine("\tFlags: " + flags);
+                var questlevel = packet.ReadUInt32();
+                Console.WriteLine("\tLevel: " + questlevel);
 
-                    var unk1 = packet.ReadBoolean();
-                    Console.WriteLine("\tUnknown bool: " + unk1);
+                var flags = (QuestFlag)(packet.ReadUInt32() | 0xFFFF);
+                Console.WriteLine("\tFlags: " + flags);
 
-                    var title = packet.ReadCString();
-                    Console.WriteLine("\tTitle: " + title);
-                }
+                var unk1 = packet.ReadBoolean();
+                Console.WriteLine("\tUnknown bool: " + unk1);
+
+                var title = packet.ReadCString();
+                Console.WriteLine("\tTitle: " + title);
             }
         }
     }

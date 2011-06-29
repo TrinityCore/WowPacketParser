@@ -87,7 +87,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Time: " + time);
 
             var declined = packet.ReadBoolean();
-            Console.WriteLine("Declined? " + (declined ? "yes" : "no"));
+            Console.WriteLine("Declined: " + declined);
 
             if (declined)
                 for (int i = 0; i < (int)MiscConstants.MaxDeclinedNameCases; i++)
