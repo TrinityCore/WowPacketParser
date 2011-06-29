@@ -83,5 +83,12 @@ namespace WowPacketParser.Parsing.Parsers
             var spellId = packet.ReadInt32();
             Console.WriteLine("Spell ID: " + spellId);
         }
+
+        [Parser(Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM)]
+        public static void HandleGODespawnAnum(Packet packet)
+        {
+            var guid = packet.ReadGuid();
+            Console.WriteLine("GUID: " + guid);
+        }
     }
 }
