@@ -2,7 +2,7 @@ namespace WowPacketParser.Enums
 {
     public enum HighGuidType
     {
-        NoEntry1 = 0,
+        Player1 = 0, // NoEntry1
         GameObject = 1,
         Transport = 2,
         Unit = 3,
@@ -10,7 +10,7 @@ namespace WowPacketParser.Enums
         Vehicle = 5,
         Unknown1 = 6,
         Unknown2 = 7,
-        NoEntry2 = 8,
+        Player2 = 8, // NoEntry2
         Unknown3 = 9,
         Unknown4 = 10,
         Unknown5 = 11,

@@ -19,8 +19,8 @@ namespace WowPacketParser.Misc
         {
             switch (GetHighType())
             {
-                case HighGuidType.NoEntry1:
-                case HighGuidType.NoEntry2:
+                case HighGuidType.Player1:
+                case HighGuidType.Player2:
                 {
                     return false;
                 }
@@ -33,8 +33,8 @@ namespace WowPacketParser.Misc
         {
             switch (GetHighType())
             {
-                case HighGuidType.NoEntry1:
-                case HighGuidType.NoEntry2:
+                case HighGuidType.Player1:
+                case HighGuidType.Player2:
                 {
                     return (Full & 0x000FFFFFFFFFFFFF) >> 0;
                 }
@@ -95,7 +95,7 @@ namespace WowPacketParser.Misc
         public override string ToString()
         {
             return "Full: 0x" + Full.ToString("X8") + " Flags: " + GetHighMask() + " Type: " +
-                GetHighType() + " Entry: " + GetEntry() + " Low: " + GetLow();
+                GetHighType() + (HasEntry() ? " Entry: " + GetEntry() : string.Empty) + " Low: " + GetLow();
         }
     }
 }
