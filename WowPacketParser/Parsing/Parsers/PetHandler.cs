@@ -18,47 +18,55 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = new Guid(guid64);
             Console.WriteLine("GUID: " + guid);
 
-            var family = packet.ReadInt16();
+            var family = (CreatureFamily)packet.ReadUInt16();
             Console.WriteLine("Pet Family: " + family);
 
             var unk1 = packet.ReadUInt32();
             Console.WriteLine("Unknown 1: " + unk1);
 
-            var reactState = packet.ReadSByte();
+            var reactState = packet.ReadByte();
             Console.WriteLine("React state: " + reactState);
 
-            var commandState = packet.ReadSByte();
+            var commandState = packet.ReadByte();
             Console.WriteLine("Command state: " + commandState);
 
             var unk2 = packet.ReadUInt16();
             Console.WriteLine("Unknow 2: " + unk1);
 
-            for (var i = 1; i <= (int)MiscConstants.CreatureMaxSpells + 1; i++) // Read vehicle spell ids
+            for (var i = 1; i <= (int)MiscConstants.CreatureMaxSpells + 2; i++) // Read vehicle spell ids
             {
                 var spell16 = packet.ReadUInt16();
-                var spell8 = packet.ReadSByte();
-                var spellid = spell16 | spell8;
-                var slotid = packet.ReadSByte();
+                var spell8 = packet.ReadByte();
+                var slotid = packet.ReadByte();
+                var spellId = spell16 | spell8;
                 slotid -= (int)MiscConstants.PetSpellsOffset;
-                Console.WriteLine("Spell " + slotid + ": " + spellid);
+                Console.WriteLine("Spell " + slotid + ": " + spellId);
             }
 
-            var unk3 = packet.ReadSByte(); // always 0?
-            Console.WriteLine("Unknown 3: " + unk3);
+            var spellCount = packet.ReadByte(); // always 0?
+            Console.WriteLine("Spell count: " + spellCount);
 
-            var intcount = packet.ReadSByte();
-            Console.WriteLine("Int32 count: " + intcount);
-
-            for (var i = 0; i < intcount; i++)
+            for (var i = 0; i < spellCount; i++)
             {
-                var unk4 = packet.ReadUInt32();
-                Console.WriteLine("Unknown 4 " + i + ": " + unk4);
+                var spellId = packet.ReadUInt16();
+                Console.WriteLine("Spell " + i + ": " + spellId);
+                var active = packet.ReadUInt16();
+                Console.WriteLine("Active: " + active);
             }
 
-            var cdcount = packet.ReadUInt16();
-            Console.WriteLine("Cooldown count: " + cdcount);
+            var cdCount = packet.ReadByte();
+            Console.WriteLine("Cooldown count: " + cdCount);
 
-            // not finished
+            for (var i = 0; i < cdCount; i++)
+            {
+                var spellId = packet.ReadUInt32();
+                var category = packet.ReadUInt16();
+                var cooldown = packet.ReadUInt32();
+                var categoryCooldown = packet.ReadUInt32();
+
+                Console.WriteLine("Cooldown: Spell: " + spellId + " category: " + category +
+                    " cooldown: " + cooldown + " category cooldown: " + categoryCooldown);
+            }
         }
 
         [Parser(Opcode.SMSG_PET_NAME_QUERY_RESPONSE)]

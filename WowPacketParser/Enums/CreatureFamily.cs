@@ -2,6 +2,7 @@ namespace WowPacketParser.Enums
 {
     public enum CreatureFamily
     {
+        None = 0,
         Wolf = 1,
         Cat = 2,
         Spider = 3,
