@@ -28,7 +28,7 @@ namespace WowPacketParser.Storing.Stores
                 }
             }
 
-            return builder.BuildInsert(true);
+            return builder.BuildInsert();
         }
     }
 }

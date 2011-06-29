@@ -14,7 +14,7 @@ namespace WowPacketParser.Storing.Stores
             builder.AddColumnValue("action", action);
             builder.AddColumnValue("type", (int)type);
 
-            return builder.BuildInsert(true);
+            return builder.BuildInsert();
         }
     }
 }

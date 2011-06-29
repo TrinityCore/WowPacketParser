@@ -89,7 +89,7 @@ namespace WowPacketParser.Storing.Stores
             builder.AddColumnValue("flags_extra", 0);
             builder.AddColumnValue("ScriptName", string.Empty);
 
-            return builder.BuildInsert(true);
+            return builder.BuildInsert();
         }
     }
 }

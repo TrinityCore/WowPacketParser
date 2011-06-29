@@ -14,7 +14,7 @@ namespace WowPacketParser.Storing.Stores
             builder.AddColumnValue("reqskillvalue", reqSkLvl);
             builder.AddColumnValue("reqlevel", reqLevel);
 
-            return builder.BuildInsert(true);
+            return builder.BuildInsert();
         }
     }
 }

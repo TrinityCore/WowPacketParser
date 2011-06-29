@@ -141,7 +141,7 @@ namespace WowPacketParser.Storing.Stores
             builder.AddColumnValue("maxMoneyLoot", 0);
             builder.AddColumnValue("NonConsumable", 0);
 
-            return builder.BuildInsert(true);
+            return builder.BuildInsert();
         }
     }
 }

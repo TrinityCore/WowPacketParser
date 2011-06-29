@@ -39,10 +39,10 @@ namespace WowPacketParser.Storing
             return str;
         }
 
-        public string BuildInsert(bool first)
+        public string BuildInsert()
         {
             var str = "";
-            if (first)
+            if (false)
             {
                 str = "INSERT INTO `" + Table + "` (`";
 

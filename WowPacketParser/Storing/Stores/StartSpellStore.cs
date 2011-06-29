@@ -13,7 +13,7 @@ namespace WowPacketParser.Storing.Stores
             builder.AddColumnValue("Spell", spellId);
             builder.AddColumnValue("Note", string.Empty);
 
-            return builder.BuildInsert(true);
+            return builder.BuildInsert();
         }
     }
 }

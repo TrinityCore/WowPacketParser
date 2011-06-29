@@ -10,7 +10,7 @@ namespace WowPacketParser.Storing.Stores
             cmd.AddColumnValue("text", pageText);
             cmd.AddColumnValue("next_page", nextPage);
 
-            return cmd.BuildInsert(true);
+            return cmd.BuildInsert();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace WowPacketParser.Storing.Stores
             builder.AddColumnValue("incrtime", 0);
             builder.AddColumnValue("ExtendedCost", extendedCost);
 
-            return builder.BuildInsert(true);
+            return builder.BuildInsert();
         }
     }
 }

@@ -96,14 +96,12 @@ namespace WowPacketParser.Parsing
 
             Console.ForegroundColor = ConsoleColor.White;
 
-            var handlerFound = false;
             if (Handlers.ContainsKey(opcode))
             {
                 var handler = Handlers[opcode];
 
                 try
                 {
-                    handlerFound = true;
                     handler(packet);
                 }
                 catch (Exception ex)

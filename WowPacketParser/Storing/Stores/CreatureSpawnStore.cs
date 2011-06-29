@@ -4,8 +4,6 @@ namespace WowPacketParser.Storing.Stores
 {
     public sealed class CreatureSpawnStore
     {
-        private bool isFirst = true;
-
         public string GetCommand(uint entry, int map, int phaseMask, Vector3 position, float orient)
         {
             var builder = new CommandBuilder("creature");
@@ -30,13 +28,7 @@ namespace WowPacketParser.Storing.Stores
             builder.AddColumnValue("unit_flags", 0);
             builder.AddColumnValue("dynamicflags", 0);
 
-            if (isFirst)
-            {
-                isFirst = false;
-                return builder.BuildInsert(true);
-            }
-            else
-                return builder.BuildInsert(false);
+            return builder.BuildInsert();
         }
     }
 }

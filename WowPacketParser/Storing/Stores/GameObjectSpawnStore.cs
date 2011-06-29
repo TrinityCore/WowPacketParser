@@ -25,7 +25,7 @@ namespace WowPacketParser.Storing.Stores
             builder.AddColumnValue("animprogress", 0);
             builder.AddColumnValue("state", 1);
 
-            return builder.BuildInsert(true);
+            return builder.BuildInsert();
         }
     }
 }

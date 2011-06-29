@@ -133,7 +133,7 @@ namespace WowPacketParser.Storing.Stores
             builder.AddColumnValue("StartScript", 0);
             builder.AddColumnValue("CompleteScript", 0);
 
-            return builder.BuildInsert(true);
+            return builder.BuildInsert();
         }
     }
 }

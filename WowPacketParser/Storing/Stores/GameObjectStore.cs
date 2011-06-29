@@ -25,7 +25,7 @@ namespace WowPacketParser.Storing.Stores
 
             builder.AddColumnValue("ScriptName", string.Empty);
 
-            return builder.BuildInsert(true);
+            return builder.BuildInsert();
         }
     }
 }

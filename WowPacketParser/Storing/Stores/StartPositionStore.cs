@@ -17,7 +17,7 @@ namespace WowPacketParser.Storing.Stores
             builder.AddColumnValue("position_y", pos.Y);
             builder.AddColumnValue("position_z", pos.Z);
 
-            return builder.BuildInsert(true);
+            return builder.BuildInsert();
         }
     }
 }

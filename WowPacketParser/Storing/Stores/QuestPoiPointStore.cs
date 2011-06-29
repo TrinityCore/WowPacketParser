@@ -13,7 +13,7 @@ namespace WowPacketParser.Storing.Stores
             builder.AddColumnValue("x", pointX);
             builder.AddColumnValue("y", pointY);
 
-            return builder.BuildInsert(true);
+            return builder.BuildInsert();
         }
     }
 }

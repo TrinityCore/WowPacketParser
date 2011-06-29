@@ -18,7 +18,7 @@ namespace WowPacketParser.Storing.Stores
             builder.AddColumnValue("unk3", unk3);
             builder.AddColumnValue("unk4", unk4);
 
-            return builder.BuildInsert(true);
+            return builder.BuildInsert();
         }
     }
 }
