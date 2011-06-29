@@ -1,0 +1,9 @@
+glob:bin/*
+glob:*.orig
+glob:*.rej
+glob:*/obj/*
+glob:*.suo
+glob:*.user
+glob:*.vs10x
+glob:TestResults/*
+glob:_ReSharper*
