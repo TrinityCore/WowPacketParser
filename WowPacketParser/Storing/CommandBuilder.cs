@@ -41,21 +41,21 @@ namespace WowPacketParser.Storing
 
         public string BuildInsert()
         {
-            var str = "";
-            if (false)
+            var str = string.Empty;
+            
+            /*
+            str = "INSERT INTO `" + Table + "` (`";
+
+            for (var i = 0; i < InsertValues.Count; i++)
             {
-                str = "INSERT INTO `" + Table + "` (`";
+                var val = InsertValues[i];
+                var comma = i == InsertValues.Count - 1 ? string.Empty : "`,`";
 
-                for (var i = 0; i < InsertValues.Count; i++)
-                {
-                    var val = InsertValues[i];
-                    var comma = i == InsertValues.Count - 1 ? string.Empty : "`,`";
-
-                    str += val.Key + comma;
-                }
-
-                str += "`) VALUES \n";
+                str += val.Key + comma;
             }
+
+            str += "`) VALUES \n";
+            */
 
             str += "(";
 
