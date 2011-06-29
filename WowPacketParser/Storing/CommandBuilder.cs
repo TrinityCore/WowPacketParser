@@ -32,45 +32,50 @@ namespace WowPacketParser.Storing
         public static string EscapeString(string str)
         {
             str = str.Replace("\\", "\\\\");
-            str = str.Replace("'", "\\'");
+            str = str.Replace("'", "''");
             str = str.Replace("\"", "\\\"");
             str = str.Replace("\r", "\\r");
             str = str.Replace("\n", "\\n");
             return str;
         }
 
-        public string BuildInsert(bool ignore)
+        public string BuildInsert(bool first)
         {
-            var ignoreStr = ignore ? "IGNORE " : string.Empty;
-            var str = "INSERT " + ignoreStr + "INTO " + Table + " (";
-
-            for (var i = 0; i < InsertValues.Count; i++)
+            var str = "";
+            if (first)
             {
-                var val = InsertValues[i];
-                var comma = i == InsertValues.Count - 1 ? string.Empty : ", ";
+                str = "INSERT INTO `" + Table + "` (`";
 
-                str += val.Key + comma;
+                for (var i = 0; i < InsertValues.Count; i++)
+                {
+                    var val = InsertValues[i];
+                    var comma = i == InsertValues.Count - 1 ? string.Empty : "`,`";
+
+                    str += val.Key + comma;
+                }
+
+                str += "`) VALUES \n";
             }
 
-            str += ") VALUES (";
+            str += "(";
 
             for (var i = 0; i < InsertValues.Count; i++)
             {
                 var val = InsertValues[i];
-                var comma = i == InsertValues.Count - 1 ? string.Empty : ", ";
+                var comma = i == InsertValues.Count - 1 ? string.Empty : ",";
 
                 string value;
                 if (val.Value is float)
                     value = ((float)val.Value).ToString("R", CultureInfo.InvariantCulture);
-                else if (val.Value is string)
-                    value = "'" + EscapeString((string)val.Value) + "'";
+                else if (val.Value is string && !val.Value.ToString().StartsWith("0x"))
+                    value = " '" + EscapeString((string)val.Value) + "'";
                 else
                     value = val.Value.ToString();
 
                 str += value + comma;
             }
 
-            str += ");";
+            str += "),";
 
             return str;
         }

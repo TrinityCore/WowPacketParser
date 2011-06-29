@@ -4,6 +4,8 @@ namespace WowPacketParser.Storing.Stores
 {
     public sealed class CreatureSpawnStore
     {
+        private bool isFirst = true;
+
         public string GetCommand(uint entry, int map, int phaseMask, Vector3 position, float orient)
         {
             var builder = new CommandBuilder("creature");
@@ -18,15 +20,23 @@ namespace WowPacketParser.Storing.Stores
             builder.AddColumnValue("position_y", position.Y);
             builder.AddColumnValue("position_z", position.Z);
             builder.AddColumnValue("orientation", orient);
-            builder.AddColumnValue("spawntimesecs", 120);
+            builder.AddColumnValue("spawntimesecs", 120); // TODO: Take rank and if map is instance in concideration
             builder.AddColumnValue("spawndist", 0.0f);
             builder.AddColumnValue("currentwaypoint", 0);
             builder.AddColumnValue("curhealth", 1);
             builder.AddColumnValue("curmana", 0);
-            builder.AddColumnValue("DeathState", 0);
             builder.AddColumnValue("MovementType", 0);
+            builder.AddColumnValue("npcflag", 0); // TODO: Check if they match updated creature_template value ?
+            builder.AddColumnValue("unit_flags", 0);
+            builder.AddColumnValue("dynamicflags", 0);
 
-            return builder.BuildInsert(true);
+            if (isFirst)
+            {
+                isFirst = false;
+                return builder.BuildInsert(true);
+            }
+            else
+                return builder.BuildInsert(false);
         }
     }
 }
