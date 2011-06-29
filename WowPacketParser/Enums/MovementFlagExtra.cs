@@ -6,21 +6,21 @@ namespace WowPacketParser.Enums
     public enum MovementFlagExtra
     {
         None = 0x0000,
-        Unknown1 = 0x0001,
-        Unknown2 = 0x0002,
-        Unknown3 = 0x0004,
+        PreventStrafe = 0x0001, // 4.x
+        PreventJumping = 0x0002, // 4.x
+        DisableCollision = 0x0004, // 4.x
         FullSpeedTurning = 0x0008,
         FullSpeedPitching = 0x0010,
         AlwaysAllowPitching = 0x0020,
-        Unknown4 = 0x0040,
-        Unknown5 = 0x0080,
-        Unknown6 = 0x0100,
-        Unknown7 = 0x0200,
-        InterpolatedPlayerMovement = 0x0400,
-        InterpolatedPlayerTurning = 0x0800,
-        InterpolatedPlayerPitching = 0x1000,
-        Unknown8 = 0x2000,
-        Unknown9 = 0x4000,
+        IsVehicleExitVoluntary = 0x0040, // 4.x
+        IsJumpSplineInAir = 0x0080, // 4.x
+        IsAnimTierInTrans = 0x0100, // 4.x
+        PreventChangePitch = 0x0200, // 4.x
+        InterpolateMove = 0x0400, // 4.x (Interpolation is player only)
+        InterpolateTurning = 0x0800,
+        InterpolatePitching = 0x1000,
+        VehiclePassengerIsTransitionAllowed = 0x2000, // 4.x
+        CanTransitionBetweenSwimAndFly = 0x4000, // 4.x
         Unknown10 = 0x8000
     }
 }

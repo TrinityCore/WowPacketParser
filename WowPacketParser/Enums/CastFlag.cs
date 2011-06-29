@@ -6,7 +6,7 @@ namespace WowPacketParser.Enums
     public enum CastFlag
     {
         None = 0x00000000,
-        PendingCast = 0x00000001,
+        PendingCast = 0x00000001, // 4.x NoCombatLog
         Unknown1 = 0x00000002,
         Unknown2 = 0x00000004,
         Unknown3 = 0x00000008,
@@ -23,15 +23,15 @@ namespace WowPacketParser.Enums
         Unknown12 = 0x00004000,
         Unknown13 = 0x00008000,
         Unknown14 = 0x00010000,
-        Unknown15 = 0x00020000,
+        AdjustMissile = 0x00020000, // 4.x
         Unknown16 = 0x00040000,
-        Unknown17 = 0x00080000,
+        VisualChain = 0x00080000, // 4.x
         Unknown18 = 0x00100000,
-        RuneInfo = 0x00200000,
+        RuneInfo = 0x00200000, // 4.x PredictedRunes
         Unknown19 = 0x00400000,
         Unknown20 = 0x00800000,
         Unknown21 = 0x01000000,
         Unknown22 = 0x02000000,
-        Unknown23 = 0x04000000
+        Immunity = 0x04000000 // 4.x
     }
 }

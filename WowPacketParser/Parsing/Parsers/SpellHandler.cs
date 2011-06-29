@@ -255,7 +255,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (packet.GetOpcode() == Opcode.SMSG_SPELL_GO)
             {
-                if (flags.HasFlag(CastFlag.Unknown15))
+                if (flags.HasFlag(CastFlag.AdjustMissile))
                 {
                     var unk1 = packet.ReadSingle();
                     Console.WriteLine("Unk Single: " + unk1);
@@ -276,7 +276,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (packet.GetOpcode() == Opcode.SMSG_SPELL_GO)
             {
-                if (flags.HasFlag(CastFlag.Unknown17))
+                if (flags.HasFlag(CastFlag.VisualChain))
                 {
                     var unk5 = packet.ReadInt32();
                     Console.WriteLine("Unk Int32 2: " + unk5);
@@ -288,7 +288,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (packet.GetOpcode() == Opcode.SMSG_SPELL_START)
             {
-                if (flags.HasFlag(CastFlag.Unknown23))
+                if (flags.HasFlag(CastFlag.Immunity))
                 {
                     var unk4 = packet.ReadInt32();
                     Console.WriteLine("Unk Int32 4: " + unk4);
@@ -360,6 +360,98 @@ namespace WowPacketParser.Parsing.Parsers
 
             var pos = packet.ReadVector3();
             Console.WriteLine("Position: " + pos);
+        }
+
+        [Parser(Opcode.SMSG_PERIODICAURALOG)]
+        public static void HandleAuraCastLog(Packet packet)
+        {
+            var packGuid = packet.ReadPackedGuid();
+            Console.WriteLine("Target GUID: " + packGuid);
+
+            var guid = packet.ReadPackedGuid();
+            Console.WriteLine("Caster GUID: " + guid);
+
+            var spellId = packet.ReadUInt32();
+            Console.WriteLine("Spell ID: " + spellId);
+
+            var count = packet.ReadUInt32();
+            Console.WriteLine("Count: " + count);
+
+            var aura = (AuraType)packet.ReadUInt32();
+            Console.WriteLine("Aura: " + aura);
+
+            switch (aura)
+            {
+                case AuraType.PeriodicDamage:
+                case AuraType.PeriodicDamagePercent:
+                {
+                    var damage = packet.ReadUInt32();
+                    Console.WriteLine("Damage: " + damage);
+
+                    var overDamage = packet.ReadUInt32();
+                    Console.WriteLine("Over damage: " + overDamage);
+
+                    var spellProto = packet.ReadUInt32();
+                    Console.WriteLine("Spell proto: " + spellProto);
+
+                    var absorb = packet.ReadUInt32();
+                    Console.WriteLine("Absorb: " + absorb);
+
+                    var resist = packet.ReadUInt32();
+                    Console.WriteLine("Resist: " + resist);
+
+                    var critical = packet.ReadSByte();
+                    Console.WriteLine("Crit? " + critical);
+
+                    break;
+                }
+                case AuraType.PeriodicHeal:
+                case AuraType.ObsModHealth:
+                {
+                    var damage = packet.ReadUInt32();
+                    Console.WriteLine("Damage: " + damage);
+
+                    var overDamage = packet.ReadUInt32();
+                    Console.WriteLine("Over damage: " + overDamage);
+
+                    var absorb = packet.ReadUInt32();
+                    Console.WriteLine("Absorb: " + absorb);
+
+                    var critical = packet.ReadSByte();
+                    Console.WriteLine("Crit? " + critical);
+
+                    break;
+                }
+                case AuraType.ObsModPower:
+                case AuraType.PeriodicEnergize:
+                {
+                    var powerType = packet.ReadUInt32();
+                    Console.WriteLine("Power type: " + powerType);
+
+                    var damage = packet.ReadUInt32();
+                    Console.WriteLine("Damage: " + damage);
+
+                    break;
+                }
+                case AuraType.PeriodicManaLeech:
+                {
+                    var powerType = packet.ReadUInt32();
+                    Console.WriteLine("Power type: " + powerType);
+
+                    var amount = packet.ReadUInt32();
+                    Console.WriteLine("Amount: " + amount);
+
+                    var multiplier = packet.ReadSingle();
+                    Console.WriteLine("Gain multiplier: " + multiplier);
+
+                    break;
+                }
+                default:
+                {
+                    Console.WriteLine("Aura type not handled.");
+                    break;
+                } 
+            }
         }
     }
 }

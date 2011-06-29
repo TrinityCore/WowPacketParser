@@ -8,13 +8,6 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class PetHandler
     {
-        static class Constants
-        {
-            public const int MaxDeclinedNameCases = 5;
-            public const int CreatureMaxSpells = 8;
-            public const int PetSpellsOffset = 8;
-        }
-
         [Parser(Opcode.SMSG_PET_SPELLS)]
         public static void HandlePetSpells(Packet packet)
         {
@@ -40,13 +33,13 @@ namespace WowPacketParser.Parsing.Parsers
             var unk2 = packet.ReadUInt16();
             Console.WriteLine("Unknow 2: " + unk1);
 
-            for (var i = 1; i <= Constants.CreatureMaxSpells + 1; i++) // Read vehicle spell ids
+            for (var i = 1; i <= (int)MiscConstants.CreatureMaxSpells + 1; i++) // Read vehicle spell ids
             {
                 var spell16 = packet.ReadUInt16();
                 var spell8 = packet.ReadSByte();
                 var spellid = spell16 | spell8;
                 var slotid = packet.ReadSByte();
-                slotid -= Constants.PetSpellsOffset;
+                slotid -= (int)MiscConstants.PetSpellsOffset;
                 Console.WriteLine("Spell " + slotid + ": " + spellid);
             }
 
@@ -89,7 +82,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Declined? " + (declined ? "yes" : "no"));
 
             if (declined)
-                for (int i = 0; i < Constants.MaxDeclinedNameCases; i++)
+                for (int i = 0; i < (int)MiscConstants.MaxDeclinedNameCases; i++)
                     Console.WriteLine("Declined name " + i + ": " + packet.ReadCString());
         }
     }

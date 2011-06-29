@@ -65,7 +65,9 @@
     <Compile Include="Enums\ActionButtonType.cs" />
     <Compile Include="Enums\AIReaction.cs" />
     <Compile Include="Enums\AmmoType.cs" />
+    <Compile Include="Enums\AttackerStateFlags.cs" />
     <Compile Include="Enums\AuraFlag.cs" />
+    <Compile Include="Enums\AuraType.cs" />
     <Compile Include="Enums\BagFamilyMask.cs" />
     <Compile Include="Enums\BarberShopResult.cs" />
     <Compile Include="Enums\BillingFlag.cs" />
@@ -83,6 +85,12 @@
     <Compile Include="Enums\ContactListFlag.cs" />
     <Compile Include="Enums\ContactResult.cs" />
     <Compile Include="Enums\ContactStatus.cs" />
+    <Compile Include="Enums\VehicleFlags.cs" />
+    <Compile Include="Enums\UnitDynamicFlags.cs" />
+    <Compile Include="Enums\PlayerFlags.cs" />
+    <Compile Include="Enums\PlayerFieldBytesMiscFlags.cs" />
+    <Compile Include="Enums\GameObjectDynamicFlag.cs" />
+    <Compile Include="Enums\UnitFlags2.cs" />
     <Compile Include="Enums\CreatureFamily.cs" />
     <Compile Include="Enums\CreatureRank.cs" />
     <Compile Include="Enums\CreatureType.cs" />
@@ -127,7 +135,9 @@
     <Compile Include="Enums\LootMethod.cs" />
     <Compile Include="Enums\MapDifficulty.cs" />
     <Compile Include="Enums\Material.cs" />
+    <Compile Include="Enums\MiscConstants.cs" />
     <Compile Include="Enums\MovementAnimationState.cs" />
+    <Compile Include="Enums\NPCFlags.cs" />
     <Compile Include="Enums\SpellMissType.cs" />
     <Compile Include="Enums\SplineMode.cs" />
     <Compile Include="Enums\SplineType.cs" />
@@ -160,6 +170,7 @@
     <Compile Include="Enums\TrainerType.cs" />
     <Compile Include="Enums\TransferAbortReason.cs" />
     <Compile Include="Enums\TypeMask.cs" />
+    <Compile Include="Enums\UnitFlags.cs" />
     <Compile Include="Enums\UpdateField.cs" />
     <Compile Include="Enums\UpdateFlag.cs" />
     <Compile Include="Enums\UpdateType.cs" />

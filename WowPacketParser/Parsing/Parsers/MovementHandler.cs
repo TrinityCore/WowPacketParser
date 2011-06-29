@@ -47,7 +47,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var seat = packet.ReadByte();
                 Console.WriteLine("Transport Seat: " + seat);
 
-                if (flags2.HasFlag(MovementFlagExtra.InterpolatedPlayerMovement))
+                if (flags2.HasFlag(MovementFlagExtra.InterpolateMove))
                 {
                     var ttime2 = packet.ReadInt32();
                     Console.WriteLine("Transport Time 2: " + ttime2);
@@ -190,9 +190,9 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var i = 0; i < waypoints - 1; i++)
                 {
                     var vec = packet.ReadPackedVector3();
-                    vec.X -= mid.X;
-                    vec.Y -= mid.Y;
-                    vec.Z -= mid.Z;
+                    vec.X += mid.X;
+                    vec.Y += mid.Y;
+                    vec.Z += mid.Z;
 
                     Console.WriteLine("Waypoint " + (i + 1) + ": " + vec);
                 }

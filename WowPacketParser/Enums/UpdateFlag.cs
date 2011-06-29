@@ -16,6 +16,9 @@ namespace WowPacketParser.Enums
         Vehicle = 0x080,
         GOPosition = 0x100,
         GORotation = 0x200,
-        Unknown2 = 0x400
+        Unknown2 = 0x400,
+        AnimKits = 0x800, // 4.x
+        TransportUnkArray = 0x1000, // 4.x
+        EnablePortals = 0x2000, // 4.x
     }
 }

@@ -25,6 +25,6 @@ namespace WowPacketParser.Enums
         SpellDynamic4 = 0x00010000,
         Glyph = 0x00020000,
         Unknown4 = 0x00040000,
-        ExtraTargets = 0x00080000
+        ExtraTargets = 0x00080000 // 4.x VisualChain
     }
 }
