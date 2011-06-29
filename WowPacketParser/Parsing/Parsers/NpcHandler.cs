@@ -134,5 +134,76 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadGuid();
             Console.WriteLine("GUID: " + guid);
         }
+
+        [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
+        public static void HandleNpcGossip(Packet packet)
+        {
+            var guid = packet.ReadGuid();
+            Console.WriteLine("GUID: " + guid);
+        
+            var entry = packet.ReadUInt32();
+            Console.WriteLine("Menu id: " + entry);
+        
+            var textid = packet.ReadUInt32();
+            Console.WriteLine("Text id: " + textid);
+        
+            var count = packet.ReadUInt32();
+            Console.WriteLine("Amount of Options:" + count);
+
+            if (count > 0)
+            {
+                Console.WriteLine("----------------------------");
+                for (var i = 0; i < count; i++)
+                {
+                    var index = packet.ReadUInt32();
+                    Console.WriteLine("--------- Index: " + index + " ---------");
+        
+                    var icon = packet.ReadSByte();
+                    Console.WriteLine("Icon: " + icon);
+        
+                    var box = packet.ReadSByte();
+                    Console.WriteLine("Box? " + box);
+        
+                    var boxMoney = packet.ReadUInt32();
+                    Console.WriteLine("Required money: " + boxMoney);
+        
+                    var text = packet.ReadCString();
+                    Console.WriteLine("Text: " + text);
+        
+                    var boxText = packet.ReadCString();
+                    Console.WriteLine("Box text: " + boxText);
+                }
+                Console.WriteLine("----------------------------");
+            }
+        
+            var questgossips = packet.ReadUInt32();
+            Console.WriteLine("Amount of Quest gossips: " + questgossips);
+        
+            if (questgossips > 0)
+            {
+                Console.WriteLine("----------------------------");
+                for (var i = 0; i < questgossips; i++)
+                {
+                    var questID = packet.ReadUInt32();
+                    Console.WriteLine("Quest ID: " + questID);
+        
+                    var questicon = packet.ReadUInt32();
+                    Console.WriteLine("Icon: " + questicon);
+        
+                    var questlevel = packet.ReadUInt32();
+                    Console.WriteLine("Level: " + questlevel);
+        
+                    var flags = (QuestFlag)(packet.ReadUInt32() | 0xFFFF);
+                    Console.WriteLine("Flags: " + flags);
+        
+                    var unk1 = packet.ReadBoolean();
+                    Console.WriteLine("Unk bool: " + unk1);
+        
+                    var title = packet.ReadCString();
+                    Console.WriteLine("Title: " + title);
+                }
+                Console.WriteLine("----------------------------");
+            }
+        }
     }
 }
