@@ -400,8 +400,8 @@ namespace WowPacketParser.Parsing.Parsers
                     var resist = packet.ReadUInt32();
                     Console.WriteLine("Resist: " + resist);
 
-                    var critical = packet.ReadSByte();
-                    Console.WriteLine("Crit? " + critical);
+                    var critical = packet.ReadByte();
+                    Console.WriteLine("Critical: " + critical);
 
                     break;
                 }
@@ -417,8 +417,8 @@ namespace WowPacketParser.Parsing.Parsers
                     var absorb = packet.ReadUInt32();
                     Console.WriteLine("Absorb: " + absorb);
 
-                    var critical = packet.ReadSByte();
-                    Console.WriteLine("Crit? " + critical);
+                    var critical = packet.ReadByte();
+                    Console.WriteLine("Critical: " + critical);
 
                     break;
                 }

@@ -158,7 +158,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var index = packet.ReadUInt32();
                 Console.WriteLine("\tIndex: " + index);
 
-                var icon = packet.ReadSByte();
+                var icon = packet.ReadByte();
                 Console.WriteLine("\tIcon: " + icon);
 
                 var box = packet.ReadBoolean();
@@ -190,7 +190,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var questicon = packet.ReadUInt32();
                 Console.WriteLine("\tIcon: " + questicon);
 
-                var questlevel = packet.ReadUInt32();
+                var questlevel = packet.ReadInt32();
                 Console.WriteLine("\tLevel: " + questlevel);
 
                 var flags = (QuestFlag)(packet.ReadUInt32() | 0xFFFF);
