@@ -90,8 +90,8 @@ namespace WowPacketParser
                 Console.WriteLine(ex.StackTrace);
             }
 
-            Console.ResetColor();
             SQLConnector.Disconnect();
+            Console.ResetColor();
         }
 
         public static void PrintUsage(string error)

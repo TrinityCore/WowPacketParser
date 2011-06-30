@@ -27,12 +27,7 @@ namespace WowPacketParser.SQLStore.DBConnector
         public static void Disconnect()
         {
             if (conn != null)
-            {
-#if DEBUG
-                Console.WriteLine("Closing connection to MySQL server.");
-#endif
                 conn.Close();
-            }
         }
 
         public static MySqlDataReader ExecuteQuery(string input)
