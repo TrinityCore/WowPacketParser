@@ -90,7 +90,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Declined: " + declined);
 
             if (declined)
-                for (int i = 0; i < (int)MiscConstants.MaxDeclinedNameCases; i++)
+                for (var i = 0; i < (int)MiscConstants.MaxDeclinedNameCases; i++)
                     Console.WriteLine("Declined name " + i + ": " + packet.ReadCString());
         }
     }

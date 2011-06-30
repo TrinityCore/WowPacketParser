@@ -15,7 +15,7 @@ namespace WowPacketParser.DBC.DBCStore
             Contract.Requires(DBC.DBCPath != null);
 
             var dict = new Dictionary<uint, T>();
-            string fileName = Path.Combine(DBC.DBCPath, typeof(T).Name + ".dbc").Replace("Entry", String.Empty);
+            var fileName = Path.Combine(DBC.DBCPath, typeof(T).Name + ".dbc").Replace("Entry", String.Empty);
 
             using (var reader = new BinaryReader(new FileStream(fileName, FileMode.Open, FileAccess.Read), Encoding.UTF8))
             {
@@ -59,9 +59,9 @@ namespace WowPacketParser.DBC.DBCStore
         // TODO: MOVE, should be outside Packet.cs
         public static unsafe T ReadStruct<T>(this BinaryReader reader) where T : struct
         {
-            byte[] rawData = reader.ReadBytes(Marshal.SizeOf(typeof(T)));
+            var rawData = reader.ReadBytes(Marshal.SizeOf(typeof(T)));
 
-            GCHandle handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);
+            var handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);
             T returnObject = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
 
             handle.Free();

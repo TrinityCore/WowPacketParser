@@ -131,8 +131,7 @@ namespace WowPacketParser.Parsing.Parsers
             var innerSpace = packet.ReadBoolean();
             Console.WriteLine("Inner Space Detected: " + innerSpace);
 
-            var hash = packet.ReadBytes(20);
-            Console.WriteLine("Hash: " + hash);
+            packet.ReadBytes(20); // Hash
         }
 
         [Parser(Opcode.CMSG_BOT_DETECTED2)]
