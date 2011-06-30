@@ -166,37 +166,39 @@ namespace WowPacketParser.Parsing.Parsers
                         }
                         case UnitField.UNIT_DYNAMIC_FLAGS:
                         {
-                            obj._dynamicflag = val.Int32Value; //(UnitDynamicFlags)
+                            //obj._dynamicflag = val.Int32Value; //(UnitDynamicFlags)
                             break;
                         }
                         case UnitField.UNIT_NPC_FLAGS:
                         {
-                            obj._npcflag = val.Int32Value; //(NPCFlags)
+                            //obj._npcflag = val.Int32Value; //(NPCFlags)
                             break;
                         }
                         case UnitField.UNIT_FIELD_FLAGS:
                         {
-                            obj._unitflag = val.Int32Value; //(UnitFlags)
+                            //obj._unitflag = val.Int32Value; //(UnitFlags)
                             break;
                         }
                         case UnitField.UNIT_FIELD_BASEATTACKTIME:
                         {
-                            obj._BaseAttackTime = val.Int32Value;
+                            //obj._BaseAttackTime = val.Int32Value;
                             break;
                         }
                         case UnitField.UNIT_FIELD_LEVEL:
                         {
-                            obj._Level = val.Int32Value;
+                            //obj._Level = val.Int32Value;
                             break;
                         }
                         case UnitField.UNIT_FIELD_FACTIONTEMPLATE:
                         {
-                            obj._Faction = val.Int32Value;
+                            //obj._Faction = val.Int32Value;
                             break;
                         }
                         default:
                             break;
                     }
+                    if (creating)
+                        obj.AddCreature((uint)guid.GetLow(), guid.GetEntry(), 1, 1, moves.Position.X, moves.Position.Y, moves.Position.Z, moves.Orientation, 0);
                 }
             }
 
