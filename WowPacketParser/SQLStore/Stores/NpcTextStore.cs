@@ -1,6 +1,6 @@
 using WowPacketParser.Enums;
 
-namespace WowPacketParser.Storing.Stores
+namespace WowPacketParser.SQLStore.Stores
 {
     public sealed class NpcTextStore
     {

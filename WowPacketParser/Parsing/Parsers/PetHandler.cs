@@ -1,7 +1,7 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.Storing;
+using WowPacketParser.SQLStore;
 using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers

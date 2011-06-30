@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using WowPacketParser.Misc;
 
-namespace WowPacketParser.Storing.Stores
+namespace WowPacketParser.SQLStore.Stores
 {
     public sealed class GameObjectSpawnStore
     {

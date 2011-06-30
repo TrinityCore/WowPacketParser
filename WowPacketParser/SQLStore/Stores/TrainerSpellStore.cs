@@ -1,4 +1,4 @@
-namespace WowPacketParser.Storing.Stores
+namespace WowPacketParser.SQLStore.Stores
 {
     public sealed class TrainerSpellStore
     {

@@ -7,8 +7,8 @@ using MySql.Data.MySqlClient;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.Storing;
-using WowPacketParser.Storing.Database;
+using WowPacketParser.SQLStore;
+using WowPacketParser.SQLStore.DBConnector;
 
 namespace WowPacketParser
 {

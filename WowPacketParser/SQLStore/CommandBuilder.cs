@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace WowPacketParser.Storing
+namespace WowPacketParser.SQLStore
 {
     public sealed class CommandBuilder
     {

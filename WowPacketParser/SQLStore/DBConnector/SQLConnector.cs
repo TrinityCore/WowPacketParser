@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Data;
-using MySql.Data.MySqlClient;
 using System.Configuration;
+using MySql.Data.MySqlClient;
 
-namespace WowPacketParser.Storing.Database
+namespace WowPacketParser.SQLStore.DBConnector
 {
     public static class SQLConnector
     {
@@ -36,9 +35,9 @@ namespace WowPacketParser.Storing.Database
             }
         }
 
-        public static MySqlDataReader ExecutedQuery(string input)
+        public static MySqlDataReader ExecuteQuery(string input)
         {
-            var command = new MySqlCommand(input, conn);
+            MySqlCommand command = new MySqlCommand(input, conn);
             return command.ExecuteReader();
         }
 
@@ -46,12 +45,12 @@ namespace WowPacketParser.Storing.Database
         {
             get
             {
-                return String.Format("Server={0};Port={1};Uid={2};Pwd={3};Database={4};character set=utf8",
-                                     ConfigurationManager.AppSettings["Server"],
-                                     ConfigurationManager.AppSettings["Port"],
-                                     ConfigurationManager.AppSettings["Uid"],
-                                     ConfigurationManager.AppSettings["Pwd"],
-                                     ConfigurationManager.AppSettings["Database"]);
+                return String.Format("Server={0};Port={1};Username={2};Password={3};Database={4};character set=utf8",
+                                    ConfigurationManager.AppSettings["Server"],
+                                    ConfigurationManager.AppSettings["Port"],
+                                    ConfigurationManager.AppSettings["Username"],
+                                    ConfigurationManager.AppSettings["Password"],
+                                    ConfigurationManager.AppSettings["Database"]);
             }
         }
     }
