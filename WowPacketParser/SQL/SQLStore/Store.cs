@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using WowPacketParser.Enums;
-using WowPacketParser.SQLStore.Stores;
+using WowPacketParser.SQL.SQLStore.Stores;
 
-namespace WowPacketParser.SQLStore
+namespace WowPacketParser.SQL.SQLStore
 {
     public static class Store
     {

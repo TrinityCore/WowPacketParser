@@ -2,21 +2,21 @@
 using System.Configuration;
 using MySql.Data.MySqlClient;
 
-namespace WowPacketParser.SQLStore
+namespace WowPacketParser.SQL.SQLStore
 {
     public static class SQLConnector
     {
-        private static MySqlConnection conn;
+        private static MySqlConnection _conn;
 
         public static void Connect()
         {
 #if DEBUG
             Console.WriteLine("Connecting to MySQL server: " + ConnectionString);
 #endif
-            conn = new MySqlConnection(ConnectionString);
+            _conn = new MySqlConnection(ConnectionString);
             try
             {
-                conn.Open();
+                _conn.Open();
             }
             catch(Exception e)
             {
@@ -26,13 +26,13 @@ namespace WowPacketParser.SQLStore
 
         public static void Disconnect()
         {
-            if (conn != null)
-                conn.Close();
+            if (_conn != null)
+                _conn.Close();
         }
 
         public static MySqlDataReader ExecuteQuery(string input)
         {
-            MySqlCommand command = new MySqlCommand(input, conn);
+            var command = new MySqlCommand(input, _conn);
             return command.ExecuteReader();
         }
 
@@ -40,12 +40,13 @@ namespace WowPacketParser.SQLStore
         {
             get
             {
-                return String.Format("Server={0};Port={1};Username={2};Password={3};Database={4};character set=utf8",
+                return String.Format("Server={0};Port={1};Username={2};Password={3};Database={4};CharSet={5}",
                                     ConfigurationManager.AppSettings["Server"],
                                     ConfigurationManager.AppSettings["Port"],
                                     ConfigurationManager.AppSettings["Username"],
                                     ConfigurationManager.AppSettings["Password"],
-                                    ConfigurationManager.AppSettings["Database"]);
+                                    ConfigurationManager.AppSettings["Database"],
+                                    ConfigurationManager.AppSettings["CharacterSet"]);
             }
         }
     }

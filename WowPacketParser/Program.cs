@@ -3,11 +3,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using MySql.Data.MySqlClient;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.SQLStore;
+using WowPacketParser.SQL.SQLStore;
 
 namespace WowPacketParser
 {

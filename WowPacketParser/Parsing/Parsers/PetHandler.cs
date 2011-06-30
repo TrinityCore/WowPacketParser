@@ -1,7 +1,7 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.SQLStore;
+using WowPacketParser.SQL.SQLStore;
 using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -31,7 +31,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Command state: " + commandState);
 
             var unk2 = packet.ReadUInt16();
-            Console.WriteLine("Unknow 2: " + unk1);
+            Console.WriteLine("Unknow 2: " + unk2);
 
             for (var i = 1; i <= (int)MiscConstants.CreatureMaxSpells + 2; i++) // Read vehicle spell ids
             {

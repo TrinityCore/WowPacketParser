@@ -53,7 +53,7 @@ namespace WowPacketParser.Parsing.Parsers
                         Console.WriteLine("String: " + str);
                     }
 
-                    var rest = (int)(packet.GetLength() - packet.GetPosition());
+                    // var rest = (int)(packet.GetLength() - packet.GetPosition());
                     break;
                 }
                 case WardenServerOpcode.Data:
@@ -132,6 +132,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Inner Space Detected: " + innerSpace);
 
             var hash = packet.ReadBytes(20);
+            Console.WriteLine("Hash: " + hash);
         }
 
         [Parser(Opcode.CMSG_BOT_DETECTED2)]

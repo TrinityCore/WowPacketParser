@@ -1,6 +1,6 @@
 using WowPacketParser.Misc;
 
-namespace WowPacketParser.SQLStore.Stores
+namespace WowPacketParser.SQL.SQLStore.Stores
 {
     public sealed class CreatureSpawnStore
     {

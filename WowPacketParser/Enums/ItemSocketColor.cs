@@ -1,5 +1,3 @@
-using System;
-
 namespace WowPacketParser.Enums
 {
     public enum ItemSocketColor

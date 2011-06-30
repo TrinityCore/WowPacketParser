@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices;
-
 namespace WowPacketParser.Misc
 {
     public sealed class UpdateField

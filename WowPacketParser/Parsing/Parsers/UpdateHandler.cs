@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.SQLStore;
+using WowPacketParser.SQL.SQLStore;
 using Guid=WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers

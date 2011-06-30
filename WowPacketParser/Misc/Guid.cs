@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-using System.Runtime.InteropServices;
 using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc
