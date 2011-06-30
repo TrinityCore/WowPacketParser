@@ -184,7 +184,7 @@
     <Compile Include="Enums\WardenOpcode.cs" />
     <Compile Include="Enums\WeatherState.cs" />
     <Compile Include="Loading\LoaderAttribute.cs" />
-    <Compile Include="Loading\Loaders\KSnifferZorLoader.cs" />
+    <Compile Include="Loading\KSnifferZorLoader.cs" />
     <Compile Include="Loading\Reader.cs" />
     <Compile Include="Misc\CharacterInfo.cs" />
     <Compile Include="Misc\CommandLine.cs" />
@@ -242,7 +242,7 @@
     <Compile Include="Misc\Vector3.cs" />
     <Compile Include="Misc\Vector4.cs" />
     <Compile Include="SQL\SQLStore\CommandBuilder.cs" />
-    <Compile Include="SQL\SQLStore\DBConnector\SQLConnector.cs" />
+    <Compile Include="SQL\SQLStore\SQLConnector.cs" />
     <Compile Include="SQL\SQLStore\Store.cs" />
     <Compile Include="SQL\SQLStore\Stores\CreatureSpawnStore.cs" />
     <Compile Include="SQL\SQLStore\Stores\CreatureSpawnUpdateStore.cs" />

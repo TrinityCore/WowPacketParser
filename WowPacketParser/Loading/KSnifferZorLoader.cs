@@ -3,7 +3,7 @@ using System.IO;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
-namespace WowPacketParser.Loading.Loaders
+namespace WowPacketParser.Loading
 {
     [Loader("kszor")]
     public sealed class KSnifferZorLoader : Loader
