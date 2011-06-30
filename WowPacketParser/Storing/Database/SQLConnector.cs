@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using MySql.Data.MySqlClient;
 using System.Configuration;
 
@@ -6,31 +7,39 @@ namespace WowPacketParser.Storing.Database
 {
     public static class SQLConnector
     {
-        public static void StartSQL()
+        private static MySqlConnection conn;
+
+        public static void Connect()
         {
-            Console.WriteLine(ConnectionString);
-            var name = string.Empty;
-
-            using (var conn = new MySqlConnection(ConnectionString))
+#if DEBUG
+            Console.WriteLine("Connecting to MySQL server: " + ConnectionString);
+#endif
+            conn = new MySqlConnection(ConnectionString);
+            try
             {
-                
-                var command = new MySqlCommand("SELECT name FROM creature_template WHERE entry=28650", conn);
                 conn.Open();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
 
-                using (var result = command.ExecuteReader())
-                {
-                    while (result.Read())
-                    {
-                        name = result[0].ToString();
-                    }
-                }
-
+        public static void Disconnect()
+        {
+            if (conn != null)
+            {
+#if DEBUG
+                Console.WriteLine("Closing connection to MySQL server.");
+#endif
                 conn.Close();
             }
+        }
 
-            Console.WriteLine(name);
-            Console.WriteLine("Done with MySQL stuff.");
-
+        public static MySqlDataReader ExecutedQuery(string input)
+        {
+            var command = new MySqlCommand(input, conn);
+            return command.ExecuteReader();
         }
 
         private static string ConnectionString

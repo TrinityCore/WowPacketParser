@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using MySql.Data.MySqlClient;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -18,8 +19,10 @@ namespace WowPacketParser
         private static void Main(string[] args)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-
+      
             CmdLine = new CommandLine(args);
+
+            SQLConnector.Connect(); // Connect to DB
 
             string file;
             string filters;
@@ -32,12 +35,11 @@ namespace WowPacketParser
                 filters = CmdLine.GetValue("-filters");
                 sqloutput = CmdLine.GetValue("-sql");
                 nodump = CmdLine.GetValue("-nodump");
-
-                SQLConnector.StartSQL();
             }
             catch (IndexOutOfRangeException)
             {
                 PrintUsage("All command line options require an argument.");
+                SQLConnector.Disconnect();
                 return;
             }
 
@@ -47,6 +49,7 @@ namespace WowPacketParser
                 if (packets == null)
                 {
                     PrintUsage("Could not open file " + file + " for reading.");
+                    SQLConnector.Disconnect();
                     return;
                 }
 
@@ -88,6 +91,7 @@ namespace WowPacketParser
             }
 
             Console.ResetColor();
+            SQLConnector.Disconnect();
         }
 
         public static void PrintUsage(string error)
