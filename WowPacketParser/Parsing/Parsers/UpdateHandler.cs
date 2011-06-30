@@ -10,8 +10,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class UpdateHandler
     {
-        public static readonly Dictionary<int, Dictionary<Guid, WowObject>> Objects =
-            new Dictionary<int, Dictionary<Guid, WowObject>>();
+        public static Dictionary<int, Dictionary<Guid, WowObject>> ObjectStore = new Dictionary<int, Dictionary<Guid, WowObject>>();
 
         [Parser(Opcode.SMSG_UPDATE_OBJECT)]
         public static void HandleUpdateObject(Packet packet)
@@ -34,8 +33,8 @@ namespace WowPacketParser.Parsing.Parsers
                         var updates = ReadValuesUpdateBlock(packet);
 
                         WowObject obj;
-                        if (Objects[MovementHandler.CurrentMapId].TryGetValue(guid, out obj))
-                            HandleUpdateFieldChangedValues(false, guid, obj.Type, updates, obj.Movement);
+                        if (ObjectStore[MovementHandler.CurrentMapId].TryGetValue(guid, out obj))
+                            HandleUpdateFieldChangedValues(false, guid, obj.Type, updates, obj.Movement, obj);
                         break;
                     }
                     case UpdateType.Movement:
@@ -74,6 +73,17 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void ReadCreateObjectBlock(Packet packet, Guid guid)
         {
+            // Here we can choose to not parse updateblocks for creatures/gameobjects
+            // In the future i plan to add a option in the GUI to only parse selected creature/gameobject entries.
+            //  bool shouldbeparsed = false;
+            //  foreach (var entry in options.Entry)
+            //      if (guid.GetEntry() == entry)
+            //      {
+            //          shouldbeparsed = true;
+            //          continue;
+            //      }
+            //  if (!shouldbeparsed)
+            //      return;
             var objType = (ObjectType)packet.ReadByte();
             Console.WriteLine("Object Type: " + objType);
 
@@ -83,11 +93,11 @@ namespace WowPacketParser.Parsing.Parsers
             var obj = new WowObject(guid, objType, moves);
             obj.Position = moves.Position;
 
-            var objects = Objects[MovementHandler.CurrentMapId];
+            var objects = ObjectStore[MovementHandler.CurrentMapId];
             var shouldAdd = true;
             foreach (var woObj in objects.Values)
             {
-                if (woObj.Position != obj.Position && woObj.Guid != guid)
+                if (woObj.Position != obj.Position && woObj.Guid == guid)
                     continue;
 
                 shouldAdd = false;
@@ -99,7 +109,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             objects.Add(guid, obj);
 
-            HandleUpdateFieldChangedValues(true, guid, objType, updates, moves);
+            HandleUpdateFieldChangedValues(true, guid, objType, updates, moves, obj);
         }
 
         public static Dictionary<int, UpdateField> ReadValuesUpdateBlock(Packet packet)
@@ -133,16 +143,8 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         public static void HandleUpdateFieldChangedValues(bool creating, Guid guid, ObjectType objType,
-            Dictionary<int, UpdateField> updates, MovementInfo moves)
+            Dictionary<int, UpdateField> updates, MovementInfo moves, WowObject obj)
         {
-            bool shouldCommit;
-            bool isIntValue;
-            bool flags;
-            var isTemplate = true;
-            var isCreated = false;
-            string sql;
-            string fieldName = null;
-
             if (objType == ObjectType.Unit && guid.GetHighType() != HighGuidType.Pet)
             {
                 if (creating)
@@ -153,105 +155,49 @@ namespace WowPacketParser.Parsing.Parsers
 
                 foreach (var upVal in updates)
                 {
-                    shouldCommit = true;
-                    isIntValue = true;
-                    flags = false;
-
                     var idx = (UnitField)upVal.Key;
                     var val = upVal.Value;
 
                     switch (idx)
                     {
-                        case UnitField.UNIT_CREATED_BY_SPELL:
-                        case UnitField.UNIT_FIELD_CREATEDBY:
-                        case UnitField.UNIT_FIELD_SUMMONEDBY:
-                        {
-                            isCreated = true;
-                            shouldCommit = false;
-                            break;
-                        }
                         case (UnitField)ObjectField.OBJECT_FIELD_SCALE_X:
                         {
-                            fieldName = "scale";
-                            isIntValue = false;
                             break;
                         }
                         case UnitField.UNIT_DYNAMIC_FLAGS:
                         {
-                            fieldName = "dynamicflags";
-                            flags = true;
+                            obj._dynamicflag = val.Int32Value; //(UnitDynamicFlags)
                             break;
                         }
                         case UnitField.UNIT_NPC_FLAGS:
                         {
-                            fieldName = "npcflag";
-                            flags = true;
+                            obj._npcflag = val.Int32Value; //(NPCFlags)
                             break;
                         }
                         case UnitField.UNIT_FIELD_FLAGS:
                         {
-                            fieldName = "unit_flags";
-                            flags = true;
-                            break;
-                        }
-                        case UnitField.UNIT_FIELD_ATTACK_POWER:
-                        {
-                            fieldName = "attackpower";
+                            obj._unitflag = val.Int32Value; //(UnitFlags)
                             break;
                         }
                         case UnitField.UNIT_FIELD_BASEATTACKTIME:
                         {
-                            fieldName = "baseattacktime";
+                            obj._BaseAttackTime = val.Int32Value;
                             break;
                         }
                         case UnitField.UNIT_FIELD_LEVEL:
                         {
-                            fieldName = "minlevel = " + val.Int32Value + ", maxlevel";
-                            break;
-                        }
-                        case UnitField.UNIT_FIELD_RANGED_ATTACK_POWER:
-                        {
-                            fieldName = "rangedattackpower";
-                            break;
-                        }
-                        case UnitField.UNIT_FIELD_RANGEDATTACKTIME:
-                        {
-                            fieldName = "rangeattacktime";
+                            obj._Level = val.Int32Value;
                             break;
                         }
                         case UnitField.UNIT_FIELD_FACTIONTEMPLATE:
                         {
-                            fieldName = "faction_A = " + val.Int32Value + ", faction_H";
+                            obj._Faction = val.Int32Value;
                             break;
                         }
                         default:
-                        {
-                            shouldCommit = false;
                             break;
-                        }
                     }
-
-                    if (!shouldCommit)
-                        continue;
-
-                    var finalValue = isIntValue ? (object)val.Int32Value : val.SingleValue;
-
-                    if (flags)
-                        finalValue = "0x" + ((int)finalValue).ToString("X8");
-
-                    if (isTemplate)
-                        sql = Store.CreatureUpdates.GetCommand(fieldName, guid.GetEntry(), finalValue);
-                    else
-                        sql = Store.CreatureSpawnUpdates.GetCommand(fieldName, (uint)guid.GetLow(),
-                            finalValue);
-
-                    Store.WriteData(sql);
                 }
-
-                if (!isCreated)
-                    Store.WriteData(Store.CreatureSpawns.GetCommand(guid.GetEntry(),
-                        MovementHandler.CurrentMapId, MovementHandler.CurrentPhaseMask,
-                        moves.Position, moves.Orientation));
             }
 
             if (objType != ObjectType.GameObject)
@@ -259,10 +205,6 @@ namespace WowPacketParser.Parsing.Parsers
 
             foreach (var upVal in updates)
             {
-                shouldCommit = true;
-                isIntValue = true;
-                flags = false;
-
                 var idx = (GameObjectField)upVal.Key;
                 var val = upVal.Value;
 
@@ -270,54 +212,24 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     case GameObjectField.GAMEOBJECT_FIELD_CREATED_BY:
                     {
-                        isCreated = true;
-                        shouldCommit = false;
                         break;
                     }
                     case (GameObjectField)ObjectField.OBJECT_FIELD_SCALE_X:
                     {
-                        fieldName = "size";
-                        isIntValue = false;
                         break;
                     }
                     case GameObjectField.GAMEOBJECT_FACTION:
                     {
-                        fieldName = "faction";
                         break;
                     }
                     case GameObjectField.GAMEOBJECT_FLAGS:
                     {
-                        fieldName = "flags";
-                        flags = true;
                         break;
                     }
                     default:
-                    {
-                        shouldCommit = false;
                         break;
-                    }
                 }
-
-                if (!shouldCommit)
-                    continue;
-
-                var finalValue = isIntValue ? (object)val.Int32Value : val.SingleValue;
-
-                if (flags)
-                    finalValue = "0x" + ((int)finalValue).ToString("X8");
-
-                if (isTemplate)
-                    sql = Store.GameObjectUpdates.GetCommand(fieldName, guid.GetEntry(), finalValue);
-                else
-                    sql = Store.GameObjectSpawnUpdates.GetCommand(fieldName, (uint)guid.GetLow(),
-                        finalValue);
-
-                Store.WriteData(sql);
             }
-
-            if (!isCreated)
-                Store.WriteData(Store.GameObjectSpawns.GetCommand(guid.GetEntry(), MovementHandler.CurrentMapId,
-                    MovementHandler.CurrentPhaseMask, moves.Position, moves.Orientation));
         }
 
         public static MovementInfo ReadMovementUpdateBlock(Packet packet, Guid guid)
