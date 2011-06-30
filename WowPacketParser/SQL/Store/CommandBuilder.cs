@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace WowPacketParser.SQL.SQLStore
+namespace WowPacketParser.SQL.Store
 {
     public sealed class CommandBuilder
     {

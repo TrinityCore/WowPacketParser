@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 
-namespace WowPacketParser.SQL.SQLStore.Stores
+namespace WowPacketParser.SQL.Store.Stores
 {
     public sealed class QuestStore
     {

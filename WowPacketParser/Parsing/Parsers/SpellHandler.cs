@@ -1,7 +1,7 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.SQL.SQLStore;
+using WowPacketParser.SQL.Store;
 
 namespace WowPacketParser.Parsing.Parsers
 {

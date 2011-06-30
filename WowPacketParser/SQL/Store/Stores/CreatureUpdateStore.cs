@@ -1,10 +1,10 @@
-namespace WowPacketParser.SQL.SQLStore.Stores
+namespace WowPacketParser.SQL.Store.Stores
 {
-    public sealed class GameObjectUpdateStore
+    public sealed class CreatureUpdateStore
     {
         public string GetCommand(string field, uint where, object value)
         {
-            var builder = new CommandBuilder("gameobject_template");
+            var builder = new CommandBuilder("creature_template");
             builder.AddUpdateValue(field, value);
             return builder.BuildUpdate("entry = " + where);
         }

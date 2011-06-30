@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace WowPacketParser.DBC.DBCStore
+namespace WowPacketParser.DBC.Store
 {
     public struct DbcHeader
     {

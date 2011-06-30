@@ -65,9 +65,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DBC\DBCStore\DBC.cs" />
-    <Compile Include="DBC\DBCStore\DBCHeader.cs" />
-    <Compile Include="DBC\DBCStore\DBCReader.cs" />
+    <Compile Include="DBC\Store\Main.cs" />
+    <Compile Include="DBC\Store\Header.cs" />
+    <Compile Include="DBC\Store\Reader.cs" />
+    <Compile Include="DBC\Loader.cs" />
+    <Compile Include="DBC\Structures\SpellEntry.cs" />
     <Compile Include="Enums\AccountDataType.cs" />
     <Compile Include="Enums\ActionButtonType.cs" />
     <Compile Include="Enums\AIReaction.cs" />
@@ -241,28 +243,28 @@
     <Compile Include="Misc\Vector2.cs" />
     <Compile Include="Misc\Vector3.cs" />
     <Compile Include="Misc\Vector4.cs" />
-    <Compile Include="SQL\SQLStore\CommandBuilder.cs" />
-    <Compile Include="SQL\SQLStore\SQLConnector.cs" />
-    <Compile Include="SQL\SQLStore\Store.cs" />
-    <Compile Include="SQL\SQLStore\Stores\CreatureSpawnStore.cs" />
-    <Compile Include="SQL\SQLStore\Stores\CreatureSpawnUpdateStore.cs" />
-    <Compile Include="SQL\SQLStore\Stores\CreatureStore.cs" />
-    <Compile Include="SQL\SQLStore\Stores\CreatureUpdateStore.cs" />
-    <Compile Include="SQL\SQLStore\Stores\GameObjectSpawnStore.cs" />
-    <Compile Include="SQL\SQLStore\Stores\GameObjectSpawnUpdateStore.cs" />
-    <Compile Include="SQL\SQLStore\Stores\GameObjectStore.cs" />
-    <Compile Include="SQL\SQLStore\Stores\GameObjectUpdateStore.cs" />
-    <Compile Include="SQL\SQLStore\Stores\ItemStore.cs" />
-    <Compile Include="SQL\SQLStore\Stores\NpcTextStore.cs" />
-    <Compile Include="SQL\SQLStore\Stores\PageTextStore.cs" />
-    <Compile Include="SQL\SQLStore\Stores\QuestPoiPointStore.cs" />
-    <Compile Include="SQL\SQLStore\Stores\QuestPoiStore.cs" />
-    <Compile Include="SQL\SQLStore\Stores\QuestStore.cs" />
-    <Compile Include="SQL\SQLStore\Stores\StartActionStore.cs" />
-    <Compile Include="SQL\SQLStore\Stores\StartPositionStore.cs" />
-    <Compile Include="SQL\SQLStore\Stores\StartSpellStore.cs" />
-    <Compile Include="SQL\SQLStore\Stores\TrainerSpellStore.cs" />
-    <Compile Include="SQL\SQLStore\Stores\VendorItemStore.cs" />
+    <Compile Include="SQL\Store\CommandBuilder.cs" />
+    <Compile Include="SQL\Store\Connector.cs" />
+    <Compile Include="SQL\Store\Store.cs" />
+    <Compile Include="SQL\Store\Stores\CreatureSpawnStore.cs" />
+    <Compile Include="SQL\Store\Stores\CreatureSpawnUpdateStore.cs" />
+    <Compile Include="SQL\Store\Stores\CreatureStore.cs" />
+    <Compile Include="SQL\Store\Stores\CreatureUpdateStore.cs" />
+    <Compile Include="SQL\Store\Stores\GameObjectSpawnStore.cs" />
+    <Compile Include="SQL\Store\Stores\GameObjectSpawnUpdateStore.cs" />
+    <Compile Include="SQL\Store\Stores\GameObjectStore.cs" />
+    <Compile Include="SQL\Store\Stores\GameObjectUpdateStore.cs" />
+    <Compile Include="SQL\Store\Stores\ItemStore.cs" />
+    <Compile Include="SQL\Store\Stores\NpcTextStore.cs" />
+    <Compile Include="SQL\Store\Stores\PageTextStore.cs" />
+    <Compile Include="SQL\Store\Stores\QuestPoiPointStore.cs" />
+    <Compile Include="SQL\Store\Stores\QuestPoiStore.cs" />
+    <Compile Include="SQL\Store\Stores\QuestStore.cs" />
+    <Compile Include="SQL\Store\Stores\StartActionStore.cs" />
+    <Compile Include="SQL\Store\Stores\StartPositionStore.cs" />
+    <Compile Include="SQL\Store\Stores\StartSpellStore.cs" />
+    <Compile Include="SQL\Store\Stores\TrainerSpellStore.cs" />
+    <Compile Include="SQL\Store\Stores\VendorItemStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

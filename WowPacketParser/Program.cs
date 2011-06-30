@@ -6,7 +6,7 @@ using System.Threading;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.SQL.SQLStore;
+using WowPacketParser.SQL.Store;
 
 namespace WowPacketParser
 {
@@ -20,7 +20,7 @@ namespace WowPacketParser
       
             CmdLine = new CommandLine(args);
 
-            SQLConnector.Connect(); // Connect to DB
+            Connector.Connect(); // Connect to DB
 
             string file;
             string filters;
@@ -37,7 +37,7 @@ namespace WowPacketParser
             catch (IndexOutOfRangeException)
             {
                 PrintUsage("All command line options require an argument.");
-                SQLConnector.Disconnect();
+                Connector.Disconnect();
                 return;
             }
 
@@ -47,7 +47,7 @@ namespace WowPacketParser
                 if (packets == null)
                 {
                     PrintUsage("Could not open file " + file + " for reading.");
-                    SQLConnector.Disconnect();
+                    Connector.Disconnect();
                     return;
                 }
 
@@ -88,7 +88,7 @@ namespace WowPacketParser
                 Console.WriteLine(ex.StackTrace);
             }
 
-            SQLConnector.Disconnect();
+            Connector.Disconnect();
             Console.ResetColor();
         }
 

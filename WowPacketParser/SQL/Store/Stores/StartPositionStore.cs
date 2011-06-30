@@ -1,7 +1,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
-namespace WowPacketParser.SQL.SQLStore.Stores
+namespace WowPacketParser.SQL.Store.Stores
 {
     public sealed class StartPositionStore
     {

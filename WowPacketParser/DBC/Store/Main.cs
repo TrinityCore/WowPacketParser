@@ -2,10 +2,11 @@
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Text;
+using WowPacketParser.DBC.Structures;
 
-namespace WowPacketParser.DBC.DBCStore
+namespace WowPacketParser.DBC.Store
 {
-    public static class DBC
+    public static class Main
     {
         public const int ClientVersion = 12340;
         public const int MaxDBCLocale = 16;
@@ -14,6 +15,8 @@ namespace WowPacketParser.DBC.DBCStore
         {
             get { return "./"; }
         }
+
+        public static Dictionary<uint, SpellEntry> Spell;
 
         public static unsafe T ReadStruct<T>(this BinaryReader reader) where T : struct
         {

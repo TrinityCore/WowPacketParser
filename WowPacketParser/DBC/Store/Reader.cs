@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace WowPacketParser.DBC.DBCStore
+namespace WowPacketParser.DBC.Store
 {
-    public static class DBCReader
+    public static class Reader
     {
         public static unsafe Dictionary<uint, T> ReadDBC<T>(Dictionary<uint, string> strDict) where T : struct
         {
-            Contract.Requires(DBC.DBCPath != String.Empty);
-            Contract.Requires(DBC.DBCPath != null);
-
             var dict = new Dictionary<uint, T>();
-            var fileName = Path.Combine(DBC.DBCPath, typeof(T).Name + ".dbc").Replace("Entry", String.Empty);
+            var fileName = Path.Combine(Main.DBCPath, typeof(T).Name + ".dbc").Replace("Entry", String.Empty);
 
             using (var reader = new BinaryReader(new FileStream(fileName, FileMode.Open, FileAccess.Read), Encoding.UTF8))
             {
