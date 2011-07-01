@@ -1,7 +1,8 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.SQL.Store;
+using WowPacketParser.SQL;
+
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -73,7 +74,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var unk = packet.ReadInt32();
                 Console.WriteLine("Unk Int32 " + i + ": " + unk);
 
-                Store.WriteData(Store.TrainerSpells.GetCommand(guid.GetEntry(), spell, cost, reqLevel,
+                SQLStore.WriteData(SQLStore.TrainerSpells.GetCommand(guid.GetEntry(), spell, cost, reqLevel,
                     reqSkill, reqSkLvl));
             }
 
@@ -116,7 +117,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var extendedCost = packet.ReadInt32();
                 Console.WriteLine("Extended Cost " + i + ": " + extendedCost);
 
-                Store.WriteData(Store.VendorItems.GetCommand(guid.GetEntry(), itemId, maxCount,
+                SQLStore.WriteData(SQLStore.VendorItems.GetCommand(guid.GetEntry(), itemId, maxCount,
                     extendedCost));
             }
         }

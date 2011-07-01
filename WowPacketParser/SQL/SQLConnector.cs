@@ -2,9 +2,9 @@
 using System.Configuration;
 using MySql.Data.MySqlClient;
 
-namespace WowPacketParser.SQL.Store
+namespace WowPacketParser.SQL
 {
-    public static class Connector
+    public static class SQLConnector
     {
         private static MySqlConnection _conn;
 

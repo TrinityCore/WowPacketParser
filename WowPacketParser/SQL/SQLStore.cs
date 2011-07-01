@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using WowPacketParser.SQL.Store.Stores;
+using WowPacketParser.SQL.Stores;
 
-namespace WowPacketParser.SQL.Store
+namespace WowPacketParser.SQL
 {
-    public static class Store
+    public static class SQLStore
     {
         private static StreamWriter _file;
 

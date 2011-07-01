@@ -1,8 +1,8 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace WowPacketParser.DBC.Store
+namespace WowPacketParser.DBC.DBCStore
 {
-    public struct DbcHeader
+    public struct DBCHeader
     {
         public int Signature;
         public int RecordsCount;
@@ -22,7 +22,7 @@ namespace WowPacketParser.DBC.Store
 
         public long StartStringPosition
         {
-            get { return DataSize + (long)Marshal.SizeOf(typeof(DbcHeader)); }
+            get { return DataSize + (long)Marshal.SizeOf(typeof(DBCHeader)); }
         }
     };
 }

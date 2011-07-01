@@ -1,6 +1,7 @@
 using WowPacketParser.Enums;
 
-namespace WowPacketParser.SQL.Store.Stores
+
+namespace WowPacketParser.SQL.Stores
 {
     public sealed class GameObjectStore
     {
@@ -8,7 +9,7 @@ namespace WowPacketParser.SQL.Store.Stores
             string iconName, string castCaption, string unkStr, int[] data, float size,
             int[] qItem)
         {
-            var builder = new CommandBuilder("gameobject_template");
+            var builder = new SQLCommandBuilder("gameobject_template");
 
             builder.AddColumnValue("entry", entry);
             builder.AddColumnValue("type", (int)type);

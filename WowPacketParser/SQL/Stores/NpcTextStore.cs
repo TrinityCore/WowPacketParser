@@ -1,13 +1,14 @@
 using WowPacketParser.Enums;
 
-namespace WowPacketParser.SQL.Store.Stores
+
+namespace WowPacketParser.SQL.Stores
 {
     public sealed class NpcTextStore
     {
         public string GetCommand(int entry, float[] prob, string[] text1, string[] text2,
             Language[] lang, int[][] emDelay, int[][] emEmote)
         {
-            var builder = new CommandBuilder("npc_text");
+            var builder = new SQLCommandBuilder("npc_text");
 
             builder.AddColumnValue("ID", entry);
 

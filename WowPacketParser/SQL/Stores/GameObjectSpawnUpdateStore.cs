@@ -1,10 +1,10 @@
-namespace WowPacketParser.SQL.Store.Stores
+namespace WowPacketParser.SQL.Stores
 {
-    public sealed class CreatureSpawnUpdateStore
+    public sealed class GameObjectSpawnUpdateStore
     {
         public string GetCommand(string field, uint where, object value)
         {
-            var builder = new CommandBuilder("creature");
+            var builder = new SQLCommandBuilder("gameobject");
             builder.AddUpdateValue(field, value);
             return builder.BuildUpdate("guid = " + where);
         }

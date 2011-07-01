@@ -2,11 +2,11 @@
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Text;
-using WowPacketParser.DBC.Structures;
+using WowPacketParser.DBC.DBCStructures;
 
-namespace WowPacketParser.DBC.Store
+namespace WowPacketParser.DBC.DBCStore
 {
-    public static class Main
+    public static class DBC
     {
         public const int ClientVersion = 12340;
         public const int MaxDBCLocale = 16;
@@ -20,9 +20,9 @@ namespace WowPacketParser.DBC.Store
 
         public static unsafe T ReadStruct<T>(this BinaryReader reader) where T : struct
         {
-            var rawData = reader.ReadBytes(Marshal.SizeOf(typeof(T)));
+            byte[] rawData = reader.ReadBytes(Marshal.SizeOf(typeof(T)));
 
-            var handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);
+            GCHandle handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);
             T returnObject = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
 
             handle.Free();

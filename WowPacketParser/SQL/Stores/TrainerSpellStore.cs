@@ -1,11 +1,13 @@
-namespace WowPacketParser.SQL.Store.Stores
+
+
+namespace WowPacketParser.SQL.Stores
 {
     public sealed class TrainerSpellStore
     {
         public string GetCommand(uint entry, int spellId, int cost, int reqLevel, int reqSkill,
             int reqSkLvl)
         {
-            var builder = new CommandBuilder("npc_trainer");
+            var builder = new SQLCommandBuilder("npc_trainer");
 
             builder.AddColumnValue("entry", entry);
             builder.AddColumnValue("spell", spellId);

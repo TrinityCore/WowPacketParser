@@ -1,7 +1,8 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.SQL.Store;
+using WowPacketParser.SQL;
+
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -70,7 +71,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (!chr.FirstLogin)
                     continue;
 
-                Store.WriteData(Store.StartSpells.GetCommand(chr.Race, chr.Class, spellId));
+                SQLStore.WriteData(SQLStore.StartSpells.GetCommand(chr.Race, chr.Class, spellId));
             }
 
             var cooldownCount = packet.ReadInt16();

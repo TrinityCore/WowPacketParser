@@ -1,7 +1,8 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.SQL.Store;
+using WowPacketParser.SQL;
+
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -61,7 +62,7 @@ namespace WowPacketParser.Parsing.Parsers
                 Console.WriteLine("Quest Item " + i + ": " + qItem[i]);
             }
 
-            Store.WriteData(Store.GameObjects.GetCommand(entry.Key, type, dispId, name[0], iconName,
+            SQLStore.WriteData(SQLStore.GameObjects.GetCommand(entry.Key, type, dispId, name[0], iconName,
                 castCaption, unkStr, data, size, qItem));
         }
 

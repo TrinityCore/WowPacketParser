@@ -1,13 +1,14 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
-namespace WowPacketParser.SQL.Store.Stores
+
+namespace WowPacketParser.SQL.Stores
 {
     public sealed class StartPositionStore
     {
         public string GetCommand(Race race, Class clss, int map, int zone, Vector3 pos)
         {
-            var builder = new CommandBuilder("playercreateinfo");
+            var builder = new SQLCommandBuilder("playercreateinfo");
 
             builder.AddColumnValue("race", (int)race);
             builder.AddColumnValue("class", (int)clss);

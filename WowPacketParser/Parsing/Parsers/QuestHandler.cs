@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.SQL.Store;
+using WowPacketParser.SQL;
+
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -203,7 +204,7 @@ namespace WowPacketParser.Parsing.Parsers
                 Console.WriteLine("Objective Text " + i + ": " + objectiveText[i]);
             }
 
-            Store.WriteData(Store.Quests.GetCommand(id, method, level, minLevel, sort, type,
+            SQLStore.WriteData(SQLStore.Quests.GetCommand(id, method, level, minLevel, sort, type,
                 players, factId, factRep, nextQuest, xpId, rewReqMoney, rewMoneyMaxLvl,
                 rewSpell, rewSpellCast, rewHonor, rewHonorBonus, srcItemId, flags, titleId,
                 reqPlayerKills, bonusTalents, bonusArenaPoints, bonusUnk, rewItemId, rewItemCnt,
@@ -262,7 +263,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var unk4 = packet.ReadInt32();
                     Console.WriteLine("Unk Int32 3 " + j + ": " + unk4);
 
-                    Store.WriteData(Store.QuestPois.GetCommand(questId, idx, objIndex, mapId, wmaId,
+                    SQLStore.WriteData(SQLStore.QuestPois.GetCommand(questId, idx, objIndex, mapId, wmaId,
                         unk2, unk3, unk4));
 
                     var pointsSize = packet.ReadInt32();
@@ -276,7 +277,7 @@ namespace WowPacketParser.Parsing.Parsers
                         var pointY = packet.ReadInt32();
                         Console.WriteLine("Point Y " + k + ": " + pointY);
 
-                        Store.WriteData(Store.QuestPoiPoints.GetCommand(questId, idx, objIndex, pointX,
+                        SQLStore.WriteData(SQLStore.QuestPoiPoints.GetCommand(questId, idx, objIndex, pointX,
                             pointY));
                     }
                 }

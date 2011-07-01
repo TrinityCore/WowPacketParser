@@ -1,12 +1,12 @@
 using WowPacketParser.Misc;
 
-namespace WowPacketParser.SQL.Store.Stores
+namespace WowPacketParser.SQL.Stores
 {
     public sealed class GameObjectSpawnStore
     {
         public string GetCommand(uint entry, int map, int phaseMask, Vector3 pos, float orient)
         {
-            var builder = new CommandBuilder("gameobject");
+            var builder = new SQLCommandBuilder("gameobject");
 
             builder.AddColumnValue("id", entry);
             builder.AddColumnValue("map", map);

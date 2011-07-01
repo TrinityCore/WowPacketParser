@@ -1,10 +1,12 @@
-namespace WowPacketParser.SQL.Store.Stores
+
+
+namespace WowPacketParser.SQL.Stores
 {
     public sealed class QuestPoiPointStore
     {
         public string GetCommand(int questId, int idx, int objIndex, int pointX, int pointY)
         {
-            var builder = new CommandBuilder("quest_poi_points");
+            var builder = new SQLCommandBuilder("quest_poi_points");
 
             builder.AddColumnValue("questId", questId);
             builder.AddColumnValue("id", idx);

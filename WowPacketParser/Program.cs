@@ -6,7 +6,8 @@ using System.Threading;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.SQL.Store;
+using WowPacketParser.SQL;
+
 
 namespace WowPacketParser
 {
@@ -20,7 +21,8 @@ namespace WowPacketParser
       
             CmdLine = new CommandLine(args);
 
-            Connector.Connect(); // Connect to DB
+            SQLConnector.Connect(); // Connect to DB
+            var DBCloader = new DBC.DBCLoader();
 
             string file;
             string filters;
@@ -37,7 +39,7 @@ namespace WowPacketParser
             catch (IndexOutOfRangeException)
             {
                 PrintUsage("All command line options require an argument.");
-                Connector.Disconnect();
+                SQLConnector.Disconnect();
                 return;
             }
 
@@ -47,7 +49,7 @@ namespace WowPacketParser
                 if (packets == null)
                 {
                     PrintUsage("Could not open file " + file + " for reading.");
-                    Connector.Disconnect();
+                    SQLConnector.Disconnect();
                     return;
                 }
 
@@ -55,7 +57,7 @@ namespace WowPacketParser
                 {
                     var fullPath = Utilities.GetPathFromFullPath(file);
                     Handler.InitializeLogFile(Path.Combine(fullPath, file + ".txt"), nodump);
-                    Store.Initialize(Path.Combine(fullPath, file + ".sql"), sqloutput);
+                    SQLStore.Initialize(Path.Combine(fullPath, file + ".sql"), sqloutput);
 
                     var appliedFilters = filters.Split(',');
 
@@ -77,7 +79,7 @@ namespace WowPacketParser
                             Handler.Parse(packet);
                     }
 
-                    Store.WriteToFile();
+                    SQLStore.WriteToFile();
                     Handler.WriteToFile();
                 }
             }
@@ -88,7 +90,7 @@ namespace WowPacketParser
                 Console.WriteLine(ex.StackTrace);
             }
 
-            Connector.Disconnect();
+            SQLConnector.Disconnect();
             Console.ResetColor();
         }
 

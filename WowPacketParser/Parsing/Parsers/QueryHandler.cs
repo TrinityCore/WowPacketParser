@@ -1,7 +1,8 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.SQL.Store;
+using WowPacketParser.SQL;
+
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -146,7 +147,7 @@ namespace WowPacketParser.Parsing.Parsers
             var moveId = packet.ReadInt32();
             Console.WriteLine("Movement ID: " + moveId);
 
-            Store.WriteData(Store.Creatures.GetCommand(entry.Key, name[0], subName, iconName, typeFlags,
+            SQLStore.WriteData(SQLStore.Creatures.GetCommand(entry.Key, name[0], subName, iconName, typeFlags,
                 type, family, rank, killCredit, dispId, mod1, mod2, racialLeader, qItem, moveId));
         }
 
@@ -168,7 +169,7 @@ namespace WowPacketParser.Parsing.Parsers
             var pageId = packet.ReadInt32();
             Console.WriteLine("Next Page: " + pageId);
 
-            Store.WriteData(Store.PageTexts.GetCommand(entry, text, pageId));
+            SQLStore.WriteData(SQLStore.PageTexts.GetCommand(entry, text, pageId));
         }
 
         [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
@@ -215,7 +216,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            Store.WriteData(Store.NpcTexts.GetCommand(entry, prob, text1, text2, lang, emDelay, emEmote));
+            SQLStore.WriteData(SQLStore.NpcTexts.GetCommand(entry, prob, text1, text2, lang, emDelay, emEmote));
         }
     }
 }

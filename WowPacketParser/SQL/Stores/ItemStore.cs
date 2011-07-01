@@ -1,6 +1,7 @@
 using WowPacketParser.Enums;
 
-namespace WowPacketParser.SQL.Store.Stores
+
+namespace WowPacketParser.SQL.Stores
 {
     public sealed class ItemStore
     {
@@ -20,7 +21,7 @@ namespace WowPacketParser.SQL.Store.Stores
             int gemProps, int reqDisEnchSkill, float armorDmgMod, int duration, int limitCategory,
             Holiday holidayId)
         {
-            var builder = new CommandBuilder("item_template");
+            var builder = new SQLCommandBuilder("item_template");
 
             builder.AddColumnValue("entry", entry);
             builder.AddColumnValue("class", (int)iClass);

@@ -1,7 +1,8 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
-namespace WowPacketParser.SQL.Store.Stores
+
+namespace WowPacketParser.SQL.Stores
 {
     public sealed class CreatureStore
     {
@@ -10,7 +11,7 @@ namespace WowPacketParser.SQL.Store.Stores
             int[] killCredit, int[] dispId, float mod1, float mod2, bool racialLeader, int[] qItem,
             int moveId)
         {
-            var builder = new CommandBuilder("creature_template");
+            var builder = new SQLCommandBuilder("creature_template");
 
             builder.AddColumnValue("entry", entry);
 

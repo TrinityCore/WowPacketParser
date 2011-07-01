@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.SQL.Store;
+using WowPacketParser.SQL;
 using Guid=WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -290,7 +290,7 @@ namespace WowPacketParser.Parsing.Parsers
                         startInfo.Zone = zone;
 
                         StartInfos.Add(startInfo);
-                        Store.WriteData(Store.StartPositions.GetCommand(race, clss, mapId, zone, pos));
+                        SQLStore.WriteData(SQLStore.StartPositions.GetCommand(race, clss, mapId, zone, pos));
                     }
                 }
 

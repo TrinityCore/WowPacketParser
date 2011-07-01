@@ -1,12 +1,13 @@
 using WowPacketParser.Enums;
 
-namespace WowPacketParser.SQL.Store.Stores
+
+namespace WowPacketParser.SQL.Stores
 {
     public sealed class StartActionStore
     {
         public string GetCommand(Race race, Class clss, int action, int button, ActionButtonType type)
         {
-            var builder = new CommandBuilder("playercreateinfo_action");
+            var builder = new SQLCommandBuilder("playercreateinfo_action");
 
             builder.AddColumnValue("race", (int)race);
             builder.AddColumnValue("class", (int)clss);

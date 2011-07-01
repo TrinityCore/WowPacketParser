@@ -1,10 +1,12 @@
-namespace WowPacketParser.SQL.Store.Stores
+
+
+namespace WowPacketParser.SQL.Stores
 {
     public sealed class VendorItemStore
     {
         public string GetCommand(uint entry, int itemId, int maxCount, int extendedCost)
         {
-            var builder = new CommandBuilder("npc_vendor");
+            var builder = new SQLCommandBuilder("npc_vendor");
 
             builder.AddColumnValue("entry", entry);
             builder.AddColumnValue("item", itemId);

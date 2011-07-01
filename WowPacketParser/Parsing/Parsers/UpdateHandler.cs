@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.SQL.Store;
+using WowPacketParser.SQL;
 using Guid=WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -149,8 +149,8 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 if (creating)
                 {
-                    Store.WriteData(Store.CreatureUpdates.GetCommand("speed_walk", guid.GetEntry(), moves.WalkSpeed));
-                    Store.WriteData(Store.CreatureUpdates.GetCommand("speed_run", guid.GetEntry(), moves.RunSpeed));
+                    SQLStore.WriteData(SQLStore.CreatureUpdates.GetCommand("speed_walk", guid.GetEntry(), moves.WalkSpeed));
+                    SQLStore.WriteData(SQLStore.CreatureUpdates.GetCommand("speed_run", guid.GetEntry(), moves.RunSpeed));
                 }
 
                 foreach (var upVal in updates)
@@ -385,7 +385,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 var vehFacing = packet.ReadSingle();
                 Console.WriteLine("Vehicle Orientation: " + vehFacing);
-                Store.WriteData(Store.CreatureUpdates.GetCommand("VehicleId", guid.GetEntry(), vehId));
+                SQLStore.WriteData(SQLStore.CreatureUpdates.GetCommand("VehicleId", guid.GetEntry(), vehId));
             }
 
             if (flags.HasFlag(UpdateFlag.GORotation))

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 
-namespace WowPacketParser.SQL.Store.Stores
+
+namespace WowPacketParser.SQL.Stores
 {
     public sealed class QuestStore
     {
@@ -18,7 +19,7 @@ namespace WowPacketParser.SQL.Store.Stores
             int[] srcId, int[] srcCnt, int[] reqItemId, int[] reqItemCnt,
             string[] objectiveText)
         {
-            var builder = new CommandBuilder("quest_template");
+            var builder = new SQLCommandBuilder("quest_template");
 
             builder.AddColumnValue("entry", entry);
             builder.AddColumnValue("Method", (int)method);

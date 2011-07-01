@@ -1,12 +1,13 @@
 using WowPacketParser.Misc;
 
-namespace WowPacketParser.SQL.Store.Stores
+
+namespace WowPacketParser.SQL.Stores
 {
     public sealed class CreatureSpawnStore
     {
         public string GetCommand(uint entry, int map, int phaseMask, Vector3 position, float orient)
         {
-            var builder = new CommandBuilder("creature");
+            var builder = new SQLCommandBuilder("creature");
 
             builder.AddColumnValue("id", entry);
             builder.AddColumnValue("map", map);

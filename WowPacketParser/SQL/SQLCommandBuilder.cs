@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace WowPacketParser.SQL.Store
+namespace WowPacketParser.SQL
 {
-    public sealed class CommandBuilder
+    public sealed class SQLCommandBuilder
     {
         public readonly List<KeyValuePair<string, object>> InsertValues =
             new List<KeyValuePair<string, object>>();
@@ -13,7 +13,7 @@ namespace WowPacketParser.SQL.Store
 
         public readonly string Table;
 
-        public CommandBuilder(string table)
+        public SQLCommandBuilder(string table)
         {
             Table = table;
         }

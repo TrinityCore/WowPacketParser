@@ -1,7 +1,8 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.SQL.Store;
+using WowPacketParser.SQL;
+
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -266,7 +267,7 @@ namespace WowPacketParser.Parsing.Parsers
             var holidayId = (Holiday)packet.ReadInt32();
             Console.WriteLine("Holiday: " + holidayId);
 
-            Store.WriteData(Store.Items.GetCommand(entry.Key, iClass, subClass, unk0, name, dispId,
+            SQLStore.WriteData(SQLStore.Items.GetCommand(entry.Key, iClass, subClass, unk0, name, dispId,
                 quality, flags, flags2, buyPrice, sellPrice, invType, allowClass, allowRace, itemLvl,
                 reqLvl, reqSkill, reqSkLvl, reqSpell, reqHonor, reqCity, reqRepFaction, reqRepValue,
                 maxCount, stacks, contSlots, statsCount, type, value, ssdId, ssdVal, dmgMin, dmgMax,
