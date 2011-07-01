@@ -11,8 +11,13 @@ namespace WowPacketParser.DBC.DBCStructures
         public uint DispelType;
         public uint Mechanic;
         public uint Attributes;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 7)]
-        public uint[] AttributesEx;
+        public uint AttributesEx;
+        public uint AttributesEx2;
+        public uint AttributesEx3;
+        public uint AttributesEx4;
+        public uint AttributesEx5;
+        public uint AttributesEx6;
+        public uint AttributesEx7;
         public ulong ShapeshiftMask;
         public ulong ShapeshiftExclude;
         public uint Targets;
@@ -40,7 +45,7 @@ namespace WowPacketParser.DBC.DBCStructures
         public uint BaseLevel;
         public uint SpellLevel;
         public uint DurationIndex;
-        public int PowerType;
+        public uint PowerType;
         public uint ManaCost;
         public uint ManaCostPerLevel;
         public uint ManaPerSecond;
@@ -54,7 +59,7 @@ namespace WowPacketParser.DBC.DBCStructures
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
         public int[] Reagent;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
-        public int[] ReagentCount;
+        public uint[] ReagentCount;
         public int EquippedItemClass;
         public int EquippedItemSubclass;
         public int EquippedItemInvTypes;
@@ -104,16 +109,16 @@ namespace WowPacketParser.DBC.DBCStructures
         public uint ActiveIconID;
         public uint SpellPriority;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = DBCStore.DBC.MaxDBCLocale)]
-        public string[] NameLang;
-        public uint NameFlag;
+        private readonly uint[] _SpellName;
+        public uint SpellNameFlag;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = DBCStore.DBC.MaxDBCLocale)]
-        public string[] NameSubtextLang;
-        public uint NameSubtextFlag;
+        private readonly uint[] _Rank;
+        public uint RankFlags;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = DBCStore.DBC.MaxDBCLocale)]
-        public string[] DescriptionLang;
+        private readonly uint[] _Description;
         public uint DescriptionFlag;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = DBCStore.DBC.MaxDBCLocale)]
-        public string[] AuraDescriptionLang;
+        private readonly uint[] _ToolTip;
         public uint AuraDescriptionFlag;
         public uint ManaCostPct;
         public uint StartRecoveryCategory;
@@ -137,7 +142,7 @@ namespace WowPacketParser.DBC.DBCStructures
         public uint SchoolMask;
         public uint RuneCostID;
         public uint SpellMissileID;
-        public int PowerDisplayID;
+        public uint PowerDisplayID;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public float[] Unk1;
         public uint SpellDescriptionVariableID;
