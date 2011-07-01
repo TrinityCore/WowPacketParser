@@ -7,7 +7,7 @@ namespace WowPacketParser.DBC
     {
         public DBCLoader()
         {
-            DBCStore.DBC.Spell = DBCReader.ReadDBC<SpellEntry>(null);
+            DBCStore.DBC.Spell = DBCReader.ReadDBC<SpellEntry>(DBC.DBCStore.DBC.SpellStrings);
         }
     }
 }

@@ -21,8 +21,8 @@ namespace WowPacketParser
       
             CmdLine = new CommandLine(args);
 
-            SQLConnector.Connect(); // Connect to DB
-            var DBCloader = new DBC.DBCLoader();
+            // SQLConnector.Connect(); // Connect to DB - we should only connect when it is needed, move this
+            // var DBCloader = new DBC.DBCLoader(); - same as above, only when needed
 
             string file;
             string filters;
