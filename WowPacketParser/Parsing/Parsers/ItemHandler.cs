@@ -80,7 +80,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Required Skill Level: " + reqSkLvl);
 
             var reqSpell = packet.ReadInt32();
-            Console.WriteLine("Required Spell: " + reqSpell);
+            Console.WriteLine("Required Spell: " + Extensions.SpellLine(reqSpell));
 
             var reqHonor = packet.ReadInt32();
             Console.WriteLine("Required Honor Rank: " + reqHonor);
@@ -163,7 +163,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 5; i++)
             {
                 spellId[i] = packet.ReadInt32();
-                Console.WriteLine("Triggered Spell ID " + i + ": " + spellId[i]);
+                Console.WriteLine("Triggered Spell ID " + i + ": " + Extensions.SpellLine(spellId[i]));
 
                 spellTrigger[i] = (ItemSpellTriggerType)packet.ReadInt32();
                 Console.WriteLine("Triggered Spell Type " + i + ": " + spellTrigger[i]);

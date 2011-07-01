@@ -42,7 +42,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
             {
                 var spell = packet.ReadInt32();
-                Console.WriteLine("Spell ID " + i + ": " + spell);
+                Console.WriteLine("Spell ID " + i + ": " + Extensions.SpellLine(spell));
 
                 var state = (TrainerSpellState)packet.ReadByte();
                 Console.WriteLine("State " + i + ": " + state);

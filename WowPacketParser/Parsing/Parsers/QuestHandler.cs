@@ -64,10 +64,10 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Reward Money Max Level: " + rewMoneyMaxLvl);
 
             var rewSpell = packet.ReadInt32();
-            Console.WriteLine("Reward Spell: " + rewSpell);
+            Console.WriteLine("Reward Spell: " + Extensions.SpellLine(rewSpell));
 
             var rewSpellCast = packet.ReadInt32();
-            Console.WriteLine("Reward Spell Cast: " + rewSpellCast);
+            Console.WriteLine("Reward Spell Cast: " + Extensions.SpellLine(rewSpellCast));
 
             var rewHonor = packet.ReadInt32();
             Console.WriteLine("Reward Honor: " + rewHonor);

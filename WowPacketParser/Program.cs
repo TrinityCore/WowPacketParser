@@ -8,6 +8,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.SQL;
 
+using WowPacketParser.DBC.DBCStore;
 
 namespace WowPacketParser
 {
@@ -22,7 +23,8 @@ namespace WowPacketParser
             CmdLine = new CommandLine(args);
 
             // SQLConnector.Connect(); // Connect to DB - we should only connect when it is needed, move this
-            // var DBCloader = new DBC.DBCLoader(); - same as above, only when needed
+            var DBCloader = new DBC.DBCLoader();
+            
 
             string file;
             string filters;

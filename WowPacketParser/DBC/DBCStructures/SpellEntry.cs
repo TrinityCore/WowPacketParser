@@ -148,13 +148,22 @@ namespace WowPacketParser.DBC.DBCStructures
         public uint SpellDescriptionVariableID;
         public uint SpellDifficultyID;
 
-        public string SpellName
+        /// <summary>
+        /// Returns the formated spell name with rank (if it exists)
+        /// </summary>
+        public string GetSpellName()
+        {
+            if (!string.IsNullOrEmpty(Rank))
+                return String.Format("{0} ({1})", SpellName, Rank);
+            return SpellName;
+        }
+
+        private string SpellName
         {
             get
             {
                 var name = string.Empty;
-                var a = DBCStore.DBC.SpellStrings.TryGetValue(_SpellName[0], out name);
-                System.Console.WriteLine(a ? "FOUND NAME" : "NOT FOUND NAME");
+                DBCStore.DBC.SpellStrings.TryGetValue(_SpellName[0], out name);
                 return name;
             }
         }

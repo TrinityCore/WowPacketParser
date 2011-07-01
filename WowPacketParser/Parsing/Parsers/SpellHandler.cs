@@ -17,7 +17,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
             {
                 var spellId = packet.ReadInt32();
-                Console.WriteLine("Spell ID " + i + ": " + spellId);
+                Console.WriteLine("Spell ID " + i + ": " + Extensions.SpellLine(spellId));
             }
         }
 
@@ -41,7 +41,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Target GUID: " + targetGuid);
 
             var spellId = packet.ReadInt32();
-            Console.WriteLine("Spell ID: " + spellId);
+            Console.WriteLine("Spell ID: " + Extensions.SpellLine(spellId));
 
             var castTime = packet.ReadInt32();
             Console.WriteLine("Cast Time: " + castTime);
@@ -62,7 +62,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
             {
                 var spellId = packet.ReadInt32();
-                Console.WriteLine("Spell ID " + i + ": " + spellId);
+                Console.WriteLine("Spell ID " + i + ": " + Extensions.SpellLine(spellId));
 
                 var unk16 = packet.ReadInt16();
                 Console.WriteLine("Unk Int16: " + unk16);
@@ -80,7 +80,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < cooldownCount; i++)
             {
                 var spellId = packet.ReadInt32();
-                Console.WriteLine("Cooldown Spell ID " + i + ": " + spellId);
+                Console.WriteLine("Cooldown Spell ID " + i + ": " + Extensions.SpellLine(spellId));
 
                 var castItemId = packet.ReadInt16();
                 Console.WriteLine("Cooldown Cast Item ID " + i + ": " + castItemId);
@@ -102,7 +102,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Slot: " + slot);
 
             var id = packet.ReadInt32();
-            Console.WriteLine("ID: " + id);
+            Console.WriteLine("ID: " + Extensions.SpellLine(id));
 
             if (id <= 0)
                 return;
@@ -165,7 +165,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Cast Count: " + count);
 
             var spellId = packet.ReadInt32();
-            Console.WriteLine("Spell ID: " + spellId);
+            Console.WriteLine("Spell ID: " + Extensions.SpellLine(spellId));
 
             var flags = (CastFlag)packet.ReadInt32();
             Console.WriteLine("Cast Flags: " + flags);
@@ -328,7 +328,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLearnedSpell(Packet packet)
         {
             var spellId = packet.ReadInt32();
-            Console.WriteLine("Spell ID: " + spellId);
+            Console.WriteLine("Spell ID: " + Extensions.SpellLine(spellId));
 
             var unk = packet.ReadInt16();
             Console.WriteLine("Unk Int16: " + unk);
@@ -341,7 +341,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("GUID: " + guid);
 
             var spellId = packet.ReadInt32();
-            Console.WriteLine("Spell ID: " + spellId);
+            Console.WriteLine("Spell ID: " + Extensions.SpellLine(spellId));
 
             var castId = packet.ReadByte();
             Console.WriteLine("Cast ID: " + castId);
@@ -373,7 +373,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Caster GUID: " + guid);
 
             var spellId = packet.ReadUInt32();
-            Console.WriteLine("Spell ID: " + spellId);
+            Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)spellId));
 
             var count = packet.ReadUInt32();
             Console.WriteLine("Count: " + count);

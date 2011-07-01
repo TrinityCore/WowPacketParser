@@ -39,7 +39,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var slotid = packet.ReadByte();
                 var spellId = spell16 | spell8;
                 slotid -= (int)MiscConstants.PetSpellsOffset;
-                Console.WriteLine("Spell " + slotid + ": " + spellId);
+                Console.WriteLine("Spell " + slotid + ": " + Extensions.SpellLine(spellId));
             }
 
             var spellCount = packet.ReadByte(); // always 0?
@@ -48,7 +48,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < spellCount; i++)
             {
                 var spellId = packet.ReadUInt16();
-                Console.WriteLine("Spell " + i + ": " + spellId);
+                Console.WriteLine("Spell " + i + ": " + Extensions.SpellLine(spellId));
                 var active = packet.ReadUInt16();
                 Console.WriteLine("Active: " + active);
             }
@@ -58,12 +58,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < cdCount; i++)
             {
-                var spellId = packet.ReadUInt32();
+                var spellId = packet.ReadUInt32(); // isn't it ReadInt32 here?
                 var category = packet.ReadUInt16();
                 var cooldown = packet.ReadUInt32();
                 var categoryCooldown = packet.ReadUInt32();
 
-                Console.WriteLine("Cooldown: Spell: " + spellId + " category: " + category +
+                Console.WriteLine("Cooldown: Spell: " + Extensions.SpellLine((int)spellId) + " category: " + category +
                     " cooldown: " + cooldown + " category cooldown: " + categoryCooldown);
             }
         }

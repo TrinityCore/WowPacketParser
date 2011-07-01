@@ -82,7 +82,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Damage: " + dmg);
 
             var spellId = packet.ReadInt32();
-            Console.WriteLine("Spell ID: " + spellId);
+            Console.WriteLine("Spell ID: " + Extensions.SpellLine(spellId));
         }
 
         [Parser(Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM)]
