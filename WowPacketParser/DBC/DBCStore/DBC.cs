@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Text;
 using WowPacketParser.DBC.DBCStructures;
+using System.Configuration;
 
 namespace WowPacketParser.DBC.DBCStore
 {
@@ -13,7 +14,10 @@ namespace WowPacketParser.DBC.DBCStore
 
         public static string DBCPath
         {
-            get { return "./"; }
+            get
+            {
+                return ConfigurationManager.AppSettings["DBCPath"];
+            }
         }
 
         public static Dictionary<uint, SpellEntry> Spell;
