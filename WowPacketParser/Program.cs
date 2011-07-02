@@ -28,7 +28,7 @@ namespace WowPacketParser
             {
                 var file = args[0]; // first argument
 
-                var packets = Reader.Read("kszor", file);
+                var packets = Reader.Read(file, filters);
                 if (packets == null)
                 {
                     Console.WriteLine("Could not open file " + file + " for reading.");
@@ -40,27 +40,10 @@ namespace WowPacketParser
                 {
                     var fullPath = Utilities.GetPathFromFullPath(file);
                     Handler.InitializeLogFile(Path.Combine(fullPath, file + ".txt"), nodump);
-                    SQLStore.Initialize(Path.Combine(fullPath, file + ".sql"), sqloutput);
-
-                    var appliedFilters = filters.Split(',');
+                    SQLStore.Initialize(Path.Combine(fullPath, file + ".sql"), sqloutput);                    
 
                     foreach (var packet in packets)
-                    {
-                        var opcode = packet.GetOpcode().ToString();
-                        if (!string.IsNullOrEmpty(filters))
-                        {
-                            foreach (var opc in appliedFilters)
-                            {
-                                if (!opcode.Contains(opc))
-                                    continue;
-
-                                Handler.Parse(packet);
-                                break;
-                            }
-                        }
-                        else
-                            Handler.Parse(packet);
-                    }
+                        Handler.Parse(packet);
 
                     SQLStore.WriteToFile();
                     Handler.WriteToFile();

@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.IO;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Loading
 {
     public static class Reader
     {
-        public static IEnumerable<Packet> Read(string loader, string file)
+        public static IEnumerable<Packet> Read(string file, string filters)
         {
             IEnumerable<Packet> packets = null;
-            var res = false;
 
             var asm = Assembly.GetExecutingAssembly();
             var types = asm.GetTypes();
@@ -22,41 +23,42 @@ namespace WowPacketParser.Loading
                 if (!type.IsPublic)
                     continue;
 
-                if (type.BaseType != typeof(Loader))
-                    continue;
-
-                var attrs = (LoaderAttribute[])type.GetCustomAttributes(typeof(LoaderAttribute), false);
-
-                if (attrs.Length <= 0)
-                    continue;
-
-                foreach (var attr in attrs)
+                try
                 {
-                    if (attr.Name != loader)
-                        continue;
+                    var packetList = new List<Packet>();
+                    var bin = new BinaryReader(new FileStream(file, FileMode.Open));
+                    var appliedFilters = filters.Split(',');
 
-                    var ctors = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
-
-                    try
+                    while (bin.BaseStream.Position != bin.BaseStream.Length)
                     {
-                        var obj = (Loader)ctors[0].Invoke(new[] { file });
+                        var opcode = (Opcode)bin.ReadInt32();
+                        var length = bin.ReadInt32();
+                        var time = Utilities.GetDateTimeFromUnixTime(bin.ReadInt32());
+                        var direction = (Direction)bin.ReadChar();
+                        var data = bin.ReadBytes(length);
 
-                        packets = obj.ParseFile();
-                    }
-                    catch (Exception)
-                    {
-                    }
+                        var packet = new Packet(data, opcode, time, direction);
 
-                    res = true;
-                    break;
+                        if (!string.IsNullOrEmpty(filters))
+                        {
+                            foreach (var opc in appliedFilters)
+                            {
+                                if (!opcode.ToString().Contains(opc))
+                                    continue;
+
+                                packetList.Add(packet);
+                                break;
+                            }
+                        }
+                        else
+                            packetList.Add(packet);
+                    }
+                    packets = packetList;
                 }
-
-                if (res)
-                    break;
+                catch (Exception)
+                {
+                }
             }
-
-            if (!res)
-                Console.WriteLine("No such loader.");
 
             return packets;
         }

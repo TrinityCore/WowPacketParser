@@ -229,8 +229,6 @@
     <Compile Include="Enums\WardenCheckType.cs" />
     <Compile Include="Enums\WardenOpcode.cs" />
     <Compile Include="Enums\WeatherState.cs" />
-    <Compile Include="Loading\LoaderAttribute.cs" />
-    <Compile Include="Loading\KSnifferZorLoader.cs" />
     <Compile Include="Loading\Reader.cs" />
     <Compile Include="Misc\CharacterInfo.cs" />
     <Compile Include="Misc\CommandLine.cs" />
@@ -243,7 +241,6 @@
     <Compile Include="Misc\UpdateField.cs" />
     <Compile Include="Misc\WowObject.cs" />
     <Compile Include="Parsing\Handler.cs" />
-    <Compile Include="Loading\Loader.cs" />
     <Compile Include="Misc\Packet.cs" />
     <Compile Include="Parsing\ParserAttribute.cs" />
     <Compile Include="Parsing\Parsers\AccountDataHandler.cs" />
