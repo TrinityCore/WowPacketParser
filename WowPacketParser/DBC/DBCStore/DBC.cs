@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Text;
@@ -11,6 +12,12 @@ namespace WowPacketParser.DBC.DBCStore
     {
         public const int ClientVersion = 12340;
         public const int MaxDBCLocale = 16;
+
+        public static bool Enabled()
+        {
+            var b = ConfigurationManager.AppSettings["DBCEnabled"];
+            return b.Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase);
+        }
 
         public static string DBCPath
         {

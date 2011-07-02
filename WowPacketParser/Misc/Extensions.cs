@@ -1,5 +1,4 @@
 using System;
-using WowPacketParser.DBC.DBCStore;
 using WowPacketParser.DBC.DBCStructures;
 
 namespace WowPacketParser.Misc
@@ -21,6 +20,8 @@ namespace WowPacketParser.Misc
 
         public static string GetExistingSpellName(int spellId)
         {
+            if (!DBC.DBCStore.DBC.Enabled()) // Could use a more general solution here
+                return string.Empty;
             SpellEntry spell;
             if (spellId <= 0)
                 return string.Empty;
@@ -33,7 +34,10 @@ namespace WowPacketParser.Misc
         {
             if (spellId == 0)
                 return "0";
-            return spellId + " (" + GetExistingSpellName(spellId) + ")";
+            var name = GetExistingSpellName(spellId);
+            if (!String.IsNullOrEmpty(name))
+                return spellId + " (" + name + ")";
+            return spellId.ToString();
         }
     }
 }
