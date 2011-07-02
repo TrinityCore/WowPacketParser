@@ -33,7 +33,7 @@ namespace WowPacketParser.Misc
         {
             if (spellId == 0)
                 return "0";
-            return spellId + " (" + GetExistingSpellName(spellId) + ") ";
+            return spellId + " (" + GetExistingSpellName(spellId) + ")";
         }
     }
 }
