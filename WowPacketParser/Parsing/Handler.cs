@@ -89,12 +89,8 @@ namespace WowPacketParser.Parsing
             var direction = packet.GetDirection();
             var length = packet.GetLength();
 
-            Console.ForegroundColor = ConsoleColor.Red;
-
             Console.WriteLine("{0}: {1} (0x{2}) Length: {3} Time: {4}", direction,
                 opcode, ((int)opcode).ToString("X4"), length, time);
-
-            Console.ForegroundColor = ConsoleColor.White;
 
             if (Handlers.ContainsKey(opcode))
             {
