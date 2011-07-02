@@ -1,4 +1,6 @@
-﻿using WowPacketParser.DBC.DBCStore;
+﻿using System;
+using System.IO;
+using WowPacketParser.DBC.DBCStore;
 using WowPacketParser.DBC.DBCStructures;
 
 namespace WowPacketParser.DBC
@@ -7,7 +9,14 @@ namespace WowPacketParser.DBC
     {
         public DBCLoader()
         {
-            DBCStore.DBC.Spell = DBCReader.ReadDBC<SpellEntry>(DBC.DBCStore.DBC.SpellStrings);
+            try
+            {
+                DBCStore.DBC.Spell = DBCReader.ReadDBC<SpellEntry>(DBC.DBCStore.DBC.SpellStrings);
+            }
+            catch (FileNotFoundException e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }
