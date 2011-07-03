@@ -313,6 +313,26 @@ namespace WowPacketParser.Parsing.Parsers
             ReadMovementInfo(packet, guid);
         }
 
+        [Parser(Opcode.MSG_MOVE_SET_WALK_SPEED)]
+        [Parser(Opcode.MSG_MOVE_SET_RUN_SPEED)]
+        [Parser(Opcode.MSG_MOVE_SET_RUN_BACK_SPEED)]
+        [Parser(Opcode.MSG_MOVE_SET_SWIM_SPEED)]
+        [Parser(Opcode.MSG_MOVE_SET_SWIM_BACK_SPEED)]
+        [Parser(Opcode.MSG_MOVE_SET_TURN_RATE)]
+        [Parser(Opcode.MSG_MOVE_SET_FLIGHT_SPEED)]
+        [Parser(Opcode.MSG_MOVE_SET_FLIGHT_BACK_SPEED)]
+        [Parser(Opcode.MSG_MOVE_SET_PITCH_RATE)]
+        public static void HandleMovementSetSpeed(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid();
+            Console.WriteLine("GUID: " + guid);
+
+            ReadMovementInfo(packet, guid);
+
+            var speed = packet.ReadSingle();
+            Console.WriteLine("Speed: " + speed);
+        }
+
         [Parser(Opcode.CMSG_FORCE_RUN_SPEED_CHANGE_ACK)]
         [Parser(Opcode.CMSG_FORCE_RUN_BACK_SPEED_CHANGE_ACK)]
         [Parser(Opcode.CMSG_FORCE_SWIM_SPEED_CHANGE_ACK)]

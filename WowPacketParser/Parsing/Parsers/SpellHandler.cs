@@ -451,8 +451,14 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     Console.WriteLine("Aura type not handled.");
                     break;
-                } 
+                }
             }
+        }
+        [Parser(Opcode.SMSG_REMOVED_SPELL)]
+        public static void HandleRemovedSpell(Packet packet)
+        {
+            var spellId = packet.ReadUInt32();
+            Console.WriteLine("Spell ID: " + Extensions.SpellLine((int) spellId));
         }
     }
 }
