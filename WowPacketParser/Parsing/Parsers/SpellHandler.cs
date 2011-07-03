@@ -454,11 +454,80 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
         }
+
         [Parser(Opcode.SMSG_REMOVED_SPELL)]
         public static void HandleRemovedSpell(Packet packet)
         {
             var spellId = packet.ReadUInt32();
             Console.WriteLine("Spell ID: " + Extensions.SpellLine((int) spellId));
+        }
+
+        [Parser(Opcode.SMSG_CAST_FAILED)]
+        public static void HandleCastFailed(Packet packet)
+        {
+            var castCount = packet.ReadByte();
+            Console.WriteLine("Cast count: " + castCount);
+
+            var spellId = packet.ReadUInt32();
+            Console.WriteLine("Spell ID: " + Extensions.SpellLine((int) spellId));
+
+            var result = (SpellCastFailureReason) packet.ReadByte();
+            Console.WriteLine("Reason: " + result);
+
+            switch (result)
+            {
+                case SpellCastFailureReason.DontReport:
+                case SpellCastFailureReason.Interrupted:
+                case SpellCastFailureReason.ItemNotReady:
+                case SpellCastFailureReason.LineOfSight:
+                case SpellCastFailureReason.TargetsDead:
+                case SpellCastFailureReason.NothingToDispel:
+                case SpellCastFailureReason.TargetAurastate:
+                case SpellCastFailureReason.SpellInProgress:
+                case SpellCastFailureReason.OutOfRange:
+                case SpellCastFailureReason.CasterDead:
+                case SpellCastFailureReason.NotInControl:
+                case SpellCastFailureReason.BadTargets:
+                case SpellCastFailureReason.UnitNotInfront:
+                case SpellCastFailureReason.Stunned:
+                case SpellCastFailureReason.NoValidTargets:
+                case SpellCastFailureReason.NotMounted:
+                case SpellCastFailureReason.NoPower:
+                case SpellCastFailureReason.NotHere:
+                case SpellCastFailureReason.Moving:
+                case SpellCastFailureReason.Fizzle:
+                case SpellCastFailureReason.CantDoThatRightNow:
+                case SpellCastFailureReason.TargetFriendly:
+                    // do nothing
+                    break;
+                case SpellCastFailureReason.RequiresSpellFocus:
+                case SpellCastFailureReason.RequiresArea:
+                case SpellCastFailureReason.Totems:
+                case SpellCastFailureReason.TotemCategory:
+                case SpellCastFailureReason.CustomError:
+                case SpellCastFailureReason.TooManyOfItem:
+                case SpellCastFailureReason.NotReady:
+                    var misc = packet.ReadUInt32();
+                    Console.WriteLine("ID/Misc: " + misc);
+                    break;
+                case SpellCastFailureReason.PreventedByMechanic:
+                    var mechanic = (SpellMechanics)packet.ReadUInt32();
+                    Console.WriteLine("Mechanic: " + mechanic);
+                    break;
+                case SpellCastFailureReason.EquippedItemClass:
+                    var iClass = packet.ReadUInt32();
+                    var iSubClass = packet.ReadUInt32();
+                    Console.WriteLine("Class: " + iClass + " subclass : " + iSubClass);
+                    break;
+                default:
+                    Console.WriteLine("Spell failure reason not handled.");
+                    if (packet.GetLength() - packet.GetPosition() != 0) // a little trick so we can Catch 'Em All. remove this later
+                    {
+                        var st = packet.ReadUInt32();
+                        Console.WriteLine("Something: " + st);
+                    }
+                    break;
+            }
         }
     }
 }

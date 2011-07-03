@@ -7,7 +7,7 @@ Usage
 -------------------------
 
 * Compile WowPacketParser using Debug or Release.
-* Edit "WowPacketParser.vshost.exe.config" to your needs.
+* Edit "WowPacketParser.exe.config" to your needs.
 * Drag a kszor sniffed .bin file to the executable.
 
 -------------
