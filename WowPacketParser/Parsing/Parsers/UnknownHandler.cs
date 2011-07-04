@@ -7,8 +7,8 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class UnknownHandler
     {
-        [Parser(Opcode.SMSG_UNKNOWN_1240)]
-        public static void HandleUnknown1240(Packet packet)
+        [Parser(Opcode.SMSG_FORCE_ANIM)]
+        public static void HandleUnknown1240(Packet packet) // It's still unknown until confirmed.
         {
             var guid = packet.ReadGuid();
             Console.WriteLine("GUID: " + guid);
@@ -17,8 +17,8 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Unk String: " + str);
         }
 
-        [Parser(Opcode.SMSG_UNKNOWN_1295)]
-        [Parser(Opcode.CMSG_UNKNOWN_1296)]
+        [Parser(Opcode.SMSG_SUSPEND_COMMS)]
+        [Parser(Opcode.CMSG_SUSPEND_COMMS_ACK)]
         public static void HandleUnknownRedirectPackets(Packet packet)
         {
             var unk = packet.ReadInt32();

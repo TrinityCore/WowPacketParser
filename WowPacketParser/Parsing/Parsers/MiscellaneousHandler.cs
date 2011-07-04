@@ -194,7 +194,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_COMSAT_RECONNECT_TRY)]
         [Parser(Opcode.SMSG_COMSAT_DISCONNECT)]
         [Parser(Opcode.SMSG_VOICESESSION_FULL)]
-        [Parser(Opcode.SMSG_UNKNOWN_1276)]
+        [Parser(Opcode.SMSG_DEBUG_SERVER_GEO)] // Was unknown
         [Parser(Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS)]
         [Parser(Opcode.SMSG_GOSSIP_COMPLETE)]
         public static void HandleZeroLengthPackets(Packet packet)
