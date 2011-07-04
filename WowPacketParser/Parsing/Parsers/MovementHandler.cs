@@ -257,8 +257,8 @@ namespace WowPacketParser.Parsing.Parsers
                 var guid = packet.ReadPackedGuid();
                 Console.WriteLine("GUID: " + guid);
 
-                var unk = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 (increasing value): " + unk);
+                var counter = packet.ReadInt32();
+                Console.WriteLine("Movement Counter: " + counter);
 
                 ReadMovementInfo(packet, guid);
             }
@@ -346,8 +346,8 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid();
             Console.WriteLine("GUID: " + guid);
 
-            var unk1 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + unk1);
+            var counter = packet.ReadInt32();
+            Console.WriteLine("Movement Counter: " + counter);
 
             ReadMovementInfo(packet, guid);
 
@@ -366,7 +366,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.GetOpcode() != Opcode.MSG_MOVE_SET_COLLISION_HGT)
             {
                 var counter = packet.ReadInt32();
-                Console.WriteLine("Counter: " + counter);
+                Console.WriteLine("Movement Counter: " + counter);
             }
 
             if (packet.GetOpcode() != Opcode.SMSG_MOVE_SET_COLLISION_HGT)
@@ -403,8 +403,8 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid();
             Console.WriteLine("GUID: " + guid);
 
-            var unk = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + unk);
+            var counter = packet.ReadInt32();
+            Console.WriteLine("Movement Counter: " + counter);
         }
 
         [Parser(Opcode.CMSG_MOVE_KNOCK_BACK_ACK)]
