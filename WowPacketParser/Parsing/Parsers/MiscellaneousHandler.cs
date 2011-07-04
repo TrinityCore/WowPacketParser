@@ -64,7 +64,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleTimeSyncReq(Packet packet)
         {
             var gameTime = packet.ReadInt32();
-            Console.WriteLine("Counter (every 10th second): " + gameTime);
+            Console.WriteLine("Count: " + gameTime);
         }
 
         [Parser(Opcode.SMSG_LEARNED_DANCE_MOVES)]
@@ -163,6 +163,32 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.ReadPackedGuid();
             Console.WriteLine("GUID: " + guid);
+        }
+
+        [Parser(Opcode.SMSG_FORCE_ANIM)]
+        public static void HandleForceAnimation(Packet packet) // It's still unknown until confirmed.
+        {
+            var guid = packet.ReadGuid();
+            Console.WriteLine("GUID: " + guid);
+
+            var str = packet.ReadCString();
+            Console.WriteLine("Unk String: " + str);
+        }
+
+        [Parser(Opcode.SMSG_SUSPEND_COMMS)]
+        [Parser(Opcode.CMSG_SUSPEND_COMMS_ACK)]
+        public static void HandleSuspendCommsPackets(Packet packet)
+        {
+            var unk = packet.ReadInt32();
+            Console.WriteLine("Unk Int32: " + unk);
+        }
+
+        [Parser(Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID1)]
+        [Parser(Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID2)]
+        public static void HandleLowLevelRaidPackets(Packet packet)
+        {
+            var unk = packet.ReadBoolean();
+            Console.WriteLine("Allow: " + unk);
         }
 
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]

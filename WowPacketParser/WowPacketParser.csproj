@@ -274,7 +274,6 @@
     <Compile Include="Parsing\Parsers\SessionHandler.cs" />
     <Compile Include="Parsing\Parsers\SpellHandler.cs" />
     <Compile Include="Parsing\Parsers\TalentHandler.cs" />
-    <Compile Include="Parsing\Parsers\UnknownHandler.cs" />
     <Compile Include="Parsing\Parsers\UpdateHandler.cs" />
     <Compile Include="Parsing\Parsers\VoiceChatHandler.cs" />
     <Compile Include="Parsing\Parsers\WardenHandler.cs" />

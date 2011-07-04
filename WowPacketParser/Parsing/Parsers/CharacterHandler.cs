@@ -305,5 +305,28 @@ namespace WowPacketParser.Parsing.Parsers
                 Characters.Add(guid, chInfo);
             }
         }
+
+        // Belongs here?
+        [Parser(Opcode.SMSG_SET_FACTION_STANDING)]
+        public static void HandleSetFactionStanding(Packet packet)
+        {
+            var unk1 = packet.ReadSingle();
+            Console.WriteLine("Unk Float: " + unk1);
+
+            var unk2 = packet.ReadByte();
+            Console.WriteLine("Unk UInt8: " + unk2);
+
+            var amount = packet.ReadInt32();
+            Console.WriteLine("Count: " + amount);
+
+            for (int i = 0; i < amount; i++)
+            {
+                var listId = packet.ReadInt32();
+                Console.WriteLine("Faction List ID: " + listId);
+
+                var standing = packet.ReadInt32();
+                Console.WriteLine("Standing: " + standing);
+            }
+        }
     }
 }

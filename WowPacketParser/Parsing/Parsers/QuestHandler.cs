@@ -290,5 +290,31 @@ namespace WowPacketParser.Parsing.Parsers
             var questId = packet.ReadInt32();
             Console.WriteLine("Quest ID: " + questId);
         }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE)]
+        public static void HandleQuestCompleted(Packet packet)
+        {
+            var questId = packet.ReadInt32();
+            Console.WriteLine("Quest ID: " + questId);
+
+            Console.WriteLine("Reward:");
+            var xp = packet.ReadInt32();
+            Console.WriteLine("XP: " + xp);
+
+            var money = packet.ReadInt32();
+            Console.WriteLine("Money: " + money);
+
+            var honor = packet.ReadInt32();
+            if (honor < 0)
+                Console.WriteLine("Honor: " + honor);
+
+            var talentpoints = packet.ReadInt32();
+            if (talentpoints < 0)
+                Console.WriteLine("Talentpoints: " + talentpoints);
+
+            var arenapoints = packet.ReadInt32();
+            if (arenapoints < 0)
+                Console.WriteLine("Arenapoints: " + arenapoints);
+        }
     }
 }
