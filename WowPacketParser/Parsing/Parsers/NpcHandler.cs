@@ -204,5 +204,47 @@ namespace WowPacketParser.Parsing.Parsers
                 Console.WriteLine("\tTitle: " + title);
             }
         }
+
+
+        [Parser(Opcode.SMSG_THREAT_UPDATE)]
+        [Parser(Opcode.SMSG_HIGHEST_THREAT_UPDATE)]
+        public static void HandleThreatlistUpdate(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid();
+            Console.WriteLine("GUID: " + guid);
+
+            if (packet.GetOpcode() == Opcode.SMSG_HIGHEST_THREAT_UPDATE)
+            {
+                var newhigh = packet.ReadPackedGuid();
+                Console.WriteLine("New Highest: " + newhigh);
+            }
+
+            var count = packet.ReadUInt32();
+            Console.WriteLine("Size: " + count);
+            for (int i = 0; i < count; i++)
+            {
+                var unit = packet.ReadPackedGuid();
+                Console.WriteLine("Hostile: " + unit);
+                var threat = packet.ReadUInt32();
+                // No idea why, but this is in core.
+                /*if (packet.GetOpcode() == Opcode.SMSG_THREAT_UPDATE)
+                    threat *= 100;*/
+                Console.WriteLine("Threat: " + threat);
+            }
+        }
+
+        [Parser(Opcode.SMSG_THREAT_CLEAR)]
+        [Parser(Opcode.SMSG_THREAT_REMOVE)]
+        public static void HandleRemoveThreatlist(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid();
+            Console.WriteLine("GUID: " + guid);
+
+            if (packet.GetOpcode() == Opcode.SMSG_THREAT_REMOVE)
+            {
+                var victim = packet.ReadPackedGuid();
+                Console.WriteLine("Victim GUID: " + victim);
+            }
+        }
     }
 }
