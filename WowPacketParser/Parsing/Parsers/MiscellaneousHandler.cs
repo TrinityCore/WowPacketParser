@@ -158,6 +158,13 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Area Trigger ID: " + id);
         }
 
+        [Parser(Opcode.SMSG_PRE_RESURRECT)]
+        public static void HandlePreRessurect(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid();
+            Console.WriteLine("GUID: " + guid);
+        }
+
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
         [Parser(Opcode.CMSG_CALENDAR_GET_NUM_PENDING)]
@@ -189,6 +196,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_VOICESESSION_FULL)]
         [Parser(Opcode.SMSG_UNKNOWN_1276)]
         [Parser(Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS)]
+        [Parser(Opcode.SMSG_GOSSIP_COMPLETE)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }
