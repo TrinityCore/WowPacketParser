@@ -159,8 +159,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (flags.HasFlag(SplineFlag.Trajectory))
             {
-                var unkFloat = packet.ReadSingle();
-                Console.WriteLine("Unk Single: " + unkFloat);
+                var speedZ = packet.ReadSingle();
+                Console.WriteLine("Vertical Speed: " + speedZ);
 
                 var unkInt2 = packet.ReadInt32();
                 Console.WriteLine("Unk Int32 2: " + unkInt2);
@@ -258,7 +258,7 @@ namespace WowPacketParser.Parsing.Parsers
                 Console.WriteLine("GUID: " + guid);
 
                 var unk = packet.ReadInt32();
-                Console.WriteLine("Unk Int32: " + unk);
+                Console.WriteLine("Unk Int32 (increasing value): " + unk);
 
                 ReadMovementInfo(packet, guid);
             }
@@ -355,16 +355,25 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("New Speed: " + newSpeed);
         }
 
-        [Parser(Opcode.SMSG_MOVE_UNKNOWN_1304)]
-        public static void HandleOtherMovements(Packet packet)
+        [Parser(Opcode.MSG_MOVE_SET_COLLISION_HGT)]
+        [Parser(Opcode.SMSG_MOVE_SET_COLLISION_HGT)]
+        [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HGT_ACK)]
+        public static void HandleCollisionMovements(Packet packet)
         {
             var guid = packet.ReadPackedGuid();
             Console.WriteLine("GUID: " + guid);
 
-            ReadMovementInfo(packet, guid);
+            if (packet.GetOpcode() != Opcode.MSG_MOVE_SET_COLLISION_HGT)
+            {
+                var counter = packet.ReadInt32();
+                Console.WriteLine("Counter: " + counter);
+            }
+
+            if (packet.GetOpcode() != Opcode.SMSG_MOVE_SET_COLLISION_HGT)
+                ReadMovementInfo(packet, guid);
 
             var unk = packet.ReadSingle();
-            Console.WriteLine("Unk Single: " + unk);
+            Console.WriteLine("Collision Height: " + unk);
         }
 
         [Parser(Opcode.CMSG_SET_ACTIVE_MOVER)]
@@ -389,7 +398,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_FORCE_MOVE_UNROOT)]
         [Parser(Opcode.SMSG_MOVE_WATER_WALK)]
         [Parser(Opcode.SMSG_MOVE_LAND_WALK)]
-        [Parser(Opcode.SMSG_MOVE_UNKNOWN_1302)]
         public static void HandleSetMovementMessages(Packet packet)
         {
             var guid = packet.ReadPackedGuid();
@@ -397,12 +405,6 @@ namespace WowPacketParser.Parsing.Parsers
 
             var unk = packet.ReadInt32();
             Console.WriteLine("Unk Int32: " + unk);
-
-            if (packet.GetOpcode() != Opcode.SMSG_MOVE_UNKNOWN_1302)
-                return;
-
-            var fl = packet.ReadSingle();
-            Console.WriteLine("Unk Single: " + fl);
         }
 
         [Parser(Opcode.CMSG_MOVE_KNOCK_BACK_ACK)]
