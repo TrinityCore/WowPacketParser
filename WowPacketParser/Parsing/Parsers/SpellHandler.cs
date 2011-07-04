@@ -462,6 +462,16 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Spell ID: " + Extensions.SpellLine((int) spellId));
         }
 
+        [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL)]
+        [Parser(Opcode.SMSG_PLAY_SPELL_IMPACT)]
+        public static void HandleCastVisual(Packet packet)
+        {
+            var guid = packet.ReadGuid();
+            Console.WriteLine("Caster GUID: " + guid);
+            var visual = packet.ReadUInt32();
+            Console.WriteLine("SpellVisualKit ID: " + visual);
+        }
+
         [Parser(Opcode.SMSG_CAST_FAILED)]
         public static void HandleCastFailed(Packet packet)
         {

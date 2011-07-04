@@ -64,7 +64,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleTimeSyncReq(Packet packet)
         {
             var gameTime = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + gameTime);
+            Console.WriteLine("Counter (every 10th second): " + gameTime);
         }
 
         [Parser(Opcode.SMSG_LEARNED_DANCE_MOVES)]
