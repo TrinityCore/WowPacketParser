@@ -86,10 +86,22 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM)]
-        public static void HandleGODespawnAnim(Packet packet)
+        [Parser(Opcode.CMSG_GAMEOBJ_USE)]
+        [Parser(Opcode.CMSG_GAMEOBJ_REPORT_USE)]
+        public static void HandleGOMisc(Packet packet)
         {
             var guid = packet.ReadGuid();
             Console.WriteLine("GUID: " + guid);
+        }
+
+        [Parser(Opcode.SMSG_GAMEOBJECT_CUSTOM_ANIM)]
+        public static void HandleGOCustomAnim(Packet packet)
+        {
+            var guid = packet.ReadGuid();
+            Console.WriteLine("GUID: " + guid);
+
+            var anim = packet.ReadInt32();
+            Console.WriteLine("Anim: " + anim);
         }
     }
 }
