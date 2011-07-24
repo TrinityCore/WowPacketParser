@@ -145,7 +145,7 @@ namespace WowPacketParser.Parsing.Parsers
             var flags = (SplineFlag)packet.ReadInt32();
             Console.WriteLine("Spline Flags: " + flags);
 
-            if (flags.HasFlag(SplineFlag.Animation))
+            if (flags.HasFlag(SplineFlag.AnimationTier))
             {
                 var unkByte3 = (MovementAnimationState)packet.ReadByte();
                 Console.WriteLine("Animation State: " + unkByte3);
