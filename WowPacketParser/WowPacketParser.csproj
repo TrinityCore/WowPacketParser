@@ -154,6 +154,7 @@
     <Compile Include="Enums\DifficultyChangeType.cs" />
     <Compile Include="Enums\Direction.cs" />
     <Compile Include="Enums\EquipmentSetState.cs" />
+    <Compile Include="Enums\EnvironmentDamageFlags.cs" />
     <Compile Include="Enums\FactionFlag.cs" />
     <Compile Include="Enums\GameObjectFlag.cs" />
     <Compile Include="Enums\GameObjectType.cs" />
