@@ -25,5 +25,25 @@ namespace WowPacketParser.Parsing.Parsers
             var amount = packet.ReadByte();
             Console.WriteLine("Combo Points: " + amount);
         }
+
+        [Parser(Opcode.SMSG_ENVIRONMENTALDAMAGELOG)]
+        public static void HandleEnvirenmentalDamageLog(Packet packet)
+        {
+            var guid = packet.ReadGuid();
+            Console.WriteLine("GUID: " + guid);
+
+            var type = (EnvironmentDamageFlags)packet.ReadByte();
+            Console.WriteLine("Type: " + type);
+
+            var damage = packet.ReadInt32();
+            Console.WriteLine("damage: " + damage);
+
+            var absorb = packet.ReadInt32();
+            Console.WriteLine("absorb: " + absorb);
+
+            var resist = packet.ReadInt32();
+            Console.WriteLine("resist: " + resist);
+        }
+
     }
 }

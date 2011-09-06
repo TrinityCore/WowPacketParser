@@ -2,9 +2,9 @@ namespace WowPacketParser.Enums
 {
     public enum LfgUpdateType
     {
-        GroupLeader = 1,
-        Unknown1 = 2,
-        Unknown2 = 3,
+        Unknown1 = 1,
+        Unknown2 = 2,
+        Unknown3 = 3,
         RoleCheckAborted = 4,
         JoinProposal = 5,
         RoleCheckFailed = 6,
@@ -12,11 +12,13 @@ namespace WowPacketParser.Enums
         ProposalFailed = 8,
         ProposalDeclined = 9,
         GroupFound = 10,
-        Unknown3 = 11,
+        Unknown11 = 11,
         AddedToQueue = 12,
-        ProposalFound = 13,
-        ClearLockList = 14,
+        ProposalBegin = 13,
+        UpdateStatus = 14,
         GroupMemberOffline = 15,
-        GroupDisbanded = 16
+        Unknown16 = 16,
+        Unknown17 = 17,
+        Unknown18 = 18
     }
 }

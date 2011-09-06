@@ -76,7 +76,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Result: " + result);
         }
 
-        [Parser(Opcode.CMSG_EQUIPMENT_SET_DELETE)]
+        [Parser(Opcode.CMSG_DELETEEQUIPMENT_SET)]
         public static void HandleEquipmentSetDelete(Packet packet)
         {
             var pguid = packet.ReadPackedGuid();
