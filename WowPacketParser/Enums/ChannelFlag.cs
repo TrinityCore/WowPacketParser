@@ -1,5 +1,8 @@
+using System;
+
 namespace WowPacketParser.Enums
 {
+    [Flags]
     public enum ChannelFlag
     {
         None = 0x00,
