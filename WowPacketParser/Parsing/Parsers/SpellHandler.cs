@@ -31,8 +31,8 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Power Value: " + value);
         }
 
-        [Parser(Opcode.SMSG_UNIT_SPELLCAST_START)]
-        public static void HandleUnitSpellCastStart(Packet packet)
+        [Parser(Opcode.SMSG_RESUME_CAST_BAR)]
+        public static void HandleResumeCastBar(Packet packet)
         {
             var casterGuid = packet.ReadPackedGuid();
             Console.WriteLine("Caster GUID: " + casterGuid);

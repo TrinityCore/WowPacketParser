@@ -18,8 +18,8 @@ namespace WowPacketParser.Parsing.Parsers
             var flags = (GroupUpdateFlag)packet.ReadByte();
             Console.WriteLine("Flags: " + flags);
 
-            var isbg = packet.ReadBoolean();
-            Console.WriteLine("Is Battleground: " + isbg);
+            var myroles = packet.ReadByte();
+            Console.WriteLine("own roles: " + myroles);
 
             if (grouptype.HasFlag(GroupTypeFlag.LookingForDungeon))
             {
@@ -30,8 +30,8 @@ namespace WowPacketParser.Parsing.Parsers
                 Console.WriteLine("LFG Entry: " + lfgentry);
             }
 
-            var unkint2 = packet.ReadInt64();
-            Console.WriteLine("Unk Int64: " + unkint2);
+            var groupGuid = packet.ReadGuid();
+            Console.WriteLine("Group GUID: " + groupGuid);
 
             var counter = packet.ReadInt32();
             Console.WriteLine("Counter: " + counter);

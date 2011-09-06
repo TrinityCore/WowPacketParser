@@ -212,7 +212,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REQUEST_RAID_INFO)]
         [Parser(Opcode.CMSG_GMTICKET_GETTICKET)]
         [Parser(Opcode.CMSG_BATTLEFIELD_STATUS)]
-        [Parser(Opcode.CMSG_MEETINGSTONE_INFO)]
+        [Parser(Opcode.CMSG_LFG_GET_STATUS)]
         [Parser(Opcode.SMSG_LFG_DISABLED)]
         [Parser(Opcode.SMSG_QUESTLOG_FULL)]
         [Parser(Opcode.CMSG_CHANNEL_VOICE_ON)]
