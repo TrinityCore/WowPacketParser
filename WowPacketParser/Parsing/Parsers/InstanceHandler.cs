@@ -33,7 +33,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Player Difficulty: " + unk2);
         }
 
-        [Parser(Opcode.SMSG_PLAYER_DIFFICULTY_CHANGE)]
+        [Parser(Opcode.SMSG_CHANGEPLAYER_DIFFICULTY_RESULT)]
         public static void HandlePlayerChangeDifficulty(Packet packet)
         {
             var type = (DifficultyChangeType)packet.ReadInt32();

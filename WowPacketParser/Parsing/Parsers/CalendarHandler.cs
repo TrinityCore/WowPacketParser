@@ -375,7 +375,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Unk Byte 3: " + unk4);
         }
 
-        [Parser(Opcode.SMSG_CALENDAR_UPDATE_INVITE_LIST)]
+        [Parser(Opcode.CMSG_CALENDAR_EVENT_INVITE_NOTES)]
         public static void HandleCalendarUpdateInviteList(Packet packet)
         {
             var guid = packet.ReadPackedGuid();
@@ -391,7 +391,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Unk Boolean: " + unk);
         }
 
-        [Parser(Opcode.SMSG_CALENDAR_UPDATE_INVITE_LIST2)]
+        [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_NOTES_ALERT)]
         public static void HandleCalendarUpdateInviteList2(Packet packet)
         {
             var invId = packet.ReadInt64();
@@ -401,7 +401,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Invite Text: " + text);
         }
 
-        [Parser(Opcode.SMSG_CALENDAR_UPDATE_INVITE_LIST3)]
+        [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_NOTES)]
         public static void HandleCalendarUpdateInviteList3(Packet packet)
         {
             var unk1 = packet.ReadInt32();

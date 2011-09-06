@@ -37,6 +37,7 @@ namespace WowPacketParser.Enums
         NotInArea = 0x20,
         NotInLfg = 0x21,
         VoiceOn = 0x22,
-        VoiceOff = 0x23
+        VoiceOff = 0x23,
+        Unknown1 = 0x24
     }
 }

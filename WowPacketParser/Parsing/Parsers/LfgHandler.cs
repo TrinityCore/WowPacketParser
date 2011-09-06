@@ -152,10 +152,10 @@ namespace WowPacketParser.Parsing.Parsers
             var byte1 = (LfgUpdateType)packet.ReadByte();
             Console.WriteLine("Update Type: " + byte1);
 
-            var boolean = packet.ReadBoolean();
-            Console.WriteLine("Joined: " + boolean);
+            var extraInfo = packet.ReadBoolean();
+            Console.WriteLine("ExtraInfo: " + extraInfo);
 
-            if (!boolean)
+            if (!extraInfo)
                 return;
 
             var byte2 = packet.ReadBoolean();
@@ -186,10 +186,10 @@ namespace WowPacketParser.Parsing.Parsers
             var byte1 = (LfgUpdateType)packet.ReadByte();
             Console.WriteLine("Update Type: " + byte1);
 
-            var boolean = packet.ReadBoolean();
-            Console.WriteLine("Joined: " + boolean);
+            var extraInfo = packet.ReadBoolean();
+            Console.WriteLine("ExtraInfo: " + extraInfo);
 
-            if (!boolean)
+            if (!extraInfo)
                 return;
 
             var byte2 = packet.ReadBoolean();
@@ -476,7 +476,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("LFG Entry: " + lfgId);
         }
 
-        [Parser(Opcode.SMSG_LFG_OPEN_FROM_GOSSIP)]
+        [Parser(Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER)]
         public static void HandleLfgGossip(Packet packet)
         {
             var unk = packet.ReadLfgEntry();

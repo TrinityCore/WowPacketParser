@@ -14,6 +14,20 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static readonly List<StartInfo> StartInfos = new List<StartInfo>();
 
+        [Parser(Opcode.CMSG_STANDSTATECHANGE)]
+        public static void HandleStandStateChange(Packet packet)
+        {
+            var standstate = packet.ReadInt32();
+            Console.WriteLine("standstate: " + standstate);
+        }
+
+        [Parser(Opcode.SMSG_STANDSTATE_UPDATE)]
+        public static void HandleStandStateUpdate(Packet packet)
+        {
+            var standstate = packet.ReadByte();
+            Console.WriteLine("standstate: " + standstate);
+        }
+
         [Parser(Opcode.CMSG_CHAR_CREATE)]
         public static void HandleClientCharCreate(Packet packet)
         {
