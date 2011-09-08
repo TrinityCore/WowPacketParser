@@ -108,5 +108,24 @@ namespace WowPacketParser.Parsing.Parsers
             var unkint = packet.ReadInt32();
             Console.WriteLine("Unk Int32: " + unkint);
         }
+
+        [Parser(Opcode.MSG_RANDOM_ROLL)]
+        public static void HandleRandomRollPackets(Packet packet)
+        {
+            var min = packet.ReadInt32();
+            Console.WriteLine("Minimum: " + min);
+
+            var max = packet.ReadInt32();
+            Console.WriteLine("Maximum: " + max);
+
+            if (packet.GetDirection() == Direction.ClientToServer)
+                return;
+
+            var roll = packet.ReadInt32();
+            Console.WriteLine("Roll: " + roll);
+
+            var guid = packet.ReadGuid();
+            Console.WriteLine("GUID: " + guid);
+        }
     }
 }
