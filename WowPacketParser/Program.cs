@@ -37,9 +37,15 @@ namespace WowPacketParser
                 string filters = ConfigurationManager.AppSettings["Filters"];
                 string sqloutput = ConfigurationManager.AppSettings["SQLOutput"];
                 string nodump = ConfigurationManager.AppSettings["NoDump"];
+                int packetsToRead = 0;
+                try
+                {
+                    packetsToRead = int.Parse(ConfigurationManager.AppSettings["PacketsNum"]);
+                }
+                catch(Exception){}
 
                 Console.WriteLine("Reading file: " + file);
-                var packets = Reader.Read(file, filters);
+                var packets = Reader.Read(file, filters, packetsToRead);
                 if (packets == null)
                 {
                     Console.WriteLine("Could not open file " + file + " for reading.");

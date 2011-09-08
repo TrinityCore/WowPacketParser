@@ -9,7 +9,7 @@ namespace WowPacketParser.Loading
 {
     public static class Reader
     {
-        public static IEnumerable<Packet> Read(string file, string filters)
+        public static IEnumerable<Packet> Read(string file, string filters, int packetsToRead)
         {
             IEnumerable<Packet> packets = null;
 
@@ -28,6 +28,7 @@ namespace WowPacketParser.Loading
                     var packetList = new List<Packet>();
                     var bin = new BinaryReader(new FileStream(file, FileMode.Open));
                     var appliedFilters = filters.Split(',');
+                    var packetsRead = 0;
 
                     while (bin.BaseStream.Position != bin.BaseStream.Length)
                     {
@@ -47,11 +48,18 @@ namespace WowPacketParser.Loading
                                     continue;
 
                                 packetList.Add(packet);
+                                if (packetsToRead > 0 && ++packetsRead == packetsToRead)
+                                    bin.BaseStream.Position = bin.BaseStream.Length;
+
                                 break;
                             }
                         }
                         else
+                        {
                             packetList.Add(packet);
+                            if (packetsToRead > 0 && ++packetsRead == packetsToRead)
+                                bin.BaseStream.Position = bin.BaseStream.Length;
+                        }
                     }
                     packets = packetList;
                 }
