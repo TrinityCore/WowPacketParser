@@ -69,12 +69,6 @@ namespace WowPacketParser.Parsing.Parsers
 
                 var unk16 = packet.ReadInt16();
                 Console.WriteLine("Unk Int16: " + unk16);
-
-                var chr = SessionHandler.LoggedInCharacter;
-                if (!chr.FirstLogin)
-                    continue;
-
-                SQLStore.WriteData(SQLStore.StartSpells.GetCommand(chr.Race, chr.Class, spellId));
             }
 
             var cooldownCount = packet.ReadInt16();
