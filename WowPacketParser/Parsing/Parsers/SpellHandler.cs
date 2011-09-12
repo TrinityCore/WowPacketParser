@@ -24,6 +24,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_POWER_UPDATE)]
         public static void HandleSetPower(Packet packet)
         {
+            var guid = packet.ReadPackedGuid();
+            Console.WriteLine("GUID: " + guid); 
+
             var type = (PowerType)packet.ReadByte();
             Console.WriteLine("Power Type: " + type);
 
