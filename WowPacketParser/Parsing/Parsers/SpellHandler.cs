@@ -453,6 +453,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_REMOVED_SPELL)]
+        [Parser(Opcode.CMSG_CANCEL_CHANNELLING)]
         public static void HandleRemovedSpell(Packet packet)
         {
             var spellId = packet.ReadUInt32();

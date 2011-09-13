@@ -45,5 +45,11 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("resist: " + resist);
         }
 
+        [Parser(Opcode.SMSG_CANCEL_AUTO_REPEAT)]
+        public static void HandleCancelAutoRepeat(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid();
+            Console.WriteLine("Target GUID: " + guid);
+        }
     }
 }
