@@ -342,5 +342,15 @@ namespace WowPacketParser.Parsing.Parsers
                 Console.WriteLine("Standing: " + standing);
             }
         }
+
+        [Parser(Opcode.SMSG_PLAYER_VEHICLE_DATA)]
+        public static void HandlePlayerVehicleData(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid();
+            Console.WriteLine("GUID: " + guid);
+
+            var vehicleId = packet.ReadInt32();
+            Console.WriteLine("Vehicle ID: " + vehicleId);
+        }
     }
 }
