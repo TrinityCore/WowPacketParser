@@ -222,5 +222,186 @@ namespace WowPacketParser.Misc
             handle.Free();
             return returnObject;
         }
+
+        public byte ReadByte(string name)
+        {
+            var val = ReadByte();
+            Console.WriteLine("{0}: {1}", name, val);
+            return val;
+        }
+
+        public byte ReadByte(string name, string prepend, string format)
+        {
+            var val = ReadByte();
+            Console.WriteLine("{0}: {1}{2}", name, prepend, val.ToString(format));
+            return val;
+        }
+
+        public short ReadInt16(string name)
+        {
+            var val = ReadInt16();
+            Console.WriteLine("{0}: {1}", name, val);
+            return val;
+        }
+
+        public short ReadInt16(string name, string prepend, string format)
+        {
+            var val = ReadInt16();
+            Console.WriteLine("{0}: {1}{2}", name, prepend, val.ToString(format));
+            return val;
+        }
+
+        public int ReadInt32(string name)
+        {
+            var val = ReadInt32();
+            Console.WriteLine("{0}: {1}", name, val);
+            return val;
+        }
+
+        public int ReadInt32(string name, string prepend, string format)
+        {
+            var val = ReadInt32();
+            Console.WriteLine("{0}: {1}{2}", name, prepend, val.ToString(format));
+            return val;
+        }
+
+        public long ReadInt64(string name)
+        {
+            var val = ReadInt64();
+            Console.WriteLine("{0}: {1}", name, val);
+            return val;
+        }
+
+        public long ReadInt64(string name, string prepend, string format)
+        {
+            var val = ReadInt64();
+            Console.WriteLine("{0}: {1}{2}", name, prepend, val.ToString(format));
+            return val;
+        }
+
+        public Guid ReadGuid(string name)
+        {
+            var val = ReadGuid();
+            Console.WriteLine("{0}: {1}", name, val);
+            return val;
+        }
+
+        public string ReadCString(string name)
+        {
+            var val = ReadCString();
+            Console.WriteLine("{0}: {1}", name, val);
+            return val;
+        }
+
+        public Guid ReadPackedGuid(string name)
+        {
+            var val = ReadPackedGuid();
+            Console.WriteLine("{0}: {1}", name, val);
+            return val;
+        }
+
+        public float ReadSingle(string name)
+        {
+            var val = ReadSingle();
+            Console.WriteLine("{0}: {1}", name, val);
+            return val;
+        }
+
+        public bool ReadBoolean(string name)
+        {
+            var val = ReadBoolean();
+            Console.WriteLine("{0}: {1}", name, val);
+            return val;
+        }
+
+        public KeyValuePair<int, bool> ReadEntryKey(string name)
+        {
+            var entry = ReadEntry();
+            Console.WriteLine("{0}: {1}", name, entry.Key);
+            return entry;
+        }
+
+        public Vector4 ReadVector4(string name)
+        {
+            var val = ReadVector4();
+            Console.WriteLine("{0}: {1}", name, val);
+            return val;
+        }
+
+        public Vector3 ReadVector3(string name)
+        {
+            var val = ReadVector3();
+            Console.WriteLine("{0}: {1}", name, val);
+            return val;
+        }
+
+        public Quaternion ReadPackedQuaternion(string name)
+        {
+            var val = ReadPackedQuaternion();
+            Console.WriteLine("{0}: {1}", name, val);
+            return val;
+        }
+
+        public DateTime ReadTime(string name)
+        {
+            var val = ReadTime();
+            Console.WriteLine("{0}: {1}", name, val);
+            return val;
+        }
+
+        public DateTime ReadPackedTime(string name)
+        {
+            var val = ReadPackedTime();
+            Console.WriteLine("{0}: {1}", name, val);
+            return val;
+        }
+
+        private KeyValuePair<long, T> ReadEnum<T>(TypeCode code)
+        {
+            var type = typeof(T);
+            object value = null;
+            long rawVal = 0;
+
+            if (code == TypeCode.Empty)
+                code = Type.GetTypeCode(type.GetEnumUnderlyingType());
+
+            switch (code)
+            {
+                case TypeCode.SByte:
+                    rawVal = ReadSByte();
+                    break;
+                case TypeCode.Byte:
+                    rawVal = ReadByte();
+                    break;
+                case TypeCode.Int16:
+                    rawVal = ReadInt16();
+                    break;
+                case TypeCode.UInt16:
+                    rawVal = ReadUInt16();
+                    break;
+                case TypeCode.Int32:
+                    rawVal = ReadInt32();
+                    break;
+                case TypeCode.UInt32:
+                    rawVal = ReadUInt32();
+                    break;
+                case TypeCode.Int64:
+                    rawVal = ReadInt64();
+                    break;
+                case TypeCode.UInt64:
+                    rawVal = (long)ReadUInt64();
+                    break;
+            }
+            value = System.Enum.ToObject(type, rawVal);
+
+            return new KeyValuePair<long, T>(rawVal, (T)value);
+        }
+
+        public T ReadEnum<T>(string name, TypeCode code = TypeCode.Empty)
+        {
+            KeyValuePair<long, T> val = ReadEnum<T>(code);   
+            Console.WriteLine("{0}: {1} ({2})", name, val.Value, val.Key);
+            return val.Value;
+        }
     }
 }

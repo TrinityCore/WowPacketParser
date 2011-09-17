@@ -10,8 +10,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_CHANNEL_VOICE_OFF)]
         public static void HandleChannelSetVoice(Packet packet)
         {
-            var chanName = packet.ReadCString();
-            Console.WriteLine("Channel Name: " + chanName);
+            packet.ReadCString("Channel Name");
         }
 
         [Parser(Opcode.CMSG_CHANNEL_SILENCE_VOICE)]
@@ -20,18 +19,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_CHANNEL_UNSILENCE_ALL)]
         public static void HandleChannelSilencing(Packet packet)
         {
-            var chanName = packet.ReadCString();
-            Console.WriteLine("Channel Name: " + chanName);
-
-            var playerName = packet.ReadCString();
-            Console.WriteLine("Player Name: " + playerName);
+            packet.ReadCString("Channel Name");
+            packet.ReadCString("Player Name");
         }
 
         [Parser(Opcode.CMSG_CHANNEL_LIST)]
         public static void HandleChannelList(Packet packet)
         {
-            var chanName = packet.ReadCString();
-            Console.WriteLine("Channel Name: " + chanName);
+            packet.ReadCString("Channel Name");
         }
 
         [Parser(Opcode.SMSG_CHANNEL_LIST)]

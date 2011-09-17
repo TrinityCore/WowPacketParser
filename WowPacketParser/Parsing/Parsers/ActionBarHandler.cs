@@ -11,8 +11,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ACTION_BUTTONS)]
         public static void HandleInitialButtons(Packet packet)
         {
-            var talentSpec = packet.ReadByte();
-            Console.WriteLine("Talent Spec: " + talentSpec);
+            packet.ReadByte("Talent Spec");
 
             for (var i = 0; i < 144; i++)
             {

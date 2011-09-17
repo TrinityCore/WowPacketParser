@@ -14,27 +14,21 @@ namespace WowPacketParser.Parsing.Parsers
             var decompCount = packet.ReadInt32();
             packet = packet.Inflate(decompCount);
 
-            var count = packet.ReadInt32();
+            var count = packet.ReadInt32("Addons Count");
             _addonCount = count;
-            Console.WriteLine("Addons Count: " + count);
 
             for (var i = 0; i < count; i++)
             {
-                var name = packet.ReadCString();
-                Console.WriteLine("Name: " + name);
+                packet.ReadCString("Name");
 
-                var enabled = packet.ReadBoolean();
-                Console.WriteLine("Enabled: " + enabled);
+                packet.ReadBoolean("Enabled");
 
-                var crcSum = packet.ReadInt32();
-                Console.WriteLine("CRC: " + crcSum);
+                packet.ReadInt32("CRC");
 
-                var unk1 = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 1: " + unk1);
+                packet.ReadInt32("Unk Int32");
             }
 
-            var unk2 = packet.ReadTime();
-            Console.WriteLine("Current Time: " + unk2);
+            packet.ReadTime("Current Time");
         }
 
         [Parser(Opcode.SMSG_ADDON_INFO)]
@@ -42,16 +36,13 @@ namespace WowPacketParser.Parsing.Parsers
         {
             for (var i = 0; i < _addonCount; i++)
             {
-                var state = packet.ReadByte();
-                Console.WriteLine("Addon State: " + state);
+                packet.ReadByte("Addon State");
 
-                var sendCrc = packet.ReadBoolean();
-                Console.WriteLine("Use CRC: " + sendCrc);
+                var sendCrc = packet.ReadBoolean("Use CRC");
 
                 if (sendCrc)
                 {
-                    var usePublicKey = packet.ReadBoolean();
-                    Console.WriteLine("Use Public Key: " + usePublicKey);
+                    var usePublicKey = packet.ReadBoolean("Use Public Key");
 
                     if (usePublicKey)
                     {
@@ -62,27 +53,22 @@ namespace WowPacketParser.Parsing.Parsers
                             Console.Write(t);
                     }
 
-                    var crc = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 1: " + crc);
+                    packet.ReadInt32("Unk Int32");
                 }
 
-                var unkByte2 = packet.ReadBoolean();
-                Console.WriteLine("Use URL File: " + unkByte2);
+                var unkByte2 = packet.ReadBoolean("Use URL File");
 
                 if (!unkByte2)
                     continue;
 
-                var unkStr = packet.ReadCString();
-                Console.WriteLine("Addon URL File: " + unkStr);
+                packet.ReadCString("Addon URL File");
             }
 
-            var bannedCount = packet.ReadInt32();
-            Console.WriteLine("Banned Addons Count: " + bannedCount);
+            var bannedCount = packet.ReadInt32("Banned Addons Count");
 
             for (var i = 0; i < bannedCount; i++)
             {
-                var unk1 = packet.ReadInt32();
-                Console.WriteLine("ID: " + unk1);
+                packet.ReadInt32("ID");
 
                 var unkStr2 = packet.ReadBytes(16);
                 Console.WriteLine("Unk Hash 1: " + Utilities.ByteArrayToHexString(unkStr2));
@@ -90,11 +76,9 @@ namespace WowPacketParser.Parsing.Parsers
                 var unkStr3 = packet.ReadBytes(16);
                 Console.WriteLine("Unk Hash 2: " + Utilities.ByteArrayToHexString(unkStr3));
 
-                var unk2 = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 3: " + unk2);
+                packet.ReadInt32("Unk Int32 3");
 
-                var unk3 = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 4: " + unk3);
+                packet.ReadInt32("Unk Int32 4");
             }
         }
     }

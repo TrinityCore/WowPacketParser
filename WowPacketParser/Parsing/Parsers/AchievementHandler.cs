@@ -10,72 +10,44 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CRITERIA_DELETED)]
         public static void HandleDeleted(Packet packet)
         {
-            var id = packet.ReadInt32();
-            Console.WriteLine("ID: " + id);
+            packet.ReadInt32("ID");
         }
 
         [Parser(Opcode.SMSG_SERVER_FIRST_ACHIEVEMENT)]
         public static void HandleServerFirstAchievement(Packet packet)
         {
-            var name = packet.ReadCString();
-            Console.WriteLine("Player Name: " + name);
-
-            var guid = packet.ReadGuid();
-            Console.WriteLine("Player GUID: " + guid);
-
-            var achId = packet.ReadInt32();
-            Console.WriteLine("Achievement: " + achId);
-
-            var linkName = packet.ReadInt32();
-            Console.WriteLine("Linked Name: " + linkName);
+            packet.ReadCString("Player Name");
+            packet.ReadGuid("Player GUID");
+            packet.ReadInt32("Achievement");
+            packet.ReadInt32("Linked Name");
         }
 
         [Parser(Opcode.SMSG_ACHIEVEMENT_EARNED)]
         public static void HandleAchievementEarned(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("Player GUID: " + guid);
-
-            var achId = packet.ReadInt32();
-            Console.WriteLine("Achievement: " + achId);
-
-            var time = packet.ReadPackedTime();
-            Console.WriteLine("Time: " + time);
-
-            var unkInt = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + unkInt);
+            packet.ReadPackedGuid("Player GUID");
+            packet.ReadInt32("Achievement");
+            packet.ReadPackedTime("Time");
+            packet.ReadInt32("Unk Int32");
         }
 
         [Parser(Opcode.SMSG_CRITERIA_UPDATE)]
         public static void HandleCriteriaUpdate(Packet packet)
         {
-            var id = packet.ReadInt32();
-            Console.WriteLine("Criteria ID: " + id);
-
-            var counter = packet.ReadPackedGuid();
-            Console.WriteLine("Criteria Counter: " + counter.Full);
-
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("Player GUID: " + guid);
-
-            var unk = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + unk);
-
-            var time = packet.ReadPackedTime();
-            Console.WriteLine("Time: " + time);
+            packet.ReadInt32("Criteria ID");
+            packet.ReadPackedGuid("Criteria Counter");
+            packet.ReadPackedGuid("Player GUID");
+            packet.ReadInt32("Unk Int32");
+            packet.ReadPackedTime("Time");
 
             for (var i = 0; i < 2; i++)
-            {
-                var timer = packet.ReadInt32();
-                Console.WriteLine("Timer " + i + ": " + timer);
-            }
+                packet.ReadInt32("Timer " + i);
         }
 
         public static void ReadAllAchievementData(Packet packet)
         {
             while (true)
             {
-
                 var id = packet.ReadInt32();
 
                 if (id == -1)
@@ -83,8 +55,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 Console.WriteLine("Achievement ID: " + id);
 
-                var time = packet.ReadPackedTime();
-                Console.WriteLine("Achievement Time: " + time);
+                packet.ReadPackedTime("Achievement Time");
             }
 
             while (true)
@@ -99,20 +70,14 @@ namespace WowPacketParser.Parsing.Parsers
                 var counter = packet.ReadPackedGuid();
                 Console.WriteLine("Criteria Counter: " + counter.Full);
 
-                var guid = packet.ReadPackedGuid();
-                Console.WriteLine("Player GUID: " + guid);
+                packet.ReadPackedGuid("Player GUID");
 
-                var unk = packet.ReadInt32();
-                Console.WriteLine("Unk Int32: " + unk);
+                packet.ReadInt32("Unk Int32");
 
-                var time = packet.ReadPackedTime();
-                Console.WriteLine("Criteria Time: " + time);
+                packet.ReadPackedTime("Criteria Time");
 
                 for (var i = 0; i < 2; i++)
-                {
-                    var timer = packet.ReadInt32();
-                    Console.WriteLine("Timer " + i + ": " + timer);
-                }
+                    packet.ReadInt32("Timer " + i);
             }
         }
 
@@ -125,16 +90,13 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_QUERY_INSPECT_ACHIEVEMENTS)]
         public static void HandleInspectAchievementData(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadPackedGuid("GUID");
         }
 
         [Parser(Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS)]
         public static void HandleInspectAchievementDataResponse(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("Player GUID: " + guid);
-
+            packet.ReadPackedGuid("Player GUID");
             ReadAllAchievementData(packet);
         }
     }

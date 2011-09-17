@@ -9,14 +9,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES)]
         public static void HandleAccountDataTimes(Packet packet)
         {
-            var unkTime = packet.ReadTime();
-            Console.WriteLine("Unk Time 1: " + unkTime);
+            packet.ReadTime("Unk Time");
 
-            var unkByte = packet.ReadByte();
-            Console.WriteLine("Unk Byte: " + unkByte);
+            packet.ReadByte("Unk Byte");
 
-            var mask = packet.ReadInt32();
-            Console.WriteLine("Time Mask: " + mask);
+            var mask = packet.ReadInt32("Time Mask");
 
             for (var i = 0; i < 8; i++)
             {
@@ -31,17 +28,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REQUEST_ACCOUNT_DATA)]
         public static void HandleRequestAccountData(Packet packet)
         {
-            var type = (AccountDataType)packet.ReadInt32();
-            Console.WriteLine("Data Type: " + type);
+            packet.ReadEnum<AccountDataType>("Data Type", TypeCode.Int32);
         }
 
         public static void ReadUpdateAccountDataBlock(Packet packet)
         {
-            var type = (AccountDataType)packet.ReadInt32();
-            Console.WriteLine("Data Type: " + type);
+            packet.ReadEnum<AccountDataType>("Data Type", TypeCode.Int32);
 
-            var unkTime = packet.ReadTime();
-            Console.WriteLine("Unk Time: " + unkTime);
+            packet.ReadTime("Unk Time");
 
             var decompCount = packet.ReadInt32();
             packet = packet.Inflate(decompCount);
@@ -64,20 +58,15 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_UPDATE_ACCOUNT_DATA)]
         public static void HandleServerUpdateAccountData(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
-
+            packet.ReadGuid("GUID");
             ReadUpdateAccountDataBlock(packet);
         }
 
         [Parser(Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE)]
         public static void HandleUpdateAccountDataComplete(Packet packet)
         {
-            var type = (AccountDataType)packet.ReadInt32();
-            Console.WriteLine("Data Type: " + type);
-
-            var unkInt = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + unkInt);
+            packet.ReadEnum<AccountDataType>("Data Type", TypeCode.Int32);
+            packet.ReadInt32("Unk Int32");
         }
     }
 }

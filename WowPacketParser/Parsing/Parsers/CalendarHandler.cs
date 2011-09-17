@@ -9,154 +9,110 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CALENDAR_SEND_CALENDAR)]
         public static void HandleSendCalendar(Packet packet)
         {
-            var invCount = packet.ReadInt32();
-            Console.WriteLine("Invite Count: " + invCount);
+            var invCount = packet.ReadInt32("Invite Count");
 
             for (var i = 0; i < invCount; i++)
             {
-                var invId = packet.ReadInt64();
-                Console.WriteLine("Invite ID " + i + ": " + invId);
+                packet.ReadInt64("Invite ID");
 
-                var eventId = packet.ReadInt64();
-                Console.WriteLine("Event ID " + i + ": " + eventId);
+                packet.ReadInt64("Event ID");
 
-                var unk1 = packet.ReadByte();
-                Console.WriteLine("Unk Byte 1 " + i + ": " + unk1);
+                packet.ReadByte("Unk Byte 1");
 
-                var unk2 = packet.ReadByte();
-                Console.WriteLine("Unk Byte 2 " + i + ": " + unk2);
+                packet.ReadByte("Unk Byte 2");
 
-                var unk3 = packet.ReadByte();
-                Console.WriteLine("Unk Byte 3 " + i + ": " + unk3);
+                packet.ReadByte("Unk Byte 3");
 
-                var creatorGuid = packet.ReadPackedGuid();
-                Console.WriteLine("Creator GUID " + i + ": " + creatorGuid);
+                packet.ReadPackedGuid("Creator GUID");
             }
 
-            var evtCount = packet.ReadInt32();
-            Console.WriteLine("Event Count: " + evtCount);
+            var eventCount = packet.ReadInt32("Event Count");
 
-            for (var i = 0; i < evtCount; i++)
+            for (var i = 0; i < eventCount; i++)
             {
-                var evtId = packet.ReadInt64();
-                Console.WriteLine("Event ID " + i + ": " + evtId);
+                packet.ReadInt64("Event ID " + i);
 
-                var title = packet.ReadCString();
-                Console.WriteLine("Event Title " + i + ": " + title);
+                packet.ReadCString("Event Title " + i);
 
-                var type = packet.ReadInt32();
-                Console.WriteLine("Event Type " + i + ": " + type);
+                packet.ReadInt32("Event Type " + i);
 
-                var occurrence = packet.ReadInt32();
-                Console.WriteLine("Occurrence Time " + i + ": " + occurrence);
+                packet.ReadInt32("Occurrence Time " + i);
 
                 var flags = packet.ReadInt32();
                 Console.WriteLine("Event Flags " + i + ": 0x" + flags.ToString("X8"));
 
-                var unk = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 1 " + i + ": " + unk);
+                packet.ReadInt32("Unk Int32 1");
 
-                var creatorGuid = packet.ReadPackedGuid();
-                Console.WriteLine("Creator GUID " + i + ": " + creatorGuid);
+                packet.ReadPackedGuid("Creator GUID " + i);
             }
 
-            var unkInt = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 2: " + unkInt);
+            packet.ReadInt32("Unk Int32 2");
 
-            var curTime = packet.ReadPackedTime();
-            Console.WriteLine("Current Time: " + curTime);
+            packet.ReadPackedTime("Current Time");
 
-            var instSaveCnt = packet.ReadInt32();
-            Console.WriteLine("Instance Save Count: " + instSaveCnt);
+            var instSaveCount = packet.ReadInt32("Instance Save Count");
 
-            for (var i = 0; i < instSaveCnt; i++)
+            for (var i = 0; i < instSaveCount; i++)
             {
-                var mapId = packet.ReadInt32();
-                Console.WriteLine("Map ID " + i + ": " + mapId);
+                packet.ReadInt32("Map ID " + i);
 
-                var difficulty = (MapDifficulty)packet.ReadInt32();
-                Console.WriteLine("Difficulty " + i + ": " + difficulty);
+                packet.ReadEnum<MapDifficulty>("Difficulty " + i, TypeCode.Int32);
 
-                var resetTime = packet.ReadInt32();
-                Console.WriteLine("Reset Time " + i + ": " + resetTime);
+                packet.ReadInt32("Reset Time " + i);
 
-                var instanceId = packet.ReadInt64();
-                Console.WriteLine("Instance ID " + i + ": " + instanceId);
+                packet.ReadInt64("Instance ID " + i);
             }
 
-            var unkDate = packet.ReadTime();
-            Console.WriteLine("Constant Date: " + unkDate);
+            packet.ReadTime("Constant Date");
 
-            var raidResetCnt = packet.ReadInt32();
-            Console.WriteLine("Raid Reset Count: " + raidResetCnt);
+            var raidResetCount = packet.ReadInt32("Raid Reset Count");
 
-            for (var i = 0; i < raidResetCnt; i++)
+            for (var i = 0; i < raidResetCount; i++)
             {
-                var mapId = packet.ReadInt32();
-                Console.WriteLine("Map ID " + i + ": " + mapId);
+                packet.ReadInt32("Map ID " + i);
 
-                var resetTime = packet.ReadInt32();
-                Console.WriteLine("Reset Time " + i + ": " + resetTime);
+                packet.ReadInt32("Reset Time " + i);
 
-                var unkTime = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 4 " + i + ": " + unkTime);
+                packet.ReadInt32("Unk Time " + i);
             }
 
-            var holidayCnt = packet.ReadInt32();
-            Console.WriteLine("Holiday Count: " + holidayCnt);
+            var holidayCount = packet.ReadInt32("Holiday Count");
 
-            for (var i = 0; i < holidayCnt; i++)
+            for (var i = 0; i < holidayCount; i++)
             {
-                var unk1 = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 5 " + i + ": " + unk1);
+                packet.ReadInt32("Unk Int32 5 " + i);
 
-                var unk2 = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 6 " + i + ": " + unk2);
+                packet.ReadInt32("Unk Int32 6 " + i);
 
-                var unk3 = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 7 " + i + ": " + unk3);
+                packet.ReadInt32("Unk Int32 7 " + i);
 
-                var unk4 = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 8 " + i + ": " + unk4);
+                packet.ReadInt32("Unk Int32 8 " + i);
 
-                var unk5 = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 9 " + i + ": " + unk5);
+                packet.ReadInt32("Unk Int32 9 " + i);
 
                 for (var j = 0; j < 26; j++)
-                {
-                    var unk = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 10 " + j + ": " + unk);
-                }
+                    packet.ReadInt32("Unk Int32 10 " + j);
 
                 for (var j = 0; j < 10; j++)
-                {
-                    var unk = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 11 " + j + ": " + unk);
-                }
+                    packet.ReadInt32("Unk Int32 11 " + j);
 
                 for (var j = 0; j < 10; j++)
-                {
-                    var unk = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 12 " + j + ": " + unk);
-                }
+                    packet.ReadInt32("Unk Int32 12 " + j);
 
-                var name = packet.ReadCString();
-                Console.WriteLine("Holiday Name " + i + ": " + name);
+                packet.ReadCString("Holiday Name " + i);
             }
         }
 
         [Parser(Opcode.CMSG_CALENDAR_GET_EVENT)]
         public static void HandleGetCalendarEvent(Packet packet)
         {
-            var eventId = packet.ReadInt64();
-            Console.WriteLine("Event ID: " + eventId);
+            packet.ReadInt64("Event ID");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_SEND_EVENT)]
         public static void HandleSendCalendarEvent(Packet packet)
         {
-            var unk = packet.ReadByte();
-            Console.WriteLine("Unk Byte: " + unk);
+            packet.ReadByte("Unk Byte");
 
             ReadCalendarEventCreationValues(packet);
 
@@ -165,43 +121,30 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < invCount; i++)
             {
-                var guid = packet.ReadPackedGuid();
-                Console.WriteLine("GUID " + i + ": " + guid);
+                packet.ReadPackedGuid("GUID " + i);
 
-                var unk1 = packet.ReadByte();
-                Console.WriteLine("Unk Byte 1 " + i + ": " + unk1);
+                packet.ReadByte("Unk Byte 1 " + i);
 
-                var unk2 = packet.ReadByte();
-                Console.WriteLine("Unk Byte 2 " + i + ": " + unk2);
+                packet.ReadByte("Unk Byte 2 " + i);
 
-                var unk3 = packet.ReadByte();
-                Console.WriteLine("Unk Byte 3 " + i + ": " + unk3);
+                packet.ReadByte("Unk Byte 3 " + i);
 
-                var unk4 = packet.ReadByte();
-                Console.WriteLine("Unk Byte 4 " + i + ": " + unk4);
+                packet.ReadByte("Unk Byte 4 " + i);
 
-                var unk64 = packet.ReadInt64();
-                Console.WriteLine("Invite ID " + i + ": " + unk64);
+                packet.ReadInt64("Invite ID " + i);
 
-                var unk32 = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 " + ": " + unk32);
+                packet.ReadInt32("Unk Int32 " + i);
 
-                var text = packet.ReadCString();
-                Console.WriteLine("Invite Text " + i + ": " + text);
+                packet.ReadCString("Invite Text " + i);
             }
         }
 
         [Parser(Opcode.CMSG_CALENDAR_GUILD_FILTER)]
         public static void HandleCalendarGuildFilter(Packet packet)
         {
-            var unk1 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 1: " + unk1);
-
-            var unk2 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 2: " + unk2);
-
-            var unk3 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 3: " + unk3);
+            packet.ReadInt32("Unk Int32 1");
+            packet.ReadInt32("Unk Int32 2");
+            packet.ReadInt32("Unk Int32 3");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_ARENA_TEAM)]
@@ -215,16 +158,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CALENDAR_FILTER_GUILD)]
         public static void HandleCalendarFilters(Packet packet)
         {
-            var count = packet.ReadInt32();
-            Console.WriteLine("Count: " + count);
+            var count = packet.ReadInt32("Count");
 
             for (var i = 0; i < count; i++)
             {
-                var guid = packet.ReadPackedGuid();
-                Console.WriteLine("GUID " + i + ": " + guid);
-
-                var unk = packet.ReadByte();
-                Console.WriteLine("Unk Byte " + i + ": " + unk);
+                packet.ReadPackedGuid("GUID " + i);;
+                packet.ReadByte("Unk Byte " + i);
             }
         }
 
@@ -232,36 +171,25 @@ namespace WowPacketParser.Parsing.Parsers
         {
             if (packet.GetOpcode() != Opcode.CMSG_CALENDAR_ADD_EVENT)
             {
-                var id = packet.ReadInt64();
-                Console.WriteLine("Event ID: " + id);
-
-                var creator = packet.ReadGuid();
-                Console.WriteLine("Creator GUID: " + creator);
+                packet.ReadInt64("Event ID");
+                packet.ReadGuid("Creator GUID");
             }
 
-            var title = packet.ReadCString();
-            Console.WriteLine("Title: " + title);
+            packet.ReadCString("Title");
 
-            var description = packet.ReadCString();
-            Console.WriteLine("Description: " + description);
+            packet.ReadCString("Description");
 
-            var type = packet.ReadByte();
-            Console.WriteLine("Type: " + type);
+            packet.ReadByte("Type");
 
-            var unk1 = packet.ReadByte();
-            Console.WriteLine("Unk Byte 1: " + unk1);
+            packet.ReadByte("Unk Byte 1");
 
-            var maxInv = packet.ReadInt32();
-            Console.WriteLine("Max Invites: " + maxInv);
+            packet.ReadInt32("Max Invites");
 
-            var unk2 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 1: " + unk2);
+            packet.ReadInt32("Unk Int32 1");
 
-            var date1 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 2: " + date1);
+            packet.ReadInt32("Unk Int32 2");
 
-            var date2 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 3: " + date2);
+            packet.ReadInt32("Unk Int32 3");
 
             var flags = packet.ReadInt32();
             Console.WriteLine("Flags: 0x" + flags.ToString("X8"));
@@ -277,20 +205,14 @@ namespace WowPacketParser.Parsing.Parsers
             if (((flags >> 6) & 1) != 0)
                 return;
 
-            var count = packet.ReadInt32();
-            Console.WriteLine("Invite Count: " + count);
+            var count = packet.ReadInt32("Invite Count");
 
             if (count <= 0)
                 return;
 
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
-
-            var status = packet.ReadByte();
-            Console.WriteLine("Status: " + status);
-
-            var rank = packet.ReadByte();
-            Console.WriteLine("Rank: " + rank);
+            packet.ReadPackedGuid("GUID");
+            packet.ReadByte("Status");
+            packet.ReadByte("Rank");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_UPDATE_EVENT)]
@@ -302,122 +224,70 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_CALENDAR_REMOVE_EVENT)]
         public static void HandleRemoveCalendarEvent(Packet packet)
         {
-            var eventId = packet.ReadInt64();
-            Console.WriteLine("Event ID: " + eventId);
-
-            var creatorGuid = packet.ReadGuid();
-            Console.WriteLine("Creator GUID: " + creatorGuid);
-
-            var unk = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + unk);
+            packet.ReadInt64("Event ID");
+            packet.ReadGuid("Creator GUID");
+            packet.ReadInt32("Unk Int32");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_COPY_EVENT)]
         public static void HandleCopyCalendarEvent(Packet packet)
         {
-            var oldId = packet.ReadInt64();
-            Console.WriteLine("Old Event ID: " + oldId);
-
-            var newId = packet.ReadInt64();
-            Console.WriteLine("New Event ID: " + newId);
-
-            var date = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + date);
+            packet.ReadInt64("Old Event ID");
+            packet.ReadInt64("New Event ID");
+            packet.ReadInt32("Unk Int32");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_EVENT_INVITE)]
         public static void HandleAddCalendarEventInvite(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
-
-            var eventId = packet.ReadInt64();
-            Console.WriteLine("Event ID: " + eventId);
-
-            var text = packet.ReadCString();
-            Console.WriteLine("Text: " + text);
-
-            var unk1 = packet.ReadByte();
-            Console.WriteLine("Unk Byte 1: " + unk1);
-
-            var unk2 = packet.ReadByte();
-            Console.WriteLine("Unk Byte 2: " + unk2);
+            packet.ReadGuid("GUID");
+            packet.ReadInt64("Event ID");
+            packet.ReadCString("Text");
+            packet.ReadByte("Unk Byte 1");
+            packet.ReadByte("Unk Byte 2");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE)]
         public static void HandleSendCalendarEventInvite(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadPackedGuid("GUID");
+            packet.ReadInt64("Invite ID");
+            packet.ReadInt64("Event ID");
+            packet.ReadByte("Unk Byte 1");
+            packet.ReadByte("Unk Byte 2");
 
-            var inviteId = packet.ReadInt64();
-            Console.WriteLine("Invite ID: " + inviteId);
-
-            var eventId = packet.ReadInt64();
-            Console.WriteLine("Event ID: " + eventId);
-
-            var unk1 = packet.ReadByte();
-            Console.WriteLine("Unk Byte 1: " + unk1);
-
-            var unk2 = packet.ReadByte();
-            Console.WriteLine("Unk Byte 2: " + unk2);
-
-            var unk3 = packet.ReadBoolean();
-            Console.WriteLine("Unk Boolean: " + unk3);
+            var unk3 = packet.ReadBoolean("Unk Boolean");
 
             if (unk3)
-            {
-                var unk32 = packet.ReadInt32();
-                Console.WriteLine("Unk Int32: " + unk32);
-            }
+                packet.ReadInt32("Unk Int32");
 
-            var unk4 = packet.ReadByte();
-            Console.WriteLine("Unk Byte 3: " + unk4);
+            packet.ReadByte("Unk Byte 3");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_EVENT_INVITE_NOTES)]
         public static void HandleCalendarUpdateInviteList(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
-
-            var inviteId = packet.ReadInt64();
-            Console.WriteLine("Invite ID: " + inviteId);
-
-            var text = packet.ReadCString();
-            Console.WriteLine("Invite Text: " + text);
-
-            var unk = packet.ReadBoolean();
-            Console.WriteLine("Unk Boolean: " + unk);
+            packet.ReadPackedGuid("GUI");
+            packet.ReadInt64("Invite ID");
+            packet.ReadCString("Invite Text");
+            packet.ReadBoolean("Unk Boolean");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_NOTES_ALERT)]
         public static void HandleCalendarUpdateInviteList2(Packet packet)
         {
-            var invId = packet.ReadInt64();
-            Console.WriteLine("Invite ID: " + invId);
-
-            var text = packet.ReadCString();
-            Console.WriteLine("Invite Text: " + text);
+            packet.ReadInt64("Invite ID");
+            packet.ReadCString("Invite Text");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_NOTES)]
         public static void HandleCalendarUpdateInviteList3(Packet packet)
         {
-            var unk1 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 1: " + unk1);
-
-            var unk2 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 2: " + unk2);
-
-            var unk3 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 3: " + unk3);
-
-            var unk4 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 4: " + unk4);
-
-            var unk5 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 5: " + unk5);
+            packet.ReadInt32("Unk Int32 1");
+            packet.ReadInt32("Unk Int32 2");
+            packet.ReadInt32("Unk Int32 3");
+            packet.ReadInt32("Unk Int32 4");
+            packet.ReadInt32("Unk Int32 5");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_EVENT_REMOVE_INVITE)]
@@ -439,148 +309,110 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_REMOVED)]
         public static void HandleSendCalendarEventInviteRemoved(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadPackedGuid("GUID");
 
-            var inviteId = packet.ReadInt64();
-            Console.WriteLine("Invite ID: " + inviteId);
+            packet.ReadInt64("Invite ID");
 
             var flags = packet.ReadInt32();
             Console.WriteLine("Flags: 0x" + flags.ToString("X8"));
 
-            var unk = packet.ReadByte();
-            Console.WriteLine("Unk Byte: " + unk);
+            packet.ReadByte("Unk Byte");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_EVENT_STATUS)]
         [Parser(Opcode.CMSG_CALENDAR_EVENT_MODERATOR_STATUS)]
         public static void HandleCalendarEventStatus(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadPackedGuid("GUID");
 
-            var eventId = packet.ReadInt64();
-            Console.WriteLine("Event ID: " + eventId);
+            packet.ReadInt64("Event ID");
 
-            var unk1 = packet.ReadInt64();
-            Console.WriteLine("Unk Int64 1: " + unk1);
+            packet.ReadInt64("Unk Int64 1");
 
-            var unk2 = packet.ReadInt64();
-            Console.WriteLine("Unk Int64 2: " + unk2);
+            packet.ReadInt64("Unk Int64 2");
 
-            var unk3 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + unk3);
+            packet.ReadInt32("Unk Int32");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_STATUS)]
         public static void HandleSendCalendarEventStatus(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadPackedGuid("GUID");
 
-            var eventId = packet.ReadInt64();
-            Console.WriteLine("Event ID: " + eventId);
+            packet.ReadInt64("Event ID");
 
-            var unk = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 1: " + unk);
+            packet.ReadInt32("Unk Int32 1");
 
             var flags = packet.ReadInt32();
             Console.WriteLine("Flags: 0x" + flags.ToString("X8"));
 
-            var unk1 = packet.ReadByte();
-            Console.WriteLine("Unk Byte 1: " + unk1);
+            packet.ReadByte("Unk Byte 1");
 
-            var unk2 = packet.ReadByte();
-            Console.WriteLine("Unk Byte 2: " + unk2);
+            packet.ReadByte("Unk Byte 2");
 
-            var unk32 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 2: " + unk32);
+            packet.ReadInt32("Unk Int32 2");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_MODERATOR_STATUS_ALERT)]
         public static void HandleSendCalendarEventModeratorStatus(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadPackedGuid("GUID");
 
-            var eventId = packet.ReadInt64();
-            Console.WriteLine("Event ID: " + eventId);
+            packet.ReadInt64("Event ID");
 
-            var unk1 = packet.ReadByte();
-            Console.WriteLine("Unk Byte: " + unk1);
+            packet.ReadByte("Unk Byte");
 
-            var unk2 = packet.ReadBoolean();
-            Console.WriteLine("Unk Boolean: " + unk2);
+            packet.ReadBoolean("Unk Boolean");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_COMPLAIN)]
         public static void HandleCalendarComplain(Packet packet)
         {
-            var eventId = packet.ReadInt64();
-            Console.WriteLine("Event ID: " + eventId);
+            packet.ReadInt64("Event ID");
 
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_SEND_NUM_PENDING)]
         public static void HandleSendCalendarNumPending(Packet packet)
         {
-            var count = packet.ReadInt32();
-            Console.WriteLine("Pending Invites: " + count);
+            packet.ReadInt32("Pending Invites");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_EVENT_RSVP)]
         public static void HandleCalendarRsvp(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadGuid("GUID");
 
-            var eventId = packet.ReadInt64();
-            Console.WriteLine("Event ID: " + eventId);
+            packet.ReadInt64("Event ID");
 
-            var unk = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + unk);
+            packet.ReadInt32("Unk Int32");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_RAID_LOCKOUT_ADDED)]
         public static void HandleRaidLockoutAdded(Packet packet)
         {
-            var mapId = packet.ReadInt32();
-            Console.WriteLine("Map ID: " + mapId);
+            packet.ReadInt32("Map ID");
 
-            var unk1 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 1: " + unk1);
+            packet.ReadInt32("Unk Int32 1");
 
-            var unk2 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 2: " + unk2);
+            packet.ReadInt32("Unk Int32 2");
 
-            var time = packet.ReadInt32();
-            Console.WriteLine("Reset Time: " + time);
+            packet.ReadInt32("Reset Time");
 
-            var instanceId = packet.ReadInt64();
-            Console.WriteLine("Instance ID: " + instanceId);
+            packet.ReadInt64("Instance ID");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_RAID_LOCKOUT_REMOVED)]
         public static void HandleRaidLockoutRemoved(Packet packet)
         {
-            var count = packet.ReadInt32();
-            Console.WriteLine("Count: " + count);
-
-            if (count < 0)
-                return;
+            var count = packet.ReadInt32("Count");
 
             for (var i = 0; i < count; i++)
             {
-                var mapId = packet.ReadInt32();
-                Console.WriteLine("Map ID " + i + ": " + mapId);
-
-                var resetTime = packet.ReadInt32();
-                Console.WriteLine("Reset Time " + i + ": " + resetTime);
-
-                var unk = packet.ReadInt32();
-                Console.WriteLine("Instance ID " + i + ": " + unk);
+                packet.ReadInt32("Map ID " + i);
+                packet.ReadInt32("Reset Time " + i);
+                packet.ReadInt32("Instance ID " + i);
             }
         }
     }
