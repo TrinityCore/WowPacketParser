@@ -287,5 +287,13 @@ namespace WowPacketParser.Parsing.Parsers
                 Console.WriteLine("Aura ID " + i + ": " + enchId);
             }
         }
+
+        [Parser(Opcode.SMSG_SET_PROFICIENCY)]
+        public static void HandleSetProficency(Packet packet)
+        {
+            packet.ReadEnum<ItemClass>("Class", TypeCode.Byte);
+
+            packet.ReadInt32("Mask");
+        }
     }
 }
