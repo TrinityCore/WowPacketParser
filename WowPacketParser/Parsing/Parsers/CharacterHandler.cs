@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
@@ -17,172 +18,132 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_STANDSTATECHANGE)]
         public static void HandleStandStateChange(Packet packet)
         {
-            var standstate = packet.ReadInt32();
-            Console.WriteLine("standstate: " + standstate);
+            packet.ReadInt32("Standstate");
         }
 
         [Parser(Opcode.SMSG_STANDSTATE_UPDATE)]
         public static void HandleStandStateUpdate(Packet packet)
         {
-            var standstate = packet.ReadByte();
-            Console.WriteLine("standstate: " + standstate);
+            packet.ReadByte("Standstate");
         }
 
         [Parser(Opcode.CMSG_CHAR_CREATE)]
         public static void HandleClientCharCreate(Packet packet)
         {
-            var name = packet.ReadCString();
-            Console.WriteLine("Name: " + name);
+            packet.ReadCString("Name");
 
-            var race = (Race)packet.ReadByte();
-            Console.WriteLine("Race: " + race);
+            packet.ReadEnum<Race>("Race", TypeCode.Byte);
 
-            var chClass = (Class)packet.ReadByte();
-            Console.WriteLine("Class: " + chClass);
+            packet.ReadEnum<Class>("Class", TypeCode.Byte);
 
-            var gender = (Gender)packet.ReadByte();
-            Console.WriteLine("Gender: " + gender);
+            packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
 
-            var skin = packet.ReadByte();
-            Console.WriteLine("Skin: " + skin);
+            packet.ReadByte("Skin");
 
-            var face = packet.ReadByte();
-            Console.WriteLine("Face: " + face);
+            packet.ReadByte("Face");
 
-            var hairStyle = packet.ReadByte();
-            Console.WriteLine("Hair Style: " + hairStyle);
+            packet.ReadByte("Hair Style");
 
-            var hairColor = packet.ReadByte();
-            Console.WriteLine("Hair Color: " + hairColor);
+            packet.ReadByte("Hair Color");
 
-            var facialHair = packet.ReadByte();
-            Console.WriteLine("Facial Hair: " + facialHair);
+            packet.ReadByte("Facial Hair");
 
-            var outfitId = packet.ReadByte();
-            Console.WriteLine("Outfit ID: " + outfitId);
+            packet.ReadByte("Outfit ID");
         }
 
         [Parser(Opcode.CMSG_CHAR_DELETE)]
         public static void HandleClientCharDelete(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.CMSG_CHAR_RENAME)]
         public static void HandleClientCharRename(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadGuid("GUID");
 
-            var newName = packet.ReadCString();
-            Console.WriteLine("New Name: " + newName);
+            packet.ReadCString("New Name");
         }
 
         [Parser(Opcode.SMSG_CHAR_RENAME)]
         public static void HandleServerCharRename(Packet packet)
         {
-            var result = (ResponseCode)packet.ReadByte();
-            Console.WriteLine("Response: " + result);
+            var result = packet.ReadEnum<ResponseCode>("Race", TypeCode.Byte);
 
             if (result != ResponseCode.RESPONSE_SUCCESS)
                 return;
 
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadGuid("GUID");
 
-            var name = packet.ReadCString();
-            Console.WriteLine("Name: " + name);
+            packet.ReadCString("Name");
         }
 
         [Parser(Opcode.SMSG_CHAR_CREATE)]
         [Parser(Opcode.SMSG_CHAR_DELETE)]
         public static void HandleCharResponse(Packet packet)
         {
-            var response = (ResponseCode)packet.ReadByte();
-            Console.WriteLine("Response: " + response);
+            packet.ReadEnum<ResponseCode>("Response", TypeCode.Byte);
         }
 
         [Parser(Opcode.CMSG_ALTER_APPEARANCE)]
         public static void HandleAlterAppearance(Packet packet)
         {
-            var hairStyle = packet.ReadByte();
-            Console.WriteLine("Hair Style: " + hairStyle);
+            packet.ReadByte("Hair Style");
 
-            var hairColor = packet.ReadByte();
-            Console.WriteLine("Hair Color: " + hairColor);
+            packet.ReadByte("Hair Color");
 
-            var facialHair = packet.ReadByte();
-            Console.WriteLine("Facial Hair: " + facialHair);
+            packet.ReadByte("Facial Hair");
         }
 
         [Parser(Opcode.SMSG_BARBER_SHOP_RESULT)]
         public static void HandleBarberShopResult(Packet packet)
         {
-            var status = (BarberShopResult)packet.ReadInt32();
-            Console.WriteLine("Result: " + status);
+            packet.ReadEnum<BarberShopResult>("Result", TypeCode.Int32);
         }
 
         [Parser(Opcode.CMSG_CHAR_CUSTOMIZE)]
         public static void HandleClientCharCustomize(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadGuid("GUID");
 
-            var name = packet.ReadCString();
-            Console.WriteLine("New Name: " + name);
+            packet.ReadCString("New Name");
 
-            var gender = (Gender)packet.ReadByte();
-            Console.WriteLine("Gender: " + gender);
+            packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
 
-            var skin = packet.ReadByte();
-            Console.WriteLine("Skin: " + skin);
+            packet.ReadByte("Skin");
 
-            var face = packet.ReadByte();
-            Console.WriteLine("Face: " + face);
+            packet.ReadByte("Face");
 
-            var hairColor = packet.ReadByte();
-            Console.WriteLine("Hair Color: " + hairColor);
+            packet.ReadByte("Hair Style");
 
-            var hairStyle = packet.ReadByte();
-            Console.WriteLine("Hair Style: " + hairStyle);
+            packet.ReadByte("Hair Color");
 
-            var facialHair = packet.ReadByte();
-            Console.WriteLine("Facial Hair: " + facialHair);
+            packet.ReadByte("Facial Hair");
         }
 
         [Parser(Opcode.SMSG_CHAR_CUSTOMIZE)]
         public static void HandleServerCharCustomize(Packet packet)
         {
-            var response = (ResponseCode)packet.ReadByte();
-            Console.WriteLine("Response: " + response);
+            var response = packet.ReadEnum<ResponseCode>("Response", TypeCode.Byte);
 
             if (response != ResponseCode.RESPONSE_SUCCESS)
                 return;
 
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadGuid("GUID");
 
-            var name = packet.ReadCString();
-            Console.WriteLine("New Name: " + name);
+            packet.ReadCString("Name");
 
-            var gender = (Gender)packet.ReadByte();
-            Console.WriteLine("Gender: " + gender);
+            packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
 
-            var skin = packet.ReadByte();
-            Console.WriteLine("Skin: " + skin);
+            packet.ReadByte("Skin");
 
-            var face = packet.ReadByte();
-            Console.WriteLine("Face: " + face);
+            packet.ReadByte("Face");
 
-            var hairStyle = packet.ReadByte();
-            Console.WriteLine("Hair Style: " + hairStyle);
+            packet.ReadByte("Hair Style");
 
-            var hairColor = packet.ReadByte();
-            Console.WriteLine("Hair Color: " + hairColor);
+            packet.ReadByte("Hair Color");
 
-            var facialHair = packet.ReadByte();
-            Console.WriteLine("Facial Hair: " + facialHair);
+            packet.ReadByte("Facial Hair");
         }
 
         [Parser(Opcode.SMSG_CHAR_ENUM)]
@@ -190,167 +151,123 @@ namespace WowPacketParser.Parsing.Parsers
         {
             Characters.Clear();
 
-            var count = packet.ReadByte();
-            Console.WriteLine("Count: " + count);
+            var count = packet.ReadByte("Count");
 
             for (var i = 0; i < count; i++)
             {
-                var guid = packet.ReadGuid();
-                Console.WriteLine("GUID: " + guid);
+                var guid = packet.ReadGuid("GUID");
 
-                var name = packet.ReadCString();
-                Console.WriteLine("Name: " + name);
+                var name = packet.ReadCString("Name");
 
-                var race = (Race)packet.ReadByte();
-                Console.WriteLine("Race: " + race);
+                var race = packet.ReadEnum<Race>("Race", TypeCode.Byte);
 
-                var clss = (Class)packet.ReadByte();
-                Console.WriteLine("Class: " + clss);
+                var clss = packet.ReadEnum<Class>("Class", TypeCode.Byte);
 
-                var gender = (Gender)packet.ReadByte();
-                Console.WriteLine("Gender: " + gender);
+                packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
 
-                var skin = packet.ReadByte();
-                Console.WriteLine("Skin: " + skin);
+                packet.ReadByte("Skin");
 
-                var face = packet.ReadByte();
-                Console.WriteLine("Face: " + face);
+                packet.ReadByte("Face");
 
-                var hairStyle = packet.ReadByte();
-                Console.WriteLine("Hair Style: " + hairStyle);
+                packet.ReadByte("Hair Style");
 
-                var hairColor = packet.ReadByte();
-                Console.WriteLine("Hair Color: " + hairColor);
+                packet.ReadByte("Hair Color");
 
-                var facialHair = packet.ReadByte();
-                Console.WriteLine("Facial Hair: " + facialHair);
+                packet.ReadByte("Facial Hair");
 
-                var level = packet.ReadByte();
-                Console.WriteLine("Level: " + level);
+                var level = packet.ReadByte("Level");
 
-                var zone = packet.ReadInt32();
-                Console.WriteLine("Zone ID: " + zone);
+                var zone = packet.ReadInt32("Zone ID");
 
-                var mapId = packet.ReadInt32();
-                Console.WriteLine("Map ID: " + mapId);
+                var mapId = packet.ReadInt32("Map ID");
 
-                var pos = packet.ReadVector3();
-                Console.WriteLine("Position: " + pos);
+                var pos = packet.ReadVector3("Position");
 
-                var guild = packet.ReadInt32();
-                Console.WriteLine("Guild ID: " + guild);
+                packet.ReadInt32("Guild ID");
 
-                var flags = (CharacterFlag)packet.ReadInt32();
-                Console.WriteLine("Character Flags: " + flags);
+                packet.ReadEnum<CharacterFlag>("Character Flags", TypeCode.Int32);
 
-                var customize = (CustomizationFlag)packet.ReadInt32();
-                Console.WriteLine("Customization Flags: " + customize);
+                packet.ReadEnum<CustomizationFlag>("Customization Flags", TypeCode.Int32);
 
-                var firstLogin = packet.ReadBoolean();
-                Console.WriteLine("First Login: " + firstLogin);
+                var firstLogin = packet.ReadBoolean("First Login");
 
-                var petDispId = packet.ReadInt32();
-                Console.WriteLine("Pet Display ID: " + petDispId);
+                packet.ReadInt32("Pet Display ID");
 
-                var petLevel = packet.ReadInt32();
-                Console.WriteLine("Pet Level: " + petLevel);
+                packet.ReadInt32("Pet Level");
 
-                var petFamily = (CreatureFamily)packet.ReadInt32();
-                Console.WriteLine("Pet Family: " + petFamily);
+                packet.ReadEnum<CreatureFamily>("Pet Family", TypeCode.Int32);
 
                 for (var j = 0; j < 19; j++)
                 {
-                    var dispId = packet.ReadInt32();
-                    Console.WriteLine("Equip Display ID " + j + ": " + dispId);
+                    packet.ReadInt32("Equip Display ID");
 
-                    var invType = (InventoryType)packet.ReadByte();
-                    Console.WriteLine("Equip Inventory Type " + j + ": " + invType);
+                    packet.ReadEnum<InventoryType>("Equip Inventory Type", TypeCode.Byte);
 
-                    var auraId = packet.ReadInt32();
-                    Console.WriteLine("Equip Aura ID " + j + ": " + auraId);
+                    packet.ReadInt32("Equip Aura ID");
                 }
 
                 for (var j = 0; j < 4; j++)
                 {
-                    var bagDispId = packet.ReadInt32();
-                    Console.WriteLine("Bag Display ID " + j + ": " + bagDispId);
+                    packet.ReadInt32("Bag Display ID");
 
-                    var bagInvType = (InventoryType)packet.ReadByte();
-                    Console.WriteLine("Bag Inventory Type " + j + ": " + bagInvType);
+                    packet.ReadEnum<InventoryType>("Bag Inventory Type", TypeCode.Byte);
 
-                    var bagAuraId = packet.ReadInt32();
-                    Console.WriteLine("Bag Aura ID " + j + ": " + bagAuraId);
+                    packet.ReadInt32("Bag Aura ID");
                 }
 
                 if (firstLogin)
-                {
-                    var shouldAdd = true;
-                    foreach (var item in StartInfos)
+                    if (StartInfos.All(item => item.Race != race && item.Class != clss))
                     {
-                        if (item.Race != race && item.Class != clss)
-                            continue;
-
-                        shouldAdd = false;
-                        break;
-                    }
-
-                    if (shouldAdd)
-                    {
-                        var startInfo = new StartInfo();
-                        startInfo.Race = race;
-                        startInfo.Class = clss;
-                        startInfo.Position = pos;
-                        startInfo.Map = mapId;
-                        startInfo.Zone = zone;
+                        var startInfo = new StartInfo
+                                            {
+                                                Race = race,
+                                                Class = clss,
+                                                Position = pos,
+                                                Map = mapId,
+                                                Zone = zone
+                                            };
 
                         StartInfos.Add(startInfo);
                         SQLStore.WriteData(SQLStore.StartPositions.GetCommand(race, clss, mapId, zone, pos));
                     }
-                }
 
-                var chInfo = new CharacterInfo();
-                chInfo.Guid = guid;
-                chInfo.Race = race;
-                chInfo.Class = clss;
-                chInfo.Name = name;
-                chInfo.FirstLogin = firstLogin;
-                chInfo.Level = level;
+                var chInfo = new CharacterInfo
+                                 {
+                                     Guid = guid,
+                                     Race = race,
+                                     Class = clss,
+                                     Name = name,
+                                     FirstLogin = firstLogin,
+                                     Level = level
+                                 };
 
                 Characters.Add(guid, chInfo);
             }
         }
 
-        // Belongs here?
         [Parser(Opcode.SMSG_SET_FACTION_STANDING)]
         public static void HandleSetFactionStanding(Packet packet)
         {
-            var unk1 = packet.ReadSingle();
-            Console.WriteLine("Unk Float: " + unk1);
+            packet.ReadSingle("Unk Float");
 
-            var unk2 = packet.ReadByte();
-            Console.WriteLine("Unk UInt8: " + unk2);
+            packet.ReadByte("Unk UInt8");
 
-            var amount = packet.ReadInt32();
-            Console.WriteLine("Count: " + amount);
+            var amount = packet.ReadInt32("Count");
 
             for (int i = 0; i < amount; i++)
             {
-                var listId = packet.ReadInt32();
-                Console.WriteLine("Faction List ID: " + listId);
+                packet.ReadInt32("Faction List ID");
 
-                var standing = packet.ReadInt32();
-                Console.WriteLine("Standing: " + standing);
+                packet.ReadInt32("Standing");
             }
         }
 
         [Parser(Opcode.SMSG_PLAYER_VEHICLE_DATA)]
         public static void HandlePlayerVehicleData(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadPackedGuid("GUID");
 
-            var vehicleId = packet.ReadInt32();
-            Console.WriteLine("Vehicle ID: " + vehicleId);
+            packet.ReadInt32("Vehicle ID");
         }
     }
 }
