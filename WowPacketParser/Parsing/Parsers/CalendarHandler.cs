@@ -13,9 +13,9 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < invCount; i++)
             {
-                packet.ReadInt64("Invite ID " + i);
-
                 packet.ReadInt64("Event ID " + i);
+
+                packet.ReadInt64("Invite ID " + i);
 
                 packet.ReadByte("Invite Status " + i);
 
@@ -41,7 +41,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var flags = packet.ReadInt32();
                 Console.WriteLine("Event Flags " + i + ": 0x" + flags.ToString("X8"));
 
-                packet.ReadInt32("Unk Int32 1 " + i); // Linked to dungeons?
+                packet.ReadInt32("Dungeon ID " + i);
 
                 packet.ReadPackedGuid("Creator GUID " + i);
             }
@@ -225,8 +225,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleRemoveCalendarEvent(Packet packet)
         {
             packet.ReadInt64("Event ID");
-            packet.ReadGuid("Creator GUID");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt64("Invite ID");
+            packet.ReadInt32("Unk Int32"); // Flag?
         }
 
         [Parser(Opcode.CMSG_CALENDAR_COPY_EVENT)]
@@ -234,13 +234,13 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadInt64("Old Event ID");
             packet.ReadInt64("New Event ID");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Event Time");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_EVENT_INVITE)]
         public static void HandleAddCalendarEventInvite(Packet packet)
         {
-            packet.ReadGuid("GUID");
+            packet.ReadInt64("Invite ID");
             packet.ReadInt64("Event ID");
             packet.ReadCString("Text");
             packet.ReadByte("Invite Status");
@@ -293,17 +293,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_CALENDAR_EVENT_REMOVE_INVITE)]
         public static void HandleRemoveCalendarEventInvite(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
-
-            var eventId = packet.ReadInt64();
-            Console.WriteLine("Event ID: " + eventId);
-
-            var unk1 = packet.ReadInt64();
-            Console.WriteLine("Unk Int64 1: " + unk1);
-
-            var unk2 = packet.ReadInt64();
-            Console.WriteLine("Unk Int64 2: " + unk2);
+            packet.ReadPackedGuid("GUID");
+            packet.ReadInt64("Event ID");
+            packet.ReadInt64("Unk Int64 1");
+            packet.ReadInt64("Invite ID");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_REMOVED)]
@@ -341,10 +334,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadInt64("Event ID");
 
-            packet.ReadInt32("Unk Int32 1");
+            packet.ReadInt32("Event Time");
 
             var flags = packet.ReadInt32();
-            Console.WriteLine("Flags: 0x" + flags.ToString("X8"));
+            Console.WriteLine("Event Flags: 0x" + flags.ToString("X8"));
 
             packet.ReadByte("Unk Byte 1");
 

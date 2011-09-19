@@ -32,37 +32,27 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CHANNEL_LIST)]
         public static void HandleChannelSendList(Packet packet)
         {
-            var type = packet.ReadByte();
-            Console.WriteLine("Type: " + type);
+            packet.ReadByte("Type");
 
-            var chanName = packet.ReadCString();
-            Console.WriteLine("Channel Name: " + chanName);
+            packet.ReadCString("Channel Name");
 
-            var flags = (ChannelFlag)packet.ReadByte();
-            Console.WriteLine("Flags: " + flags);
+            packet.ReadEnum<ChannelFlag>("Flags", TypeCode.Byte);
 
-            var count = packet.ReadUInt32();
-            Console.WriteLine("Counter: " + count);
+            var count = packet.ReadInt32("Counter");
 
             for (var i = 0; i < count; i++)
             {
-                var guid = packet.ReadGuid();
-                Console.WriteLine("Player GUID " + i + ": " + guid);
-
-                var playerflags = (ChannelMemberFlag)packet.ReadByte();
-                Console.WriteLine("Player Flags " + i + ": " + playerflags);
-
+                packet.ReadGuid("Player GUID " + i);
+                packet.ReadEnum<ChannelMemberFlag>("Player Flags " + i, TypeCode.Byte);
             }
         }
 
         [Parser(Opcode.SMSG_CHANNEL_NOTIFY)]
         public static void HandleChannelNotify(Packet packet)
         {
-            var type = (ChatNotificationType)packet.ReadByte();
-            Console.WriteLine("Notification Type: " + type);
+            var type = packet.ReadEnum<ChatNotificationType>("Notification Type", TypeCode.Byte);
 
-            var chanName = packet.ReadCString();
-            Console.WriteLine("Channel Name: " + chanName);
+            packet.ReadCString("Channel Name");
 
             switch(type)
             {
@@ -78,32 +68,52 @@ namespace WowPacketParser.Parsing.Parsers
                 case ChatNotificationType.Left:
                 case ChatNotificationType.VoiceOn:
                 case ChatNotificationType.VoiceOff:
-                    {
-                        var guid = packet.ReadGuid();
-                        Console.WriteLine("GUID: " + guid);
-                    }
+                {
+                    packet.ReadGuid("GUID");
                     break;
+                }
                 case ChatNotificationType.YouJoined:
-                    {
-                        var flags = (ChannelFlag)packet.ReadByte();
-                        Console.WriteLine("Flags: " + flags);
-
-                        var id = packet.ReadUInt32();
-                        Console.WriteLine("Id: " + id);
-
-                        var unk1 = packet.ReadUInt32();
-                        Console.WriteLine("Unk: " + unk1);
-                    }
+                {
+                    packet.ReadEnum<ChannelFlag>("Flags", TypeCode.Byte);
+                    packet.ReadInt32("Id");
+                    packet.ReadInt32("Unk");
                     break;
+                }
                 case ChatNotificationType.YouLeft:
-                    {
-                        var id = packet.ReadUInt32();
-                        Console.WriteLine("Id: " + id);
-
-                        var unk1 = packet.ReadByte();
-                        Console.WriteLine("Unk: " + unk1);
-                    }
+                {
+                    packet.ReadInt32("Id");
+                    packet.ReadByte("Unk");
                     break;
+                }
+                case ChatNotificationType.PlayerNotFound:
+                case ChatNotificationType.ChannelOwner:
+                case ChatNotificationType.PlayerNotBanned:
+                case ChatNotificationType.PlayerInvited:
+                case ChatNotificationType.PlayerInviteBanned:
+                {
+                    packet.ReadCString("Player Name");
+                    break;
+                }
+                case ChatNotificationType.ModeChange:
+                {
+                    packet.ReadGuid("GUID");
+                    packet.ReadEnum<ChannelMemberFlag>("Old Flags", TypeCode.Byte);
+                    packet.ReadEnum<ChannelMemberFlag>("New Flags", TypeCode.Byte);
+                    break;
+                }
+                case ChatNotificationType.PlayerKicked:
+                case ChatNotificationType.PlayerBanned:
+                case ChatNotificationType.PlayerUnbanned:
+                {
+                    packet.ReadGuid("Bad");
+                    packet.ReadGuid("Good");
+                    break;
+                }
+                case ChatNotificationType.Unknown1:
+                {
+                    packet.ReadGuid("GUID");
+                    break;
+                }
                 case ChatNotificationType.WrongPassword:
                 case ChatNotificationType.NotMember:
                 case ChatNotificationType.NotModerator:
@@ -118,111 +128,44 @@ namespace WowPacketParser.Parsing.Parsers
                 case ChatNotificationType.NotInArea:
                 case ChatNotificationType.NotInLfg:
                     break;
-                case ChatNotificationType.PlayerNotFound:
-                case ChatNotificationType.ChannelOwner:
-                case ChatNotificationType.PlayerNotBanned:
-                case ChatNotificationType.PlayerInvited:
-                case ChatNotificationType.PlayerInviteBanned:
-                    {
-                        var name = packet.ReadCString();
-                        Console.WriteLine("Player Name: " + name);
-                    }
-                    break;
-                case ChatNotificationType.ModeChange:
-                    {
-                        var guid = packet.ReadGuid();
-                        Console.WriteLine("GUID: " + guid);
-
-                        var oldFlags = (ChannelMemberFlag)packet.ReadByte();
-                        Console.WriteLine("Old Flags: " + oldFlags);
-
-                        var newFlags = (ChannelMemberFlag)packet.ReadByte();
-                        Console.WriteLine("New Flags: " + newFlags);
-                    }
-                    break;
-                case ChatNotificationType.PlayerKicked:
-                case ChatNotificationType.PlayerBanned:
-                case ChatNotificationType.PlayerUnbanned:
-                    {
-                        var guid = packet.ReadGuid();
-                        Console.WriteLine("Bad: " + guid);
-
-                        var good = packet.ReadGuid();
-                        Console.WriteLine("Good: " + good);
-                    }
-                    break;
-                case ChatNotificationType.Unknown1:
-                    {
-                        var guid = packet.ReadGuid();
-                        Console.WriteLine("GUID: " + guid);
-                    }
-                    break;
             }
         }
 
         [Parser(Opcode.CMSG_JOIN_CHANNEL)]
         public static void HandleChannelJoin(Packet packet)
         {
-            var id = packet.ReadUInt32();
-            Console.WriteLine("ChannelId: " + id);
-
-            var unk1 = packet.ReadByte();
-            Console.WriteLine("Unk1: " + unk1);
-
-            var unk2 = packet.ReadByte();
-            Console.WriteLine("Unk2: " + unk2);
-
-            var chanName = packet.ReadCString();
-            Console.WriteLine("Channel Name: " + chanName);
-
-            var chanPass = packet.ReadCString();
-            Console.WriteLine("Channel Pass: " + chanPass);
+            packet.ReadInt32("Channel Id");
+            packet.ReadByte("Unk1");
+            packet.ReadByte("Unk2");
+            packet.ReadCString("Channel Name");
+            packet.ReadCString("Channel Pass");
         }
 
         [Parser(Opcode.CMSG_LEAVE_CHANNEL)]
         public static void HandleChannelLeave(Packet packet)
         {
-            var id = packet.ReadUInt32();
-            Console.WriteLine("ChannelId: " + id);
-
-            var chanName = packet.ReadCString();
-            Console.WriteLine("Channel Name: " + chanName);
+            packet.ReadInt32("Channel Id");
+            packet.ReadCString("Channel Name");
         }
 
         [Parser(Opcode.SMSG_USERLIST_REMOVE)]
         public static void HandleChannelUserListRemove(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
-
-            var flags = (ChannelFlag)packet.ReadByte();
-            Console.WriteLine("Flags: " + flags);
-
-            var count = packet.ReadUInt32();
-            Console.WriteLine("Counter: " + count);
-
-            var chanName = packet.ReadCString();
-            Console.WriteLine("Channel Name: " + chanName);
+            packet.ReadGuid("GUID");
+            packet.ReadEnum<ChannelFlag>("Flags", TypeCode.Byte);
+            packet.ReadInt32("Counter");
+            packet.ReadCString("Channel Name");
         }
 
         [Parser(Opcode.SMSG_USERLIST_ADD)]
         [Parser(Opcode.SMSG_USERLIST_UPDATE)]
         public static void HandleChannelUserListAdd(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
-
-            var memberFlags = (ChannelMemberFlag)packet.ReadByte();
-            Console.WriteLine("Member Flags: " + memberFlags);
-
-            var flags = (ChannelFlag)packet.ReadByte();
-            Console.WriteLine("Flags: " + flags);
-
-            var count = packet.ReadUInt32();
-            Console.WriteLine("Counter: " + count);
-
-            var chanName = packet.ReadCString();
-            Console.WriteLine("Channel Name: " + chanName);
+            packet.ReadGuid("GUID");
+            packet.ReadEnum<ChannelMemberFlag>("Member Flags", TypeCode.Byte);
+            packet.ReadEnum<ChannelFlag>("Flags", TypeCode.Byte);
+            packet.ReadInt32("Counter");
+            packet.ReadCString("Channel Name");
         }
 
         /*
