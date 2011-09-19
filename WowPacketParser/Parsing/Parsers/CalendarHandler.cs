@@ -13,17 +13,17 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < invCount; i++)
             {
-                packet.ReadInt64("Invite ID");
+                packet.ReadInt64("Invite ID " + i);
 
-                packet.ReadInt64("Event ID");
+                packet.ReadInt64("Event ID " + i);
 
-                packet.ReadByte("Unk Byte 1");
+                packet.ReadByte("Invite Status " + i);
 
-                packet.ReadByte("Unk Byte 2");
+                packet.ReadByte("Moderation Rank " + i);
 
-                packet.ReadByte("Unk Byte 3");
+                packet.ReadByte("Unk Byte 3 " + i);
 
-                packet.ReadPackedGuid("Creator GUID");
+                packet.ReadPackedGuid("Creator GUID " + i);
             }
 
             var eventCount = packet.ReadInt32("Event Count");
@@ -41,7 +41,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var flags = packet.ReadInt32();
                 Console.WriteLine("Event Flags " + i + ": 0x" + flags.ToString("X8"));
 
-                packet.ReadInt32("Unk Int32 1");
+                packet.ReadInt32("Unk Int32 1 " + i); // Linked to dungeons?
 
                 packet.ReadPackedGuid("Creator GUID " + i);
             }
@@ -50,9 +50,9 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadPackedTime("Current Time");
 
-            var instSaveCount = packet.ReadInt32("Instance Save Count");
+            var instanceResetCount = packet.ReadInt32("Instance Reset Count");
 
-            for (var i = 0; i < instSaveCount; i++)
+            for (var i = 0; i < instanceResetCount; i++)
             {
                 packet.ReadInt32("Map ID " + i);
 
@@ -73,7 +73,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadInt32("Reset Time " + i);
 
-                packet.ReadInt32("Unk Time " + i);
+                packet.ReadInt32("Unk Time " + i); // Remaining time?
             }
 
             var holidayCount = packet.ReadInt32("Holiday Count");
@@ -112,7 +112,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CALENDAR_SEND_EVENT)]
         public static void HandleSendCalendarEvent(Packet packet)
         {
-            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Invite Type");
 
             ReadCalendarEventCreationValues(packet);
 
@@ -121,13 +121,13 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < invCount; i++)
             {
-                packet.ReadPackedGuid("GUID " + i);
+                packet.ReadPackedGuid("Invited Player GUID " + i);
 
-                packet.ReadByte("Unk Byte 1 " + i);
+                packet.ReadByte("Player Level " + i);
 
-                packet.ReadByte("Unk Byte 2 " + i);
+                packet.ReadByte("Invite Status " + i);
 
-                packet.ReadByte("Unk Byte 3 " + i);
+                packet.ReadByte("Moderation Rank " + i);
 
                 packet.ReadByte("Unk Byte 4 " + i);
 
@@ -181,15 +181,15 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadByte("Type");
 
-            packet.ReadByte("Unk Byte 1");
+            packet.ReadBoolean("Repeating");
 
             packet.ReadInt32("Max Invites");
 
-            packet.ReadInt32("Unk Int32 1");
+            packet.ReadInt32("Dungeon ID");
 
-            packet.ReadInt32("Unk Int32 2");
+            packet.ReadInt32("Unk Int32 2"); // Creation time?
 
-            packet.ReadInt32("Unk Int32 3");
+            packet.ReadInt32("Event Time");
 
             var flags = packet.ReadInt32();
             Console.WriteLine("Flags: 0x" + flags.ToString("X8"));
@@ -210,9 +210,9 @@ namespace WowPacketParser.Parsing.Parsers
             if (count <= 0)
                 return;
 
-            packet.ReadPackedGuid("GUID");
-            packet.ReadByte("Status");
-            packet.ReadByte("Rank");
+            packet.ReadPackedGuid("Creator GUID");
+            packet.ReadByte("Invite Status");
+            packet.ReadByte("Moderation Rank");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_UPDATE_EVENT)]
@@ -243,8 +243,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
             packet.ReadInt64("Event ID");
             packet.ReadCString("Text");
-            packet.ReadByte("Unk Byte 1");
-            packet.ReadByte("Unk Byte 2");
+            packet.ReadByte("Invite Status");
+            packet.ReadByte("Moderation Rank");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE)]
@@ -267,7 +267,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_CALENDAR_EVENT_INVITE_NOTES)]
         public static void HandleCalendarUpdateInviteList(Packet packet)
         {
-            packet.ReadPackedGuid("GUI");
+            packet.ReadPackedGuid("GUID");
             packet.ReadInt64("Invite ID");
             packet.ReadCString("Invite Text");
             packet.ReadBoolean("Unk Boolean");
