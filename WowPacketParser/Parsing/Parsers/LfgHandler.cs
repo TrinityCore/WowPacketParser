@@ -486,202 +486,127 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_UPDATE_LFG_LIST)]
         public static void HandleUpdateLfgList(Packet packet)
         {
-            var type = (LfgType)packet.ReadInt32();
-            Console.WriteLine("LFG Type: " + type);
+            var type = packet.ReadEnum<LfgType>("LFG Type", TypeCode.Int32);
 
-            var id = packet.ReadInt32();
-            Console.WriteLine("Dungeon ID: " + id);
+            packet.ReadInt32("Dungeon ID");
 
-            var unkBool = packet.ReadBoolean();
-            Console.WriteLine("Unk Boolean 1: " + unkBool);
+            var unkBool = packet.ReadBoolean("Unknown bool 1");
 
             if (unkBool)
             {
-                var cnt = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 1: " + cnt);
+                var count = packet.ReadInt32("Unknown count");
 
-                for (var i = 0; i < cnt; i++)
+                for (var i = 0; i < count; i++)
                 {
-                    var guid = packet.ReadGuid();
-                    Console.WriteLine("Unk GUID 1: " + guid);
+                    packet.ReadGuid("[" + i + "] Unk Player GUID");
                 }
             }
 
-            var cnt2 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 2: " + cnt2);
+            var count2 = packet.ReadInt32("Group count");
+            packet.ReadInt32("Unknown group count");
 
-            var int2 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 3: " + int2);
-
-            for (var i = 0; i < cnt2; i++)
+            for (var i = 0; i < count2; i++)
             {
-                var guid2 = packet.ReadGuid();
-                Console.WriteLine("Unk GUID 2 " + ": " + guid2);
+                packet.ReadGuid("[" + i + "] Group GUID");
 
-                var flags = (LfgUpdateFlag)packet.ReadInt32();
-                Console.WriteLine("Update Flags " + i + ": " + flags);
+                var flags = packet.ReadEnum<LfgUpdateFlag>("[" + i + "] Update Flags", TypeCode.Int32);
 
                 if (flags.HasFlag(LfgUpdateFlag.Comment))
                 {
-                    var str = packet.ReadCString();
-                    Console.WriteLine("Comment " + i + ": " + str);
+                    packet.ReadCString("[" + i + "] Comment");
                 }
 
                 if (flags.HasFlag(LfgUpdateFlag.Roles))
                 {
                     for (var j = 0; j < 3; j++)
                     {
-                        var unk8 = packet.ReadByte();
-                        Console.WriteLine("Unk Byte 1 " + i + ": " + unk8);
+                        packet.ReadByte("[" + i + "] Unk byte 1 " + i); // Group have this role ?
                     }
                 }
 
-                if (!flags.HasFlag(LfgUpdateFlag.Unknown4))
+                if (!flags.HasFlag(LfgUpdateFlag.Binded))
                     continue;
 
-                var guid3 = packet.ReadGuid();
-                Console.WriteLine("Unk GUID 3 " + i + ": " + guid3);
-
-                var unk80 = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 4 " + i + ": " + unk80);
+                packet.ReadGuid("[" + i + "] Instance GUID");
+                packet.ReadInt32("[" + i + "] Encounters");
             }
 
-            var cnt3 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 5: " + cnt3);
+            var count3 = packet.ReadInt32("Players count");
+            packet.ReadInt32("Unknown player count");
 
-            var int3 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 6: " + int3);
-
-            for (var i = 0; i < cnt3; i++)
+            for (var i = 0; i < count3; i++)
             {
-                var guid4 = packet.ReadGuid();
-                Console.WriteLine("Unk GUID 4 " + ": " + guid4);
-
-                var flags2 = (LfgUpdateFlag)packet.ReadInt32();
-                Console.WriteLine("Update Flags " + i + ": " + flags2);
+                packet.ReadGuid("[" + i + "] Player GUID");
+                var flags2 = packet.ReadEnum<LfgUpdateFlag>("[" + i + "] Update Flags", TypeCode.Int32);
 
                 if (flags2.HasFlag(LfgUpdateFlag.CharacterInfo))
                 {
-                    var byte1 = packet.ReadByte();
-                    Console.WriteLine("Unk Byte 2 " + i + ": " + byte1);
-
-                    var byte2 = packet.ReadByte();
-                    Console.WriteLine("Unk Byte 3 " + i + ": " + byte2);
-
-                    var byte3 = packet.ReadByte();
-                    Console.WriteLine("Unk Byte 4 " + i + ": " + byte3);
+                    packet.ReadByte("[" + i + "] Level");
+                    packet.ReadByte("[" + i + "] Class");
+                    packet.ReadByte("[" + i + "] Race");
 
                     for (var j = 0; j < 3; j++)
                     {
-                        var unkByte3 = packet.ReadByte();
-                        Console.WriteLine("Unk Byte 5 " + i + ": " + unkByte3);
+                        packet.ReadByte("[" + i + "] Talents spent in row [" + (j + 1) + "]");
                     }
 
-                    var integer1 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 6 " + i + ": " + integer1);
-
-                    var integer2 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 7 " + i + ": " + integer2);
-
-                    var integer3 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 8 " + i + ": " + integer3);
-
-                    var integer4 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 9 " + i + ": " + integer4);
-
-                    var integer5 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 10 " + i + ": " + integer5);
-
-                    var integer6 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 11 " + i + ": " + integer6);
-
-                    var float1 = packet.ReadSingle();
-                    Console.WriteLine("Unk Single 1 " + i + ": " + float1);
-
-                    var float2 = packet.ReadSingle();
-                    Console.WriteLine("Unk Single 2 " + i + ": " + float2);
-
-                    var integer7 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 12 " + i + ": " + integer7);
-
-                    var integer8 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 13 " + i + ": " + integer8);
-
-                    var integer9 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 14 " + i + ": " + integer9);
-
-                    var integer10 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 15 " + i + ": " + integer10);
-
-                    var integer11 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 16 " + i + ": " + integer11);
-
-                    var float3 = packet.ReadSingle();
-                    Console.WriteLine("Unk Single 3 " + i + ": " + float3);
-
-                    var integer12 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 17 " + i + ": " + integer12);
-
-                    var integer13 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 18 " + i + ": " + integer13);
-
-                    var integer14 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 19 " + i + ": " + integer14);
-
-                    var integer15 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 20 " + i + ": " + integer15);
-
-                    var integer16 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 21 " + i + ": " + integer16);
-
-                    var integer17 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 22 " + i + ": " + integer17);
+                    packet.ReadInt32("[" + i + "] Armor");
+                    packet.ReadInt32("[" + i + "] Spell Damage Bonus");
+                    packet.ReadInt32("[" + i + "] Spell Healing Bonus");
+                    packet.ReadInt32("[" + i + "] Melee Crit Rating");
+                    packet.ReadInt32("[" + i + "] Ranged Crit Rating");
+                    packet.ReadInt32("[" + i + "] Spell Crit Rating");
+                    packet.ReadSingle("[" + i + "] Mana / 5 (Out of combat)");
+                    packet.ReadSingle("[" + i + "] Mana / 5 (In combat)");
+                    packet.ReadInt32("[" + i + "] Attackpower");
+                    packet.ReadInt32("[" + i + "] Agility");
+                    packet.ReadInt32("[" + i + "] Max Health");
+                    packet.ReadInt32("[" + i + "] Max Power");
+                    packet.ReadInt32("[" + i + "] Free talent points");
+                    packet.ReadSingle("[" + i + "] Unknown float");
+                    packet.ReadInt32("[" + i + "] Defence Rating");
+                    packet.ReadInt32("[" + i + "] Dodge Rating");
+                    packet.ReadInt32("[" + i + "] Block Rating");
+                    packet.ReadInt32("[" + i + "] Parry Rating");
+                    packet.ReadInt32("[" + i + "] Crit Rating");
+                    packet.ReadInt32("[" + i + "] Expertise Rating");
                 }
 
                 if (flags2.HasFlag(LfgUpdateFlag.Comment))
                 {
-                    var str = packet.ReadCString();
-                    Console.WriteLine("Comment " + i + ": " + str);
+                    packet.ReadCString("[" + i + "] Comment");
                 }
 
-                if (flags2.HasFlag(LfgUpdateFlag.Unknown1))
+                if (flags2.HasFlag(LfgUpdateFlag.GroupLeader))
                 {
-                    var int8 = packet.ReadByte();
-                    Console.WriteLine("Unk Byte 6 " + i + ": " + int8);
+                    packet.ReadBoolean("[" + i + "] Is Group Leader");
                 }
 
                 if (flags2.HasFlag(LfgUpdateFlag.Guid))
                 {
-                    var guid5 = packet.ReadGuid();
-                    Console.WriteLine("Unk GUID 5 " + i + ": " + guid5);
+                    packet.ReadGuid("[" + i + "] Group GUID");
                 }
 
                 if (flags2.HasFlag(LfgUpdateFlag.Roles))
                 {
-                    var byte10 = packet.ReadByte();
-                    Console.WriteLine("Unk Byte 7 " + byte10 + ": " + byte10);
+                    packet.ReadEnum<LfgRoleFlag>("[" + i + "] Role", TypeCode.Byte);
                 }
 
-                if (flags2.HasFlag(LfgUpdateFlag.Unknown2))
+                if (flags2.HasFlag(LfgUpdateFlag.Area))
                 {
-                    var int20 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 23 " + i + ": " + int20);
+                    packet.ReadInt32("[" + i + "] Area ID");
                 }
 
-                if (flags2.HasFlag(LfgUpdateFlag.Unknown3))
+                if (flags2.HasFlag(LfgUpdateFlag.Unknown7))
                 {
-                    var byte40 = packet.ReadByte();
-                    Console.WriteLine("Unk Byte 8 " + i + ": " + byte40);
+                    packet.ReadBoolean("[" + i + "] Unknown byte");
                 }
 
-                if (!flags2.HasFlag(LfgUpdateFlag.Unknown4))
+                if (!flags2.HasFlag(LfgUpdateFlag.Binded))
                     continue;
 
-                var guid6 = packet.ReadGuid();
-                Console.WriteLine("Unk GUID 6 " + i + ": " + guid6);
-
-                var intUnk = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 24 " + i + ": " + intUnk);
+                packet.ReadGuid("[" + i + "] Instance GUID");
+                packet.ReadInt32("[" + i + "] Encounters");
             }
         }
     }

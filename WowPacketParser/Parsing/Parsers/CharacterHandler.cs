@@ -257,7 +257,6 @@ namespace WowPacketParser.Parsing.Parsers
             for (int i = 0; i < amount; i++)
             {
                 packet.ReadInt32("Faction List ID");
-
                 packet.ReadInt32("Standing");
             }
         }
@@ -279,7 +278,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Time Played");
                 packet.ReadInt32("Total");
             }
-            packet.ReadByte("Level");
+            packet.ReadBoolean("Print in chat");
         }
     }
 }

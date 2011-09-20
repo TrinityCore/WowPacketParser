@@ -8,11 +8,11 @@ namespace WowPacketParser.Enums
         None = 0x00,
         CharacterInfo = 0x01,
         Comment = 0x02,
-        Unknown1 = 0x04,
+        GroupLeader = 0x04,
         Guid = 0x08,
         Roles = 0x10,
-        Unknown2 = 0x20,
-        Unknown3 = 0x40,
-        Unknown4 = 0x80
+        Area = 0x20,
+        Unknown7 = 0x40,
+        Binded = 0x80
     }
 }
