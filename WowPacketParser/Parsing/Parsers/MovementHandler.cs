@@ -281,6 +281,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_MOVE_START_STRAFE_LEFT)]
         [Parser(Opcode.MSG_MOVE_START_STRAFE_RIGHT)]
         [Parser(Opcode.MSG_MOVE_STOP_STRAFE)]
+        [Parser(Opcode.MSG_MOVE_START_ASCEND)]
+        [Parser(Opcode.MSG_MOVE_START_DESCEND)]
+        [Parser(Opcode.MSG_MOVE_STOP_ASCEND)]
         [Parser(Opcode.MSG_MOVE_JUMP)]
         [Parser(Opcode.MSG_MOVE_START_TURN_LEFT)]
         [Parser(Opcode.MSG_MOVE_START_TURN_RIGHT)]
@@ -290,27 +293,42 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_MOVE_STOP_PITCH)]
         [Parser(Opcode.MSG_MOVE_SET_RUN_MODE)]
         [Parser(Opcode.MSG_MOVE_SET_WALK_MODE)]
-        [Parser(Opcode.MSG_MOVE_FALL_LAND)]
-        [Parser(Opcode.MSG_MOVE_START_SWIM)]
-        [Parser(Opcode.MSG_MOVE_STOP_SWIM)]
+        [Parser(Opcode.MSG_MOVE_TELEPORT)]
         [Parser(Opcode.MSG_MOVE_SET_FACING)]
         [Parser(Opcode.MSG_MOVE_SET_PITCH)]
+        [Parser(Opcode.MSG_MOVE_TOGGLE_COLLISION_CHEAT)]
+        [Parser(Opcode.MSG_MOVE_GRAVITY_CHNG)]
+        [Parser(Opcode.MSG_MOVE_ROOT)]
+        [Parser(Opcode.MSG_MOVE_UNROOT)]
+        [Parser(Opcode.MSG_MOVE_START_SWIM)]
+        [Parser(Opcode.MSG_MOVE_STOP_SWIM)]
+        [Parser(Opcode.MSG_MOVE_START_SWIM_CHEAT)]
+        [Parser(Opcode.MSG_MOVE_STOP_SWIM_CHEAT)]
         [Parser(Opcode.MSG_MOVE_HEARTBEAT)]
+        [Parser(Opcode.MSG_MOVE_FALL_LAND)]
+        [Parser(Opcode.MSG_MOVE_UPDATE_CAN_FLY)]
+        [Parser(Opcode.MSG_MOVE_UPDATE_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY)]
+        [Parser(Opcode.MSG_MOVE_KNOCK_BACK)]
+        [Parser(Opcode.MSG_MOVE_HOVER)]
+        [Parser(Opcode.MSG_MOVE_FEATHER_FALL)]
+        [Parser(Opcode.MSG_MOVE_WATER_WALK)]
         [Parser(Opcode.CMSG_MOVE_FALL_RESET)]
         [Parser(Opcode.CMSG_MOVE_SET_FLY)]
-        [Parser(Opcode.MSG_MOVE_START_ASCEND)]
-        [Parser(Opcode.MSG_MOVE_STOP_ASCEND)]
         [Parser(Opcode.CMSG_MOVE_CHNG_TRANSPORT)]
-        [Parser(Opcode.MSG_MOVE_START_DESCEND)]
-        [Parser(Opcode.MSG_MOVE_TELEPORT)]
         [Parser(Opcode.CMSG_MOVE_NOT_ACTIVE_MOVER)]
         [Parser(Opcode.CMSG_DISMISS_CONTROLLED_VEHICLE)]
         public static void HandleMovementMessages(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            var guid = packet.ReadPackedGuid("GUID");
 
             ReadMovementInfo(packet, guid);
+            if (packet.GetOpcode() == Opcode.MSG_MOVE_KNOCK_BACK)
+            {
+                packet.ReadSingle("Sin Angle");
+                packet.ReadSingle("Cos Angle");
+                packet.ReadSingle("XY-Speed");
+                packet.ReadSingle("Velocity");
+            }
         }
 
         [Parser(Opcode.MSG_MOVE_SET_WALK_SPEED)]
@@ -324,13 +342,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_MOVE_SET_PITCH_RATE)]
         public static void HandleMovementSetSpeed(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            var guid = packet.ReadPackedGuid("GUID");
 
             ReadMovementInfo(packet, guid);
 
-            var speed = packet.ReadSingle();
-            Console.WriteLine("Speed: " + speed);
+            packet.ReadSingle("Speed");
         }
 
         [Parser(Opcode.CMSG_FORCE_RUN_SPEED_CHANGE_ACK)]

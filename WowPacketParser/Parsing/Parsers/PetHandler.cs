@@ -31,7 +31,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Command state: " + commandState);
 
             var unk2 = packet.ReadUInt16(); // pets -> 0, vehicles -> 0x800 (2048)
-            Console.WriteLine("Unknow 2: " + unk2);
+            Console.WriteLine("Unknown 2: " + unk2);
 
             for (var i = 1; i <= (int)MiscConstants.CreatureMaxSpells + 2; i++) // Read pet/vehicle spell ids
             {

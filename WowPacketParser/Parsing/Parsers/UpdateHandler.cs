@@ -403,6 +403,7 @@ namespace WowPacketParser.Parsing.Parsers
             var decompCount = packet.ReadInt32();
             var pkt = packet.Inflate(decompCount);
             HandleUpdateObject(pkt);
+            packet.ReadBytes((int)packet.GetLength()); // Prevent errors even if packet is fully read.
         }
 
         [Parser(Opcode.SMSG_DESTROY_OBJECT)]

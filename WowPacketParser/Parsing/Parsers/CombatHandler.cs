@@ -9,21 +9,17 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_AI_REACTION)]
         public static void HandleAIReaction(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadGuid("GUID");
 
-            var reaction = (AIReaction)packet.ReadInt32();
-            Console.WriteLine("Reaction: " + reaction);
+            packet.ReadEnum<AIReaction>("Reaction", TypeCode.Int32);
         }
 
         [Parser(Opcode.SMSG_UPDATE_COMBO_POINTS)]
         public static void HandleUpdateComboPoints(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadPackedGuid("GUID");
 
-            var amount = packet.ReadByte();
-            Console.WriteLine("Combo Points: " + amount);
+            packet.ReadByte("Combo Points");
         }
 
         [Parser(Opcode.SMSG_ENVIRONMENTALDAMAGELOG)]
@@ -32,24 +28,82 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadGuid();
             Console.WriteLine("GUID: " + guid);
 
-            var type = (EnvironmentDamageFlags)packet.ReadByte();
-            Console.WriteLine("Type: " + type);
+            packet.ReadEnum<EnvironmentDamageFlags>("Type", TypeCode.Byte);
 
-            var damage = packet.ReadInt32();
-            Console.WriteLine("damage: " + damage);
+            packet.ReadInt32("Damage");
 
-            var absorb = packet.ReadInt32();
-            Console.WriteLine("absorb: " + absorb);
+            packet.ReadInt32("Absorb");
 
-            var resist = packet.ReadInt32();
-            Console.WriteLine("resist: " + resist);
+            packet.ReadInt32("Resist");
         }
 
         [Parser(Opcode.SMSG_CANCEL_AUTO_REPEAT)]
         public static void HandleCancelAutoRepeat(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("Target GUID: " + guid);
+            packet.ReadPackedGuid("Target GUID");
+        }
+
+        [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]
+        public static void HandleAttackerStateUpdate(Packet packet)
+        {
+            var HitInfo = packet.ReadEnum<SpellHitInfo>("HitInfo", TypeCode.Int32);
+            packet.ReadPackedGuid("AttackerGUID");
+            packet.ReadPackedGuid("TargetGUID");
+            packet.ReadInt32("Damage");
+            packet.ReadInt32("OverDamage");
+            var subDmgCount = packet.ReadByte();
+
+            for (var i = 0; i < subDmgCount; ++i)
+            {
+                packet.ReadInt32("[" + i + "] SchoolMask");
+                packet.ReadSingle("[" + i + "] Float Damage");
+                packet.ReadInt32("[" + i + "] Int Damage");
+
+                if (HitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_ABSORB | SpellHitInfo.HITINFO_FULL_ABSORB))
+                {
+                    packet.ReadInt32("[" + i + "] Damage Absorbed");
+                }
+
+                if (HitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
+                {
+                    packet.ReadInt32("[" + i + "] Damage Resisted");
+                }
+            }
+
+            packet.ReadEnum<VictimStates>("VictimState", TypeCode.Byte);
+
+            packet.ReadInt32("unkattackerstate0");
+
+            var spellId = packet.ReadInt32();
+            Console.WriteLine("Melee Spell ID : " + Extensions.SpellLine(spellId));
+
+            if (HitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
+            {
+                packet.ReadInt32("Block Amount");
+            }
+
+            if (HitInfo.HasAnyFlag(SpellHitInfo.HITINFO_RAGE_GAIN))
+            {
+                packet.ReadInt32("Rage Gained");
+            }
+
+            if (HitInfo.HasAnyFlag(SpellHitInfo.HITINFO_UNK0))
+            {
+                packet.ReadInt32("unkattackerstate3");
+                packet.ReadSingle("unkattackerstate3");
+                packet.ReadSingle("unkattackerstate3");
+                packet.ReadSingle("unkattackerstate3");
+                packet.ReadSingle("unkattackerstate3");
+                packet.ReadSingle("unkattackerstate3");
+                packet.ReadSingle("unkattackerstate3");
+                packet.ReadSingle("unkattackerstate3");
+                packet.ReadSingle("unkattackerstate3");
+                packet.ReadSingle("unkattackerstate3");
+                packet.ReadSingle("unkattackerstate3");
+                packet.ReadInt32("unkattackerstate3");
+                packet.ReadInt32("unkattackerstate3");
+                packet.ReadInt32("unkattackerstate3");
+            }
         }
     }
 }

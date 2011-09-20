@@ -316,5 +316,18 @@ namespace WowPacketParser.Parsing.Parsers
             if (arenapoints < 0)
                 Console.WriteLine("Arenapoints: " + arenapoints);
         }
+
+        [Parser(Opcode.SMSG_QUERY_QUESTS_COMPLETED_RESPONSE)]
+        public static void HandleQuestCompletedResponse(Packet packet)
+        {
+            var count = packet.ReadInt32("Count");
+            // Prints ~4k lines of quest IDs, should be DEBUG only or something...
+            /*
+            for (var i = 0; i < count; i++)
+                packet.ReadInt32("[" + i + "] Rewarded Quest");
+            */
+            Console.WriteLine("Packet is currently not printed");
+            packet.ReadBytes((int)packet.GetLength());
+        }
     }
 }

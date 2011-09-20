@@ -143,6 +143,8 @@
     <Compile Include="Enums\ContactListFlag.cs" />
     <Compile Include="Enums\ContactResult.cs" />
     <Compile Include="Enums\ContactStatus.cs" />
+    <Compile Include="Enums\VictimStates.cs" />
+    <Compile Include="Enums\SpellHitInfo.cs" />
     <Compile Include="Enums\SpellMechanics.cs" />
     <Compile Include="Enums\VehicleFlags.cs" />
     <Compile Include="Enums\UnitDynamicFlags.cs" />
