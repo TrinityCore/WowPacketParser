@@ -269,5 +269,17 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadInt32("Vehicle ID");
         }
+
+        [Parser(Opcode.CMSG_PLAYED_TIME)]
+        [Parser(Opcode.SMSG_PLAYED_TIME)]
+        public static void HandlePlayedTime(Packet packet)
+        {
+            if (packet.GetOpcode() == Opcode.SMSG_PLAYED_TIME)
+            {
+                packet.ReadInt32("Time Played");
+                packet.ReadInt32("Total");
+            }
+            packet.ReadByte("Level");
+        }
     }
 }
