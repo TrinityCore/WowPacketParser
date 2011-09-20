@@ -124,6 +124,11 @@
     <Compile Include="Enums\BagFamilyMask.cs" />
     <Compile Include="Enums\BarberShopResult.cs" />
     <Compile Include="Enums\BillingFlag.cs" />
+    <Compile Include="Enums\CalendarEventStatus.cs" />
+    <Compile Include="Enums\CalendarEventType.cs" />
+    <Compile Include="Enums\CalendarFlag.cs" />
+    <Compile Include="Enums\CalendarSendEventType.cs" />
+    <Compile Include="Enums\CalendarModerationRank.cs" />
     <Compile Include="Enums\CastFlag.cs" />
     <Compile Include="Enums\ChannelFlag.cs" />
     <Compile Include="Enums\ChannelMemberFlag.cs" />
