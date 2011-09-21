@@ -25,9 +25,15 @@ namespace WowPacketParser.Misc
             SpellEntry spell;
             if (spellId <= 0)
                 return string.Empty;
-            return DBC.DBCStore.DBC.Spell.TryGetValue((uint)spellId, out spell)
-                ? spell.GetSpellName()
-                : "-Unknown-";
+            try
+            {
+                DBC.DBCStore.DBC.Spell.TryGetValue((uint)spellId, out spell);
+            }
+            catch(Exception)
+            {
+                return "-Unknown-";
+            }
+            return spell.GetSpellName();
         }
 
         public static string SpellLine(int spellId)
@@ -38,6 +44,34 @@ namespace WowPacketParser.Misc
             if (!String.IsNullOrEmpty(name))
                 return spellId + " (" + name + ")";
             return spellId.ToString();
+        }
+
+        public static string GetExistingMapName(int mapId)
+        {
+            if (!DBC.DBCStore.DBC.Enabled()) // Could use a more general solution here
+                return string.Empty;
+            if (mapId <= 0)
+                return string.Empty;
+            MapEntry map;
+            try
+            {
+                DBC.DBCStore.DBC.Map.TryGetValue((uint)mapId, out map);
+            }
+            catch(Exception)
+            {
+                return "-Unknown-";
+            }
+            return map.GetMapName();
+        }
+
+        public static string MapLine(int mapId)
+        {
+            if (mapId == 0)
+                return "0";
+            var name = GetExistingMapName(mapId);
+            if (!String.IsNullOrEmpty(name))
+                return mapId + " (" + name + ")";
+            return mapId.ToString();
         }
     }
 }

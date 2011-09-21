@@ -28,8 +28,10 @@ namespace WowPacketParser.DBC.DBCStore
         }
 
         public static Dictionary<uint, SpellEntry> Spell;
+        public static Dictionary<uint, MapEntry> Map;
 
         public static Dictionary<uint, string> SpellStrings = new Dictionary<uint, string>();
+        public static Dictionary<uint, string> MapStrings = new Dictionary<uint, string>();
 
         public static unsafe T ReadStruct<T>(this BinaryReader reader) where T : struct
         {

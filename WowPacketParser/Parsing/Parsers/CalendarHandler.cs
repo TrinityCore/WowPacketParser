@@ -41,10 +41,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < instanceResetCount; i++)
             {
-                packet.ReadInt32("[" + i + "] Map ID");
+                Console.WriteLine("[" + i + "] Map ID: " + Extensions.MapLine(packet.ReadInt32()));
                 packet.ReadEnum<MapDifficulty>("[" + i + "] Difficulty", TypeCode.Int32);
                 packet.ReadInt32("[" + i + "] Time left");
-                packet.ReadInt64("[" + i + "] Instance ID");
+                packet.ReadGuid("[" + i + "] Instance ID");
             }
 
             packet.ReadTime("Constant Date");
@@ -53,7 +53,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < raidResetCount; i++)
             {
-                packet.ReadInt32("[" + i + "] Map ID");
+                Console.WriteLine("[" + i + "] Map ID: " + Extensions.MapLine(packet.ReadInt32()));
                 packet.ReadInt32("[" + i + "] Time left");
                 packet.ReadInt32("[" + i + "] Unk Time");
             }
@@ -319,24 +319,20 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CALENDAR_RAID_LOCKOUT_ADDED)]
         public static void HandleRaidLockoutAdded(Packet packet)
         {
-            packet.ReadInt32("Map ID");
-            packet.ReadInt32("Unk Int32 1");
-            packet.ReadInt32("Unk Int32 2");
+            packet.ReadPackedTime("Time");
+            Console.WriteLine("Map ID: " + Extensions.MapLine(packet.ReadInt32()));
+            packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
             packet.ReadInt32("Reset Time");
-            packet.ReadInt64("Instance ID");
+            packet.ReadGuid("Instance ID");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_RAID_LOCKOUT_REMOVED)]
         public static void HandleRaidLockoutRemoved(Packet packet)
         {
-            var count = packet.ReadInt32("Count");
-
-            for (var i = 0; i < count; i++)
-            {
-                packet.ReadInt32("[" + i + "] Map ID");
-                packet.ReadInt32("[" + i + "] Reset Time");
-                packet.ReadInt32("[" + i + "] Instance ID");
-            }
+            Console.WriteLine("Map ID: " + Extensions.MapLine(packet.ReadInt32()));
+            packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
+            packet.ReadInt32("Reset Time");
+            packet.ReadGuid("Instance ID");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_ALERT)]

@@ -12,6 +12,7 @@ namespace WowPacketParser.DBC
             try
             {
                 DBCStore.DBC.Spell = DBCReader.ReadDBC<SpellEntry>(DBC.DBCStore.DBC.SpellStrings);
+                DBCStore.DBC.Map = DBCReader.ReadDBC<MapEntry>(DBC.DBCStore.DBC.MapStrings);
             }
             catch (FileNotFoundException e)
             {
