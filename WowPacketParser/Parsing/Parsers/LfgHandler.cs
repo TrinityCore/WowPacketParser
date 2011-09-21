@@ -488,7 +488,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var type = packet.ReadEnum<LfgType>("LFG Type", TypeCode.Int32);
 
-            packet.ReadInt32("Dungeon ID");
+            Console.WriteLine("Dungeon ID: " + Extensions.DungeonLine(packet.ReadInt32()));
 
             var unkBool = packet.ReadBoolean("Unknown bool 1");
 

@@ -14,11 +14,8 @@ namespace WowPacketParser.Parsing.Parsers
             if (onlineCheck && status != ContactStatus.Online)
                 return;
 
-            var area = packet.ReadInt32();
-            Console.WriteLine("Area ID: " + area);
-
-            var level = packet.ReadInt32();
-            Console.WriteLine("Level: " + level);
+            packet.ReadInt32("Area ID");
+            packet.ReadInt32("Level");
 
             var clss = (Class)packet.ReadInt32();
             Console.WriteLine("Class: " + clss);
