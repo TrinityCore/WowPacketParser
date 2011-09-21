@@ -100,7 +100,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("[" + i + "] Player Level");
                 packet.ReadEnum<CalendarEventStatus>("[" + i + "] Status", TypeCode.Byte);
                 packet.ReadEnum<CalendarModerationRank>("[" + i + "] Moderation Rank", TypeCode.Byte);
-                packet.ReadByte("[" + i + "] Unk Byte 4 (boolean?)");
+                packet.ReadBoolean("[" + i + "] Guild Member");
                 packet.ReadInt64("[" + i + "] Invite ID");
                 packet.ReadPackedTime("[" + i + "] Status Time");
                 packet.ReadCString("[" + i + "] Invite Text");
