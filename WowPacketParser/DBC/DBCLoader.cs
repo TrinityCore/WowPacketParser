@@ -13,6 +13,7 @@ namespace WowPacketParser.DBC
             {
                 DBCStore.DBC.Spell = DBCReader.ReadDBC<SpellEntry>(DBC.DBCStore.DBC.SpellStrings);
                 DBCStore.DBC.Map = DBCReader.ReadDBC<MapEntry>(DBC.DBCStore.DBC.MapStrings);
+                DBCStore.DBC.LFGDungeons = DBCReader.ReadDBC<LFGDungeonsEntry>(DBC.DBCStore.DBC.LFGDungeonsStrings);
             }
             catch (FileNotFoundException e)
             {

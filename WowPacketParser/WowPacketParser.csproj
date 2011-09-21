@@ -115,6 +115,7 @@
     <Compile Include="DBC\DBCLoader.cs" />
     <Compile Include="DBC\DBCStructures\SpellEntry.cs" />
     <Compile Include="DBC\DBCStructures\MapEntry.cs" />
+    <Compile Include="DBC\DBCStructures\LFGDungeonsEntry.cs" />
     <Compile Include="Enums\AccountDataType.cs" />
     <Compile Include="Enums\ActionButtonType.cs" />
     <Compile Include="Enums\AIReaction.cs" />

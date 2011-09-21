@@ -30,7 +30,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<CalendarEventType>("[" + i + "] Event Type", TypeCode.Int32);
                 packet.ReadPackedTime("[" + i + "] Event Time");
                 Console.WriteLine("[" + i + "] Event Flags " + (CalendarFlag)packet.ReadInt32());
-                packet.ReadInt32("[" + i + "] Dungeon ID");
+                Console.WriteLine("[" + i + "] Dungeon ID: " + Extensions.DungeonLine(packet.ReadInt32()));
                 packet.ReadPackedGuid("[" + i + "] Creator GUID");
             }
 
@@ -141,7 +141,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Byte);
             packet.ReadBoolean("Repeatable");
             packet.ReadInt32("Max Invites");
-            packet.ReadInt32("Dungeon ID");
+            Console.WriteLine("Dungeon ID: " + Extensions.DungeonLine(packet.ReadInt32()));
             packet.ReadPackedTime("Event Time");
             packet.ReadPackedTime("Unk PackedTime");
             var flags = packet.ReadInt32();
@@ -343,7 +343,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedTime("Time");
             Console.WriteLine("Event Flags: " + (CalendarFlag)packet.ReadInt32());
             packet.ReadEnum<CalendarEventType>("Type", TypeCode.Int32);
-            packet.ReadInt32("Dungeon ID");
+            Console.WriteLine("Dungeon ID: " + Extensions.DungeonLine(packet.ReadInt32()));
             packet.ReadInt64("Invite ID");
             packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte);
             packet.ReadEnum<CalendarModerationRank>("Moderation Rank", TypeCode.Byte);
@@ -368,7 +368,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Event Flags?: " + (CalendarFlag)packet.ReadInt32());
             packet.ReadPackedTime("Time2");
             packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Byte);
-            packet.ReadInt32("Dungeon ID");
+            Console.WriteLine("Dungeon ID: " + Extensions.DungeonLine(packet.ReadInt32()));
             packet.ReadCString("Title");
             packet.ReadCString("Descripcion");
             packet.ReadBoolean("Repeatable");

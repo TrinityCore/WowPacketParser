@@ -73,5 +73,33 @@ namespace WowPacketParser.Misc
                 return mapId + " (" + name + ")";
             return mapId.ToString();
         }
+
+        public static string GetExistingLFGDungeonsName(int dungeonId)
+        {
+            if (!DBC.DBCStore.DBC.Enabled()) // Could use a more general solution here
+                return string.Empty;
+            if (dungeonId <= 0)
+                return string.Empty;
+            LFGDungeonsEntry dungeon;
+            try
+            {
+                DBC.DBCStore.DBC.LFGDungeons.TryGetValue((uint)dungeonId, out dungeon);
+            }
+            catch(Exception)
+            {
+                return "-Unknown-";
+            }
+            return dungeon.GetName();
+        }
+
+        public static string DungeonLine(int dungeonId)
+        {
+            if (dungeonId == 0)
+                return "0";
+            var name = GetExistingLFGDungeonsName(dungeonId);
+            if (!String.IsNullOrEmpty(name))
+                return dungeonId + " (" + name + ")";
+            return dungeonId.ToString();
+        }
     }
 }

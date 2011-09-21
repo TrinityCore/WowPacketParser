@@ -32,9 +32,6 @@ namespace WowPacketParser.DBC.DBCStructures
         public uint UnkTime;
         public uint MaxPlayers;
 
-        /// <summary>
-        /// Returns the formated spell name with rank (if it exists)
-        /// </summary>
         public string GetMapName()
         {
             return MapName;
@@ -44,9 +41,9 @@ namespace WowPacketParser.DBC.DBCStructures
         {
             get
             {
-                var name = string.Empty;
-                DBCStore.DBC.MapStrings.TryGetValue(_MapName[0], out name);
-                return name;
+                var aux = string.Empty;
+                DBCStore.DBC.MapStrings.TryGetValue(_MapName[0], out aux);
+                return aux;
             }
         }
 
@@ -54,9 +51,9 @@ namespace WowPacketParser.DBC.DBCStructures
         {
             get
             {
-                var intro = string.Empty;
-                DBCStore.DBC.MapStrings.TryGetValue(_HordeIntro[0], out intro);
-                return intro;
+                var aux = string.Empty;
+                DBCStore.DBC.MapStrings.TryGetValue(_HordeIntro[0], out aux);
+                return aux;
             }
         }
 
@@ -64,9 +61,19 @@ namespace WowPacketParser.DBC.DBCStructures
         {
             get
             {
-                var intro = string.Empty;
-                DBCStore.DBC.MapStrings.TryGetValue(_AllianceIntro[0], out intro);
-                return intro;
+                var aux = string.Empty;
+                DBCStore.DBC.MapStrings.TryGetValue(_AllianceIntro[0], out aux);
+                return aux;
+            }
+        }
+
+        public string InternalName
+        {
+            get
+            {
+                var aux = string.Empty;
+                DBCStore.DBC.MapStrings.TryGetValue(_InternalName[0], out aux);
+                return aux;
             }
         }
     }
