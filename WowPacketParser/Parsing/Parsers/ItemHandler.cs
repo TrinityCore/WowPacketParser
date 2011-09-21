@@ -226,8 +226,9 @@ namespace WowPacketParser.Parsing.Parsers
             var area = packet.ReadInt32();
             Console.WriteLine("Area: " + area);
 
+            // In this single (?) case, map 0 means no map
             var map = packet.ReadInt32();
-            Console.WriteLine("Map: " + map);
+            Console.WriteLine("Map ID: " + (map != 0 ? Extensions.MapLine(map) : map + " (No map)"));
 
             var bagFamily = (BagFamilyMask)packet.ReadInt32();
             Console.WriteLine("Bag Family: " + bagFamily);

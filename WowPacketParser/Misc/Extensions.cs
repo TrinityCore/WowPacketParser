@@ -50,7 +50,7 @@ namespace WowPacketParser.Misc
         {
             if (!DBC.DBCStore.DBC.Enabled()) // Could use a more general solution here
                 return string.Empty;
-            if (mapId <= 0)
+            if (mapId < 0)
                 return string.Empty;
             MapEntry map;
             try
@@ -66,8 +66,6 @@ namespace WowPacketParser.Misc
 
         public static string MapLine(int mapId)
         {
-            if (mapId == 0)
-                return "0";
             var name = GetExistingMapName(mapId);
             if (!String.IsNullOrEmpty(name))
                 return mapId + " (" + name + ")";

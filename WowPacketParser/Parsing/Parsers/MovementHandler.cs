@@ -204,7 +204,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleEnterWorld(Packet packet)
         {
             var mapId = packet.ReadInt32();
-            Console.WriteLine("Map ID: " + mapId);
+            Console.WriteLine("Map ID: " + Extensions.MapLine(mapId));
             CurrentMapId = mapId;
 
             var position = packet.ReadVector4();
@@ -239,14 +239,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_BINDPOINTUPDATE)]
         public static void HandleBindPointUpdate(Packet packet)
         {
-            var pos = packet.ReadVector3();
-            Console.WriteLine("Position: " + pos);
+            packet.ReadVector3("Position");
 
-            var mapId = packet.ReadInt32();
-            Console.WriteLine("Map ID: " + mapId);
+            Console.WriteLine("Map ID: " + Extensions.MapLine(packet.ReadInt32()));
 
-            var zoneId = packet.ReadInt32();
-            Console.WriteLine("Zone ID: " + zoneId);
+            packet.ReadInt32("Zone ID");
         }
 
         [Parser(Opcode.MSG_MOVE_TELEPORT_ACK)]
@@ -454,24 +451,21 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
         public static void HandleTransferPending(Packet packet)
         {
-            var mapId = packet.ReadInt32();
-            Console.WriteLine("Map ID: " + mapId);
+            Console.WriteLine("Map ID: " + Extensions.MapLine(packet.ReadInt32()));
 
             if (packet.IsRead())
                 return;
 
-            var tEntry = packet.ReadInt32();
+            var tEntry = packet.ReadInt32("Transport Entry");
             Console.WriteLine("Transport Entry: " + tEntry);
 
-            var tMapId = packet.ReadInt32();
-            Console.WriteLine("Transport Map ID: " + tMapId);
+            Console.WriteLine("Transport Map ID: " + Extensions.MapLine(packet.ReadInt32()));
         }
 
         [Parser(Opcode.SMSG_TRANSFER_ABORTED)]
         public static void HandleTransferAborted(Packet packet)
         {
-            var mapId = packet.ReadInt32();
-            Console.WriteLine("Map ID: " + mapId);
+            Console.WriteLine("Map ID: " + Extensions.MapLine(packet.ReadInt32()));
 
             var code = (TransferAbortReason)packet.ReadByte();
             Console.WriteLine("Reason: " + code);
