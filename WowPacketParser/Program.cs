@@ -107,8 +107,17 @@ namespace WowPacketParser
 
         private static void EndPrompt()
         {
-            Console.WriteLine("Press any key to exit.");
-            Console.ReadKey();
+            int noPrompt = 0;
+            try
+            {
+                noPrompt = int.Parse(ConfigurationManager.AppSettings["NoPrompt"]);
+            }
+            catch(Exception){}
+            if (noPrompt != 1)
+            {
+                Console.WriteLine("Press any key to exit.");
+                Console.ReadKey();
+            }
         }
     }
 }
