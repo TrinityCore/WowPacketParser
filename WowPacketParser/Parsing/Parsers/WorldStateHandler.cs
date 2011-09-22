@@ -9,17 +9,13 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_INIT_WORLD_STATES)]
         public static void HandleInitWorldStates(Packet packet)
         {
-            var mapId = packet.ReadInt32();
-            Console.WriteLine("Map ID: " + mapId);
+            Console.WriteLine("Map ID: " + Extensions.MapLine(packet.ReadInt32()));
 
-            var zoneId = packet.ReadInt32();
-            Console.WriteLine("Zone ID: " + zoneId);
+            packet.ReadInt32("Zone ID");
 
-            var areaId = packet.ReadInt32();
-            Console.WriteLine("Area ID: " + areaId);
+            packet.ReadInt32("Area ID");
 
-            var numFields = packet.ReadInt16();
-            Console.WriteLine("Field Count: " + numFields);
+            var numFields = packet.ReadInt16("Field Count");
 
             for (var i = 0; i < numFields; i++)
                 ReadWorldStateBlock(packet);

@@ -12,23 +12,18 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.GetDirection() == Direction.ClientToServer)
                 return;
 
-            var found = packet.ReadBoolean();
-            Console.WriteLine("Corpse Found: " + found);
+            var found = packet.ReadBoolean("Corpse Found");
 
             if (!found)
                 return;
 
-            var mapId = packet.ReadInt32();
-            Console.WriteLine("Map ID: " + mapId);
+            Console.WriteLine("Map ID: " + Extensions.MapLine(packet.ReadInt32()));
 
-            var pos = packet.ReadVector3();
-            Console.WriteLine("Corpse Position: " + pos);
+            packet.ReadVector3("Corpse Position");
 
-            var corpseMapId = packet.ReadInt32();
-            Console.WriteLine("Corpse Map Id: " + corpseMapId);
+            Console.WriteLine("Corpse Map ID: " + Extensions.MapLine(packet.ReadInt32()));
 
-            var corpseLowGuid = packet.ReadInt32();
-            Console.WriteLine("Corpse Low GUID: " + corpseLowGuid);
+            packet.ReadInt32("Corpse Low GUID");
         }
 
         [Parser(Opcode.CMSG_CORPSE_MAP_POSITION_QUERY)]

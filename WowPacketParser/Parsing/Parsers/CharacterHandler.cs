@@ -179,7 +179,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                 var zone = packet.ReadInt32("Zone ID");
 
-                var mapId = packet.ReadInt32("Map ID");
+                var mapId = packet.ReadInt32();
+                Console.WriteLine("Map ID: " + Extensions.MapLine(mapId));
 
                 var pos = packet.ReadVector3("Position");
 
