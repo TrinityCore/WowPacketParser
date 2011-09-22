@@ -54,9 +54,9 @@ namespace WowPacketParser.Parsing
             }
         }
 
-        public static void InitializeLogFile(string file, string nodump)
+        public static void InitializeLogFile(string file, bool noDump)
         {
-            _noDump = nodump.Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase);
+            _noDump = noDump;
             if (_noDump)
                 return;
 

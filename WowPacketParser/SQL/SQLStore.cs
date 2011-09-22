@@ -11,12 +11,9 @@ namespace WowPacketParser.SQL
 
         private static readonly List<string> Sqls = new List<string>();
 
-        private static bool _output;
-
-        public static void Initialize(string file, string output)
+        public static void Initialize(string file, bool output)
         {
-            _output = output.Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase);
-            if (!_output)
+            if (output)
                 return;
 
             File.Delete(file);

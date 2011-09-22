@@ -63,9 +63,7 @@ namespace WowPacketParser.Loading
                     }
                     packets = packetList;
                 }
-                catch (Exception)
-                {
-                }
+                catch (Exception) {}
             }
 
             return packets;

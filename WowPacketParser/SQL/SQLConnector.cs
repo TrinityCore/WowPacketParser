@@ -10,10 +10,9 @@ namespace WowPacketParser.SQL
 
         public static void Connect()
         {
-#if DEBUG
             Console.WriteLine("Connecting to MySQL server: " + ConnectionString);
-#endif
             _conn = new MySqlConnection(ConnectionString);
+
             try
             {
                 _conn.Open();
