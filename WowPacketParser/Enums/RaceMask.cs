@@ -20,6 +20,14 @@ namespace WowPacketParser.Enums
         FelOrc = 0x00000800,
         Naga = 0x00001000,
         Broken = 0x00002000,
-        Skeleton = 0x00004000
+        Skeleton = 0x00004000,
+        Vrykul = 0x00008000,
+        Tuskarr = 0x00010000,
+        ForestTroll = 0x00020000,
+        Taunka = 0x00040000,
+        NorthrendSkeleton = 0x00080000,
+        IceTroll = 0x00100000,
+        Worgen = 0x00200000,
+        Gilnean = 0x00400000 // Human
     }
 }

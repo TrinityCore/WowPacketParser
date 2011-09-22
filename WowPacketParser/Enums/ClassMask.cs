@@ -15,6 +15,7 @@ namespace WowPacketParser.Enums
         Shaman = 0x0040,
         Mage = 0x0080,
         Warlock = 0x0100,
-        Druid = 0x0400,
+        Unknown = 0x0200,
+        Druid = 0x0400
     }
 }

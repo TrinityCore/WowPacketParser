@@ -9,6 +9,7 @@ namespace WowPacketParser.Enums
         Afk = 0x1,
         Dnd = 0x2,
         Gm = 0x4,
-        Unknown = 0x8
+        Com = 0x8,
+        Dev = 0x10
     }
 }

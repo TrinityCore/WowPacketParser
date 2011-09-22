@@ -2,11 +2,12 @@ namespace WowPacketParser.Enums
 {
     public enum Race
     {
+        None = 0,
         Human = 1,
         Orc = 2,
         Dwarf = 3,
         NightElf = 4,
-        Scourge = 5,
+        Undead = 5, // Scourge
         Tauren = 6,
         Gnome = 7,
         Troll = 8,
@@ -22,6 +23,8 @@ namespace WowPacketParser.Enums
         ForestTroll = 18,
         Taunka = 19,
         NorthrendSkeleton = 20,
-        IceTroll = 21
+        IceTroll = 21,
+        Worgen = 22,
+        Gilnean = 23, // Human
     }
 }

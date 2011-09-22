@@ -20,6 +20,8 @@ namespace WowPacketParser.Enums
         Zombie = 36,
         GnomishBinary = 37,
         GoblinBinary = 38,
+        Worgen = 39,
+        Goblin = 40,
         Addon = uint.MaxValue
     }
 }
