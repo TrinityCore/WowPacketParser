@@ -279,6 +279,48 @@ namespace WowPacketParser.Misc
             return val;
         }
 
+        public ushort ReadUInt16(string name)
+        {
+            var val = ReadUInt16();
+            Console.WriteLine("{0}: {1}", name, val);
+            return val;
+        }
+
+        public ushort ReadUInt16(string name, string prepend, string format)
+        {
+            var val = ReadUInt16();
+            Console.WriteLine("{0}: {1}{2}", name, prepend, val.ToString(format));
+            return val;
+        }
+
+        public uint ReadUInt32(string name)
+        {
+            var val = ReadUInt32();
+            Console.WriteLine("{0}: {1}", name, val);
+            return val;
+        }
+
+        public uint ReadUInt32(string name, string prepend, string format)
+        {
+            var val = ReadUInt32();
+            Console.WriteLine("{0}: {1}{2}", name, prepend, val.ToString(format));
+            return val;
+        }
+
+        public ulong ReadUInt64(string name)
+        {
+            var val = ReadUInt64();
+            Console.WriteLine("{0}: {1}", name, val);
+            return val;
+        }
+
+        public ulong ReadUInt64(string name, string prepend, string format)
+        {
+            var val = ReadUInt64();
+            Console.WriteLine("{0}: {1}{2}", name, prepend, val.ToString(format));
+            return val;
+        }
+
         public Guid ReadGuid(string name)
         {
             var val = ReadGuid();
