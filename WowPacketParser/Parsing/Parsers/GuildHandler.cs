@@ -6,29 +6,18 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class GuildHandler
     {
-
         [Parser(Opcode.SMSG_GUILD_ROSTER)]
         public static void HandleGuildRosterPacket(Packet packet)
         {
-            var size = packet.ReadInt32();
-            Console.WriteLine("Number of members: " + size);
+            var size = packet.ReadInt32("Number of members");
+            packet.ReadCString("Motd");
+            packet.ReadCString("Info");
 
-            var motd = packet.ReadCString();
-            Console.WriteLine("Motd: " + motd);
-
-            var info = packet.ReadCString();
-            Console.WriteLine("Info: " + info);
-
-            var numFields = packet.ReadInt32();
-            Console.WriteLine("Number of ranks: " + numFields);
-
+            var numFields = packet.ReadInt32("Number of ranks");
             for (var i = 0; i < numFields; i++)
             {
-                var rights = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Rights: " + rights);
-
-                var money = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Money Per day: " + money);
+                packet.ReadInt32("[" + i + "] Rights");
+                packet.ReadInt32("[" + i + "] Money Per day");
 
                 for (var j = 0; j < 6; j++)
                 {
@@ -40,42 +29,24 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < size; i++)
             {
-                var guid = packet.ReadGuid();
-                Console.WriteLine("[" + i + "] GUID: " + guid);
+                packet.ReadGuid("[" + i + "] GUID");
+                var online = packet.ReadBoolean("[" + i + "] Online");
 
-                var online = packet.ReadByte();
-                Console.WriteLine("[" + i + "] Online: " + online);
+                packet.ReadCString("[" + i + "] Name");
+                packet.ReadInt32("[" + i + "] Rank id");
+                packet.ReadByte("[" + i + "] Level");
+                packet.ReadByte("[" + i + "] Class");
+                packet.ReadByte("[" + i + "] Unk");
+                packet.ReadInt32("[" + i + "] Zone id");
 
-                var name = packet.ReadCString();
-                Console.WriteLine("[" + i + "] Name: " + name);
-
-                var rank = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Rank id: " + rank);
-
-                var level = packet.ReadByte();
-                Console.WriteLine("[" + i + "] Level: " + level);
-
-                var mclass = packet.ReadByte();
-                Console.WriteLine("[" + i + "] Class: " + mclass);
-
-                var unk = packet.ReadByte();
-                Console.WriteLine("[" + i + "] Unk: " + unk);
-
-                var zone = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Zone id: " + zone);
-
-                if (online == 0)
+                if (!online)
                 {
-                    var time = packet.ReadInt32();
-                    Console.WriteLine("[" + i + "] Last online: " + time);
+                    packet.ReadInt32("[" + i + "] Last online");
                 }
 
-                var pnote = packet.ReadCString();
-                Console.WriteLine("[" + i + "] Public note: " + pnote);
-
-                var onote = packet.ReadCString();
-                Console.WriteLine("[" + i + "] Officer note: " + onote);
+                packet.ReadCString("[" + i + "] Public note");
+                packet.ReadCString("[" + i + "] Officer note");
             }
-		}
+        }
     }
 }

@@ -19,26 +19,45 @@ namespace WowPacketParser.Enums
     [Flags]
     enum VehicleSeatFlags // 4.x
     {
-        HasLowerAnimForEnter = 0x1,
-        HasLowerAnimForRide = 0x2,
+        HasLowerAnimForEnter = 0x00000001,
+        HasLowerAnimForRide = 0x00000002,
 
-        ShouldUseVehicleSeatExitAnimationOnVoluntaryExit = 0x8,
+        Unknown1 = 0x00000004,
 
-        HidePassanger = 0x200,
-        AllowsTurning = 0x400,
-        CanControl = 0x800,
-        Uncontrolled = 0x2000,
-        CanAttack = 0x4000,
-        ShouldUseVehicleSeatExitAnimationOnForcedExit = 0x8000,
-        Unk1 = 0x20000,
-        HasVehicleExitAnimForVoluntaryExit = 0x40000,
-        HasVehicleExitAnimForForcedExit = 0x80000,
-        Unk2 = 0x200000,
-        RecHasVehicleEnterAnim = 0x400000,
-        EnableVehicleZoom = 0x1000000,
-        CanEnterOrExit = 0x2000000,
-        CanSwitchFromSeat = 0x4000000,
-        HasStartWaitingForVehicleTransitionAnimEnter = 0x8000000,
+        ShouldUseVehicleSeatExitAnimationOnVoluntaryExit = 0x00000008,
+
+        Unknown2 = 0x00000020,
+        Unknown3 = 0x00000040,
+        Unknown4 = 0x00000080,
+        Unknown5 = 0x00000100,
+
+        HidePassanger = 0x00000200,
+        AllowsTurning = 0x00000400,
+        CanControl = 0x00000800,
+
+        Unknown6 = 0x00001000,
+
+        Uncontrolled = 0x00002000,
+        CanAttack = 0x00004000,
+        ShouldUseVehicleSeatExitAnimationOnForcedExit = 0x00008000,
+
+        Unknown7 = 0x00010000,
+        Unknown8 = 0x00020000,
+
+        HasVehicleExitAnimForVoluntaryExit = 0x00040000,
+        HasVehicleExitAnimForForcedExit = 0x00080000,
+
+        Unknown9 = 0x00100000,
+        Unknown10 = 0x00200000,
+
+        RecHasVehicleEnterAnim = 0x00400000,
+
+        Unknown11 = 0x00800000,
+
+        EnableVehicleZoom = 0x01000000,
+        CanEnterOrExit = 0x02000000,
+        CanSwitchFromSeat = 0x04000000,
+        HasStartWaitingForVehicleTransitionAnimEnter = 0x08000000,
         HasStartWaitingForVehicleTransitionAnimExit = 0x10000000,
         HasVehicleUI = 0x20000000,
         // AllowsInteraction = 0x80000000
@@ -48,12 +67,15 @@ namespace WowPacketParser.Enums
     enum VehicleSeatFlagsB // 4.x
     {
         None = 0x00000000,
+        Unknown1 = 0x00000001,
         UsableForced = 0x00000002,
+        Unknown2 = 0x00000004,
         TargetsInRaidUI = 0x00000008,
+        Unknown3 = 0x00000010,
         Ejectable = 0x00000020,
         UsableForced2 = 0x00000040,
+        Unknown4 = 0x00000080,
         UsableForced3 = 0x00000100,
-
         CanSwitch = 0x04000000,
 
         // VehiclePlayerFrameUI = 0x80000000,
