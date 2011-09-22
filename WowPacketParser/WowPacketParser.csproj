@@ -265,6 +265,7 @@
     <Compile Include="Parsing\Parsers\ChatHandler.cs" />
     <Compile Include="Parsing\Parsers\CombatHandler.cs" />
     <Compile Include="Parsing\Parsers\ContactHandler.cs" />
+    <Compile Include="Parsing\Parsers\TicketHandler.cs" />
     <Compile Include="Parsing\Parsers\CorpseHandler.cs" />
     <Compile Include="Parsing\Parsers\EquipmentSetHandler.cs" />
     <Compile Include="Parsing\Parsers\GameObjectHandler.cs" />

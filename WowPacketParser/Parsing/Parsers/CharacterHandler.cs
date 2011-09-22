@@ -281,5 +281,24 @@ namespace WowPacketParser.Parsing.Parsers
             }
             packet.ReadBoolean("Print in chat");
         }
+
+        [Parser(Opcode.SMSG_LOG_XPGAIN)]
+        public static void HandeLogXPGain(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+
+            packet.ReadUInt32("Total XP");
+
+            var type = packet.ReadByte("XP type"); // Need enum
+
+            if (type == 0) // kill
+            {
+                packet.ReadUInt32("Base XP");
+
+                packet.ReadSingle("Group rate (unk)");
+            }
+
+            packet.ReadByte("RAF");
+        }
     }
 }
