@@ -295,7 +295,10 @@
     <Compile Include="Misc\Vector2.cs" />
     <Compile Include="Misc\Vector3.cs" />
     <Compile Include="Misc\Vector4.cs" />
+    <Compile Include="SQL\Builder\ISQLCommand.cs" />
+    <Compile Include="SQL\Builder\SQLInsert.cs" />
     <Compile Include="SQL\Builder\SQLUpdate.cs" />
+    <Compile Include="SQL\SQLUtilities.cs" />
     <Compile Include="SQL\SQLCommandBuilder.cs" />
     <Compile Include="SQL\SQLConnector.cs" />
     <Compile Include="SQL\SQLStore.cs" />

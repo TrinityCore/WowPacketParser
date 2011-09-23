@@ -42,7 +42,7 @@ namespace WowPacketParser.SQL
         {
             var str = string.Empty;
             
-            /*
+            
             str = "INSERT INTO `" + Table + "` (`";
 
             for (var i = 0; i < InsertValues.Count; i++)
@@ -54,7 +54,7 @@ namespace WowPacketParser.SQL
             }
 
             str += "`) VALUES \n";
-            */
+            
 
             str += "(";
 
