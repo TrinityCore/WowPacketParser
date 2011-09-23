@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
+using WowPacketParser.SQL.Stores;
 using Guid=WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
     public static class UpdateHandler
     {
-        public static Dictionary<int, Dictionary<Guid, WowObject>> ObjectStore = new Dictionary<int, Dictionary<Guid, WowObject>>();
+        public static readonly Dictionary<int, Dictionary<Guid, WowObject>> Objects =
+            new Dictionary<int, Dictionary<Guid, WowObject>>();
 
         [Parser(Opcode.SMSG_UPDATE_OBJECT)]
         public static void HandleUpdateObject(Packet packet)
@@ -33,8 +35,8 @@ namespace WowPacketParser.Parsing.Parsers
                         var updates = ReadValuesUpdateBlock(packet);
 
                         WowObject obj;
-                        if (ObjectStore[MovementHandler.CurrentMapId].TryGetValue(guid, out obj))
-                            HandleUpdateFieldChangedValues(false, guid, obj.Type, updates, obj.Movement, obj);
+                        if (Objects[MovementHandler.CurrentMapId].TryGetValue(guid, out obj))
+                            HandleUpdateFieldChangedValues(false, guid, obj.Type, updates, obj.Movement);
                         break;
                     }
                     case UpdateType.Movement:
@@ -73,17 +75,6 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void ReadCreateObjectBlock(Packet packet, Guid guid)
         {
-            // Here we can choose to not parse updateblocks for creatures/gameobjects
-            // In the future i plan to add a option in the GUI to only parse selected creature/gameobject entries.
-            //  bool shouldbeparsed = false;
-            //  foreach (var entry in options.Entry)
-            //      if (guid.GetEntry() == entry)
-            //      {
-            //          shouldbeparsed = true;
-            //          continue;
-            //      }
-            //  if (!shouldbeparsed)
-            //      return;
             var objType = (ObjectType)packet.ReadByte();
             Console.WriteLine("Object Type: " + objType);
 
@@ -93,11 +84,11 @@ namespace WowPacketParser.Parsing.Parsers
             var obj = new WowObject(guid, objType, moves);
             obj.Position = moves.Position;
 
-            var objects = ObjectStore[MovementHandler.CurrentMapId];
+            var objects = Objects[MovementHandler.CurrentMapId];
             var shouldAdd = true;
             foreach (var woObj in objects.Values)
             {
-                if (woObj.Position != obj.Position && woObj.Guid == guid)
+                if (woObj.Position != obj.Position && woObj.Guid != guid)
                     continue;
 
                 shouldAdd = false;
@@ -109,7 +100,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             objects.Add(guid, obj);
 
-            HandleUpdateFieldChangedValues(true, guid, objType, updates, moves, obj);
+            HandleUpdateFieldChangedValues(true, guid, objType, updates, moves);
         }
 
         public static Dictionary<int, UpdateField> ReadValuesUpdateBlock(Packet packet)
@@ -143,8 +134,16 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         public static void HandleUpdateFieldChangedValues(bool creating, Guid guid, ObjectType objType,
-            Dictionary<int, UpdateField> updates, MovementInfo moves, WowObject obj)
+            Dictionary<int, UpdateField> updates, MovementInfo moves)
         {
+            bool shouldCommit;
+            bool isIntValue;
+            bool flags;
+            var isTemplate = true;
+            var isCreated = false;
+            string sql;
+            string fieldName = null;
+
             if (objType == ObjectType.Unit && guid.GetHighType() != HighGuidType.Pet)
             {
                 if (creating)
@@ -155,51 +154,105 @@ namespace WowPacketParser.Parsing.Parsers
 
                 foreach (var upVal in updates)
                 {
+                    shouldCommit = true;
+                    isIntValue = true;
+                    flags = false;
+
                     var idx = (UnitField)upVal.Key;
                     var val = upVal.Value;
 
                     switch (idx)
                     {
+                        case UnitField.UNIT_CREATED_BY_SPELL:
+                        case UnitField.UNIT_FIELD_CREATEDBY:
+                        case UnitField.UNIT_FIELD_SUMMONEDBY:
+                        {
+                            isCreated = true;
+                            shouldCommit = false;
+                            break;
+                        }
                         case (UnitField)ObjectField.OBJECT_FIELD_SCALE_X:
                         {
+                            fieldName = "scale";
+                            isIntValue = false;
                             break;
                         }
                         case UnitField.UNIT_DYNAMIC_FLAGS:
                         {
-                            //obj._dynamicflag = val.Int32Value; //(UnitDynamicFlags)
+                            fieldName = "dynamicflags";
+                            flags = true;
                             break;
                         }
                         case UnitField.UNIT_NPC_FLAGS:
                         {
-                            //obj._npcflag = val.Int32Value; //(NPCFlags)
+                            fieldName = "npcflag";
+                            flags = true;
                             break;
                         }
                         case UnitField.UNIT_FIELD_FLAGS:
                         {
-                            //obj._unitflag = val.Int32Value; //(UnitFlags)
+                            fieldName = "unit_flags";
+                            flags = true;
+                            break;
+                        }
+                        case UnitField.UNIT_FIELD_ATTACK_POWER:
+                        {
+                            fieldName = "attackpower";
                             break;
                         }
                         case UnitField.UNIT_FIELD_BASEATTACKTIME:
                         {
-                            //obj._BaseAttackTime = val.Int32Value;
+                            fieldName = "baseattacktime";
                             break;
                         }
                         case UnitField.UNIT_FIELD_LEVEL:
                         {
-                            //obj._Level = val.Int32Value;
+                            fieldName = "minlevel = " + val.Int32Value + ", maxlevel";
+                            break;
+                        }
+                        case UnitField.UNIT_FIELD_RANGED_ATTACK_POWER:
+                        {
+                            fieldName = "rangedattackpower";
+                            break;
+                        }
+                        case UnitField.UNIT_FIELD_RANGEDATTACKTIME:
+                        {
+                            fieldName = "rangeattacktime";
                             break;
                         }
                         case UnitField.UNIT_FIELD_FACTIONTEMPLATE:
                         {
-                            //obj._Faction = val.Int32Value;
+                            fieldName = "faction_A = " + val.Int32Value + ", faction_H";
                             break;
                         }
                         default:
+                        {
+                            shouldCommit = false;
                             break;
+                        }
                     }
-                    if (creating)
-                        obj.AddCreature((uint)guid.GetLow(), guid.GetEntry(), 1, 1, moves.Position.X, moves.Position.Y, moves.Position.Z, moves.Orientation, 0);
+
+                    if (!shouldCommit)
+                        continue;
+
+                    var finalValue = isIntValue ? (object)val.Int32Value : val.SingleValue;
+
+                    if (flags)
+                        finalValue = "0x" + ((int)finalValue).ToString("X8");
+
+                    if (isTemplate)
+                        sql = SQLStore.CreatureUpdates.GetCommand(fieldName, guid.GetEntry(), finalValue);
+                    else
+                        sql = SQLStore.CreatureSpawnUpdates.GetCommand(fieldName, (uint)guid.GetLow(),
+                            finalValue);
+
+                    SQLStore.WriteData(sql);
                 }
+
+                if (!isCreated)
+                    SQLStore.WriteData(SQLStore.CreatureSpawns.GetCommand(guid.GetEntry(),
+                        MovementHandler.CurrentMapId, MovementHandler.CurrentPhaseMask,
+                        moves.Position, moves.Orientation));
             }
 
             if (objType != ObjectType.GameObject)
@@ -207,6 +260,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             foreach (var upVal in updates)
             {
+                shouldCommit = true;
+                isIntValue = true;
+                flags = false;
+
                 var idx = (GameObjectField)upVal.Key;
                 var val = upVal.Value;
 
@@ -214,24 +271,54 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     case GameObjectField.GAMEOBJECT_FIELD_CREATED_BY:
                     {
+                        isCreated = true;
+                        shouldCommit = false;
                         break;
                     }
                     case (GameObjectField)ObjectField.OBJECT_FIELD_SCALE_X:
                     {
+                        fieldName = "size";
+                        isIntValue = false;
                         break;
                     }
                     case GameObjectField.GAMEOBJECT_FACTION:
                     {
+                        fieldName = "faction";
                         break;
                     }
                     case GameObjectField.GAMEOBJECT_FLAGS:
                     {
+                        fieldName = "flags";
+                        flags = true;
                         break;
                     }
                     default:
+                    {
+                        shouldCommit = false;
                         break;
+                    }
                 }
+
+                if (!shouldCommit)
+                    continue;
+
+                var finalValue = isIntValue ? (object)val.Int32Value : val.SingleValue;
+
+                if (flags)
+                    finalValue = "0x" + ((int)finalValue).ToString("X8");
+
+                if (isTemplate)
+                    sql = SQLStore.GameObjectUpdates.GetCommand(fieldName, guid.GetEntry(), finalValue);
+                else
+                    sql = SQLStore.GameObjectSpawnUpdates.GetCommand(fieldName, (uint)guid.GetLow(),
+                        finalValue);
+
+                SQLStore.WriteData(sql);
             }
+
+            if (!isCreated)
+                SQLStore.WriteData(SQLStore.GameObjectSpawns.GetCommand(guid.GetEntry(), MovementHandler.CurrentMapId,
+                    MovementHandler.CurrentPhaseMask, moves.Position, moves.Orientation));
         }
 
         public static MovementInfo ReadMovementUpdateBlock(Packet packet, Guid guid)
@@ -403,7 +490,6 @@ namespace WowPacketParser.Parsing.Parsers
             var decompCount = packet.ReadInt32();
             var pkt = packet.Inflate(decompCount);
             HandleUpdateObject(pkt);
-            packet.ReadBytes((int)packet.GetLength()); // Prevent errors even if packet is fully read.
         }
 
         [Parser(Opcode.SMSG_DESTROY_OBJECT)]

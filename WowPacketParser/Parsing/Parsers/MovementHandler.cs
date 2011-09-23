@@ -202,7 +202,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Position: " + position);
             CurrentPosition = position;
 
-            UpdateHandler.ObjectStore[mapId] = new Dictionary<Guid, WowObject>();
+            UpdateHandler.Objects[mapId] = new Dictionary<Guid, WowObject>();
 
             if (packet.GetOpcode() != Opcode.SMSG_LOGIN_VERIFY_WORLD)
                 return;
