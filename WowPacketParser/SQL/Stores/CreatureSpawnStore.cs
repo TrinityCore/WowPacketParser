@@ -9,6 +9,10 @@ namespace WowPacketParser.SQL.Stores
         {
             var builder = new SQLCommandBuilder("creature");
 
+            // If map is Eastern Kingdoms, Kalimdor, Outland, Northrend or Ebon Hold use a lower respawn time
+            // TODO: Rank and if npc is needed for quest kill should change spawntime aswell
+            var spawntimesecs = (map == 0 || map == 1 || map == 530 || map == 571 || map == 609) ? 120 : 7200;
+
             builder.AddColumnValue("id", entry);
             builder.AddColumnValue("map", map);
             builder.AddColumnValue("spawnMask", 1);
@@ -19,7 +23,7 @@ namespace WowPacketParser.SQL.Stores
             builder.AddColumnValue("position_y", position.Y);
             builder.AddColumnValue("position_z", position.Z);
             builder.AddColumnValue("orientation", orient);
-            builder.AddColumnValue("spawntimesecs", 120); // TODO: Take rank and if map is instance in concideration
+            builder.AddColumnValue("spawntimesecs", spawntimesecs);
             builder.AddColumnValue("spawndist", 0.0f);
             builder.AddColumnValue("currentwaypoint", 0);
             builder.AddColumnValue("curhealth", 1);
