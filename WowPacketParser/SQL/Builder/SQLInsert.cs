@@ -13,19 +13,19 @@ namespace WowPacketParser.SQL.Builder
 
         public void AddValue(string name, object value)
         {
-            _values.Add(new KeyValuePair<string, object>(SQLUtilities.AddQuotes(name), value));
+            _values.Add(new KeyValuePair<string, object>(SQLUtilities.AddBackQuotes(name), value));
         }
 
         public void AddWhere(string name, object value)
         {
-            _whereClause.Add(new KeyValuePair<string, object>(SQLUtilities.AddQuotes(name), value));
+            _whereClause.Add(new KeyValuePair<string, object>(SQLUtilities.AddBackQuotes(name), value));
         }
 
         private string _table;
 
         public string Table
         {
-            get { return SQLUtilities.AddQuotes(_table); }
+            get { return SQLUtilities.AddBackQuotes(_table); }
             set { _table = value; }
         }
 
@@ -48,16 +48,20 @@ namespace WowPacketParser.SQL.Builder
             result += "DELETE FROM " + Table + " WHERE ";
             foreach (var whereClause in _whereClause)
             {
+                /* read todo below
                 if (_whereClause.Count == 1)
                     result += whereClause.Key + "=" + whereClause.Value;
                 else
-                {
                     result += whereClause.Key + " IN (" + whereClause.Value + ")";
-                    if (_whereClause.IndexOf(whereClause) + 1 != _whereClause.Count)
+                if (_whereClause.IndexOf(whereClause) + 1 != _whereClause.Count)
                         result += " AND ";
-                }
+                */
+
+                result += whereClause.Key + "=" + whereClause.Value;
+                if (_whereClause.IndexOf(whereClause) + 1 != _whereClause.Count)
+                    result += " AND ";
             }
-            result += Environment.NewLine;
+            result += ";" + Environment.NewLine;
 
             result += "INSERT INTO " + Table + " (";
             foreach (var keys in _values)
@@ -68,13 +72,13 @@ namespace WowPacketParser.SQL.Builder
             }
             result += ") VALUES" + Environment.NewLine;
 
-            // TODO needs a list of lists
+            // TODO needs a list of lists or a dictionary
             // Atm we can't have an insert with more than one row. THAT NEEDS TO CHANGE.
             result += "(";
             foreach (var values in _values)
             {
                 if (values.Value is string)
-                    result += SQLUtilities.EscapeString(values.Value.ToString());
+                    result += SQLUtilities.AddQuotes(SQLUtilities.EscapeString(values.Value.ToString()));
                 else
                     result += values.Value;
                 if (_values.IndexOf(values) + 1 != _values.Count)
