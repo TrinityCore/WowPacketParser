@@ -13,7 +13,7 @@ namespace WowPacketParser.SQL
 
         public static void Initialize(string file, bool output)
         {
-            if (output)
+            if (!output)
                 return;
 
             File.Delete(file);
