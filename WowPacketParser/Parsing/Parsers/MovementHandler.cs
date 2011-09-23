@@ -25,9 +25,7 @@ namespace WowPacketParser.Parsing.Parsers
             var flags2 = (MovementFlagExtra)packet.ReadInt16();
             Console.WriteLine("Extra Movement Flags: " + flags2);
 
-            var time = packet.ReadInt32();
-            Console.WriteLine("Time: " + time);
-
+            var time = packet.ReadInt32("Time");
             var pos = packet.ReadVector4();
             Console.WriteLine("Position: " + pos);
             info.Position = new Vector3(pos.X, pos.Y, pos.Z);
@@ -66,17 +64,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (moveFlags.HasFlag(MovementFlag.Falling))
             {
-                var junk = packet.ReadSingle();
-                Console.WriteLine("Jump Velocity: " + junk);
-
-                var jsin = packet.ReadSingle();
-                Console.WriteLine("Jump Sin: " + jsin);
-
-                var jcos = packet.ReadSingle();
-                Console.WriteLine("Jump Cos: " + jcos);
-
-                var jxys = packet.ReadSingle();
-                Console.WriteLine("Jump XY Speed: " + jxys);
+                packet.ReadSingle("Fall Velocity");
+                packet.ReadSingle("Fall Sin angle");
+                packet.ReadSingle("Fall Cos angle");
+                packet.ReadSingle("Fall Speed");
             }
 
             if (moveFlags.HasFlag(MovementFlag.SplineElevation))
@@ -323,7 +314,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadSingle("Sin Angle");
                 packet.ReadSingle("Cos Angle");
-                packet.ReadSingle("XY-Speed");
+                packet.ReadSingle("Speed");
                 packet.ReadSingle("Velocity");
             }
         }
