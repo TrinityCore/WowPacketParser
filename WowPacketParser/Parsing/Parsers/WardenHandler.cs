@@ -10,8 +10,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_WARDEN_DATA)]
         public static void HandleServerWardenData(Packet packet)
         {
-            var opcode = (WardenServerOpcode)packet.ReadByte();
-            Console.WriteLine("Warden Server Opcode: " + opcode);
+
+            var opcode = packet.ReadEnum<WardenServerOpcode>("Warden Server Opcode", TypeCode.Byte);
+            
             packet.SetPosition(0);
 
             switch (opcode)
@@ -26,16 +27,14 @@ namespace WowPacketParser.Parsing.Parsers
                     var rc4 = packet.ReadBytes(16);
                     Console.WriteLine("Module RC4: " + Utilities.ByteArrayToHexString(rc4));
 
-                    var length = packet.ReadInt32();
-                    Console.WriteLine("Module Length: " + length);
+                    packet.ReadUInt32("Module Length");
                     break;
                 }
                 case WardenServerOpcode.ModuleChunk:
                 {
                     packet.ReadByte();
 
-                    var length = packet.ReadInt16();
-                    Console.WriteLine("Chunk Length: " + length);
+                    var length = packet.ReadUInt16("Chunk Length");
 
                     var chunk = packet.ReadBytes(length);
                     Console.WriteLine("Module Chunk: " + Utilities.ByteArrayToHexString(chunk));
@@ -62,11 +61,9 @@ namespace WowPacketParser.Parsing.Parsers
                     {
                         packet.ReadByte();
 
-                        var length = packet.ReadInt16();
-                        Console.WriteLine("Data Length: " + length);
+                        var length = packet.ReadUInt16("Data Length");
 
-                        var checksum = packet.ReadInt32();
-                        Console.WriteLine("Data Checksum: " + checksum);
+                        packet.ReadInt32("Data Checksum");
 
                         var data = packet.ReadBytes(length);
                         Console.WriteLine("Data: " + Utilities.ByteArrayToHexString(data));
@@ -87,18 +84,15 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_WARDEN_DATA)]
         public static void HandleClientWardenData(Packet packet)
         {
-            var opcode = (WardenClientOpcode)packet.ReadByte();
-            Console.WriteLine("Warden Client Opcode: " + opcode);
+            var opcode = packet.ReadEnum<WardenClientOpcode>("Warden Client Opcode", TypeCode.Byte);
 
             switch (opcode)
             {
                 case WardenClientOpcode.CheatCheckResults:
                 {
-                    var length = packet.ReadInt16();
-                    Console.WriteLine("Check Result Length: " + length);
+                    var length = packet.ReadUInt16("Check Result Length");
 
-                    var checksum = packet.ReadInt32();
-                    Console.WriteLine("Check Result Checksum: " + checksum);
+                    packet.ReadInt32("Check Result Checksum");
 
                     var result = packet.ReadBytes(length);
                     Console.WriteLine("Check Results: " + Utilities.ByteArrayToHexString(result));
@@ -122,14 +116,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BOT_DETECTED)]
         public static void HandleBotDetected(Packet packet)
         {
-            var glider1 = packet.ReadBoolean();
-            Console.WriteLine("Glider 1 Detected: " + glider1);
+            packet.ReadBoolean("Glider 1 Detected");
 
-            var glider2 = packet.ReadBoolean();
-            Console.WriteLine("Glider 2 Detected: " + glider2);
+            packet.ReadBoolean("Glider 2 Detected");
 
-            var innerSpace = packet.ReadBoolean();
-            Console.WriteLine("Inner Space Detected: " + innerSpace);
+            packet.ReadBoolean("Inner Space Detected");
 
             packet.ReadBytes(20); // Hash
         }
@@ -137,8 +128,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BOT_DETECTED2)]
         public static void HandleBotDetected2(Packet packet)
         {
-            var useless = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + useless);
+            packet.ReadInt32("Unk Int32");
         }
 
         public static void ReadCheatCheckDecryptionBlock(Packet packet)

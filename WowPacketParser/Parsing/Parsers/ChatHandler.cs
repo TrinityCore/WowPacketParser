@@ -71,7 +71,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                     var target = packet.ReadGuid("Receiver GUID");
 
-                    if (target.Full != 0)
+                    if (target.GetHighType() == HighGuidType.Unit)
                     {
                         packet.ReadInt32("Receiver Name Length");
 

@@ -10,67 +10,58 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_VOICE_SESSION_ENABLE)]
         public static void HandleVoiceSessionEnable(Packet packet)
         {
-            var voiceEnabled = packet.ReadBoolean();
-            Console.WriteLine("Voice Enabled: " + voiceEnabled);
+            packet.ReadBoolean("Voice Enabled");
 
-            var micEnabled = packet.ReadByte();
-            Console.WriteLine("Microphone Enabled. " + micEnabled);
+            packet.ReadBoolean("Microphone Enabled");
         }
 
         [Parser(Opcode.SMSG_VOICE_SESSION_ROSTER_UPDATE)]
         public static void HandleVoiceRosterUpdate(Packet packet)
         {
-            var unk64 = packet.ReadInt64();
-            Console.WriteLine("Unk Int64: " + unk64);
+            packet.ReadInt64("Voice Channel ID");
 
-            var chanId = packet.ReadInt16();
-            Console.WriteLine("Channel ID: " + chanId);
+            packet.ReadInt16("Channel ID");
 
-            var chanName = packet.ReadCString();
-            Console.WriteLine("Channel Name: " + chanName);
+            packet.ReadByte("Channel Type"); // 0: channel, 2: party
+
+            packet.ReadCString("Channel Name");
 
             var key = Encoding.UTF8.GetString(packet.ReadBytes(16));
             Console.WriteLine("Encryption Key: " + key);
 
-            var ip = packet.ReadInt32();
-            Console.WriteLine("Voice Server IP: " + ip);
+            packet.ReadUInt32("Voice Server IP");
+            packet.ReadByte("Voice Server Port");
 
-            var count = packet.ReadByte();
-            Console.WriteLine("Player Count: " + count);
+            var count = packet.ReadByte("Player Count");
 
-            var leaderGuid = packet.ReadGuid();
-            Console.WriteLine("Leader GUID: " + leaderGuid);
+            packet.ReadGuid("Leader GUID");
 
-            var leaderFlags = packet.ReadByte();
-            Console.WriteLine("Leader Flags: 0x" + leaderFlags.ToString("X2"));
+            var leaderFlags1 = packet.ReadByte();
+            Console.WriteLine("Leader Flags 1: 0x" + leaderFlags1.ToString("X2"));
 
-            var unk = packet.ReadByte();
-            Console.WriteLine("Unk Byte 1: " + unk);
+            var leaderFlags2 = packet.ReadByte();
+            Console.WriteLine("Leader Flags 2: 0x" + leaderFlags2.ToString("X2"));
 
             for (var i = 0; i < count - 1; i++)
             {
-                var guid = packet.ReadGuid();
-                Console.WriteLine("Player GUID: " + guid);
+                packet.ReadGuid("Player GUID");
 
-                var idx = packet.ReadByte();
-                Console.WriteLine("Index: " + idx);
+                packet.ReadByte("Index");
 
-                var flags = packet.ReadByte();
-                Console.WriteLine("Flags: 0x" + flags.ToString("X2"));
+                var flags1 = packet.ReadByte();
+                Console.WriteLine("Flags 1: 0x" + flags1.ToString("X2"));
 
-                var unk2 = packet.ReadByte();
-                Console.WriteLine("Unk Byte 2: " + unk2);
+                var flags2 = packet.ReadByte();
+                Console.WriteLine("Flags 2: 0x" + flags2.ToString("X2"));
             }
         }
 
         [Parser(Opcode.SMSG_VOICE_SESSION_LEAVE)]
         public static void HandleVoiceLeave(Packet packet)
         {
-            var unk1 = packet.ReadInt64();
-            Console.WriteLine("Unk Int64 1: " + unk1);
+            packet.ReadInt64("Unk Int64 1");
 
-            var unk2 = packet.ReadInt64();
-            Console.WriteLine("Unk Int64 2: " + unk2);
+            packet.ReadInt64("Unk Int64 2");
         }
 
         [Parser(Opcode.SMSG_VOICE_SET_TALKER_MUTED)]

@@ -18,6 +18,8 @@ namespace WowPacketParser.Misc
             return (val & test) != 0;
         }
 
+        // TODO: Merge the next 6 methods and move them to somewhere else
+
         public static string GetExistingSpellName(int spellId)
         {
             if (!DBC.DBCStore.DBC.Enabled()) // Could use a more general solution here
@@ -25,14 +27,8 @@ namespace WowPacketParser.Misc
             SpellEntry spell;
             if (spellId <= 0)
                 return string.Empty;
-            try
-            {
-                DBC.DBCStore.DBC.Spell.TryGetValue((uint)spellId, out spell);
-            }
-            catch(Exception)
-            {
+            if (!DBC.DBCStore.DBC.Spell.TryGetValue((uint)spellId, out spell))
                 return "-Unknown-";
-            }
             return spell.GetSpellName();
         }
 
@@ -53,14 +49,8 @@ namespace WowPacketParser.Misc
             if (mapId < 0)
                 return string.Empty;
             MapEntry map;
-            try
-            {
-                DBC.DBCStore.DBC.Map.TryGetValue((uint)mapId, out map);
-            }
-            catch(Exception)
-            {
+            if (!DBC.DBCStore.DBC.Map.TryGetValue((uint)mapId, out map))
                 return "-Unknown-";
-            }
             return map.GetMapName();
         }
 
@@ -79,14 +69,8 @@ namespace WowPacketParser.Misc
             if (dungeonId <= 0)
                 return string.Empty;
             LFGDungeonsEntry dungeon;
-            try
-            {
-                DBC.DBCStore.DBC.LFGDungeons.TryGetValue((uint)dungeonId, out dungeon);
-            }
-            catch(Exception)
-            {
+            if (!DBC.DBCStore.DBC.LFGDungeons.TryGetValue((uint)dungeonId, out dungeon))
                 return "-Unknown-";
-            }
             return dungeon.GetName();
         }
 

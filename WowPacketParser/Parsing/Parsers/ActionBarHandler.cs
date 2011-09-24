@@ -25,12 +25,6 @@ namespace WowPacketParser.Parsing.Parsers
 
                 var type = (ActionButtonType)((packed & 0xFF000000) >> 24);
                 Console.WriteLine("Type " + i + ": " + type);
-
-                var chr = SessionHandler.LoggedInCharacter;
-                if (!chr.FirstLogin)
-                    continue;
-
-                SQLStore.WriteData(SQLStore.StartActions.GetCommand(chr.Race, chr.Class, action, i, type));
             }
         }
     }
