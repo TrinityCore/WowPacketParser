@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using WowPacketParser.Enums;
-
+using WowPacketParser.SQL.Builder;
 
 namespace WowPacketParser.SQL.Stores
 {
@@ -19,122 +19,125 @@ namespace WowPacketParser.SQL.Stores
             int[] srcId, int[] srcCnt, int[] reqItemId, int[] reqItemCnt,
             string[] objectiveText)
         {
-            var builder = new SQLCommandBuilder("quest_template");
+            var builder = new SQLInsert();
+            builder.Table = "quest_template";
 
-            builder.AddColumnValue("entry", entry);
-            builder.AddColumnValue("Method", (int)method);
-            builder.AddColumnValue("ZoneOrSort", (int)sort);
-            builder.AddColumnValue("SkillOrClass", 0);
-            builder.AddColumnValue("MinLevel", minLevel);
-            builder.AddColumnValue("QuestLevel", level);
-            builder.AddColumnValue("Type", (int)type);
-            builder.AddColumnValue("RequiredRaces", 0);
-            builder.AddColumnValue("RequiredSkillValue", 0);
-            builder.AddColumnValue("RepObjectiveFaction", factId[0]);
-            builder.AddColumnValue("RepObjectiveValue", factRep[0]);
-            builder.AddColumnValue("RepObjectiveFaction2", factId[1]);
-            builder.AddColumnValue("RepObjectiveValue2", factRep[1]);
-            builder.AddColumnValue("RequiredMinRepFaction", 0);
-            builder.AddColumnValue("RequiredMinRepValue", 0);
-            builder.AddColumnValue("RequiredMaxRepFaction", 0);
-            builder.AddColumnValue("RequiredMaxRepValue", 0);
-            builder.AddColumnValue("SuggestedPlayers", players);
-            builder.AddColumnValue("LimitTime", 0);
-            builder.AddColumnValue("QuestFlags", (int)flags);
-            builder.AddColumnValue("SpecialFlags", 0);
-            builder.AddColumnValue("CharTitleId", titleId);
-            builder.AddColumnValue("PlayersSlain", reqPlayerKills);
-            builder.AddColumnValue("BonusTalents", bonusTalents);
-            builder.AddColumnValue("BonusArenaPoints", bonusArenaPoints);
-            builder.AddColumnValue("PrevQuestId", 0);
-            builder.AddColumnValue("NextQuestId", 0);
-            builder.AddColumnValue("ExclusiveGroup", 0);
-            builder.AddColumnValue("NextQuestInChain", nextQuest);
-            builder.AddColumnValue("RewXPId", xpId);
-            builder.AddColumnValue("SrcItemId", srcItemId);
-            builder.AddColumnValue("SrcItemCount", 0);
-            builder.AddColumnValue("SrcSpell", 0);
-            builder.AddColumnValue("Title", title);
-            builder.AddColumnValue("Details", details);
-            builder.AddColumnValue("Objectives", objectives);
-            builder.AddColumnValue("OfferRewardText", string.Empty);
-            builder.AddColumnValue("RequestItemsText", string.Empty);
-            builder.AddColumnValue("EndText", endText);
-            builder.AddColumnValue("CompletedText", returnText);
-
-            for (var i = 0; i < 4; i++)
-                builder.AddColumnValue("ObjectiveText" + (i + 1), objectiveText[i]);
+            builder.AddValue("entry", entry);
+            builder.AddValue("Method", (int)method);
+            builder.AddValue("ZoneOrSort", (int)sort);
+            builder.AddValue("SkillOrClass", 0);
+            builder.AddValue("MinLevel", minLevel);
+            builder.AddValue("QuestLevel", level);
+            builder.AddValue("Type", (int)type);
+            builder.AddValue("RequiredRaces", 0);
+            builder.AddValue("RequiredSkillValue", 0);
+            builder.AddValue("RepObjectiveFaction", factId[0]);
+            builder.AddValue("RepObjectiveValue", factRep[0]);
+            builder.AddValue("RepObjectiveFaction2", factId[1]);
+            builder.AddValue("RepObjectiveValue2", factRep[1]);
+            builder.AddValue("RequiredMinRepFaction", 0);
+            builder.AddValue("RequiredMinRepValue", 0);
+            builder.AddValue("RequiredMaxRepFaction", 0);
+            builder.AddValue("RequiredMaxRepValue", 0);
+            builder.AddValue("SuggestedPlayers", players);
+            builder.AddValue("LimitTime", 0);
+            builder.AddValue("QuestFlags", (int)flags);
+            builder.AddValue("SpecialFlags", 0);
+            builder.AddValue("CharTitleId", titleId);
+            builder.AddValue("PlayersSlain", reqPlayerKills);
+            builder.AddValue("BonusTalents", bonusTalents);
+            builder.AddValue("BonusArenaPoints", bonusArenaPoints);
+            builder.AddValue("PrevQuestId", 0);
+            builder.AddValue("NextQuestId", 0);
+            builder.AddValue("ExclusiveGroup", 0);
+            builder.AddValue("NextQuestInChain", nextQuest);
+            builder.AddValue("RewXPId", xpId);
+            builder.AddValue("SrcItemId", srcItemId);
+            builder.AddValue("SrcItemCount", 0);
+            builder.AddValue("SrcSpell", 0);
+            builder.AddValue("Title", title);
+            builder.AddValue("Details", details);
+            builder.AddValue("Objectives", objectives);
+            builder.AddValue("OfferRewardText", string.Empty);
+            builder.AddValue("RequestItemsText", string.Empty);
+            builder.AddValue("EndText", endText);
+            builder.AddValue("CompletedText", returnText);
 
             for (var i = 0; i < 4; i++)
-                builder.AddColumnValue("ReqItemId" + (i + 1), reqItemId[i]);
+                builder.AddValue("ObjectiveText" + (i + 1), objectiveText[i]);
 
             for (var i = 0; i < 4; i++)
-                builder.AddColumnValue("ReqItemCount" + (i + 1), reqItemCnt[i]);
+                builder.AddValue("ReqItemId" + (i + 1), reqItemId[i]);
 
             for (var i = 0; i < 4; i++)
-                builder.AddColumnValue("ReqSourceId" + (i + 1), srcId[i]);
+                builder.AddValue("ReqItemCount" + (i + 1), reqItemCnt[i]);
 
             for (var i = 0; i < 4; i++)
-                builder.AddColumnValue("ReqSourceCount" + (i + 1), srcCnt[i]);
+                builder.AddValue("ReqSourceId" + (i + 1), srcId[i]);
 
             for (var i = 0; i < 4; i++)
-                builder.AddColumnValue("ReqCreatureOrGOId" + (i + 1), reqId[i].Value ?
+                builder.AddValue("ReqSourceCount" + (i + 1), srcCnt[i]);
+
+            for (var i = 0; i < 4; i++)
+                builder.AddValue("ReqCreatureOrGOId" + (i + 1), reqId[i].Value ?
                     -reqId[i].Key : reqId[i].Key);
 
             for (var i = 0; i < 4; i++)
-                builder.AddColumnValue("ReqCreatureOrGOCount" + (i + 1), reqCnt[i]);
+                builder.AddValue("ReqCreatureOrGOCount" + (i + 1), reqCnt[i]);
 
             for (var i = 0; i < 4; i++)
-                builder.AddColumnValue("ReqSpellCast" + (i + 1), 0);
+                builder.AddValue("ReqSpellCast" + (i + 1), 0);
 
             for (var i = 0; i < 6; i++)
-                builder.AddColumnValue("RewChoiceItemId" + (i + 1), rewChoiceItemId[i]);
+                builder.AddValue("RewChoiceItemId" + (i + 1), rewChoiceItemId[i]);
 
             for (var i = 0; i < 6; i++)
-                builder.AddColumnValue("RewChoiceItemCount" + (i + 1), rewChoiceItemCnt[i]);
+                builder.AddValue("RewChoiceItemCount" + (i + 1), rewChoiceItemCnt[i]);
 
             for (var i = 0; i < 4; i++)
-                builder.AddColumnValue("RewItemId" + (i + 1), rewItemId[i]);
+                builder.AddValue("RewItemId" + (i + 1), rewItemId[i]);
 
             for (var i = 0; i < 4; i++)
-                builder.AddColumnValue("RewItemCount" + (i + 1), rewItemCnt[i]);
+                builder.AddValue("RewItemCount" + (i + 1), rewItemCnt[i]);
 
             for (var i = 0; i < 5; i++)
-                builder.AddColumnValue("RewRepFaction" + (i + 1), rewFactionId[i]);
+                builder.AddValue("RewRepFaction" + (i + 1), rewFactionId[i]);
 
             for (var i = 0; i < 5; i++)
-                builder.AddColumnValue("RewRepValueId" + (i + 1), rewRepOverride[i]);
+                builder.AddValue("RewRepValueId" + (i + 1), rewRepOverride[i]);
 
             for (var i = 0; i < 5; i++)
-                builder.AddColumnValue("RewRepValue" + (i + 1), 0);
+                builder.AddValue("RewRepValue" + (i + 1), 0);
 
-            builder.AddColumnValue("RewHonorAddition", rewHonor);
-            builder.AddColumnValue("RewHonorMultiplier", rewHonorBonus);
-            builder.AddColumnValue("unk0", bonusUnk);
-            builder.AddColumnValue("RewOrReqMoney", rewReqMoney);
-            builder.AddColumnValue("RewMoneyMaxLevel", rewMoneyMaxLvl);
-            builder.AddColumnValue("RewSpell", rewSpell);
-            builder.AddColumnValue("RewSpellCast", rewSpellCast);
-            builder.AddColumnValue("RewMailTemplateId", 0);
-            builder.AddColumnValue("RewMailDelaySecs", 0);
-            builder.AddColumnValue("PointMapId", pointMap);
-            builder.AddColumnValue("PointX", pointX);
-            builder.AddColumnValue("PointY", pointY);
-            builder.AddColumnValue("PointOpt", pointOpt);
-
-            for (var i = 0; i < 4; i++)
-                builder.AddColumnValue("DetailsEmote" + (i + 1), 0);
-
-            builder.AddColumnValue("IncompleteEmote", 0);
-            builder.AddColumnValue("CompleteEmote", 0);
+            builder.AddValue("RewHonorAddition", rewHonor);
+            builder.AddValue("RewHonorMultiplier", rewHonorBonus);
+            builder.AddValue("unk0", bonusUnk);
+            builder.AddValue("RewOrReqMoney", rewReqMoney);
+            builder.AddValue("RewMoneyMaxLevel", rewMoneyMaxLvl);
+            builder.AddValue("RewSpell", rewSpell);
+            builder.AddValue("RewSpellCast", rewSpellCast);
+            builder.AddValue("RewMailTemplateId", 0);
+            builder.AddValue("RewMailDelaySecs", 0);
+            builder.AddValue("PointMapId", pointMap);
+            builder.AddValue("PointX", pointX);
+            builder.AddValue("PointY", pointY);
+            builder.AddValue("PointOpt", pointOpt);
 
             for (var i = 0; i < 4; i++)
-                builder.AddColumnValue("OfferRewardEmote" + (i + 1), 0);
+                builder.AddValue("DetailsEmote" + (i + 1), 0);
 
-            builder.AddColumnValue("StartScript", 0);
-            builder.AddColumnValue("CompleteScript", 0);
+            builder.AddValue("IncompleteEmote", 0);
+            builder.AddValue("CompleteEmote", 0);
 
-            return builder.BuildInsert();
+            for (var i = 0; i < 4; i++)
+                builder.AddValue("OfferRewardEmote" + (i + 1), 0);
+
+            builder.AddValue("StartScript", 0);
+            builder.AddValue("CompleteScript", 0);
+
+            builder.AddWhere("entry", entry);
+
+            return builder.Build();
         }
     }
 }

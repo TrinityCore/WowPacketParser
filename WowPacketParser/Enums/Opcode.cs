@@ -2,7 +2,7 @@ namespace WowPacketParser.Enums
 {
     public enum Opcode
     {
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         MSG_NULL_ACTION = 0x0,
         CMSG_BOOTME = 0x1,
         CMSG_DBLOOKUP = 0x2,

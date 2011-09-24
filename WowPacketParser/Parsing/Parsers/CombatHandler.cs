@@ -46,7 +46,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]
         public static void HandleAttackerStateUpdate(Packet packet)
         {
-            var HitInfo = packet.ReadEnum<SpellHitInfo>("HitInfo", TypeCode.Int32);
+            var hitInfo = packet.ReadEnum<SpellHitInfo>("HitInfo", TypeCode.Int32);
             packet.ReadPackedGuid("AttackerGUID");
             packet.ReadPackedGuid("TargetGUID");
             packet.ReadInt32("Damage");
@@ -59,12 +59,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSingle("[" + i + "] Float Damage");
                 packet.ReadInt32("[" + i + "] Int Damage");
 
-                if (HitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_ABSORB | SpellHitInfo.HITINFO_FULL_ABSORB))
+                if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_ABSORB | SpellHitInfo.HITINFO_FULL_ABSORB))
                 {
                     packet.ReadInt32("[" + i + "] Damage Absorbed");
                 }
 
-                if (HitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
+                if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
                 {
                     packet.ReadInt32("[" + i + "] Damage Resisted");
                 }
@@ -72,37 +72,37 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadEnum<VictimStates>("VictimState", TypeCode.Byte);
 
-            packet.ReadInt32("unkattackerstate0");
+            packet.ReadInt32("Unk Attacker State 0");
 
             var spellId = packet.ReadInt32();
             Console.WriteLine("Melee Spell ID : " + Extensions.SpellLine(spellId));
 
-            if (HitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
+            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
             {
                 packet.ReadInt32("Block Amount");
             }
 
-            if (HitInfo.HasAnyFlag(SpellHitInfo.HITINFO_RAGE_GAIN))
+            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_RAGE_GAIN))
             {
                 packet.ReadInt32("Rage Gained");
             }
 
-            if (HitInfo.HasAnyFlag(SpellHitInfo.HITINFO_UNK0))
+            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_UNK0))
             {
-                packet.ReadInt32("unkattackerstate3");
-                packet.ReadSingle("unkattackerstate3");
-                packet.ReadSingle("unkattackerstate3");
-                packet.ReadSingle("unkattackerstate3");
-                packet.ReadSingle("unkattackerstate3");
-                packet.ReadSingle("unkattackerstate3");
-                packet.ReadSingle("unkattackerstate3");
-                packet.ReadSingle("unkattackerstate3");
-                packet.ReadSingle("unkattackerstate3");
-                packet.ReadSingle("unkattackerstate3");
-                packet.ReadSingle("unkattackerstate3");
-                packet.ReadInt32("unkattackerstate3");
-                packet.ReadInt32("unkattackerstate3");
-                packet.ReadInt32("unkattackerstate3");
+                packet.ReadInt32("Unk Attacker State 3");
+                packet.ReadSingle("Unk Attacker State 3");
+                packet.ReadSingle("Unk Attacker State 3");
+                packet.ReadSingle("Unk Attacker State 3");
+                packet.ReadSingle("Unk Attacker State 3");
+                packet.ReadSingle("Unk Attacker State 3");
+                packet.ReadSingle("Unk Attacker State 3");
+                packet.ReadSingle("Unk Attacker State 3");
+                packet.ReadSingle("Unk Attacker State 3");
+                packet.ReadSingle("Unk Attacker State 3");
+                packet.ReadSingle("Unk Attacker State 3");
+                packet.ReadInt32("Unk Attacker State 3");
+                packet.ReadInt32("Unk Attacker State 3");
+                packet.ReadInt32("Unk Attacker State 3");
             }
         }
     }

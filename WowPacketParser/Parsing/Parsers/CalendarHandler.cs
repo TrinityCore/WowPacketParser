@@ -140,7 +140,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                packet.ReadPackedGuid("[" + i + "] GUID"); ;
+                packet.ReadPackedGuid("[" + i + "] GUID");
                 packet.ReadByte("[" + i + "] Unk Byte");
             }
         }
@@ -382,7 +382,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Byte);
             Console.WriteLine("Dungeon ID: " + Extensions.DungeonLine(packet.ReadInt32()));
             packet.ReadCString("Title");
-            packet.ReadCString("Descripcion");
+            packet.ReadCString("Description");
             packet.ReadBoolean("Repeatable");
             packet.ReadInt32("Max Invites");
             packet.ReadInt32("Unk int32 (UpdatedAlert)");

@@ -9,27 +9,21 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_EMOTE)]
         public static void HandleEmote(Packet packet)
         {
-            var id = packet.ReadInt32();
-            Console.WriteLine("Emote ID: " + id);
+            packet.ReadInt32("Emote ID");
 
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.SMSG_MESSAGECHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
-            var type = (ChatMessageType)packet.ReadByte();
-            Console.WriteLine("Type: " + type);
+            var type = packet.ReadEnum<ChatMessageType>("Type", TypeCode.Byte);
 
-            var lang = (Language)packet.ReadInt32();
-            Console.WriteLine("Language: " + lang);
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
 
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadGuid("GUID");
 
-            var unkInt = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + unkInt);
+            packet.ReadInt32("Unk Int32");
 
             switch (type)
             {
@@ -57,13 +51,9 @@ namespace WowPacketParser.Parsing.Parsers
                 case ChatMessageType.GuildAchievement:
                 {
                     if (type == ChatMessageType.Channel)
-                    {
-                        var chanName = packet.ReadCString();
-                        Console.WriteLine("Channel Name: " + chanName);
-                    }
+                        packet.ReadCString("Channel Name");
 
-                    var senderGuid = packet.ReadGuid();
-                    Console.WriteLine("Sender GUID: " + senderGuid);
+                    packet.ReadGuid("Sender GUID");
                     break;
                 }
                 case ChatMessageType.MonsterSay:
@@ -75,73 +65,54 @@ namespace WowPacketParser.Parsing.Parsers
                 case ChatMessageType.RaidBossWhisper:
                 case ChatMessageType.BattleNet:
                 {
-                    var nameLen = packet.ReadInt32();
-                    Console.WriteLine("Name Length: " + nameLen);
+                    packet.ReadInt32("Name Length");
 
-                    var name = packet.ReadCString();
-                    Console.WriteLine("Name: " + name);
+                    packet.ReadCString("Name");
 
-                    var target = packet.ReadGuid();
-                    Console.WriteLine("Receiver GUID: " + guid);
+                    var target = packet.ReadGuid("Receiver GUID");
 
                     if (target.Full != 0)
                     {
-                        var tNameLen = packet.ReadInt32();
-                        Console.WriteLine("Receiver Name Length: " + tNameLen);
+                        packet.ReadInt32("Receiver Name Length");
 
-                        var tName = packet.ReadCString();
-                        Console.WriteLine("Receiver Name: " + tName);
+                        packet.ReadCString("Receiver Name");
                     }
                     break;
                 }
             }
 
-            var textLen = packet.ReadInt32();
-            Console.WriteLine("Text Length: " + textLen);
+            packet.ReadInt32("Text Length");
 
-            var text = packet.ReadCString();
-            Console.WriteLine("Text: " + text);
+            packet.ReadCString("Text");
 
-            var chatTag = (ChatTag)packet.ReadByte();
-            Console.WriteLine("Chat Tag: " + chatTag);
+            packet.ReadEnum<ChatTag>("Chat Tag", TypeCode.Byte);
 
-            if (type != ChatMessageType.Achievement && type != ChatMessageType.GuildAchievement)
-                return;
-
-            var achId = packet.ReadInt32();
-            Console.WriteLine("Achievement ID: " + achId);
+            if (type == ChatMessageType.Achievement && type == ChatMessageType.GuildAchievement)
+                packet.ReadInt32("Achievement ID");
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT)]
         public static void HandleClientChatMessage(Packet packet)
         {
-            var type = (ChatMessageType)packet.ReadInt32();
-            Console.WriteLine("Type: " + type);
+            var type = packet.ReadEnum<ChatMessageType>("Type", TypeCode.Byte);
 
-            var lang = (Language)packet.ReadInt32();
-            Console.WriteLine("Language: " + lang);
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
 
             switch (type)
             {
                 case ChatMessageType.Whisper:
                 {
-                    var to = packet.ReadCString();
-                    Console.WriteLine("Recipient: " + to);
-                    goto default;
+                    packet.ReadCString("Recipient");
+                    break;
                 }
                 case ChatMessageType.Channel:
                 {
-                    var chan = packet.ReadCString();
-                    Console.WriteLine("Channel: " + chan);
-                    goto default;
-                }
-                default:
-                {
-                    var msg = packet.ReadCString();
-                    Console.WriteLine("Message: " + msg);
+                    packet.ReadCString("Channel");
                     break;
                 }
             }
+
+            packet.ReadCString("Message");
         }
     }
 }

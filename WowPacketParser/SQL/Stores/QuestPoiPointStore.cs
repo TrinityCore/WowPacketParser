@@ -1,4 +1,4 @@
-
+using WowPacketParser.SQL.Builder;
 
 namespace WowPacketParser.SQL.Stores
 {
@@ -6,14 +6,14 @@ namespace WowPacketParser.SQL.Stores
     {
         public string GetCommand(int questId, int idx, int objIndex, int pointX, int pointY)
         {
-            var builder = new SQLCommandBuilder("quest_poi_points");
-
-            builder.AddColumnValue("questId", questId);
-            builder.AddColumnValue("id", idx);
-            builder.AddColumnValue("x", pointX);
-            builder.AddColumnValue("y", pointY);
-
-            return builder.BuildInsert();
+            var builder = new SQLInsert();
+            builder.Table = "quest_poi_points";
+            builder.AddValue("questId", questId);
+            builder.AddValue("id", idx);
+            builder.AddValue("x", pointX);
+            builder.AddValue("y", pointY);
+            builder.AddWhere("questId", questId);
+            return builder.Build();
         }
     }
 }

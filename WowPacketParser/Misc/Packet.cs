@@ -356,7 +356,7 @@ namespace WowPacketParser.Misc
             return val;
         }
 
-        public KeyValuePair<int, bool> ReadEntryKey(string name)
+        public KeyValuePair<int, bool> ReadEntry(string name)
         {
             var entry = ReadEntry();
             Console.WriteLine("{0}: {1}", name, entry.Key);
@@ -401,7 +401,6 @@ namespace WowPacketParser.Misc
         private KeyValuePair<long, T> ReadEnum<T>(TypeCode code)
         {
             var type = typeof(T);
-            object value = null;
             long rawVal = 0;
 
             if (code == TypeCode.Empty)
@@ -434,7 +433,7 @@ namespace WowPacketParser.Misc
                     rawVal = (long)ReadUInt64();
                     break;
             }
-            value = System.Enum.ToObject(type, rawVal);
+            var value = Enum.ToObject(type, rawVal);
 
             return new KeyValuePair<long, T>(rawVal, (T)value);
         }

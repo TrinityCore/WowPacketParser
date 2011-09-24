@@ -6,32 +6,28 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class EquipmentSetHandler
     {
+        public const int NumSlots = 19;
+
         public static void ReadSetInfo(Packet packet)
         {
-            var pguid = packet.ReadPackedGuid();
-            Console.WriteLine("Set ID: " + pguid.Full);
+            packet.ReadPackedGuid("Set ID");
 
-            var index = packet.ReadInt32();
-            Console.WriteLine("Index: " + index);
+            packet.ReadInt32("Index");
 
-            var name = packet.ReadCString();
-            Console.WriteLine("Set Name: " + name);
+            packet.ReadCString("Set Name");
 
-            var iconName = packet.ReadCString();
-            Console.WriteLine("Set Icon: " + iconName);
+            packet.ReadCString("Set Icon");
 
-            for (var j = 0; j < 19; j++)
+            for (var j = 0; j < NumSlots; j++)
             {
-                var itemGuid = packet.ReadPackedGuid();
-                Console.WriteLine("Item GUID " + j + ": " + itemGuid);
+                packet.ReadPackedGuid("Item GUID " + j);
             }
         }
 
         [Parser(Opcode.SMSG_EQUIPMENT_SET_LIST)]
         public static void HandleEquipmentSetList(Packet packet)
         {
-            var count = packet.ReadInt32();
-            Console.WriteLine("Count: " + count);
+            var count = packet.ReadInt32("Count");
 
             for (var i = 0; i < count; i++)
                 ReadSetInfo(packet);
@@ -46,41 +42,34 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_EQUIPMENT_SET_SAVED)]
         public static void HandleEquipmentSetSaved(Packet packet)
         {
-            var index = packet.ReadInt32();
-            Console.WriteLine("Index: " + index);
+            packet.ReadInt32("Index");
 
-            var id = packet.ReadPackedGuid();
-            Console.WriteLine("Set ID: " + id.Full);
+            packet.ReadPackedGuid("Set ID");
         }
 
         [Parser(Opcode.CMSG_EQUIPMENT_SET_USE)]
         public static void HandleEquipmentSetUse(Packet packet)
         {
-            for (var i = 0; i < 19; i++)
+            for (var i = 0; i < NumSlots; i++)
             {
-                var itemGuid = packet.ReadPackedGuid();
-                Console.WriteLine("Item GUID " + i + ": " + itemGuid);
+                packet.ReadPackedGuid("Item GUID " + i);
 
-                var srcbag = packet.ReadByte();
-                Console.WriteLine("Source Bag: " + srcbag);
+                packet.ReadByte("Source Bag");
 
-                var srcslot = packet.ReadByte();
-                Console.WriteLine("Source Slot: " + srcslot);
+                packet.ReadByte("Source Slot");
             }
         }
 
         [Parser(Opcode.SMSG_EQUIPMENT_SET_USE_RESULT)]
         public static void HandleEquipmentSetUseResult(Packet packet)
         {
-            var result = packet.ReadByte();
-            Console.WriteLine("Result: " + result);
+            packet.ReadByte("Result");
         }
 
         [Parser(Opcode.CMSG_DELETEEQUIPMENT_SET)]
         public static void HandleEquipmentSetDelete(Packet packet)
         {
-            var pguid = packet.ReadPackedGuid();
-            Console.WriteLine("Set ID: " + pguid.Full);
+            packet.ReadPackedGuid("Set ID");
         }
     }
 }

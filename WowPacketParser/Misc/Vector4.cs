@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices;
-
 namespace WowPacketParser.Misc
 {
     public struct Vector4

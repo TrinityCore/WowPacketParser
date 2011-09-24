@@ -8,8 +8,7 @@ namespace WowPacketParser.Parsing.Parsers
     {
         public static void ReadSingleContactBlock(Packet packet, bool onlineCheck)
         {
-            var status = (ContactStatus)packet.ReadByte();
-            Console.WriteLine("Status: " + status);
+            var status = packet.ReadEnum<ContactStatus>("Status", TypeCode.Byte);
 
             if (onlineCheck && status != ContactStatus.Online)
                 return;
@@ -17,29 +16,23 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Area ID");
             packet.ReadInt32("Level");
 
-            var clss = (Class)packet.ReadInt32();
-            Console.WriteLine("Class: " + clss);
+            packet.ReadEnum<Class>("Class", TypeCode.Int32);
         }
 
         [Parser(Opcode.SMSG_CONTACT_LIST)]
         public static void HandleContactList(Packet packet)
         {
-            var flags = (ContactListFlag)packet.ReadInt32();
-            Console.WriteLine("List Flags: " + flags);
+            packet.ReadEnum<ContactListFlag>("List Flags", TypeCode.Int32);
 
-            var count = packet.ReadInt32();
-            Console.WriteLine("Count: " + count);
+            var count = packet.ReadInt32("Count");
 
             for (var i = 0; i < count; i++)
             {
-                var guid = packet.ReadGuid();
-                Console.WriteLine("GUID: " + guid);
+                packet.ReadGuid("GUID");
 
-                var cflags = (ContactEntryFlag)packet.ReadInt32();
-                Console.WriteLine("Flags: " + cflags);
+                var cflags = packet.ReadEnum<ContactEntryFlag>("Flags", TypeCode.Int32);
 
-                var note = packet.ReadCString();
-                Console.WriteLine("Note: " + note);
+                packet.ReadCString("Note");
 
                 if (!cflags.HasFlag(ContactEntryFlag.Friend))
                     continue;
@@ -54,11 +47,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_FRIEND_STATUS)]
         public static void HandleFriendStatus(Packet packet)
         {
-            var result = (ContactResult)packet.ReadByte();
-            Console.WriteLine("Result: " + result);
+            var result = packet.ReadEnum<ContactResult>("Result", TypeCode.Byte);
 
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadGuid("GUID");
 
             switch (result)
             {
@@ -67,10 +58,7 @@ namespace WowPacketParser.Parsing.Parsers
                 case ContactResult.Online:
                 {
                     if (result != ContactResult.Online)
-                    {
-                        var note = packet.ReadCString();
-                        Console.WriteLine("Note: " + note);
-                    }
+                        packet.ReadCString("Note");
 
                     ReadSingleContactBlock(packet, false);
                     break;

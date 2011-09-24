@@ -29,32 +29,27 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_CORPSE_MAP_POSITION_QUERY)]
         public static void HandleCorpseMapPositionQuery(Packet packet)
         {
-            var lowGuid = packet.ReadInt32();
-            Console.WriteLine("Low GUID: " + lowGuid);
+            packet.ReadInt32("Low GUID");
         }
 
         [Parser(Opcode.SMSG_CORPSE_MAP_POSITION_QUERY_RESPONSE)]
         public static void HandleCorpseMapPositionResponse(Packet packet)
         {
-            var unkCoords = packet.ReadVector3();
-            Console.WriteLine("Unk Vector3: " + unkCoords);
+            packet.ReadVector3("Unk Vector3");
 
-            var unkSingle = packet.ReadSingle();
-            Console.WriteLine("Unk Single: " + unkSingle);
+            packet.ReadSingle("Unk Single");
         }
 
         [Parser(Opcode.SMSG_CORPSE_RECLAIM_DELAY)]
         public static void HandleCorpseReclaimDelay(Packet packet)
         {
-            var delay = packet.ReadInt32();
-            Console.WriteLine("Delay: " + delay);
+           packet.ReadInt32("Delay");
         }
 
         [Parser(Opcode.CMSG_RECLAIM_CORPSE)]
         public static void HandleReclaimCorpse(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("Corpse GUID: " + guid);
+            packet.ReadGuid("Corpse GUID");
         }
     }
 }
