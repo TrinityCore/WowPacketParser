@@ -63,6 +63,20 @@ namespace WowPacketParser
 
             // Read binaries
             string [] files = args;
+            if (args.Length == 1 && args[0].Contains('*'))
+            {
+                try
+                {
+                    files = Directory.GetFiles(@".\", args[0]);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.GetType());
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+                }
+            }
+
             foreach (string file in files)
             {
                 Console.WriteLine("Reading file [" + System.IO.Path.GetFileName(file) + "]");
