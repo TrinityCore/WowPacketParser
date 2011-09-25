@@ -241,16 +241,18 @@
     <Compile Include="Enums\WardenOpcode.cs" />
     <Compile Include="Enums\WeatherState.cs" />
     <Compile Include="Loading\Reader.cs" />
+    <Compile Include="Misc\Aura.cs" />
     <Compile Include="Misc\CharacterInfo.cs" />
     <Compile Include="Misc\CommandLine.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Misc\Guid.cs" />
     <Compile Include="Misc\LfgEntry.cs" />
     <Compile Include="Misc\MovementInfo.cs" />
+    <Compile Include="Misc\Objects\Unit.cs" />
     <Compile Include="Misc\Quaternion.cs" />
     <Compile Include="Misc\StartInfo.cs" />
     <Compile Include="Misc\UpdateField.cs" />
-    <Compile Include="Misc\WowObject.cs" />
+    <Compile Include="Misc\Objects\Object.cs" />
     <Compile Include="Parsing\Handler.cs" />
     <Compile Include="Misc\Packet.cs" />
     <Compile Include="Parsing\ParserAttribute.cs" />
@@ -347,6 +349,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

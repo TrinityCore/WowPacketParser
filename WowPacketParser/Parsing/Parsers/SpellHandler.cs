@@ -1,7 +1,7 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.SQL;
+using Guid = WowPacketParser.Misc.Guid;
 
 
 namespace WowPacketParser.Parsing.Parsers
@@ -93,40 +93,58 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        public static void ReadAuraUpdateBlock(Packet packet)
+        public static Aura ReadAuraUpdateBlock(Packet packet)
         {
+            var aura = new Aura();
+
             var slot = packet.ReadByte();
             Console.WriteLine("Slot: " + slot);
+            aura.Slot = slot;
 
             var id = packet.ReadInt32();
             Console.WriteLine("ID: " + Extensions.SpellLine(id));
-
             if (id <= 0)
-                return;
+                return null;
+            aura.SpellId = (uint)id;
 
             var flags = (AuraFlag)packet.ReadByte();
             Console.WriteLine("Flags: " + flags);
+            aura.AuraFlags = flags;
 
             var level = packet.ReadByte();
             Console.WriteLine("Level: " + level);
+            aura.Level = level;
 
             var charges = packet.ReadByte();
             Console.WriteLine("Charges: " + charges);
+            aura.Charges = charges;
 
             if (!flags.HasFlag(AuraFlag.NotCaster))
             {
                 var unkGuid = packet.ReadPackedGuid();
                 Console.WriteLine("Caster GUID: " + unkGuid);
+                aura.CasterGuid = unkGuid;
+            }
+            else
+                aura.CasterGuid = new Guid(); // Is this needed?
+
+            if (flags.HasFlag(AuraFlag.Duration))
+            {
+                var maxDura = packet.ReadInt32();
+                Console.WriteLine("Max Duration: " + maxDura);
+                aura.MaxDuration = maxDura;
+
+                var dura = packet.ReadInt32();
+                Console.WriteLine("Duration: " + dura);
+                aura.Duration = dura;
+            }
+            else // Is this needed?
+            {
+                aura.MaxDuration = 0;
+                aura.Duration = 0;
             }
 
-            if (!flags.HasFlag(AuraFlag.Duration))
-                return;
-
-            var maxDura = packet.ReadInt32();
-            Console.WriteLine("Max Duration: " + maxDura);
-
-            var dura = packet.ReadInt32();
-            Console.WriteLine("Duration: " + dura);
+            return aura;
         }
 
         [Parser(Opcode.SMSG_AURA_UPDATE)]
@@ -135,7 +153,8 @@ namespace WowPacketParser.Parsing.Parsers
             var pguid = packet.ReadPackedGuid();
             Console.WriteLine("GUID: " + pguid);
 
-            ReadAuraUpdateBlock(packet);
+            var aura = ReadAuraUpdateBlock(packet);
+            // TODO: Add this aura to a list of objects (searching by guid)
         }
 
         [Parser(Opcode.SMSG_AURA_UPDATE_ALL)]
@@ -144,8 +163,10 @@ namespace WowPacketParser.Parsing.Parsers
             var pguid = packet.ReadPackedGuid();
             Console.WriteLine("GUID: " + pguid);
 
+            var aura = new Aura();
             while (!packet.IsRead())
-                ReadAuraUpdateBlock(packet);
+                aura = ReadAuraUpdateBlock(packet);
+            // TODO: Add this aura to a list of objects (searching by guid)
         }
 
         [Parser(Opcode.SMSG_SPELL_START)]

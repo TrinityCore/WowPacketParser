@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using Guid = WowPacketParser.Misc.Guid;
+using Object = WowPacketParser.Misc.Objects.Object;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -202,7 +203,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Position: " + position);
             CurrentPosition = position;
 
-            UpdateHandler.Objects[mapId] = new Dictionary<Guid, WowObject>();
+            UpdateHandler.Objects[mapId] = new Dictionary<Guid, Object>();
 
             if (packet.GetOpcode() != Opcode.SMSG_LOGIN_VERIFY_WORLD)
                 return;
