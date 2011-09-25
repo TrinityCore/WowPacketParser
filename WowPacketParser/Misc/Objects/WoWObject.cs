@@ -3,9 +3,9 @@ using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc.Objects
 {
-    public class Object
+    public class WoWObject
     {
-        public Object(Guid guid, ObjectType type, MovementInfo moves, Dictionary<int, UpdateField> updateFields)
+        public WoWObject(Guid guid, ObjectType type, MovementInfo moves, Dictionary<int, UpdateField> updateFields)
         {
             Guid = guid;
             Type = type;

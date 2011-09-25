@@ -3,16 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Misc.Objects;
 using WowPacketParser.SQL;
 using Guid=WowPacketParser.Misc.Guid;
-using Object = WowPacketParser.Misc.Objects.Object;
 
 namespace WowPacketParser.Parsing.Parsers
 {
     public static class UpdateHandler
     {
-        public static readonly Dictionary<int, Dictionary<Guid, Object>> Objects =
-            new Dictionary<int, Dictionary<Guid, Object>>();
+        public static readonly Dictionary<int, Dictionary<Guid, WoWObject>> Objects =
+            new Dictionary<int, Dictionary<Guid, WoWObject>>();
 
         [Parser(Opcode.SMSG_UPDATE_OBJECT)]
         public static void HandleUpdateObject(Packet packet)
@@ -34,7 +34,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                         var updates = ReadValuesUpdateBlock(packet);
 
-                        Object obj;
+                        WoWObject obj;
                         if (Objects[MovementHandler.CurrentMapId].TryGetValue(guid, out obj))
                             // System.Collections.Generic.KeyNotFoundException in the next line
                             HandleUpdateFieldChangedValues(false, guid, obj.Type, updates, obj.Movement);
@@ -82,7 +82,7 @@ namespace WowPacketParser.Parsing.Parsers
             var moves = ReadMovementUpdateBlock(packet, guid);
             var updates = ReadValuesUpdateBlock(packet);
 
-            var obj = new Object(guid, objType, moves, updates);
+            var obj = new WoWObject(guid, objType, moves, updates);
             obj.Position = moves.Position;
 
             var objects = Objects[MovementHandler.CurrentMapId];

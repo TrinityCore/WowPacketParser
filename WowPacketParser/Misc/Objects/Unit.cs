@@ -3,7 +3,7 @@ using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc.Objects
 {
-    public sealed class Unit // inherit from Object ?
+    public sealed class Unit // inherit from WoWObject ?
     {
         public Unit(Guid guid, MovementInfo moves, Dictionary<int, UpdateField> updateFields, List<Aura> auras)
         {

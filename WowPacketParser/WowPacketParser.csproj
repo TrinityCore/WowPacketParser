@@ -252,7 +252,7 @@
     <Compile Include="Misc\Quaternion.cs" />
     <Compile Include="Misc\StartInfo.cs" />
     <Compile Include="Misc\UpdateField.cs" />
-    <Compile Include="Misc\Objects\Object.cs" />
+    <Compile Include="Misc\Objects\WoWObject.cs" />
     <Compile Include="Parsing\Handler.cs" />
     <Compile Include="Misc\Packet.cs" />
     <Compile Include="Parsing\ParserAttribute.cs" />
