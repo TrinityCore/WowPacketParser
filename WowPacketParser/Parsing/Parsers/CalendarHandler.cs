@@ -62,17 +62,17 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < holidayCount; i++)
             {
-                packet.ReadInt32("[" + i + "] Unk Int32 5");
-                packet.ReadInt32("[" + i + "] Unk Int32 6");
-                packet.ReadInt32("[" + i + "] Unk Int32 7");
-                packet.ReadInt32("[" + i + "] Unk Int32 8");
-                packet.ReadInt32("[" + i + "] Unk Int32 9");
+                packet.ReadInt32("[" + i + "] ID");
+                packet.ReadInt32("[" + i + "] Region (Looping?)");
+                packet.ReadInt32("[" + i + "] Looping (Region?)");
+                packet.ReadInt32("[" + i + "] Priority");
+                packet.ReadInt32("[" + i + "] Calendar FilterType");
                 for (var j = 0; j < 26; j++)
-                    packet.ReadPackedTime("[" + i + ", " + j + "] Unk Int32 10");
+                    packet.ReadPackedTime("[" + i + ", " + j + "] Start Date");
                 for (var j = 0; j < 10; j++)
-                    packet.ReadInt32("[" + i + ", " + j + "] Unk Int32 11");
+                    packet.ReadInt32("[" + i + ", " + j + "] Duration");
                 for (var j = 0; j < 10; j++)
-                    packet.ReadInt32("[" + i + ", " + j + "] Unk Int32 12");
+                    packet.ReadInt32("[" + i + ", " + j + "] Calendar Flags");
                 packet.ReadCString("[" + i + "] Holiday Name");
             }
         }
