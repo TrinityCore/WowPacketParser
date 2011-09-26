@@ -20,6 +20,7 @@ namespace WowPacketParser
 
             // Read config options
             string filters = string.Empty;
+            string ignoreFilters = string.Empty;
             bool sqlOutput = false;
             bool noDump = false;
             int packetsToRead = 0; // 0 -> all packets
@@ -27,6 +28,7 @@ namespace WowPacketParser
             try
             {
                 filters = ConfigurationManager.AppSettings["Filters"];
+                ignoreFilters = ConfigurationManager.AppSettings["IgnoreFilters"];
                 sqlOutput = ConfigurationManager.AppSettings["SQLOutput"].Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase);
                 noDump = ConfigurationManager.AppSettings["NoDump"].Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase);
                 packetsToRead = int.Parse(ConfigurationManager.AppSettings["PacketsNum"]);
@@ -82,7 +84,7 @@ namespace WowPacketParser
                 Console.WriteLine("Reading file [" + System.IO.Path.GetFileName(file) + "]");
                 try
                 {
-                    var packets = Reader.Read(file, filters, packetsToRead);
+                    var packets = Reader.Read(file, filters, ignoreFilters, packetsToRead);
                     if (packets == null)
                     {
                         Console.Clear();

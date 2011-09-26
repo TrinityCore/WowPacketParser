@@ -9,7 +9,7 @@ namespace WowPacketParser.Loading
 {
     public static class Reader
     {
-        public static IEnumerable<Packet> Read(string file, string filters, int packetsToRead)
+        public static IEnumerable<Packet> Read(string file, string filters, string ignoreFilters, int packetsToRead)
         {
             IEnumerable<Packet> packets = null;
 
@@ -28,6 +28,7 @@ namespace WowPacketParser.Loading
                     var packetList = new List<Packet>();
                     var bin = new BinaryReader(new FileStream(file, FileMode.Open));
                     var appliedFilters = filters.Split(',');
+                    var appliedIgnoreFilters = ignoreFilters.Split(',');
                     var packetsRead = 0;
 
                     while (bin.BaseStream.Position != bin.BaseStream.Length)
@@ -40,21 +41,33 @@ namespace WowPacketParser.Loading
 
                         var packet = new Packet(data, opcode, time, direction);
 
+                        var add = true;
                         if (!string.IsNullOrEmpty(filters))
                         {
+                            add = false;
                             foreach (var opc in appliedFilters)
                             {
-                                if (!opcode.ToString().Contains(opc))
-                                    continue;
-
-                                packetList.Add(packet);
-                                if (packetsToRead > 0 && ++packetsRead == packetsToRead)
-                                    bin.BaseStream.Position = bin.BaseStream.Length;
-
-                                break;
+                                if (opcode.ToString().Contains(opc))
+                                {
+                                    add = true;
+                                    break;
+                                }
                             }
                         }
-                        else
+
+                        if (add && !string.IsNullOrEmpty(ignoreFilters))
+                        {
+                            foreach (var opc in appliedIgnoreFilters)
+                            {
+                                if (opcode.ToString().Contains(opc))
+                                {
+                                    add = false;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (add)
                         {
                             packetList.Add(packet);
                             if (packetsToRead > 0 && ++packetsRead == packetsToRead)
