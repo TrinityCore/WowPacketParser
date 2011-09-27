@@ -31,7 +31,7 @@ namespace WowPacketParser
             {
                 packetNumberLow = int.Parse(ConfigurationManager.AppSettings["FilterPacketNumLow"]);
                 packetNumberHigh = int.Parse(ConfigurationManager.AppSettings["FilterPacketNumHigh"]);
-                if (packetNumberLow > packetNumberHigh)
+                if (packetNumberLow > 0 && packetNumberHigh > 0 && packetNumberLow > packetNumberHigh)
                     throw new System.Exception("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
                 filters = ConfigurationManager.AppSettings["Filters"];
                 ignoreFilters = ConfigurationManager.AppSettings["IgnoreFilters"];
