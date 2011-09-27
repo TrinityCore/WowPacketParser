@@ -486,7 +486,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_UPDATE_LFG_LIST)]
         public static void HandleUpdateLfgList(Packet packet)
         {
-            var type = packet.ReadEnum<LfgType>("LFG Type", TypeCode.Int32);
+            packet.ReadEnum<LfgType>("LFG Type", TypeCode.Int32);
 
             Console.WriteLine("Dungeon ID: " + Extensions.DungeonLine(packet.ReadInt32()));
 

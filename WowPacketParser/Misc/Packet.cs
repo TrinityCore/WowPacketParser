@@ -11,12 +11,13 @@ namespace WowPacketParser.Misc
 {
     public sealed class Packet : BinaryReader
     {
-        public Packet(byte[] input, Opcode opcode, DateTime time, Direction direction)
+        public Packet(byte[] input, Opcode opcode, DateTime time, Direction direction, int Number)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
             _opcode = opcode;
             _time = time;
             _direction = direction;
+            _number = Number;
         }
 
         private readonly Opcode _opcode;
@@ -24,6 +25,8 @@ namespace WowPacketParser.Misc
         private readonly DateTime _time;
 
         private readonly Direction _direction;
+
+        private readonly int _number;
 
         public Opcode GetOpcode()
         {
@@ -40,6 +43,11 @@ namespace WowPacketParser.Misc
             return _direction;
         }
 
+        public int GetNumber()
+        {
+            return _number;
+        }
+
         public Packet Inflate(int inflatedSize)
         {
             var arr = GetStream(GetPosition());
@@ -48,7 +56,7 @@ namespace WowPacketParser.Misc
             inflater.SetInput(arr, 0, arr.Length);
             inflater.Inflate(newarr, 0, inflatedSize);
 
-            var pkt = new Packet(newarr, GetOpcode(), GetTime(), GetDirection());
+            var pkt = new Packet(newarr, GetOpcode(), GetTime(), GetDirection(), GetNumber());
             return pkt;
         }
 

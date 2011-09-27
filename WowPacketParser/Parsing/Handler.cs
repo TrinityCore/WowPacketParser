@@ -88,9 +88,10 @@ namespace WowPacketParser.Parsing
             var time = packet.GetTime();
             var direction = packet.GetDirection();
             var length = packet.GetLength();
+            var number = packet.GetNumber();
 
-            Console.WriteLine("{0}: {1} (0x{2}) Length: {3} Time: {4}", direction,
-                opcode, ((int)opcode).ToString("X4"), length, time);
+            Console.WriteLine("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}", direction,
+                opcode, ((int)opcode).ToString("X4"), length, time, number);
 
             if (Handlers.ContainsKey(opcode))
             {

@@ -26,7 +26,7 @@ namespace WowPacketParser.Parsing.Parsers
             var flags2 = (MovementFlagExtra)packet.ReadInt16();
             Console.WriteLine("Extra Movement Flags: " + flags2);
 
-            var time = packet.ReadInt32("Time");
+            packet.ReadInt32("Time");
             var pos = packet.ReadVector4();
             Console.WriteLine("Position: " + pos);
             info.Position = new Vector3(pos.X, pos.Y, pos.Z);

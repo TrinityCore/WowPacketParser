@@ -17,7 +17,7 @@ namespace WowPacketParser.Misc.Objects
 
         public MovementInfo Movement { get; set; }
 
-        public new Dictionary<int, UpdateField> UpdateFields { get; set; }
+        public Dictionary<int, UpdateField> UpdateFields { get; set; }
 
         public List<Aura> Auras { get; set; }
 

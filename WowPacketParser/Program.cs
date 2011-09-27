@@ -24,9 +24,15 @@ namespace WowPacketParser
             bool sqlOutput = false;
             bool noDump = false;
             int packetsToRead = 0; // 0 -> all packets
+            int packetNumberLow = 0; // 0 -> No low limit
+            int packetNumberHigh = 0; // 0 -> No high limit
             bool prompt = false;
             try
             {
+                packetNumberLow = int.Parse(ConfigurationManager.AppSettings["FilterPacketNumLow"]);
+                packetNumberHigh = int.Parse(ConfigurationManager.AppSettings["FilterPacketNumHigh"]);
+                if (packetNumberLow > packetNumberHigh)
+                    throw new System.Exception("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
                 filters = ConfigurationManager.AppSettings["Filters"];
                 ignoreFilters = ConfigurationManager.AppSettings["IgnoreFilters"];
                 sqlOutput = ConfigurationManager.AppSettings["SQLOutput"].Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase);
@@ -84,7 +90,7 @@ namespace WowPacketParser
                 Console.WriteLine("Reading file [" + System.IO.Path.GetFileName(file) + "]");
                 try
                 {
-                    var packets = Reader.Read(file, filters, ignoreFilters, packetsToRead);
+                    var packets = Reader.Read(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead);
                     if (packets == null)
                     {
                         Console.Clear();

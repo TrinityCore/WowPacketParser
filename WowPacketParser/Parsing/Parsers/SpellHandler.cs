@@ -153,7 +153,7 @@ namespace WowPacketParser.Parsing.Parsers
             var pguid = packet.ReadPackedGuid();
             Console.WriteLine("GUID: " + pguid);
 
-            var aura = ReadAuraUpdateBlock(packet);
+            ReadAuraUpdateBlock(packet);
             // TODO: Add this aura to a list of objects (searching by guid)
         }
 
@@ -163,9 +163,9 @@ namespace WowPacketParser.Parsing.Parsers
             var pguid = packet.ReadPackedGuid();
             Console.WriteLine("GUID: " + pguid);
 
-            var aura = new Aura();
+            /*var aura =*/ new Aura();
             while (!packet.IsRead())
-                aura = ReadAuraUpdateBlock(packet);
+                /*aura =*/ ReadAuraUpdateBlock(packet);
             // TODO: Add this aura to a list of objects (searching by guid)
         }
 

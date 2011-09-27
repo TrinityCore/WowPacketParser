@@ -320,7 +320,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUERY_QUESTS_COMPLETED_RESPONSE)]
         public static void HandleQuestCompletedResponse(Packet packet)
         {
-            var count = packet.ReadInt32("Count");
+            packet.ReadInt32("Count");
             // Prints ~4k lines of quest IDs, should be DEBUG only or something...
             /*
             for (var i = 0; i < count; i++)
