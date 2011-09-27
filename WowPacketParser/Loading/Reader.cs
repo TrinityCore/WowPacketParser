@@ -50,12 +50,22 @@ namespace WowPacketParser.Loading
                         if (!string.IsNullOrEmpty(filters))
                         {
                             add = false;
+
                             foreach (var opc in appliedFilters)
                             {
                                 if (opcode.ToString().Contains(opc))
                                 {
                                     add = true;
                                     break;
+                                }
+                                else
+                                {
+                                    var opcodeString = "0x" + ((int)opcode).ToString("X4");
+                                    if (opcodeString.Contains(opc))
+                                    {
+                                        add = true;
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -68,6 +78,15 @@ namespace WowPacketParser.Loading
                                 {
                                     add = false;
                                     break;
+                                }
+                                else
+                                {
+                                    var opcodeString = "0x" + ((int)opcode).ToString("X4");
+                                    if (opcodeString.Contains(opc))
+                                    {
+                                        add = false;
+                                        break;
+                                    }
                                 }
                             }
                         }
