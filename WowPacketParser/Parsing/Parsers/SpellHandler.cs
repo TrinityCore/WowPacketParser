@@ -225,7 +225,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Target Flags: " + targetFlags);
 
             if (targetFlags.HasAnyFlag(TargetFlag.Unit | TargetFlag.PvpCorpse | TargetFlag.Object |
-                TargetFlag.Corpse | TargetFlag.SpellDynamic4)
+                TargetFlag.Corpse | TargetFlag.SpellDynamic4))
             {
                 var tGuid = packet.ReadPackedGuid();
                 Console.WriteLine("Target GUID: " + tGuid);
