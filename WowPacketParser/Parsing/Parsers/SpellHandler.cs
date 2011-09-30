@@ -25,7 +25,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSetPower(Packet packet)
         {
             var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid); 
+            Console.WriteLine("GUID: " + guid);
 
             var type = (PowerType)packet.ReadByte();
             Console.WriteLine("Power Type: " + type);
@@ -225,17 +225,32 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Target Flags: " + targetFlags);
 
             if (targetFlags.HasAnyFlag(TargetFlag.Unit | TargetFlag.PvpCorpse | TargetFlag.Object |
-                TargetFlag.Corpse | TargetFlag.SpellDynamic4 | TargetFlag.Item | TargetFlag.TradeItem
-                | TargetFlag.SourceLocation | TargetFlag.DestinationLocation))
+                TargetFlag.Corpse | TargetFlag.SpellDynamic4)
             {
                 var tGuid = packet.ReadPackedGuid();
                 Console.WriteLine("Target GUID: " + tGuid);
             }
 
-            if (targetFlags.HasAnyFlag(TargetFlag.SourceLocation | TargetFlag.DestinationLocation))
+            if (targetFlags.HasAnyFlag(TargetFlag.Item | TargetFlag.TradeItem))
             {
+                var tGuid = packet.ReadPackedGuid();
+                Console.WriteLine("Item Target GUID: " + tGuid);
+            }
+
+            if (targetFlags.HasFlag(TargetFlag.SourceLocation))
+            {
+                var tGuid = packet.ReadPackedGuid();
+                Console.WriteLine("Source Transport GUID: " + tGuid);
                 var pos = packet.ReadVector3();
-                Console.WriteLine("Position: " + pos);
+                Console.WriteLine("Source Position: " + pos);
+            }
+
+            if (targetFlags.HasFlag(TargetFlag.DestinationLocation))
+            {
+                var tGuid = packet.ReadPackedGuid();
+                Console.WriteLine("Destination Transport GUID: " + tGuid);
+                var pos = packet.ReadVector3();
+                Console.WriteLine("Destination Position: " + pos);
             }
 
             if (targetFlags.HasFlag(TargetFlag.NameString))
