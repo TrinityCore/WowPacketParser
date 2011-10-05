@@ -53,7 +53,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Unk Byte (BattlefieldList)");
         }
 
-        //[Parser(Opcode.SMSG_BATTLEFIELD_LIST)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_LIST)]
         public static void HandleBattlefieldListServer(Packet packet)
         {
             packet.ReadGuid("GUID");
