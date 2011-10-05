@@ -83,5 +83,28 @@ namespace WowPacketParser.Misc
                 return dungeonId + " (" + name + ")";
             return dungeonId.ToString();
         }
+
+        public static string GetExistingBattlegroundName(int id)
+        {
+            if (!DBC.DBCStore.DBC.Enabled()) // Could use a more general solution here
+                return string.Empty;
+            if (id <= 0)
+                return string.Empty;
+
+            BattlemasterListEntry data;
+            if (!DBC.DBCStore.DBC.BattlemasterList.TryGetValue((uint)id, out data))
+                return "-Unknown-";
+            return data.GetName();
+        }
+
+        public static string BattlegroundLine(int id)
+        {
+            if (id == 0)
+                return "0";
+            var name = GetExistingBattlegroundName(id);
+            if (!String.IsNullOrEmpty(name))
+                return id + " (" + name + ")";
+            return id.ToString();
+        }
     }
 }

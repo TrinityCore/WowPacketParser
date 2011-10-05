@@ -6,6 +6,14 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class CombatHandler
     {
+        [Parser(Opcode.SMSG_PVP_CREDIT)]
+        public static void HandlePvPCredit(Packet packet)
+        {
+            packet.ReadUInt32("Honor");
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32("Rank");
+        }
+
         [Parser(Opcode.SMSG_AI_REACTION)]
         public static void HandleAIReaction(Packet packet)
         {

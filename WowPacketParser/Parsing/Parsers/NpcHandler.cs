@@ -124,7 +124,6 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.CMSG_GOSSIP_HELLO)]
         [Parser(Opcode.CMSG_TRAINER_LIST)]
-        [Parser(Opcode.CMSG_BATTLEMASTER_HELLO)]
         [Parser(Opcode.CMSG_LIST_INVENTORY)]
         [Parser(Opcode.MSG_TABARDVENDOR_ACTIVATE)]
         [Parser(Opcode.CMSG_BANKER_ACTIVATE)]
