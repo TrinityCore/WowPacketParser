@@ -95,9 +95,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Repeatable");
             packet.ReadInt32("Max Invites");
             Console.WriteLine("Dungeon ID: " + Extensions.DungeonLine(packet.ReadInt32()));
-            packet.ReadPackedTime("Unk PackedTime");
-            packet.ReadPackedTime("Event Time");
             var flags = packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
+            packet.ReadPackedTime("Event Time");
+            packet.ReadPackedTime("Unk PackedTime");
             packet.ReadInt32("Guild");
 
             if ((flags & CalendarFlag.WithoutInvites) != 0)
