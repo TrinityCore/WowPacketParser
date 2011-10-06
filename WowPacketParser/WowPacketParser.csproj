@@ -172,6 +172,14 @@
     <Compile Include="Enums\GroupMemberStatusFlag.cs" />
     <Compile Include="Enums\GroupTypeFlag.cs" />
     <Compile Include="Enums\GroupUpdateFlag.cs" />
+    <Compile Include="Enums\GuildCommandType.cs" />
+    <Compile Include="Enums\GuildCommandError.cs" />
+    <Compile Include="Enums\GuildBankEventLogType.cs" />
+    <Compile Include="Enums\GuildBankRightsFlag.cs" />
+    <Compile Include="Enums\GuildEventLogType.cs" />
+    <Compile Include="Enums\GuildEmblemError.cs" />
+    <Compile Include="Enums\GuildRankRightsFlag.cs" />
+    <Compile Include="Enums\GuildEventType.cs" />
     <Compile Include="Enums\HighGuidMask.cs" />
     <Compile Include="Enums\HighGuidType.cs" />
     <Compile Include="Enums\Holiday.cs" />

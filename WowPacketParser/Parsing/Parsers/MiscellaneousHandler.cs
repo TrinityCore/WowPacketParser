@@ -191,7 +191,6 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Allow: " + unk);
         }
 
-        [Parser(Opcode.CMSG_GUILD_ROSTER)]
         [Parser(Opcode.CMSG_QUERY_QUESTS_COMPLETED)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
