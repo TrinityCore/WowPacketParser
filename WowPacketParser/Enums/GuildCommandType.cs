@@ -2,21 +2,21 @@
 {
     public enum  GuildCommandType
     {
-        Create = 0,
-        Invite = 1,
-        Quit = 3,
-        GuildChat = 5,
-        Promote = 6,
-        Demote = 7,
-        Removed = 8,
-        Leader = 10,
-        UpdateMOTD = 11,
-        Chat = 13,
-        Founder = 14,
-        CreateRank = 16,
+        Create         = 0,
+        Invite         = 1,
+        Quit           = 3,
+        GetRoster      = 5,
+        Promote        = 6,
+        Demote         = 7,
+        Remove         = 8,
+        ChangeLeader   = 10,
+        EditMOTD       = 11,
+        GuildChat      = 13,
+        Founder        = 14,
+        CreateRank     = 16,
         EditPublicNote = 19,
-        Unk21 = 21, // Appears after SMSG_GUILD_BANK_LIST Money (0, 0, -1, 0, 0)
-        Unk22 = 22,
-        Unk25 = 25
+        ViewTab        = 21,
+        MoveItem       = 22,
+        Repair         = 25
     }
 }

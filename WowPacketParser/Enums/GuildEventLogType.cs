@@ -2,11 +2,11 @@
 {
     public enum  GuildEventLogType
     {
-        Invite = 1,
-        JoinGuild = 2,
-        PromotePlayer = 3,
-        DemotePlayer = 4,
-        Uninvite = 5,
-        LeaveGuild = 6
+        InvitePlayer   = 1,
+        JoinGuild      = 2,
+        PromotePlayer  = 3,
+        DemotePlayer   = 4,
+        UninvitePlayer = 5,
+        LeaveGuild     = 6
     }
 }

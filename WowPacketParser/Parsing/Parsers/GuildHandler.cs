@@ -205,7 +205,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadUInt64("Money");
             var tabId = packet.ReadByte("Tab Id");
-            packet.ReadInt32("Reaining Slots");
+            packet.ReadInt32("Remaining Slots");
             var tabInfo = packet.ReadBoolean("Has Tab Info?");
             if (tabId == 0 && tabInfo)
             {
@@ -357,7 +357,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadGuid("GUID 2");
                 if (type == GuildEventLogType.PromotePlayer || type == GuildEventLogType.DemotePlayer)
                     packet.ReadByte("Rank");
-                packet.ReadUInt32("Time");
+                packet.ReadUInt32("Time Ago");
             }
         }
 
@@ -384,7 +384,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        // Missing sniffs
+        // Missing Opcodes
         //[Parser(Opcode.CMSG_MAELSTROM_RENAME_GUILD)]
         //[Parser(Opcode.SMSG_GUILD_DECLINE)]
         //[Parser(Opcode.UMSG_UPDATE_GUILD)]
