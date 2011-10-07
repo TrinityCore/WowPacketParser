@@ -38,12 +38,12 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < numFields; i++)
             {
                 packet.ReadEnum<GuildRankRightsFlag>("[" + i + "] Rights", TypeCode.UInt32);
-                packet.ReadUInt32("[" + i + "] Money Per Day");
+                packet.ReadInt32("[" + i + "] Money Per Day");
 
                 for (var j = 0; j < 6; j++)
                 {
                     packet.ReadEnum<GuildBankRightsFlag>("[" + i + "][" + j + "] Tab Rights", TypeCode.UInt32);
-                    packet.ReadUInt32("[" + i + "][" + j + "] Tab Slots");
+                    packet.ReadInt32("[" + i + "][" + j + "] Tab Slots");
                 }
             }
 
@@ -157,7 +157,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Rank Id");
             packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.UInt32);
             packet.ReadCString("Name");
-            packet.ReadUInt32("Money Per Day");
+            packet.ReadInt32("Money Per Day");
             for (var i = 0; i < 6; i++)
             {
                 packet.ReadEnum<GuildBankRightsFlag>("[" + i + "] Tab Rights", TypeCode.UInt32);
@@ -189,7 +189,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGuildBankerActivate(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadByte("Unk Byte (First Time after Login?)");
+            packet.ReadBoolean("Full Slot List");
         }
 
         [Parser(Opcode.CMSG_GUILD_BANK_QUERY_TAB)]
@@ -197,7 +197,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadByte("Tab Id");
-            packet.ReadByte("Unk Byte");
+            packet.ReadBoolean("Full Slot List"); // false = only slots updated in last operation are shown. True = all slots updated
         }
 
         [Parser(Opcode.SMSG_GUILD_BANK_LIST)]
@@ -205,9 +205,8 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadUInt64("Money");
             var tabId = packet.ReadByte("Tab Id");
-            packet.ReadInt32("Remaining Slots");
-            var tabInfo = packet.ReadBoolean("Has Tab Info?");
-            if (tabId == 0 && tabInfo)
+            packet.ReadInt32("Remaining Withdraw");
+            if (packet.ReadBoolean("Full Slot List") && tabId == 0)
             {
                 var size = packet.ReadByte("Number of Tabs");
                 for (var i = 0; i < size; i++)
@@ -224,12 +223,12 @@ namespace WowPacketParser.Parsing.Parsers
                 var entry = packet.ReadUInt32("[" + i + "] Item Entry");
                 if (entry > 0)
                 {
-                    packet.ReadUInt32("[" + i + "] Unk Uint32 1"); // Only seen 98304 and 98336
-                    var ramdonEnchant = packet.ReadUInt32("[" + i + "] Random Item Property Id");
-                    if (ramdonEnchant > 0)
+                    packet.ReadEnum<ItemFlag>("[" + i + "] Item Flags?", TypeCode.UInt32);
+                    var ramdonEnchant = packet.ReadInt32("[" + i + "] Random Item Property Id");
+                    if (ramdonEnchant != 0)
                         packet.ReadUInt32("[" + i + "] Item Suffix Factor");
                     packet.ReadUInt32("[" + i + "] Stack Count");
-                    packet.ReadUInt32("[" + i + "] Unk Uint32 2");
+                    packet.ReadUInt32("[" + i + "] Unk Uint32 2"); // Only seen 0
                     packet.ReadByte("[" + i + "] Spell Charges");
                     var enchantment = packet.ReadByte("[" + i + "] Number of Enchantments");
                     for (var j = 0; j < enchantment; j++)
@@ -250,7 +249,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadByte("Dest Tab Id");
                 packet.ReadByte("Dest Slot Id");
-                packet.ReadUInt32("Unk Uint32 1");
+                packet.ReadUInt32("Dest Item Entry");
                 packet.ReadByte("Tab Id");
                 packet.ReadByte("Slot Id");
                 packet.ReadUInt32("Item Entry");
@@ -372,12 +371,22 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     var type = packet.ReadEnum<GuildBankEventLogType>("[" + i + "] Bank Log Event Type", TypeCode.Byte);
                     packet.ReadGuid("[" + i + "] GUID");
-                    packet.ReadUInt32("[" + i + "] Item Or Money");
-                    if (type < GuildBankEventLogType.DepositMoney)
+                    if (type == GuildBankEventLogType.BuySlot)
+                        packet.ReadUInt32("[" + i + "] Cost");
+                    else
                     {
-                        packet.ReadUInt32("[" + i + "] Stack Count");
-                        if (type == GuildBankEventLogType.MoveItem)
-                            packet.ReadByte("Tab Id");
+                        if (type == GuildBankEventLogType.DepositMoney ||
+                            type == GuildBankEventLogType.WithdrawMoney ||
+                            type == GuildBankEventLogType.RepairMoney)
+                            packet.ReadUInt32("[" + i + "] Money");
+                        else
+                        {
+                            packet.ReadUInt32("[" + i + "] Item Entry");
+                            packet.ReadUInt32("[" + i + "] Stack Count");
+                            if (type == GuildBankEventLogType.MoveItem ||
+                                type == GuildBankEventLogType.MoveItem2)
+                                packet.ReadByte("[" + i + "] Tab Id");
+                        }
                     }
                     packet.ReadUInt32("[" + i + "] Time");
                 }
