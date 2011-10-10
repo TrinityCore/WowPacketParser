@@ -8,24 +8,25 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class SpellHandler
     {
+        [Parser(Opcode.SMSG_COOLDOWN_EVENT)]
+        public static void HandleCooldownEvent(Packet packet)
+        {
+            Console.WriteLine("Spell ID: " + Extensions.SpellLine(packet.ReadInt32()));
+            packet.ReadGuid("GUID");
+        }
+
         [Parser(Opcode.SMSG_SEND_UNLEARN_SPELLS)]
         public static void HandleSendUnlearnSpells(Packet packet)
         {
-            var count = packet.ReadInt32();
-            Console.WriteLine("Count: " + count);
-
+            var count = packet.ReadInt32("Count");
             for (var i = 0; i < count; i++)
-            {
-                var spellId = packet.ReadInt32();
-                Console.WriteLine("Spell ID " + i + ": " + Extensions.SpellLine(spellId));
-            }
+                Console.WriteLine("[" + i + "] Spell ID: " + Extensions.SpellLine(packet.ReadInt32()));
         }
 
         [Parser(Opcode.SMSG_POWER_UPDATE)]
         public static void HandleSetPower(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadPackedGuid("GUID");
 
             var type = (PowerType)packet.ReadByte();
             Console.WriteLine("Power Type: " + type);
