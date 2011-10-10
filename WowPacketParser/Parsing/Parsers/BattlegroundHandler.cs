@@ -329,7 +329,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("[" + i + "] Captain");
                 packet.ReadByte("[" + i + "] Level");
                 packet.ReadByte("[" + i + "] Class");
-                packet.ReadUInt32("[" + i + "] Week Played");
+                packet.ReadUInt32("[" + i + "] Week Games");
                 packet.ReadUInt32("[" + i + "] Week Win");
                 packet.ReadUInt32("[" + i + "] Seasonal Games");
                 packet.ReadUInt32("[" + i + "] Seasonal Wins");
@@ -347,6 +347,18 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleArenaOpponentUpdate(Packet packet)
         {
             packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.SMSG_ARENA_TEAM_STATS)]
+        public static void HandleArenaTeamStats(Packet packet)
+        {
+            packet.ReadUInt32("Team Id");
+            packet.ReadUInt32("Rating");
+            packet.ReadUInt32("Week Games");
+            packet.ReadUInt32("Week Win");
+            packet.ReadUInt32("Seasonal Games");
+            packet.ReadUInt32("Seasonal Wins");
+            packet.ReadUInt32("Rank");
         }
 
         //[Parser(Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_REQUEST)]
