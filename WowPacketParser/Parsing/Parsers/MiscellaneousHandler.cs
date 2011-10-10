@@ -179,7 +179,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadVector3("Position");
         }
 
-        [Parser(Opcode.CMSG_QUERY_QUESTS_COMPLETED)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
         [Parser(Opcode.CMSG_CALENDAR_GET_NUM_PENDING)]
@@ -203,7 +202,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BATTLEFIELD_STATUS)]
         [Parser(Opcode.CMSG_LFG_GET_STATUS)]
         [Parser(Opcode.SMSG_LFG_DISABLED)]
-        [Parser(Opcode.SMSG_QUESTLOG_FULL)]
         [Parser(Opcode.CMSG_CHANNEL_VOICE_ON)]
         [Parser(Opcode.SMSG_COMSAT_CONNECT_FAIL)]
         [Parser(Opcode.SMSG_COMSAT_RECONNECT_TRY)]

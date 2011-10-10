@@ -333,6 +333,8 @@
     <Compile Include="SQL\Stores\TrainerSpellStore.cs" />
     <Compile Include="SQL\Stores\VendorItemStore.cs" />
     <Compile Include="Enums\MirrorTimerType.cs" />
+    <Compile Include="Enums\QuestStatus.cs" />
+    <Compile Include="Enums\QuestReasonType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
