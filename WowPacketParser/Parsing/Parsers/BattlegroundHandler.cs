@@ -343,6 +343,12 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_ARENA_OPPONENT_UPDATE)]
+        public static void HandleArenaOpponentUpdate(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+        }
+
         //[Parser(Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_REQUEST)]
         //[Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING)]
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE)]
