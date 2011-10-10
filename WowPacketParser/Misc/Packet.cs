@@ -406,6 +406,13 @@ namespace WowPacketParser.Misc
             return val;
         }
 
+        public LfgEntry ReadLfgEntry(string name)
+        {
+            var val = new LfgEntry(ReadInt32());
+            Console.WriteLine("{0}: {1}", name, val);
+            return val;
+        }
+
         private KeyValuePair<long, T> ReadEnum<T>(TypeCode code)
         {
             var type = typeof(T);

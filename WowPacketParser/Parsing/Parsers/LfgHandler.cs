@@ -137,11 +137,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LFG_PLAYER_REWARD)]
         public static void HandleLfgCompletionReward(Packet packet)
         {
-            var int1 = packet.ReadLfgEntry();
-            Console.WriteLine("Random LFG Entry: " + int1);
-
-            var int2 = packet.ReadInt32();
-            Console.WriteLine("Actual LFG Entry: " + int2);
+            packet.ReadLfgEntry("Random LFG Entry");
+            packet.ReadLfgEntry("Actual LFG Entry");
 
             ReadLfgRewardBlock(packet);
         }
