@@ -171,6 +171,14 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadEnum<MirrorTimerType>("Timer Type", TypeCode.UInt32);
         }
+
+        [Parser(Opcode.SMSG_DEATH_RELEASE_LOC)]
+        public static void HandleDeathReleaseLoc(Packet packet)
+        {
+            Console.WriteLine("Map Id: " + Extensions.MapLine(packet.ReadInt32()));
+            packet.ReadVector3("Position");
+        }
+
         [Parser(Opcode.CMSG_QUERY_QUESTS_COMPLETED)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
