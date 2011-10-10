@@ -52,5 +52,18 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Map Id: " + Extensions.MapLine(packet.ReadInt32()));
         }
 
+        [Parser(Opcode.MSG_RAID_TARGET_UPDATE)]
+        public static void HandleRaidTargetUpdate(Packet packet)
+        {
+            var type = packet.ReadByte("Type");
+            if (type == 0)
+            {
+                packet.ReadGuid("Who GUID");
+                packet.ReadByte("Icon Id");
+                packet.ReadGuid("Target GUID");
+            }
+            else if (type != 255 && packet.GetDirection() == Direction.ClientToServer)
+                packet.ReadGuid("Target GUID");
+        }
     }
 }

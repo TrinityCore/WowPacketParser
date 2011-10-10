@@ -313,57 +313,46 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Battle Id");
         }
 
+        [Parser(Opcode.SMSG_ARENA_TEAM_ROSTER)]
+        public static void HandleArenaTeamRoster(Packet packet)
+        {
+            packet.ReadUInt32("Team Id");
+            var unk = packet.ReadByte("Unk Byte");
+            var count = packet.ReadUInt32("Member count");
+            packet.ReadByte("Type");
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadGuid("[" + i + "] GUID");
+                packet.ReadByte("[" + i + "] Online");
+                packet.ReadCString("[" + i + "] Name");
+                packet.ReadUInt32("[" + i + "] Captain");
+                packet.ReadByte("[" + i + "] Level");
+                packet.ReadByte("[" + i + "] Class");
+                packet.ReadUInt32("[" + i + "] Week Played");
+                packet.ReadUInt32("[" + i + "] Week Win");
+                packet.ReadUInt32("[" + i + "] Seasonal Games");
+                packet.ReadUInt32("[" + i + "] Seasonal Wins");
+                packet.ReadUInt32("[" + i + "] Personal Rating");
+                if (unk > 0)
+                {
+                    packet.ReadSingle("[" + i + "] Unk float 1");
+                    packet.ReadSingle("[" + i + "] Unk float 2");
+                }
+
+            }
+        }
+
         //[Parser(Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_REQUEST)]
-        public static void HandleBattlefieldMgrQueueRequest(Packet packet)
-        {
-        }
-
         //[Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING)]
-        public static void HandleBattlefieldMgrEjectPending(Packet packet)
-        {
-
-        }
-
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE)]
-        public static void HandleBattlefieldMgrAdvanceState(Packet packet)
-        {
-
-        }
-
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_SET_NEXT_TRANSITION_TIME)]
-        public static void HandleBattlefieldMgrSetNextTransitionTime(Packet packet)
-        {
-
-        }
-
         //[Parser(Opcode.SMSG_JOINED_BATTLEGROUND_QUEUE)]
-        public static void HandleJoinBattlegroundQueue(Packet packet)
-        {
-
-        }
-
         //[Parser(Opcode.SMSG_BATTLEGROUND_INFO_THROTTLED)]
-        public static void HandleBattlefieldInfoThrottled(Packet packet)
-        {
-
-        }
-
         //[Parser(Opcode.SMSG_BATTLEFIELD_PORT_DENIED)]
-        public static void HandleBattlefieldPortDenied(Packet packet)
-        {
-
-        }
-
         //[Parser(Opcode.CMSG_START_BATTLEFIELD_CHEAT)]
-        public static void HandleBattlefieldCheatStart(Packet packet)
-        {
-
-        }
-
         //[Parser(Opcode.CMSG_END_BATTLEFIELD_CHEAT)]
-        public static void HandleBattlefieldCheatEnd(Packet packet)
-        {
 
-        }
+
     }
 }
