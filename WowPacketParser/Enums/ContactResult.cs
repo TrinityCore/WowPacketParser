@@ -28,6 +28,7 @@ namespace WowPacketParser.Enums
         MuteRemoved = 23,
         MuteNameAmbiguous = 24,
         Unknown1 = 25,
-        Unknown2 = 26
+        Unknown2 = 26,
+        Unknown3 = 27
     }
 }
