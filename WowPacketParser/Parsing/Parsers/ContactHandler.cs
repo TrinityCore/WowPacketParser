@@ -53,13 +53,20 @@ namespace WowPacketParser.Parsing.Parsers
 
             switch (result)
             {
-                case ContactResult.FriendAddedOnline:
                 case ContactResult.FriendAddedOffline:
+                {
+                    
+                    packet.ReadCString("Note");
+                    break;
+                }
+                case ContactResult.FriendAddedOnline:
+                {
+                    
+                    packet.ReadCString("Note");
+                    // fall through
+                }
                 case ContactResult.Online:
                 {
-                    if (result != ContactResult.Online)
-                        packet.ReadCString("Note");
-
                     ReadSingleContactBlock(packet, false);
                     break;
                 }
