@@ -494,5 +494,12 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid();
             Console.WriteLine("GUID: " + guid);
         }
+
+        [Parser(Opcode.SMSG_CLIENT_CONTROL_UPDATE)]
+        public static void HandleClientControlUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid("GUID");
+            packet.ReadByte("AllowMove");
+        }
     }
 }
