@@ -54,22 +54,22 @@ namespace WowPacketParser.Parsing.Parsers
             switch (result)
             {
                 case ContactResult.FriendAddedOffline:
-                {
-                    
                     packet.ReadCString("Note");
                     break;
-                }
                 case ContactResult.FriendAddedOnline:
-                {
-                    
                     packet.ReadCString("Note");
-                    // fall through
-                }
+                    // No break intended
                 case ContactResult.Online:
                 {
                     ReadSingleContactBlock(packet, false);
                     break;
                 }
+                case ContactResult.Unknown2:
+                    packet.ReadByte("Unk byte 1");
+                    break;
+                case ContactResult.Unknown3:
+                    packet.ReadInt32("Unk int");
+                    break;
             }
         }
     }
