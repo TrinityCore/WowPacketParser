@@ -9,77 +9,60 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
         public static void HandleFeatureSystemStatus(Packet packet)
         {
-            var unknown = packet.ReadByte();
-            Console.WriteLine("Unk Byte: " + unknown);
-
-            var voiceChat = packet.ReadBoolean();
-            Console.WriteLine("Voice Chat On: " + voiceChat);
+            packet.ReadByte("Unk Byte");
+            packet.ReadBoolean("Enable Voice Chat");
         }
 
         [Parser(Opcode.CMSG_REALM_SPLIT)]
         public static void HandleClientRealmSplit(Packet packet)
         {
-            var unk = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + unk);
+            packet.ReadInt32("Unk Int32");
         }
 
         [Parser(Opcode.SMSG_REALM_SPLIT)]
         public static void HandleServerRealmSplit(Packet packet)
         {
-            var unk = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + unk);
-
-            var state = (RealmSplitState)packet.ReadInt32();
-            Console.WriteLine("Split State: " + state);
-
-            var unkDate = packet.ReadCString();
-            Console.WriteLine("Unk String: " + unkDate);
+            packet.ReadInt32("Unk Int32");
+            packet.ReadEnum<RealmSplitState>("Split State", TypeCode.Int32);
+            packet.ReadCString("Unk String");
         }
 
         [Parser(Opcode.CMSG_PING)]
         public static void HandleClientPing(Packet packet)
         {
-            var ping = packet.ReadInt32();
-            Console.WriteLine("Ping: " + ping);
-
-            var latency = packet.ReadInt32();
-            Console.WriteLine("Latency: " + latency);
+            packet.ReadInt32("Ping");
+            packet.ReadInt32("Latency");
         }
 
         [Parser(Opcode.SMSG_PONG)]
         public static void HandleServerPong(Packet packet)
         {
-            var ping = packet.ReadInt32();
-            Console.WriteLine("Ping: " + ping);
+            packet.ReadInt32("Ping");
         }
 
         [Parser(Opcode.SMSG_CLIENTCACHE_VERSION)]
         public static void HandleClientCacheVersion(Packet packet)
         {
-            var version = packet.ReadInt32();
-            Console.WriteLine("Version: " + version);
+            packet.ReadInt32("Version");
         }
 
         [Parser(Opcode.SMSG_TIME_SYNC_REQ)]
         public static void HandleTimeSyncReq(Packet packet)
         {
-            var gameTime = packet.ReadInt32();
-            Console.WriteLine("Count: " + gameTime);
+            packet.ReadInt32("Count");
         }
 
         [Parser(Opcode.SMSG_LEARNED_DANCE_MOVES)]
         public static void HandleLearnedDanceMoves(Packet packet)
         {
-            var unk64 = packet.ReadInt64();
-            Console.WriteLine("Dance Move ID: " + unk64);
+            packet.ReadInt32("Dance Move Id");
         }
 
         [Parser(Opcode.SMSG_TRIGGER_CINEMATIC)]
         [Parser(Opcode.SMSG_TRIGGER_MOVIE)]
         public static void HandleTriggerSequence(Packet packet)
         {
-            var id = packet.ReadInt32();
-            Console.WriteLine("Sequence ID: " + id);
+            packet.ReadInt32("Sequence Id");
         }
 
         [Parser(Opcode.SMSG_PLAY_SOUND)]
@@ -87,49 +70,30 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PLAY_OBJECT_SOUND)]
         public static void HandleSoundMessages(Packet packet)
         {
-            var soundId = packet.ReadInt32();
-            Console.WriteLine("Sound ID: " + soundId);
+            packet.ReadInt32("Sound Id");
 
-            if (packet.GetOpcode() != Opcode.SMSG_PLAY_OBJECT_SOUND)
-                return;
-
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            if (packet.GetOpcode() == Opcode.SMSG_PLAY_OBJECT_SOUND)
+                packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.SMSG_WEATHER)]
         public static void HandleWeatherStatus(Packet packet)
         {
-            var state = (WeatherState)packet.ReadInt32();
-            Console.WriteLine("State: " + state);
-
-            var grade = packet.ReadSingle();
-            Console.WriteLine("Grade: " + grade);
-
-            var unkByte = packet.ReadByte();
-            Console.WriteLine("Unk Byte: " + unkByte);
+            packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
+            packet.ReadSingle("Grade");
+            packet.ReadByte("Unk Byte");
         }
 
         [Parser(Opcode.SMSG_LEVELUP_INFO)]
         public static void HandleLevelUp(Packet packet)
         {
-            var level = packet.ReadInt32();
-            Console.WriteLine("Level: " + level);
-
-            var health = packet.ReadInt32();
-            Console.WriteLine("Health: " + health);
-
+            packet.ReadInt32("Level");
+            packet.ReadInt32("Health");
             for (var i = 0; i < 6; i++)
-            {
-                var power = packet.ReadInt32();
-                Console.WriteLine((PowerType)i + " Value: " + power);
-            }
+                packet.ReadInt32("Power " + (PowerType)i);
 
             for (var i = 0; i < 5; i++)
-            {
-                var stat = packet.ReadInt32();
-                Console.WriteLine((StatType)i + " Value: " + stat);
-            }
+                packet.ReadInt32("StatType " + (StatType)i);
 
             SessionHandler.LoggedInCharacter.Level = level;
         }
@@ -154,41 +118,41 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_AREATRIGGER)]
         public static void HandleClientAreaTrigger(Packet packet)
         {
-            var id = packet.ReadInt32();
-            Console.WriteLine("Area Trigger ID: " + id);
+            packet.ReadInt32("Area Trigger Id");
         }
 
         [Parser(Opcode.SMSG_PRE_RESURRECT)]
         public static void HandlePreRessurect(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadPackedGuid("GUID");
         }
 
         [Parser(Opcode.SMSG_FORCE_ANIM)]
         public static void HandleForceAnimation(Packet packet) // It's still unknown until confirmed.
         {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
-
-            var str = packet.ReadCString();
-            Console.WriteLine("Unk String: " + str);
+            packet.ReadGuid("GUID");
+            packet.ReadCString("Unk String");
         }
 
         [Parser(Opcode.SMSG_SUSPEND_COMMS)]
         [Parser(Opcode.CMSG_SUSPEND_COMMS_ACK)]
         public static void HandleSuspendCommsPackets(Packet packet)
         {
-            var unk = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + unk);
+            packet.ReadInt32("Unk Int32");
         }
 
         [Parser(Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID1)]
         [Parser(Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID2)]
         public static void HandleLowLevelRaidPackets(Packet packet)
         {
-            var unk = packet.ReadBoolean();
-            Console.WriteLine("Allow: " + unk);
+            packet.ReadBoolean("Allow");
+        }
+
+        [Parser(Opcode.SMSG_EXPLORATION_EXPERIENCE)]
+        public static void HandleExplorationExperience(Packet packet)
+        {
+            packet.ReadUInt32("Area Id");
+            packet.ReadUInt32("Experience");
         }
 
         [Parser(Opcode.CMSG_QUERY_QUESTS_COMPLETED)]

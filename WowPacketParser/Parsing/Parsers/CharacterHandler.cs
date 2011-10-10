@@ -31,24 +31,15 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleClientCharCreate(Packet packet)
         {
             packet.ReadCString("Name");
-
             packet.ReadEnum<Race>("Race", TypeCode.Byte);
-
             packet.ReadEnum<Class>("Class", TypeCode.Byte);
-
             packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
-
             packet.ReadByte("Skin");
-
             packet.ReadByte("Face");
-
             packet.ReadByte("Hair Style");
-
             packet.ReadByte("Hair Color");
-
             packet.ReadByte("Facial Hair");
-
-            packet.ReadByte("Outfit ID");
+            packet.ReadByte("Outfit Id");
         }
 
         [Parser(Opcode.CMSG_CHAR_DELETE)]
@@ -68,13 +59,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CHAR_RENAME)]
         public static void HandleServerCharRename(Packet packet)
         {
-            var result = packet.ReadEnum<ResponseCode>("Race", TypeCode.Byte);
-
-            if (result != ResponseCode.RESPONSE_SUCCESS)
+            if (packet.ReadEnum<ResponseCode>("Race", TypeCode.Byte) != ResponseCode.RESPONSE_SUCCESS)
                 return;
 
             packet.ReadGuid("GUID");
-
             packet.ReadCString("Name");
         }
 
@@ -89,9 +77,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleAlterAppearance(Packet packet)
         {
             packet.ReadByte("Hair Style");
-
             packet.ReadByte("Hair Color");
-
             packet.ReadByte("Facial Hair");
         }
 
@@ -105,44 +91,28 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleClientCharCustomize(Packet packet)
         {
             packet.ReadGuid("GUID");
-
             packet.ReadCString("New Name");
-
             packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
-
             packet.ReadByte("Skin");
-
             packet.ReadByte("Face");
-
             packet.ReadByte("Hair Style");
-
             packet.ReadByte("Hair Color");
-
             packet.ReadByte("Facial Hair");
         }
 
         [Parser(Opcode.SMSG_CHAR_CUSTOMIZE)]
         public static void HandleServerCharCustomize(Packet packet)
         {
-            var response = packet.ReadEnum<ResponseCode>("Response", TypeCode.Byte);
-
-            if (response != ResponseCode.RESPONSE_SUCCESS)
+            if (packet.ReadEnum<ResponseCode>("Response", TypeCode.Byte) != ResponseCode.RESPONSE_SUCCESS)
                 return;
 
             packet.ReadGuid("GUID");
-
             packet.ReadCString("Name");
-
             packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
-
             packet.ReadByte("Skin");
-
             packet.ReadByte("Face");
-
             packet.ReadByte("Hair Style");
-
             packet.ReadByte("Hair Color");
-
             packet.ReadByte("Facial Hair");
         }
 
@@ -156,81 +126,58 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
             {
                 var guid = packet.ReadGuid("GUID");
-
                 var name = packet.ReadCString("Name");
-
                 var race = packet.ReadEnum<Race>("Race", TypeCode.Byte);
-
                 var clss = packet.ReadEnum<Class>("Class", TypeCode.Byte);
-
                 packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
-
                 packet.ReadByte("Skin");
-
                 packet.ReadByte("Face");
-
                 packet.ReadByte("Hair Style");
-
                 packet.ReadByte("Hair Color");
-
                 packet.ReadByte("Facial Hair");
 
                 var level = packet.ReadByte("Level");
-
-                var zone = packet.ReadInt32("Zone ID");
-
-                var mapId = packet.ReadInt32();
-                Console.WriteLine("Map ID: " + Extensions.MapLine(mapId));
+                var zone = packet.ReadInt32("Zone Id");
+                Console.WriteLine("Map Id: " + Extensions.MapLine(packet.ReadInt32()));
 
                 var pos = packet.ReadVector3("Position");
-
-                packet.ReadInt32("Guild ID");
-
+                packet.ReadInt32("Guild Id");
                 packet.ReadEnum<CharacterFlag>("Character Flags", TypeCode.Int32);
-
                 packet.ReadEnum<CustomizationFlag>("Customization Flags", TypeCode.Int32);
 
                 var firstLogin = packet.ReadBoolean("First Login");
-
-                packet.ReadInt32("Pet Display ID");
-
+                packet.ReadInt32("Pet Display Id");
                 packet.ReadInt32("Pet Level");
-
                 packet.ReadEnum<CreatureFamily>("Pet Family", TypeCode.Int32);
 
                 for (var j = 0; j < 19; j++)
                 {
-                    packet.ReadInt32("Equip Display ID");
-
+                    packet.ReadInt32("Equip Display Id");
                     packet.ReadEnum<InventoryType>("Equip Inventory Type", TypeCode.Byte);
-
-                    packet.ReadInt32("Equip Aura ID");
+                    packet.ReadInt32("Equip Aura Id");
                 }
 
                 for (var j = 0; j < 4; j++)
                 {
-                    packet.ReadInt32("Bag Display ID");
-
+                    packet.ReadInt32("Bag Display Id");
                     packet.ReadEnum<InventoryType>("Bag Inventory Type", TypeCode.Byte);
-
-                    packet.ReadInt32("Bag Aura ID");
+                    packet.ReadInt32("Bag Aura Id");
                 }
 
-                if (firstLogin)
-                    if (StartInfos.All(item => item.Race != race && item.Class != clss))
-                    {
-                        var startInfo = new StartInfo
-                                            {
-                                                Race = race,
-                                                Class = clss,
-                                                Position = pos,
-                                                Map = mapId,
-                                                Zone = zone
-                                            };
+                if (firstLogin && StartInfos.All(item => item.Race != race && item.Class != clss))
+                {
+                    var startInfo = new StartInfo
+                                        {
+                                            Race = race,
+                                            Class = clss,
+                                            Position = pos,
+                                            Map = mapId,
+                                            Zone = zone
+                                        };
 
-                        StartInfos.Add(startInfo);
-                        SQLStore.WriteData(SQLStore.StartPositions.GetCommand(race, clss, mapId, zone, pos));
-                    }
+                    StartInfos.Add(startInfo);
+                    SQLStore.WriteData(SQLStore.StartPositions.GetCommand(race, clss, mapId, zone, pos));
+                }
 
                 var chInfo = new CharacterInfo
                                  {
@@ -250,14 +197,12 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSetFactionStanding(Packet packet)
         {
             packet.ReadSingle("Unk Float");
-
             packet.ReadByte("Unk UInt8");
-
             var amount = packet.ReadInt32("Count");
 
             for (int i = 0; i < amount; i++)
             {
-                packet.ReadInt32("Faction List ID");
+                packet.ReadInt32("Faction List Id");
                 packet.ReadInt32("Standing");
             }
         }
@@ -266,8 +211,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePlayerVehicleData(Packet packet)
         {
             packet.ReadPackedGuid("GUID");
-
-            packet.ReadInt32("Vehicle ID");
+            packet.ReadInt32("Vehicle Id");
         }
 
         [Parser(Opcode.CMSG_PLAYED_TIME)]
@@ -283,22 +227,19 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_LOG_XPGAIN)]
-        public static void HandeLogXPGain(Packet packet)
+        public static void HandleLogXPGain(Packet packet)
         {
             packet.ReadGuid("GUID");
-
             packet.ReadUInt32("Total XP");
-
             var type = packet.ReadByte("XP type"); // Need enum
 
             if (type == 0) // kill
             {
                 packet.ReadUInt32("Base XP");
-
                 packet.ReadSingle("Group rate (unk)");
             }
 
-            packet.ReadByte("RAF");
+            packet.ReadBoolean("RAF Bonus");
         }
     }
 }
