@@ -87,7 +87,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LEVELUP_INFO)]
         public static void HandleLevelUp(Packet packet)
         {
-            packet.ReadInt32("Level");
+            var level = packet.ReadInt32("Level");
             packet.ReadInt32("Health");
             for (var i = 0; i < 6; i++)
                 packet.ReadInt32("Power " + (PowerType)i);

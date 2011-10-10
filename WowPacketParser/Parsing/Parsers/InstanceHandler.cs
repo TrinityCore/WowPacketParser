@@ -10,62 +10,47 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_SET_RAID_DIFFICULTY)]
         public static void HandleSetDifficulty(Packet packet)
         {
-            var difficulty = (MapDifficulty)packet.ReadInt32();
-            Console.WriteLine("Difficulty: " + difficulty);
-
+            packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
             if (packet.GetDirection() != Direction.ServerToClient)
                 return;
 
-            var unkByte = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 1: " + unkByte);
-
-            var inGroup = packet.ReadInt32();
-            Console.WriteLine("In Group: " + inGroup);
+            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("In Group");
         }
 
         [Parser(Opcode.SMSG_INSTANCE_DIFFICULTY)]
         public static void HandleInstanceDifficulty(Packet packet)
         {
-            var diff = (MapDifficulty)packet.ReadInt32();
-            Console.WriteLine("Instance Difficulty: " + diff);
-
-            var unk2 = packet.ReadInt32();
-            Console.WriteLine("Player Difficulty: " + unk2);
+            packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
+            packet.ReadInt32("Player Difficulty");
         }
 
         [Parser(Opcode.SMSG_CHANGEPLAYER_DIFFICULTY_RESULT)]
         public static void HandlePlayerChangeDifficulty(Packet packet)
         {
-            var type = (DifficultyChangeType)packet.ReadInt32();
-            Console.WriteLine("Change Type: " + type);
-
+            var type = packet.ReadEnum<DifficultyChangeType>("Change Type", TypeCode.Int32);
             switch (type)
             {
                 case DifficultyChangeType.PlayerDifficulty1:
-                {
-                    var difficulty = packet.ReadByte();
-                    Console.WriteLine("Player Difficulty: " + difficulty);
+                    packet.ReadByte("Player Difficulty");
                     break;
-                }
                 case DifficultyChangeType.SpellDuration:
-                {
-                    var duration = packet.ReadInt32();
-                    Console.WriteLine("Spell Duration: " + duration);
+                    packet.ReadInt32("Spell Duration");
                     break;
-                }
                 case DifficultyChangeType.Time:
-                {
-                    var time = packet.ReadInt32();
-                    Console.WriteLine("Time: " + time);
+                    packet.ReadInt32("Time");
                     break;
-                }
                 case DifficultyChangeType.MapDifficulty:
-                {
-                    var difficulty = (MapDifficulty)packet.ReadInt32();
-                    Console.WriteLine("Map Difficulty: " + difficulty);
+                    packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
                     break;
-                }
             }
         }
+
+        [Parser(Opcode.SMSG_RESET_FAILED_NOTIFY)]
+        public static void HandleResetFailedNotify(Packet packet)
+        {
+            Console.WriteLine("Map Id: " + Extensions.MapLine(packet.ReadInt32()));
+        }
+
     }
 }

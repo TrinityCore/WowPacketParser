@@ -138,7 +138,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                 var level = packet.ReadByte("Level");
                 var zone = packet.ReadInt32("Zone Id");
-                Console.WriteLine("Map Id: " + Extensions.MapLine(packet.ReadInt32()));
+                var mapId = packet.ReadInt32();
+                Console.WriteLine("Map Id: " + Extensions.MapLine(mapId));
 
                 var pos = packet.ReadVector3("Position");
                 packet.ReadInt32("Guild Id");
