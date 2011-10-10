@@ -155,6 +155,22 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Experience");
         }
 
+        [Parser(Opcode.SMSG_START_MIRROR_TIMER)]
+        public static void HandleStartMirrorTimer(Packet packet)
+        {
+            packet.ReadEnum<MirrorTimerType>("Timer Type", TypeCode.UInt32);
+            packet.ReadUInt32("Current Value");
+            packet.ReadUInt32("Max Value");
+            packet.ReadUInt32("Regen");
+            packet.ReadByte("Unk Byte");
+            packet.ReadUInt32("Spell Id");
+        }
+
+        [Parser(Opcode.SMSG_STOP_MIRROR_TIMER)]
+        public static void HandleStopMirrorTimer(Packet packet)
+        {
+            packet.ReadEnum<MirrorTimerType>("Timer Type", TypeCode.UInt32);
+        }
         [Parser(Opcode.CMSG_QUERY_QUESTS_COMPLETED)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]

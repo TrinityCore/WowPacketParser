@@ -319,12 +319,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Team Id");
             var unk = packet.ReadByte("Unk Byte");
             var count = packet.ReadUInt32("Member count");
-            packet.ReadByte("Type");
+            packet.ReadUInt32("Type");
 
             for (var i = 0; i < count; i++)
             {
                 packet.ReadGuid("[" + i + "] GUID");
-                packet.ReadByte("[" + i + "] Online");
+                packet.ReadBoolean("[" + i + "] Online");
                 packet.ReadCString("[" + i + "] Name");
                 packet.ReadUInt32("[" + i + "] Captain");
                 packet.ReadByte("[" + i + "] Level");
