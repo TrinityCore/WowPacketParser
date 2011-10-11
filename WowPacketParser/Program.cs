@@ -23,7 +23,7 @@ namespace WowPacketParser
             string ignoreFilters = string.Empty;
             bool sqlOutput = false;
             bool noDump = false;
-            int packetsToRead = 0; // 0 -> all packets
+            int packetsToRead = 0; // 0 -> All packets
             int packetNumberLow = 0; // 0 -> No low limit
             int packetNumberHigh = 0; // 0 -> No high limit
             bool prompt = false;
@@ -100,8 +100,15 @@ namespace WowPacketParser
                         continue;
                     }
 
+                   
                     if (packets.Count() > 0)
                     {
+                        ClientVersion.Time = packets.First().GetTime();
+                        ClientVersion.ComputeDateTime();
+                        // debug, will remove
+                        Console.WriteLine("TIME PACKET: " + packets.First().GetTime());
+                        Console.WriteLine("VERSION: " + ClientVersion.Version);
+                        
                         Console.WriteLine("Parsing {0} packets...", packets.Count());
                         var startTime = DateTime.Now;
 
@@ -139,12 +146,12 @@ namespace WowPacketParser
 
         private static void EndPrompt(bool prompt)
         {
-            if (prompt)
-            {
-                Console.WriteLine("Press any key to continue.");
-                Console.ReadKey();
-                Console.WriteLine();
-            }
+            if (!prompt)
+                return;
+
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadKey();
+            Console.WriteLine();
         }
     }
 }
