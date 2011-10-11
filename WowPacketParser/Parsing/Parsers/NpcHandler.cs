@@ -50,13 +50,13 @@ namespace WowPacketParser.Parsing.Parsers
                 var cost = packet.ReadInt32();
                 Console.WriteLine("Cost " + i + ": " + cost);
 
-                var profDialog = packet.ReadBoolean();
+                var profDialog = packet.ReadInt32();
                 Console.WriteLine("Profession Dialog " + i + ": " + profDialog);
 
-                var profButton = packet.ReadBoolean();
+                var profButton = packet.ReadInt32();
                 Console.WriteLine("Profession Button " + i + ": " + profButton);
 
-                var reqLevel = packet.ReadInt32();
+                var reqLevel = packet.ReadByte();
                 Console.WriteLine("Required Level " + i + ": " + reqLevel);
 
                 var reqSkill = packet.ReadInt32();
