@@ -179,6 +179,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadVector3("Position");
         }
 
+        [Parser(Opcode.CMSG_ZONEUPDATE)]
+        public static void HandleZoneUpdate(Packet packet)
+        {
+            packet.ReadUInt32("Zone Id");
+        }
+
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
         [Parser(Opcode.CMSG_CALENDAR_GET_NUM_PENDING)]
