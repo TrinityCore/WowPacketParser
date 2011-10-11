@@ -14,9 +14,7 @@ namespace WowPacketParser.Parsing.Parsers
             // State = 0: Looks to be sent when initial action buttons get sent, however on Trinity we use 1 since 0 had some difficulties
             // State = 1: Used in any SMSG_ACTION_BUTTONS packet with button data on Trinity. Only used after spec swaps on retail.
             // State = 2: Clears the action bars client sided. This is sent during spec swap before unlearning and before sending the new buttons
-            var type = packet.ReadByte("Packet Type");
-
-            if (type != 2)
+            if (packet.ReadByte("Packet Type") != 2)
             {
                 for (var i = 0; i < 144; i++)
                 {

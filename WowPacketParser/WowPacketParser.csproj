@@ -207,6 +207,7 @@
     <Compile Include="Enums\LootMethod.cs" />
     <Compile Include="Enums\MapDifficulty.cs" />
     <Compile Include="Enums\Material.cs" />
+    <Compile Include="Enums\MirrorTimerType.cs" />
     <Compile Include="Enums\MiscConstants.cs" />
     <Compile Include="Enums\MovementAnimationState.cs" />
     <Compile Include="Enums\NPCFlags.cs" />
@@ -221,7 +222,9 @@
     <Compile Include="Enums\PetTameFailureReason.cs" />
     <Compile Include="Enums\PowerType.cs" />
     <Compile Include="Enums\QuestFlag.cs" />
+    <Compile Include="Enums\QuestGiverStatus.cs" />
     <Compile Include="Enums\QuestMethod.cs" />
+    <Compile Include="Enums\QuestReasonType.cs" />
     <Compile Include="Enums\QuestSort.cs" />
     <Compile Include="Enums\QuestType.cs" />
     <Compile Include="Enums\Race.cs" />
@@ -332,9 +335,6 @@
     <Compile Include="SQL\Stores\StartSpellStore.cs" />
     <Compile Include="SQL\Stores\TrainerSpellStore.cs" />
     <Compile Include="SQL\Stores\VendorItemStore.cs" />
-    <Compile Include="Enums\MirrorTimerType.cs" />
-    <Compile Include="Enums\QuestStatus.cs" />
-    <Compile Include="Enums\QuestReasonType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

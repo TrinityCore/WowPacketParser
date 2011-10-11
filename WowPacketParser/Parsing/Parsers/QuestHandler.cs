@@ -294,7 +294,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleQuestgiverStatus(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadEnum<QuestStatus>("Status", TypeCode.Byte);
+            packet.ReadEnum<QuestGiverStatus>("Status", TypeCode.Byte);
         }
 
         [Parser(Opcode.SMSG_QUESTGIVER_QUEST_LIST)]
@@ -561,7 +561,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
             {
                 packet.ReadGuid("[" + i + "] GUID");
-                packet.ReadEnum<QuestStatus>("[" + i + "] Status", TypeCode.Byte);
+                packet.ReadEnum<QuestGiverStatus>("[" + i + "] Status", TypeCode.Byte);
             }
         }
 
