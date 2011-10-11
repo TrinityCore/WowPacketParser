@@ -393,12 +393,12 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 5; i++)
                 packet.ReadInt32("[" + i + "] Reputation Value");
 
-            for (var i = 0; i < 4; i++)
+            var count3 = packet.ReadUInt32("Quest Emote count");
+            for (var i = 0; i < count3; i++)
             {
                 packet.ReadUInt32("[" + i + "] Emote Id");
                 packet.ReadUInt32("[" + i + "] Emote Delay");
             }
-            packet.ReadUInt32("Unk Uint32 2");
         }
 
         [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST)]
