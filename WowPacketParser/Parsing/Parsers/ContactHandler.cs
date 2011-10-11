@@ -57,13 +57,14 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadCString("Note");
                     break;
                 case ContactResult.FriendAddedOnline:
-                    packet.ReadCString("Note");
-                    // No break intended
-                case ContactResult.Online:
                 {
+                    packet.ReadCString("Note");
                     ReadSingleContactBlock(packet, false);
                     break;
                 }
+                case ContactResult.Online:
+                    ReadSingleContactBlock(packet, false);
+                    break;
                 case ContactResult.Unknown2:
                     packet.ReadByte("Unk byte 1");
                     break;
