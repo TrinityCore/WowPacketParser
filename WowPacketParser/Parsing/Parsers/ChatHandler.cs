@@ -87,14 +87,14 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadEnum<ChatTag>("Chat Tag", TypeCode.Byte);
 
-            if (type == ChatMessageType.Achievement && type == ChatMessageType.GuildAchievement)
+            if (type == ChatMessageType.Achievement || type == ChatMessageType.GuildAchievement)
                 packet.ReadInt32("Achievement ID");
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT)]
         public static void HandleClientChatMessage(Packet packet)
         {
-            var type = packet.ReadEnum<ChatMessageType>("Type", TypeCode.Byte);
+            var type = packet.ReadEnum<ChatMessageType>("Type", TypeCode.Int32);
 
             packet.ReadEnum<Language>("Language", TypeCode.Int32);
 
