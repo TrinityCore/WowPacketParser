@@ -398,5 +398,157 @@ namespace WowPacketParser.Parsing.Parsers
         //[Parser(Opcode.SMSG_GUILD_DECLINE)]
         //[Parser(Opcode.UMSG_UPDATE_GUILD)]
         //[Parser(Opcode.UMSG_DELETE_GUILD_CHARTER)]
+
+        [Parser(Opcode.SMSG_PETITION_SHOWLIST)]
+        public static void HandlePetitionShowList(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            var counter = packet.ReadByte("Counter");
+            for (var i = 0; i < counter; i++)
+            {
+                packet.ReadUInt32("Index");
+                packet.ReadUInt32("Charter Entry");
+                packet.ReadUInt32("Charter Display");
+                packet.ReadUInt32("Charter Cost");
+                packet.ReadUInt32("Unk Uint32 1");
+                packet.ReadUInt32("Required signs");
+            }
+        }
+
+        [Parser(Opcode.CMSG_PETITION_BUY)]
+        public static void HandlePetitionBuy(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32("Unk UInt32 1");
+            packet.ReadUInt64("Unk UInt64 1");
+            packet.ReadCString("Name");
+            packet.ReadCString("Text");
+            packet.ReadUInt32("Unk UInt32 2");
+            packet.ReadUInt32("Unk UInt32 3");
+            packet.ReadUInt32("Unk UInt32 4");
+            packet.ReadUInt32("Unk UInt32 5");
+            packet.ReadUInt32("Unk UInt32 6");
+            packet.ReadUInt32("Unk UInt32 7");
+            packet.ReadUInt32("Unk UInt32 8");
+            packet.ReadUInt16("Unk UInt16 1");
+            packet.ReadUInt32("Unk UInt32 9");
+            packet.ReadUInt32("Unk UInt32 10");
+            packet.ReadUInt32("Unk UInt32 11");
+
+            for (var i = 0; i < 10; i++)
+                packet.ReadCString("[" + i + "] Unk String");
+
+            packet.ReadUInt32("Client Index");
+            packet.ReadUInt32("Unk UInt32 12");
+        }
+
+        [Parser(Opcode.CMSG_PETITION_SHOW_SIGNATURES)]
+        public static void HandlePetitionShowSignatures(Packet packet)
+        {
+            packet.ReadGuid("Petition GUID");
+        }
+
+        [Parser(Opcode.SMSG_PETITION_SHOW_SIGNATURES)]
+        public static void HandlePetitionShowSignaturesServer(Packet packet)
+        {
+            packet.ReadGuid("Petition GUID");
+            packet.ReadGuid("Owner GUID");
+            packet.ReadUInt32("Guild/Team GUID");
+            var counter = packet.ReadByte("Sign count");
+            for (var i = 0; i < counter; i++)
+            {
+                packet.ReadGuid("[" + i + "] Player GUID");
+                packet.ReadUInt32("[" + i + "] Unk UInt32 1");
+            }
+        }
+
+        [Parser(Opcode.CMSG_PETITION_SIGN)]
+        public static void HandlePetitionSign(Packet packet)
+        {
+            packet.ReadGuid("Petition GUID");
+            packet.ReadByte("Unk Byte 1");
+        }
+
+        [Parser(Opcode.SMSG_PETITION_SIGN_RESULTS)]
+        public static void HandlePetitionSignResult(Packet packet)
+        {
+            packet.ReadGuid("Petition GUID");
+            packet.ReadGuid("Player GUID");
+            packet.ReadEnum<PetitionResultType>("Petition Result", TypeCode.UInt32);
+        }
+
+        [Parser(Opcode.MSG_PETITION_DECLINE)]
+        public static void HandlePetitionDecline(Packet packet)
+        {
+            if (packet.GetDirection() == Direction.ClientToServer)
+                packet.ReadGuid("Petition GUID");
+            else
+                packet.ReadGuid("Player GUID");
+        }
+
+        [Parser(Opcode.CMSG_OFFER_PETITION)]
+        public static void HandlePetitionOffer(Packet packet)
+        {
+            packet.ReadUInt32("Unk UInt3 1");
+            packet.ReadGuid("Petition GUID");
+            packet.ReadGuid("Owner GUID");
+        }
+
+        [Parser(Opcode.CMSG_TURN_IN_PETITION)]
+        public static void HandlePetitionTurnIn(Packet packet)
+        {
+            packet.ReadGuid("Petition GUID");
+        }
+
+        [Parser(Opcode.SMSG_TURN_IN_PETITION_RESULTS)]
+        public static void HandlePetitionTurnInResults(Packet packet)
+        {
+            packet.ReadEnum<PetitionResultType>("Result", TypeCode.UInt32);
+        }
+
+        [Parser(Opcode.CMSG_PETITION_QUERY)]
+        public static void HandlePetitionQuery(Packet packet)
+        {
+            packet.ReadUInt32("Guild/Team GUID");
+            packet.ReadGuid("Petition GUID");
+        }
+
+        [Parser(Opcode.SMSG_PETITION_QUERY_RESPONSE)]
+        public static void HandlePetitionQueryResponse(Packet packet)
+        {
+            packet.ReadUInt32("Guild/Team GUID");
+            packet.ReadGuid("Owner GUID");
+            packet.ReadCString("Name");
+            packet.ReadCString("Text");
+            packet.ReadUInt32("Signs Needed");
+            packet.ReadUInt32("Signs Needed");
+            packet.ReadUInt32("Unk UInt32 4");
+            packet.ReadUInt32("Unk UInt32 5");
+            packet.ReadUInt32("Unk UInt32 6");
+            packet.ReadUInt32("Unk UInt32 7");
+            packet.ReadUInt32("Unk UInt32 8");
+            packet.ReadUInt16("Unk UInt16 1");
+            packet.ReadUInt32("Unk UInt32 (Level?)");
+            packet.ReadUInt32("Unk UInt32 (Level?)");
+            packet.ReadUInt32("Unk UInt32 11");
+
+            for (var i = 0; i < 10; i++)
+                packet.ReadCString("[" + i + "] Unk String");
+
+            packet.ReadUInt32("Client Index");
+            packet.ReadUInt32("Petition Type (0: Guild / 1: Arena)");
+        }
+
+        [Parser(Opcode.MSG_PETITION_RENAME)]
+        public static void HandlePetitionRename(Packet packet)
+        {
+            packet.ReadGuid("Petition GUID");
+            packet.ReadCString("New Name");
+        }
+
+        //[Parser(Opcode.SMSG_OFFER_PETITION_ERROR)]
+        public static void HandlePetitionError(Packet packet)
+        {
+        }
     }
 }
