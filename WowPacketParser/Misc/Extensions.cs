@@ -31,7 +31,7 @@ namespace WowPacketParser.Misc
 
         public static string GetExistingSpellName(int spellId)
         {
-            if (!DBC.DBCStore.DBC.Enabled()) // Could use a more general solution here
+            if (!DBC.DBCStore.DBC.Enabled) // Could use a more general solution here
                 return string.Empty;
             SpellEntry spell;
             if (spellId <= 0)
@@ -53,7 +53,7 @@ namespace WowPacketParser.Misc
 
         public static string GetExistingMapName(int mapId)
         {
-            if (!DBC.DBCStore.DBC.Enabled()) // Could use a more general solution here
+            if (!DBC.DBCStore.DBC.Enabled) // Could use a more general solution here
                 return string.Empty;
             if (mapId < 0)
                 return string.Empty;
@@ -73,7 +73,7 @@ namespace WowPacketParser.Misc
 
         public static string GetExistingLFGDungeonsName(int dungeonId)
         {
-            if (!DBC.DBCStore.DBC.Enabled()) // Could use a more general solution here
+            if (!DBC.DBCStore.DBC.Enabled) // Could use a more general solution here
                 return string.Empty;
             if (dungeonId <= 0)
                 return string.Empty;
@@ -95,7 +95,7 @@ namespace WowPacketParser.Misc
 
         public static string GetExistingBattlegroundName(int id)
         {
-            if (!DBC.DBCStore.DBC.Enabled()) // Could use a more general solution here
+            if (!DBC.DBCStore.DBC.Enabled) // Could use a more general solution here
                 return string.Empty;
             if (id <= 0)
                 return string.Empty;

@@ -11,15 +11,15 @@ namespace WowPacketParser.DBC
         {
             try
             {
-                DBCStore.DBC.Spell = DBCReader.ReadDBC<SpellEntry>(DBC.DBCStore.DBC.SpellStrings);
-                DBCStore.DBC.Map = DBCReader.ReadDBC<MapEntry>(DBC.DBCStore.DBC.MapStrings);
-                DBCStore.DBC.LFGDungeons = DBCReader.ReadDBC<LFGDungeonsEntry>(DBC.DBCStore.DBC.LFGDungeonsStrings);
-                DBCStore.DBC.BattlemasterList = DBCReader.ReadDBC<BattlemasterListEntry>(DBC.DBCStore.DBC.BattlemasterListStrings);
+                DBCStore.DBC.Spell = DBCReader.ReadDBC<SpellEntry>(DBCStore.DBC.SpellStrings);
+                DBCStore.DBC.Map = DBCReader.ReadDBC<MapEntry>(DBCStore.DBC.MapStrings);
+                DBCStore.DBC.LFGDungeons = DBCReader.ReadDBC<LFGDungeonsEntry>(DBCStore.DBC.LFGDungeonsStrings);
+                DBCStore.DBC.BattlemasterList = DBCReader.ReadDBC<BattlemasterListEntry>(DBCStore.DBC.BattlemasterListStrings);
             }
             catch (FileNotFoundException e)
             {
                 Console.WriteLine(e.Message);
-                DBCStore.DBC.DisableDBC();
+                DBCStore.DBC.Enabled = false;
             }
         }
     }

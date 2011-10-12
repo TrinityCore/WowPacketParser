@@ -13,18 +13,7 @@ namespace WowPacketParser.DBC.DBCStore
         public const int ClientVersion = 12340;
         public const int MaxDBCLocale = 16;
 
-        private static bool _disabled;
-
-        public static void DisableDBC()
-        {
-            _disabled = true;
-        }
-
-        public static bool Enabled()
-        {
-            var b = ConfigurationManager.AppSettings["DBCEnabled"];
-            return (b.Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase) && !_disabled);
-        }
+        public static bool Enabled = ConfigurationManager.AppSettings["DBCEnabled"].Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase);
 
         public static string DBCPath
         {
@@ -49,7 +38,7 @@ namespace WowPacketParser.DBC.DBCStore
             byte[] rawData = reader.ReadBytes(Marshal.SizeOf(typeof(T)));
 
             GCHandle handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);
-            T returnObject = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
+            var returnObject = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
 
             handle.Free();
 
