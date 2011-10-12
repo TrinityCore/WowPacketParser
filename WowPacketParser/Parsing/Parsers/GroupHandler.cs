@@ -9,123 +9,170 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GROUP_LIST)]
         public static void HandleGroupList(Packet packet)
         {
-            var grouptype = (GroupTypeFlag)packet.ReadByte();
-            Console.WriteLine("Group Type: " + grouptype);
-
-            var subgroup = packet.ReadByte();
-            Console.WriteLine("Sub Group: " + subgroup);
-
-            var flags = (GroupUpdateFlag)packet.ReadByte();
-            Console.WriteLine("Flags: " + flags);
-
-            var myroles = packet.ReadByte();
-            Console.WriteLine("own roles: " + myroles);
+            var grouptype = packet.ReadEnum<GroupTypeFlag>("Group Type", TypeCode.Byte);
+            packet.ReadByte("Sub Group");
+            packet.ReadEnum<GroupUpdateFlag>("Flags", TypeCode.Byte);
+            packet.ReadByte("Player's Role");
 
             if (grouptype.HasFlag(GroupTypeFlag.LookingForDungeon))
             {
-                var dungeonStatus = (InstanceStatus)packet.ReadByte();
-                Console.WriteLine("Dungeon Status: " + dungeonStatus);
-
-                var lfgentry = packet.ReadLfgEntry();
-                Console.WriteLine("LFG Entry: " + lfgentry);
+                packet.ReadEnum<InstanceStatus>("Group Type Status", TypeCode.Byte);
+                packet.ReadLfgEntry("LFG Entry");
             }
 
-            var groupGuid = packet.ReadGuid();
-            Console.WriteLine("Group GUID: " + groupGuid);
-
-            var counter = packet.ReadInt32();
-            Console.WriteLine("Counter: " + counter);
-
-            var numFields = packet.ReadInt32();
-            Console.WriteLine("Member Count: " + numFields);
+            packet.ReadGuid("Group GUID");
+            packet.ReadInt32("Counter");
+            var numFields = packet.ReadInt32("Member Count");
 
             for (var i = 0; i < numFields; i++)
             {
-                var name = packet.ReadCString();
-                Console.WriteLine("Name " + i + ": " + name);
-
-                var guid = packet.ReadGuid();
-                Console.WriteLine("GUID " + i + ": " + guid);
-
-                var status = (GroupMemberStatusFlag)packet.ReadByte();
-                Console.WriteLine("Status " + i + ": " + status);
-
-                var subgroup1 = packet.ReadByte();
-                Console.WriteLine("Sub Group" + i + ": " + subgroup1);
-
-                var flags1 = (GroupUpdateFlag)packet.ReadByte();
-                Console.WriteLine("Update Flags " + i + ": " + flags1);
-
-                var role = (LfgRoleFlag)packet.ReadByte();
-                Console.WriteLine("Role " + i + ": " + role);
+                packet.ReadCString("[" + i + "] Name");
+                packet.ReadGuid("[" + i + "] GUID");
+                packet.ReadEnum<GroupMemberStatusFlag>("[" + i + "] Status", TypeCode.Byte);
+                packet.ReadByte("[" + i + "] Sub Group");
+                packet.ReadEnum<GroupUpdateFlag>("[" + i + "] Update Flags", TypeCode.Byte);
+                packet.ReadEnum<LfgRoleFlag>("[" + i + "] Role", TypeCode.Byte);
             }
 
-            var leaderGuid = packet.ReadGuid();
-            Console.WriteLine("Leader GUID: " + leaderGuid);
+            packet.ReadGuid("Leader GUID");
 
             if (numFields <= 0)
                 return;
 
-            var loot = (LootMethod)packet.ReadByte();
-            Console.WriteLine("Loot Method: " + loot);
+            packet.ReadEnum<LootMethod>("Loot Method", TypeCode.Byte);
+            packet.ReadGuid("Looter GUID");
+            packet.ReadEnum<ItemQuality>("Loot Threshold", TypeCode.Byte);
+            packet.ReadEnum<MapDifficulty>("Dungeon Difficulty", TypeCode.Byte);
+            packet.ReadEnum<MapDifficulty>("Raid Difficulty", TypeCode.Byte);
+            packet.ReadByte("Unk Byte");
+        }
 
-            var looterGuid = packet.ReadGuid();
-            Console.WriteLine("Looter GUID: " + looterGuid);
+        [Parser(Opcode.SMSG_PARTY_MEMBER_STATS)]
+        [Parser(Opcode.SMSG_PARTY_MEMBER_STATS_FULL)]
+        public static void HandlePartyMemberStats(Packet packet)
+        {
+            if (packet.GetOpcode() == Opcode.SMSG_PARTY_MEMBER_STATS_FULL)
+                packet.ReadByte("Unk byte");
 
-            var item = (ItemQuality)packet.ReadByte();
-            Console.WriteLine("Loot Threshold: " + item);
+            packet.ReadPackedGuid("GUID");
+            var updateFlags = packet.ReadEnum<GroupUpdateFlag>("Update Flags", TypeCode.Int32);
 
-            var dungeonDifficulty = (MapDifficulty)packet.ReadByte();
-            Console.WriteLine("Dungeon Difficulty: " + dungeonDifficulty);
+            if (updateFlags.HasFlag(GroupUpdateFlag.Status))
+                packet.ReadEnum<GroupMemberStatusFlag>("Status", TypeCode.Int16);
 
-            var raidDifficulty = (MapDifficulty)packet.ReadByte();
-            Console.WriteLine("Raid Difficulty: " + raidDifficulty);
+            if (updateFlags.HasFlag(GroupUpdateFlag.CurrentHealth))
+                packet.ReadInt32("Current Health");
 
-            var unkbyte3 = packet.ReadByte();
-            Console.WriteLine("Unk Byte: " + unkbyte3);
+            if (updateFlags.HasFlag(GroupUpdateFlag.MaxHealth))
+                packet.ReadInt32("Max Health");
+
+            if (updateFlags.HasFlag(GroupUpdateFlag.PowerType))
+                packet.ReadEnum<PowerType>("Power type", TypeCode.Byte);
+
+            if (updateFlags.HasFlag(GroupUpdateFlag.CurrentPower))
+                packet.ReadInt16("Current Power");
+
+            if (updateFlags.HasFlag(GroupUpdateFlag.MaxPower))
+                packet.ReadInt16("Max Power");
+
+            if (updateFlags.HasFlag(GroupUpdateFlag.Level))
+                packet.ReadInt16("Level");
+
+            if (updateFlags.HasFlag(GroupUpdateFlag.Zone))
+                packet.ReadInt16("Zone ID");
+
+            if (updateFlags.HasFlag(GroupUpdateFlag.Position))
+            {
+                packet.ReadInt16("Position X");
+                packet.ReadInt16("Position Y");
+            }
+
+            if (updateFlags.HasFlag(GroupUpdateFlag.Auras))
+            {
+                var auraMask = packet.ReadUInt64("Auramask");
+                var j = 0;
+                for (var i = 0; i < 64; ++i)
+                {
+                    if ((auraMask & ((ulong)1 << i)) != 0)
+                    {
+                        var spellid = packet.ReadInt32("Slot: [" + i + "] Spell Id");
+                        packet.ReadEnum<AuraFlag>("Slot: [" + i + "] Aura flag", TypeCode.Byte);
+                    }
+                }
+            }
+
+            if (updateFlags.HasFlag(GroupUpdateFlag.PetGuid))
+                packet.ReadGuid("Pet GUID");
+
+            if (updateFlags.HasFlag(GroupUpdateFlag.PetName))
+                packet.ReadCString("Pet Name");
+
+            if (updateFlags.HasFlag(GroupUpdateFlag.PetModelId))
+                packet.ReadInt16("Pet Modelid");
+
+            if (updateFlags.HasFlag(GroupUpdateFlag.PetCurrentHealth))
+                packet.ReadInt32("Pet Current Health");
+
+            if (updateFlags.HasFlag(GroupUpdateFlag.PetMaxHealth))
+                packet.ReadInt32("Pet Max Health");
+
+            if (updateFlags.HasFlag(GroupUpdateFlag.PetPowerType))
+                packet.ReadEnum<PowerType>("Pet Power type", TypeCode.Byte);
+
+            if (updateFlags.HasFlag(GroupUpdateFlag.PetCurrentPower))
+                packet.ReadInt16("Pet Current Power");
+
+            if (updateFlags.HasFlag(GroupUpdateFlag.PetMaxPower))
+                packet.ReadInt16("Pet Max Power");
+
+            if (updateFlags.HasFlag(GroupUpdateFlag.PetAuras))
+            {
+                var auraMask = packet.ReadUInt64("Pet Auramask");
+
+                for (var i = 0; i < 64; ++i)
+                {
+                    if ((auraMask & ((ulong)1 << i)) != 0)
+                    {
+                        packet.ReadInt32("Slot: [" + i + "] Spell Id");
+                        packet.ReadEnum<AuraFlag>("Slot: [" + i + "] Aura flag", TypeCode.Byte);
+                    }
+                }
+            }
+
+            if (updateFlags.HasFlag(GroupUpdateFlag.VehicleSeat))
+                packet.ReadInt32("Vehicle Seat");
         }
 
         [Parser(Opcode.SMSG_GROUP_SET_LEADER)]
         public static void HandleGroupSetLeader(Packet packet)
         {
-            var name = packet.ReadCString();
-            Console.WriteLine("Name: " + name);
+            packet.ReadCString("Name");
         }
 
         [Parser(Opcode.CMSG_GROUP_INVITE)]
         public static void HandleGroupInvite(Packet packet)
         {
-            var name = packet.ReadCString();
-            Console.WriteLine("Name: " + name);
-
-            var unkint = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + unkint);
+            packet.ReadCString("Name");
+            packet.ReadInt32("Unk Int32");
         }
 
         [Parser(Opcode.CMSG_GROUP_ACCEPT)]
         public static void HandleGroupAccept(Packet packet)
         {
-            var unkint = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + unkint);
+            packet.ReadInt32("Unk Int32");
         }
 
         [Parser(Opcode.MSG_RANDOM_ROLL)]
         public static void HandleRandomRollPackets(Packet packet)
         {
-            var min = packet.ReadInt32();
-            Console.WriteLine("Minimum: " + min);
-
-            var max = packet.ReadInt32();
-            Console.WriteLine("Maximum: " + max);
+            packet.ReadInt32("Minimum");
+            packet.ReadInt32("Maximum");
 
             if (packet.GetDirection() == Direction.ClientToServer)
                 return;
 
-            var roll = packet.ReadInt32();
-            Console.WriteLine("Roll: " + roll);
-
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadInt32("Roll");
+            packet.ReadGuid("GUID");
         }
     }
 }
