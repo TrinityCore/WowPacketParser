@@ -31,26 +31,16 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_AUTH_SESSION)]
         public static void HandleAuthSession(Packet packet)
         {
-            var build = packet.ReadInt32();
-            Console.WriteLine("Client Build: " + build);
+            // overwrite version
+            ClientVersion.Version = packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int32);
 
-            var unk1 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 1: " + unk1);
+            packet.ReadInt32("Unk Int32 1");
+            packet.ReadCString("Account");
+            packet.ReadInt32("Unk Int32 2");
+            packet.ReadInt32("Client Seed");
+            packet.ReadInt64("Unk Int64");
 
-            var account = packet.ReadCString();
-            Console.WriteLine("Account: " + account);
-
-            var unk2 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 2: " + unk2);
-
-            var clientSeed = packet.ReadInt32();
-            Console.WriteLine("Client Seed: " + clientSeed);
-
-            var unk3 = packet.ReadInt64();
-            Console.WriteLine("Unk Int64: " + unk3);
-
-            var digest = packet.ReadBytes(20);
-            Console.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(digest));
+            Console.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(packet.ReadBytes(20)));
 
             AddonHandler.ReadClientAddonsList(packet);
         }

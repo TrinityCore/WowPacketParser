@@ -140,6 +140,7 @@
     <Compile Include="Enums\Class.cs" />
     <Compile Include="Enums\ClassMask.cs" />
     <Compile Include="Enums\ClientType.cs" />
+    <Compile Include="Enums\ClientVersionBuild.cs" />
     <Compile Include="Enums\ContactEntryFlag.cs" />
     <Compile Include="Enums\ContactListFlag.cs" />
     <Compile Include="Enums\ContactResult.cs" />
