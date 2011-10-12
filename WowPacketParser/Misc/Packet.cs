@@ -52,12 +52,15 @@ namespace WowPacketParser.Misc
         {
             var arr = ReadToEnd();
             var newarr = new byte[inflatedSize];
+
             var inflater = new Inflater();
             inflater.SetInput(arr, 0, arr.Length);
             inflater.Inflate(newarr, 0, inflatedSize);
 
-            var pkt = new Packet(newarr, GetOpcode(), GetTime(), GetDirection(), GetNumber());
-            return pkt;
+            // set stream position to prevent read warnings
+            SetPosition(GetPosition() + arr.Length);
+
+            return new Packet(newarr, GetOpcode(), GetTime(), GetDirection(), GetNumber());
         }
 
         public byte[] GetStream(long offset)
