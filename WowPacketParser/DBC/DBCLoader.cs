@@ -19,6 +19,7 @@ namespace WowPacketParser.DBC
             catch (FileNotFoundException e)
             {
                 Console.WriteLine(e.Message);
+                DBCStore.DBC.DisableDBC();
             }
         }
     }
