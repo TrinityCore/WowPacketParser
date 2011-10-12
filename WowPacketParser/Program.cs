@@ -100,22 +100,12 @@ namespace WowPacketParser
                 try
                 {
                     var packets = Reader.Read(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead);
-                    if (packets == null)
+                    if (packets.Count > 0)
                     {
-                        Console.Clear();
-                        Console.WriteLine("Could not open file [" + file + "] for reading.");
-                        EndPrompt(prompt);
-                        Console.Clear();
-                        continue;
-                    }
-
-                   
-                    if (packets.Count() > 0)
-                    {
-                        ClientVersion.SetVersion(packets.First().GetTime());
+                        ClientVersion.SetVersion(packets[0].GetTime());
 
                         // debug, will remove
-                        Console.WriteLine("TIME PACKET: " + packets.First().GetTime());
+                        Console.WriteLine("TIME PACKET: " + packets[0].GetTime());
                         Console.WriteLine("VERSION: " + ClientVersion.Version);
                         
                         Console.WriteLine("Parsing {0} packets...", packets.Count());

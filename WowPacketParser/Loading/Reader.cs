@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.IO;
 using System.Text;
 using WowPacketParser.Enums;
@@ -10,71 +9,58 @@ namespace WowPacketParser.Loading
 {
     public static class Reader
     {
-        public static IEnumerable<Packet> Read(string fileName, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead)
+        public static List<Packet> Read(string fileName, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead)
         {
-            IEnumerable<Packet> packets = null;
+            var packets = new List<Packet>();
+            var packetNum = -1;
 
-            var packetNum = 0;
-            var packetList = new List<Packet>();
-            var packetsRead = 0;
-
-            using (var bin = new BinaryReader(new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII))
+            IPacketReader reader = null;
+            switch (Path.GetExtension(fileName).ToLower())
             {
-                while (bin.BaseStream.Position != bin.BaseStream.Length)
+                case ".bin":
+                    reader = new BinaryPacketReader(SniffType.Bin, fileName, Encoding.ASCII);
+                    break;
+                case ".pkt":
+                    reader = new BinaryPacketReader(SniffType.Pkt, fileName, Encoding.ASCII);
+                    break;
+                case ".sqlite":
+                    reader = new SQLitePacketReader(fileName);
+                    break;
+                default:
+                    throw new IOException("Invalid file type");
+            }
+
+            while (reader.CanRead())
+            {
+                if (++packetNum < packetNumberLow)
+                    continue;
+
+                var packet = reader.Read(packetNum);
+                if (packet == null)
+                    continue;
+
+                //check for filters
+                bool add =
+                    filters == null || filters.Length == 0 ||
+                    packet.GetOpcode().ToString().MatchesFilters(filters);
+
+                //check for ignore filters
+                if (add && ignoreFilters != null && ignoreFilters.Length > 0)
+                    add = !packet.GetOpcode().ToString().MatchesFilters(ignoreFilters);
+
+                if (add)
                 {
-                    Opcode opcode = 0;
-                    var length = 0;
-                    DateTime time = DateTime.Now;
-                    Direction direction = 0;
-                    byte[] data = {};
-
-                    if (Path.GetExtension(fileName) == ".bin")
-                    {
-                        opcode = (Opcode)bin.ReadInt32();
-                        length = bin.ReadInt32();
-                        time = Utilities.GetDateTimeFromUnixTime(bin.ReadInt32());
-                        direction = (Direction)bin.ReadChar();
-                        data = bin.ReadBytes(length);
-                    }
-                    else if (Path.GetExtension(fileName) == ".pkt")
-                    {
-                        opcode = (Opcode)bin.ReadUInt16();
-                        length = bin.ReadInt32();
-                        direction = (Direction)bin.ReadByte();
-                        time = Utilities.GetDateTimeFromUnixTime((int)bin.ReadInt64());
-                        data = bin.ReadBytes(length);
-                    }
-                    else
-                        throw new IOException("Invalid file type");
-
-                    var num = packetNum++;
-
-                    if (num < packetNumberLow)
-                        continue;
-
-                    var packet = new Packet(data, opcode, time, direction, num);
-
-                    //check for filters
-                    bool add =
-                        filters == null || filters.Length == 0 ||
-                        opcode.ToString().MatchesFilters(filters);
-
-                    //check for ignore filters
-                    if (add && ignoreFilters != null && ignoreFilters.Length > 0)
-                        add = !opcode.ToString().MatchesFilters(ignoreFilters);
-
-                    if (add)
-                    {
-                        packetList.Add(packet);
-                        if (packetsToRead > 0 && ++packetsRead == packetsToRead)
-                            break;
-                    }
-
-                    if (packetNumberHigh > 0 && packetNum > packetNumberHigh)
+                    packets.Add(packet);
+                    if (packetsToRead > 0 && packets.Count == packetsToRead)
                         break;
                 }
-                packets = packetList;
+
+                if (packetNumberHigh > 0 && packetNum > packetNumberHigh)
+                    break;
             }
+
+            if (reader != null)
+                reader.Close();
 
             return packets;
         }
