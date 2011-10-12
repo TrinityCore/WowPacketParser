@@ -103,8 +103,8 @@ namespace WowPacketParser
                    
                     if (packets.Count() > 0)
                     {
-                        ClientVersion.Time = packets.First().GetTime();
-                        ClientVersion.ComputeDateTime();
+                        ClientVersion.SetVersion(packets.First().GetTime());
+
                         // debug, will remove
                         Console.WriteLine("TIME PACKET: " + packets.First().GetTime());
                         Console.WriteLine("VERSION: " + ClientVersion.Version);
