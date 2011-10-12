@@ -10,7 +10,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleEmote(Packet packet)
         {
             packet.ReadInt32("Emote ID");
-
             packet.ReadGuid("GUID");
         }
 
@@ -18,11 +17,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleServerChatMessage(Packet packet)
         {
             var type = packet.ReadEnum<ChatMessageType>("Type", TypeCode.Byte);
-
             packet.ReadEnum<Language>("Language", TypeCode.Int32);
-
             packet.ReadGuid("GUID");
-
             packet.ReadInt32("Unk Int32");
 
             switch (type)
@@ -66,15 +62,12 @@ namespace WowPacketParser.Parsing.Parsers
                 case ChatMessageType.BattleNet:
                 {
                     packet.ReadInt32("Name Length");
-
                     packet.ReadCString("Name");
 
                     var target = packet.ReadGuid("Receiver GUID");
-
                     if (target.GetHighType() == HighGuidType.Unit)
                     {
                         packet.ReadInt32("Receiver Name Length");
-
                         packet.ReadCString("Receiver Name");
                     }
                     break;
@@ -82,9 +75,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             packet.ReadInt32("Text Length");
-
             packet.ReadCString("Text");
-
             packet.ReadEnum<ChatTag>("Chat Tag", TypeCode.Byte);
 
             if (type == ChatMessageType.Achievement || type == ChatMessageType.GuildAchievement)

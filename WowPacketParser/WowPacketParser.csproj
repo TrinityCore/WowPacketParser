@@ -145,6 +145,7 @@
     <Compile Include="Enums\ContactResult.cs" />
     <Compile Include="Enums\ContactStatus.cs" />
     <Compile Include="Enums\BattlegroundStatus.cs" />
+    <Compile Include="Enums\SpellHitType.cs" />
     <Compile Include="Enums\PetitionResultType.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\SpellHitInfo.cs" />

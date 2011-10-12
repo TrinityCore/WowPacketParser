@@ -460,25 +460,15 @@ namespace WowPacketParser.Parsing.Parsers
                 case AuraType.ObsModPower:
                 case AuraType.PeriodicEnergize:
                 {
-                    var powerType = packet.ReadUInt32();
-                    Console.WriteLine("Power type: " + powerType);
-
-                    var damage = packet.ReadUInt32();
-                    Console.WriteLine("Damage: " + damage);
-
+                    packet.ReadEnum<PowerType>("Power type", TypeCode.Int32);
+                    packet.ReadUInt32("Amount");
                     break;
                 }
                 case AuraType.PeriodicManaLeech:
                 {
-                    var powerType = packet.ReadUInt32();
-                    Console.WriteLine("Power type: " + powerType);
-
-                    var amount = packet.ReadUInt32();
-                    Console.WriteLine("Amount: " + amount);
-
-                    var multiplier = packet.ReadSingle();
-                    Console.WriteLine("Gain multiplier: " + multiplier);
-
+                    packet.ReadEnum<PowerType>("Power type", TypeCode.Int32);
+                    packet.ReadUInt32("Amount");
+                    packet.ReadSingle("Gain multiplier");
                     break;
                 }
                 default:
@@ -574,5 +564,72 @@ namespace WowPacketParser.Parsing.Parsers
                     break;
             }
         }
+
+        [Parser(Opcode.SMSG_SPELLNONMELEEDAMAGELOG)]
+        public static void HandleSpellNonMeleeDmgLog(Packet packet)
+        {
+            packet.ReadPackedGuid("Target GUID");
+            packet.ReadPackedGuid("Caster GUID");
+            Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
+            packet.ReadUInt32("Damage");
+            packet.ReadUInt32("Overkill");
+            packet.ReadByte("SchoolMask");
+            packet.ReadUInt32("Absorb");
+            packet.ReadUInt32("Resist");
+            packet.ReadBoolean("Show spellname in log");
+            packet.ReadByte("Unk byte");
+            packet.ReadUInt32("Blocked");
+            packet.ReadEnum<SpellHitType>("HitType", TypeCode.Int32);
+            packet.ReadBoolean("Debug output");
+        }
+
+        [Parser(Opcode.SMSG_SPELLHEALLOG)]
+        public static void HandleSpellHealLog(Packet packet)
+        {
+            packet.ReadPackedGuid("Target GUID");
+            packet.ReadPackedGuid("Caster GUID");
+            Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
+            packet.ReadUInt32("Damage");
+            packet.ReadUInt32("Overkill");
+            packet.ReadUInt32("Absorb");
+            packet.ReadBoolean("Critical");
+            packet.ReadBoolean("Debug output");
+        }
+
+        [Parser(Opcode.SMSG_SPELLENERGIZELOG)]
+        public static void HandleSpellEnergizeLog(Packet packet)
+        {
+            packet.ReadPackedGuid("Target GUID");
+            packet.ReadPackedGuid("Caster GUID");
+            Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
+            packet.ReadEnum<PowerType>("Power type", TypeCode.UInt32);
+            packet.ReadUInt32("Amount");
+        }
+
+        [Parser(Opcode.SMSG_PROCRESIST)]
+        [Parser(Opcode.SMSG_SPELLORDAMAGE_IMMUNE)]
+        public static void HandleSpellProcResist(Packet packet)
+        {
+            packet.ReadPackedGuid("Caster GUID");
+            packet.ReadPackedGuid("Target GUID");
+            Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
+            packet.ReadBoolean("Debug output");
+        }
+
+        [Parser(Opcode.SMSG_SPELLLOGMISS)]
+        public static void HandleSpellLogMiss(Packet packet)
+        {
+            Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
+            packet.ReadPackedGuid("Caster GUID");
+            packet.ReadBoolean("Unk bool");
+
+            var count = packet.ReadUInt32("Target count");
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadPackedGuid("Target GUID");
+                packet.ReadEnum<SpellMissType>("Miss info", TypeCode.Byte);
+            }
+        }
+
     }
 }

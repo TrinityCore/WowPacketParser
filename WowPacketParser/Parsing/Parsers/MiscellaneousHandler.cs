@@ -56,6 +56,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLearnedDanceMoves(Packet packet)
         {
             packet.ReadInt32("Dance Move Id");
+            packet.ReadInt32("Unk int");
         }
 
         [Parser(Opcode.SMSG_TRIGGER_CINEMATIC)]
