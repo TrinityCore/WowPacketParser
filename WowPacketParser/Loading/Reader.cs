@@ -10,14 +10,12 @@ namespace WowPacketParser.Loading
 {
     public static class Reader
     {
-        public static IEnumerable<Packet> Read(string fileName, string filters, string ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead)
+        public static IEnumerable<Packet> Read(string fileName, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead)
         {
             IEnumerable<Packet> packets = null;
 
             var packetNum = 0;
             var packetList = new List<Packet>();
-            var appliedFilters = filters.Split(',');
-            var appliedIgnoreFilters = ignoreFilters.Split(',');
             var packetsRead = 0;
 
             using (var bin = new BinaryReader(new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII))
@@ -56,32 +54,14 @@ namespace WowPacketParser.Loading
 
                     var packet = new Packet(data, opcode, time, direction, num);
 
-                    var add = true;
-                    if (!string.IsNullOrEmpty(filters))
-                    {
-                        add = false;
+                    //check for filters
+                    bool add =
+                        filters == null || filters.Length == 0 ||
+                        opcode.ToString().MatchesFilters(filters);
 
-                        foreach (var opc in appliedFilters)
-                        {
-                            if (opcode.ToString().Contains(opc))
-                            {
-                                add = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (add && !string.IsNullOrEmpty(ignoreFilters))
-                    {
-                        foreach (var opc in appliedIgnoreFilters)
-                        {
-                            if (opcode.ToString().Contains(opc))
-                            {
-                                add = false;
-                                break;
-                            }
-                        }
-                    }
+                    //check for ignore filters
+                    if (add && ignoreFilters != null && ignoreFilters.Length > 0)
+                        add = !opcode.ToString().MatchesFilters(ignoreFilters);
 
                     if (add)
                     {

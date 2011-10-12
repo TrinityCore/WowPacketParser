@@ -18,6 +18,15 @@ namespace WowPacketParser.Misc
             return (val & test) != 0;
         }
 
+        public static bool MatchesFilters(this string value, string[] filters)
+        {
+            foreach (var filter in filters)
+                if (value.Contains(filter))
+                    return true;
+
+            return false;
+        }
+
         // TODO: Merge the next 6 methods and move them to somewhere else
 
         public static string GetExistingSpellName(int spellId)

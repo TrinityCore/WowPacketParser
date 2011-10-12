@@ -19,22 +19,31 @@ namespace WowPacketParser
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             // Read config options
-            string filters = string.Empty;
-            string ignoreFilters = string.Empty;
+            string[] filters = null;
+            string[] ignoreFilters = null;
             bool sqlOutput = false;
             bool noDump = false;
             int packetsToRead = 0; // 0 -> All packets
             int packetNumberLow = 0; // 0 -> No low limit
             int packetNumberHigh = 0; // 0 -> No high limit
             bool prompt = false;
+
             try
             {
                 packetNumberLow = int.Parse(ConfigurationManager.AppSettings["FilterPacketNumLow"]);
                 packetNumberHigh = int.Parse(ConfigurationManager.AppSettings["FilterPacketNumHigh"]);
+
                 if (packetNumberLow > 0 && packetNumberHigh > 0 && packetNumberLow > packetNumberHigh)
                     throw new System.Exception("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
-                filters = ConfigurationManager.AppSettings["Filters"];
-                ignoreFilters = ConfigurationManager.AppSettings["IgnoreFilters"];
+
+                string filtersString = ConfigurationManager.AppSettings["Filters"];
+                if (filtersString != null)
+                    filters = filtersString.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                filtersString = ConfigurationManager.AppSettings["IgnoreFilters"];
+                if (filtersString != null)
+                    ignoreFilters = filtersString.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
                 sqlOutput = ConfigurationManager.AppSettings["SQLOutput"].Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase);
                 noDump = ConfigurationManager.AppSettings["NoDump"].Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase);
                 packetsToRead = int.Parse(ConfigurationManager.AppSettings["PacketsNum"]);
