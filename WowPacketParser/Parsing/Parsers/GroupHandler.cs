@@ -90,12 +90,11 @@ namespace WowPacketParser.Parsing.Parsers
             if (updateFlags.HasFlag(GroupUpdateFlag.Auras))
             {
                 var auraMask = packet.ReadUInt64("Auramask");
-                var j = 0;
                 for (var i = 0; i < 64; ++i)
                 {
                     if ((auraMask & ((ulong)1 << i)) != 0)
                     {
-                        var spellid = packet.ReadInt32("Slot: [" + i + "] Spell Id");
+                        Console.WriteLine("Slot: [" + i + "] Spell ID: " + Extensions.SpellLine(packet.ReadInt32()));
                         packet.ReadEnum<AuraFlag>("Slot: [" + i + "] Aura flag", TypeCode.Byte);
                     }
                 }
@@ -133,7 +132,7 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     if ((auraMask & ((ulong)1 << i)) != 0)
                     {
-                        packet.ReadInt32("Slot: [" + i + "] Spell Id");
+                        Console.WriteLine("Slot: [" + i + "] Spell ID: " + Extensions.SpellLine(packet.ReadInt32()));
                         packet.ReadEnum<AuraFlag>("Slot: [" + i + "] Aura flag", TypeCode.Byte);
                     }
                 }
