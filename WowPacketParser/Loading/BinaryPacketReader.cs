@@ -8,43 +8,43 @@ namespace WowPacketParser.Loading
 {
     public class BinaryPacketReader : IPacketReader
     {
-        private BinaryReader reader = null;
-        private SniffType sniffType;
+        private readonly BinaryReader _reader;
+        private readonly SniffType _sniffType;
 
         public BinaryPacketReader(SniffType type, string fileName, Encoding encoding)
         {
-            sniffType = type;
-            reader = new BinaryReader(new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read), encoding);
+            _sniffType = type;
+            _reader = new BinaryReader(new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read), encoding);
         }
 
         public bool CanRead()
         {
-            return reader.BaseStream.Position != reader.BaseStream.Length;
+            return _reader.BaseStream.Position != _reader.BaseStream.Length;
         }
 
         public Packet Read(int number)
         {
-            Opcode opcode = 0;
-            var length = 0;
-            DateTime time = DateTime.Now;
-            Direction direction = 0;
-            byte[] data = { };
+            Opcode opcode;
+            int length;
+            DateTime time;
+            Direction direction;
+            byte[] data;
 
-            if (sniffType == SniffType.Pkt)
+            if (_sniffType == SniffType.Pkt)
             {
-                opcode = (Opcode)reader.ReadUInt16();
-                length = reader.ReadInt32();
-                direction = (Direction)reader.ReadByte();
-                time = Utilities.GetDateTimeFromUnixTime((int)reader.ReadInt64());
-                data = reader.ReadBytes(length);
+                opcode = (Opcode)_reader.ReadUInt16();
+                length = _reader.ReadInt32();
+                direction = (Direction)_reader.ReadByte();
+                time = Utilities.GetDateTimeFromUnixTime((int)_reader.ReadInt64());
+                data = _reader.ReadBytes(length);
             }
             else
             {
-                opcode = (Opcode)reader.ReadInt32();
-                length = reader.ReadInt32();
-                time = Utilities.GetDateTimeFromUnixTime(reader.ReadInt32());
-                direction = (Direction)reader.ReadChar();
-                data = reader.ReadBytes(length);
+                opcode = (Opcode)_reader.ReadInt32();
+                length = _reader.ReadInt32();
+                time = Utilities.GetDateTimeFromUnixTime(_reader.ReadInt32());
+                direction = (Direction)_reader.ReadChar();
+                data = _reader.ReadBytes(length);
             }
 
             return new Packet(data, opcode, time, direction, number);
@@ -52,8 +52,8 @@ namespace WowPacketParser.Loading
 
         public void Close()
         {
-            if (reader != null)
-                reader.Close();
+            if (_reader != null)
+                _reader.Close();
         }
     }
 }

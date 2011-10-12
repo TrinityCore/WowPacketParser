@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -15,22 +14,24 @@ namespace WowPacketParser.Loading
             var packetNum = -1;
 
             IPacketReader reader = null;
-            switch (Path.GetExtension(fileName).ToLower())
-            {
-                case ".bin":
-                    reader = new BinaryPacketReader(SniffType.Bin, fileName, Encoding.ASCII);
-                    break;
-                case ".pkt":
-                    reader = new BinaryPacketReader(SniffType.Pkt, fileName, Encoding.ASCII);
-                    break;
-                case ".sqlite":
-                    reader = new SQLitePacketReader(fileName);
-                    break;
-                default:
-                    throw new IOException("Invalid file type");
-            }
+            var extension = Path.GetExtension(fileName);
+            if (extension != null)
+                switch (extension.ToLower())
+               {
+                    case ".bin":
+                        reader = new BinaryPacketReader(SniffType.Bin, fileName, Encoding.ASCII);
+                        break;
+                    case ".pkt":
+                        reader = new BinaryPacketReader(SniffType.Pkt, fileName, Encoding.ASCII);
+                        break;
+                    case ".sqlite":
+                        reader = new SQLitePacketReader(fileName);
+                        break;
+                    default:
+                        throw new IOException("Invalid file type");
+                }
 
-            while (reader.CanRead())
+            while (reader != null && reader.CanRead())
             {
                 if (++packetNum < packetNumberLow)
                     continue;

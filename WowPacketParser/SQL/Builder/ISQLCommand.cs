@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace WowPacketParser.SQL.Builder
+﻿namespace WowPacketParser.SQL.Builder
 {
     interface ISQLCommand
     {

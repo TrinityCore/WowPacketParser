@@ -1,5 +1,3 @@
-using WowPacketParser.Enums;
-
 namespace WowPacketParser.Misc
 {
     public struct BgEntry

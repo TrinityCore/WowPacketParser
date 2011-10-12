@@ -9,7 +9,7 @@ namespace WowPacketParser.Misc
         public static ClientVersionBuild Version { get; set; }
 
         // Kept in sync with http://www.wowwiki.com/Public_client_builds
-        private static readonly KeyValuePair<ClientVersionBuild, DateTime>[] _clientVersions = new KeyValuePair<ClientVersionBuild, DateTime>[]
+        private static readonly KeyValuePair<ClientVersionBuild, DateTime>[] _clientVersions = new []
         {
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V2_4_3_8606, new DateTime(2008, 7, 15)),
 
@@ -41,7 +41,7 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V4_1_0_14007, new DateTime(2011, 5, 5)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V4_2_0_14333, new DateTime(2011, 6, 28)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V4_2_0_14480, new DateTime(2011, 9, 8)),
-            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V4_2_2_14545, new DateTime(2011, 9, 30)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V4_2_2_14545, new DateTime(2011, 9, 30))
         };
 
         private static ClientVersionBuild GetCurrentVersion(DateTime time)

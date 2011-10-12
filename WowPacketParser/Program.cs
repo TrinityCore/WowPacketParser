@@ -34,7 +34,7 @@ namespace WowPacketParser
                 packetNumberHigh = int.Parse(ConfigurationManager.AppSettings["FilterPacketNumHigh"]);
 
                 if (packetNumberLow > 0 && packetNumberHigh > 0 && packetNumberLow > packetNumberHigh)
-                    throw new System.Exception("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
+                    throw new Exception("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
 
                 string filtersString = ConfigurationManager.AppSettings["Filters"];
                 if (filtersString != null)
@@ -65,7 +65,7 @@ namespace WowPacketParser
             }
 
             // Read DBCs
-            if (DBCStore.Enabled())
+            if (DBCStore.Enabled)
             {
                 var startTime = DateTime.Now;
                 Console.WriteLine("Loading DBCs");
@@ -96,7 +96,7 @@ namespace WowPacketParser
 
             foreach (string file in files)
             {
-                Console.WriteLine("Reading file [" + System.IO.Path.GetFileName(file) + "]");
+                Console.WriteLine("Reading file [" + Path.GetFileName(file) + "]");
                 try
                 {
                     var packets = Reader.Read(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead);

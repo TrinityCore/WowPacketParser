@@ -9,7 +9,7 @@ namespace WowPacketParser.Parsing.Parsers
         // Hack to read BG Guids (didn't wanted to touch Guid class till 100% sure this is real GUID as it seems to be)
         private static bool ReadBgGuid(UInt64 guid)
         {
-            var bgGuid = new WowPacketParser.Misc.Guid(guid);
+            var bgGuid = new Misc.Guid(guid);
             bool isBg = bgGuid.GetHighType() == HighGuidType.Unknown3;
             int low = (int)bgGuid.GetLow();
             if (isBg)

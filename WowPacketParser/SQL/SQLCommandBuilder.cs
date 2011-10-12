@@ -40,10 +40,7 @@ namespace WowPacketParser.SQL
 
         public string BuildInsert()
         {
-            var str = string.Empty;
-            
-            
-            str = "INSERT INTO `" + Table + "` (`";
+            var str = "INSERT INTO `" + Table + "` (`";
 
             for (var i = 0; i < InsertValues.Count; i++)
             {

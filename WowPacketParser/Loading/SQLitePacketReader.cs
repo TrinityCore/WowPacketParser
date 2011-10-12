@@ -7,30 +7,30 @@ namespace WowPacketParser.Loading
 {
     public class SQLitePacketReader : IPacketReader
     {
-        SQLiteConnection connection = null;
-        SQLiteDataReader reader = null;
+        readonly SQLiteConnection _connection;
+        readonly SQLiteDataReader _reader;
 
         public SQLitePacketReader(string fileName)
         {
-            connection = new SQLiteConnection("Data Source=" + fileName);
-            SQLiteCommand command = connection.CreateCommand();
-            connection.Open();
+            _connection = new SQLiteConnection("Data Source=" + fileName);
+            SQLiteCommand command = _connection.CreateCommand();
+            _connection.Open();
 
             command.CommandText = "SELECT opcode, timestamp, direction, data FROM packets;";
-            reader = command.ExecuteReader();
+            _reader = command.ExecuteReader();
         }
 
         public bool CanRead()
         {
-            return reader.Read();
+            return _reader.Read();
         }
 
         public Packet Read(int number)
         {
-            var opcode = (Opcode)reader.GetInt32(0);
-            var time = reader.GetDateTime(1);
-            var direction = (Direction)reader.GetInt32(2);
-            object blob = reader.GetValue(3);
+            var opcode = (Opcode)_reader.GetInt32(0);
+            var time = _reader.GetDateTime(1);
+            var direction = (Direction)_reader.GetInt32(2);
+            object blob = _reader.GetValue(3);
 
             if (DBNull.Value.Equals(blob))
                 return null;
@@ -42,11 +42,11 @@ namespace WowPacketParser.Loading
 
         public void Close()
         {
-            if (reader != null)
-                reader.Close();
+            if (_reader != null)
+                _reader.Close();
 
-            if (connection != null)
-                connection.Close();
+            if (_connection != null)
+                _connection.Close();
         }
     }
 }

@@ -68,7 +68,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var cooldown = packet.ReadUInt32();
                 var categoryCooldown = packet.ReadUInt32();
 
-                Console.WriteLine("Cooldown: Spell: " + Extensions.SpellLine((int)spellId) + " category: " + category +
+                Console.WriteLine("Cooldown: Spell: " + Extensions.SpellLine(spellId) + " category: " + category +
                     " cooldown: " + cooldown + " category cooldown: " + categoryCooldown);
             }
         }
