@@ -50,7 +50,7 @@ namespace WowPacketParser.Misc
 
         public Packet Inflate(int inflatedSize)
         {
-            var arr = GetStream(GetPosition());
+            var arr = ReadToEnd();
             var newarr = new byte[inflatedSize];
             var inflater = new Inflater();
             inflater.SetInput(arr, 0, arr.Length);
@@ -62,10 +62,9 @@ namespace WowPacketParser.Misc
 
         public byte[] GetStream(long offset)
         {
-            var length = (int)(GetLength() - offset);
             var pos = GetPosition();
             SetPosition(offset);
-            var buffer = ReadBytes(length);
+            var buffer = ReadToEnd();
             SetPosition(pos);
             return buffer;
         }
@@ -229,6 +228,12 @@ namespace WowPacketParser.Misc
             var returnObject = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
             handle.Free();
             return returnObject;
+        }
+
+        public byte[] ReadToEnd()
+        {
+            var length = (int)(GetLength() - GetPosition());
+            return ReadBytes(length);
         }
 
         public byte ReadByte(string name)
