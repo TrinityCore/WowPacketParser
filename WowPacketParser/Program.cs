@@ -79,7 +79,7 @@ namespace WowPacketParser
             }
 
             // Read binaries
-            string [] files = args;
+            string[] files = args;
             if (args.Length == 1 && args[0].Contains('*'))
             {
                 try
@@ -107,7 +107,7 @@ namespace WowPacketParser
                         // debug, will remove
                         Console.WriteLine("TIME PACKET: " + packets[0].GetTime());
                         Console.WriteLine("VERSION: " + ClientVersion.Version);
-                        
+
                         Console.WriteLine("Parsing {0} packets...", packets.Count());
                         var startTime = DateTime.Now;
 
@@ -124,7 +124,7 @@ namespace WowPacketParser
                         var endTime = DateTime.Now;
                         var span = endTime.Subtract(startTime);
                         // Need to open a new writer to console, last one was redirected to the file and is now closed.
-                        var standardOutput = new StreamWriter(Console.OpenStandardOutput()) {AutoFlush = true};
+                        var standardOutput = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
                         Console.SetOut(standardOutput);
                         Console.WriteLine("Finished parsing in - {0} Minutes, {1} Seconds and {2} Milliseconds.", span.Minutes, span.Seconds, span.Milliseconds);
                         Console.WriteLine();

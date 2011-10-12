@@ -11,33 +11,35 @@ namespace WowPacketParser.Loading
         public static List<Packet> Read(string fileName, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead)
         {
             var packets = new List<Packet>();
-            var packetNum = -1;
+            var packetNum = 0;
 
-            IPacketReader reader = null;
             var extension = Path.GetExtension(fileName);
-            if (extension != null)
-                switch (extension.ToLower())
-               {
-                    case ".bin":
-                        reader = new BinaryPacketReader(SniffType.Bin, fileName, Encoding.ASCII);
-                        break;
-                    case ".pkt":
-                        reader = new BinaryPacketReader(SniffType.Pkt, fileName, Encoding.ASCII);
-                        break;
-                    case ".sqlite":
-                        reader = new SQLitePacketReader(fileName);
-                        break;
-                    default:
-                        throw new IOException("Invalid file type");
-                }
+            if (extension == null)
+                throw new IOException("Invalid file type");
 
-            while (reader != null && reader.CanRead())
+            IPacketReader reader;
+            switch (extension.ToLower())
             {
-                if (++packetNum < packetNumberLow)
-                    continue;
+                case ".bin":
+                    reader = new BinaryPacketReader(SniffType.Bin, fileName, Encoding.ASCII);
+                    break;
+                case ".pkt":
+                    reader = new BinaryPacketReader(SniffType.Pkt, fileName, Encoding.ASCII);
+                    break;
+                case ".sqlite":
+                    reader = new SQLitePacketReader(fileName);
+                    break;
+                default:
+                    throw new IOException("Invalid file type");
+            }
 
+            while (reader.CanRead())
+            {
                 var packet = reader.Read(packetNum);
                 if (packet == null)
+                    continue;
+
+                if (++packetNum < packetNumberLow)
                     continue;
 
                 //check for filters
@@ -60,8 +62,7 @@ namespace WowPacketParser.Loading
                     break;
             }
 
-            if (reader != null)
-                reader.Close();
+            reader.Close();
 
             return packets;
         }
