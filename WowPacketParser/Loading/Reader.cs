@@ -13,99 +13,87 @@ namespace WowPacketParser.Loading
         {
             IEnumerable<Packet> packets = null;
 
-            var asm = Assembly.GetExecutingAssembly();
-            var types = asm.GetTypes();
-            foreach (var type in types)
+            try
             {
-                if (!type.IsSealed)
-                    continue;
+                var packetNum = 0;
+                var packetList = new List<Packet>();
+                var bin = new BinaryReader(new FileStream(file, FileMode.Open));
+                var appliedFilters = filters.Split(',');
+                var appliedIgnoreFilters = ignoreFilters.Split(',');
+                var packetsRead = 0;
 
-                if (!type.IsPublic)
-                    continue;
-
-                try
+                while (bin.BaseStream.Position != bin.BaseStream.Length)
                 {
-                    var packetNum = 0;
-                    var packetList = new List<Packet>();
-                    var bin = new BinaryReader(new FileStream(file, FileMode.Open));
-                    var appliedFilters = filters.Split(',');
-                    var appliedIgnoreFilters = ignoreFilters.Split(',');
-                    var packetsRead = 0;
+                    var opcode = (Opcode)bin.ReadInt32();
+                    var length = bin.ReadInt32();
+                    var time = Utilities.GetDateTimeFromUnixTime(bin.ReadInt32());
+                    var direction = (Direction)bin.ReadChar();
+                    var data = bin.ReadBytes(length);
+                    var num = packetNum++;
 
-                    while (bin.BaseStream.Position != bin.BaseStream.Length)
+                    if (num < packetNumberLow)
+                        continue;
+
+                    var packet = new Packet(data, opcode, time, direction, num);
+
+                    var add = true;
+                    if (!string.IsNullOrEmpty(filters))
                     {
-                        var opcode = (Opcode)bin.ReadInt32();
-                        var length = bin.ReadInt32();
-                        var time = Utilities.GetDateTimeFromUnixTime(bin.ReadInt32());
-                        var direction = (Direction)bin.ReadChar();
-                        var data = bin.ReadBytes(length);
-                        var num = packetNum++;
+                        add = false;
 
-                        if (num < packetNumberLow)
-                            continue;
-
-                        var packet = new Packet(data, opcode, time, direction, num);
-
-                        var add = true;
-                        if (!string.IsNullOrEmpty(filters))
+                        foreach (var opc in appliedFilters)
                         {
-                            add = false;
-
-                            foreach (var opc in appliedFilters)
+                            if (opcode.ToString().Contains(opc))
                             {
-                                if (opcode.ToString().Contains(opc))
+                                add = true;
+                                break;
+                            }
+                            else
+                            {
+                                var opcodeString = "0x" + ((int)opcode).ToString("X4");
+                                if (opcodeString.Contains(opc))
                                 {
                                     add = true;
                                     break;
                                 }
-                                else
-                                {
-                                    var opcodeString = "0x" + ((int)opcode).ToString("X4");
-                                    if (opcodeString.Contains(opc))
-                                    {
-                                        add = true;
-                                        break;
-                                    }
-                                }
                             }
                         }
+                    }
 
-                        if (add && !string.IsNullOrEmpty(ignoreFilters))
+                    if (add && !string.IsNullOrEmpty(ignoreFilters))
+                    {
+                        foreach (var opc in appliedIgnoreFilters)
                         {
-                            foreach (var opc in appliedIgnoreFilters)
+                            if (opcode.ToString().Contains(opc))
                             {
-                                if (opcode.ToString().Contains(opc))
+                                add = false;
+                                break;
+                            }
+                            else
+                            {
+                                var opcodeString = "0x" + ((int)opcode).ToString("X4");
+                                if (opcodeString.Contains(opc))
                                 {
                                     add = false;
                                     break;
                                 }
-                                else
-                                {
-                                    var opcodeString = "0x" + ((int)opcode).ToString("X4");
-                                    if (opcodeString.Contains(opc))
-                                    {
-                                        add = false;
-                                        break;
-                                    }
-                                }
                             }
                         }
-
-                        if (add)
-                        {
-                            packetList.Add(packet);
-                            if (packetsToRead > 0 && ++packetsRead == packetsToRead)
-                                break;
-                        }
-
-                        if (packetNumberHigh > 0 && packetNum > packetNumberHigh)
-                            break;
-
                     }
-                    packets = packetList;
+
+                    if (add)
+                    {
+                        packetList.Add(packet);
+                        if (packetsToRead > 0 && ++packetsRead == packetsToRead)
+                            break;
+                    }
+
+                    if (packetNumberHigh > 0 && packetNum > packetNumberHigh)
+                        break;
                 }
-                catch (Exception) {}
+                packets = packetList;
             }
+            catch (Exception) { }
 
             return packets;
         }
