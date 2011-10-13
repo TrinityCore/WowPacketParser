@@ -45,11 +45,11 @@ namespace WowPacketParser.Loading
                 //check for filters
                 bool add =
                     filters == null || filters.Length == 0 ||
-                    packet.GetOpcode().ToString().MatchesFilters(filters);
+                    packet.Opcode.ToString().MatchesFilters(filters);
 
                 //check for ignore filters
                 if (add && ignoreFilters != null && ignoreFilters.Length > 0)
-                    add = !packet.GetOpcode().ToString().MatchesFilters(ignoreFilters);
+                    add = !packet.Opcode.ToString().MatchesFilters(ignoreFilters);
 
                 if (add)
                 {

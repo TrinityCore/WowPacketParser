@@ -11,42 +11,19 @@ namespace WowPacketParser.Misc
 {
     public sealed class Packet : BinaryReader
     {
-        public Packet(byte[] input, Opcode opcode, DateTime time, Direction direction, int Number)
+        public Packet(byte[] input, Opcode opcode, DateTime time, Direction direction, int number)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
-            _opcode = opcode;
-            _time = time;
-            _direction = direction;
-            _number = Number;
+            Opcode = opcode;
+            Time = time;
+            Direction = direction;
+            Number = number;
         }
 
-        private readonly Opcode _opcode;
-
-        private readonly DateTime _time;
-
-        private readonly Direction _direction;
-
-        private readonly int _number;
-
-        public Opcode GetOpcode()
-        {
-            return _opcode;
-        }
-
-        public DateTime GetTime()
-        {
-            return _time;
-        }
-
-        public Direction GetDirection()
-        {
-            return _direction;
-        }
-
-        public int GetNumber()
-        {
-            return _number;
-        }
+        public Opcode Opcode { get; private set; }
+        public DateTime Time { get; private set; }
+        public Direction Direction { get; private set; }
+        public int Number { get; private set; }
 
         public Packet Inflate(int inflatedSize)
         {
@@ -56,7 +33,7 @@ namespace WowPacketParser.Misc
             inflater.SetInput(arr, 0, arr.Length);
             inflater.Inflate(newarr, 0, inflatedSize);
 
-            var pkt = new Packet(newarr, GetOpcode(), GetTime(), GetDirection(), GetNumber());
+            var pkt = new Packet(newarr, Opcode, Time, Direction, Number);
             return pkt;
         }
 
@@ -84,9 +61,9 @@ namespace WowPacketParser.Misc
             return BaseStream.Length;
         }
 
-        public bool IsRead()
+        public bool CanRead()
         {
-            return GetPosition() == GetLength();
+            return GetPosition() != GetLength();
         }
 
         public Guid ReadGuid()

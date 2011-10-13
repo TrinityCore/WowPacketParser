@@ -57,7 +57,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
                 case WardenServerOpcode.Data:
                 {
-                    while (!packet.IsRead())
+                    while (packet.CanRead())
                     {
                         packet.ReadByte();
 

@@ -9,7 +9,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_CORPSE_QUERY)]
         public static void HandleCorpseQuery(Packet packet)
         {
-            if (packet.GetDirection() == Direction.ClientToServer)
+            if (packet.Direction == Direction.ClientToServer)
                 return;
 
             var found = packet.ReadBoolean("Corpse Found");

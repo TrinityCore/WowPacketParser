@@ -101,10 +101,10 @@ namespace WowPacketParser
                     var packets = Reader.Read(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead);
                     if (packets.Count > 0)
                     {
-                        ClientVersion.SetVersion(packets[0].GetTime());
+                        ClientVersion.SetVersion(packets[0].Time);
 
                         // debug, will remove
-                        Console.WriteLine("TIME PACKET: " + packets[0].GetTime());
+                        Console.WriteLine("TIME PACKET: " + packets[0].Time);
                         Console.WriteLine("VERSION: " + ClientVersion.Version);
 
                         Console.WriteLine("Parsing {0} packets...", packets.Count());

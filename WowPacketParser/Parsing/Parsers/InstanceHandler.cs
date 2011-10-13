@@ -11,7 +11,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSetDifficulty(Packet packet)
         {
             packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
-            if (packet.GetDirection() != Direction.ServerToClient)
+            if (packet.Direction != Direction.ServerToClient)
                 return;
 
             packet.ReadInt32("Unk Int32");
@@ -62,7 +62,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Icon Id");
                 packet.ReadGuid("Target GUID");
             }
-            else if (type != 255 && packet.GetDirection() == Direction.ClientToServer)
+            else if (type != 255 && packet.Direction == Direction.ClientToServer)
                 packet.ReadGuid("Target GUID");
         }
     }

@@ -51,7 +51,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PARTY_MEMBER_STATS_FULL)]
         public static void HandlePartyMemberStats(Packet packet)
         {
-            if (packet.GetOpcode() == Opcode.SMSG_PARTY_MEMBER_STATS_FULL)
+            if (packet.Opcode == Opcode.SMSG_PARTY_MEMBER_STATS_FULL)
                 packet.ReadByte("Unk byte");
 
             packet.ReadPackedGuid("GUID");
@@ -167,7 +167,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Minimum");
             packet.ReadInt32("Maximum");
 
-            if (packet.GetDirection() == Direction.ClientToServer)
+            if (packet.Direction == Direction.ClientToServer)
                 return;
 
             packet.ReadInt32("Roll");

@@ -3,7 +3,6 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
-
 namespace WowPacketParser.Parsing.Parsers
 {
     public static class NpcHandler
@@ -212,7 +211,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid();
             Console.WriteLine("GUID: " + guid);
 
-            if (packet.GetOpcode() == Opcode.SMSG_HIGHEST_THREAT_UPDATE)
+            if (packet.Opcode == Opcode.SMSG_HIGHEST_THREAT_UPDATE)
             {
                 var newhigh = packet.ReadPackedGuid();
                 Console.WriteLine("New Highest: " + newhigh);
@@ -226,7 +225,7 @@ namespace WowPacketParser.Parsing.Parsers
                 Console.WriteLine("Hostile: " + unit);
                 var threat = packet.ReadUInt32();
                 // No idea why, but this is in core.
-                /*if (packet.GetOpcode() == Opcode.SMSG_THREAT_UPDATE)
+                /*if (packet.Opcode == Opcode.SMSG_THREAT_UPDATE)
                     threat *= 100;*/
                 Console.WriteLine("Threat: " + threat);
             }
@@ -239,7 +238,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid();
             Console.WriteLine("GUID: " + guid);
 
-            if (packet.GetOpcode() == Opcode.SMSG_THREAT_REMOVE)
+            if (packet.Opcode == Opcode.SMSG_THREAT_REMOVE)
             {
                 var victim = packet.ReadPackedGuid();
                 Console.WriteLine("Victim GUID: " + victim);

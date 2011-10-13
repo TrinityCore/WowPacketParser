@@ -73,7 +73,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadInt32("Sound Id");
 
-            if (packet.GetOpcode() == Opcode.SMSG_PLAY_OBJECT_SOUND)
+            if (packet.Opcode == Opcode.SMSG_PLAY_OBJECT_SOUND)
                 packet.ReadGuid("GUID");
         }
 

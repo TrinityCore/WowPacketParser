@@ -171,7 +171,7 @@ namespace WowPacketParser.Parsing.Parsers
             var reason = (KickReason)packet.ReadByte();
             Console.WriteLine("Reason: " + reason);
 
-            if (packet.IsRead())
+            if (!packet.CanRead())
                 return;
 
             var str = packet.ReadCString();

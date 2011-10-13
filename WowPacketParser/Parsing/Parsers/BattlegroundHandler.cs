@@ -25,7 +25,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_BATTLEGROUND_PLAYER_POSITIONS)]
         public static void HandleBattlegrounPlayerPositions(Packet packet)
         {
-            if (packet.GetDirection() == Direction.ClientToServer)
+            if (packet.Direction == Direction.ClientToServer)
                 return;
 
             var count1 = packet.ReadInt32("Count1");

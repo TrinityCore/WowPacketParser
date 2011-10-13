@@ -40,7 +40,7 @@ namespace WowPacketParser.Parsing.Parsers
                 ReadSingleContactBlock(packet, true);
             }
 
-            if (!packet.IsRead())
+            if (packet.CanRead())
                 WardenHandler.ReadCheatCheckDecryptionBlock(packet);
         }
 

@@ -142,7 +142,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_SAVE_GUILD_EMBLEM)]
         public static void HandleGuildEmblem(Packet packet)
         {
-            if (packet.GetDirection() == Direction.ClientToServer)
+            if (packet.Direction == Direction.ClientToServer)
             {
                 packet.ReadGuid("GUID");
                 ReadEmblemInfo(packet);
@@ -306,7 +306,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGuildQueryBankText(Packet packet)
         {
             packet.ReadByte("Tab Id");
-            if (packet.GetDirection() == Direction.ServerToClient)
+            if (packet.Direction == Direction.ServerToClient)
                 packet.ReadCString("Text");
         }
 
@@ -320,7 +320,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_GUILD_PERMISSIONS)]
         public static void HandleGuildPermissions(Packet packet)
         {
-            if (packet.GetDirection() == Direction.ClientToServer)
+            if (packet.Direction == Direction.ClientToServer)
                 return;
 
             packet.ReadUInt32("Rank Id");
@@ -337,14 +337,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_GUILD_BANK_MONEY_WITHDRAWN)]
         public static void HandleGuildBankMoneyWithdrawn(Packet packet)
         {
-            if (packet.GetDirection() == Direction.ServerToClient)
+            if (packet.Direction == Direction.ServerToClient)
                 packet.ReadUInt32("Remaining Money");
         }
 
         [Parser(Opcode.MSG_GUILD_EVENT_LOG_QUERY)]
         public static void HandleGuildEventLogQuery(Packet packet)
         {
-            if (packet.GetDirection() == Direction.ClientToServer)
+            if (packet.Direction == Direction.ClientToServer)
                 return;
 
             var size = packet.ReadByte("Log size");
@@ -364,7 +364,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGuildBankLogQuery(Packet packet)
         {
             packet.ReadByte("Tab Id");
-            if (packet.GetDirection() == Direction.ServerToClient)
+            if (packet.Direction == Direction.ServerToClient)
             {
                 var size = packet.ReadByte("Size");
                 for (var i = 0 ; i < size; i++)
@@ -480,7 +480,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_PETITION_DECLINE)]
         public static void HandlePetitionDecline(Packet packet)
         {
-            if (packet.GetDirection() == Direction.ClientToServer)
+            if (packet.Direction == Direction.ClientToServer)
                 packet.ReadGuid("Petition GUID");
             else
                 packet.ReadGuid("Player GUID");

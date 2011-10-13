@@ -87,7 +87,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid();
             Console.WriteLine("GUID: " + guid);
 
-            if (packet.GetOpcode() == Opcode.SMSG_MONSTER_MOVE_TRANSPORT)
+            if (packet.Opcode == Opcode.SMSG_MONSTER_MOVE_TRANSPORT)
             {
                 var transguid = packet.ReadPackedGuid();
                 Console.WriteLine("Transport GUID: " + transguid);
@@ -205,7 +205,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             UpdateHandler.Objects[mapId] = new Dictionary<Guid, WoWObject>();
 
-            if (packet.GetOpcode() != Opcode.SMSG_LOGIN_VERIFY_WORLD)
+            if (packet.Opcode != Opcode.SMSG_LOGIN_VERIFY_WORLD)
                 return;
 
             CharacterInfo chInfo;
@@ -241,7 +241,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_MOVE_TELEPORT_ACK)]
         public static void HandleTeleportAck(Packet packet)
         {
-            if (packet.GetDirection() == Direction.ServerToClient)
+            if (packet.Direction == Direction.ServerToClient)
             {
                 var guid = packet.ReadPackedGuid();
                 Console.WriteLine("GUID: " + guid);
@@ -311,7 +311,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid("GUID");
 
             ReadMovementInfo(packet, guid);
-            if (packet.GetOpcode() == Opcode.MSG_MOVE_KNOCK_BACK)
+            if (packet.Opcode == Opcode.MSG_MOVE_KNOCK_BACK)
             {
                 packet.ReadSingle("Sin Angle");
                 packet.ReadSingle("Cos Angle");
@@ -368,13 +368,13 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid();
             Console.WriteLine("GUID: " + guid);
 
-            if (packet.GetOpcode() != Opcode.MSG_MOVE_SET_COLLISION_HGT)
+            if (packet.Opcode != Opcode.MSG_MOVE_SET_COLLISION_HGT)
             {
                 var counter = packet.ReadInt32();
                 Console.WriteLine("Movement Counter: " + counter);
             }
 
-            if (packet.GetOpcode() != Opcode.SMSG_MOVE_SET_COLLISION_HGT)
+            if (packet.Opcode != Opcode.SMSG_MOVE_SET_COLLISION_HGT)
                 ReadMovementInfo(packet, guid);
 
             var unk = packet.ReadSingle();
@@ -425,7 +425,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             ReadMovementInfo(packet, guid);
 
-            if (packet.GetOpcode() == Opcode.CMSG_MOVE_KNOCK_BACK_ACK)
+            if (packet.Opcode == Opcode.CMSG_MOVE_KNOCK_BACK_ACK)
                 return;
 
             var unk2 = packet.ReadInt32();
@@ -445,7 +445,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             Console.WriteLine("Map ID: " + Extensions.MapLine(packet.ReadInt32()));
 
-            if (packet.IsRead())
+            if (!packet.CanRead())
                 return;
 
             var tEntry = packet.ReadInt32("Transport Entry");

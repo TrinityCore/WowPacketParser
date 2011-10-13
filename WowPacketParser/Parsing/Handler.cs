@@ -84,11 +84,11 @@ namespace WowPacketParser.Parsing
 
         public static void Parse(Packet packet)
         {
-            var opcode = packet.GetOpcode();
-            var time = packet.GetTime();
-            var direction = packet.GetDirection();
+            var opcode = packet.Opcode;
+            var time = packet.Time;
+            var direction = packet.Direction;
             var length = packet.GetLength();
-            var number = packet.GetNumber();
+            var number = packet.Number;
 
             Console.WriteLine("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}", direction,
                 opcode, ((int)opcode).ToString("X4"), length, time, number);

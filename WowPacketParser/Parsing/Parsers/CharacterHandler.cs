@@ -219,7 +219,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PLAYED_TIME)]
         public static void HandlePlayedTime(Packet packet)
         {
-            if (packet.GetOpcode() == Opcode.SMSG_PLAYED_TIME)
+            if (packet.Opcode == Opcode.SMSG_PLAYED_TIME)
             {
                 packet.ReadInt32("Time Played");
                 packet.ReadInt32("Total");

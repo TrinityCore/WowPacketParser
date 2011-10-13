@@ -100,7 +100,7 @@ namespace WowPacketParser.Parsing.Parsers
             var byte1 = packet.ReadBoolean();
             Console.WriteLine("First Completion: " + byte1);
 
-            if (packet.GetOpcode() == Opcode.SMSG_LFG_PLAYER_REWARD)
+            if (packet.Opcode == Opcode.SMSG_LFG_PLAYER_REWARD)
             {
                 var int3 = packet.ReadInt32();
                 Console.WriteLine("Strangers: " + int3);
