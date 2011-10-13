@@ -361,8 +361,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var moveInfo = new MovementInfo();
 
-            var flags = (UpdateFlag)packet.ReadInt16();
-            Console.WriteLine("Update Flags: " + flags);
+            var flags = packet.ReadEnum<UpdateFlag>("Update Flags", TypeCode.Int16);
 
             if (flags.HasFlag(UpdateFlag.Living))
             {
@@ -372,8 +371,7 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var i = 0; i < 9; i++)
                 {
                     var j = (SpeedType)i;
-                    var speed = packet.ReadSingle();
-                    Console.WriteLine(j + " Speed: " + speed);
+                    var speed = packet.ReadSingle("[" + j + "] Speed");
 
                     switch (j)
                     {
@@ -392,130 +390,75 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (moveFlags.HasFlag(MovementFlag.SplineEnabled))
                 {
-                    var splineFlags = (SplineFlag)packet.ReadInt32();
-                    Console.WriteLine("Spline Flags: " + splineFlags);
+                    var splineFlags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32);
 
                     if (splineFlags.HasFlag(SplineFlag.FinalPoint))
-                    {
-                        var splineCoords = packet.ReadVector3();
-                        Console.WriteLine("Final Spline Coords: " + splineCoords);
-                    }
+                        packet.ReadVector3("Final Spline Coords");
 
                     if (splineFlags.HasFlag(SplineFlag.FinalTarget))
-                    {
-                        var splineTarget = packet.ReadGuid();
-                        Console.WriteLine("Final Spline Target GUID: " + splineTarget);
-                    }
+                        packet.ReadGuid("Final Spline Target GUID");
 
                     if (splineFlags.HasFlag(SplineFlag.FinalOrientation))
-                    {
-                        var splineOrient = packet.ReadSingle();
-                        Console.WriteLine("Final Spline Orientation: " + splineOrient);
-                    }
+                        packet.ReadSingle("Final Spline Orientation");
 
-                    var splineTime = packet.ReadInt32();
-                    Console.WriteLine("Spline Time: " + splineTime);
+                    packet.ReadInt32("Spline Time");
+                    packet.ReadInt32("Spline Full Time");
+                    packet.ReadInt32("Spline Unk Int32 1");
+                    packet.ReadSingle("Spline Duration Multiplier");
+                    packet.ReadSingle("Spline Unit Interval");
+                    packet.ReadSingle("Spline Unk Float 2");
+                    packet.ReadInt32("Spline Height Time");
 
-                    var fullTime = packet.ReadInt32();
-                    Console.WriteLine("Spline Full Time: " + fullTime);
-
-                    var unk1 = packet.ReadInt32();
-                    Console.WriteLine("Spline Unk Int32 1: " + unk1);
-
-                    var duraMul = packet.ReadSingle();
-                    Console.WriteLine("Spline Duration Multiplier: " + duraMul);
-
-                    var unk3 = packet.ReadSingle();
-                    Console.WriteLine("Spline Unit Interval: " + unk3);
-
-                    var unk4 = packet.ReadSingle();
-                    Console.WriteLine("Spline Unk Float 2: " + unk4);
-
-                    var unk5 = packet.ReadInt32();
-                    Console.WriteLine("Spline Height Time: " + unk5);
-
-                    var splineCount = packet.ReadInt32();
+                    var splineCount = packet.ReadInt32("Spline Count");
                     for (var i = 0; i < splineCount; i++)
-                    {
-                        var coords = packet.ReadVector3();
-                        Console.WriteLine("Spline Waypoint " + i + ": " + coords);
-                    }
+                        packet.ReadVector3("[" + i + "] Spline Waypoint");
 
-                    var mode = (SplineMode)packet.ReadByte();
-                    Console.WriteLine("Spline Mode: " + mode);
-
-                    var endpoint = packet.ReadVector3();
-                    Console.WriteLine("Spline Endpoint: " + endpoint);
+                    packet.ReadEnum<SplineMode>("Spline Mode", TypeCode.Byte);
+                    packet.ReadVector3("Spline Endpoint");
                 }
             }
             else
             {
                 if (flags.HasFlag(UpdateFlag.GOPosition))
                 {
-                    var goguid = packet.ReadPackedGuid();
-                    Console.WriteLine("GO Position GUID: " + goguid);
-
-                    var gopos = packet.ReadVector3();
-                    Console.WriteLine("GO Position: " + gopos);
-
-                    var gopos2 = packet.ReadVector3();
-                    Console.WriteLine("GO Transport Position: " + gopos2);
-
-                    var goFacing = packet.ReadSingle();
-                    Console.WriteLine("GO Orientation: " + goFacing);
+                    packet.ReadPackedGuid("GO Position GUID");
+                    var gopos = packet.ReadVector3("GO Position");
+                    packet.ReadVector3("GO Transport Position");
+                    var goFacing = packet.ReadSingle("GO Orientation");
 
                     moveInfo.Position = gopos;
                     moveInfo.Orientation = goFacing;
 
-                    var goflt = packet.ReadSingle();
-                    Console.WriteLine("GO Transport Orientation: " + goflt);
+                    packet.ReadSingle("GO Transport Orientation");
                 }
                 else if (flags.HasFlag(UpdateFlag.StationaryObject))
                 {
-                    var ufpos = packet.ReadVector4();
-                    Console.WriteLine("Stationary Position: " + ufpos);
+                    packet.ReadVector4("Stationary Position");
                 }
             }
 
             if (flags.HasFlag(UpdateFlag.Unknown1))
-            {
-                var lguid = packet.ReadInt32();
-                Console.WriteLine("Unk Int32: " + lguid);
-            }
+                packet.ReadInt32("Unk Int32");
 
             if (flags.HasFlag(UpdateFlag.LowGuid))
-            {
-                var hguid = packet.ReadInt32();
-                Console.WriteLine("Low GUID: " + hguid);
-            }
+                packet.ReadInt32("Low GUID");
 
             if (flags.HasFlag(UpdateFlag.AttackingTarget))
-            {
-                var targetGuid = packet.ReadPackedGuid();
-                Console.WriteLine("Target GUID: " + targetGuid);
-            }
+                packet.ReadPackedGuid("Target GUID");
 
             if (flags.HasFlag(UpdateFlag.Transport))
-            {
-                var ttime = packet.ReadInt32();
-                Console.WriteLine("Transport Creation Time: " + ttime);
-            }
+                packet.ReadInt32("Transport Creation Time");
 
             if (flags.HasFlag(UpdateFlag.Vehicle))
             {
-                var vehId = packet.ReadInt32();
-                Console.WriteLine("Vehicle ID: " + vehId);
+                var vehId = packet.ReadInt32("Vehicle ID");
+                var vehFacing = packet.ReadSingle("Vehicle Orientation");
 
-                var vehFacing = packet.ReadSingle();
-                Console.WriteLine("Vehicle Orientation: " + vehFacing);
                 SQLStore.WriteData(SQLStore.CreatureUpdates.GetCommand("VehicleId", guid.GetEntry(), vehId));
             }
 
             if (flags.HasFlag(UpdateFlag.GORotation))
-            {
-                var gorot = packet.ReadPackedQuaternion();
-                Console.WriteLine("GO Rotation: " + gorot);
-            }
+                packet.ReadPackedQuaternion("GO Rotation");
 
             return moveInfo;
         }
@@ -531,11 +474,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_DESTROY_OBJECT)]
         public static void HandleDestroyObject(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
-
-            var anim = packet.ReadBoolean();
-            Console.WriteLine("Despawn Animation: " + anim);
+            packet.ReadGuid("GUID");
+            packet.ReadBoolean("Despawn Animation");
         }
     }
 }

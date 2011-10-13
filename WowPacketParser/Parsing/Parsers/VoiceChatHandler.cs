@@ -11,7 +11,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleVoiceSessionEnable(Packet packet)
         {
             packet.ReadBoolean("Voice Enabled");
-
             packet.ReadBoolean("Microphone Enabled");
         }
 
@@ -19,11 +18,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleVoiceRosterUpdate(Packet packet)
         {
             packet.ReadInt64("Voice Channel ID");
-
             packet.ReadInt16("Channel ID");
-
             packet.ReadByte("Channel Type"); // 0: channel, 2: party
-
             packet.ReadCString("Channel Name");
 
             var key = Encoding.UTF8.GetString(packet.ReadBytes(16));
@@ -60,85 +56,55 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleVoiceLeave(Packet packet)
         {
             packet.ReadInt64("Unk Int64 1");
-
             packet.ReadInt64("Unk Int64 2");
         }
 
         [Parser(Opcode.SMSG_VOICE_SET_TALKER_MUTED)]
         public static void HandleSetTalkerMuted(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
-
-            var unk = packet.ReadByte();
-            Console.WriteLine("Unk Byte: " + unk);
+            packet.ReadGuid("GUID");
+            packet.ReadByte("Unk Byte");
         }
 
         [Parser(Opcode.SMSG_VOICE_PARENTAL_CONTROLS)]
         public static void HandleVoiceParentalControls(Packet packet)
         {
-            var disableAll = packet.ReadBoolean();
-            Console.WriteLine("Disable All: " + disableAll);
-
-            var disableMic = packet.ReadBoolean();
-            Console.WriteLine("Disable Microphone: " + disableMic);
+            packet.ReadBoolean("Disable All");
+            packet.ReadBoolean("Disable Microphone");
         }
 
         [Parser(Opcode.SMSG_AVAILABLE_VOICE_CHANNEL)]
         public static void HandleAvailableVoiceChannel(Packet packet)
         {
-            var unk = packet.ReadInt64();
-            Console.WriteLine("Unk Int64 1: " + unk);
-
-            var type = packet.ReadByte();
-            Console.WriteLine("Channel Type: " + type);
-
-            var name = packet.ReadCString();
-            Console.WriteLine("Channel Name: " + name);
-
-            var unk2 = packet.ReadInt64();
-            Console.WriteLine("Unk Int64 2: " + unk2);
+            packet.ReadInt64("Unk Int64 1");
+            packet.ReadByte("Channel Type");
+            packet.ReadCString("Channel Name");
+            packet.ReadInt64("Unk Int64 2");
         }
 
         [Parser(Opcode.CMSG_SET_ACTIVE_VOICE_CHANNEL)]        
         public static void HandleSetActiveVoiceChannel(Packet packet)
         {
-            var chanId = packet.ReadInt32();
-            Console.WriteLine("Channel ID: " + chanId);
-
-            var name = packet.ReadCString();
-            Console.WriteLine("Channel Name: " + name);
-        }
-
-        [Parser(Opcode.SMSG_VOICE_SET_TALKER_MUTED)]
-        public static void HandleTalkerMuted(Packet packet)
-        {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
-
-            var unk = packet.ReadByte();
-            Console.WriteLine("Unk Byte: " + unk);
+            packet.ReadInt32("Channel ID");
+            packet.ReadCString("Channel Name");
         }
 
         [Parser(Opcode.CMSG_ADD_VOICE_IGNORE)]
         public static void HandleAddVoiceIgnore(Packet packet)
         {
-            var name = packet.ReadCString();
-            Console.WriteLine("Name: " + name);
+            packet.ReadCString("Name");
         }
 
         [Parser(Opcode.CMSG_DEL_VOICE_IGNORE)]
         public static void HandleDelVoiceIgnore(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.SMSG_VOICE_CHAT_STATUS)]
         public static void HandleVoiceStatus(Packet packet)
         {
-            var status = packet.ReadByte();
-            Console.WriteLine("Status: " + status);
+            packet.ReadByte("Status");
         }
     }
 }
