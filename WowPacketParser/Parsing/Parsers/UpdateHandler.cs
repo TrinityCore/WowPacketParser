@@ -20,6 +20,7 @@ namespace WowPacketParser.Parsing.Parsers
             int map = -1;
             if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
                 map = packet.ReadInt16("Map");
+
             var count = packet.ReadInt32("Count");
 
             byte unkByte = 0;
@@ -39,78 +40,66 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            int realCount;
+            int realCount = count;
+
             if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
                 realCount = count - ((unkByte == 3) ? 1 : 0);
-            else
-                realCount = count;
 
             for (var i = 0; i < realCount; i++)
             {
-                var type = packet.ReadEnum<UpdateType>("Update Type #" + (i + 1), TypeCode.Byte);
-
+                var type = packet.ReadEnum<UpdateType>("[" + i + "] Update Type", TypeCode.Byte);
                 switch (type)
                 {
                     case UpdateType.Values:
                     {
-                        var guid = packet.ReadPackedGuid("GUID");
-                        var updates = ReadValuesUpdateBlock(packet);
+                        var guid = packet.ReadPackedGuid("[" + i + "] GUID");
 
                         WoWObject obj;
-
                         if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
                         {
                             if (Objects.ContainsKey(map) && Objects[map].TryGetValue(guid, out obj))
-                                HandleUpdateFieldChangedValues(false, guid, obj.Type, updates, obj.Movement);
+                                HandleUpdateFieldChangedValues(false, guid, obj.Type, ReadValuesUpdateBlock(packet, obj.Type, i), obj.Movement);
                         }
-                        else
-                            if (Objects[MovementHandler.CurrentMapId].TryGetValue(guid, out obj))
-                                // System.Collections.Generic.KeyNotFoundException in the next line
-                                HandleUpdateFieldChangedValues(false, guid, obj.Type, updates, obj.Movement);
+                        else if (Objects[MovementHandler.CurrentMapId].TryGetValue(guid, out obj))
+                            // System.Collections.Generic.KeyNotFoundException in the next line
+                            HandleUpdateFieldChangedValues(false, guid, obj.Type, ReadValuesUpdateBlock(packet, obj.Type, i), obj.Movement);
                         break;
                     }
                     case UpdateType.Movement:
                     {
-                        var guid = packet.ReadPackedGuid("GUID");
+                        var guid = packet.ReadPackedGuid("[" + i + "] GUID");
 
                         if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
-                            packet.ReadEnum<ObjectType>("Object type");
-
-                        ReadMovementUpdateBlock(packet, guid);
-
-                        if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
-                            ReadValuesUpdateBlock(packet);
+                        {
+                            var objType = packet.ReadEnum<ObjectType>("[" + i + "] Object type");
+                            ReadMovementUpdateBlock(packet, guid, i);
+                            ReadValuesUpdateBlock(packet, objType, i);
+                        }
+                        else
+                            ReadMovementUpdateBlock(packet, guid, i);
                         break;
                     }
                     case UpdateType.CreateObject1:
                     case UpdateType.CreateObject2:
-                    {
-                        var guid = packet.ReadPackedGuid("GUID");
-                        ReadCreateObjectBlock(packet, guid);
+                        ReadCreateObjectBlock(packet, packet.ReadPackedGuid("[" + i + "] GUID"), i);
                         break;
-                    }
                     case UpdateType.FarObjects:
                     case UpdateType.NearObjects:
                     {
-                        var objCount = packet.ReadInt32("Object Count");
-
+                        var objCount = packet.ReadInt32("[" + i + "] Object Count");
                         for (var j = 0; j < objCount; j++)
-                        {
-                            packet.ReadPackedGuid("Object GUID");
-                        }
+                            packet.ReadPackedGuid("[" + i + "][" + j + "] Object GUID");
                         break;
                     }
                 }
             }
         }
 
-        public static void ReadCreateObjectBlock(Packet packet, Guid guid)
+        public static void ReadCreateObjectBlock(Packet packet, Guid guid, int index)
         {
-            var objType = (ObjectType)packet.ReadByte();
-            Console.WriteLine("Object Type: " + objType);
-
-            var moves = ReadMovementUpdateBlock(packet, guid);
-            var updates = ReadValuesUpdateBlock(packet);
+            var objType = packet.ReadEnum<ObjectType>("[" + index + "] Object Type", TypeCode.Byte);
+            var moves = ReadMovementUpdateBlock(packet, guid, index);
+            var updates = ReadValuesUpdateBlock(packet, objType, index);
 
             var obj = new WoWObject(guid, objType, moves, updates);
             obj.Position = moves.Position;
@@ -134,35 +123,90 @@ namespace WowPacketParser.Parsing.Parsers
             HandleUpdateFieldChangedValues(true, guid, objType, updates, moves);
         }
 
-        /// <summary>
-        /// Reads update values (a.k.a. Block Values).
-        /// </summary>
-        /// <param name="packet"></param>
-        /// <returns>Dictionary in the form {block value id | value}.</returns>
-        public static Dictionary<int, UpdateField> ReadValuesUpdateBlock(Packet packet)
+        public static Dictionary<int, UpdateField> ReadValuesUpdateBlock(Packet packet, ObjectType type, int index)
         {
             var maskSize = packet.ReadByte();
-            Console.WriteLine("Block Count: " + maskSize);
 
             var updateMask = new int[maskSize];
             for (var i = 0; i < maskSize; i++)
-            {
-                var blockIdx = packet.ReadInt32();
-                updateMask[i] = blockIdx;
-            }
+                updateMask[i] = packet.ReadInt32();
 
             var mask = new BitArray(updateMask);
             var dict = new Dictionary<int, UpdateField>();
 
+            var objectEnd = (int)ObjectField.OBJECT_END;
+
+            string key = "Block Value";
+            string value = "";
             for (var i = 0; i < mask.Count; i++)
             {
                 if (!mask[i])
                     continue;
 
                 var blockVal = packet.ReadUpdateField();
-                Console.WriteLine("Block Value " + i + ": " + blockVal.Int32Value + "/" +
-                    blockVal.SingleValue);
+                value = blockVal.Int32Value + "/" + blockVal.SingleValue;
+                if (i < objectEnd)
+                {
+                    ObjectField field = (ObjectField)i;
+                    key = field.ToString();
+                }
+                else
+                {
+                    switch (type)
+                    {
+                        case ObjectType.Container:
+                        {
+                            if (i < (int)ItemField.ITEM_END)
+                                goto case ObjectType.Item;
 
+                            ContainerField field = (ContainerField)i;
+                            key = field.ToString();
+                            break;
+                        }                                
+                        case ObjectType.Item:
+                        {
+                            ItemField field = (ItemField)i;
+                            key = field.ToString();
+                            break;
+                        }
+                        case ObjectType.Player:
+                        {
+                            if (i < (int)UnitField.UNIT_END)
+                                goto case ObjectType.Unit;
+
+                            PlayerField field = (PlayerField)i;
+                            key = field.ToString();
+                            break;
+                        }                                
+                        case ObjectType.Unit:
+                        {
+                            UnitField field = (UnitField)i;
+                            key = field.ToString();
+                            break;
+                        }
+                        case ObjectType.GameObject:
+                        {
+                            GameObjectField field = (GameObjectField)i;
+                            key = field.ToString();
+                            break;
+                        }
+                        case ObjectType.DynamicObject:
+                        {
+                            DynamicObjectField field = (DynamicObjectField)i;
+                            key = field.ToString();
+                            break;
+                        }
+                        case ObjectType.Corpse:
+                        {
+                            CorpseField field = (CorpseField)i;
+                            key = field.ToString();
+                            break;
+                        }
+                        default:
+                            break;
+                    }
+                }
+                Console.WriteLine("[" + index + "] " + key + ": " + value);
                 dict.Add(i, blockVal);
             }
 
@@ -357,21 +401,20 @@ namespace WowPacketParser.Parsing.Parsers
                     MovementHandler.CurrentPhaseMask, moves.Position, moves.Orientation));
         }
 
-        public static MovementInfo ReadMovementUpdateBlock(Packet packet, Guid guid)
+        public static MovementInfo ReadMovementUpdateBlock(Packet packet, Guid guid, int index)
         {
             var moveInfo = new MovementInfo();
 
-            var flags = packet.ReadEnum<UpdateFlag>("Update Flags", TypeCode.Int16);
-
+            var flags = packet.ReadEnum<UpdateFlag>("[" + index + "] Update Flags", TypeCode.Int16);
             if (flags.HasFlag(UpdateFlag.Living))
             {
-                moveInfo = MovementHandler.ReadMovementInfo(packet, guid);
+                moveInfo = MovementHandler.ReadMovementInfo(packet, guid, index);
                 var moveFlags = moveInfo.Flags;
 
                 for (var i = 0; i < 9; i++)
                 {
                     var j = (SpeedType)i;
-                    var speed = packet.ReadSingle("[" + j + "] Speed");
+                    var speed = packet.ReadSingle("["+ index + "] " + j + " Speed");
 
                     switch (j)
                     {
@@ -390,85 +433,73 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (moveFlags.HasFlag(MovementFlag.SplineEnabled))
                 {
-                    var splineFlags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32);
-
+                    var splineFlags = packet.ReadEnum<SplineFlag>("[" + index + "] Spline Flags", TypeCode.Int32);
                     if (splineFlags.HasFlag(SplineFlag.FinalPoint))
-                        packet.ReadVector3("Final Spline Coords");
+                        packet.ReadVector3("[" + index + "] Final Spline Coords");
 
                     if (splineFlags.HasFlag(SplineFlag.FinalTarget))
-                        packet.ReadGuid("Final Spline Target GUID");
+                        packet.ReadGuid("[" + index + "] Final Spline Target GUID");
 
                     if (splineFlags.HasFlag(SplineFlag.FinalOrientation))
-                        packet.ReadSingle("Final Spline Orientation");
+                        packet.ReadSingle("[" + index + "] Final Spline Orientation");
 
-                    packet.ReadInt32("Spline Time");
-                    packet.ReadInt32("Spline Full Time");
-                    packet.ReadInt32("Spline Unk Int32 1");
-                    packet.ReadSingle("Spline Duration Multiplier");
-                    packet.ReadSingle("Spline Unit Interval");
-                    packet.ReadSingle("Spline Unk Float 2");
-                    packet.ReadInt32("Spline Height Time");
-
-                    var splineCount = packet.ReadInt32("Spline Count");
+                    packet.ReadInt32("[" + index + "] Spline Time");
+                    packet.ReadInt32("[" + index + "] Spline Full Time");
+                    packet.ReadInt32("[" + index + "] Spline Unk Int32 1");
+                    packet.ReadSingle("[" + index + "] Spline Duration Multiplier");
+                    packet.ReadSingle("[" + index + "] Spline Unit Interval");
+                    packet.ReadSingle("[" + index + "] Spline Unk Float 2");
+                    packet.ReadInt32("[" + index + "] Spline Height Time");
+                    var splineCount = packet.ReadInt32();
                     for (var i = 0; i < splineCount; i++)
-                        packet.ReadVector3("[" + i + "] Spline Waypoint");
+                        packet.ReadVector3("[" + index + "][" + i + "] Spline Waypoint");
 
-                    packet.ReadEnum<SplineMode>("Spline Mode", TypeCode.Byte);
-                    packet.ReadVector3("Spline Endpoint");
+                    packet.ReadEnum<SplineMode>("[" + index + "] Spline Mode", TypeCode.Byte);
+                    packet.ReadVector3("[" + index + "] Spline Endpoin");
                 }
             }
             else
             {
                 if (flags.HasFlag(UpdateFlag.GOPosition))
                 {
-                    packet.ReadPackedGuid("GO Position GUID");
-                    var gopos = packet.ReadVector3("GO Position");
-                    packet.ReadVector3("GO Transport Position");
-                    var goFacing = packet.ReadSingle("GO Orientation");
-
-                    moveInfo.Position = gopos;
-                    moveInfo.Orientation = goFacing;
-
-                    packet.ReadSingle("GO Transport Orientation");
+                    packet.ReadPackedGuid("[" + index + "] GO Position GUID");
+                    moveInfo.Position = packet.ReadVector3("[" + index + "] GO Position");
+                    packet.ReadVector3("[" + index + "] GO Transport Position");
+                    moveInfo.Orientation = packet.ReadSingle("[" + index + "] GO Orientation");
+                    packet.ReadSingle("[" + index + "] GO Transport Orientation");
                 }
                 else if (flags.HasFlag(UpdateFlag.StationaryObject))
-                {
-                    packet.ReadVector4("Stationary Position");
-                }
+                    packet.ReadVector4("[" + index + "] Stationary Position");
             }
 
             if (flags.HasFlag(UpdateFlag.Unknown1))
-                packet.ReadInt32("Unk Int32");
+                packet.ReadInt32("[" + index + "] Unk Int32");
 
             if (flags.HasFlag(UpdateFlag.LowGuid))
-                packet.ReadInt32("Low GUID");
+                packet.ReadInt32("[" + index + "] Low GUID");
 
             if (flags.HasFlag(UpdateFlag.AttackingTarget))
-                packet.ReadPackedGuid("Target GUID");
+                packet.ReadPackedGuid("[" + index + "] Target GUID");
 
             if (flags.HasFlag(UpdateFlag.Transport))
-                packet.ReadInt32("Transport Creation Time");
+                packet.ReadInt32("[" + index + "] Transport Creation Time");
 
             if (flags.HasFlag(UpdateFlag.Vehicle))
             {
-                var vehId = packet.ReadInt32("Vehicle ID");
-                var vehFacing = packet.ReadSingle("Vehicle Orientation");
-
+                var vehId = packet.ReadInt32("[" + index + "] Vehicle ID");
+                packet.ReadSingle("[" + index + "] Vehicle Orientation");
                 SQLStore.WriteData(SQLStore.CreatureUpdates.GetCommand("VehicleId", guid.GetEntry(), vehId));
             }
 
             if (flags.HasFlag(UpdateFlag.GORotation))
-                packet.ReadPackedQuaternion("GO Rotation");
-
+                packet.ReadPackedQuaternion("[" + index + "] GO Rotation");
             return moveInfo;
         }
 
         [Parser(Opcode.SMSG_COMPRESSED_UPDATE_OBJECT)]
         public static void HandleCompressedUpdateObject(Packet packet)
         {
-            var decompCount = packet.ReadInt32();
-            var pkt = packet.Inflate(decompCount);
-            HandleUpdateObject(pkt);
+            HandleUpdateObject(packet.Inflate(packet.ReadInt32()));
         }
 
         [Parser(Opcode.SMSG_DESTROY_OBJECT)]

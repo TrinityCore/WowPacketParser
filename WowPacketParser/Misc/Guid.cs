@@ -32,15 +32,14 @@ namespace WowPacketParser.Misc
             {
                 case HighGuidType.Player1:
                 case HighGuidType.Player2:
-                {
                     return (Full & 0x000FFFFFFFFFFFFF) >> 0;
-                }
                 case HighGuidType.GameObject:
                 case HighGuidType.Transport:
                 case HighGuidType.MOTransport:
-                {
+                case HighGuidType.Unit:
+                case HighGuidType.Pet:
+                case HighGuidType.Vehicle:
                     return (Full & 0x0000000000FFFFFF) >> 0;
-                }
             }
 
             return (Full & 0x00000000FFFFFFFF) >> 0;
@@ -91,7 +90,7 @@ namespace WowPacketParser.Misc
 
         public override string ToString()
         {
-            return "Full: 0x" + Full.ToString("X8") + " Flags: " + GetHighMask() + " Type: " +
+            return (Full == 0) ? "0": "Full: 0x" + Full.ToString("X8") + " Flags: " + GetHighMask() + " Type: " +
                 GetHighType() + (HasEntry() ? " Entry: " + GetEntry() : string.Empty) + " Low: " + GetLow();
         }
     }

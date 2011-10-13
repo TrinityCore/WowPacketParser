@@ -15,67 +15,45 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static int CurrentPhaseMask = 1;
 
-        public static MovementInfo ReadMovementInfo(Packet packet, Guid guid)
+        public static MovementInfo ReadMovementInfo(Packet packet, Guid guid, int index = -1)
         {
+            string prefix = index < 0 ? "" : "[" + index + "] ";
             var info = new MovementInfo();
+            info.Flags = packet.ReadEnum<MovementFlag>(prefix + "Movement Flags", TypeCode.Int32);
+            var flags = packet.ReadEnum<MovementFlagExtra>(prefix + "Extra Movement Flags", TypeCode.Int16);
+            packet.ReadInt32(prefix + "Time");
 
-            var moveFlags = (MovementFlag)packet.ReadInt32();
-            Console.WriteLine("Movement Flags: " + moveFlags);
-            info.Flags = moveFlags;
-
-            var flags2 = (MovementFlagExtra)packet.ReadInt16();
-            Console.WriteLine("Extra Movement Flags: " + flags2);
-
-            packet.ReadInt32("Time");
-            var pos = packet.ReadVector4();
-            Console.WriteLine("Position: " + pos);
+            var pos = packet.ReadVector4(prefix + "Position");
             info.Position = new Vector3(pos.X, pos.Y, pos.Z);
             info.Orientation = pos.O;
 
-            if (moveFlags.HasFlag(MovementFlag.OnTransport))
+            if (info.Flags.HasFlag(MovementFlag.OnTransport))
             {
-                var tguid = packet.ReadPackedGuid();
-                Console.WriteLine("Transport GUID: " + tguid);
+                packet.ReadPackedGuid(prefix + "Transport GUID");
+                packet.ReadVector4(prefix + "Transport Position");
+                packet.ReadInt32(prefix + "Transport Time");
+                packet.ReadByte(prefix + "Transport Seat");
 
-                var tpos = packet.ReadVector4();
-                Console.WriteLine("Transport Position: " + tpos);
-
-                var ttime = packet.ReadInt32();
-                Console.WriteLine("Transport Time: " + ttime);
-
-                var seat = packet.ReadByte();
-                Console.WriteLine("Transport Seat: " + seat);
-
-                if (flags2.HasFlag(MovementFlagExtra.InterpolateMove))
-                {
-                    var ttime2 = packet.ReadInt32();
-                    Console.WriteLine("Transport Time 2: " + ttime2);
-                }
+                if (flags.HasFlag(MovementFlagExtra.InterpolateMove))
+                    packet.ReadInt32(prefix + "Transport Time");
             }
 
-            if (moveFlags.HasAnyFlag(MovementFlag.Swimming | MovementFlag.Flying) ||
-                flags2.HasFlag(MovementFlagExtra.AlwaysAllowPitching))
+            if (info.Flags.HasAnyFlag(MovementFlag.Swimming | MovementFlag.Flying) ||
+                flags.HasFlag(MovementFlagExtra.AlwaysAllowPitching))
+                packet.ReadSingle(prefix + "Swim Pitch");
+
+            var fallTime = packet.ReadInt32(prefix + "Fall Time");
+
+            if (info.Flags.HasFlag(MovementFlag.Falling))
             {
-                var swimPitch = packet.ReadSingle();
-                Console.WriteLine("Swim Pitch: " + swimPitch);
+                packet.ReadSingle(prefix + "Fall Velocity");
+                packet.ReadSingle(prefix + "Fall Sin angle");
+                packet.ReadSingle(prefix + "Fall Cos angle");
+                packet.ReadSingle(prefix + "Fall Speed");
             }
 
-            var fallTime = packet.ReadInt32();
-            Console.WriteLine("Fall Time: " + fallTime);
-
-            if (moveFlags.HasFlag(MovementFlag.Falling))
-            {
-                packet.ReadSingle("Fall Velocity");
-                packet.ReadSingle("Fall Sin angle");
-                packet.ReadSingle("Fall Cos angle");
-                packet.ReadSingle("Fall Speed");
-            }
-
-            if (moveFlags.HasFlag(MovementFlag.SplineElevation))
-            {
-                var unkSpline = packet.ReadSingle();
-                Console.WriteLine("Spline Elevation: " + unkSpline);
-            }
+            if (info.Flags.HasFlag(MovementFlag.SplineElevation))
+                packet.ReadSingle(prefix + "Spline Elevation");
 
             return info;
         }

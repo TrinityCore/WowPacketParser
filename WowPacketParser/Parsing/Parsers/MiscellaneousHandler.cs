@@ -218,6 +218,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS)]
         [Parser(Opcode.SMSG_GOSSIP_COMPLETE)]
         [Parser(Opcode.SMSG_CALENDAR_CLEAR_PENDING_ACTION)]
+        [Parser(Opcode.CMSG_CANCEL_TRADE)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }
