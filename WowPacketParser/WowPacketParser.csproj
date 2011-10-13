@@ -270,6 +270,7 @@
     <Compile Include="Misc\MovementInfo.cs" />
     <Compile Include="Misc\Objects\Unit.cs" />
     <Compile Include="Misc\Quaternion.cs" />
+    <Compile Include="Misc\Settings.cs" />
     <Compile Include="Misc\StartInfo.cs" />
     <Compile Include="Misc\UpdateField.cs" />
     <Compile Include="Misc\Objects\WoWObject.cs" />

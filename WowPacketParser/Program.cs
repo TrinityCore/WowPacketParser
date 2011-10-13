@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -30,24 +29,24 @@ namespace WowPacketParser
 
             try
             {
-                packetNumberLow = int.Parse(ConfigurationManager.AppSettings["FilterPacketNumLow"]);
-                packetNumberHigh = int.Parse(ConfigurationManager.AppSettings["FilterPacketNumHigh"]);
+                packetNumberLow = Settings.GetInt32("FilterPacketNumLow");
+                packetNumberHigh = Settings.GetInt32("FilterPacketNumHigh");
 
                 if (packetNumberLow > 0 && packetNumberHigh > 0 && packetNumberLow > packetNumberHigh)
                     throw new Exception("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
 
-                string filtersString = ConfigurationManager.AppSettings["Filters"];
+                string filtersString = Settings.GetString("Filters");
                 if (filtersString != null)
                     filters = filtersString.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-                filtersString = ConfigurationManager.AppSettings["IgnoreFilters"];
+                filtersString = Settings.GetString("IgnoreFilters");
                 if (filtersString != null)
                     ignoreFilters = filtersString.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-                sqlOutput = ConfigurationManager.AppSettings["SQLOutput"].Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase);
-                noDump = ConfigurationManager.AppSettings["NoDump"].Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase);
-                packetsToRead = int.Parse(ConfigurationManager.AppSettings["PacketsNum"]);
-                prompt = ConfigurationManager.AppSettings["ShowEndPrompt"].Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase);
+                sqlOutput = Settings.GetBoolean("SQLOutput");
+                noDump = Settings.GetBoolean("NoDump");
+                packetsToRead = Settings.GetInt32("PacketsNum");
+                prompt = Settings.GetBoolean("ShowEndPrompt");
             }
             catch (Exception ex)
             {

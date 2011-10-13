@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Configuration;
 using MySql.Data.MySqlClient;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.SQL
 {
@@ -40,12 +40,12 @@ namespace WowPacketParser.SQL
             get
             {
                 return String.Format("Server={0};Port={1};Username={2};Password={3};Database={4};CharSet={5}",
-                                    ConfigurationManager.AppSettings["Server"],
-                                    ConfigurationManager.AppSettings["Port"],
-                                    ConfigurationManager.AppSettings["Username"],
-                                    ConfigurationManager.AppSettings["Password"],
-                                    ConfigurationManager.AppSettings["Database"],
-                                    ConfigurationManager.AppSettings["CharacterSet"]);
+                                    Settings.GetString("Server"),
+                                    Settings.GetString("Port"),
+                                    Settings.GetString("Username"),
+                                    Settings.GetString("Password"),
+                                    Settings.GetString("Database"),
+                                    Settings.GetString("CharacterSet"));
             }
         }
     }

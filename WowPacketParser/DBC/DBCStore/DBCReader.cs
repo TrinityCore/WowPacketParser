@@ -33,9 +33,9 @@ namespace WowPacketParser.DBC.DBCStore
                     var key = reader.ReadUInt32();
                     reader.BaseStream.Position -= 4;
 
-                    var T_entry = reader.ReadStruct<T>();
+                    var entry = reader.ReadStruct<T>();
 
-                    dict.Add(key, T_entry);
+                    dict.Add(key, entry);
                 }
 
                 // read dbc strings
