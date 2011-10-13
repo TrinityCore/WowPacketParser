@@ -17,56 +17,86 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_UPDATE_OBJECT)]
         public static void HandleUpdateObject(Packet packet)
         {
-            var count = packet.ReadInt32();
-            Console.WriteLine("Count: " + count);
+            int map = -1;
+            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+                map = packet.ReadInt16("Map");
+            var count = packet.ReadInt32("Count");
 
-            for (var i = 0; i < count; i++)
+            byte unkByte = 0;
+            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
             {
-                var type = (UpdateType)packet.ReadByte();
-                Console.WriteLine("Update Type: " + type);
+                long sposition = packet.GetPosition();
+                unkByte = packet.ReadByte();
+                if (unkByte != 3)
+                    packet.SetPosition(sposition);
+                else
+                {
+                    Console.WriteLine("firstType: " + unkByte);
+                    var guidCount = packet.ReadInt32("GUID Count");
+                    if (guidCount > 0)
+                        for (uint i = 0; i < guidCount; i++)
+                            packet.ReadPackedGuid("GUID " + (i + 1));
+                }
+            }
+
+            int realCount;
+            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+                realCount = count - ((unkByte == 3) ? 1 : 0);
+            else
+                realCount = count;
+
+            for (var i = 0; i < realCount; i++)
+            {
+                var type = packet.ReadEnum<UpdateType>("Update Type #" + (i + 1), TypeCode.Byte);
 
                 switch (type)
                 {
                     case UpdateType.Values:
                     {
-                        var guid = packet.ReadPackedGuid();
-                        Console.WriteLine("GUID: " + guid);
-
+                        var guid = packet.ReadPackedGuid("GUID");
                         var updates = ReadValuesUpdateBlock(packet);
 
                         WoWObject obj;
-                        if (Objects[MovementHandler.CurrentMapId].TryGetValue(guid, out obj))
-                            // System.Collections.Generic.KeyNotFoundException in the next line
-                            HandleUpdateFieldChangedValues(false, guid, obj.Type, updates, obj.Movement);
+
+                        if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+                        {
+                            if (Objects.ContainsKey(map) && Objects[map].TryGetValue(guid, out obj))
+                                HandleUpdateFieldChangedValues(false, guid, obj.Type, updates, obj.Movement);
+                        }
+                        else
+                            if (Objects[MovementHandler.CurrentMapId].TryGetValue(guid, out obj))
+                                // System.Collections.Generic.KeyNotFoundException in the next line
+                                HandleUpdateFieldChangedValues(false, guid, obj.Type, updates, obj.Movement);
                         break;
                     }
                     case UpdateType.Movement:
                     {
-                        var guid = packet.ReadPackedGuid();
-                        Console.WriteLine("GUID: " + guid);
+                        var guid = packet.ReadPackedGuid("GUID");
+
+                        if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+                            packet.ReadEnum<ObjectType>("Object type");
 
                         ReadMovementUpdateBlock(packet, guid);
+
+                        if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+                            ReadValuesUpdateBlock(packet);
                         break;
                     }
                     case UpdateType.CreateObject1:
                     case UpdateType.CreateObject2:
                     {
-                        var guid = packet.ReadPackedGuid();
-                        Console.WriteLine("GUID: " + guid);
-
+                        var guid = packet.ReadPackedGuid("GUID");
                         ReadCreateObjectBlock(packet, guid);
                         break;
                     }
                     case UpdateType.FarObjects:
                     case UpdateType.NearObjects:
                     {
-                        var objCount = packet.ReadInt32();
-                        Console.WriteLine("Object Count: " + objCount);
+                        var objCount = packet.ReadInt32("Object Count");
 
                         for (var j = 0; j < objCount; j++)
                         {
-                            var guid = packet.ReadPackedGuid();
-                            Console.WriteLine("Object GUID: " + guid);
+                            packet.ReadPackedGuid("Object GUID");
                         }
                         break;
                     }
