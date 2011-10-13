@@ -610,8 +610,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SPELLORDAMAGE_IMMUNE)]
         public static void HandleSpellProcResist(Packet packet)
         {
-            packet.ReadPackedGuid("Caster GUID");
-            packet.ReadPackedGuid("Target GUID");
+            packet.ReadGuid("Caster GUID");
+            packet.ReadGuid("Target GUID");
             Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
             packet.ReadBoolean("Debug output");
         }
@@ -620,13 +620,13 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSpellLogMiss(Packet packet)
         {
             Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
-            packet.ReadPackedGuid("Caster GUID");
+            packet.ReadGuid("Caster GUID");
             packet.ReadBoolean("Unk bool");
 
             var count = packet.ReadUInt32("Target count");
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadPackedGuid("Target GUID");
+                packet.ReadGuid("Target GUID");
                 packet.ReadEnum<SpellMissType>("Miss info", TypeCode.Byte);
             }
         }
