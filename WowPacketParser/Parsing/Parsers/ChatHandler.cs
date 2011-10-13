@@ -65,7 +65,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadCString("Name");
 
                     var target = packet.ReadGuid("Receiver GUID");
-                    if (target.GetHighType() == HighGuidType.Unit)
+                    if (target.GetHighType() == HighGuidType.Unit || target.GetHighType() == HighGuidType.Vehicle)
                     {
                         packet.ReadInt32("Receiver Name Length");
                         packet.ReadCString("Receiver Name");
