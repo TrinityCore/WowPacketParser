@@ -16,6 +16,20 @@ namespace WowPacketParser.Loading
             SQLiteCommand command = _connection.CreateCommand();
             _connection.Open();
 
+            // tiawps
+            // header table (`key` string primary key, value string)
+            // packets table (id integer primary key autoincrement, timestamp datetime, direction integer, opcode integer, data blob)
+
+            //command.CommandText = "SELECT key, value FROM header;";
+            //using (SQLiteDataReader tempReader = command.ExecuteReader())
+            //{
+            //    while (tempReader.Read())
+            //    {
+            //        var key = tempReader.GetString(0);
+            //        var value = tempReader.GetValue(1);
+            //    }
+            //}
+
             command.CommandText = "SELECT opcode, timestamp, direction, data FROM packets;";
             _reader = command.ExecuteReader();
         }
