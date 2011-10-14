@@ -296,5 +296,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadInt32("Mask");
         }
+
+        [Parser(Opcode.SMSG_ITEM_COOLDOWN)]
+        public static void HandleItemCooldown(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            Console.WriteLine("Spell ID " + Extensions.SpellLine(packet.ReadInt32()));
+        }
     }
 }

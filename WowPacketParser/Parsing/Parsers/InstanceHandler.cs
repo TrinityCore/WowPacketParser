@@ -65,5 +65,19 @@ namespace WowPacketParser.Parsing.Parsers
             else if (type != 255 && packet.Direction == Direction.ClientToServer)
                 packet.ReadGuid("Target GUID");
         }
+
+        [Parser(Opcode.SMSG_RAID_INSTANCE_MESSAGE)]
+        public static void HandleRaidInstanceMessage(Packet packet)
+        {
+            var type = packet.ReadEnum<RaidInstanceResetWarning>("Warning Type", TypeCode.Int32);
+            Console.WriteLine("Map Id: " + Extensions.MapLine(packet.ReadInt32()));
+            packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
+            packet.ReadInt32("Reset time");
+            if (type == RaidInstanceResetWarning.Welcome)
+            {
+                packet.ReadBoolean("Unk bool");
+                packet.ReadBoolean("Is Extended");
+            }
+        }
     }
 }
