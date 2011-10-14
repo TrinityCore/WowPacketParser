@@ -7,8 +7,8 @@ namespace WowPacketParser.Enums
         Group           = 0x105,
         BattleGround    = 0x109,
         MOTransport     = 0x10C,
-        Item            = 0x400,
-        DynObject       = 0xF00,
+        Item            = 0x400, // Container
+        DynObject       = 0xF00, // Corpses
         GameObject      = 0xF01,
         Transport       = 0xF02,
         Unit            = 0xF03,

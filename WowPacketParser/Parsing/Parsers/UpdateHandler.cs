@@ -104,21 +104,25 @@ namespace WowPacketParser.Parsing.Parsers
             var obj = new WoWObject(guid, objType, moves, updates);
             obj.Position = moves.Position;
 
-            var objects = Objects[MovementHandler.CurrentMapId];
-            var shouldAdd = true;
-            foreach (var woObj in objects.Values)
+            try
             {
-                if (woObj.Position != obj.Position && woObj.Guid != guid)
-                    continue;
+                var objects = Objects[MovementHandler.CurrentMapId];
+                var shouldAdd = true;
+                foreach (var woObj in objects.Values)
+                {
+                    if (woObj.Position != obj.Position && woObj.Guid != guid)
+                        continue;
 
-                shouldAdd = false;
-                break;
+                    shouldAdd = false;
+                    break;
+                }
+
+                if (!shouldAdd)
+                    return;
+
+                objects.Add(guid, obj);
             }
-
-            if (!shouldAdd)
-                return;
-
-            objects.Add(guid, obj);
+            catch { }
 
             HandleUpdateFieldChangedValues(true, guid, objType, updates, moves);
         }
