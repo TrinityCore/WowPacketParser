@@ -14,7 +14,7 @@ namespace WowPacketParser.Misc
 
         public bool HasEntry()
         {
-            return (GetHighType() == HighGuidType.Unit || GetHighType() == HighGuidType.Gameobject);
+            return (GetHighType() == HighGuidType.Unit || GetHighType() == HighGuidType.GameObject);
         }
 
         public ulong GetLow()
