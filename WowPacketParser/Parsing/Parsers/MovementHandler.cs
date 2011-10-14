@@ -42,7 +42,7 @@ namespace WowPacketParser.Parsing.Parsers
                 flags.HasFlag(MovementFlagExtra.AlwaysAllowPitching))
                 packet.ReadSingle(prefix + "Swim Pitch");
 
-            var fallTime = packet.ReadInt32(prefix + "Fall Time");
+            packet.ReadInt32(prefix + "Fall Time");
 
             if (info.Flags.HasFlag(MovementFlag.Falling))
             {
@@ -478,6 +478,17 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("GUID");
             packet.ReadByte("AllowMove");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_KNOCK_BACK)]
+        public static void HandleMoveKnockBack(Packet packet)
+        {
+            packet.ReadPackedGuid("GUID");
+            packet.ReadUInt32("Counter");
+            packet.ReadSingle("X direction");
+            packet.ReadSingle("Y direction");
+            packet.ReadSingle("Horizontal Speed");
+            packet.ReadSingle("Vertical Speed");
         }
     }
 }
