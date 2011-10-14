@@ -7,6 +7,7 @@ using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.SQL;
+using WowPacketParser.Enums;
 using DBCStore = WowPacketParser.DBC.DBCStore.DBC;
 
 namespace WowPacketParser
@@ -21,7 +22,7 @@ namespace WowPacketParser
             string[] filters = null;
             string[] ignoreFilters = null;
             bool sqlOutput = false;
-            bool noDump = false;
+            SniffType dumpFormat = SniffType.Text;
             int packetsToRead = 0; // 0 -> All packets
             int packetNumberLow = 0; // 0 -> No low limit
             int packetNumberHigh = 0; // 0 -> No high limit
@@ -44,7 +45,7 @@ namespace WowPacketParser
                     ignoreFilters = filtersString.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
                 sqlOutput = Settings.GetBoolean("SQLOutput");
-                noDump = Settings.GetBoolean("NoDump");
+                dumpFormat = (SniffType)Settings.GetInt32("DumpFormat");
                 packetsToRead = Settings.GetInt32("PacketsNum");
                 prompt = Settings.GetBoolean("ShowEndPrompt");
             }
@@ -102,31 +103,69 @@ namespace WowPacketParser
                     var packets = Reader.Read(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead);
                     if (packets.Count > 0)
                     {
-                        ClientVersion.SetVersion(packets[0].Time);
-
-                        // debug, will remove
-                        Console.WriteLine("TIME PACKET: " + packets[0].Time);
-                        Console.WriteLine("VERSION: " + ClientVersion.Version);
-
-                        Console.WriteLine("Parsing {0} packets...", packets.Count());
-                        var startTime = DateTime.Now;
-
                         var directoryPath = Path.GetDirectoryName(file);
-                        SQLStore.Initialize(Path.Combine(directoryPath, fileName + ".sql"), sqlOutput);
 
-                        Handler.InitializeLogFile(Path.Combine(directoryPath, fileName + ".txt"), noDump);
-                        foreach (var packet in packets)
-                            Handler.Parse(packet);
+                        if (dumpFormat == SniffType.Bin)
+                        {
+                            Console.WriteLine("Copying {0} packets in .bin format...", packets.Count());
+                            var dumpFileName = Path.Combine(directoryPath, fileName + ".bin");
+                            File.Delete(dumpFileName);
+                            BinaryWriter writer = new BinaryWriter(File.Open(dumpFileName, FileMode.Create));
+                            foreach (var packet in packets)
+                            {
+                                writer.Write((Int32)packet.Opcode);
+                                writer.Write((Int32)packet.GetLength());
+                                writer.Write((Int32)Utilities.GetUnixTimeFromDateTime(packet.Time));
+                                writer.Write((char)packet.Direction);
+                                writer.Write(packet.GetStream(0));
+                            }
+                            writer.Flush();
+                            writer.Close();
+                            writer = null;
+                        }
+                        else if (dumpFormat == SniffType.Pkt)
+                        {
+                            Console.WriteLine("Copying {0} packets in .pkt format...", packets.Count());
+                            var dumpFileName = Path.Combine(directoryPath, fileName + ".pkt");
+                            File.Delete(dumpFileName);
+                            BinaryWriter writer = new BinaryWriter(File.Open(dumpFileName, FileMode.Create));
+                            foreach (var packet in packets)
+                            {
+                                writer.Write((UInt16)packet.Opcode);
+                                writer.Write((Int32)packet.GetLength());
+                                writer.Write((Byte)packet.Direction);
+                                writer.Write((UInt64)Utilities.GetUnixTimeFromDateTime(packet.Time));
+                                writer.Write(packet.GetStream(0));
+                            }
+                            writer.Flush();
+                            writer.Close();
+                            writer = null;                        }
+                        else
+                        {
+                            ClientVersion.SetVersion(packets[0].Time);
 
-                        SQLStore.WriteToFile();
-                        Handler.WriteToFile();
+                            // debug, will remove
+                            Console.WriteLine("TIME PACKET: " + packets[0].Time);
+                            Console.WriteLine("VERSION: " + ClientVersion.Version);
 
-                        var endTime = DateTime.Now;
-                        var span = endTime.Subtract(startTime);
-                        // Need to open a new writer to console, last one was redirected to the file and is now closed.
-                        var standardOutput = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
-                        Console.SetOut(standardOutput);
-                        Console.WriteLine("Finished parsing in - {0} Minutes, {1} Seconds and {2} Milliseconds.{3}", span.Minutes, span.Seconds, span.Milliseconds, Environment.NewLine);
+                            Console.WriteLine("Parsing {0} packets...", packets.Count());
+                            var startTime = DateTime.Now;
+
+                            SQLStore.Initialize(Path.Combine(directoryPath, fileName + ".sql"), sqlOutput);
+                            Handler.InitializeLogFile(Path.Combine(directoryPath, fileName + ".txt"), dumpFormat == SniffType.None);
+                            foreach (var packet in packets)
+                                Handler.Parse(packet);
+
+                            SQLStore.WriteToFile();
+                            Handler.WriteToFile();
+
+                            var endTime = DateTime.Now;
+                            var span = endTime.Subtract(startTime);
+                            // Need to open a new writer to console, last one was redirected to the file and is now closed.
+                            var standardOutput = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
+                            Console.SetOut(standardOutput);
+                            Console.WriteLine("Finished parsing in - {0} Minutes, {1} Seconds and {2} Milliseconds.{3}", span.Minutes, span.Seconds, span.Milliseconds, Environment.NewLine);
+                        }
                     }
                 }
                 catch (Exception ex)

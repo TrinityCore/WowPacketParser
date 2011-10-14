@@ -13,6 +13,13 @@ namespace WowPacketParser.Misc
             return new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(unixTime);
         }
 
+        public static double GetUnixTimeFromDateTime(DateTime time)
+        {
+            DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            TimeSpan span = (time - epoch);
+            return span.TotalSeconds;
+        }
+
         public static byte[] HexStringToBinary(string data)
         {
             var bytes = new List<byte>();
