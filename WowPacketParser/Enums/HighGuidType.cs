@@ -2,18 +2,17 @@ namespace WowPacketParser.Enums
 {
     public enum HighGuidType
     {
-        Player1 = 0, // NoEntry1
-        GameObject = 1,
-        Transport = 2,
-        Unit = 3,
-        Pet = 4,
-        Vehicle = 5,
-        Unknown1 = 6,
-        Unknown2 = 7,
-        Player2 = 8, // NoEntry2
-        Unknown3 = 9,
-        Unknown4 = 10,
-        Unknown5 = 11,
-        MOTransport = 12
+        Player          = 0x000,
+        InstanceSave    = 0x104,
+        Group           = 0x105,
+        BattleGround    = 0x109,
+        MOTransport     = 0x10C,
+        Item            = 0x400,
+        DynObject       = 0xF00,
+        GameObject      = 0xF01,
+        Transport       = 0xF02,
+        Unit            = 0xF03,
+        Pet             = 0xF04,
+        Vehicle         = 0xF05,
     }
 }

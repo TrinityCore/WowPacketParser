@@ -10,7 +10,7 @@ namespace WowPacketParser.Parsing.Parsers
         private static bool ReadBgGuid(UInt64 guid)
         {
             var bgGuid = new Misc.Guid(guid);
-            bool isBg = bgGuid.GetHighType() == HighGuidType.Unknown3;
+            bool isBg = bgGuid.GetHighType() == HighGuidType.BattleGround;
             int low = (int)bgGuid.GetLow();
             if (isBg)
             {

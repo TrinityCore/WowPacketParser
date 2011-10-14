@@ -505,8 +505,7 @@ namespace WowPacketParser.Parsing.Parsers
             var spellId = packet.ReadUInt32();
             Console.WriteLine("Spell ID: " + Extensions.SpellLine((int) spellId));
 
-            var result = (SpellCastFailureReason) packet.ReadByte();
-            Console.WriteLine("Reason: " + result);
+            var result = packet.ReadEnum<SpellCastFailureReason>("Reason", TypeCode.Byte);
 
             switch (result)
             {

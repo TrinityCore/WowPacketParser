@@ -14,31 +14,24 @@ namespace WowPacketParser.Misc
 
         public bool HasEntry()
         {
-            switch (GetHighType())
-            {
-                case HighGuidType.Player1:
-                case HighGuidType.Player2:
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return GetHighType() != HighGuidType.Player;
         }
 
         public ulong GetLow()
         {
             switch (GetHighType())
             {
-                case HighGuidType.Player1:
-                case HighGuidType.Player2:
+                case HighGuidType.Player:
+                case HighGuidType.DynObject:
+                case HighGuidType.Group:
+                case HighGuidType.Item:
                     return (Full & 0x000FFFFFFFFFFFFF) >> 0;
                 case HighGuidType.GameObject:
                 case HighGuidType.Transport:
                 case HighGuidType.MOTransport:
+                case HighGuidType.Vehicle:
                 case HighGuidType.Unit:
                 case HighGuidType.Pet:
-                case HighGuidType.Vehicle:
                     return (Full & 0x0000000000FFFFFF) >> 0;
             }
 
@@ -55,12 +48,12 @@ namespace WowPacketParser.Misc
 
         public HighGuidType GetHighType()
         {
-            return (HighGuidType)((Full & 0x00F0000000000000) >> 52);
-        }
+            var highGUID = (HighGuidType)((Full & 0xF0F0000000000000) >> 52);
 
-        public HighGuidMask GetHighMask()
-        {
-            return (HighGuidMask)((Full & 0xFF00000000000000) >> 56);
+            if (highGUID == 0)
+                return HighGuidType.Player;
+
+            return highGUID;
         }
 
         public static bool operator ==(Guid first, Guid other)
@@ -90,8 +83,10 @@ namespace WowPacketParser.Misc
 
         public override string ToString()
         {
-            return (Full == 0) ? "0": "Full: 0x" + Full.ToString("X8") + " Flags: " + GetHighMask() + " Type: " +
-                GetHighType() + (HasEntry() ? " Entry: " + GetEntry() : string.Empty) + " Low: " + GetLow();
+            if (Full == 0)
+                return "0x0";
+            return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()
+                + (HasEntry() ? " Entry: " + GetEntry() : string.Empty) + " Low: " + GetLow();
         }
     }
 }

@@ -1,6 +1,6 @@
 namespace WowPacketParser.Enums
 {
-    public enum SpellCastFailureReason
+    public enum SpellCastFailureReason : byte
     {
         Success = 0,
         AffectingCombat = 1,
