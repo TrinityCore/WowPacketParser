@@ -96,7 +96,8 @@ namespace WowPacketParser
             foreach (string file in files)
             {
                 var fileName = Path.GetFileName(file);
-                Console.WriteLine("Reading file '{0}'", fileName);
+                Console.WriteLine("Opening file '{0}'", fileName);
+                Console.WriteLine("Reading packets...");
 
                 try
                 {
@@ -143,12 +144,9 @@ namespace WowPacketParser
                         else
                         {
                             ClientVersion.SetVersion(packets[0].Time);
+                            Console.WriteLine("Assumed version: {0}", ClientVersion.Version);
 
-                            // debug, will remove
-                            Console.WriteLine("TIME PACKET: " + packets[0].Time);
-                            Console.WriteLine("VERSION: " + ClientVersion.Version);
-
-                            Console.WriteLine("Parsing {0} packets...", packets.Count());
+                            Console.WriteLine("Parsing {0} packets...", packets.Count);
                             var startTime = DateTime.Now;
 
                             SQLStore.Initialize(Path.Combine(directoryPath, fileName + ".sql"), sqlOutput);
