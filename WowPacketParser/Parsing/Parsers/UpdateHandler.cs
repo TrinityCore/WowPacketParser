@@ -17,17 +17,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_UPDATE_OBJECT)]
         public static void HandleUpdateObject(Packet packet)
         {
-            int map = -1;
-            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
-                map = packet.ReadInt16("Map");
-            else
-                map = MovementHandler.CurrentMapId;
+            int map = MovementHandler.CurrentMapId;
+            int realCount = 0;
 
-            var count = packet.ReadInt32("Count");
-
-            byte unkByte = 0;
             if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
             {
+                map = packet.ReadInt16("Map");
+                var count = packet.ReadInt32("Count");
+                byte unkByte = 0;
                 long sposition = packet.GetPosition();
                 unkByte = packet.ReadByte();
                 if (unkByte != 3)
@@ -40,12 +37,10 @@ namespace WowPacketParser.Parsing.Parsers
                         for (uint i = 0; i < guidCount; i++)
                             packet.ReadPackedGuid("GUID " + (i + 1));
                 }
-            }
-
-            int realCount = count;
-
-            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
                 realCount = count - ((unkByte == 3) ? 1 : 0);
+            }
+            else
+                realCount = packet.ReadInt32("Count");
 
             for (var i = 0; i < realCount; i++)
             {
