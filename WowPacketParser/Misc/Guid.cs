@@ -14,16 +14,7 @@ namespace WowPacketParser.Misc
 
         public bool HasEntry()
         {
-            switch (GetHighType())
-            {
-                case HighGuidType.Player:
-                case HighGuidType.DynObject:
-                case HighGuidType.Group:
-                case HighGuidType.Item:
-                    return false;
-                default:
-                    return true;
-            }
+            return (GetHighType() == HighGuidType.Unit || GetHighType() == HighGuidType.Gameobject);
         }
 
         public ulong GetLow()
