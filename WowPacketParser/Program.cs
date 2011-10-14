@@ -58,7 +58,7 @@ namespace WowPacketParser
             // Quit if no arguments are given
             if (args.Length == 0)
             {
-                Console.WriteLine("Could not find file for reading.");
+                Console.WriteLine("No files specified.");
                 EndPrompt(prompt);
                 return;
             }
@@ -67,14 +67,13 @@ namespace WowPacketParser
             if (DBCStore.Enabled)
             {
                 var startTime = DateTime.Now;
-                Console.WriteLine("Loading DBCs");
+                Console.WriteLine("Loading DBCs...");
 
                 new DBC.DBCLoader();
 
                 var endTime = DateTime.Now;
                 var span = endTime.Subtract(startTime);
-                Console.WriteLine("Finished loading DBCs - {0} Minutes, {1} Seconds and {2} Milliseconds.", span.Minutes, span.Seconds, span.Milliseconds);
-                Console.WriteLine();
+                Console.WriteLine("Finished loading DBCs - {0} Minutes, {1} Seconds and {2} Milliseconds.{3}", span.Minutes, span.Seconds, span.Milliseconds, Environment.NewLine);
             }
 
             // Read binaries
@@ -95,7 +94,9 @@ namespace WowPacketParser
 
             foreach (string file in files)
             {
-                Console.WriteLine("Reading file [" + Path.GetFileName(file) + "]");
+                var fileName = Path.GetFileName(file);
+                Console.WriteLine("Reading file '{0}'", fileName);
+
                 try
                 {
                     var packets = Reader.Read(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead);
@@ -110,10 +111,10 @@ namespace WowPacketParser
                         Console.WriteLine("Parsing {0} packets...", packets.Count());
                         var startTime = DateTime.Now;
 
-                        var fullPath = Utilities.GetPathFromFullPath(file);
-                        SQLStore.Initialize(Path.Combine(fullPath, file + ".sql"), sqlOutput);
+                        var directoryPath = Path.GetDirectoryName(file);
+                        SQLStore.Initialize(Path.Combine(directoryPath, fileName + ".sql"), sqlOutput);
 
-                        Handler.InitializeLogFile(Path.Combine(fullPath, file + ".txt"), noDump);
+                        Handler.InitializeLogFile(Path.Combine(directoryPath, fileName + ".txt"), noDump);
                         foreach (var packet in packets)
                             Handler.Parse(packet);
 
@@ -125,8 +126,7 @@ namespace WowPacketParser
                         // Need to open a new writer to console, last one was redirected to the file and is now closed.
                         var standardOutput = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
                         Console.SetOut(standardOutput);
-                        Console.WriteLine("Finished parsing in - {0} Minutes, {1} Seconds and {2} Milliseconds.", span.Minutes, span.Seconds, span.Milliseconds);
-                        Console.WriteLine();
+                        Console.WriteLine("Finished parsing in - {0} Minutes, {1} Seconds and {2} Milliseconds.{3}", span.Minutes, span.Seconds, span.Milliseconds, Environment.NewLine);
                     }
                 }
                 catch (Exception ex)

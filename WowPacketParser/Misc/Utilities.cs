@@ -97,11 +97,5 @@ namespace WowPacketParser.Misc
 
             return hexDump.ToString();
         }
-
-        public static string GetPathFromFullPath(string fullPath)
-        {
-            return !fullPath.Contains("\\") ? Directory.GetCurrentDirectory() :
-                fullPath.Substring(0, fullPath.LastIndexOf("\\") + 1);
-        }
     }
 }

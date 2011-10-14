@@ -61,13 +61,13 @@ namespace WowPacketParser.Parsing
                 return;
 
             File.Delete(file);
-            _file = new StreamWriter(file, true);
-            Console.SetOut(_file);
+            _writer = new StreamWriter(file, true);
+            Console.SetOut(_writer);
         }
 
         private static bool _noDump;
 
-        private static StreamWriter _file;
+        private static StreamWriter _writer;
 
         private static readonly Dictionary<Opcode, Action<Packet>> Handlers =
             new Dictionary<Opcode, Action<Packet>>();
@@ -77,21 +77,18 @@ namespace WowPacketParser.Parsing
             if (_noDump)
                 return;
 
-            _file.Flush();
-            _file.Close();
-            _file = null;
+            _writer.Flush();
+            _writer.Close();
+            _writer = null;
         }
 
         public static void Parse(Packet packet)
         {
             var opcode = packet.Opcode;
-            var time = packet.Time;
-            var direction = packet.Direction;
-            var length = packet.GetLength();
-            var number = packet.Number;
 
-            Console.WriteLine("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}", direction,
-                opcode, ((int)opcode).ToString("X4"), length, time, number);
+            Console.WriteLine("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}",
+                packet.Direction, opcode, ((int)opcode).ToString("X4"),
+                packet.GetLength(), packet.Time, packet.Number);
 
             if (Handlers.ContainsKey(opcode))
             {
