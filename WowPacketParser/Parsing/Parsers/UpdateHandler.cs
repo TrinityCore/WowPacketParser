@@ -144,6 +144,7 @@ namespace WowPacketParser.Parsing.Parsers
                     continue;
 
                 var blockVal = packet.ReadUpdateField();
+                key = "Block Value";
                 value = blockVal.Int32Value + "/" + blockVal.SingleValue;
                 if (i < objectEnd)
                 {
