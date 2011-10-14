@@ -65,6 +65,29 @@ namespace WowPacketParser.Misc
             return highGUID;
         }
 
+        public ObjectType GetObjectType()
+        {
+            switch (GetHighType())
+            {
+                case HighGuidType.Player:
+                    return ObjectType.Player;
+                case HighGuidType.DynObject:
+                    return ObjectType.DynamicObject;
+                case HighGuidType.Item:
+                    return ObjectType.Item;
+                case HighGuidType.GameObject:
+                case HighGuidType.Transport:
+                case HighGuidType.MOTransport:
+                    return ObjectType.GameObject;
+                case HighGuidType.Vehicle:
+                case HighGuidType.Unit:
+                case HighGuidType.Pet:
+                    return ObjectType.Unit;
+                default:
+                    return ObjectType.Object;
+            }
+        }
+
         public static bool operator ==(Guid first, Guid other)
         {
             return first.Full == other.Full;

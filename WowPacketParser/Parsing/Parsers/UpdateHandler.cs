@@ -20,6 +20,8 @@ namespace WowPacketParser.Parsing.Parsers
             int map = -1;
             if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
                 map = packet.ReadInt16("Map");
+            else
+                map = MovementHandler.CurrentMapId;
 
             var count = packet.ReadInt32("Count");
 
@@ -52,17 +54,12 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     case UpdateType.Values:
                     {
-                        var guid = packet.ReadPackedGuid("[" + i + "] GUID");
-
+                        Guid guid = packet.ReadPackedGuid("[" + i + "] GUID");
                         WoWObject obj;
-                        if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
-                        {
-                            if (Objects.ContainsKey(map) && Objects[map].TryGetValue(guid, out obj))
-                                HandleUpdateFieldChangedValues(false, guid, obj.Type, ReadValuesUpdateBlock(packet, obj.Type, i), obj.Movement);
-                        }
-                        else if (Objects[MovementHandler.CurrentMapId].TryGetValue(guid, out obj))
-                            // System.Collections.Generic.KeyNotFoundException in the next line
-                            HandleUpdateFieldChangedValues(false, guid, obj.Type, ReadValuesUpdateBlock(packet, obj.Type, i), obj.Movement);
+
+                        var updates = ReadValuesUpdateBlock(packet, guid.GetObjectType(), i);
+                        if (Objects.ContainsKey(map) && Objects[map].TryGetValue(guid, out obj))
+                            HandleUpdateFieldChangedValues(false, guid, obj.Type, updates, obj.Movement);
                         break;
                     }
                     case UpdateType.Movement:
