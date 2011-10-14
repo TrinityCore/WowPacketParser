@@ -55,7 +55,7 @@ namespace WowPacketParser.Parsing.Parsers
                     case UpdateType.FarObjects:
                     case UpdateType.NearObjects:
                     {
-                        ReadObjectsBlock(packet);
+                        ReadObjectsBlock(packet, i);
                         break;
                     }
                 }
@@ -94,11 +94,11 @@ namespace WowPacketParser.Parsing.Parsers
             HandleUpdateFieldChangedValues(true, guid, objType, updates, moves);
         }
 
-        public static void ReadObjectsBlock(Packet packet)
+        public static void ReadObjectsBlock(Packet packet, int index)
         {
-            var objCount = packet.ReadInt32("Object Count");
+            var objCount = packet.ReadInt32("[" + index + "] Object Count");
             for (var j = 0; j < objCount; j++)
-                packet.ReadPackedGuid("Object GUID");
+                packet.ReadPackedGuid("[" + index + "][" + j + "] Object GUID");
         }
 
         public static Dictionary<int, UpdateField> ReadValuesUpdateBlock(Packet packet, ObjectType type, int index)
