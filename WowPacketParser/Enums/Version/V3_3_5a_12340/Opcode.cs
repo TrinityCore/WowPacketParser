@@ -1,4 +1,4 @@
-namespace WowPacketParser.Enums
+namespace WowPacketParser.Enums.Version.V3_3_5a_12340
 {
     public enum Opcode
     {

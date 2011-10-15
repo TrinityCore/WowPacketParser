@@ -39,7 +39,7 @@ namespace WowPacketParser.SQL.Builder
                (13204,1,403,-925);
             */
 
-            // Return empty if there are no values or where clause or no table name set
+            // Return empty if there are no values or no where clause or no table name set
             if (_values.Count == 0 || _whereClause.Count == 0 || Table == string.Empty)
                 return string.Empty;
 
