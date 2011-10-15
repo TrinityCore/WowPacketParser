@@ -1,4 +1,5 @@
 namespace WowPacketParser.Enums.Version.V4_0_6_13596
+// namespace WowPacketParser.Enums
 {
     public enum Opcode
     {
@@ -1314,7 +1315,13 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
         SMSG_LFG_UPDATE_SEARCH,
         SMSG_OPEN_LFG_DUNGEON_FINDER,
         SMSG_QUEST_FORCE_REMOVE,
-        SMSG_RESUME_CAST_BAR
+        SMSG_RESUME_CAST_BAR,
+        CMSG_GUILD_SET_OFFICER_NOTE,
+        CMSG_GUILD_SET_PUBLIC_NOTE,
+        CMSG_ITEM_QUERY_SINGLE,
+        MSG_BATTLEGROUND_PLAYER_POSITIONS,
+        SMSG_BATTLEFIELD_STATUS,
+        SMSG_ITEM_QUERY_SINGLE_RESPONSE
         // ReSharper restore InconsistentNaming
     }
 }

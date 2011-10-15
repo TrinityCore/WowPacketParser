@@ -1,4 +1,5 @@
 namespace WowPacketParser.Enums
+// namespace WowPacketParser.Enums.Unused
 {
     public enum Opcode
     {
@@ -1316,6 +1317,10 @@ namespace WowPacketParser.Enums
         SMSG_COMMENTATOR_SKIRMISH_QUEUE_RESULT2 = 0x51D,
         SMSG_COMPRESSED_UNKNOWN_1310 = 0x51E,
         NUM_MSG_TYPES = 0x51F,
+
+        // Missing on 3.3.5
+        // Until a solution for multiple opcode enums per build is found...
+        SMSG_GUILD_RANK,
         // ReSharper restore InconsistentNaming
     }
 }
