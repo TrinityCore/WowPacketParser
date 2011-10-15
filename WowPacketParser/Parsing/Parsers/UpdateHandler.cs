@@ -462,7 +462,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadPackedGuid("[" + index + "] Target GUID");
 
             if (flags.HasFlag(UpdateFlag.Transport))
-                packet.ReadInt32("[" + index + "] Transport Creation Time");
+                packet.ReadInt32("[" + index + "] Transport Movement Time (ms)");
 
             if (flags.HasFlag(UpdateFlag.Vehicle))
             {
