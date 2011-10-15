@@ -1,5 +1,7 @@
 namespace WowPacketParser.Enums
 {
+    // ReSharper disable InconsistentNaming
+    // 3.3.5
     public enum ObjectField
     {
         OBJECT_FIELD_GUID = 0x0000,
@@ -487,4 +489,5 @@ namespace WowPacketParser.Enums
         CORPSE_FIELD_PAD = ObjectField.OBJECT_END + 0x001D,
         CORPSE_END = ObjectField.OBJECT_END + 0x001E
     }
+    // ReSharper restore InconsistentNaming
 }

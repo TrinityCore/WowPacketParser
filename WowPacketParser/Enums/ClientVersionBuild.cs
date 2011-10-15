@@ -2,6 +2,7 @@
 {
     public enum ClientVersionBuild
     {
+        // ReSharper disable InconsistentNaming
         V2_4_3_8606 = 8606,
 
         V3_0_2_9056 = 9056,
@@ -33,5 +34,6 @@
         V4_2_0_14333 = 14333,
         V4_2_0_14480 = 14480,
         V4_2_2_14545 = 14545,
+        // ReSharper restore InconsistentNaming
     }
 }
