@@ -150,6 +150,9 @@
     <Compile Include="Enums\SniffType.cs" />
     <Compile Include="Enums\SpellHitType.cs" />
     <Compile Include="Enums\PetitionResultType.cs" />
+    <Compile Include="Enums\Version\V3_3_5a_12340\Opcode.cs" />
+    <Compile Include="Enums\Version\V3_3_5a_12340\UpdateField.cs" />
+    <Compile Include="Enums\Version\V4_0_6_13596\Opcode.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\SpellHitInfo.cs" />
     <Compile Include="Enums\SpellMechanics.cs" />
@@ -371,11 +374,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Enums\NewFolder1\" />
-    <Folder Include="Enums\Version\V3_3_5a_12340\" />
-    <Folder Include="Enums\Version\V4_0_6_13596\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
