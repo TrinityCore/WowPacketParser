@@ -42,10 +42,13 @@ namespace WowPacketParser.Parsing.Parsers
                 flags.HasFlag(MovementFlagExtra.AlwaysAllowPitching))
                 packet.ReadSingle(prefix + "Swim Pitch");
 
-            packet.ReadInt32(prefix + "Fall Time");
+            if (ClientVersion.Version <= ClientVersionBuild.V3_3_5a_12340)
+                packet.ReadInt32(prefix + "Fall Time");
 
             if (info.Flags.HasFlag(MovementFlag.Falling))
             {
+                if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+                    packet.ReadInt32(prefix + "Fall Time");
                 packet.ReadSingle(prefix + "Fall Velocity");
                 packet.ReadSingle(prefix + "Fall Sin angle");
                 packet.ReadSingle(prefix + "Fall Cos angle");
