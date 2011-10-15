@@ -12,7 +12,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Unk bool");
             packet.ReadBoolean("Enable Voice Chat");
 
-            if (ClientVersion.Version <= ClientVersionBuild.V3_3_5a_12340)
+            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
                 return;
 
             packet.ReadByte("Complain System Status");
@@ -209,6 +209,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk int32");
 
             packet.ReadUInt32("Value");
+        }
+
+        [Parser(Opcode.CMSG_SET_SELECTION)]
+        public static void HandleSetSelection(Packet packet)
+        {
+            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]

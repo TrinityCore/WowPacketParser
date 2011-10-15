@@ -551,5 +551,31 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("Petition GUID");
         }
+
+        [Parser(Opcode.SMSG_GUILD_RANK)] // Cata only opcode
+        public static void HandleGuildRankServer(Packet packet)
+        {
+            const int guildBankMaxTabs = 8;
+
+            var count = packet.ReadUInt32("Rank Count");
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadUInt32("[" + i + "] " + "Unk1");
+                packet.ReadUInt32("[" + i + "] " + "Unk2");
+
+                packet.ReadCString("[" + i + "] " + "Name");
+                packet.ReadUInt32("[" + i + "] " + "Rights"); // Missing enum?
+
+                for (int j = 0; j < guildBankMaxTabs; j++)
+                    packet.ReadUInt32("[" + i + "]" + "[" + j + "] " + "Rights"); // Missing enum?
+                for (int j = 0; j < guildBankMaxTabs; j++)
+                    packet.ReadUInt32("[" + i + "]" + "[" + j + "] " + "Slots"); // Missing enum?
+
+                packet.ReadUInt32("[" + i + "] " + "Bank Money Per Day");
+
+                if (i != count - 1)
+                    Console.WriteLine("--");
+            }
+        }
     }
 }
