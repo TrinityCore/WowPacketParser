@@ -90,10 +90,9 @@ namespace WowPacketParser.Parsing
                 packet.Direction, opcode, ((int)opcode).ToString("X4"),
                 packet.GetLength(), packet.Time, packet.Number);
 
-            if (Handlers.ContainsKey(opcode))
+            Action<Packet> handler;
+            if (Handlers.TryGetValue(opcode, out handler))
             {
-                var handler = Handlers[opcode];
-
                 try
                 {
                     handler(packet);

@@ -44,7 +44,7 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V4_2_2_14545, new DateTime(2011, 9, 30))
         };
 
-        private static ClientVersionBuild GetCurrentVersion(DateTime time)
+        private static ClientVersionBuild GetVersion(DateTime time)
         {
             for (int i = 1; i < _clientVersions.Length; i++)
                 if (_clientVersions[i].Value > time)
@@ -55,7 +55,7 @@ namespace WowPacketParser.Misc
 
         public static void SetVersion(DateTime time)
         {
-            Version = GetCurrentVersion(time);
+            Version = GetVersion(time);
         }
     }
 }
