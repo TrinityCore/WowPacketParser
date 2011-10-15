@@ -151,20 +151,6 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<GuildEmblemError>("Result", TypeCode.UInt32);
         }
 
-        [Parser(Opcode.CMSG_GUILD_RANK)]
-        public static void HandleGuildRank(Packet packet)
-        {
-            packet.ReadUInt32("Rank Id");
-            packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.UInt32);
-            packet.ReadCString("Name");
-            packet.ReadInt32("Money Per Day");
-            for (var i = 0; i < 6; i++)
-            {
-                packet.ReadEnum<GuildBankRightsFlag>("[" + i + "] Tab Rights", TypeCode.UInt32);
-                packet.ReadInt32("[" + i + "] Tab Slots");
-            }
-        }
-
         [Parser(Opcode.CMSG_GUILD_SET_PUBLIC_NOTE)]
         public static void HandleGuildSetPublicNote(Packet packet)
         {
@@ -552,6 +538,20 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Petition GUID");
         }
 
+        [Parser(Opcode.CMSG_GUILD_RANK)]
+        public static void HandleGuildRank(Packet packet)
+        {
+            packet.ReadUInt32("Rank Id");
+            packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.UInt32);
+            packet.ReadCString("Name");
+            packet.ReadInt32("Money Per Day");
+            for (var i = 0; i < 6; i++)
+            {
+                packet.ReadEnum<GuildBankRightsFlag>("[" + i + "] Tab Rights", TypeCode.UInt32);
+                packet.ReadInt32("[" + i + "] Tab Slots");
+            }
+        }
+
         [Parser(Opcode.SMSG_GUILD_RANK)] // Cata only opcode
         public static void HandleGuildRankServer(Packet packet)
         {
@@ -564,12 +564,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("[" + i + "] " + "Unk2");
 
                 packet.ReadCString("[" + i + "] " + "Name");
-                packet.ReadUInt32("[" + i + "] " + "Rights"); // Missing enum?
+                packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.UInt32);
 
                 for (int j = 0; j < guildBankMaxTabs; j++)
-                    packet.ReadUInt32("[" + i + "]" + "[" + j + "] " + "Rights"); // Missing enum?
+                    packet.ReadEnum<GuildRankRightsFlag>("[" + i + "]" + "[" + j + "] " + "Tab Rights", TypeCode.UInt32);
                 for (int j = 0; j < guildBankMaxTabs; j++)
-                    packet.ReadUInt32("[" + i + "]" + "[" + j + "] " + "Slots"); // Missing enum?
+                    packet.ReadUInt32("[" + i + "]" + "[" + j + "] " + "Tab Slots"); // Unsure about this. Seems to be rights aswell
 
                 packet.ReadUInt32("[" + i + "] " + "Bank Money Per Day");
 
