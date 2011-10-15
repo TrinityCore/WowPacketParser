@@ -9,8 +9,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
         public static void HandleFeatureSystemStatus(Packet packet)
         {
-            packet.ReadByte("Unk Byte");
+            packet.ReadBoolean("Unk bool");
             packet.ReadBoolean("Enable Voice Chat");
+
+            if (ClientVersion.Version <= ClientVersionBuild.V3_3_5a_12340)
+                return;
+
+            packet.ReadByte("Complain System Status");
+            packet.ReadInt32("Unknown Mail Url Related Value");
         }
 
         [Parser(Opcode.CMSG_REALM_SPLIT)]
@@ -184,6 +190,25 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleZoneUpdate(Packet packet)
         {
             packet.ReadUInt32("Zone Id");
+        }
+
+        [Parser(Opcode.SMSG_HEALTH_UPDATE)]
+        public static void HandleHealthUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid("GUID");
+            packet.ReadUInt32("Value");
+        }
+
+        [Parser(Opcode.SMSG_POWER_UPDATE)]
+        public static void HandlePowerUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid("GUID");
+            packet.ReadEnum<PowerType>("Type", TypeCode.Byte);
+
+            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+                packet.ReadUInt32("Unk int32");
+
+            packet.ReadUInt32("Value");
         }
 
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]

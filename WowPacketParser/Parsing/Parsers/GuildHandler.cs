@@ -546,9 +546,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("New Name");
         }
 
-        //[Parser(Opcode.SMSG_OFFER_PETITION_ERROR)]
+        [Parser(Opcode.SMSG_OFFER_PETITION_ERROR)]
         public static void HandlePetitionError(Packet packet)
         {
+            packet.ReadGuid("Petition GUID");
         }
     }
 }

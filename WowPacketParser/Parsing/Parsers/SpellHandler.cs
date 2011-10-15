@@ -22,18 +22,6 @@ namespace WowPacketParser.Parsing.Parsers
                 Console.WriteLine("[" + i + "] Spell ID: " + Extensions.SpellLine(packet.ReadInt32()));
         }
 
-        [Parser(Opcode.SMSG_POWER_UPDATE)]
-        public static void HandleSetPower(Packet packet)
-        {
-            packet.ReadPackedGuid("GUID");
-
-            var type = (PowerType)packet.ReadByte();
-            Console.WriteLine("Power Type: " + type);
-
-            var value = packet.ReadInt32();
-            Console.WriteLine("Power Value: " + value);
-        }
-
         [Parser(Opcode.SMSG_RESUME_CAST_BAR)]
         public static void HandleResumeCastBar(Packet packet)
         {
