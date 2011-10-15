@@ -12,9 +12,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Unk bool");
             packet.ReadBoolean("Enable Voice Chat");
 
-            // Can't find these two in any version
-            // packet.ReadByte("Complain System Status");
-            // packet.ReadInt32("Unknown Mail Url Related Value");
+            if (ClientVersion.Version >= ClientVersionBuild.V4_2_0_14333)
+            {
+                packet.ReadByte("Complain System Status");
+                packet.ReadInt32("Unknown Mail Url Related Value");
+            }
         }
 
         [Parser(Opcode.CMSG_REALM_SPLIT)]

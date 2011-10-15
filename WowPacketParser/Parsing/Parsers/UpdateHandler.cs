@@ -54,6 +54,7 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                     case UpdateType.FarObjects:
                     case UpdateType.NearObjects:
+                    // case UpdateType.DestroyObjects:
                     {
                         ReadObjectsBlock(packet, i);
                         break;
@@ -384,16 +385,16 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var moveInfo = new MovementInfo();
 
-            var flags = packet.ReadEnum<UpdateFlag>("[" + index + "] Update Flags", TypeCode.Int16);
+            var flags = packet.ReadEnum<UpdateFlag>("[" + index + "] Update Flags", TypeCode.UInt16);
             if (flags.HasFlag(UpdateFlag.Living))
             {
                 moveInfo = MovementHandler.ReadMovementInfo(packet, guid, index);
                 var moveFlags = moveInfo.Flags;
 
-                var maxSpeedCount = ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340 ? 8 : 9;
+                var maxSpeedCount = ClientVersion.Version >= ClientVersionBuild.V4_1_0_13914 ? 8 : 9; // enums shifted by one
                 for (var i = 0; i < maxSpeedCount; i++)
                 {
-                    var j = (SpeedType)(ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340 ? i + 1 : i); // enums shifted by one
+                    var j = (SpeedType)(i + (9 - maxSpeedCount)); // enums shifted by one
                     var speed = packet.ReadSingle("["+ index + "] " + j + " Speed");
 
                     switch (j)
