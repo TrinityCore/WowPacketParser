@@ -2,12 +2,13 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
+using WowPacketParser.Enums;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.SQL;
-using WowPacketParser.Enums;
 using DBCStore = WowPacketParser.DBC.DBCStore.DBC;
 
 namespace WowPacketParser
@@ -74,7 +75,8 @@ namespace WowPacketParser
 
                 var endTime = DateTime.Now;
                 var span = endTime.Subtract(startTime);
-                Console.WriteLine("Finished loading DBCs - {0} Minutes, {1} Seconds and {2} Milliseconds.{3}", span.Minutes, span.Seconds, span.Milliseconds, Environment.NewLine);
+                Console.WriteLine("Finished loading DBCs - {0} Minutes, {1} Seconds and {2} Milliseconds.", span.Minutes, span.Seconds, span.Milliseconds);
+                Console.WriteLine();
             }
 
             // Read binaries
@@ -95,8 +97,7 @@ namespace WowPacketParser
 
             foreach (string file in files)
             {
-                var fileName = Path.GetFileName(file);
-                Console.WriteLine("Opening file '{0}'", fileName);
+                Console.WriteLine("Opening file '{0}'", Path.GetFileName(file));
                 Console.WriteLine("Reading packets...");
 
                 try
@@ -104,43 +105,22 @@ namespace WowPacketParser
                     var packets = Reader.Read(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead);
                     if (packets.Count > 0)
                     {
-                        var directoryPath = Path.GetDirectoryName(file);
-
                         if (dumpFormat == SniffType.Bin)
                         {
-                            Console.WriteLine("Copying {0} packets in .bin format...", packets.Count());
-                            var dumpFileName = Path.Combine(directoryPath, fileName + ".bin");
-                            File.Delete(dumpFileName);
-                            BinaryWriter writer = new BinaryWriter(File.Open(dumpFileName, FileMode.Create));
-                            foreach (var packet in packets)
-                            {
-                                writer.Write((Int32)packet.Opcode);
-                                writer.Write((Int32)packet.GetLength());
-                                writer.Write((Int32)Utilities.GetUnixTimeFromDateTime(packet.Time));
-                                writer.Write((char)packet.Direction);
-                                writer.Write(packet.GetStream(0));
-                            }
-                            writer.Flush();
-                            writer.Close();
-                            writer = null;
+                            Console.WriteLine("Copying {0} packets to .bin format...", packets.Count);
+
+                            var dumpFileName = Path.ChangeExtension(file, null) + "_excerpt.bin";
+                            BinaryPacketWriter writer = new BinaryPacketWriter(SniffType.Bin, dumpFileName, Encoding.ASCII);
+                            writer.Write(packets);
                         }
                         else if (dumpFormat == SniffType.Pkt)
                         {
-                            Console.WriteLine("Copying {0} packets in .pkt format...", packets.Count());
-                            var dumpFileName = Path.Combine(directoryPath, fileName + ".pkt");
-                            File.Delete(dumpFileName);
-                            BinaryWriter writer = new BinaryWriter(File.Open(dumpFileName, FileMode.Create));
-                            foreach (var packet in packets)
-                            {
-                                writer.Write((UInt16)packet.Opcode);
-                                writer.Write((Int32)packet.GetLength());
-                                writer.Write((Byte)packet.Direction);
-                                writer.Write((UInt64)Utilities.GetUnixTimeFromDateTime(packet.Time));
-                                writer.Write(packet.GetStream(0));
-                            }
-                            writer.Flush();
-                            writer.Close();
-                            writer = null;                        }
+                            Console.WriteLine("Copying {0} packets to .pkt format...", packets.Count);
+
+                            var dumpFileName = Path.ChangeExtension(file, null) + "_excerpt.pkt";
+                            BinaryPacketWriter writer = new BinaryPacketWriter(SniffType.Pkt, dumpFileName, Encoding.ASCII);
+                            writer.Write(packets);
+                        }
                         else
                         {
                             ClientVersion.SetVersion(packets[0].Time);
@@ -149,8 +129,10 @@ namespace WowPacketParser
                             Console.WriteLine("Parsing {0} packets...", packets.Count);
                             var startTime = DateTime.Now;
 
-                            SQLStore.Initialize(Path.Combine(directoryPath, fileName + ".sql"), sqlOutput);
-                            Handler.InitializeLogFile(Path.Combine(directoryPath, fileName + ".txt"), dumpFormat == SniffType.None);
+                            var outFileName = Path.ChangeExtension(file, null) + "_parsed";
+                            SQLStore.Initialize(outFileName + ".sql", sqlOutput);
+                            Handler.InitializeLogFile(outFileName + ".txt", dumpFormat == SniffType.None);
+
                             foreach (var packet in packets)
                                 Handler.Parse(packet);
 
@@ -162,7 +144,9 @@ namespace WowPacketParser
                             // Need to open a new writer to console, last one was redirected to the file and is now closed.
                             var standardOutput = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
                             Console.SetOut(standardOutput);
-                            Console.WriteLine("Finished parsing in - {0} Minutes, {1} Seconds and {2} Milliseconds.{3}", span.Minutes, span.Seconds, span.Milliseconds, Environment.NewLine);
+                            Console.WriteLine("Finished parsing in - {0} Minutes, {1} Seconds and {2} Milliseconds.", span.Minutes, span.Seconds, span.Milliseconds);
+                            Console.WriteLine("Saved file to '{0}'", outFileName);
+                            Console.WriteLine();
                         }
                     }
                 }
