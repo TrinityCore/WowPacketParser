@@ -47,15 +47,11 @@ namespace WowPacketParser.Enums.Version
 
         public static string GetOpcodeName(int opcodeId, ClientVersionBuild versionBuild)
         {
-            var opcodeName = opcodeId.ToString();
             foreach (var pair in GetOpcodeDictionary(versionBuild))
                 if (pair.Value == opcodeId)
-                {
-                    opcodeName = pair.Key.ToString();
-                    break; // We've found what we want
-                }
+                    return pair.Key.ToString();
 
-            return opcodeName;
+            return opcodeId.ToString();
         }
 
         public static int GetOpcode(Opcode opcode)
