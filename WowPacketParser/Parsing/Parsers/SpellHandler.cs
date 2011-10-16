@@ -108,7 +108,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Charges: " + charges);
             aura.Charges = charges;
 
-            if (!flags.HasFlag(AuraFlag.NotCaster))
+            if (!flags.HasAnyFlag(AuraFlag.NotCaster))
             {
                 var unkGuid = packet.ReadPackedGuid();
                 Console.WriteLine("Caster GUID: " + unkGuid);
@@ -117,7 +117,7 @@ namespace WowPacketParser.Parsing.Parsers
             else
                 aura.CasterGuid = new Guid(); // Is this needed?
 
-            if (flags.HasFlag(AuraFlag.Duration))
+            if (flags.HasAnyFlag(AuraFlag.Duration))
             {
                 var maxDura = packet.ReadInt32();
                 Console.WriteLine("Max Duration: " + maxDura);
@@ -226,7 +226,7 @@ namespace WowPacketParser.Parsing.Parsers
                 Console.WriteLine("Item Target GUID: " + tGuid);
             }
 
-            if (targetFlags.HasFlag(TargetFlag.SourceLocation))
+            if (targetFlags.HasAnyFlag(TargetFlag.SourceLocation))
             {
                 var tGuid = packet.ReadPackedGuid();
                 Console.WriteLine("Source Transport GUID: " + tGuid);
@@ -234,7 +234,7 @@ namespace WowPacketParser.Parsing.Parsers
                 Console.WriteLine("Source Position: " + pos);
             }
 
-            if (targetFlags.HasFlag(TargetFlag.DestinationLocation))
+            if (targetFlags.HasAnyFlag(TargetFlag.DestinationLocation))
             {
                 var tGuid = packet.ReadPackedGuid();
                 Console.WriteLine("Destination Transport GUID: " + tGuid);
@@ -242,19 +242,19 @@ namespace WowPacketParser.Parsing.Parsers
                 Console.WriteLine("Destination Position: " + pos);
             }
 
-            if (targetFlags.HasFlag(TargetFlag.NameString))
+            if (targetFlags.HasAnyFlag(TargetFlag.NameString))
             {
                 var targetStr = packet.ReadCString();
                 Console.WriteLine("Target String: " + targetStr);
             }
 
-            if (flags.HasFlag(CastFlag.PredictedPower))
+            if (flags.HasAnyFlag(CastFlag.PredictedPower))
             {
                 var runeCooldown = packet.ReadInt32();
                 Console.WriteLine("Rune Cooldown: " + runeCooldown);
             }
 
-            if (flags.HasFlag(CastFlag.RuneInfo))
+            if (flags.HasAnyFlag(CastFlag.RuneInfo))
             {
                 var spellRuneState = packet.ReadByte();
                 Console.WriteLine("Spell Rune State: " + spellRuneState);
@@ -278,7 +278,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO))
             {
-                if (flags.HasFlag(CastFlag.AdjustMissile))
+                if (flags.HasAnyFlag(CastFlag.AdjustMissile))
                 {
                     var unk1 = packet.ReadSingle();
                     Console.WriteLine("Unk Single: " + unk1);
@@ -288,7 +288,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            if (flags.HasFlag(CastFlag.Projectile))
+            if (flags.HasAnyFlag(CastFlag.Projectile))
             {
                 var ammoDispId = packet.ReadInt32();
                 Console.WriteLine("Ammo Display ID: " + ammoDispId);
@@ -299,7 +299,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO))
             {
-                if (flags.HasFlag(CastFlag.VisualChain))
+                if (flags.HasAnyFlag(CastFlag.VisualChain))
                 {
                     var unk5 = packet.ReadInt32();
                     Console.WriteLine("Unk Int32 2: " + unk5);
@@ -311,7 +311,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_START))
             {
-                if (flags.HasFlag(CastFlag.Immunity))
+                if (flags.HasAnyFlag(CastFlag.Immunity))
                 {
                     var unk4 = packet.ReadInt32();
                     Console.WriteLine("Unk Int32 4: " + unk4);
@@ -324,13 +324,13 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Opcode != Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO))
                 return;
 
-            if (targetFlags.HasFlag(TargetFlag.DestinationLocation))
+            if (targetFlags.HasAnyFlag(TargetFlag.DestinationLocation))
             {
                 var unkByte = packet.ReadByte();
                 Console.WriteLine("Unk Byte 2: " + unkByte);
             }
 
-            if (!targetFlags.HasFlag(TargetFlag.ExtraTargets))
+            if (!targetFlags.HasAnyFlag(TargetFlag.ExtraTargets))
                 return;
 
             var unkInt = packet.ReadInt32();

@@ -16,7 +16,12 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static int CurrentPhaseMask = 1;
 
-        public static MovementInfo ReadMovementInfo(Packet packet, Guid guid, int index = -1)
+        public static MovementInfo ReadMovementInfo(Packet packet, Guid guid)
+        {
+            return ReadMovementInfo(packet, guid, -1);
+        }
+
+        public static MovementInfo ReadMovementInfo(Packet packet, Guid guid, int index)
         {
             string prefix = index < 0 ? "" : "[" + index + "] ";
             var info = new MovementInfo();
@@ -28,25 +33,25 @@ namespace WowPacketParser.Parsing.Parsers
             info.Position = new Vector3(pos.X, pos.Y, pos.Z);
             info.Orientation = pos.O;
 
-            if (info.Flags.HasFlag(MovementFlag.OnTransport))
+            if (info.Flags.HasAnyFlag(MovementFlag.OnTransport))
             {
                 packet.ReadPackedGuid(prefix + "Transport GUID");
                 packet.ReadVector4(prefix + "Transport Position");
                 packet.ReadInt32(prefix + "Transport Time");
                 packet.ReadByte(prefix + "Transport Seat");
 
-                if (flags.HasFlag(MovementFlagExtra.InterpolateMove))
+                if (flags.HasAnyFlag(MovementFlagExtra.InterpolateMove))
                     packet.ReadInt32(prefix + "Transport Time");
             }
 
             if (info.Flags.HasAnyFlag(MovementFlag.Swimming | MovementFlag.Flying) ||
-                flags.HasFlag(MovementFlagExtra.AlwaysAllowPitching))
+                flags.HasAnyFlag(MovementFlagExtra.AlwaysAllowPitching))
                 packet.ReadSingle(prefix + "Swim Pitch");
 
             if (ClientVersion.Version <= ClientVersionBuild.V3_3_5a_12340)
                 packet.ReadInt32(prefix + "Fall Time");
 
-            if (info.Flags.HasFlag(MovementFlag.Falling))
+            if (info.Flags.HasAnyFlag(MovementFlag.Falling))
             {
                 if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
                     packet.ReadInt32(prefix + "Fall Time");
@@ -56,7 +61,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSingle(prefix + "Fall Speed");
             }
 
-            if (info.Flags.HasFlag(MovementFlag.SplineElevation))
+            if (info.Flags.HasAnyFlag(MovementFlag.SplineElevation))
                 packet.ReadSingle(prefix + "Spline Elevation");
 
             return info;
@@ -119,7 +124,7 @@ namespace WowPacketParser.Parsing.Parsers
             var flags = (SplineFlag)packet.ReadInt32();
             Console.WriteLine("Spline Flags: " + flags);
 
-            if (flags.HasFlag(SplineFlag.AnimationTier))
+            if (flags.HasAnyFlag(SplineFlag.AnimationTier))
             {
                 var unkByte3 = (MovementAnimationState)packet.ReadByte();
                 Console.WriteLine("Animation State: " + unkByte3);
@@ -131,7 +136,7 @@ namespace WowPacketParser.Parsing.Parsers
             var time = packet.ReadInt32();
             Console.WriteLine("Move Time: " + time);
 
-            if (flags.HasFlag(SplineFlag.Trajectory))
+            if (flags.HasAnyFlag(SplineFlag.Trajectory))
             {
                 var speedZ = packet.ReadSingle();
                 Console.WriteLine("Vertical Speed: " + speedZ);
@@ -146,7 +151,7 @@ namespace WowPacketParser.Parsing.Parsers
             var newpos = packet.ReadVector3();
             Console.WriteLine("Waypoint 0: " + newpos);
 
-            if (flags.HasFlag(SplineFlag.Flying) || flags.HasFlag(SplineFlag.CatmullRom))
+            if (flags.HasAnyFlag(SplineFlag.Flying) || flags.HasAnyFlag(SplineFlag.CatmullRom))
             {
                 for (var i = 0; i < waypoints - 1; i++)
                 {

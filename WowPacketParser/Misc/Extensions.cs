@@ -10,12 +10,12 @@ namespace WowPacketParser.Misc
             return (byte)(boolean ? 1 : 0);
         }
 
-        public static bool HasAnyFlag(this Enum value, Enum toTest)
+        public static bool HasAnyFlag(this Enum value, Enum flag)
         {
-            var val = ((IConvertible)value).ToUInt64(null);
-            var test = ((IConvertible)toTest).ToUInt64(null);
+            var uFlag = ((IConvertible)flag).ToUInt64(null);
+            var uThis = ((IConvertible)value).ToUInt64(null);
 
-            return (val & test) != 0;
+            return (uThis & uFlag) != 0;
         }
 
         public static bool MatchesFilters(this string value, string[] filters)

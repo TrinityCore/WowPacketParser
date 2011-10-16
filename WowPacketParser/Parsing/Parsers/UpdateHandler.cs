@@ -386,7 +386,7 @@ namespace WowPacketParser.Parsing.Parsers
             var moveInfo = new MovementInfo();
 
             var flags = packet.ReadEnum<UpdateFlag>("[" + index + "] Update Flags", TypeCode.UInt16);
-            if (flags.HasFlag(UpdateFlag.Living))
+            if (flags.HasAnyFlag(UpdateFlag.Living))
             {
                 moveInfo = MovementHandler.ReadMovementInfo(packet, guid, index);
                 var moveFlags = moveInfo.Flags;
@@ -412,16 +412,16 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                 }
 
-                if (moveFlags.HasFlag(MovementFlag.SplineEnabled))
+                if (moveFlags.HasAnyFlag(MovementFlag.SplineEnabled))
                 {
                     var splineFlags = packet.ReadEnum<SplineFlag>("[" + index + "] Spline Flags", TypeCode.Int32);
-                    if (splineFlags.HasFlag(SplineFlag.FinalPoint))
+                    if (splineFlags.HasAnyFlag(SplineFlag.FinalPoint))
                         packet.ReadVector3("[" + index + "] Final Spline Coords");
 
-                    if (splineFlags.HasFlag(SplineFlag.FinalTarget))
+                    if (splineFlags.HasAnyFlag(SplineFlag.FinalTarget))
                         packet.ReadGuid("[" + index + "] Final Spline Target GUID");
 
-                    if (splineFlags.HasFlag(SplineFlag.FinalOrientation))
+                    if (splineFlags.HasAnyFlag(SplineFlag.FinalOrientation))
                         packet.ReadSingle("[" + index + "] Final Spline Orientation");
 
                     packet.ReadInt32("[" + index + "] Spline Time");
@@ -441,7 +441,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
             else
             {
-                if (flags.HasFlag(UpdateFlag.GOPosition))
+                if (flags.HasAnyFlag(UpdateFlag.GOPosition))
                 {
                     packet.ReadPackedGuid("[" + index + "] GO Position GUID");
                     moveInfo.Position = packet.ReadVector3("[" + index + "] GO Position");
@@ -449,30 +449,30 @@ namespace WowPacketParser.Parsing.Parsers
                     moveInfo.Orientation = packet.ReadSingle("[" + index + "] GO Orientation");
                     packet.ReadSingle("[" + index + "] GO Transport Orientation");
                 }
-                else if (flags.HasFlag(UpdateFlag.StationaryObject))
+                else if (flags.HasAnyFlag(UpdateFlag.StationaryObject))
                     packet.ReadVector4("[" + index + "] Stationary Position");
             }
 
-            if (flags.HasFlag(UpdateFlag.Unknown1))
+            if (flags.HasAnyFlag(UpdateFlag.Unknown1))
                 packet.ReadInt32("[" + index + "] Unk Int32");
 
-            if (flags.HasFlag(UpdateFlag.LowGuid))
+            if (flags.HasAnyFlag(UpdateFlag.LowGuid))
                 packet.ReadInt32("[" + index + "] Low GUID");
 
-            if (flags.HasFlag(UpdateFlag.AttackingTarget))
+            if (flags.HasAnyFlag(UpdateFlag.AttackingTarget))
                 packet.ReadPackedGuid("[" + index + "] Target GUID");
 
-            if (flags.HasFlag(UpdateFlag.Transport))
+            if (flags.HasAnyFlag(UpdateFlag.Transport))
                 packet.ReadInt32("[" + index + "] Transport Movement Time (ms)");
 
-            if (flags.HasFlag(UpdateFlag.Vehicle))
+            if (flags.HasAnyFlag(UpdateFlag.Vehicle))
             {
                 var vehId = packet.ReadInt32("[" + index + "] Vehicle ID");
                 packet.ReadSingle("[" + index + "] Vehicle Orientation");
                 SQLStore.WriteData(SQLStore.CreatureUpdates.GetCommand("VehicleId", guid.GetEntry(), vehId));
             }
 
-            if (flags.HasFlag(UpdateFlag.GORotation))
+            if (flags.HasAnyFlag(UpdateFlag.GORotation))
                 packet.ReadPackedQuaternion("[" + index + "] GO Rotation");
             return moveInfo;
         }

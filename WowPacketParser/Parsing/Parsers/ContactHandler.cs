@@ -34,7 +34,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadCString("Note");
 
-                if (!cflags.HasFlag(ContactEntryFlag.Friend))
+                if (!cflags.HasAnyFlag(ContactEntryFlag.Friend))
                     continue;
 
                 ReadSingleContactBlock(packet, true);

@@ -445,9 +445,6 @@ namespace WowPacketParser.Misc
             var type = typeof(T);
             long rawVal = 0;
 
-            if (code == TypeCode.Empty)
-                code = Type.GetTypeCode(type.GetEnumUnderlyingType());
-
             switch (code)
             {
                 case TypeCode.SByte:
@@ -480,7 +477,7 @@ namespace WowPacketParser.Misc
             return new KeyValuePair<long, T>(rawVal, (T)value);
         }
 
-        public T ReadEnum<T>(string name, TypeCode code = TypeCode.Empty, params int[] values)
+        public T ReadEnum<T>(string name, TypeCode code, params int[] values)
         {
             KeyValuePair<long, T> val = ReadEnum<T>(code);
 

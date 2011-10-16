@@ -509,12 +509,12 @@ namespace WowPacketParser.Parsing.Parsers
 
                 var flags = packet.ReadEnum<LfgUpdateFlag>("[" + i + "] Update Flags", TypeCode.Int32);
 
-                if (flags.HasFlag(LfgUpdateFlag.Comment))
+                if (flags.HasAnyFlag(LfgUpdateFlag.Comment))
                 {
                     packet.ReadCString("[" + i + "] Comment");
                 }
 
-                if (flags.HasFlag(LfgUpdateFlag.Roles))
+                if (flags.HasAnyFlag(LfgUpdateFlag.Roles))
                 {
                     for (var j = 0; j < 3; j++)
                     {
@@ -522,7 +522,7 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                 }
 
-                if (!flags.HasFlag(LfgUpdateFlag.Binded))
+                if (!flags.HasAnyFlag(LfgUpdateFlag.Binded))
                     continue;
 
                 packet.ReadGuid("[" + i + "] Instance GUID");
@@ -537,7 +537,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("[" + i + "] Player GUID");
                 var flags2 = packet.ReadEnum<LfgUpdateFlag>("[" + i + "] Update Flags", TypeCode.Int32);
 
-                if (flags2.HasFlag(LfgUpdateFlag.CharacterInfo))
+                if (flags2.HasAnyFlag(LfgUpdateFlag.CharacterInfo))
                 {
                     packet.ReadByte("[" + i + "] Level");
                     packet.ReadByte("[" + i + "] Class");
@@ -570,37 +570,37 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("[" + i + "] Expertise Rating");
                 }
 
-                if (flags2.HasFlag(LfgUpdateFlag.Comment))
+                if (flags2.HasAnyFlag(LfgUpdateFlag.Comment))
                 {
                     packet.ReadCString("[" + i + "] Comment");
                 }
 
-                if (flags2.HasFlag(LfgUpdateFlag.GroupLeader))
+                if (flags2.HasAnyFlag(LfgUpdateFlag.GroupLeader))
                 {
                     packet.ReadBoolean("[" + i + "] Is Group Leader");
                 }
 
-                if (flags2.HasFlag(LfgUpdateFlag.Guid))
+                if (flags2.HasAnyFlag(LfgUpdateFlag.Guid))
                 {
                     packet.ReadGuid("[" + i + "] Group GUID");
                 }
 
-                if (flags2.HasFlag(LfgUpdateFlag.Roles))
+                if (flags2.HasAnyFlag(LfgUpdateFlag.Roles))
                 {
                     packet.ReadEnum<LfgRoleFlag>("[" + i + "] Role", TypeCode.Byte);
                 }
 
-                if (flags2.HasFlag(LfgUpdateFlag.Area))
+                if (flags2.HasAnyFlag(LfgUpdateFlag.Area))
                 {
                     packet.ReadInt32("[" + i + "] Area ID");
                 }
 
-                if (flags2.HasFlag(LfgUpdateFlag.Unknown7))
+                if (flags2.HasAnyFlag(LfgUpdateFlag.Unknown7))
                 {
                     packet.ReadBoolean("[" + i + "] Unknown byte");
                 }
 
-                if (!flags2.HasFlag(LfgUpdateFlag.Binded))
+                if (!flags2.HasAnyFlag(LfgUpdateFlag.Binded))
                     continue;
 
                 packet.ReadGuid("[" + i + "] Instance GUID");
