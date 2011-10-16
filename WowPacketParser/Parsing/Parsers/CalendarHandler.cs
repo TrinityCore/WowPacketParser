@@ -13,25 +13,25 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < invCount; i++)
             {
-                packet.ReadInt64("[" + i + "] Event ID");
-                packet.ReadInt64("[" + i + "] Invite ID");
-                packet.ReadEnum<CalendarEventStatus>("[" + i + "] Status", TypeCode.Byte);
-                packet.ReadEnum<CalendarModerationRank>("[" + i + "] Moderation Rank", TypeCode.Byte);
-                packet.ReadBoolean("[" + i + "] Guild Event");
-                packet.ReadPackedGuid("[" + i + "] Creator GUID");
+                packet.ReadInt64("Event ID", i);
+                packet.ReadInt64("Invite ID", i);
+                packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte, i);
+                packet.ReadEnum<CalendarModerationRank>("Moderation Rank", TypeCode.Byte, i);
+                packet.ReadBoolean("Guild Event", i);
+                packet.ReadPackedGuid("Creator GUID", i);
             }
 
             var eventCount = packet.ReadInt32("Event Count");
 
             for (var i = 0; i < eventCount; i++)
             {
-                packet.ReadInt64("[" + i + "] Event ID");
-                packet.ReadCString("[" + i + "] Event Title ");
-                packet.ReadEnum<CalendarEventType>("[" + i + "] Event Type", TypeCode.Int32);
-                packet.ReadPackedTime("[" + i + "] Event Time");
-                packet.ReadEnum<CalendarFlag>("[" + i + "] Event Flags", TypeCode.Int32);
+                packet.ReadInt64("Event ID", i);
+                packet.ReadCString("Event Title ", i);
+                packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Int32, i);
+                packet.ReadPackedTime("Event Time", i);
+                packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32, i);
                 Console.WriteLine("[" + i + "] Dungeon ID: " + Extensions.DungeonLine(packet.ReadInt32()));
-                packet.ReadPackedGuid("[" + i + "] Creator GUID");
+                packet.ReadPackedGuid("Creator GUID", i);
             }
 
             packet.ReadTime("Current Time");
@@ -42,9 +42,9 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < instanceResetCount; i++)
             {
                 Console.WriteLine("[" + i + "] Map ID: " + Extensions.MapLine(packet.ReadInt32()));
-                packet.ReadEnum<MapDifficulty>("[" + i + "] Difficulty", TypeCode.Int32);
-                packet.ReadInt32("[" + i + "] Time left");
-                packet.ReadGuid("[" + i + "] Instance ID");
+                packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32, i);
+                packet.ReadInt32("Time left", i);
+                packet.ReadGuid("Instance ID", i);
             }
 
             packet.ReadTime("Constant Date");
@@ -54,26 +54,26 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < raidResetCount; i++)
             {
                 Console.WriteLine("[" + i + "] Map ID: " + Extensions.MapLine(packet.ReadInt32()));
-                packet.ReadInt32("[" + i + "] Time left");
-                packet.ReadInt32("[" + i + "] Unk Time");
+                packet.ReadInt32("Time left", i);
+                packet.ReadInt32("Unk Time", i);
             }
 
             var holidayCount = packet.ReadInt32("Holiday Count");
 
             for (var i = 0; i < holidayCount; i++)
             {
-                packet.ReadInt32("[" + i + "] ID");
-                packet.ReadInt32("[" + i + "] Region (Looping?)");
-                packet.ReadInt32("[" + i + "] Looping (Region?)");
-                packet.ReadInt32("[" + i + "] Priority");
-                packet.ReadInt32("[" + i + "] Calendar FilterType");
+                packet.ReadInt32("ID", i);
+                packet.ReadInt32("Region (Looping?)", i);
+                packet.ReadInt32("Looping (Region?)", i);
+                packet.ReadInt32("Priority", i);
+                packet.ReadInt32("Calendar FilterType", i);
                 for (var j = 0; j < 26; j++)
-                    packet.ReadPackedTime("[" + i + ", " + j + "] Start Date");
+                    packet.ReadPackedTime("Start Date", i, j);
                 for (var j = 0; j < 10; j++)
-                    packet.ReadInt32("[" + i + ", " + j + "] Duration");
+                    packet.ReadInt32("Duration", i, j);
                 for (var j = 0; j < 10; j++)
-                    packet.ReadInt32("[" + i + ", " + j + "] Calendar Flags");
-                packet.ReadCString("[" + i + "] Holiday Name");
+                    packet.ReadInt32("Calendar Flags", i, j);
+                packet.ReadCString("Holiday Name", i);
             }
         }
 
@@ -107,14 +107,14 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < invCount; i++)
             {
-                packet.ReadPackedGuid("[" + i + "] Invitee GUID");
-                packet.ReadByte("[" + i + "] Player Level");
-                packet.ReadEnum<CalendarEventStatus>("[" + i + "] Status", TypeCode.Byte);
-                packet.ReadEnum<CalendarModerationRank>("[" + i + "] Moderation Rank", TypeCode.Byte);
-                packet.ReadBoolean("[" + i + "] Guild Member");
-                packet.ReadInt64("[" + i + "] Invite ID");
-                packet.ReadPackedTime("[" + i + "] Status Time");
-                packet.ReadCString("[" + i + "] Invite Text");
+                packet.ReadPackedGuid("Invitee GUID", i);
+                packet.ReadByte("Player Level", i);
+                packet.ReadEnum<CalendarEventStatus>("[" + i + "] Status", TypeCode.Byte, i);
+                packet.ReadEnum<CalendarModerationRank>("[" + i + "] Moderation Rank", TypeCode.Byte, i);
+                packet.ReadBoolean("Guild Member", i);
+                packet.ReadInt64("Invite ID", i);
+                packet.ReadPackedTime("Status Time", i);
+                packet.ReadCString("Invite Text", i);
             }
         }
 
@@ -140,8 +140,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                packet.ReadPackedGuid("[" + i + "] GUID");
-                packet.ReadByte("[" + i + "] Unk Byte");
+                packet.ReadPackedGuid("GUID", i);
+                packet.ReadByte("Unk Byte", i);
             }
         }
 

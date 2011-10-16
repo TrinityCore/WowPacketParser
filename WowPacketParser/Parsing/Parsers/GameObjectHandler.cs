@@ -27,7 +27,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var name = new string[4];
             for (var i = 0; i < 4; i++)
-                name[i] = packet.ReadCString("Name " + i);
+                name[i] = packet.ReadCString("Name", i);
 
             var iconName = packet.ReadCString("Icon Name");
             var castCaption = packet.ReadCString("Cast Caption");
@@ -35,7 +35,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var data = new int[24];
             for (var i = 0; i < 24; i++)
-                data[i] = packet.ReadInt32("Data " + i);
+                data[i] = packet.ReadInt32("Data", i);
 
             var size = packet.ReadSingle("Size");
 
