@@ -12,6 +12,7 @@ namespace WowPacketParser.Enums.Version
         public static string GetOpcodeName(int opcodeId, ClientVersionBuild versionBuild)
         {
             var opcodeName = string.Empty;
+            var found = false;
             switch (versionBuild)
             {
                 case ClientVersionBuild.V2_4_3_8606:
@@ -38,6 +39,7 @@ namespace WowPacketParser.Enums.Version
                         if (pair.Value == opcodeId)
                         {
                             opcodeName = pair.Key.ToString();
+                            found = true;
                             break; // We've found what we want
                         }
                     break;
@@ -49,16 +51,15 @@ namespace WowPacketParser.Enums.Version
                         if (pair.Value == opcodeId)
                         {
                             opcodeName = pair.Key.ToString();
+                            found = true;
                             break;
                         }
                     break;
                 }
-                default:
-                {
-                    opcodeName = "Unknown";
-                    break;
-                }
             }
+
+            if (found == false)
+                opcodeName = opcodeId.ToString();
 
             return opcodeName;
         }
