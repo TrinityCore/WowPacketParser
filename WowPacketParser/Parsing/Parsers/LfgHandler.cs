@@ -1,5 +1,6 @@
 using System;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -100,7 +101,7 @@ namespace WowPacketParser.Parsing.Parsers
             var byte1 = packet.ReadBoolean();
             Console.WriteLine("First Completion: " + byte1);
 
-            if (packet.Opcode == Opcode.SMSG_LFG_PLAYER_REWARD)
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_LFG_PLAYER_REWARD))
             {
                 var int3 = packet.ReadInt32();
                 Console.WriteLine("Strangers: " + int3);

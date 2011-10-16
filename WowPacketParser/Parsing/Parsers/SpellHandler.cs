@@ -1,5 +1,6 @@
 using System;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using Guid = WowPacketParser.Misc.Guid;
 
@@ -179,7 +180,7 @@ namespace WowPacketParser.Parsing.Parsers
             var time = packet.ReadInt32();
             Console.WriteLine("Time: " + time);
 
-            if (packet.Opcode == Opcode.SMSG_SPELL_GO)
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO))
             {
                 var hitCount = packet.ReadByte();
                 Console.WriteLine("Hit Count: " + hitCount);
@@ -275,7 +276,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            if (packet.Opcode == Opcode.SMSG_SPELL_GO)
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO))
             {
                 if (flags.HasFlag(CastFlag.AdjustMissile))
                 {
@@ -296,7 +297,7 @@ namespace WowPacketParser.Parsing.Parsers
                 Console.WriteLine("Ammo Inventory Type: " + ammoInvType);
             }
 
-            if (packet.Opcode == Opcode.SMSG_SPELL_GO)
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO))
             {
                 if (flags.HasFlag(CastFlag.VisualChain))
                 {
@@ -308,7 +309,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            if (packet.Opcode == Opcode.SMSG_SPELL_START)
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_START))
             {
                 if (flags.HasFlag(CastFlag.Immunity))
                 {
@@ -320,7 +321,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            if (packet.Opcode != Opcode.SMSG_SPELL_GO)
+            if (packet.Opcode != Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO))
                 return;
 
             if (targetFlags.HasFlag(TargetFlag.DestinationLocation))

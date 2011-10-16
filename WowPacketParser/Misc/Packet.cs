@@ -11,7 +11,7 @@ namespace WowPacketParser.Misc
 {
     public sealed class Packet : BinaryReader
     {
-        public Packet(byte[] input, Opcode opcode, DateTime time, Direction direction, int number)
+        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
             Opcode = opcode;
@@ -20,7 +20,7 @@ namespace WowPacketParser.Misc
             Number = number;
         }
 
-        public Opcode Opcode { get; private set; }
+        public int Opcode {get; private set; }
         public DateTime Time { get; private set; }
         public Direction Direction { get; private set; }
         public int Number { get; private set; }

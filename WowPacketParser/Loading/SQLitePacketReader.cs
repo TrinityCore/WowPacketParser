@@ -41,7 +41,7 @@ namespace WowPacketParser.Loading
 
         public Packet Read(int number)
         {
-            var opcode = (Opcode)_reader.GetInt32(0);
+            var opcode = _reader.GetInt32(0);
             var time = _reader.GetDateTime(1);
             var direction = (Direction)_reader.GetInt32(2);
             object blob = _reader.GetValue(3);

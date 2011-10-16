@@ -1,5 +1,6 @@
 using System;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -79,7 +80,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadInt32("Sound Id");
 
-            if (packet.Opcode == Opcode.SMSG_PLAY_OBJECT_SOUND)
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PLAY_OBJECT_SOUND))
                 packet.ReadGuid("GUID");
         }
 

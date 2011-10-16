@@ -1,5 +1,6 @@
 using System;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -51,7 +52,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PARTY_MEMBER_STATS_FULL)]
         public static void HandlePartyMemberStats(Packet packet)
         {
-            if (packet.Opcode == Opcode.SMSG_PARTY_MEMBER_STATS_FULL)
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PARTY_MEMBER_STATS_FULL))
                 packet.ReadByte("Unk byte");
 
             packet.ReadPackedGuid("GUID");

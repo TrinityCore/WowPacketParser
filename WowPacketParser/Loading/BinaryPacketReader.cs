@@ -24,7 +24,7 @@ namespace WowPacketParser.Loading
 
         public Packet Read(int number)
         {
-            Opcode opcode;
+            int opcode;
             int length;
             DateTime time;
             Direction direction;
@@ -32,7 +32,7 @@ namespace WowPacketParser.Loading
 
             if (_sniffType == SniffType.Pkt)
             {
-                opcode = (Opcode)_reader.ReadUInt16();
+                opcode = _reader.ReadUInt16();
                 length = _reader.ReadInt32();
                 direction = (Direction)_reader.ReadByte();
                 time = Utilities.GetDateTimeFromUnixTime((int)_reader.ReadInt64());
@@ -40,7 +40,7 @@ namespace WowPacketParser.Loading
             }
             else
             {
-                opcode = (Opcode)_reader.ReadInt32();
+                opcode = _reader.ReadInt32();
                 length = _reader.ReadInt32();
                 time = Utilities.GetDateTimeFromUnixTime(_reader.ReadInt32());
                 direction = (Direction)_reader.ReadChar();

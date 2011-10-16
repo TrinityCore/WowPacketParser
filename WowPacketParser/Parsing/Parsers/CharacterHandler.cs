@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 using Guid=WowPacketParser.Misc.Guid;
@@ -219,7 +220,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PLAYED_TIME)]
         public static void HandlePlayedTime(Packet packet)
         {
-            if (packet.Opcode == Opcode.SMSG_PLAYED_TIME)
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PLAYED_TIME))
             {
                 packet.ReadInt32("Time Played");
                 packet.ReadInt32("Total");

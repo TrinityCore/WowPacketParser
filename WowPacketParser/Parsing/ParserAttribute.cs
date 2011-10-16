@@ -1,5 +1,6 @@
 using System;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 
 namespace WowPacketParser.Parsing
 {
@@ -8,9 +9,9 @@ namespace WowPacketParser.Parsing
     {
         public ParserAttribute(Opcode opcode)
         {
-            Opcode = opcode;
+            Opcode = Opcodes.GetOpcode(opcode);
         }
 
-        public Opcode Opcode { get; private set; }
+        public int Opcode { get; private set; }
     }
 }

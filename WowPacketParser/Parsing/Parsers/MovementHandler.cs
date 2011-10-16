@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Misc.Objects;
 using Guid = WowPacketParser.Misc.Guid;
@@ -68,7 +69,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid();
             Console.WriteLine("GUID: " + guid);
 
-            if (packet.Opcode == Opcode.SMSG_MONSTER_MOVE_TRANSPORT)
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MONSTER_MOVE_TRANSPORT))
             {
                 var transguid = packet.ReadPackedGuid();
                 Console.WriteLine("Transport GUID: " + transguid);
@@ -186,7 +187,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             UpdateHandler.Objects[mapId] = new Dictionary<Guid, WoWObject>();
 
-            if (packet.Opcode != Opcode.SMSG_LOGIN_VERIFY_WORLD)
+            if (packet.Opcode != Opcodes.GetOpcode(Opcode.SMSG_LOGIN_VERIFY_WORLD))
                 return;
 
             CharacterInfo chInfo;
@@ -292,7 +293,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid("GUID");
 
             ReadMovementInfo(packet, guid);
-            if (packet.Opcode == Opcode.MSG_MOVE_KNOCK_BACK)
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.MSG_MOVE_KNOCK_BACK))
             {
                 packet.ReadSingle("Sin Angle");
                 packet.ReadSingle("Cos Angle");
@@ -349,13 +350,13 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid();
             Console.WriteLine("GUID: " + guid);
 
-            if (packet.Opcode != Opcode.MSG_MOVE_SET_COLLISION_HGT)
+            if (packet.Opcode != Opcodes.GetOpcode(Opcode.MSG_MOVE_SET_COLLISION_HGT))
             {
                 var counter = packet.ReadInt32();
                 Console.WriteLine("Movement Counter: " + counter);
             }
 
-            if (packet.Opcode != Opcode.SMSG_MOVE_SET_COLLISION_HGT)
+            if (packet.Opcode != Opcodes.GetOpcode(Opcode.SMSG_MOVE_SET_COLLISION_HGT))
                 ReadMovementInfo(packet, guid);
 
             var unk = packet.ReadSingle();
@@ -406,7 +407,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             ReadMovementInfo(packet, guid);
 
-            if (packet.Opcode == Opcode.CMSG_MOVE_KNOCK_BACK_ACK)
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_MOVE_KNOCK_BACK_ACK))
                 return;
 
             var unk2 = packet.ReadInt32();

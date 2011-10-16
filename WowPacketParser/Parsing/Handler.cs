@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Parsing
@@ -69,8 +70,8 @@ namespace WowPacketParser.Parsing
 
         private static StreamWriter _writer;
 
-        private static readonly Dictionary<Opcode, Action<Packet>> Handlers =
-            new Dictionary<Opcode, Action<Packet>>();
+        private static readonly Dictionary<int, Action<Packet>> Handlers =
+            new Dictionary<int, Action<Packet>>();
 
         public static void WriteToFile()
         {
@@ -87,7 +88,7 @@ namespace WowPacketParser.Parsing
             var opcode = packet.Opcode;
 
             Console.WriteLine("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}",
-                packet.Direction, opcode, ((int)opcode).ToString("X4"),
+                packet.Direction, Opcodes.GetOpcodeName(opcode), opcode.ToString("X4"),
                 packet.GetLength(), packet.Time, packet.Number);
 
             Action<Packet> handler;
@@ -107,7 +108,6 @@ namespace WowPacketParser.Parsing
             else
                 Console.WriteLine(Utilities.DumpPacketAsHex(packet));
 
-#if DEBUG
             if (packet.GetPosition() < packet.GetLength())
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -119,7 +119,6 @@ namespace WowPacketParser.Parsing
 
                 Console.ForegroundColor = ConsoleColor.White;
             }
-#endif
 
             Console.ResetColor();
             Console.WriteLine();

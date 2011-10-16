@@ -1,5 +1,6 @@
 using System;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
@@ -211,7 +212,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid();
             Console.WriteLine("GUID: " + guid);
 
-            if (packet.Opcode == Opcode.SMSG_HIGHEST_THREAT_UPDATE)
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_HIGHEST_THREAT_UPDATE))
             {
                 var newhigh = packet.ReadPackedGuid();
                 Console.WriteLine("New Highest: " + newhigh);
@@ -238,7 +239,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid();
             Console.WriteLine("GUID: " + guid);
 
-            if (packet.Opcode == Opcode.SMSG_THREAT_REMOVE)
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_THREAT_REMOVE))
             {
                 var victim = packet.ReadPackedGuid();
                 Console.WriteLine("Victim GUID: " + victim);
