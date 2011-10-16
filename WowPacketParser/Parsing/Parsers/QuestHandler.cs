@@ -342,10 +342,24 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Title");
             packet.ReadCString("Details");
             packet.ReadCString("Objectives");
+            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+            {
+                packet.ReadCString("Target Text Window");
+                packet.ReadCString("Target Name");
+                packet.ReadUInt16("Unknown UInt16");
+                packet.ReadUInt32("Quest Giver Portrait Id");
+                packet.ReadUInt32("Unknown UInt32");
+            }
             packet.ReadByte("AutoAccept");
             var flags = packet.ReadEnum<QuestFlag>("Quest Flags", TypeCode.UInt32);
             packet.ReadUInt32("Suggested Players");
-            packet.ReadByte("Unk byte");
+            packet.ReadByte("Unknown byte");
+
+            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+            {
+                packet.ReadByte("Start Type");
+                Console.WriteLine("Required Spell: " + Extensions.SpellLine(packet.ReadInt32()));
+            }
 
             if ((flags & QuestFlag.HiddenRewards) > 0)
             {
@@ -356,33 +370,67 @@ namespace WowPacketParser.Parsing.Parsers
             }
             else
             {
-                var count = packet.ReadUInt32("Choice Item Count");
-                for (var i = 0; i < count; i++)
+                if (ClientVersion.Version <= ClientVersionBuild.V3_3_5a_12340)
                 {
-                    packet.ReadUInt32("[" + i + "] Choice Item Id");
-                    packet.ReadUInt32("[" + i + "] Choice Item Count");
-                    packet.ReadUInt32("[" + i + "] Choice Item Display Id");
+                    var choiceCount = packet.ReadUInt32("Choice Item Count");
+                    for (var i = 0; i < choiceCount; i++)
+                    {
+                        packet.ReadUInt32("[" + i + "] Choice Item Id");
+                        packet.ReadUInt32("[" + i + "] Choice Item Count");
+                        packet.ReadUInt32("[" + i + "] Choice Item Display Id");
+                    }
+
+                    var rewardCount = packet.ReadUInt32("Reward Item Count");
+                    for (var i = 0; i < rewardCount; i++)
+                    {
+                        packet.ReadUInt32("[" + i + "] Reward Item Id");
+                        packet.ReadUInt32("[" + i + "] Reward Item Count");
+                        packet.ReadUInt32("[" + i + "] Reward Item Display Id");
+                    }
+                }
+                else
+                {
+                    var choiceCount = packet.ReadUInt32("Choice Item Count");
+                    for (var i = 0; i < choiceCount; i++)
+                        packet.ReadUInt32("[" + i + "] Choice Item Id");
+                    for (var i = 0; i < choiceCount; i++)
+                        packet.ReadUInt32("[" + i + "] Choice Item Count");
+                    for (var i = 0; i < choiceCount; i++)
+                        packet.ReadUInt32("[" + i + "] Choice Item Display Id");
+
+                    var rewardCount = packet.ReadUInt32("Reward Item Count");
+                    for (var i = 0; i < rewardCount; i++)
+                        packet.ReadUInt32("[" + i + "] Reward Item Id");
+                    for (var i = 0; i < rewardCount; i++)
+                        packet.ReadUInt32("[" + i + "] Reward Item Count");
+                    for (var i = 0; i < rewardCount; i++)
+                        packet.ReadUInt32("[" + i + "] Reward Item Display Id");
                 }
 
-                var count2 = packet.ReadUInt32("Reward Item Count");
-                for (var i = 0; i < count2; i++)
-                {
-                    packet.ReadUInt32("[" + i + "] Reward Item Id");
-                    packet.ReadUInt32("[" + i + "] Reward Item Count");
-                    packet.ReadUInt32("[" + i + "] Reward Item Display Id");
-                }
                 packet.ReadUInt32("Money");
                 packet.ReadUInt32("XP");
             }
 
-            packet.ReadUInt32("Honor Points");
-            packet.ReadSingle("Honor Multiplier");
-            Console.WriteLine("Spell Id: " + Extensions.SpellLine(packet.ReadInt32()));
-            Console.WriteLine("Spell Cast Id: " + Extensions.SpellLine(packet.ReadInt32()));
-            packet.ReadUInt32("Title Id");
-            packet.ReadUInt32("Bonus Talent");
-            packet.ReadUInt32("Arena Points");
-            packet.ReadUInt32("Unk Uint32 1");
+            if (ClientVersion.Version <= ClientVersionBuild.V3_3_5a_12340)
+            {
+                packet.ReadUInt32("Honor Points");
+                packet.ReadSingle("Honor Multiplier");
+                Console.WriteLine("Spell Id: " + Extensions.SpellLine(packet.ReadInt32()));
+                Console.WriteLine("Spell Cast Id: " + Extensions.SpellLine(packet.ReadInt32()));
+                packet.ReadUInt32("Title Id");
+                packet.ReadUInt32("Bonus Talents");
+                packet.ReadUInt32("Arena Points");
+                packet.ReadUInt32("Unk UInt32");
+            }
+            else
+            {
+                packet.ReadUInt32("Title Id");
+                packet.ReadUInt32("Unknown UInt32");
+                packet.ReadUInt32("Unknown UInt32");
+                packet.ReadUInt32("Bonus Talents");
+                packet.ReadUInt32("Unknown UInt32");
+                packet.ReadUInt32("Unknown UInt32");
+            }
 
             for (var i = 0; i < 5; i++)
                 packet.ReadUInt32("[" + i + "] Reputation Faction");
@@ -393,12 +441,28 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 5; i++)
                 packet.ReadInt32("[" + i + "] Reputation Value");
 
-            var count3 = packet.ReadUInt32("Quest Emote count");
-            for (var i = 0; i < count3; i++)
+            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+            {
+                Console.WriteLine("Spell Id: " + Extensions.SpellLine(packet.ReadInt32()));
+                Console.WriteLine("Spell Cast Id: " + Extensions.SpellLine(packet.ReadInt32()));
+                for (var i = 0; i < 4; i++)
+                    packet.ReadUInt32("[" + i + "] " + "Unknown UInt32 1");
+                for (var i = 0; i < 4; i++)
+                    packet.ReadUInt32("[" + i + "] " + "Unknown UInt32 2");
+
+                packet.ReadUInt32("Unknown UInt32");
+
+                packet.ReadUInt32("Unknown UInt32");
+            }
+
+            var emoteCount = packet.ReadUInt32("Quest Emote Count");
+            for (var i = 0; i < emoteCount; i++)
             {
                 packet.ReadUInt32("[" + i + "] Emote Id");
-                packet.ReadUInt32("[" + i + "] Emote Delay");
+                packet.ReadUInt32("[" + i + "] Emote Delay (ms)");
             }
+
+
         }
 
         [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST)]

@@ -49,6 +49,10 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldListClient(Packet packet)
         {
             Console.WriteLine("BGType: " + Extensions.BattlegroundLine(packet.ReadInt32()));
+
+            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+                return;
+
             packet.ReadBoolean("From UI");
             packet.ReadByte("Unk Byte (BattlefieldList)");
         }
