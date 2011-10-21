@@ -618,5 +618,19 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.MSG_CHANNEL_UPDATE)]
+        public static void HandleSpellChannelUpdate(Packet packet)
+        {
+            packet.ReadTime("Time");
+        }
+
+        [Parser(Opcode.MSG_CHANNEL_START)]
+        public static void HandleSpellChannelStart(Packet packet)
+        {
+            packet.ReadPackedGuid("GUID");
+            Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
+            packet.ReadUInt32("Duration");
+        }
+
     }
 }
