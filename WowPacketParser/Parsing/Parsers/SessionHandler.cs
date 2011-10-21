@@ -32,7 +32,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
             // overwrite version
             ClientVersion.Version = packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int32);
-            Console.WriteLine("Detected version: {0} in packet {1}", ClientVersion.Version, packet.Number);
 
             packet.ReadInt32("Unk Int32 1");
             packet.ReadCString("Account");
