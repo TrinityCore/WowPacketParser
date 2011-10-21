@@ -40,17 +40,24 @@ namespace WowPacketParser.Loading
                 if (packet == null)
                     continue;
 
+                // determine build version based on date of first packet if not specified otherwise
+                if (packetNum == 0 && ClientVersion.Version == ClientVersionBuild.Unknown)
+                    ClientVersion.SetVersion(packet.Time);
+
                 if (++packetNum < packetNumberLow)
                     continue;
 
-                //check for filters
-                bool add =
-                    filters == null || filters.Length == 0 ||
-                    Opcodes.GetOpcodeName(packet.Opcode).MatchesFilters(filters);
+                // check for filters
+                bool add = true;
+                if (filters != null && filters.Length > 0)
+                {
+                    var opcodeName = Opcodes.GetOpcodeName(packet.Opcode);
+                    add = opcodeName.MatchesFilters(filters);
 
-                //check for ignore filters
-                if (add && ignoreFilters != null && ignoreFilters.Length > 0)
-                    add = !Opcodes.GetOpcodeName(packet.Opcode).MatchesFilters(ignoreFilters);
+                    // check for ignore filters
+                    if (add && ignoreFilters != null && ignoreFilters.Length > 0)
+                        add = !Opcodes.GetOpcodeName(packet.Opcode).MatchesFilters(ignoreFilters);
+                }
 
                 if (add)
                 {

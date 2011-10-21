@@ -8,30 +8,45 @@ namespace WowPacketParser.Loading
     public class SQLitePacketReader : IPacketReader
     {
         readonly SQLiteConnection _connection;
-        readonly SQLiteDataReader _reader;
+        SQLiteDataReader _reader;
 
         public SQLitePacketReader(string fileName)
         {
             _connection = new SQLiteConnection("Data Source=" + fileName);
-            SQLiteCommand command = _connection.CreateCommand();
             _connection.Open();
 
             // tiawps
             // header table (`key` string primary key, value string)
             // packets table (id integer primary key autoincrement, timestamp datetime, direction integer, opcode integer, data blob)
+            ReadHeader();
 
-            //command.CommandText = "SELECT key, value FROM header;";
-            //using (SQLiteDataReader tempReader = command.ExecuteReader())
-            //{
-            //    while (tempReader.Read())
-            //    {
-            //        var key = tempReader.GetString(0);
-            //        var value = tempReader.GetValue(1);
-            //    }
-            //}
-
+            SQLiteCommand command = _connection.CreateCommand();
             command.CommandText = "SELECT opcode, timestamp, direction, data FROM packets;";
             _reader = command.ExecuteReader();
+        }
+
+        void ReadHeader()
+        {
+            SQLiteCommand command = _connection.CreateCommand();
+            command.CommandText = "SELECT key, value FROM header;";
+            _reader = command.ExecuteReader();
+
+            while (_reader.Read())
+            {
+                var key = _reader.GetString(0);
+                var value = _reader.GetValue(1);
+
+                if (key.ToLower() == "clientbuild")
+                {
+                    int build;
+                    if (int.TryParse(value.ToString(), out build))
+                        ClientVersion.Version = (ClientVersionBuild)build;
+
+                    break;
+                }
+            }
+
+            _reader.Close();
         }
 
         public bool CanRead()

@@ -19,6 +19,9 @@ namespace WowPacketParser
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
+            // set default sniff version
+            ClientVersion.Version = ClientVersionBuild.Unknown;
+
             // Read config options
             string[] filters = null;
             string[] ignoreFilters = null;
@@ -123,13 +126,12 @@ namespace WowPacketParser
                         }
                         else
                         {
-                            ClientVersion.SetVersion(packets[0].Time);
                             Console.WriteLine("Assumed version: {0}", ClientVersion.Version);
-
                             Console.WriteLine("Parsing {0} packets...", packets.Count);
-                            var startTime = DateTime.Now;
 
+                            var startTime = DateTime.Now;
                             var outFileName = Path.ChangeExtension(file, null) + "_parsed";
+
                             SQLStore.Initialize(outFileName + ".sql", sqlOutput);
                             Handler.InitializeLogFile(outFileName + ".txt", dumpFormat == SniffType.None);
 
