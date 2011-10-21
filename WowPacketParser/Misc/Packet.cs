@@ -486,7 +486,7 @@ namespace WowPacketParser.Misc
             for (var i = 0; i < values.Length; i++)
                 indexes += "[" + i + "] ";
 
-            Console.WriteLine("{0}{1}: {2} ({3}", indexes, name, val.Value, val.Key);
+            Console.WriteLine("{0}{1}: {2} ({3})", indexes, name, val.Value, val.Key);
             return val.Value;
         }
     }

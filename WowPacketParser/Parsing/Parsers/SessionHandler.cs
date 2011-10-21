@@ -35,9 +35,14 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadInt32("Unk Int32 1");
             packet.ReadCString("Account");
-            packet.ReadInt32("Unk Int32 2");
+
+            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                packet.ReadInt32("Unk Int32 2");
+
             packet.ReadInt32("Client Seed");
-            packet.ReadInt64("Unk Int64");
+
+            if (ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192)
+                packet.ReadInt64("Unk Int64");
 
             Console.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(packet.ReadBytes(20)));
 

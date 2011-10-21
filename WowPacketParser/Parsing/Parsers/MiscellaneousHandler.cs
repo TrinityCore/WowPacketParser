@@ -218,6 +218,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
+        [Parser(Opcode.CMSG_SET_ACTIONBAR_TOGGLES)]
+        public static void HandleSetActionBarToggles(Packet packet)
+        {
+            packet.ReadByte("Action Bar");
+        }
+
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
         [Parser(Opcode.CMSG_CALENDAR_GET_NUM_PENDING)]

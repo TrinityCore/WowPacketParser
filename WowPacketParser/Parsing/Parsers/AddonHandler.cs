@@ -13,21 +13,37 @@ namespace WowPacketParser.Parsing.Parsers
             var decompCount = packet.ReadInt32();
             packet = packet.Inflate(decompCount);
 
-            var count = packet.ReadInt32("Addons Count");
-            _addonCount = count;
-
-            for (var i = 0; i < count; i++)
+            if (ClientVersion.Version <= ClientVersionBuild.V3_0_3_9183)
             {
-                packet.ReadCString("Name");
+                int count = 0;
 
-                packet.ReadBoolean("Enabled");
+                while (packet.GetPosition() != packet.GetLength())
+                {
+                    var n = packet.ReadCString("Name");
+                    var b = packet.ReadBoolean("Enabled");
+                    packet.ReadInt32("CRC");
+                    packet.ReadInt32("Unk Int32");
 
-                packet.ReadInt32("CRC");
+                    count++;
+                }
 
-                packet.ReadInt32("Unk Int32");
+                _addonCount = count;
             }
+            else
+            {
+                var count = packet.ReadInt32("Addons Count");
+                _addonCount = count;
 
-            packet.ReadTime("Current Time");
+                for (var i = 0; i < count; i++)
+                {
+                    packet.ReadCString("Name");
+                    packet.ReadBoolean("Enabled");
+                    packet.ReadInt32("CRC");
+                    packet.ReadInt32("Unk Int32");
+                }
+
+                packet.ReadTime("Current Time");
+            }
         }
 
         [Parser(Opcode.SMSG_ADDON_INFO)]
