@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Loading
@@ -45,11 +46,11 @@ namespace WowPacketParser.Loading
                 //check for filters
                 bool add =
                     filters == null || filters.Length == 0 ||
-                    packet.Opcode.ToString().MatchesFilters(filters);
+                    Opcodes.GetOpcodeName(packet.Opcode).MatchesFilters(filters);
 
                 //check for ignore filters
                 if (add && ignoreFilters != null && ignoreFilters.Length > 0)
-                    add = !packet.Opcode.ToString().MatchesFilters(ignoreFilters);
+                    add = !Opcodes.GetOpcodeName(packet.Opcode).MatchesFilters(ignoreFilters);
 
                 if (add)
                 {

@@ -12,7 +12,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
 
             var opcode = packet.ReadEnum<WardenServerOpcode>("Warden Server Opcode", TypeCode.Byte);
-            
+
             packet.SetPosition(0);
 
             switch (opcode)

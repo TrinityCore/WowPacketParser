@@ -51,7 +51,6 @@ namespace WowPacketParser.SQL
             }
 
             str += "`) VALUES \n";
-            
 
             str += "(";
 

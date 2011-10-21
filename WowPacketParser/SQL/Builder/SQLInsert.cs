@@ -32,7 +32,7 @@ namespace WowPacketParser.SQL.Builder
         public string Build()
         {
             /* DELETE FROM `quest_poi_points` WHERE `questId` IN (13153,13204);
-               INSERT INTO `quest_poi_points` (`questId`,`id`,`x`,`y`) VALUES 
+               INSERT INTO `quest_poi_points` (`questId`,`id`,`x`,`y`) VALUES
                (13153,0,4494,2412),
                (13153,0,4524,2964),
                (13204,1,378,-927),

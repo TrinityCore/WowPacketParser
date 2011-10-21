@@ -31,7 +31,7 @@ namespace WowPacketParser.Parsing.Parsers
                     case UpdateType.Values:
                     {
                         var guid = packet.ReadPackedGuid("[" + i + "] GUID");
-                        
+
                         WoWObject obj;
                         var updates = ReadValuesUpdateBlock(packet, guid.GetObjectType(), i);
 
@@ -142,7 +142,7 @@ namespace WowPacketParser.Parsing.Parsers
                             ContainerField field = (ContainerField)i;
                             key = field.ToString();
                             break;
-                        }                                
+                        }
                         case ObjectType.Item:
                         {
                             ItemField field = (ItemField)i;
@@ -157,7 +157,7 @@ namespace WowPacketParser.Parsing.Parsers
                             PlayerField field = (PlayerField)i;
                             key = field.ToString();
                             break;
-                        }                                
+                        }
                         case ObjectType.Unit:
                         {
                             UnitField field = (UnitField)i;

@@ -19,7 +19,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk 2");
 
             packet.ReadCString("Text");
-        
+
             for (var i = 1; i <= 4; i++) // Last 3 strings are usually empty
             {
                 packet.ReadCString("Response " + i);

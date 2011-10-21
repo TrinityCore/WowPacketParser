@@ -82,7 +82,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt64("Unk Int64 2");
         }
 
-        [Parser(Opcode.CMSG_SET_ACTIVE_VOICE_CHANNEL)]        
+        [Parser(Opcode.CMSG_SET_ACTIVE_VOICE_CHANNEL)]
         public static void HandleSetActiveVoiceChannel(Packet packet)
         {
             packet.ReadInt32("Channel ID");

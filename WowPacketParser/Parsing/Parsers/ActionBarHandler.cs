@@ -23,7 +23,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                     var action = packed & 0x00FFFFFF;
                     Console.WriteLine("Action " + i + ": " + action);
-    
+
                     var type = (ActionButtonType)((packed & 0xFF000000) >> 24);
                     Console.WriteLine("Type " + i + ": " + type);
                 }

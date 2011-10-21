@@ -11,7 +11,7 @@ namespace WowPacketParser.Enums
         BossMob = 0x00000004, // 4.x name
         DoNotPlayWoundParryAnimation = 0x00000008, // 4.x
         HideFactionTooltip = 0x00000010, // 4.x
-        Unknown4 = 0x00000020, // sound related 
+        Unknown4 = 0x00000020, // sound related
         SpellAttackable = 0x00000040,
         CanInteractWhileDead = 0x00000080, // 4.x name
         HerbSkinningSkill = 0x00000100, // 4.x name

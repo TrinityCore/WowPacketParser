@@ -130,7 +130,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
         UNIT_FIELD_POSSTAT2 = ObjectField.OBJECT_END + 0x0055,
         UNIT_FIELD_POSSTAT3 = ObjectField.OBJECT_END + 0x0056,
         UNIT_FIELD_POSSTAT4 = ObjectField.OBJECT_END + 0x0057,
-        UNIT_FIELD_NEGSTAT0 = ObjectField.OBJECT_END + 0x0058, 
+        UNIT_FIELD_NEGSTAT0 = ObjectField.OBJECT_END + 0x0058,
         UNIT_FIELD_NEGSTAT1 = ObjectField.OBJECT_END + 0x0059,
         UNIT_FIELD_NEGSTAT2 = ObjectField.OBJECT_END + 0x005A,
         UNIT_FIELD_NEGSTAT3 = ObjectField.OBJECT_END + 0x005B,

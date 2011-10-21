@@ -22,7 +22,5 @@ namespace WowPacketParser.Misc.Objects
         public MovementInfo Movement;
 
         public Dictionary<int, UpdateField> UpdateFields { get; set; }
-
-        
     }
 }

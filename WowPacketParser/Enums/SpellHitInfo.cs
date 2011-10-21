@@ -17,7 +17,7 @@ namespace WowPacketParser.Enums
         HITINFO_CRITICALHIT     = 0x00000200,
         HITINFO_UNK10           = 0x00000400,
         HITINFO_UNK11           = 0x00000800,
-        HITINFO_UNK12           = 0x00001000, 
+        HITINFO_UNK12           = 0x00001000,
         HITINFO_BLOCK           = 0x00002000,
         HITINFO_UNK14           = 0x00004000, // set only if meleespellid is present//  no world text when victim is hit for 0 dmg(HideWorldTextForNoDamage?)
         HITINFO_UNK15           = 0x00008000,  // player victim?// something related to blod sprut visual (BloodSpurtInBack?)
