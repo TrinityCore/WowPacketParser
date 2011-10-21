@@ -145,7 +145,9 @@ namespace WowPacketParser.Parsing.Parsers
                 var pos = packet.ReadVector3("Position");
                 packet.ReadInt32("Guild Id");
                 packet.ReadEnum<CharacterFlag>("Character Flags", TypeCode.Int32);
-                packet.ReadEnum<CustomizationFlag>("Customization Flags", TypeCode.Int32);
+
+                if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                    packet.ReadEnum<CustomizationFlag>("Customization Flags", TypeCode.Int32);
 
                 var firstLogin = packet.ReadBoolean("First Login");
                 packet.ReadInt32("Pet Display Id");
@@ -159,7 +161,8 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Equip Aura Id");
                 }
 
-                for (var j = 0; j < 4; j++)
+                int bagCount = ClientVersion.Version >= ClientVersionBuild.V3_3_3_11685 ? 4 : 1;
+                for (var j = 0; j < bagCount; j++)
                 {
                     packet.ReadInt32("Bag Display Id");
                     packet.ReadEnum<InventoryType>("Bag Inventory Type", TypeCode.Byte);

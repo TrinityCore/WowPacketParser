@@ -28,41 +28,31 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_NAME_QUERY_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
-            var pguid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + pguid);
+            if (ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767)
+            {
+                packet.ReadPackedGuid("GUID");
+                var end = packet.ReadBoolean();
+                Console.WriteLine("Name Found: " + !end);
 
-            var end = packet.ReadBoolean();
-            Console.WriteLine("Name Found: " + !end);
+                if (end)
+                    return;
+            }
+            else
+                packet.ReadGuid("GUID");
 
-            if (end)
-                return;
+            packet.ReadCString("Name");
+            packet.ReadCString("Realm Name");
 
-            var name = packet.ReadCString();
-            Console.WriteLine("Name: " + name);
+            TypeCode typeCode = ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767 ? TypeCode.Byte : TypeCode.Int32;
+            packet.ReadEnum<Race>("Race", typeCode);
+            packet.ReadEnum<Gender>("Gender", typeCode);
+            packet.ReadEnum<Class>("Class", typeCode);
 
-            var realmName = packet.ReadCString();
-            Console.WriteLine("Realm Name: " + realmName);
-
-            var race = (Race)packet.ReadByte();
-            Console.WriteLine("Race: " + race);
-
-            var gender = (Gender)packet.ReadByte();
-            Console.WriteLine("Gender: " + gender);
-
-            var cClass = (Class)packet.ReadByte();
-            Console.WriteLine("Class: " + cClass);
-
-            var decline = packet.ReadBoolean();
-            Console.WriteLine("Name Declined: " + decline);
-
-            if (!decline)
+            if (!packet.ReadBoolean("Name Declined"))
                 return;
 
             for (var i = 0; i < 5; i++)
-            {
-                var declinedName = packet.ReadCString();
-                Console.WriteLine("Declined Name " + i + ": " + declinedName);
-            }
+                packet.ReadCString("Declined Name", i);
         }
 
         public static void ReadQueryHeader(Packet packet)

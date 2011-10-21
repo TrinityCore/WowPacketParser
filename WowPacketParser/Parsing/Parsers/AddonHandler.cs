@@ -13,23 +13,7 @@ namespace WowPacketParser.Parsing.Parsers
             var decompCount = packet.ReadInt32();
             packet = packet.Inflate(decompCount);
 
-            if (ClientVersion.Version <= ClientVersionBuild.V3_0_3_9183)
-            {
-                int count = 0;
-
-                while (packet.GetPosition() != packet.GetLength())
-                {
-                    var n = packet.ReadCString("Name");
-                    var b = packet.ReadBoolean("Enabled");
-                    packet.ReadInt32("CRC");
-                    packet.ReadInt32("Unk Int32");
-
-                    count++;
-                }
-
-                _addonCount = count;
-            }
-            else
+            if (ClientVersion.Version >= ClientVersionBuild.V3_0_8_9464)
             {
                 var count = packet.ReadInt32("Addons Count");
                 _addonCount = count;
@@ -43,6 +27,22 @@ namespace WowPacketParser.Parsing.Parsers
                 }
 
                 packet.ReadTime("Current Time");
+            }
+            else
+            {
+                int count = 0;
+
+                while (packet.GetPosition() != packet.GetLength())
+                {
+                    packet.ReadCString("Name");
+                    packet.ReadBoolean("Enabled");
+                    packet.ReadInt32("CRC");
+                    packet.ReadInt32("Unk Int32");
+
+                    count++;
+                }
+
+                _addonCount = count;
             }
         }
 
@@ -79,21 +79,25 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("Addon URL File");
             }
 
-            var bannedCount = packet.ReadInt32("Banned Addons Count");
-
-            for (var i = 0; i < bannedCount; i++)
+            if (ClientVersion.Version >= ClientVersionBuild.V3_0_8_9464)
             {
-                packet.ReadInt32("ID");
+                var bannedCount = packet.ReadInt32("Banned Addons Count");
 
-                var unkStr2 = packet.ReadBytes(16);
-                Console.WriteLine("Unk Hash 1: " + Utilities.ByteArrayToHexString(unkStr2));
+                for (var i = 0; i < bannedCount; i++)
+                {
+                    packet.ReadInt32("ID");
 
-                var unkStr3 = packet.ReadBytes(16);
-                Console.WriteLine("Unk Hash 2: " + Utilities.ByteArrayToHexString(unkStr3));
+                    var unkStr2 = packet.ReadBytes(16);
+                    Console.WriteLine("Unk Hash 1: " + Utilities.ByteArrayToHexString(unkStr2));
 
-                packet.ReadInt32("Unk Int32 3");
+                    var unkStr3 = packet.ReadBytes(16);
+                    Console.WriteLine("Unk Hash 2: " + Utilities.ByteArrayToHexString(unkStr3));
 
-                packet.ReadInt32("Unk Int32 4");
+                    packet.ReadInt32("Unk Int32 3");
+
+                    if (ClientVersion.Version >= ClientVersionBuild.V3_3_3a_11723)
+                        packet.ReadInt32("Unk Int32 4");
+                }
             }
         }
     }

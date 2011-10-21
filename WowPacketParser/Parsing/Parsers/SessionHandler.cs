@@ -14,17 +14,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
         public static void HandleServerAuthChallenge(Packet packet)
         {
-            var unk = packet.ReadInt32();
-            Console.WriteLine("Shuffle Count: " + unk);
+            if (ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192)
+                packet.ReadInt32("Shuffle Count");
 
-            var seed = packet.ReadInt32();
-            Console.WriteLine("Server Seed: " + seed);
+            packet.ReadInt32("Server Seed");
 
-            for (var i = 0; i < 8; i++)
-            {
-                var rand = packet.ReadInt32();
-                Console.WriteLine("Server State " + i + ": " + rand);
-            }
+            if (ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192)
+                for (var i = 0; i < 8; i++)
+                    packet.ReadInt32("Server State", i);
         }
 
         [Parser(Opcode.CMSG_AUTH_SESSION)]

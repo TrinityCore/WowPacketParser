@@ -53,7 +53,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                var spellId = packet.ReadInt32();
+                int spellId;
+                if (ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767)
+                    spellId = packet.ReadInt32();
+                else
+                    spellId = packet.ReadUInt16();
+
                 Console.WriteLine("Spell ID " + i + ": " + Extensions.SpellLine(spellId));
 
                 var unk16 = packet.ReadInt16();

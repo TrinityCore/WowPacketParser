@@ -9,19 +9,32 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES)]
         public static void HandleAccountDataTimes(Packet packet)
         {
-            packet.ReadTime("Unk Time");
-
-            packet.ReadByte("Unk Byte");
-
-            var mask = packet.ReadInt32("Time Mask");
-
-            for (var i = 0; i < 8; i++)
+            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
             {
-                if ((mask & (1 << i)) == 0)
-                    continue;
+                packet.ReadTime("Unk Time");
+                packet.ReadByte("Unk Byte");
+            }
 
-                var unkTime2 = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 2 " + i + ": " + unkTime2);
+            if (ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192)
+            {
+                var mask = packet.ReadInt32("Time Mask");
+                for (var i = 0; i < 8; i++)
+                {
+                    if ((mask & (1 << i)) == 0)
+                        continue;
+
+                    packet.ReadInt32("Unk Int32", i);
+                }
+            }
+            else if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+            {
+                for (var i = 0; i < 8; i++)
+                    packet.ReadInt32("Unk Int32", i);
+            }
+            else
+            {
+                for (var i = 0; i < 32; i++)
+                    packet.ReadInt32("Unk Int32", i);
             }
         }
 

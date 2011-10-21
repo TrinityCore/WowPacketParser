@@ -205,14 +205,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]
         public static void HandleLoginSetTimeSpeed(Packet packet)
         {
-            var gameTime = packet.ReadPackedTime();
-            Console.WriteLine("Game Time: " + gameTime);
+            packet.ReadPackedTime("Game Time");
+            packet.ReadSingle("Game Speed");
 
-            var gameSpeed = packet.ReadSingle();
-            Console.WriteLine("Game Speed: " + gameSpeed);
-
-            var unk = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + unk);
+            if (ClientVersion.Version >= ClientVersionBuild.V3_1_2_9901)
+                packet.ReadInt32("Unk Int32");
         }
 
         [Parser(Opcode.SMSG_BINDPOINTUPDATE)]
