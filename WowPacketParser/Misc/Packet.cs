@@ -213,280 +213,198 @@ namespace WowPacketParser.Misc
             return ReadBytes(length);
         }
 
+        string GetIndexString(params int[] values)
+        {
+            var indexes = string.Empty;
+            foreach (var value in values)
+                indexes += "[" + value + "] ";
+
+            return indexes;
+        }
+
         public byte ReadByte(string name, params int[] values)
         {
             var val = ReadByte();
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, val);
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
 
         public bool ReadBoolean(string name, params int[] values)
         {
             var val = ReadBoolean();
-            var indexes = string.Empty;
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            return val;
+        }
 
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, val);
+        public bool ReadBoolean(string name, TypeCode code, params int[] values)
+        {
+            var val = ReadValue(code) == 1;
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
 
         public short ReadInt16(string name, params int[] values)
         {
             var val = ReadInt16();
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, val);
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
 
         public ushort ReadUInt16(string name, params int[] values)
         {
             var val = ReadUInt16();
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, val);
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
 
         public float ReadSingle(string name, params int[] values)
         {
             var val = ReadSingle();
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, val);
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
 
         public int ReadInt32(string name, params int[] values)
         {
             var val = ReadInt32();
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, val);
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
 
         public uint ReadUInt32(string name, params int[] values)
         {
             var val = ReadUInt32();
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, val);
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
 
         public long ReadInt64(string name, params int[] values)
         {
             var val = ReadInt64();
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, val);
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
 
         public ulong ReadUInt64(string name, params int[] values)
         {
             var val = ReadUInt64();
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, val);
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
         public Guid ReadGuid(string name, params int[] values)
         {
             var val = ReadGuid();
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, val);
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
 
         public string ReadCString(string name, params int[] values)
         {
             var val = ReadCString();
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, val);
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
 
         public Guid ReadPackedGuid(string name, params int[] values)
         {
             var val = ReadPackedGuid();
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, val);
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
 
         public KeyValuePair<int, bool> ReadEntry(string name, params int[] values)
         {
             var entry = ReadEntry();
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, entry.Key);
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, entry.Key);
             return entry;
         }
 
         public Vector3 ReadVector3(string name, params int[] values)
         {
             var val = ReadVector3();
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, val);
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
 
         public Vector4 ReadVector4(string name, params int[] values)
         {
             var val = ReadVector4();
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, val);
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
 
         public Quaternion ReadPackedQuaternion(string name, params int[] values)
         {
             var val = ReadPackedQuaternion();
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, val);
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
 
         public DateTime ReadTime(string name, params int[] values)
         {
             var val = ReadTime();
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, val);
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
 
         public DateTime ReadPackedTime(string name, params int[] values)
         {
             var val = ReadPackedTime();
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, val);
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
 
         public LfgEntry ReadLfgEntry(string name, params int[] values)
         {
             var val = new LfgEntry(ReadInt32());
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2}", indexes, name, val);
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
+        }
+
+        private long ReadValue(TypeCode code)
+        {
+            long rawValue = 0;
+            switch (code)
+            {
+                case TypeCode.SByte:
+                    rawValue = ReadSByte();
+                    break;
+                case TypeCode.Byte:
+                    rawValue = ReadByte();
+                    break;
+                case TypeCode.Int16:
+                    rawValue = ReadInt16();
+                    break;
+                case TypeCode.UInt16:
+                    rawValue = ReadUInt16();
+                    break;
+                case TypeCode.Int32:
+                    rawValue = ReadInt32();
+                    break;
+                case TypeCode.UInt32:
+                    rawValue = ReadUInt32();
+                    break;
+                case TypeCode.Int64:
+                    rawValue = ReadInt64();
+                    break;
+                case TypeCode.UInt64:
+                    rawValue = (long)ReadUInt64();
+                    break;
+            }
+            return rawValue;
         }
 
         private KeyValuePair<long, T> ReadEnum<T>(TypeCode code)
         {
-            var type = typeof(T);
-            long rawVal = 0;
-
-            switch (code)
-            {
-                case TypeCode.SByte:
-                    rawVal = ReadSByte();
-                    break;
-                case TypeCode.Byte:
-                    rawVal = ReadByte();
-                    break;
-                case TypeCode.Int16:
-                    rawVal = ReadInt16();
-                    break;
-                case TypeCode.UInt16:
-                    rawVal = ReadUInt16();
-                    break;
-                case TypeCode.Int32:
-                    rawVal = ReadInt32();
-                    break;
-                case TypeCode.UInt32:
-                    rawVal = ReadUInt32();
-                    break;
-                case TypeCode.Int64:
-                    rawVal = ReadInt64();
-                    break;
-                case TypeCode.UInt64:
-                    rawVal = (long)ReadUInt64();
-                    break;
-            }
-            var value = Enum.ToObject(type, rawVal);
-
-            return new KeyValuePair<long, T>(rawVal, (T)value);
+            var rawValue = ReadValue(code);
+            var value = Enum.ToObject(typeof(T), rawValue);
+            return new KeyValuePair<long, T>(rawValue, (T)value);
         }
 
         public T ReadEnum<T>(string name, TypeCode code, params int[] values)
         {
             KeyValuePair<long, T> val = ReadEnum<T>(code);
-
-            var indexes = string.Empty;
-
-            for (var i = 0; i < values.Length; i++)
-                indexes += "[" + i + "] ";
-
-            Console.WriteLine("{0}{1}: {2} ({3})", indexes, name, val.Value, val.Key);
+            Console.WriteLine("{0}{1}: {2} ({3})", GetIndexString(values), name, val.Value, val.Key);
             return val.Value;
         }
     }
