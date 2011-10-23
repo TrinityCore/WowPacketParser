@@ -137,6 +137,9 @@ namespace WowPacketParser.Parsing.Parsers
             var moveId = packet.ReadInt32();
             Console.WriteLine("Movement ID: " + moveId);
 
+            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+                packet.ReadUInt32("Expansion");
+
             SQLStore.WriteData(SQLStore.Creatures.GetCommand(entry.Key, name[0], subName, iconName, typeFlags,
                 type, family, rank, killCredit, dispId, mod1, mod2, racialLeader, qItem, moveId));
         }
