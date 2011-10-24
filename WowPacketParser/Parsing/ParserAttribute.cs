@@ -13,8 +13,13 @@ namespace WowPacketParser.Parsing
             Opcode = Opcodes.GetOpcode(opcode);
         }
 
-        // Wish we could use a predicate in attribute arguments
-        public ParserAttribute(Opcode opcode, ClientVersionBuild minBuild, ClientVersionBuild maxBuild = ClientVersionBuild.MaxBuild)
+        public ParserAttribute(Opcode opcode, ClientVersionBuild minBuild)
+        {
+            if (ClientVersion.Version >= minBuild)
+                Opcode = Opcodes.GetOpcode(opcode);
+        }
+
+        public ParserAttribute(Opcode opcode, ClientVersionBuild minBuild, ClientVersionBuild maxBuild)
         {
             if (ClientVersion.Version >= minBuild && ClientVersion.Version <= maxBuild)
                 Opcode = Opcodes.GetOpcode(opcode);

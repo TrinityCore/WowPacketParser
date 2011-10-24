@@ -27,9 +27,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_AUTH_SESSION)]
         public static void HandleAuthSession(Packet packet)
         {
-            // Do not overwrite version
-            // this packet can be read wrongly in different versions, which would screw up the whole file
-            // ClientVersion.Version = packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int32);
+            // Do not overwrite version after Handler was initialized
+            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int32);
 
             packet.ReadInt32("Unk Int32 1");
             packet.ReadCString("Account");

@@ -55,8 +55,6 @@
         V4_2_0_14333 = 14333,
         V4_2_0_14480 = 14480,
         V4_2_2_14545 = 14545,
-
-        MaxBuild = 99999,
         // ReSharper restore InconsistentNaming
     }
 }
