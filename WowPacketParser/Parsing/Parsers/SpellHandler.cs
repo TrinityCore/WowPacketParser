@@ -233,33 +233,36 @@ namespace WowPacketParser.Parsing.Parsers
             if (targetFlags.HasAnyFlag(TargetFlag.NameString))
                 packet.ReadCString("Target String");
 
-            if (flags.HasAnyFlag(CastFlag.PredictedPower))
-                packet.ReadInt32("Rune Cooldown");
-
-            if (flags.HasAnyFlag(CastFlag.RuneInfo))
+            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
             {
-                var spellRuneState = packet.ReadByte("Spell Rune State");
-                var playerRuneState = packet.ReadByte("Player Rune State");
+                if (flags.HasAnyFlag(CastFlag.PredictedPower))
+                    packet.ReadInt32("Rune Cooldown");
 
-                for (var i = 0; i < 6; i++)
+                if (flags.HasAnyFlag(CastFlag.RuneInfo))
                 {
-                    var mask = 1 << i;
-                    if ((mask & spellRuneState) == 0)
-                        continue;
+                    var spellRuneState = packet.ReadByte("Spell Rune State");
+                    var playerRuneState = packet.ReadByte("Player Rune State");
 
-                    if ((mask & playerRuneState) != 0)
-                        continue;
+                    for (var i = 0; i < 6; i++)
+                    {
+                        var mask = 1 << i;
+                        if ((mask & spellRuneState) == 0)
+                            continue;
 
-                    packet.ReadByte("Unk Byte 1", i);
+                        if ((mask & playerRuneState) != 0)
+                            continue;
+
+                        packet.ReadByte("Unk Byte 1", i);
+                    }
                 }
-            }
 
-            if (isSpellGo)
-            {
-                if (flags.HasAnyFlag(CastFlag.AdjustMissile))
+                if (isSpellGo)
                 {
-                    packet.ReadSingle("Unk Single");
-                    packet.ReadInt32("Unk Int32 1");
+                    if (flags.HasAnyFlag(CastFlag.AdjustMissile))
+                    {
+                        packet.ReadSingle("Unk Single");
+                        packet.ReadInt32("Unk Int32 1");
+                    }
                 }
             }
 
@@ -269,33 +272,35 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<InventoryType>("Ammo Inventory Type", TypeCode.Int32);
             }
 
-            if (isSpellGo)
+            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
             {
-                if (flags.HasAnyFlag(CastFlag.VisualChain))
+                if (isSpellGo)
                 {
-                    packet.ReadInt32("Unk Int32 2");
-                    packet.ReadInt32("Unk Int32 3");
-                }
-            }
-            else
-            {
-                if (flags.HasAnyFlag(CastFlag.Immunity))
-                {
-                    packet.ReadInt32("Unk Int32 4");
-                    packet.ReadInt32("Unk Int32 5");
-                }
-
-                //cant find any information about this one - does not exist in 2.4.1
-                //if (targetFlags.HasAnyFlag(TargetFlag.DestinationLocation))
-                //    packet.ReadByte("Unk Byte 2");
-
-                if (targetFlags.HasAnyFlag(TargetFlag.ExtraTargets))
-                {
-                    var targetCount = packet.ReadInt32("Extra Targets Count");
-                    for (var i = 0; i < targetCount; i++)
+                    if (flags.HasAnyFlag(CastFlag.VisualChain))
                     {
-                        packet.ReadVector3("Extra Target Position", i);
-                        packet.ReadGuid("Extra Target GUID", i);
+                        packet.ReadInt32("Unk Int32 2");
+                        packet.ReadInt32("Unk Int32 3");
+                    }
+
+                    if (targetFlags.HasAnyFlag(TargetFlag.DestinationLocation))
+                        packet.ReadByte("Unk Byte 2");
+
+                    if (targetFlags.HasAnyFlag(TargetFlag.ExtraTargets))
+                    {
+                        var targetCount = packet.ReadInt32("Extra Targets Count");
+                        for (var i = 0; i < targetCount; i++)
+                        {
+                            packet.ReadVector3("Extra Target Position", i);
+                            packet.ReadGuid("Extra Target GUID", i);
+                        }
+                    }
+                }
+                else
+                {
+                    if (flags.HasAnyFlag(CastFlag.Immunity))
+                    {
+                        packet.ReadInt32("Unk Int32 4");
+                        packet.ReadInt32("Unk Int32 5");
                     }
                 }
             }
@@ -594,6 +599,5 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
             packet.ReadUInt32("Duration");
         }
-
     }
 }
