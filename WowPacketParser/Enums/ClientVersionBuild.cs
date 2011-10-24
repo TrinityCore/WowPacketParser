@@ -3,7 +3,7 @@
     public enum ClientVersionBuild
     {
         // ReSharper disable InconsistentNaming
-        Unknown = 0,
+        Zero = 0,
 
         V1_12_1_5875 = 5875,
 

@@ -9,33 +9,28 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES)]
         public static void HandleAccountDataTimes(Packet packet)
         {
-            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
-            {
-                packet.ReadTime("Unk Time");
-                packet.ReadByte("Unk Byte");
-            }
+            packet.ReadTime("Unk Time");
+            packet.ReadByte("Unk Byte");
 
+            var mask = 0;
             if (ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192)
+                mask = packet.ReadInt32("Time Mask");
+
+            for (var i = 0; i < 8; i++)
             {
-                var mask = packet.ReadInt32("Time Mask");
-                for (var i = 0; i < 8; i++)
-                {
+                if (ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192)
                     if ((mask & (1 << i)) == 0)
                         continue;
 
-                    packet.ReadInt32("Unk Int32", i);
-                }
+                packet.ReadInt32("Unk Int32", i);
             }
-            else if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
-            {
-                for (var i = 0; i < 8; i++)
-                    packet.ReadInt32("Unk Int32", i);
-            }
-            else
-            {
-                for (var i = 0; i < 32; i++)
-                    packet.ReadInt32("Unk Int32", i);
-            }
+        }
+
+        [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES, ClientVersionBuild.Zero, ClientVersionBuild.V2_4_3_8606)]
+        public static void HandleAccountDataTimes_V243(Packet packet)
+        {
+            for (var i = 0; i < 32; i++)
+                packet.ReadInt32("Unk Int32", i);
         }
 
         [Parser(Opcode.CMSG_REQUEST_ACCOUNT_DATA)]

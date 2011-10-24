@@ -19,9 +19,6 @@ namespace WowPacketParser
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-            // set default sniff version
-            ClientVersion.Version = ClientVersionBuild.Unknown;
-
             // Read config options
             string[] filters = null;
             string[] ignoreFilters = null;
@@ -34,6 +31,8 @@ namespace WowPacketParser
 
             try
             {
+                ClientVersion.Version = Settings.GetEnum<ClientVersionBuild>("ClientBuild");
+
                 packetNumberLow = Settings.GetInt32("FilterPacketNumLow");
                 packetNumberHigh = Settings.GetInt32("FilterPacketNumHigh");
 

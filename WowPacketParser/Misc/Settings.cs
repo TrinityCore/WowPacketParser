@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Globalization;
 
 namespace WowPacketParser.Misc
@@ -44,6 +45,18 @@ namespace WowPacketParser.Misc
                     return value;
             }
             return 0;
+        }
+
+        public static T GetEnum<T>(string key)
+        {
+            var s = ConfigurationManager.AppSettings[key];
+            if (s != null)
+            {
+                object value = Enum.Parse(typeof(T), s);
+                if (value != null)
+                    return (T)value;
+            }
+            return default(T);
         }
     }
 }
