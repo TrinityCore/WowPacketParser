@@ -150,9 +150,11 @@
     <Compile Include="Enums\SniffType.cs" />
     <Compile Include="Enums\SpellHitType.cs" />
     <Compile Include="Enums\PetitionResultType.cs" />
+    <Compile Include="Enums\Version\V4_1_0_13914\Opcodes.cs" />
     <Compile Include="Enums\Version\Opcodes.cs" />
     <Compile Include="Enums\Version\V3_3_5a_12340\Opcodes.cs" />
     <Compile Include="Enums\Version\V3_3_5a_12340\UpdateField.cs" />
+    <Compile Include="Enums\Version\V4_0_3_13329\Opcodes.cs" />
     <Compile Include="Enums\Version\V4_0_6_13596\Opcodes.cs">
       <SubType>Code</SubType>
     </Compile>

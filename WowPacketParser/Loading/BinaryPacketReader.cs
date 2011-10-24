@@ -43,7 +43,7 @@ namespace WowPacketParser.Loading
                 opcode = _reader.ReadInt32();
                 length = _reader.ReadInt32();
                 time = Utilities.GetDateTimeFromUnixTime(_reader.ReadInt32());
-                direction = (Direction)_reader.ReadChar();
+                direction = (Direction)_reader.ReadByte();
                 data = _reader.ReadBytes(length);
             }
 

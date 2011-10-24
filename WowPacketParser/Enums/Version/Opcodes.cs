@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Enums.Version
@@ -31,10 +32,19 @@ namespace WowPacketParser.Enums.Version
                 {
                     return _V3_3_5_opcodes;
                 }
+                case ClientVersionBuild.V4_0_3_13329:
+                {
+                    return _V4_0_3_opcodes;
+                }
                 case ClientVersionBuild.V4_0_6_13596:
                 case ClientVersionBuild.V4_0_6_13623:
                 {
                     return _V4_0_6_opcodes;
+                }
+                case ClientVersionBuild.V4_1_0_13914:
+                case ClientVersionBuild.V4_1_0_14007:
+                {
+                    return _V4_1_0_opcodes;
                 }
             }
             return _V3_3_5_opcodes; // Default case, should pick a better one
