@@ -27,8 +27,9 @@ namespace WowPacketParser.Parsing.Parsers
             var level = packet.ReadInt32();
             Console.WriteLine("Level: " + level);
 
-            var minLevel = packet.ReadInt32();
-            Console.WriteLine("Min Level: " + minLevel);
+            var minLevel = 0;
+            if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+                minLevel = packet.ReadInt32("Min Level");
 
             var sort = (QuestSort)packet.ReadInt32();
             Console.WriteLine("Sort: " + sort);
@@ -53,8 +54,9 @@ namespace WowPacketParser.Parsing.Parsers
             var nextQuest = packet.ReadInt32();
             Console.WriteLine("Next Chain Quest: " + nextQuest);
 
-            var xpId = packet.ReadInt32();
-            Console.WriteLine("Quest XP ID: " + xpId);
+            var xpId = 0;
+            if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+                xpId = packet.ReadInt32("Quest XP ID");
 
             var rewReqMoney = packet.ReadInt32();
             Console.WriteLine("Reward/Required Money: " + rewReqMoney);
@@ -71,8 +73,9 @@ namespace WowPacketParser.Parsing.Parsers
             var rewHonor = packet.ReadInt32();
             Console.WriteLine("Reward Honor: " + rewHonor);
 
-            var rewHonorBonus = packet.ReadSingle();
-            Console.WriteLine("Reward Honor Multiplier: " + rewHonorBonus);
+            var rewHonorBonus = 0f;
+            if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+                rewHonorBonus = packet.ReadSingle("Reward Honor Multiplier");
 
             var srcItemId = packet.ReadInt32();
             Console.WriteLine("Source Item ID: " + srcItemId);
@@ -80,20 +83,25 @@ namespace WowPacketParser.Parsing.Parsers
             var flags = (QuestFlag)(packet.ReadInt32() | 0xFFFF);
             Console.WriteLine("Flags: " + flags);
 
-            var titleId = packet.ReadInt32();
-            Console.WriteLine("Title ID: " + titleId);
+            var titleId = 0;
+            if (ClientVersion.Version >= ClientVersionBuild.V2_4_0_8089)
+                titleId = packet.ReadInt32("Title ID");
 
-            var reqPlayerKills = packet.ReadInt32();
-            Console.WriteLine("Required Player Kills: " + reqPlayerKills);
+            var reqPlayerKills = 0;
+            var bonusTalents = 0;
+            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+            {
+                reqPlayerKills = packet.ReadInt32("Required Player Kills");
+                bonusTalents = packet.ReadInt32("Bonus Talents");
+            }
 
-            var bonusTalents = packet.ReadInt32();
-            Console.WriteLine("Bonus Talents: " + bonusTalents);
-
-            var bonusArenaPoints = packet.ReadInt32();
-            Console.WriteLine("Bonus Arena Points: " + bonusArenaPoints);
-
-            var bonusUnk = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + bonusUnk);
+            var bonusArenaPoints = 0;
+            var bonusUnk = 0;
+            if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+            {
+                bonusArenaPoints = packet.ReadInt32("Bonus Arena Points");
+                bonusUnk = packet.ReadInt32("Unk Int32");
+            }
 
             var rewItemId = new int[4];
             var rewItemCnt = new int[4];
@@ -118,24 +126,19 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             var rewFactionId = new int[5];
-            for (var i = 0; i < 5; i++)
-            {
-                rewFactionId[i] = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Reward Faction ID: " + rewFactionId[i]);
-            }
-
             var rewRepIdx = new int[5];
-            for (var i = 0; i < 5; i++)
-            {
-                rewRepIdx[i] = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Reward Reputation ID: " + rewRepIdx[i]);
-            }
-
             var rewRepOverride = new int[5];
-            for (var i = 0; i < 5; i++)
+
+            if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
             {
-                rewRepOverride[i] = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Reward Rep Override: " + rewRepOverride[i]);
+                for (var i = 0; i < 5; i++)
+                    rewFactionId[i] = packet.ReadInt32("Reward Faction ID", i);
+
+                for (var i = 0; i < 5; i++)
+                    rewRepIdx[i] = packet.ReadInt32("Reward Reputation ID", i);
+
+                for (var i = 0; i < 5; i++)
+                    rewRepOverride[i] = packet.ReadInt32("Reward Reputation ID", i);
             }
 
             var pointMap = packet.ReadInt32();
@@ -162,46 +165,52 @@ namespace WowPacketParser.Parsing.Parsers
             var endText = packet.ReadCString();
             Console.WriteLine("End Text: " + endText);
 
-            var returnText = packet.ReadCString();
-            Console.WriteLine("Return Text: " + returnText);
+            var returnText = string.Empty;
+            if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+                returnText = packet.ReadCString("Return Text");
 
             var reqId = new KeyValuePair<int, bool>[4];
             var reqCnt = new int[4];
             var srcId = new int[4];
             var srcCnt = new int[4];
+
+            var reqItemFieldCount = ClientVersion.Version >= ClientVersionBuild.V3_0_8_9464 ? 6 : 4;
+            var reqItemId = new int[reqItemFieldCount];
+            var reqItemCnt = new int[reqItemFieldCount];
+
             for (var i = 0; i < 4; i++)
             {
                 reqId[i] = packet.ReadEntry();
                 Console.WriteLine("[" + i + "] Required " + (reqId[i].Value ? "GO" : "NPC") +
                     " ID: " + reqId[i].Key);
 
-                reqCnt[i] = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Required Count: " + reqCnt[i]);
+                reqCnt[i] = packet.ReadInt32("Required Count", i);
 
-                srcId[i] = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Source ID: " + srcId[i]);
+                if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                    srcId[i] = packet.ReadInt32("Source ID", i);
 
-                srcCnt[i] = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Source Count: " + srcCnt[i]);
+                if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+                    srcCnt[i] = packet.ReadInt32("Source Count", i);
+
+                if (ClientVersion.Version < ClientVersionBuild.V3_0_8_9464)
+                {
+                    reqItemId[i] = packet.ReadInt32("Required Item ID", i);
+                    reqItemCnt[i] = packet.ReadInt32("Required Item Count", i);
+                }
             }
 
-            var reqItemId = new int[6];
-            var reqItemCnt = new int[6];
-            for (var i = 0; i < 6; i++)
+            if (ClientVersion.Version >= ClientVersionBuild.V3_0_8_9464)
             {
-                reqItemId[i] = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Required Item ID: " + reqItemId[i]);
-
-                reqItemCnt[i] = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Required Item Count: " + reqItemCnt[i]);
+                for (var i = 0; i < reqItemFieldCount; i++)
+                {
+                    reqItemId[i] = packet.ReadInt32("Required Item ID", i);
+                    reqItemCnt[i] = packet.ReadInt32("Required Item Count", i);
+                }
             }
 
             var objectiveText = new string[4];
             for (var i = 0; i < 4; i++)
-            {
-                objectiveText[i] = packet.ReadCString();
-                Console.WriteLine("[" + i + "] Objective Text: " + objectiveText[i]);
-            }
+                objectiveText[i] = packet.ReadCString("Objective Text", i);
 
             SQLStore.WriteData(SQLStore.Quests.GetCommand(id, method, level, minLevel, sort, type,
                 players, factId, factRep, nextQuest, xpId, rewReqMoney, rewMoneyMaxLvl,
@@ -330,18 +339,24 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadUInt32("Quest Id");
-            packet.ReadUInt32("Unk UInt32");
+
+            if (ClientVersion.Version >= ClientVersionBuild.V3_1_2_9901)
+                packet.ReadUInt32("Unk UInt32");
         }
 
         [Parser(Opcode.SMSG_QUESTGIVER_QUEST_DETAILS)]
         public static void HandleQuestgiverDetails(Packet packet)
         {
             packet.ReadGuid("GUID1");
-            packet.ReadGuid("GUID2");
+
+            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                packet.ReadGuid("GUID2");
+
             packet.ReadUInt32("Quest Id");
             packet.ReadCString("Title");
             packet.ReadCString("Details");
             packet.ReadCString("Objectives");
+
             if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
             {
                 packet.ReadCString("Target Text Window");
@@ -350,10 +365,20 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Quest Giver Portrait Id");
                 packet.ReadUInt32("Unknown UInt32");
             }
-            packet.ReadByte("AutoAccept");
-            var flags = packet.ReadEnum<QuestFlag>("Quest Flags", TypeCode.UInt32);
+
+            var flags = QuestFlag.None;
+            if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+            {
+                packet.ReadByte("AutoAccept");
+                flags = packet.ReadEnum<QuestFlag>("Quest Flags", TypeCode.UInt32);
+            }
+            else
+                packet.ReadInt32("AutoAccept");
+
             packet.ReadUInt32("Suggested Players");
-            packet.ReadByte("Unknown byte");
+
+            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                packet.ReadByte("Unknown byte");
 
             if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
             {
@@ -366,92 +391,108 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Hidden Chosen Items");
                 packet.ReadUInt32("Hidden Items");
                 packet.ReadUInt32("Hidden Money");
-                packet.ReadUInt32("Hidden XP");
+
+                if (ClientVersion.Version >= ClientVersionBuild.V3_2_2_10482)
+                    packet.ReadUInt32("Hidden XP");
             }
             else
             {
-                if (ClientVersion.Version <= ClientVersionBuild.V3_3_5a_12340)
+                var choiceCount = packet.ReadUInt32("Choice Item Count");
+
+                if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
                 {
-                    var choiceCount = packet.ReadUInt32("Choice Item Count");
                     for (var i = 0; i < choiceCount; i++)
-                    {
-                        packet.ReadUInt32("[" + i + "] Choice Item Id");
-                        packet.ReadUInt32("[" + i + "] Choice Item Count");
-                        packet.ReadUInt32("[" + i + "] Choice Item Display Id");
-                    }
+                        packet.ReadUInt32("Choice Item Id", i);
+                    for (var i = 0; i < choiceCount; i++)
+                        packet.ReadUInt32("Choice Item Count", i);
+                    for (var i = 0; i < choiceCount; i++)
+                        packet.ReadUInt32("Choice Item Display Id", i);
 
                     var rewardCount = packet.ReadUInt32("Reward Item Count");
                     for (var i = 0; i < rewardCount; i++)
-                    {
-                        packet.ReadUInt32("[" + i + "] Reward Item Id");
-                        packet.ReadUInt32("[" + i + "] Reward Item Count");
-                        packet.ReadUInt32("[" + i + "] Reward Item Display Id");
-                    }
+                        packet.ReadUInt32("Reward Item Id", i);
+                    for (var i = 0; i < rewardCount; i++)
+                        packet.ReadUInt32("Reward Item Count", i);
+                    for (var i = 0; i < rewardCount; i++)
+                        packet.ReadUInt32("Reward Item Display Id", i);
                 }
                 else
                 {
-                    var choiceCount = packet.ReadUInt32("Choice Item Count");
                     for (var i = 0; i < choiceCount; i++)
-                        packet.ReadUInt32("[" + i + "] Choice Item Id");
-                    for (var i = 0; i < choiceCount; i++)
-                        packet.ReadUInt32("[" + i + "] Choice Item Count");
-                    for (var i = 0; i < choiceCount; i++)
-                        packet.ReadUInt32("[" + i + "] Choice Item Display Id");
+                    {
+                        packet.ReadUInt32("Choice Item Id", i);
+                        packet.ReadUInt32("Choice Item Count", i);
+                        packet.ReadUInt32("Choice Item Display Id", i);
+                    }
 
                     var rewardCount = packet.ReadUInt32("Reward Item Count");
                     for (var i = 0; i < rewardCount; i++)
-                        packet.ReadUInt32("[" + i + "] Reward Item Id");
-                    for (var i = 0; i < rewardCount; i++)
-                        packet.ReadUInt32("[" + i + "] Reward Item Count");
-                    for (var i = 0; i < rewardCount; i++)
-                        packet.ReadUInt32("[" + i + "] Reward Item Display Id");
+                    {
+                        packet.ReadUInt32("Reward Item Id", i);
+                        packet.ReadUInt32("Reward Item Count", i);
+                        packet.ReadUInt32("Reward Item Display Id", i);
+                    }
                 }
 
                 packet.ReadUInt32("Money");
-                packet.ReadUInt32("XP");
+
+                if (ClientVersion.Version >= ClientVersionBuild.V3_2_2_10482)
+                    packet.ReadUInt32("XP");
             }
 
-            if (ClientVersion.Version <= ClientVersionBuild.V3_3_5a_12340)
+            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
             {
-                packet.ReadUInt32("Honor Points");
-                packet.ReadSingle("Honor Multiplier");
-                Console.WriteLine("Spell Id: " + Extensions.SpellLine(packet.ReadInt32()));
-                Console.WriteLine("Spell Cast Id: " + Extensions.SpellLine(packet.ReadInt32()));
                 packet.ReadUInt32("Title Id");
+                packet.ReadUInt32("Unknown UInt32");
+                packet.ReadUInt32("Unknown UInt32");
                 packet.ReadUInt32("Bonus Talents");
-                packet.ReadUInt32("Arena Points");
-                packet.ReadUInt32("Unk UInt32");
+                packet.ReadUInt32("Unknown UInt32");
+                packet.ReadUInt32("Unknown UInt32");
             }
             else
             {
+                packet.ReadUInt32("Honor Points");
+
+                if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+                    packet.ReadSingle("Honor Multiplier");
+
+                Console.WriteLine("Spell Id: " + Extensions.SpellLine(packet.ReadInt32()));
+                Console.WriteLine("Spell Cast Id: " + Extensions.SpellLine(packet.ReadInt32()));
                 packet.ReadUInt32("Title Id");
-                packet.ReadUInt32("Unknown UInt32");
-                packet.ReadUInt32("Unknown UInt32");
-                packet.ReadUInt32("Bonus Talents");
-                packet.ReadUInt32("Unknown UInt32");
-                packet.ReadUInt32("Unknown UInt32");
+
+                if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                    packet.ReadUInt32("Bonus Talents");
+
+                if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+                {
+                    packet.ReadUInt32("Arena Points");
+                    packet.ReadUInt32("Unk UInt32");
+                }
             }
 
-            for (var i = 0; i < 5; i++)
-                packet.ReadUInt32("[" + i + "] Reputation Faction");
+            if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+            {
+                for (var i = 0; i < 5; i++)
+                    packet.ReadUInt32("[" + i + "] Reputation Faction");
 
-            for (var i = 0; i < 5; i++)
-                packet.ReadUInt32("[" + i + "] Reputation Value Id");
+                for (var i = 0; i < 5; i++)
+                    packet.ReadUInt32("[" + i + "] Reputation Value Id");
 
-            for (var i = 0; i < 5; i++)
-                packet.ReadInt32("[" + i + "] Reputation Value");
+                for (var i = 0; i < 5; i++)
+                    packet.ReadInt32("[" + i + "] Reputation Value");
+            }
 
             if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
             {
                 Console.WriteLine("Spell Id: " + Extensions.SpellLine(packet.ReadInt32()));
                 Console.WriteLine("Spell Cast Id: " + Extensions.SpellLine(packet.ReadInt32()));
+
                 for (var i = 0; i < 4; i++)
                     packet.ReadUInt32("[" + i + "] " + "Unknown UInt32 1");
                 for (var i = 0; i < 4; i++)
                     packet.ReadUInt32("[" + i + "] " + "Unknown UInt32 2");
 
                 packet.ReadUInt32("Unknown UInt32");
-
                 packet.ReadUInt32("Unknown UInt32");
             }
 
@@ -461,8 +502,6 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("[" + i + "] Emote Id");
                 packet.ReadUInt32("[" + i + "] Emote Delay (ms)");
             }
-
-
         }
 
         [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST)]

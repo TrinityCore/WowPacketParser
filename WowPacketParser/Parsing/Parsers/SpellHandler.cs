@@ -167,105 +167,79 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SPELL_GO)]
         public static void HandleSpellStart(Packet packet)
         {
-            var casterGuid = packet.ReadPackedGuid();
-            Console.WriteLine("Caster GUID: " + casterGuid);
+            bool isSpellGo = packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO);
 
-            var casterUnit = packet.ReadPackedGuid();
-            Console.WriteLine("Caster Unit GUID: " + casterUnit);
+            packet.ReadPackedGuid("Caster GUID");
+            packet.ReadPackedGuid("Caster Unit GUID");
 
-            var count = packet.ReadByte();
-            Console.WriteLine("Cast Count: " + count);
+            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                packet.ReadByte("Cast Count");
 
-            var spellId = packet.ReadInt32();
-            Console.WriteLine("Spell ID: " + Extensions.SpellLine(spellId));
+            Console.WriteLine("Spell ID: " + Extensions.SpellLine(packet.ReadInt32()));
 
-            var flags = (CastFlag)packet.ReadInt32();
-            Console.WriteLine("Cast Flags: " + flags);
+            if (ClientVersion.Version <= ClientVersionBuild.V2_4_3_8606 && !isSpellGo)
+                packet.ReadByte("Cast Count");
 
-            var time = packet.ReadInt32();
-            Console.WriteLine("Time: " + time);
+            var flagsTypeCode = ClientVersion.Version > ClientVersionBuild.V2_4_3_8606 ? TypeCode.Int32 : TypeCode.UInt16;
+            var flags = packet.ReadEnum<CastFlag>("Cast Flags", flagsTypeCode);
 
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO))
+            packet.ReadInt32("Time");
+
+            if (isSpellGo)
             {
-                var hitCount = packet.ReadByte();
-                Console.WriteLine("Hit Count: " + hitCount);
-
+                var hitCount = packet.ReadByte("Hit Count");
                 for (var i = 0; i < hitCount; i++)
-                {
-                    var hitGuid = packet.ReadGuid();
-                    Console.WriteLine("Hit GUID " + i + ": " + hitGuid);
-                }
+                    packet.ReadGuid("Hit GUID", i);
 
-                var missCount = packet.ReadByte();
-                Console.WriteLine("Miss Count: " + missCount);
-
+                var missCount = packet.ReadByte("Miss Count");
                 for (var i = 0; i < missCount; i++)
                 {
-                    var missGuid = packet.ReadGuid();
+                    var missGuid = packet.ReadGuid("Miss GUID", i);
                     Console.WriteLine("Miss GUID " + i + ": " + missGuid);
 
-                    var missType = (SpellMissType)packet.ReadByte();
-                    Console.WriteLine("Miss Type " + i + ": " + missType);
-
+                    var missType = packet.ReadEnum<SpellMissType>("Miss Type", TypeCode.Byte, i);
                     if (missType != SpellMissType.Reflect)
                         continue;
 
-                    var reflectResult = (SpellMissType)packet.ReadByte();
-                    Console.WriteLine("Miss Reflect " + i + ": " + reflectResult);
+                    packet.ReadEnum<SpellMissType>("Miss Reflect", TypeCode.Byte, i);
                 }
             }
 
-            var targetFlags = (TargetFlag)packet.ReadInt32();
-            Console.WriteLine("Target Flags: " + targetFlags);
+            var targetFlags = packet.ReadEnum<TargetFlag>("Target Flags", TypeCode.Int32);
 
             if (targetFlags.HasAnyFlag(TargetFlag.Unit | TargetFlag.PvpCorpse | TargetFlag.Object |
                 TargetFlag.Corpse | TargetFlag.SpellDynamic4))
-            {
-                var tGuid = packet.ReadPackedGuid();
-                Console.WriteLine("Target GUID: " + tGuid);
-            }
+                packet.ReadPackedGuid("Target GUID");
 
             if (targetFlags.HasAnyFlag(TargetFlag.Item | TargetFlag.TradeItem))
-            {
-                var tGuid = packet.ReadPackedGuid();
-                Console.WriteLine("Item Target GUID: " + tGuid);
-            }
+                packet.ReadPackedGuid("Item Target GUID");
 
             if (targetFlags.HasAnyFlag(TargetFlag.SourceLocation))
             {
-                var tGuid = packet.ReadPackedGuid();
-                Console.WriteLine("Source Transport GUID: " + tGuid);
-                var pos = packet.ReadVector3();
-                Console.WriteLine("Source Position: " + pos);
+                if (ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192)
+                    packet.ReadPackedGuid("Source Transport GUID");
+
+                packet.ReadVector3("Source Position");
             }
 
             if (targetFlags.HasAnyFlag(TargetFlag.DestinationLocation))
             {
-                var tGuid = packet.ReadPackedGuid();
-                Console.WriteLine("Destination Transport GUID: " + tGuid);
-                var pos = packet.ReadVector3();
-                Console.WriteLine("Destination Position: " + pos);
+                if (ClientVersion.Version >= ClientVersionBuild.V3_0_8_9464)
+                    packet.ReadPackedGuid("Destination Transport GUID");
+
+                packet.ReadVector3("Destination Position");
             }
 
             if (targetFlags.HasAnyFlag(TargetFlag.NameString))
-            {
-                var targetStr = packet.ReadCString();
-                Console.WriteLine("Target String: " + targetStr);
-            }
+                packet.ReadCString("Target String");
 
             if (flags.HasAnyFlag(CastFlag.PredictedPower))
-            {
-                var runeCooldown = packet.ReadInt32();
-                Console.WriteLine("Rune Cooldown: " + runeCooldown);
-            }
+                packet.ReadInt32("Rune Cooldown");
 
             if (flags.HasAnyFlag(CastFlag.RuneInfo))
             {
-                var spellRuneState = packet.ReadByte();
-                Console.WriteLine("Spell Rune State: " + spellRuneState);
-
-                var playerRuneState = packet.ReadByte();
-                Console.WriteLine("Player Rune State: " + playerRuneState);
+                var spellRuneState = packet.ReadByte("Spell Rune State");
+                var playerRuneState = packet.ReadByte("Player Rune State");
 
                 for (var i = 0; i < 6; i++)
                 {
@@ -276,78 +250,54 @@ namespace WowPacketParser.Parsing.Parsers
                     if ((mask & playerRuneState) != 0)
                         continue;
 
-                    var unk = packet.ReadByte();
-                    Console.WriteLine("Unk Byte 1 " + i + ": " + unk);
+                    packet.ReadByte("Unk Byte 1", i);
                 }
             }
 
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO))
+            if (isSpellGo)
             {
                 if (flags.HasAnyFlag(CastFlag.AdjustMissile))
                 {
-                    var unk1 = packet.ReadSingle();
-                    Console.WriteLine("Unk Single: " + unk1);
-
-                    var unk2 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 1: " + unk2);
+                    packet.ReadSingle("Unk Single");
+                    packet.ReadInt32("Unk Int32 1");
                 }
             }
 
             if (flags.HasAnyFlag(CastFlag.Projectile))
             {
-                var ammoDispId = packet.ReadInt32();
-                Console.WriteLine("Ammo Display ID: " + ammoDispId);
-
-                var ammoInvType = (InventoryType)packet.ReadInt32();
-                Console.WriteLine("Ammo Inventory Type: " + ammoInvType);
+                packet.ReadInt32("Ammo Display ID");
+                packet.ReadEnum<InventoryType>("Ammo Inventory Type", TypeCode.Int32);
             }
 
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO))
+            if (isSpellGo)
             {
                 if (flags.HasAnyFlag(CastFlag.VisualChain))
                 {
-                    var unk5 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 2: " + unk5);
-
-                    var unk6 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 3: " + unk6);
+                    packet.ReadInt32("Unk Int32 2");
+                    packet.ReadInt32("Unk Int32 3");
                 }
             }
-
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_START))
+            else
             {
                 if (flags.HasAnyFlag(CastFlag.Immunity))
                 {
-                    var unk4 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 4: " + unk4);
-
-                    var unk5 = packet.ReadInt32();
-                    Console.WriteLine("Unk Int32 5: " + unk5);
+                    packet.ReadInt32("Unk Int32 4");
+                    packet.ReadInt32("Unk Int32 5");
                 }
-            }
 
-            if (packet.Opcode != Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO))
-                return;
+                //cant find any information about this one - does not exist in 2.4.1
+                //if (targetFlags.HasAnyFlag(TargetFlag.DestinationLocation))
+                //    packet.ReadByte("Unk Byte 2");
 
-            if (targetFlags.HasAnyFlag(TargetFlag.DestinationLocation))
-            {
-                var unkByte = packet.ReadByte();
-                Console.WriteLine("Unk Byte 2: " + unkByte);
-            }
-
-            if (!targetFlags.HasAnyFlag(TargetFlag.ExtraTargets))
-                return;
-
-            var unkInt = packet.ReadInt32();
-            Console.WriteLine("Extra Targets Count: " + unkInt);
-
-            for (var i = 0; i < unkInt; i++)
-            {
-                var pos = packet.ReadVector3();
-                Console.WriteLine("Extra Target Position " + i + ": " + pos);
-
-                var guid = packet.ReadGuid();
-                Console.WriteLine("Extra Target GUID " + i + ": " + guid);
+                if (targetFlags.HasAnyFlag(TargetFlag.ExtraTargets))
+                {
+                    var targetCount = packet.ReadInt32("Extra Targets Count");
+                    for (var i = 0; i < targetCount; i++)
+                    {
+                        packet.ReadVector3("Extra Target Position", i);
+                        packet.ReadGuid("Extra Target GUID", i);
+                    }
+                }
             }
         }
 
@@ -416,8 +366,8 @@ namespace WowPacketParser.Parsing.Parsers
                     var damage = packet.ReadUInt32();
                     Console.WriteLine("Damage: " + damage);
 
-                    var overDamage = packet.ReadUInt32();
-                    Console.WriteLine("Over damage: " + overDamage);
+                    if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                        packet.ReadUInt32("Over damage");
 
                     var spellProto = packet.ReadUInt32();
                     Console.WriteLine("Spell proto: " + spellProto);
@@ -428,8 +378,8 @@ namespace WowPacketParser.Parsing.Parsers
                     var resist = packet.ReadUInt32();
                     Console.WriteLine("Resist: " + resist);
 
-                    var critical = packet.ReadByte();
-                    Console.WriteLine("Critical: " + critical);
+                    if (ClientVersion.Version >= ClientVersionBuild.V3_1_2_9901)
+                        packet.ReadByte("Critical");
 
                     break;
                 }
@@ -439,14 +389,14 @@ namespace WowPacketParser.Parsing.Parsers
                     var damage = packet.ReadUInt32();
                     Console.WriteLine("Damage: " + damage);
 
-                    var overDamage = packet.ReadUInt32();
-                    Console.WriteLine("Over damage: " + overDamage);
+                    if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                        packet.ReadUInt32("Over damage");
 
-                    var absorb = packet.ReadUInt32();
-                    Console.WriteLine("Absorb: " + absorb);
+                    if (ClientVersion.Version >= ClientVersionBuild.V3_3_5_12213) // no idea when this was added exactly
+                        packet.ReadUInt32("Absorb");
 
-                    var critical = packet.ReadByte();
-                    Console.WriteLine("Critical: " + critical);
+                    if (ClientVersion.Version >= ClientVersionBuild.V3_1_2_9901)
+                        packet.ReadByte("Critical");
 
                     break;
                 }
@@ -564,7 +514,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Caster GUID");
             Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
             packet.ReadUInt32("Damage");
-            packet.ReadUInt32("Overkill");
+
+            if (ClientVersion.Version >= ClientVersionBuild.V3_0_3_9183)
+                packet.ReadUInt32("Overkill");
+
             packet.ReadByte("SchoolMask");
             packet.ReadUInt32("Absorb");
             packet.ReadUInt32("Resist");
@@ -582,8 +535,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Caster GUID");
             Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
             packet.ReadUInt32("Damage");
-            packet.ReadUInt32("Overkill");
-            packet.ReadUInt32("Absorb");
+
+            if (ClientVersion.Version >= ClientVersionBuild.V3_0_3_9183)
+                packet.ReadUInt32("Overheal");
+
+            if (ClientVersion.Version >= ClientVersionBuild.V3_3_5_12213) // no idea when this was added exactly
+                packet.ReadUInt32("Absorb");
+
             packet.ReadBoolean("Critical");
             packet.ReadBoolean("Debug output");
         }

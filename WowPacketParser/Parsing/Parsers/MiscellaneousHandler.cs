@@ -251,7 +251,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_COMSAT_CONNECT_FAIL)]
         [Parser(Opcode.SMSG_COMSAT_RECONNECT_TRY)]
         [Parser(Opcode.SMSG_COMSAT_DISCONNECT)]
-        [Parser(Opcode.SMSG_VOICESESSION_FULL)]
+        [Parser(Opcode.SMSG_VOICESESSION_FULL)] // 61 bytes in 2.4.1
         [Parser(Opcode.SMSG_DEBUG_SERVER_GEO)] // Was unknown
         [Parser(Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS)]
         [Parser(Opcode.SMSG_GOSSIP_COMPLETE)]

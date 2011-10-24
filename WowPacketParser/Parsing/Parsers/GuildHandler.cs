@@ -82,7 +82,9 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("[" + i + "] Name");
 
             ReadEmblemInfo(packet);
-            packet.ReadUInt32("Ranks");
+
+            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                packet.ReadUInt32("Ranks");
         }
 
         [Parser(Opcode.CMSG_GUILD_CREATE)]

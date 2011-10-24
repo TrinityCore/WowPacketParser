@@ -49,8 +49,9 @@ namespace WowPacketParser.Parsing.Parsers
             var flags = (ItemFlag)packet.ReadInt32();
             Console.WriteLine("Flags: " + flags);
 
-            var flags2 = (ItemFlagExtra)packet.ReadInt32();
-            Console.WriteLine("Extra Flags: " + flags2);
+            var flags2 = ItemFlagExtra.None;
+            if (ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192)
+                flags2 = packet.ReadEnum<ItemFlagExtra>("Extra Flags", TypeCode.Int32);
 
             var buyPrice = packet.ReadInt32();
             Console.WriteLine("Buy Price: " + buyPrice);
@@ -103,39 +104,42 @@ namespace WowPacketParser.Parsing.Parsers
             var contSlots = packet.ReadInt32();
             Console.WriteLine("Container Slots: " + contSlots);
 
-            var statsCount = packet.ReadInt32();
-            Console.WriteLine("Stats Count: " + statsCount);
+            int statsCount;
+            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                statsCount = packet.ReadInt32("Stats Count");
+            else
+                statsCount = 10;
 
-            var type = new ItemModType[statsCount];
-            var value = new int[statsCount];
+            var statType = new ItemModType[statsCount];
+            var statVal = new int[statsCount];
             for (var i = 0; i < statsCount; i++)
             {
-                type[i] = (ItemModType)packet.ReadInt32();
-                Console.WriteLine("Stat Type " + i + ": " + type[i]);
-
-                value[i] = packet.ReadInt32();
-                Console.WriteLine("Stat Value " + i + ": " + value[i]);
+                statType[i] = packet.ReadEnum<ItemModType>("Stat Type", TypeCode.Int32, i);
+                statVal[i] = packet.ReadInt32("Stat Value", i);
             }
 
-            var ssdId = packet.ReadInt32();
-            Console.WriteLine("SSD ID: " + ssdId);
-
-            var ssdVal = packet.ReadInt32();
-            Console.WriteLine("SSD Value: " + ssdVal);
-
-            var dmgMin = new float[2];
-            var dmgMax = new float[2];
-            var dmgType = new DamageType[2];
-            for (var i = 0; i < 2; i++)
+            var ssdId = 0;
+            var ssdVal = 0;
+            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
             {
-                dmgMin[i] = packet.ReadSingle();
-                Console.WriteLine("Damage Min " + i + ": " + dmgMin[i]);
+                ssdId = packet.ReadInt32("SSD ID");
+                ssdVal = packet.ReadInt32("SSD Value");
+            }
 
-                dmgMax[i] = packet.ReadSingle();
-                Console.WriteLine("Damage Max " + i + ": " + dmgMax[i]);
+            int dmgCount;
+            if (ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767)
+                dmgCount = 2;
+            else
+                dmgCount = 5;
 
-                dmgType[i] = (DamageType)packet.ReadInt32();
-                Console.WriteLine("Damage Type " + i + ": " + dmgType[i]);
+            var dmgMin = new float[dmgCount];
+            var dmgMax = new float[dmgCount];
+            var dmgType = new DamageType[dmgCount];
+            for (var i = 0; i < dmgCount; i++)
+            {
+                dmgMin[i] = packet.ReadSingle("Damage Min", i);
+                dmgMax[i] = packet.ReadSingle("Damage Max", i);
+                dmgType[i] = packet.ReadEnum<DamageType>("Damage Type", TypeCode.Int32, i);
             }
 
             var resistance = new int[7];
@@ -236,15 +240,12 @@ namespace WowPacketParser.Parsing.Parsers
             var totemCat = (TotemCategory)packet.ReadInt32();
             Console.WriteLine("Totem Category: " + totemCat);
 
-            var color = new ItemSocketColor[3];
-            var content = new int[3];
+            var socketColor = new ItemSocketColor[3];
+            var socketItem = new int[3];
             for (var i = 0; i < 3; i++)
             {
-                color[i] = (ItemSocketColor)packet.ReadInt32();
-                Console.WriteLine("Socket Color " + i + ": " + color[i]);
-
-                content[i] = packet.ReadInt32();
-                Console.WriteLine("Socket Item " + i + ": " + content[i]);
+                socketColor[i] = packet.ReadEnum<ItemSocketColor>("Socket Color", TypeCode.Int32, i);
+                socketItem[i] = packet.ReadInt32("Socket Item", i);
             }
 
             var socketBonus = packet.ReadInt32();
@@ -259,23 +260,26 @@ namespace WowPacketParser.Parsing.Parsers
             var armorDmgMod = packet.ReadSingle();
             Console.WriteLine("Armor Damage Modifier: " + armorDmgMod);
 
-            var duration = packet.ReadInt32();
-            Console.WriteLine("Duration: " + duration);
+            var duration = 0;
+            if (ClientVersion.Version >= ClientVersionBuild.V2_4_2_8209)
+                duration = packet.ReadInt32("Duration");
 
-            var limitCategory = packet.ReadInt32();
-            Console.WriteLine("Limit Category: " + limitCategory);
+            var limitCategory = 0;
+            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                limitCategory = packet.ReadInt32("Limit Category");
 
-            var holidayId = (Holiday)packet.ReadInt32();
-            Console.WriteLine("Holiday: " + holidayId);
+            var holidayId = Holiday.None;
+            if (ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767)
+                holidayId = packet.ReadEnum<Holiday>("Holiday", TypeCode.Int32);
 
             SQLStore.WriteData(SQLStore.Items.GetCommand(entry.Key, iClass, subClass, unk0, name, dispId,
                 quality, flags, flags2, buyPrice, sellPrice, invType, allowClass, allowRace, itemLvl,
                 reqLvl, reqSkill, reqSkLvl, reqSpell, reqHonor, reqCity, reqRepFaction, reqRepValue,
-                maxCount, stacks, contSlots, statsCount, type, value, ssdId, ssdVal, dmgMin, dmgMax,
+                maxCount, stacks, contSlots, statsCount, statType, statVal, ssdId, ssdVal, dmgMin, dmgMax,
                 dmgType, resistance, delay, ammoType, rangedMod, spellId, spellTrigger, spellCharges,
                 spellCooldown, spellCategory, spellCatCooldown, binding, description, pageText, langId,
                 pageMat, startQuest, lockId, material, sheath, randomProp, randomSuffix, block, itemSet,
-                maxDura, area, map, bagFamily, totemCat, color, content, socketBonus, gemProps,
+                maxDura, area, map, bagFamily, totemCat, socketColor, socketItem, socketBonus, gemProps,
                 reqDisEnchSkill, armorDmgMod, duration, limitCategory, holidayId));
         }
 

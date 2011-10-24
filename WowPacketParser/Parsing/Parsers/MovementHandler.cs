@@ -24,9 +24,13 @@ namespace WowPacketParser.Parsing.Parsers
         public static MovementInfo ReadMovementInfo(Packet packet, Guid guid, int index)
         {
             string prefix = index < 0 ? "" : "[" + index + "] ";
+
             var info = new MovementInfo();
             info.Flags = packet.ReadEnum<MovementFlag>(prefix + "Movement Flags", TypeCode.Int32);
-            var flags = packet.ReadEnum<MovementFlagExtra>(prefix + "Extra Movement Flags", TypeCode.Int16);
+
+            var flagsTypeCode = ClientVersion.Version > ClientVersionBuild.V2_4_3_8606 ? TypeCode.Int16 : TypeCode.Byte;
+            var flags = packet.ReadEnum<MovementFlagExtra>(prefix + "Extra Movement Flags", flagsTypeCode);
+
             packet.ReadInt32(prefix + "Time");
 
             var pos = packet.ReadVector4(prefix + "Position");
@@ -35,10 +39,16 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (info.Flags.HasAnyFlag(MovementFlag.OnTransport))
             {
-                packet.ReadPackedGuid(prefix + "Transport GUID");
+                if (ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767)
+                    packet.ReadPackedGuid(prefix + "Transport GUID");
+                else
+                    packet.ReadGuid(prefix + "Transport GUID");
+
                 packet.ReadVector4(prefix + "Transport Position");
                 packet.ReadInt32(prefix + "Transport Time");
-                packet.ReadByte(prefix + "Transport Seat");
+
+                if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                    packet.ReadByte(prefix + "Transport Seat");
 
                 if (flags.HasAnyFlag(MovementFlagExtra.InterpolateMove))
                     packet.ReadInt32(prefix + "Transport Time");
@@ -55,6 +65,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
                     packet.ReadInt32(prefix + "Fall Time");
+
                 packet.ReadSingle(prefix + "Fall Velocity");
                 packet.ReadSingle(prefix + "Fall Sin angle");
                 packet.ReadSingle(prefix + "Fall Cos angle");
@@ -292,7 +303,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_DISMISS_CONTROLLED_VEHICLE)]
         public static void HandleMovementMessages(Packet packet)
         {
-            var guid = packet.ReadPackedGuid("GUID");
+            Guid guid;
+            if (ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192 ||
+                packet.Direction == Direction.ServerToClient)
+                guid = packet.ReadPackedGuid("GUID");
+            else
+                guid = new Guid();
 
             ReadMovementInfo(packet, guid);
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.MSG_MOVE_KNOCK_BACK))

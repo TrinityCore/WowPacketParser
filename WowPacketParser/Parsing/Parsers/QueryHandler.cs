@@ -105,10 +105,15 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Rank: " + rank);
 
             var killCredit = new int[2];
-            for (var i = 0; i < 2; i++)
+            if (ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767)
             {
-                killCredit[i] = packet.ReadInt32();
-                Console.WriteLine("Kill Credit " + i + ": " + killCredit[i]);
+                for (var i = 0; i < 2; i++)
+                    killCredit[i] = packet.ReadInt32("Kill Credit", i);
+            }
+            else
+            {
+                packet.ReadInt32("Unk Int");
+                packet.ReadInt32("Pet Spell Data Id");
             }
 
             var dispId = new int[4];
@@ -127,15 +132,17 @@ namespace WowPacketParser.Parsing.Parsers
             var racialLeader = packet.ReadBoolean();
             Console.WriteLine("Racial Leader: " + racialLeader);
 
-            var qItem = new int[6];
-            for (var i = 0; i < 6; i++)
-            {
-                qItem[i] = packet.ReadInt32();
-                Console.WriteLine("Quest Item " + i + ": " + qItem[i]);
-            }
+            var qItemCount = ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192 ? 6 : 4;
+            var qItem = new int[qItemCount];
+            var moveId = 0;
 
-            var moveId = packet.ReadInt32();
-            Console.WriteLine("Movement ID: " + moveId);
+            if (ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767)
+            {
+                for (var i = 0; i < qItemCount; i++)
+                    qItem[i] = packet.ReadInt32("Quest Item", i);
+
+                moveId = packet.ReadInt32("Movement ID");
+            }
 
             if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
                 packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);
