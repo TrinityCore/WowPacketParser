@@ -138,7 +138,10 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Movement ID: " + moveId);
 
             if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
-                packet.ReadUInt32("Expansion");
+                packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);
+
+            if (ClientVersion.Version >= ClientVersionBuild.V4_1_0_13914)
+                packet.ReadInt32("Unknown");
 
             SQLStore.WriteData(SQLStore.Creatures.GetCommand(entry.Key, name[0], subName, iconName, typeFlags,
                 type, family, rank, killCredit, dispId, mod1, mod2, racialLeader, qItem, moveId));
