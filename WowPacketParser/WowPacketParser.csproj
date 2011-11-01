@@ -150,6 +150,8 @@
     <Compile Include="Enums\SniffType.cs" />
     <Compile Include="Enums\SpellHitType.cs" />
     <Compile Include="Enums\PetitionResultType.cs" />
+    <Compile Include="Enums\Version\V4_2_2_14545\Opcodes.cs" />
+    <Compile Include="Enums\Version\V4_2_0_14480\Opcodes.cs" />
     <Compile Include="Enums\Version\V4_1_0_13914\Opcodes.cs" />
     <Compile Include="Enums\Version\Opcodes.cs" />
     <Compile Include="Enums\Version\V3_3_5a_12340\Opcodes.cs" />

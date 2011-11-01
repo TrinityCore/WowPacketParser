@@ -1524,6 +1524,9 @@
         UMSG_UNKNOWN_1332,
         UMSG_UNKNOWN_1333,
         UMSG_UNKNOWN_1334,
+        SMSG_PLAYER_MOVE,
+        SMSG_CUF_PROFILES_LOAD,
+        CMSG_CUF_PROFILES_SAVE,
         // ReSharper restore InconsistentNaming
     }
 }
