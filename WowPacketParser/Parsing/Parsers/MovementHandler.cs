@@ -95,7 +95,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             var unkByte = packet.ReadBoolean();
-            Console.WriteLine("Unk Boolean: " + unkByte);
+            Console.WriteLine("Unk Boolean: " + unkByte); // Something to do with IsVehicleExitVoluntary ?
 
             var pos = packet.ReadVector3();
             Console.WriteLine("Position: " + pos);

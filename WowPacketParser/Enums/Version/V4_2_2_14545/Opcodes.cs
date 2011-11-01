@@ -194,6 +194,20 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x9E56},
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x4C72},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0xCCEB},
+
+            // By Kaelima
+            {Opcode.SMSG_UPDATE_OBJECT, 0x1EE7},
+            {Opcode.SMSG_COMPRESSED_UPDATE_OBJECT, 0x1CC3},
+            {Opcode.SMSG_AURA_UPDATE, 0x18EE},
+            {Opcode.SMSG_MONSTER_MOVE_TRANSPORT, 0x88FB},
+            {Opcode.CMSG_CREATURE_QUERY, 0x5A7E},
+            {Opcode.CMSG_GAMEOBJECT_QUERY, 0xCEFF},
+            {Opcode.CMSG_NAME_QUERY, 0x586A},
+            {Opcode.CMSG_PETITION_QUERY, 0xCEF3},
+            {Opcode.CMSG_ARENA_TEAM_QUERY, 0x872},
+            {Opcode.CMSG_DANCE_QUERY, 0x5C5E},
+            {Opcode.CMSG_ITEM_TEXT_QUERY, 0x4AEB},
+            {Opcode.CMSG_PET_NAME_QUERY, 0xDA76},
         };
     }
 }

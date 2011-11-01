@@ -17,9 +17,9 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleServerChatMessage(Packet packet)
         {
             var type = packet.ReadEnum<ChatMessageType>("Type", TypeCode.Byte);
-            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            var language = packet.ReadEnum<Language>("Language", TypeCode.Int32);
             packet.ReadGuid("GUID");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Constant time");
 
             switch (type)
             {
@@ -74,9 +74,21 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
+            if (ClientVersion.Version >= ClientVersionBuild.V4_2_2_14545 && language == Language.Addon)
+                packet.ReadCString("Addon name");
+
             packet.ReadInt32("Text Length");
             packet.ReadCString("Text");
             packet.ReadEnum<ChatTag>("Chat Tag", TypeCode.Byte);
+
+            if (ClientVersion.Version >= ClientVersionBuild.V4_2_2_14545)
+            {
+                if (type == ChatMessageType.RaidBossEmote || type == ChatMessageType.RaidBossWhisper)
+                {
+                    packet.ReadSingle("Unk single");
+                    packet.ReadByte("Unk byte");
+                }
+            }
 
             if (type == ChatMessageType.Achievement || type == ChatMessageType.GuildAchievement)
                 packet.ReadInt32("Achievement ID");
