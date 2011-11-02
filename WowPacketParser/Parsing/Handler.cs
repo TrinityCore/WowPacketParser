@@ -106,7 +106,7 @@ namespace WowPacketParser.Parsing
                 }
             }
             else
-                Console.WriteLine(Utilities.DumpPacketAsHex(packet));
+                Console.WriteLine(packet.AsHex());
 
             if (packet.GetPosition() < packet.GetLength())
             {

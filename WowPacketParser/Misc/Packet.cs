@@ -264,6 +264,13 @@ namespace WowPacketParser.Misc
             return val;
         }
 
+        public double ReadDouble(string name, params int[] values)
+        {
+            var val = ReadDouble();
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            return val;
+        }
+
         public int ReadInt32(string name, params int[] values)
         {
             var val = ReadInt32();
