@@ -131,7 +131,7 @@ namespace WowPacketParser.Parsing.Parsers
                     continue;
 
                 var blockVal = packet.ReadUpdateField();
-                key = "Block Value";
+                key = "Block Value " + i;
                 value = blockVal.Int32Value + "/" + blockVal.SingleValue;
                 if (i < objectEnd)
                 {
