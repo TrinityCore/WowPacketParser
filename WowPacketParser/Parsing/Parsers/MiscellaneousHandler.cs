@@ -38,7 +38,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleClientPing(Packet packet)
         {
             packet.ReadInt32("Ping");
-            packet.ReadInt32("Latency");
+            packet.ReadInt32("Ping Count");
         }
 
         [Parser(Opcode.SMSG_PONG)]

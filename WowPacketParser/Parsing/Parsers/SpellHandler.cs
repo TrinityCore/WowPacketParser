@@ -91,9 +91,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var aura = new Aura();
 
-            var slot = packet.ReadByte();
-            Console.WriteLine("Slot: " + slot);
-            aura.Slot = slot;
+            aura.Slot = packet.ReadByte("Slot");
 
             var id = packet.ReadInt32();
             Console.WriteLine("ID: " + Extensions.SpellLine(id));
@@ -101,36 +99,22 @@ namespace WowPacketParser.Parsing.Parsers
                 return null;
             aura.SpellId = (uint)id;
 
-            var flags = (AuraFlag)packet.ReadByte();
-            Console.WriteLine("Flags: " + flags);
-            aura.AuraFlags = flags;
+            var type = ClientVersion.Version > ClientVersionBuild.V4_2_0_14333 ? TypeCode.Int16 : TypeCode.Byte;
+            aura.AuraFlags = packet.ReadEnum<AuraFlag>("Flags", type);
 
-            var level = packet.ReadByte();
-            Console.WriteLine("Level: " + level);
-            aura.Level = level;
+            aura.Level = packet.ReadByte("Level");
 
-            var charges = packet.ReadByte();
-            Console.WriteLine("Charges: " + charges);
-            aura.Charges = charges;
+            aura.Charges = packet.ReadByte("Charges");
 
-            if (!flags.HasAnyFlag(AuraFlag.NotCaster))
-            {
-                var unkGuid = packet.ReadPackedGuid();
-                Console.WriteLine("Caster GUID: " + unkGuid);
-                aura.CasterGuid = unkGuid;
-            }
+            if (!aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster))
+                aura.CasterGuid = packet.ReadPackedGuid("Caster GUID");
             else
                 aura.CasterGuid = new Guid(); // Is this needed?
 
-            if (flags.HasAnyFlag(AuraFlag.Duration))
+            if (aura.AuraFlags.HasAnyFlag(AuraFlag.Duration))
             {
-                var maxDura = packet.ReadInt32();
-                Console.WriteLine("Max Duration: " + maxDura);
-                aura.MaxDuration = maxDura;
-
-                var dura = packet.ReadInt32();
-                Console.WriteLine("Duration: " + dura);
-                aura.Duration = dura;
+                aura.MaxDuration = packet.ReadInt32("Max Duration");
+                aura.Duration = packet.ReadInt32("Duration");
             }
             else // Is this needed?
             {
@@ -138,29 +122,29 @@ namespace WowPacketParser.Parsing.Parsers
                 aura.Duration = 0;
             }
 
+            if (aura.AuraFlags.HasAnyFlag(AuraFlag.Unknown))
+            {
+                if (aura.AuraFlags.HasAnyFlag(AuraFlag.EffectIndex0))
+                    packet.ReadInt32("Unknown Effect 0");
+                if (aura.AuraFlags.HasAnyFlag(AuraFlag.EffectIndex1))
+                    packet.ReadInt32("Unknown Effect 1");
+                if (aura.AuraFlags.HasAnyFlag(AuraFlag.EffectIndex2))
+                    packet.ReadInt32("Unknown Effect 2");
+            }
+
             return aura;
         }
 
+        [Parser(Opcode.SMSG_AURA_UPDATE_ALL)]
         [Parser(Opcode.SMSG_AURA_UPDATE)]
         public static void HandleAuraUpdate(Packet packet)
         {
-            var pguid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + pguid);
+            packet.ReadPackedGuid("GUID");
 
-            ReadAuraUpdateBlock(packet);
-            // TODO: Add this aura to a list of objects (searching by guid)
-        }
-
-        [Parser(Opcode.SMSG_AURA_UPDATE_ALL)]
-        public static void HandleAuraUpdateAll(Packet packet)
-        {
-            var pguid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + pguid);
-
-            /*var aura =*/ new Aura();
+            /*var aura = new Aura(); */
             while (packet.CanRead())
                 /*aura =*/ ReadAuraUpdateBlock(packet);
-            // TODO: Add this aura to a list of objects (searching by guid)
+                // TODO: Add this aura to a list of objects (searching by guid)
         }
 
         [Parser(Opcode.SMSG_SPELL_START)]

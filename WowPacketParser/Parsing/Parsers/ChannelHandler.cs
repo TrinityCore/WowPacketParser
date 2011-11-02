@@ -137,8 +137,18 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Channel Id");
             packet.ReadByte("Unk1");
             packet.ReadByte("Unk2");
-            packet.ReadCString("Channel Name");
-            packet.ReadCString("Channel Pass");
+
+            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+            {
+                packet.ReadCString("Channel Pass");
+                packet.ReadCString("Channel Name");
+            }
+            else
+            {
+                packet.ReadCString("Channel Name");
+                packet.ReadCString("Channel Pass");
+            }
+
         }
 
         [Parser(Opcode.CMSG_LEAVE_CHANNEL)]

@@ -57,11 +57,11 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void ReadQueryHeader(Packet packet)
         {
-            var entry = packet.ReadInt32();
-            Console.WriteLine("Entry: " + entry);
+            var entry = packet.ReadInt32("Entry");
+            var guid = packet.ReadGuid("GUID");
 
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            if (guid.HasEntry() && (entry != guid.GetEntry()))
+                Console.WriteLine("Entry does not match calculated GUID entry");
         }
 
         [Parser(Opcode.CMSG_CREATURE_QUERY)]
@@ -73,36 +73,25 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CREATURE_QUERY_RESPONSE)]
         public static void HandleCreatureQueryResponse(Packet packet)
         {
-            var entry = packet.ReadEntry();
-            Console.WriteLine("Entry: " + entry.Key);
-
+            var entry = packet.ReadEntry("Entry");
             if (entry.Value)
                 return;
 
             var name = new string[4];
             for (var i = 0; i < 4; i++)
-            {
-                name[i] = packet.ReadCString();
-                Console.WriteLine("Name " + i + ": " + name[i]);
-            }
+                name[i] = packet.ReadCString("Name", i);
 
-            var subName = packet.ReadCString();
-            Console.WriteLine("Sub Name: " + subName);
+            var subName = packet.ReadCString("Sub Name");
 
-            var iconName = packet.ReadCString();
-            Console.WriteLine("Icon Name: " + iconName);
+            var iconName = packet.ReadCString("Icon Name");
 
-            var typeFlags = (CreatureTypeFlag)packet.ReadInt32();
-            Console.WriteLine("Type Flags: " + typeFlags);
+            var typeFlags = packet.ReadEnum<CreatureTypeFlag>("Type Flags", TypeCode.Int32);
 
-            var type = (CreatureType)packet.ReadInt32();
-            Console.WriteLine("Type: " + type);
+            var type = packet.ReadEnum<CreatureType>("Type", TypeCode.Int32);
 
-            var family = (CreatureFamily)packet.ReadInt32();
-            Console.WriteLine("Family: " + family);
+            var family = packet.ReadEnum<CreatureFamily>("Family", TypeCode.Int32);
 
-            var rank = (CreatureRank)packet.ReadInt32();
-            Console.WriteLine("Rank: " + rank);
+            var rank = packet.ReadEnum<CreatureRank>("Rank", TypeCode.Int32);
 
             var killCredit = new int[2];
             if (ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767)
@@ -118,19 +107,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             var dispId = new int[4];
             for (var i = 0; i < 4; i++)
-            {
-                dispId[i] = packet.ReadInt32();
-                Console.WriteLine("Display ID " + i + ": " + dispId[i]);
-            }
+                dispId[i] = packet.ReadInt32("Display ID", i);
 
-            var mod1 = packet.ReadSingle();
-            Console.WriteLine("Modifier 1: " + mod1);
+            var mod1 = packet.ReadSingle("Modifier 1");
+            var mod2 = packet.ReadSingle("Modifier 2");
 
-            var mod2 = packet.ReadSingle();
-            Console.WriteLine("Modifier 2: " + mod2);
-
-            var racialLeader = packet.ReadBoolean();
-            Console.WriteLine("Racial Leader: " + racialLeader);
+            var racialLeader = packet.ReadBoolean("Racial Leader");
 
             var qItemCount = ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192 ? 6 : 4;
             var qItem = new int[qItemCount];
