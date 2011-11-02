@@ -1,3 +1,4 @@
+
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -284,6 +285,56 @@ namespace WowPacketParser.Parsing.Parsers
                 ++slot;
                 slotMask >>= 1;
             }
+        }
+
+        [Parser(Opcode.CMSG_PLAY_DANCE)]
+        public static void HandleClientPlayDance(Packet packet)
+        {
+            packet.ReadInt32("Unk int32 1");
+            packet.ReadInt32("Unk int32 2");
+            packet.ReadInt32("Unk int32 3");
+        }
+
+        /*
+        [Parser(Opcode.SMSG_NOTIFY_DANCE)]
+        public static void HandleNotifyDance(Packet packet)
+        {
+            var flag = packet.ReadEnum<>("Flag", TypeCode.Int32);
+
+            if (flag & 0x8)
+            {
+                var unk4 = packet.ReadInt32();
+                if (unk4 == 1)
+                    Console.WriteLine("Error msg = ERR_DANCE_SAVE_FAILED");
+                else if (unk4 == 2)
+                    Console.WriteLine("Error msg = ERR_DANCE_DELETE_FAILED");
+                else if (unk4 == 0)
+                    Console.WriteLine("Error msg = ERR_DANCE_CREATE_DUPLICATE");
+            }
+            else
+            {
+                packet.ReadInt32("Unk int 1");
+                packet.ReadCString("Unk string");
+                packet.ReadInt32("Unk int 2");
+            }
+        }
+        */
+
+        [Parser(Opcode.SMSG_PLAY_DANCE)]
+        public static void HandleServerPlayDance(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadInt32("Unk int32 1");
+            packet.ReadInt32("Unk int32 2");
+            packet.ReadInt32("Unk int32 3");
+            packet.ReadInt32("Unk int32 4");
+        }
+
+        [Parser(Opcode.SMSG_STOP_DANCE)]
+        [Parser(Opcode.SMSG_LEARNED_DANCE_MOVES)]
+        public static void HandleMiscDancePackets(Packet packet)
+        {
+            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
