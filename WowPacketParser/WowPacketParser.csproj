@@ -288,6 +288,7 @@
     <Compile Include="Misc\Quaternion.cs" />
     <Compile Include="Misc\Settings.cs" />
     <Compile Include="Misc\StartInfo.cs" />
+    <Compile Include="Misc\Statistics.cs" />
     <Compile Include="Misc\UpdateField.cs" />
     <Compile Include="Misc\Objects\WoWObject.cs" />
     <Compile Include="Misc\Packet.cs" />

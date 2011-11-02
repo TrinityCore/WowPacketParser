@@ -83,9 +83,10 @@ namespace WowPacketParser.Parsing
             _writer = null;
         }
 
-        public static void Parse(Packet packet)
+        public static void Parse(Packet packet, ref Statistics stats)
         {
             var opcode = packet.Opcode;
+            bool exception = false, notRead = false, notFullyRead = false;
 
             Console.WriteLine("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}",
                 packet.Direction, Opcodes.GetOpcodeName(opcode), opcode.ToString("X4"),
@@ -96,6 +97,7 @@ namespace WowPacketParser.Parsing
             {
                 try
                 {
+                    stats.PacketsParsed++;
                     handler(packet);
                 }
                 catch (Exception ex)
@@ -103,24 +105,29 @@ namespace WowPacketParser.Parsing
                     Console.WriteLine(ex.GetType());
                     Console.WriteLine(ex.Message);
                     Console.WriteLine(ex.StackTrace);
+                    exception = true;
                 }
             }
             else
-                Console.WriteLine(packet.AsHex());
-
-            if (packet.GetPosition() < packet.GetLength())
             {
-                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(packet.AsHex());
+                notRead = true;
+            }
 
+            if (packet.GetPosition() < packet.GetLength() && !exception && !notRead)
+            {
                 var pos = packet.GetPosition();
                 var len = packet.GetLength();
                 Console.WriteLine("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.",
                     pos, len, len - pos);
-
-                Console.ForegroundColor = ConsoleColor.White;
+                notFullyRead = true;
             }
 
-            Console.ResetColor();
+            if (notRead)
+                stats.PacketsNotParsed++;
+            if (exception || notFullyRead)
+                stats.PacketsParsedWithErrors++;
+
             Console.WriteLine();
         }
     }

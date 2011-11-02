@@ -17,6 +17,7 @@ namespace WowPacketParser
     {
         private static void Main(string[] args)
         {
+
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             // Read config options
@@ -29,6 +30,7 @@ namespace WowPacketParser
             int packetNumberHigh = 0; // 0 -> No high limit
             bool prompt = false;
 
+            // Read configuration values
             try
             {
                 ClientVersion.Version = Settings.GetEnum<ClientVersionBuild>("ClientBuild");
@@ -107,20 +109,12 @@ namespace WowPacketParser
                     var packets = Reader.Read(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead);
                     if (packets.Count > 0)
                     {
-                        if (dumpFormat == SniffType.Bin)
+                        if (dumpFormat == SniffType.Bin || dumpFormat == SniffType.Pkt)
                         {
-                            Console.WriteLine("Copying {0} packets to .bin format...", packets.Count);
+                            Console.WriteLine("Copying {0} packets to {1} format...", packets.Count, dumpFormat);
 
                             var dumpFileName = Path.ChangeExtension(file, null) + "_excerpt.bin";
-                            BinaryPacketWriter writer = new BinaryPacketWriter(SniffType.Bin, dumpFileName, Encoding.ASCII);
-                            writer.Write(packets);
-                        }
-                        else if (dumpFormat == SniffType.Pkt)
-                        {
-                            Console.WriteLine("Copying {0} packets to .pkt format...", packets.Count);
-
-                            var dumpFileName = Path.ChangeExtension(file, null) + "_excerpt.pkt";
-                            BinaryPacketWriter writer = new BinaryPacketWriter(SniffType.Pkt, dumpFileName, Encoding.ASCII);
+                            var writer = new BinaryPacketWriter(dumpFormat, dumpFileName, Encoding.ASCII);
                             writer.Write(packets);
                         }
                         else
@@ -128,24 +122,26 @@ namespace WowPacketParser
                             Console.WriteLine("Assumed version: {0}", ClientVersion.Version);
                             Console.WriteLine("Parsing {0} packets...", packets.Count);
 
-                            var startTime = DateTime.Now;
+                            var stats = new Statistics();
+
+                            stats.StartTime = DateTime.Now;
                             var outFileName = Path.ChangeExtension(file, null) + "_parsed";
 
                             SQLStore.Initialize(outFileName + ".sql", sqlOutput);
                             Handler.InitializeLogFile(outFileName + ".txt", dumpFormat == SniffType.None);
 
                             foreach (var packet in packets)
-                                Handler.Parse(packet);
+                                Handler.Parse(packet, ref stats);
 
                             SQLStore.WriteToFile();
                             Handler.WriteToFile();
 
-                            var endTime = DateTime.Now;
-                            var span = endTime.Subtract(startTime);
+                            stats.EndTime = DateTime.Now;
+
                             // Need to open a new writer to console, last one was redirected to the file and is now closed.
                             var standardOutput = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
                             Console.SetOut(standardOutput);
-                            Console.WriteLine("Finished parsing in - {0} Minutes, {1} Seconds and {2} Milliseconds.", span.Minutes, span.Seconds, span.Milliseconds);
+                            Console.WriteLine(stats.Stats());
                             Console.WriteLine("Saved file to '{0}'", outFileName);
                             Console.WriteLine();
                         }
