@@ -19,6 +19,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<Class>("Class", TypeCode.Int32);
         }
 
+        [Parser(Opcode.CMSG_CONTACT_LIST)]
+        public static void HandleContactListClient(Packet packet)
+        {
+            packet.ReadEnum<ContactListFlag>("List Flags?", TypeCode.Int32);
+        }
+
         [Parser(Opcode.SMSG_CONTACT_LIST)]
         public static void HandleContactList(Packet packet)
         {

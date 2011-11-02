@@ -178,6 +178,7 @@
     <Compile Include="Enums\DamageType.cs" />
     <Compile Include="Enums\DifficultyChangeType.cs" />
     <Compile Include="Enums\Direction.cs" />
+    <Compile Include="Enums\EquipmentSlotType.cs" />
     <Compile Include="Enums\EquipmentSetState.cs" />
     <Compile Include="Enums\EnvironmentDamageFlags.cs" />
     <Compile Include="Enums\FactionFlag.cs" />
@@ -221,6 +222,9 @@
     <Compile Include="Enums\LfgUpdateFlag.cs" />
     <Compile Include="Enums\LfgUpdateType.cs" />
     <Compile Include="Enums\LootMethod.cs" />
+    <Compile Include="Enums\MailType.cs" />
+    <Compile Include="Enums\MailActionType.cs" />
+    <Compile Include="Enums\MailErrorType.cs" />
     <Compile Include="Enums\MapDifficulty.cs" />
     <Compile Include="Enums\Material.cs" />
     <Compile Include="Enums\MirrorTimerType.cs" />

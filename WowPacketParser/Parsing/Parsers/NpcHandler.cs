@@ -27,11 +27,17 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Icon Name: " + iconName);
         }
 
+        [Parser(Opcode.SMSG_TRAINER_BUY_SUCCEEDED)]
+        public static void HandleServerTrainerBuySucceedeed(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            Console.WriteLine("Spell ID: " + Extensions.SpellLine(packet.ReadInt32()));
+        }
+
         [Parser(Opcode.SMSG_TRAINER_LIST)]
         public static void HandleServerTrainerList(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            var guid = packet.ReadGuid("GUID");
 
             var type = (TrainerType)packet.ReadInt32();
             Console.WriteLine("Type: " + type);
@@ -85,8 +91,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LIST_INVENTORY)]
         public static void HandleVendorInventoryList(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            var guid = packet.ReadGuid("GUID");
 
             var itemCount = packet.ReadByte();
             Console.WriteLine("Item Count: " + itemCount);
@@ -131,24 +136,25 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BINDER_ACTIVATE)]
         public static void HandleNpcHello(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_GOSSIP_SELECT_OPTION)]
+        public static void HandleNpcGossipSelectOption(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32("Menu id");
+            packet.ReadUInt32("Gossip id");
         }
 
         [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
         public static void HandleNpcGossip(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32("Menu id");
+            packet.ReadUInt32("Text id");
 
-            var entry = packet.ReadUInt32();
-            Console.WriteLine("Menu id: " + entry);
-
-            var textid = packet.ReadUInt32();
-            Console.WriteLine("Text id: " + textid);
-
-            var count = packet.ReadUInt32();
-            Console.WriteLine("- Amount of Options: " + count);
+            var count = packet.ReadUInt32("- Amount of Options");
 
             for (var i = 0; i < count; i++)
             {
@@ -222,8 +228,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Size: " + count);
             for (int i = 0; i < count; i++)
             {
-                var unit = packet.ReadPackedGuid();
-                Console.WriteLine("Hostile: " + unit);
+                packet.ReadPackedGuid("Hostile");
                 var threat = packet.ReadUInt32();
                 // No idea why, but this is in core.
                 /*if (packet.Opcode == Opcode.SMSG_THREAT_UPDATE)
@@ -236,14 +241,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_THREAT_REMOVE)]
         public static void HandleRemoveThreatlist(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.ReadPackedGuid("GUID");
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_THREAT_REMOVE))
-            {
-                var victim = packet.ReadPackedGuid();
-                Console.WriteLine("Victim GUID: " + victim);
-            }
+                packet.ReadPackedGuid("Victim GUID");
         }
     }
 }

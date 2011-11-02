@@ -53,6 +53,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Version");
         }
 
+        [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED)]
+        public static void HandleMoveTimeSkipped(Packet packet)
+        {
+            packet.ReadPackedGuid("GUID");
+            packet.ReadInt32("Time");
+        }
+
         [Parser(Opcode.SMSG_TIME_SYNC_REQ)]
         public static void HandleTimeSyncReq(Packet packet)
         {
@@ -188,6 +195,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_ZONEUPDATE)]
+        [Parser(Opcode.SMSG_ZONE_UNDER_ATTACK)]
         public static void HandleZoneUpdate(Packet packet)
         {
             packet.ReadUInt32("Zone Id");
@@ -213,6 +221,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_SET_SELECTION)]
+        [Parser(Opcode.CMSG_INSPECT)]
         public static void HandleSetSelection(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -222,6 +231,59 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSetActionBarToggles(Packet packet)
         {
             packet.ReadByte("Action Bar");
+        }
+
+
+        [Parser(Opcode.SMSG_INSPECT_TALENT)]
+        public static void HandleInspectTalent(Packet packet)
+        {
+            packet.ReadPackedGuid("GUID");
+            packet.ReadUInt32("Free Talent count");
+            var speccount = packet.ReadByte("Spec count");
+            packet.ReadByte("Active Spec");
+            for (var i = 0; i < speccount; ++i)
+            {
+                var count2 = packet.ReadByte("Spec Talent Count ", i);
+                for (var j = 0 ; j < count2 ; ++j)
+                {
+                    packet.ReadUInt32("Talent Id", i, j);
+                    packet.ReadByte("Rank", i, j);
+                }
+            }
+
+            var glyphs = packet.ReadByte("Glyph count");
+            for (var i = 0; i < glyphs; ++i)
+                packet.ReadUInt16("Glyph", i);
+
+            var slotMask = packet.ReadUInt32("Slot Mask");
+            var slot = 0;
+            while (slotMask > 0)
+            {
+                if ((slotMask & 0x1) > 0)
+                {
+                    var name = "[" + (EquipmentSlotType)slot + "] ";
+                    packet.ReadUInt32(name + "Item Entry");
+                    var enchantMask = packet.ReadUInt16();
+                    if (enchantMask > 0)
+                    {
+                        var enchantName = name + "Item Enchantments: ";
+                        while (enchantMask > 0)
+                        {
+                            if ((enchantMask & 0x1) > 0)
+                                enchantName += packet.ReadUInt16();
+                            enchantMask >>= 1;
+                            if (enchantMask > 0)
+                                enchantName += ", ";
+                        }
+                        Console.WriteLine(enchantName);
+                    }
+                    packet.ReadUInt16(name + "Unk Uint16");
+                    packet.ReadPackedGuid(name + "Creator GUID");
+                    packet.ReadUInt32(name + "Unk Uint32");
+                }
+                ++slot;
+                slotMask >>= 1;
+            }
         }
 
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
