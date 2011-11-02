@@ -210,6 +210,8 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_DANCE_QUERY, 0x5C5E},
             {Opcode.CMSG_ITEM_TEXT_QUERY, 0x4AEB},
             {Opcode.CMSG_PET_NAME_QUERY, 0xDA76},
+            {Opcode.SMSG_PET_REMOVED_SPELL, 0x18F6}, // Should actually be called UNLEARNED_SPELL
+            {Opcode.SMSG_PET_LEARNED_SPELL, 0xDC5E},
         };
     }
 }

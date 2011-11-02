@@ -24,6 +24,7 @@ namespace WowPacketParser.Parsing.Parsers
             var unk1 = packet.ReadUInt32(); // 0
             Console.WriteLine("Unknown 1: " + unk1);
 
+            // Following int8,int8,int16 is sent like int32
             var reactState = packet.ReadByte(); // 1
             Console.WriteLine("React state: " + reactState);
 
@@ -53,6 +54,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < spellCount; i++)
             {
+                // Sent as int32
                 var spellId = packet.ReadUInt16();
                 var active = packet.ReadInt16();
                 Console.WriteLine("Spell " + i + ": " + Extensions.SpellLine(spellId) + ", active: " + active);
@@ -74,7 +76,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_PET_NAME_QUERY_RESPONSE)]
-        public static void HandlePetNameQueryResponce(Packet packet)
+        public static void HandlePetNameQueryResponse(Packet packet)
         {
             var petNumber = packet.ReadInt32();
             Console.WriteLine("Pet number: " + petNumber);
@@ -96,6 +98,57 @@ namespace WowPacketParser.Parsing.Parsers
             if (declined)
                 for (var i = 0; i < (int)MiscConstants.MaxDeclinedNameCases; i++)
                     Console.WriteLine("Declined name " + i + ": " + packet.ReadCString());
+        }
+
+        [Parser(Opcode.SMSG_PET_MODE)]
+        public static void HandlePetMode(Packet packet)
+        {
+            packet.ReadGuid("Guid");
+            packet.ReadInt32("Unk int");
+        }
+
+        [Parser(Opcode.SMSG_PET_LEARNED_SPELL)]
+        [Parser(Opcode.SMSG_PET_REMOVED_SPELL)]
+        public static void HandlePetSpellsLearnedRemoved(Packet packet)
+        {
+            Console.WriteLine("Spell: " + Extensions.SpellLine(packet.ReadInt32()));
+        }
+
+        [Parser(Opcode.SMSG_PET_ACTION_FEEDBACK)]
+        public static void HandlePetActionFeedback(Packet packet)
+        {
+            byte state = packet.ReadByte("Pet state");
+            switch (state)
+            {
+                //case 1: Pet is dead
+                case 2:
+                    Console.WriteLine("Spell: " + Extensions.SpellLine(packet.ReadInt32()));
+                    break;
+                case 3:
+                    // Invalid attack target
+                    packet.ReadInt32("Unk int32");
+                    break;
+                //case 4: Charge has no path
+                default:
+                    Console.WriteLine("Unknown state");
+                    break;
+            }
+        }
+
+        [Parser(Opcode.SMSG_PET_UPDATE_COMBO_POINTS)]
+        public static void HandlePetUpdateComboPoints(Packet packet)
+        {
+            packet.ReadGuid("Guid 1");
+            packet.ReadGuid("Guid 2");
+            packet.ReadByte("Combo points");
+        }
+
+        [Parser(Opcode.SMSG_PET_GUIDS)]
+        public static void HandlePetGuids(Packet packet)
+        {
+            var count = packet.ReadInt32("Count");
+            for (var i = 0; i < count; ++i)
+                packet.ReadGuid("Guid", i);
         }
     }
 }

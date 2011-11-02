@@ -61,7 +61,10 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldListServer(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadBoolean("From UI");
+
+            if (ClientVersion.Version < ClientVersionBuild.V4_2_0_14333)
+                packet.ReadBoolean("From UI");
+
             Console.WriteLine("BGType: " + Extensions.BattlegroundLine(packet.ReadInt32()));
             packet.ReadByte("Min Level");
             packet.ReadByte("Max Level");
