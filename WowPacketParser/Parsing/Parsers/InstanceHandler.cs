@@ -46,6 +46,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_UPDATE_LAST_INSTANCE)]
         [Parser(Opcode.SMSG_RESET_FAILED_NOTIFY)]
         public static void HandleResetFailedNotify(Packet packet)
         {
@@ -79,5 +80,28 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadBoolean("Is Extended");
             }
         }
+
+        [Parser(Opcode.SMSG_UPDATE_INSTANCE_OWNERSHIP)]
+        [Parser(Opcode.SMSG_INSTANCE_SAVE_CREATED)]
+        public static void HandleUpdateInstanceOwnership(Packet packet)
+        {
+            packet.ReadInt32("Unk");
+        }
+
+        [Parser(Opcode.SMSG_RAID_INSTANCE_INFO)]
+        public static void HandleRaidInstanceInfo(Packet packet)
+        {
+            var counter = packet.ReadInt32("Counter");
+            for (var i = 0; i < counter; ++i)
+            {
+                Console.WriteLine("[" + i + "] Map Id: " + Extensions.MapLine(packet.ReadInt32()));
+                packet.ReadEnum<MapDifficulty>("Map Difficulty", TypeCode.UInt32, i);
+                packet.ReadGuid("Instance GUID", i);
+                packet.ReadBoolean("Expired", i);
+                packet.ReadBoolean("Extended", i);
+                packet.ReadUInt32("Reset Time", i);
+            }
+        }
+
     }
 }
