@@ -337,6 +337,24 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
+        [Parser(Opcode.SMSG_WHO)]
+        public static void HandleWho(Packet packet)
+        {
+            var counter = packet.ReadUInt32("List count");
+            packet.ReadUInt32("Online count");
+
+            for (var i = 0; i < counter; ++i)
+            {
+                packet.ReadCString("Name");
+                packet.ReadCString("Guild");
+                packet.ReadUInt32("Level");
+                packet.ReadEnum<Class>("Class", TypeCode.UInt32);
+                packet.ReadEnum<Race>("Race", TypeCode.UInt32);
+                packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
+                packet.ReadUInt32("Zone Id");
+            }
+        }
+
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
         [Parser(Opcode.CMSG_CALENDAR_GET_NUM_PENDING)]
