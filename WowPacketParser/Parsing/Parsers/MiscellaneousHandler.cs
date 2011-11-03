@@ -332,6 +332,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.SMSG_STOP_DANCE)]
         [Parser(Opcode.SMSG_LEARNED_DANCE_MOVES)]
+        [Parser(Opcode.SMSG_INVALIDATE_PLAYER)]
         public static void HandleMiscDancePackets(Packet packet)
         {
             packet.ReadGuid("GUID");
