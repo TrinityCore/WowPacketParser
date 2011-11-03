@@ -21,6 +21,17 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
+        [Parser(Opcode.SMSG_TEXT_EMOTE)]
+        public static void HandleTextEmoteServer(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadInt32("Text Emote ID");
+            packet.ReadInt32("Emote ID");
+            packet.ReadInt32("Name length");
+            packet.ReadCString("Name");
+
+        }
+
         [Parser(Opcode.SMSG_CHAT_PLAYER_NOT_FOUND)]
         public static void HandleChatPlayerNotFound(Packet packet)
         {
