@@ -389,14 +389,19 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("GUID: " + guid);
         }
 
+        [Parser(Opcode.SMSG_SUMMON_REQUEST)]
+        public static void HandleSummonRequest(Packet packet)
+        {
+            packet.ReadGuid("Summoner GUID");
+            packet.ReadInt32("Unk int 1");
+            packet.ReadInt32("Unk int 2");
+        }
+
         [Parser(Opcode.CMSG_SUMMON_RESPONSE)]
         public static void HandleSummonResponse(Packet packet)
         {
-            var summonerGuid = packet.ReadGuid();
-            Console.WriteLine("Summoner GUID: " + summonerGuid);
-
-            var agree = packet.ReadBoolean();
-            Console.WriteLine("Accept: " + agree);
+            packet.ReadGuid("Summoner GUID");
+            packet.ReadBoolean("Accept");
         }
 
         [Parser(Opcode.SMSG_FORCE_MOVE_ROOT)]
