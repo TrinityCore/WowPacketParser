@@ -8,6 +8,31 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class MiscellaneousParsers
     {
+        [Parser(Opcode.SMSG_RESURRECT_REQUEST)]
+        public static void HandleResurrectRequest(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32("Name length");
+            packet.ReadCString("Resurrector Name");
+            // FIXME: TC states this is "Null terminator" and "Affected by Resurrection sickness?" but i'm not sure
+            // All packets have 0 on first one and 95% of second = false. Leaving as Unk till further test
+            packet.ReadByte("Unk byte 1");
+            packet.ReadByte("Unk byte 2");
+        }
+
+        [Parser(Opcode.CMSG_RESURRECT_RESPONSE)]
+        public static void HandleResurrectResponse(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadBoolean("Accept");
+        }
+
+        [Parser(Opcode.CMSG_REPOP_REQUEST)]
+        public static void HandleRepopRequest(Packet packet)
+        {
+            packet.ReadBoolean("Accept");
+        }
+
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
         public static void HandleFeatureSystemStatus(Packet packet)
         {
