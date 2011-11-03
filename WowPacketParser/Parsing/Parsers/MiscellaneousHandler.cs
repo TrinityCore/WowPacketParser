@@ -363,6 +363,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Ticks");
         }
 
+        [Parser(Opcode.SMSG_GAMETIME_UPDATE)]
+        public static void HandleGametimeUpdate(Packet packet)
+        {
+            packet.ReadUInt32("Unk1");
+            packet.ReadUInt32("Unk2");
+        }
+
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
         [Parser(Opcode.CMSG_CALENDAR_GET_NUM_PENDING)]
