@@ -13,6 +13,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
+        [Parser(Opcode.CMSG_TEXT_EMOTE)]
+        public static void HandleTextEmote(Packet packet)
+        {
+            packet.ReadInt32("Text Emote ID");
+            packet.ReadInt32("Emote ID");
+            packet.ReadGuid("GUID");
+        }
+
         [Parser(Opcode.SMSG_CHAT_PLAYER_NOT_FOUND)]
         public static void HandleChatPlayerNotFound(Packet packet)
         {

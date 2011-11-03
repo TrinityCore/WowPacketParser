@@ -372,7 +372,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_DUEL_REQUESTED)]
-        public static void HandleDuelComplete(Packet packet)
+        public static void HandleDuelRequested(Packet packet)
         {
             packet.ReadGuid("Flag GUID");
             packet.ReadGuid("Opponent GUID");
