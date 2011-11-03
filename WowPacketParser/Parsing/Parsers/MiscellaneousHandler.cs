@@ -371,14 +371,29 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk2");
         }
 
+        [Parser(Opcode.SMSG_DUEL_REQUESTED)]
+        public static void HandleDuelComplete(Packet packet)
+        {
+            packet.ReadGuid("Flag GUID");
+            packet.ReadGuid("Opponent GUID");
+
+        }
+
+        [Parser(Opcode.SMSG_DUEL_COMPLETE)]
+        public static void HandleDuelComplete(Packet packet)
+        {
+            packet.ReadBoolean("Abnormal finish");
+        }
+
         [Parser(Opcode.SMSG_DUEL_WINNER)]
         public static void HandleDuelWinner(Packet packet)
         {
-            packet.ReadByte("Lost:");
+            packet.ReadBoolean("Abnormal finish");
             packet.ReadCString("Opponent Name");
             packet.ReadCString("Name");
         }
 
+        [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
         [Parser(Opcode.CMSG_CALENDAR_GET_NUM_PENDING)]
