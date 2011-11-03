@@ -1,10 +1,6 @@
 WowPacketParser
 ========
 
-World of Warcraft sniff parser
-
-!!! IMPORTANT NOTE !!!
-NEVER ask for sniffs/sniffers.
 
 Usage
 --------------------------------------------------
