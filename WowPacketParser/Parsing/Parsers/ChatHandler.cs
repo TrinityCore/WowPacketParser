@@ -13,6 +13,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
+        [Parser(Opcode.SMSG_CHAT_PLAYER_NOT_FOUND)]
+        public static void HandleChatPlayerNotFound(Packet packet)
+        {
+            packet.ReadCString("Name");
+        }
+
         [Parser(Opcode.SMSG_MESSAGECHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
