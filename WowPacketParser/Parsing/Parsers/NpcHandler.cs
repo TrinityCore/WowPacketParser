@@ -134,6 +134,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BANKER_ACTIVATE)]
         [Parser(Opcode.CMSG_SPIRIT_HEALER_ACTIVATE)]
         [Parser(Opcode.CMSG_BINDER_ACTIVATE)]
+        [Parser(Opcode.SMSG_SHOW_BANK)]
         public static void HandleNpcHello(Packet packet)
         {
             packet.ReadGuid("GUID");
