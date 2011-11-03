@@ -259,7 +259,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Action Bar");
         }
 
-
         [Parser(Opcode.SMSG_INSPECT_TALENT)]
         public static void HandleInspectTalent(Packet packet)
         {
@@ -387,6 +386,9 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var counter = packet.ReadUInt32("List count");
             packet.ReadUInt32("Online count");
+
+            if (ClientVersion.Version > ClientVersionBuild.V4_2_0_14333)
+                packet.ReadUInt32("Unk int32");
 
             for (var i = 0; i < counter; ++i)
             {
