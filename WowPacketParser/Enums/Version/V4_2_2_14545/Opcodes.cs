@@ -212,6 +212,14 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_PET_NAME_QUERY, 0xDA76},
             {Opcode.SMSG_PET_REMOVED_SPELL, 0x18F6}, // Should actually be called UNLEARNED_SPELL
             {Opcode.SMSG_PET_LEARNED_SPELL, 0xDC5E},
+            {Opcode.CMSG_CHAR_ENUM, 0x4A8B},
+            {Opcode.SMSG_LOGIN_VERIFY_WORLD ,0xC86E},
+            {Opcode.SMSG_INIT_WORLD_STATES, 0x9EDA},
+            {Opcode.SMSG_SET_PHASE_SHIFT, 0x204C},
+            {Opcode.SMSG_INIT_CURRENCY, 0x227E},
+            {Opcode.SMSG_DB_REPLY, 0x76EC},
+            {Opcode.SMSG_SPELL_GO, 0x0A53},
+            {Opcode.SMSG_SPELL_START, 0xCE43},
         };
     }
 }
