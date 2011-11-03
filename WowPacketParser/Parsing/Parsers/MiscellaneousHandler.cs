@@ -363,6 +363,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Ticks");
         }
 
+        // Guessed
         [Parser(Opcode.SMSG_GAMETIME_UPDATE)]
         public static void HandleGametimeUpdate(Packet packet)
         {

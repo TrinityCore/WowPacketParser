@@ -583,5 +583,11 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
             packet.ReadUInt32("Duration");
         }
+
+        [Parser(Opcode.SMSG_DISMOUNT)]
+        public static void HandleDismount(Packet packet)
+        {
+            packet.ReadPackedGuid("GUID");
+        }
     }
 }
