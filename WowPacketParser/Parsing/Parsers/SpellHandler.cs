@@ -122,14 +122,16 @@ namespace WowPacketParser.Parsing.Parsers
                 aura.Duration = 0;
             }
 
-            if (aura.AuraFlags.HasAnyFlag(AuraFlag.Unknown))
+            if (aura.AuraFlags.HasAnyFlag(AuraFlag.Scalable))
             {
+                // This aura is scalable with level/talents
+                // Here we show each effect value after scaling
                 if (aura.AuraFlags.HasAnyFlag(AuraFlag.EffectIndex0))
-                    packet.ReadInt32("Unknown Effect 0");
+                    packet.ReadInt32("Effect 0 Value");
                 if (aura.AuraFlags.HasAnyFlag(AuraFlag.EffectIndex1))
-                    packet.ReadInt32("Unknown Effect 1");
+                    packet.ReadInt32("Effect 1 Value");
                 if (aura.AuraFlags.HasAnyFlag(AuraFlag.EffectIndex2))
-                    packet.ReadInt32("Unknown Effect 2");
+                    packet.ReadInt32("Effect 2 Value");
             }
 
             return aura;

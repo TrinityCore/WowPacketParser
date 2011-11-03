@@ -32,6 +32,9 @@ namespace WowPacketParser.Enums
         Unknown20 = 0x00800000,
         Unknown21 = 0x01000000,
         Unknown22 = 0x02000000,
-        Immunity = 0x04000000 // 4.x
+        Immunity = 0x04000000, // 4.x
+        Unknown23 = 0x08000000,
+        Unknown24 = 0x10000000,
+        Unknown25 = 0x20000000,
     }
 }
