@@ -363,6 +363,25 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
+        [Parser(Opcode.CMSG_WHO)]
+        public static void HandleWhoRequest(Packet packet)
+        {
+            packet.ReadInt32("Min Level");
+            packet.ReadInt32("Max Level");
+            packet.ReadCString("Player Name");
+            packet.ReadCString("Guild Name");
+            packet.ReadInt32("RaceMask");
+            packet.ReadInt32("ClassMask");
+
+            var zones = packet.ReadUInt32("Zones count");
+            for (var i = 0; i < zones; ++i)
+                packet.ReadUInt32("Zone Id", i);
+
+            var patterns = packet.ReadUInt32("Pattern count");
+            for (var i = 0; i < patterns; ++i)
+                packet.ReadCString("Pattern", i);
+        }
+
         [Parser(Opcode.SMSG_WHO)]
         public static void HandleWho(Packet packet)
         {
@@ -452,6 +471,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GOSSIP_COMPLETE)]
         [Parser(Opcode.SMSG_CALENDAR_CLEAR_PENDING_ACTION)]
         [Parser(Opcode.CMSG_CANCEL_TRADE)]
+        [Parser(Opcode.CMSG_LFG_LEAVE)]
+        [Parser(Opcode.CMSG_GROUP_DISBAND)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

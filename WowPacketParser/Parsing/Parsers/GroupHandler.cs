@@ -156,6 +156,19 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32");
         }
 
+        [Parser(Opcode.SMSG_GROUP_INVITE)]
+        public static void HandleGroupInviteResponse(Packet packet)
+        {
+            packet.ReadBoolean("invited/already in group flag?");
+            packet.ReadCString("Name");
+            packet.ReadInt32("Unk Int32 1");
+            var count = packet.ReadByte("Count");
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt32("Unk Uint32", i);
+
+            packet.ReadInt32("Unk Int32 2");
+        }
+
         [Parser(Opcode.CMSG_GROUP_ACCEPT)]
         public static void HandleGroupAccept(Packet packet)
         {
