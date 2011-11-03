@@ -14,11 +14,20 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < 128; i++)
             {
-                var sFlags = (FactionFlag)packet.ReadByte();
-                Console.WriteLine("Faction Flags " + i + ": " + sFlags);
+                packet.ReadEnum<FactionFlag>("Faction Flags", TypeCode.Byte, i);
+                packet.ReadInt32("Faction Standing", i);
+            }
+        }
 
-                var sStand = packet.ReadInt32();
-                Console.WriteLine("Faction Standing " + i + ": " + sStand);
+        [Parser(Opcode.SMSG_SET_FORCED_REACTIONS)]
+        public static  void HandleForcedReactions(Packet packet)
+        {
+            var counter = packet.ReadInt32("Factions");
+
+            for (var i = 0; i < counter; i++)
+            {
+                packet.ReadUInt32("Faction Id");
+                packet.ReadUInt32("Reputation Rank");
             }
         }
     }
