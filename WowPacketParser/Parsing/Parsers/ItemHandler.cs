@@ -18,97 +18,66 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ITEM_QUERY_SINGLE_RESPONSE)]
         public static void HandleItemQueryResponse(Packet packet)
         {
-            var entry = packet.ReadEntry();
-            Console.WriteLine("Entry: " + entry.Key);
-
+            var entry = packet.ReadEntry("Entry");
             if (entry.Value)
                 return;
 
-            var iClass = (ItemClass)packet.ReadInt32();
-            Console.WriteLine("Class: " + iClass);
+            var iClass = packet.ReadEnum<ItemClass>("Class", TypeCode.Int32);
 
-            var subClass = packet.ReadInt32();
-            Console.WriteLine("Sub Class: " + subClass);
+            var subClass = packet.ReadInt32("Sub Class");
 
-            var unk0 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32: " + unk0);
+            var unk0 = packet.ReadInt32("Unk Int32");
 
             var name = new string[4];
             for (var i = 0; i < 4; i++)
-            {
-                name[i] = packet.ReadCString();
-                Console.WriteLine("Name " + i + ": " + name[i]);
-            }
+                name[i] = packet.ReadCString("Name", i);
 
-            var dispId = packet.ReadInt32();
-            Console.WriteLine("Display ID: " + dispId);
+            var dispId = packet.ReadInt32("Display ID");
 
-            var quality = (ItemQuality)packet.ReadInt32();
-            Console.WriteLine("Quality: " + quality);
+            var quality = packet.ReadEnum<ItemQuality>("Quality", TypeCode.Int32);
 
-            var flags = (ItemFlag)packet.ReadInt32();
-            Console.WriteLine("Flags: " + flags);
+            var flags = packet.ReadEnum<ItemFlag>("Flags", TypeCode.Int32);
 
             var flags2 = ItemFlagExtra.None;
             if (ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192)
                 flags2 = packet.ReadEnum<ItemFlagExtra>("Extra Flags", TypeCode.Int32);
 
-            var buyPrice = packet.ReadInt32();
-            Console.WriteLine("Buy Price: " + buyPrice);
+            var buyPrice = packet.ReadInt32("Buy Price");
 
-            var sellPrice = packet.ReadInt32();
-            Console.WriteLine("Sell Price: " + sellPrice);
+            var sellPrice = packet.ReadInt32("Sell Price");
 
-            var invType = (InventoryType)packet.ReadInt32();
-            Console.WriteLine("Inventory Type: " + invType);
+            var invType = packet.ReadEnum<InventoryType>("Inventory Type", TypeCode.Int32);
 
-            var allowClass = (ClassMask)packet.ReadInt32();
-            Console.WriteLine("Allowed Classes: " + allowClass);
+            var allowClass = packet.ReadEnum<ClassMask>("Allowed Classes", TypeCode.Int32);
 
-            var allowRace = (RaceMask)packet.ReadInt32();
-            Console.WriteLine("Allowed Races: " + allowRace);
+            var allowRace = packet.ReadEnum<RaceMask>("Allowed Races", TypeCode.Int32);
 
-            var itemLvl = packet.ReadInt32();
-            Console.WriteLine("Item Level: " + itemLvl);
+            var itemLvl = packet.ReadInt32("Item Level");
 
-            var reqLvl = packet.ReadInt32();
-            Console.WriteLine("Required Level: " + reqLvl);
+            var reqLvl = packet.ReadInt32("Required Level");
 
-            var reqSkill = packet.ReadInt32();
-            Console.WriteLine("Required Skill ID: " + reqSkill);
+            var reqSkill = packet.ReadInt32("Required Skill ID");
 
-            var reqSkLvl = packet.ReadInt32();
-            Console.WriteLine("Required Skill Level: " + reqSkLvl);
+            var reqSkLvl = packet.ReadInt32("Required Skill Level");
 
             var reqSpell = packet.ReadInt32();
             Console.WriteLine("Required Spell: " + Extensions.SpellLine(reqSpell));
 
-            var reqHonor = packet.ReadInt32();
-            Console.WriteLine("Required Honor Rank: " + reqHonor);
+            var reqHonor = packet.ReadInt32("Required Honor Rank");
 
-            var reqCity = packet.ReadInt32();
-            Console.WriteLine("Required City Rank: " + reqCity);
+            var reqCity = packet.ReadInt32("Required City Rank");
 
-            var reqRepFaction = packet.ReadInt32();
-            Console.WriteLine("Required Rep Faction: " + reqRepFaction);
+            var reqRepFaction = packet.ReadInt32("Required Rep Faction");
 
-            var reqRepValue = packet.ReadInt32();
-            Console.WriteLine("Required Rep Value: " + reqRepValue);
+            var reqRepValue = packet.ReadInt32("Required Rep Value");
 
-            var maxCount = packet.ReadInt32();
-            Console.WriteLine("Max Count: " + maxCount);
+            var maxCount = packet.ReadInt32("Max Count");
 
-            var stacks = packet.ReadInt32();
-            Console.WriteLine("Max Stack Size: " + stacks);
+            var stacks = packet.ReadInt32("Max Stack Size");
 
-            var contSlots = packet.ReadInt32();
-            Console.WriteLine("Container Slots: " + contSlots);
+            var contSlots = packet.ReadInt32("Container Slots");
 
-            int statsCount;
-            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
-                statsCount = packet.ReadInt32("Stats Count");
-            else
-                statsCount = 10;
+            int statsCount = ClientVersion.Version > ClientVersionBuild.V2_4_3_8606 ? packet.ReadInt32("Stats Count") : 10;
 
             var statType = new ItemModType[statsCount];
             var statVal = new int[statsCount];
@@ -126,11 +95,7 @@ namespace WowPacketParser.Parsing.Parsers
                 ssdVal = packet.ReadInt32("SSD Value");
             }
 
-            int dmgCount;
-            if (ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767)
-                dmgCount = 2;
-            else
-                dmgCount = 5;
+            int dmgCount = ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767 ? 2 : 5;
 
             var dmgMin = new float[dmgCount];
             var dmgMax = new float[dmgCount];
@@ -149,14 +114,11 @@ namespace WowPacketParser.Parsing.Parsers
                 Console.WriteLine((DamageType)i + " Resistance: " + resistance[i]);
             }
 
-            var delay = packet.ReadInt32();
-            Console.WriteLine("Delay: " + delay);
+            var delay = packet.ReadInt32("Delay");
 
-            var ammoType = (AmmoType)packet.ReadInt32();
-            Console.WriteLine("Ammo Type: " + ammoType);
+            var ammoType = packet.ReadEnum<AmmoType>("Ammo Type", TypeCode.Int32);
 
-            var rangedMod = packet.ReadSingle();
-            Console.WriteLine("Ranged Mod: " + rangedMod);
+            var rangedMod = packet.ReadSingle("Ranged Mod");
 
             var spellId = new int[5];
             var spellTrigger = new ItemSpellTriggerType[5];
@@ -167,78 +129,52 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 5; i++)
             {
                 spellId[i] = packet.ReadInt32();
-                Console.WriteLine("Triggered Spell ID " + i + ": " + Extensions.SpellLine(spellId[i]));
+                Console.WriteLine("[" + i + "] Triggered Spell ID: " + Extensions.SpellLine(spellId[i]));
 
-                spellTrigger[i] = (ItemSpellTriggerType)packet.ReadInt32();
-                Console.WriteLine("Triggered Spell Type " + i + ": " + spellTrigger[i]);
-
-                spellCharges[i] = packet.ReadInt32();
-                Console.WriteLine("Triggered Spell Charges " + i + ": " + spellCharges[i]);
-
-                spellCooldown[i] = packet.ReadInt32();
-                Console.WriteLine("Triggered Spell Cooldown " + i + ": " + spellCooldown[i]);
-
-                spellCategory[i] = packet.ReadInt32();
-                Console.WriteLine("Triggered Spell Category " + i + ": " + spellCategory[i]);
-
-                spellCatCooldown[i] = packet.ReadInt32();
-                Console.WriteLine("Triggered Spell Category Cooldown " + i + ": " + spellCatCooldown[i]);
+                spellTrigger[i] = packet.ReadEnum<ItemSpellTriggerType>("Trigger Spell Type", TypeCode.Int32, i);
+                spellCharges[i] = packet.ReadInt32("Triggered Spell Charges", i);
+                spellCooldown[i] = packet.ReadInt32("Triggered Spell Cooldown", i);
+                spellCategory[i] = packet.ReadInt32("Triggered Spell Category", i);
+                spellCatCooldown[i] = packet.ReadInt32("Triggered Spell Category Cooldown", i);
             }
 
-            var binding = (ItemBonding)packet.ReadInt32();
-            Console.WriteLine("Bonding: " + binding);
+            var binding = packet.ReadEnum<ItemBonding>("Bonding", TypeCode.Int32);
 
             var description = packet.ReadCString();
-            Console.WriteLine("Description: " + description);
 
-            var pageText = packet.ReadInt32();
-            Console.WriteLine("Page Text: " + pageText);
+            var pageText = packet.ReadInt32("Page Text");
 
-            var langId = (Language)packet.ReadInt32();
-            Console.WriteLine("Language ID: " + langId);
+            var langId = packet.ReadEnum<Language>("Language", TypeCode.Int32);
 
-            var pageMat = (PageMaterial)packet.ReadInt32();
-            Console.WriteLine("Page Material: " + pageMat);
+            var pageMat = packet.ReadEnum<PageMaterial>("Page Material", TypeCode.Int32);
 
-            var startQuest = packet.ReadInt32();
-            Console.WriteLine("Start Quest: " + startQuest);
+            var startQuest = packet.ReadInt32("Start Quest");
 
-            var lockId = packet.ReadInt32();
-            Console.WriteLine("Lock ID: " + lockId);
+            var lockId = packet.ReadInt32("Lock ID");
 
-            var material = (Material)packet.ReadInt32();
-            Console.WriteLine("Material: " + material);
+            var material = packet.ReadEnum<Material>("Material", TypeCode.Int32);
 
-            var sheath = (SheathType)packet.ReadInt32();
-            Console.WriteLine("Sheath Type: " + sheath);
+            var sheath = packet.ReadEnum<SheathType>("Sheath Type", TypeCode.Int32);
 
-            var randomProp = packet.ReadInt32();
-            Console.WriteLine("Random Property: " + randomProp);
+            var randomProp = packet.ReadInt32("Random Property");
 
-            var randomSuffix = packet.ReadInt32();
-            Console.WriteLine("Random Suffix: " + randomSuffix);
+            var randomSuffix = packet.ReadInt32("Random Suffix");
 
-            var block = packet.ReadInt32();
-            Console.WriteLine("Block: " + block);
+            var block = packet.ReadInt32("Block");
 
-            var itemSet = packet.ReadInt32();
-            Console.WriteLine("Item Set: " + itemSet);
+            var itemSet = packet.ReadInt32("Item Set");
 
-            var maxDura = packet.ReadInt32();
-            Console.WriteLine("Max Durability: " + maxDura);
+            var maxDura = packet.ReadInt32("Max Durability");
 
-            var area = packet.ReadInt32();
-            Console.WriteLine("Area: " + area);
+            var area = packet.ReadInt32("Area");
 
             // In this single (?) case, map 0 means no map
             var map = packet.ReadInt32();
             Console.WriteLine("Map ID: " + (map != 0 ? Extensions.MapLine(map) : map + " (No map)"));
 
-            var bagFamily = (BagFamilyMask)packet.ReadInt32();
-            Console.WriteLine("Bag Family: " + bagFamily);
+            var bagFamily = packet.ReadEnum<BagFamilyMask>("Bag Family", TypeCode.Int32);
 
-            var totemCat = (TotemCategory)packet.ReadInt32();
-            Console.WriteLine("Totem Category: " + totemCat);
+            var totemCat = packet.ReadEnum<TotemCategory>("Totem Category", TypeCode.Int32);
 
             var socketColor = new ItemSocketColor[3];
             var socketItem = new int[3];
@@ -248,17 +184,13 @@ namespace WowPacketParser.Parsing.Parsers
                 socketItem[i] = packet.ReadInt32("Socket Item", i);
             }
 
-            var socketBonus = packet.ReadInt32();
-            Console.WriteLine("Socket Bonus: " + socketBonus);
+            var socketBonus = packet.ReadInt32("Socket Bonus");
 
-            var gemProps = packet.ReadInt32();
-            Console.WriteLine("Gem Properties: " + gemProps);
+            var gemProps = packet.ReadInt32("Gem Properties");
 
-            var reqDisEnchSkill = packet.ReadInt32();
-            Console.WriteLine("Required Disenchant Skill: " + reqDisEnchSkill);
+            var reqDisEnchSkill = packet.ReadInt32("Required Disenchant Skill");
 
-            var armorDmgMod = packet.ReadSingle();
-            Console.WriteLine("Armor Damage Modifier: " + armorDmgMod);
+            var armorDmgMod = packet.ReadSingle("Armor Damage Modifier");
 
             var duration = 0;
             if (ClientVersion.Version >= ClientVersionBuild.V2_4_2_8209)

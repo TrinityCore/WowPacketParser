@@ -17,6 +17,7 @@ namespace WowPacketParser
     {
         private static void Main(string[] args)
         {
+            // args = new string[] { @"D:\wow\Parser\355\WowPacketParser\WowPacketParser\bin\Debug\ZorLogBinary_World_9_1_2011_10_18_37_292.pkt" };
 
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
@@ -111,9 +112,10 @@ namespace WowPacketParser
                     {
                         if (dumpFormat == SniffType.Bin || dumpFormat == SniffType.Pkt)
                         {
-                            Console.WriteLine("Copying {0} packets to {1} format...", packets.Count, dumpFormat);
+                            var fileExtension = dumpFormat.ToString().ToLower();
+                            Console.WriteLine("Copying {0} packets to .{1} format...", packets.Count, fileExtension);
 
-                            var dumpFileName = Path.ChangeExtension(file, null) + "_excerpt.bin";
+                            var dumpFileName = Path.ChangeExtension(file, null) + "_excerpt." + fileExtension;
                             var writer = new BinaryPacketWriter(dumpFormat, dumpFileName, Encoding.ASCII);
                             writer.Write(packets);
                         }
