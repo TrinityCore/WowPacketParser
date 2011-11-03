@@ -1,20 +1,18 @@
 WowPacketParser
 ========
 
-World of Warcraft sniff parser - forked from XTZGZoReX (https://bitbucket.org/XTZGZoReX/wowpacketparser).
+World of Warcraft sniff parser
 
 !!! IMPORTANT NOTE !!!
-This parser is only supporting the output of kszor's sniffer (3.3.5a).
-If you don't got access to these kind of sniffed files, this parser is not for you.
+NEVER ask for sniffs/sniffers.
 
 Usage
 --------------------------------------------------
 
 * Compile WowPacketParser using Debug or Release.
 * Edit "WowPacketParser.exe.config" to fit your needs.
-* Drag your sniffed files to the executable.
+* Drag files to the executable.
 
---------------------------------------------------
 
 Thanks
 --------------------------------------------------
@@ -24,5 +22,5 @@ Thanks
 - Machiavelli
 - Shauren
 - Spp
+- sftx
 
---------------------------------------------------
