@@ -356,6 +356,13 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_TIME_SYNC_RESP)]
+        public static void HandleTimeSyncResp(Packet packet)
+        {
+            packet.ReadUInt32("Counter");
+            packet.ReadUInt32("Ticks");
+        }
+
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
         [Parser(Opcode.CMSG_CALENDAR_GET_NUM_PENDING)]
