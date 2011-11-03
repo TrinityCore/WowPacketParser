@@ -10,6 +10,7 @@ namespace WowPacketParser.Parsing.Parsers
     public static class QuestHandler
     {
         [Parser(Opcode.CMSG_QUEST_QUERY)]
+        [Parser(Opcode.CMSG_PUSHQUESTTOPARTY)]
         public static void HandleQuestQuery(Packet packet)
         {
             packet.ReadInt32("Entry");
@@ -688,7 +689,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleQuestPushResult(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadByte("Result: "); // FIXME - Add Enum
+            packet.ReadEnum<QuestPartyResult>("Result", TypeCode.Byte);
         }
 
         [Parser(Opcode.CMSG_QUERY_QUESTS_COMPLETED)]

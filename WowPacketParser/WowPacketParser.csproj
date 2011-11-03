@@ -242,6 +242,7 @@
     <Compile Include="Enums\PetTameFailureReason.cs" />
     <Compile Include="Enums\PowerType.cs" />
     <Compile Include="Enums\QuestFlag.cs" />
+    <Compile Include="Enums\QuestPartyResult.cs" />
     <Compile Include="Enums\QuestGiverStatus.cs" />
     <Compile Include="Enums\QuestMethod.cs" />
     <Compile Include="Enums\QuestReasonType.cs" />
