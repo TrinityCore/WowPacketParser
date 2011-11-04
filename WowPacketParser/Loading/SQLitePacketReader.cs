@@ -36,17 +36,23 @@ namespace WowPacketParser.Loading
                 var key = _reader.GetString(0);
                 var value = _reader.GetValue(1);
 
-                if (key.ToLower() == "clientbuild" && ClientVersion.Version == ClientVersionBuild.Zero)
+                if (key.ToLower() == "clientbuild")
                 {
                     int build;
                     if (int.TryParse(value.ToString(), out build))
-                        ClientVersion.Version = (ClientVersionBuild)build;
+                        SetBuild(build);
 
                     break;
                 }
             }
 
             _reader.Close();
+        }
+
+        void SetBuild(int build)
+        {
+            if (ClientVersion.Version == ClientVersionBuild.Zero)
+                ClientVersion.Version = (ClientVersionBuild)build;
         }
 
         public bool CanRead()
