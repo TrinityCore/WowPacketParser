@@ -76,17 +76,13 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void ReadAuthResponseInfo(Packet packet)
         {
-            var billingRemaining = packet.ReadInt32();
-            Console.WriteLine("Billing Time Remaining: " + billingRemaining);
+            packet.ReadInt32("Billing Time Remaining");
+            packet.ReadEnum<BillingFlag>("Billing Flags", TypeCode.Byte);
+            packet.ReadInt32("Billing Time Rested");
+            packet.ReadEnum<ClientType>("Client Expansion", TypeCode.Byte);
 
-            var billingFlags = (BillingFlag)packet.ReadByte();
-            Console.WriteLine("Billing Flags: " + billingFlags);
-
-            var billingRested = packet.ReadInt32();
-            Console.WriteLine("Billing Time Rested: " + billingRested);
-
-            var expansion = (ClientType)packet.ReadByte();
-            Console.WriteLine("Expansion: " + expansion);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_3_13329))
+                packet.ReadEnum<ClientType>("Server Expansion", TypeCode.Byte);
         }
 
         public static void ReadQueuePositionInfo(Packet packet)
