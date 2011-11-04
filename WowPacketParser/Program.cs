@@ -17,8 +17,6 @@ namespace WowPacketParser
     {
         private static void Main(string[] args)
         {
-            // args = new string[] { @"D:\wow\Parser\355\WowPacketParser\WowPacketParser\bin\Debug\ZorLogBinary_World_9_1_2011_10_18_37_292.pkt" };
-
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             // Read config options
@@ -30,8 +28,6 @@ namespace WowPacketParser
             int packetNumberLow = 0; // 0 -> No low limit
             int packetNumberHigh = 0; // 0 -> No high limit
             bool prompt = false;
-
-            // Read configuration values
             try
             {
                 ClientVersion.Version = Settings.GetEnum<ClientVersionBuild>("ClientBuild");
