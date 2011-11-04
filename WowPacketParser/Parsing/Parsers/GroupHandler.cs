@@ -187,5 +187,20 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Roll");
             packet.ReadGuid("GUID");
         }
+
+        [Parser(Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS)]
+        public static void HandleRequestPartyMemberStats(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.SMSG_PARTY_COMMAND_RESULT)]
+        public static void HandlePartyCommandResult(Packet packet)
+        {
+            packet.ReadEnum<PartyCommand>("Command", TypeCode.UInt32);
+            packet.ReadCString("Member");
+            packet.ReadEnum<PartyResult>("Result", TypeCode.UInt32);
+            packet.ReadUInt32("LFG Boot Cooldown");
+        }
     }
 }

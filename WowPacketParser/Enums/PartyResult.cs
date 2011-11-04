@@ -1,0 +1,35 @@
+namespace WowPacketParser.Enums
+{
+    public enum PartyResult
+    {
+        Ok                     = 0,
+        BadName                = 1,
+        TargetNotInGroup       = 2,
+        TargetNotInInstance    = 3,
+        GroupFull              = 4,
+        AlreadyInGroup         = 5,
+        NotInGroup             = 6,
+        NotLeader              = 7,
+        WrongFaction           = 8,
+        IgnoringYou            = 9,
+        LfgPending             = 12,
+        InviteRestricted       = 13,
+        SwapFailed             = 14,
+        InviteUnknownRealm     = 15,
+        InviteNoPartyServer    = 16,
+        InvitePartyBusy        = 17,
+        TargetAmbiguous        = 18,
+        LfgInviteRaidLocked    = 19,
+        LfgBootLimit           = 20,
+        LfgBootCooldown        = 21,
+        LfgBootInProgress      = 22,
+        LfgBootFewPlayers      = 23,
+        LfgBootNotEligible     = 24,
+        RaidDisallowedByLevel  = 25,
+        LfgBootInCombat        = 26,
+        LfgBootReasonNeeded    = 27,
+        LfgBootDungeonComplete = 28,
+        LfgBootLootRolls       = 29,
+        LfgTeleportIncombat    = 30,
+    }
+}
