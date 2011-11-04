@@ -14,6 +14,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Rank");
         }
 
+        [Parser(Opcode.SMSG_PARTYKILLLOG)]
+        public static void HandlePartyKillLog(Packet packet)
+        {
+            packet.ReadGuid("Player GUID");
+            packet.ReadGuid("Victim GUID");
+        }
+
         [Parser(Opcode.SMSG_AI_REACTION)]
         public static void HandleAIReaction(Packet packet)
         {
