@@ -6,6 +6,14 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class ChatHandler
     {
+        [Parser(Opcode.SMSG_DEFENSE_MESSAGE)]
+        public static void HandleDefenseMessage(Packet packet)
+        {
+            packet.ReadInt32("Zone Id");
+            packet.ReadInt32("Message Length");
+            packet.ReadCString("Message");
+        }
+
         [Parser(Opcode.SMSG_EMOTE)]
         public static void HandleEmote(Packet packet)
         {
@@ -29,7 +37,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Emote ID");
             packet.ReadInt32("Name length");
             packet.ReadCString("Name");
-
         }
 
         [Parser(Opcode.SMSG_CHAT_PLAYER_NOT_FOUND)]
