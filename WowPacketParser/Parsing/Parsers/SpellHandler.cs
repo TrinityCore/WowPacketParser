@@ -586,10 +586,17 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Duration");
         }
 
+        [Parser(Opcode.SMSG_BREAK_TARGET)]
         [Parser(Opcode.SMSG_DISMOUNT)]
         public static void HandleDismount(Packet packet)
         {
             packet.ReadPackedGuid("GUID");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_TARGET)]
+        public static void HandleClearTarget(Packet packet)
+        {
+            packet.ReadGuid("GUID");
         }
     }
 }
