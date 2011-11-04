@@ -6,7 +6,18 @@ namespace WowPacketParser.Misc
 {
     public static class ClientVersion
     {
-        public static ClientVersionBuild Version { get; set; }
+        private static ClientVersionBuild _clientVersionBuild;
+        public static ClientVersionBuild Version
+        {
+            get { return _clientVersionBuild; }
+            set
+            {
+                _clientVersionBuild = value;
+                Expansion = GetExpansion(value);
+            }
+        }
+
+        public static ClientType Expansion { get; set; }
 
         // Kept in sync with http://www.wowwiki.com/Public_client_builds
         private static readonly KeyValuePair<ClientVersionBuild, DateTime>[] _clientVersions = new []
@@ -71,6 +82,18 @@ namespace WowPacketParser.Misc
                     return _clientVersions[i - 1].Key;
 
             return _clientVersions[_clientVersions.Length - 1].Key;
+        }
+
+        private static ClientType GetExpansion(ClientVersionBuild build)
+        {
+            if (build >= ClientVersionBuild.V4_0_3_13329)
+                return ClientType.Cataclysm;
+            else if (build >= ClientVersionBuild.V3_0_2_9056)
+                return ClientType.WrathOfTheLichKing;
+            else if (build >= ClientVersionBuild.V2_0_1_6180)
+                return ClientType.TheBurningCrusade;
+            else
+                return ClientType.WorldOfWarcraft;
         }
 
         public static void SetVersion(DateTime time)
