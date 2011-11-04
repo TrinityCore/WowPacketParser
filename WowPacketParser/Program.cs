@@ -30,7 +30,7 @@ namespace WowPacketParser
             bool prompt = false;
             try
             {
-                ClientVersion.Version = Settings.GetEnum<ClientVersionBuild>("ClientBuild");
+                ClientVersion.Build = Settings.GetEnum<ClientVersionBuild>("ClientBuild");
 
                 packetNumberLow = Settings.GetInt32("FilterPacketNumLow");
                 packetNumberHigh = Settings.GetInt32("FilterPacketNumHigh");
@@ -117,7 +117,7 @@ namespace WowPacketParser
                         }
                         else
                         {
-                            Console.WriteLine("Assumed version: {0}", ClientVersion.Version);
+                            Console.WriteLine("Assumed version: {0}", ClientVersion.Build);
                             Console.WriteLine("Parsing {0} packets...", packets.Count);
 
                             var stats = new Statistics() { Total = (uint)packets.Count };

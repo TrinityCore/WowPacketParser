@@ -89,7 +89,7 @@ namespace WowPacketParser.Parsing
 
             Console.WriteLine("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}",
                 packet.Direction, Opcodes.GetOpcodeName(opcode), opcode.ToString("X4"),
-                packet.GetLength(), packet.Time, packet.Number);
+                packet.GetLength(), packet.Time.ToString("MM/dd/yyyy hh:mm:ss.fff"), packet.Number);
 
             Action<Packet> handler;
             if (Handlers.TryGetValue(opcode, out handler))

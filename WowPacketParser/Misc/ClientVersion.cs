@@ -8,19 +8,19 @@ namespace WowPacketParser.Misc
     {
         private static ClientType _expansion;
 
-        private static ClientVersionBuild _version;
-        public static ClientVersionBuild Version
+        private static ClientVersionBuild _build;
+        public static ClientVersionBuild Build
         {
-            get { return _version; }
+            get { return _build; }
             set
             {
-                _version = value;
+                _build = value;
                 _expansion = GetExpansion(value);
             }
         }
 
         // Kept in sync with http://www.wowwiki.com/Public_client_builds
-        private static readonly KeyValuePair<ClientVersionBuild, DateTime>[] _clientVersions = new []
+        private static readonly KeyValuePair<ClientVersionBuild, DateTime>[] _clientBuilds = new []
         {
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V1_12_1_5875, new DateTime(2006, 9, 26)),
 
@@ -89,36 +89,36 @@ namespace WowPacketParser.Misc
 
         private static ClientVersionBuild GetVersion(DateTime time)
         {
-            for (int i = 1; i < _clientVersions.Length; i++)
-                if (_clientVersions[i].Value > time)
-                    return _clientVersions[i - 1].Key;
+            for (int i = 1; i < _clientBuilds.Length; i++)
+                if (_clientBuilds[i].Value > time)
+                    return _clientBuilds[i - 1].Key;
 
-            return _clientVersions[_clientVersions.Length - 1].Key;
+            return _clientBuilds[_clientBuilds.Length - 1].Key;
         }
 
         public static void SetVersion(DateTime time)
         {
-            Version = GetVersion(time);
+            Build = GetVersion(time);
         }
 
-        public static bool AddedInVersion(ClientVersionBuild version)
+        public static bool AddedInVersion(ClientVersionBuild build)
         {
-            return Version >= version;
+            return Build >= build;
         }
 
-        public static bool AddedInVersion(ClientType version)
+        public static bool AddedInVersion(ClientType expansion)
         {
-            return _expansion >= version;
+            return _expansion >= expansion;
         }
 
-        public static bool RemovedInVersion(ClientVersionBuild version)
+        public static bool RemovedInVersion(ClientVersionBuild build)
         {
-            return Version < version;
+            return Build < build;
         }
 
-        public static bool RemovedInVersion(ClientType version)
+        public static bool RemovedInVersion(ClientType expansion)
         {
-            return _expansion < version;
+            return _expansion < expansion;
         }
     }
 }

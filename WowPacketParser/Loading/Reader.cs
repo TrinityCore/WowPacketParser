@@ -41,7 +41,7 @@ namespace WowPacketParser.Loading
                     continue;
 
                 // determine build version based on date of first packet if not specified otherwise
-                if (packetNum == 0 && ClientVersion.Version == ClientVersionBuild.Zero)
+                if (packetNum == 0 && ClientVersion.Build == ClientVersionBuild.Zero)
                     ClientVersion.SetVersion(packet.Time);
 
                 if (++packetNum < packetNumberLow)
