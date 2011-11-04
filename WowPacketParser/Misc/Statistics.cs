@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace WowPacketParser.Misc
 {
@@ -6,29 +7,12 @@ namespace WowPacketParser.Misc
     {
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        
-        public uint Total
-        {
-            get { return PacketsParsed + PacketsNotParsed; }
-        }
 
-        public uint PacketsParsed { get; set; }
+        public uint Total { get; set; }
 
+        public uint PacketsSuccessfullyParsed { get; set; }
         public uint PacketsParsedWithErrors { get; set; }
-
         public uint PacketsNotParsed { get; set; }
-
-        public double PercentageParsedPackets()
-        {
-            var result = (1 - (((double)Total - PacketsParsed) / Total)) * 100;
-            return Math.Round(result);
-        }
-
-        public double PercentageParsedPacketsWithErrors()
-        {
-            var result = (1 - (((double)Total - PacketsParsedWithErrors) / Total)) * 100;
-            return Math.Round(result);
-        }
 
         public TimeSpan TimeToParse()
         {
@@ -37,14 +21,18 @@ namespace WowPacketParser.Misc
 
         public string Stats()
         {
+            StringBuilder res = new StringBuilder();
             var span = TimeToParse();
 
-            string res = "Finished parsing in - " + span.Minutes + " Minutes, " + span.Seconds + " Seconds and " +
-                         span.Milliseconds + " Milliseconds.";
-            res += Environment.NewLine;
-            res += Total + " packets, " + PercentageParsedPackets() + "% parsed (" + PercentageParsedPacketsWithErrors() + "% with errors).";
+            res.AppendFormat("Finished parsing in {0} Minutes, {1} Seconds and {2} Milliseconds.",
+                span.Minutes, span.Seconds, span.Milliseconds);
 
-            return res;
+            res.AppendLine();
+
+            res.AppendFormat("Parsed {0:F1}% packets successfully, {1:F1}% with errors and skipped {2:F1}%.",
+                (double)PacketsSuccessfullyParsed / Total * 100, (double)PacketsParsedWithErrors / Total * 100, (double)PacketsNotParsed / Total * 100);
+
+            return res.ToString();
         }
     }
 }

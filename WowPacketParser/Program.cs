@@ -120,7 +120,7 @@ namespace WowPacketParser
                             Console.WriteLine("Assumed version: {0}", ClientVersion.Version);
                             Console.WriteLine("Parsing {0} packets...", packets.Count);
 
-                            var stats = new Statistics();
+                            var stats = new Statistics() { Total = (uint)packets.Count };
 
                             stats.StartTime = DateTime.Now;
                             var outFileName = Path.ChangeExtension(file, null) + "_parsed";
