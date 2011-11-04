@@ -31,8 +31,9 @@ namespace WowPacketParser.Parsing.Parsers
             var flagsTypeCode = ClientVersion.Version > ClientVersionBuild.V2_4_3_8606 ? TypeCode.Int16 : TypeCode.Byte;
             var flags = packet.ReadEnum<MovementFlagExtra>(prefix + "Extra Movement Flags", flagsTypeCode);
 
-            if (packet.ReadGuid(prefix + "GUID 2?") != guid)
-                Console.WriteLine("GUIDS NOT EQUAL"); // Fo debuggingz
+            if (ClientVersion.Version >= ClientVersionBuild.V4_2_2_14545)
+                if (packet.ReadGuid(prefix + "GUID 2") != guid)
+                    Console.WriteLine("GUIDS NOT EQUAL"); // Fo debuggingz
 
             packet.ReadInt32(prefix + "Time");
 
@@ -50,7 +51,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadVector4(prefix + "Transport Position");
                 packet.ReadInt32(prefix + "Transport Time");
 
-                if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                if (ClientVersion.Expansion > ClientType.TheBurningCrusade)
                     packet.ReadByte(prefix + "Transport Seat");
 
                 if (flags.HasAnyFlag(MovementFlagExtra.InterpolateMove))
@@ -61,12 +62,12 @@ namespace WowPacketParser.Parsing.Parsers
                 flags.HasAnyFlag(MovementFlagExtra.AlwaysAllowPitching))
                 packet.ReadSingle(prefix + "Swim Pitch");
 
-            if (ClientVersion.Version <= ClientVersionBuild.V3_3_5a_12340)
+            if (ClientVersion.Expansion <= ClientType.WrathOfTheLichKing)
                 packet.ReadInt32(prefix + "Fall Time");
 
             if (info.Flags.HasAnyFlag(MovementFlag.Falling))
             {
-                if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+                if (ClientVersion.Expansion > ClientType.WrathOfTheLichKing)
                     packet.ReadInt32(prefix + "Fall Time");
 
                 packet.ReadSingle(prefix + "Fall Velocity");
