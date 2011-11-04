@@ -14,6 +14,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Rank");
         }
 
+        [Parser(Opcode.CMSG_SETSHEATHED)]
+        public static void HandleSetSheathed(Packet packet)
+        {
+            packet.ReadEnum<SheathState>("Sheath", TypeCode.Int32);
+        }
+
         [Parser(Opcode.SMSG_PARTYKILLLOG)]
         public static void HandlePartyKillLog(Packet packet)
         {

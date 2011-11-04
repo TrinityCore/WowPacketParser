@@ -232,6 +232,7 @@
     <Compile Include="Enums\MiscConstants.cs" />
     <Compile Include="Enums\MovementAnimationState.cs" />
     <Compile Include="Enums\NPCFlags.cs" />
+    <Compile Include="Enums\SheathState.cs" />
     <Compile Include="Enums\SpellMissType.cs" />
     <Compile Include="Enums\SplineMode.cs" />
     <Compile Include="Enums\SplineType.cs" />
