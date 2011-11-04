@@ -1,4 +1,3 @@
-
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -8,6 +7,20 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class MiscellaneousParsers
     {
+        [Parser(Opcode.CMSG_SET_ACTION_BUTTON)]
+        public static void HandleActionButton(Packet packet)
+        {
+            packet.ReadByte("Button");
+            var data =  packet.ReadInt32();
+            var type = (ActionButtonType)((data & 0xFF000000) >> 24);
+            var action = (data & 0x00FFFFFF);
+
+            if (type == ActionButtonType.Spell)
+                Console.WriteLine("Type: " + type + " ID: " + Extensions.SpellLine(action));
+            else
+                Console.WriteLine("Type: " + type + " ID: " + action);
+        }
+
         [Parser(Opcode.SMSG_RESURRECT_REQUEST)]
         public static void HandleResurrectRequest(Packet packet)
         {
