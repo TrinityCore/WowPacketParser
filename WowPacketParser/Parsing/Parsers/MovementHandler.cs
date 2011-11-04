@@ -31,6 +31,10 @@ namespace WowPacketParser.Parsing.Parsers
             var flagsTypeCode = ClientVersion.Version > ClientVersionBuild.V2_4_3_8606 ? TypeCode.Int16 : TypeCode.Byte;
             var flags = packet.ReadEnum<MovementFlagExtra>(prefix + "Extra Movement Flags", flagsTypeCode);
 
+            packet.ReadBytes(8); // I have no idea what is this or if it is in being read in the right place
+                                 // But it should be read before Position
+            Console.WriteLine(prefix + "(Unknown ReadBytes(8)");
+
             packet.ReadInt32(prefix + "Time");
 
             var pos = packet.ReadVector4(prefix + "Position");

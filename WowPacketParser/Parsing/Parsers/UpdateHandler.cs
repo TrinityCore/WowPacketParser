@@ -28,10 +28,13 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                var type = packet.ReadEnum<UpdateType>("[" + i + "] Update Type", TypeCode.Byte);
-                switch (type)
+                var type = packet.ReadByte();
+                var typeString = ClientVersion.Expansion == ClientType.Cataclysm ? ((UpdateTypeCataclysm)type).ToString() : ((UpdateType)type).ToString();
+
+                Console.WriteLine("[" + i + "] UpdateType: " + typeString);
+                switch (typeString)
                 {
-                    case UpdateType.Values:
+                    case "Values":
                     {
                         var guid = packet.ReadPackedGuid("[" + i + "] GUID");
 
@@ -42,7 +45,7 @@ namespace WowPacketParser.Parsing.Parsers
                             HandleUpdateFieldChangedValues(false, guid, obj.Type, updates, obj.Movement);
                         break;
                     }
-                    case UpdateType.Movement:
+                    case "Movement":
                     {
                         Guid guid;
                         if (ClientVersion.Version >= ClientVersionBuild.V3_1_2_9901)
@@ -53,16 +56,16 @@ namespace WowPacketParser.Parsing.Parsers
                         ReadMovementUpdateBlock(packet, guid, i);
                         break;
                     }
-                    case UpdateType.CreateObject2: // Might != CreateObject1 on Cata
-                    case UpdateType.CreateObject1:
+                    case "CreateObject1":
+                    case "CreateObject2": // Might != CreateObject1 on Cata
                     {
                         var guid = packet.ReadPackedGuid("[" + i + "] GUID");
                         ReadCreateObjectBlock(packet, guid, i);
                         break;
                     }
-                    case UpdateType.FarObjects:
-                    case UpdateType.NearObjects:
-                    // case UpdateType.DestroyObjects:
+                    case "FarObjects":
+                    case "NearObjects":
+                    case "DestroyObjects":
                     {
                         ReadObjectsBlock(packet, i);
                         break;
@@ -337,12 +340,12 @@ namespace WowPacketParser.Parsing.Parsers
 
                 switch (idx)
                 {
-                    case GameObjectField.GAMEOBJECT_FIELD_CREATED_BY:
-                    {
-                        isCreated = true;
-                        shouldCommit = false;
-                        break;
-                    }
+                    //case GameObjectField.GAMEOBJECT_FIELD_CREATED_BY:
+                    //{
+                    //    isCreated = true;
+                    //    shouldCommit = false;
+                    //  break;
+                    //}
                     case (GameObjectField)ObjectField.OBJECT_FIELD_SCALE_X:
                     {
                         fieldName = "size";
@@ -402,7 +405,11 @@ namespace WowPacketParser.Parsing.Parsers
                 var moveFlags = moveInfo.Flags;
 
                 var speedCount = ClientVersion.Version > ClientVersionBuild.V2_4_3_8606 ? 9 : 8;
-                var speedShift = ClientVersion.Version >= ClientVersionBuild.V4_1_0_13914 ? 1 : 0; // enums shifted by one
+                int speedShift;
+                if (ClientVersion.Version >= ClientVersionBuild.V4_1_0_13914 &&
+                    ClientVersion.Version < ClientVersionBuild.V4_2_2_14545)
+                    speedShift = 1;  // enums shifted by one
+                else speedShift = 0;
 
                 for (var i = 0; i < speedCount - speedShift; i++)
                 {
