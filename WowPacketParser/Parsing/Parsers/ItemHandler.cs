@@ -8,11 +8,19 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class ItemHandler
     {
+        [Parser(Opcode.SMSG_ENCHANTMENTLOG)]
+        public static void HandleEnchantmentLog(Packet packet)
+        {
+            packet.ReadPackedGuid("Target");
+            packet.ReadPackedGuid("Caster");
+            packet.ReadUInt32("Item Entry");
+            packet.ReadUInt32("Enchantment ID?");
+        }
+
         [Parser(Opcode.CMSG_ITEM_QUERY_SINGLE)]
         public static void HandleItemQuerySingle(Packet packet)
         {
-            var entry = packet.ReadInt32();
-            Console.WriteLine("Entry: " + entry);
+            packet.ReadInt32("Entry");
         }
 
         [Parser(Opcode.SMSG_ITEM_QUERY_SINGLE_RESPONSE)]
@@ -219,17 +227,13 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleUpdateItemEnchantments(Packet packet)
         {
             for (var i = 0; i < 4; i++)
-            {
-                var enchId = packet.ReadInt32();
-                Console.WriteLine("Aura ID " + i + ": " + enchId);
-            }
+                packet.ReadInt32("Aura ID", i);
         }
 
         [Parser(Opcode.SMSG_SET_PROFICIENCY)]
         public static void HandleSetProficency(Packet packet)
         {
             packet.ReadEnum<ItemClass>("Class", TypeCode.Byte);
-
             packet.ReadInt32("Mask");
         }
 
