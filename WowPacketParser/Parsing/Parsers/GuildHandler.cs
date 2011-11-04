@@ -83,7 +83,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             ReadEmblemInfo(packet);
 
-            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadUInt32("Ranks");
         }
 

@@ -13,15 +13,15 @@ namespace WowPacketParser.Parsing
             Opcode = Opcodes.GetOpcode(opcode);
         }
 
-        public ParserAttribute(Opcode opcode, ClientVersionBuild minBuild)
+        public ParserAttribute(Opcode opcode, ClientVersionBuild addedInVersion)
         {
-            if (ClientVersion.Version >= minBuild)
+            if (ClientVersion.AddedInVersion(addedInVersion))
                 Opcode = Opcodes.GetOpcode(opcode);
         }
 
-        public ParserAttribute(Opcode opcode, ClientVersionBuild minBuild, ClientVersionBuild maxBuild)
+        public ParserAttribute(Opcode opcode, ClientVersionBuild addedInVersion, ClientVersionBuild removedInVersion)
         {
-            if (ClientVersion.Version >= minBuild && ClientVersion.Version <= maxBuild)
+            if (ClientVersion.AddedInVersion(addedInVersion) && ClientVersion.RemovedInVersion(removedInVersion))
                 Opcode = Opcodes.GetOpcode(opcode);
         }
 

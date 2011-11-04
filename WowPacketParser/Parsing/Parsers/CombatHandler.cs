@@ -72,7 +72,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("TargetGUID");
             packet.ReadInt32("Damage");
 
-            if (ClientVersion.Version >= ClientVersionBuild.V3_0_3_9183)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183))
                 packet.ReadInt32("OverDamage");
 
             var subDmgCount = packet.ReadByte();
@@ -82,22 +82,22 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSingle("Float Damage", i);
                 packet.ReadInt32("Int Damage", i);
 
-                if (ClientVersion.Version < ClientVersionBuild.V3_0_3_9183 ||
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_3_9183) ||
                     hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_ABSORB | SpellHitInfo.HITINFO_FULL_ABSORB))
                     packet.ReadInt32("Damage Absorbed", i);
 
-                if (ClientVersion.Version < ClientVersionBuild.V3_0_3_9183 ||
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_3_9183) ||
                     hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
                     packet.ReadInt32("Damage Resisted", i);
             }
 
-            var victimStateTypeCode = ClientVersion.Version >= ClientVersionBuild.V3_0_3_9183 ? TypeCode.Byte : TypeCode.Int32;
+            var victimStateTypeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183) ? TypeCode.Byte : TypeCode.Int32;
             packet.ReadEnum<VictimStates>("VictimState", victimStateTypeCode);
             packet.ReadInt32("Unk Attacker State 0");
 
             Console.WriteLine("Melee Spell ID : " + Extensions.SpellLine(packet.ReadInt32()));
 
-            if (ClientVersion.Version < ClientVersionBuild.V3_0_3_9183 ||
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_3_9183) ||
                 hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
                 packet.ReadInt32("Block Amount");
 

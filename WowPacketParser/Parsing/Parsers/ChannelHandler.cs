@@ -138,7 +138,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Unk1");
             packet.ReadByte("Unk2");
 
-            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
                 packet.ReadCString("Channel Pass");
                 packet.ReadCString("Channel Name");

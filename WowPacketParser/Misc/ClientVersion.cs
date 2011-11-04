@@ -6,18 +6,18 @@ namespace WowPacketParser.Misc
 {
     public static class ClientVersion
     {
-        private static ClientVersionBuild _clientVersionBuild;
+        private static ClientType _expansion;
+
+        private static ClientVersionBuild _version;
         public static ClientVersionBuild Version
         {
-            get { return _clientVersionBuild; }
+            get { return _version; }
             set
             {
-                _clientVersionBuild = value;
-                Expansion = GetExpansion(value);
+                _version = value;
+                _expansion = GetExpansion(value);
             }
         }
-
-        public static ClientType Expansion { get; set; }
 
         // Kept in sync with http://www.wowwiki.com/Public_client_builds
         private static readonly KeyValuePair<ClientVersionBuild, DateTime>[] _clientVersions = new []
@@ -75,6 +75,18 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V4_2_2_14545, new DateTime(2011, 9, 30))
         };
 
+        private static ClientType GetExpansion(ClientVersionBuild build)
+        {
+            if (build >= ClientVersionBuild.V4_0_3_13329)
+                return ClientType.Cataclysm;
+            else if (build >= ClientVersionBuild.V3_0_3_9183)
+                return ClientType.WrathOfTheLichKing;
+            else if (build >= ClientVersionBuild.V2_0_3_6299)
+                return ClientType.TheBurningCrusade;
+            else
+                return ClientType.WorldOfWarcraft;
+        }
+
         private static ClientVersionBuild GetVersion(DateTime time)
         {
             for (int i = 1; i < _clientVersions.Length; i++)
@@ -84,21 +96,29 @@ namespace WowPacketParser.Misc
             return _clientVersions[_clientVersions.Length - 1].Key;
         }
 
-        private static ClientType GetExpansion(ClientVersionBuild build)
-        {
-            if (build >= ClientVersionBuild.V4_0_3_13329)
-                return ClientType.Cataclysm;
-            else if (build >= ClientVersionBuild.V3_0_2_9056)
-                return ClientType.WrathOfTheLichKing;
-            else if (build >= ClientVersionBuild.V2_0_1_6180)
-                return ClientType.TheBurningCrusade;
-            else
-                return ClientType.WorldOfWarcraft;
-        }
-
         public static void SetVersion(DateTime time)
         {
             Version = GetVersion(time);
+        }
+
+        public static bool AddedInVersion(ClientVersionBuild version)
+        {
+            return Version >= version;
+        }
+
+        public static bool AddedInVersion(ClientType version)
+        {
+            return _expansion >= version;
+        }
+
+        public static bool RemovedInVersion(ClientVersionBuild version)
+        {
+            return Version < version;
+        }
+
+        public static bool RemovedInVersion(ClientType version)
+        {
+            return _expansion < version;
         }
     }
 }

@@ -38,12 +38,12 @@ namespace WowPacketParser.Parsing.Parsers
                 data[i] = packet.ReadInt32("Data", i);
 
             var size = 0f;
-            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606) // not sure when it was added exactly - did not exist in 2.4.1 sniff
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056)) // not sure when it was added exactly - did not exist in 2.4.1 sniff
                 size = packet.ReadSingle("Size");
 
-            var qItemCount = ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192 ? 6 : 4;
+            var qItemCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 6 : 4;
             var qItem = new int[qItemCount];
-            if (ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
                 for (var i = 0; i < qItemCount; i++)
                     qItem[i] = packet.ReadInt32("Quest Item " + i);

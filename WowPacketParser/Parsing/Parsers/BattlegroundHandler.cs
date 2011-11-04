@@ -50,7 +50,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             Console.WriteLine("BGType: " + Extensions.BattlegroundLine(packet.ReadInt32()));
 
-            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 return;
 
             packet.ReadBoolean("From UI");
@@ -62,7 +62,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
 
-            if (ClientVersion.Version < ClientVersionBuild.V4_2_0_14333)
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333))
                 packet.ReadBoolean("From UI");
 
             Console.WriteLine("BGType: " + Extensions.BattlegroundLine(packet.ReadInt32()));

@@ -106,14 +106,14 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            if (ClientVersion.Version >= ClientVersionBuild.V4_2_2_14545 && language == Language.Addon)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) && language == Language.Addon)
                 packet.ReadCString("Addon name");
 
             packet.ReadInt32("Text Length");
             packet.ReadCString("Text");
             packet.ReadEnum<ChatTag>("Chat Tag", TypeCode.Byte);
 
-            if (ClientVersion.Version >= ClientVersionBuild.V4_2_2_14545)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
             {
                 if (type == ChatMessageType.RaidBossEmote || type == ChatMessageType.RaidBossWhisper)
                 {

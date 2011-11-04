@@ -47,7 +47,7 @@ namespace WowPacketParser.Parsing.Parsers
             var flags = packet.ReadEnum<ItemFlag>("Flags", TypeCode.Int32);
 
             var flags2 = ItemFlagExtra.None;
-            if (ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
                 flags2 = packet.ReadEnum<ItemFlagExtra>("Extra Flags", TypeCode.Int32);
 
             var buyPrice = packet.ReadInt32("Buy Price");
@@ -85,7 +85,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var contSlots = packet.ReadInt32("Container Slots");
 
-            int statsCount = ClientVersion.Version > ClientVersionBuild.V2_4_3_8606 ? packet.ReadInt32("Stats Count") : 10;
+            int statsCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056) ? packet.ReadInt32("Stats Count") : 10;
 
             var statType = new ItemModType[statsCount];
             var statVal = new int[statsCount];
@@ -97,13 +97,13 @@ namespace WowPacketParser.Parsing.Parsers
 
             var ssdId = 0;
             var ssdVal = 0;
-            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
             {
                 ssdId = packet.ReadInt32("SSD ID");
                 ssdVal = packet.ReadInt32("SSD Value");
             }
 
-            int dmgCount = ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767 ? 2 : 5;
+            int dmgCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767) ? 2 : 5;
 
             var dmgMin = new float[dmgCount];
             var dmgMax = new float[dmgCount];
@@ -201,15 +201,15 @@ namespace WowPacketParser.Parsing.Parsers
             var armorDmgMod = packet.ReadSingle("Armor Damage Modifier");
 
             var duration = 0;
-            if (ClientVersion.Version >= ClientVersionBuild.V2_4_2_8209)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_4_2_8209))
                 duration = packet.ReadInt32("Duration");
 
             var limitCategory = 0;
-            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                 limitCategory = packet.ReadInt32("Limit Category");
 
             var holidayId = Holiday.None;
-            if (ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                 holidayId = packet.ReadEnum<Holiday>("Holiday", TypeCode.Int32);
 
             SQLStore.WriteData(SQLStore.Items.GetCommand(entry.Key, iClass, subClass, unk0, name, dispId,

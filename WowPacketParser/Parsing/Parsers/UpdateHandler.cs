@@ -18,18 +18,18 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleUpdateObject(Packet packet)
         {
             var map = MovementHandler.CurrentMapId;
-            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 map = packet.ReadUInt16("Map");
 
             var count = packet.ReadUInt32("Count");
 
-            if (ClientVersion.Version <= ClientVersionBuild.V2_4_3_8606)
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadBoolean("Has Transport");
 
             for (var i = 0; i < count; i++)
             {
                 var type = packet.ReadByte();
-                var typeString = ClientVersion.Expansion == ClientType.Cataclysm ? ((UpdateTypeCataclysm)type).ToString() : ((UpdateType)type).ToString();
+                var typeString = ClientVersion.AddedInVersion(ClientType.Cataclysm) ? ((UpdateTypeCataclysm)type).ToString() : ((UpdateType)type).ToString();
 
                 Console.WriteLine("[" + i + "] UpdateType: " + typeString);
                 switch (typeString)
@@ -48,7 +48,7 @@ namespace WowPacketParser.Parsing.Parsers
                     case "Movement":
                     {
                         Guid guid;
-                        if (ClientVersion.Version >= ClientVersionBuild.V3_1_2_9901)
+                        if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
                             guid = packet.ReadPackedGuid("[" + i + "] GUID");
                         else
                             guid = packet.ReadGuid("[" + i + "] GUID");
@@ -396,7 +396,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var moveInfo = new MovementInfo();
 
-            var flagsTypeCode = ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767 ? TypeCode.UInt16 : TypeCode.Byte;
+            var flagsTypeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767) ? TypeCode.UInt16 : TypeCode.Byte;
             var flags = packet.ReadEnum<UpdateFlag>("[" + index + "] Update Flags", flagsTypeCode);
 
             if (flags.HasAnyFlag(UpdateFlag.Living))
@@ -404,10 +404,10 @@ namespace WowPacketParser.Parsing.Parsers
                 moveInfo = MovementHandler.ReadMovementInfo(packet, guid, index);
                 var moveFlags = moveInfo.Flags;
 
-                var speedCount = ClientVersion.Version > ClientVersionBuild.V2_4_3_8606 ? 9 : 8;
+                var speedCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056) ? 9 : 8;
                 int speedShift;
-                if (ClientVersion.Version >= ClientVersionBuild.V4_1_0_13914 &&
-                    ClientVersion.Version < ClientVersionBuild.V4_2_2_14545)
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_1_0_13914) &&
+                    ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
                     speedShift = 1;  // enums shifted by one
                 else speedShift = 0;
 
@@ -439,7 +439,7 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadGuid("Final Spline Target GUID", index);
                     else if (splineFlags.HasAnyFlag(SplineFlag.FinalOrientation))
                     {
-                        if (ClientVersion.Version <= ClientVersionBuild.V2_4_3_8606)
+                        if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_2_9056))
                             packet.ReadInt32(); //not sure, orientation is incorrect in 2.4.1, this int is probably involved
 
                         packet.ReadSingle("Final Spline Orientation", index);
@@ -451,7 +451,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Spline Full Time", index);
                     packet.ReadInt32("Spline Unk Int32 1", index);
 
-                    if (ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767)
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                     {
                         packet.ReadSingle("Spline Duration Multiplier", index);
                         packet.ReadSingle("Spline Unit Interval", index);
@@ -463,7 +463,7 @@ namespace WowPacketParser.Parsing.Parsers
                     for (var i = 0; i < splineCount; i++)
                         packet.ReadVector3("Spline Waypoint", index, i);
 
-                    if (ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767)
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                         packet.ReadEnum<SplineMode>("Spline Mode", TypeCode.Byte, index);
 
                     packet.ReadVector3("Spline Endpoint", index);
@@ -521,7 +521,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
 
-            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadBoolean("Despawn Animation");
         }
     }

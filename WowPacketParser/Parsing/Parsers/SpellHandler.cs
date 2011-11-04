@@ -54,7 +54,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
             {
                 int spellId;
-                if (ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767)
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                     spellId = packet.ReadInt32();
                 else
                     spellId = packet.ReadUInt16();
@@ -99,7 +99,7 @@ namespace WowPacketParser.Parsing.Parsers
                 return null;
             aura.SpellId = (uint)id;
 
-            var type = ClientVersion.Version > ClientVersionBuild.V4_2_0_14333 ? TypeCode.Int16 : TypeCode.Byte;
+            var type = ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0a_14480) ? TypeCode.Int16 : TypeCode.Byte;
             aura.AuraFlags = packet.ReadEnum<AuraFlag>("Flags", type);
 
             aura.Level = packet.ReadByte("Level");
@@ -158,15 +158,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Caster GUID");
             packet.ReadPackedGuid("Caster Unit GUID");
 
-            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadByte("Cast Count");
 
             Console.WriteLine("Spell ID: " + Extensions.SpellLine(packet.ReadInt32()));
 
-            if (ClientVersion.Version <= ClientVersionBuild.V2_4_3_8606 && !isSpellGo)
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_2_9056) && !isSpellGo)
                 packet.ReadByte("Cast Count");
 
-            var flagsTypeCode = ClientVersion.Version > ClientVersionBuild.V2_4_3_8606 ? TypeCode.Int32 : TypeCode.UInt16;
+            var flagsTypeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056) ? TypeCode.Int32 : TypeCode.UInt16;
             var flags = packet.ReadEnum<CastFlag>("Cast Flags", flagsTypeCode);
 
             packet.ReadInt32("Time");
@@ -202,7 +202,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (targetFlags.HasAnyFlag(TargetFlag.SourceLocation))
             {
-                if (ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192)
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
                     packet.ReadPackedGuid("Source Transport GUID");
 
                 packet.ReadVector3("Source Position");
@@ -210,7 +210,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (targetFlags.HasAnyFlag(TargetFlag.DestinationLocation))
             {
-                if (ClientVersion.Version >= ClientVersionBuild.V3_0_8_9464)
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
                     packet.ReadPackedGuid("Destination Transport GUID");
 
                 packet.ReadVector3("Destination Position");
@@ -219,7 +219,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (targetFlags.HasAnyFlag(TargetFlag.NameString))
                 packet.ReadCString("Target String");
 
-            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
             {
                 if (flags.HasAnyFlag(CastFlag.PredictedPower))
                     packet.ReadInt32("Rune Cooldown");
@@ -258,7 +258,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<InventoryType>("Ammo Inventory Type", TypeCode.Int32);
             }
 
-            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
             {
                 if (isSpellGo)
                 {
@@ -357,7 +357,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var damage = packet.ReadUInt32();
                     Console.WriteLine("Damage: " + damage);
 
-                    if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                         packet.ReadUInt32("Over damage");
 
                     var spellProto = packet.ReadUInt32();
@@ -369,7 +369,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var resist = packet.ReadUInt32();
                     Console.WriteLine("Resist: " + resist);
 
-                    if (ClientVersion.Version >= ClientVersionBuild.V3_1_2_9901)
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
                         packet.ReadByte("Critical");
 
                     break;
@@ -380,13 +380,13 @@ namespace WowPacketParser.Parsing.Parsers
                     var damage = packet.ReadUInt32();
                     Console.WriteLine("Damage: " + damage);
 
-                    if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                         packet.ReadUInt32("Over damage");
 
-                    if (ClientVersion.Version >= ClientVersionBuild.V3_3_5_12213) // no idea when this was added exactly
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_5_12213)) // no idea when this was added exactly
                         packet.ReadUInt32("Absorb");
 
-                    if (ClientVersion.Version >= ClientVersionBuild.V3_1_2_9901)
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
                         packet.ReadByte("Critical");
 
                     break;
@@ -506,7 +506,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
             packet.ReadUInt32("Damage");
 
-            if (ClientVersion.Version >= ClientVersionBuild.V3_0_3_9183)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183))
                 packet.ReadUInt32("Overkill");
 
             packet.ReadByte("SchoolMask");
@@ -527,10 +527,10 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
             packet.ReadUInt32("Damage");
 
-            if (ClientVersion.Version >= ClientVersionBuild.V3_0_3_9183)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183))
                 packet.ReadUInt32("Overheal");
 
-            if (ClientVersion.Version >= ClientVersionBuild.V3_3_5_12213) // no idea when this was added exactly
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_5_12213)) // no idea when this was added exactly
                 packet.ReadUInt32("Absorb");
 
             packet.ReadBoolean("Critical");

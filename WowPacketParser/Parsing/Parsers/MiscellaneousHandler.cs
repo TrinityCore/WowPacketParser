@@ -39,7 +39,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Unk bool");
             packet.ReadBoolean("Enable Voice Chat");
 
-            if (ClientVersion.Version >= ClientVersionBuild.V4_2_0_14333)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
             {
                 packet.ReadByte("Complain System Status");
                 packet.ReadInt32("Unknown Mail Url Related Value");
@@ -240,7 +240,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("GUID");
             packet.ReadEnum<PowerType>("Type", TypeCode.Byte);
 
-            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 packet.ReadUInt32("Unk int32");
 
             packet.ReadUInt32("Value");
@@ -387,7 +387,7 @@ namespace WowPacketParser.Parsing.Parsers
             var counter = packet.ReadUInt32("List count");
             packet.ReadUInt32("Online count");
 
-            if (ClientVersion.Version >= ClientVersionBuild.V4_2_2_14545)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                 packet.ReadUInt32("Unk int32");
 
             for (var i = 0; i < counter; ++i)

@@ -28,7 +28,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_NAME_QUERY_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
-            if (ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
                 packet.ReadPackedGuid("GUID");
                 var end = packet.ReadBoolean();
@@ -43,7 +43,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Name");
             packet.ReadCString("Realm Name");
 
-            TypeCode typeCode = ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767 ? TypeCode.Byte : TypeCode.Int32;
+            TypeCode typeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767) ? TypeCode.Byte : TypeCode.Int32;
             packet.ReadEnum<Race>("Race", typeCode);
             packet.ReadEnum<Gender>("Gender", typeCode);
             packet.ReadEnum<Class>("Class", typeCode);
@@ -94,7 +94,7 @@ namespace WowPacketParser.Parsing.Parsers
             var rank = packet.ReadEnum<CreatureRank>("Rank", TypeCode.Int32);
 
             var killCredit = new int[2];
-            if (ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
                 for (var i = 0; i < 2; i++)
                     killCredit[i] = packet.ReadInt32("Kill Credit", i);
@@ -114,11 +114,11 @@ namespace WowPacketParser.Parsing.Parsers
 
             var racialLeader = packet.ReadBoolean("Racial Leader");
 
-            var qItemCount = ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192 ? 6 : 4;
+            var qItemCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 6 : 4;
             var qItem = new int[qItemCount];
             var moveId = 0;
 
-            if (ClientVersion.Version >= ClientVersionBuild.V3_1_0_9767)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
                 for (var i = 0; i < qItemCount; i++)
                     qItem[i] = packet.ReadInt32("Quest Item", i);
@@ -126,10 +126,10 @@ namespace WowPacketParser.Parsing.Parsers
                 moveId = packet.ReadInt32("Movement ID");
             }
 
-            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);
 
-            if (ClientVersion.Version >= ClientVersionBuild.V4_1_0_13914)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_1_0_13914))
                 packet.ReadInt32("Unknown");
 
             SQLStore.WriteData(SQLStore.Creatures.GetCommand(entry.Key, name[0], subName, iconName, typeFlags,

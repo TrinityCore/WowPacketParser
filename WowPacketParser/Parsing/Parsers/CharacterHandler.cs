@@ -146,7 +146,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Guild Id");
                 packet.ReadEnum<CharacterFlag>("Character Flags", TypeCode.Int32);
 
-                if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                     packet.ReadEnum<CustomizationFlag>("Customization Flags", TypeCode.Int32);
 
                 var firstLogin = packet.ReadBoolean("First Login");
@@ -161,7 +161,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Equip Aura Id");
                 }
 
-                int bagCount = ClientVersion.Version >= ClientVersionBuild.V3_3_3_11685 ? 4 : 1;
+                int bagCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685) ? 4 : 1;
                 for (var j = 0; j < bagCount; j++)
                 {
                     packet.ReadInt32("Bag Display Id");

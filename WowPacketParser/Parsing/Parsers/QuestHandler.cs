@@ -29,7 +29,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Level: " + level);
 
             var minLevel = 0;
-            if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 minLevel = packet.ReadInt32("Min Level");
 
             var sort = (QuestSort)packet.ReadInt32();
@@ -56,7 +56,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Next Chain Quest: " + nextQuest);
 
             var xpId = 0;
-            if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 xpId = packet.ReadInt32("Quest XP ID");
 
             var rewReqMoney = packet.ReadInt32();
@@ -75,7 +75,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Reward Honor: " + rewHonor);
 
             var rewHonorBonus = 0f;
-            if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 rewHonorBonus = packet.ReadSingle("Reward Honor Multiplier");
 
             var srcItemId = packet.ReadInt32();
@@ -85,12 +85,12 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Flags: " + flags);
 
             var titleId = 0;
-            if (ClientVersion.Version >= ClientVersionBuild.V2_4_0_8089)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_4_0_8089))
                 titleId = packet.ReadInt32("Title ID");
 
             var reqPlayerKills = 0;
             var bonusTalents = 0;
-            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
             {
                 reqPlayerKills = packet.ReadInt32("Required Player Kills");
                 bonusTalents = packet.ReadInt32("Bonus Talents");
@@ -98,7 +98,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var bonusArenaPoints = 0;
             var bonusUnk = 0;
-            if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
             {
                 bonusArenaPoints = packet.ReadInt32("Bonus Arena Points");
                 bonusUnk = packet.ReadInt32("Unk Int32");
@@ -130,7 +130,7 @@ namespace WowPacketParser.Parsing.Parsers
             var rewRepIdx = new int[5];
             var rewRepOverride = new int[5];
 
-            if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
             {
                 for (var i = 0; i < 5; i++)
                     rewFactionId[i] = packet.ReadInt32("Reward Faction ID", i);
@@ -167,7 +167,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("End Text: " + endText);
 
             var returnText = string.Empty;
-            if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 returnText = packet.ReadCString("Return Text");
 
             var reqId = new KeyValuePair<int, bool>[4];
@@ -175,7 +175,7 @@ namespace WowPacketParser.Parsing.Parsers
             var srcId = new int[4];
             var srcCnt = new int[4];
 
-            var reqItemFieldCount = ClientVersion.Version >= ClientVersionBuild.V3_0_8_9464 ? 6 : 4;
+            var reqItemFieldCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464) ? 6 : 4;
             var reqItemId = new int[reqItemFieldCount];
             var reqItemCnt = new int[reqItemFieldCount];
 
@@ -187,20 +187,20 @@ namespace WowPacketParser.Parsing.Parsers
 
                 reqCnt[i] = packet.ReadInt32("Required Count", i);
 
-                if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                     srcId[i] = packet.ReadInt32("Source ID", i);
 
-                if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                     srcCnt[i] = packet.ReadInt32("Source Count", i);
 
-                if (ClientVersion.Version < ClientVersionBuild.V3_0_8_9464)
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_8_9464))
                 {
                     reqItemId[i] = packet.ReadInt32("Required Item ID", i);
                     reqItemCnt[i] = packet.ReadInt32("Required Item Count", i);
                 }
             }
 
-            if (ClientVersion.Version >= ClientVersionBuild.V3_0_8_9464)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
             {
                 for (var i = 0; i < reqItemFieldCount; i++)
                 {
@@ -341,7 +341,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
             packet.ReadUInt32("Quest Id");
 
-            if (ClientVersion.Version >= ClientVersionBuild.V3_1_2_9901)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
                 packet.ReadUInt32("Unk UInt32");
         }
 
@@ -350,7 +350,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID1");
 
-            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadGuid("GUID2");
 
             packet.ReadUInt32("Quest Id");
@@ -358,7 +358,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Details");
             packet.ReadCString("Objectives");
 
-            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
                 packet.ReadCString("Target Text Window");
                 packet.ReadCString("Target Name");
@@ -368,7 +368,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             var flags = QuestFlag.None;
-            if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
             {
                 packet.ReadByte("AutoAccept");
                 flags = packet.ReadEnum<QuestFlag>("Quest Flags", TypeCode.UInt32);
@@ -378,10 +378,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadUInt32("Suggested Players");
 
-            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadByte("Unknown byte");
 
-            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
                 packet.ReadByte("Start Type");
                 Console.WriteLine("Required Spell: " + Extensions.SpellLine(packet.ReadInt32()));
@@ -393,14 +393,14 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Hidden Items");
                 packet.ReadUInt32("Hidden Money");
 
-                if (ClientVersion.Version >= ClientVersionBuild.V3_2_2_10482)
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_2_10482))
                     packet.ReadUInt32("Hidden XP");
             }
             else
             {
                 var choiceCount = packet.ReadUInt32("Choice Item Count");
 
-                if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 {
                     for (var i = 0; i < choiceCount; i++)
                         packet.ReadUInt32("Choice Item Id", i);
@@ -437,11 +437,11 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadUInt32("Money");
 
-                if (ClientVersion.Version >= ClientVersionBuild.V3_2_2_10482)
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_2_10482))
                     packet.ReadUInt32("XP");
             }
 
-            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
                 packet.ReadUInt32("Title Id");
                 packet.ReadUInt32("Unknown UInt32");
@@ -454,24 +454,24 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadUInt32("Honor Points");
 
-                if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                     packet.ReadSingle("Honor Multiplier");
 
                 Console.WriteLine("Spell Id: " + Extensions.SpellLine(packet.ReadInt32()));
                 Console.WriteLine("Spell Cast Id: " + Extensions.SpellLine(packet.ReadInt32()));
                 packet.ReadUInt32("Title Id");
 
-                if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                     packet.ReadUInt32("Bonus Talents");
 
-                if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 {
                     packet.ReadUInt32("Arena Points");
                     packet.ReadUInt32("Unk UInt32");
                 }
             }
 
-            if (ClientVersion.Version >= ClientVersionBuild.V3_3_0_10958)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
             {
                 for (var i = 0; i < 5; i++)
                     packet.ReadUInt32("[" + i + "] Reputation Faction");
@@ -483,7 +483,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("[" + i + "] Reputation Value");
             }
 
-            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
                 Console.WriteLine("Spell Id: " + Extensions.SpellLine(packet.ReadInt32()));
                 Console.WriteLine("Spell Cast Id: " + Extensions.SpellLine(packet.ReadInt32()));

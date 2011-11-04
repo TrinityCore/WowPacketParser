@@ -14,12 +14,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
         public static void HandleServerAuthChallenge(Packet packet)
         {
-            if (ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
                 packet.ReadInt32("Shuffle Count");
 
             packet.ReadInt32("Server Seed");
 
-            if (ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
                 for (var i = 0; i < 8; i++)
                     packet.ReadInt32("Server State", i);
         }
@@ -33,12 +33,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32 1");
             packet.ReadCString("Account");
 
-            if (ClientVersion.Version > ClientVersionBuild.V2_4_3_8606)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadInt32("Unk Int32 2");
 
             packet.ReadInt32("Client Seed");
 
-            if (ClientVersion.Version >= ClientVersionBuild.V3_2_0_10192)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
                 packet.ReadInt64("Unk Int64");
 
             Console.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(packet.ReadBytes(20)));

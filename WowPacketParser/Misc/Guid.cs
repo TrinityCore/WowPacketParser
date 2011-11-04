@@ -51,7 +51,7 @@ namespace WowPacketParser.Misc
             if (!HasEntry())
                 return 0;
 
-            if (ClientVersion.Version > ClientVersionBuild.V3_3_5a_12340)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 return (uint)((Full & 0x000FFFFF00000000) >> 32);
             return     (uint)((Full & 0x000FFFFFFF000000) >> 24);
         }

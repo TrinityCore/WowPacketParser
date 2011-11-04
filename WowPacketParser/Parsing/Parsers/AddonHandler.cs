@@ -13,7 +13,7 @@ namespace WowPacketParser.Parsing.Parsers
             var decompCount = packet.ReadInt32();
             packet = packet.Inflate(decompCount);
 
-            if (ClientVersion.Version >= ClientVersionBuild.V3_0_8_9464)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
             {
                 var count = packet.ReadInt32("Addons Count");
                 _addonCount = count;
@@ -79,7 +79,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("Addon URL File");
             }
 
-            if (ClientVersion.Version >= ClientVersionBuild.V3_0_8_9464)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
             {
                 var bannedCount = packet.ReadInt32("Banned Addons Count");
 
@@ -95,7 +95,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                     packet.ReadInt32("Unk Int32 3");
 
-                    if (ClientVersion.Version >= ClientVersionBuild.V3_3_3a_11723)
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3a_11723))
                         packet.ReadInt32("Unk Int32 4");
                 }
             }
