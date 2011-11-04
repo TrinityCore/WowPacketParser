@@ -8,16 +8,16 @@ namespace WowPacketParser.Misc
 {
     public static class Utilities
     {
-        public static DateTime GetDateTimeFromUnixTime(int unixTime)
+        private static readonly DateTime _epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+        public static DateTime GetDateTimeFromUnixTime(double unixTime)
         {
-            return new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(unixTime);
+            return _epoch.AddSeconds(unixTime);
         }
 
         public static double GetUnixTimeFromDateTime(DateTime time)
         {
-            DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            TimeSpan span = (time - epoch);
-            return span.TotalSeconds;
+            return (time - _epoch).TotalSeconds;
         }
 
         public static byte[] HexStringToBinary(string data)

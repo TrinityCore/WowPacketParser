@@ -62,7 +62,7 @@ namespace WowPacketParser.Loading
                     break;
                 case PktVersion.V3_0:
                     _reader.ReadByte();                         // sniffer id
-                    SetBuild(_reader.ReadInt32());              // client build
+                    SetBuild(_reader.ReadUInt32());             // client build
                     _reader.ReadBytes(4);                       // client locale
                     _reader.ReadBytes(40);                      // session key
                     additionalLength = _reader.ReadInt32();
@@ -70,18 +70,22 @@ namespace WowPacketParser.Loading
                     break;
                 case PktVersion.V3_1:
                     _reader.ReadByte();                         // sniffer id
-                    SetBuild(_reader.ReadInt32());              // client build
+                    SetBuild(_reader.ReadUInt32());             // client build
                     _reader.ReadBytes(4);                       // client locale
                     _reader.ReadBytes(40);                      // session key
-                    _startTime = Utilities.GetDateTimeFromUnixTime(_reader.ReadInt32()); // start time
+                    _startTime = Utilities.GetDateTimeFromUnixTime(_reader.ReadUInt32()); // start time
                     _startTickCount = _reader.ReadUInt32();     // start tick count
                     additionalLength = _reader.ReadInt32();
                     _reader.ReadBytes(additionalLength);
                     break;
+                default:
+                    // not supported version - let's assume the PKT bytes were a coincidence
+                    _reader.BaseStream.Position = 0;
+                    break;
             }
         }
 
-        void SetBuild(int build)
+        void SetBuild(uint build)
         {
             if (ClientVersion.Build == ClientVersionBuild.Zero)
                 ClientVersion.Build = (ClientVersionBuild)build;
@@ -130,13 +134,13 @@ namespace WowPacketParser.Loading
                         if (pktVersion == PktVersion.V3_0)
                         {
                             time = Utilities.GetDateTimeFromUnixTime(_reader.ReadInt32());
-                            var tickCount = _reader.ReadInt32();
+                            var tickCount = _reader.ReadUInt32();
                             time = time.AddMilliseconds(tickCount);
                         }
                         else
                         {
                             _reader.ReadUInt32(); // session id
-                            var tickCount = _reader.ReadInt32();
+                            var tickCount = _reader.ReadUInt32();
                             time = _startTime.AddMilliseconds(tickCount - _startTickCount);
                         }
 
@@ -150,7 +154,7 @@ namespace WowPacketParser.Loading
                         opcode = _reader.ReadUInt16();
                         length = _reader.ReadInt32();
                         direction = (Direction)_reader.ReadByte();
-                        time = Utilities.GetDateTimeFromUnixTime((int)_reader.ReadInt64());
+                        time = Utilities.GetDateTimeFromUnixTime(_reader.ReadInt64());
                         data = _reader.ReadBytes(length);
                         break;
                 }
