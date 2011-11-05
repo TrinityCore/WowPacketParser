@@ -69,7 +69,7 @@ namespace WowPacketParser.Parsing.Parsers
             var reqSkLvl = packet.ReadInt32("Required Skill Level");
 
             var reqSpell = packet.ReadInt32();
-            Console.WriteLine("Required Spell: " + Extensions.SpellLine(reqSpell));
+            Console.WriteLine("Required Spell: " + StoreGetters.GetName(StoreNameType.Spell, reqSpell));
 
             var reqHonor = packet.ReadInt32("Required Honor Rank");
 
@@ -137,7 +137,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 5; i++)
             {
                 spellId[i] = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Triggered Spell ID: " + Extensions.SpellLine(spellId[i]));
+                Console.WriteLine("[" + i + "] Triggered Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, spellId[i]));
 
                 spellTrigger[i] = packet.ReadEnum<ItemSpellTriggerType>("Trigger Spell Type", TypeCode.Int32, i);
                 spellCharges[i] = packet.ReadInt32("Triggered Spell Charges", i);
@@ -178,7 +178,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             // In this single (?) case, map 0 means no map
             var map = packet.ReadInt32();
-            Console.WriteLine("Map ID: " + (map != 0 ? Extensions.MapLine(map) : map + " (No map)"));
+            Console.WriteLine("Map ID: " + (map != 0 ? StoreGetters.GetName(StoreNameType.Map, map) : map + " (No map)"));
 
             var bagFamily = packet.ReadEnum<BagFamilyMask>("Bag Family", TypeCode.Int32);
 
@@ -241,7 +241,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleItemCooldown(Packet packet)
         {
             packet.ReadGuid("GUID");
-            Console.WriteLine("Spell ID " + Extensions.SpellLine(packet.ReadInt32()));
+            Console.WriteLine("Spell ID " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
         }
     }
 }

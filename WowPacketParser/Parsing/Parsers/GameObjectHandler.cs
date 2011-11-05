@@ -60,7 +60,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Vehicle GUID:");
             packet.ReadPackedGuid("Player GUID");
             packet.ReadInt32("Damage");
-            Console.WriteLine("Spell ID: " + Extensions.SpellLine(packet.ReadInt32()));
+            Console.WriteLine("Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
         }
 
         [Parser(Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM)]

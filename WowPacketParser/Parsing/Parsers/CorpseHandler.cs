@@ -17,11 +17,11 @@ namespace WowPacketParser.Parsing.Parsers
             if (!found)
                 return;
 
-            Console.WriteLine("Map ID: " + Extensions.MapLine(packet.ReadInt32()));
+            Console.WriteLine("Map ID: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
 
             packet.ReadVector3("Corpse Position");
 
-            Console.WriteLine("Corpse Map ID: " + Extensions.MapLine(packet.ReadInt32()));
+            Console.WriteLine("Corpse Map ID: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
 
             packet.ReadInt32("Corpse Low GUID");
         }

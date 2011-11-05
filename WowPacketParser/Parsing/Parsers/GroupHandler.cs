@@ -95,7 +95,7 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     if ((auraMask & ((ulong)1 << i)) != 0)
                     {
-                        Console.WriteLine("Slot: [" + i + "] Spell ID: " + Extensions.SpellLine(packet.ReadInt32()));
+                        Console.WriteLine("Slot: [" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
                         packet.ReadEnum<AuraFlag>("Slot: [" + i + "] Aura flag", TypeCode.Byte);
                     }
                 }
@@ -133,7 +133,7 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     if ((auraMask & ((ulong)1 << i)) != 0)
                     {
-                        Console.WriteLine("Slot: [" + i + "] Spell ID: " + Extensions.SpellLine(packet.ReadInt32()));
+                        Console.WriteLine("Slot: [" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
                         packet.ReadEnum<AuraFlag>("Slot: [" + i + "] Aura flag", TypeCode.Byte);
                     }
                 }

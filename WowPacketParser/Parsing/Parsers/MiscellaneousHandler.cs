@@ -216,7 +216,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_DEATH_RELEASE_LOC)]
         public static void HandleDeathReleaseLoc(Packet packet)
         {
-            Console.WriteLine("Map Id: " + Extensions.MapLine(packet.ReadInt32()));
+            Console.WriteLine("Map Id: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
             packet.ReadVector3("Position");
         }
 

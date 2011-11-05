@@ -24,7 +24,7 @@ namespace WowPacketParser.Misc
         public override string ToString()
         {
             return "Full: 0x" + Full.ToString("X4") + " Type: " + GetLfgType() + " Instance: " +
-                Extensions.DungeonLine(GetInstanceId());
+                StoreGetters.GetName(StoreNameType.LFGDungeon, GetInstanceId());
         }
     }
 }

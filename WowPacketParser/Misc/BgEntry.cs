@@ -1,3 +1,5 @@
+using WowPacketParser.Enums;
+
 namespace WowPacketParser.Misc
 {
     public struct BgEntry
@@ -26,7 +28,7 @@ namespace WowPacketParser.Misc
 
         public override string ToString()
         {
-            var text = "Type: " + Extensions.BattlegroundLine(GetBgType()) + " Unk: " + GetUnk();
+            var text = "Type: " + StoreGetters.GetName(StoreNameType.Battleground, GetBgType()) + " Unk: " + GetUnk();
             if (GetArenaType() > 0) // Arenas
                 text += " ArenaType: " + GetArenaType();
 

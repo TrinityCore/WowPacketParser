@@ -9,7 +9,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_INIT_WORLD_STATES)]
         public static void HandleInitWorldStates(Packet packet)
         {
-            Console.WriteLine("Map ID: " + Extensions.MapLine(packet.ReadInt32()));
+            Console.WriteLine("Map ID: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
             packet.ReadInt32("Zone ID");
             packet.ReadInt32("Area ID");
 

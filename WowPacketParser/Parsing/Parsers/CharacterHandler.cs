@@ -140,7 +140,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var level = packet.ReadByte("Level");
                 var zone = packet.ReadInt32("Zone Id");
                 var mapId = packet.ReadInt32();
-                Console.WriteLine("Map Id: " + Extensions.MapLine(mapId));
+                Console.WriteLine("Map Id: " + StoreGetters.GetName(StoreNameType.Map, mapId));
 
                 var pos = packet.ReadVector3("Position");
                 packet.ReadInt32("Guild Id");

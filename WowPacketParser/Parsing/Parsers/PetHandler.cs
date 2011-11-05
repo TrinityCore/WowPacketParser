@@ -46,7 +46,7 @@ namespace WowPacketParser.Parsing.Parsers
                     if (spellId == 0)
                         continue;
                 }
-                Console.WriteLine("Spell " + slotid + ": " + Extensions.SpellLine(spellId));
+                Console.WriteLine("Spell " + slotid + ": " + StoreGetters.GetName(StoreNameType.Spell, spellId));
             }
 
             var spellCount = packet.ReadByte(); // vehicles -> 0, pets -> != 0. Could this be auras?
@@ -57,7 +57,7 @@ namespace WowPacketParser.Parsing.Parsers
                 // Sent as int32
                 var spellId = packet.ReadUInt16();
                 var active = packet.ReadInt16();
-                Console.WriteLine("Spell " + i + ": " + Extensions.SpellLine(spellId) + ", active: " + active);
+                Console.WriteLine("Spell " + i + ": " + StoreGetters.GetName(StoreNameType.Spell, spellId) + ", active: " + active);
             }
 
             var cdCount = packet.ReadByte();
@@ -70,7 +70,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var cooldown = packet.ReadUInt32();
                 var categoryCooldown = packet.ReadUInt32();
 
-                Console.WriteLine("Cooldown: Spell: " + Extensions.SpellLine(spellId) + " category: " + category +
+                Console.WriteLine("Cooldown: Spell: " + StoreGetters.GetName(StoreNameType.Spell, spellId) + " category: " + category +
                     " cooldown: " + cooldown + " category cooldown: " + categoryCooldown);
             }
         }
@@ -111,7 +111,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PET_REMOVED_SPELL)]
         public static void HandlePetSpellsLearnedRemoved(Packet packet)
         {
-            Console.WriteLine("Spell: " + Extensions.SpellLine(packet.ReadInt32()));
+            Console.WriteLine("Spell: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
         }
 
         [Parser(Opcode.SMSG_PET_ACTION_FEEDBACK)]
@@ -122,7 +122,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 //case 1: Pet is dead
                 case 2:
-                    Console.WriteLine("Spell: " + Extensions.SpellLine(packet.ReadInt32()));
+                    Console.WriteLine("Spell: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
                     break;
                 case 3:
                     // Invalid attack target

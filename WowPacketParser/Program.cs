@@ -124,9 +124,11 @@ namespace WowPacketParser
 
                             stats.StartTime = DateTime.Now;
                             var outFileName = Path.ChangeExtension(file, null) + "_parsed";
+                            var outLogFileName = outFileName + ".txt";
+                            var outSqlFileName = outFileName + ".sql";
 
-                            SQLStore.Initialize(outFileName + ".sql", sqlOutput);
-                            Handler.InitializeLogFile(outFileName + ".txt", dumpFormat == SniffType.None);
+                            SQLStore.Initialize(outSqlFileName, sqlOutput);
+                            Handler.InitializeLogFile(outLogFileName, dumpFormat == SniffType.None);
 
                             foreach (var packet in packets)
                                 Handler.Parse(packet, ref stats);
@@ -140,7 +142,7 @@ namespace WowPacketParser
                             var standardOutput = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
                             Console.SetOut(standardOutput);
                             Console.WriteLine(stats.Stats());
-                            Console.WriteLine("Saved file to '{0}'", outFileName);
+                            Console.WriteLine("Saved file to '{0}'", outLogFileName);
                             Console.WriteLine();
                         }
                     }

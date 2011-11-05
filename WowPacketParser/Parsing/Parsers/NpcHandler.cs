@@ -31,7 +31,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleServerTrainerBuySucceedeed(Packet packet)
         {
             packet.ReadGuid("GUID");
-            Console.WriteLine("Spell ID: " + Extensions.SpellLine(packet.ReadInt32()));
+            Console.WriteLine("Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
         }
 
         [Parser(Opcode.SMSG_TRAINER_LIST)]
@@ -48,7 +48,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
             {
                 var spell = packet.ReadInt32();
-                Console.WriteLine("Spell ID " + i + ": " + Extensions.SpellLine(spell));
+                Console.WriteLine("Spell ID " + i + ": " + StoreGetters.GetName(StoreNameType.Spell, spell));
 
                 var state = (TrainerSpellState)packet.ReadByte();
                 Console.WriteLine("State " + i + ": " + state);

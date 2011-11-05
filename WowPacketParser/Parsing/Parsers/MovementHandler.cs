@@ -198,7 +198,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleEnterWorld(Packet packet)
         {
             var mapId = packet.ReadInt32();
-            Console.WriteLine("Map ID: " + Extensions.MapLine(mapId));
+            Console.WriteLine("Map ID: " + StoreGetters.GetName(StoreNameType.Map, (int)mapId));
             CurrentMapId = mapId;
 
             var position = packet.ReadVector4();
@@ -232,7 +232,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadVector3("Position");
 
-            Console.WriteLine("Map ID: " + Extensions.MapLine(packet.ReadInt32()));
+            Console.WriteLine("Map ID: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
 
             packet.ReadInt32("Zone ID");
         }
@@ -452,7 +452,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
         public static void HandleTransferPending(Packet packet)
         {
-            Console.WriteLine("Map ID: " + Extensions.MapLine(packet.ReadInt32()));
+            Console.WriteLine("Map ID: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
 
             if (!packet.CanRead())
                 return;
@@ -460,13 +460,13 @@ namespace WowPacketParser.Parsing.Parsers
             var tEntry = packet.ReadInt32("Transport Entry");
             Console.WriteLine("Transport Entry: " + tEntry);
 
-            Console.WriteLine("Transport Map ID: " + Extensions.MapLine(packet.ReadInt32()));
+            Console.WriteLine("Transport Map ID: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
         }
 
         [Parser(Opcode.SMSG_TRANSFER_ABORTED)]
         public static void HandleTransferAborted(Packet packet)
         {
-            Console.WriteLine("Map ID: " + Extensions.MapLine(packet.ReadInt32()));
+            Console.WriteLine("Map ID: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
 
             var code = (TransferAbortReason)packet.ReadByte();
             Console.WriteLine("Reason: " + code);

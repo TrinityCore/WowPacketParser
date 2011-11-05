@@ -11,7 +11,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_COOLDOWN_EVENT)]
         public static void HandleCooldownEvent(Packet packet)
         {
-            Console.WriteLine("Spell ID: " + Extensions.SpellLine(packet.ReadInt32()));
+            Console.WriteLine("Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
             packet.ReadGuid("GUID");
         }
 
@@ -20,7 +20,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var count = packet.ReadInt32("Count");
             for (var i = 0; i < count; i++)
-                Console.WriteLine("[" + i + "] Spell ID: " + Extensions.SpellLine(packet.ReadInt32()));
+                Console.WriteLine("[" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
         }
 
         [Parser(Opcode.SMSG_RESUME_CAST_BAR)]
@@ -33,7 +33,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Target GUID: " + targetGuid);
 
             var spellId = packet.ReadInt32();
-            Console.WriteLine("Spell ID: " + Extensions.SpellLine(spellId));
+            Console.WriteLine("Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, spellId));
 
             var castTime = packet.ReadInt32();
             Console.WriteLine("Cast Time: " + castTime);
@@ -59,7 +59,7 @@ namespace WowPacketParser.Parsing.Parsers
                 else
                     spellId = packet.ReadUInt16();
 
-                Console.WriteLine("Spell ID " + i + ": " + Extensions.SpellLine(spellId));
+                Console.WriteLine("Spell ID " + i + ": " + StoreGetters.GetName(StoreNameType.Spell, spellId));
 
                 var unk16 = packet.ReadInt16();
                 Console.WriteLine("Unk Int16: " + unk16);
@@ -71,7 +71,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < cooldownCount; i++)
             {
                 var spellId = packet.ReadInt32();
-                Console.WriteLine("Cooldown Spell ID " + i + ": " + Extensions.SpellLine(spellId));
+                Console.WriteLine("Cooldown Spell ID " + i + ": " + StoreGetters.GetName(StoreNameType.Spell, spellId));
 
                 var castItemId = packet.ReadInt16();
                 Console.WriteLine("Cooldown Cast Item ID " + i + ": " + castItemId);
@@ -94,12 +94,12 @@ namespace WowPacketParser.Parsing.Parsers
             aura.Slot = packet.ReadByte("Slot");
 
             var id = packet.ReadInt32();
-            Console.WriteLine("ID: " + Extensions.SpellLine(id));
+            Console.WriteLine("ID: " + StoreGetters.GetName(StoreNameType.Spell, id));
             if (id <= 0)
                 return null;
             aura.SpellId = (uint)id;
 
-            var type = ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0a_14480) ? TypeCode.Int16 : TypeCode.Byte;
+            var type = ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) ? TypeCode.Int16 : TypeCode.Byte;
             aura.AuraFlags = packet.ReadEnum<AuraFlag>("Flags", type);
 
             aura.Level = packet.ReadByte("Level");
@@ -161,7 +161,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadByte("Cast Count");
 
-            Console.WriteLine("Spell ID: " + Extensions.SpellLine(packet.ReadInt32()));
+            Console.WriteLine("Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_2_9056) && !isSpellGo)
                 packet.ReadByte("Cast Count");
@@ -296,7 +296,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLearnedSpell(Packet packet)
         {
             var spellId = packet.ReadInt32();
-            Console.WriteLine("Spell ID: " + Extensions.SpellLine(spellId));
+            Console.WriteLine("Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, spellId));
 
             var unk = packet.ReadInt16();
             Console.WriteLine("Unk Int16: " + unk);
@@ -309,7 +309,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("GUID: " + guid);
 
             var spellId = packet.ReadInt32();
-            Console.WriteLine("Spell ID: " + Extensions.SpellLine(spellId));
+            Console.WriteLine("Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, spellId));
 
             var castId = packet.ReadByte();
             Console.WriteLine("Cast ID: " + castId);
@@ -341,7 +341,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Caster GUID: " + guid);
 
             var spellId = packet.ReadUInt32();
-            Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)spellId));
+            Console.WriteLine("Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, (int)spellId));
 
             var count = packet.ReadUInt32();
             Console.WriteLine("Count: " + count);
@@ -418,7 +418,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleRemovedSpell(Packet packet)
         {
             var spellId = packet.ReadUInt32();
-            Console.WriteLine("Spell ID: " + Extensions.SpellLine((int) spellId));
+            Console.WriteLine("Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, (int) spellId));
         }
 
         [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL)]
@@ -438,7 +438,7 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Cast count: " + castCount);
 
             var spellId = packet.ReadUInt32();
-            Console.WriteLine("Spell ID: " + Extensions.SpellLine((int) spellId));
+            Console.WriteLine("Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, (int) spellId));
 
             var result = packet.ReadEnum<SpellCastFailureReason>("Reason", TypeCode.Byte);
 
@@ -503,7 +503,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("Target GUID");
             packet.ReadPackedGuid("Caster GUID");
-            Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
+            Console.WriteLine("Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, (int)packet.ReadUInt32()));
             packet.ReadUInt32("Damage");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183))
@@ -524,7 +524,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("Target GUID");
             packet.ReadPackedGuid("Caster GUID");
-            Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
+            Console.WriteLine("Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, (int)packet.ReadUInt32()));
             packet.ReadUInt32("Damage");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183))
@@ -542,7 +542,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("Target GUID");
             packet.ReadPackedGuid("Caster GUID");
-            Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
+            Console.WriteLine("Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, (int)packet.ReadUInt32()));
             packet.ReadEnum<PowerType>("Power type", TypeCode.UInt32);
             packet.ReadUInt32("Amount");
         }
@@ -553,14 +553,14 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("Caster GUID");
             packet.ReadGuid("Target GUID");
-            Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
+            Console.WriteLine("Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, (int)packet.ReadUInt32()));
             packet.ReadBoolean("Debug output");
         }
 
         [Parser(Opcode.SMSG_SPELLLOGMISS)]
         public static void HandleSpellLogMiss(Packet packet)
         {
-            Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
+            Console.WriteLine("Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, (int)packet.ReadUInt32()));
             packet.ReadGuid("Caster GUID");
             packet.ReadBoolean("Unk bool");
 
@@ -582,7 +582,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSpellChannelStart(Packet packet)
         {
             packet.ReadPackedGuid("GUID");
-            Console.WriteLine("Spell ID: " + Extensions.SpellLine((int)packet.ReadUInt32()));
+            Console.WriteLine("Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, (int)packet.ReadUInt32()));
             packet.ReadUInt32("Duration");
         }
 

@@ -66,10 +66,10 @@ namespace WowPacketParser.Parsing.Parsers
             Console.WriteLine("Reward Money Max Level: " + rewMoneyMaxLvl);
 
             var rewSpell = packet.ReadInt32();
-            Console.WriteLine("Reward Spell: " + Extensions.SpellLine(rewSpell));
+            Console.WriteLine("Reward Spell: " + StoreGetters.GetName(StoreNameType.Spell, rewSpell));
 
             var rewSpellCast = packet.ReadInt32();
-            Console.WriteLine("Reward Spell Cast: " + Extensions.SpellLine(rewSpellCast));
+            Console.WriteLine("Reward Spell Cast: " + StoreGetters.GetName(StoreNameType.Spell, rewSpellCast));
 
             var rewHonor = packet.ReadInt32();
             Console.WriteLine("Reward Honor: " + rewHonor);
@@ -247,7 +247,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var objIndex = packet.ReadInt32("[" + i + "][" + j + "] Objective Index");
 
                     var mapId = packet.ReadInt32();
-                    var mapName = Extensions.MapLine(mapId);
+                    var mapName = StoreGetters.GetName(StoreNameType.Map, mapId);
                     Console.WriteLine("[" + i + "][" + j + "] Map Id: " + mapName);
                     var wmaId = packet.ReadInt32("[" + i + "][" + j + "] World Map Area");
                     var floorId = packet.ReadInt32("[" + i + "][" + j + "] Floor Id");
@@ -384,7 +384,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
                 packet.ReadByte("Start Type");
-                Console.WriteLine("Required Spell: " + Extensions.SpellLine(packet.ReadInt32()));
+                Console.WriteLine("Required Spell: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
             }
 
             if ((flags & QuestFlag.HiddenRewards) > 0)
@@ -457,8 +457,8 @@ namespace WowPacketParser.Parsing.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                     packet.ReadSingle("Honor Multiplier");
 
-                Console.WriteLine("Spell Id: " + Extensions.SpellLine(packet.ReadInt32()));
-                Console.WriteLine("Spell Cast Id: " + Extensions.SpellLine(packet.ReadInt32()));
+                Console.WriteLine("Spell Id: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
+                Console.WriteLine("Spell Cast Id: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
                 packet.ReadUInt32("Title Id");
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
@@ -485,8 +485,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
-                Console.WriteLine("Spell Id: " + Extensions.SpellLine(packet.ReadInt32()));
-                Console.WriteLine("Spell Cast Id: " + Extensions.SpellLine(packet.ReadInt32()));
+                Console.WriteLine("Spell Id: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
+                Console.WriteLine("Spell Cast Id: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
 
                 for (var i = 0; i < 4; i++)
                     packet.ReadUInt32("[" + i + "] " + "Unknown UInt32 1");
@@ -577,8 +577,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Honor Points");
             packet.ReadSingle("Honor Multiplier");
             packet.ReadUInt32("Unk UInt32 1");
-            Console.WriteLine("Spell Id: " + Extensions.SpellLine(packet.ReadInt32()));
-            Console.WriteLine("Spell Cast Id: " + Extensions.SpellLine(packet.ReadInt32()));
+            Console.WriteLine("Spell Id: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
+            Console.WriteLine("Spell Cast Id: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
             packet.ReadUInt32("Title Id");
             packet.ReadUInt32("Bonus Talent");
             packet.ReadUInt32("Arena Points");
