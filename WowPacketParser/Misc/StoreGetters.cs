@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using WowPacketParser.DBC.DBCStructures;
 using WowPacketParser.Enums;
+using WowPacketParser.SQL;
 
 namespace WowPacketParser.Misc
 {
@@ -12,7 +10,7 @@ namespace WowPacketParser.Misc
         public static string GetExistingDBCString(StoreNameType type, int entry)
         {
             if (entry <= 0 || !DBC.DBCStore.DBC.Enabled)
-                return String.Empty;
+                return string.Empty;
 
             switch (type)
             {
@@ -50,12 +48,42 @@ namespace WowPacketParser.Misc
             return "-Unknown-";
         }
 
+        public static string GetExistingDatabaseString(StoreNameType type, int entry)
+        {
+            if (entry <= 0 || !SQLConnector.Enabled)
+                return string.Empty;
+
+            string name = "-Unknown-";
+
+            switch (type)
+            {
+                case StoreNameType.Unit:
+                {
+                    if (SQLDatabase.UnitNames.TryGetValue((uint)entry, out name))
+                        return name;
+                    break;
+                }
+                case StoreNameType.GameObject:
+                {
+                    if (SQLDatabase.GameObjectNames.TryGetValue((uint)entry, out name))
+                        return name;
+                    break;
+                }
+                default:
+                    return string.Empty;
+            }
+            return name;
+        }
+
         public static string GetName(StoreNameType type, int entry)
         {
             if (type != StoreNameType.Map && entry <= 0)
                 return "0"; // map can be 0
 
-            var name = GetExistingDBCString(type, entry);
+            var name = type == StoreNameType.Unit || type == StoreNameType.GameObject
+                              ? GetExistingDatabaseString(type, entry)
+                              : GetExistingDBCString(type, entry);
+
             if (!String.IsNullOrEmpty(name))
                 return entry + " (" + name + ")";
 

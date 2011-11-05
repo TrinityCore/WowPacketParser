@@ -18,6 +18,5 @@
             str = str.Replace("\"", "\\\"");
             return str;
         }
-
     }
 }

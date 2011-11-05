@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
+using MySql.Data.MySqlClient;
 using WowPacketParser.DBC.DBCStructures;
 
 namespace WowPacketParser.Misc
@@ -26,6 +28,16 @@ namespace WowPacketParser.Misc
                     return true;
 
             return false;
+        }
+
+        public static Dictionary<T, TK> GetDictionary<T, TK>(this MySqlDataReader reader)
+        {
+            var dict = new Dictionary<T, TK>();
+
+            while (reader.Read())
+                dict.Add((T)reader.GetValue(0), (TK)reader.GetValue(1));
+
+            return dict;
         }
 
         public static string AsHex(this Packet packet)

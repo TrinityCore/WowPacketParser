@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using MySql.Data.MySqlClient;
 using WowPacketParser.Misc;
 
@@ -8,9 +9,17 @@ namespace WowPacketParser.SQL
     {
         private static MySqlConnection _conn;
 
+        public static bool Enabled = Settings.GetBoolean("DBEnabled");
+
         public static void Connect()
         {
-            Console.WriteLine("Connecting to MySQL server: " + ConnectionString);
+            if (!Enabled)
+            {
+                Console.WriteLine("DB queries are disabled. Will not connect.");
+                return;
+            }
+
+            Console.WriteLine("Connecting to MySQL server: " + ConnectionString.Replace("Password=" + Settings.GetString("Password") + ";", string.Empty)); // Do not print password
             _conn = new MySqlConnection(ConnectionString);
 
             try
@@ -23,6 +32,11 @@ namespace WowPacketParser.SQL
             }
         }
 
+        public static bool Connected()
+        {
+            return _conn.State == ConnectionState.Open;
+        }
+
         public static void Disconnect()
         {
             if (_conn != null)
@@ -32,7 +46,21 @@ namespace WowPacketParser.SQL
         public static MySqlDataReader ExecuteQuery(string input)
         {
             var command = new MySqlCommand(input, _conn);
-            return command.ExecuteReader();
+
+            try
+            {
+                return command.ExecuteReader();
+            }
+            catch (Exception e)
+            {
+
+                // Something wrong happened, disabling everything MySQL/DB related
+                Enabled = false;
+                Console.WriteLine(e.Message + " at query \"" + input + "\"");
+                Disconnect();
+            }
+
+            return null;
         }
 
         private static string ConnectionString

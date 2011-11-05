@@ -80,6 +80,21 @@ namespace WowPacketParser
                 Console.WriteLine();
             }
 
+            // Read DB
+            if (SQLConnector.Enabled)
+            {
+                var startTime = DateTime.Now;
+                Console.WriteLine("Loading DB...");
+
+                SQLConnector.Connect();
+                SQLDatabase.GrabData();
+
+                var endTime = DateTime.Now;
+                var span = endTime.Subtract(startTime);
+                Console.WriteLine("Finished loading DB - {0} Minutes, {1} Seconds and {2} Milliseconds.", span.Minutes, span.Seconds, span.Milliseconds);
+                Console.WriteLine();
+            }
+
             // Read binaries
             string[] files = args;
             if (args.Length == 1 && args[0].Contains('*'))

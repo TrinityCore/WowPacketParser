@@ -118,8 +118,23 @@ namespace WowPacketParser.Misc
         {
             if (Full == 0)
                 return "0x0";
+
+            // If our guid has an entry and it is an unit or a GO, print its
+            // name next to the entry (from a database, if enabled)
+            if (HasEntry())
+            {
+                StoreNameType type = StoreNameType.None;
+                if (GetObjectType() == ObjectType.Unit)
+                    type = StoreNameType.Unit;
+                if (GetObjectType() == ObjectType.GameObject)
+                    type = StoreNameType.GameObject;
+
+                return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()
+                       + " Entry: " + StoreGetters.GetName(type, (int)GetEntry()) + " Low: " + GetLow();
+            }
+
             return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()
-                + (HasEntry() ? " Entry: " + GetEntry() : string.Empty) + " Low: " + GetLow();
+                + " Low: " + GetLow();
         }
     }
 }
