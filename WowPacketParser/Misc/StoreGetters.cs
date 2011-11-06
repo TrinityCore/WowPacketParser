@@ -92,8 +92,8 @@ namespace WowPacketParser.Misc
             if (type != StoreNameType.Map && entry <= 0)
                 return "0"; // map can be 0
 
-            var name = type == StoreNameType.Unit || type == StoreNameType.GameObject
-                 || type == StoreNameType.Item || type == StoreNameType.Quest
+            var name = (type == StoreNameType.Unit || type == StoreNameType.GameObject
+                 || type == StoreNameType.Item || type == StoreNameType.Quest)
                               ? GetExistingDatabaseString(type, entry)
                               : GetExistingDBCString(type, entry);
 
