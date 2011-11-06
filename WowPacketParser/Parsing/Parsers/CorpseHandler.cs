@@ -17,11 +17,11 @@ namespace WowPacketParser.Parsing.Parsers
             if (!found)
                 return;
 
-            Console.WriteLine("Map ID: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
 
             packet.ReadVector3("Corpse Position");
 
-            Console.WriteLine("Corpse Map ID: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Corpse Map ID");
 
             packet.ReadInt32("Corpse Low GUID");
         }
@@ -43,7 +43,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CORPSE_RECLAIM_DELAY)]
         public static void HandleCorpseReclaimDelay(Packet packet)
         {
-           packet.ReadInt32("Delay");
+            packet.ReadInt32("Delay");
         }
 
         [Parser(Opcode.CMSG_RECLAIM_CORPSE)]

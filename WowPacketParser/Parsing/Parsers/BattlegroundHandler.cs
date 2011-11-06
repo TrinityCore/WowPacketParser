@@ -48,7 +48,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BATTLEFIELD_LIST)]
         public static void HandleBattlefieldListClient(Packet packet)
         {
-            Console.WriteLine("BGType: " + StoreGetters.GetName(StoreNameType.Battleground, packet.ReadInt32()));
+            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 return;
@@ -65,7 +65,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333))
                 packet.ReadBoolean("From UI");
 
-            Console.WriteLine("BGType: " + StoreGetters.GetName(StoreNameType.Battleground, packet.ReadInt32()));
+            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
             packet.ReadByte("Min Level");
             packet.ReadByte("Max Level");
             packet.ReadBoolean("Has Win");
@@ -111,7 +111,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadUInt32("Queue Slot");
 
-             // Hack - Sometimes found incomplete data... Old versions?
+            // Hack - Sometimes found incomplete data... Old versions?
             if (!ReadBgGuid(packet.ReadUInt64()))
             {
                 packet.SetPosition(packet.GetLength());
@@ -130,12 +130,12 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Time in queue");
                     break;
                 case BattlegroundStatus.WaitJoin:
-                    Console.WriteLine("Map ID: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
                     ReadBgGuid(packet.ReadUInt64());
                     packet.ReadUInt32("Time left");
                     break;
                 case BattlegroundStatus.InProgress:
-                    Console.WriteLine("Map ID: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
                     ReadBgGuid(packet.ReadUInt64());
                     packet.ReadUInt32("Auto Leave Time");
                     packet.ReadUInt32("Time in BG");
@@ -159,7 +159,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlemasterJoin(Packet packet)
         {
             packet.ReadGuid("GUID");
-            Console.WriteLine("BGType: " + StoreGetters.GetName(StoreNameType.Battleground, packet.ReadInt32()));
+            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
             packet.ReadUInt32("Instance Id");
             packet.ReadBoolean("As group");
         }

@@ -207,22 +207,22 @@ namespace WowPacketParser.Parsing.Parsers
             var slots = packet.ReadByte("Number of Slots");
             for (var i = 0; i < slots; i++)
             {
-                packet.ReadByte("[" + i + "] Slot Id");
-                var entry = packet.ReadUInt32("[" + i + "] Item Entry");
+                packet.ReadByte("Slot Id", i);
+                var entry = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item Entry", i);
                 if (entry > 0)
                 {
-                    packet.ReadEnum<ItemFlag>("[" + i + "] Item Flags?", TypeCode.UInt32);
-                    var ramdonEnchant = packet.ReadInt32("[" + i + "] Random Item Property Id");
+                    packet.ReadEnum<ItemFlag>("Item Flags?", TypeCode.UInt32, i);
+                    var ramdonEnchant = packet.ReadInt32("Random Item Property Id", i);
                     if (ramdonEnchant != 0)
-                        packet.ReadUInt32("[" + i + "] Item Suffix Factor");
-                    packet.ReadUInt32("[" + i + "] Stack Count");
-                    packet.ReadUInt32("[" + i + "] Unk Uint32 2"); // Only seen 0
-                    packet.ReadByte("[" + i + "] Spell Charges");
-                    var enchantment = packet.ReadByte("[" + i + "] Number of Enchantments");
+                        packet.ReadUInt32("Item Suffix Factor", i);
+                    packet.ReadUInt32("Stack Count", i);
+                    packet.ReadUInt32("Unk Uint32 2", i); // Only seen 0
+                    packet.ReadByte("Spell Charges", i);
+                    var enchantment = packet.ReadByte("Number of Enchantments", i);
                     for (var j = 0; j < enchantment; j++)
                     {
-                        packet.ReadByte("[" + i + "][" + j + "] Enchantment Slot Id");
-                        packet.ReadUInt32("[" + i + "][" + j + "] Enchantment Id");
+                        packet.ReadByte("Enchantment Slot Id", i, j);
+                        packet.ReadUInt32("Enchantment Id", i, j);
                     }
                 }
             }
@@ -237,10 +237,10 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadByte("Dest Tab Id");
                 packet.ReadByte("Dest Slot Id");
-                packet.ReadUInt32("Dest Item Entry");
+                packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Dest Item Entry");
                 packet.ReadByte("Tab Id");
                 packet.ReadByte("Slot Id");
-                packet.ReadUInt32("Item Entry");
+                packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item Entry");
                 packet.ReadByte("Unk Byte 1");
                 packet.ReadUInt32("Amount");
             }
@@ -248,7 +248,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadByte("Tab Id");
                 packet.ReadByte("Slot Id");
-                packet.ReadUInt32("Item Entry");
+                packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item Entry");
                 var autostore = packet.ReadBoolean("Autostore");
                 if (autostore)
                 {
@@ -355,7 +355,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Direction == Direction.ServerToClient)
             {
                 var size = packet.ReadByte("Size");
-                for (var i = 0 ; i < size; i++)
+                for (var i = 0; i < size; i++)
                 {
                     var type = packet.ReadEnum<GuildBankEventLogType>("[" + i + "] Bank Log Event Type", TypeCode.Byte);
                     packet.ReadGuid("[" + i + "] GUID");

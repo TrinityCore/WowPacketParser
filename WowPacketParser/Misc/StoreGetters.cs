@@ -69,6 +69,18 @@ namespace WowPacketParser.Misc
                         return name;
                     break;
                 }
+                case StoreNameType.Item:
+                {
+                    if (SQLDatabase.ItemNames.TryGetValue((uint)entry, out name))
+                        return name;
+                    break;
+                }
+                case StoreNameType.Quest:
+                {
+                    if (SQLDatabase.QuestNames.TryGetValue((uint)entry, out name))
+                        return name;
+                    break;
+                }
                 default:
                     return string.Empty;
             }
@@ -81,6 +93,7 @@ namespace WowPacketParser.Misc
                 return "0"; // map can be 0
 
             var name = type == StoreNameType.Unit || type == StoreNameType.GameObject
+                 || type == StoreNameType.Item || type == StoreNameType.Quest
                               ? GetExistingDatabaseString(type, entry)
                               : GetExistingDBCString(type, entry);
 

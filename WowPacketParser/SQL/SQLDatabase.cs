@@ -4,24 +4,35 @@ using WowPacketParser.Misc;
 
 namespace WowPacketParser.SQL
 {
+    // Note: When adding more queries here, do not forget to update StoreGetters.cs
     public static class SQLDatabase
     {
-        private const string UnitNameQuery = "SELECT entry, name FROM creature_template;";
-        private const string GameObjectNameQuery = "SELECT entry, name FROM gameobject_template;";
-
         public static Dictionary<uint, string> UnitNames;
         public static Dictionary<uint, string> GameObjectNames;
+        public static Dictionary<uint, string> ItemNames;
+        public static Dictionary<uint, string> QuestNames;
 
         public static void GrabData()
         {
             if (!SQLConnector.Connected())
                 throw new Exception("Cannot get DB data without an active DB connection.");
 
-            // `creature_template`.`entry`, `creature_template`.`name`
-            UnitNames = GetDict<uint, string>(UnitNameQuery);
+            const string unitNameQuery = "SELECT entry, name FROM creature_template;";
+            const string gameObjectNameQuery = "SELECT entry, name FROM gameobject_template;";
+            const string itemNameQuery = "SELECT entry, name FROM item_template;";
+            const string questNameQuery = "SELECT entry, Title FROM quest_template;";
 
-            // `gameobject_template`.`id`, `gameobject_template`.`name`
-            GameObjectNames = GetDict<uint, string>(GameObjectNameQuery);
+            // creature_template.entry, creature_template.name
+            UnitNames = GetDict<uint, string>(unitNameQuery);
+
+            // gameobject_template.entry, gameobject_template.name
+            GameObjectNames = GetDict<uint, string>(gameObjectNameQuery);
+
+            // item_template.entry, item_template.name
+            ItemNames = GetDict<uint, string>(itemNameQuery);
+
+            // item_template.entry, item_template.name
+            QuestNames = GetDict<uint, string>(questNameQuery);
         }
 
         // Returns a dictionary from a DB query with two parameters (e.g <creature_entry, creature_name>)

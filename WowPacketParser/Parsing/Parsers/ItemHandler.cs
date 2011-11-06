@@ -13,7 +13,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("Target");
             packet.ReadPackedGuid("Caster");
-            packet.ReadUInt32("Item Entry");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item Entry");
             packet.ReadUInt32("Enchantment ID?");
         }
 
@@ -68,8 +68,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var reqSkLvl = packet.ReadInt32("Required Skill Level");
 
-            var reqSpell = packet.ReadInt32();
-            Console.WriteLine("Required Spell: " + StoreGetters.GetName(StoreNameType.Spell, reqSpell));
+            var reqSpell = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Required Spell");
 
             var reqHonor = packet.ReadInt32("Required Honor Rank");
 
@@ -136,9 +135,7 @@ namespace WowPacketParser.Parsing.Parsers
             var spellCatCooldown = new int[5];
             for (var i = 0; i < 5; i++)
             {
-                spellId[i] = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Triggered Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, spellId[i]));
-
+                spellId[i] = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Triggered Spell ID", i);
                 spellTrigger[i] = packet.ReadEnum<ItemSpellTriggerType>("Trigger Spell Type", TypeCode.Int32, i);
                 spellCharges[i] = packet.ReadInt32("Triggered Spell Charges", i);
                 spellCooldown[i] = packet.ReadInt32("Triggered Spell Cooldown", i);
@@ -156,7 +153,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var pageMat = packet.ReadEnum<PageMaterial>("Page Material", TypeCode.Int32);
 
-            var startQuest = packet.ReadInt32("Start Quest");
+            var startQuest = packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Start Quest");
 
             var lockId = packet.ReadInt32("Lock ID");
 
@@ -241,7 +238,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleItemCooldown(Packet packet)
         {
             packet.ReadGuid("GUID");
-            Console.WriteLine("Spell ID " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+
         }
     }
 }

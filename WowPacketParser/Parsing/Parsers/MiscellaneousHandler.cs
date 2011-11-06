@@ -216,7 +216,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_DEATH_RELEASE_LOC)]
         public static void HandleDeathReleaseLoc(Packet packet)
         {
-            Console.WriteLine("Map Id: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
             packet.ReadVector3("Position");
         }
 
@@ -269,7 +269,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < speccount; ++i)
             {
                 var count2 = packet.ReadByte("Spec Talent Count ", i);
-                for (var j = 0 ; j < count2 ; ++j)
+                for (var j = 0; j < count2; ++j)
                 {
                     packet.ReadUInt32("Talent Id", i, j);
                     packet.ReadByte("Rank", i, j);

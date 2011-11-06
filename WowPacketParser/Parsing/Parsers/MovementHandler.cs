@@ -12,7 +12,7 @@ namespace WowPacketParser.Parsing.Parsers
     {
         public static Vector4 CurrentPosition;
 
-        public static int CurrentMapId;
+        public static uint CurrentMapId;
 
         public static int CurrentPhaseMask = 1;
 
@@ -23,7 +23,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static MovementInfo ReadMovementInfo(Packet packet, Guid guid, int index)
         {
-            string prefix = index < 0 ? "" : "[" + index + "] ";
+            string prefix = index < 0 ? string.Empty : "[" + index + "] ";
 
             var info = new MovementInfo();
             info.Flags = packet.ReadEnum<MovementFlag>(prefix + "Movement Flags", TypeCode.Int32);
@@ -113,27 +113,27 @@ namespace WowPacketParser.Parsing.Parsers
             switch (type)
             {
                 case SplineType.FacingSpot:
-                {
-                    var spot = packet.ReadVector3();
-                    Console.WriteLine("Facing Spot: " + spot);
-                    break;
-                }
+                    {
+                        var spot = packet.ReadVector3();
+                        Console.WriteLine("Facing Spot: " + spot);
+                        break;
+                    }
                 case SplineType.FacingTarget:
-                {
-                    var tguid = packet.ReadGuid();
-                    Console.WriteLine("Facing GUID: " + tguid);
-                    break;
-                }
+                    {
+                        var tguid = packet.ReadGuid();
+                        Console.WriteLine("Facing GUID: " + tguid);
+                        break;
+                    }
                 case SplineType.FacingAngle:
-                {
-                    var angle = packet.ReadSingle();
-                    Console.WriteLine("Facing Angle: " + angle);
-                    break;
-                }
+                    {
+                        var angle = packet.ReadSingle();
+                        Console.WriteLine("Facing Angle: " + angle);
+                        break;
+                    }
                 case SplineType.Stop:
-                {
-                    return;
-                }
+                    {
+                        return;
+                    }
             }
 
             var flags = (SplineFlag)packet.ReadInt32();
@@ -197,15 +197,15 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
         public static void HandleEnterWorld(Packet packet)
         {
-            var mapId = packet.ReadInt32();
-            Console.WriteLine("Map ID: " + StoreGetters.GetName(StoreNameType.Map, (int)mapId));
-            CurrentMapId = mapId;
+            var mapId = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
+
+            CurrentMapId = (uint)mapId;
 
             var position = packet.ReadVector4();
             Console.WriteLine("Position: " + position);
             CurrentPosition = position;
 
-            UpdateHandler.Objects[mapId] = new Dictionary<Guid, WoWObject>();
+            UpdateHandler.Objects[CurrentMapId] = new Dictionary<Guid, WoWObject>();
 
             if (packet.Opcode != Opcodes.GetOpcode(Opcode.SMSG_LOGIN_VERIFY_WORLD))
                 return;
@@ -232,7 +232,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadVector3("Position");
 
-            Console.WriteLine("Map ID: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
 
             packet.ReadInt32("Zone ID");
         }
@@ -452,7 +452,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
         public static void HandleTransferPending(Packet packet)
         {
-            Console.WriteLine("Map ID: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
 
             if (!packet.CanRead())
                 return;
@@ -460,13 +460,13 @@ namespace WowPacketParser.Parsing.Parsers
             var tEntry = packet.ReadInt32("Transport Entry");
             Console.WriteLine("Transport Entry: " + tEntry);
 
-            Console.WriteLine("Transport Map ID: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Transport Map ID");
         }
 
         [Parser(Opcode.SMSG_TRANSFER_ABORTED)]
         public static void HandleTransferAborted(Packet packet)
         {
-            Console.WriteLine("Map ID: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
 
             var code = (TransferAbortReason)packet.ReadByte();
             Console.WriteLine("Reason: " + code);
@@ -474,23 +474,23 @@ namespace WowPacketParser.Parsing.Parsers
             switch (code)
             {
                 case TransferAbortReason.DifficultyUnavailable:
-                {
-                    var arg = (MapDifficulty)packet.ReadByte();
-                    Console.WriteLine("Difficulty: " + arg);
-                    break;
-                }
+                    {
+                        var arg = (MapDifficulty)packet.ReadByte();
+                        Console.WriteLine("Difficulty: " + arg);
+                        break;
+                    }
                 case TransferAbortReason.InsufficientExpansion:
-                {
-                    var arg = (ClientType)packet.ReadByte();
-                    Console.WriteLine("Expansion: " + arg);
-                    break;
-                }
+                    {
+                        var arg = (ClientType)packet.ReadByte();
+                        Console.WriteLine("Expansion: " + arg);
+                        break;
+                    }
                 case TransferAbortReason.UniqueMessage:
-                {
-                    var arg = packet.ReadByte();
-                    Console.WriteLine("Message ID: " + arg);
-                    break;
-                }
+                    {
+                        var arg = packet.ReadByte();
+                        Console.WriteLine("Message ID: " + arg);
+                        break;
+                    }
             }
         }
 

@@ -13,6 +13,8 @@ namespace WowPacketParser.Enums
         LFGDungeon = 3,
         Battleground = 4,
         Unit = 5,
-        GameObject = 6
+        GameObject = 6,
+        Item = 7,
+        Quest = 8
     }
 }

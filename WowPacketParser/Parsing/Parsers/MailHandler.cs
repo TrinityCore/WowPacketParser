@@ -55,10 +55,24 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt16("Message Size", i);
                 packet.ReadUInt32("Mail Id", i);
                 var mailType = packet.ReadEnum<MailType>("Message Type", TypeCode.Byte, i);
-                if (mailType == MailType.Normal)
-                    packet.ReadGuid("Player GUID", i);
-                else
-                    packet.ReadInt32("Entry", i);
+                switch (mailType) // Read GUID if MailType.Normal, int32 (entry) if not
+                {
+                    case MailType.Normal:
+                        packet.ReadGuid("Player GUID", i);
+                        break;
+                    case MailType.Creature:
+                        Console.WriteLine("[" + i + "] Entry: " + StoreGetters.GetExistingDatabaseString(StoreNameType.Unit, packet.ReadInt32()));
+                        break;
+                    case MailType.GameObject:
+                        Console.WriteLine("[" + i + "] Entry: " + StoreGetters.GetExistingDatabaseString(StoreNameType.GameObject, packet.ReadInt32()));
+                        break;
+                    case MailType.Item:
+                        Console.WriteLine("[" + i + "] Entry: " + StoreGetters.GetExistingDatabaseString(StoreNameType.Item, packet.ReadInt32()));
+                        break;
+                    default:
+                        packet.ReadInt32("Entry", i);
+                        break;
+                }
                 packet.ReadUInt32("COD", i);
                 packet.ReadUInt32("Unk uint32", i);
                 packet.ReadUInt32("Stationery", i);
@@ -73,7 +87,7 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     packet.ReadByte("Item Index", i, j);
                     packet.ReadUInt32("Item GuidLow", i, j);
-                    packet.ReadUInt32("Item Entry", i, j);
+                    packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Id", i, j);
                     for (var k = 0; k < 7; ++k)
                     {
                         packet.ReadUInt32("Item Enchantment Id", i, j, k);

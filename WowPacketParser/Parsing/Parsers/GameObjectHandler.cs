@@ -44,10 +44,8 @@ namespace WowPacketParser.Parsing.Parsers
             var qItemCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 6 : 4;
             var qItem = new int[qItemCount];
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
-            {
                 for (var i = 0; i < qItemCount; i++)
-                    qItem[i] = packet.ReadInt32("Quest Item " + i);
-            }
+                    qItem[i] = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item");
 
             SQLStore.WriteData(SQLStore.GameObjects.GetCommand(entry.Key, type, dispId, name[0], iconName,
                 castCaption, unkStr, data, size, qItem));
@@ -60,7 +58,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Vehicle GUID:");
             packet.ReadPackedGuid("Player GUID");
             packet.ReadInt32("Damage");
-            Console.WriteLine("Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
         }
 
         [Parser(Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM)]

@@ -95,7 +95,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<VictimStates>("VictimState", victimStateTypeCode);
             packet.ReadInt32("Unk Attacker State 0");
 
-            Console.WriteLine("Melee Spell ID : " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Melee Spell ID ");
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_3_9183) ||
                 hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))

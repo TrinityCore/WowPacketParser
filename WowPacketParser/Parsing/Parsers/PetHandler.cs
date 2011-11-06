@@ -42,7 +42,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var spellId = spell16 | spell8;
                 if (!isPet) // cleanup vehicle spells (start at 1 instead 8,
                 {           // and do not print spells with id 0)
-                    slotid -= (int) MiscConstants.PetSpellsOffset - 1;
+                    slotid -= (int)MiscConstants.PetSpellsOffset - 1;
                     if (spellId == 0)
                         continue;
                 }
@@ -111,7 +111,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PET_REMOVED_SPELL)]
         public static void HandlePetSpellsLearnedRemoved(Packet packet)
         {
-            Console.WriteLine("Spell: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell");
         }
 
         [Parser(Opcode.SMSG_PET_ACTION_FEEDBACK)]
@@ -122,7 +122,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 //case 1: Pet is dead
                 case 2:
-                    Console.WriteLine("Spell: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell");
                     break;
                 case 3:
                     // Invalid attack target

@@ -98,40 +98,28 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void ReadLfgRewardBlock(Packet packet)
         {
-            var byte1 = packet.ReadBoolean();
-            Console.WriteLine("First Completion: " + byte1);
+            packet.ReadBoolean("First Completion");
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_LFG_PLAYER_REWARD))
-            {
-                var int3 = packet.ReadInt32();
-                Console.WriteLine("Strangers: " + int3);
-            }
+                packet.ReadInt32("Strangers");
 
-            var int4 = packet.ReadInt32();
-            Console.WriteLine("Base Money: " + int4);
+            packet.ReadInt32("Base Money");
 
-            var int5 = packet.ReadInt32();
-            Console.WriteLine("Base XP: " + int5);
+            packet.ReadInt32("Base XP");
 
-            var int6 = packet.ReadInt32();
-            Console.WriteLine("Variable Money: " + int6);
+            packet.ReadInt32("Variable Money");
 
-            var int7 = packet.ReadInt32();
-            Console.WriteLine("Variable XP: " + int7);
+            packet.ReadInt32("Variable XP");
 
-            var numFields = packet.ReadByte();
-            Console.WriteLine("Reward Item Count: " + numFields);
+            var numFields = packet.ReadByte("Reward Item Count");
 
             for (var i = 0; i < numFields; i++)
             {
-                var blockint1 = packet.ReadInt32();
-                Console.WriteLine("Reward Item ID " + i + ": " + blockint1);
+                packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Item Id", i);
 
-                var blockint2 = packet.ReadInt32();
-                Console.WriteLine("Reward Item Display ID " + i + ": " + blockint2);
+                packet.ReadInt32("Reward Item Display ID", i);
 
-                var blockint3 = packet.ReadInt32();
-                Console.WriteLine("Reward Item Stack Count " + i + ": " + blockint3);
+                packet.ReadInt32("Reward Item Stack Count", i);
             }
         }
 
@@ -486,7 +474,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadEnum<LfgType>("LFG Type", TypeCode.Int32);
 
-            Console.WriteLine("Dungeon ID: " + StoreGetters.GetName(StoreNameType.LFGDungeon, packet.ReadInt32()));
+            packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
 
             var unkBool = packet.ReadBoolean("Unknown bool 1");
 

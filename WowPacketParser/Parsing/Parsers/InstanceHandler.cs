@@ -50,7 +50,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_RESET_FAILED_NOTIFY)]
         public static void HandleResetFailedNotify(Packet packet)
         {
-            Console.WriteLine("Map Id: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
         }
 
         [Parser(Opcode.MSG_RAID_TARGET_UPDATE)]
@@ -71,7 +71,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleRaidInstanceMessage(Packet packet)
         {
             var type = packet.ReadEnum<RaidInstanceResetWarning>("Warning Type", TypeCode.Int32);
-            Console.WriteLine("Map Id: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
             packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
             packet.ReadInt32("Reset time");
             if (type == RaidInstanceResetWarning.Welcome)
@@ -94,7 +94,7 @@ namespace WowPacketParser.Parsing.Parsers
             var counter = packet.ReadInt32("Counter");
             for (var i = 0; i < counter; ++i)
             {
-                Console.WriteLine("[" + i + "] Map Id: " + StoreGetters.GetName(StoreNameType.Map, packet.ReadInt32()));
+                packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID", i);
                 packet.ReadEnum<MapDifficulty>("Map Difficulty", TypeCode.UInt32, i);
                 packet.ReadGuid("Instance GUID", i);
                 packet.ReadBoolean("Expired", i);

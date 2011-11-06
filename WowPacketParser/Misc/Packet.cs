@@ -414,5 +414,12 @@ namespace WowPacketParser.Misc
             Console.WriteLine("{0}{1}: {2} ({3})", GetIndexString(values), name, val.Value, val.Key);
             return val.Value;
         }
+
+        public int ReadEntryWithName<T>(StoreNameType type, string name, params int[] values)
+        {
+            var val = (int)ReadValue(Type.GetTypeCode(typeof(T)));
+            Console.WriteLine("{0}{1}: {2}", GetIndexString(values), name, StoreGetters.GetName(type, val));
+            return val;
+        }
     }
 }
