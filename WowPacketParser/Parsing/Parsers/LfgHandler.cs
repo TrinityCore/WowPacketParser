@@ -10,59 +10,43 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LFG_JOIN)]
         public static void HandleLfgJoin(Packet packet)
         {
-            var roles = (LfgRoleFlag)packet.ReadInt32();
-            Console.WriteLine("Roles: " + roles);
+            packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
 
-            var boolean1 = packet.ReadBoolean();
-            Console.WriteLine("Unk Boolean 1: " + boolean1);
+            packet.ReadBoolean("Unk Boolean 1");
 
-            var boolean2 = packet.ReadBoolean();
-            Console.WriteLine("Unk Boolean 2: " + boolean2);
+            packet.ReadBoolean("Unk Boolean 2");
 
-            var numFields = packet.ReadByte();
-            Console.WriteLine("Join Dungeon Count: " + numFields);
+            var numFields = packet.ReadByte("Join Dungeon Count");
 
             for (var i = 0; i < numFields; i++)
-            {
-                var lfgEntry = packet.ReadLfgEntry();
-                Console.WriteLine("Dungeon Entry " + i + ": " + lfgEntry);
-            }
+                packet.ReadLfgEntry("Dungeon Entry", i);
 
-            var numFields2 = packet.ReadByte();
-            Console.WriteLine("Unk Byte 1: " + numFields2);
+            var numFields2 = packet.ReadByte("Unk Byte 1");
 
             for (var i = 0; i < numFields2; i++)
-            {
-                var unkByte = packet.ReadByte();
-                Console.WriteLine("Unk Byte 2 " + i + ": " + unkByte);
-            }
+                packet.ReadByte("Unk Byte 2 ", i);
 
-            var comment = packet.ReadCString();
-            Console.WriteLine("Comment: " + comment);
+           packet.ReadCString("Comment");
         }
 
         [Parser(Opcode.CMSG_SET_LFG_COMMENT)]
         public static void HandleLfgComment(Packet packet)
         {
-            var comment = packet.ReadCString();
-            Console.WriteLine("Comment: " + comment);
+            packet.ReadCString("Comment");
         }
 
         [Parser(Opcode.CMSG_LFG_SET_BOOT_VOTE)]
         public static void HandleLfgSetBootVote(Packet packet)
         {
-            var boolean = packet.ReadBoolean();
-            Console.WriteLine("Agree: " + boolean);
+            packet.ReadBoolean("Agree");
         }
 
         [Parser(Opcode.CMSG_LFG_PROPOSAL_RESULT)]
         public static void HandleLfgProposalResult(Packet packet)
         {
-            var int32 = packet.ReadInt32();
-            Console.WriteLine("Group ID: " + int32);
+            packet.ReadInt32("Group ID");
 
-            var boolean = packet.ReadBoolean();
-            Console.WriteLine("Accept: " + boolean);
+            packet.ReadBoolean("Accept");
         }
 
         [Parser(Opcode.SMSG_LFG_BOOT_PLAYER)]

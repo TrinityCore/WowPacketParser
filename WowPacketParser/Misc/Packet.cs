@@ -165,14 +165,14 @@ namespace WowPacketParser.Misc
 
         public KeyValuePair<int, bool> ReadEntry()
         {
-            var entry = ReadInt32();
-            var masked = (int)(entry & 0x80000000);
+            var entry = ReadUInt32();
+            var masked = entry & 0x80000000;
 
             var result = masked != 0;
             if (result)
-                entry = masked;
+                entry = entry ^ 0x80000000;
 
-            return new KeyValuePair<int, bool>(entry, result);
+            return new KeyValuePair<int, bool>((int)entry, result);
         }
 
         public LfgEntry ReadLfgEntry()

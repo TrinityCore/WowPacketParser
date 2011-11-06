@@ -19,37 +19,31 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUEST_QUERY_RESPONSE)]
         public static void HandleQuestQueryResponse(Packet packet)
         {
-            var id = packet.ReadInt32();
-            Console.WriteLine("Entry: " + id);
+            var id = packet.ReadEntry("Quest ID");
+            if (id.Value) // entry is masked
+                return;
 
-            var method = (QuestMethod)packet.ReadInt32();
-            Console.WriteLine("Method: " + method);
+            var method = packet.ReadEnum<QuestMethod>("Method", TypeCode.Int32);
 
-            var level = packet.ReadInt32();
-            Console.WriteLine("Level: " + level);
+            var level = packet.ReadInt32("Level");
 
             var minLevel = 0;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 minLevel = packet.ReadInt32("Min Level");
 
-            var sort = (QuestSort)packet.ReadInt32();
-            Console.WriteLine("Sort: " + sort);
+            var sort = packet.ReadEnum<QuestSort>("Sort", TypeCode.Int32);
 
-            var type = (QuestType)packet.ReadInt32();
-            Console.WriteLine("Type: " + type);
+            var type = packet.ReadEnum<QuestType>("Type", TypeCode.Int32);
 
-            var players = packet.ReadInt32();
-            Console.WriteLine("Suggested Players: " + players);
+            var players = packet.ReadInt32("Suggested Players");
 
             var factId = new int[2];
             var factRep = new int[2];
             for (var i = 0; i < 2; i++)
             {
-                factId[i] = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Required Faction ID: " + factId[i]);
+                factId[i] = packet.ReadInt32("Required Faction ID", i);
 
-                factRep[i] = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Required Faction Rep: " + factRep[i]);
+                factRep[i] = packet.ReadInt32("Required Faction Rep", i);
             }
 
             var nextQuest = packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Next Chain Quest");
@@ -58,25 +52,21 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 xpId = packet.ReadInt32("Quest XP ID");
 
-            var rewReqMoney = packet.ReadInt32();
-            Console.WriteLine("Reward/Required Money: " + rewReqMoney);
+            var rewReqMoney = packet.ReadInt32("Reward/Required Money");
 
-            var rewMoneyMaxLvl = packet.ReadInt32();
-            Console.WriteLine("Reward Money Max Level: " + rewMoneyMaxLvl);
+            var rewMoneyMaxLvl = packet.ReadInt32("Reward Money Max Level");
 
             var rewSpell = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Reward Spell");
 
             var rewSpellCast = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Reward Spell Cast");
 
-            var rewHonor = packet.ReadInt32();
-            Console.WriteLine("Reward Honor: " + rewHonor);
+            var rewHonor = packet.ReadInt32("Reward Honor");
 
             var rewHonorBonus = 0f;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 rewHonorBonus = packet.ReadSingle("Reward Honor Multiplier");
 
-            var srcItemId = packet.ReadInt32();
-            Console.WriteLine("Source Item ID: " + srcItemId);
+            var srcItemId = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Source Item ID");
 
             var flags = (QuestFlag)(packet.ReadInt32() | 0xFFFF);
             Console.WriteLine("Flags: " + flags);
@@ -101,32 +91,36 @@ namespace WowPacketParser.Parsing.Parsers
                 bonusUnk = packet.ReadInt32("Unk Int32");
             }
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // Probably added earlier
+            {
+                packet.ReadUInt32("RewSkillPoints");
+                packet.ReadUInt32("RewRepMask");
+                packet.ReadUInt32("QuestGiverPortrait");
+                packet.ReadUInt32("QuestTurnInPortrait");
+                packet.ReadUInt32("UnknownUInt32"); // This was added on 422
+            }
+
             var rewItemId = new int[4];
             var rewItemCnt = new int[4];
             for (var i = 0; i < 4; i++)
             {
-                rewItemId[i] = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Reward Item ID: " + rewItemId[i]);
+                rewItemId[i] = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Item ID", i);
 
-                rewItemCnt[i] = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Reward Item Count: " + rewItemCnt[i]);
+                rewItemCnt[i] = packet.ReadInt32("Reward Item Count");
             }
 
             var rewChoiceItemId = new int[6];
             var rewChoiceItemCnt = new int[6];
             for (var i = 0; i < 6; i++)
             {
-                rewChoiceItemId[i] = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Reward Choice Item ID: " + rewChoiceItemId[i]);
+                rewChoiceItemId[i] = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Choice Item ID", i);
 
-                rewChoiceItemCnt[i] = packet.ReadInt32();
-                Console.WriteLine("[" + i + "] Reward Choice Item Count: " + rewChoiceItemCnt[i]);
+                rewChoiceItemCnt[i] = packet.ReadInt32("Reward Choice Item Count");
             }
 
             var rewFactionId = new int[5];
             var rewRepIdx = new int[5];
             var rewRepOverride = new int[5];
-
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
             {
                 for (var i = 0; i < 5; i++)
@@ -139,33 +133,25 @@ namespace WowPacketParser.Parsing.Parsers
                     rewRepOverride[i] = packet.ReadInt32("Reward Reputation ID", i);
             }
 
-            var pointMap = packet.ReadInt32();
-            Console.WriteLine("Point Map ID: " + pointMap);
+            var pointMap = packet.ReadInt32("Point Map ID");
 
-            var pointX = packet.ReadSingle();
-            Console.WriteLine("Point X: " + pointX);
+            var pointX = packet.ReadSingle("Point X");
 
-            var pointY = packet.ReadSingle();
-            Console.WriteLine("Point Y: " + pointY);
+            var pointY = packet.ReadSingle("Point Y");
 
-            var pointOpt = packet.ReadInt32();
-            Console.WriteLine("Point Opt: " + pointOpt);
+            var pointOpt = packet.ReadInt32("Point Opt");
 
-            var title = packet.ReadCString();
-            Console.WriteLine("Title: " + title);
+            var title = packet.ReadCString("Title");
 
-            var objectives = packet.ReadCString();
-            Console.WriteLine("Objectives: " + objectives);
+            var objectives = packet.ReadCString("Objectives");
 
-            var details = packet.ReadCString();
-            Console.WriteLine("Details: " + details);
-
-            var endText = packet.ReadCString();
-            Console.WriteLine("End Text: " + endText);
+            var details = packet.ReadCString("Details");
 
             var returnText = string.Empty;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                returnText = packet.ReadCString("Return Text");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // Probably earlier
+                returnText = packet.ReadCString("Completed Text");
+
+            var endText = packet.ReadCString("End Text");
 
             var reqId = new KeyValuePair<int, bool>[4];
             var reqCnt = new int[4];
@@ -179,8 +165,10 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 4; i++)
             {
                 reqId[i] = packet.ReadEntry();
-                Console.WriteLine("[" + i + "] Required " + (reqId[i].Value ? "GO" : "NPC") +
-                    " ID: " + reqId[i].Key);
+                var isGO = reqId[i].Value;
+
+                Console.WriteLine("[" + i + "] Required " + (isGO ? "GO" : "NPC") +
+                    " ID: " + StoreGetters.GetName(isGO ? StoreNameType.GameObject : StoreNameType.Unit, (int)reqId[i].Key));
 
                 reqCnt[i] = packet.ReadInt32("Required Count", i);
 
@@ -192,7 +180,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_8_9464))
                 {
-                    reqItemId[i] = packet.ReadInt32("Required Item ID", i);
+                    reqItemId[i] = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Required Item ID", i);
                     reqItemCnt[i] = packet.ReadInt32("Required Item Count", i);
                 }
             }
@@ -201,16 +189,43 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 for (var i = 0; i < reqItemFieldCount; i++)
                 {
-                    reqItemId[i] = packet.ReadInt32("Required Item ID", i);
+                    reqItemId[i] = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Required Item ID", i);
                     reqItemCnt[i] = packet.ReadInt32("Required Item Count", i);
                 }
             }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333)) // Probably earlier
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Required Spell");
 
             var objectiveText = new string[4];
             for (var i = 0; i < 4; i++)
                 objectiveText[i] = packet.ReadCString("Objective Text", i);
 
-            SQLStore.WriteData(SQLStore.Quests.GetCommand(id, method, level, minLevel, sort, type,
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
+            {
+                for (int i = 0; i < 4; ++i)
+                {
+                    packet.ReadUInt32("Reward Currency ID", i);
+                    packet.ReadUInt32("Reward Currency Count", i);
+                }
+                for (int i = 0; i < 4; ++i)
+                {
+                    packet.ReadUInt32("Required Currency ID", i);
+                    packet.ReadUInt32("Required Currency Count", i);
+                }
+                packet.ReadCString("QuestGiver Text Window");
+                packet.ReadCString("QuestGiver Target Name");
+                packet.ReadCString("QuestTurn Text Window");
+                packet.ReadCString("QuestTurn Target Name");
+
+                packet.ReadUInt32("Sound Accept");
+
+                packet.ReadUInt32("Sound TurnIn");
+            }
+
+
+
+            SQLStore.WriteData(SQLStore.Quests.GetCommand((int)id.Key, method, level, minLevel, sort, type,
                 players, factId, factRep, nextQuest, xpId, rewReqMoney, rewMoneyMaxLvl,
                 rewSpell, rewSpellCast, rewHonor, rewHonorBonus, srcItemId, flags, titleId,
                 reqPlayerKills, bonusTalents, bonusArenaPoints, bonusUnk, rewItemId, rewItemCnt,
