@@ -4,7 +4,7 @@ namespace WowPacketParser.SQL.Stores
 {
     public sealed class GameObjectSpawnStore
     {
-        public string GetCommand(uint entry, int map, int phaseMask, Vector3 pos, float orient)
+        public string GetCommand(uint entry, uint map, int phaseMask, Vector3 pos, float orient)
         {
             var builder = new SQLCommandBuilder("gameobject");
 

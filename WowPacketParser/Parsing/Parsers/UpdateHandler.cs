@@ -11,13 +11,13 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class UpdateHandler
     {
-        public static readonly Dictionary<int, Dictionary<Guid, WoWObject>> Objects =
-            new Dictionary<int, Dictionary<Guid, WoWObject>>();
+        public static Dictionary<uint, Dictionary<Guid, WoWObject>> Objects =
+            new Dictionary<uint, Dictionary<Guid, WoWObject>>();
 
         [Parser(Opcode.SMSG_UPDATE_OBJECT)]
         public static void HandleUpdateObject(Packet packet)
         {
-            var map = MovementHandler.CurrentMapId;
+            uint map = MovementHandler.CurrentMapId;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 map = packet.ReadUInt16("Map");
 
@@ -42,7 +42,7 @@ namespace WowPacketParser.Parsing.Parsers
                         var updates = ReadValuesUpdateBlock(packet, guid.GetObjectType(), i);
 
                         if (Objects.ContainsKey(map) && Objects[map].TryGetValue(guid, out obj))
-                            HandleUpdateFieldChangedValues(false, guid, obj.Type, updates, obj.Movement);
+                            HandleUpdateFieldChangedValues(guid, obj.Type, updates, obj.Movement);
                         break;
                     }
                     case "Movement":
@@ -60,7 +60,7 @@ namespace WowPacketParser.Parsing.Parsers
                     case "CreateObject2": // Might != CreateObject1 on Cata
                     {
                         var guid = packet.ReadPackedGuid("[" + i + "] GUID");
-                        ReadCreateObjectBlock(packet, guid, i);
+                        ReadCreateObjectBlock(packet, guid, (uint)map, i);
                         break;
                     }
                     case "FarObjects":
@@ -74,14 +74,13 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        public static void ReadCreateObjectBlock(Packet packet, Guid guid, int index)
+        public static void ReadCreateObjectBlock(Packet packet, Guid guid, uint map, int index)
         {
             var objType = packet.ReadEnum<ObjectType>("[" + index + "] Object Type", TypeCode.Byte);
             var moves = ReadMovementUpdateBlock(packet, guid, index);
             var updates = ReadValuesUpdateBlock(packet, objType, index);
 
-            var obj = new WoWObject(guid, objType, moves, updates);
-            obj.Position = moves.Position;
+            var obj = new WoWObject(guid, objType, moves, updates, map);
 
             try
             {
@@ -89,7 +88,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var shouldAdd = true;
                 foreach (var woObj in objects.Values)
                 {
-                    if (woObj.Position != obj.Position && woObj.Guid != guid)
+                    if (woObj.GetPosition() != obj.GetPosition() && woObj.Guid != guid)
                         continue;
 
                     shouldAdd = false;
@@ -103,7 +102,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
             catch { }
 
-            HandleUpdateFieldChangedValues(true, guid, objType, updates, moves);
+            HandleUpdateFieldChangedValues(guid, objType, updates, moves, true);
         }
 
         public static void ReadObjectsBlock(Packet packet, int index)
@@ -124,21 +123,19 @@ namespace WowPacketParser.Parsing.Parsers
             var mask = new BitArray(updateMask);
             var dict = new Dictionary<int, UpdateField>();
 
-            var objectEnd = (int)ObjectField.OBJECT_END;
+            const int objectEnd = (int)ObjectField.OBJECT_END;
 
-            string key = "Block Value";
-            string value = "";
             for (var i = 0; i < mask.Count; i++)
             {
                 if (!mask[i])
                     continue;
 
                 var blockVal = packet.ReadUpdateField();
-                key = "Block Value " + i;
-                value = blockVal.Int32Value + "/" + blockVal.SingleValue;
+                string key = "Block Value " + i;
+                string value = blockVal.Int32Value + "/" + blockVal.SingleValue;
                 if (i < objectEnd)
                 {
-                    ObjectField field = (ObjectField)i;
+                    var field = (ObjectField)i;
                     key = field.ToString();
                 }
                 else
@@ -150,13 +147,13 @@ namespace WowPacketParser.Parsing.Parsers
                             if (i < (int)ItemField.ITEM_END)
                                 goto case ObjectType.Item;
 
-                            ContainerField field = (ContainerField)i;
+                            var field = (ContainerField)i;
                             key = field.ToString();
                             break;
                         }
                         case ObjectType.Item:
                         {
-                            ItemField field = (ItemField)i;
+                            var field = (ItemField)i;
                             key = field.ToString();
                             break;
                         }
@@ -165,36 +162,34 @@ namespace WowPacketParser.Parsing.Parsers
                             if (i < (int)UnitField.UNIT_END)
                                 goto case ObjectType.Unit;
 
-                            PlayerField field = (PlayerField)i;
+                            var field = (PlayerField)i;
                             key = field.ToString();
                             break;
                         }
                         case ObjectType.Unit:
                         {
-                            UnitField field = (UnitField)i;
+                            var field = (UnitField)i;
                             key = field.ToString();
                             break;
                         }
                         case ObjectType.GameObject:
                         {
-                            GameObjectField field = (GameObjectField)i;
+                            var field = (GameObjectField)i;
                             key = field.ToString();
                             break;
                         }
                         case ObjectType.DynamicObject:
                         {
-                            DynamicObjectField field = (DynamicObjectField)i;
+                            var field = (DynamicObjectField)i;
                             key = field.ToString();
                             break;
                         }
                         case ObjectType.Corpse:
                         {
-                            CorpseField field = (CorpseField)i;
+                            var field = (CorpseField)i;
                             key = field.ToString();
                             break;
                         }
-                        default:
-                            break;
                     }
                 }
                 Console.WriteLine("[" + index + "] " + key + ": " + value);
@@ -204,20 +199,20 @@ namespace WowPacketParser.Parsing.Parsers
             return dict;
         }
 
-        public static void HandleUpdateFieldChangedValues(bool creating, Guid guid, ObjectType objType,
-            Dictionary<int, UpdateField> updates, MovementInfo moves)
+        public static void HandleUpdateFieldChangedValues(Guid guid, ObjectType objType,
+            Dictionary<int, UpdateField> updates, MovementInfo moves, bool updatingObject = false)
         {
             bool shouldCommit;
             bool isIntValue;
             bool flags;
-            var isTemplate = true;
+            const bool isTemplate = true;
             var isCreated = false;
             string sql;
             string fieldName = null;
 
             if (objType == ObjectType.Unit && guid.GetHighType() != HighGuidType.Pet)
             {
-                if (creating)
+                if (!updatingObject)
                 {
                     SQLStore.WriteData(SQLStore.CreatureUpdates.GetCommand("speed_walk", guid.GetEntry(), moves.WalkSpeed));
                     SQLStore.WriteData(SQLStore.CreatureUpdates.GetCommand("speed_run", guid.GetEntry(), moves.RunSpeed));
@@ -311,11 +306,9 @@ namespace WowPacketParser.Parsing.Parsers
                     if (flags)
                         finalValue = "0x" + ((int)finalValue).ToString("X8");
 
-                    if (isTemplate)
-                        sql = SQLStore.CreatureUpdates.GetCommand(fieldName, guid.GetEntry(), finalValue);
-                    else
-                        sql = SQLStore.CreatureSpawnUpdates.GetCommand(fieldName, (uint)guid.GetLow(),
-                            finalValue);
+                    if (updatingObject)
+                        sql = SQLStore.CreatureSpawnUpdates.GetCommand(fieldName, (uint) guid.GetLow(), finalValue);
+                    else sql = SQLStore.CreatureUpdates.GetCommand(fieldName, guid.GetEntry(), finalValue);
 
                     SQLStore.WriteData(sql);
                 }
@@ -440,7 +433,7 @@ namespace WowPacketParser.Parsing.Parsers
                     else if (splineFlags.HasAnyFlag(SplineFlag.FinalOrientation))
                     {
                         if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_2_9056))
-                            packet.ReadInt32(); //not sure, orientation is incorrect in 2.4.1, this int is probably involved
+                            packet.ReadInt32(); // not sure, orientation is incorrect in 2.4.1, this int is probably involved
 
                         packet.ReadSingle("Final Spline Orientation", index);
                     }
@@ -469,7 +462,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadVector3("Spline Endpoint", index);
                 }
             }
-            else
+            else // !UpdateFlag.Living
             {
                 if (flags.HasAnyFlag(UpdateFlag.GOPosition))
                 {
@@ -499,13 +492,21 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (flags.HasAnyFlag(UpdateFlag.Vehicle))
             {
-                var vehId = packet.ReadInt32("[" + index + "] Vehicle ID");
+                moveInfo.VehicleId = packet.ReadUInt32("[" + index + "] Vehicle ID");
                 packet.ReadSingle("[" + index + "] Vehicle Orientation");
-                SQLStore.WriteData(SQLStore.CreatureUpdates.GetCommand("VehicleId", guid.GetEntry(), vehId));
             }
 
             if (flags.HasAnyFlag(UpdateFlag.GORotation))
                 packet.ReadPackedQuaternion("[" + index + "] GO Rotation");
+
+
+            // Initialize fields that are not used by GOs
+            if (guid.GetObjectType() == ObjectType.GameObject)
+            {
+                moveInfo.VehicleId = 0;
+                moveInfo.WalkSpeed = 0;
+                moveInfo.RunSpeed = 0;
+            }
 
             return moveInfo;
         }

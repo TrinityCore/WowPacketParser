@@ -290,6 +290,7 @@
     <Compile Include="Misc\Guid.cs" />
     <Compile Include="Misc\LfgEntry.cs" />
     <Compile Include="Misc\MovementInfo.cs" />
+    <Compile Include="Misc\Objects\GameObject.cs" />
     <Compile Include="Misc\Objects\Unit.cs" />
     <Compile Include="Misc\Quaternion.cs" />
     <Compile Include="Misc\Settings.cs" />

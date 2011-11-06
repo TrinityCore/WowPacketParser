@@ -6,7 +6,7 @@ namespace WowPacketParser.SQL.Stores
 {
     public sealed class CreatureSpawnStore
     {
-        public string GetCommand(uint entry, int map, int phaseMask, Vector3 position, float orient)
+        public string GetCommand(uint entry, uint map, int phaseMask, Vector3 position, float orient)
         {
             var builder = new SQLInsert();
             builder.Table = "creature";

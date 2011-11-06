@@ -1,3 +1,4 @@
+using System;
 using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc
@@ -13,5 +14,7 @@ namespace WowPacketParser.Misc
         public float WalkSpeed;
 
         public float RunSpeed;
+
+        public UInt32 VehicleId; // Not exactly related to movement but it is read in ReadMovementUpdateBlock
     }
 }
