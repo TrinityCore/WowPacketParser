@@ -33,19 +33,21 @@ namespace WowPacketParser.Parsing.Parsers
             var castCaption = packet.ReadCString("Cast Caption");
             var unkStr = packet.ReadCString("Unk String");
 
-            var data = new int[24];
-            for (var i = 0; i < 24; i++)
+            var data = new int[ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333) ? 32 : 24];
+            for (var i = 0; i < data.Length; i++)
                 data[i] = packet.ReadInt32("Data", i);
 
             var size = 0f;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056)) // not sure when it was added exactly - did not exist in 2.4.1 sniff
                 size = packet.ReadSingle("Size");
 
-            var qItemCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 6 : 4;
-            var qItem = new int[qItemCount];
+            var qItem = new int[ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 6 : 4];
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
-                for (var i = 0; i < qItemCount; i++)
-                    qItem[i] = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item");
+                for (var i = 0; i < qItem.Length; i++)
+                    qItem[i] = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item", i);
+
+            if (ClientVersion.Build >= ClientVersionBuild.V4_2_0_14333)
+                packet.ReadUInt32("Unknown UInt32");
 
             SQLStore.WriteData(SQLStore.GameObjects.GetCommand(entry.Key, type, dispId, name[0], iconName,
                 castCaption, unkStr, data, size, qItem));
