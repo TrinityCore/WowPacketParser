@@ -86,9 +86,17 @@ namespace WowPacketParser
                 var startTime = DateTime.Now;
                 Console.WriteLine("Loading DB...");
 
-                SQLConnector.Connect();
-                SQLDatabase.GrabData();
-
+                try
+                {
+                    SQLConnector.Connect();
+                    SQLDatabase.GrabData();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    SQLConnector.Enabled = false; // Something failed, disabling everything SQL related
+                }
+                
                 var endTime = DateTime.Now;
                 var span = endTime.Subtract(startTime);
                 Console.WriteLine("Finished loading DB - {0} Minutes, {1} Seconds and {2} Milliseconds.", span.Minutes, span.Seconds, span.Milliseconds);

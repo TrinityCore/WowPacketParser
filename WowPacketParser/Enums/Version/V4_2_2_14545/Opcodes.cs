@@ -160,7 +160,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_SWAP_INV_ITEM, 0x5CE7},
             {Opcode.CMSG_SWAP_ITEM, 0xDED6},
             {Opcode.CMSG_TAXINODE_STATUS_QUERY, 0x98E3},
-            {Opcode.SMSG_TAXINODE_STATUS, 0x8CFB},
+            {Opcode.SMSG_TAXINODE_STATUS, 0x8CFB}, // might be 0x98CF
             {Opcode.CMSG_TELEPORT_TO_UNIT, 0x8C72},
             {Opcode.CMSG_TOGGLE_PVP, 0x8ECA},
             {Opcode.CMSG_TRAINER_BUY_SPELL, 0xAF7},
@@ -209,7 +209,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_MONSTER_MOVE_TRANSPORT, 0x88FB},
             {Opcode.SMSG_MOTD, 0xCA4B},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x9CE6},
-            {Opcode.SMSG_TAXINODE_STATUS, 0x98CF},
             {Opcode.SMSG_NEW_TAXI_PATH, 0xC8FF},
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x4C72},
             {Opcode.SMSG_PET_LEARNED_SPELL, 0xDC5E},
