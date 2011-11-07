@@ -258,6 +258,7 @@
     <Compile Include="Enums\RealmSplitState.cs" />
     <Compile Include="Enums\ReputationRank.cs" />
     <Compile Include="Enums\ResponseCode.cs" />
+    <Compile Include="Enums\SellResult.cs" />
     <Compile Include="Enums\SheathType.cs" />
     <Compile Include="Enums\SpeedType.cs" />
     <Compile Include="Enums\SpellCastFailureReason.cs" />

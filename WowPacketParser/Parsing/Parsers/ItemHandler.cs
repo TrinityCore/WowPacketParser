@@ -8,6 +8,158 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class ItemHandler
     {
+        [Parser(Opcode.CMSG_USE_ITEM)]
+        public static void HandleUseItem(Packet packet)
+        {
+            packet.ReadByte("Bag");
+            packet.ReadByte("Slot");
+            packet.ReadByte("Cast Count");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell Id");
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32("Glyph Index");
+            packet.ReadByte("CastFlags");
+        }
+
+        [Parser(Opcode.CMSG_AUTOSTORE_LOOT_ITEM)]
+        public static void HandleAutoStoreLootItem(Packet packet)
+        {
+            packet.ReadByte("Slot");
+        }
+
+        [Parser(Opcode.CMSG_SWAP_INV_ITEM)]
+        public static void HandleSwapInventoryItem(Packet packet)
+        {
+            packet.ReadByte("Slot 1");
+            packet.ReadByte("Slot 2");
+        }
+
+        [Parser(Opcode.SMSG_ITEM_PUSH_RESULT)]
+        public static void HandleItemPushResult(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32("From NPC");
+            packet.ReadUInt32("Created");
+            packet.ReadUInt32("Unk Uint32");
+            packet.ReadByte("Slot");
+            packet.ReadInt32("Item Slot");
+            packet.ReadUInt32("Entry");
+            packet.ReadInt32("Suffix Factor");
+            packet.ReadInt32("Random Property ID");
+            packet.ReadUInt32("Count");
+            packet.ReadUInt32("Count of Items in inventory");
+        }
+
+        [Parser(Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE)]
+        public static void HandleItemEnchantTimeUpdate(Packet packet)
+        {
+            packet.ReadGuid("Item GUID");
+            packet.ReadUInt32("Slot");
+            packet.ReadUInt32("Duration");
+            packet.ReadGuid("Player GUID");
+        }
+
+        [Parser(Opcode.CMSG_BUYBACK_ITEM)]
+        public static void HandleBuyBackItem(Packet packet)
+        {
+            packet.ReadGuid("Vendor GUID");
+            packet.ReadByte("Slot");
+        }
+
+        [Parser(Opcode.CMSG_ITEM_REFUND_INFO)]
+        public static void HandleRefundItem(Packet packet)
+        {
+            packet.ReadGuid("Item GUID");
+        }
+
+        [Parser(Opcode.CMSG_OPEN_ITEM)]
+        [Parser(Opcode.CMSG_READ_ITEM)]
+        public static void HandleOpenItem(Packet packet)
+        {
+            packet.ReadByte("Bag");
+            packet.ReadByte("Slot");
+        }
+
+        [Parser(Opcode.SMSG_READ_ITEM_OK)]
+        public static void HandleReadItem(Packet packet)
+        {
+            packet.ReadGuid("Item GUID");
+        }
+
+        [Parser(Opcode.CMSG_REPAIR_ITEM)]
+        public static void HandleRepairItem(Packet packet)
+        {
+            packet.ReadGuid("Vendor GUID");
+            packet.ReadGuid("Item GUID");
+            packet.ReadBoolean("Use guild money");
+        }
+
+        [Parser(Opcode.CMSG_DESTROYITEM)]
+        public static void HandleDestroyItem(Packet packet)
+        {
+            packet.ReadByte("Bag");
+            packet.ReadByte("Slot");
+            packet.ReadByte("Count");
+            packet.ReadByte("Unk1");
+            packet.ReadByte("Unk2");
+            packet.ReadByte("Unk3");
+        }
+
+        [Parser(Opcode.CMSG_SELL_ITEM)]
+        public static void HandleSellItem(Packet packet)
+        {
+            packet.ReadGuid("Vendor GUID");
+            packet.ReadGuid("Item GUID");
+            packet.ReadUInt32("Count");
+        }
+
+        [Parser(Opcode.SMSG_SELL_ITEM)]
+        public static void HandleSellItemResponse(Packet packet)
+        {
+            packet.ReadGuid("Vendor GUID");
+            packet.ReadGuid("Item GUID");
+            packet.ReadEnum<SellResult>("Sell Result", TypeCode.Byte);
+        }
+
+        [Parser(Opcode.CMSG_BUY_ITEM)]
+        public static void HandleBuyItem(Packet packet)
+        {
+            packet.ReadGuid("Vendor GUID");
+            packet.ReadUInt32("Item ID");
+            packet.ReadUInt32("Slot");
+            packet.ReadUInt32("Count");
+            packet.ReadByte("Unk");
+        }
+
+        [Parser(Opcode.SMSG_BUY_ITEM)]
+        public static void HandleBuyItemResponse(Packet packet)
+        {
+            packet.ReadGuid("Vendor GUID");
+            packet.ReadUInt32("Slot");
+            packet.ReadInt32("New Count");
+            packet.ReadUInt32("Count");
+        }
+
+        [Parser(Opcode.CMSG_BUY_ITEM_IN_SLOT)]
+        public static void HandleBuyItemInSlot(Packet packet)
+        {
+            packet.ReadGuid("Vendor GUID");
+            packet.ReadUInt32("Item ID");
+            packet.ReadUInt32("Slot");
+            packet.ReadUInt32("Count");
+            packet.ReadGuid("Bag GUID");
+            packet.ReadByte("Bag Slot");
+            packet.ReadByte("Count");
+        }
+
+        [Parser(Opcode.CMSG_AUTOSTORE_BANK_ITEM)]
+        [Parser(Opcode.CMSG_AUTOEQUIP_ITEM)]
+        [Parser(Opcode.CMSG_AUTOBANK_ITEM)]
+        public static void HandleAutoBankItem(Packet packet)
+        {
+            packet.ReadByte("Bag");
+            packet.ReadByte("Slot");
+        }
+
         [Parser(Opcode.SMSG_ENCHANTMENTLOG)]
         public static void HandleEnchantmentLog(Packet packet)
         {

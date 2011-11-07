@@ -14,11 +14,7 @@ namespace WowPacketParser.Parsing.Parsers
             var data =  packet.ReadInt32();
             var type = (ActionButtonType)((data & 0xFF000000) >> 24);
             var action = (data & 0x00FFFFFF);
-
-            if (type == ActionButtonType.Spell)
-                Console.WriteLine("Type: " + type + " ID: " + Extensions.SpellLine(action));
-            else
-                Console.WriteLine("Type: " + type + " ID: " + action);
+            Console.WriteLine("Type: " + type + " ID: " + action);
         }
 
         [Parser(Opcode.SMSG_RESURRECT_REQUEST)]
@@ -488,6 +484,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_CANCEL_TRADE)]
         [Parser(Opcode.CMSG_LFG_LEAVE)]
         [Parser(Opcode.CMSG_GROUP_DISBAND)]
+        [Parser(Opcode.SMSG_CANCEL_COMBAT)]
+        [Parser(Opcode.SMSG_DURABILITY_DAMAGE_DEATH)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }
