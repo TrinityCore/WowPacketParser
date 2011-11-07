@@ -80,7 +80,7 @@ namespace WowPacketParser.Enums.Version
 
         public static int GetOpcode(Opcode opcode, ClientVersionBuild versionBuild)
         {
-            var opcodeId = 0;
+            int opcodeId;
             GetOpcodeDictionary(versionBuild).TryGetValue(opcode, out opcodeId);
             return opcodeId;
         }

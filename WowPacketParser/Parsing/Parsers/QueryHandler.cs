@@ -77,8 +77,9 @@ namespace WowPacketParser.Parsing.Parsers
             if (entry.Value)
                 return;
 
-            var name = new string[4];
-            for (var i = 0; i < 4; i++)
+            var nameCount = ClientVersion.Build >= ClientVersionBuild.V4_1_0_13914 ? 8 : 4; // Might be earlier or later
+            var name = new string[nameCount];
+            for (var i = 0; i < name.Length; i++)
                 name[i] = packet.ReadCString("Name", i);
 
             var subName = packet.ReadCString("Sub Name");
@@ -86,6 +87,9 @@ namespace WowPacketParser.Parsing.Parsers
             var iconName = packet.ReadCString("Icon Name");
 
             var typeFlags = packet.ReadEnum<CreatureTypeFlag>("Type Flags", TypeCode.Int32);
+
+            if (ClientVersion.Build >= ClientVersionBuild.V4_1_0_13914) // Might be earlier or later
+                packet.ReadInt32("Creature Type Flags 2"); // Missing enum
 
             var type = packet.ReadEnum<CreatureType>("Type", TypeCode.Int32);
 
@@ -121,16 +125,13 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
                 for (var i = 0; i < qItemCount; i++)
-                    qItem[i] = packet.ReadInt32("Quest Item", i);
+                    qItem[i] = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item", i);
 
                 moveId = packet.ReadInt32("Movement ID");
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_1_0_13914))
-                packet.ReadInt32("Unknown");
 
             SQLStore.WriteData(SQLStore.Creatures.GetCommand(entry.Key, name[0], subName, iconName, typeFlags,
                 type, family, rank, killCredit, dispId, mod1, mod2, racialLeader, qItem, moveId));
