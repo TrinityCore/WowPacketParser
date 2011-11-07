@@ -107,6 +107,9 @@ namespace WowPacketParser.Parsing
                         Console.WriteLine("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.",
                             pos, len, len - pos);
 
+                        if (len < 300) // If the packet isn't "too big" and it is not full read, print its hex table
+                            Console.WriteLine(packet.AsHex());
+
                         stats.PacketsParsedWithErrors++;
                     }
                 }
