@@ -10,7 +10,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_RECEIVED_MAIL)]
         public static void HandleReceivedMail(Packet packet)
         {
-            packet.ReadUInt32("Mail Id?");
+            packet.ReadSingle("Time left"); // Sup with timers in float?
         }
 
         [Parser(Opcode.SMSG_SHOW_MAILBOX)]
@@ -111,7 +111,9 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Direction == Direction.ClientToServer)
                 return;
 
-            packet.ReadSingle("Unk Single (time left?)");
+            // Math.Abs(this float) > 0.0f returns whether the player has received a new mail since last visiting a mailbox
+            packet.ReadSingle("Time since last time visiting a mailbox (can be < 0.0)");
+
             var count = packet.ReadUInt32("Count");
             for (var i = 0; i < count; ++i)
             {
