@@ -29,19 +29,73 @@ namespace WowPacketParser.Parsing.Parsers
         {
             // Do not overwrite version after Handler was initialized
             packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int32);
-
+ 
             packet.ReadInt32("Unk Int32 1");
             packet.ReadCString("Account");
-
+ 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadInt32("Unk Int32 2");
-
+ 
             packet.ReadInt32("Client Seed");
-
+ 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
                 packet.ReadInt64("Unk Int64");
-
+ 
             Console.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(packet.ReadBytes(20)));
+ 
+            AddonHandler.ReadClientAddonsList(packet);
+        }
+
+        //[Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_2_0_14333)]
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleAuthSession422(Packet packet)
+        {
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadInt32("Int32");
+            packet.ReadInt32("Int32");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+
+            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+
+            packet.ReadInt32("Int32");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+
+            // for (var i = 0; i < 3; i++) ??
+            packet.ReadInt32("Int32");
+            packet.ReadByte("Byte");
+
+            packet.ReadInt32("Int32");
+            packet.ReadByte("Byte");
+
+            packet.ReadInt32("Int32");
+            packet.ReadByte("Byte");
+
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+
+            packet.ReadInt64("Int64");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+
+            packet.ReadCString("String");
+            packet.ReadInt32("Int32");
 
             AddonHandler.ReadClientAddonsList(packet);
         }
