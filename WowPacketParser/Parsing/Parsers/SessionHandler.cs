@@ -79,10 +79,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Billing Time Remaining");
             packet.ReadEnum<BillingFlag>("Billing Flags", TypeCode.Byte);
             packet.ReadInt32("Billing Time Rested");
-            packet.ReadEnum<ClientType>("Client Expansion", TypeCode.Byte);
+            packet.ReadEnum<ClientType>("Server Expansion", TypeCode.Byte);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_3_13329))
-                packet.ReadEnum<ClientType>("Server Expansion", TypeCode.Byte);
+                packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
         }
 
         public static void ReadQueuePositionInfo(Packet packet)

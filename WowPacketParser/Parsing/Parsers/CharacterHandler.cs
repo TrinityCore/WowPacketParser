@@ -197,20 +197,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_SET_FACTION_STANDING)]
-        public static void HandleSetFactionStanding(Packet packet)
-        {
-            packet.ReadSingle("Unk Float");
-            packet.ReadByte("Unk UInt8");
-            var amount = packet.ReadInt32("Count");
-
-            for (int i = 0; i < amount; i++)
-            {
-                packet.ReadInt32("Faction List Id");
-                packet.ReadInt32("Standing");
-            }
-        }
-
         [Parser(Opcode.SMSG_PLAYER_VEHICLE_DATA)]
         public static void HandlePlayerVehicleData(Packet packet)
         {
