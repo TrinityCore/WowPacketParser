@@ -8,6 +8,36 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class ItemHandler
     {
+        [Parser(Opcode.SMSG_INVENTORY_CHANGE_FAILURE)]
+        public static void HandleInventoryChangeFailure(Packet packet)
+        {
+            var result = packet.ReadEnum<InventoryResult>("Result", TypeCode.Byte);
+            if (result == InventoryResult.Ok)
+                return;
+
+            packet.ReadGuid("Item GUID1");
+            packet.ReadGuid("Item GUID2");
+            packet.ReadByte("Bag");
+
+            switch (result)
+            {
+                case InventoryResult.CantEquipLevel:
+                case InventoryResult.PurchaseLevelTooLow:
+                    packet.ReadUInt32("Required Level");
+                    break;
+                case InventoryResult.EventAutoEquipBindConfirm:
+                    packet.ReadUInt64("Unk UInt64 1");
+                    packet.ReadUInt32("Unk UInt32 1");
+                    packet.ReadUInt64("Unk UInt64 2");
+                    break;
+                case InventoryResult.ItemMaxLimitCategoryCountExceeded:
+                case InventoryResult.ItemMaxLimitCategorySocketedExceeded:
+                case InventoryResult.ItemMaxLimitCategoryEquippedExceeded:
+                    packet.ReadUInt32("Limit Category");
+                    break;
+            }
+        }
+
         [Parser(Opcode.CMSG_USE_ITEM)]
         public static void HandleUseItem(Packet packet)
         {

@@ -205,6 +205,7 @@
     <Compile Include="Enums\Holiday.cs" />
     <Compile Include="Enums\InstanceResetWarningType.cs" />
     <Compile Include="Enums\InstanceStatus.cs" />
+    <Compile Include="Enums\InventoryResult.cs" />
     <Compile Include="Enums\InventoryType.cs" />
     <Compile Include="Enums\ItemBonding.cs" />
     <Compile Include="Enums\ItemClass.cs" />
