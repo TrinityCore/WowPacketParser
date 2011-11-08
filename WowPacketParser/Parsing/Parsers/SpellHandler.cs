@@ -176,8 +176,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             var targetFlags = packet.ReadEnum<TargetFlag>("Target Flags", TypeCode.Int32);
 
-            if (targetFlags.HasAnyFlag(TargetFlag.Unit | TargetFlag.PvpCorpse | TargetFlag.Object |
-                TargetFlag.Corpse | TargetFlag.SpellDynamic4))
+            if (targetFlags.HasAnyFlag(TargetFlag.Unit | TargetFlag.CorpseEnemy | TargetFlag.GameObject |
+                TargetFlag.CorpseAlly | TargetFlag.UnitMinipet))
                 packet.ReadPackedGuid("Target GUID");
 
             if (targetFlags.HasAnyFlag(TargetFlag.Item | TargetFlag.TradeItem))
