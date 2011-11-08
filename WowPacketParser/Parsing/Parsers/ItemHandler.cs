@@ -173,6 +173,11 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleItemQuerySingle(Packet packet)
         {
             packet.ReadInt32("Entry");
+            if (ClientVersion.Build >= ClientVersionBuild.V4_2_2_14545) // Might be earlier
+            {
+                packet.ReadEnum<UnknownFlags>("Unknown Byte", TypeCode.Byte);
+                packet.ReadInt32("Unknown Int32");
+            }
         }
 
         [Parser(Opcode.SMSG_ITEM_QUERY_SINGLE_RESPONSE)]

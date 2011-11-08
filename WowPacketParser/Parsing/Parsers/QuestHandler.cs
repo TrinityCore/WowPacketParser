@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
@@ -308,13 +309,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleQuestgiverStatusQuery(Packet packet)
         {
             packet.ReadGuid("GUID");
-        }
-
-        [Parser(Opcode.SMSG_QUESTGIVER_STATUS)]
-        public static void HandleQuestgiverStatus(Packet packet)
-        {
-            packet.ReadGuid("GUID");
-            packet.ReadEnum<QuestGiverStatus>("Status", TypeCode.Byte);
         }
 
         [Parser(Opcode.SMSG_QUESTGIVER_QUEST_LIST)]
@@ -668,14 +662,31 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
+        [Parser(Opcode.SMSG_QUESTGIVER_STATUS)]
         [Parser(Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE)]
+        public static void HandleQuestgiverStatus(Packet packet)
+        {
+            uint count = 1;
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE))
+                count = packet.ReadUInt32("Count");
+
+            var typeCode = ClientVersion.Build >= ClientVersionBuild.V4_2_2_14545 ? TypeCode.Int32 : TypeCode.Byte;
+
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadGuid("GUID", i);
+                packet.ReadEnum<QuestGiverStatus>("Status", typeCode, i);
+            }
+        }
+
+        
         public static void HandleQuestgiverStatusMultiple(Packet packet)
         {
             var count = packet.ReadUInt32("Count");
             for (var i = 0; i < count; i++)
             {
-                packet.ReadGuid("[" + i + "] GUID");
-                packet.ReadEnum<QuestGiverStatus>("[" + i + "] Status", TypeCode.Byte);
+                packet.ReadGuid("GUID");
+                packet.ReadEnum<QuestGiverStatus>("Status", TypeCode.Byte);
             }
         }
 

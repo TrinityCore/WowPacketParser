@@ -20,13 +20,13 @@ namespace WowPacketParser.Parsing.Parsers
 
                 for (var i = 0; i < count; i++)
                 {
-                    packet.ReadCString("Name");
-                    packet.ReadBoolean("Enabled");
-                    packet.ReadInt32("CRC");
-                    packet.ReadInt32("Unk Int32");
+                    packet.ReadCString("Name", i);
+                    packet.ReadBoolean("Enabled", i);
+                    packet.ReadInt32("CRC", i);
+                    packet.ReadInt32("Unk Int32", i);
                 }
 
-                packet.ReadTime("Current Time");
+                packet.ReadTime("Time");
             }
             else
             {
