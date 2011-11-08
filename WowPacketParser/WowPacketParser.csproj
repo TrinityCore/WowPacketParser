@@ -270,6 +270,7 @@
     <Compile Include="Enums\TeamType.cs" />
     <Compile Include="Enums\TotemCategory.cs" />
     <Compile Include="Enums\TrainerSpellState.cs" />
+    <Compile Include="Enums\TradeStatus.cs" />
     <Compile Include="Enums\TrainerType.cs" />
     <Compile Include="Enums\TransferAbortReason.cs" />
     <Compile Include="Enums\TypeMask.cs" />
@@ -340,6 +341,7 @@
     <Compile Include="Parsing\Parsers\SessionHandler.cs" />
     <Compile Include="Parsing\Parsers\SpellHandler.cs" />
     <Compile Include="Parsing\Parsers\TalentHandler.cs" />
+    <Compile Include="Parsing\Parsers\TradeHandler.cs" />
     <Compile Include="Parsing\Parsers\UpdateHandler.cs" />
     <Compile Include="Parsing\Parsers\VoiceChatHandler.cs" />
     <Compile Include="Parsing\Parsers\WardenHandler.cs" />
