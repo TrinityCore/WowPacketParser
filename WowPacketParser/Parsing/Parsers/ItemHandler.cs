@@ -173,6 +173,25 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Count");
         }
 
+        [Parser(Opcode.CMSG_SWAP_ITEM)]
+        public static void HandleSwapItem(Packet packet)
+        {
+            packet.ReadByte("Bag");
+            packet.ReadByte("Slot");
+            packet.ReadByte("Destination Bag");
+            packet.ReadByte("Destination Slot");
+        }
+
+        [Parser(Opcode.CMSG_SPLIT_ITEM)]
+        public static void HandleSplitItem(Packet packet)
+        {
+            packet.ReadByte("Bag");
+            packet.ReadByte("Slot");
+            packet.ReadByte("Destination Bag");
+            packet.ReadByte("Destination Slot");
+            packet.ReadUInt32("Count");
+        }
+
         [Parser(Opcode.SMSG_ENCHANTMENTLOG)]
         public static void HandleEnchantmentLog(Packet packet)
         {
