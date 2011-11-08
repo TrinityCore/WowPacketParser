@@ -17,7 +17,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadGuid("Item GUID1");
             packet.ReadGuid("Item GUID2");
-            packet.ReadByte("Bag");
+            packet.ReadSByte("Bag");
 
             switch (result)
             {
@@ -41,7 +41,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_USE_ITEM)]
         public static void HandleUseItem(Packet packet)
         {
-            packet.ReadByte("Bag");
+            packet.ReadSByte("Bag");
             packet.ReadByte("Slot");
             packet.ReadByte("Cast Count");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell Id");
@@ -99,7 +99,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk Uint32");
             packet.ReadByte("Slot");
             packet.ReadInt32("Item Slot");
-            packet.ReadUInt32("Entry");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
             packet.ReadInt32("Suffix Factor");
             packet.ReadInt32("Random Property ID");
             packet.ReadUInt32("Count");
@@ -191,14 +191,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_READ_ITEM)]
         public static void HandleAutoBankItem(Packet packet)
         {
-            packet.ReadByte("Bag");
+            packet.ReadSByte("Bag");
             packet.ReadByte("Slot");
         }
 
         [Parser(Opcode.CMSG_DESTROYITEM)]
         public static void HandleDestroyItem(Packet packet)
         {
-            packet.ReadByte("Bag");
+            packet.ReadSByte("Bag");
             packet.ReadByte("Slot");
             packet.ReadUInt32("Count");
         }
@@ -206,7 +206,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_SWAP_ITEM)]
         public static void HandleSwapItem(Packet packet)
         {
-            packet.ReadByte("Bag");
+            packet.ReadSByte("Bag");
             packet.ReadByte("Slot");
             packet.ReadByte("Destination Bag");
             packet.ReadByte("Destination Slot");
@@ -215,7 +215,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_SPLIT_ITEM)]
         public static void HandleSplitItem(Packet packet)
         {
-            packet.ReadByte("Bag");
+            packet.ReadSByte("Bag");
             packet.ReadByte("Slot");
             packet.ReadByte("Destination Bag");
             packet.ReadByte("Destination Slot");
@@ -234,7 +234,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_ITEM_QUERY_SINGLE)]
         public static void HandleItemQuerySingle(Packet packet)
         {
-            packet.ReadInt32("Entry");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
             if (ClientVersion.Build >= ClientVersionBuild.V4_2_2_14545) // Might be earlier
             {
                 packet.ReadEnum<UnknownFlags>("Unknown Byte", TypeCode.Byte);

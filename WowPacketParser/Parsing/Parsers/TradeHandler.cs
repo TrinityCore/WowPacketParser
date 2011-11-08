@@ -17,7 +17,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleTradeItem(Packet packet)
         {
             packet.ReadByte("Trade Slot");
-            packet.ReadByte("Bag");
+            packet.ReadSByte("Bag");
             packet.ReadByte("Slot");
         }
 
@@ -67,11 +67,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Gold");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
 
-            // Hack! Can't figure this condition
-            while (packet.GetPosition() != packet.GetLength())
+            while (packet.CanRead())
             {
                 var slot = packet.ReadByte("Slot Index");
-                packet.ReadUInt32("Item Entry", slot);
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", slot);
                 packet.ReadUInt32("Item Display ID", slot);
                 packet.ReadUInt32("Item Count", slot);
                 packet.ReadUInt32("Item Wrapped", slot);

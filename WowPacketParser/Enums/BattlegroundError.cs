@@ -18,6 +18,5 @@ namespace WowPacketParser.Enums
         CantJoinWhileUsingLFG             = -13,
         NotAllowedWhileInRandomQueue      = -14,
         NotAllowedWhileInNotRandomQueue   = -15
-
     }
 }

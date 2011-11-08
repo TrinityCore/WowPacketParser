@@ -350,10 +350,67 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_ARENA_TEAM_ROSTER)]
+        [Parser(Opcode.CMSG_ARENA_TEAM_QUERY)]
+        public static void HandleArenaTeamQuery(Packet packet)
+        {
+            packet.ReadUInt32("Team ID");
+        }
+
+        [Parser(Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT)]
+        public static void HandleArenaTeamCommandResult(Packet packet)
+        {
+            packet.ReadUInt32("Action"); // FIXME: Use enum
+            packet.ReadCString("Team Name");
+            packet.ReadCString("Player Name");
+            packet.ReadUInt32("ErrorId"); // FIXME: Use enum
+        }
+
+        [Parser(Opcode.SMSG_ARENA_TEAM_EVENT)]
+        public static void HandleArenaTeamEvent(Packet packet)
+        {
+            packet.ReadByte("Event"); // FIXME: Use enum
+            var count = packet.ReadByte("Count");
+            for (var i = 0; i < count; ++i)
+                packet.ReadCString("Param", i);
+
+            if (packet.CanRead())
+                packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.SMSG_ARENA_TEAM_QUERY_RESPONSE)]
+        public static void HandleArenaTeamQueryResponse(Packet packet)
+        {
+            packet.ReadUInt32("Team ID");
+            packet.ReadCString("Team Name");
+            packet.ReadUInt32("Type");
+            packet.ReadUInt32("Background Color");
+            packet.ReadUInt32("Emblem Style");
+            packet.ReadUInt32("Emblem Color");
+            packet.ReadUInt32("Border Style");
+            packet.ReadUInt32("Border Color");
+        }
+
         [Parser(Opcode.SMSG_ARENA_OPPONENT_UPDATE)]
         public static void HandleArenaOpponentUpdate(Packet packet)
         {
             packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.MSG_INSPECT_ARENA_TEAMS)]
+        public static void HandleInspectArenaTeams(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            if (packet.Direction == Direction.ClientToServer)
+                return;
+
+            packet.ReadByte("Slot");
+            packet.ReadUInt32("Team Id");
+            packet.ReadUInt32("Team Rating");
+            packet.ReadUInt32("Team Season Games");
+            packet.ReadUInt32("Team Season Wins");
+            packet.ReadUInt32("Player Season Games");
+            packet.ReadUInt32("Player Personal Rating");
         }
 
         [Parser(Opcode.SMSG_ARENA_TEAM_STATS)]

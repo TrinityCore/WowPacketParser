@@ -127,9 +127,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<GuildEventType>("Event Type", TypeCode.Byte);
             var size = packet.ReadByte("Param Count");
             for (var i = 0; i < size; i++)
-                packet.ReadCString("[" + i + "]");
+                packet.ReadCString("Param", i);
 
-            if (packet.GetPosition() != packet.GetLength())
+            if (packet.CanRead())
                 packet.ReadGuid("GUID");
         }
 
