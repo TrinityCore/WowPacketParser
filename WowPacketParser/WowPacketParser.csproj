@@ -290,6 +290,7 @@
     <Compile Include="Misc\CharacterInfo.cs" />
     <Compile Include="Misc\ClientVersion.cs" />
     <Compile Include="Misc\CommandLine.cs" />
+    <Compile Include="Misc\PacketReads.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Misc\Guid.cs" />
     <Compile Include="Misc\LfgEntry.cs" />
