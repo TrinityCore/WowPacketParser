@@ -83,6 +83,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Slot");
         }
 
+        [Parser(Opcode.CMSG_SET_TRADE_ITEM)]
+        public static void HandleTradeItem(Packet packet)
+        {
+            packet.ReadByte("Trade Slot");
+            packet.ReadByte("Bag");
+            packet.ReadByte("Slot");
+        }
+
         [Parser(Opcode.CMSG_SWAP_INV_ITEM)]
         public static void HandleSwapInventoryItem(Packet packet)
         {
