@@ -119,7 +119,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBuyBackItem(Packet packet)
         {
             packet.ReadGuid("Vendor GUID");
-            packet.ReadByte("Slot");
+            packet.ReadUInt32("Slot");
         }
 
         [Parser(Opcode.CMSG_ITEM_REFUND_INFO)]
