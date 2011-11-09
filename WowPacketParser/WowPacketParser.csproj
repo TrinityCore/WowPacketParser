@@ -227,6 +227,10 @@
     <Compile Include="Enums\LfgUpdateFlag.cs" />
     <Compile Include="Enums\LfgUpdateType.cs" />
     <Compile Include="Enums\LootMethod.cs" />
+    <Compile Include="Enums\LootRoolType.cs" />
+    <Compile Include="Enums\LootSlotType.cs" />
+    <Compile Include="Enums\LootType.cs" />
+    <Compile Include="Enums\LootVoteFlags.cs" />
     <Compile Include="Enums\MailType.cs" />
     <Compile Include="Enums\MailActionType.cs" />
     <Compile Include="Enums\MailErrorType.cs" />
@@ -328,6 +332,7 @@
     <Compile Include="Parsing\Parsers\EquipmentSetHandler.cs" />
     <Compile Include="Parsing\Parsers\GameObjectHandler.cs" />
     <Compile Include="Parsing\Parsers\LfgHandler.cs" />
+    <Compile Include="Parsing\Parsers\LootHandler.cs" />
     <Compile Include="Parsing\Parsers\MailHandler.cs" />
     <Compile Include="Parsing\Parsers\NpcHandler.cs" />
     <Compile Include="Parsing\Parsers\GroupHandler.cs" />
