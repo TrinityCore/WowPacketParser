@@ -66,14 +66,18 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_ATTACKSTART)]
+        public static void HandleAttackStartStart(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadGuid("Victim GUID");
+        }
+
         [Parser(Opcode.SMSG_ATTACKSTOP)]
         public static void HandleAttackStartStop(Packet packet)
         {
             packet.ReadPackedGuid("GUID");
             packet.ReadPackedGuid("Victim GUID");
-
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_ATTACKSTOP))
-                packet.ReadInt32("Unk int");
+            packet.ReadInt32("Unk int");
         }
 
         [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]

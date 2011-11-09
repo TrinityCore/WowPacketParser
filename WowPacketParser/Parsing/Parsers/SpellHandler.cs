@@ -406,38 +406,31 @@ namespace WowPacketParser.Parsing.Parsers
 
             switch (result)
             {
-                case SpellCastFailureReason.DontReport:
-                case SpellCastFailureReason.Interrupted:
-                case SpellCastFailureReason.ItemNotReady:
-                case SpellCastFailureReason.LineOfSight:
-                case SpellCastFailureReason.TargetsDead:
-                case SpellCastFailureReason.NothingToDispel:
-                case SpellCastFailureReason.TargetAurastate:
-                case SpellCastFailureReason.SpellInProgress:
-                case SpellCastFailureReason.OutOfRange:
-                case SpellCastFailureReason.CasterDead:
-                case SpellCastFailureReason.NotInControl:
-                case SpellCastFailureReason.BadTargets:
-                case SpellCastFailureReason.UnitNotInfront:
-                case SpellCastFailureReason.Stunned:
-                case SpellCastFailureReason.NoValidTargets:
-                case SpellCastFailureReason.NotMounted:
-                case SpellCastFailureReason.NoPower:
-                case SpellCastFailureReason.NotHere:
-                case SpellCastFailureReason.Moving:
-                case SpellCastFailureReason.Fizzle:
-                case SpellCastFailureReason.CantDoThatRightNow:
-                case SpellCastFailureReason.TargetFriendly:
-                    // do nothing
+                case SpellCastFailureReason.TooManyOfItem:
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Limit");
                     break;
-                case SpellCastFailureReason.RequiresSpellFocus:
-                case SpellCastFailureReason.RequiresArea:
                 case SpellCastFailureReason.Totems:
                 case SpellCastFailureReason.TotemCategory:
-                case SpellCastFailureReason.CustomError:
-                case SpellCastFailureReason.TooManyOfItem:
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Totem 1");
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Totem 2");
+                    break;
+                case SpellCastFailureReason.Reagents:
+                    packet.ReadUInt32("Reagent ID");
+                    break;
+                case SpellCastFailureReason.RequiresSpellFocus:
+                    packet.ReadUInt32("Spell Focus");
+                    break;
+                case SpellCastFailureReason.RequiresArea:
+                    packet.ReadUInt32("Area ID");
+                    break;
                 case SpellCastFailureReason.NotReady:
-                    packet.ReadUInt32("ID/Misc");
+                    packet.ReadInt32("Unk");
+                    break;
+                case SpellCastFailureReason.CustomError:
+                    packet.ReadUInt32("Error ID");
                     break;
                 case SpellCastFailureReason.PreventedByMechanic:
                     packet.ReadEnum<SpellMechanics>("Mechanic", TypeCode.UInt32);
@@ -445,11 +438,6 @@ namespace WowPacketParser.Parsing.Parsers
                 case SpellCastFailureReason.EquippedItemClass:
                     packet.ReadEnum<ItemClass>("Class", TypeCode.UInt32);
                     packet.ReadUInt32("Subclass");
-                    break;
-                default:
-                    Console.WriteLine("Spell failure reason not handled.");
-                    if (packet.GetLength() - packet.GetPosition() != 0) // a little trick so we can Catch 'Em All. remove this later
-                        packet.ReadUInt32("Something");
                     break;
             }
         }

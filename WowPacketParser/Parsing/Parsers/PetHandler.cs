@@ -138,8 +138,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PET_UPDATE_COMBO_POINTS)]
         public static void HandlePetUpdateComboPoints(Packet packet)
         {
-            packet.ReadGuid("Guid 1");
-            packet.ReadGuid("Guid 2");
+            packet.ReadPackedGuid("Guid 1");
+            packet.ReadPackedGuid("Guid 2");
             packet.ReadByte("Combo points");
         }
 
