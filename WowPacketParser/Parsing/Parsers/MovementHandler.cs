@@ -113,27 +113,22 @@ namespace WowPacketParser.Parsing.Parsers
             switch (type)
             {
                 case SplineType.FacingSpot:
-                    {
-                        var spot = packet.ReadVector3();
-                        Console.WriteLine("Facing Spot: " + spot);
-                        break;
-                    }
+                {
+                    packet.ReadVector3("Facing Spot");
+                    break;
+                }
                 case SplineType.FacingTarget:
-                    {
-                        var tguid = packet.ReadGuid();
-                        Console.WriteLine("Facing GUID: " + tguid);
-                        break;
-                    }
+                {
+                    packet.ReadGuid("Facing GUID");
+                    break;
+                }
                 case SplineType.FacingAngle:
-                    {
-                        var angle = packet.ReadSingle();
-                        Console.WriteLine("Facing Angle: " + angle);
-                        break;
-                    }
+                {
+                    packet.ReadSingle("Facing Angle");
+                    break;
+                }
                 case SplineType.Stop:
-                    {
-                        return;
-                    }
+                    return;
             }
 
             var flags = (SplineFlag)packet.ReadInt32();
@@ -520,6 +515,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Y direction");
             packet.ReadSingle("Horizontal Speed");
             packet.ReadSingle("Vertical Speed");
+        }
+
+        [Parser(Opcode.MSG_MOVE_TIME_SKIPPED)]
+        public static void HandleMoveTimeSkipped(Packet packet)
+        {
+            packet.ReadPackedGuid("Guid");
+            packet.ReadInt32("Time");
         }
     }
 }
