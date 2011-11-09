@@ -1,5 +1,6 @@
 using System;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -64,12 +65,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Target GUID");
         }
 
+        [Parser(Opcode.SMSG_ATTACKSTART)]
         [Parser(Opcode.SMSG_ATTACKSTOP)]
-        public static void HandleAttackStop(Packet packet)
+        public static void HandleAttackStartStop(Packet packet)
         {
             packet.ReadPackedGuid("GUID");
             packet.ReadPackedGuid("Victim GUID");
-            packet.ReadInt32("Unk int");
+
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_ATTACKSTOP))
+                packet.ReadInt32("Unk int");
         }
 
         [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]
