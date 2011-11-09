@@ -146,6 +146,7 @@
     <Compile Include="Enums\ContactResult.cs" />
     <Compile Include="Enums\ContactStatus.cs" />
     <Compile Include="Enums\BattlegroundStatus.cs" />
+    <Compile Include="Enums\SpellModOp.cs" />
     <Compile Include="Enums\RaidInstanceResetWarning.cs" />
     <Compile Include="Enums\SniffType.cs" />
     <Compile Include="Enums\SpellHitType.cs" />

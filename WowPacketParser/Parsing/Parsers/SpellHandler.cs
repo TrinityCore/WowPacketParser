@@ -554,5 +554,14 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
         }
+
+        [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER)]
+        [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER)]
+        public static void HandleSetSpellModifier(Packet packet)
+        {
+            packet.ReadByte("Effect");
+            packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte);
+            packet.ReadInt32("Amount");
+        }
     }
 }
