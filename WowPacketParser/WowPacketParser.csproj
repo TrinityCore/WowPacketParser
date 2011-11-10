@@ -116,6 +116,8 @@
     <Compile Include="DBC\DBCStructures\LFGDungeonsEntry.cs" />
     <Compile Include="Enums\AccountDataType.cs" />
     <Compile Include="Enums\ActionButtonType.cs" />
+    <Compile Include="Enums\AuctionHouseAction.cs" />
+    <Compile Include="Enums\AuctionHouseError.cs" />
     <Compile Include="Enums\AIReaction.cs" />
     <Compile Include="Enums\AmmoType.cs" />
     <Compile Include="Enums\AttackerStateFlags.cs" />
@@ -318,6 +320,7 @@
     <Compile Include="Parsing\Handler.cs" />
     <Compile Include="Parsing\ParserAttribute.cs" />
     <Compile Include="Parsing\Parsers\AccountDataHandler.cs" />
+    <Compile Include="Parsing\Parsers\AuctionHouseHandler.cs" />
     <Compile Include="Parsing\Parsers\AchievementHandler.cs" />
     <Compile Include="Parsing\Parsers\ActionBarHandler.cs" />
     <Compile Include="Parsing\Parsers\AddonHandler.cs" />
