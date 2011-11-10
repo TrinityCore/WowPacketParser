@@ -1,0 +1,77 @@
+using System;
+using System.Text;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
+
+namespace WowPacketParser.Parsing.Parsers
+{
+    public static class TaxiHandler
+    {
+        [Parser(Opcode.CMSG_TAXINODE_STATUS_QUERY)]
+        [Parser(Opcode.CMSG_TAXIQUERYAVAILABLENODES)]
+        [Parser(Opcode.CMSG_ENABLETAXI)]
+        public static void HandleTaxiStatusQuery(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.SMSG_TAXINODE_STATUS)]
+        public static void HandleTaxiStatus(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadByte("Known");
+        }
+
+        [Parser(Opcode.SMSG_SHOWTAXINODES)]
+        public static void HandleShowTaxiNodes(Packet packet)
+        {
+            packet.ReadUInt32("Unk UInt32 1");
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32("Node ID");
+            var i = 0;
+            while (packet.CanRead())
+                packet.ReadUInt32("NodeMask", i++);
+        }
+
+        [Parser(Opcode.CMSG_ACTIVATETAXI)]
+        public static void HandleActivateTaxi(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32("Node 1 ID");
+            packet.ReadUInt32("Node 2 ID");
+        }
+
+        [Parser(Opcode.SMSG_ACTIVATETAXIREPLY)]
+        public static void HandleActivateTaxiReply(Packet packet)
+        {
+            packet.ReadEnum<TaxiError>("Result", TypeCode.UInt32);
+        }
+
+        [Parser(Opcode.CMSG_ACTIVATETAXIEXPRESS)]
+        public static void HandleActivateTaxiExpress(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            var count = packet.ReadUInt32("Node Count");
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt32("Node ID", i);
+
+        }
+
+        [Parser(Opcode.CMSG_SET_TAXI_BENCHMARK_MODE)]
+        public static void HandleSetTaxiBenchmarkMode(Packet packet)
+        {
+        }
+
+        [Parser(Opcode.SMSG_NEW_TAXI_PATH)]
+        public static void HandleTaxiNull(Packet packet)
+        {
+        }
+
+        //Missing Feedback
+        //[Parser(Opcode.CMSG_TAXICLEARALLNODES)]
+        //[Parser(Opcode.CMSG_TAXIENABLEALLNODES)]
+        //[Parser(Opcode.CMSG_TAXISHOWNODES)]
+        //[Parser(Opcode.CMSG_TAXICLEARNODE)]
+        //[Parser(Opcode.CMSG_TAXIENABLENODE)]
+    }
+}

@@ -274,6 +274,7 @@
     <Compile Include="Enums\SpellCastFailureReason.cs" />
     <Compile Include="Enums\SplineFlag.cs" />
     <Compile Include="Enums\StatType.cs" />
+    <Compile Include="Enums\TaxiError.cs" />
     <Compile Include="Enums\TargetFlag.cs" />
     <Compile Include="Enums\TeamType.cs" />
     <Compile Include="Enums\TotemCategory.cs" />
@@ -352,6 +353,7 @@
     <Compile Include="Parsing\Parsers\SessionHandler.cs" />
     <Compile Include="Parsing\Parsers\SpellHandler.cs" />
     <Compile Include="Parsing\Parsers\TalentHandler.cs" />
+    <Compile Include="Parsing\Parsers\TaxiHandler.cs" />
     <Compile Include="Parsing\Parsers\TradeHandler.cs" />
     <Compile Include="Parsing\Parsers\UpdateHandler.cs" />
     <Compile Include="Parsing\Parsers\VoiceChatHandler.cs" />
