@@ -122,7 +122,8 @@ namespace WowPacketParser.Parsing.Parsers
             switch (state)
             {
                 case PetFeedback.NothingToAttack:
-                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+                    if (ClientVersion.AddedInVersion(ClientType.Cataclysm) || packet.CanRead())
+                        packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
                     break;
                 case PetFeedback.CantAttackTarget:
                     if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
