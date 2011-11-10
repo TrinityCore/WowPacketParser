@@ -3,25 +3,25 @@ using System.Text;
 
 namespace WowPacketParser.Misc
 {
-    public sealed class Statistics
+    public static class Statistics
     {
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public static DateTime StartTime { get; set; }
+        public static DateTime EndTime { get; set; }
 
-        public uint Total { get; set; }
+        public static uint Total { get; set; }
 
-        public uint PacketsSuccessfullyParsed { get; set; }
-        public uint PacketsParsedWithErrors { get; set; }
-        public uint PacketsNotParsed { get; set; }
+        public static uint PacketsSuccessfullyParsed { get; set; }
+        public static uint PacketsParsedWithErrors { get; set; }
+        public static uint PacketsNotParsed { get; set; }
 
-        public TimeSpan TimeToParse()
+        public static TimeSpan TimeToParse()
         {
             return EndTime.Subtract(StartTime);
         }
 
-        public string Stats()
+        public static string Stats()
         {
-            StringBuilder res = new StringBuilder();
+            var res = new StringBuilder();
             var span = TimeToParse();
 
             res.AppendFormat("Finished parsing in {0} Minutes, {1} Seconds and {2} Milliseconds.",
@@ -33,6 +33,16 @@ namespace WowPacketParser.Misc
                 (double)PacketsSuccessfullyParsed / Total * 100, (double)PacketsParsedWithErrors / Total * 100, (double)PacketsNotParsed / Total * 100);
 
             return res.ToString();
+        }
+
+        public static void Reset()
+        {
+            StartTime = new DateTime(0);
+            EndTime = new DateTime(0);
+            Total = 0;
+            PacketsSuccessfullyParsed = 0;
+            PacketsParsedWithErrors = 0;
+            PacketsNotParsed = 0;
         }
     }
 }

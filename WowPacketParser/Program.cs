@@ -149,9 +149,9 @@ namespace WowPacketParser
                             Console.WriteLine("Assumed version: {0}", ClientVersion.Build);
                             Console.WriteLine("Parsing {0} packets...", packets.Count);
 
-                            var stats = new Statistics() { Total = (uint)packets.Count };
+                            Statistics.Total = (uint) packets.Count;
 
-                            stats.StartTime = DateTime.Now;
+                            Statistics.StartTime = DateTime.Now;
                             var outFileName = Path.ChangeExtension(file, null) + "_parsed";
                             var outLogFileName = outFileName + ".txt";
                             var outSqlFileName = outFileName + ".sql";
@@ -160,19 +160,20 @@ namespace WowPacketParser
                             Handler.InitializeLogFile(outLogFileName, dumpFormat == SniffType.None);
 
                             foreach (var packet in packets)
-                                Handler.Parse(packet, ref stats);
+                                Handler.Parse(packet);
 
                             SQLStore.WriteToFile();
                             Handler.WriteToFile();
 
-                            stats.EndTime = DateTime.Now;
+                            Statistics.EndTime = DateTime.Now;
 
                             // Need to open a new writer to console, last one was redirected to the file and is now closed.
                             var standardOutput = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
                             Console.SetOut(standardOutput);
-                            Console.WriteLine(stats.Stats());
+                            Console.WriteLine(Statistics.Stats());
                             Console.WriteLine("Saved file to '{0}'", outLogFileName);
                             Console.WriteLine();
+                            Statistics.Reset();
                         }
                     }
                 }

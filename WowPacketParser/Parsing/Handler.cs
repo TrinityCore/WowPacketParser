@@ -83,7 +83,7 @@ namespace WowPacketParser.Parsing
             _writer = null;
         }
 
-        public static void Parse(Packet packet, ref Statistics stats)
+        public static void Parse(Packet packet)
         {
             var opcode = packet.Opcode;
 
@@ -99,7 +99,7 @@ namespace WowPacketParser.Parsing
                     handler(packet);
 
                     if (packet.GetPosition() == packet.GetLength())
-                        stats.PacketsSuccessfullyParsed++;
+                        Statistics.PacketsSuccessfullyParsed++;
                     else
                     {
                         var pos = packet.GetPosition();
@@ -110,7 +110,7 @@ namespace WowPacketParser.Parsing
                         if (len < 300) // If the packet isn't "too big" and it is not full read, print its hex table
                             Console.WriteLine(packet.AsHex());
 
-                        stats.PacketsParsedWithErrors++;
+                        Statistics.PacketsParsedWithErrors++;
                     }
                 }
                 catch (Exception ex)
@@ -119,13 +119,13 @@ namespace WowPacketParser.Parsing
                     Console.WriteLine(ex.Message);
                     Console.WriteLine(ex.StackTrace);
 
-                    stats.PacketsParsedWithErrors++;
+                    Statistics.PacketsParsedWithErrors++;
                 }
             }
             else
             {
                 Console.WriteLine(packet.AsHex());
-                stats.PacketsNotParsed++;
+                Statistics.PacketsNotParsed++;
             }
 
             Console.WriteLine();
