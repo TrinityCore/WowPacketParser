@@ -373,9 +373,9 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (isTemplate)
                     sql = SQLStore.GameObjectUpdates.GetCommand(fieldName, guid.GetEntry(), finalValue);
-                else
-                    sql = SQLStore.GameObjectSpawnUpdates.GetCommand(fieldName, (uint)guid.GetLow(),
-                        finalValue);
+                //else
+                //    sql = SQLStore.GameObjectSpawnUpdates.GetCommand(fieldName, (uint)guid.GetLow(),
+                //        finalValue);
 
                 SQLStore.WriteData(sql);
             }

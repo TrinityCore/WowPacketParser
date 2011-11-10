@@ -3,7 +3,6 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
-
 namespace WowPacketParser.Parsing.Parsers
 {
     public static class ItemHandler
@@ -44,37 +43,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSByte("Bag");
             packet.ReadByte("Slot");
             packet.ReadByte("Cast Count");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell Id");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
             packet.ReadGuid("GUID");
             packet.ReadUInt32("Glyph Index");
             packet.ReadByte("CastFlags");
-            var targetFlags = packet.ReadEnum<TargetFlag>("Target Flags", TypeCode.Int32);
-
-            if (targetFlags.HasAnyFlag(TargetFlag.Unit | TargetFlag.CorpseEnemy | TargetFlag.GameObject |
-                TargetFlag.CorpseAlly | TargetFlag.UnitMinipet))
-                packet.ReadPackedGuid("Target GUID");
-
-            if (targetFlags.HasAnyFlag(TargetFlag.Item | TargetFlag.TradeItem))
-                packet.ReadPackedGuid("Item Target GUID");
-
-            if (targetFlags.HasAnyFlag(TargetFlag.SourceLocation))
-            {
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
-                    packet.ReadPackedGuid("Source Transport GUID");
-
-                packet.ReadVector3("Source Position");
-            }
-
-            if (targetFlags.HasAnyFlag(TargetFlag.DestinationLocation))
-            {
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
-                    packet.ReadPackedGuid("Destination Transport GUID");
-
-                packet.ReadVector3("Destination Position");
-            }
-
-            if (targetFlags.HasAnyFlag(TargetFlag.NameString))
-                packet.ReadCString("Target String");
+            SpellHandler.ReadSpellCastTargets(packet);
         }
 
         [Parser(Opcode.CMSG_AUTOSTORE_LOOT_ITEM)]
