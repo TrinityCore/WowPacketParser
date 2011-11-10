@@ -53,11 +53,10 @@ namespace WowPacketParser.Loading
                 {
                     var opcodeName = Opcodes.GetOpcodeName(packet.Opcode);
                     add = opcodeName.MatchesFilters(filters);
-
-                    // check for ignore filters
-                    if (add && ignoreFilters != null && ignoreFilters.Length > 0)
-                        add = !Opcodes.GetOpcodeName(packet.Opcode).MatchesFilters(ignoreFilters);
                 }
+                // check for ignore filters
+                if (add && ignoreFilters != null && ignoreFilters.Length > 0)
+                    add = !Opcodes.GetOpcodeName(packet.Opcode).MatchesFilters(ignoreFilters);
 
                 if (add)
                 {
