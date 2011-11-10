@@ -106,8 +106,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 4; i++)
             {
                 rewItemId[i] = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Item ID", i);
-
-                rewItemCnt[i] = packet.ReadInt32("Reward Item Count");
+                rewItemCnt[i] = packet.ReadInt32("Reward Item Count", i);
             }
 
             var rewChoiceItemId = new int[6];
@@ -115,8 +114,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 6; i++)
             {
                 rewChoiceItemId[i] = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Choice Item ID", i);
-
-                rewChoiceItemCnt[i] = packet.ReadInt32("Reward Choice Item Count");
+                rewChoiceItemCnt[i] = packet.ReadInt32("Reward Choice Item Count", i);
             }
 
             var rewFactionId = new int[5];
@@ -148,11 +146,15 @@ namespace WowPacketParser.Parsing.Parsers
 
             var details = packet.ReadCString("Details");
 
-            var returnText = string.Empty;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // Probably earlier
-                returnText = packet.ReadCString("Completed Text");
-
             var endText = packet.ReadCString("End Text");
+
+            var returnText = string.Empty;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+                returnText = packet.ReadCString("Return Text");
+
+            var completedText = string.Empty;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // Probably earlier
+                completedText = packet.ReadCString("Completed Text");
 
             var reqId = new KeyValuePair<int, bool>[4];
             var reqCnt = new int[4];
