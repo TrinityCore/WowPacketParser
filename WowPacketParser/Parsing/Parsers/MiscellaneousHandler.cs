@@ -268,58 +268,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Action Bar");
         }
 
-        [Parser(Opcode.SMSG_INSPECT_TALENT)]
-        public static void HandleInspectTalent(Packet packet)
-        {
-            packet.ReadPackedGuid("GUID");
-            packet.ReadUInt32("Free Talent count");
-            var speccount = packet.ReadByte("Spec count");
-            packet.ReadByte("Active Spec");
-            for (var i = 0; i < speccount; ++i)
-            {
-                var count2 = packet.ReadByte("Spec Talent Count ", i);
-                for (var j = 0; j < count2; ++j)
-                {
-                    packet.ReadUInt32("Talent Id", i, j);
-                    packet.ReadByte("Rank", i, j);
-                }
-            }
-
-            var glyphs = packet.ReadByte("Glyph count");
-            for (var i = 0; i < glyphs; ++i)
-                packet.ReadUInt16("Glyph", i);
-
-            var slotMask = packet.ReadUInt32("Slot Mask");
-            var slot = 0;
-            while (slotMask > 0)
-            {
-                if ((slotMask & 0x1) > 0)
-                {
-                    var name = "[" + (EquipmentSlotType)slot + "] ";
-                    packet.ReadUInt32(name + "Item Entry");
-                    var enchantMask = packet.ReadUInt16();
-                    if (enchantMask > 0)
-                    {
-                        var enchantName = name + "Item Enchantments: ";
-                        while (enchantMask > 0)
-                        {
-                            if ((enchantMask & 0x1) > 0)
-                                enchantName += packet.ReadUInt16();
-                            enchantMask >>= 1;
-                            if (enchantMask > 0)
-                                enchantName += ", ";
-                        }
-                        Console.WriteLine(enchantName);
-                    }
-                    packet.ReadUInt16(name + "Unk Uint16");
-                    packet.ReadPackedGuid(name + "Creator GUID");
-                    packet.ReadUInt32(name + "Unk Uint32");
-                }
-                ++slot;
-                slotMask >>= 1;
-            }
-        }
-
         [Parser(Opcode.CMSG_PLAY_DANCE)]
         public static void HandleClientPlayDance(Packet packet)
         {
