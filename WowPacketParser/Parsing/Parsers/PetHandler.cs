@@ -75,29 +75,31 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_PET_NAME_QUERY)]
+        public static void HandlePetNameQuery(Packet packet)
+        {
+            packet.ReadInt32("Pet number");
+            packet.ReadGuid("Guid");
+        }
+
         [Parser(Opcode.SMSG_PET_NAME_QUERY_RESPONSE)]
         public static void HandlePetNameQueryResponse(Packet packet)
         {
-            var petNumber = packet.ReadInt32();
-            Console.WriteLine("Pet number: " + petNumber);
+            packet.ReadInt32("Pet number");
 
-            var petName = packet.ReadCString();
+            var petName = packet.ReadCString("Pet name");
             if (petName == string.Empty)
             {
                 packet.ReadBytes(7); // 0s
                 return;
             }
-            Console.WriteLine("Pet name: " + petName);
 
-            var time = packet.ReadTime();
-            Console.WriteLine("Time: " + time);
-
-            var declined = packet.ReadBoolean();
-            Console.WriteLine("Declined: " + declined);
+            packet.ReadTime("Time");
+            var declined = packet.ReadBoolean("Declined");
 
             if (declined)
                 for (var i = 0; i < (int)MiscConstants.MaxDeclinedNameCases; i++)
-                    Console.WriteLine("Declined name " + i + ": " + packet.ReadCString());
+                    packet.ReadCString("Declined name", i);
         }
 
         [Parser(Opcode.SMSG_PET_MODE)]
