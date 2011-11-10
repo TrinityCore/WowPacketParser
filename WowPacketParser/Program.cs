@@ -50,6 +50,12 @@ namespace WowPacketParser
                 dumpFormat = (SniffType)Settings.GetInt32("DumpFormat");
                 packetsToRead = Settings.GetInt32("PacketsNum");
                 prompt = Settings.GetBoolean("ShowEndPrompt");
+
+                if (dumpFormat == SniffType.Bin || dumpFormat == SniffType.Pkt)
+                {
+                    DBCStore.Enabled = false;
+                    SQLConnector.Enabled = false;
+                }
             }
             catch (Exception ex)
             {

@@ -117,13 +117,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PET_ACTION_FEEDBACK)]
         public static void HandlePetActionFeedback(Packet packet)
         {
-            if (ClientVersion.Version <= ClientVersionBuild.V3_3_5a_12340)
-            {
-                packet.ReadByte("Pet state");
-                return;
-            }
-
             byte state = packet.ReadByte("Pet state");
+            if (ClientVersion.RemovedInVersion(ClientType.Cataclysm))
+                return;
+
             switch (state)
             {
                 //case 1: Pet is dead

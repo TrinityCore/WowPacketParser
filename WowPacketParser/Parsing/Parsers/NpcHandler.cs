@@ -154,58 +154,28 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Menu id");
             packet.ReadUInt32("Text id");
 
-            var count = packet.ReadUInt32("- Amount of Options");
+            var count = packet.ReadUInt32("Amount of Options");
 
             for (var i = 0; i < count; i++)
             {
-                if (i != 0)
-                    Console.WriteLine("\t--");
-
-                var index = packet.ReadUInt32();
-                Console.WriteLine("\tIndex: " + index);
-
-                var icon = packet.ReadByte();
-                Console.WriteLine("\tIcon: " + icon);
-
-                var box = packet.ReadBoolean();
-                Console.WriteLine("\tBox: " + box);
-
-                var boxMoney = packet.ReadUInt32();
-                if (box) // Only print if there's a box. avaliable.
-                    Console.WriteLine("\tRequired money: " + boxMoney);
-
-                var text = packet.ReadCString();
-                Console.WriteLine("\tText: " + text);
-
-                var boxText = packet.ReadCString();
-                if (box) // Only print if there's a box avaliable.
-                    Console.WriteLine("\tBox text: " + boxText);
+                packet.ReadUInt32("Index", i);
+                packet.ReadByte("Icon", i);
+                packet.ReadBoolean("Box", i);
+                packet.ReadUInt32("Required money", i);
+                packet.ReadCString("Text", i);
+                packet.ReadCString("Box Text", i);
             }
 
-            var questgossips = packet.ReadUInt32();
-            Console.WriteLine("- Amount of Quest gossips: " + questgossips);
-
+            var questgossips = packet.ReadUInt32("Amount of Quest gossips");
             for (var i = 0; i < questgossips; i++)
             {
-                if (i != 0)
-                    Console.WriteLine("\t--");
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID", i);
 
-                var questID = packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "\tQuest ID");
-
-                var questicon = packet.ReadUInt32();
-                Console.WriteLine("\tIcon: " + questicon);
-
-                var questlevel = packet.ReadInt32();
-                Console.WriteLine("\tLevel: " + questlevel);
-
-                var flags = (QuestFlag)(packet.ReadUInt32() | 0xFFFF);
-                Console.WriteLine("\tFlags: " + flags);
-
-                var unk1 = packet.ReadBoolean();
-                Console.WriteLine("\tUnknown bool: " + unk1);
-
-                var title = packet.ReadCString();
-                Console.WriteLine("\tTitle: " + title);
+                packet.ReadUInt32("Icon", i);
+                packet.ReadInt32("Level", i);
+                packet.ReadEnum<QuestFlag>("Flags", TypeCode.UInt32, i);
+                packet.ReadBoolean("Unk Bool", i);
+                packet.ReadCString("Title", i);
             }
         }
 
