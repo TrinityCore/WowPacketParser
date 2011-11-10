@@ -49,14 +49,12 @@ namespace WowPacketParser.Loading
 
                 // check for filters
                 bool add = true;
+                var opcodeName = Opcodes.GetOpcodeName(packet.Opcode);
                 if (filters != null && filters.Length > 0)
-                {
-                    var opcodeName = Opcodes.GetOpcodeName(packet.Opcode);
                     add = opcodeName.MatchesFilters(filters);
-                }
                 // check for ignore filters
                 if (add && ignoreFilters != null && ignoreFilters.Length > 0)
-                    add = !Opcodes.GetOpcodeName(packet.Opcode).MatchesFilters(ignoreFilters);
+                    add = !opcodeName.MatchesFilters(ignoreFilters);
 
                 if (add)
                 {
