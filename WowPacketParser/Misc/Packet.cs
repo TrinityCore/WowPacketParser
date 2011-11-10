@@ -17,7 +17,7 @@ namespace WowPacketParser.Misc
             Number = number;
         }
 
-        public int Opcode { get; private set; }
+        public int Opcode { get; set; }
         public DateTime Time { get; private set; }
         public Direction Direction { get; private set; }
         public int Number { get; private set; }

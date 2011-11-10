@@ -4,6 +4,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Misc.Objects;
+using WowPacketParser.Parsing;
 using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -331,9 +332,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleMovementSetSpeed(Packet packet)
         {
             var guid = packet.ReadPackedGuid("GUID");
-
             ReadMovementInfo(packet, guid);
-
             packet.ReadSingle("Speed");
         }
 
@@ -522,6 +521,29 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("Guid");
             packet.ReadInt32("Time");
+        }
+
+        [Parser(Opcode.SMSG_COMPRESSED_MOVES)]
+        public static void HandleCompressedMoves(Packet packet)
+        {
+            var pkt = packet.Inflate(packet.ReadInt32());
+            Console.WriteLine("{"); // To be able to see what is inside this packet.
+            Console.WriteLine();
+
+            while (pkt.CanRead())
+            {
+                var size = pkt.ReadByte();
+                var oldPos = pkt.GetLength();
+                var opc = pkt.ReadInt16();
+
+                size -= 2; // TODO: Should not be needed! Is here because size is by some reason always 2 bits too high
+                byte[] input = pkt.ReadBytes(size);
+                var newPacket = new Packet(input, opc, pkt.Time, pkt.Direction, pkt.Number);
+                Handler.Parse(newPacket);
+            }
+
+            Console.WriteLine("}");
+            packet.ReadToEnd();
         }
     }
 }
