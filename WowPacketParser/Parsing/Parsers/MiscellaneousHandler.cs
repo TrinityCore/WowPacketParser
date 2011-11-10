@@ -486,6 +486,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GROUP_DISBAND)]
         [Parser(Opcode.SMSG_CANCEL_COMBAT)]
         [Parser(Opcode.SMSG_DURABILITY_DAMAGE_DEATH)]
+        [Parser(Opcode.CMSG_ATTACKSTOP)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

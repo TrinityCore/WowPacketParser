@@ -117,23 +117,16 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PET_ACTION_FEEDBACK)]
         public static void HandlePetActionFeedback(Packet packet)
         {
-            byte state = packet.ReadByte("Pet state");
-            if (ClientVersion.RemovedInVersion(ClientType.Cataclysm))
-                return;
+            var state = packet.ReadEnum<PetFeedback>("Pet state", TypeCode.Byte);
 
             switch (state)
             {
-                //case 1: Pet is dead
-                case 2:
-                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell");
+                case PetFeedback.NothingToAttack:
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
                     break;
-                case 3:
-                    // Invalid attack target
-                    packet.ReadInt32("Unk int32");
-                    break;
-                //case 4: Charge has no path
-                default:
-                    Console.WriteLine("Unknown state");
+                case PetFeedback.CantAttackTarget:
+                    if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
+                        packet.ReadInt32("Unk int32");
                     break;
             }
         }

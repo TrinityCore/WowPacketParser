@@ -150,6 +150,7 @@
     <Compile Include="Enums\RaidInstanceResetWarning.cs" />
     <Compile Include="Enums\SniffType.cs" />
     <Compile Include="Enums\SpellHitType.cs" />
+    <Compile Include="Enums\PetFeedback.cs" />
     <Compile Include="Enums\PetitionResultType.cs" />
     <Compile Include="Enums\StoreNameType.cs" />
     <Compile Include="Enums\UnknownFlags.cs" />
