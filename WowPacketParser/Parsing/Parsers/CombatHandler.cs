@@ -7,6 +7,13 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class CombatHandler
     {
+
+        [Parser(Opcode.CMSG_ATTACKSWING)]
+        public static void HandleAttackSwing(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+        }
+
         [Parser(Opcode.SMSG_PVP_CREDIT)]
         public static void HandlePvPCredit(Packet packet)
         {
