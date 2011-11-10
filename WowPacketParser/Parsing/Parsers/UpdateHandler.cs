@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Misc.Objects;
 using WowPacketParser.SQL;
@@ -123,7 +124,7 @@ namespace WowPacketParser.Parsing.Parsers
             var mask = new BitArray(updateMask);
             var dict = new Dictionary<int, UpdateField>();
 
-            const int objectEnd = (int)ObjectField.OBJECT_END;
+            int objectEnd = UpdateFields.GetUpdateField(ObjectField.OBJECT_END);
 
             for (var i = 0; i < mask.Count; i++)
             {
@@ -134,60 +135,50 @@ namespace WowPacketParser.Parsing.Parsers
                 string key = "Block Value " + i;
                 string value = blockVal.Int32Value + "/" + blockVal.SingleValue;
                 if (i < objectEnd)
-                {
-                    var field = (ObjectField)i;
-                    key = field.ToString();
-                }
+                    key = UpdateFields.GetUpdateFieldName(i, "ObjectField");
                 else
                 {
                     switch (type)
                     {
                         case ObjectType.Container:
                         {
-                            if (i < (int)ItemField.ITEM_END)
+                            if (i < UpdateFields.GetUpdateField(ItemField.ITEM_END))
                                 goto case ObjectType.Item;
 
-                            var field = (ContainerField)i;
-                            key = field.ToString();
+                            key = UpdateFields.GetUpdateFieldName(i, "ContainerField");
                             break;
                         }
                         case ObjectType.Item:
                         {
-                            var field = (ItemField)i;
-                            key = field.ToString();
+                            key = UpdateFields.GetUpdateFieldName(i, "ItemField");
                             break;
                         }
                         case ObjectType.Player:
                         {
-                            if (i < (int)UnitField.UNIT_END)
+                            if (i < UpdateFields.GetUpdateField(UnitField.UNIT_END))
                                 goto case ObjectType.Unit;
 
-                            var field = (PlayerField)i;
-                            key = field.ToString();
+                            key = UpdateFields.GetUpdateFieldName(i, "PlayerField");
                             break;
                         }
                         case ObjectType.Unit:
                         {
-                            var field = (UnitField)i;
-                            key = field.ToString();
+                            key = UpdateFields.GetUpdateFieldName(i, "UnitField");
                             break;
                         }
                         case ObjectType.GameObject:
                         {
-                            var field = (GameObjectField)i;
-                            key = field.ToString();
+                            key = UpdateFields.GetUpdateFieldName(i, "GameObjectField");
                             break;
                         }
                         case ObjectType.DynamicObject:
                         {
-                            var field = (DynamicObjectField)i;
-                            key = field.ToString();
+                            key = UpdateFields.GetUpdateFieldName(i, "DynamicObjectField");
                             break;
                         }
                         case ObjectType.Corpse:
                         {
-                            var field = (CorpseField)i;
-                            key = field.ToString();
+                            key = UpdateFields.GetUpdateFieldName(i, "CorpseField");
                             break;
                         }
                     }
@@ -199,10 +190,11 @@ namespace WowPacketParser.Parsing.Parsers
             return dict;
         }
 
+        // Outdated, not using new UpdateFields. Plix rewrite.
         public static void HandleUpdateFieldChangedValues(Guid guid, ObjectType objType,
             Dictionary<int, UpdateField> updates, MovementInfo moves, bool updatingObject = false)
         {
-            bool shouldCommit;
+           /* bool shouldCommit;
             bool isIntValue;
             bool flags;
             const bool isTemplate = true;
@@ -383,6 +375,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (!isCreated)
                 SQLStore.WriteData(SQLStore.GameObjectSpawns.GetCommand(guid.GetEntry(), MovementHandler.CurrentMapId,
                     MovementHandler.CurrentPhaseMask, moves.Position, moves.Orientation));
+            * */
         }
 
         public static MovementInfo ReadMovementUpdateBlock(Packet packet, Guid guid, int index)
