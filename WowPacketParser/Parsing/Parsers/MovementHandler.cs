@@ -523,6 +523,42 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Time");
         }
 
+        [Parser(Opcode.SMSG_SPLINE_MOVE_ROOT)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_UNROOT)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_GRAVITY_ENABLE)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_GRAVITY_DISABLE)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_FEATHER_FALL)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_NORMAL_FALL)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_HOVER)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_UNSET_HOVER)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_WATER_WALK)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_LAND_WALK)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_START_SWIM)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_STOP_SWIM)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_MODE)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_MODE)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLYING)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_UNSET_FLYING)]
+        public static void HandleSplineMovementMessages(Packet packet)
+        {
+            packet.ReadPackedGuid("GUID");
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_SET_WALK_SPEED)]
+        [Parser(Opcode.SMSG_SPLINE_SET_RUN_SPEED)]
+        [Parser(Opcode.SMSG_SPLINE_SET_SWIM_SPEED)]
+        [Parser(Opcode.SMSG_SPLINE_SET_FLIGHT_SPEED)]
+        [Parser(Opcode.SMSG_SPLINE_SET_RUN_BACK_SPEED)]
+        [Parser(Opcode.SMSG_SPLINE_SET_SWIM_BACK_SPEED)]
+        [Parser(Opcode.SMSG_SPLINE_SET_FLIGHT_BACK_SPEED)]
+        [Parser(Opcode.SMSG_SPLINE_SET_TURN_RATE)]
+        [Parser(Opcode.SMSG_SPLINE_SET_PITCH_RATE)]
+        public static void HandleSplineMovementSetSpeed(Packet packet)
+        {
+            packet.ReadPackedGuid("GUID");
+            packet.ReadSingle("Amount");
+        }
+
         [Parser(Opcode.SMSG_COMPRESSED_MOVES)]
         public static void HandleCompressedMoves(Packet packet)
         {
