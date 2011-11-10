@@ -575,6 +575,7 @@ namespace WowPacketParser.Parsing.Parsers
                 size -= 2; // TODO: Should not be needed! Is here because size is by some reason always 2 bits too high
                 byte[] input = pkt.ReadBytes(size);
                 var newPacket = new Packet(input, opc, pkt.Time, pkt.Direction, pkt.Number);
+                Statistics.Total += 1;
                 Handler.Parse(newPacket);
             }
 
