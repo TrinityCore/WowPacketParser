@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 
@@ -55,32 +54,23 @@ namespace WowPacketParser.Parsing
             }
         }
 
-        public static void InitializeLogFile(string file, bool noDump)
-        {
-            _noDump = noDump;
-            if (_noDump)
-                return;
-
-            File.Delete(file);
-            _writer = new StreamWriter(file, true);
-            Console.SetOut(_writer);
-        }
-
-        private static bool _noDump;
-
-        private static StreamWriter _writer;
-
         private static readonly Dictionary<int, Action<Packet>> Handlers =
             new Dictionary<int, Action<Packet>>();
 
-        public static void WriteToFile()
+        public static void WriteToFile(List<Packet> packets, string file, bool noDump)
         {
-            if (_noDump)
+            if (noDump)
                 return;
 
-            _writer.Flush();
-            _writer.Close();
-            _writer = null;
+            File.Delete(file);
+            var writer = new StreamWriter(file, true);
+
+            foreach (var packet in packets)
+                writer.WriteLine(packet.Writer);
+
+            writer.Flush();
+            writer.Close();
+            writer = null;
         }
 
         public static void Parse(Packet packet)

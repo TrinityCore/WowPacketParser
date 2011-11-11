@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Loading;
@@ -180,17 +179,10 @@ namespace WowPacketParser
                                 packets.AsParallel().SetCulture().WithDegreeOfParallelism(threads).ForAll(Handler.Parse);
 
                             SQLStore.WriteToFile();
-
-                            Handler.InitializeLogFile(outLogFileName, dumpFormat == SniffType.None);
-                            foreach (var packet in packets)
-                                Console.WriteLine(packet.Writer);
-                            Handler.WriteToFile();
+                            Handler.WriteToFile(packets, outLogFileName, dumpFormat == SniffType.None);
 
                             Statistics.EndTime = DateTime.Now;
 
-                            // Need to open a new writer to console, last one was redirected to the file and is now closed.
-                            var standardOutput = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
-                            Console.SetOut(standardOutput);
                             Console.WriteLine(Statistics.Stats());
                             Console.WriteLine("Saved file to '{0}'", outLogFileName);
                             Console.WriteLine();

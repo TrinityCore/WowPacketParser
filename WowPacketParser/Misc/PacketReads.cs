@@ -159,8 +159,12 @@ namespace WowPacketParser.Misc
         private string GetIndexString(params int[] values)
         {
             string indexes = string.Empty;
+
             foreach (int value in values)
+            {
+                if (value == -1) continue;
                 indexes += "[" + value + "] ";
+            }
 
             return indexes;
         }
