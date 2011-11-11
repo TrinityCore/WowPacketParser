@@ -6,22 +6,6 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class BattlegroundHandler
     {
-        // Hack to read BG Guids (didn't wanted to touch Guid class till 100% sure this is real GUID as it seems to be)
-        private static bool ReadBgGuid(UInt64 guid)
-        {
-            var bgGuid = new Misc.Guid(guid);
-            bool isBg = bgGuid.GetHighType() == HighGuidType.BattleGround;
-            int low = (int)bgGuid.GetLow();
-            if (isBg)
-            {
-                var bgEntry = new BgEntry(low);
-                Console.WriteLine("BG GUID: Full: 0x" + bgGuid.Full.ToString("X8") + " BG Data: " + bgEntry);
-            }
-            else
-                Console.WriteLine("BG GUID: " + bgGuid);
-            return low != 0;
-        }
-
         [Parser(Opcode.MSG_BATTLEGROUND_PLAYER_POSITIONS)]
         public static void HandleBattlegrounPlayerPositions(Packet packet)
         {
@@ -90,14 +74,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BATTLEFIELD_PORT)]
         public static void HandleBattlefieldPort(Packet packet)
         {
-            ReadBgGuid(packet.ReadUInt64());
+            packet.ReadGuid("GUID");
             packet.ReadBoolean("Join BG");
         }
 
         [Parser(Opcode.CMSG_LEAVE_BATTLEFIELD)]
         public static void HandleBattlefieldLeave(Packet packet)
         {
-            ReadBgGuid(packet.ReadUInt64());
+            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_STATUS)]
@@ -109,17 +93,17 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS)]
         public static void HandleBattlefieldStatusServer(Packet packet)
         {
-            packet.ReadUInt32("Queue Slot");
+            var slot = packet.ReadUInt32("Queue Slot");
+            var guid = packet.ReadGuid("GUID");
 
-            // Hack - Sometimes found incomplete data... Old versions?
-            if (!ReadBgGuid(packet.ReadUInt64()))
-            {
-                packet.SetPosition(packet.GetLength());
+            if (slot == 1 && guid.GetLow() == 0)
                 return;
-            }
 
             packet.ReadByte("Min Level");
-            packet.ReadByte("Max Level");
+            var max = packet.ReadByte("Max Level");
+            if (max == 0)
+                return;
+
             packet.ReadUInt32("Client Instance ID");
             packet.ReadBoolean("Rated");
             var status = packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
@@ -131,12 +115,12 @@ namespace WowPacketParser.Parsing.Parsers
                     break;
                 case BattlegroundStatus.WaitJoin:
                     packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
-                    ReadBgGuid(packet.ReadUInt64());
+                    packet.ReadGuid("GUID");
                     packet.ReadUInt32("Time left");
                     break;
                 case BattlegroundStatus.InProgress:
                     packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
-                    ReadBgGuid(packet.ReadUInt64());
+                    packet.ReadGuid("GUID");
                     packet.ReadUInt32("Auto Leave Time");
                     packet.ReadUInt32("Time in BG");
                     packet.ReadByte("Is BG?");
@@ -434,7 +418,5 @@ namespace WowPacketParser.Parsing.Parsers
         //[Parser(Opcode.SMSG_BATTLEFIELD_PORT_DENIED)]
         //[Parser(Opcode.CMSG_START_BATTLEFIELD_CHEAT)]
         //[Parser(Opcode.CMSG_END_BATTLEFIELD_CHEAT)]
-
-
     }
 }
