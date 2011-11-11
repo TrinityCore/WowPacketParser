@@ -152,7 +152,7 @@ namespace WowPacketParser
                         else
                         {
                             Console.WriteLine("Assumed version: {0}", ClientVersion.Build);
-                            Console.WriteLine("Parsing {0} packets...", packets.Count);
+                            Console.WriteLine("Parsing {0} packets with {1} threads...", packets.Count, threads);
 
                             Statistics.Total = (uint) packets.Count;
 
