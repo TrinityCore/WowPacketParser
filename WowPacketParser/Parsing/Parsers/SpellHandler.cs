@@ -81,7 +81,7 @@ namespace WowPacketParser.Parsing.Parsers
                 return null;
             aura.SpellId = (uint)id;
 
-            var type = ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) ? TypeCode.Int16 : TypeCode.Byte;
+            var type = ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333) ? TypeCode.Int16 : TypeCode.Byte;
             aura.AuraFlags = packet.ReadEnum<AuraFlag>("Flags", type);
 
             aura.Level = packet.ReadByte("Level");
