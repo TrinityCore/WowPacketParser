@@ -4,7 +4,6 @@ using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Misc.Objects;
-using WowPacketParser.Parsing;
 using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -19,6 +18,9 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static MovementInfo ReadMovementInfo(ref Packet packet, Guid guid)
         {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
+                return ReadMovementInfo420(ref packet, guid, -1);
+
             return ReadMovementInfo(ref packet, guid, -1);
         }
 
@@ -79,6 +81,76 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (info.Flags.HasAnyFlag(MovementFlag.SplineElevation))
                 packet.ReadSingle(prefix + "Spline Elevation");
+
+            return info;
+        }
+
+        public static MovementInfo ReadMovementInfo420(ref Packet packet, Guid guid, int index)
+        {
+            var info = new MovementInfo();
+
+            info.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
+
+            packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 12, index);
+
+            var onTrasport = packet.ReadBit("OnTrasport", index);
+            var hasInterpolatedMovement = false;
+            var time3 = false;
+            if (onTrasport)
+            {
+                hasInterpolatedMovement = packet.ReadBit("HasInterpolatedMovement", index);
+                time3 = packet.ReadBit("Time3", index);
+            }
+
+            var swimming = packet.ReadBit("Swimming", index);
+            var interPolatedTurning = packet.ReadBit("InterPolatedTurning", index);
+
+
+            var jumping = false;
+            if (interPolatedTurning)
+                jumping = packet.ReadBit("Jumping", index);
+
+            var splineElevation = packet.ReadBit("SplineElevation", index);
+
+            packet.ReadBit("HasSplineData", index);
+
+            packet.ResetBitReader(); // reset bitreader
+
+            packet.ReadGuid("GUID 2", index);
+
+            packet.ReadInt32("Time", index);
+            var pos = packet.ReadVector4("Position", index);
+            info.Position = new Vector3(pos.X, pos.Y, pos.Z);
+            info.Orientation = pos.O;
+
+            if (onTrasport)
+            {
+                packet.ReadGuid("Transport GUID", index);
+                packet.ReadVector4("Transport Position", index);
+                packet.ReadByte("Transport Seat", index);
+                packet.ReadInt32("Transport Time", index);
+                if (hasInterpolatedMovement)
+                    packet.ReadInt32("Transport Time 2", index);
+                if (time3)
+                    packet.ReadInt32("Transport Time 3", index);
+            }
+            if (swimming)
+                packet.ReadSingle("Swim Pitch", index);
+
+            if (interPolatedTurning)
+            {
+                packet.ReadInt32("Fall Time", index);
+                packet.ReadSingle("Jump Z Speed", index);
+                if (jumping)
+                {
+                    packet.ReadSingle("Jump Sin", index);
+                    packet.ReadSingle("Jump Cos", index);
+                    packet.ReadSingle("Jump XY Speed", index);
+
+                }
+            }
+            if (splineElevation)
+                packet.ReadSingle("Spline Elevation", index);
 
             return info;
         }
