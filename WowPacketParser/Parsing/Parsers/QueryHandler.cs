@@ -55,7 +55,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("Declined Name", i);
         }
 
-        public static void ReadQueryHeader(Packet packet)
+        public static void ReadQueryHeader(ref Packet packet)
         {
             var entry = packet.ReadInt32("Entry");
             var guid = packet.ReadGuid("GUID");
@@ -67,7 +67,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_CREATURE_QUERY)]
         public static void HandleCreatureQuery(Packet packet)
         {
-            ReadQueryHeader(packet);
+            ReadQueryHeader(ref packet);
         }
 
         [Parser(Opcode.SMSG_CREATURE_QUERY_RESPONSE)]
@@ -140,7 +140,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_PAGE_TEXT_QUERY)]
         public static void HandlePageTextQuery(Packet packet)
         {
-            ReadQueryHeader(packet);
+            ReadQueryHeader(ref packet);
         }
 
         [Parser(Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE)]
@@ -161,7 +161,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
         public static void HandleNpcTextQuery(Packet packet)
         {
-            ReadQueryHeader(packet);
+            ReadQueryHeader(ref packet);
         }
 
         [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]

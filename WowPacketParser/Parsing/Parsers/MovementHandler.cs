@@ -17,12 +17,12 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static int CurrentPhaseMask = 1;
 
-        public static MovementInfo ReadMovementInfo(Packet packet, Guid guid)
+        public static MovementInfo ReadMovementInfo(ref Packet packet, Guid guid)
         {
-            return ReadMovementInfo(packet, guid, -1);
+            return ReadMovementInfo(ref packet, guid, -1);
         }
 
-        public static MovementInfo ReadMovementInfo(Packet packet, Guid guid, int index)
+        public static MovementInfo ReadMovementInfo(ref Packet packet, Guid guid, int index)
         {
             string prefix = index < 0 ? string.Empty : "[" + index + "] ";
 
@@ -244,7 +244,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var counter = packet.ReadInt32();
                 packet.Writer.WriteLine("Movement Counter: " + counter);
 
-                ReadMovementInfo(packet, guid);
+                ReadMovementInfo(ref packet, guid);
             }
             else
             {
@@ -310,7 +310,7 @@ namespace WowPacketParser.Parsing.Parsers
             else
                 guid = new Guid();
 
-            ReadMovementInfo(packet, guid);
+            ReadMovementInfo(ref packet, guid);
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.MSG_MOVE_KNOCK_BACK))
             {
                 packet.ReadSingle("Sin Angle");
@@ -332,7 +332,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleMovementSetSpeed(Packet packet)
         {
             var guid = packet.ReadPackedGuid("GUID");
-            ReadMovementInfo(packet, guid);
+            ReadMovementInfo(ref packet, guid);
             packet.ReadSingle("Speed");
         }
 
@@ -352,7 +352,7 @@ namespace WowPacketParser.Parsing.Parsers
             var counter = packet.ReadInt32();
             packet.Writer.WriteLine("Movement Counter: " + counter);
 
-            ReadMovementInfo(packet, guid);
+            ReadMovementInfo(ref packet, guid);
 
             var newSpeed = packet.ReadSingle();
             packet.Writer.WriteLine("New Speed: " + newSpeed);
@@ -373,7 +373,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (packet.Opcode != Opcodes.GetOpcode(Opcode.SMSG_MOVE_SET_COLLISION_HGT))
-                ReadMovementInfo(packet, guid);
+                ReadMovementInfo(ref packet, guid);
 
             var unk = packet.ReadSingle();
             packet.Writer.WriteLine("Collision Height: " + unk);
@@ -426,7 +426,7 @@ namespace WowPacketParser.Parsing.Parsers
             var unk1 = packet.ReadInt32();
             packet.Writer.WriteLine("Unk Int32 1: " + unk1);
 
-            ReadMovementInfo(packet, guid);
+            ReadMovementInfo(ref packet, guid);
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_MOVE_KNOCK_BACK_ACK))
                 return;
@@ -574,7 +574,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 size -= 2; // TODO: Should not be needed! Is here because size is by some reason always 2 bits too high
                 byte[] input = pkt.ReadBytes(size);
-                var newPacket = new Packet(input, opc, pkt.Time, pkt.Direction, pkt.Number);
+                var newPacket = new Packet(input, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer);
                 Statistics.Total += 1;
                 Handler.Parse(newPacket);
             }

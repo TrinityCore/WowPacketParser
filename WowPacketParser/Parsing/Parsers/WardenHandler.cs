@@ -110,7 +110,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CHECK_FOR_BOTS)]
         public static void HandleCheckForBots(Packet packet)
         {
-            ReadCheatCheckDecryptionBlock(packet);
+            ReadCheatCheckDecryptionBlock(ref packet);
         }
 
         [Parser(Opcode.CMSG_BOT_DETECTED)]
@@ -131,7 +131,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32");
         }
 
-        public static void ReadCheatCheckDecryptionBlock(Packet packet)
+        public static void ReadCheatCheckDecryptionBlock(ref Packet packet)
         {
             var arc4 = packet.ReadBytes(16);
             packet.Writer.WriteLine("ARC4 Key: " + Utilities.ByteArrayToHexString(arc4));

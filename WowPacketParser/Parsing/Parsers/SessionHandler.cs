@@ -43,7 +43,7 @@ namespace WowPacketParser.Parsing.Parsers
  
             packet.Writer.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(packet.ReadBytes(20)));
  
-            AddonHandler.ReadClientAddonsList(packet);
+            AddonHandler.ReadClientAddonsList(ref packet);
         }
 
         //[Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_2_0_14333)]
@@ -97,7 +97,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("String");
             packet.ReadInt32("Int32");
 
-            AddonHandler.ReadClientAddonsList(packet);
+            AddonHandler.ReadClientAddonsList(ref packet);
         }
 
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
@@ -110,25 +110,25 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 case ResponseCode.AUTH_OK:
                 {
-                    ReadAuthResponseInfo(packet);
+                    ReadAuthResponseInfo(ref packet);
                     break;
                 }
                 case ResponseCode.AUTH_WAIT_QUEUE:
                 {
                     if (packet.GetLength() <= 6)
                     {
-                        ReadQueuePositionInfo(packet);
+                        ReadQueuePositionInfo(ref packet);
                         break;
                     }
 
-                    ReadAuthResponseInfo(packet);
-                    ReadQueuePositionInfo(packet);
+                    ReadAuthResponseInfo(ref packet);
+                    ReadQueuePositionInfo(ref packet);
                     break;
                 }
             }
         }
 
-        public static void ReadAuthResponseInfo(Packet packet)
+        public static void ReadAuthResponseInfo(ref Packet packet)
         {
             packet.ReadInt32("Billing Time Remaining");
             packet.ReadEnum<BillingFlag>("Billing Flags", TypeCode.Byte);
@@ -139,7 +139,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
         }
 
-        public static void ReadQueuePositionInfo(Packet packet)
+        public static void ReadQueuePositionInfo(ref Packet packet)
         {
             var position = packet.ReadInt32();
             packet.Writer.WriteLine("Queue Position: " + position);

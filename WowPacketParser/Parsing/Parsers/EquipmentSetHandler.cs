@@ -7,7 +7,7 @@ namespace WowPacketParser.Parsing.Parsers
     {
         public const int NumSlots = 19;
 
-        public static void ReadSetInfo(Packet packet)
+        public static void ReadSetInfo(ref Packet packet)
         {
             packet.ReadPackedGuid("Set ID");
 
@@ -29,13 +29,13 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadInt32("Count");
 
             for (var i = 0; i < count; i++)
-                ReadSetInfo(packet);
+                ReadSetInfo(ref packet);
         }
 
         [Parser(Opcode.CMSG_EQUIPMENT_SET_SAVE)]
         public static void HandleEquipmentSetSave(Packet packet)
         {
-            ReadSetInfo(packet);
+            ReadSetInfo(ref packet);
         }
 
         [Parser(Opcode.SMSG_EQUIPMENT_SET_SAVED)]

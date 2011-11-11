@@ -47,7 +47,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
             packet.ReadUInt32("Glyph Index");
             packet.ReadByte("CastFlags");
-            SpellHandler.ReadSpellCastTargets(packet);
+            SpellHandler.ReadSpellCastTargets(ref packet);
         }
 
         [Parser(Opcode.CMSG_AUTOSTORE_LOOT_ITEM)]

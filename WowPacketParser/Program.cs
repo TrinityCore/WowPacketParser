@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
@@ -91,7 +92,7 @@ namespace WowPacketParser
                 var startTime = DateTime.Now;
                 Console.WriteLine("Loading DBCs...");
 
-                new DBC.DBCLoader();
+                new DBCLoader();
 
                 var endTime = DateTime.Now;
                 var span = endTime.Subtract(startTime);

@@ -40,7 +40,7 @@ namespace WowPacketParser.Parsing.Parsers
                         var guid = packet.ReadPackedGuid("[" + i + "] GUID");
 
                         WoWObject obj;
-                        var updates = ReadValuesUpdateBlock(packet, guid.GetObjectType(), i);
+                        var updates = ReadValuesUpdateBlock(ref packet, guid.GetObjectType(), i);
 
                         if (Objects.ContainsKey(map) && Objects[map].TryGetValue(guid, out obj))
                             HandleUpdateFieldChangedValues(guid, obj.Type, updates, obj.Movement);
@@ -54,32 +54,32 @@ namespace WowPacketParser.Parsing.Parsers
                         else
                             guid = packet.ReadGuid("[" + i + "] GUID");
 
-                        ReadMovementUpdateBlock(packet, guid, i);
+                        ReadMovementUpdateBlock(ref packet, guid, i);
                         break;
                     }
                     case "CreateObject1":
                     case "CreateObject2": // Might != CreateObject1 on Cata
                     {
                         var guid = packet.ReadPackedGuid("[" + i + "] GUID");
-                        ReadCreateObjectBlock(packet, guid, (uint)map, i);
+                        ReadCreateObjectBlock(ref packet, guid, (uint)map, i);
                         break;
                     }
                     case "FarObjects":
                     case "NearObjects":
                     case "DestroyObjects":
                     {
-                        ReadObjectsBlock(packet, i);
+                        ReadObjectsBlock(ref packet, i);
                         break;
                     }
                 }
             }
         }
 
-        public static void ReadCreateObjectBlock(Packet packet, Guid guid, uint map, int index)
+        public static void ReadCreateObjectBlock(ref Packet packet, Guid guid, uint map, int index)
         {
             var objType = packet.ReadEnum<ObjectType>("[" + index + "] Object Type", TypeCode.Byte);
-            var moves = ReadMovementUpdateBlock(packet, guid, index);
-            var updates = ReadValuesUpdateBlock(packet, objType, index);
+            var moves = ReadMovementUpdateBlock(ref packet, guid, index);
+            var updates = ReadValuesUpdateBlock(ref packet, objType, index);
 
             var obj = new WoWObject(guid, objType, moves, updates, map);
 
@@ -106,14 +106,14 @@ namespace WowPacketParser.Parsing.Parsers
             HandleUpdateFieldChangedValues(guid, objType, updates, moves, true);
         }
 
-        public static void ReadObjectsBlock(Packet packet, int index)
+        public static void ReadObjectsBlock(ref Packet packet, int index)
         {
             var objCount = packet.ReadInt32("[" + index + "] Object Count");
             for (var j = 0; j < objCount; j++)
                 packet.ReadPackedGuid("[" + index + "][" + j + "] Object GUID");
         }
 
-        public static Dictionary<int, UpdateField> ReadValuesUpdateBlock(Packet packet, ObjectType type, int index)
+        public static Dictionary<int, UpdateField> ReadValuesUpdateBlock(ref Packet packet, ObjectType type, int index)
         {
             var maskSize = packet.ReadByte();
 
@@ -378,7 +378,7 @@ namespace WowPacketParser.Parsing.Parsers
             * */
         }
 
-        public static MovementInfo ReadMovementUpdateBlock(Packet packet, Guid guid, int index)
+        public static MovementInfo ReadMovementUpdateBlock(ref Packet packet, Guid guid, int index)
         {
             var moveInfo = new MovementInfo();
 
@@ -387,7 +387,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (flags.HasAnyFlag(UpdateFlag.Living))
             {
-                moveInfo = MovementHandler.ReadMovementInfo(packet, guid, index);
+                moveInfo = MovementHandler.ReadMovementInfo(ref packet, guid, index);
                 var moveFlags = moveInfo.Flags;
 
                 var speedCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056) ? 9 : 8;

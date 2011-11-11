@@ -7,7 +7,7 @@ namespace WowPacketParser.Parsing.Parsers
     public static class ReputationHandler
     {
         [Parser(Opcode.SMSG_INITIALIZE_FACTIONS)]
-        public static  void HandleInitializeFactions(Packet packet)
+        public static void HandleInitializeFactions(Packet packet)
         {
             var flags = packet.ReadInt32();
             packet.Writer.WriteLine("Flags: 0x" + flags.ToString("X8"));
@@ -20,7 +20,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_SET_FORCED_REACTIONS)]
-        public static  void HandleForcedReactions(Packet packet)
+        public static void HandleForcedReactions(Packet packet)
         {
             var counter = packet.ReadInt32("Factions");
             for (var i = 0; i < counter; i++)

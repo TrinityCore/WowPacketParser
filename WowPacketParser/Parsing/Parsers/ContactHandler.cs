@@ -6,7 +6,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class ContactHandler
     {
-        public static void ReadSingleContactBlock(Packet packet, bool onlineCheck)
+        public static void ReadSingleContactBlock(ref Packet packet, bool onlineCheck)
         {
             var status = packet.ReadEnum<ContactStatus>("Status", TypeCode.Byte);
 
@@ -43,11 +43,11 @@ namespace WowPacketParser.Parsing.Parsers
                 if (!cflags.HasAnyFlag(ContactEntryFlag.Friend))
                     continue;
 
-                ReadSingleContactBlock(packet, true);
+                ReadSingleContactBlock(ref packet, true);
             }
 
             if (packet.CanRead())
-                WardenHandler.ReadCheatCheckDecryptionBlock(packet);
+                WardenHandler.ReadCheatCheckDecryptionBlock(ref packet);
         }
 
         [Parser(Opcode.SMSG_FRIEND_STATUS)]
@@ -65,11 +65,11 @@ namespace WowPacketParser.Parsing.Parsers
                 case ContactResult.FriendAddedOnline:
                 {
                     packet.ReadCString("Note");
-                    ReadSingleContactBlock(packet, false);
+                    ReadSingleContactBlock(ref packet, false);
                     break;
                 }
                 case ContactResult.Online:
-                    ReadSingleContactBlock(packet, false);
+                    ReadSingleContactBlock(ref packet, false);
                     break;
                 case ContactResult.Unknown2:
                     packet.ReadByte("Unk byte 1");

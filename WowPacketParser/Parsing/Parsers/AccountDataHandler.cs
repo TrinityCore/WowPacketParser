@@ -39,7 +39,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<AccountDataType>("Data Type", TypeCode.Int32);
         }
 
-        public static void ReadUpdateAccountDataBlock(Packet packet)
+        public static void ReadUpdateAccountDataBlock(ref Packet packet)
         {
             packet.ReadEnum<AccountDataType>("Data Type", TypeCode.Int32);
 
@@ -60,14 +60,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_UPDATE_ACCOUNT_DATA)]
         public static void HandleClientUpdateAccountData(Packet packet)
         {
-            ReadUpdateAccountDataBlock(packet);
+            ReadUpdateAccountDataBlock(ref packet);
         }
 
         [Parser(Opcode.SMSG_UPDATE_ACCOUNT_DATA)]
         public static void HandleServerUpdateAccountData(Packet packet)
         {
             packet.ReadGuid("GUID");
-            ReadUpdateAccountDataBlock(packet);
+            ReadUpdateAccountDataBlock(ref packet);
         }
 
         [Parser(Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE)]

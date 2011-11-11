@@ -80,7 +80,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.Writer.WriteLine("Comment: " + comment);
         }
 
-        public static void ReadLfgRewardBlock(Packet packet)
+        public static void ReadLfgRewardBlock(ref Packet packet)
         {
             packet.ReadBoolean("First Completion");
 
@@ -113,7 +113,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadLfgEntry("Random LFG Entry");
             packet.ReadLfgEntry("Actual LFG Entry");
 
-            ReadLfgRewardBlock(packet);
+            ReadLfgRewardBlock(ref packet);
         }
 
         [Parser(Opcode.SMSG_LFG_UPDATE_PLAYER)]
@@ -211,7 +211,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var int1 = packet.ReadLfgEntry();
                 packet.Writer.WriteLine("Random Dungeon Entry " + i + ": " + int1);
 
-                ReadLfgRewardBlock(packet);
+                ReadLfgRewardBlock(ref packet);
             }
 
             var numFields3 = packet.ReadInt32();
@@ -242,7 +242,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.Writer.WriteLine("Entry Count: " + numFields2);
 
                 for (var j = 0; j < numFields2; j++)
-                    ReadDungeonJoinResults(packet);
+                    ReadDungeonJoinResults(ref packet);
             }
         }
 
@@ -384,11 +384,11 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.Writer.WriteLine("Dungeon Count: " + cnt2);
 
                 for (var j = 0; j < cnt2; j++)
-                    ReadDungeonJoinResults(packet);
+                    ReadDungeonJoinResults(ref packet);
             }
         }
 
-        public static void ReadDungeonJoinResults(Packet packet)
+        public static void ReadDungeonJoinResults(ref Packet packet)
         {
             var lfgent = packet.ReadLfgEntry();
             packet.Writer.WriteLine("LFG Entry: " + lfgent);

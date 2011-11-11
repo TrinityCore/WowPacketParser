@@ -7,7 +7,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class TalentHandler
     {
-        public static void ReadTalentInfo(Packet packet)
+        public static void ReadTalentInfo(ref Packet packet)
         {
             packet.ReadUInt32("Free Talent count");
             var speccount = packet.ReadByte("Spec count");
@@ -37,7 +37,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleInspectTalent(Packet packet)
         {
             packet.ReadPackedGuid("GUID");
-            ReadTalentInfo(packet);
+            ReadTalentInfo(ref packet);
 
             var slotMask = packet.ReadUInt32("Slot Mask");
             var slot = 0;
@@ -95,7 +95,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
             else
-                ReadTalentInfo(packet);
+                ReadTalentInfo(ref packet);
         }
 
         [Parser(Opcode.CMSG_LEARN_PREVIEW_TALENTS)]

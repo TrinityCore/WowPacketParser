@@ -15,10 +15,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             var numFields = packet.ReadInt16("Field Count");
             for (var i = 0; i < numFields; i++)
-                ReadWorldStateBlock(packet);
+                ReadWorldStateBlock(ref packet);
         }
 
-        public static void ReadWorldStateBlock(Packet packet)
+        public static void ReadWorldStateBlock(ref Packet packet)
         {
             packet.ReadInt32("Field");
             packet.ReadInt32("Value");
@@ -27,7 +27,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_UPDATE_WORLD_STATE)]
         public static void HandleUpdateWorldState(Packet packet)
         {
-            ReadWorldStateBlock(packet);
+            ReadWorldStateBlock(ref packet);
         }
 
         [Parser(Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE)]

@@ -11,7 +11,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GAMEOBJECT_QUERY)]
         public static void HandleGameObjectQuery(Packet packet)
         {
-            QueryHandler.ReadQueryHeader(packet);
+            QueryHandler.ReadQueryHeader(ref packet);
         }
 
         [Parser(Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE)]

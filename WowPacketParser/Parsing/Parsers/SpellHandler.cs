@@ -70,7 +70,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        public static Aura ReadAuraUpdateBlock(Packet packet)
+        public static Aura ReadAuraUpdateBlock(ref Packet packet)
         {
             var aura = new Aura();
 
@@ -128,7 +128,7 @@ namespace WowPacketParser.Parsing.Parsers
             /*var aura = new Aura(); */
             while (packet.CanRead())
                 /*aura =*/
-                ReadAuraUpdateBlock(packet);
+                ReadAuraUpdateBlock(ref packet);
             // TODO: Add this aura to a list of objects (searching by guid)
         }
 
@@ -138,10 +138,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Cast Count");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
             packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
-            ReadSpellCastTargets(packet);
+            ReadSpellCastTargets(ref packet);
         }
 
-        public static TargetFlag ReadSpellCastTargets(Packet packet)
+        public static TargetFlag ReadSpellCastTargets(ref Packet packet)
         {
             var targetFlags = packet.ReadEnum<TargetFlag>("Target Flags", TypeCode.Int32);
 
@@ -216,7 +216,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            var targetFlags = ReadSpellCastTargets(packet);
+            var targetFlags = ReadSpellCastTargets(ref packet);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
             {

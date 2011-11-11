@@ -8,6 +8,16 @@ namespace WowPacketParser.Misc
 {
     public sealed partial class Packet : BinaryReader
     {
+        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringWriter writer)
+            : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
+        {
+            Opcode = opcode;
+            Time = time;
+            Direction = direction;
+            Number = number;
+            Writer = writer;
+        }
+
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
@@ -32,7 +42,7 @@ namespace WowPacketParser.Misc
             inflater.SetInput(arr, 0, arr.Length);
             inflater.Inflate(newarr, 0, inflatedSize);
 
-            var pkt = new Packet(newarr, Opcode, Time, Direction, Number);
+            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer);
             return pkt;
         }
 
