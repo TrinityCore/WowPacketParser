@@ -372,5 +372,64 @@ namespace WowPacketParser.Misc
             Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, StoreGetters.GetName(type, val));
             return val;
         }
+
+        // Bitstream reader - start
+        private byte _bitpos = 8;
+        private byte _curbitval = 0;
+
+        public bool ReadBit(string name, params int[] values)
+        {
+            var bit = ReadBit();
+            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, bit ? "1" : "0");
+            return bit;
+        }
+        public bool ReadBit()
+        {
+            ++_bitpos;
+
+            if (_bitpos > 7)
+            {
+                _bitpos = 0;
+                _curbitval = ReadByte();
+            }
+
+            var bit = ((_curbitval >> (7 - _bitpos)) & 1) != 0;
+            return bit;
+        }
+
+        public void ResetBitReader()
+        {
+            _bitpos = 8;
+        }
+
+        public uint ReadBits(string name, int bits, params int[] values)
+        {
+            var val = ReadBits(bits);
+            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            return val;
+        }
+        public uint ReadBits(int bits)
+        {
+            uint value = 0;
+            for (int i = bits - 1; i >= 0; --i)
+                if (ReadBit())
+                    value |= (uint)((1 << (_bitpos)));
+            return value;
+        }
+        private KeyValuePair<long, T> ReadEnum<T>(int bits)
+        {
+            var type = typeof(T);
+            long rawVal = ReadBits(bits);
+            var value = Enum.ToObject(type, rawVal);
+            return new KeyValuePair<long, T>(rawVal, (T)value);
+        }
+        public T ReadEnum<T>(string name, int bits, params int[] values)
+        {
+            var val = ReadEnum<T>(bits);
+            Writer.WriteLine("{0}{1}: {2} ({3})", GetIndexString(values), name, val.Value, val.Key);
+            return val.Value;
+        }
+        // Bitstream reader - end
+
     }
 }
