@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using WowPacketParser.Enums;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
@@ -28,7 +29,7 @@ namespace WowPacketParser
             int packetNumberLow = 0; // 0 -> No low limit
             int packetNumberHigh = 0; // 0 -> No high limit
             bool prompt = false;
-            int threads = 1;
+            int threads = 0;
             try
             {
                 ClientVersion.Build = Settings.GetEnum<ClientVersionBuild>("ClientBuild");
@@ -53,9 +54,16 @@ namespace WowPacketParser
                 prompt = Settings.GetBoolean("ShowEndPrompt");
                 threads = Settings.GetInt32("Threads");
 
-                if (threads == 0 || sqlOutput)
+                // Atm, we can't output sql with multiple threads
+                // sql output needs to be written to a "buffer" (similar to Packet.Writer)
+                // or done at the end of parsing (prefered option)
+                if (sqlOutput)
+                {
                     threads = 1;
+                    Console.WriteLine("Thread number forced to 1 because SQL Output is enabled (temporary behaviour).");
+                }
 
+                // Disable DB and DBCs when we don't need its data (dumping to a binary file)
                 if (dumpFormat == SniffType.Bin || dumpFormat == SniffType.Pkt)
                 {
                     DBCStore.Enabled = false;
@@ -151,8 +159,10 @@ namespace WowPacketParser
                         }
                         else
                         {
+                            var numberOfThreads = threads != 0 ? threads.ToString() : "a recommended number of";
+
                             Console.WriteLine("Assumed version: {0}", ClientVersion.Build);
-                            Console.WriteLine("Parsing {0} packets with {1} threads...", packets.Count, threads);
+                            Console.WriteLine("Parsing {0} packets with {1} threads...", packets.Count, numberOfThreads);
 
                             Statistics.Total = (uint) packets.Count;
 
@@ -163,10 +173,10 @@ namespace WowPacketParser
 
                             SQLStore.Initialize(outSqlFileName, sqlOutput);
 
-                            packets.AsParallel().WithDegreeOfParallelism(threads).ForAll(packet =>
-                            {
-                                Handler.Parse(packet);
-                            });
+                            if (threads == 0) // Number of threads is automatically choosen by the Parallel library
+                                Parallel.ForEach(packets, Handler.Parse);
+                            else
+                                packets.AsParallel().WithDegreeOfParallelism(threads).ForAll(Handler.Parse);
 
                             SQLStore.WriteToFile();
 
