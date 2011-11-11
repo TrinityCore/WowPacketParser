@@ -175,9 +175,9 @@ namespace WowPacketParser
                             SQLStore.Initialize(outSqlFileName, sqlOutput);
 
                             if (threads == 0) // Number of threads is automatically choosen by the Parallel library
-                                Parallel.ForEach(packets, Handler.Parse);
+                                packets.AsParallel().SetCulture().ForAll(Handler.Parse);
                             else
-                                packets.AsParallel().WithDegreeOfParallelism(threads).ForAll(Handler.Parse);
+                                packets.AsParallel().SetCulture().WithDegreeOfParallelism(threads).ForAll(Handler.Parse);
 
                             SQLStore.WriteToFile();
 

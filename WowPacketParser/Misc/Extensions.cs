@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Text;
+using System.Threading;
 using MySql.Data.MySqlClient;
 using WowPacketParser.DBC.DBCStructures;
 
@@ -94,6 +97,26 @@ namespace WowPacketParser.Misc
                            "---------------|");
 
             return hexDump.ToString();
+        }
+
+        public static ParallelQuery<TSource> SetCulture<TSource>(this ParallelQuery<TSource> source)
+        {
+            SetCulture(CultureInfo.InvariantCulture);
+            return source
+                .Select(
+                    item =>
+                        {
+                            SetCulture(CultureInfo.InvariantCulture);
+                            return item;
+                        });
+        }
+
+        private static void SetCulture(CultureInfo cultureInfo)
+        {
+            if (Thread.CurrentThread.CurrentCulture != cultureInfo)
+            {
+                Thread.CurrentThread.CurrentCulture = cultureInfo;
+            }
         }
     }
 }
