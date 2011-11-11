@@ -70,7 +70,7 @@ namespace WowPacketParser.Parsing.Parsers
             var srcItemId = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Source Item ID");
 
             var flags = (QuestFlag)(packet.ReadInt32() | 0xFFFF);
-            Console.WriteLine("Flags: " + flags);
+            packet.Writer.WriteLine("Flags: " + flags);
 
             var titleId = 0;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_4_0_8089))
@@ -170,7 +170,7 @@ namespace WowPacketParser.Parsing.Parsers
                 reqId[i] = packet.ReadEntry();
                 var isGO = reqId[i].Value;
 
-                Console.WriteLine("[" + i + "] Required " + (isGO ? "GO" : "NPC") +
+                packet.Writer.WriteLine("[" + i + "] Required " + (isGO ? "GO" : "NPC") +
                     " ID: " + StoreGetters.GetName(isGO ? StoreNameType.GameObject : StoreNameType.Unit, (int)reqId[i].Key));
 
                 reqCnt[i] = packet.ReadInt32("Required Count", i);
@@ -301,7 +301,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
                 packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Rewarded Quest");
             */
-            Console.WriteLine("Packet is currently not printed");
+            packet.Writer.WriteLine("Packet is currently not printed");
             packet.ReadBytes((int)packet.GetLength());
         }
 
@@ -629,15 +629,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Money");
             var honor = packet.ReadInt32();
             if (honor < 0)
-                Console.WriteLine("Honor: " + honor);
+                packet.Writer.WriteLine("Honor: " + honor);
 
             var talentpoints = packet.ReadInt32();
             if (talentpoints < 0)
-                Console.WriteLine("Talentpoints: " + talentpoints);
+                packet.Writer.WriteLine("Talentpoints: " + talentpoints);
 
             var arenapoints = packet.ReadInt32();
             if (arenapoints < 0)
-                Console.WriteLine("Arenapoints: " + arenapoints);
+                packet.Writer.WriteLine("Arenapoints: " + arenapoints);
         }
 
         [Parser(Opcode.CMSG_QUESTLOG_SWAP_QUEST)]

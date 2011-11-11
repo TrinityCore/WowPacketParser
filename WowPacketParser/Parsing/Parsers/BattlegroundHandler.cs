@@ -17,7 +17,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count1; i++)
             {
                 packet.ReadGuid("[" + i + "] Player GUID");
-                Console.WriteLine("[" + i + "] Position: " + packet.ReadVector2());
+                packet.Writer.WriteLine("[" + i + "] Position: " + packet.ReadVector2());
             }
 
             var count2 = packet.ReadInt32("Count2");
@@ -25,7 +25,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count2; i++)
             {
                 packet.ReadGuid("[" + i + "] Player GUID");
-                Console.WriteLine("[" + i + "] Position: " + packet.ReadVector2());
+                packet.Writer.WriteLine("[" + i + "] Position: " + packet.ReadVector2());
             }
         }
 
@@ -179,13 +179,13 @@ namespace WowPacketParser.Parsing.Parsers
             if (val < 1)
             {
                 var result = (BattlegroundError)val;
-                Console.WriteLine("Result: " + result);
+                packet.Writer.WriteLine("Result: " + result);
                 if (result == BattlegroundError.JoinFailedAsGroup ||
                     result == BattlegroundError.CouldntJoinQueueInTime)
                     packet.ReadGuid("GUID");
             }
             else
-                Console.WriteLine("Result: Joined (BGType: " + StoreGetters.GetName(StoreNameType.Battleground, val) + ")");
+                packet.Writer.WriteLine("Result: Joined (BGType: " + StoreGetters.GetName(StoreNameType.Battleground, val) + ")");
         }
 
         [Parser(Opcode.MSG_PVP_LOG_DATA)]

@@ -55,7 +55,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleEnvirenmentalDamageLog(Packet packet)
         {
             var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.Writer.WriteLine("GUID: " + guid);
 
             packet.ReadEnum<EnvironmentDamageFlags>("Type", TypeCode.Byte);
 

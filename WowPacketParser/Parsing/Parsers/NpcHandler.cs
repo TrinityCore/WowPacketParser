@@ -12,19 +12,19 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGossipPoi(Packet packet)
         {
             var flags = packet.ReadInt32();
-            Console.WriteLine("Flags: 0x" + flags.ToString("X8"));
+            packet.Writer.WriteLine("Flags: 0x" + flags.ToString("X8"));
 
             var pos = packet.ReadVector2();
-            Console.WriteLine("Coordinates: " + pos);
+            packet.Writer.WriteLine("Coordinates: " + pos);
 
             var icon = (GossipPoiIcon)packet.ReadInt32();
-            Console.WriteLine("Icon: " + icon);
+            packet.Writer.WriteLine("Icon: " + icon);
 
             var data = packet.ReadInt32();
-            Console.WriteLine("Data: " + data);
+            packet.Writer.WriteLine("Data: " + data);
 
             var iconName = packet.ReadCString();
-            Console.WriteLine("Icon Name: " + iconName);
+            packet.Writer.WriteLine("Icon Name: " + iconName);
         }
 
         [Parser(Opcode.SMSG_TRAINER_BUY_SUCCEEDED)]
@@ -40,51 +40,51 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadGuid("GUID");
 
             var type = (TrainerType)packet.ReadInt32();
-            Console.WriteLine("Type: " + type);
+            packet.Writer.WriteLine("Type: " + type);
 
             var count = packet.ReadInt32();
-            Console.WriteLine("Count: " + count);
+            packet.Writer.WriteLine("Count: " + count);
 
             for (var i = 0; i < count; i++)
             {
                 var spell = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
 
                 var state = (TrainerSpellState)packet.ReadByte();
-                Console.WriteLine("State " + i + ": " + state);
+                packet.Writer.WriteLine("State " + i + ": " + state);
 
                 var cost = packet.ReadInt32();
-                Console.WriteLine("Cost " + i + ": " + cost);
+                packet.Writer.WriteLine("Cost " + i + ": " + cost);
 
                 var profDialog = packet.ReadInt32();
-                Console.WriteLine("Profession Dialog " + i + ": " + profDialog);
+                packet.Writer.WriteLine("Profession Dialog " + i + ": " + profDialog);
 
                 var profButton = packet.ReadInt32();
-                Console.WriteLine("Profession Button " + i + ": " + profButton);
+                packet.Writer.WriteLine("Profession Button " + i + ": " + profButton);
 
                 var reqLevel = packet.ReadByte();
-                Console.WriteLine("Required Level " + i + ": " + reqLevel);
+                packet.Writer.WriteLine("Required Level " + i + ": " + reqLevel);
 
                 var reqSkill = packet.ReadInt32();
-                Console.WriteLine("Required Skill " + i + ": " + reqSkill);
+                packet.Writer.WriteLine("Required Skill " + i + ": " + reqSkill);
 
                 var reqSkLvl = packet.ReadInt32();
-                Console.WriteLine("Required Skill Level " + i + ": " + reqSkLvl);
+                packet.Writer.WriteLine("Required Skill Level " + i + ": " + reqSkLvl);
 
                 var chainNode1 = packet.ReadInt32();
-                Console.WriteLine("Chain Node 1 " + i + ": " + chainNode1);
+                packet.Writer.WriteLine("Chain Node 1 " + i + ": " + chainNode1);
 
                 var chainNode2 = packet.ReadInt32();
-                Console.WriteLine("Chain Node 2 " + i + ": " + chainNode2);
+                packet.Writer.WriteLine("Chain Node 2 " + i + ": " + chainNode2);
 
                 var unk = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 " + i + ": " + unk);
+                packet.Writer.WriteLine("Unk Int32 " + i + ": " + unk);
 
                 SQLStore.WriteData(SQLStore.TrainerSpells.GetCommand(guid.GetEntry(), spell, cost, reqLevel,
                     reqSkill, reqSkLvl));
             }
 
             var titleStr = packet.ReadCString();
-            Console.WriteLine("Title: " + titleStr);
+            packet.Writer.WriteLine("Title: " + titleStr);
         }
 
         [Parser(Opcode.SMSG_LIST_INVENTORY)]
@@ -93,33 +93,33 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadGuid("GUID");
 
             var itemCount = packet.ReadByte();
-            Console.WriteLine("Item Count: " + itemCount);
+            packet.Writer.WriteLine("Item Count: " + itemCount);
 
             for (var i = 0; i < itemCount; i++)
             {
                 var position = packet.ReadInt32();
-                Console.WriteLine("Item Position " + position + ": " + position);
+                packet.Writer.WriteLine("Item Position " + position + ": " + position);
 
                 var itemId = packet.ReadInt32();
-                Console.WriteLine("Item ID " + i + ": " + itemId);
+                packet.Writer.WriteLine("Item ID " + i + ": " + itemId);
 
                 var dispid = packet.ReadInt32();
-                Console.WriteLine("Display ID " + i + ": " + dispid);
+                packet.Writer.WriteLine("Display ID " + i + ": " + dispid);
 
                 var maxCount = packet.ReadInt32();
-                Console.WriteLine("Max Count " + i + ": " + maxCount);
+                packet.Writer.WriteLine("Max Count " + i + ": " + maxCount);
 
                 var price = packet.ReadInt32();
-                Console.WriteLine("Price " + i + ": " + price);
+                packet.Writer.WriteLine("Price " + i + ": " + price);
 
                 var maxDura = packet.ReadInt32();
-                Console.WriteLine("Max Durability " + i + ": " + maxDura);
+                packet.Writer.WriteLine("Max Durability " + i + ": " + maxDura);
 
                 var buyCount = packet.ReadInt32();
-                Console.WriteLine("Buy Count " + i + ": " + buyCount);
+                packet.Writer.WriteLine("Buy Count " + i + ": " + buyCount);
 
                 var extendedCost = packet.ReadInt32();
-                Console.WriteLine("Extended Cost " + i + ": " + extendedCost);
+                packet.Writer.WriteLine("Extended Cost " + i + ": " + extendedCost);
 
                 SQLStore.WriteData(SQLStore.VendorItems.GetCommand(guid.GetEntry(), itemId, maxCount,
                     extendedCost));
@@ -185,16 +185,16 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleThreatlistUpdate(Packet packet)
         {
             var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.Writer.WriteLine("GUID: " + guid);
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_HIGHEST_THREAT_UPDATE))
             {
                 var newhigh = packet.ReadPackedGuid();
-                Console.WriteLine("New Highest: " + newhigh);
+                packet.Writer.WriteLine("New Highest: " + newhigh);
             }
 
             var count = packet.ReadUInt32();
-            Console.WriteLine("Size: " + count);
+            packet.Writer.WriteLine("Size: " + count);
             for (int i = 0; i < count; i++)
             {
                 packet.ReadPackedGuid("Hostile");
@@ -202,7 +202,7 @@ namespace WowPacketParser.Parsing.Parsers
                 // No idea why, but this is in core.
                 /*if (packet.Opcode == Opcode.SMSG_THREAT_UPDATE)
                     threat *= 100;*/
-                Console.WriteLine("Threat: " + threat);
+                packet.Writer.WriteLine("Threat: " + threat);
             }
         }
 

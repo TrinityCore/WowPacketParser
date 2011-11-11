@@ -14,7 +14,7 @@ namespace WowPacketParser.Parsing.Parsers
             var data =  packet.ReadInt32();
             var type = (ActionButtonType)((data & 0xFF000000) >> 24);
             var action = (data & 0x00FFFFFF);
-            Console.WriteLine("Type: " + type + " ID: " + action);
+            packet.Writer.WriteLine("Type: " + type + " ID: " + action);
         }
 
         [Parser(Opcode.SMSG_RESURRECT_REQUEST)]
@@ -152,7 +152,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleTutorialFlag(Packet packet)
         {
             var flag = packet.ReadInt32();
-            Console.WriteLine("Flag: 0x" + flag.ToString("X8"));
+            packet.Writer.WriteLine("Flag: 0x" + flag.ToString("X8"));
         }
 
         [Parser(Opcode.SMSG_TUTORIAL_FLAGS)]
@@ -161,7 +161,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 8; i++)
             {
                 var flag = packet.ReadInt32();
-                Console.WriteLine("Flags " + i + ": 0x" + flag.ToString("X8"));
+                packet.Writer.WriteLine("Flags " + i + ": 0x" + flag.ToString("X8"));
             }
         }
 
@@ -286,11 +286,11 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var unk4 = packet.ReadInt32();
                 if (unk4 == 1)
-                    Console.WriteLine("Error msg = ERR_DANCE_SAVE_FAILED");
+                    packet.Writer.WriteLine("Error msg = ERR_DANCE_SAVE_FAILED");
                 else if (unk4 == 2)
-                    Console.WriteLine("Error msg = ERR_DANCE_DELETE_FAILED");
+                    packet.Writer.WriteLine("Error msg = ERR_DANCE_DELETE_FAILED");
                 else if (unk4 == 0)
-                    Console.WriteLine("Error msg = ERR_DANCE_CREATE_DUPLICATE");
+                    packet.Writer.WriteLine("Error msg = ERR_DANCE_CREATE_DUPLICATE");
             }
             else
             {

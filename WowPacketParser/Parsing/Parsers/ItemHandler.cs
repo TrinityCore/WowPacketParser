@@ -310,7 +310,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 7; i++)
             {
                 resistance[i] = packet.ReadInt32();
-                Console.WriteLine((DamageType)i + " Resistance: " + resistance[i]);
+                packet.Writer.WriteLine((DamageType)i + " Resistance: " + resistance[i]);
             }
 
             var delay = packet.ReadInt32("Delay");
@@ -367,7 +367,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             // In this single (?) case, map 0 means no map
             var map = packet.ReadInt32();
-            Console.WriteLine("Map ID: " + (map != 0 ? StoreGetters.GetName(StoreNameType.Map, map) : map + " (No map)"));
+            packet.Writer.WriteLine("Map ID: " + (map != 0 ? StoreGetters.GetName(StoreNameType.Map, map) : map + " (No map)"));
 
             var bagFamily = packet.ReadEnum<BagFamilyMask>("Bag Family", TypeCode.Int32);
 

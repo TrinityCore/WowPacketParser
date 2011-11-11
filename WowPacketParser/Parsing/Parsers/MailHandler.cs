@@ -61,13 +61,13 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadGuid("Player GUID", i);
                         break;
                     case MailType.Creature:
-                        Console.WriteLine("[" + i + "] Entry: " + StoreGetters.GetExistingDatabaseString(StoreNameType.Unit, packet.ReadInt32()));
+                        packet.Writer.WriteLine("[" + i + "] Entry: " + StoreGetters.GetExistingDatabaseString(StoreNameType.Unit, packet.ReadInt32()));
                         break;
                     case MailType.GameObject:
-                        Console.WriteLine("[" + i + "] Entry: " + StoreGetters.GetExistingDatabaseString(StoreNameType.GameObject, packet.ReadInt32()));
+                        packet.Writer.WriteLine("[" + i + "] Entry: " + StoreGetters.GetExistingDatabaseString(StoreNameType.GameObject, packet.ReadInt32()));
                         break;
                     case MailType.Item:
-                        Console.WriteLine("[" + i + "] Entry: " + StoreGetters.GetExistingDatabaseString(StoreNameType.Item, packet.ReadInt32()));
+                        packet.Writer.WriteLine("[" + i + "] Entry: " + StoreGetters.GetExistingDatabaseString(StoreNameType.Item, packet.ReadInt32()));
                         break;
                     default:
                         packet.ReadInt32("Entry", i);
@@ -119,11 +119,11 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var data = packet.ReadUInt64();
                 if (data == 0 || ((data & 0xFFFFFFFF00000000) >> 32) == 0)
-                    Console.WriteLine("Entry: " + ((data & 0x00000000FFFFFFFF) >> 32));
+                    packet.Writer.WriteLine("Entry: " + ((data & 0x00000000FFFFFFFF) >> 32));
                 else
                 {
                     var guid = new Guid(data);
-                    Console.WriteLine("[" + i + "] GUID: " + guid);
+                    packet.Writer.WriteLine("[" + i + "] GUID: " + guid);
                 }
                 packet.ReadUInt32("COD", i);
                 packet.ReadUInt32("Unk uint32", i);

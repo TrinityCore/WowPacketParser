@@ -61,7 +61,7 @@ namespace WowPacketParser.Parsing.Parsers
                             }
                             enchantMask >>= 1;
                         }
-                        Console.WriteLine(enchantName);
+                        packet.Writer.WriteLine(enchantName);
                     }
                     packet.ReadUInt16(name + "Unk Uint16");
                     packet.ReadPackedGuid(name + "Creator GUID");

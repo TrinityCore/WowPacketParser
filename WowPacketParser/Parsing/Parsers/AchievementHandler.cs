@@ -53,7 +53,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (id == -1)
                     break;
 
-                Console.WriteLine("Achievement ID: " + id);
+                packet.Writer.WriteLine("Achievement ID: " + id);
 
                 packet.ReadPackedTime("Achievement Time");
             }
@@ -65,10 +65,10 @@ namespace WowPacketParser.Parsing.Parsers
                 if (id == -1)
                     break;
 
-                Console.WriteLine("Criteria ID: " + id);
+                packet.Writer.WriteLine("Criteria ID: " + id);
 
                 var counter = packet.ReadPackedGuid();
-                Console.WriteLine("Criteria Counter: " + counter.Full);
+                packet.Writer.WriteLine("Criteria Counter: " + counter.Full);
 
                 packet.ReadPackedGuid("Player GUID");
 

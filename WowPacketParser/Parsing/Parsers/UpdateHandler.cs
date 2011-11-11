@@ -32,7 +32,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var type = packet.ReadByte();
                 var typeString = ClientVersion.AddedInVersion(ClientType.Cataclysm) ? ((UpdateTypeCataclysm)type).ToString() : ((UpdateType)type).ToString();
 
-                Console.WriteLine("[" + i + "] UpdateType: " + typeString);
+                packet.Writer.WriteLine("[" + i + "] UpdateType: " + typeString);
                 switch (typeString)
                 {
                     case "Values":
@@ -183,7 +183,7 @@ namespace WowPacketParser.Parsing.Parsers
                         }
                     }
                 }
-                Console.WriteLine("[" + index + "] " + key + ": " + value);
+                packet.Writer.WriteLine("[" + index + "] " + key + ": " + value);
                 dict.Add(i, blockVal);
             }
 

@@ -206,7 +206,7 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var i = 0; i < missCount; i++)
                 {
                     var missGuid = packet.ReadGuid("Miss GUID", i);
-                    Console.WriteLine("Miss GUID " + i + ": " + missGuid);
+                    packet.Writer.WriteLine("Miss GUID " + i + ": " + missGuid);
 
                     var missType = packet.ReadEnum<SpellMissType>("Miss Type", TypeCode.Byte, i);
                     if (missType != SpellMissType.Reflect)
@@ -388,7 +388,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
                 default:
                 {
-                    Console.WriteLine("Aura type not handled.");
+                    packet.Writer.WriteLine("Aura type not handled.");
                     break;
                 }
             }
@@ -406,9 +406,9 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleCastVisual(Packet packet)
         {
             var guid = packet.ReadGuid();
-            Console.WriteLine("Caster GUID: " + guid);
+            packet.Writer.WriteLine("Caster GUID: " + guid);
             var visual = packet.ReadUInt32();
-            Console.WriteLine("SpellVisualKit ID: " + visual);
+            packet.Writer.WriteLine("SpellVisualKit ID: " + visual);
         }
 
         [Parser(Opcode.SMSG_CAST_FAILED)]

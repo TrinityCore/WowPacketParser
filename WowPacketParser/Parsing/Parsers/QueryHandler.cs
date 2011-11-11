@@ -12,17 +12,17 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleTimeQueryResponse(Packet packet)
         {
             var curTime = packet.ReadTime();
-            Console.WriteLine("Current Time: " + curTime);
+            packet.Writer.WriteLine("Current Time: " + curTime);
 
             var dailyReset = packet.ReadInt32();
-            Console.WriteLine("Daily Quest Reset: " + dailyReset);
+            packet.Writer.WriteLine("Daily Quest Reset: " + dailyReset);
         }
 
         [Parser(Opcode.CMSG_NAME_QUERY)]
         public static void HandleNameQuery(Packet packet)
         {
             var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.Writer.WriteLine("GUID: " + guid);
         }
 
         [Parser(Opcode.SMSG_NAME_QUERY_RESPONSE)]
@@ -32,7 +32,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadPackedGuid("GUID");
                 var end = packet.ReadBoolean();
-                Console.WriteLine("Name Found: " + !end);
+                packet.Writer.WriteLine("Name Found: " + !end);
 
                 if (end)
                     return;
@@ -61,7 +61,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadGuid("GUID");
 
             if (guid.HasEntry() && (entry != guid.GetEntry()))
-                Console.WriteLine("Entry does not match calculated GUID entry");
+                packet.Writer.WriteLine("Entry does not match calculated GUID entry");
         }
 
         [Parser(Opcode.CMSG_CREATURE_QUERY)]
@@ -147,13 +147,13 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePageTextResponse(Packet packet)
         {
             var entry = packet.ReadInt32();
-            Console.WriteLine("Entry: " + entry);
+            packet.Writer.WriteLine("Entry: " + entry);
 
             var text = packet.ReadCString();
-            Console.WriteLine("Page Text: " + text);
+            packet.Writer.WriteLine("Page Text: " + text);
 
             var pageId = packet.ReadInt32();
-            Console.WriteLine("Next Page: " + pageId);
+            packet.Writer.WriteLine("Next Page: " + pageId);
 
             SQLStore.WriteData(SQLStore.PageTexts.GetCommand(entry, text, pageId));
         }
@@ -168,7 +168,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleNpcTextUpdate(Packet packet)
         {
             var entry = packet.ReadInt32();
-            Console.WriteLine("Entry: " + entry);
+            packet.Writer.WriteLine("Entry: " + entry);
 
             var prob = new float[8];
             var text1 = new string[8];
@@ -179,26 +179,26 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 8; i++)
             {
                 prob[i] = packet.ReadSingle();
-                Console.WriteLine("Probability " + i + ": " + prob[i]);
+                packet.Writer.WriteLine("Probability " + i + ": " + prob[i]);
 
                 text1[i] = packet.ReadCString();
-                Console.WriteLine("Text 1 " + i + ": " + text1[i]);
+                packet.Writer.WriteLine("Text 1 " + i + ": " + text1[i]);
 
                 text2[i] = packet.ReadCString();
-                Console.WriteLine("Text 2 " + i + ": " + text2[i]);
+                packet.Writer.WriteLine("Text 2 " + i + ": " + text2[i]);
 
                 lang[i] = (Language)packet.ReadInt32();
-                Console.WriteLine("Language " + i + ": " + lang[i]);
+                packet.Writer.WriteLine("Language " + i + ": " + lang[i]);
 
                 emDelay[i] = new int[3];
                 emEmote[i] = new int[3];
                 for (var j = 0; j < 3; j++)
                 {
                     emDelay[i][j] = packet.ReadInt32();
-                    Console.WriteLine("Emote Delay " + j + ": " + emDelay[i][j]);
+                    packet.Writer.WriteLine("Emote Delay " + j + ": " + emDelay[i][j]);
 
                     emEmote[i][j] = packet.ReadInt32();
-                    Console.WriteLine("Emote ID " + j + ": " + emEmote[i][j]);
+                    packet.Writer.WriteLine("Emote ID " + j + ": " + emEmote[i][j]);
                 }
             }
 

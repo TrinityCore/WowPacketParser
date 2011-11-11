@@ -34,7 +34,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                 if (packet.ReadGuid(prefix + "GUID 2") != guid)
-                    Console.WriteLine("GUIDS NOT EQUAL"); // Fo debuggingz
+                    packet.Writer.WriteLine("GUIDS NOT EQUAL"); // Fo debuggingz
 
             packet.ReadInt32(prefix + "Time");
 
@@ -88,28 +88,28 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleMonsterMove(Packet packet)
         {
             var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.Writer.WriteLine("GUID: " + guid);
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MONSTER_MOVE_TRANSPORT))
             {
                 var transguid = packet.ReadPackedGuid();
-                Console.WriteLine("Transport GUID: " + transguid);
+                packet.Writer.WriteLine("Transport GUID: " + transguid);
 
                 var transseat = packet.ReadByte();
-                Console.WriteLine("Transport Seat: " + transseat);
+                packet.Writer.WriteLine("Transport Seat: " + transseat);
             }
 
             var unkByte = packet.ReadBoolean();
-            Console.WriteLine("Unk Boolean: " + unkByte); // Something to do with IsVehicleExitVoluntary ?
+            packet.Writer.WriteLine("Unk Boolean: " + unkByte); // Something to do with IsVehicleExitVoluntary ?
 
             var pos = packet.ReadVector3();
-            Console.WriteLine("Position: " + pos);
+            packet.Writer.WriteLine("Position: " + pos);
 
             var curTime = packet.ReadInt32();
-            Console.WriteLine("Move Ticks: " + curTime);
+            packet.Writer.WriteLine("Move Ticks: " + curTime);
 
             var type = (SplineType)packet.ReadByte();
-            Console.WriteLine("Spline Type: " + type);
+            packet.Writer.WriteLine("Spline Type: " + type);
 
             switch (type)
             {
@@ -133,41 +133,41 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             var flags = (SplineFlag)packet.ReadInt32();
-            Console.WriteLine("Spline Flags: " + flags);
+            packet.Writer.WriteLine("Spline Flags: " + flags);
 
             if (flags.HasAnyFlag(SplineFlag.AnimationTier))
             {
                 var unkByte3 = (MovementAnimationState)packet.ReadByte();
-                Console.WriteLine("Animation State: " + unkByte3);
+                packet.Writer.WriteLine("Animation State: " + unkByte3);
 
                 var unkInt1 = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 1: " + unkInt1);
+                packet.Writer.WriteLine("Unk Int32 1: " + unkInt1);
             }
 
             var time = packet.ReadInt32();
-            Console.WriteLine("Move Time: " + time);
+            packet.Writer.WriteLine("Move Time: " + time);
 
             if (flags.HasAnyFlag(SplineFlag.Trajectory))
             {
                 var speedZ = packet.ReadSingle();
-                Console.WriteLine("Vertical Speed: " + speedZ);
+                packet.Writer.WriteLine("Vertical Speed: " + speedZ);
 
                 var unkInt2 = packet.ReadInt32();
-                Console.WriteLine("Unk Int32 2: " + unkInt2);
+                packet.Writer.WriteLine("Unk Int32 2: " + unkInt2);
             }
 
             var waypoints = packet.ReadInt32();
-            Console.WriteLine("Waypoints: " + waypoints);
+            packet.Writer.WriteLine("Waypoints: " + waypoints);
 
             var newpos = packet.ReadVector3();
-            Console.WriteLine("Waypoint 0: " + newpos);
+            packet.Writer.WriteLine("Waypoint 0: " + newpos);
 
             if (flags.HasAnyFlag(SplineFlag.Flying) || flags.HasAnyFlag(SplineFlag.CatmullRom))
             {
                 for (var i = 0; i < waypoints - 1; i++)
                 {
                     var vec = packet.ReadVector3();
-                    Console.WriteLine("Waypoint " + (i + 1) + ": " + vec);
+                    packet.Writer.WriteLine("Waypoint " + (i + 1) + ": " + vec);
                 }
             }
             else
@@ -184,7 +184,7 @@ namespace WowPacketParser.Parsing.Parsers
                     vec.Y += mid.Y;
                     vec.Z += mid.Z;
 
-                    Console.WriteLine("Waypoint " + (i + 1) + ": " + vec);
+                    packet.Writer.WriteLine("Waypoint " + (i + 1) + ": " + vec);
                 }
             }
         }
@@ -198,7 +198,7 @@ namespace WowPacketParser.Parsing.Parsers
             CurrentMapId = (uint)mapId;
 
             var position = packet.ReadVector4();
-            Console.WriteLine("Position: " + position);
+            packet.Writer.WriteLine("Position: " + position);
             CurrentPosition = position;
 
             UpdateHandler.Objects[CurrentMapId] = new Dictionary<Guid, WoWObject>();
@@ -239,23 +239,23 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Direction == Direction.ServerToClient)
             {
                 var guid = packet.ReadPackedGuid();
-                Console.WriteLine("GUID: " + guid);
+                packet.Writer.WriteLine("GUID: " + guid);
 
                 var counter = packet.ReadInt32();
-                Console.WriteLine("Movement Counter: " + counter);
+                packet.Writer.WriteLine("Movement Counter: " + counter);
 
                 ReadMovementInfo(packet, guid);
             }
             else
             {
                 var guid = packet.ReadPackedGuid();
-                Console.WriteLine("GUID: " + guid);
+                packet.Writer.WriteLine("GUID: " + guid);
 
                 var flags = (MovementFlag)packet.ReadInt32();
-                Console.WriteLine("Move Flags: " + flags);
+                packet.Writer.WriteLine("Move Flags: " + flags);
 
                 var time = packet.ReadInt32();
-                Console.WriteLine("Time: " + time);
+                packet.Writer.WriteLine("Time: " + time);
             }
         }
 
@@ -347,15 +347,15 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSpeedChangeMessage(Packet packet)
         {
             var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.Writer.WriteLine("GUID: " + guid);
 
             var counter = packet.ReadInt32();
-            Console.WriteLine("Movement Counter: " + counter);
+            packet.Writer.WriteLine("Movement Counter: " + counter);
 
             ReadMovementInfo(packet, guid);
 
             var newSpeed = packet.ReadSingle();
-            Console.WriteLine("New Speed: " + newSpeed);
+            packet.Writer.WriteLine("New Speed: " + newSpeed);
         }
 
         [Parser(Opcode.MSG_MOVE_SET_COLLISION_HGT)]
@@ -364,19 +364,19 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleCollisionMovements(Packet packet)
         {
             var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.Writer.WriteLine("GUID: " + guid);
 
             if (packet.Opcode != Opcodes.GetOpcode(Opcode.MSG_MOVE_SET_COLLISION_HGT))
             {
                 var counter = packet.ReadInt32();
-                Console.WriteLine("Movement Counter: " + counter);
+                packet.Writer.WriteLine("Movement Counter: " + counter);
             }
 
             if (packet.Opcode != Opcodes.GetOpcode(Opcode.SMSG_MOVE_SET_COLLISION_HGT))
                 ReadMovementInfo(packet, guid);
 
             var unk = packet.ReadSingle();
-            Console.WriteLine("Collision Height: " + unk);
+            packet.Writer.WriteLine("Collision Height: " + unk);
         }
 
         [Parser(Opcode.CMSG_SET_ACTIVE_MOVER)]
@@ -384,7 +384,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSetActiveMover(Packet packet)
         {
             var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.Writer.WriteLine("GUID: " + guid);
         }
 
         [Parser(Opcode.SMSG_SUMMON_REQUEST)]
@@ -409,10 +409,10 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSetMovementMessages(Packet packet)
         {
             var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.Writer.WriteLine("GUID: " + guid);
 
             var counter = packet.ReadInt32();
-            Console.WriteLine("Movement Counter: " + counter);
+            packet.Writer.WriteLine("Movement Counter: " + counter);
         }
 
         [Parser(Opcode.CMSG_MOVE_KNOCK_BACK_ACK)]
@@ -421,10 +421,10 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSpecialMoveAckMessages(Packet packet)
         {
             var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.Writer.WriteLine("GUID: " + guid);
 
             var unk1 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 1: " + unk1);
+            packet.Writer.WriteLine("Unk Int32 1: " + unk1);
 
             ReadMovementInfo(packet, guid);
 
@@ -432,14 +432,14 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
 
             var unk2 = packet.ReadInt32();
-            Console.WriteLine("Unk Int32 2: " + unk2);
+            packet.Writer.WriteLine("Unk Int32 2: " + unk2);
         }
 
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
         public static void HandlePhaseShift(Packet packet)
         {
             var phaseMask = packet.ReadInt32();
-            Console.WriteLine("Phase Mask: 0x" + phaseMask.ToString("X8"));
+            packet.Writer.WriteLine("Phase Mask: 0x" + phaseMask.ToString("X8"));
             CurrentPhaseMask = phaseMask;
         }
 
@@ -452,7 +452,7 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
 
             var tEntry = packet.ReadInt32("Transport Entry");
-            Console.WriteLine("Transport Entry: " + tEntry);
+            packet.Writer.WriteLine("Transport Entry: " + tEntry);
 
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Transport Map ID");
         }
@@ -463,26 +463,26 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
 
             var code = (TransferAbortReason)packet.ReadByte();
-            Console.WriteLine("Reason: " + code);
+            packet.Writer.WriteLine("Reason: " + code);
 
             switch (code)
             {
                 case TransferAbortReason.DifficultyUnavailable:
                     {
                         var arg = (MapDifficulty)packet.ReadByte();
-                        Console.WriteLine("Difficulty: " + arg);
+                        packet.Writer.WriteLine("Difficulty: " + arg);
                         break;
                     }
                 case TransferAbortReason.InsufficientExpansion:
                     {
                         var arg = (ClientType)packet.ReadByte();
-                        Console.WriteLine("Expansion: " + arg);
+                        packet.Writer.WriteLine("Expansion: " + arg);
                         break;
                     }
                 case TransferAbortReason.UniqueMessage:
                     {
                         var arg = packet.ReadByte();
-                        Console.WriteLine("Message ID: " + arg);
+                        packet.Writer.WriteLine("Message ID: " + arg);
                         break;
                     }
             }
@@ -492,10 +492,10 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleFlightSplineSync(Packet packet)
         {
             var val = packet.ReadSingle();
-            Console.WriteLine("Unk Single: " + val);
+            packet.Writer.WriteLine("Unk Single: " + val);
 
             var guid = packet.ReadPackedGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.Writer.WriteLine("GUID: " + guid);
         }
 
         [Parser(Opcode.SMSG_CLIENT_CONTROL_UPDATE)]
@@ -563,8 +563,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleCompressedMoves(Packet packet)
         {
             var pkt = packet.Inflate(packet.ReadInt32());
-            Console.WriteLine("{"); // To be able to see what is inside this packet.
-            Console.WriteLine();
+            packet.Writer.WriteLine("{"); // To be able to see what is inside this packet.
+            packet.Writer.WriteLine();
 
             while (pkt.CanRead())
             {
@@ -579,7 +579,7 @@ namespace WowPacketParser.Parsing.Parsers
                 Handler.Parse(newPacket);
             }
 
-            Console.WriteLine("}");
+            packet.Writer.WriteLine("}");
             packet.ReadToEnd();
         }
     }

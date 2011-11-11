@@ -15,12 +15,14 @@ namespace WowPacketParser.Misc
             Time = time;
             Direction = direction;
             Number = number;
+            Writer = new StringWriter();
         }
 
         public int Opcode { get; set; }
         public DateTime Time { get; private set; }
         public Direction Direction { get; private set; }
         public int Number { get; private set; }
+        public StringWriter Writer { get; private set; }
 
         public Packet Inflate(int inflatedSize)
         {

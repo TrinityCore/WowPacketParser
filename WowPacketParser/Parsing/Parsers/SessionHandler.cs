@@ -41,7 +41,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
                 packet.ReadInt64("Unk Int64");
  
-            Console.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(packet.ReadBytes(20)));
+            packet.Writer.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(packet.ReadBytes(20)));
  
             AddonHandler.ReadClientAddonsList(packet);
         }
@@ -104,7 +104,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleAuthResponse(Packet packet)
         {
             var code = (ResponseCode)packet.ReadByte();
-            Console.WriteLine("Auth Code: " + code);
+            packet.Writer.WriteLine("Auth Code: " + code);
 
             switch (code)
             {
@@ -142,17 +142,17 @@ namespace WowPacketParser.Parsing.Parsers
         public static void ReadQueuePositionInfo(Packet packet)
         {
             var position = packet.ReadInt32();
-            Console.WriteLine("Queue Position: " + position);
+            packet.Writer.WriteLine("Queue Position: " + position);
 
             var unkByte = packet.ReadByte();
-            Console.WriteLine("Unk Byte: " + unkByte);
+            packet.Writer.WriteLine("Unk Byte: " + unkByte);
         }
 
         [Parser(Opcode.CMSG_PLAYER_LOGIN)]
         public static void HandlePlayerLogin(Packet packet)
         {
             var guid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + guid);
+            packet.Writer.WriteLine("GUID: " + guid);
             LoginGuid = guid;
         }
 
@@ -160,7 +160,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLoginFailed(Packet packet)
         {
             var unk = packet.ReadByte();
-            Console.WriteLine("Unk Byte: " + unk);
+            packet.Writer.WriteLine("Unk Byte: " + unk);
         }
 
         [Parser(Opcode.SMSG_LOGOUT_RESPONSE)]
@@ -185,61 +185,61 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleRedirectClient(Packet packet)
         {
             var ip = packet.ReadIPAddress();
-            Console.WriteLine("IP Address: " + ip);
+            packet.Writer.WriteLine("IP Address: " + ip);
 
             var port = packet.ReadUInt16();
-            Console.WriteLine("Port: " + port);
+            packet.Writer.WriteLine("Port: " + port);
 
             var unk = packet.ReadInt32();
-            Console.WriteLine("Token: " + unk);
+            packet.Writer.WriteLine("Token: " + unk);
 
             var hash = packet.ReadBytes(20);
-            Console.WriteLine("Address SHA-1 Hash: " + Utilities.ByteArrayToHexString(hash));
+            packet.Writer.WriteLine("Address SHA-1 Hash: " + Utilities.ByteArrayToHexString(hash));
         }
 
         [Parser(Opcode.CMSG_REDIRECTION_FAILED)]
         public static void HandleRedirectFailed(Packet packet)
         {
             var token = packet.ReadInt32();
-            Console.WriteLine("Token: " + token);
+            packet.Writer.WriteLine("Token: " + token);
         }
 
         [Parser(Opcode.CMSG_REDIRECTION_AUTH_PROOF)]
         public static void HandleRedirectionAuthProof(Packet packet)
         {
             var name = packet.ReadCString();
-            Console.WriteLine("Account: " + name);
+            packet.Writer.WriteLine("Account: " + name);
 
             var unk = packet.ReadInt64();
-            Console.WriteLine("Unk Int64: " + unk);
+            packet.Writer.WriteLine("Unk Int64: " + unk);
 
             var hash = packet.ReadBytes(20);
-            Console.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(hash));
+            packet.Writer.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(hash));
         }
 
         [Parser(Opcode.SMSG_KICK_REASON)]
         public static void HandleKickReason(Packet packet)
         {
             var reason = (KickReason)packet.ReadByte();
-            Console.WriteLine("Reason: " + reason);
+            packet.Writer.WriteLine("Reason: " + reason);
 
             if (!packet.CanRead())
                 return;
 
             var str = packet.ReadCString();
-            Console.WriteLine("Unk String: " + str);
+            packet.Writer.WriteLine("Unk String: " + str);
         }
 
         [Parser(Opcode.SMSG_MOTD)]
         public static void HandleMessageOfTheDay(Packet packet)
         {
             var lineCount = packet.ReadInt32();
-            Console.WriteLine("Line Count: " + lineCount);
+            packet.Writer.WriteLine("Line Count: " + lineCount);
 
             for (var i = 0; i < lineCount; i++)
             {
                 var lineStr = packet.ReadCString();
-                Console.WriteLine("Line " + i + ": " + lineStr);
+                packet.Writer.WriteLine("Line " + i + ": " + lineStr);
             }
         }
     }

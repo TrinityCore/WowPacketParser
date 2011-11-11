@@ -53,31 +53,31 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLfgBootProposalUpdate(Packet packet)
         {
             var byte1 = packet.ReadBoolean();
-            Console.WriteLine("In Progress: " + byte1);
+            packet.Writer.WriteLine("In Progress: " + byte1);
 
             var byte2 = packet.ReadBoolean();
-            Console.WriteLine("Did Vote: " + byte2);
+            packet.Writer.WriteLine("Did Vote: " + byte2);
 
             var byte3 = packet.ReadBoolean();
-            Console.WriteLine("Vote: " + byte3);
+            packet.Writer.WriteLine("Vote: " + byte3);
 
             var playerGuid = packet.ReadGuid();
-            Console.WriteLine("Victim GUID: " + playerGuid);
+            packet.Writer.WriteLine("Victim GUID: " + playerGuid);
 
             var int1 = packet.ReadInt32();
-            Console.WriteLine("Total Votes: " + int1);
+            packet.Writer.WriteLine("Total Votes: " + int1);
 
             var int2 = packet.ReadInt32();
-            Console.WriteLine("Agree Count: " + int2);
+            packet.Writer.WriteLine("Agree Count: " + int2);
 
             var int3 = packet.ReadInt32();
-            Console.WriteLine("Time Left: " + int3);
+            packet.Writer.WriteLine("Time Left: " + int3);
 
             var int4 = packet.ReadInt32();
-            Console.WriteLine("Needed Votes: " + int4);
+            packet.Writer.WriteLine("Needed Votes: " + int4);
 
             var comment = packet.ReadCString();
-            Console.WriteLine("Comment: " + comment);
+            packet.Writer.WriteLine("Comment: " + comment);
         }
 
         public static void ReadLfgRewardBlock(Packet packet)
@@ -120,110 +120,110 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLfgUpdatePlayer(Packet packet)
         {
             var byte1 = (LfgUpdateType)packet.ReadByte();
-            Console.WriteLine("Update Type: " + byte1);
+            packet.Writer.WriteLine("Update Type: " + byte1);
 
             var extraInfo = packet.ReadBoolean();
-            Console.WriteLine("ExtraInfo: " + extraInfo);
+            packet.Writer.WriteLine("ExtraInfo: " + extraInfo);
 
             if (!extraInfo)
                 return;
 
             var byte2 = packet.ReadBoolean();
-            Console.WriteLine("Queued: " + byte2);
+            packet.Writer.WriteLine("Queued: " + byte2);
 
             var byte3 = packet.ReadByte();
-            Console.WriteLine("Unk Byte 1: " + byte3);
+            packet.Writer.WriteLine("Unk Byte 1: " + byte3);
 
             var byte4 = packet.ReadByte();
-            Console.WriteLine("Unk Byte 2: " + byte4);
+            packet.Writer.WriteLine("Unk Byte 2: " + byte4);
 
             var numFields2 = packet.ReadByte();
-            Console.WriteLine("Slot Count: " + numFields2);
+            packet.Writer.WriteLine("Slot Count: " + numFields2);
 
             for (var i = 0; i < numFields2; i++)
             {
                 var blockint32 = packet.ReadLfgEntry();
-                Console.WriteLine("LFG Entry " + i + ": " + blockint32);
+                packet.Writer.WriteLine("LFG Entry " + i + ": " + blockint32);
             }
 
             var string1 = packet.ReadCString();
-            Console.WriteLine("Comment: " + string1);
+            packet.Writer.WriteLine("Comment: " + string1);
         }
 
         [Parser(Opcode.SMSG_LFG_UPDATE_PARTY)]
         public static void HandleLfgUpdateParty(Packet packet)
         {
             var byte1 = (LfgUpdateType)packet.ReadByte();
-            Console.WriteLine("Update Type: " + byte1);
+            packet.Writer.WriteLine("Update Type: " + byte1);
 
             var extraInfo = packet.ReadBoolean();
-            Console.WriteLine("ExtraInfo: " + extraInfo);
+            packet.Writer.WriteLine("ExtraInfo: " + extraInfo);
 
             if (!extraInfo)
                 return;
 
             var byte2 = packet.ReadBoolean();
-            Console.WriteLine("LFG Joined: " + byte2);
+            packet.Writer.WriteLine("LFG Joined: " + byte2);
 
             var byte3 = packet.ReadByte();
-            Console.WriteLine("Queued: " + byte3);
+            packet.Writer.WriteLine("Queued: " + byte3);
 
             var byte4 = packet.ReadByte();
-            Console.WriteLine("Unk Byte 1: " + byte4);
+            packet.Writer.WriteLine("Unk Byte 1: " + byte4);
 
             var byte5 = packet.ReadByte();
-            Console.WriteLine("Unk Byte 2: " + byte5);
+            packet.Writer.WriteLine("Unk Byte 2: " + byte5);
 
             for (var i = 0; i < 3; i++)
             {
                 var blockbyte = packet.ReadByte();
-                Console.WriteLine("Unk Byte 3 " + i + ": " + blockbyte);
+                packet.Writer.WriteLine("Unk Byte 3 " + i + ": " + blockbyte);
             }
 
             var numFields2 = packet.ReadByte();
-            Console.WriteLine("Slot Count: " + numFields2);
+            packet.Writer.WriteLine("Slot Count: " + numFields2);
 
             for (var i = 0; i < numFields2; i++)
             {
                 var blockint32 = packet.ReadLfgEntry();
-                Console.WriteLine("LFG Entry " + i + ": " + blockint32);
+                packet.Writer.WriteLine("LFG Entry " + i + ": " + blockint32);
             }
 
             var string1 = packet.ReadCString();
-            Console.WriteLine("Comment: " + string1);
+            packet.Writer.WriteLine("Comment: " + string1);
         }
 
         [Parser(Opcode.SMSG_LFG_OFFER_CONTINUE)]
         public static void HandleLfgOfferContinue(Packet packet)
         {
             var entry = packet.ReadLfgEntry();
-            Console.WriteLine("LFG Entry: " + entry);
+            packet.Writer.WriteLine("LFG Entry: " + entry);
         }
 
         [Parser(Opcode.SMSG_LFG_PLAYER_INFO)]
         public static void HandleLfgPlayerLockInfoResponse(Packet packet)
         {
             var numFields = packet.ReadByte();
-            Console.WriteLine("Random Dungeon Count: " + numFields);
+            packet.Writer.WriteLine("Random Dungeon Count: " + numFields);
 
             for (var i = 0; i < numFields; i++)
             {
                 var int1 = packet.ReadLfgEntry();
-                Console.WriteLine("Random Dungeon Entry " + i + ": " + int1);
+                packet.Writer.WriteLine("Random Dungeon Entry " + i + ": " + int1);
 
                 ReadLfgRewardBlock(packet);
             }
 
             var numFields3 = packet.ReadInt32();
-            Console.WriteLine("Entry Count: " + numFields3);
+            packet.Writer.WriteLine("Entry Count: " + numFields3);
 
             for (var j = 0; j < numFields3; j++)
             {
                 var lfgent = packet.ReadLfgEntry();
-                Console.WriteLine("LFG Entry " + j + ": " + lfgent);
+                packet.Writer.WriteLine("LFG Entry " + j + ": " + lfgent);
 
                 var value = (LfgEntryCheckResult)packet.ReadInt32();
-                Console.WriteLine("Entry Check Result: " + value);
+                packet.Writer.WriteLine("Entry Check Result: " + value);
             }
         }
 
@@ -231,15 +231,15 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLfgPlayerLockInfoUpdate(Packet packet)
         {
             var numFields = packet.ReadByte();
-            Console.WriteLine("Player Count: " + numFields);
+            packet.Writer.WriteLine("Player Count: " + numFields);
 
             for (var i = 0; i < numFields; i++)
             {
                 var playerGuid = packet.ReadGuid();
-                Console.WriteLine("GUID " + i + ": " + playerGuid);
+                packet.Writer.WriteLine("GUID " + i + ": " + playerGuid);
 
                 var numFields2 = packet.ReadInt32();
-                Console.WriteLine("Entry Count: " + numFields2);
+                packet.Writer.WriteLine("Entry Count: " + numFields2);
 
                 for (var j = 0; j < numFields2; j++)
                     ReadDungeonJoinResults(packet);
@@ -250,42 +250,42 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLfgProposalUpdate(Packet packet)
         {
             var int1 = packet.ReadLfgEntry();
-            Console.WriteLine("LFG Entry: " + int1);
+            packet.Writer.WriteLine("LFG Entry: " + int1);
 
             var byte1 = (LfgState)packet.ReadByte();
-            Console.WriteLine("State: " + byte1);
+            packet.Writer.WriteLine("State: " + byte1);
 
             var int2 = packet.ReadInt32();
-            Console.WriteLine("Group ID: " + int2);
+            packet.Writer.WriteLine("Group ID: " + int2);
 
             var int3 = packet.ReadInt32();
-            Console.WriteLine("Bosses Killed: " + int3.ToString("X8"));
+            packet.Writer.WriteLine("Bosses Killed: " + int3.ToString("X8"));
 
             var byte2 = packet.ReadByte();
-            Console.WriteLine("Silent: " + byte2);
+            packet.Writer.WriteLine("Silent: " + byte2);
 
             var numFields = packet.ReadByte();
-            Console.WriteLine("Response Count: " + numFields);
+            packet.Writer.WriteLine("Response Count: " + numFields);
 
             for (var i = 0; i < numFields; i++)
             {
                 var blockint32 = (LfgRoleFlag)packet.ReadInt32();
-                Console.WriteLine("Roles " + i + ": " + blockint32);
+                packet.Writer.WriteLine("Roles " + i + ": " + blockint32);
 
                 var blockbyte1 = packet.ReadBoolean();
-                Console.WriteLine("Self " + i + ": " + blockbyte1);
+                packet.Writer.WriteLine("Self " + i + ": " + blockbyte1);
 
                 var blockbyte2 = packet.ReadBoolean();
-                Console.WriteLine("In Dungeon " + i + ": " + blockbyte2);
+                packet.Writer.WriteLine("In Dungeon " + i + ": " + blockbyte2);
 
                 var blockbyte3 = packet.ReadBoolean();
-                Console.WriteLine("Same Group " + i + ": " + blockbyte3);
+                packet.Writer.WriteLine("Same Group " + i + ": " + blockbyte3);
 
                 var blockbyte4 = packet.ReadBoolean();
-                Console.WriteLine("Answer " + i + ": " + blockbyte4);
+                packet.Writer.WriteLine("Answer " + i + ": " + blockbyte4);
 
                 var blockbyte5 = packet.ReadBoolean();
-                Console.WriteLine("Accept " + i + ": " + blockbyte5);
+                packet.Writer.WriteLine("Accept " + i + ": " + blockbyte5);
             }
         }
 
@@ -293,70 +293,70 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLfgQueueStatusUpdate(Packet packet)
         {
             var int1 = packet.ReadLfgEntry();
-            Console.WriteLine("LFG Entry: " + int1);
+            packet.Writer.WriteLine("LFG Entry: " + int1);
 
             var int2 = packet.ReadInt32();
-            Console.WriteLine("Average Wait Time: " + int2);
+            packet.Writer.WriteLine("Average Wait Time: " + int2);
 
             var int3 = packet.ReadInt32();
-            Console.WriteLine("Wait Time: " + int3);
+            packet.Writer.WriteLine("Wait Time: " + int3);
 
             var int4 = packet.ReadInt32();
-            Console.WriteLine("Wait Tanks: " + int4);
+            packet.Writer.WriteLine("Wait Tanks: " + int4);
 
             var int5 = packet.ReadInt32();
-            Console.WriteLine("Wait Healers: " + int5);
+            packet.Writer.WriteLine("Wait Healers: " + int5);
 
             var int6 = packet.ReadInt32();
-            Console.WriteLine("Wait DPS: " + int6);
+            packet.Writer.WriteLine("Wait DPS: " + int6);
 
             var byte1 = packet.ReadBoolean();
-            Console.WriteLine("Tanks Needed: " + byte1);
+            packet.Writer.WriteLine("Tanks Needed: " + byte1);
 
             var byte2 = packet.ReadBoolean();
-            Console.WriteLine("Healers Needed: " + byte2);
+            packet.Writer.WriteLine("Healers Needed: " + byte2);
 
             var byte3 = packet.ReadByte();
-            Console.WriteLine("Damage Dealers Needed: " + byte3);
+            packet.Writer.WriteLine("Damage Dealers Needed: " + byte3);
 
             var int7 = packet.ReadInt32();
-            Console.WriteLine("Queued Time: " + int7);
+            packet.Writer.WriteLine("Queued Time: " + int7);
         }
 
         [Parser(Opcode.SMSG_LFG_ROLE_CHECK_UPDATE)]
         public static void HandleLfgRoleCheck(Packet packet)
         {
             var int1 = (LfgRoleCheckStatus)packet.ReadInt32();
-            Console.WriteLine("Check Status: " + int1);
+            packet.Writer.WriteLine("Check Status: " + int1);
 
             var init = packet.ReadBoolean();
-            Console.WriteLine("Is Beginning: " + init);
+            packet.Writer.WriteLine("Is Beginning: " + init);
 
             var numFields = packet.ReadByte();
-            Console.WriteLine("Entry Count: " + numFields);
+            packet.Writer.WriteLine("Entry Count: " + numFields);
 
             for (var i = 0; i < numFields; i++)
             {
                 var blockint32 = packet.ReadLfgEntry();
-                Console.WriteLine("LFG Entry " + i + ": " + blockint32);
+                packet.Writer.WriteLine("LFG Entry " + i + ": " + blockint32);
             }
 
             var numFields2 = packet.ReadByte();
-            Console.WriteLine("Player Count: " + numFields2);
+            packet.Writer.WriteLine("Player Count: " + numFields2);
 
             for (var i = 0; i < numFields2; i++)
             {
                 var playerGuid = packet.ReadGuid();
-                Console.WriteLine("GUID " + i + ": " + playerGuid);
+                packet.Writer.WriteLine("GUID " + i + ": " + playerGuid);
 
                 var blockbyte1 = packet.ReadBoolean();
-                Console.WriteLine("Ready " + i + ": " + blockbyte1);
+                packet.Writer.WriteLine("Ready " + i + ": " + blockbyte1);
 
                 var blockint32 = (LfgRoleFlag)packet.ReadInt32();
-                Console.WriteLine("Roles " + i + ": " + blockint32);
+                packet.Writer.WriteLine("Roles " + i + ": " + blockint32);
 
                 var blockbyte2 = packet.ReadByte();
-                Console.WriteLine("Level " + i + ": " + blockbyte2);
+                packet.Writer.WriteLine("Level " + i + ": " + blockbyte2);
             }
         }
 
@@ -364,24 +364,24 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLfgJoinResult(Packet packet)
         {
             var int1 = (LfgRoleCheckStatus)packet.ReadInt32();
-            Console.WriteLine("Check Status: " + int1);
+            packet.Writer.WriteLine("Check Status: " + int1);
 
             var int2 = packet.ReadInt32();
-            Console.WriteLine("Reason: " + int2);
+            packet.Writer.WriteLine("Reason: " + int2);
 
             if (int1 != LfgRoleCheckStatus.Unknown)
                 return;
 
             var numFields = packet.ReadByte();
-            Console.WriteLine("Count: " + numFields);
+            packet.Writer.WriteLine("Count: " + numFields);
 
             for (var i = 0; i < numFields; i++)
             {
                 var playerGuid = packet.ReadGuid();
-                Console.WriteLine("GUID " + i + ": " + playerGuid);
+                packet.Writer.WriteLine("GUID " + i + ": " + playerGuid);
 
                 var cnt2 = packet.ReadInt32();
-                Console.WriteLine("Dungeon Count: " + cnt2);
+                packet.Writer.WriteLine("Dungeon Count: " + cnt2);
 
                 for (var j = 0; j < cnt2; j++)
                     ReadDungeonJoinResults(packet);
@@ -391,51 +391,51 @@ namespace WowPacketParser.Parsing.Parsers
         public static void ReadDungeonJoinResults(Packet packet)
         {
             var lfgent = packet.ReadLfgEntry();
-            Console.WriteLine("LFG Entry: " + lfgent);
+            packet.Writer.WriteLine("LFG Entry: " + lfgent);
 
             var value = (LfgEntryCheckResult)packet.ReadInt32();
-            Console.WriteLine("Entry Check Result: " + value);
+            packet.Writer.WriteLine("Entry Check Result: " + value);
         }
 
         [Parser(Opcode.SMSG_LFG_ROLE_CHOSEN)]
         public static void HandleLfgRoleCheckResult(Packet packet)
         {
             var playerGuid = packet.ReadGuid();
-            Console.WriteLine("GUID: " + playerGuid);
+            packet.Writer.WriteLine("GUID: " + playerGuid);
 
             var boolean = packet.ReadBoolean();
-            Console.WriteLine("Accept: " + boolean);
+            packet.Writer.WriteLine("Accept: " + boolean);
 
             var Role = (LfgRoleFlag)packet.ReadInt32();
-            Console.WriteLine("Roles: " + Role);
+            packet.Writer.WriteLine("Roles: " + Role);
         }
 
         [Parser(Opcode.SMSG_LFG_UPDATE_SEARCH)]
         public static void HandleLfgUpdateSearch(Packet packet)
         {
             var byte1 = packet.ReadBoolean();
-            Console.WriteLine("Unk Boolean: " + byte1);
+            packet.Writer.WriteLine("Unk Boolean: " + byte1);
         }
 
         [Parser(Opcode.CMSG_LFG_SET_ROLES)]
         public static void HandleLfgSetRoles(Packet packet)
         {
             var role = (LfgRoleFlag)packet.ReadByte();
-            Console.WriteLine("Roles: " + role);
+            packet.Writer.WriteLine("Roles: " + role);
         }
 
         [Parser(Opcode.CMSG_LFG_TELEPORT)]
         public static void HandleLfgTeleport(Packet packet)
         {
             var teleout = packet.ReadBoolean();
-            Console.WriteLine("Teleport Out: " + teleout);
+            packet.Writer.WriteLine("Teleport Out: " + teleout);
         }
 
         [Parser(Opcode.SMSG_LFG_TELEPORT_DENIED)]
         public static void HandleLfgError(Packet packet)
         {
             var err = (LfgError)packet.ReadInt32();
-            Console.WriteLine("Error: " + err);
+            packet.Writer.WriteLine("Error: " + err);
         }
 
         [Parser(Opcode.CMSG_SEARCH_LFG_JOIN)]
@@ -443,14 +443,14 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLfgSearch(Packet packet)
         {
             var lfgId = packet.ReadLfgEntry();
-            Console.WriteLine("LFG Entry: " + lfgId);
+            packet.Writer.WriteLine("LFG Entry: " + lfgId);
         }
 
         [Parser(Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER)]
         public static void HandleLfgGossip(Packet packet)
         {
             var unk = packet.ReadLfgEntry();
-            Console.WriteLine("LFG Entry: " + unk);
+            packet.Writer.WriteLine("LFG Entry: " + unk);
         }
 
         [Parser(Opcode.SMSG_UPDATE_LFG_LIST)]

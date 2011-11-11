@@ -576,7 +576,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("[" + i + "] " + "Bank Money Per Day");
 
                 if (i != count - 1)
-                    Console.WriteLine("--");
+                    packet.Writer.WriteLine("--");
             }
         }
     }

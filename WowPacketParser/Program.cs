@@ -28,6 +28,7 @@ namespace WowPacketParser
             int packetNumberLow = 0; // 0 -> No low limit
             int packetNumberHigh = 0; // 0 -> No high limit
             bool prompt = false;
+            int threads = 1;
             try
             {
                 ClientVersion.Build = Settings.GetEnum<ClientVersionBuild>("ClientBuild");
@@ -50,6 +51,10 @@ namespace WowPacketParser
                 dumpFormat = (SniffType)Settings.GetInt32("DumpFormat");
                 packetsToRead = Settings.GetInt32("PacketsNum");
                 prompt = Settings.GetBoolean("ShowEndPrompt");
+                threads = Settings.GetInt32("Threads");
+
+                if (threads == 0 || sqlOutput)
+                    threads = 1;
 
                 if (dumpFormat == SniffType.Bin || dumpFormat == SniffType.Pkt)
                 {
@@ -157,12 +162,17 @@ namespace WowPacketParser
                             var outSqlFileName = outFileName + ".sql";
 
                             SQLStore.Initialize(outSqlFileName, sqlOutput);
-                            Handler.InitializeLogFile(outLogFileName, dumpFormat == SniffType.None);
 
-                            foreach (var packet in packets)
+                            packets.AsParallel().WithDegreeOfParallelism(threads).ForAll(packet =>
+                            {
                                 Handler.Parse(packet);
+                            });
 
                             SQLStore.WriteToFile();
+
+                            Handler.InitializeLogFile(outLogFileName, dumpFormat == SniffType.None);
+                            foreach (var packet in packets)
+                                Console.WriteLine(packet.Writer);
                             Handler.WriteToFile();
 
                             Statistics.EndTime = DateTime.Now;
