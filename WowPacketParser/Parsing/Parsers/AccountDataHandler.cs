@@ -43,13 +43,13 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadEnum<AccountDataType>("Data Type", TypeCode.Int32);
 
-            packet.ReadTime("Unk Time");
+            packet.ReadTime("Login Time");
 
             var decompCount = packet.ReadInt32();
             packet = packet.Inflate(decompCount);
 
             var data = packet.ReadBytes(decompCount);
-            packet.Writer.Write("Account Data: ");
+            packet.Writer.WriteLine("Account Data: ");
 
             foreach (var b in data)
                 packet.Writer.Write((char)b);

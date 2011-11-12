@@ -137,7 +137,9 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadByte("Cast Count");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
+            packet.ReadInt32("Glyph Index");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
+                packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
             ReadSpellCastTargets(ref packet);
         }
 
