@@ -131,6 +131,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var race = packet.ReadEnum<Race>("Race", TypeCode.Byte);
                 var clss = packet.ReadEnum<Class>("Class", TypeCode.Byte);
                 packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
+
                 packet.ReadByte("Skin");
                 packet.ReadByte("Face");
                 packet.ReadByte("Hair Style");

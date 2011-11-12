@@ -145,7 +145,8 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 5; i++)
                 packet.ReadInt32("StatType " + (StatType)i);
 
-            SessionHandler.LoggedInCharacter.Level = level;
+            if (SessionHandler.LoggedInCharacter != null)
+                SessionHandler.LoggedInCharacter.Level = level;
         }
 
         [Parser(Opcode.CMSG_TUTORIAL_FLAG)]
