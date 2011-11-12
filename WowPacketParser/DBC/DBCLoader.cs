@@ -21,6 +21,11 @@ namespace WowPacketParser.DBC
                 Console.WriteLine(e.Message);
                 DBCStore.DBC.Enabled = false;
             }
+            catch (DirectoryNotFoundException e)
+            {
+                Console.WriteLine(e.Message);
+                DBCStore.DBC.Enabled = false;
+            }
         }
     }
 }
