@@ -377,7 +377,10 @@ namespace WowPacketParser.Misc
             return val;
         }
 
-        // Bitstream reader - start
+        /// <summary>
+        /// Bitstream
+        /// </summary>
+
         private byte _bitpos = 8;
         private byte _curbitval = 0;
 
@@ -387,6 +390,7 @@ namespace WowPacketParser.Misc
             Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, bit ? "1" : "0");
             return bit;
         }
+
         public bool ReadBit()
         {
             ++_bitpos;
@@ -412,14 +416,20 @@ namespace WowPacketParser.Misc
             Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
+
         public uint ReadBits(int bits)
         {
             uint value = 0;
+
             for (int i = bits - 1; i >= 0; --i)
+            {
                 if (ReadBit())
                     value |= (uint)((1 << (_bitpos)));
+            }
+
             return value;
         }
+
         private KeyValuePair<long, T> ReadEnum<T>(int bits)
         {
             var type = typeof(T);
@@ -427,13 +437,12 @@ namespace WowPacketParser.Misc
             var value = Enum.ToObject(type, rawVal);
             return new KeyValuePair<long, T>(rawVal, (T)value);
         }
+
         public T ReadEnum<T>(string name, int bits, params int[] values)
         {
             var val = ReadEnum<T>(bits);
             Writer.WriteLine("{0}{1}: {2} ({3})", GetIndexString(values), name, val.Value, val.Key);
             return val.Value;
         }
-        // Bitstream reader - end
-
     }
 }

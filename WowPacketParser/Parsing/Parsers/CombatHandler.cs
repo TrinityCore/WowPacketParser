@@ -39,7 +39,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleAIReaction(Packet packet)
         {
             packet.ReadGuid("GUID");
-
             packet.ReadEnum<AIReaction>("Reaction", TypeCode.Int32);
         }
 
@@ -47,22 +46,16 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleUpdateComboPoints(Packet packet)
         {
             packet.ReadPackedGuid("GUID");
-
             packet.ReadByte("Combo Points");
         }
 
         [Parser(Opcode.SMSG_ENVIRONMENTALDAMAGELOG)]
         public static void HandleEnvirenmentalDamageLog(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            packet.Writer.WriteLine("GUID: " + guid);
-
+            packet.ReadGuid("GUID");
             packet.ReadEnum<EnvironmentDamageFlags>("Type", TypeCode.Byte);
-
             packet.ReadInt32("Damage");
-
             packet.ReadInt32("Absorb");
-
             packet.ReadInt32("Resist");
         }
 

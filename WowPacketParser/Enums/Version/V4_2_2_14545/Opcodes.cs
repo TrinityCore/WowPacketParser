@@ -232,6 +232,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_QUESTUPDATE_FAILED, 0x9EF6},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x9E56},
             {Opcode.SMSG_REALM_SPLIT, 0x1AF2},
+            {Opcode.SMSG_REDIRECT_CLIENT, 0x0180},
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x204C},
             {Opcode.SMSG_SHOWTAXINODES, 0x8CFB}, 
             {Opcode.SMSG_SPELL_GO, 0x0A53},
