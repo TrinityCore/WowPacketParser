@@ -146,48 +146,52 @@ namespace WowPacketParser
                 try
                 {
                     var packets = Reader.Read(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead);
-                    if (packets.Count > 0)
+                    if (packets.Count <= 0)
                     {
-                        if (dumpFormat == SniffType.Bin || dumpFormat == SniffType.Pkt)
-                        {
-                            var fileExtension = dumpFormat.ToString().ToLower();
-                            Console.WriteLine("Copying {0} packets to .{1} format...", packets.Count, fileExtension);
+                        Console.WriteLine("Packet count is 0");
+                        EndPrompt(prompt);
+                        return;
+                    }
 
-                            var dumpFileName = Path.ChangeExtension(file, null) + "_excerpt." + fileExtension;
-                            var writer = new BinaryPacketWriter(dumpFormat, dumpFileName, Encoding.ASCII);
-                            writer.Write(packets);
-                        }
+                    if (dumpFormat == SniffType.Bin || dumpFormat == SniffType.Pkt)
+                    {
+                        var fileExtension = dumpFormat.ToString().ToLower();
+                        Console.WriteLine("Copying {0} packets to .{1} format...", packets.Count, fileExtension);
+
+                        var dumpFileName = Path.ChangeExtension(file, null) + "_excerpt." + fileExtension;
+                        var writer = new BinaryPacketWriter(dumpFormat, dumpFileName, Encoding.ASCII);
+                        writer.Write(packets);
+                    }
+                    else
+                    {
+                        var numberOfThreads = threads != 0 ? threads.ToString() : "a recommended number of";
+
+                        Console.WriteLine("Assumed version: {0}", ClientVersion.Build);
+                        Console.WriteLine("Parsing {0} packets with {1} threads...", packets.Count, numberOfThreads);
+
+                        Statistics.Total = (uint)packets.Count;
+
+                        Statistics.StartTime = DateTime.Now;
+                        var outFileName = Path.ChangeExtension(file, null) + "_parsed";
+                        var outLogFileName = outFileName + ".txt";
+                        var outSqlFileName = outFileName + ".sql";
+
+                        SQLStore.Initialize(outSqlFileName, sqlOutput);
+
+                        if (threads == 0) // Number of threads is automatically choosen by the Parallel library
+                            packets.AsParallel().SetCulture().ForAll(Handler.Parse);
                         else
-                        {
-                            var numberOfThreads = threads != 0 ? threads.ToString() : "a recommended number of";
+                            packets.AsParallel().SetCulture().WithDegreeOfParallelism(threads).ForAll(Handler.Parse);
 
-                            Console.WriteLine("Assumed version: {0}", ClientVersion.Build);
-                            Console.WriteLine("Parsing {0} packets with {1} threads...", packets.Count, numberOfThreads);
+                        SQLStore.WriteToFile();
+                        Handler.WriteToFile(packets, outLogFileName, dumpFormat == SniffType.None);
 
-                            Statistics.Total = (uint) packets.Count;
+                        Statistics.EndTime = DateTime.Now;
 
-                            Statistics.StartTime = DateTime.Now;
-                            var outFileName = Path.ChangeExtension(file, null) + "_parsed";
-                            var outLogFileName = outFileName + ".txt";
-                            var outSqlFileName = outFileName + ".sql";
-
-                            SQLStore.Initialize(outSqlFileName, sqlOutput);
-
-                            if (threads == 0) // Number of threads is automatically choosen by the Parallel library
-                                packets.AsParallel().SetCulture().ForAll(Handler.Parse);
-                            else
-                                packets.AsParallel().SetCulture().WithDegreeOfParallelism(threads).ForAll(Handler.Parse);
-
-                            SQLStore.WriteToFile();
-                            Handler.WriteToFile(packets, outLogFileName, dumpFormat == SniffType.None);
-
-                            Statistics.EndTime = DateTime.Now;
-
-                            Console.WriteLine(Statistics.Stats());
-                            Console.WriteLine("Saved file to '{0}'", outLogFileName);
-                            Console.WriteLine();
-                            Statistics.Reset();
-                        }
+                        Console.WriteLine(Statistics.Stats());
+                        Console.WriteLine("Saved file to '{0}'", outLogFileName);
+                        Console.WriteLine();
+                        Statistics.Reset();
                     }
                 }
                 catch (Exception ex)

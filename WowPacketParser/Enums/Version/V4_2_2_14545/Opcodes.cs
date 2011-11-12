@@ -102,6 +102,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_MEETINGSTONE_INFO, 0xCA5B},
             {Opcode.CMSG_NAME_QUERY, 0x586A},
             {Opcode.CMSG_NEXT_CINEMATIC_CAMERA, 0x8E63},
+            {Opcode.CMSG_NPC_TEXT_QUERY, 0x5C63},
             {Opcode.CMSG_OFFER_PETITION, 0xC8DE},
             {Opcode.CMSG_OPENING_CINEMATIC, 0xD8D2},
             {Opcode.CMSG_OPEN_ITEM, 0x88C7},

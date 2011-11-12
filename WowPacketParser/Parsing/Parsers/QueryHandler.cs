@@ -1,5 +1,6 @@
 using System;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
@@ -60,8 +61,9 @@ namespace WowPacketParser.Parsing.Parsers
             var entry = packet.ReadInt32("Entry");
             var guid = packet.ReadGuid("GUID");
 
-            if (guid.HasEntry() && (entry != guid.GetEntry()))
-                packet.Writer.WriteLine("Entry does not match calculated GUID entry");
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_CREATURE_QUERY) || packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_GAMEOBJECT_QUERY))
+                if (guid.HasEntry() && (entry != guid.GetEntry()))
+                    packet.Writer.WriteLine("Entry does not match calculated GUID entry");
         }
 
         [Parser(Opcode.CMSG_CREATURE_QUERY)]
