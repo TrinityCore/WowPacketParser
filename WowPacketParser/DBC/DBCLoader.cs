@@ -16,13 +16,9 @@ namespace WowPacketParser.DBC
                 DBCStore.DBC.LFGDungeons = DBCReader.ReadDBC<LFGDungeonsEntry>(DBCStore.DBC.LFGDungeonsStrings);
                 DBCStore.DBC.BattlemasterList = DBCReader.ReadDBC<BattlemasterListEntry>(DBCStore.DBC.BattlemasterListStrings);
             }
-            catch (FileNotFoundException e)
+            catch (IOException e)
             {
-                Console.WriteLine(e.Message);
-                DBCStore.DBC.Enabled = false;
-            }
-            catch (DirectoryNotFoundException e)
-            {
+                Console.WriteLine("DBC loading failed at exception {0}. DBC will be disabled.", e.GetType());
                 Console.WriteLine(e.Message);
                 DBCStore.DBC.Enabled = false;
             }
