@@ -106,6 +106,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_OFFER_PETITION, 0xC8DE},
             {Opcode.CMSG_OPENING_CINEMATIC, 0xD8D2},
             {Opcode.CMSG_OPEN_ITEM, 0x88C7},
+            {Opcode.CMSG_PAGE_TEXT_QUERY, 0x8A5F},
             {Opcode.CMSG_PETITION_BUY, 0x8E4E},
             {Opcode.CMSG_PETITION_QUERY, 0xCEF3},
             {Opcode.CMSG_PETITION_SIGN, 0x4A5E},
@@ -215,6 +216,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x9CE6},
             {Opcode.SMSG_NEW_TAXI_PATH, 0xC8FF}, // Might be 0x98CF
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x4C72},
+            {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x18D2},
             {Opcode.SMSG_PET_LEARNED_SPELL, 0xDC5E},
             {Opcode.SMSG_PET_REMOVED_SPELL, 0x18F6}, // Should actually be called UNLEARNED_SPELL
             {Opcode.SMSG_PLAYERBINDERROR, 0x5A4F},
