@@ -26,6 +26,13 @@ namespace WowPacketParser.Enums
         PilgrimsBounty = 404,
         WrathOfTheLichKingLaunch = 406,
         DayOfTheDead = 409,
-        CallToArmsIsleOfConquest = 420
+        CallToArmsIsleOfConquest = 420,
+        LoveInTheAir = 423,
+        FishingExtravaganza2 = 424,
+        CallToArmsTheBattleForGilneas = 435,
+        CallToArmsTwinPeaks = 436,
+        RatedBG15V15 = 442,
+        RatedBG25V25 = 443,
+        WoWs7ThAnniversary = 467
     }
 }
