@@ -77,38 +77,50 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LIST_INVENTORY)]
         public static void HandleVendorInventoryList(Packet packet)
         {
-            var guid = packet.ReadGuid("GUID");
+            var guid = packet.ReadBits(48);
 
-            var itemCount = packet.ReadByte();
+            var itemCount = packet.ReadInt32();
             packet.Writer.WriteLine("Item Count: " + itemCount);
+
+            var itemCountunk = packet.ReadByte();
+            packet.Writer.WriteLine("itemCountunk: " + itemCountunk);
+
+            var itemCountunk1 = packet.ReadByte();
+            packet.Writer.WriteLine("itemCountunk1: " + itemCountunk1);
 
             for (var i = 0; i < itemCount; i++)
             {
-                var position = packet.ReadInt32();
-                packet.Writer.WriteLine("Item Position " + position + ": " + position);
-
-                var itemId = packet.ReadInt32();
-                packet.Writer.WriteLine("Item ID " + i + ": " + itemId);
-
-                var dispid = packet.ReadInt32();
-                packet.Writer.WriteLine("Display ID " + i + ": " + dispid);
-
-                var maxCount = packet.ReadInt32();
-                packet.Writer.WriteLine("Max Count " + i + ": " + maxCount);
-
                 var price = packet.ReadInt32();
                 packet.Writer.WriteLine("Price " + i + ": " + price);
+
+                var unk = packet.ReadInt32();
+                packet.Writer.WriteLine("unk " + i + ": " + unk);
+
+                var unk1 = packet.ReadInt32();
+                packet.Writer.WriteLine("unk1 " + i + ": " + unk1);
 
                 var maxDura = packet.ReadInt32();
                 packet.Writer.WriteLine("Max Durability " + i + ": " + maxDura);
 
-                var buyCount = packet.ReadInt32();
-                packet.Writer.WriteLine("Buy Count " + i + ": " + buyCount);
-
                 var extendedCost = packet.ReadInt32();
                 packet.Writer.WriteLine("Extended Cost " + i + ": " + extendedCost);
 
-                SQLStore.WriteData(SQLStore.VendorItems.GetCommand(guid.GetEntry(), itemId, maxCount,
+                var buyCount = packet.ReadInt32();
+                packet.Writer.WriteLine("Buy Count " + i + ": " + buyCount);
+
+                var maxCount = packet.ReadInt32();
+                packet.Writer.WriteLine("Max Count " + i + ": " + maxCount);
+
+                var position = packet.ReadInt32();
+                packet.Writer.WriteLine("Item Position " + position + ": " + position);
+
+                var dispid = packet.ReadInt32();
+                packet.Writer.WriteLine("Display ID " + i + ": " + dispid);
+
+                var itemId = packet.ReadInt32();
+                packet.Writer.WriteLine("Item ID " + i + ": " + itemId);
+
+                SQLStore.WriteData(SQLStore.VendorItems.GetCommand(guid, itemId, maxCount,
                     extendedCost));
             }
         }
