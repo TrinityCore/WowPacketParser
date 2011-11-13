@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
-using WowPacketParser.Misc.Objects;
 using WowPacketParser.SQL;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 using Guid=WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -77,40 +78,22 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void ReadCreateObjectBlock(ref Packet packet, Guid guid, uint map, int index)
         {
-            var objType = packet.ReadEnum<ObjectType>("[" + index + "] Object Type", TypeCode.Byte);
+            var objType = packet.ReadEnum<ObjectType>("Object Type", TypeCode.Byte, index);
             var moves = ReadMovementUpdateBlock(ref packet, guid, index);
             var updates = ReadValuesUpdateBlock(ref packet, objType, index);
 
-            var obj = new WoWObject(guid, objType, moves, updates, map);
+            var obj = new WoWObject {Type = objType, Movement = moves, UpdateFields = updates, Map = map};
 
-            try
-            {
-                var objects = Objects[MovementHandler.CurrentMapId];
-                var shouldAdd = true;
-                foreach (var woObj in objects.Values)
-                {
-                    if (woObj.GetPosition() != obj.GetPosition() && woObj.Guid != guid)
-                        continue;
-
-                    shouldAdd = false;
-                    break;
-                }
-
-                if (!shouldAdd)
-                    return;
-
-                objects.Add(guid, obj);
-            }
-            catch { }
+            Stuffing.Objects.TryAdd(guid, obj);
 
             HandleUpdateFieldChangedValues(guid, objType, updates, moves, true);
         }
 
         public static void ReadObjectsBlock(ref Packet packet, int index)
         {
-            var objCount = packet.ReadInt32("[" + index + "] Object Count");
+            var objCount = packet.ReadInt32("Object Count", index);
             for (var j = 0; j < objCount; j++)
-                packet.ReadPackedGuid("[" + index + "][" + j + "] Object GUID");
+                packet.ReadPackedGuid("Object GUID", index, j);
         }
 
         public static Dictionary<int, UpdateField> ReadValuesUpdateBlock(ref Packet packet, ObjectType type, int index)

@@ -68,6 +68,7 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -295,23 +296,39 @@
     <Compile Include="Loading\IPacketReader.cs" />
     <Compile Include="Loading\Reader.cs" />
     <Compile Include="Loading\SQLitePacketReader.cs" />
-    <Compile Include="Misc\Aura.cs" />
-    <Compile Include="Misc\CharacterInfo.cs" />
+    <Compile Include="Store\Objects\Aura.cs" />
+    <Compile Include="Store\Objects\GossipOption.cs" />
+    <Compile Include="Store\Objects\StartAction.cs" />
+    <Compile Include="Store\Objects\GameObjectTemplate.cs" />
+    <Compile Include="Store\Objects\Gossip.cs" />
+    <Compile Include="Store\Objects\Item.cs" />
+    <Compile Include="Store\Objects\ItemTemplate.cs" />
+    <Compile Include="Store\Objects\Loot.cs" />
+    <Compile Include="Store\Objects\NpcText.cs" />
+    <Compile Include="Store\Objects\PageText.cs" />
+    <Compile Include="Store\Objects\Player.cs" />
     <Compile Include="Misc\ClientVersion.cs" />
     <Compile Include="Misc\PacketReads.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Misc\Guid.cs" />
     <Compile Include="Misc\LfgEntry.cs" />
     <Compile Include="Misc\MovementInfo.cs" />
-    <Compile Include="Misc\Objects\GameObject.cs" />
-    <Compile Include="Misc\Objects\Unit.cs" />
+    <Compile Include="Store\Objects\GameObject.cs" />
+    <Compile Include="Store\Objects\QuestTemplate.cs" />
+    <Compile Include="Store\Objects\StartItem.cs" />
+    <Compile Include="Store\Objects\StartPos.cs" />
+    <Compile Include="Store\Objects\StartSpell.cs" />
+    <Compile Include="Store\Objects\TrainerSpell.cs" />
+    <Compile Include="Store\Objects\Unit.cs" />
     <Compile Include="Misc\Quaternion.cs" />
     <Compile Include="Misc\Settings.cs" />
-    <Compile Include="Misc\StartInfo.cs" />
+    <Compile Include="Store\Objects\StartInfo.cs" />
     <Compile Include="Misc\Statistics.cs" />
     <Compile Include="Misc\StoreGetters.cs" />
     <Compile Include="Misc\UpdateField.cs" />
-    <Compile Include="Misc\Objects\WoWObject.cs" />
+    <Compile Include="Store\Objects\UnitTemplate.cs" />
+    <Compile Include="Store\Objects\VendorItem.cs" />
+    <Compile Include="Store\Objects\WoWObject.cs" />
     <Compile Include="Misc\Packet.cs" />
     <Compile Include="Misc\Utilities.cs" />
     <Compile Include="Misc\Vector2.cs" />
@@ -388,6 +405,7 @@
     <Compile Include="SQL\Stores\StartSpellStore.cs" />
     <Compile Include="SQL\Stores\TrainerSpellStore.cs" />
     <Compile Include="SQL\Stores\VendorItemStore.cs" />
+    <Compile Include="Store\Stuffing.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

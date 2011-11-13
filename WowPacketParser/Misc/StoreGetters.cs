@@ -19,7 +19,7 @@ namespace WowPacketParser.Misc
                     SpellEntry spell;
                     if (DBC.DBCStore.DBC.Spell.TryGetValue((uint)entry, out spell))
                         return spell.GetSpellName();
-                    break;                    
+                    break;
                 }
                 case StoreNameType.Map:
                 {

@@ -39,52 +39,39 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.ReadGuid("GUID");
 
-            var type = (TrainerType)packet.ReadInt32();
-            packet.Writer.WriteLine("Type: " + type);
+            packet.ReadEnum<TrainerType>("Type", TypeCode.Int32);
 
-            var count = packet.ReadInt32();
-            packet.Writer.WriteLine("Count: " + count);
+            var count = packet.ReadInt32("Count");
 
             for (var i = 0; i < count; i++)
             {
                 var spell = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
 
-                var state = (TrainerSpellState)packet.ReadByte();
-                packet.Writer.WriteLine("State " + i + ": " + state);
+                packet.ReadEnum<TrainerSpellState>("State", TypeCode.Byte, i);
 
-                var cost = packet.ReadInt32();
-                packet.Writer.WriteLine("Cost " + i + ": " + cost);
+                var cost = packet.ReadInt32("Cost", i);
 
-                var profDialog = packet.ReadInt32();
-                packet.Writer.WriteLine("Profession Dialog " + i + ": " + profDialog);
+                packet.ReadInt32("Profession Dialog", i);
 
-                var profButton = packet.ReadInt32();
-                packet.Writer.WriteLine("Profession Button " + i + ": " + profButton);
+                packet.ReadInt32("Profession Button", i);
 
-                var reqLevel = packet.ReadByte();
-                packet.Writer.WriteLine("Required Level " + i + ": " + reqLevel);
+                var reqLevel = packet.ReadByte("Required Level", i);
 
-                var reqSkill = packet.ReadInt32();
-                packet.Writer.WriteLine("Required Skill " + i + ": " + reqSkill);
+                var reqSkill = packet.ReadInt32("Required Skill", i);
 
-                var reqSkLvl = packet.ReadInt32();
-                packet.Writer.WriteLine("Required Skill Level " + i + ": " + reqSkLvl);
+                var reqSkLvl = packet.ReadInt32("Required Skill Level", i);
 
-                var chainNode1 = packet.ReadInt32();
-                packet.Writer.WriteLine("Chain Node 1 " + i + ": " + chainNode1);
+                packet.ReadInt32("Chain Node 1", i);
 
-                var chainNode2 = packet.ReadInt32();
-                packet.Writer.WriteLine("Chain Node 2 " + i + ": " + chainNode2);
+                packet.ReadInt32("Chain Node 2", i);
 
-                var unk = packet.ReadInt32();
-                packet.Writer.WriteLine("Unk Int32 " + i + ": " + unk);
+                packet.ReadInt32("Unk Int32", i);
 
                 SQLStore.WriteData(SQLStore.TrainerSpells.GetCommand(guid.GetEntry(), spell, cost, reqLevel,
                     reqSkill, reqSkLvl));
             }
 
-            var titleStr = packet.ReadCString();
-            packet.Writer.WriteLine("Title: " + titleStr);
+            packet.ReadCString("Title");
         }
 
         [Parser(Opcode.SMSG_LIST_INVENTORY)]

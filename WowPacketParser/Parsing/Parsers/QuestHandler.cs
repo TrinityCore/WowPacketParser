@@ -226,9 +226,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Sound TurnIn");
             }
 
-
-
-            SQLStore.WriteData(SQLStore.Quests.GetCommand((int)id.Key, method, level, minLevel, sort, type,
+            SQLStore.WriteData(SQLStore.Quests.GetCommand(id.Key, method, level, minLevel, sort, type,
                 players, factId, factRep, nextQuest, xpId, rewReqMoney, rewMoneyMaxLvl,
                 rewSpell, rewSpellCast, rewHonor, rewHonorBonus, srcItemId, flags, titleId,
                 reqPlayerKills, bonusTalents, bonusArenaPoints, bonusUnk, rewItemId, rewItemCnt,

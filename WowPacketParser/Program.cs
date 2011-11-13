@@ -149,7 +149,6 @@ namespace WowPacketParser
                     if (packets.Count <= 0)
                     {
                         Console.WriteLine("Packet count is 0");
-                        EndPrompt(prompt);
                         return;
                     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
-using WowPacketParser.Misc.Objects;
+using WowPacketParser.Store.Objects;
 using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -278,7 +278,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Opcode != Opcodes.GetOpcode(Opcode.SMSG_LOGIN_VERIFY_WORLD))
                 return;
 
-            CharacterInfo chInfo;
+            Player chInfo;
             if (!CharacterHandler.Characters.TryGetValue(SessionHandler.LoginGuid, out chInfo))
                 return;
 

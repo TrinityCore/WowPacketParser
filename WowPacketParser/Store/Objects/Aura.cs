@@ -1,6 +1,7 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
-namespace WowPacketParser.Misc
+namespace WowPacketParser.Store.Objects
 {
     public class Aura
     {

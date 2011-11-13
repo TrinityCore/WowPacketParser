@@ -1,6 +1,7 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Store.Objects;
 using Guid=WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -9,7 +10,7 @@ namespace WowPacketParser.Parsing.Parsers
     {
         public static Guid LoginGuid;
 
-        public static CharacterInfo LoggedInCharacter;
+        public static Player LoggedInCharacter;
 
         [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
         public static void HandleServerAuthChallenge(Packet packet)

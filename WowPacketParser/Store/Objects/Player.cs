@@ -1,16 +1,14 @@
 using WowPacketParser.Enums;
 
-namespace WowPacketParser.Misc
+namespace WowPacketParser.Store.Objects
 {
-    public sealed class CharacterInfo
+    public sealed class Player : WoWObject
     {
         public Race Race;
 
         public Class Class;
 
         public string Name;
-
-        public Guid Guid;
 
         public bool FirstLogin;
 

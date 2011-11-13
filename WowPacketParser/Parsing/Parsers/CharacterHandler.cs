@@ -5,14 +5,16 @@ using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 using Guid=WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
     public static class CharacterHandler
     {
-        public static readonly Dictionary<Guid, CharacterInfo> Characters =
-            new Dictionary<Guid, CharacterInfo>();
+        public static readonly Dictionary<Guid, Player> Characters =
+            new Dictionary<Guid, Player>();
 
         public static readonly List<StartInfo> StartInfos = new List<StartInfo>();
 
@@ -169,24 +171,35 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Bag Aura Id");
                 }
 
-                if (firstLogin && StartInfos.All(item => item.Race != race && item.Class != clss))
+                bool all = true;
+                foreach (StartInfo item in StartInfos)
+                {
+                    if (item.Race == race || item.Class == clss)
+                    {
+                        all = false;
+                        break;
+                    }
+                }
+                if (firstLogin && all)
                 {
                     var startInfo = new StartInfo
                                         {
                                             Race = race,
                                             Class = clss,
-                                            Position = pos,
-                                            Map = mapId,
-                                            Zone = zone
+                                            StartPos = new StartPos
+                                                           {
+                                                               Map = mapId,
+                                                               Position = pos,
+                                                               Zone = zone
+                                                           }
                                         };
 
-                    StartInfos.Add(startInfo);
+                    Stuffing.StartInformation.TryAdd(new Tuple<Race, Class>(race, clss), startInfo);
                     SQLStore.WriteData(SQLStore.StartPositions.GetCommand(race, clss, mapId, zone, pos));
                 }
 
-                var chInfo = new CharacterInfo
+                var chInfo = new Player
                                  {
-                                     Guid = guid,
                                      Race = race,
                                      Class = clss,
                                      Name = name,
@@ -194,7 +207,9 @@ namespace WowPacketParser.Parsing.Parsers
                                      Level = level
                                  };
 
-                Characters.Add(guid, chInfo);
+                Characters.Add(guid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects
+                Stuffing.Objects.TryAdd(guid, chInfo);
+
             }
         }
 
