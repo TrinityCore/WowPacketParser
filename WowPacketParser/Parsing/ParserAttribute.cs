@@ -25,6 +25,11 @@ namespace WowPacketParser.Parsing
                 Opcode = Opcodes.GetOpcode(opcode);
         }
 
+        public ParserAttribute(int opcode)
+        {
+            Opcode = opcode;
+        }
+
         public int Opcode { get; private set; }
     }
 }
