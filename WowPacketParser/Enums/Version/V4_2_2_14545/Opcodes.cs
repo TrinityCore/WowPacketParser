@@ -34,6 +34,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_CANCEL_AUTO_REPEAT_SPELL, 0x5CEE},
             {Opcode.CMSG_CANCEL_CHANNELLING, 0xC8FE},
             {Opcode.CMSG_CANCEL_GROWTH_AURA, 0xDEF7},
+            {Opcode.CMSG_CANCEL_TRADE, 0x35A5},
             {Opcode.CMSG_CHAR_CREATE, 0x1AC6},
             {Opcode.CMSG_CHAR_CUSTOMIZE, 0xDECF},
             {Opcode.CMSG_CHAR_DELETE, 0x1ED3},
@@ -169,6 +170,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_TRAINER_LIST, 0xCC7F},
             {Opcode.CMSG_TURN_IN_PETITION, 0x9C67},
             {Opcode.CMSG_UNLEARN_SKILL, 0xAC3},
+            {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x4AFE},
             {Opcode.CMSG_WARDEN_DATA, 0x5847},
             {Opcode.CMSG_WHO, 0x9AD7},
             {Opcode.CMSG_WHOIS, 0xCCE6},
@@ -212,6 +214,8 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_INIT_WORLD_STATES, 0x9EDA},
             {Opcode.SMSG_LIST_INVENTORY, 0x264C},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0xC86E},
+            {Opcode.SMSG_LOGOUT_COMPLETE, 0xCC6B},
+            {Opcode.SMSG_LOGOUT_RESPONSE, 0x886A},
             {Opcode.SMSG_MESSAGECHAT, 0x5E52},
             {Opcode.SMSG_MONSTER_MOVE, 0x4C53},
             {Opcode.SMSG_MONSTER_MOVE_TRANSPORT, 0x88FB},
@@ -245,6 +249,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_TRAINER_LIST, 0xC84E},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x1A46},
             {Opcode.SMSG_UPDATE_OBJECT, 0x1EE7},
+            {Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 0x5E53},
         };
     }
 }

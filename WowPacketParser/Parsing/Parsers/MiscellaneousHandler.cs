@@ -397,6 +397,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Name");
         }
 
+        [Parser(Opcode.CMSG_FAR_SIGHT)]
+        public static void HandleFarSight(Packet packet)
+        {
+            packet.ReadBoolean("Apply");
+        }
+
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
