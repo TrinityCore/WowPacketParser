@@ -39,37 +39,46 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleServerTrainerList(Packet packet)
         {
             var guid = packet.ReadGuid("GUID");
-
             packet.ReadEnum<TrainerType>("Type", TypeCode.Int32);
 
-            var count = packet.ReadInt32("Count");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
+                packet.ReadInt32("Unk int");
 
+            var count = packet.ReadInt32("Count");
             for (var i = 0; i < count; i++)
             {
                 var spell = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
-
                 packet.ReadEnum<TrainerSpellState>("State", TypeCode.Byte, i);
-
                 var cost = packet.ReadInt32("Cost", i);
 
-                packet.ReadInt32("Profession Dialog", i);
+                var reqLevel = 0;
+                var reqSkill = 0;
+                var reqSkLvl = 0;
 
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
+                {
+                    reqLevel = packet.ReadByte("Required Level", i);
+                    reqSkill = packet.ReadInt32("Required Skill", i);
+                    reqSkLvl = packet.ReadInt32("Required Skill Level", i);
+                }
+
+                packet.ReadInt32("Profession Dialog", i);
                 packet.ReadInt32("Profession Button", i);
 
-                var reqLevel = packet.ReadByte("Required Level", i);
-
-                var reqSkill = packet.ReadInt32("Required Skill", i);
-
-                var reqSkLvl = packet.ReadInt32("Required Skill Level", i);
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333))
+                {
+                    reqLevel = packet.ReadByte("Required Level", i);
+                    reqSkill = packet.ReadInt32("Required Skill", i);
+                    reqSkLvl = packet.ReadInt32("Required Skill Level", i);
+                }
 
                 packet.ReadInt32("Chain Node 1", i);
-
                 packet.ReadInt32("Chain Node 2", i);
 
-                packet.ReadInt32("Unk Int32", i);
-
-                SQLStore.WriteData(SQLStore.TrainerSpells.GetCommand(guid.GetEntry(), spell, cost, reqLevel,
-                    reqSkill, reqSkLvl));
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333))
+                    packet.ReadInt32("Unk Int32", i);
+                //SQLStore.WriteData(SQLStore.TrainerSpells.GetCommand(guid.GetEntry(), spell, cost, reqLevel,
+                //    reqSkill, reqSkLvl));
             }
 
             packet.ReadCString("Title");
