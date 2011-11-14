@@ -75,7 +75,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Title");
         }
 
-        //WIP [Parser(Opcode.SMSG_LIST_INVENTORY, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_LIST_INVENTORY, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleVendorInventoryList422(Packet packet)
         {
             var unk = packet.ReadByte("UnkByte");
@@ -119,7 +119,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_LIST_INVENTORY)]
+        [Parser(Opcode.SMSG_LIST_INVENTORY, ClientVersionBuild.V1_12_1_5875, ClientVersionBuild.V4_2_0_14333)]
         public static void HandleVendorInventoryList(Packet packet)
         {
             var guid = packet.ReadGuid("GUID");
