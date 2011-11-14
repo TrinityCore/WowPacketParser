@@ -106,15 +106,15 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < itemCount; i++)
             {
-                packet.ReadInt32("Unk Int32", i);
+                packet.ReadInt32("Max Durability", i);
                 packet.ReadInt32("Item Position", i);
                 packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
-                packet.ReadInt32("Unk Int32 2", i);
+                packet.ReadInt32("Unk Int32 1", i);
                 packet.ReadInt32("Display ID", i);
                 packet.ReadInt32("Max Count", i);
                 packet.ReadInt32("Buy Count", i);
                 packet.ReadInt32("Extended Cost", i);
-                packet.ReadInt32("Max Durability", i);
+                packet.ReadInt32("Unk Int32 2", i);
                 packet.ReadInt32("Price", i);
             }
         }
