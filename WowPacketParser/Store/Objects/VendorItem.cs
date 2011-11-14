@@ -2,11 +2,13 @@
 {
     public class VendorItem
     {
-        public uint Entry;
+        public uint ItemId;
 
         public uint Slot;
 
-        public uint MaxCount;
+        public int MaxCount;
+
+        public uint BuyCount;
 
         public uint ExtendedCostId;
     }

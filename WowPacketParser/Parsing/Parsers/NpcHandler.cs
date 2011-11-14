@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
-using WowPacketParser.SQL;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -38,28 +40,32 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_TRAINER_LIST)]
         public static void HandleServerTrainerList(Packet packet)
         {
+            var npcTrainer = new NpcTrainer();
+
             var guid = packet.ReadGuid("GUID");
-            packet.ReadEnum<TrainerType>("Type", TypeCode.Int32);
+
+            npcTrainer.Type = packet.ReadEnum<TrainerType>("Type", TypeCode.Int32);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
-                packet.ReadInt32("Unk int");
-
+                packet.ReadInt32("Unk Int32");
+            
             var count = packet.ReadInt32("Count");
+            npcTrainer.TrainerSpells = new List<TrainerSpell>(count);
             for (var i = 0; i < count; i++)
             {
-                var spell = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
-                packet.ReadEnum<TrainerSpellState>("State", TypeCode.Byte, i);
-                var cost = packet.ReadInt32("Cost", i);
+                var trainerSpell = new TrainerSpell();
 
-                var reqLevel = 0;
-                var reqSkill = 0;
-                var reqSkLvl = 0;
+                trainerSpell.Spell = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+
+                packet.ReadEnum<TrainerSpellState>("State", TypeCode.Byte, i);
+
+                trainerSpell.Cost = packet.ReadUInt32("Cost", i);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
                 {
-                    reqLevel = packet.ReadByte("Required Level", i);
-                    reqSkill = packet.ReadInt32("Required Skill", i);
-                    reqSkLvl = packet.ReadInt32("Required Skill Level", i);
+                    trainerSpell.RequiredLevel = packet.ReadByte("Required Level", i);
+                    trainerSpell.RequiredSkill = packet.ReadUInt32("Required Skill", i);
+                    trainerSpell.RequiredSkillLevel = packet.ReadUInt32("Required Skill Level", i);
                 }
 
                 packet.ReadInt32("Profession Dialog", i);
@@ -67,9 +73,9 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333))
                 {
-                    reqLevel = packet.ReadByte("Required Level", i);
-                    reqSkill = packet.ReadInt32("Required Skill", i);
-                    reqSkLvl = packet.ReadInt32("Required Skill Level", i);
+                    trainerSpell.RequiredLevel = packet.ReadByte("Required Level", i);
+                    trainerSpell.RequiredSkill = packet.ReadUInt32("Required Skill", i);
+                    trainerSpell.RequiredSkillLevel = packet.ReadUInt32("Required Skill Level", i);
                 }
 
                 packet.ReadInt32("Chain Node 1", i);
@@ -77,84 +83,97 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333))
                     packet.ReadInt32("Unk Int32", i);
-                //SQLStore.WriteData(SQLStore.TrainerSpells.GetCommand(guid.GetEntry(), spell, cost, reqLevel,
-                //    reqSkill, reqSkLvl));
             }
 
-            packet.ReadCString("Title");
+            npcTrainer.Title = packet.ReadCString("Title");
+
+            Stuffing.NpcTrainers.TryAdd(guid.GetEntry(), npcTrainer);
         }
 
         // WIP
         [Parser(Opcode.SMSG_LIST_INVENTORY, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleVendorInventoryList422(Packet packet)
         {
+            var npcVendor = new NpcVendor();
+
             var flags = packet.ReadEnum<UnknownFlags>("Unk Flags", TypeCode.Byte);
-            if ((flags & UnknownFlags.Unk5) != 0)
+            if (flags.HasAnyFlag(UnknownFlags.Unk5))
                 packet.ReadByte("Unk Byte2");
 
             var itemCount = packet.ReadUInt32("Item Count");
-            var bytes = new ulong[7];
 
+            var bytes = new ulong[7];
             for (var i = 0; i < 7; i++)
             {
                 switch (i)
                 {
                     case 2:
-                        if ((flags & UnknownFlags.Unk6) == 0)
+                        if (!flags.HasAnyFlag(UnknownFlags.Unk6))
                             continue;
                         break;
                     case 3:
-                        if ((flags & UnknownFlags.Unk8) == 0)
+                        if (!flags.HasAnyFlag(UnknownFlags.Unk8))
                             continue;
                         break;
                 }
-                bytes[i] = (ulong)packet.ReadByte();
-                if ((bytes[i] % 2) == 0)
+
+                bytes[i] = packet.ReadByte();
+                if ((bytes[i] % 2) == 0) // even
                     bytes[i] += 1;
-                else
+                else                     // odd
                     bytes[i] -= 1;
             }
-
 
             var guid = new Guid((bytes[5] << 56) + (bytes[6] << 48) + (bytes[0] << 40) + (bytes[4] << 32) + (bytes[2] << 8) + bytes[1]);
             packet.Writer.WriteLine("GUID: " + guid);
 
+            npcVendor.VendorItems = new List<VendorItem>((int)itemCount);
             for (var i = 0; i < itemCount; i++)
             {
+                var vendorItem = new VendorItem();
+
                 packet.ReadInt32("Max Durability", i);
-                packet.ReadInt32("Item Position", i);
-                packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
+                vendorItem.Slot = packet.ReadUInt32("Item Position", i);
+                vendorItem.ItemId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
                 packet.ReadInt32("Unk Int32 1", i);
                 packet.ReadInt32("Display ID", i);
-                packet.ReadInt32("Max Count", i);
-                packet.ReadInt32("Buy Count", i);
-                packet.ReadInt32("Extended Cost", i);
+                vendorItem.MaxCount = packet.ReadInt32("Max Count", i);
+                vendorItem.BuyCount = packet.ReadUInt32("Buy Count", i);
+                vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
                 packet.ReadInt32("Unk Int32 2", i);
                 packet.ReadInt32("Price", i);
+
+                npcVendor.VendorItems.Add(vendorItem);
             }
+
+            Stuffing.NpcVendors.TryAdd(guid.GetEntry(), npcVendor);
         }
 
         [Parser(Opcode.SMSG_LIST_INVENTORY, ClientVersionBuild.V1_12_1_5875, ClientVersionBuild.V4_2_0_14333)]
         public static void HandleVendorInventoryList(Packet packet)
         {
+            var npcVendor = new NpcVendor();
+
             var guid = packet.ReadGuid("GUID");
 
             var itemCount = packet.ReadByte("Item Count");
 
+            npcVendor.VendorItems = new List<VendorItem>(itemCount);
             for (var i = 0; i < itemCount; i++)
             {
-                packet.ReadInt32("Item Position", i);
-                var itemId = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
+                var vendorItem = new VendorItem();
+
+                vendorItem.Slot = packet.ReadUInt32("Item Position", i);
+                vendorItem.ItemId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
                 packet.ReadInt32("Display ID", i);
-                var maxCount = packet.ReadInt32("Max Count", i);
+                vendorItem.MaxCount = packet.ReadInt32("Max Count", i);
                 packet.ReadInt32("Price", i);
                 packet.ReadInt32("Max Durability", i);
-                packet.ReadInt32("Buy Count", i);
-                var extendedCost = packet.ReadInt32("Extended Cost", i);
-
-                SQLStore.WriteData(SQLStore.VendorItems.GetCommand(guid.GetEntry(), itemId, maxCount,
-                    extendedCost));
+                vendorItem.BuyCount = packet.ReadUInt32("Buy Count", i);
+                vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
             }
+
+            Stuffing.NpcVendors.TryAdd(guid.GetEntry(), npcVendor);
         }
 
         [Parser(Opcode.CMSG_GOSSIP_HELLO)]

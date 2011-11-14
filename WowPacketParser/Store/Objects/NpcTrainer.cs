@@ -8,5 +8,7 @@ namespace WowPacketParser.Store.Objects
         public TrainerType Type;
 
         public List<TrainerSpell> TrainerSpells;
+
+        public string Title;
     }
 }
