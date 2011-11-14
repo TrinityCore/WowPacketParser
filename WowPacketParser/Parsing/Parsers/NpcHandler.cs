@@ -3,6 +3,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
+using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -72,6 +73,50 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             packet.ReadCString("Title");
+        }
+
+        //WIP [Parser(Opcode.SMSG_LIST_INVENTORY, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleVendorInventoryList422(Packet packet)
+        {
+            var unk = packet.ReadByte("UnkByte");
+            if (unk == 247)
+                packet.ReadByte("Unk Byte2");
+
+            var itemCount = packet.ReadByte("Item Count");
+
+            packet.ReadUInt16();
+            if (unk != 103)
+                packet.ReadByte();
+
+            var bytes = new ulong[7];
+            for (var i = 0; i < 7; i++)
+            {
+                bytes[i] = (ulong)packet.ReadByte();
+                if (bytes[i] > 0)
+                {
+                    if ((bytes[i] % 2) == 0)
+                        bytes[i] += 1;
+                    else
+                        bytes[i] -= 1;
+                }
+            }
+
+            var guid = new Guid((bytes[5] << 56) + (bytes[6] << 48) + (bytes[0] << 40) + (bytes[4] << 32) + (bytes[2] << 8) + bytes[1]);
+            packet.Writer.WriteLine("GUID: " + guid);
+
+            for (var i = 0; i < itemCount; i++)
+            {
+                packet.ReadInt32("Unk Int32", i);
+                var position = packet.ReadInt32("Item Position", i);
+                var itemId = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
+                packet.ReadInt32("Unk Int32 2", i);
+                var dispid = packet.ReadInt32("Display ID", i);
+                var maxCount = packet.ReadInt32("Max Count", i);
+                var buyCount = packet.ReadInt32("Buy Count", i);
+                var extendedCost = packet.ReadInt32("Extended Cost", i);
+                var maxDura = packet.ReadInt32("Max Durability", i);
+                var price = packet.ReadInt32("Price", i);
+            }
         }
 
         [Parser(Opcode.SMSG_LIST_INVENTORY)]
