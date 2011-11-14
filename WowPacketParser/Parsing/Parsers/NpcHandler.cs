@@ -75,31 +75,37 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Title");
         }
 
+        // WIP
         [Parser(Opcode.SMSG_LIST_INVENTORY, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleVendorInventoryList422(Packet packet)
         {
-            var unk = packet.ReadByte("UnkByte");
-            if (unk == 247)
+            var flags = packet.ReadEnum<UnknownFlags>("Unk Flags", TypeCode.Byte);
+            if ((flags & UnknownFlags.Unk5) != 0)
                 packet.ReadByte("Unk Byte2");
 
-            var itemCount = packet.ReadByte("Item Count");
-
-            packet.ReadUInt16();
-            if (unk != 103)
-                packet.ReadByte();
-
+            var itemCount = packet.ReadUInt32("Item Count");
             var bytes = new ulong[7];
+
             for (var i = 0; i < 7; i++)
             {
-                bytes[i] = (ulong)packet.ReadByte();
-                if (bytes[i] > 0)
+                switch (i)
                 {
-                    if ((bytes[i] % 2) == 0)
-                        bytes[i] += 1;
-                    else
-                        bytes[i] -= 1;
+                    case 2:
+                        if ((flags & UnknownFlags.Unk6) == 0)
+                            continue;
+                        break;
+                    case 3:
+                        if ((flags & UnknownFlags.Unk8) == 0)
+                            continue;
+                        break;
                 }
+                bytes[i] = (ulong)packet.ReadByte();
+                if ((bytes[i] % 2) == 0)
+                    bytes[i] += 1;
+                else
+                    bytes[i] -= 1;
             }
+
 
             var guid = new Guid((bytes[5] << 56) + (bytes[6] << 48) + (bytes[0] << 40) + (bytes[4] << 32) + (bytes[2] << 8) + bytes[1]);
             packet.Writer.WriteLine("GUID: " + guid);
