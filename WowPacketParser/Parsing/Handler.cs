@@ -89,7 +89,10 @@ namespace WowPacketParser.Parsing
                     handler(packet);
 
                     if (packet.GetPosition() == packet.GetLength())
-                        Statistics.PacketsSuccessfullyParsed++;
+                        lock (Handlers)
+                        {
+                            Statistics.PacketsSuccessfullyParsed++;
+                        }
                     else
                     {
                         var pos = packet.GetPosition();
@@ -100,7 +103,10 @@ namespace WowPacketParser.Parsing
                         if (len < 300) // If the packet isn't "too big" and it is not full read, print its hex table
                             packet.Writer.WriteLine(packet.AsHex());
 
-                        Statistics.PacketsParsedWithErrors++;
+                        lock (Handlers)
+                        {
+                            Statistics.PacketsParsedWithErrors++;
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -109,13 +115,19 @@ namespace WowPacketParser.Parsing
                     packet.Writer.WriteLine(ex.Message);
                     packet.Writer.WriteLine(ex.StackTrace);
 
-                    Statistics.PacketsParsedWithErrors++;
+                    lock (Handlers)
+                    {
+                        Statistics.PacketsParsedWithErrors++;
+                    }
                 }
             }
             else
             {
                 packet.Writer.WriteLine(packet.AsHex());
-                Statistics.PacketsNotParsed++;
+                lock (Handlers)
+                {
+                    Statistics.PacketsNotParsed++;
+                }
             }
         }
     }
