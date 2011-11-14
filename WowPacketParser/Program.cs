@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -138,8 +139,9 @@ namespace WowPacketParser
                 }
             }
 
-            foreach (string file in files)
+            foreach (string file_ in files)
             {
+                string file = HttpUtility.UrlDecode(file_);
                 Console.WriteLine("Opening file '{0}'", Path.GetFileName(file));
                 Console.WriteLine("Reading packets...");
 
