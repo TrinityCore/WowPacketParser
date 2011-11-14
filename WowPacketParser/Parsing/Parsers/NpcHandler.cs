@@ -90,41 +90,53 @@ namespace WowPacketParser.Parsing.Parsers
             Stuffing.NpcTrainers.TryAdd(guid.GetEntry(), npcTrainer);
         }
 
+        private static ulong ReadByte(ref Packet packet, int index)
+        {
+            var tmp = (ulong)packet.ReadByte();
+            if ((tmp % 2) == 0)
+                tmp++;
+            else
+                tmp--;
+            // Debug: packet.Writer.WriteLine("Read {0} = {1}", index, tmp.ToString("X2"));
+            return (tmp << 8*index);
+        }
+
         // WIP
         [Parser(Opcode.SMSG_LIST_INVENTORY, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleVendorInventoryList422(Packet packet)
         {
             var npcVendor = new NpcVendor();
-
             var flags = packet.ReadEnum<UnknownFlags>("Unk Flags", TypeCode.Byte);
-            if (flags.HasAnyFlag(UnknownFlags.Unk5))
-                packet.ReadByte("Unk Byte2");
+
+            ulong tmp = 0;
+
+            if (flags.HasFlag(UnknownFlags.Unk5))
+                tmp += ReadByte(ref packet, 2);
 
             var itemCount = packet.ReadUInt32("Item Count");
 
-            var bytes = new ulong[7];
-            for (var i = 0; i < 7; i++)
-            {
-                switch (i)
-                {
-                    case 2:
-                        if (!flags.HasAnyFlag(UnknownFlags.Unk6))
-                            continue;
-                        break;
-                    case 3:
-                        if (!flags.HasAnyFlag(UnknownFlags.Unk8))
-                            continue;
-                        break;
-                }
+            if (flags.HasFlag(UnknownFlags.Unk8))
+                tmp += ReadByte(ref packet, 5);
 
-                bytes[i] = packet.ReadByte();
-                if ((bytes[i] % 2) == 0) // even
-                    bytes[i] += 1;
-                else                     // odd
-                    bytes[i] -= 1;
-            }
+            if (flags.HasFlag(UnknownFlags.Unk2)) // Flag?
+                tmp += ReadByte(ref packet, 0);
 
-            var guid = new Guid((bytes[5] << 56) + (bytes[6] << 48) + (bytes[0] << 40) + (bytes[4] << 32) + (bytes[2] << 8) + bytes[1]);
+            if (flags.HasFlag(UnknownFlags.Unk3)) // Flag?
+                tmp += ReadByte(ref packet, 1);
+
+            if (flags.HasFlag(UnknownFlags.Unk6)) // Flag?
+                ReadByte(ref packet, 3);
+
+            if (flags.HasFlag(UnknownFlags.Unk1))
+                tmp += ReadByte(ref packet, 4);
+
+            if (flags.HasFlag(UnknownFlags.Unk7)) // Flag?
+                tmp += ReadByte(ref packet, 7);
+
+            if (!flags.HasFlag(UnknownFlags.Unk4)) // Flag?
+                tmp += ReadByte(ref packet, 6);
+
+            var guid = new Guid(tmp);
             packet.Writer.WriteLine("GUID: " + guid);
 
             npcVendor.VendorItems = new List<VendorItem>((int)itemCount);
