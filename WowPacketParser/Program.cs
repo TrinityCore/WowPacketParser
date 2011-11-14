@@ -149,7 +149,7 @@ namespace WowPacketParser
                     if (packets.Count <= 0)
                     {
                         Console.WriteLine("Packet count is 0");
-                        return;
+                        continue;
                     }
 
                     if (dumpFormat == SniffType.Bin || dumpFormat == SniffType.Pkt)

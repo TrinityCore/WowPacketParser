@@ -107,15 +107,15 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < itemCount; i++)
             {
                 packet.ReadInt32("Unk Int32", i);
-                var position = packet.ReadInt32("Item Position", i);
-                var itemId = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
+                packet.ReadInt32("Item Position", i);
+                packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
                 packet.ReadInt32("Unk Int32 2", i);
-                var dispid = packet.ReadInt32("Display ID", i);
-                var maxCount = packet.ReadInt32("Max Count", i);
-                var buyCount = packet.ReadInt32("Buy Count", i);
-                var extendedCost = packet.ReadInt32("Extended Cost", i);
-                var maxDura = packet.ReadInt32("Max Durability", i);
-                var price = packet.ReadInt32("Price", i);
+                packet.ReadInt32("Display ID", i);
+                packet.ReadInt32("Max Count", i);
+                packet.ReadInt32("Buy Count", i);
+                packet.ReadInt32("Extended Cost", i);
+                packet.ReadInt32("Max Durability", i);
+                packet.ReadInt32("Price", i);
             }
         }
 
@@ -128,20 +128,13 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < itemCount; i++)
             {
-                var position = packet.ReadInt32("Item Position", i);
-
+                packet.ReadInt32("Item Position", i);
                 var itemId = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
-                
-                var dispid = packet.ReadInt32("Display ID", i);
-
+                packet.ReadInt32("Display ID", i);
                 var maxCount = packet.ReadInt32("Max Count", i);
-
-                var price = packet.ReadInt32("Price", i);
-
-                var maxDura = packet.ReadInt32("Max Durability", i);
-
-                var buyCount = packet.ReadInt32("Buy Count", i);
-
+                packet.ReadInt32("Price", i);
+                packet.ReadInt32("Max Durability", i);
+                packet.ReadInt32("Buy Count", i);
                 var extendedCost = packet.ReadInt32("Extended Cost", i);
 
                 SQLStore.WriteData(SQLStore.VendorItems.GetCommand(guid.GetEntry(), itemId, maxCount,

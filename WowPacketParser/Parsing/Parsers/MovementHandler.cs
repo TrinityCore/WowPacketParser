@@ -648,7 +648,7 @@ namespace WowPacketParser.Parsing.Parsers
             while (pkt.CanRead())
             {
                 var size = pkt.ReadByte();
-                var oldPos = pkt.GetLength();
+                pkt.GetLength();
                 var opc = pkt.ReadInt16();
 
                 size -= 2; // TODO: Should not be needed! Is here because size is by some reason always 2 bits too high
