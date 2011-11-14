@@ -1,6 +1,6 @@
 namespace WowPacketParser.Enums
 {
-    public enum LfgState
+    public enum LfgProposalState
     {
         Initiating = 0,
         Failed = 1,
