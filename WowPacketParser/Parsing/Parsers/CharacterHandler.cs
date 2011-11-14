@@ -172,9 +172,9 @@ namespace WowPacketParser.Parsing.Parsers
                 }
 
                 bool all = true;
-                foreach (StartInfo item in StartInfos)
+                foreach (StartInfo info in StartInfos)
                 {
-                    if (item.Race == race || item.Class == clss)
+                    if (info.Race == race || info.Class == clss)
                     {
                         all = false;
                         break;
@@ -184,8 +184,6 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     var startInfo = new StartInfo
                                         {
-                                            Race = race,
-                                            Class = clss,
                                             StartPos = new StartPos
                                                            {
                                                                Map = mapId,

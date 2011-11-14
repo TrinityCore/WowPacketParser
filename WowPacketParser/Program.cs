@@ -182,6 +182,7 @@ namespace WowPacketParser
                         else
                             packets.AsParallel().SetCulture().WithDegreeOfParallelism(threads).ForAll(Handler.Parse);
 
+                        Console.WriteLine("Writing data to file...");
                         SQLStore.WriteToFile();
                         Handler.WriteToFile(packets, outLogFileName, dumpFormat == SniffType.None);
 

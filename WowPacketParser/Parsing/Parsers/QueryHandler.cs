@@ -169,8 +169,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]
         public static void HandleNpcTextUpdate(Packet packet)
         {
-            var entry = packet.ReadInt32();
-            packet.Writer.WriteLine("Entry: " + entry);
+            var entry = packet.ReadInt32("Entry");
 
             var prob = new float[8];
             var text1 = new string[8];
@@ -180,27 +179,21 @@ namespace WowPacketParser.Parsing.Parsers
             var emEmote = new int[8][];
             for (var i = 0; i < 8; i++)
             {
-                prob[i] = packet.ReadSingle();
-                packet.Writer.WriteLine("Probability " + i + ": " + prob[i]);
+                prob[i] = packet.ReadSingle("Probability", i);
 
-                text1[i] = packet.ReadCString();
-                packet.Writer.WriteLine("Text 1 " + i + ": " + text1[i]);
+                text1[i] = packet.ReadCString("Text 1", i);
 
-                text2[i] = packet.ReadCString();
-                packet.Writer.WriteLine("Text 2 " + i + ": " + text2[i]);
+                text2[i] = packet.ReadCString("Text 2", i);
 
-                lang[i] = (Language)packet.ReadInt32();
-                packet.Writer.WriteLine("Language " + i + ": " + lang[i]);
+                lang[i] = packet.ReadEnum<Language>("Language", TypeCode.Int32, i);
 
                 emDelay[i] = new int[3];
                 emEmote[i] = new int[3];
                 for (var j = 0; j < 3; j++)
                 {
-                    emDelay[i][j] = packet.ReadInt32();
-                    packet.Writer.WriteLine("Emote Delay " + j + ": " + emDelay[i][j]);
+                    emDelay[i][j] = packet.ReadInt32("Emote Delay", i, j);
 
-                    emEmote[i][j] = packet.ReadInt32();
-                    packet.Writer.WriteLine("Emote ID " + j + ": " + emEmote[i][j]);
+                    emEmote[i][j] = packet.ReadInt32("Emote ID", i, j);
                 }
             }
 

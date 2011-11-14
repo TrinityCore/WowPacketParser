@@ -28,10 +28,10 @@ namespace WowPacketParser.Store
             new ConcurrentDictionary<uint, UnitTemplate>();
 
         // Vendor & trainer
-        public static ConcurrentDictionary<uint, TrainerSpell> TrainerSpells =
-            new ConcurrentDictionary<uint, TrainerSpell>();
-        public static ConcurrentDictionary<uint, VendorItem> VendorItems =
-            new ConcurrentDictionary<uint, VendorItem>();
+        public static ConcurrentDictionary<uint, NpcTrainer> NpcTrainers =
+            new ConcurrentDictionary<uint, NpcTrainer>();
+        public static ConcurrentDictionary<uint, NpcVendor> NpcVendors =
+            new ConcurrentDictionary<uint, NpcVendor>();
 
         // Page & npc text
         public static ConcurrentDictionary<uint, PageText> PageTexts =

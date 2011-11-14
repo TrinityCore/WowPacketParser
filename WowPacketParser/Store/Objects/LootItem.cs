@@ -1,0 +1,13 @@
+﻿using WowPacketParser.Enums;
+
+namespace WowPacketParser.Store.Objects
+{
+    public class LootItem
+    {
+        public uint ItemId;
+
+        public uint Count;
+
+        public LootSlotType SlotType;
+    }
+}

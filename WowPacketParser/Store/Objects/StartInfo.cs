@@ -5,9 +5,9 @@ namespace WowPacketParser.Store.Objects
 {
     public sealed class StartInfo
     {
-        public Race Race;
+        public Race Race; // TODO Remove
 
-        public Class Class;
+        public Class Class; // TODO Remove
 
         public StartPos StartPos;
 

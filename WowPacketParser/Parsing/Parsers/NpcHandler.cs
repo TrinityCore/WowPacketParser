@@ -79,34 +79,25 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.ReadGuid("GUID");
 
-            var itemCount = packet.ReadByte();
-            packet.Writer.WriteLine("Item Count: " + itemCount);
+            var itemCount = packet.ReadByte("Item Count");
 
             for (var i = 0; i < itemCount; i++)
             {
-                var position = packet.ReadInt32();
-                packet.Writer.WriteLine("Item Position " + position + ": " + position);
+                var position = packet.ReadInt32("Item Position", i);
 
-                var itemId = packet.ReadInt32();
-                packet.Writer.WriteLine("Item ID " + i + ": " + itemId);
+                var itemId = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
+                
+                var dispid = packet.ReadInt32("Display ID", i);
 
-                var dispid = packet.ReadInt32();
-                packet.Writer.WriteLine("Display ID " + i + ": " + dispid);
+                var maxCount = packet.ReadInt32("Max Count", i);
 
-                var maxCount = packet.ReadInt32();
-                packet.Writer.WriteLine("Max Count " + i + ": " + maxCount);
+                var price = packet.ReadInt32("Price", i);
 
-                var price = packet.ReadInt32();
-                packet.Writer.WriteLine("Price " + i + ": " + price);
+                var maxDura = packet.ReadInt32("Max Durability", i);
 
-                var maxDura = packet.ReadInt32();
-                packet.Writer.WriteLine("Max Durability " + i + ": " + maxDura);
+                var buyCount = packet.ReadInt32("Buy Count", i);
 
-                var buyCount = packet.ReadInt32();
-                packet.Writer.WriteLine("Buy Count " + i + ": " + buyCount);
-
-                var extendedCost = packet.ReadInt32();
-                packet.Writer.WriteLine("Extended Cost " + i + ": " + extendedCost);
+                var extendedCost = packet.ReadInt32("Extended Cost", i);
 
                 SQLStore.WriteData(SQLStore.VendorItems.GetCommand(guid.GetEntry(), itemId, maxCount,
                     extendedCost));
