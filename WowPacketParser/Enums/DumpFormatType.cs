@@ -6,7 +6,6 @@
         Text,
         Bin,
         Pkt,
-        SQLite,
         TextHeader,     // Dump only packet headers
         SummaryHeader   // Dump only header of first packet found of same type (Opcode + Direction)
     }
