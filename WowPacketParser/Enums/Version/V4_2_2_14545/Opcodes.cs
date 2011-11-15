@@ -103,6 +103,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_MAIL_TAKE_MONEY, 0x4CD6},
             {Opcode.CMSG_MEETINGSTONE_INFO, 0xCA5B},
             {Opcode.CMSG_NAME_QUERY, 0x586A},
+            {Opcode.CMSG_MESSAGECHAT_ADDON, 0x24D9}, // Not confirmed
             {Opcode.CMSG_NEXT_CINEMATIC_CAMERA, 0x8E63},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x5C63},
             {Opcode.CMSG_OFFER_PETITION, 0xC8DE},
