@@ -345,6 +345,9 @@ namespace WowPacketParser.Parsing.Parsers
             var counter = packet.ReadUInt32("List count");
             packet.ReadUInt32("Online count");
 
+            if (counter == 0)
+                return;
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                 packet.ReadUInt32("Unk int32");
 

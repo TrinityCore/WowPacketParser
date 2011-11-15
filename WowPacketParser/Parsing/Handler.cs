@@ -57,11 +57,8 @@ namespace WowPacketParser.Parsing
         private static readonly Dictionary<int, Action<Packet>> Handlers =
             new Dictionary<int, Action<Packet>>();
 
-        public static void WriteToFile(List<Packet> packets, string file, bool noDump)
+        public static void WriteToFile(List<Packet> packets, string file)
         {
-            if (noDump)
-                return;
-
             File.Delete(file);
             var writer = new StreamWriter(file, true);
 
@@ -73,13 +70,19 @@ namespace WowPacketParser.Parsing
             writer = null;
         }
 
-        public static void Parse(Packet packet)
+        public static void Parse(Packet packet, bool headerOnly = false)
         {
             var opcode = packet.Opcode;
 
             packet.Writer.WriteLine("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}",
                 packet.Direction, Opcodes.GetOpcodeName(opcode), opcode.ToString("X4"),
                 packet.GetLength(), packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"), packet.Number);
+
+            if (headerOnly)
+            {
+                Statistics.PacketsSuccessfullyParsed++;
+                return;
+            }
 
             Action<Packet> handler;
             if (Handlers.TryGetValue(opcode, out handler))

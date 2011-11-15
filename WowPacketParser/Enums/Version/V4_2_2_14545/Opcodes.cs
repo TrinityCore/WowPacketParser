@@ -103,6 +103,13 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_MAIL_TAKE_MONEY, 0x4CD6},
             {Opcode.CMSG_MEETINGSTONE_INFO, 0xCA5B},
             {Opcode.CMSG_NAME_QUERY, 0x586A},
+            {Opcode.CMSG_MESSAGECHAT_ADDON, 0x24D9},
+            {Opcode.CMSG_MESSAGECHAT_WHISPER, 0x70D9},
+            {Opcode.CMSG_MESSAGECHAT_GUILD, 0x60C1},
+            {Opcode.CMSG_MESSAGECHAT_EMOTE, 0x6449},
+            {Opcode.CMSG_MESSAGECHAT_SAY, 0x2459},
+            {Opcode.CMSG_MESSAGECHAT_CHANNEL, 0x7459},
+            {Opcode.CMSG_MESSAGECHAT_YELL, 0x70C1},
             {Opcode.CMSG_NEXT_CINEMATIC_CAMERA, 0x8E63},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x5C63},
             {Opcode.CMSG_OFFER_PETITION, 0xC8DE},
@@ -205,6 +212,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_FISH_NOT_HOOKED, 0x18C3},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0xCCF7},
             {Opcode.SMSG_GMTICKET_SYSTEMSTATUS, 0x9C7E},
+            {Opcode.SMSG_GM_MESSAGECHAT, 0x8E5E}, // Not confirmed
             {Opcode.SMSG_GODMODE, 0xDEEE},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0xCCEB},
             {Opcode.SMSG_GUILD_BANK_LIST, 0x5EFB},
@@ -251,6 +259,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x1A46},
             {Opcode.SMSG_UPDATE_OBJECT, 0x1EE7},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 0x5E53},
+            {Opcode.SMSG_WHO, 0x4C7F}
         };
     }
 }
