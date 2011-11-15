@@ -212,21 +212,48 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
         public static void HandleNpcGossip(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            packet.ReadUInt32("Menu id");
-            packet.ReadUInt32("Text id");
+            var guid = packet.ReadGuid("GUID");
+            var menuid = packet.ReadUInt32("Menu id");
+            var textid = packet.ReadUInt32("Text id");
 
             var count = packet.ReadUInt32("Amount of Options");
 
+            Gossip gossip = new Gossip
+            {
+                GossipOptions = new List<GossipOption>(),
+                NpcTextIds = new List<uint>()
+            };
+            
+            gossip = Stuffing.Gossips.GetOrAdd(guid.GetEntry(), gossip);
+            
+            gossip.NpcTextIds.Add(textid);
+
             for (var i = 0; i < count; i++)
             {
-                packet.ReadUInt32("Index", i);
-                packet.ReadByte("Icon", i);
-                packet.ReadBoolean("Box", i);
-                packet.ReadUInt32("Required money", i);
-                packet.ReadCString("Text", i);
-                packet.ReadCString("Box Text", i);
+                var index = packet.ReadUInt32("Index", i);
+                var icon = packet.ReadByte("Icon", i);
+                var box = packet.ReadBoolean("Box", i);
+                var reqmoney = packet.ReadUInt32("Required money", i);
+                var text = packet.ReadCString("Text", i);
+                var boxtext = packet.ReadCString("Box Text", i);
+                GossipOption opt = new GossipOption
+                {
+                    Box = box,
+                    RequiredMoney = reqmoney,
+                    Index = index,
+                    OptionIcon = icon,
+                    OptionText = text,
+                    BoxText = boxtext
+                };
+                gossip.GossipOptions.Add(opt);
             }
+
+            Stuffing.Gossips.AddOrUpdate(guid.GetEntry(), gossip, (a,b) => 
+            {
+                b.GossipOptions = gossip.GossipOptions;
+                b.NpcTextIds = gossip.NpcTextIds;
+                return b;
+            });
 
             var questgossips = packet.ReadUInt32("Amount of Quest gossips");
             for (var i = 0; i < questgossips; i++)

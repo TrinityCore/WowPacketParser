@@ -43,6 +43,10 @@ namespace WowPacketParser.Store
         public static ConcurrentDictionary<uint, Loot> Loots =
             new ConcurrentDictionary<uint, Loot>();
 
+        // Quests
+        public static ConcurrentDictionary<uint, QuestTemplate> Quests =
+            new ConcurrentDictionary<uint, QuestTemplate>();
+
         // Gossips
         public static ConcurrentDictionary<uint, Gossip> Gossips =
             new ConcurrentDictionary<uint, Gossip>();
