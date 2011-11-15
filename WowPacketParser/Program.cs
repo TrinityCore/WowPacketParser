@@ -24,7 +24,7 @@ namespace WowPacketParser
             string[] filters = null;
             string[] ignoreFilters = null;
             bool sqlOutput = false;
-            SniffType dumpFormat = SniffType.Text;
+            DumpFormatType dumpFormat = DumpFormatType.Text;
             int packetsToRead = 0; // 0 -> All packets
             int packetNumberLow = 0; // 0 -> No low limit
             int packetNumberHigh = 0; // 0 -> No high limit
@@ -49,7 +49,7 @@ namespace WowPacketParser
                     ignoreFilters = filtersString.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
                 sqlOutput = Settings.GetBoolean("SQLOutput");
-                dumpFormat = (SniffType)Settings.GetInt32("DumpFormat");
+                dumpFormat = (DumpFormatType)Settings.GetInt32("DumpFormat");
                 packetsToRead = Settings.GetInt32("PacketsNum");
                 prompt = Settings.GetBoolean("ShowEndPrompt");
                 threads = Settings.GetInt32("Threads");
@@ -64,7 +64,7 @@ namespace WowPacketParser
                 }
 
                 // Disable DB and DBCs when we don't need its data (dumping to a binary file)
-                if (dumpFormat == SniffType.Bin || dumpFormat == SniffType.Pkt)
+                if (dumpFormat == DumpFormatType.Bin || dumpFormat == DumpFormatType.Pkt)
                 {
                     DBCStore.Enabled = false;
                     SQLConnector.Enabled = false;
@@ -145,20 +145,21 @@ namespace WowPacketParser
 
                 try
                 {
-                    var packets = Reader.Read(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead);
+                    var packets = Reader.Read(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead, (dumpFormat == DumpFormatType.SummaryHeader));
                     if (packets.Count <= 0)
                     {
                         Console.WriteLine("Packet count is 0");
                         continue;
                     }
 
-                    if (dumpFormat == SniffType.Bin || dumpFormat == SniffType.Pkt)
+                    if (dumpFormat == DumpFormatType.Bin || dumpFormat == DumpFormatType.Pkt)
                     {
+                        SniffType format = dumpFormat == DumpFormatType.Bin ? SniffType.Bin : SniffType.Pkt;
                         var fileExtension = dumpFormat.ToString().ToLower();
                         Console.WriteLine("Copying {0} packets to .{1} format...", packets.Count, fileExtension);
 
                         var dumpFileName = Path.ChangeExtension(file, null) + "_excerpt." + fileExtension;
-                        var writer = new BinaryPacketWriter(dumpFormat, dumpFileName, Encoding.ASCII);
+                        var writer = new BinaryPacketWriter(format, dumpFileName, Encoding.ASCII);
                         writer.Write(packets);
                     }
                     else
@@ -177,14 +178,22 @@ namespace WowPacketParser
 
                         SQLStore.Initialize(outSqlFileName, sqlOutput);
 
+                        bool headersOnly = (dumpFormat == DumpFormatType.TextHeader || dumpFormat == DumpFormatType.SummaryHeader);
                         if (threads == 0) // Number of threads is automatically choosen by the Parallel library
-                            packets.AsParallel().SetCulture().ForAll(Handler.Parse);
+                            packets.AsParallel().SetCulture().ForAll(packet =>
+                            {
+                                Handler.Parse(packet, headersOnly);
+                            });
                         else
-                            packets.AsParallel().SetCulture().WithDegreeOfParallelism(threads).ForAll(Handler.Parse);
+                            packets.AsParallel().SetCulture().WithDegreeOfParallelism(threads).ForAll(packet =>
+                            {
+                                Handler.Parse(packet, headersOnly);
+                            });
 
                         Console.WriteLine("Writing data to file...");
                         SQLStore.WriteToFile();
-                        Handler.WriteToFile(packets, outLogFileName, dumpFormat == SniffType.None);
+                        if (dumpFormat != DumpFormatType.None)
+                            Handler.WriteToFile(packets, outLogFileName);
 
                         Statistics.EndTime = DateTime.Now;
 

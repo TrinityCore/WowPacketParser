@@ -9,7 +9,7 @@ namespace WowPacketParser.Loading
 {
     public static class Reader
     {
-        public static List<Packet> Read(string fileName, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead)
+        public static List<Packet> Read(string fileName, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead, bool summary)
         {
             var packets = new List<Packet>();
             var packetNum = 0;
@@ -55,6 +55,14 @@ namespace WowPacketParser.Loading
                 // check for ignore filters
                 if (add && ignoreFilters != null && ignoreFilters.Length > 0)
                     add = !opcodeName.MatchesFilters(ignoreFilters);
+
+                if (add && summary)
+                {
+                    add = packets.Find(delegate(Packet found)
+                    {
+                        return (found.Opcode == packet.Opcode && found.Direction == packet.Direction);
+                    }) == null;
+                }
 
                 if (add)
                 {

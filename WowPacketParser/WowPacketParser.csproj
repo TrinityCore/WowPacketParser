@@ -187,6 +187,7 @@
     <Compile Include="Enums\DamageType.cs" />
     <Compile Include="Enums\DifficultyChangeType.cs" />
     <Compile Include="Enums\Direction.cs" />
+    <Compile Include="Enums\DumpFormatType.cs" />
     <Compile Include="Enums\EquipmentSlotType.cs" />
     <Compile Include="Enums\EquipmentSetState.cs" />
     <Compile Include="Enums\EnvironmentDamageFlags.cs" />
