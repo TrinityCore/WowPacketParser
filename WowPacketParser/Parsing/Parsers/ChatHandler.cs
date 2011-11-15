@@ -165,6 +165,29 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Addon Name");
         }
 
+        [Parser(Opcode.CMSG_MESSAGECHAT_EMOTE)]
+        public static void HandleClientChatMessageEmote(Packet packet)
+        {
+            packet.ReadCString("Message");
+        }
+
+        [Parser(Opcode.CMSG_MESSAGECHAT_GUILD)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_YELL)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_SAY)]
+        public static void HandleClientChatMessageSay(Packet packet)
+        {
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            packet.ReadCString("Message");
+        }
+
+        [Parser(Opcode.CMSG_MESSAGECHAT_CHANNEL)]
+        public static void HandleClientChatMessageChannel(Packet packet)
+        {
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            packet.ReadCString("Message");
+            packet.ReadCString("Channel Name");
+        }
+
         [Parser(Opcode.SMSG_GM_MESSAGECHAT)] // Similar to SMSG_MESSAGECHAT
         public static void HandleGMMessageChat(Packet packet)
         {

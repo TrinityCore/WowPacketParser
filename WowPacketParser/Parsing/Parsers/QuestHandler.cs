@@ -540,6 +540,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk UInt32 3");
             packet.ReadUInt32("Unk UInt32 4");
             packet.ReadUInt32("Unk UInt32 5");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+            {
+                packet.ReadUInt32("Unk UInt32 6");
+                packet.ReadUInt32("Unk UInt32 7");
+            }
         }
 
         [Parser(Opcode.SMSG_QUESTGIVER_OFFER_REWARD)]
