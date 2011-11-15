@@ -104,6 +104,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_MEETINGSTONE_INFO, 0xCA5B},
             {Opcode.CMSG_NAME_QUERY, 0x586A},
             {Opcode.CMSG_MESSAGECHAT_ADDON, 0x24D9}, // Not confirmed
+            {Opcode.CMSG_MESSAGECHAT_WHISPER, 0x70D9},
             {Opcode.CMSG_NEXT_CINEMATIC_CAMERA, 0x8E63},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x5C63},
             {Opcode.CMSG_OFFER_PETITION, 0xC8DE},
@@ -205,6 +206,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_FISH_NOT_HOOKED, 0x18C3},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0xCCF7},
             {Opcode.SMSG_GMTICKET_SYSTEMSTATUS, 0x9C7E},
+            {Opcode.SMSG_GM_MESSAGECHAT, 0x8E5E}, // Not confirmed
             {Opcode.SMSG_GODMODE, 0xDEEE},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0xCCEB},
             {Opcode.SMSG_GUILD_BANK_LIST, 0x5EFB},
