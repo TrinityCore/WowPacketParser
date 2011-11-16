@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Concurrent;
 using WowPacketParser.Enums;
 using WowPacketParser.Store.Objects;
@@ -48,9 +49,8 @@ namespace WowPacketParser.Store
             new ConcurrentDictionary<uint, QuestTemplate>();
 
         // Gossips
-        public static ConcurrentDictionary<uint, Gossip> Gossips =
-            new ConcurrentDictionary<uint, Gossip>();
-
+        public static ConcurrentDictionary<uint, GossipMenu> Gossips =
+            new ConcurrentDictionary<uint, GossipMenu>();
 
         /* Key: Misc */
 

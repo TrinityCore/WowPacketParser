@@ -1,4 +1,6 @@
 using System;
+using System.Text;
+using System.Linq;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -218,8 +220,9 @@ namespace WowPacketParser.Parsing.Parsers
 
             var count = packet.ReadUInt32("Amount of Options");
 
-            Gossip gossip = new Gossip
+            GossipMenu gossip = new GossipMenu
             {
+                MenuId = menuid,
                 GossipOptions = new List<GossipOption>(),
                 NpcTextIds = new List<uint>()
             };
@@ -267,7 +270,6 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("Title", i);
             }
         }
-
 
         [Parser(Opcode.SMSG_THREAT_UPDATE)]
         [Parser(Opcode.SMSG_HIGHEST_THREAT_UPDATE)]
