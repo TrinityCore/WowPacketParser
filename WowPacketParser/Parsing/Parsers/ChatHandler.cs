@@ -191,15 +191,15 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GM_MESSAGECHAT)] // Similar to SMSG_MESSAGECHAT
         public static void HandleGMMessageChat(Packet packet)
         {
-            var type = packet.ReadEnum<ChatMessageType>("Type", TypeCode.Byte);
-            var language = packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            packet.ReadEnum<ChatMessageType>("Type", TypeCode.Byte);
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
             packet.ReadGuid("GUID 1");
             packet.ReadInt32("Constant time");
             packet.ReadInt32("GM Name Length");
-            var s1 = packet.ReadCString("GM Name");
+            packet.ReadCString("GM Name");
             packet.ReadGuid("GUID 2");
             packet.ReadInt32("Message Length");
-            var s2 = packet.ReadCString("Message");
+            packet.ReadCString("Message");
             packet.ReadEnum<ChatTag>("Chat Tag", TypeCode.Byte);
         }
     }

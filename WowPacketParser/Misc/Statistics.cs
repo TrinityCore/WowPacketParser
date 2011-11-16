@@ -19,18 +19,18 @@ namespace WowPacketParser.Misc
             return EndTime.Subtract(StartTime);
         }
 
-        public static string Stats()
+        public static string Stats(string fileName)
         {
             var res = new StringBuilder();
             var span = TimeToParse();
 
-            res.AppendFormat("Finished parsing in {0} Minutes, {1} Seconds and {2} Milliseconds.",
-                span.Minutes, span.Seconds, span.Milliseconds);
+            res.AppendFormat("{0}: Finished parsing in {1} Minutes, {2} Seconds and {3} Milliseconds.",
+                fileName, span.Minutes, span.Seconds, span.Milliseconds);
 
             res.AppendLine();
 
-            res.AppendFormat("Parsed {0:F1}% packets successfully, {1:F1}% with errors and skipped {2:F1}%.",
-                (double)PacketsSuccessfullyParsed / Total * 100, (double)PacketsParsedWithErrors / Total * 100, (double)PacketsNotParsed / Total * 100);
+            res.AppendFormat("{0}: Parsed {1:F1}% packets successfully, {2:F1}% with errors and skipped {3:F1}%.",
+                fileName, (double)PacketsSuccessfullyParsed / Total * 100, (double)PacketsParsedWithErrors / Total * 100, (double)PacketsNotParsed / Total * 100);
 
             return res.ToString();
         }

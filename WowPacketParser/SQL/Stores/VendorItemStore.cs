@@ -1,5 +1,3 @@
-
-
 namespace WowPacketParser.SQL.Stores
 {
     public sealed class VendorItemStore
