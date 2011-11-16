@@ -140,7 +140,7 @@ namespace WowPacketParser.Parsing.Parsers
             var error = packet.ReadEnum<MailErrorType>("Mail Error", TypeCode.UInt32);
             if (error == MailErrorType.Equip)
                 packet.ReadUInt32("Equip Error");
-            else if (action == MailActionType.ItemTaken)
+            else if (action == MailActionType.AttachmentExpired)
             {
                 packet.ReadUInt32("Item Low GUID");
                 packet.ReadUInt32("Item count");

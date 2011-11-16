@@ -195,11 +195,13 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.MSG_SET_RAID_DIFFICULTY, 0x1A5A},
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x98EB},
             {Opcode.SMSG_ACTIVATETAXIREPLY, 0x8E4F},
+            {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x5EE2},
             {Opcode.SMSG_ADDON_INFO, 0x9863},
             {Opcode.SMSG_ARENA_TEAM_CHANGE_FAILED_QUEUED, 0x4A4E},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x1181},
             {Opcode.SMSG_AUTH_RESPONSE, 0x8867},
             {Opcode.SMSG_CHANNEL_NOTIFY, 0x9C7F},
+            {Opcode.SMSG_CHAR_ENUM, 0xA05C},
             {Opcode.SMSG_CHAT_WRONG_FACTION, 0xE66},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x88F2},
             {Opcode.SMSG_COMPRESSED_UPDATE_OBJECT, 0x1CC3},
@@ -258,6 +260,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x1A46},
             {Opcode.SMSG_UPDATE_OBJECT, 0x1EE7},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 0x5E53},
+            {Opcode.SMSG_WARDEN_DATA ,0x484F},
             {Opcode.SMSG_WHO, 0x4C7F}
         };
     }

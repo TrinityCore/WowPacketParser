@@ -93,10 +93,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 12, index);
 
-            var onTrasport = packet.ReadBit("OnTrasport", index);
+            var onTransport = packet.ReadBit("OnTransport", index);
             var hasInterpolatedMovement = false;
             var time3 = false;
-            if (onTrasport)
+            if (onTransport)
             {
                 hasInterpolatedMovement = packet.ReadBit("HasInterpolatedMovement", index);
                 time3 = packet.ReadBit("Time3", index);
@@ -112,7 +112,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var splineElevation = packet.ReadBit("SplineElevation", index);
 
-            packet.ReadBit("HasSplineData", index);
+            var splineData = packet.ReadBit("HasSplineData", index);
 
             packet.ResetBitReader(); // reset bitreader
 
@@ -123,7 +123,7 @@ namespace WowPacketParser.Parsing.Parsers
             info.Position = new Vector3(pos.X, pos.Y, pos.Z);
             info.Orientation = pos.O;
 
-            if (onTrasport)
+            if (onTransport)
             {
                 packet.ReadGuid("Transport GUID", index);
                 packet.ReadVector4("Transport Position", index);
