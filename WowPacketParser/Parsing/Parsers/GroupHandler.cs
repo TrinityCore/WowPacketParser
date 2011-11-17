@@ -239,5 +239,28 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Name");
             packet.ReadByte("Group");
         }
+
+        [Parser(Opcode.MSG_RAID_READY_CHECK)]
+        public static void HandleRaidReadyCheck(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+                packet.ReadBoolean("Ready");
+            else
+                packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.MSG_RAID_READY_CHECK_CONFIRM)]
+        public static void HandleRaidReadyCheckConfirm(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadBoolean("Ready");
+        }
+
+        [Parser(Opcode.SMSG_SERVER_MESSAGE)]
+        public static void HandleServerMessage(Packet packet)
+        {
+            packet.ReadUInt32("Unk UInt32");
+            packet.ReadCString("Message");
+        }
     }
 }
