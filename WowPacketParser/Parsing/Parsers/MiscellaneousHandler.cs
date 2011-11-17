@@ -24,6 +24,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.CMSG_GRANT_LEVEL)]
         [Parser(Opcode.CMSG_ACCEPT_LEVEL_GRANT)]
+        [Parser(Opcode.SMSG_PROPOSE_LEVEL_GRANT)]
         public static void HandleGrantLevel(Packet packet)
         {
             packet.ReadPackedGuid("GUID");
