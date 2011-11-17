@@ -131,7 +131,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
             packet.ReadSingle("Grade");
-            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Unk Byte"); // Type
         }
 
         [Parser(Opcode.SMSG_LEVELUP_INFO)]

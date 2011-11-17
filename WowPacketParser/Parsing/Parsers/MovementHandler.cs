@@ -139,13 +139,13 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (interPolatedTurning)
             {
-                packet.ReadInt32("Fall Time", index);
-                packet.ReadSingle("Jump Z Speed", index);
+                packet.ReadInt32("Time Fallen", index);
+                packet.ReadSingle("Fall Start Velocity", index);
                 if (jumping)
                 {
                     packet.ReadSingle("Jump Sin", index);
                     packet.ReadSingle("Jump Cos", index);
-                    packet.ReadSingle("Jump XY Speed", index);
+                    packet.ReadSingle("Jump Velocity", index);
 
                 }
             }
