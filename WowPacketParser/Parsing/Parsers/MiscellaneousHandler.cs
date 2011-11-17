@@ -15,6 +15,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BUY_BANK_SLOT)]
         [Parser(Opcode.CMSG_DEL_FRIEND)]
         [Parser(Opcode.CMSG_DEL_IGNORE)]
+        [Parser(Opcode.CMSG_DUEL_ACCEPTED)]
+        [Parser(Opcode.CMSG_DUEL_CANCELLED)]
         public static void HandleReadGuid(Packet packet)
         {
             packet.ReadGuid("GUID");
