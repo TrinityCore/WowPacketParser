@@ -114,6 +114,26 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk");
         }
 
+        [Parser(Opcode.SMSG_INSTANCE_RESET)]
+        public static void HandleUpdateInstanceReset(Packet packet)
+        {
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+        }
+
+        [Parser(Opcode.CMSG_INSTANCE_LOCK_RESPONSE)]
+        public static void HandleInstanceLockResponse(Packet packet)
+        {
+            packet.ReadBoolean("Accept");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_LOCK_WARNING_QUERY)]
+        public static void HandleInstanceLockWarningQuery(Packet packet)
+        {
+            packet.ReadInt32("Time");
+            packet.ReadInt32("Encounter Mask");
+            packet.ReadByte("Unk");
+        }
+
         [Parser(Opcode.SMSG_RAID_INSTANCE_INFO)]
         public static void HandleRaidInstanceInfo(Packet packet)
         {

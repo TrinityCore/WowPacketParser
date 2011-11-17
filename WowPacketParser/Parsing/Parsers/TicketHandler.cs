@@ -27,9 +27,11 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_GMTICKET_GETTICKET)]
+        [Parser(Opcode.SMSG_GMTICKET_CREATE)]
+        [Parser(Opcode.SMSG_GMTICKET_UPDATETEXT)]
         public static void HandleGetTicket(Packet packet)
         {
-            packet.ReadInt32("Unknown");
+            packet.ReadInt32("Unk UInt32");
         }
 
         [Parser(Opcode.SMSG_GMRESPONSE_STATUS_UPDATE)]

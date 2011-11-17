@@ -540,6 +540,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_CLEAR_TARGET)]
+        [Parser(Opcode.CMSG_GET_MIRRORIMAGE_DATA)]
         public static void HandleClearTarget(Packet packet)
         {
             packet.ReadGuid("GUID");
