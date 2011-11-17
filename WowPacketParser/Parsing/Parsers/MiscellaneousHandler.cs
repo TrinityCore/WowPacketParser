@@ -493,6 +493,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ATTACKSWING_NOTINRANGE)]
         [Parser(Opcode.SMSG_ATTACKSWING_BADFACING)]
         [Parser(Opcode.SMSG_ATTACKSWING_DEADTARGET)]
+        [Parser(Opcode.SMSG_GROUP_DESTROYED)]
+        [Parser(Opcode.SMSG_GROUP_UNINVITE)]
+        [Parser(Opcode.CMSG_GROUP_DECLINE)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

@@ -143,8 +143,16 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Vehicle Seat");
         }
 
-        [Parser(Opcode.SMSG_GROUP_SET_LEADER)]
+
+        [Parser(Opcode.CMSG_GROUP_SET_LEADER)]
         public static void HandleGroupSetLeader(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.SMSG_GROUP_SET_LEADER)]
+        [Parser(Opcode.SMSG_GROUP_DECLINE)]
+        public static void HandleGroupDecline(Packet packet)
         {
             packet.ReadCString("Name");
         }
@@ -167,6 +175,13 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk Uint32", i);
 
             packet.ReadInt32("Unk Int32 2");
+        }
+
+        [Parser(Opcode.CMSG_GROUP_UNINVITE_GUID)]
+        public static void HandleGroupUninviteGuid(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadCString("Reason");
         }
 
         [Parser(Opcode.CMSG_GROUP_ACCEPT)]
@@ -201,6 +216,28 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Member");
             packet.ReadEnum<PartyResult>("Result", TypeCode.UInt32);
             packet.ReadUInt32("LFG Boot Cooldown");
+        }
+
+        [Parser(Opcode.SMSG_RAID_GROUP_ONLY)]
+        public static void HandleRaidGroupOnly(Packet packet)
+        {
+            packet.ReadInt32("Time left");
+            packet.ReadEnum<InstanceStatus>("Group Type Status?", TypeCode.Int32);
+        }
+
+        [Parser(Opcode.SMSG_REAL_GROUP_UPDATE)]
+        public static void HandleRealGroupUpdate(Packet packet)
+        {
+            packet.ReadByte("Unk Byte");
+            packet.ReadUInt32("Unk UInt32");
+            packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_GROUP_CHANGE_SUB_GROUP)]
+        public static void HandleGroupChangesubgroup(Packet packet)
+        {
+            packet.ReadCString("Name");
+            packet.ReadByte("Group");
         }
     }
 }
