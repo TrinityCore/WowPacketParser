@@ -7,6 +7,13 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class MiscellaneousParsers
     {
+        [Parser(Opcode.CMSG_GRANT_LEVEL)]
+        [Parser(Opcode.CMSG_ACCEPT_LEVEL_GRANT)]
+        public static void HandleActionButton(Packet packet)
+        {
+            packet.ReadPackedGuid("GUID");
+        }
+
         [Parser(Opcode.CMSG_SET_ACTION_BUTTON)]
         public static void HandleActionButton(Packet packet)
         {
