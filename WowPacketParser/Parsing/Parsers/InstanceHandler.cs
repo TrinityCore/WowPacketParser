@@ -6,6 +6,32 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class InstanceHandler
     {
+        [Parser(Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT)]
+        public static void HandleUpdateInstanceEncounterUnit(Packet packet)
+        {
+            var type = packet.ReadEnum<EncounterFrame>("Type", TypeCode.UInt32);
+            switch (type)
+            {
+                case EncounterFrame.Add:
+                case EncounterFrame.Remove:
+                case EncounterFrame.Unk2:
+                    packet.ReadPackedGuid("GUID");
+                    packet.ReadByte("Param 1");
+                    break;
+                case EncounterFrame.Unk3:
+                case EncounterFrame.Unk4:
+                case EncounterFrame.Unk6:
+                    packet.ReadByte("Param 1");
+                    packet.ReadByte("Param 2");
+                    break;
+                case EncounterFrame.Unk5:
+                    packet.ReadByte("Param 1");
+                    break;
+            }
+
+
+        }
+
         [Parser(Opcode.MSG_SET_DUNGEON_DIFFICULTY)]
         [Parser(Opcode.MSG_SET_RAID_DIFFICULTY)]
         public static void HandleSetDifficulty(Packet packet)

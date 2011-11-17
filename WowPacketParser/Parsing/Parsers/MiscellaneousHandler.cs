@@ -496,6 +496,22 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GROUP_DESTROYED)]
         [Parser(Opcode.SMSG_GROUP_UNINVITE)]
         [Parser(Opcode.CMSG_GROUP_DECLINE)]
+        [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
+        [Parser(Opcode.CMSG_CANCEL_AUTO_REPEAT_SPELL)]
+        [Parser(Opcode.CMSG_CANCEL_GROWTH_AURA)]
+        [Parser(Opcode.CMSG_CANCEL_MOUNT_AURA)]
+        [Parser(Opcode.CMSG_COMPLETE_CINEMATIC)]
+        [Parser(Opcode.CMSG_NEXT_CINEMATIC_CAMERA)]
+        [Parser(Opcode.CMSG_REQUEST_PET_INFO)]
+        [Parser(Opcode.CMSG_REQUEST_VEHICLE_EXIT)]
+        [Parser(Opcode.CMSG_RESET_INSTANCES)]
+        [Parser(Opcode.CMSG_SELF_RES)]
+        [Parser(Opcode.MSG_RAID_READY_CHECK_FINISHED)]
+        [Parser(Opcode.SMSG_ATTACKSWING_CANT_ATTACK)]
+        [Parser(Opcode.SMSG_CORPSE_NOT_IN_INSTANCE)]
+        [Parser(Opcode.SMSG_ENABLE_BARBER_SHOP)]
+        [Parser(Opcode.SMSG_FISH_NOT_HOOKED)]
+        [Parser(Opcode.SMSG_SUMMON_CANCEL)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

@@ -6,6 +6,12 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class ChatHandler
     {
+        [Parser(Opcode.SMSG_CHAT_NOT_IN_PARTY)]
+        public static void HandleChatNotInParty(Packet packet)
+        {
+            packet.ReadInt32("Unk UInt32");
+        }
+
         [Parser(Opcode.SMSG_DEFENSE_MESSAGE)]
         public static void HandleDefenseMessage(Packet packet)
         {
