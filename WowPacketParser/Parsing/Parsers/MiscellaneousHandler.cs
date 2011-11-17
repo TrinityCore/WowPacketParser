@@ -9,9 +9,41 @@ namespace WowPacketParser.Parsing.Parsers
     {
         [Parser(Opcode.CMSG_GRANT_LEVEL)]
         [Parser(Opcode.CMSG_ACCEPT_LEVEL_GRANT)]
-        public static void HandleActionButton(Packet packet)
+        [Parser(Opcode.CMSG_DEL_FRIEND)]
+        [Parser(Opcode.CMSG_DEL_IGNORE)]
+        public static void HandleGrantLevel(Packet packet)
         {
             packet.ReadPackedGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_ADD_FRIEND)]
+        public static void HandleAddFriend(Packet packet)
+        {
+            packet.ReadCString("Name");
+            packet.ReadCString("Note");
+        }
+
+        [Parser(Opcode.CMSG_ADD_IGNORE)]
+        public static void HandleAddIgnore(Packet packet)
+        {
+            packet.ReadCString("Name");
+        }
+
+        [Parser(Opcode.CMSG_SET_CONTACT_NOTES)]
+        public static void HandleSetContactNotes(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadCString("Name");
+        }
+
+        [Parser(Opcode.CMSG_BUG)]
+        public static void HandleBug(Packet packet)
+        {
+            packet.ReadUInt32("Suggestion");
+            packet.ReadUInt32("Content Lenght");
+            packet.ReadCString("Content");
+            packet.ReadUInt32("Text Lenght");
+            packet.ReadCString("Text");
         }
 
         [Parser(Opcode.CMSG_SET_ACTION_BUTTON)]
