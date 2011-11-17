@@ -14,10 +14,23 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Message");
         }
 
+        [Parser(Opcode.CMSG_CHAT_IGNORED)]
+        public static void HandleChatIgnored(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadByte("Unk Byte");
+        }
+
+        [Parser(Opcode.CMSG_EMOTE)]
+        public static void HandleEmoteClient(Packet packet)
+        {
+            packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
+        }
+
         [Parser(Opcode.SMSG_EMOTE)]
         public static void HandleEmote(Packet packet)
         {
-            packet.ReadInt32("Emote ID");
+            packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
             packet.ReadGuid("GUID");
         }
 
@@ -25,7 +38,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleTextEmote(Packet packet)
         {
             packet.ReadInt32("Text Emote ID");
-            packet.ReadInt32("Emote ID");
+            packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
             packet.ReadGuid("GUID");
         }
 
@@ -34,7 +47,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadInt32("Text Emote ID");
-            packet.ReadInt32("Emote ID");
+            packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
             packet.ReadInt32("Name length");
             packet.ReadCString("Name");
         }
