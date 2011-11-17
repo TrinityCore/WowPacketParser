@@ -113,10 +113,7 @@ namespace WowPacketParser.Misc
 
         private static void SetCulture(CultureInfo cultureInfo)
         {
-            if (Thread.CurrentThread.CurrentCulture != cultureInfo)
-            {
-                Thread.CurrentThread.CurrentCulture = cultureInfo;
-            }
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
         }
     }
 }

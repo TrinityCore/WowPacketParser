@@ -87,7 +87,7 @@ namespace WowPacketParser.Misc
             return name;
         }
 
-        public static string GetName(StoreNameType type, int entry)
+        public static string GetName(StoreNameType type, int entry, bool withEntry = true)
         {
             if (type != StoreNameType.Map && entry <= 0)
                 return "0"; // map can be 0
@@ -98,7 +98,14 @@ namespace WowPacketParser.Misc
                               : GetExistingDBCString(type, entry);
 
             if (!String.IsNullOrEmpty(name))
-                return entry + " (" + name + ")";
+            {
+                if (withEntry)
+                    return entry + " (" + name + ")";
+                return name;
+            }
+
+            if (!withEntry)
+                return "-Unknown-";
 
             return entry.ToString();
         }

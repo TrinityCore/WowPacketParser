@@ -395,9 +395,6 @@ namespace WowPacketParser.Parsing.Parsers
             if (counter == 0)
                 return;
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                packet.ReadUInt32("Unk int32");
-
             for (var i = 0; i < counter; ++i)
             {
                 packet.ReadCString("Name");

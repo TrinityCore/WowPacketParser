@@ -152,8 +152,6 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 returnText = packet.ReadCString("Return Text");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // Probably earlier
-                packet.ReadCString("Completed Text");
 
             var reqId = new KeyValuePair<int, bool>[4];
             var reqCnt = new int[4];

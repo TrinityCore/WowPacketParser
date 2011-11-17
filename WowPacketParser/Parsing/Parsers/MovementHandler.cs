@@ -159,29 +159,22 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MONSTER_MOVE_TRANSPORT)]
         public static void HandleMonsterMove(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            packet.Writer.WriteLine("GUID: " + guid);
+            packet.ReadPackedGuid("GUID");
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MONSTER_MOVE_TRANSPORT))
             {
-                var transguid = packet.ReadPackedGuid();
-                packet.Writer.WriteLine("Transport GUID: " + transguid);
+                packet.ReadPackedGuid("Transport GUID");
 
-                var transseat = packet.ReadByte();
-                packet.Writer.WriteLine("Transport Seat: " + transseat);
+                packet.ReadByte("Transport Seat");
             }
 
-            var unkByte = packet.ReadBoolean();
-            packet.Writer.WriteLine("Unk Boolean: " + unkByte); // Something to do with IsVehicleExitVoluntary ?
+            packet.ReadBoolean("Unk Boolean"); // Something to do with IsVehicleExitVoluntary ?
 
-            var pos = packet.ReadVector3();
-            packet.Writer.WriteLine("Position: " + pos);
+            var pos = packet.ReadVector3("Position");
 
-            var curTime = packet.ReadInt32();
-            packet.Writer.WriteLine("Move Ticks: " + curTime);
+            packet.ReadInt32("Move Ticks");
 
-            var type = (SplineType)packet.ReadByte();
-            packet.Writer.WriteLine("Spline Type: " + type);
+            var type = packet.ReadEnum<SplineType>("Spline Type", TypeCode.Byte);
 
             switch (type)
             {
@@ -204,44 +197,38 @@ namespace WowPacketParser.Parsing.Parsers
                     return;
             }
 
-            var flags = (SplineFlag)packet.ReadInt32();
-            packet.Writer.WriteLine("Spline Flags: " + flags);
+            var flags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32);
 
             if (flags.HasAnyFlag(SplineFlag.AnimationTier))
             {
-                var unkByte3 = (MovementAnimationState)packet.ReadByte();
-                packet.Writer.WriteLine("Animation State: " + unkByte3);
+                packet.ReadEnum<MovementAnimationState>("Animation State", TypeCode.Byte);
 
-                var unkInt1 = packet.ReadInt32();
-                packet.Writer.WriteLine("Unk Int32 1: " + unkInt1);
+                packet.ReadInt32("Unk Int32 1");
             }
 
-            var time = packet.ReadInt32();
-            packet.Writer.WriteLine("Move Time: " + time);
+            if (flags.HasAnyFlag(SplineFlag.Falling)) // Could be SplineFlag.UsePathSmoothing
+            {
+                packet.ReadInt32("Unknown");
+                packet.ReadInt16("Unknown");
+                packet.ReadInt16("Unknown");
+            }
+
+            packet.ReadInt32("Move Time");
 
             if (flags.HasAnyFlag(SplineFlag.Trajectory))
             {
-                var speedZ = packet.ReadSingle();
-                packet.Writer.WriteLine("Vertical Speed: " + speedZ);
+                packet.ReadSingle("Vertical Speed");
 
-                var unkInt2 = packet.ReadInt32();
-                packet.Writer.WriteLine("Unk Int32 2: " + unkInt2);
+                packet.ReadInt32("Unk Int32 2");
             }
 
-            var waypoints = packet.ReadInt32();
-            packet.Writer.WriteLine("Waypoints: " + waypoints);
+            var waypoints = packet.ReadInt32("Waypoints");
 
-            var newpos = packet.ReadVector3();
-            packet.Writer.WriteLine("Waypoint 0: " + newpos);
+            var newpos = packet.ReadVector3("Waypoint 0");
 
             if (flags.HasAnyFlag(SplineFlag.Flying) || flags.HasAnyFlag(SplineFlag.CatmullRom))
-            {
                 for (var i = 0; i < waypoints - 1; i++)
-                {
-                    var vec = packet.ReadVector3();
-                    packet.Writer.WriteLine("Waypoint " + (i + 1) + ": " + vec);
-                }
-            }
+                    packet.ReadVector3("Waypoint " + (i + 1));
             else
             {
                 var mid = new Vector3();
