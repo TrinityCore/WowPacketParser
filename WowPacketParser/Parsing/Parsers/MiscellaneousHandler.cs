@@ -7,13 +7,31 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class MiscellaneousParsers
     {
-        [Parser(Opcode.CMSG_GRANT_LEVEL)]
-        [Parser(Opcode.CMSG_ACCEPT_LEVEL_GRANT)]
+        [Parser(Opcode.SMSG_STOP_DANCE)]
+        [Parser(Opcode.SMSG_LEARNED_DANCE_MOVES)]
+        [Parser(Opcode.SMSG_INVALIDATE_PLAYER)]
+        [Parser(Opcode.CMSG_SET_SELECTION)]
+        [Parser(Opcode.CMSG_INSPECT)]
+        [Parser(Opcode.CMSG_BUY_BANK_SLOT)]
         [Parser(Opcode.CMSG_DEL_FRIEND)]
         [Parser(Opcode.CMSG_DEL_IGNORE)]
+        public static void HandleReadGuid(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_GRANT_LEVEL)]
+        [Parser(Opcode.CMSG_ACCEPT_LEVEL_GRANT)]
         public static void HandleGrantLevel(Packet packet)
         {
             packet.ReadPackedGuid("GUID");
+        }
+
+
+        [Parser(Opcode.SMSG_BUY_BANK_SLOT_RESULT)]
+        public static void HandleBuyBankSlotResult(Packet packet)
+        {
+            packet.ReadEnum<BankSlotResult>("Result", TypeCode.UInt32);
         }
 
         [Parser(Opcode.CMSG_ADD_FRIEND)]
@@ -295,13 +313,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Value");
         }
 
-        [Parser(Opcode.CMSG_SET_SELECTION)]
-        [Parser(Opcode.CMSG_INSPECT)]
-        public static void HandleSetSelection(Packet packet)
-        {
-            packet.ReadGuid("GUID");
-        }
-
         [Parser(Opcode.CMSG_SET_ACTIONBAR_TOGGLES)]
         public static void HandleSetActionBarToggles(Packet packet)
         {
@@ -349,14 +360,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk int32 2");
             packet.ReadInt32("Unk int32 3");
             packet.ReadInt32("Unk int32 4");
-        }
-
-        [Parser(Opcode.SMSG_STOP_DANCE)]
-        [Parser(Opcode.SMSG_LEARNED_DANCE_MOVES)]
-        [Parser(Opcode.SMSG_INVALIDATE_PLAYER)]
-        public static void HandleMiscDancePackets(Packet packet)
-        {
-            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.CMSG_WHO)]
