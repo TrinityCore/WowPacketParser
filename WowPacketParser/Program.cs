@@ -84,6 +84,10 @@ namespace WowPacketParser
                     Statistics.Reset();
                 }
             }
+            catch (TypeInitializationException tye)
+            {
+                Console.WriteLine(tye.InnerException.Message);
+            }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.GetType());

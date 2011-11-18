@@ -226,13 +226,11 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 MenuId = menuid,
                 GossipOptions = new List<GossipOption>(),
-                NpcTextIds = new List<uint>()
+                NpcTextId = textid
             };
-            
-            gossip = Stuffing.Gossips.GetOrAdd(guid.GetEntry(), gossip);
-            
-            gossip.NpcTextIds.Add(textid);
 
+            gossip = Stuffing.Gossips.GetOrAdd(Tuple.Create<uint,uint>(guid.GetEntry(),menuid), gossip);
+            
             for (var i = 0; i < count; i++)
             {
                 var index = packet.ReadUInt32("Index", i);
@@ -253,10 +251,10 @@ namespace WowPacketParser.Parsing.Parsers
                 gossip.GossipOptions.Add(opt);
             }
 
-            Stuffing.Gossips.AddOrUpdate(guid.GetEntry(), gossip, (a,b) => 
+            Stuffing.Gossips.AddOrUpdate(Tuple.Create<uint,uint>(guid.GetEntry(),menuid), gossip, (a,b) => 
             {
                 b.GossipOptions = gossip.GossipOptions;
-                b.NpcTextIds = gossip.NpcTextIds;
+                b.NpcTextId = gossip.NpcTextId;
                 return b;
             });
 

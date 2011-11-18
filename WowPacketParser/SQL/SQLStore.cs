@@ -1,4 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
+using System;
 using System.IO;
 using WowPacketParser.SQL.Stores;
 
@@ -30,6 +34,24 @@ namespace WowPacketParser.SQL
             Sqls.Add(sql);
         }
 
+        /// <summary>
+        /// Since this function must do a lookup to all of its elements, it needs to be written when all of them are already parsed/loaded into the ConcurrentDictionary
+        /// </summary>
+        public static void WriteGossipMenus()
+        {
+            foreach (KeyValuePair<Tuple<uint, uint>, GossipMenu> kvp in Stuffing.Gossips)
+            {
+                _file.WriteLine("DELETE FROM gossip_menu WHERE entry = {0} AND text_id = {1};", kvp.Key.Item2, kvp.Value.NpcTextId);
+                _file.WriteLine("INSERT INTO gossip_menu(entry,text_id) VAlUES ({0},{1});",kvp.Key.Item2,kvp.Value.NpcTextId);
+
+                foreach (GossipOption go in kvp.Value.GossipOptions)
+                {
+                    _file.WriteLine("DELETE FROM gossip_menu_option WHERE menu_id = {0} AND id = {1};", kvp.Key.Item2, go.Index);
+                    _file.WriteLine("INSERT INTO gossip_menu_option(menu_id, id, option_icon, option_text, option_id, npc_option_npcflag, action_menu_id, box_coded, box_money, box_text) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}');", kvp.Key.Item2, go.Index, go.OptionIcon, go.OptionText, 1, 1, (Stuffing.Gossips.Count(k => k.Key.Item1 == kvp.Key.Item1 && k.Key.Item2 == kvp.Key.Item2 + 1) == 1 && kvp.Value.GossipOptions.Count == 1) ? Stuffing.Gossips.Where(k => k.Key.Item1 == kvp.Key.Item1 && k.Key.Item2 == kvp.Key.Item2 + 1).First().Key.Item2 : 0, go.Box ? 1 : 0, go.RequiredMoney, go.BoxText);
+                }
+            }
+        }
+
         public static void WriteToFile()
         {
             if (_file == null)
@@ -39,6 +61,8 @@ namespace WowPacketParser.SQL
 
             foreach (var sql in Sqls)
                 _file.WriteLine(sql);
+            
+            WriteGossipMenus();
 
             Flush();
         }

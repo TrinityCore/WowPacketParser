@@ -276,7 +276,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x1A46},
             {Opcode.SMSG_UPDATE_OBJECT, 0x1EE7},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 0x5E53},
-            {Opcode.SMSG_WARDEN_DATA ,0x484F},
             {Opcode.SMSG_WEATHER, 0x4ECE},
             {Opcode.SMSG_WHO, 0x4C7F}
         };

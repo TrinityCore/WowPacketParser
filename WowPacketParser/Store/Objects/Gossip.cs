@@ -9,7 +9,7 @@ namespace WowPacketParser.Store.Objects
     {
         public uint MenuId;
 
-        public List<uint> NpcTextIds; // should this be List<NpcText> ?
+        public uint NpcTextId;
 
         public List<GossipOption> GossipOptions;
     }

@@ -48,9 +48,9 @@ namespace WowPacketParser.Store
         public static ConcurrentDictionary<uint, QuestTemplate> Quests =
             new ConcurrentDictionary<uint, QuestTemplate>();
 
-        // Gossips
-        public static ConcurrentDictionary<uint, GossipMenu> Gossips =
-            new ConcurrentDictionary<uint, GossipMenu>();
+        /* Key: npc entry, menuid */
+        public static ConcurrentDictionary<Tuple<uint,uint>, GossipMenu> Gossips =
+            new ConcurrentDictionary<Tuple<uint, uint>, GossipMenu>();
 
         /* Key: Misc */
 
