@@ -299,7 +299,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLearnedSpell(Packet packet)
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
-
             packet.ReadInt16("Unk Int16");
         }
 
@@ -307,11 +306,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleUpdateProjectilePosition(Packet packet)
         {
             packet.ReadGuid("GUID");
-
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
-
             packet.ReadByte("Cast ID");
-
             packet.ReadVector3("Position");
         }
 
@@ -319,9 +315,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSetProjectilePosition(Packet packet)
         {
             packet.ReadGuid("GUID");
-
             packet.ReadByte("Cast ID");
-
             packet.ReadVector3("Position");
         }
 
@@ -329,16 +323,11 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleAuraCastLog(Packet packet)
         {
             packet.ReadPackedGuid("Target GUID");
-
             packet.ReadPackedGuid("Caster GUID");
-
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
-
             packet.ReadUInt32("Count");
 
             var aura = packet.ReadEnum<AuraType>("Aura Type", TypeCode.UInt32);
-            
-
             switch (aura)
             {
                 case AuraType.PeriodicDamage:
@@ -350,9 +339,7 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadUInt32("Over damage");
 
                     packet.ReadUInt32("Spell Proto");
-
                     packet.ReadUInt32("Absorb");
-
                     packet.ReadUInt32("Resist");
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
@@ -368,7 +355,7 @@ namespace WowPacketParser.Parsing.Parsers
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                         packet.ReadUInt32("Over damage");
 
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_5_12213)) // no idea when this was added exactly
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685)) // no idea when this was added exactly
                         packet.ReadUInt32("Absorb");
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
@@ -388,11 +375,6 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadEnum<PowerType>("Power type", TypeCode.Int32);
                     packet.ReadUInt32("Amount");
                     packet.ReadSingle("Gain multiplier");
-                    break;
-                }
-                default:
-                {
-                    packet.Writer.WriteLine("Aura type not handled.");
                     break;
                 }
             }
@@ -558,6 +540,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_CLEAR_TARGET)]
+        [Parser(Opcode.CMSG_GET_MIRRORIMAGE_DATA)]
         public static void HandleClearTarget(Packet packet)
         {
             packet.ReadGuid("GUID");

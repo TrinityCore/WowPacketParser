@@ -134,8 +134,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Billing Time Remaining");
             packet.ReadEnum<BillingFlag>("Billing Flags", TypeCode.Byte);
             packet.ReadInt32("Billing Time Rested");
-            packet.ReadEnum<ClientType>("Server Expansion", TypeCode.Byte);
 
+            // Unknown, these two show the same as expansion payed for.
+            // Eg. If account only has payed for Wotlk expansion it will show 2 for both.
+            packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_3_13329))
                 packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
         }

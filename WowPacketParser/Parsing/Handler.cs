@@ -80,7 +80,10 @@ namespace WowPacketParser.Parsing
 
             if (headerOnly)
             {
-                Statistics.PacketsSuccessfullyParsed++;
+                lock (Handlers)
+                {
+                    Statistics.PacketsSuccessfullyParsed++;
+                }
                 return;
             }
 

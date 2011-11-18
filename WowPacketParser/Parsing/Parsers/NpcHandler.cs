@@ -85,6 +85,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333))
                     packet.ReadInt32("Unk Int32", i);
+
+                npcTrainer.TrainerSpells.Add(trainerSpell);
             }
 
             npcTrainer.Title = packet.ReadCString("Title");

@@ -7,6 +7,68 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class MiscellaneousParsers
     {
+        [Parser(Opcode.SMSG_STOP_DANCE)]
+        [Parser(Opcode.SMSG_LEARNED_DANCE_MOVES)]
+        [Parser(Opcode.SMSG_INVALIDATE_PLAYER)]
+        [Parser(Opcode.CMSG_SET_SELECTION)]
+        [Parser(Opcode.CMSG_INSPECT)]
+        [Parser(Opcode.CMSG_BUY_BANK_SLOT)]
+        [Parser(Opcode.CMSG_DEL_FRIEND)]
+        [Parser(Opcode.CMSG_DEL_IGNORE)]
+        [Parser(Opcode.CMSG_DUEL_ACCEPTED)]
+        [Parser(Opcode.CMSG_DUEL_CANCELLED)]
+        [Parser(Opcode.SMSG_REFER_A_FRIEND_EXPIRED)]
+        [Parser(Opcode.CMSG_PLAYER_VEHICLE_ENTER)]
+        public static void HandleReadGuid(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_GRANT_LEVEL)]
+        [Parser(Opcode.CMSG_ACCEPT_LEVEL_GRANT)]
+        [Parser(Opcode.SMSG_PROPOSE_LEVEL_GRANT)]
+        public static void HandleGrantLevel(Packet packet)
+        {
+            packet.ReadPackedGuid("GUID");
+        }
+
+
+        [Parser(Opcode.SMSG_BUY_BANK_SLOT_RESULT)]
+        public static void HandleBuyBankSlotResult(Packet packet)
+        {
+            packet.ReadEnum<BankSlotResult>("Result", TypeCode.UInt32);
+        }
+
+        [Parser(Opcode.CMSG_ADD_FRIEND)]
+        public static void HandleAddFriend(Packet packet)
+        {
+            packet.ReadCString("Name");
+            packet.ReadCString("Note");
+        }
+
+        [Parser(Opcode.CMSG_ADD_IGNORE)]
+        public static void HandleAddIgnore(Packet packet)
+        {
+            packet.ReadCString("Name");
+        }
+
+        [Parser(Opcode.CMSG_SET_CONTACT_NOTES)]
+        public static void HandleSetContactNotes(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadCString("Name");
+        }
+
+        [Parser(Opcode.CMSG_BUG)]
+        public static void HandleBug(Packet packet)
+        {
+            packet.ReadUInt32("Suggestion");
+            packet.ReadUInt32("Content Lenght");
+            packet.ReadCString("Content");
+            packet.ReadUInt32("Text Lenght");
+            packet.ReadCString("Text");
+        }
+
         [Parser(Opcode.CMSG_SET_ACTION_BUTTON)]
         public static void HandleActionButton(Packet packet)
         {
@@ -131,7 +193,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
             packet.ReadSingle("Grade");
-            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Unk Byte"); // Type
         }
 
         [Parser(Opcode.SMSG_LEVELUP_INFO)]
@@ -256,13 +318,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Value");
         }
 
-        [Parser(Opcode.CMSG_SET_SELECTION)]
-        [Parser(Opcode.CMSG_INSPECT)]
-        public static void HandleSetSelection(Packet packet)
-        {
-            packet.ReadGuid("GUID");
-        }
-
         [Parser(Opcode.CMSG_SET_ACTIONBAR_TOGGLES)]
         public static void HandleSetActionBarToggles(Packet packet)
         {
@@ -312,14 +367,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk int32 4");
         }
 
-        [Parser(Opcode.SMSG_STOP_DANCE)]
-        [Parser(Opcode.SMSG_LEARNED_DANCE_MOVES)]
-        [Parser(Opcode.SMSG_INVALIDATE_PLAYER)]
-        public static void HandleMiscDancePackets(Packet packet)
-        {
-            packet.ReadGuid("GUID");
-        }
-
         [Parser(Opcode.CMSG_WHO)]
         public static void HandleWhoRequest(Packet packet)
         {
@@ -347,9 +394,6 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (counter == 0)
                 return;
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                packet.ReadUInt32("Unk int32");
 
             for (var i = 0; i < counter; ++i)
             {
@@ -448,6 +492,26 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ATTACKSWING_NOTINRANGE)]
         [Parser(Opcode.SMSG_ATTACKSWING_BADFACING)]
         [Parser(Opcode.SMSG_ATTACKSWING_DEADTARGET)]
+        [Parser(Opcode.SMSG_INVALID_PROMOTION_CODE)]
+        [Parser(Opcode.SMSG_GROUP_DESTROYED)]
+        [Parser(Opcode.SMSG_GROUP_UNINVITE)]
+        [Parser(Opcode.CMSG_GROUP_DECLINE)]
+        [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
+        [Parser(Opcode.CMSG_CANCEL_AUTO_REPEAT_SPELL)]
+        [Parser(Opcode.CMSG_CANCEL_GROWTH_AURA)]
+        [Parser(Opcode.CMSG_CANCEL_MOUNT_AURA)]
+        [Parser(Opcode.CMSG_COMPLETE_CINEMATIC)]
+        [Parser(Opcode.CMSG_NEXT_CINEMATIC_CAMERA)]
+        [Parser(Opcode.CMSG_REQUEST_PET_INFO)]
+        [Parser(Opcode.CMSG_REQUEST_VEHICLE_EXIT)]
+        [Parser(Opcode.CMSG_RESET_INSTANCES)]
+        [Parser(Opcode.CMSG_SELF_RES)]
+        [Parser(Opcode.MSG_RAID_READY_CHECK_FINISHED)]
+        [Parser(Opcode.SMSG_ATTACKSWING_CANT_ATTACK)]
+        [Parser(Opcode.SMSG_CORPSE_NOT_IN_INSTANCE)]
+        [Parser(Opcode.SMSG_ENABLE_BARBER_SHOP)]
+        [Parser(Opcode.SMSG_FISH_NOT_HOOKED)]
+        [Parser(Opcode.SMSG_SUMMON_CANCEL)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

@@ -6,6 +6,32 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class InstanceHandler
     {
+        [Parser(Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT)]
+        public static void HandleUpdateInstanceEncounterUnit(Packet packet)
+        {
+            var type = packet.ReadEnum<EncounterFrame>("Type", TypeCode.UInt32);
+            switch (type)
+            {
+                case EncounterFrame.Add:
+                case EncounterFrame.Remove:
+                case EncounterFrame.Unk2:
+                    packet.ReadPackedGuid("GUID");
+                    packet.ReadByte("Param 1");
+                    break;
+                case EncounterFrame.Unk3:
+                case EncounterFrame.Unk4:
+                case EncounterFrame.Unk6:
+                    packet.ReadByte("Param 1");
+                    packet.ReadByte("Param 2");
+                    break;
+                case EncounterFrame.Unk5:
+                    packet.ReadByte("Param 1");
+                    break;
+            }
+
+
+        }
+
         [Parser(Opcode.MSG_SET_DUNGEON_DIFFICULTY)]
         [Parser(Opcode.MSG_SET_RAID_DIFFICULTY)]
         public static void HandleSetDifficulty(Packet packet)
@@ -86,6 +112,26 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleUpdateInstanceOwnership(Packet packet)
         {
             packet.ReadInt32("Unk");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_RESET)]
+        public static void HandleUpdateInstanceReset(Packet packet)
+        {
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+        }
+
+        [Parser(Opcode.CMSG_INSTANCE_LOCK_RESPONSE)]
+        public static void HandleInstanceLockResponse(Packet packet)
+        {
+            packet.ReadBoolean("Accept");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_LOCK_WARNING_QUERY)]
+        public static void HandleInstanceLockWarningQuery(Packet packet)
+        {
+            packet.ReadInt32("Time");
+            packet.ReadInt32("Encounter Mask");
+            packet.ReadByte("Unk");
         }
 
         [Parser(Opcode.SMSG_RAID_INSTANCE_INFO)]

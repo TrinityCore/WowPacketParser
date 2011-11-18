@@ -412,6 +412,9 @@
     <Compile Include="SQL\Stores\TrainerSpellStore.cs" />
     <Compile Include="SQL\Stores\VendorItemStore.cs" />
     <Compile Include="Store\Stuffing.cs" />
+    <Compile Include="Enums\BankSlotResult.cs" />
+    <Compile Include="Enums\EmoteType.cs" />
+    <Compile Include="Enums\EncounterFrame.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
