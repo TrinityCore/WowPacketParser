@@ -6,6 +6,13 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class BattlegroundHandler
     {
+        [Parser(Opcode.SMSG_AREA_SPIRIT_HEALER_TIME)]
+        public static void HandleAreaSpiritHealerTime(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32("Timer");
+        }
+
         [Parser(Opcode.MSG_BATTLEGROUND_PLAYER_POSITIONS)]
         public static void HandleBattlegrounPlayerPositions(Packet packet)
         {

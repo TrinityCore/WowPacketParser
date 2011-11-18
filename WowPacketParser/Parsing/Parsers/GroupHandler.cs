@@ -256,11 +256,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Ready");
         }
 
-        [Parser(Opcode.SMSG_SERVER_MESSAGE)]
-        public static void HandleServerMessage(Packet packet)
+        [Parser(Opcode.MSG_MINIMAP_PING)]
+        public static void HandleServerMinimapPing(Packet packet)
         {
-            packet.ReadUInt32("Unk UInt32");
-            packet.ReadCString("Message");
+            if (packet.Direction == Direction.ServerToClient)
+                packet.ReadGuid("GUID");
+
+            var position = packet.ReadVector2();
+            packet.Writer.WriteLine("Position: " + position);
         }
     }
 }

@@ -541,8 +541,17 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.SMSG_CLEAR_TARGET)]
         [Parser(Opcode.CMSG_GET_MIRRORIMAGE_DATA)]
+        [Parser(Opcode.SMSG_SPIRIT_HEALER_CONFIRM)]
         public static void HandleClearTarget(Packet packet)
         {
+            packet.ReadGuid("GUID");
+        }
+
+
+        [Parser(Opcode.SMSG_CLEAR_COOLDOWN)]
+        public static void HandleClearCooldown(Packet packet)
+        {
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
             packet.ReadGuid("GUID");
         }
 
@@ -553,6 +562,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Effect");
             packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte);
             packet.ReadInt32("Amount");
+        }
+
+        [Parser(Opcode.SMSG_DISPEL_FAILED)]
+        public static void HandleDispelFailed(Packet packet)
+        {
+            packet.ReadGuid("Caster GUID");
+            packet.ReadGuid("Target GUID");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Dispel Spell ID");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
         }
     }
 }

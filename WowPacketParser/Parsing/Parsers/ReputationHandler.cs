@@ -19,6 +19,12 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_SET_FACTION_VISIBLE)]
+        public static void HandleSetFactionVisible(Packet packet)
+        {
+            packet.ReadUInt32("Faction Id");
+        }
+
         [Parser(Opcode.SMSG_SET_FORCED_REACTIONS)]
         public static void HandleForcedReactions(Packet packet)
         {
