@@ -134,6 +134,13 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+
+        [Parser(Opcode.CMSG_DISMISS_CRITTER)]
+        public static void HandleDismissCritter(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+        }
+
         [Parser(Opcode.SMSG_PET_UPDATE_COMBO_POINTS)]
         public static void HandlePetUpdateComboPoints(Packet packet)
         {

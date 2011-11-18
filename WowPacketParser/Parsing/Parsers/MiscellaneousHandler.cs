@@ -32,6 +32,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("GUID");
         }
 
+        [Parser(Opcode.SMSG_CROSSED_INEBRIATION_THRESHOLD)]
+        public static void HandleCrossedInerbriationThreshold(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadEnum<DrunkenState>("Drunken State", TypeCode.UInt32);
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+        }
 
         [Parser(Opcode.SMSG_BUY_BANK_SLOT_RESULT)]
         public static void HandleBuyBankSlotResult(Packet packet)
@@ -422,32 +429,32 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk2");
         }
 
-        [Parser(Opcode.SMSG_DUEL_REQUESTED)]
-        public static void HandleDuelRequested(Packet packet)
-        {
-            packet.ReadGuid("Flag GUID");
-            packet.ReadGuid("Opponent GUID");
-
-        }
-
-        [Parser(Opcode.SMSG_DUEL_COMPLETE)]
-        public static void HandleDuelComplete(Packet packet)
-        {
-            packet.ReadBoolean("Abnormal finish");
-        }
-
-        [Parser(Opcode.SMSG_DUEL_WINNER)]
-        public static void HandleDuelWinner(Packet packet)
-        {
-            packet.ReadBoolean("Abnormal finish");
-            packet.ReadCString("Opponent Name");
-            packet.ReadCString("Name");
-        }
-
         [Parser(Opcode.CMSG_FAR_SIGHT)]
+        [Parser(Opcode.SMSG_PLAYER_SKINNED)]
         public static void HandleFarSight(Packet packet)
         {
             packet.ReadBoolean("Apply");
+        }
+
+        [Parser(Opcode.SMSG_SERVER_MESSAGE)]
+        public static void HandleServerMessage(Packet packet)
+        {
+            packet.ReadUInt32("Unk UInt32");
+            packet.ReadCString("Message");
+        }
+
+        [Parser(Opcode.MSG_INSPECT_HONOR_STATS)]
+        public static void HandleInspectHonorStats(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            if (packet.Direction == Direction.ClientToServer)
+                return;
+
+            packet.ReadByte("Honor Points");
+            packet.ReadUInt32("Kills");
+            packet.ReadUInt32("Today");
+            packet.ReadUInt32("Yesterday");
+            packet.ReadUInt32("Life Time Kills");
         }
 
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]

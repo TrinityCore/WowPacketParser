@@ -14,6 +14,53 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
+        [Parser(Opcode.SMSG_DUEL_REQUESTED)]
+        public static void HandleDuelRequested(Packet packet)
+        {
+            packet.ReadGuid("Flag GUID");
+            packet.ReadGuid("Opponent GUID");
+        }
+
+        [Parser(Opcode.SMSG_DUEL_COMPLETE)]
+        public static void HandleDuelComplete(Packet packet)
+        {
+            packet.ReadBoolean("Abnormal finish");
+        }
+
+        [Parser(Opcode.SMSG_DUEL_WINNER)]
+        public static void HandleDuelWinner(Packet packet)
+        {
+            packet.ReadBoolean("Abnormal finish");
+            packet.ReadCString("Opponent Name");
+            packet.ReadCString("Name");
+        }
+
+        [Parser(Opcode.SMSG_DUEL_COUNTDOWN)]
+        public static void HandleDuelCountDown(Packet packet)
+        {
+            packet.ReadInt32("Timer");
+        }
+
+        [Parser(Opcode.SMSG_COMBAT_EVENT_FAILED)]
+        public static void HandleCombatEventFailed(Packet packet)
+        {
+            packet.ReadPackedGuid("GUID");
+            packet.ReadPackedGuid("Target GUID");
+            packet.ReadUInt32("Unk UInt32");
+        }
+
+        [Parser(Opcode.SMSG_RESET_RANGED_COMBAT_TIMER)]
+        public static void HandleResetRangedCombatTimer(Packet packet)
+        {
+            packet.ReadInt32("Timer");
+        }
+
+        [Parser(Opcode.CMSG_TOGGLE_PVP)]
+        public static void HandleTogglePvP(Packet packet)
+        {
+            packet.ReadBoolean("Enable");
+        }
+
         [Parser(Opcode.SMSG_PVP_CREDIT)]
         public static void HandlePvPCredit(Packet packet)
         {

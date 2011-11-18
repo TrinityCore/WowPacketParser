@@ -31,10 +31,13 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_TRAINER_BUY_SUCCEEDED)]
+        [Parser(Opcode.SMSG_TRAINER_BUY_FAILED)]
         public static void HandleServerTrainerBuySucceedeed(Packet packet)
         {
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_TRAINER_BUY_FAILED))
+                packet.ReadUInt32("Reason");
         }
 
         [Parser(Opcode.SMSG_TRAINER_LIST)]
@@ -197,6 +200,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BANKER_ACTIVATE)]
         [Parser(Opcode.CMSG_SPIRIT_HEALER_ACTIVATE)]
         [Parser(Opcode.CMSG_BINDER_ACTIVATE)]
+        [Parser(Opcode.SMSG_BINDER_CONFIRM)]
         [Parser(Opcode.SMSG_SHOW_BANK)]
         public static void HandleNpcHello(Packet packet)
         {

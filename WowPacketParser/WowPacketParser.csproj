@@ -414,6 +414,7 @@
     <Compile Include="Enums\BankSlotResult.cs" />
     <Compile Include="Enums\EmoteType.cs" />
     <Compile Include="Enums\EncounterFrame.cs" />
+    <Compile Include="Enums\DrunkenState.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
