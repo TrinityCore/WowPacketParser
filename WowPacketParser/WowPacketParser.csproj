@@ -334,6 +334,7 @@
     <Compile Include="Misc\UpdateField.cs" />
     <Compile Include="Store\Objects\UnitTemplate.cs" />
     <Compile Include="Store\Objects\VendorItem.cs" />
+    <Compile Include="Store\Objects\Waypoint.cs" />
     <Compile Include="Store\Objects\WoWObject.cs" />
     <Compile Include="Misc\Packet.cs" />
     <Compile Include="Misc\Utilities.cs" />

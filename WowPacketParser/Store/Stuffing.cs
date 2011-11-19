@@ -48,6 +48,13 @@ namespace WowPacketParser.Store
         public static ConcurrentDictionary<uint, QuestTemplate> Quests =
             new ConcurrentDictionary<uint, QuestTemplate>();
 
+        /// <summary>
+        /// Waypoints, key: npc entry, point id
+        /// Waypoints are currently written with npc Entry instead of GUID * 10, since our GUIDs differ from retails GUIDs
+        /// </summary>
+        public static ConcurrentDictionary<Tuple<uint,uint>, Waypoint> Waypoints =
+            new ConcurrentDictionary<Tuple<uint, uint>, Waypoint>();
+
         /* Key: npc entry, menuid */
         public static ConcurrentDictionary<Tuple<uint,uint>, GossipMenu> Gossips =
             new ConcurrentDictionary<Tuple<uint, uint>, GossipMenu>();

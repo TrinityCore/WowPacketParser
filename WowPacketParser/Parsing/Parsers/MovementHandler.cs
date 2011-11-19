@@ -1,4 +1,6 @@
 using System;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -159,7 +161,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MONSTER_MOVE_TRANSPORT)]
         public static void HandleMonsterMove(Packet packet)
         {
-            packet.ReadPackedGuid("GUID");
+            var guid = packet.ReadPackedGuid("GUID");
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MONSTER_MOVE_TRANSPORT))
             {
@@ -226,6 +228,21 @@ namespace WowPacketParser.Parsing.Parsers
 
             var newpos = packet.ReadVector3("Waypoint 0");
 
+            if (waypoints >= 4)
+            {
+                Waypoint wp = new Waypoint
+                {
+                    X = newpos.X,
+                    Y = newpos.Y,
+                    Z = newpos.Z,
+                    NpcEntry = guid.GetEntry(),
+                    Id = 0
+                };
+
+                Stuffing.Waypoints.TryAdd(Tuple.Create<uint, uint>(guid.GetEntry(), wp.Id), wp);
+                SQL.SQLStore.WriteData(SQL.Stores.WaypointStore.GetCommand(wp));
+            }
+
             if (flags.HasAnyFlag(SplineFlag.Flying) || flags.HasAnyFlag(SplineFlag.CatmullRom))
                 for (var i = 0; i < waypoints - 1; i++)
                     packet.ReadVector3("Waypoint " + (i + 1));
@@ -244,6 +261,21 @@ namespace WowPacketParser.Parsing.Parsers
                     vec.Z += mid.Z;
 
                     packet.Writer.WriteLine("Waypoint " + (i + 1) + ": " + vec);
+                    
+                    if (waypoints >= 4)
+                    {
+                        Waypoint wp = new Waypoint
+                        {
+                            X = vec.X,
+                            Y = vec.Y,
+                            Z = vec.Z,
+                            NpcEntry = guid.GetEntry(),
+                            Id = (uint)(i + 1)
+                        };
+
+                        Stuffing.Waypoints.TryAdd(Tuple.Create<uint,uint>(guid.GetEntry(),wp.Id), wp);
+                        SQL.SQLStore.WriteData(SQL.Stores.WaypointStore.GetCommand(wp));
+                    }
                 }
             }
         }
