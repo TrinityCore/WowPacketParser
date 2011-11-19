@@ -71,7 +71,7 @@ namespace WowPacketParser.Store
 
         public static string CreateNpcTrainerTestSQL()
         {
-            StringBuilder sqlQuery = new StringBuilder(string.Empty);
+            var sqlQuery = new StringBuilder(string.Empty);
 
             const string tableName = "npc_trainer";
             const string primaryKey = "entry";
