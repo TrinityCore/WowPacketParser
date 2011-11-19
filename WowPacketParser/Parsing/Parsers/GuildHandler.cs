@@ -579,20 +579,30 @@ namespace WowPacketParser.Parsing.Parsers
             const int guildBankMaxTabs = 8;
 
             var count = packet.ReadUInt32("Rank Count");
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
-                packet.ReadUInt32("[" + i + "] " + "Unk1");
-                packet.ReadUInt32("[" + i + "] " + "Unk2");
+                if (ClientVersion.Build < ClientVersionBuild.V4_2_2_14545)
+                {
+                    packet.ReadUInt32("Unk1", i);
+                    packet.ReadUInt32("Unk2", i);
+                }
 
-                packet.ReadCString("[" + i + "] " + "Name");
+                packet.ReadCString("Name", i);
                 packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.UInt32);
 
                 for (int j = 0; j < guildBankMaxTabs; j++)
-                    packet.ReadEnum<GuildRankRightsFlag>("[" + i + "]" + "[" + j + "] " + "Tab Rights", TypeCode.UInt32);
-                for (int j = 0; j < guildBankMaxTabs; j++)
-                    packet.ReadUInt32("[" + i + "]" + "[" + j + "] " + "Tab Slots"); // Unsure about this. Seems to be rights aswell
+                    packet.ReadEnum<GuildRankRightsFlag>("Tab Rights", TypeCode.UInt32, i, j);
 
-                packet.ReadUInt32("[" + i + "] " + "Bank Money Per Day");
+                if (ClientVersion.Build >= ClientVersionBuild.V4_2_2_14545)
+                    packet.ReadInt32("Unknown Int32");
+
+                for (int j = 0; j < guildBankMaxTabs; j++)
+                    packet.ReadEnum<GuildRankRightsFlag>("Tab Slots", TypeCode.UInt32, i, j);
+
+                packet.ReadUInt32("Bank Money Per Day", i);
+
+                if (ClientVersion.Build >= ClientVersionBuild.V4_2_2_14545)
+                    packet.ReadInt32("Unknown Int32");
 
                 if (i != count - 1)
                     packet.Writer.WriteLine("--");
