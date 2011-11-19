@@ -12,7 +12,7 @@ namespace WowPacketParser.Store.Objects
 
         public int Level;
 
-        public uint MinLevel;
+        public int MinLevel;
 
         public QuestSort Sort;
 
@@ -74,7 +74,7 @@ namespace WowPacketParser.Store.Objects
 
         public uint[] RewardFactionId;
 
-        public uint[] RewardReputationId;
+        public int[] RewardReputationId;
 
         public uint[] RewardReputationIdOverride; // ?
 

@@ -33,7 +33,7 @@ namespace WowPacketParser.Parsing.Parsers
             quest.Level = packet.ReadInt32("Level");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                quest.MinLevel = packet.ReadUInt32("Min Level");
+                quest.MinLevel = packet.ReadInt32("Min Level");
 
             quest.Sort = packet.ReadEnum<QuestSort>("Sort", TypeCode.Int32);
 
@@ -113,7 +113,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             quest.RewardFactionId = new uint[5];
-            quest.RewardReputationId = new uint[5];
+            quest.RewardReputationId = new int[5];
             quest.RewardReputationIdOverride = new uint[5];
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
             {
@@ -121,7 +121,7 @@ namespace WowPacketParser.Parsing.Parsers
                     quest.RewardFactionId[i] = packet.ReadUInt32("Reward Faction ID", i);
 
                 for (var i = 0; i < 5; i++)
-                    quest.RewardReputationId[i] = packet.ReadUInt32("Reward Reputation ID", i);
+                    quest.RewardReputationId[i] = packet.ReadInt32("Reward Reputation ID", i);
 
                 for (var i = 0; i < 5; i++)
                     quest.RewardReputationIdOverride[i] = packet.ReadUInt32("Reward Reputation ID", i);
