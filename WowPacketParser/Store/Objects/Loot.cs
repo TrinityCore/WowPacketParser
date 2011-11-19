@@ -7,8 +7,6 @@ namespace WowPacketParser.Store.Objects
     {
         // ObjectType
 
-        public LootType LootType;
-
         public uint Gold;
 
         public List<LootItem> LootItems;
