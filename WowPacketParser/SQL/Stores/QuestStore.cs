@@ -10,7 +10,7 @@ namespace WowPacketParser.SQL.Stores
             QuestSort sort, QuestType type, int players, int[] factId, int[] factRep,
             int nextQuest, int xpId, int rewReqMoney, int rewMoneyMaxLvl, int rewSpell,
             int rewSpellCast, int rewHonor, float rewHonorBonus, int srcItemId,
-            QuestFlag flags, int titleId, int reqPlayerKills, int bonusTalents,
+            QuestFlags flagses, int titleId, int reqPlayerKills, int bonusTalents,
             int bonusArenaPoints, int bonusUnk, int[] rewItemId, int[] rewItemCnt,
             int[] rewChoiceItemId, int[] rewChoiceItemCnt, int[] rewFactionId,
             int[] rewFactionIdx, int[] rewRepOverride, int pointMap, float pointX,
@@ -41,7 +41,7 @@ namespace WowPacketParser.SQL.Stores
             builder.AddValue("RequiredMaxRepValue", 0);
             builder.AddValue("SuggestedPlayers", players);
             builder.AddValue("LimitTime", 0);
-            builder.AddValue("QuestFlags", (int)flags);
+            builder.AddValue("QuestFlags", (int)flagses);
             builder.AddValue("SpecialFlags", 0);
             builder.AddValue("CharTitleId", titleId);
             builder.AddValue("PlayersSlain", reqPlayerKills);

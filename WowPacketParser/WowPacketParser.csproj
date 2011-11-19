@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -260,7 +260,7 @@
     <Compile Include="Enums\PowerType.cs" />
     <Compile Include="Enums\PartyCommand.cs" />
     <Compile Include="Enums\PartyResult.cs" />
-    <Compile Include="Enums\QuestFlag.cs" />
+    <Compile Include="Enums\QuestFlags.cs" />
     <Compile Include="Enums\QuestPartyResult.cs" />
     <Compile Include="Enums\QuestGiverStatus.cs" />
     <Compile Include="Enums\QuestMethod.cs" />

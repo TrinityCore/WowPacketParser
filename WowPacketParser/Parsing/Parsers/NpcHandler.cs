@@ -251,7 +251,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadUInt32("Icon", i);
                 packet.ReadInt32("Level", i);
-                packet.ReadEnum<QuestFlag>("Flags", TypeCode.UInt32, i);
+                packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32, i);
                 packet.ReadBoolean("Unk Bool", i);
                 packet.ReadCString("Title", i);
             }
