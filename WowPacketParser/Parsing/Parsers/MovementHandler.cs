@@ -529,13 +529,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
         public static void HandlePhaseShift(Packet packet)
         {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
-            {
-                packet.ReadGuid("Guid");
-                packet.ReadInt32("Unk");
-                // TODO: the rest
-            }
-
             var phaseMask = packet.ReadInt32();
             packet.Writer.WriteLine("Phase Mask: 0x" + phaseMask.ToString("X8"));
             CurrentPhaseMask = phaseMask;

@@ -25,6 +25,21 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Server State", i);
         }
 
+        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleServerAuthChallenge422(Packet packet)
+        {
+            packet.ReadInt32("Unk1");
+            packet.ReadInt32("Unk2");
+            packet.ReadInt32("Unk3");
+            packet.ReadInt32("Unk4");
+            packet.ReadInt32("Server Seed");
+            packet.ReadByte("Unk Byte");
+            packet.ReadInt32("Unk5");
+            packet.ReadInt32("Unk6");
+            packet.ReadInt32("Unk7");
+            packet.ReadInt32("Unk8");
+        }
+
         [Parser(Opcode.CMSG_AUTH_SESSION)]
         public static void HandleAuthSession(Packet packet)
         {
