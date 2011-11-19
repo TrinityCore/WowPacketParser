@@ -2,6 +2,8 @@ using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 
 namespace WowPacketParser.Parsing.Parsers
@@ -17,40 +19,42 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE)]
         public static void HandleGameObjectQueryResponse(Packet packet)
         {
+            var gameObject = new GameObjectTemplate();
+
             var entry = packet.ReadEntry("Entry");
 
             if (entry.Value) // entry is masked
                 return;
 
-            var type = packet.ReadEnum<GameObjectType>("Type", TypeCode.Int32);
-            var dispId = packet.ReadInt32("Display ID");
+            gameObject.Type = packet.ReadEnum<GameObjectType>("Type", TypeCode.Int32);
+            gameObject.DisplayId = packet.ReadUInt32("Display ID");
 
             var name = new string[4];
             for (var i = 0; i < 4; i++)
                 name[i] = packet.ReadCString("Name", i);
+            gameObject.Name = name[0];
 
-            var iconName = packet.ReadCString("Icon Name");
-            var castCaption = packet.ReadCString("Cast Caption");
-            var unkStr = packet.ReadCString("Unk String");
+            gameObject.IconName = packet.ReadCString("Icon Name");
+            gameObject.CastCaption = packet.ReadCString("Cast Caption");
+            gameObject.UnkString = packet.ReadCString("Unk String");
 
-            var data = new int[ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333) ? 32 : 24];
-            for (var i = 0; i < data.Length; i++)
-                data[i] = packet.ReadInt32("Data", i);
+            gameObject.Data = new int[ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333) ? 32 : 24];
+            for (var i = 0; i < gameObject.Data.Length; i++)
+                gameObject.Data[i] = packet.ReadInt32("Data", i);
 
-            var size = 0f;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056)) // not sure when it was added exactly - did not exist in 2.4.1 sniff
-                size = packet.ReadSingle("Size");
+                gameObject.Size = packet.ReadSingle("Size");
 
-            var item = new int[ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 6 : 4];
+
+            gameObject.QuestItems = new uint[ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 6 : 4];
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
-                for (var i = 0; i < item.Length; i++)
-                    item[i] = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item", i);
+                for (var i = 0; i < gameObject.QuestItems.Length; i++)
+                    gameObject.QuestItems[i] = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item", i);
 
             if (ClientVersion.Build >= ClientVersionBuild.V4_2_0_14333)
-                packet.ReadUInt32("Unknown UInt32");
+                gameObject.UnknownUInt = packet.ReadUInt32("Unknown UInt32");
 
-            SQLStore.WriteData(SQLStore.GameObjects.GetCommand(entry.Key, type, dispId, name[0], iconName,
-                castCaption, unkStr, data, size, item));
+            Stuffing.GameObjectTemplates.TryAdd((uint) entry.Key, gameObject);
         }
 
         [Parser(Opcode.SMSG_DESTRUCTIBLE_BUILDING_DAMAGE)]

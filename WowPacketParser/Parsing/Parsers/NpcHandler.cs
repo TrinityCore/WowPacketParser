@@ -218,21 +218,31 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
         public static void HandleNpcGossip(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            packet.ReadUInt32("Menu id");
-            packet.ReadUInt32("Text id");
+            var gossip = new Gossip();
+
+            packet.ReadGuid("GUID"); // TODO: Use this to assign npc entries with gossip ids
+
+            var menuId = packet.ReadUInt32("Menu id");
+
+            gossip.NpcTextIds.Add(packet.ReadUInt32("Text id"));
 
             var count = packet.ReadUInt32("Amount of Options");
-
+            gossip.GossipOptions = new List<GossipOption>((int)count);
             for (var i = 0; i < count; i++)
             {
-                packet.ReadUInt32("Index", i);
-                packet.ReadByte("Icon", i);
-                packet.ReadBoolean("Box", i);
-                packet.ReadUInt32("Required money", i);
-                packet.ReadCString("Text", i);
-                packet.ReadCString("Box Text", i);
+                var gossipOption = new GossipOption();
+
+                gossipOption.Index = packet.ReadUInt32("Index", i);
+                gossipOption.OptionIcon = packet.ReadByte("Icon", i);
+                gossipOption.Box = packet.ReadBoolean("Box", i);
+                gossipOption.RequiredMoney = packet.ReadUInt32("Required money", i);
+                gossipOption.OptionText = packet.ReadCString("Text", i);
+                gossipOption.BoxText = packet.ReadCString("Box Text", i);
+
+                gossip.GossipOptions.Add(gossipOption);
             }
+
+            Stuffing.Gossips.TryAdd(menuId, gossip);
 
             var questgossips = packet.ReadUInt32("Amount of Quest gossips");
             for (var i = 0; i < questgossips; i++)

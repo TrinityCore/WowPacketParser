@@ -16,7 +16,7 @@ namespace WowPacketParser.Store.Objects
 
         public int UnkInt32;
 
-        public string[] Name;
+        public string Name;
 
         public uint DisplayId;
 
@@ -28,7 +28,7 @@ namespace WowPacketParser.Store.Objects
 
         public uint BuyPrice;
 
-        public uint SpellPrice;
+        public uint SellPrice;
 
         public InventoryType InventoryType;
 
@@ -107,6 +107,8 @@ namespace WowPacketParser.Store.Objects
         public PageMaterial PageMaterial;
 
         public uint StartQuestId;
+
+        public uint LockId;
 
         public Material Material;
 
