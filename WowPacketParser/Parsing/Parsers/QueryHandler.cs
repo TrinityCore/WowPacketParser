@@ -3,6 +3,8 @@ using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 
 namespace WowPacketParser.Parsing.Parsers
@@ -12,18 +14,15 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUERY_TIME_RESPONSE)]
         public static void HandleTimeQueryResponse(Packet packet)
         {
-            var curTime = packet.ReadTime();
-            packet.Writer.WriteLine("Current Time: " + curTime);
+            packet.ReadTime("Current Time");
 
-            var dailyReset = packet.ReadInt32();
-            packet.Writer.WriteLine("Daily Quest Reset: " + dailyReset);
+            packet.ReadInt32("Daily Quest Reset");
         }
 
         [Parser(Opcode.CMSG_NAME_QUERY)]
         public static void HandleNameQuery(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            packet.Writer.WriteLine("GUID: " + guid);
+            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.SMSG_NAME_QUERY_RESPONSE)]
@@ -32,9 +31,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
                 packet.ReadPackedGuid("GUID");
-                var end = packet.ReadBoolean();
-                packet.Writer.WriteLine("Name Found: " + !end);
-
+                var end = packet.ReadBoolean("Name Not Found");
                 if (end)
                     return;
             }
@@ -75,6 +72,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CREATURE_QUERY_RESPONSE)]
         public static void HandleCreatureQueryResponse(Packet packet)
         {
+            var creature = new UnitTemplate();
+
             var entry = packet.ReadEntry("Entry");
             if (entry.Value)
                 return;
@@ -83,60 +82,62 @@ namespace WowPacketParser.Parsing.Parsers
             var name = new string[nameCount];
             for (var i = 0; i < name.Length; i++)
                 name[i] = packet.ReadCString("Name", i);
+            creature.Name = name[0];
 
-            var subName = packet.ReadCString("Sub Name");
+            creature.SubName = packet.ReadCString("Sub Name");
 
-            var iconName = packet.ReadCString("Icon Name");
+            creature.IconName = packet.ReadCString("Icon Name");
 
-            var typeFlags = packet.ReadEnum<CreatureTypeFlag>("Type Flags", TypeCode.Int32);
+            creature.TypeFlags = packet.ReadEnum<CreatureTypeFlag>("Type Flags", TypeCode.Int32);
 
             if (ClientVersion.Build >= ClientVersionBuild.V4_1_0_13914) // Might be earlier or later
-                packet.ReadInt32("Creature Type Flags 2"); // Missing enum
+                creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2"); // Missing enum
 
-            var type = packet.ReadEnum<CreatureType>("Type", TypeCode.Int32);
+            creature.Type = packet.ReadEnum<CreatureType>("Type", TypeCode.Int32);
 
-            var family = packet.ReadEnum<CreatureFamily>("Family", TypeCode.Int32);
+            creature.Family = packet.ReadEnum<CreatureFamily>("Family", TypeCode.Int32);
 
-            var rank = packet.ReadEnum<CreatureRank>("Rank", TypeCode.Int32);
+            creature.Rank = packet.ReadEnum<CreatureRank>("Rank", TypeCode.Int32);
 
-            var killCredit = new int[2];
+            var killCredit = new uint[2];
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
                 for (var i = 0; i < 2; i++)
-                    killCredit[i] = packet.ReadInt32("Kill Credit", i);
+                    killCredit[i] = packet.ReadUInt32("Kill Credit", i);
+
+                creature.KillCredit1 = killCredit[0];
+                creature.KillCredit2 = killCredit[1];
             }
             else
             {
-                packet.ReadInt32("Unk Int");
-                packet.ReadInt32("Pet Spell Data Id");
+                creature.UnkInt = packet.ReadInt32("Unk Int");
+                creature.PetSpellData = packet.ReadUInt32("Pet Spell Data Id");
             }
 
-            var dispId = new int[4];
+            creature.DisplayIds = new uint[4];
             for (var i = 0; i < 4; i++)
-                dispId[i] = packet.ReadInt32("Display ID", i);
+                creature.DisplayIds[i] = packet.ReadUInt32("Display ID", i);
 
-            var mod1 = packet.ReadSingle("Modifier 1");
-            var mod2 = packet.ReadSingle("Modifier 2");
+            creature.Modifier1 = packet.ReadSingle("Modifier 1");
+            creature.Modifier2 = packet.ReadSingle("Modifier 2");
 
-            var racialLeader = packet.ReadBoolean("Racial Leader");
+            creature.RacialLeader = packet.ReadBoolean("Racial Leader");
 
             var qItemCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 6 : 4;
-            var qItem = new int[qItemCount];
-            var moveId = 0;
+            creature.QuestItems = new uint[qItemCount];
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
                 for (var i = 0; i < qItemCount; i++)
-                    qItem[i] = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item", i);
+                    creature.QuestItems[i] = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item", i);
 
-                moveId = packet.ReadInt32("Movement ID");
+                creature.MovementId = packet.ReadUInt32("Movement ID");
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
-                packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);
+                creature.Expansion = packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);
 
-            SQLStore.WriteData(SQLStore.Creatures.GetCommand(entry.Key, name[0], subName, iconName, typeFlags,
-                type, family, rank, killCredit, dispId, mod1, mod2, racialLeader, qItem, moveId));
+            Stuffing.UnitTemplates.TryAdd((uint)entry.Key, creature);
         }
 
         [Parser(Opcode.CMSG_PAGE_TEXT_QUERY)]
@@ -148,16 +149,15 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE)]
         public static void HandlePageTextResponse(Packet packet)
         {
-            var entry = packet.ReadInt32();
-            packet.Writer.WriteLine("Entry: " + entry);
+            var pageText = new PageText();
 
-            var text = packet.ReadCString();
-            packet.Writer.WriteLine("Page Text: " + text);
+            var entry = packet.ReadUInt32("Entry");
 
-            var pageId = packet.ReadInt32();
-            packet.Writer.WriteLine("Next Page: " + pageId);
+            pageText.Text = packet.ReadCString("Page Tex");
 
-            SQLStore.WriteData(SQLStore.PageTexts.GetCommand(entry, text, pageId));
+            pageText.NextPageId = packet.ReadUInt32("Next Page");
+
+            Stuffing.PageTexts.TryAdd(entry, pageText);
         }
 
         [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
@@ -169,35 +169,37 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]
         public static void HandleNpcTextUpdate(Packet packet)
         {
-            var entry = packet.ReadInt32("Entry");
+            var npcText = new NpcText();
 
-            var prob = new float[8];
-            var text1 = new string[8];
-            var text2 = new string[8];
-            var lang = new Language[8];
-            var emDelay = new int[8][];
-            var emEmote = new int[8][];
+            var entry = packet.ReadUInt32("Entry");
+
+            npcText.Probabilities = new float[8];
+            npcText.Texts1 = new string[8];
+            npcText.Texts2 = new string[8];
+            npcText.Languages = new Language[8];
+            npcText.EmoteDelays = new uint[8][];
+            npcText.EmoteIds = new uint[8][];
             for (var i = 0; i < 8; i++)
             {
-                prob[i] = packet.ReadSingle("Probability", i);
+                npcText.Probabilities[i] = packet.ReadSingle("Probability", i);
 
-                text1[i] = packet.ReadCString("Text 1", i);
+                npcText.Texts1[i] = packet.ReadCString("Text 1", i);
 
-                text2[i] = packet.ReadCString("Text 2", i);
+                npcText.Texts2[i] = packet.ReadCString("Text 2", i);
 
-                lang[i] = packet.ReadEnum<Language>("Language", TypeCode.Int32, i);
+                npcText.Languages[i] = packet.ReadEnum<Language>("Language", TypeCode.Int32, i);
 
-                emDelay[i] = new int[3];
-                emEmote[i] = new int[3];
+                npcText.EmoteDelays[i] = new uint[3];
+                npcText.EmoteIds[i] = new uint[3];
                 for (var j = 0; j < 3; j++)
                 {
-                    emDelay[i][j] = packet.ReadInt32("Emote Delay", i, j);
+                    npcText.EmoteDelays[i][j] = packet.ReadUInt32("Emote Delay", i, j);
 
-                    emEmote[i][j] = packet.ReadInt32("Emote ID", i, j);
+                    npcText.EmoteIds[i][j] = packet.ReadUInt32("Emote ID", i, j);
                 }
             }
 
-            SQLStore.WriteData(SQLStore.NpcTexts.GetCommand(entry, prob, text1, text2, lang, emDelay, emEmote));
+            Stuffing.NpcTexts.TryAdd(entry, npcText);
         }
     }
 }

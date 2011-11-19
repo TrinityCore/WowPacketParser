@@ -16,8 +16,8 @@ namespace WowPacketParser.Store.Objects
 
         public Language[] Languages;
 
-        public uint[,] EmoteDelays;
+        public uint[][] EmoteDelays;
 
-        public uint[,] EmoteIds;
+        public uint[][] EmoteIds;
     }
 }
