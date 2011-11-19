@@ -228,7 +228,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var newpos = packet.ReadVector3("Waypoint 0");
 
-            if (waypoints >= 4)
+            if (waypoints >= 3) // Hardcoded number, i have not seen any creature with less than 3 waypoints to have a scripted movement behaviour
             {
                 Waypoint wp = new Waypoint
                 {
@@ -262,7 +262,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                     packet.Writer.WriteLine("Waypoint " + (i + 1) + ": " + vec);
                     
-                    if (waypoints >= 4)
+                    if (waypoints >= 3) // Hardcoded number, i have not seen any creature with less than 3 waypoints to have a scripted movement behaviour
                     {
                         Waypoint wp = new Waypoint
                         {

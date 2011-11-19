@@ -224,8 +224,6 @@ namespace WowPacketParser.Parsing.Parsers
             var menuid = packet.ReadUInt32("Menu id");
             var textid = packet.ReadUInt32("Text id");
 
-            var count = packet.ReadUInt32("Amount of Options");
-
             GossipMenu gossip = new GossipMenu
             {
                 MenuId = menuid,
@@ -235,22 +233,17 @@ namespace WowPacketParser.Parsing.Parsers
 
             gossip = Stuffing.Gossips.GetOrAdd(Tuple.Create<uint,uint>(guid.GetEntry(),menuid), gossip);
             
+            var count = packet.ReadUInt32("Amount of Options");
             for (var i = 0; i < count; i++)
             {
-                var index = packet.ReadUInt32("Index", i);
-                var icon = packet.ReadByte("Icon", i);
-                var box = packet.ReadBoolean("Box", i);
-                var reqmoney = packet.ReadUInt32("Required money", i);
-                var text = packet.ReadCString("Text", i);
-                var boxtext = packet.ReadCString("Box Text", i);
                 GossipOption opt = new GossipOption
                 {
-                    Box = box,
-                    RequiredMoney = reqmoney,
-                    Index = index,
-                    OptionIcon = icon,
-                    OptionText = text,
-                    BoxText = boxtext
+                    Index = packet.ReadUInt32("Index", i),
+                    OptionIcon = packet.ReadByte("Icon", i),
+                    Box = packet.ReadBoolean("Box", i),
+                    RequiredMoney = packet.ReadUInt32("Required money", i),
+                    OptionText = packet.ReadCString("Text", i),
+                    BoxText = packet.ReadCString("Box Text", i)
                 };
                 gossip.GossipOptions.Add(opt);
             }

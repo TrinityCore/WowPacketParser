@@ -26,17 +26,11 @@ namespace WowPacketParser.Store.Objects
 
         public uint KillCredit2;
 
-        public uint UnkInt;
+        public int UnkInt;
 
         public uint PetSpellData;
 
         public uint[] DisplayIds;
-
-        public uint DisplayId2;
-
-        public uint DisplayId3;
-
-        public uint DisplayId4;
 
         public float Modifier1;
 
