@@ -87,6 +87,25 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Ranks");
         }
 
+        [Parser(Opcode.SMSG_GUILD_QUERY_RESPONSE, ClientVersionBuild.V4_2_2_14545)] // Might be earlier
+        public static void HandleGuildQueryResponse422(Packet packet)
+        {
+            packet.ReadGuid("Guild Guid");
+            packet.ReadCString("Name");
+            for (var i = 0; i < 10; i++)
+                packet.ReadCString("Rank Name", i);
+
+            for (var i = 0; i < 10; i++)
+                packet.ReadUInt32("Rank Rights", i);
+
+            for (var i = 0; i < 10; i++)
+                packet.ReadUInt32("Rank Order", i);
+
+            ReadEmblemInfo(ref packet);
+
+            packet.ReadUInt32("Ranks");
+        }
+
         [Parser(Opcode.CMSG_GUILD_CREATE)]
         [Parser(Opcode.CMSG_GUILD_INVITE)]
         [Parser(Opcode.CMSG_GUILD_PROMOTE)]
