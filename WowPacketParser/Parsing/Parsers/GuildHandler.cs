@@ -94,7 +94,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Unk1?", i); // see SMSG_GUILD_RANK same name
 
                 for (var i = 0; i < 10; i++)
-                    packet.ReadUInt32("Order?", i); // see SMSG_GUILD_RANK same name
+                    packet.ReadUInt32("Order", i);
             }
 
             ReadEmblemInfo(ref packet);
@@ -134,9 +134,9 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Gold Per day", i);
 
                 for (int j = 0; j < guildBankMaxTabs; j++)
-                    packet.ReadInt32("Tab Slots", i, j); // Unsure about this. Seems to be rights aswell
+                    packet.ReadInt32("Tab Slots", i, j);
 
-                packet.ReadInt32("Order?", i); // see SMSG_GUILD_QUERY_RESPONSE same name
+                packet.ReadInt32("Order", i);
                 packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.Int32, i);
             }
         }
@@ -380,7 +380,11 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGuildBankMoneyWithdrawn(Packet packet)
         {
             if (packet.Direction == Direction.ServerToClient)
-                packet.ReadUInt32("Remaining Money");
+            {
+                packet.ReadInt32("Remaining Money");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                    packet.ReadInt32("Unk UInt32");
+            }
         }
 
         [Parser(Opcode.MSG_GUILD_EVENT_LOG_QUERY)]
