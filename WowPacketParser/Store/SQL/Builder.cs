@@ -10,7 +10,7 @@ namespace WowPacketParser.Store.SQL
     {
         private const string cs = SQLUtil.CommaSeparator;
 
-        public static string CreateQuestTemplateTestSQL()
+        public static string QuestTemplate()
         {
             var sqlQuery = new StringBuilder(String.Empty);
 
@@ -167,8 +167,7 @@ namespace WowPacketParser.Store.SQL
             return sqlQuery.ReplaceLast(',', ';').ToString();
         }
 
-
-        public static string CreateNpcTrainerTestSQL()
+        public static string NpcTrainer()
         {
             var sqlQuery = new StringBuilder(String.Empty);
 
@@ -204,7 +203,7 @@ namespace WowPacketParser.Store.SQL
             return sqlQuery.ReplaceLast(',', ';').ToString();
         }
 
-        public static string CreateNpcVendorTestSQL()
+        public static string NpcVendor()
         {
             var sqlQuery = new StringBuilder(String.Empty);
 
@@ -234,6 +233,65 @@ namespace WowPacketParser.Store.SQL
                                     StoreGetters.GetName(StoreNameType.Item, (int)vendorItem.ItemId, false) +
                                     Environment.NewLine);
                 }
+            }
+
+            return sqlQuery.ReplaceLast(',', ';').ToString();
+        }
+
+        public static string NpcTemplate()
+        {
+            var sqlQuery = new StringBuilder(String.Empty);
+
+            const string tableName = "creature_template";
+            const string primaryKey = "entry";
+            string[] tableStructure = {
+                                          "Id", "Name", "SubName", "IconName", "TypeFlags", "TypeFlags2", "Type ",
+                                          "Family ", "Rank ", "KillCredit1 ", "KillCredit2 ", "UnkInt ", "PetSpellData",
+                                          "DisplayId1", "DisplayId2", "DisplayId3", "DisplayId4", "Modifier1 ",
+                                          "Modifier2 ", "RacialLeader", "QuestItem1", "QuestItem2", "QuestItem3",
+                                          "QuestItem4", "QuestItem5", "QuestItem6", "MovementId ", "Expansion"
+                                      };
+
+            // Delete
+            sqlQuery.Append(SQLUtil.DeleteQuerySingle(Stuffing.UnitTemplates.Keys, primaryKey, tableName));
+
+            // Insert
+            sqlQuery.Append(SQLUtil.InsertQueryHeader(tableStructure, tableName));
+
+            // Insert rows
+            foreach (var unitTemplate in Stuffing.UnitTemplates)
+            {
+                sqlQuery.Append(
+                    "(" +
+                    unitTemplate.Key + cs +
+                    SQLUtil.Stringify(unitTemplate.Value.Name) + cs +
+                    SQLUtil.Stringify(unitTemplate.Value.SubName) + cs +
+                    SQLUtil.Stringify(unitTemplate.Value.IconName) + cs +
+                    SQLUtil.Hexify((int) unitTemplate.Value.TypeFlags) + cs +
+                    SQLUtil.Hexify((int) unitTemplate.Value.TypeFlags2) + cs +
+                    (int) unitTemplate.Value.Type + cs +
+                    (int) unitTemplate.Value.Family + cs +
+                    (int) unitTemplate.Value.Rank + cs +
+                    unitTemplate.Value.KillCredit1 + cs +
+                    unitTemplate.Value.KillCredit2 + cs +
+                    unitTemplate.Value.UnkInt + cs +
+                    unitTemplate.Value.PetSpellData + cs);
+
+                foreach (var n in unitTemplate.Value.DisplayIds)
+                    sqlQuery.Append(n + cs);
+
+                sqlQuery.Append(
+                    unitTemplate.Value.Modifier1 + cs +
+                    unitTemplate.Value.Modifier2 + cs +
+                    (unitTemplate.Value.RacialLeader ? 1 : 0) + cs);
+
+                foreach (var n in unitTemplate.Value.QuestItems)
+                    sqlQuery.Append(n + cs);
+
+                sqlQuery.Append(
+                    unitTemplate.Value.MovementId + cs +
+                    (int) unitTemplate.Value.Expansion + ")," + Environment.NewLine);
+
             }
 
             return sqlQuery.ReplaceLast(',', ';').ToString();
