@@ -537,11 +537,13 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk flags 6");
             }
             else
+            {
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
                 {
                     packet.ReadUInt32("Unk flags 5");
                     packet.ReadUInt32("Unk flags 6");
                 }
+            }
         }
 
         [Parser(Opcode.SMSG_QUESTGIVER_OFFER_REWARD)]
