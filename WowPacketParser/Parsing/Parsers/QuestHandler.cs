@@ -522,27 +522,19 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadUInt32("Required Item Count");
             for (var i = 0; i < count; i++)
             {
-                packet.ReadUInt32("[" + i + "] Required Item Id");
-                packet.ReadUInt32("[" + i + "] Required Item Count");
-                packet.ReadUInt32("[" + i + "] Required Item Display Id");
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Required Item Id", i);
+                packet.ReadUInt32("Required Item Count", i);
+                packet.ReadUInt32("Required Item Display Id", i);
             }
             // flags
             packet.ReadUInt32("Unk flags 1");
             packet.ReadUInt32("Unk flags 2");
             packet.ReadUInt32("Unk flags 3");
             packet.ReadUInt32("Unk flags 4");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
             {
                 packet.ReadUInt32("Unk flags 5");
                 packet.ReadUInt32("Unk flags 6");
-            }
-            else
-            {
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
-                {
-                    packet.ReadUInt32("Unk flags 5");
-                    packet.ReadUInt32("Unk flags 6");
-                }
             }
         }
 

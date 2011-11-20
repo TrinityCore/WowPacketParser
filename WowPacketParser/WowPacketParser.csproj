@@ -387,7 +387,7 @@
     <Compile Include="SQL\Builder\SQLInsert.cs" />
     <Compile Include="SQL\Builder\SQLUpdate.cs" />
     <Compile Include="SQL\SQLDatabase.cs" />
-    <Compile Include="SQL\SQLUtilities.cs" />
+    <Compile Include="SQL\SQLUtil.cs" />
     <Compile Include="SQL\SQLCommandBuilder.cs" />
     <Compile Include="SQL\SQLConnector.cs" />
     <Compile Include="SQL\SQLStore.cs" />
@@ -410,6 +410,7 @@
     <Compile Include="SQL\Stores\StartSpellStore.cs" />
     <Compile Include="SQL\Stores\TrainerSpellStore.cs" />
     <Compile Include="SQL\Stores\VendorItemStore.cs" />
+    <Compile Include="Store\SQL\Builder.cs" />
     <Compile Include="Store\Stuffing.cs" />
     <Compile Include="Enums\BankSlotResult.cs" />
     <Compile Include="Enums\EmoteType.cs" />
