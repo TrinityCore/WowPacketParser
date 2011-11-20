@@ -521,7 +521,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_CHANNEL_UPDATE)]
         public static void HandleSpellChannelUpdate(Packet packet)
         {
-            packet.ReadTime("Time");
+            packet.ReadPackedGuid("GUID");
+            packet.ReadUInt32("Unk");
         }
 
         [Parser(Opcode.MSG_CHANNEL_START)]
@@ -529,7 +530,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadUInt32("Duration");
+            packet.ReadInt32("Duration");
         }
 
         [Parser(Opcode.SMSG_BREAK_TARGET)]

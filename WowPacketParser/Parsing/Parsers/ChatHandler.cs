@@ -64,6 +64,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Name");
         }
 
+        [Parser(Opcode.CMSG_MESSAGECHAT_PARTY)]
+        public static void HandleMessageChatParty(Packet packet)
+        {
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            packet.ReadCString("Text");
+        }
+
         [Parser(Opcode.SMSG_MESSAGECHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
