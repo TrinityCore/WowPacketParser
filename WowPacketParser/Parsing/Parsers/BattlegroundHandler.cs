@@ -107,8 +107,8 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
 
             packet.ReadByte("Min Level");
-            var max = packet.ReadByte("Max Level");
-            if (max == 0)
+            packet.ReadByte("Max Level");
+            if (!packet.CanRead())
                 return;
 
             packet.ReadUInt32("Client Instance ID");
