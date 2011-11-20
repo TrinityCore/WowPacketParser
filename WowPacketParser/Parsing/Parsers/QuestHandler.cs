@@ -526,14 +526,23 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("[" + i + "] Required Item Count");
                 packet.ReadUInt32("[" + i + "] Required Item Display Id");
             }
-            packet.ReadUInt32("Unk UInt32 2");
-            packet.ReadUInt32("Unk UInt32 3");
-            packet.ReadUInt32("Unk UInt32 4");
-            packet.ReadUInt32("Unk UInt32 5");
+            // flags
+            packet.ReadUInt32("Unk flags 1");
+            packet.ReadUInt32("Unk flags 2");
+            packet.ReadUInt32("Unk flags 3");
+            packet.ReadUInt32("Unk flags 4");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
             {
-                packet.ReadUInt32("Unk UInt32 6");
-                packet.ReadUInt32("Unk UInt32 7");
+                packet.ReadUInt32("Unk flags 5");
+                packet.ReadUInt32("Unk flags 6");
+            }
+            else
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
+                {
+                    packet.ReadUInt32("Unk flags 5");
+                    packet.ReadUInt32("Unk flags 6");
+                }
             }
         }
 
@@ -673,7 +682,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        
+
         public static void HandleQuestgiverStatusMultiple(Packet packet)
         {
             var count = packet.ReadUInt32("Count");
