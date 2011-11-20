@@ -526,7 +526,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.Writer.WriteLine("Unk Int32 2: " + unk2);
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT,ClientVersionBuild.V1_12_1_5875,ClientVersionBuild.V4_0_6a_13623)]
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT,ClientVersionBuild.V1_12_1_5875,ClientVersionBuild.V4_0_6a_13623)] // Not exactly sure when it was removed
         public static void HandlePhaseShift(Packet packet)
         {
             var phaseMask = packet.ReadInt32();
@@ -534,15 +534,49 @@ namespace WowPacketParser.Parsing.Parsers
             CurrentPhaseMask = phaseMask;
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT,ClientVersionBuild.V4_0_6a_13623)]
-        public static void HandlePhaseShift4xx(Packet packet)
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandlePhaseShift406(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+
+            var CountOfBytes1 = packet.ReadUInt32("Count of bytes 1");
+            byte[] bytes1 = null;
+
+            if (CountOfBytes1 > 0)
+                bytes1 = packet.ReadBytes((int)CountOfBytes1);
+
+            var CountOfBytes2 = packet.ReadUInt32("Count of bytes 2");
+            byte[] bytes2 = null;
+
+            if (CountOfBytes2 > 0)
+                bytes2 = packet.ReadBytes((int)CountOfBytes2);
+
+            var CountOfBytes3 = packet.ReadUInt32("Count of bytes 3");
+            byte[] bytes3 = null;
+
+            if (CountOfBytes3 > 0)
+                bytes3 = packet.ReadBytes((int)CountOfBytes3);
+
+            var CountOfBytes4 = packet.ReadUInt32("Count of bytes 4");
+            byte[] bytes4 = null;
+
+            if (CountOfBytes4 > 0)
+                bytes4 = packet.ReadBytes((int)CountOfBytes4);
+
+            packet.ReadUInt32("Flag"); // can be 0, 4 or 8, 8 = normal world, others are unknown
+        }
+
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT,ClientVersionBuild.V4_2_2_14545)] // Not exactly sure when it was added
+        public static void HandlePhaseShift422(Packet packet)
         {
             var v23 = packet.ReadByte("Unk Byte 1");
             // math from IDA
             byte v4 = (byte)(v23 * 2);
+            
+            uint v5 = v4;
+
             v4 *= 2;
 
-            uint v5 = v4;
             uint v6 = v4;
             v6 >>= 7;
 
@@ -560,7 +594,10 @@ namespace WowPacketParser.Parsing.Parsers
             byte[] bytes1 = null;
 
             if (CountOfBytes1 > 0)
-                bytes1 = packet.ReadBytes((int)CountOfBytes1);
+            {
+                packet.ReadUInt16("Map Swap 1");
+                bytes1 = packet.ReadBytes((int)CountOfBytes1 - 2);
+            }
 
             v4 *= 2;
 
@@ -573,7 +610,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (v9 != 0)
                 packet.ReadByte("Unk Byte 4");
 
-            packet.ReadInt32("Unk Int32");
+            packet.ReadUInt32("Flag? "); // this is 0, 4 or 8, if 8 then its normal world
 
             if (v8 != 0)
                 packet.ReadByte("Unk Byte 5");
@@ -582,19 +619,23 @@ namespace WowPacketParser.Parsing.Parsers
             byte[] bytes2 = null;
 
             if (CountOfBytes2 > 0)
-                bytes2 = packet.ReadBytes((int)CountOfBytes2);
+            {
+                CurrentPhaseMask = packet.ReadUInt16("Current PhaseMask");
+                bytes2 = packet.ReadBytes((int)CountOfBytes2 - 2);
+            }
 
             v4 *= 2;
 
-            /*if (((v4 * 2) >> 7) != 0)
-                packet.ReadByte("Unk Byte 6");*/
+            byte __tmp = (byte)(v4 * 2);
+            if ((__tmp >> 7) != 0)
+                packet.ReadByte("Unk Byte 6");
 
             var CountOfBytes3 = packet.ReadUInt32("Count of bytes 3");
             byte[] bytes3 = null;
 
             if (CountOfBytes3 > 0)
             {
-                CurrentPhaseMask = packet.ReadUInt16("Current PhaseMask");
+                packet.ReadUInt16("Map Swap 2");
                 bytes3 = packet.ReadBytes((int)CountOfBytes3 - 2);
             }
 
@@ -605,7 +646,10 @@ namespace WowPacketParser.Parsing.Parsers
             byte[] bytes4 = null;
 
             if (CountOfBytes4 > 0)
-                bytes4 = packet.ReadBytes((int)CountOfBytes4);
+            {
+                packet.ReadUInt16("Map Swap 3");
+                bytes4 = packet.ReadBytes((int)CountOfBytes4 - 2);
+            }
 
             if ((v4 >> 7) != 0)
                 packet.ReadByte("Unk Byte 8");
