@@ -208,6 +208,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_AUTH_RESPONSE, 0x8867},
             {Opcode.SMSG_BREAK_TARGET, 0xE7E},
             {Opcode.SMSG_CHANNEL_NOTIFY, 0x9C7F},
+            {Opcode.SMSG_CHAR_CREATE, 0x4C5B},
             {Opcode.SMSG_CHAR_DELETE, 0x48CE},
             {Opcode.SMSG_CHAR_ENUM, 0xA05C},
             {Opcode.SMSG_CHAT_WRONG_FACTION, 0xE66},
