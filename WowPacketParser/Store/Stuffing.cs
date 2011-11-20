@@ -43,10 +43,6 @@ namespace WowPacketParser.Store
         public static ConcurrentDictionary<uint, NpcText> NpcTexts =
             new ConcurrentDictionary<uint, NpcText>();
 
-        // Loot
-        public static ConcurrentDictionary<uint, Loot> Loots =
-            new ConcurrentDictionary<uint, Loot>();
-
         // Quests
         public static ConcurrentDictionary<uint, QuestTemplate> Quests =
             new ConcurrentDictionary<uint, QuestTemplate>();
@@ -58,15 +54,20 @@ namespace WowPacketParser.Store
         public static ConcurrentDictionary<Tuple<uint,uint>, Waypoint> Waypoints =
             new ConcurrentDictionary<Tuple<uint, uint>, Waypoint>();
 
+        // Gossips
         /* Key: npc entry, menuid */
         public static ConcurrentDictionary<Tuple<uint,uint>, GossipMenu> Gossips =
             new ConcurrentDictionary<Tuple<uint, uint>, GossipMenu>();
 
         /* Key: Misc */
 
-        // Race, Class
+        // Race-Class start information
         public static ConcurrentDictionary<Tuple<Race, Class>, StartInfo> StartInformation =
             new ConcurrentDictionary<Tuple<Race, Class>, StartInfo>();
+
+        // Loot
+        public static ConcurrentDictionary<Tuple<uint, LootType>, Loot> Loots =
+            new ConcurrentDictionary<Tuple<uint, LootType>, Loot>();
 
 
         public static string CreateNpcTrainerTestSQL()

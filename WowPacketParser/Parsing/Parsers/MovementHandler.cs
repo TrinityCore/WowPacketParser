@@ -526,12 +526,93 @@ namespace WowPacketParser.Parsing.Parsers
             packet.Writer.WriteLine("Unk Int32 2: " + unk2);
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT,ClientVersionBuild.V1_12_1_5875,ClientVersionBuild.V4_0_6a_13623)]
         public static void HandlePhaseShift(Packet packet)
         {
             var phaseMask = packet.ReadInt32();
             packet.Writer.WriteLine("Phase Mask: 0x" + phaseMask.ToString("X8"));
             CurrentPhaseMask = phaseMask;
+        }
+
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT,ClientVersionBuild.V4_0_6a_13623)]
+        public static void HandlePhaseShift4xx(Packet packet)
+        {
+            var v23 = packet.ReadByte("Unk Byte 1");
+            // math from IDA
+            byte v4 = (byte)(v23 * 2);
+            v4 *= 2;
+
+            uint v5 = v4;
+            uint v6 = v4;
+            v6 >>= 7;
+
+            if (v6 != 0)
+                packet.ReadByte("Unk Byte 2");
+
+            v4 *= 2;
+            
+            var v7 = v4 >> 7;
+
+            if (v7 != 0)
+                packet.ReadByte("Unk Byte 3");
+
+            var CountOfBytes1 = packet.ReadUInt32("Count of bytes 1");
+            byte[] bytes1 = null;
+
+            if (CountOfBytes1 > 0)
+                bytes1 = packet.ReadBytes((int)CountOfBytes1);
+
+            v4 *= 2;
+
+            var v8 = v4 >> 7;
+
+            v4 *= 2;
+            
+            var v9 = v4 >> 7;
+
+            if (v9 != 0)
+                packet.ReadByte("Unk Byte 4");
+
+            packet.ReadInt32("Unk Int32");
+
+            if (v8 != 0)
+                packet.ReadByte("Unk Byte 5");
+
+            var CountOfBytes2 = packet.ReadUInt32("Count of bytes 2");
+            byte[] bytes2 = null;
+
+            if (CountOfBytes2 > 0)
+                bytes2 = packet.ReadBytes((int)CountOfBytes2);
+
+            v4 *= 2;
+
+            /*if (((v4 * 2) >> 7) != 0)
+                packet.ReadByte("Unk Byte 6");*/
+
+            var CountOfBytes3 = packet.ReadUInt32("Count of bytes 3");
+            byte[] bytes3 = null;
+
+            if (CountOfBytes3 > 0)
+            {
+                CurrentPhaseMask = packet.ReadUInt16("Current PhaseMask");
+                bytes3 = packet.ReadBytes((int)CountOfBytes3 - 2);
+            }
+
+            if ((v5 >> 7) != 0)
+                packet.ReadByte("Unk Byte 7");
+
+            var CountOfBytes4 = packet.ReadUInt32("Count of bytes 4");
+            byte[] bytes4 = null;
+
+            if (CountOfBytes4 > 0)
+                bytes4 = packet.ReadBytes((int)CountOfBytes4);
+
+            if ((v4 >> 7) != 0)
+                packet.ReadByte("Unk Byte 8");
+
+            if ((v23 >> 7) != 0)
+                packet.ReadByte("Unk Byte 9");
+
         }
 
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]

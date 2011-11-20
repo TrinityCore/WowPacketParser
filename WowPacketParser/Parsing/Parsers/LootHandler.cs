@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -78,28 +81,35 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LOOT_RESPONSE)]
         public static void HandleLootResponse(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            var loot = packet.ReadEnum<LootType>("Loot Type", TypeCode.Byte);
-            if (loot == LootType.Unk0)
+            var loot = new Loot();
+
+            var guid = packet.ReadGuid("GUID");
+            var lootType = packet.ReadEnum<LootType>("Loot Type", TypeCode.Byte);
+            if (lootType == LootType.Unk0)
             {
                 packet.ReadByte("Slot");
                 return;
             }
 
-            packet.ReadUInt32("Gold");
+            loot.Gold = packet.ReadUInt32("Gold");
+
             var count = packet.ReadByte("Drop Count");
+            loot.LootItems = new List<LootItem>(count);
             for (var i = 0; i < count; ++i)
             {
+                var lootItem = new LootItem();
                 packet.ReadByte("Slot", i);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
-                packet.ReadUInt32("Count", i);
+                lootItem.ItemId = (uint) packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
+                lootItem.Count = packet.ReadUInt32("Count", i);
                 packet.ReadUInt32("Display ID", i);
                 packet.ReadInt32("Random Suffix", i);
                 packet.ReadInt32("Random Property Id", i);
-                packet.ReadEnum<LootSlotType>("Slot Type", TypeCode.Byte, i);
+                lootItem.SlotType = packet.ReadEnum<LootSlotType>("Slot Type", TypeCode.Byte, i);
+                loot.LootItems.Add(lootItem);
             }
-        }
 
+            Stuffing.Loots.TryAdd(new Tuple<uint, LootType>(guid.GetEntry(), lootType), loot);
+        }
 
         [Parser(Opcode.CMSG_LOOT_ROLL)]
         public static void HandleLootRoll(Packet packet)
