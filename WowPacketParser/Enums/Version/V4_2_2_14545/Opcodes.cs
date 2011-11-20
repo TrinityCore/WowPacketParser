@@ -204,6 +204,8 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_ACTIVATETAXIREPLY, 0x8E4F},
             {Opcode.SMSG_ADDON_INFO, 0x9863},
             {Opcode.SMSG_ARENA_TEAM_CHANGE_FAILED_QUEUED, 0x4A4E},
+            {Opcode.SMSG_AURA_UPDATE, 0x4C66},
+            {Opcode.SMSG_AURA_UPDATE_ALL, 0x18EE},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x1181},
             {Opcode.SMSG_AUTH_RESPONSE, 0x8867},
             {Opcode.SMSG_BREAK_TARGET, 0xE7E},
