@@ -3,7 +3,7 @@ using System;
 namespace WowPacketParser.Enums
 {
     [Flags]
-    public enum CreatureTypeFlag
+    public enum CreatureTypeFlag : uint
     {
         None = 0x00000000,
         TameablePet = 0x00000001, // 4.x name
@@ -37,5 +37,6 @@ namespace WowPacketParser.Enums
         DoNotSheathe = 0x10000000, // 4.x
         DoNotTargetOnInteraction = 0x20000000, // 4.x
         DoNotRenderObjectName = 0x40000000, // 4.x
+        Unknown = 0x80000000,
     }
 }

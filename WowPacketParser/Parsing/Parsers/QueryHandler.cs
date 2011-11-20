@@ -87,7 +87,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             creature.IconName = packet.ReadCString("Icon Name");
 
-            creature.TypeFlags = packet.ReadEnum<CreatureTypeFlag>("Type Flags", TypeCode.Int32);
+            creature.TypeFlags = packet.ReadEnum<CreatureTypeFlag>("Type Flags", TypeCode.UInt32);
 
             if (ClientVersion.Build >= ClientVersionBuild.V4_1_0_13914) // Might be earlier or later
                 creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2"); // Missing enum
