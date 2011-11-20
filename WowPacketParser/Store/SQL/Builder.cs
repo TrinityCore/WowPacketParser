@@ -12,10 +12,14 @@ namespace WowPacketParser.Store.SQL
 
         public static string QuestTemplate()
         {
+            if (Stuffing.QuestTemplates.IsEmpty)
+                return string.Empty;
+
             var sqlQuery = new StringBuilder(String.Empty);
 
+            // Not TDB structure
             const string tableName = "quest_template";
-            const string primaryKey = "entry";
+            const string primaryKey = "Id";
             string[] tableStructure = {
                                           "Id", "Method", "Level", "MinLevel", "Sort", "Type", "SuggestedPlayers",
                                           "RequiredFactionId1", "RequiredFactionId2", "RequiredFactionValue1",
@@ -169,6 +173,9 @@ namespace WowPacketParser.Store.SQL
 
         public static string NpcTrainer()
         {
+            if (Stuffing.NpcTrainers.IsEmpty)
+                return string.Empty;
+
             var sqlQuery = new StringBuilder(String.Empty);
 
             const string tableName = "npc_trainer";
@@ -205,6 +212,9 @@ namespace WowPacketParser.Store.SQL
 
         public static string NpcVendor()
         {
+            if (Stuffing.NpcVendors.IsEmpty)
+                return string.Empty;
+
             var sqlQuery = new StringBuilder(String.Empty);
 
             const string tableName = "npc_vendor";
@@ -240,10 +250,14 @@ namespace WowPacketParser.Store.SQL
 
         public static string NpcTemplate()
         {
+            if (Stuffing.UnitTemplates.IsEmpty)
+                return string.Empty;
+
             var sqlQuery = new StringBuilder(String.Empty);
 
+            // Not TDB structure
             const string tableName = "creature_template";
-            const string primaryKey = "entry";
+            const string primaryKey = "Id";
             string[] tableStructure = {
                                           "Id", "Name", "SubName", "IconName", "TypeFlags", "TypeFlags2", "Type ",
                                           "Family ", "Rank ", "KillCredit1 ", "KillCredit2 ", "UnkInt ", "PetSpellData",
@@ -292,6 +306,61 @@ namespace WowPacketParser.Store.SQL
                     unitTemplate.Value.MovementId + cs +
                     (int) unitTemplate.Value.Expansion + ")," + Environment.NewLine);
 
+            }
+
+            return sqlQuery.ReplaceLast(',', ';').ToString();
+        }
+
+        public static string GameObjectTemplate()
+        {
+            if (Stuffing.GameObjectTemplates.IsEmpty)
+                return string.Empty;
+
+            var sqlQuery = new StringBuilder(String.Empty);
+
+            // Not TDB structure (data got 32 fields, not 24)
+            const string tableName = "gameobject_template";
+            const string primaryKey = "Id";
+            string[] tableStructure = {
+                                          "Id", "Type", "DisplayId", "Name", "IconName", "CastCaption", "UnkString",
+                                          "Data1", "Data2", "Data3", "Data4", "Data5", "Data6", "Data7", "Data8",
+                                          "Data9", "Data10", "Data11", "Data12", "Data13", "Data14", "Data15", "Data16",
+                                          "Data17", "Data18", "Data19", "Data20", "Data21", "Data22", "Data23", "Data24",
+                                          "Data25", "Data26", "Data27", "Data28", "Data29", "Data30", "Data31",
+                                          "Data32", "Size", "QuestItem1", "QuestItem2", "QuestItem3", "QuestItem4",
+                                          "QuestItem5", "QuestItem6", "UnknownUInt"
+                                      };
+
+            // Delete
+            sqlQuery.Append(SQLUtil.DeleteQuerySingle(Stuffing.GameObjectTemplates.Keys, primaryKey, tableName));
+
+            // Insert
+            sqlQuery.Append(SQLUtil.InsertQueryHeader(tableStructure, tableName));
+
+            // Insert rows
+            foreach (var goTemplate in Stuffing.GameObjectTemplates)
+            {
+                sqlQuery.Append(
+                    "(" +
+                    goTemplate.Key + cs +
+                    (int) goTemplate.Value.Type + cs +
+                    goTemplate.Value.DisplayId + cs +
+                    SQLUtil.Stringify(goTemplate.Value.Name) + cs +
+                    SQLUtil.Stringify(goTemplate.Value.IconName) + cs +
+                    SQLUtil.Stringify(goTemplate.Value.CastCaption) + cs +
+                    SQLUtil.Stringify(goTemplate.Value.UnkString) + cs);
+
+                foreach (var n in goTemplate.Value.Data)
+                    sqlQuery.Append(n + cs);
+
+                sqlQuery.Append(
+                    goTemplate.Value.Size + cs);
+
+                foreach (var n in goTemplate.Value.QuestItems)
+                    sqlQuery.Append(n + cs);
+
+                sqlQuery.Append(
+                    goTemplate.Value.UnknownUInt + ")," + Environment.NewLine);
             }
 
             return sqlQuery.ReplaceLast(',', ';').ToString();
