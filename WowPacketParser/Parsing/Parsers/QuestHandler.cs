@@ -69,8 +69,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             quest.SourceItemId = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Source Item ID");
 
-            quest.Flags = (QuestFlags)(packet.ReadInt32() | 0xFFFF);
-            packet.Writer.WriteLine("Flags: " + quest.Flags);
+            quest.Flags = packet.ReadEnum<QuestFlags>("Flags", TypeCode.Int32);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_4_0_8089))
                 quest.RewardTitleId = packet.ReadUInt32("Title ID");
@@ -84,7 +83,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
             {
                 quest.RewardArenaPoints = packet.ReadUInt32("Bonus Arena Points");
-                quest.RewardUnknown = packet.ReadInt32("Unk Int32");
+                quest.RewardUnknown = packet.ReadInt32("Unk Int32"); // Always 0
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // Probably added earlier

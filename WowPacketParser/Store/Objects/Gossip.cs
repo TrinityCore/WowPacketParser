@@ -7,7 +7,7 @@ namespace WowPacketParser.Store.Objects
 {
     public class Gossip
     {
-        public List<uint> NpcTextIds; // should this be List<NpcText> ?
+        public List<uint> NpcTextIds;
 
         public List<GossipOption> GossipOptions;
     }

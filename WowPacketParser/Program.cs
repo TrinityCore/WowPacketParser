@@ -10,6 +10,7 @@ using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.SQL;
+using WowPacketParser.Store;
 using DBCStore = WowPacketParser.DBC.DBCStore.DBC;
 
 namespace WowPacketParser
@@ -59,17 +60,20 @@ namespace WowPacketParser
 
                     bool headersOnly = (dumpFormat == DumpFormatType.TextHeader || dumpFormat == DumpFormatType.SummaryHeader);
                     if (threads == 0) // Number of threads is automatically choosen by the Parallel library
-                        packets.AsParallel().SetCulture().ForAll(packet =>
-                        {
-                            Handler.Parse(packet, headersOnly);
-                        });
+                        packets.AsParallel().SetCulture().ForAll(packet => Handler.Parse(packet, headersOnly));
                     else
-                        packets.AsParallel().SetCulture().WithDegreeOfParallelism(threads).ForAll(packet =>
-                        {
-                            Handler.Parse(packet, headersOnly);
-                        });
+                        packets.AsParallel().SetCulture().WithDegreeOfParallelism(threads).ForAll(packet => Handler.Parse(packet, headersOnly));
 
                     Console.WriteLine("{0}: Writing data to file...", fileName);
+
+                    if (sqlOutput)
+                    {
+                        // Experimental, will remove
+                        SQLStore.WriteData(Stuffing.CreateQuestTemplateTestSQL());
+                        SQLStore.WriteData(Stuffing.CreateNpcTrainerTestSQL());
+                        SQLStore.WriteData(Stuffing.CreateNpcVendorTestSQL());
+                    }
+
                     SQLStore.WriteToFile();
                     if (dumpFormat != DumpFormatType.None)
                         Handler.WriteToFile(packets, outLogFileName);
@@ -120,26 +124,17 @@ namespace WowPacketParser
 
                 string filtersString = Settings.GetString("Filters");
                 if (filtersString != null)
-                    filters = filtersString.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    filters = filtersString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
                 filtersString = Settings.GetString("IgnoreFilters");
                 if (filtersString != null)
-                    ignoreFilters = filtersString.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    ignoreFilters = filtersString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
                 sqlOutput = Settings.GetBoolean("SQLOutput");
                 dumpFormat = (DumpFormatType)Settings.GetInt32("DumpFormat");
                 packetsToRead = Settings.GetInt32("PacketsNum");
                 prompt = Settings.GetBoolean("ShowEndPrompt");
                 threads = Settings.GetInt32("Threads");
-
-                // Atm, we can't output sql with multiple threads
-                // sql output needs to be written to a "buffer" (similar to Packet.Writer)
-                // or done at the end of parsing (prefered option)
-                if (sqlOutput)
-                {
-                    threads = 1;
-                    Console.WriteLine("Thread number forced to 1 because SQL Output is enabled (temporary behaviour).");
-                }
 
                 // Disable DB and DBCs when we don't need its data (dumping to a binary file)
                 if (dumpFormat == DumpFormatType.Bin || dumpFormat == DumpFormatType.Pkt)
@@ -217,15 +212,9 @@ namespace WowPacketParser
             }
 
             if (threads == 0) // Number of threads is automatically choosen by the Parallel library
-                files.AsParallel().SetCulture().ForAll(file =>
-                {
-                    ReadFile(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead, dumpFormat, threads, sqlOutput, prompt);
-                });
+                files.AsParallel().SetCulture().ForAll(file => ReadFile(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead, dumpFormat, threads, sqlOutput, prompt));
             else
-                files.AsParallel().SetCulture().WithDegreeOfParallelism(threads).ForAll(file =>
-                {
-                    ReadFile(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead, dumpFormat, threads, sqlOutput, prompt);
-                });
+                files.AsParallel().SetCulture().WithDegreeOfParallelism(threads).ForAll(file => ReadFile(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead, dumpFormat, threads, sqlOutput, prompt));
         }
 
         private static void EndPrompt(bool prompt)
