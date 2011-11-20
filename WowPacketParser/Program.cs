@@ -12,6 +12,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.SQL;
 using WowPacketParser.Store;
+using WowPacketParser.Store.SQL;
 using DBCStore = WowPacketParser.DBC.DBCStore.DBC;
 
 namespace WowPacketParser
@@ -71,9 +72,9 @@ namespace WowPacketParser
                     if (sqlOutput)
                     {
                         // Experimental, will remove
-                        SQLStore.WriteData(Stuffing.CreateQuestTemplateTestSQL());
-                        SQLStore.WriteData(Stuffing.CreateNpcTrainerTestSQL());
-                        SQLStore.WriteData(Stuffing.CreateNpcVendorTestSQL());
+                        SQLStore.WriteData(Builder.CreateQuestTemplateTestSQL());
+                        SQLStore.WriteData(Builder.CreateNpcTrainerTestSQL());
+                        SQLStore.WriteData(Builder.CreateNpcVendorTestSQL());
                     }
 
                     SQLStore.WriteToFile();

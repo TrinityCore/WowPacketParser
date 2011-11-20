@@ -3,7 +3,7 @@ using System;
 namespace WowPacketParser.Enums
 {
     [Flags]
-    public enum MovementFlag
+    public enum MovementFlag : uint
     {
         None = 0x00000000,
         Forward = 0x00000001,
@@ -16,7 +16,7 @@ namespace WowPacketParser.Enums
         PitchDown = 0x00000080,
         WalkMode = 0x00000100,
         OnTransport = 0x00000200,
-        DisableGravity = 0x00000400, // 4.x
+        DisableGravity = 0x00000400,
         Root = 0x00000800,
         Falling = 0x00001000,
         FallingFar = 0x00002000,
@@ -35,7 +35,8 @@ namespace WowPacketParser.Enums
         SplineElevation = 0x04000000,
         SplineEnabled = 0x08000000,
         Waterwalking = 0x10000000,
-        CanSafeFall = 0x20000000, // 4.x name
+        CanSafeFall = 0x20000000,
         Hover = 0x40000000,
+        LocalDirty = 0x80000000,
     }
 }

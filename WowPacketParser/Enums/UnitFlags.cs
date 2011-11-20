@@ -3,7 +3,7 @@
 namespace WowPacketParser.Enums
 {
     [Flags]
-    enum UnitFlags // 4.x
+    enum UnitFlags : uint
     {
         None = 0,
         NotClientControlled = 0x1,
@@ -37,6 +37,6 @@ namespace WowPacketParser.Enums
         PreventKneelingWhenLooting = 0x10000000,
         PreventEmotes = 0x20000000,
         Sheath = 0x40000000,
-        // Unk31 = 0x80000000,
+        Unk31 = 0x80000000,
     }
 }

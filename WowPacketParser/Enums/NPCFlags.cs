@@ -3,7 +3,7 @@
 namespace WowPacketParser.Enums
 {
     [Flags]
-    enum NPCFlags // 4.x
+    enum NPCFlags
     {
         None = 0x00000000,
         Gossip = 0x00000001,

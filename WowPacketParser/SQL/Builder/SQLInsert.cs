@@ -13,19 +13,19 @@ namespace WowPacketParser.SQL.Builder
 
         public void AddValue(string name, object value)
         {
-            _values.Add(new KeyValuePair<string, object>(SQLUtilities.AddBackQuotes(name), value));
+            _values.Add(new KeyValuePair<string, object>(SQLUtil.AddBackQuotes(name), value));
         }
 
         public void AddWhere(string name, object value)
         {
-            _whereClause.Add(new KeyValuePair<string, object>(SQLUtilities.AddBackQuotes(name), value));
+            _whereClause.Add(new KeyValuePair<string, object>(SQLUtil.AddBackQuotes(name), value));
         }
 
         private string _table;
 
         public string Table
         {
-            get { return SQLUtilities.AddBackQuotes(_table); }
+            get { return SQLUtil.AddBackQuotes(_table); }
             set { _table = value; }
         }
 
@@ -78,7 +78,7 @@ namespace WowPacketParser.SQL.Builder
             foreach (var values in _values)
             {
                 if (values.Value is string)
-                    result += SQLUtilities.AddQuotes(SQLUtilities.EscapeString(values.Value.ToString()));
+                    result += SQLUtil.AddQuotes(SQLUtil.EscapeString(values.Value.ToString()));
                 else
                     result += values.Value;
                 if (_values.IndexOf(values) + 1 != _values.Count)
