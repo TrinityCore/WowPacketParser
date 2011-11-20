@@ -530,7 +530,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadUInt32("Duration");
+            packet.ReadInt32("Duration");
         }
 
         [Parser(Opcode.SMSG_BREAK_TARGET)]
