@@ -86,13 +86,15 @@ namespace WowPacketParser.Parsing.Parsers
                 quest.RewardUnknown = packet.ReadInt32("Unk Int32"); // Always 0
             }
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // Probably added earlier
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333)) // Probably added earlier
             {
+                packet.ReadUInt32("skill line id");
                 quest.RewardSkillPoints = packet.ReadUInt32("RewSkillPoints");
                 quest.RewardReputationMask = packet.ReadUInt32("RewRepMask");
                 quest.QuestGiverPortrait = packet.ReadUInt32("QuestGiverPortrait");
                 quest.QuestTurnInPortrait = packet.ReadUInt32("QuestTurnInPortrait");
-                quest.UnknownUInt32 = packet.ReadUInt32("UnknownUInt32"); // This was added on 422
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // Probably added earlier
+                    quest.UnknownUInt32 = packet.ReadUInt32("UnknownUInt32"); // This was added on 422
             }
 
             quest.RewardItemId = new uint[4];
@@ -225,6 +227,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
+        [Parser(Opcode.CMSG_START_QUEST)]
         public static void HandleQuestPoiQuery(Packet packet)
         {
             var count = packet.ReadInt32("Count");
@@ -355,7 +358,8 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadCString("Target Text Window");
                 packet.ReadCString("Target Name");
-                packet.ReadUInt16("Unknown UInt16");
+                packet.ReadCString("Target unk1");
+                packet.ReadCString("Target unk2");
                 packet.ReadUInt32("Quest Giver Portrait Id");
                 packet.ReadUInt32("Unknown UInt32");
             }
@@ -395,19 +399,19 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 {
-                    for (var i = 0; i < choiceCount; i++)
+                    for (var i = 0; i < 6; i++)
                         packet.ReadUInt32("Choice Item Id", i);
-                    for (var i = 0; i < choiceCount; i++)
+                    for (var i = 0; i < 6; i++)
                         packet.ReadUInt32("Choice Item Count", i);
-                    for (var i = 0; i < choiceCount; i++)
+                    for (var i = 0; i < 6; i++)
                         packet.ReadUInt32("Choice Item Display Id", i);
 
                     var rewardCount = packet.ReadUInt32("Reward Item Count");
-                    for (var i = 0; i < rewardCount; i++)
+                    for (var i = 0; i < 4; i++)
                         packet.ReadUInt32("Reward Item Id", i);
-                    for (var i = 0; i < rewardCount; i++)
+                    for (var i = 0; i < 4; i++)
                         packet.ReadUInt32("Reward Item Count", i);
-                    for (var i = 0; i < rewardCount; i++)
+                    for (var i = 0; i < 4; i++)
                         packet.ReadUInt32("Reward Item Display Id", i);
                 }
                 else
@@ -491,7 +495,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             var emoteCount = packet.ReadUInt32("Quest Emote Count");
-            for (var i = 0; i < emoteCount; i++)
+            for (var i = 0; i < 4; i++)
             {
                 packet.ReadUInt32("[" + i + "] Emote Id");
                 packet.ReadUInt32("[" + i + "] Emote Delay (ms)");
@@ -665,7 +669,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE))
                 count = packet.ReadUInt32("Count");
 
-            var typeCode = ClientVersion.Build >= ClientVersionBuild.V4_2_2_14545 ? TypeCode.Int32 : TypeCode.Byte;
+            var typeCode = ClientVersion.Build >= ClientVersionBuild.V4_2_0_14333 ? TypeCode.Int32 : TypeCode.Byte;
 
             for (int i = 0; i < count; i++)
             {
@@ -716,7 +720,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
         }
 
-        //[Parser(Opcode.CMSG_START_QUEST)]
         //[Parser(Opcode.CMSG_FLAG_QUEST)]
         //[Parser(Opcode.CMSG_FLAG_QUEST_FINISH)]
         //[Parser(Opcode.CMSG_CLEAR_QUEST)]
