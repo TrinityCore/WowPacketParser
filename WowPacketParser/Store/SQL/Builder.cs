@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -361,6 +362,102 @@ namespace WowPacketParser.Store.SQL
 
                 sqlQuery.Append(
                     goTemplate.Value.UnknownUInt + ")," + Environment.NewLine);
+            }
+
+            return sqlQuery.ReplaceLast(',', ';').ToString();
+        }
+
+        public static string PageText()
+        {
+            if (Stuffing.PageTexts.IsEmpty)
+                return string.Empty;
+
+            var sqlQuery = new StringBuilder(String.Empty);
+
+            const string tableName = "page_Text";
+            const string primaryKey = "entry";
+            string[] tableStructure = {"entry", "text", "next_page"};
+
+            // Delete
+            sqlQuery.Append(SQLUtil.DeleteQuerySingle(Stuffing.PageTexts.Keys, primaryKey, tableName));
+
+            // Insert
+            sqlQuery.Append(SQLUtil.InsertQueryHeader(tableStructure, tableName));
+
+            // Insert rows
+            foreach (var pageText in Stuffing.PageTexts)
+            {
+                sqlQuery.Append(
+                    "(" +
+                    pageText.Key + cs +
+                    SQLUtil.Stringify(pageText.Value.Text) + cs +
+                    pageText.Value.NextPageId + ")," + Environment.NewLine);
+            }
+
+            return sqlQuery.ReplaceLast(',', ';').ToString();
+        }
+
+        public static string NpcText()
+        {
+            if (Stuffing.NpcTexts.IsEmpty)
+                return string.Empty;
+
+            var sqlQuery = new StringBuilder(String.Empty);
+
+            // Not TDB structure (data got 32 fields, not 24)
+            const string tableName = "npc_text";
+            const string primaryKey = "Id";
+            string[] tableStructure = {
+                                          "Id", "Probability1", "Probability2", "Probability3", "Probability4",
+                                          "Probability5", "Probability6", "Probability7", "Probability8", "Text1_1",
+                                          "Text1_2", "Text1_3", "Text1_4", "Text1_5", "Text1_6", "Text1_7", "Text1_8",
+                                          "Text2_1", "Text2_2", "Text2_3", "Text2_4", "Text2_5", "Text2_6", "Text2_7",
+                                          "Text2_8", "Language1", "Language2", "Language3", "Language4", "Language5",
+                                          "Language6", "Language7", "Language8", "EmoteId1_1", "EmoteId1_2",
+                                          "EmoteId1_3", "EmoteId2_1", "EmoteId2_2", "EmoteId2_3", "EmoteId3_1",
+                                          "EmoteId3_2", "EmoteId3_3", "EmoteId4_1", "EmoteId4_2", "EmoteId4_3",
+                                          "EmoteId5_1", "EmoteId5_2", "EmoteId5_3", "EmoteId6_1", "EmoteId6_2",
+                                          "EmoteId6_3", "EmoteId7_1", "EmoteId7_2", "EmoteId7_3", "EmoteId8_1",
+                                          "EmoteId8_2", "EmoteId8_3", "EmoteId1_1", "EmoteId1_2", "EmoteId1_3",
+                                          "EmoteId2_1", "EmoteId2_2", "EmoteId2_3", "EmoteId3_1", "EmoteId3_2",
+                                          "EmoteId3_3", "EmoteId4_1", "EmoteId4_2", "EmoteId4_3", "EmoteId5_1",
+                                          "EmoteId5_2", "EmoteId5_3", "EmoteId6_1", "EmoteId6_2", "EmoteId6_3",
+                                          "EmoteId7_1", "EmoteId7_2", "EmoteId7_3", "EmoteId8_1", "EmoteId8_2",
+                                          "EmoteId8_3"
+                                      };
+
+            // Delete
+            sqlQuery.Append(SQLUtil.DeleteQuerySingle(Stuffing.GameObjectTemplates.Keys, primaryKey, tableName));
+
+            // Insert
+            sqlQuery.Append(SQLUtil.InsertQueryHeader(tableStructure, tableName));
+
+            // Insert rows
+            foreach (var npcText in Stuffing.NpcTexts)
+            {
+                sqlQuery.Append("(" + npcText.Key + cs);
+
+                foreach (var n in npcText.Value.Probabilities)
+                    sqlQuery.Append(n + cs);
+
+                foreach (var s in npcText.Value.Texts1)
+                    sqlQuery.Append(SQLUtil.Stringify(s) + cs);
+
+                foreach (var s in npcText.Value.Texts2)
+                    sqlQuery.Append(SQLUtil.Stringify(s) + cs);
+
+                foreach (int n in npcText.Value.Languages)
+                    sqlQuery.Append(n + cs);
+
+                foreach (var a in npcText.Value.EmoteDelays)
+                    foreach (var n in a)
+                        sqlQuery.Append(n + cs);
+
+                foreach (var a in npcText.Value.EmoteIds)
+                    foreach (int n in a)
+                        sqlQuery.Append(n + cs); // TODO: Do not print comma on the last of the last emote
+
+                sqlQuery.Append(")," + Environment.NewLine);
             }
 
             return sqlQuery.ReplaceLast(',', ';').ToString();
