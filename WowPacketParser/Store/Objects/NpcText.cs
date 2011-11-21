@@ -18,6 +18,6 @@ namespace WowPacketParser.Store.Objects
 
         public uint[][] EmoteDelays;
 
-        public uint[][] EmoteIds;
+        public EmoteType[][] EmoteIds;
     }
 }

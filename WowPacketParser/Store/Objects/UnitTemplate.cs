@@ -4,8 +4,6 @@ namespace WowPacketParser.Store.Objects
 {
     public class UnitTemplate
     {
-        public uint Entry;
-
         public string Name;
 
         public string SubName;
@@ -43,14 +41,5 @@ namespace WowPacketParser.Store.Objects
         public uint MovementId;
 
         public ClientType Expansion;
-
-        // TypeFlags2? UnkInt?
-        public string[] DatabaseStructure = {
-                                                "entry", "KillCredit1", "KillCredit2", "modelid1", "modelid2", "modelid3",
-                                                "modelid4", "name", "subname", "IconName", "exp", "rank", "family", "type",
-                                                "type_flags", "PetSpellDataId", "Health_mod", "Mana_mod", "RacialLeader",
-                                                "questItem1", "questItem2", "questItem3", "questItem4", "questItem5",
-                                                "questItem6", "movementId"
-                                            };
     }
 }

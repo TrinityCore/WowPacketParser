@@ -551,24 +551,24 @@ namespace WowPacketParser.Parsing.Parsers
             var count1 = packet.ReadUInt32("Emote Count");
             for (var i = 0; i < count1; i++)
             {
-                packet.ReadUInt32("[" + i + "] Emote Delay");
-                packet.ReadUInt32("[" + i + "] Emote Id");
+                packet.ReadUInt32("Emote Delay", i);
+                packet.ReadEnum<EmoteType>("Emote Id", TypeCode.UInt32, i);
             }
 
             var count2 = packet.ReadUInt32("Choice Item Count");
             for (var i = 0; i < count2; i++)
             {
-                packet.ReadUInt32("[" + i + "] Choice Item Id");
-                packet.ReadUInt32("[" + i + "] Choice Item Count");
-                packet.ReadUInt32("[" + i + "] Choice Item Display Id");
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Choice Item Id", i);
+                packet.ReadUInt32("Choice Item Count", i);
+                packet.ReadUInt32("Choice Item Display Id", i);
             }
 
             var count3 = packet.ReadUInt32("Reward Item Count");
             for (var i = 0; i < count3; i++)
             {
-                packet.ReadUInt32("[" + i + "] Reward Item Id");
-                packet.ReadUInt32("[" + i + "] Reward Item Count");
-                packet.ReadUInt32("[" + i + "] Reward Item Display Id");
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Reward Item Id", i);
+                packet.ReadUInt32("Reward Item Count", i);
+                packet.ReadUInt32("Reward Item Display Id", i);
             }
             packet.ReadUInt32("Money");
             packet.ReadUInt32("XP");
@@ -584,13 +584,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk Uint32");
 
             for (var i = 0; i < 5; i++)
-                packet.ReadUInt32("[" + i + "] Reputation Faction");
+                packet.ReadUInt32("Reputation Faction", i);
 
             for (var i = 0; i < 5; i++)
-                packet.ReadUInt32("[" + i + "] Reputation Value Id");
+                packet.ReadUInt32("Reputation Value Id", i);
 
             for (var i = 0; i < 5; i++)
-                packet.ReadInt32("[" + i + "] Reputation Value");
+                packet.ReadInt32("Reputation Value", i);
         }
 
         [Parser(Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD)]
