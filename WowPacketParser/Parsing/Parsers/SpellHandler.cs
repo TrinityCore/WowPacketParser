@@ -45,7 +45,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Talent Spec");
 
             var count = packet.ReadInt16("Spell Count");
-
             for (var i = 0; i < count; i++)
             {
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
@@ -57,17 +56,16 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             var cooldownCount = packet.ReadInt16("Cooldown Count");
-
             for (var i = 0; i < cooldownCount; i++)
             {
-                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Cooldown Spell ID", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Cooldown Spell ID", i);
+                else
+                    packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Cooldown Spell ID", i);
 
                 packet.ReadInt16("Cooldown Cast Item ID");
-
                 packet.ReadInt16("Cooldown Spell Category", i);
-
                 packet.ReadInt32("Cooldown Time", i);
-
                 packet.ReadInt32("Cooldown Category Time", i);
             }
         }
@@ -303,7 +301,9 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLearnedSpell(Packet packet)
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadInt16("Unk Int16");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+                packet.ReadInt16("Unk Int16");
         }
 
         [Parser(Opcode.CMSG_UPDATE_PROJECTILE_POSITION)]
@@ -385,8 +385,14 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_REMOVED_SPELL)]
-        [Parser(Opcode.CMSG_CANCEL_CHANNELLING)]
         public static void HandleRemovedSpell(Packet packet)
+        {
+            packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Spell ID");
+        }
+
+        [Parser(Opcode.SMSG_REMOVED_SPELL, ClientVersionBuild.V3_1_0_9767)]
+        [Parser(Opcode.CMSG_CANCEL_CHANNELLING)]
+        public static void HandleRemovedSpell2(Packet packet)
         {
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
         }

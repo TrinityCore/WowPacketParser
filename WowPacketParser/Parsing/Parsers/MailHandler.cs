@@ -48,12 +48,15 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MAIL_LIST_RESULT)]
         public static void HandleMailListResult(Packet packet)
         {
-            packet.ReadUInt32("Total Mails");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
+                packet.ReadUInt32("Total Mails");
+
             var count = packet.ReadByte("Shown Mails");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadUInt16("Message Size", i);
                 packet.ReadUInt32("Mail Id", i);
+
                 var mailType = packet.ReadEnum<MailType>("Message Type", TypeCode.Byte, i);
                 switch (mailType) // Read GUID if MailType.Normal, int32 (entry) if not
                 {
@@ -73,7 +76,12 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadInt32("Entry", i);
                         break;
                 }
+
                 packet.ReadUInt32("COD", i);
+
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_0_10958))
+                    packet.ReadUInt32("Item Text Id", i);
+
                 packet.ReadUInt32("Unk uint32", i);
                 packet.ReadUInt32("Stationery", i);
                 packet.ReadUInt32("Money", i);
@@ -81,26 +89,39 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSingle("Time?", i);
                 packet.ReadUInt32("Template Id", i);
                 packet.ReadCString("Subject", i);
-                packet.ReadCString("Body", i);
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+                    packet.ReadCString("Body", i);
+
                 var items = packet.ReadByte("Item Count", i);
                 for (var j = 0; j < items; ++j)
                 {
                     packet.ReadByte("Item Index", i, j);
                     packet.ReadUInt32("Item GuidLow", i, j);
                     packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Id", i, j);
-                    for (var k = 0; k < 7; ++k)
+
+                    int enchantmentCount = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 7 : 6;
+                    for (var k = 0; k < enchantmentCount; ++k)
                     {
                         packet.ReadUInt32("Item Enchantment Id", i, j, k);
                         packet.ReadUInt32("Item Enchantment Duration", i, j, k);
                         packet.ReadUInt32("Item Enchantment Charges", i, j, k);
                     }
+
                     packet.ReadInt32("Item Random Property Id", i, j);
                     packet.ReadUInt32("Item Suffix Factor", i, j);
-                    packet.ReadUInt32("Item Count", i, j);
+
+                    if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
+                        packet.ReadUInt32("Item Count", i, j);
+                    else
+                        packet.ReadByte("Item Count", i, j);
+
                     packet.ReadUInt32("Item SpellCharges", i, j);
                     packet.ReadUInt32("Item Max Durability", i, j);
                     packet.ReadUInt32("Item Durability", i, j);
-                    packet.ReadByte("Unk byte", i, j);
+
+                    if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
+                        packet.ReadByte("Unk byte", i, j);
                 }
             }
         }

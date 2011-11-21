@@ -12,18 +12,15 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Direction == Direction.ClientToServer)
                 return;
 
-            var found = packet.ReadBoolean("Corpse Found");
-
-            if (!found)
+            if (!packet.ReadBoolean("Corpse Found"))
                 return;
 
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
-
             packet.ReadVector3("Corpse Position");
-
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Corpse Map ID");
 
-            packet.ReadInt32("Corpse Low GUID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_2_10482))
+                packet.ReadInt32("Corpse Low GUID");
         }
 
         [Parser(Opcode.CMSG_CORPSE_MAP_POSITION_QUERY)]
@@ -36,7 +33,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleCorpseMapPositionResponse(Packet packet)
         {
             packet.ReadVector3("Unk Vector3");
-
             packet.ReadSingle("Unk Single");
         }
 

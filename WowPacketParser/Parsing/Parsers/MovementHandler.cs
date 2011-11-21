@@ -165,10 +165,12 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadPackedGuid("Transport GUID");
 
-                packet.ReadByte("Transport Seat");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
+                    packet.ReadByte("Transport Seat");
             }
 
-            packet.ReadBoolean("Unk Boolean"); // Something to do with IsVehicleExitVoluntary ?
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
+                packet.ReadBoolean("Unk Boolean"); // Something to do with IsVehicleExitVoluntary ?
 
             var pos = packet.ReadVector3("Position");
 

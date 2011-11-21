@@ -18,8 +18,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.Writer.WriteLine("GUID: " + guid);
             var isPet = guid.GetHighType() == HighGuidType.Pet;
 
-            var family = (CreatureFamily)packet.ReadUInt16();
-            packet.Writer.WriteLine("Pet Family: " + family); // vehicles -> 0
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
+                packet.ReadEnum<CreatureFamily>("Pet Family", TypeCode.UInt16); // vehicles -> 0
 
             var unk1 = packet.ReadUInt32(); // 0
             packet.Writer.WriteLine("Unknown 1: " + unk1);
@@ -65,7 +65,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < cdCount; i++)
             {
-                var spellId = packet.ReadInt32();
+                int spellId;
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
+                    spellId = packet.ReadInt32();
+                else
+                    spellId = packet.ReadUInt16();
+
                 var category = packet.ReadUInt16();
                 var cooldown = packet.ReadUInt32();
                 var categoryCooldown = packet.ReadUInt32();

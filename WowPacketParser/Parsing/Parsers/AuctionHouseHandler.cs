@@ -16,16 +16,24 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
 
             packet.ReadUInt32("AuctionHouse ID");
-            packet.ReadBoolean("Enabled");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+                packet.ReadBoolean("Enabled");
         }
 
         [Parser(Opcode.CMSG_AUCTION_SELL_ITEM)]
         public static void HandleAuctionSellItem(Packet packet)
         {
             packet.ReadGuid("Auctioneer GUID");
-            packet.ReadUInt32("Unk UInt32");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_2a_10505))
+                packet.ReadUInt32("Unk UInt32");
+
             packet.ReadGuid("Item GUID");
-            packet.ReadUInt32("Count");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_2a_10505))
+                packet.ReadUInt32("Count");
+
             packet.ReadUInt32("Bid");
             packet.ReadUInt32("Buyout");
             packet.ReadUInt32("Expire Time");
@@ -129,12 +137,15 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadUInt32("Auction Id", i);
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
-                for (var j = 0; j < 7; ++j)
+
+                int enchantmentCount = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 7 : 6;
+                for (var j = 0; j < enchantmentCount; ++j)
                 {
                     packet.ReadUInt32("Item Enchantment ID", i, j);
                     packet.ReadUInt32("Item Enchantment Duration", i, j);
                     packet.ReadUInt32("Item Enchantment Charges", i, j);
                 }
+
                 packet.ReadInt32("Item Random Property ID", i);
                 packet.ReadUInt32("Item Suffix", i);
                 packet.ReadUInt32("Item Count", i);

@@ -22,9 +22,11 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             packet.ReadGuid("Group GUID");
-            packet.ReadInt32("Counter");
-            var numFields = packet.ReadInt32("Member Count");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+                packet.ReadInt32("Counter");
+
+            var numFields = packet.ReadInt32("Member Count");
             for (var i = 0; i < numFields; i++)
             {
                 packet.ReadCString("[" + i + "] Name");
@@ -32,7 +34,9 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<GroupMemberStatusFlag>("[" + i + "] Status", TypeCode.Byte);
                 packet.ReadByte("[" + i + "] Sub Group");
                 packet.ReadEnum<GroupUpdateFlag>("[" + i + "] Update Flags", TypeCode.Byte);
-                packet.ReadEnum<LfgRoleFlag>("[" + i + "] Role", TypeCode.Byte);
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+                    packet.ReadEnum<LfgRoleFlag>("[" + i + "] Role", TypeCode.Byte);
             }
 
             packet.ReadGuid("Leader GUID");
@@ -43,16 +47,22 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<LootMethod>("Loot Method", TypeCode.Byte);
             packet.ReadGuid("Looter GUID");
             packet.ReadEnum<ItemQuality>("Loot Threshold", TypeCode.Byte);
-            packet.ReadEnum<MapDifficulty>("Dungeon Difficulty", TypeCode.Byte);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
+                packet.ReadEnum<MapDifficulty>("Dungeon Difficulty", TypeCode.Byte);
+
             packet.ReadEnum<MapDifficulty>("Raid Difficulty", TypeCode.Byte);
-            packet.ReadByte("Unk Byte");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+                packet.ReadByte("Unk Byte");
         }
 
         [Parser(Opcode.SMSG_PARTY_MEMBER_STATS)]
         [Parser(Opcode.SMSG_PARTY_MEMBER_STATS_FULL)]
         public static void HandlePartyMemberStats(Packet packet)
         {
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PARTY_MEMBER_STATS_FULL))
+            if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) &&
+                packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PARTY_MEMBER_STATS_FULL))
                 packet.ReadByte("Unk byte");
 
             packet.ReadPackedGuid("GUID");
@@ -62,10 +72,20 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<GroupMemberStatusFlag>("Status", TypeCode.Int16);
 
             if (updateFlags.HasAnyFlag(GroupUpdateFlag.CurrentHealth))
-                packet.ReadInt32("Current Health");
+            {
+                if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
+                    packet.ReadInt32("Current Health");
+                else
+                    packet.ReadUInt16("Current Health");
+            }
 
             if (updateFlags.HasAnyFlag(GroupUpdateFlag.MaxHealth))
-                packet.ReadInt32("Max Health");
+            {
+                if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
+                    packet.ReadInt32("Max Health");
+                else
+                    packet.ReadUInt16("Max Health");
+            }
 
             if (updateFlags.HasAnyFlag(GroupUpdateFlag.PowerType))
                 packet.ReadEnum<PowerType>("Power type", TypeCode.Byte);
@@ -91,11 +111,19 @@ namespace WowPacketParser.Parsing.Parsers
             if (updateFlags.HasAnyFlag(GroupUpdateFlag.Auras))
             {
                 var auraMask = packet.ReadUInt64("Auramask");
-                for (var i = 0; i < 64; ++i)
+
+                int maxAura = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 64 : 56;
+                for (var i = 0; i < maxAura; ++i)
                 {
                     if ((auraMask & ((ulong)1 << i)) != 0)
                     {
-                        packet.Writer.WriteLine("Slot: [" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
+                        int aura;
+                        if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
+                            aura = packet.ReadInt32();
+                        else
+                            aura = packet.ReadUInt16();
+
+                        packet.Writer.WriteLine("Slot: [" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, aura));
                         packet.ReadEnum<AuraFlag>("Slot: [" + i + "] Aura flag", TypeCode.Byte);
                     }
                 }
@@ -111,10 +139,20 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt16("Pet Modelid");
 
             if (updateFlags.HasAnyFlag(GroupUpdateFlag.PetCurrentHealth))
-                packet.ReadInt32("Pet Current Health");
+            {
+                if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
+                    packet.ReadInt32("Pet Current Health");
+                else
+                    packet.ReadUInt16("Pet Current Health");
+            }
 
             if (updateFlags.HasAnyFlag(GroupUpdateFlag.PetMaxHealth))
-                packet.ReadInt32("Pet Max Health");
+            {
+                if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
+                    packet.ReadInt32("Pet Max Health");
+                else
+                    packet.ReadUInt16("Pet Max Health");
+            }
 
             if (updateFlags.HasAnyFlag(GroupUpdateFlag.PetPowerType))
                 packet.ReadEnum<PowerType>("Pet Power type", TypeCode.Byte);
@@ -129,20 +167,27 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var auraMask = packet.ReadUInt64("Pet Auramask");
 
-                for (var i = 0; i < 64; ++i)
+                int maxAura = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 64 : 56;
+                for (var i = 0; i < maxAura; ++i)
                 {
                     if ((auraMask & ((ulong)1 << i)) != 0)
                     {
-                        packet.Writer.WriteLine("Slot: [" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, packet.ReadInt32()));
+                        int aura;
+                        if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
+                            aura = packet.ReadInt32();
+                        else
+                            aura = packet.ReadUInt16();
+
+                        packet.Writer.WriteLine("Slot: [" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, aura));
                         packet.ReadEnum<AuraFlag>("Slot: [" + i + "] Aura flag", TypeCode.Byte);
                     }
                 }
             }
 
-            if (updateFlags.HasAnyFlag(GroupUpdateFlag.VehicleSeat))
+            if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) && // no idea when this was added exactly, doesn't exist in 2.4.1
+                updateFlags.HasAnyFlag(GroupUpdateFlag.VehicleSeat))
                 packet.ReadInt32("Vehicle Seat");
         }
-
 
         [Parser(Opcode.CMSG_GROUP_SET_LEADER)]
         public static void HandleGroupSetLeader(Packet packet)
@@ -215,7 +260,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<PartyCommand>("Command", TypeCode.UInt32);
             packet.ReadCString("Member");
             packet.ReadEnum<PartyResult>("Result", TypeCode.UInt32);
-            packet.ReadUInt32("LFG Boot Cooldown");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+                packet.ReadUInt32("LFG Boot Cooldown");
         }
 
         [Parser(Opcode.SMSG_RAID_GROUP_ONLY)]

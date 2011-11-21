@@ -51,6 +51,10 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleActivateTaxiExpress(Packet packet)
         {
             packet.ReadGuid("GUID");
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_2_0_10192))
+                packet.ReadUInt32("Cost");
+
             var count = packet.ReadUInt32("Node Count");
             for (var i = 0; i < count; ++i)
                 packet.ReadUInt32("Node ID", i);

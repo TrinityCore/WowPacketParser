@@ -58,7 +58,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_TOGGLE_PVP)]
         public static void HandleTogglePvP(Packet packet)
         {
-            packet.ReadBoolean("Enable");
+            // this opcode can be used in two ways: Either set new status explicitly or toggle old status
+            if (packet.CanRead())
+                packet.ReadBoolean("Enable");
         }
 
         [Parser(Opcode.SMSG_PVP_CREDIT)]

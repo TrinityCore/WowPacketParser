@@ -208,7 +208,9 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var level = packet.ReadInt32("Level");
             packet.ReadInt32("Health");
-            for (var i = 0; i < 7; i++)
+
+            var powerCount = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 7 : 5;
+            for (var i = 0; i < powerCount; i++)
                 packet.ReadInt32("Power " + (PowerType)i);
 
             for (var i = 0; i < 5; i++)

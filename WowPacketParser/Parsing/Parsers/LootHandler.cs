@@ -14,7 +14,9 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLootMoneyNotify(Packet packet)
         {
             packet.ReadUInt32("Gold");
-            packet.ReadBoolean("Solo Loot");
+
+            if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing)) // no idea when this was added, doesn't exist in 2.4.1
+                packet.ReadBoolean("Solo Loot");
         }
 
         [Parser(Opcode.CMSG_LOOT)]

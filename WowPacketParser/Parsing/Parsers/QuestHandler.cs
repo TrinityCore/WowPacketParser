@@ -516,9 +516,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk UInt32 1");
             packet.ReadUInt32("Emote");
             packet.ReadUInt32("Close Window on Cancel");
-            packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+                packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
+
             packet.ReadUInt32("Suggested Players");
             packet.ReadUInt32("Money");
+
             var count = packet.ReadUInt32("Required Item Count");
             for (var i = 0; i < count; i++)
             {
@@ -526,11 +530,13 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Required Item Count", i);
                 packet.ReadUInt32("Required Item Display Id", i);
             }
+
             // flags
             packet.ReadUInt32("Unk flags 1");
             packet.ReadUInt32("Unk flags 2");
             packet.ReadUInt32("Unk flags 3");
             packet.ReadUInt32("Unk flags 4");
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
             {
                 packet.ReadUInt32("Unk flags 5");
@@ -545,9 +551,17 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
             packet.ReadCString("Title");
             packet.ReadCString("Text");
-            packet.ReadByte("Auto Finish");
-            packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+                packet.ReadBoolean("Auto Finish");
+            else
+                packet.ReadBoolean("Auto Finish", TypeCode.Int32);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+                packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
+
             packet.ReadUInt32("Suggested Players");
+
             var count1 = packet.ReadUInt32("Emote Count");
             for (var i = 0; i < count1; i++)
             {
@@ -570,27 +584,38 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Reward Item Count", i);
                 packet.ReadUInt32("Reward Item Display Id", i);
             }
-            packet.ReadUInt32("Money");
-            packet.ReadUInt32("XP");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+                packet.ReadUInt32("Money");
+
+            packet.ReadUInt32("XP");
             packet.ReadUInt32("Honor Points");
-            packet.ReadSingle("Honor Multiplier");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+                packet.ReadSingle("Honor Multiplier");
+
             packet.ReadUInt32("Unk UInt32 1");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell Id");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell Cast Id");
             packet.ReadUInt32("Title Id");
-            packet.ReadUInt32("Bonus Talent");
-            packet.ReadUInt32("Arena Points");
-            packet.ReadUInt32("Unk Uint32");
 
-            for (var i = 0; i < 5; i++)
-                packet.ReadUInt32("Reputation Faction", i);
+            if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
+                packet.ReadUInt32("Bonus Talent");
 
-            for (var i = 0; i < 5; i++)
-                packet.ReadUInt32("Reputation Value Id", i);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+            {
+                packet.ReadUInt32("Arena Points");
+                packet.ReadUInt32("Unk Uint32");
 
-            for (var i = 0; i < 5; i++)
-                packet.ReadInt32("Reputation Value", i);
+                for (var i = 0; i < 5; i++)
+                    packet.ReadUInt32("Reputation Faction", i);
+
+                for (var i = 0; i < 5; i++)
+                    packet.ReadUInt32("Reputation Value Id", i);
+
+                for (var i = 0; i < 5; i++)
+                    packet.ReadInt32("Reputation Value", i);
+            }
         }
 
         [Parser(Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD)]
