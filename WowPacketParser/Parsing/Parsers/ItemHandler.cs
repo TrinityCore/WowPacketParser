@@ -210,7 +210,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleItemQuerySingle(Packet packet)
         {
             packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
-            if (ClientVersion.Build >= ClientVersionBuild.V4_2_2_14545) // Might be earlier
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // Might be earlier
             {
                 packet.ReadEnum<UnknownFlags>("Unknown Byte", TypeCode.Byte);
                 packet.ReadInt32("Unknown Int32");

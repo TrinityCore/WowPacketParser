@@ -194,18 +194,18 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 4; i++)
                 quest.ObjectiveTexts[i] = packet.ReadCString("Objective Text", i);
 
+            quest.RewardCurrencyId = new uint[4];
+            quest.RewardCurrencyCount = new uint[4];
+            quest.RequiredCurrencyId = new uint[4];
+            quest.RequiredCurrencyCount = new uint[4];
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
             {
-                quest.RewardCurrencyId = new uint[4];
-                quest.RewardCurrencyCount = new uint[4];
                 for (var i = 0; i < 4; ++i)
                 {
                     quest.RewardCurrencyId[i] = packet.ReadUInt32("Reward Currency ID", i);
                     quest.RewardCurrencyCount[i] = packet.ReadUInt32("Reward Currency Count", i);
                 }
 
-                quest.RequiredCurrencyId = new uint[4];
-                quest.RequiredCurrencyCount = new uint[4];
                 for (var i = 0; i < 4; ++i)
                 {
                     quest.RequiredCurrencyId[i] = packet.ReadUInt32("Required Currency ID", i);
@@ -665,7 +665,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE))
                 count = packet.ReadUInt32("Count");
 
-            var typeCode = ClientVersion.Build >= ClientVersionBuild.V4_2_2_14545 ? TypeCode.Int32 : TypeCode.Byte;
+            var typeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) ? TypeCode.Int32 : TypeCode.Byte;
 
             for (int i = 0; i < count; i++)
             {

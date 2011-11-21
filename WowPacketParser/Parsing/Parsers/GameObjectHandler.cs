@@ -51,7 +51,7 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var i = 0; i < gameObject.QuestItems.Length; i++)
                     gameObject.QuestItems[i] = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item", i);
 
-            if (ClientVersion.Build >= ClientVersionBuild.V4_2_0_14333)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
                 gameObject.UnknownUInt = packet.ReadUInt32("Unknown UInt32");
 
             Stuffing.GameObjectTemplates.TryAdd((uint) entry.Key, gameObject);

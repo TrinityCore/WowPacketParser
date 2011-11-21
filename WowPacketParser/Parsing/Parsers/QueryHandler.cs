@@ -77,7 +77,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (entry.Value)
                 return;
 
-            var nameCount = ClientVersion.Build >= ClientVersionBuild.V4_1_0_13914 ? 8 : 4; // Might be earlier or later
+            var nameCount = ClientVersion.AddedInVersion(ClientVersionBuild.V4_1_0_13914) ? 8 : 4; // Might be earlier or later
             var name = new string[nameCount];
             for (var i = 0; i < name.Length; i++)
                 name[i] = packet.ReadCString("Name", i);
@@ -89,7 +89,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             creature.TypeFlags = packet.ReadEnum<CreatureTypeFlag>("Type Flags", TypeCode.UInt32);
 
-            if (ClientVersion.Build >= ClientVersionBuild.V4_1_0_13914) // Might be earlier or later
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_1_0_13914)) // Might be earlier or later
                 creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2"); // Missing enum
 
             creature.Type = packet.ReadEnum<CreatureType>("Type", TypeCode.Int32);

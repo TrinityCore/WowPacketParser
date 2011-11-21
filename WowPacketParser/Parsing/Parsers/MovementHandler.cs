@@ -226,7 +226,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var newpos = packet.ReadVector3("Waypoint 0");
 
-            if (flags.HasAnyFlag(SplineFlag.Flying) || flags.HasAnyFlag(SplineFlag.CatmullRom))
+            if (flags.HasAnyFlag(SplineFlag.Flying | SplineFlag.CatmullRom))
                 for (var i = 0; i < waypoints - 1; i++)
                     packet.ReadVector3("Waypoint " + (i + 1));
             else

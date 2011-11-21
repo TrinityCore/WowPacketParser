@@ -7,17 +7,7 @@ namespace WowPacketParser.Misc
     public static class ClientVersion
     {
         private static ClientType _expansion;
-
         private static ClientVersionBuild _build;
-        public static ClientVersionBuild Build
-        {
-            get { return _build; }
-            set
-            {
-                _build = value;
-                _expansion = GetExpansion(value);
-            }
-        }
 
         // Kept in sync with http://www.wowwiki.com/Public_client_builds
         private static readonly KeyValuePair<ClientVersionBuild, DateTime>[] _clientBuilds = new []
@@ -96,14 +86,20 @@ namespace WowPacketParser.Misc
             return _clientBuilds[_clientBuilds.Length - 1].Key;
         }
 
+        public static void SetVersion(ClientVersionBuild version)
+        {
+            _build = version;
+            _expansion = GetExpansion(version);
+        }
+
         public static void SetVersion(DateTime time)
         {
-            Build = GetVersion(time);
+            SetVersion(GetVersion(time));
         }
 
         public static bool AddedInVersion(ClientVersionBuild build)
         {
-            return Build >= build;
+            return _build >= build;
         }
 
         public static bool AddedInVersion(ClientType expansion)
@@ -113,12 +109,27 @@ namespace WowPacketParser.Misc
 
         public static bool RemovedInVersion(ClientVersionBuild build)
         {
-            return Build < build;
+            return _build < build;
         }
 
         public static bool RemovedInVersion(ClientType expansion)
         {
             return _expansion < expansion;
+        }
+
+        public static bool IsUndefined()
+        {
+            return _build == ClientVersionBuild.Zero;
+        }
+
+        public static int GetBuild()
+        {
+            return (int)_build;
+        }
+
+        public static string GetVersionString()
+        {
+            return _build.ToString();
         }
     }
 }

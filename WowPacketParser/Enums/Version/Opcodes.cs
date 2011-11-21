@@ -6,9 +6,9 @@ namespace WowPacketParser.Enums.Version
 {
     public static partial class Opcodes
     {
-        private static Dictionary<Opcode, int> GetOpcodeDictionary(ClientVersionBuild versionBuild)
+        private static Dictionary<Opcode, int> GetOpcodeDictionary(int build)
         {
-            switch (versionBuild)
+            switch ((ClientVersionBuild)build)
             {
                 case ClientVersionBuild.V2_4_3_8606:
                 case ClientVersionBuild.V3_0_2_9056:
@@ -61,12 +61,12 @@ namespace WowPacketParser.Enums.Version
 
         public static string GetOpcodeName(int opcodeId)
         {
-            return GetOpcodeName(opcodeId, ClientVersion.Build);
+            return GetOpcodeName(opcodeId, ClientVersion.GetBuild());
         }
 
-        public static string GetOpcodeName(int opcodeId, ClientVersionBuild versionBuild)
+        public static string GetOpcodeName(int opcodeId, int build)
         {
-            foreach (var pair in GetOpcodeDictionary(versionBuild))
+            foreach (var pair in GetOpcodeDictionary(build))
                 if (pair.Value == opcodeId)
                     return pair.Key.ToString();
 
@@ -75,13 +75,13 @@ namespace WowPacketParser.Enums.Version
 
         public static int GetOpcode(Opcode opcode)
         {
-            return GetOpcode(opcode, ClientVersion.Build);
+            return GetOpcode(opcode, ClientVersion.GetBuild());
         }
 
-        public static int GetOpcode(Opcode opcode, ClientVersionBuild versionBuild)
+        public static int GetOpcode(Opcode opcode, int build)
         {
-            int opcodeId;
-            GetOpcodeDictionary(versionBuild).TryGetValue(opcode, out opcodeId);
+            int opcodeId = -1;
+            GetOpcodeDictionary(build).TryGetValue(opcode, out opcodeId);
             return opcodeId;
         }
     }

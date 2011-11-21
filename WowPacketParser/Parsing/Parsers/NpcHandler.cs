@@ -115,30 +115,30 @@ namespace WowPacketParser.Parsing.Parsers
 
             ulong tmp = 0;
 
-            if (flags.HasFlag(UnknownFlags.Unk5))
+            if (flags.HasAnyFlag(UnknownFlags.Unk5))
                 tmp += ReadByte(ref packet, 2);
 
             var itemCount = packet.ReadUInt32("Item Count");
 
-            if (flags.HasFlag(UnknownFlags.Unk8))
+            if (flags.HasAnyFlag(UnknownFlags.Unk8))
                 tmp += ReadByte(ref packet, 5);
 
-            if (flags.HasFlag(UnknownFlags.Unk2)) // Flag?
+            if (flags.HasAnyFlag(UnknownFlags.Unk2)) // Flag?
                 tmp += ReadByte(ref packet, 0);
 
-            if (flags.HasFlag(UnknownFlags.Unk3)) // Flag?
+            if (flags.HasAnyFlag(UnknownFlags.Unk3)) // Flag?
                 tmp += ReadByte(ref packet, 1);
 
-            if (flags.HasFlag(UnknownFlags.Unk6)) // Flag?
+            if (flags.HasAnyFlag(UnknownFlags.Unk6)) // Flag?
                 ReadByte(ref packet, 3);
 
-            if (flags.HasFlag(UnknownFlags.Unk1))
+            if (flags.HasAnyFlag(UnknownFlags.Unk1))
                 tmp += ReadByte(ref packet, 4);
 
-            if (flags.HasFlag(UnknownFlags.Unk7)) // Flag?
+            if (flags.HasAnyFlag(UnknownFlags.Unk7)) // Flag?
                 tmp += ReadByte(ref packet, 7);
 
-            if (!flags.HasFlag(UnknownFlags.Unk4)) // Flag?
+            if (!flags.HasAnyFlag(UnknownFlags.Unk4)) // Flag?
                 tmp += ReadByte(ref packet, 6);
 
             var guid = new Guid(tmp);

@@ -11,9 +11,9 @@ namespace WowPacketParser.Enums.Version
 
         public static string GetUpdateFieldName(int updateField, string fieldType)
         {
-            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", ClientVersion.Build, fieldType);
+            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", ClientVersion.GetVersionString(), fieldType);
 
-            var enumName = _assembly.GetType(typeString).GetEnumName(updateField);
+            var enumName = Enum.GetName(_assembly.GetType(typeString), updateField);
 
             if (!String.IsNullOrEmpty(enumName))
                 return enumName;
@@ -25,7 +25,7 @@ namespace WowPacketParser.Enums.Version
 
         public static int GetUpdateField(ObjectField objectField)
         {
-            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.ObjectField", ClientVersion.Build);
+            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.ObjectField", ClientVersion.GetVersionString());
 
             var newEnumType = _assembly.GetType(typeString);
 
@@ -38,7 +38,7 @@ namespace WowPacketParser.Enums.Version
 
         public static int GetUpdateField(ItemField itemField)
         {
-            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.ItemField", ClientVersion.Build);
+            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.ItemField", ClientVersion.GetVersionString());
 
             var newEnumType = _assembly.GetType(typeString);
 
@@ -51,7 +51,7 @@ namespace WowPacketParser.Enums.Version
 
         public static int GetUpdateField(ContainerField containerField)
         {
-            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.ContainerField", ClientVersion.Build);
+            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.ContainerField", ClientVersion.GetVersionString());
 
             var newEnumType = _assembly.GetType(typeString);
 
@@ -64,7 +64,7 @@ namespace WowPacketParser.Enums.Version
 
         public static int GetUpdateField(UnitField unitField)
         {
-            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.UnitField", ClientVersion.Build);
+            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.UnitField", ClientVersion.GetVersionString());
 
             var newEnumType = _assembly.GetType(typeString);
 
@@ -77,7 +77,7 @@ namespace WowPacketParser.Enums.Version
 
         public static int GetUpdateField(GameObjectField gameObjectField)
         {
-            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.GameObjectField", ClientVersion.Build);
+            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.GameObjectField", ClientVersion.GetVersionString());
 
             var newEnumType = _assembly.GetType(typeString);
 
@@ -90,7 +90,7 @@ namespace WowPacketParser.Enums.Version
 
         public static int GetUpdateField(DynamicObjectField dynamicObjectField)
         {
-            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.DynamicObjectField", ClientVersion.Build);
+            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.DynamicObjectField", ClientVersion.GetVersionString());
 
             var newEnumType = _assembly.GetType(typeString);
 
@@ -103,7 +103,7 @@ namespace WowPacketParser.Enums.Version
 
         public static int GetUpdateField(CorpseField corpseField)
         {
-            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.CorpseField", ClientVersion.Build);
+            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.CorpseField", ClientVersion.GetVersionString());
 
             var newEnumType = _assembly.GetType(typeString);
 
