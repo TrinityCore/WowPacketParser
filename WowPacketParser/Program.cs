@@ -75,6 +75,8 @@ namespace WowPacketParser
                         SQLStore.WriteData(Builder.NpcVendor());
                         SQLStore.WriteData(Builder.NpcTemplate());
                         SQLStore.WriteData(Builder.GameObjectTemplate());
+                        SQLStore.WriteData(Builder.PageText());
+                        SQLStore.WriteData(Builder.NpcText());
                     }
 
                     SQLStore.WriteToFile();

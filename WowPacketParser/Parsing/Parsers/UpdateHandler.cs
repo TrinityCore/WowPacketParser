@@ -403,7 +403,8 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                 }
 
-                if (moveFlags.HasAnyFlag(MovementFlag.SplineEnabled))
+                // this is incorrect for certain objects but I can't figure out why
+                if (moveFlags.HasAnyFlag(MovementFlag.SplineEnabled) || moveInfo.HasSplineData)
                 {
                     var splineFlags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32, index);
 

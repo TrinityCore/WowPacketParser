@@ -112,7 +112,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var splineElevation = packet.ReadBit("SplineElevation", index);
 
-            packet.ReadBit("HasSplineData", index);
+            info.HasSplineData = packet.ReadBit("HasSplineData", index);
 
             packet.ResetBitReader(); // reset bitreader
 
