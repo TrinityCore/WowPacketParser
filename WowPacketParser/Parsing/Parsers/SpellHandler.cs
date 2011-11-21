@@ -548,6 +548,34 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
+        [Parser(Opcode.SMSG_MIRRORIMAGE_DATA)]
+        public static void HandleMirrorImageData(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32("Display ID");
+            packet.ReadEnum<Race>("Race", TypeCode.Byte);
+            packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
+            packet.ReadEnum<Class>("Class", TypeCode.Byte);
+
+            if (!packet.CanRead())
+                return;
+
+            packet.ReadByte("Skin");
+            packet.ReadByte("Face");
+            packet.ReadByte("Hair Style");
+            packet.ReadByte("Hair Color");
+            packet.ReadByte("Facial Hair");
+            packet.ReadUInt32("Unk");
+
+            EquipmentSlotType[] slots = {
+                EquipmentSlotType.Head, EquipmentSlotType.Shoulders, EquipmentSlotType.Shirt,
+                EquipmentSlotType.Chest, EquipmentSlotType.Waist, EquipmentSlotType.Legs,
+                EquipmentSlotType.Feet, EquipmentSlotType.Wrists, EquipmentSlotType.Hands,
+                EquipmentSlotType.Back, EquipmentSlotType.Tabard };
+
+            for (var i = 0; i < 11; ++i)
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "[" + slots[i] + "] Item Entry");
+        }
 
         [Parser(Opcode.SMSG_CLEAR_COOLDOWN)]
         public static void HandleClearCooldown(Packet packet)
