@@ -566,54 +566,46 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Flag"); // can be 0, 4 or 8, 8 = normal world, others are unknown
         }
 
+        private static ulong ReadByte(ref Packet packet, int index)
+        {
+            var tmp = (ulong)packet.ReadByte();
+            if ((tmp % 2) == 0)
+                tmp++;
+            else
+                tmp--;
+            // Debug: packet.Writer.WriteLine("Read {0} = {1}", index, tmp.ToString("X2"));
+            return (tmp << 8 * index);
+        }
+
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT,ClientVersionBuild.V4_2_2_14545)] // Not exactly sure when it was added
         public static void HandlePhaseShift422(Packet packet)
         {
-            var v23 = packet.ReadByte("Unk Byte 1");
-            // math from IDA
-            byte v4 = (byte)(v23 * 2);
-            
-            uint v5 = v4;
+            ulong tmp = 0;
 
-            v4 *= 2;
+            var GuidFlag = packet.ReadEnum<UnknownFlags>("Guid Mask Flags",TypeCode.Byte);
 
-            uint v6 = v4;
-            v6 >>= 7;
+            if (GuidFlag.HasFlag(UnknownFlags.Byte0))
+                tmp += ReadByte(ref packet,0);
 
-            if (v6 != 0)
-                packet.ReadByte("Unk Byte 2");
-
-            v4 *= 2;
-            
-            var v7 = v4 >> 7;
-
-            if (v7 != 0)
-                packet.ReadByte("Unk Byte 3");
+            if (GuidFlag.HasFlag(UnknownFlags.Byte4))
+                tmp += ReadByte(ref packet, 4);// packet.ReadByte("Unk Byte 3");
 
             var CountOfBytes1 = packet.ReadUInt32("Count of bytes 1");
             byte[] bytes1 = null;
 
             if (CountOfBytes1 > 0)
             {
-                packet.ReadUInt16("Map Swap 1");
+                packet.ReadUInt16("Map Swap 1"); // Map that is currently being loaded
                 bytes1 = packet.ReadBytes((int)CountOfBytes1 - 2);
             }
 
-            v4 *= 2;
-
-            var v8 = v4 >> 7;
-
-            v4 *= 2;
-            
-            var v9 = v4 >> 7;
-
-            if (v9 != 0)
-                packet.ReadByte("Unk Byte 4");
+            if (GuidFlag.HasFlag(UnknownFlags.Byte3))
+                tmp += ReadByte(ref packet, 3);// packet.ReadByte("Unk Byte 4");
 
             packet.ReadUInt32("Flag? "); // this is 0, 4 or 8, if 8 then its normal world
 
-            if (v8 != 0)
-                packet.ReadByte("Unk Byte 5");
+            if (GuidFlag.HasFlag(UnknownFlags.Byte2))
+                tmp += ReadByte(ref packet, 2);// packet.ReadByte("Unk Byte 5"); // flag Unk4
 
             var CountOfBytes2 = packet.ReadUInt32("Count of bytes 2");
             byte[] bytes2 = null;
@@ -624,11 +616,8 @@ namespace WowPacketParser.Parsing.Parsers
                 bytes2 = packet.ReadBytes((int)CountOfBytes2 - 2);
             }
 
-            v4 *= 2;
-
-            byte __tmp = (byte)(v4 * 2);
-            if ((__tmp >> 7) != 0)
-                packet.ReadByte("Unk Byte 6");
+            if (!GuidFlag.HasFlag(UnknownFlags.Byte2))
+                tmp += ReadByte(ref packet, 6);// packet.ReadByte("Unk Byte 6");
 
             var CountOfBytes3 = packet.ReadUInt32("Count of bytes 3");
             byte[] bytes3 = null;
@@ -639,24 +628,26 @@ namespace WowPacketParser.Parsing.Parsers
                 bytes3 = packet.ReadBytes((int)CountOfBytes3 - 2);
             }
 
-            if ((v5 >> 7) != 0)
-                packet.ReadByte("Unk Byte 7");
+            if (GuidFlag.HasFlag(UnknownFlags.Byte7))
+                tmp += ReadByte(ref packet, 7);// packet.ReadByte("Unk Byte 7");
 
             var CountOfBytes4 = packet.ReadUInt32("Count of bytes 4");
             byte[] bytes4 = null;
 
             if (CountOfBytes4 > 0)
             {
-                packet.ReadUInt16("Map Swap 3");
+                packet.ReadUInt16("Map Swap 3"); // Should always match 'Map Swap 1'
                 bytes4 = packet.ReadBytes((int)CountOfBytes4 - 2);
             }
 
-            if ((v4 >> 7) != 0)
-                packet.ReadByte("Unk Byte 8");
+            if (GuidFlag.HasFlag(UnknownFlags.Byte1))
+                tmp += ReadByte(ref packet, 1);// packet.ReadByte("Unk Byte 8");
 
-            if ((v23 >> 7) != 0)
-                packet.ReadByte("Unk Byte 9");
+            if (GuidFlag.HasFlag(UnknownFlags.Byte5))
+                tmp += ReadByte(ref packet, 5);// packet.ReadByte("Unk Byte 9");
 
+            var guid = new Guid(tmp);
+            packet.Writer.WriteLine("Guid: " + guid.ToString());
         }
 
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
