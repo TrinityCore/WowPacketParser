@@ -406,7 +406,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadInt32("Remaining Money");
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                    packet.ReadInt32("Unk UInt32");
+                    packet.ReadInt32("Guild Money");
             }
         }
 
