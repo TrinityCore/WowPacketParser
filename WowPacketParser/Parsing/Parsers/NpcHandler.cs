@@ -257,7 +257,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-
         [Parser(Opcode.SMSG_THREAT_UPDATE)]
         [Parser(Opcode.SMSG_HIGHEST_THREAT_UPDATE)]
         public static void HandleThreatlistUpdate(Packet packet)

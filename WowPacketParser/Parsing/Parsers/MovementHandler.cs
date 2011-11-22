@@ -504,6 +504,128 @@ namespace WowPacketParser.Parsing.Parsers
             CurrentPhaseMask = phaseMask;
         }
 
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_0_6a_13623)]
+        public static void HandlePhaseShift406(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            for (var i = 0; i < 4; ++i)
+            {
+                var count = packet.ReadUInt32("Count of bytes: {0}", i + 1);
+                if (count > 0)
+                {
+                    byte[] bytes1 = packet.ReadBytes((int)count);
+                    packet.Writer.WriteLine("Bytes: " + bytes1.ToString());
+                }
+            }
+
+            packet.ReadUInt32("Flag"); // can be 0, 4 or 8, 8 = normal world, others are unknown
+        }
+
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandlePhaseShift422(Packet packet)
+        {
+            byte[] bytes = { 0, 0, 0, 0, 0, 0, 0, 0 };
+
+            var GuidFlag = packet.ReadEnum<BitMask>("Guid Mask Flags",TypeCode.Byte);
+
+            if (GuidFlag.HasFlag(BitMask.Byte0))
+                bytes[0] = packet.ReadByte();
+
+            if (GuidFlag.HasFlag(BitMask.Byte4))
+                bytes[4] = packet.ReadByte();
+
+            var count = packet.ReadUInt32();
+            if (count > 0)
+            {
+                int num = (int)count - 2;
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 1");
+                if (num > 0)
+                {
+                    packet.Writer.Write("Bytes: 0x");
+                    byte[] bytes1 = packet.ReadBytes(num);
+                    for (var i = 0; i < num; ++i)
+                        packet.Writer.Write(bytes1[i].ToString("X2"));
+                    packet.Writer.WriteLine();
+                }
+            }
+
+            if (GuidFlag.HasFlag(BitMask.Byte3))
+                bytes[3] = packet.ReadByte();
+
+            packet.ReadUInt32("Flag? ");
+
+            if (GuidFlag.HasFlag(BitMask.Byte2))
+                bytes[2] = packet.ReadByte();
+
+            count = packet.ReadUInt32();
+            if (count > 0)
+            {
+                int num = (int)count - 2;
+                packet.ReadUInt16("Current Mask");
+                if (num > 0)
+                {
+                    packet.Writer.Write("Bytes: 0x");
+                    byte[] bytes1 = packet.ReadBytes(num);
+                    for (var i = 0; i < num; ++i)
+                        packet.Writer.Write(bytes1[i].ToString("X2"));
+                    packet.Writer.WriteLine();
+                }
+            }
+
+            if (!GuidFlag.HasFlag(BitMask.Byte2))
+                bytes[6] = packet.ReadByte();
+
+            count = packet.ReadUInt32();
+            if (count > 0)
+            {
+                int num = (int)count - 2;
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 2");
+                if (num > 0)
+                {
+                    packet.Writer.Write("Bytes: 0x");
+                    byte[] bytes1 = packet.ReadBytes(num);
+                    for (var i = 0; i < num; ++i)
+                        packet.Writer.Write(bytes1[i].ToString("X2"));
+                    packet.Writer.WriteLine();
+                }
+            }
+
+            if (GuidFlag.HasFlag(BitMask.Byte7))
+                bytes[7] = packet.ReadByte();
+
+                        count = packet.ReadUInt32();
+            if (count > 0)
+            {
+                int num = (int)count - 2;
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 3");
+                if (num > 0)
+                {
+                    packet.Writer.Write("Bytes: 0x");
+                    byte[] bytes1 = packet.ReadBytes(num);
+                    for (var i = 0; i < num; ++i)
+                        packet.Writer.Write(bytes1[i].ToString("X2"));
+                    packet.Writer.WriteLine();
+                }
+            }
+
+            if (GuidFlag.HasFlag(BitMask.Byte1))
+                bytes[1] = packet.ReadByte();
+
+            if (GuidFlag.HasFlag(BitMask.Byte5))
+                bytes[5] = packet.ReadByte();
+
+            ulong tmp = 0;
+            for (var i = 7; i > 0; --i)
+            {
+                if (bytes[i] > 0)
+                    bytes[i] ^= 1;
+                tmp += bytes[i];
+                tmp <<= 8;
+            }
+            var guid = new Guid(tmp);
+            packet.Writer.WriteLine("GUID: " + guid.ToString());
+        }
+
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
         public static void HandleTransferPending(Packet packet)
         {
