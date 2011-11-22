@@ -28,7 +28,7 @@ namespace WowPacketParser.Loading
         public BinaryPacketReader(SniffType type, string fileName, Encoding encoding)
         {
             _sniffType = type;
-            _reader = new BinaryReader(new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read), encoding);
+            _reader = new BinaryReader(new FileStream(@fileName, FileMode.Open, FileAccess.Read, FileShare.Read), encoding);
 
             ReadHeader();
         }
