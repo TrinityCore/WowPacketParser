@@ -96,6 +96,10 @@ namespace WowPacketParser.Parsing.Parsers
             loot.Gold = packet.ReadUInt32("Gold");
 
             var count = packet.ReadByte("Drop Count");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
+                packet.ReadByte("unk");
+
             loot.LootItems = new List<LootItem>(count);
             for (var i = 0; i < count; ++i)
             {
@@ -160,6 +164,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Count");
             packet.ReadUInt32("Count Down");
             packet.ReadEnum<LootVoteFlags>("Roll Vote Mask", TypeCode.Byte);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
+                packet.ReadByte("unk"); //amount of players? need verification.
         }
 
         [Parser(Opcode.SMSG_LOOT_SLOT_CHANGED)]

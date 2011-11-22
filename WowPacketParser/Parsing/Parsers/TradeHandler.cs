@@ -24,7 +24,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_CLEAR_TRADE_ITEM)]
         public static void HandleClearTradeItem(Packet packet)
         {
-            packet.ReadByte("Slot");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596)) // Need correct version
+                packet.ReadInt32("Slot");
+            else
+                packet.ReadByte("Slot");
         }
 
         [Parser(Opcode.CMSG_SET_TRADE_GOLD)]
