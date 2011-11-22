@@ -44,11 +44,24 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadSByte("Bag");
             packet.ReadByte("Slot");
+            packet.ReadByte("Spell Count");
+            packet.ReadByte("Cast Count");
+            packet.ReadGuid("GUID");
+
+            SpellHandler.ReadSpellCastTargets(ref packet);
+        }
+
+        [Parser(Opcode.CMSG_USE_ITEM, ClientVersionBuild.V3_0_3_9183)]
+        public static void HandleUseItem2(Packet packet)
+        {
+            packet.ReadSByte("Bag");
+            packet.ReadByte("Slot");
             packet.ReadByte("Cast Count");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
             packet.ReadGuid("GUID");
             packet.ReadUInt32("Glyph Index");
             packet.ReadByte("CastFlags");
+
             SpellHandler.ReadSpellCastTargets(ref packet);
         }
 
@@ -117,7 +130,11 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("Vendor GUID");
             packet.ReadGuid("Item GUID");
-            packet.ReadUInt32("Count");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192)) // not sure when this was changed exactly
+                packet.ReadUInt32("Count");
+            else
+                packet.ReadByte("Count");
         }
 
         [Parser(Opcode.SMSG_SELL_ITEM)]
@@ -133,8 +150,15 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("Vendor GUID");
             packet.ReadUInt32("Item ID");
-            packet.ReadUInt32("Slot");
-            packet.ReadUInt32("Count");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
+            {
+                packet.ReadUInt32("Slot");
+                packet.ReadUInt32("Count");
+            }
+            else
+                packet.ReadByte("Count");
+
             packet.ReadByte("Unk");
         }
 
@@ -194,7 +218,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Slot");
             packet.ReadByte("Destination Bag");
             packet.ReadByte("Destination Slot");
-            packet.ReadUInt32("Count");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192)) // not sure when this was changed exactly
+                packet.ReadUInt32("Count");
+            else
+                packet.ReadByte("Count");
         }
 
         [Parser(Opcode.SMSG_ENCHANTMENTLOG)]
@@ -210,7 +238,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleItemQuerySingle(Packet packet)
         {
             packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
-            if (ClientVersion.Build >= ClientVersionBuild.V4_2_2_14545) // Might be earlier
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // Might be earlier
             {
                 packet.ReadEnum<UnknownFlags>("Unknown Byte", TypeCode.Byte);
                 packet.ReadInt32("Unknown Int32");

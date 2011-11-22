@@ -97,17 +97,6 @@ namespace WowPacketParser.Parsing.Parsers
             Stuffing.NpcTrainers.TryAdd(guid.GetEntry(), npcTrainer);
         }
 
-        private static ulong ReadByte(ref Packet packet, int index)
-        {
-            var tmp = (ulong)packet.ReadByte();
-            if ((tmp % 2) == 0)
-                tmp++;
-            else
-                tmp--;
-            // Debug: packet.Writer.WriteLine("Read {0} = {1}", index, tmp.ToString("X2"));
-            return (tmp << 8*index);
-        }
-
         // WIP
         [Parser(Opcode.SMSG_LIST_INVENTORY, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleVendorInventoryList422(Packet packet)
@@ -115,35 +104,33 @@ namespace WowPacketParser.Parsing.Parsers
             var npcVendor = new NpcVendor();
             var flags = packet.ReadEnum<UnknownFlags>("GUID Byte Mask", TypeCode.Byte);
 
-            ulong tmp = 0;
-
-            if (flags.HasFlag(UnknownFlags.Byte2))
-                tmp += ReadByte(ref packet, 2);
+            if (flags.HasAnyFlag(UnknownFlags.Byte2))
+                packet.ReadGuidByte(2);
 
             var itemCount = packet.ReadUInt32("Item Count");
 
-            if (flags.HasFlag(UnknownFlags.Byte5))
-                tmp += ReadByte(ref packet, 5);
+            if (flags.HasAnyFlag(UnknownFlags.Byte5))
+                packet.ReadGuidByte(5);
 
-            if (flags.HasFlag(UnknownFlags.Byte0)) // Flag?
-                tmp += ReadByte(ref packet, 0);
+            if (flags.HasAnyFlag(UnknownFlags.Byte0)) // Flag?
+                packet.ReadGuidByte(0);
 
-            if (flags.HasFlag(UnknownFlags.Byte1)) // Flag?
-                tmp += ReadByte(ref packet, 1);
+            if (flags.HasAnyFlag(UnknownFlags.Byte1)) // Flag?
+                packet.ReadGuidByte(1);
 
-            if (flags.HasFlag(UnknownFlags.Byte3)) // Flag?
-                ReadByte(ref packet, 3);
+            if (flags.HasAnyFlag(UnknownFlags.Byte3)) // Flag?
+                packet.ReadGuidByte(3);
 
-            if (flags.HasFlag(UnknownFlags.Byte4))
-                tmp += ReadByte(ref packet, 4);
+            if (flags.HasAnyFlag(UnknownFlags.Byte4))
+                packet.ReadGuidByte(4);
 
-            if (flags.HasFlag(UnknownFlags.Byte7)) // Flag?
-                tmp += ReadByte(ref packet, 7);
+            if (flags.HasAnyFlag(UnknownFlags.Byte7)) // Flag?
+                packet.ReadGuidByte(7);
 
-            if (!flags.HasFlag(UnknownFlags.Byte2)) // Flag?
-                tmp += ReadByte(ref packet, 6);
+            if (!flags.HasAnyFlag(UnknownFlags.Byte2)) // Flag?
+                packet.ReadGuidByte(6);
 
-            var guid = new Guid(tmp);
+            var guid = packet.ReadBitstreamedGuid();
             packet.Writer.WriteLine("GUID: " + guid);
 
             npcVendor.VendorItems = new List<VendorItem>((int)itemCount);

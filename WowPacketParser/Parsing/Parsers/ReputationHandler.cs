@@ -39,8 +39,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SET_FACTION_STANDING)]
         public static void HandleSetFactionStanding(Packet packet)
         {
-            packet.ReadSingle("Reputation loss");
-            packet.ReadBoolean("Unk bool"); // First login = false ?
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_4_0_8089))
+                packet.ReadSingle("Reputation loss");
+
+            if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
+                packet.ReadBoolean("Unk bool"); // First login = false ?
 
             var count = packet.ReadInt32("Count");
             for (var i = 0; i < count; i++)

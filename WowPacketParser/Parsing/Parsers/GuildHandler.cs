@@ -406,7 +406,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadInt32("Remaining Money");
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                    packet.ReadInt32("Unk UInt32");
+                    packet.ReadInt32("Guild Money");
             }
         }
 
@@ -601,8 +601,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk UInt32 (Level?)");
             packet.ReadUInt32("Unk UInt32 11");
 
-            for (var i = 0; i < 10; i++)
-                packet.ReadCString("Unk String", i);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
+                for (var i = 0; i < 10; i++)
+                    packet.ReadCString("Unk String", i);
 
             packet.ReadUInt32("Client Index");
             packet.ReadUInt32("Petition Type (0: Guild / 1: Arena)");

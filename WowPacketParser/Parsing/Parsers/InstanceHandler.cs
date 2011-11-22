@@ -28,8 +28,6 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadByte("Param 1");
                     break;
             }
-
-
         }
 
         [Parser(Opcode.MSG_SET_DUNGEON_DIFFICULTY)]
@@ -47,7 +45,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_INSTANCE_DIFFICULTY)]
         public static void HandleInstanceDifficulty(Packet packet)
         {
-            packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
+            if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing)) // don't know when this was added, doesn't exist in 2.4.1
+                packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
+
             packet.ReadInt32("Player Difficulty");
         }
 

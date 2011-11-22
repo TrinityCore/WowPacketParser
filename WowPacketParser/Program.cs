@@ -49,7 +49,7 @@ namespace WowPacketParser
                 {
                     var numberOfThreads = threads != 0 ? threads.ToString() : "a recommended number of";
 
-                    Console.WriteLine("{0}: Assumed version: {1}", fileName, ClientVersion.Build);
+                    Console.WriteLine("{0}: Assumed version: {1}", fileName, ClientVersion.GetVersionString());
                     Console.WriteLine("{0}: Parsing {1} packets with {2} threads...", fileName, packets.Count, numberOfThreads);
 
                     Statistics.Total = (uint)packets.Count;
@@ -77,6 +77,8 @@ namespace WowPacketParser
                         SQLStore.WriteData(Builder.NpcVendor());
                         SQLStore.WriteData(Builder.NpcTemplate());
                         SQLStore.WriteData(Builder.GameObjectTemplate());
+                        SQLStore.WriteData(Builder.PageText());
+                        SQLStore.WriteData(Builder.NpcText());
                     }
 
                     SQLStore.WriteToFile();
@@ -123,7 +125,7 @@ namespace WowPacketParser
             int threads = 0;
             try
             {
-                ClientVersion.Build = Settings.GetEnum<ClientVersionBuild>("ClientBuild");
+                ClientVersion.SetVersion(Settings.GetEnum<ClientVersionBuild>("ClientBuild"));
 
                 packetNumberLow = Settings.GetInt32("FilterPacketNumLow");
                 packetNumberHigh = Settings.GetInt32("FilterPacketNumHigh");

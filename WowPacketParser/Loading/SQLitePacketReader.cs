@@ -51,8 +51,8 @@ namespace WowPacketParser.Loading
 
         void SetBuild(int build)
         {
-            if (ClientVersion.Build == ClientVersionBuild.Zero)
-                ClientVersion.Build = (ClientVersionBuild)build;
+            if (ClientVersion.IsUndefined())
+                ClientVersion.SetVersion((ClientVersionBuild)build);
         }
 
         public bool CanRead()

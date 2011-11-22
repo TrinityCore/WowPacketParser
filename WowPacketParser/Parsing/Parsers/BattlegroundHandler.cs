@@ -106,8 +106,12 @@ namespace WowPacketParser.Parsing.Parsers
             if (slot == 1 && guid.GetLow() == 0)
                 return;
 
-            packet.ReadByte("Min Level");
-            packet.ReadByte("Max Level");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+            {
+                packet.ReadByte("Min Level");
+                packet.ReadByte("Max Level");
+            }
+
             if (!packet.CanRead())
                 return;
 
@@ -122,12 +126,18 @@ namespace WowPacketParser.Parsing.Parsers
                     break;
                 case BattlegroundStatus.WaitJoin:
                     packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
-                    packet.ReadGuid("GUID");
+
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_5_12213))
+                        packet.ReadGuid("GUID");
+
                     packet.ReadUInt32("Time left");
                     break;
                 case BattlegroundStatus.InProgress:
                     packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
-                    packet.ReadGuid("GUID");
+
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_5_12213))
+                        packet.ReadGuid("GUID");
+
                     packet.ReadUInt32("Auto Leave Time");
                     packet.ReadUInt32("Time in BG");
                     packet.ReadByte("Is BG?");

@@ -403,19 +403,19 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                 }
 
-                if (moveFlags.HasAnyFlag(MovementFlag.SplineEnabled))
+                // this is incorrect for certain objects but I can't figure out why
+                if (moveFlags.HasAnyFlag(MovementFlag.SplineEnabled) || moveInfo.HasSplineData)
                 {
                     var splineFlags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32, index);
+
+                    // HACK: Fix splineflags for next ifs. Need to use different enum for TBC
+                    if (ClientVersion.RemovedInVersion(ClientType.WrathOfTheLichKing))
+                        splineFlags = (SplineFlag)((int)splineFlags >> 1);
 
                     if (splineFlags.HasAnyFlag(SplineFlag.FinalTarget))
                         packet.ReadGuid("Final Spline Target GUID", index);
                     else if (splineFlags.HasAnyFlag(SplineFlag.FinalOrientation))
-                    {
-                        if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_2_9056))
-                            packet.ReadInt32(); // not sure, orientation is incorrect in 2.4.1, this int is probably involved
-
                         packet.ReadSingle("Final Spline Orientation", index);
-                    }
                     else if (splineFlags.HasAnyFlag(SplineFlag.FinalPoint))
                         packet.ReadVector3("Final Spline Coords", index);
 

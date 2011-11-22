@@ -45,7 +45,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Talent Spec");
 
             var count = packet.ReadInt16("Spell Count");
-
             for (var i = 0; i < count; i++)
             {
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
@@ -57,17 +56,16 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             var cooldownCount = packet.ReadInt16("Cooldown Count");
-
             for (var i = 0; i < cooldownCount; i++)
             {
-                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Cooldown Spell ID", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Cooldown Spell ID", i);
+                else
+                    packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Cooldown Spell ID", i);
 
                 packet.ReadInt16("Cooldown Cast Item ID");
-
                 packet.ReadInt16("Cooldown Spell Category", i);
-
                 packet.ReadInt32("Cooldown Time", i);
-
                 packet.ReadInt32("Cooldown Category Time", i);
             }
         }
@@ -139,9 +137,13 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadByte("Cast Count");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadInt32("Glyph Index");
+
+            if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
+                packet.ReadInt32("Glyph Index");
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
                 packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
+
             ReadSpellCastTargets(ref packet);
         }
 
@@ -299,7 +301,9 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLearnedSpell(Packet packet)
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadInt16("Unk Int16");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+                packet.ReadInt16("Unk Int16");
         }
 
         [Parser(Opcode.CMSG_UPDATE_PROJECTILE_POSITION)]
@@ -381,8 +385,14 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_REMOVED_SPELL)]
-        [Parser(Opcode.CMSG_CANCEL_CHANNELLING)]
         public static void HandleRemovedSpell(Packet packet)
+        {
+            packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Spell ID");
+        }
+
+        [Parser(Opcode.SMSG_REMOVED_SPELL, ClientVersionBuild.V3_1_0_9767)]
+        [Parser(Opcode.CMSG_CANCEL_CHANNELLING)]
+        public static void HandleRemovedSpell2(Packet packet)
         {
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
         }
@@ -548,6 +558,34 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
+        [Parser(Opcode.SMSG_MIRRORIMAGE_DATA)]
+        public static void HandleMirrorImageData(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32("Display ID");
+            packet.ReadEnum<Race>("Race", TypeCode.Byte);
+            packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
+            packet.ReadEnum<Class>("Class", TypeCode.Byte);
+
+            if (!packet.CanRead())
+                return;
+
+            packet.ReadByte("Skin");
+            packet.ReadByte("Face");
+            packet.ReadByte("Hair Style");
+            packet.ReadByte("Hair Color");
+            packet.ReadByte("Facial Hair");
+            packet.ReadUInt32("Unk");
+
+            EquipmentSlotType[] slots = {
+                EquipmentSlotType.Head, EquipmentSlotType.Shoulders, EquipmentSlotType.Shirt,
+                EquipmentSlotType.Chest, EquipmentSlotType.Waist, EquipmentSlotType.Legs,
+                EquipmentSlotType.Feet, EquipmentSlotType.Wrists, EquipmentSlotType.Hands,
+                EquipmentSlotType.Back, EquipmentSlotType.Tabard };
+
+            for (var i = 0; i < 11; ++i)
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "[" + slots[i] + "] Item Entry");
+        }
 
         [Parser(Opcode.SMSG_CLEAR_COOLDOWN)]
         public static void HandleClearCooldown(Packet packet)

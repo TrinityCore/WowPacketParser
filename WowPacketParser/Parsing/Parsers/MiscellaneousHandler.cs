@@ -80,7 +80,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleActionButton(Packet packet)
         {
             packet.ReadByte("Button");
-            var data =  packet.ReadInt32();
+            var data = packet.ReadInt32();
             var type = (ActionButtonType)((data & 0xFF000000) >> 24);
             var action = (data & 0x00FFFFFF);
             packet.Writer.WriteLine("Type: " + type + " ID: " + action);
@@ -208,7 +208,9 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var level = packet.ReadInt32("Level");
             packet.ReadInt32("Health");
-            for (var i = 0; i < 7; i++)
+
+            var powerCount = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 7 : 5;
+            for (var i = 0; i < powerCount; i++)
                 packet.ReadInt32("Power " + (PowerType)i);
 
             for (var i = 0; i < 5; i++)
@@ -426,7 +428,9 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGametimeUpdate(Packet packet)
         {
             packet.ReadUInt32("Unk1");
-            packet.ReadUInt32("Unk2");
+
+            if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing)) // no idea when this was added exactly, doesn't exist in 2.4.0
+                packet.ReadUInt32("Unk2");
         }
 
         [Parser(Opcode.CMSG_FAR_SIGHT)]

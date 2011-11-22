@@ -114,7 +114,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var splineElevation = packet.ReadBit("SplineElevation", index);
 
-            packet.ReadBit("HasSplineData", index);
+            info.HasSplineData = packet.ReadBit("HasSplineData", index);
 
             packet.ResetBitReader(); // reset bitreader
 
@@ -167,10 +167,12 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadPackedGuid("Transport GUID");
 
-                packet.ReadByte("Transport Seat");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
+                    packet.ReadByte("Transport Seat");
             }
 
-            packet.ReadBoolean("Unk Boolean"); // Something to do with IsVehicleExitVoluntary ?
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
+                packet.ReadBoolean("Unk Boolean"); // Something to do with IsVehicleExitVoluntary ?
 
             var pos = packet.ReadVector3("Position");
 
@@ -243,7 +245,7 @@ namespace WowPacketParser.Parsing.Parsers
                 SQL.SQLStore.WriteData(SQL.Stores.WaypointStore.GetCommand(wp));
             }
 
-            if (flags.HasAnyFlag(SplineFlag.Flying) || flags.HasAnyFlag(SplineFlag.CatmullRom))
+            if (flags.HasAnyFlag(SplineFlag.Flying | SplineFlag.CatmullRom))
                 for (var i = 0; i < waypoints - 1; i++)
                     packet.ReadVector3("Waypoint " + (i + 1));
             else
@@ -566,29 +568,16 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Flag"); // can be 0, 4 or 8, 8 = normal world, others are unknown
         }
 
-        private static ulong ReadByte(ref Packet packet, int index)
-        {
-            var tmp = (ulong)packet.ReadByte();
-            if ((tmp % 2) == 0)
-                tmp++;
-            else
-                tmp--;
-            // Debug: packet.Writer.WriteLine("Read {0} = {1}", index, tmp.ToString("X2"));
-            return (tmp << 8 * index);
-        }
-
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT,ClientVersionBuild.V4_2_2_14545)] // Not exactly sure when it was added
         public static void HandlePhaseShift422(Packet packet)
         {
-            ulong tmp = 0;
-
             var GuidFlag = packet.ReadEnum<UnknownFlags>("Guid Mask Flags",TypeCode.Byte);
 
             if (GuidFlag.HasFlag(UnknownFlags.Byte0))
-                tmp += ReadByte(ref packet,0);
+                packet.ReadGuidByte(0);
 
             if (GuidFlag.HasFlag(UnknownFlags.Byte4))
-                tmp += ReadByte(ref packet, 4);// packet.ReadByte("Unk Byte 3");
+                packet.ReadGuidByte(4);// packet.ReadByte("Unk Byte 3");
 
             var CountOfBytes1 = packet.ReadUInt32("Count of bytes 1");
             byte[] bytes1 = null;
@@ -600,12 +589,12 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (GuidFlag.HasFlag(UnknownFlags.Byte3))
-                tmp += ReadByte(ref packet, 3);// packet.ReadByte("Unk Byte 4");
+                packet.ReadGuidByte(3);// packet.ReadByte("Unk Byte 4");
 
             packet.ReadUInt32("Flag? "); // this is 0, 4 or 8, if 8 then its normal world
 
             if (GuidFlag.HasFlag(UnknownFlags.Byte2))
-                tmp += ReadByte(ref packet, 2);// packet.ReadByte("Unk Byte 5"); // flag Unk4
+                packet.ReadGuidByte(2);// packet.ReadByte("Unk Byte 5"); // flag Unk4
 
             var CountOfBytes2 = packet.ReadUInt32("Count of bytes 2");
             byte[] bytes2 = null;
@@ -617,7 +606,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (!GuidFlag.HasFlag(UnknownFlags.Byte2))
-                tmp += ReadByte(ref packet, 6);// packet.ReadByte("Unk Byte 6");
+                packet.ReadGuidByte(6);// packet.ReadByte("Unk Byte 6");
 
             var CountOfBytes3 = packet.ReadUInt32("Count of bytes 3");
             byte[] bytes3 = null;
@@ -629,7 +618,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (GuidFlag.HasFlag(UnknownFlags.Byte7))
-                tmp += ReadByte(ref packet, 7);// packet.ReadByte("Unk Byte 7");
+                packet.ReadGuidByte(7);// packet.ReadByte("Unk Byte 7");
 
             var CountOfBytes4 = packet.ReadUInt32("Count of bytes 4");
             byte[] bytes4 = null;
@@ -641,13 +630,12 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (GuidFlag.HasFlag(UnknownFlags.Byte1))
-                tmp += ReadByte(ref packet, 1);// packet.ReadByte("Unk Byte 8");
+                packet.ReadGuidByte(1);// packet.ReadByte("Unk Byte 8");
 
             if (GuidFlag.HasFlag(UnknownFlags.Byte5))
-                tmp += ReadByte(ref packet, 5);// packet.ReadByte("Unk Byte 9");
+                packet.ReadGuidByte(5);// packet.ReadByte("Unk Byte 9");
 
-            var guid = new Guid(tmp);
-            packet.Writer.WriteLine("Guid: " + guid.ToString());
+            packet.Writer.WriteLine("Guid: " + packet.ReadBitstreamedGuid().ToString());
         }
 
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
