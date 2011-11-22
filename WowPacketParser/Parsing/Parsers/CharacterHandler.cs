@@ -221,7 +221,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (int c = 0; c < count; c++)
                 for (int j = 0; j < 17; j++)
-                    bits[c, j] = packet.ReadBits();
+                    bits[c, j] = packet.ReadBit();
 
             for (int c = 0; c < count; c++)
             {
