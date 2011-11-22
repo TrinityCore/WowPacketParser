@@ -211,6 +211,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleCharEnum442(Packet packet)
         {
             packet.ReadByte("Unk Flag");
