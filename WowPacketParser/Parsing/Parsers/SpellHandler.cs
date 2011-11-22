@@ -401,20 +401,22 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PLAY_SPELL_IMPACT)]
         public static void HandleCastVisual(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            packet.Writer.WriteLine("Caster GUID: " + guid);
-            var visual = packet.ReadUInt32();
-            packet.Writer.WriteLine("SpellVisualKit ID: " + visual);
+            packet.ReadGuid("Caster GUID");
+            packet.ReadUInt32("SpellVisualKit ID");
         }
 
         [Parser(Opcode.SMSG_CAST_FAILED)]
         public static void HandleCastFailed(Packet packet)
         {
-            packet.ReadByte("Cast count");
+            if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
+                packet.ReadByte("Cast count");
 
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
 
             var result = packet.ReadEnum<SpellCastFailureReason>("Reason", TypeCode.Byte);
+
+            if (ClientVersion.RemovedInVersion(ClientType.WrathOfTheLichKing))
+                packet.ReadByte("Cast count");
 
             switch (result)
             {
