@@ -211,6 +211,128 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        public static void HandleCharEnum442(Packet packet)
+        {
+            packet.ReadByte("Unk Flag");
+            int count = packet.ReadInt32("Char Count");
+            packet.ReadInt32("Unk Count");
+
+            bool[,] bits = new bool[count, 17];
+
+            for (int c = 0; c < count; c++)
+                for (int j = 0; j < 17; j++)
+                    bits[c, j] = packet.ReadBits();
+
+            for (int c = 0; c < count; c++)
+            {
+                byte[] low = new byte[8];
+                byte[] guild = new byte[8];
+                packet.ReadCString("Name", c);
+
+                if (bits[c, 0])
+                    guild[5] = (byte)(packet.ReadByte() ^ 1);
+
+                packet.ReadByte("Face", c);
+                packet.ReadInt32("Map", c);
+
+                if (bits[c, 12])
+                    low[1] = (byte)(packet.ReadByte() ^ 1);
+
+                if (bits[c, 1])
+                    low[4] = (byte)(packet.ReadByte() ^ 1);
+
+                if (bits[c, 10])
+                    guild[4] = (byte)(packet.ReadByte() ^ 1);
+
+                if (bits[c, 15])
+                    guild[0] = (byte)(packet.ReadByte() ^ 1);
+
+                packet.ReadSingle("Position X", c);
+                packet.ReadSingle("Position Y", c);
+                packet.ReadSingle("Position Z", c);
+
+                if (bits[c, 11])
+                    low[0] = (byte)(packet.ReadByte() ^ 1);
+
+                packet.ReadInt32("ZoneID", c);
+                packet.ReadInt32("Pet Level", c);
+
+                if (bits[c, 8])
+                    low[3] = (byte)(packet.ReadByte() ^ 1);
+
+                if (bits[c, 14])
+                    low[7] = (byte)(packet.ReadByte() ^ 1);
+
+                packet.ReadByte("Facial Hair", c);
+                packet.ReadByte("Skin", c);
+                packet.ReadEnum<Class>("Class", TypeCode.Byte, c);
+                packet.ReadInt32("Pet Family", c);
+                packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
+
+                if (bits[c, 9])
+                    low[2] = (byte)(packet.ReadByte() ^ 1);
+
+                packet.ReadInt32("Pet Display ID", c);
+
+                if (bits[c, 3])
+                    guild[7] = (byte)(packet.ReadByte() ^ 1);
+
+                packet.ReadByte("Level", c);
+
+                if (bits[c, 7])
+                    low[6] = (byte)(packet.ReadByte() ^ 1);
+
+                packet.ReadByte("Hair Style", c);
+
+                if (bits[c, 13])
+                    guild[2] = (byte)(packet.ReadByte() ^ 1);
+
+                packet.ReadEnum<Race>("Race", TypeCode.Byte, c);
+                packet.ReadByte("Hair Color", c);
+
+                if (bits[c, 5])
+                    guild[6] = (byte)(packet.ReadByte() ^ 1);
+
+                packet.ReadEnum<Gender>("Gender", TypeCode.Byte, c);
+
+                if (bits[c, 6])
+                    low[5] = (byte)(packet.ReadByte() ^ 1);
+
+                if (bits[c, 2])
+                    guild[3] = (byte)(packet.ReadByte() ^ 1);
+
+                packet.ReadByte("List Order", c);
+
+                for (int itm = 0; itm < 19; itm++)
+                {
+                    packet.ReadInt32("Item EnchantID", c, itm);
+                    packet.ReadEnum<InventoryType>("Item InventoryType", TypeCode.Byte, c, itm);
+                    packet.ReadInt32("Item DisplayID", c, itm);
+                }
+
+                for (int itm = 0; itm < 4; itm++)
+                {
+                    packet.ReadInt32("Bag EnchantID", c, itm);
+                    packet.ReadEnum<InventoryType>("Bag InventoryType", TypeCode.Byte, c, itm);
+                    packet.ReadInt32("Bag DisplayID", c, itm);
+                }
+
+                packet.ReadEnum<CustomizationFlag>("CustomizationFlag", TypeCode.UInt32, c);
+
+                if (bits[c, 4])
+                    guild[1] = (byte)(packet.ReadByte() ^ 1);
+
+                packet.Writer.WriteLine("[{0}] Character GUID: {1}", c, new Guid(BitConverter.ToUInt64(low, 0)));
+                packet.Writer.WriteLine("[{0}] Guild GUID: {1}", c, new Guid(BitConverter.ToUInt64(guild, 0)));
+            }
+        }
+
+        [Parser(Opcode.SMSG_COMPRESSED_CHAR_ENUM)]
+        public static void HandleCompressedCharEnum(Packet packet)
+        {
+            HandleCharEnum442(packet.Inflate(packet.ReadInt32()));
+        }
+
         [Parser(Opcode.SMSG_PLAYER_VEHICLE_DATA)]
         public static void HandlePlayerVehicleData(Packet packet)
         {
