@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace WowPacketParser
     {
         private static void ReadFile(string file, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead, DumpFormatType dumpFormat, int threads, bool sqlOutput, bool prompt)
         {
+            file = HttpUtility.UrlDecode(file);
             string fileName = Path.GetFileName(file);
             Console.WriteLine("{0}: Opening file", fileName);
             Console.WriteLine("{0}: Reading packets...", fileName);
@@ -90,6 +92,10 @@ namespace WowPacketParser
                     Console.WriteLine();
                     Statistics.Reset();
                 }
+            }
+            catch (TypeInitializationException tye)
+            {
+                Console.WriteLine(tye.InnerException.Message);
             }
             catch (Exception ex)
             {

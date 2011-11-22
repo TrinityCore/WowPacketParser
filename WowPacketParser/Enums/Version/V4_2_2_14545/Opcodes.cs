@@ -186,6 +186,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x4AFE},
             {Opcode.CMSG_VERIFY_CONNECTIVITY_RESPONSE, 0x4C52},
             {Opcode.CMSG_WARDEN_DATA, 0x5847},
+            {Opcode.SMSG_WARDEN_DATA, 0x484F},
             {Opcode.CMSG_WHO, 0x9AD7},
             {Opcode.CMSG_WHOIS, 0xCCE6},
             {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x58F6},
@@ -284,7 +285,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x1A46},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 0x5E53},
             {Opcode.SMSG_UPDATE_OBJECT, 0x1EE7},
-            {Opcode.SMSG_WARDEN_DATA ,0x484F},
             {Opcode.SMSG_WEATHER, 0x4ECE},
             {Opcode.SMSG_WHO, 0x4C7F}
         };

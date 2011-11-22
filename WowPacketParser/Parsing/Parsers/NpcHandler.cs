@@ -1,4 +1,6 @@
 using System;
+using System.Text;
+using System.Linq;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -95,53 +97,40 @@ namespace WowPacketParser.Parsing.Parsers
             Stuffing.NpcTrainers.TryAdd(guid.GetEntry(), npcTrainer);
         }
 
-        private static ulong ReadByte(ref Packet packet, int index)
-        {
-            var tmp = (ulong)packet.ReadByte();
-            if ((tmp % 2) == 0)
-                tmp++;
-            else
-                tmp--;
-            // Debug: packet.Writer.WriteLine("Read {0} = {1}", index, tmp.ToString("X2"));
-            return (tmp << 8*index);
-        }
-
         // WIP
         [Parser(Opcode.SMSG_LIST_INVENTORY, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleVendorInventoryList422(Packet packet)
         {
             var npcVendor = new NpcVendor();
-            var flags = packet.ReadEnum<UnknownFlags>("Unk Flags", TypeCode.Byte);
+            var flags = packet.ReadEnum<UnknownFlags>("GUID Byte Mask", TypeCode.Byte);
 
-            ulong tmp = 0;
-
-            if (flags.HasAnyFlag(UnknownFlags.Unk5))
-                tmp += ReadByte(ref packet, 2);
+            if (flags.HasAnyFlag(UnknownFlags.Byte2))
+                packet.ReadGuidByte(2);
 
             var itemCount = packet.ReadUInt32("Item Count");
 
-            if (flags.HasAnyFlag(UnknownFlags.Unk8))
-                tmp += ReadByte(ref packet, 5);
+            if (flags.HasAnyFlag(UnknownFlags.Byte5))
+                packet.ReadGuidByte(5);
 
-            if (flags.HasAnyFlag(UnknownFlags.Unk2)) // Flag?
-                tmp += ReadByte(ref packet, 0);
+            if (flags.HasAnyFlag(UnknownFlags.Byte0)) // Flag?
+                packet.ReadGuidByte(0);
 
-            if (flags.HasAnyFlag(UnknownFlags.Unk3)) // Flag?
-                tmp += ReadByte(ref packet, 1);
+            if (flags.HasAnyFlag(UnknownFlags.Byte1)) // Flag?
+                packet.ReadGuidByte(1);
 
-            if (flags.HasAnyFlag(UnknownFlags.Unk6)) // Flag?
-                ReadByte(ref packet, 3);
+            if (flags.HasAnyFlag(UnknownFlags.Byte3)) // Flag?
+                packet.ReadGuidByte(3);
 
-            if (flags.HasAnyFlag(UnknownFlags.Unk1))
-                tmp += ReadByte(ref packet, 4);
+            if (flags.HasAnyFlag(UnknownFlags.Byte4))
+                packet.ReadGuidByte(4);
 
-            if (flags.HasAnyFlag(UnknownFlags.Unk7)) // Flag?
-                tmp += ReadByte(ref packet, 7);
+            if (flags.HasAnyFlag(UnknownFlags.Byte7)) // Flag?
+                packet.ReadGuidByte(7);
 
-            if (!flags.HasAnyFlag(UnknownFlags.Unk4)) // Flag?
-                tmp += ReadByte(ref packet, 6);
+            if (!flags.HasAnyFlag(UnknownFlags.Byte2)) // Flag?
+                packet.ReadGuidByte(6);
 
-            var guid = new Guid(tmp);
+            var guid = packet.ReadBitstreamedGuid();
             packet.Writer.WriteLine("GUID: " + guid);
 
             npcVendor.VendorItems = new List<VendorItem>((int)itemCount);
@@ -218,31 +207,40 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
         public static void HandleNpcGossip(Packet packet)
         {
-            var gossip = new Gossip();
+            var guid = packet.ReadGuid("GUID");
+            var menuid = packet.ReadUInt32("Menu id");
+            var textid = packet.ReadUInt32("Text id");
 
-            packet.ReadGuid("GUID"); // TODO: Use this to assign npc entries with gossip ids
+            GossipMenu gossip = new GossipMenu
+            {
+                MenuId = menuid,
+                GossipOptions = new List<GossipOption>(),
+                NpcTextId = textid
+            };
 
-            var menuId = packet.ReadUInt32("Menu id");
-
-            gossip.NpcTextIds.Add(packet.ReadUInt32("Text id"));
-
+            gossip = Stuffing.Gossips.GetOrAdd(Tuple.Create<uint,uint>(guid.GetEntry(),menuid), gossip);
+            
             var count = packet.ReadUInt32("Amount of Options");
-            gossip.GossipOptions = new List<GossipOption>((int)count);
             for (var i = 0; i < count; i++)
             {
-                var gossipOption = new GossipOption();
-
-                gossipOption.Index = packet.ReadUInt32("Index", i);
-                gossipOption.OptionIcon = packet.ReadByte("Icon", i);
-                gossipOption.Box = packet.ReadBoolean("Box", i);
-                gossipOption.RequiredMoney = packet.ReadUInt32("Required money", i);
-                gossipOption.OptionText = packet.ReadCString("Text", i);
-                gossipOption.BoxText = packet.ReadCString("Box Text", i);
-
-                gossip.GossipOptions.Add(gossipOption);
+                GossipOption opt = new GossipOption
+                {
+                    Index = packet.ReadUInt32("Index", i),
+                    OptionIcon = packet.ReadByte("Icon", i),
+                    Box = packet.ReadBoolean("Box", i),
+                    RequiredMoney = packet.ReadUInt32("Required money", i),
+                    OptionText = packet.ReadCString("Text", i),
+                    BoxText = packet.ReadCString("Box Text", i)
+                };
+                gossip.GossipOptions.Add(opt);
             }
 
-            Stuffing.Gossips.TryAdd(menuId, gossip);
+            Stuffing.Gossips.AddOrUpdate(Tuple.Create<uint,uint>(guid.GetEntry(),menuid), gossip, (a,b) => 
+            {
+                b.GossipOptions = gossip.GossipOptions;
+                b.NpcTextId = gossip.NpcTextId;
+                return b;
+            });
 
             var questgossips = packet.ReadUInt32("Amount of Quest gossips");
             for (var i = 0; i < questgossips; i++)
@@ -256,7 +254,6 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("Title", i);
             }
         }
-
 
         [Parser(Opcode.SMSG_THREAT_UPDATE)]
         [Parser(Opcode.SMSG_HIGHEST_THREAT_UPDATE)]

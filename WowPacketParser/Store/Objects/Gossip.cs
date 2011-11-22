@@ -5,9 +5,11 @@ using System.Text;
 
 namespace WowPacketParser.Store.Objects
 {
-    public class Gossip
+    public class GossipMenu
     {
-        public List<uint> NpcTextIds;
+        public uint MenuId;
+
+        public uint NpcTextId;
 
         public List<GossipOption> GossipOptions;
     }

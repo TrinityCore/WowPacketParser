@@ -1,4 +1,6 @@
 using System;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -159,7 +161,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MONSTER_MOVE_TRANSPORT)]
         public static void HandleMonsterMove(Packet packet)
         {
-            packet.ReadPackedGuid("GUID");
+            var guid = packet.ReadPackedGuid("GUID");
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MONSTER_MOVE_TRANSPORT))
             {
@@ -228,6 +230,21 @@ namespace WowPacketParser.Parsing.Parsers
 
             var newpos = packet.ReadVector3("Waypoint 0");
 
+            if (waypoints >= 3) // Hardcoded number, i have not seen any creature with less than 3 waypoints to have a scripted movement behaviour
+            {
+                Waypoint wp = new Waypoint
+                {
+                    X = newpos.X,
+                    Y = newpos.Y,
+                    Z = newpos.Z,
+                    NpcEntry = guid.GetEntry(),
+                    Id = 0
+                };
+
+                Stuffing.Waypoints.TryAdd(Tuple.Create<uint, uint>(guid.GetEntry(), wp.Id), wp);
+                SQL.SQLStore.WriteData(SQL.Stores.WaypointStore.GetCommand(wp));
+            }
+
             if (flags.HasAnyFlag(SplineFlag.Flying | SplineFlag.CatmullRom))
                 for (var i = 0; i < waypoints - 1; i++)
                     packet.ReadVector3("Waypoint " + (i + 1));
@@ -246,6 +263,21 @@ namespace WowPacketParser.Parsing.Parsers
                     vec.Z += mid.Z;
 
                     packet.Writer.WriteLine("Waypoint " + (i + 1) + ": " + vec);
+                    
+                    if (waypoints >= 3) // Hardcoded number, i have not seen any creature with less than 3 waypoints to have a scripted movement behaviour
+                    {
+                        Waypoint wp = new Waypoint
+                        {
+                            X = vec.X,
+                            Y = vec.Y,
+                            Z = vec.Z,
+                            NpcEntry = guid.GetEntry(),
+                            Id = (uint)(i + 1)
+                        };
+
+                        Stuffing.Waypoints.TryAdd(Tuple.Create<uint,uint>(guid.GetEntry(),wp.Id), wp);
+                        SQL.SQLStore.WriteData(SQL.Stores.WaypointStore.GetCommand(wp));
+                    }
                 }
             }
         }
@@ -496,12 +528,114 @@ namespace WowPacketParser.Parsing.Parsers
             packet.Writer.WriteLine("Unk Int32 2: " + unk2);
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT,ClientVersionBuild.V1_12_1_5875,ClientVersionBuild.V4_0_6a_13623)] // Not exactly sure when it was removed
         public static void HandlePhaseShift(Packet packet)
         {
             var phaseMask = packet.ReadInt32();
             packet.Writer.WriteLine("Phase Mask: 0x" + phaseMask.ToString("X8"));
             CurrentPhaseMask = phaseMask;
+        }
+
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandlePhaseShift406(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+
+            var CountOfBytes1 = packet.ReadUInt32("Count of bytes 1");
+            byte[] bytes1 = null;
+
+            if (CountOfBytes1 > 0)
+                bytes1 = packet.ReadBytes((int)CountOfBytes1);
+
+            var CountOfBytes2 = packet.ReadUInt32("Count of bytes 2");
+            byte[] bytes2 = null;
+
+            if (CountOfBytes2 > 0)
+                bytes2 = packet.ReadBytes((int)CountOfBytes2);
+
+            var CountOfBytes3 = packet.ReadUInt32("Count of bytes 3");
+            byte[] bytes3 = null;
+
+            if (CountOfBytes3 > 0)
+                bytes3 = packet.ReadBytes((int)CountOfBytes3);
+
+            var CountOfBytes4 = packet.ReadUInt32("Count of bytes 4");
+            byte[] bytes4 = null;
+
+            if (CountOfBytes4 > 0)
+                bytes4 = packet.ReadBytes((int)CountOfBytes4);
+
+            packet.ReadUInt32("Flag"); // can be 0, 4 or 8, 8 = normal world, others are unknown
+        }
+
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT,ClientVersionBuild.V4_2_2_14545)] // Not exactly sure when it was added
+        public static void HandlePhaseShift422(Packet packet)
+        {
+            var GuidFlag = packet.ReadEnum<UnknownFlags>("Guid Mask Flags",TypeCode.Byte);
+
+            if (GuidFlag.HasFlag(UnknownFlags.Byte0))
+                packet.ReadGuidByte(0);
+
+            if (GuidFlag.HasFlag(UnknownFlags.Byte4))
+                packet.ReadGuidByte(4);// packet.ReadByte("Unk Byte 3");
+
+            var CountOfBytes1 = packet.ReadUInt32("Count of bytes 1");
+            byte[] bytes1 = null;
+
+            if (CountOfBytes1 > 0)
+            {
+                packet.ReadUInt16("Map Swap 1"); // Map that is currently being loaded
+                bytes1 = packet.ReadBytes((int)CountOfBytes1 - 2);
+            }
+
+            if (GuidFlag.HasFlag(UnknownFlags.Byte3))
+                packet.ReadGuidByte(3);// packet.ReadByte("Unk Byte 4");
+
+            packet.ReadUInt32("Flag? "); // this is 0, 4 or 8, if 8 then its normal world
+
+            if (GuidFlag.HasFlag(UnknownFlags.Byte2))
+                packet.ReadGuidByte(2);// packet.ReadByte("Unk Byte 5"); // flag Unk4
+
+            var CountOfBytes2 = packet.ReadUInt32("Count of bytes 2");
+            byte[] bytes2 = null;
+
+            if (CountOfBytes2 > 0)
+            {
+                CurrentPhaseMask = packet.ReadUInt16("Current PhaseMask");
+                bytes2 = packet.ReadBytes((int)CountOfBytes2 - 2);
+            }
+
+            if (!GuidFlag.HasFlag(UnknownFlags.Byte2))
+                packet.ReadGuidByte(6);// packet.ReadByte("Unk Byte 6");
+
+            var CountOfBytes3 = packet.ReadUInt32("Count of bytes 3");
+            byte[] bytes3 = null;
+
+            if (CountOfBytes3 > 0)
+            {
+                packet.ReadUInt16("Map Swap 2");
+                bytes3 = packet.ReadBytes((int)CountOfBytes3 - 2);
+            }
+
+            if (GuidFlag.HasFlag(UnknownFlags.Byte7))
+                packet.ReadGuidByte(7);// packet.ReadByte("Unk Byte 7");
+
+            var CountOfBytes4 = packet.ReadUInt32("Count of bytes 4");
+            byte[] bytes4 = null;
+
+            if (CountOfBytes4 > 0)
+            {
+                packet.ReadUInt16("Map Swap 3"); // Should always match 'Map Swap 1'
+                bytes4 = packet.ReadBytes((int)CountOfBytes4 - 2);
+            }
+
+            if (GuidFlag.HasFlag(UnknownFlags.Byte1))
+                packet.ReadGuidByte(1);// packet.ReadByte("Unk Byte 8");
+
+            if (GuidFlag.HasFlag(UnknownFlags.Byte5))
+                packet.ReadGuidByte(5);// packet.ReadByte("Unk Byte 9");
+
+            packet.Writer.WriteLine("Guid: " + packet.ReadBitstreamedGuid().ToString());
         }
 
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]

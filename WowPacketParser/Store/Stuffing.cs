@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Concurrent;
 using WowPacketParser.Enums;
 using WowPacketParser.Store.Objects;
@@ -39,10 +40,17 @@ namespace WowPacketParser.Store
         public static readonly ConcurrentDictionary<uint, NpcText> NpcTexts =
             new ConcurrentDictionary<uint, NpcText>();
 
-        // Gossips
-        public static readonly ConcurrentDictionary<uint, Gossip> Gossips =
-            new ConcurrentDictionary<uint, Gossip>();
+        /// <summary>
+        /// Waypoints, key: npc entry, point id
+        /// Waypoints are currently written with npc Entry instead of GUID * 10, since our GUIDs differ from retails GUIDs
+        /// </summary>
+        public static ConcurrentDictionary<Tuple<uint,uint>, Waypoint> Waypoints =
+            new ConcurrentDictionary<Tuple<uint, uint>, Waypoint>();
 
+        // Gossips
+        /* Key: npc entry, menuid */
+        public static ConcurrentDictionary<Tuple<uint,uint>, GossipMenu> Gossips =
+            new ConcurrentDictionary<Tuple<uint, uint>, GossipMenu>();
 
         /* Key: Misc */
 

@@ -14,6 +14,26 @@ namespace WowPacketParser.Misc
             return new Guid(ReadUInt64());
         }
 
+        private ulong GuidBytes = 0;
+
+        public ulong ReadGuidByte(int index)
+        {
+            var tmp = (ulong)ReadByte();
+            if ((tmp % 2) == 0)
+                tmp++;
+            else
+                tmp--;
+            // Debug: packet.Writer.WriteLine("Read {0} = {1}", index, tmp.ToString("X2"));
+            var tmp2 = (tmp << 8 * index);
+            GuidBytes += tmp2;
+            return tmp2;
+        }
+
+        public Guid ReadBitstreamedGuid()
+        {
+            return new Guid(GuidBytes);
+        }
+
         public Guid ReadPackedGuid()
         {
             byte mask = ReadByte();

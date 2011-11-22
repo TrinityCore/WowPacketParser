@@ -1,4 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
+using System;
 using System.IO;
 using WowPacketParser.SQL.Stores;
 
@@ -30,6 +34,54 @@ namespace WowPacketParser.SQL
             Sqls.Add(sql);
         }
 
+        /// <summary>
+        /// Since this function must do a lookup to all of its elements, it needs to be written when all of them are already parsed/loaded into the ConcurrentDictionary
+        /// </summary>
+        public static void WriteGossipMenus()
+        {
+            String deletemenus = String.Empty;
+            String insertmenus = String.Empty;
+            String deleteoptions = String.Empty;
+            String insertoptions = String.Empty;
+
+            if (Stuffing.Gossips.Count > 0)
+            {
+                deletemenus = "DELETE FROM gossip_menu WHERE entry IN (";
+                insertmenus = "INSERT INTO gossip_menu(entry,text_id) VALUES " + Environment.NewLine;
+                deleteoptions = "DELETE FROM gossip_menu_option WHERE menu_id IN (";
+                insertoptions = "INSERT INTO gossip_menu_option(menu_id, id, option_icon, option_text, option_id, npc_option_npcflag, action_menu_id, box_coded, box_money, box_text) VALUES " + Environment.NewLine;
+            }
+
+            foreach (KeyValuePair<Tuple<uint, uint>, GossipMenu> kvp in Stuffing.Gossips)
+            {
+                deletemenus += kvp.Key.Item2 + ",";
+                insertmenus += String.Format("({0},{1}),",kvp.Key.Item2,kvp.Value.NpcTextId) + Environment.NewLine;
+                deleteoptions += kvp.Key.Item2 + ",";
+
+                foreach (GossipOption go in kvp.Value.GossipOptions)
+                {
+                    insertoptions += String.Format("('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}'),", kvp.Key.Item2, go.Index, go.OptionIcon, go.OptionText, 1, 1, (Stuffing.Gossips.Count(k => k.Key.Item1 == kvp.Key.Item1 && k.Key.Item2 == kvp.Key.Item2 + 1) == 1 && kvp.Value.GossipOptions.Count == 1) ? Stuffing.Gossips.Where(k => k.Key.Item1 == kvp.Key.Item1 && k.Key.Item2 == kvp.Key.Item2 + 1).First().Key.Item2 : 0, go.Box ? 1 : 0, go.RequiredMoney, go.BoxText) + Environment.NewLine;
+                }
+            }
+
+            deletemenus = deletemenus.Substring(0,deletemenus.Length - 1); // Remove extra comma
+            deletemenus += ");";
+
+            insertmenus = insertmenus.Substring(0,insertmenus.Length - 3); // Remove extra comma
+            insertmenus += ";";
+
+            deleteoptions = deleteoptions.Substring(0,deleteoptions.Length - 1); // Remove extra comma
+            deleteoptions += ");";
+
+            insertoptions = insertoptions.Substring(0, insertoptions.Length - 3); // Remove extra comma
+            insertoptions += ";";
+
+            _file.WriteLine(deletemenus);
+            _file.WriteLine(deleteoptions);
+            _file.WriteLine(insertmenus);
+            _file.WriteLine(insertoptions);
+        }
+
         public static void WriteToFile()
         {
             if (_file == null)
@@ -39,6 +91,8 @@ namespace WowPacketParser.SQL
 
             foreach (var sql in Sqls)
                 _file.WriteLine(sql);
+            
+            WriteGossipMenus();
 
             Flush();
         }

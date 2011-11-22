@@ -84,6 +84,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -298,6 +299,7 @@
     <Compile Include="Loading\IPacketReader.cs" />
     <Compile Include="Loading\Reader.cs" />
     <Compile Include="Loading\SQLitePacketReader.cs" />
+    <Compile Include="SQL\Stores\WaypointStore.cs" />
     <Compile Include="Store\Objects\Aura.cs" />
     <Compile Include="Store\Objects\LootItem.cs" />
     <Compile Include="Store\Objects\NpcVendor.cs" />
@@ -333,6 +335,7 @@
     <Compile Include="Misc\UpdateField.cs" />
     <Compile Include="Store\Objects\UnitTemplate.cs" />
     <Compile Include="Store\Objects\VendorItem.cs" />
+    <Compile Include="Store\Objects\Waypoint.cs" />
     <Compile Include="Store\Objects\WoWObject.cs" />
     <Compile Include="Misc\Packet.cs" />
     <Compile Include="Misc\Utilities.cs" />

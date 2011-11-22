@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Net;
+using System.Web;
 using System.IO;
 using System.Text;
 using WowPacketParser.Enums;
