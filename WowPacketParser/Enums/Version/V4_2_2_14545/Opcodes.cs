@@ -246,6 +246,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0xC86E},
             {Opcode.SMSG_LOGOUT_COMPLETE, 0xCC6B},
             {Opcode.SMSG_LOGOUT_RESPONSE, 0x886A},
+            {Opcode.SMSG_LOOT_RESPONSE, 0x0842},
             {Opcode.SMSG_MESSAGECHAT, 0x5E52},
             {Opcode.SMSG_MONSTER_MOVE, 0x4C53},
             {Opcode.SMSG_MONSTER_MOVE_TRANSPORT, 0x88FB},

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
@@ -110,11 +111,24 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Display ID", i);
                 packet.ReadInt32("Random Suffix", i);
                 packet.ReadInt32("Random Property Id", i);
-                lootItem.SlotType = packet.ReadEnum<LootSlotType>("Slot Type", TypeCode.Byte, i);
+                packet.ReadEnum<LootSlotType>("Slot Type", TypeCode.Byte, i);
                 loot.LootItems.Add(lootItem);
             }
 
-            Stuffing.Loots.TryAdd(new Tuple<uint, LootType>(guid.GetEntry(), lootType), loot);
+            // Items do not have item id in its guid, we need to query the wowobject store go 
+            if (guid.GetObjectType() == ObjectType.Item)
+            {
+                WoWObject item;
+                UpdateField itemEntry;
+                if (Stuffing.Objects.TryGetValue(guid, out item))
+                    if (item.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out itemEntry))
+                    {
+                        Stuffing.Loots.TryAdd(new Tuple<uint, ObjectType>((uint) itemEntry.Int32Value, guid.GetObjectType()), loot);
+                        return;
+                    }
+            }
+
+            Stuffing.Loots.TryAdd(new Tuple<uint, ObjectType>(guid.GetEntry(), guid.GetObjectType()), loot);
         }
 
         [Parser(Opcode.CMSG_LOOT_ROLL)]

@@ -538,5 +538,67 @@ namespace WowPacketParser.Store.SQL
 
             return sqlQuery.ReplaceLast(',', ';').ToString();
         }
+
+        public static string Loot()
+        {
+            if (Stuffing.Loots.IsEmpty)
+                return string.Empty;
+
+            var sqlQuery = new StringBuilder(String.Empty);
+
+            // Not TDB structure
+            const string tableName = "LootTemplate";
+            string[] primaryKey = { "Id", "Type" };
+            string[] tableStructure = {"Id", "Type", "ItemId", "Count"};
+
+            // Can't cast the collection directly
+            ICollection<Tuple<uint, uint>> lootKeys = new Collection<Tuple<uint, uint>>();
+            foreach (var tuple in Stuffing.Loots.Keys)
+            {
+                lootKeys.Add(new Tuple<uint, uint>(tuple.Item1, (uint)tuple.Item2));
+            }
+
+            // Delete
+            sqlQuery.Append(SQLUtil.DeleteQueryDouble(lootKeys, primaryKey, tableName));
+
+            // Insert
+            sqlQuery.Append(SQLUtil.InsertQueryHeader(tableStructure, tableName));
+
+            // Insert rows
+            foreach (var loot in Stuffing.Loots)
+            {
+                StoreNameType storeType = StoreNameType.None;
+                switch (Stuffing.Loots.Keys.First().Item2)
+                {
+                    case ObjectType.Item:
+                        storeType = StoreNameType.Item;
+                        break;
+                    case ObjectType.Corpse:
+                    case ObjectType.Unit:
+                        storeType = StoreNameType.Unit;
+                        break;
+                    case ObjectType.Container:
+                    case ObjectType.GameObject:
+                        storeType = StoreNameType.GameObject;
+                        break;
+                }
+                sqlQuery.Append("-- " + StoreGetters.GetName(storeType, (int) loot.Key.Item1) +
+                                "(" + loot.Value.Gold + " gold)" + Environment.NewLine);
+                foreach (var lootItem in loot.Value.LootItems)
+                {
+                    sqlQuery.Append(
+                        "(" +
+                        loot.Key.Item1 + cs +
+                        (int) loot.Key.Item2 + cs +
+                        lootItem.ItemId + cs +
+                        lootItem.Count + ")," + " -- " +
+                        StoreGetters.GetName(StoreNameType.Item, (int)lootItem.ItemId, false) +
+                        Environment.NewLine);
+
+                }
+            }
+
+            return sqlQuery.ReplaceLast(',', ';').ToString();
+        }
     }
 }

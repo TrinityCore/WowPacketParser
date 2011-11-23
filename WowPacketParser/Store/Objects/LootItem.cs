@@ -7,7 +7,5 @@ namespace WowPacketParser.Store.Objects
         public uint ItemId;
 
         public uint Count;
-
-        public LootSlotType SlotType;
     }
 }
