@@ -39,9 +39,7 @@ namespace WowPacketParser.Store
         public static readonly ConcurrentDictionary<uint, NpcText> NpcTexts =
             new ConcurrentDictionary<uint, NpcText>();
 
-        // Gossips
-        public static readonly ConcurrentDictionary<uint, Gossip> Gossips =
-            new ConcurrentDictionary<uint, Gossip>();
+        
 
 
         /* Key: Misc */
@@ -49,6 +47,10 @@ namespace WowPacketParser.Store
         // Race-Class start information
         public static readonly ConcurrentDictionary<Tuple<Race, Class>, StartInfo> StartInformation =
             new ConcurrentDictionary<Tuple<Race, Class>, StartInfo>();
+
+        // Gossips (MenuId, TextId)
+        public static readonly ConcurrentDictionary<Tuple<uint, uint>, Gossip> Gossips =
+            new ConcurrentDictionary<Tuple<uint, uint>, Gossip>();
 
         // Loot
         public static readonly ConcurrentDictionary<Tuple<uint, LootType>, Loot> Loots =

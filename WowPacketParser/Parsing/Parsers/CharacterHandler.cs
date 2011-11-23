@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -218,7 +217,7 @@ namespace WowPacketParser.Parsing.Parsers
             int count = packet.ReadInt32("Char Count");
             packet.ReadInt32("Unk Count");
 
-            bool[,] bits = new bool[count, 17];
+            var bits = new bool[count, 17];
 
             for (int c = 0; c < count; c++)
                 for (int j = 0; j < 17; j++)
@@ -226,8 +225,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (int c = 0; c < count; c++)
             {
-                byte[] low = new byte[8];
-                byte[] guild = new byte[8];
+                var low = new byte[8];
+                var guild = new byte[8];
                 packet.ReadCString("Name", c);
 
                 if (bits[c, 0])

@@ -222,12 +222,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadGuid("GUID"); // TODO: Use this to assign npc entries with gossip ids
 
-            var menuId = packet.ReadUInt32("Menu id");
-
-            gossip.NpcTextIds.Add(packet.ReadUInt32("Text id"));
+            var menuId = packet.ReadUInt32("Menu Id");
+            var textId = packet.ReadUInt32("Text Id");
 
             var count = packet.ReadUInt32("Amount of Options");
-            gossip.GossipOptions = new List<GossipOption>((int)count);
+
+            gossip.GossipOptions = new List<GossipOption>((int) count);
             for (var i = 0; i < count; i++)
             {
                 var gossipOption = new GossipOption();
@@ -242,7 +242,7 @@ namespace WowPacketParser.Parsing.Parsers
                 gossip.GossipOptions.Add(gossipOption);
             }
 
-            Stuffing.Gossips.TryAdd(menuId, gossip);
+            Stuffing.Gossips.TryAdd(new Tuple<uint, uint>(menuId, textId), gossip);
 
             var questgossips = packet.ReadUInt32("Amount of Quest gossips");
             for (var i = 0; i < questgossips; i++)

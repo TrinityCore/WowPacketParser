@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -427,7 +430,7 @@ namespace WowPacketParser.Store.SQL
                                       };
 
             // Delete
-            sqlQuery.Append(SQLUtil.DeleteQuerySingle(Stuffing.GameObjectTemplates.Keys, primaryKey, tableName));
+            sqlQuery.Append(SQLUtil.DeleteQuerySingle(Stuffing.NpcTexts.Keys, primaryKey, tableName));
 
             // Insert
             sqlQuery.Append(SQLUtil.InsertQueryHeader(tableStructure, tableName));
@@ -453,11 +456,84 @@ namespace WowPacketParser.Store.SQL
                     foreach (var n in a)
                         sqlQuery.Append(n + cs);
 
+                var itr = 0;
                 foreach (var a in npcText.Value.EmoteIds)
                     foreach (int n in a)
-                        sqlQuery.Append(n + cs); // TODO: Do not print comma on the last of the last emote
+                    {
+                        itr++;
+                        sqlQuery.Append(n);
+                        if (itr != npcText.Value.EmoteIds.Length * a.Length)
+                            sqlQuery.Append(cs);
+                    }
 
                 sqlQuery.Append(")," + Environment.NewLine);
+            }
+
+            return sqlQuery.ReplaceLast(',', ';').ToString();
+        }
+
+        public static string Gossip()
+        {
+            if (Stuffing.Gossips.IsEmpty)
+                return string.Empty;
+
+            var sqlQuery = new StringBuilder(String.Empty);
+
+            // Not TDB structure (data got 32 fields, not 24)
+            const string tableName1 = "gossip_menu";
+            string[] primaryKey1 = {"entry", "text_id"};
+            string[] tableStructure1 = {"entry", "text_id"};
+
+            const string tableName2 = "gossip_menu_option";
+            const string primaryKey2 = "menu_id";
+            string[] tableStructure2 = {
+                                           "menu_id", "id", "option_icon", "option_text", "box_coded",
+                                           "box_money", "box_text"
+                                       };
+
+            // Delete1
+            sqlQuery.Append(SQLUtil.DeleteQueryDouble(Stuffing.Gossips.Keys, primaryKey1, tableName1));
+
+            // Insert1
+            sqlQuery.Append(SQLUtil.InsertQueryHeader(tableStructure1, tableName1));
+
+            // Insert1 rows
+            foreach (var pair in Stuffing.Gossips.Keys)
+                sqlQuery.Append("(" + pair.Item1 + cs + pair.Item2 + ")," + Environment.NewLine);
+
+            sqlQuery = sqlQuery.ReplaceLast(',', ';');
+
+            // We need a collection of the first items of a tuple
+            var keyCollection = new Collection<uint>();
+            foreach (var key in Stuffing.Gossips.Keys)
+                keyCollection.Add(key.Item1);
+
+            // Delete2
+            sqlQuery.Append(SQLUtil.DeleteQuerySingle(keyCollection, primaryKey2, tableName2));
+
+            // If no gossip options exists, return what we got so far
+            if (!Stuffing.Gossips.Values.Any(gossip => gossip.GossipOptions != null))
+                return sqlQuery.ToString();
+
+            // Insert2
+            sqlQuery.Append(SQLUtil.InsertQueryHeader(tableStructure2, tableName2));
+
+            // Insert2 rows
+            foreach (var gossip in Stuffing.Gossips)
+            {
+                if (gossip.Value.GossipOptions != null)
+                    foreach (var gossipOption in gossip.Value.GossipOptions)
+                    {
+                        sqlQuery.Append(
+                            "(" +
+                            gossip.Key.Item1 + cs +
+                            gossipOption.Index + cs +
+                            gossipOption.OptionIcon + cs +
+                            SQLUtil.Stringify(gossipOption.OptionText) + cs +
+                            (gossipOption.Box ? "1" : "0") + cs +
+                            gossipOption.RequiredMoney + cs +
+                            SQLUtil.Stringify(gossipOption.BoxText) + ")," + Environment.NewLine);
+                    }
             }
 
             return sqlQuery.ReplaceLast(',', ';').ToString();

@@ -10,7 +10,6 @@ using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.SQL;
-using WowPacketParser.Store;
 using WowPacketParser.Store.SQL;
 using DBCStore = WowPacketParser.DBC.DBCStore.DBC;
 
@@ -77,6 +76,7 @@ namespace WowPacketParser
                         SQLStore.WriteData(Builder.GameObjectTemplate());
                         SQLStore.WriteData(Builder.PageText());
                         SQLStore.WriteData(Builder.NpcText());
+                        SQLStore.WriteData(Builder.Gossip());
                     }
 
                     SQLStore.WriteToFile();

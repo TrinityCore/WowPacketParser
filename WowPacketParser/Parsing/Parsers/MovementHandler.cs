@@ -514,7 +514,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (count > 0)
                 {
                     byte[] bytes1 = packet.ReadBytes((int)count);
-                    packet.Writer.WriteLine("Bytes: " + bytes1.ToString());
+                    packet.Writer.WriteLine("Bytes: " + bytes1);
                 }
             }
 
@@ -526,12 +526,12 @@ namespace WowPacketParser.Parsing.Parsers
         {
             byte[] bytes = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-            var GuidFlag = packet.ReadEnum<BitMask>("Guid Mask Flags",TypeCode.Byte);
+            var guidFlag = packet.ReadEnum<BitMask>("Guid Mask Flags",TypeCode.Byte);
 
-            if (GuidFlag.HasFlag(BitMask.Byte0))
+            if (guidFlag.HasFlag(BitMask.Byte0))
                 bytes[0] = packet.ReadByte();
 
-            if (GuidFlag.HasFlag(BitMask.Byte4))
+            if (guidFlag.HasFlag(BitMask.Byte4))
                 bytes[4] = packet.ReadByte();
 
             var count = packet.ReadUInt32();
@@ -549,12 +549,12 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            if (GuidFlag.HasFlag(BitMask.Byte3))
+            if (guidFlag.HasFlag(BitMask.Byte3))
                 bytes[3] = packet.ReadByte();
 
-            packet.ReadUInt32("Flag? ");
+            packet.ReadUInt32("Flag?");
 
-            if (GuidFlag.HasFlag(BitMask.Byte2))
+            if (guidFlag.HasFlag(BitMask.Byte2))
                 bytes[2] = packet.ReadByte();
 
             count = packet.ReadUInt32();
@@ -572,7 +572,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            if (!GuidFlag.HasFlag(BitMask.Byte2))
+            if (!guidFlag.HasFlag(BitMask.Byte2))
                 bytes[6] = packet.ReadByte();
 
             count = packet.ReadUInt32();
@@ -590,7 +590,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            if (GuidFlag.HasFlag(BitMask.Byte7))
+            if (guidFlag.HasFlag(BitMask.Byte7))
                 bytes[7] = packet.ReadByte();
 
                         count = packet.ReadUInt32();
@@ -608,10 +608,10 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            if (GuidFlag.HasFlag(BitMask.Byte1))
+            if (guidFlag.HasFlag(BitMask.Byte1))
                 bytes[1] = packet.ReadByte();
 
-            if (GuidFlag.HasFlag(BitMask.Byte5))
+            if (guidFlag.HasFlag(BitMask.Byte5))
                 bytes[5] = packet.ReadByte();
 
             ulong tmp = 0;
@@ -623,7 +623,7 @@ namespace WowPacketParser.Parsing.Parsers
                 tmp <<= 8;
             }
             var guid = new Guid(tmp);
-            packet.Writer.WriteLine("GUID: " + guid.ToString());
+            packet.Writer.WriteLine("GUID: " + guid);
         }
 
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]

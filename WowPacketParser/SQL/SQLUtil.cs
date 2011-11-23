@@ -87,6 +87,30 @@ namespace WowPacketParser.SQL
         }
 
         /// <summary>
+        /// Creates a SQL DELETE query:
+        /// "DELETE FROM `tableName` WHERE (`primaryKey[0]`=entries1[0] AND `primaryKey[1]`=entries1[1]) OR ..."
+        /// </summary>
+        public static string DeleteQueryDouble(ICollection<Tuple<uint, uint>> entries, string[] primaryKeys, string tableName)
+        {
+            var result = "DELETE FROM " + AddBackQuotes(tableName) + " WHERE ";
+
+            var iter = 0;
+            foreach (var tuple in entries)
+            {
+                iter++;
+                result += "(" +
+                          AddBackQuotes(primaryKeys[0]) + "=" + tuple.Item1 + " AND " +
+                          AddBackQuotes(primaryKeys[1]) + "=" + tuple.Item2 + ")";
+                if (entries.Count != iter)
+                    result += " OR ";
+            }
+
+            result += ";" + Environment.NewLine;
+
+            return result;
+        }
+
+        /// <summary>
         /// Creates the upper part of a SQL INSERT query:
         /// "INSERT INTO `tableName` (`column1`,`column2`, ..., `columnN`) VALUES"
         /// </summary>
