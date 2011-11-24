@@ -62,6 +62,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_DEL_VOICE_IGNORE, 0x8C73},
             {Opcode.CMSG_DESTROYITEM, 0x4E7A},
             {Opcode.CMSG_EMOTE, 0x9843},
+            {Opcode.CMSG_ENTER_WORLD, 0x0888},
             {Opcode.CMSG_EQUIPMENT_SET_USE, 0x4853},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0xCEFF},
             {Opcode.CMSG_GET_MAIL_LIST, 0xB284},

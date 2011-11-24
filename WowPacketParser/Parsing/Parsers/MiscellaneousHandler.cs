@@ -469,6 +469,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Life Time Kills");
         }
 
+        [Parser(Opcode.CMSG_ENTER_WORLD)]
+        public static void HandleClientEnterWorld(Packet packet)
+        {
+            packet.ReadByte("Mask?");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
+        }
+
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
