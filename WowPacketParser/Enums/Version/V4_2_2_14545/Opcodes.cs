@@ -205,6 +205,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0xC4F},
             {Opcode.MSG_SET_RAID_DIFFICULTY, 0x1A5A},
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x98EB},
+            {Opcode.SMSG_ACTION_BUTTONS, 0x8A6B},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x5EE2},
             {Opcode.SMSG_ACTIVATETAXIREPLY, 0x8E4F},
             {Opcode.SMSG_ADDON_INFO, 0x9863},
@@ -244,6 +245,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_GUILD_RANK, 0xA6EC},
             {Opcode.SMSG_INIT_CURRENCY, 0x227E},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x9EDA},
+            {Opcode.SMSG_INITIAL_SPELLS, 0x88FE},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x8EFB},
             {Opcode.SMSG_INVALID_PROMOTION_CODE, 0xD8FE},
             {Opcode.SMSG_LFGUILD_RECRUIT_DATA, 0xE0CE}, // Made up name
@@ -299,7 +301,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_UPDATE_OBJECT, 0x1EE7},
             {Opcode.SMSG_WARDEN_DATA ,0x484F},
             {Opcode.SMSG_WEATHER, 0x4ECE},
-            {Opcode.SMSG_WHO, 0x4C7F}
+            {Opcode.SMSG_WHO, 0x4C7F},
         };
     }
 }
