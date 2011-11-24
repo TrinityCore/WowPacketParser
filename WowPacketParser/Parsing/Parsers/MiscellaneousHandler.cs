@@ -319,12 +319,12 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePowerUpdate(Packet packet)
         {
             packet.ReadPackedGuid("GUID");
-            packet.ReadEnum<PowerType>("Type", TypeCode.Byte);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
-                packet.ReadUInt32("Unk int32");
+                packet.ReadInt32("Unk int32");
 
-            packet.ReadUInt32("Value");
+            packet.ReadEnum<PowerType>("Type", TypeCode.Byte);
+            packet.ReadInt32("Value");
         }
 
         [Parser(Opcode.CMSG_SET_ACTIONBAR_TOGGLES)]

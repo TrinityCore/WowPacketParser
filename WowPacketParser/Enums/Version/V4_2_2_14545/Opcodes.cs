@@ -272,6 +272,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_PLAYERBINDERROR, 0x5A4F},
             {Opcode.SMSG_PLAY_SOUND, 0x4ACF},
             {Opcode.SMSG_PONG, 0x0380},
+            {Opcode.SMSG_POWER_UPDATE, 0x487E},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0xCE5F},
             {Opcode.SMSG_QUESTGIVER_QUEST_FAILED, 0xD8FF},
             {Opcode.SMSG_QUESTGIVER_QUEST_LIST, 0xDEF6},
