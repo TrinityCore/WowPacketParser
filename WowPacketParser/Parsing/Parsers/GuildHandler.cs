@@ -31,22 +31,20 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleGuildRoster(Packet packet)
         {
-            // FIXME bytes 4 and 5 and bits equivalence
+            packet.Writer.WriteLine(packet.AsHex());
             var bits = new bool[8];
-            for (int c = 0; c < 8; c++)
+            for (int c = 7; c >= 0; c--)
                 bits[c] = packet.ReadBit();
 
             var bytes = new byte[8];
-
-            if (bits[7]) bytes[7] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[0]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[4]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[5]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[6]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[1]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[2]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[3]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
-
+            if (bits[0]) bytes[7] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[5]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[4]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[7]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[3]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[2]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[1]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[6]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
             packet.Writer.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(bytes, 0)));
         }
 
