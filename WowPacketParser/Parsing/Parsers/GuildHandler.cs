@@ -204,7 +204,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GUILD_EVENT)]
         public static void HandleGuildEvent(Packet packet)
         {
-            packet.ReadEnum<GuildEventType>("Event Type", TypeCode.Byte);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                packet.ReadEnum<GuildEventType442>("Event Type", TypeCode.Byte);
+            else
+                packet.ReadEnum<GuildEventType>("Event Type", TypeCode.Byte);
             var size = packet.ReadByte("Param Count");
             for (var i = 0; i < size; i++)
                 packet.ReadCString("Param", i);
@@ -463,6 +466,17 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Time", i);
                 }
             }
+        }
+
+        [Parser(Opcode.CMSG_GUILDFINDER_JOIN)]
+        public static void HandleGuildFinderJoin(Packet packet)
+        {
+            packet.ReadEnum <GuildFinderCommand>("Command", TypeCode.Byte);
+            packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsLevel>("Level", TypeCode.UInt32);
+            packet.ReadCString("Comment");
         }
 
         // Missing Opcodes
