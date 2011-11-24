@@ -1281,7 +1281,7 @@ namespace WowPacketParser.Enums.Version//.V4_0_6_13596
             {Opcode.CMSG_AUTO_DECLINE_GUILD_INVITES, 0x08589}, // 4.0.6a 13623
             {Opcode.CMSG_SET_PRIMARY_TALENT_TREE, 0x0FEA8}, // 4.0.6a 13623
             {Opcode.CMSG_GROUP_SET_ROLES, 0x08509}, // 4.0.6a 13623
-            {Opcode.CMSG_WORLD_LOGIN, 0x08508}, // 4.0.6a 13623
+            {Opcode.CMSG_LOAD_SCREEN, 0x08508}, // 4.0.6a 13623
             {Opcode.SMSG_UNKNOWN_65508, 0x0FFE4}, // Unknown opcode Name, 4.0.6a 13623
             {Opcode.SMSG_GUILD_ACHIEVEMENT_EARNED, 0x00D5C}, // 4.0.6a 13623
             {Opcode.SMSG_GUILD_ACHIEVEMENT_DATA, 0x0491E}, // 4.0.6a 13623

@@ -135,7 +135,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_PET_NAME_QUERY, 0xDA76},
             {Opcode.CMSG_PING, 0x1008},
             {Opcode.CMSG_PLAYED_TIME, 0x5A56},
-            //{Opcode.CMSG_PLAYER_LOGIN, 0x0898},
+            {Opcode.CMSG_PLAYER_LOGIN, 0x0898},
             {Opcode.CMSG_PLAYER_LOGOUT, 0x1CEE},
             {Opcode.CMSG_PLAY_DANCE, 0x5857},
             {Opcode.CMSG_PUSHQUESTTOPARTY, 0xA47},
@@ -258,6 +258,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x8EFB},
             {Opcode.SMSG_INVALID_PROMOTION_CODE, 0xD8FE},
             {Opcode.SMSG_LFGUILD_RECRUIT_DATA, 0xE0CE}, // Made up name
+            {Opcode.SMSG_LFG_PLAYER_INFO, 0xC85F},
             {Opcode.SMSG_LIST_INVENTORY, 0x264C},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0xC86E},
             {Opcode.SMSG_LOGOUT_COMPLETE, 0xCC6B},

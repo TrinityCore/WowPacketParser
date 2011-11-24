@@ -538,6 +538,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ENABLE_BARBER_SHOP)]
         [Parser(Opcode.SMSG_FISH_NOT_HOOKED)]
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]
+        [Parser(Opcode.CMSG_MEETINGSTONE_INFO)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }
