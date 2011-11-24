@@ -38,29 +38,14 @@ namespace WowPacketParser.Parsing.Parsers
 
             var bytes = new byte[8];
 
-            if (bits[7])
-                bytes[7] = (byte)(packet.ReadByte() ^ 1);
-
-            if (bits[0])
-                bytes[0] = (byte)(packet.ReadByte() ^ 1);
-
-            if (bits[4])
-                bytes[1] = (byte)(packet.ReadByte() ^ 1);
-
-            if (bits[5])
-                bytes[2] = (byte)(packet.ReadByte() ^ 1);
-
-            if (bits[6])
-                bytes[6] = (byte)(packet.ReadByte() ^ 1);
-
-            if (bits[1])
-                bytes[3] = (byte)(packet.ReadByte() ^ 1);
-
-            if (bits[2])
-                bytes[4] = (byte)(packet.ReadByte() ^ 1);
-
-            if (bits[3])
-                bytes[5] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[7]) bytes[7] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[0]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[4]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[5]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[6]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[1]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[2]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[3]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
 
             packet.Writer.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(bytes, 0)));
         }

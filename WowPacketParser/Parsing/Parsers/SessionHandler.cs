@@ -177,8 +177,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_2_2_14545)]
         public static void HandlePlayerLogin422(Packet packet)
         {
-            packet.Writer.WriteLine(packet.AsHex());
-
             var bits = new bool[8];
             for (int c = 7; c >= 0; c--)
                 bits[c] = packet.ReadBit();
