@@ -81,6 +81,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_GUILD_INFO, 0xCE76},
             {Opcode.CMSG_GUILD_QUERY, 0x8E57},
             {Opcode.CMSG_GUILD_RANK, 0x8D50},
+            {Opcode.CMSG_GUILD_ROSTER, 0x9952},
             {Opcode.CMSG_GUILDFINDER_JOIN, 0x68C5},
             {Opcode.CMSG_INSPECT, 0x9A7B},
             {Opcode.CMSG_INSTANCE_LOCK_WARNING_RESPONSE, 0x8CF7},

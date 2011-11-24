@@ -211,7 +211,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleCharEnum442(Packet packet)
+        public static void HandleCharEnum422(Packet packet)
         {
             packet.ReadByte("Unk Flag");
             int count = packet.ReadInt32("Char Count");
@@ -330,7 +330,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_COMPRESSED_CHAR_ENUM)]
         public static void HandleCompressedCharEnum(Packet packet)
         {
-            HandleCharEnum442(packet.Inflate(packet.ReadInt32()));
+            HandleCharEnum422(packet.Inflate(packet.ReadInt32()));
         }
 
         [Parser(Opcode.SMSG_PLAYER_VEHICLE_DATA)]
