@@ -31,5 +31,7 @@ namespace WowPacketParser.Enums
         AllowOnlyAbility = 0x00800000,
         Unk25 = 0x01000000,
         NoXPGain = 0x02000000,
+        Unk27 = 0x04000000,
+        Unk28 = 0x08000000,
     }
 }

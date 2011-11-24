@@ -204,15 +204,18 @@ namespace WowPacketParser.Parsing.Parsers
             if (flags.HasAnyFlag(SplineFlag.AnimationTier))
             {
                 packet.ReadEnum<MovementAnimationState>("Animation State", TypeCode.Byte);
-
-                packet.ReadInt32("Unk Int32 1");
+                packet.ReadInt32("Asynctime in ms"); // Async-time in ms
             }
 
-            if (flags.HasAnyFlag(SplineFlag.Falling)) // Could be SplineFlag.UsePathSmoothing
+            // Cannot find anything similar to this in 4.2.2 client
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
             {
-                packet.ReadInt32("Unknown");
-                packet.ReadInt16("Unknown");
-                packet.ReadInt16("Unknown");
+                if (flags.HasAnyFlag(SplineFlag.Falling)) // Could be SplineFlag.UsePathSmoothing
+                {
+                    packet.ReadInt32("Unknown");
+                    packet.ReadInt16("Unknown");
+                    packet.ReadInt16("Unknown");
+                }
             }
 
             packet.ReadInt32("Move Time");
@@ -220,32 +223,35 @@ namespace WowPacketParser.Parsing.Parsers
             if (flags.HasAnyFlag(SplineFlag.Trajectory))
             {
                 packet.ReadSingle("Vertical Speed");
-
                 packet.ReadInt32("Unk Int32 2");
             }
 
             var waypoints = packet.ReadInt32("Waypoints");
 
-            var newpos = packet.ReadVector3("Waypoint 0");
-
             if (flags.HasAnyFlag(SplineFlag.Flying | SplineFlag.CatmullRom))
-                for (var i = 0; i < waypoints - 1; i++)
-                    packet.ReadVector3("Waypoint " + (i + 1));
+            {
+                packet.ReadVector3("Waypoint", 0);
+
+                for (var i = 1; i < waypoints; i++)
+                    packet.ReadVector3("Waypoint", i);
+            }
             else
             {
+                var newpos = packet.ReadVector3("Waypoint Endpoint");
+
                 var mid = new Vector3();
                 mid.X = (pos.X + newpos.X) * 0.5f;
                 mid.Y = (pos.Y + newpos.Y) * 0.5f;
                 mid.Z = (pos.Z + newpos.Z) * 0.5f;
 
-                for (var i = 0; i < waypoints - 1; i++)
+                for (var i = 1; i < waypoints; i++)
                 {
                     var vec = packet.ReadPackedVector3();
                     vec.X += mid.X;
                     vec.Y += mid.Y;
                     vec.Z += mid.Z;
 
-                    packet.Writer.WriteLine("Waypoint " + (i + 1) + ": " + vec);
+                    packet.Writer.WriteLine("[" + i + "]" + " Waypoint: " + vec);
                 }
             }
         }
