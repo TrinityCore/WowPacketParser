@@ -29,10 +29,10 @@ namespace WowPacketParser.Store.SQL
                                           "RequiredFactionId1", "RequiredFactionId2", "RequiredFactionValue1",
                                           "RequiredFactionValue2", "NextQuestId", "RewardXPId", "RewardOrRequiredMoney",
                                           "RewardMoneyMaxLevel", "RewardSpell", "RewardSpellCast", "RewardHonor",
-                                          "RewardHonorMultiplier", "SourceItemId", "Hexify((int)Flags)", "RewardTitleId",
-                                          "RequiredPlayerKills", "RewardTalents", "RewardArenaPoints",
+                                          "RewardHonorMultiplier", "SourceItemId", "Flags", "RewardTitleId",
+                                          "RequiredPlayerKills", "RewardTalents", "RewardArenaPoints", "RewardSkillId",
                                           "RewardSkillPoints", "RewardReputationMask", "QuestGiverPortrait",
-                                          "QuestTurnInPortrait", "UnknownUInt32", "RewardItemId1", "RewardItemId2",
+                                          "QuestTurnInPortrait", "RewardItemId1", "RewardItemId2",
                                           "RewardItemId3", "RewardItemId4", "RewardItemCount1", "RewardItemCount2",
                                           "RewardItemCount3", "RewardItemCount4", "RewardChoiceItemId1",
                                           "RewardChoiceItemId2", "RewardChoiceItemId3", "RewardChoiceItemId4",
@@ -105,11 +105,11 @@ namespace WowPacketParser.Store.SQL
                     quest.Value.RewardTalents + cs +
                     quest.Value.RewardArenaPoints + cs +
                     // quest.Value.RewardUnknown + cs + // Always 0
+                    quest.Value.RewardSkillId + cs +
                     quest.Value.RewardSkillPoints + cs +
                     quest.Value.RewardReputationMask + cs +
                     quest.Value.QuestGiverPortrait + cs +
-                    quest.Value.QuestTurnInPortrait + cs +
-                    quest.Value.UnknownUInt32 + cs);
+                    quest.Value.QuestTurnInPortrait + cs);
 
                 foreach (var n in quest.Value.RewardItemId)
                     sqlQuery.Append(n + cs);

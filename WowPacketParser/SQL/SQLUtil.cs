@@ -52,6 +52,8 @@ namespace WowPacketParser.SQL
         /// </summary>
         public static string Stringify(string str)
         {
+            if (str == null)
+                str = string.Empty;
             return AddQuotes(EscapeString(str));
         }
 

@@ -88,13 +88,11 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333)) // Probably added earlier
             {
-                packet.ReadUInt32("skill line id");
+                quest.RewardSkillId = packet.ReadUInt32("RewSkillId");
                 quest.RewardSkillPoints = packet.ReadUInt32("RewSkillPoints");
                 quest.RewardReputationMask = packet.ReadUInt32("RewRepMask");
                 quest.QuestGiverPortrait = packet.ReadUInt32("QuestGiverPortrait");
                 quest.QuestTurnInPortrait = packet.ReadUInt32("QuestTurnInPortrait");
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                    quest.UnknownUInt32 = packet.ReadUInt32("UnknownUInt32"); // This was added on 422
             }
 
             quest.RewardItemId = new uint[4];
@@ -113,19 +111,20 @@ namespace WowPacketParser.Parsing.Parsers
                 quest.RewardChoiceItemCount[i] = packet.ReadUInt32("Reward Choice Item Count", i);
             }
 
-            quest.RewardFactionId = new uint[5];
-            quest.RewardReputationId = new int[5];
-            quest.RewardReputationIdOverride = new uint[5];
+            const int repCount = 5;
+            quest.RewardFactionId = new uint[repCount];
+            quest.RewardReputationId = new int[repCount];
+            quest.RewardReputationIdOverride = new uint[repCount];
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
             {
-                for (var i = 0; i < 5; i++)
+                for (var i = 0; i < repCount; i++)
                     quest.RewardFactionId[i] = packet.ReadUInt32("Reward Faction ID", i);
 
-                for (var i = 0; i < 5; i++)
+                for (var i = 0; i < repCount; i++)
                     quest.RewardReputationId[i] = packet.ReadInt32("Reward Reputation ID", i);
 
-                for (var i = 0; i < 5; i++)
-                    quest.RewardReputationIdOverride[i] = packet.ReadUInt32("Reward Reputation ID", i);
+                for (var i = 0; i < repCount; i++)
+                    quest.RewardReputationIdOverride[i] = packet.ReadUInt32("Reward Reputation ID Override", i);
             }
 
             quest.PointMapId = packet.ReadUInt32("Point Map ID");
