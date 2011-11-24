@@ -50,6 +50,8 @@ namespace WowPacketParser.Store.Objects
 
         public int RewardUnknown;
 
+        public uint RewardSkillId;
+
         public uint RewardSkillPoints;
 
         public uint RewardReputationMask;
@@ -57,8 +59,6 @@ namespace WowPacketParser.Store.Objects
         public uint QuestGiverPortrait;
 
         public uint QuestTurnInPortrait;
-
-        public uint UnknownUInt32;
 
         public uint[] RewardItemId;
 
