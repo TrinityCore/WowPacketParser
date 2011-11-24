@@ -169,12 +169,40 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_PLAYER_LOGIN)]
         public static void HandlePlayerLogin(Packet packet)
         {
-            // 4.2.2:
-            // Length = 6
-            // BC 04 03 03 A4 BD = 0x200000002A5BC05
             var guid = packet.ReadGuid();
             packet.Writer.WriteLine("GUID: " + guid);
             LoginGuid = guid;
+        }
+
+        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandlePlayerLogin422(Packet packet)
+        {
+            packet.Writer.WriteLine(packet.AsHex());
+
+            var bits = new bool[8];
+            for (int c = 7; c >= 0; c--)
+                bits[c] = packet.ReadBit();
+
+            var bytes = new byte[8];
+
+            // Data - Real
+            // BC 04 03 03 A4 BD = 02 00 00 00 02 A5 BC 05
+            // BC F6 05 04 1E 2F = 05 00 00 00 04 1F 2E F7
+            // (BC = 10111100)
+
+            // 3C 05 04 20 9E = 05 00 00 00 04 21 9F 00
+            // (3C = 00111100)
+
+            if (bits[7]) bytes[0] = (byte)(packet.ReadByte() ^ 1); // 1
+            if (bits[6]) bytes[4] = (byte)(packet.ReadByte() ^ 1); // NOTCONF
+            if (bits[5]) bytes[3] = (byte)(packet.ReadByte() ^ 1); // 2
+            if (bits[4]) bytes[7] = (byte)(packet.ReadByte() ^ 1); // 3
+            if (bits[3]) bytes[2] = (byte)(packet.ReadByte() ^ 1); // 4
+            if (bits[2]) bytes[1] = (byte)(packet.ReadByte() ^ 1); // 5
+            if (bits[1]) bytes[5] = (byte)(packet.ReadByte() ^ 1); // NOTCONF
+            if (bits[0]) bytes[6] = (byte)(packet.ReadByte() ^ 1); // NOTCONF
+            
+            packet.Writer.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(bytes, 0)));
         }
 
         [Parser(Opcode.SMSG_CHARACTER_LOGIN_FAILED)]
