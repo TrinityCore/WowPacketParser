@@ -469,10 +469,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Life Time Kills");
         }
 
-        [Parser(Opcode.CMSG_ENTER_WORLD)]
+        [Parser(Opcode.CMSG_LOAD_SCREEN)]
         public static void HandleClientEnterWorld(Packet packet)
         {
-            packet.ReadByte("Mask?");
+            packet.ReadByte("Mask?"); // Loading start: 0x80, (near) loading end: 0x0
             packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
         }
 

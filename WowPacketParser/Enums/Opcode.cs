@@ -1536,7 +1536,7 @@
         SMSG_LFGUILD_RECRUIT_DATA,
         SMSG_COMPRESSED_CHAR_ENUM,
         SMSG_COMPRESSED_GUILD_ROSTER,
-        CMSG_ENTER_WORLD,
+        CMSG_LOAD_SCREEN,
         // ReSharper restore InconsistentNaming
     }
 }
