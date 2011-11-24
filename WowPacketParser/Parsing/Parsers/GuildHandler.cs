@@ -71,7 +71,10 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGuildQuery(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596)) // Not sure when it was changed
+            {
                 packet.ReadGuid("Guild GUID");
+                packet.ReadGuid("Player GUID");
+            }
             else
                 packet.ReadUInt32("Guild Id");
         }
@@ -560,7 +563,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadUInt32("Unk UInt3 1");
             packet.ReadGuid("Petition GUID");
-            packet.ReadGuid("Owner GUID");
+            packet.ReadGuid("Target GUID");
         }
 
         [Parser(Opcode.CMSG_TURN_IN_PETITION)]

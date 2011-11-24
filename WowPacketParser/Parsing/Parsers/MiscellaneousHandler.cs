@@ -419,8 +419,16 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_TIME_SYNC_RESP)]
         public static void HandleTimeSyncResp(Packet packet)
         {
-            packet.ReadUInt32("Counter");
-            packet.ReadUInt32("Ticks");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // no idea when this was added exactly
+            {
+                packet.ReadUInt32("Ticks");
+                packet.ReadUInt32("Counter");
+            }
+            else
+            {
+                packet.ReadUInt32("Counter");
+                packet.ReadUInt32("Ticks");
+            }
         }
 
         // Guessed
