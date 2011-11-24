@@ -169,6 +169,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_PLAYER_LOGIN)]
         public static void HandlePlayerLogin(Packet packet)
         {
+            // 4.2.2:
+            // Length = 6
+            // BC 04 03 03 A4 BD = 0x200000002A5BC05
             var guid = packet.ReadGuid();
             packet.Writer.WriteLine("GUID: " + guid);
             LoginGuid = guid;
