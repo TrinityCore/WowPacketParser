@@ -105,6 +105,18 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_GUILD_ROSTER, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleGuildRoster422(Packet packet)
+        {
+            packet.Writer.WriteLine(packet.AsHex()); // FIXME
+        }
+
+        [Parser(Opcode.SMSG_COMPRESSED_GUILD_ROSTER)]
+        public static void HandleCompressedGuildRoster(Packet packet)
+        {
+            HandleGuildRoster422(packet.Inflate(packet.ReadInt32()));
+        }
+
         [Parser(Opcode.CMSG_GUILD_QUERY)]
         public static void HandleGuildQuery(Packet packet)
         {

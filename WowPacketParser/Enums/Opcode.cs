@@ -1534,6 +1534,7 @@
         SMSG_RANDOMIZE_CHAR_NAME,
         SMSG_LFGUILD_RECRUIT_DATA,
         SMSG_COMPRESSED_CHAR_ENUM,
+        SMSG_COMPRESSED_GUILD_ROSTER,
         // ReSharper restore InconsistentNaming
     }
 }
