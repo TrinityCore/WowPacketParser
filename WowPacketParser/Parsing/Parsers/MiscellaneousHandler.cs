@@ -490,10 +490,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Life Time Kills");
         }
 
-        [Parser(Opcode.CMSG_LOAD_SCREEN)]
+        [Parser(Opcode.CMSG_LOAD_SCREEN)] // Also named CMSG_LOADING_SCREEN_NOTIFY
         public static void HandleClientEnterWorld(Packet packet)
         {
-            packet.ReadByte("Mask?"); // Loading start: 0x80, (near) loading end: 0x0
+            packet.Writer.WriteLine("Loading: " + (packet.ReadBit() ? "true" : "false")); // Not sure on the meaning
             packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
         }
 

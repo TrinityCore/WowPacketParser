@@ -20,7 +20,7 @@ namespace WowPacketParser.SQL
             const string unitNameQuery = "SELECT entry, name FROM creature_template;";
             const string gameObjectNameQuery = "SELECT entry, name FROM gameobject_template;";
             const string itemNameQuery = "SELECT entry, name FROM item_template;";
-            const string questNameQuery = "SELECT entry, Title FROM quest_template;";
+            const string questNameQuery = "SELECT Id, Title FROM quest_template;";
 
             // creature_template.entry, creature_template.name
             UnitNames = GetDict<uint, string>(unitNameQuery);

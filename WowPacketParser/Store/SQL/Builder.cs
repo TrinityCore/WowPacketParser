@@ -25,7 +25,7 @@ namespace WowPacketParser.Store.SQL
             const string tableName = "quest_template";
             const string primaryKey = "Id";
             string[] tableStructure = {
-                                          "Id", "Method", "Level", "MinLevel", "Sort", "Type", "SuggestedPlayers",
+                                          "Id", "Method", "Level", "MinLevel", "ZoneOrSort", "Type", "SuggestedPlayers",
                                           "RequiredFactionId1", "RequiredFactionId2", "RequiredFactionValue1",
                                           "RequiredFactionValue2", "NextQuestId", "RewardXPId", "RewardOrRequiredMoney",
                                           "RewardMoneyMaxLevel", "RewardSpell", "RewardSpellCast", "RewardHonor",
@@ -54,8 +54,8 @@ namespace WowPacketParser.Store.SQL
                                           "RequiredItemId2", "RequiredItemId3", "RequiredItemId4", "RequiredItemId5",
                                           "RequiredItemId6", "RequiredItemCount1", "RequiredItemCount2",
                                           "RequiredItemCount3", "RequiredItemCount4", "RequiredItemCount5",
-                                          "RequiredItemCount6", "RequiredSpell", "ObjectiveTexts1", "ObjectiveTexts2",
-                                          "ObjectiveTexts3", "ObjectiveTexts4", "RewardCurrencyId1", "RewardCurrencyId2",
+                                          "RequiredItemCount6", "RequiredSpell", "ObjectiveText1", "ObjectiveText2",
+                                          "ObjectiveText3", "ObjectiveText4", "RewardCurrencyId1", "RewardCurrencyId2",
                                           "RewardCurrencyId3", "RewardCurrencyId4", "RewardCurrencyCount1",
                                           "RewardCurrencyCount2", "RewardCurrencyCount3", "RewardCurrencyCount4",
                                           "RequiredCurrencyId1", "RequiredCurrencyId2", "RequiredCurrencyId3",
@@ -80,7 +80,7 @@ namespace WowPacketParser.Store.SQL
                     (int)quest.Value.Method + cs +
                     quest.Value.Level + cs +
                     quest.Value.MinLevel + cs +
-                    (int)quest.Value.Sort + cs +
+                    (int)quest.Value.ZoneOrSort + cs +
                     (int)quest.Value.Type + cs +
                     quest.Value.SuggestedPlayers + cs);
 

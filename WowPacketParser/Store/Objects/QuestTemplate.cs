@@ -10,7 +10,7 @@ namespace WowPacketParser.Store.Objects
 
         public int MinLevel;
 
-        public QuestSort Sort;
+        public QuestSort ZoneOrSort; // TODO: Read correct enum
 
         public QuestType Type;
 
@@ -39,6 +39,8 @@ namespace WowPacketParser.Store.Objects
         public int SourceItemId;
 
         public QuestFlags Flags;
+
+        public uint TargetMark;
 
         public uint RewardTitleId;
 
@@ -127,6 +129,5 @@ namespace WowPacketParser.Store.Objects
         public uint SoundAccept;
 
         public uint SoundTurnIn;
-
     }
 }

@@ -71,11 +71,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CREATURE_QUERY_RESPONSE)]
         public static void HandleCreatureQueryResponse(Packet packet)
         {
-            var creature = new UnitTemplate();
-
             var entry = packet.ReadEntry("Entry");
             if (entry.Value)
                 return;
+
+            var creature = new UnitTemplate();
 
             var nameCount = ClientVersion.AddedInVersion(ClientVersionBuild.V4_1_0_13914) ? 8 : 4; // Might be earlier or later
             var name = new string[nameCount];

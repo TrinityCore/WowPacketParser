@@ -22,11 +22,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUEST_QUERY_RESPONSE)]
         public static void HandleQuestQueryResponse(Packet packet)
         {
-            var quest = new QuestTemplate();
-
             var id = packet.ReadEntry("Quest ID");
             if (id.Value) // entry is masked
                 return;
+
+            var quest = new QuestTemplate();
 
             quest.Method = packet.ReadEnum<QuestMethod>("Method", TypeCode.Int32);
 
@@ -35,7 +35,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 quest.MinLevel = packet.ReadInt32("Min Level");
 
-            quest.Sort = packet.ReadEnum<QuestSort>("Sort", TypeCode.Int32);
+            quest.ZoneOrSort = packet.ReadEnum<QuestSort>("Sort", TypeCode.Int32);
 
             quest.Type = packet.ReadEnum<QuestType>("Type", TypeCode.Int32);
 
@@ -71,8 +71,11 @@ namespace WowPacketParser.Parsing.Parsers
 
             quest.Flags = packet.ReadEnum<QuestFlags>("Flags", TypeCode.Int32);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // Not sure when this was added
+            quest.TargetMark = packet.ReadUInt32("Minimap Target Mark"); // missing enum
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_4_0_8089))
-                quest.RewardTitleId = packet.ReadUInt32("Title ID");
+                quest.RewardTitleId = packet.ReadUInt32("Reward Title ID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
             {
@@ -81,10 +84,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-            {
                 quest.RewardArenaPoints = packet.ReadUInt32("Bonus Arena Points");
-                quest.RewardUnknown = packet.ReadInt32("Unk Int32"); // Always 0
-            }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333)) // Probably added earlier
             {
@@ -328,6 +328,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
+            packet.ReadByte("Unknown Byte");
         }
 
         [Parser(Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST)]
@@ -470,13 +471,13 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
             {
                 for (var i = 0; i < 5; i++)
-                    packet.ReadUInt32("[" + i + "] Reputation Faction");
+                    packet.ReadUInt32("Reputation Faction", i);
 
                 for (var i = 0; i < 5; i++)
-                    packet.ReadUInt32("[" + i + "] Reputation Value Id");
+                    packet.ReadUInt32("Reputation Value Id", i);
 
                 for (var i = 0; i < 5; i++)
-                    packet.ReadInt32("[" + i + "] Reputation Value");
+                    packet.ReadInt32("Reputation Value", i);
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
@@ -485,9 +486,9 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell Cast Id");
 
                 for (var i = 0; i < 4; i++)
-                    packet.ReadUInt32("[" + i + "] " + "Unknown UInt32 1");
+                    packet.ReadUInt32("Unknown UInt32 1", i);
                 for (var i = 0; i < 4; i++)
-                    packet.ReadUInt32("[" + i + "] " + "Unknown UInt32 2");
+                    packet.ReadUInt32("Unknown UInt32 2", i);
 
                 packet.ReadUInt32("Unknown UInt32");
                 packet.ReadUInt32("Unknown UInt32");
@@ -496,8 +497,8 @@ namespace WowPacketParser.Parsing.Parsers
             var emoteCount = packet.ReadUInt32("Quest Emote Count");
             for (var i = 0; i < emoteCount; i++)
             {
-                packet.ReadUInt32("[" + i + "] Emote Id");
-                packet.ReadUInt32("[" + i + "] Emote Delay (ms)");
+                packet.ReadUInt32("Emote Id", i);
+                packet.ReadUInt32("Emote Delay (ms)", i);
             }
         }
 
