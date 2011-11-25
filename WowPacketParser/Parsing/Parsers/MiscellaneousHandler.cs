@@ -209,12 +209,17 @@ namespace WowPacketParser.Parsing.Parsers
             var level = packet.ReadInt32("Level");
             packet.ReadInt32("Health");
 
-            var powerCount = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 7 : 5;
+            var powerCount = 5;
+            if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
+                powerCount = 7;
+            if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
+                powerCount = 11;
+
             for (var i = 0; i < powerCount; i++)
-                packet.ReadInt32("Power " + (PowerType)i);
+                packet.ReadEnum<PowerType>("Power", TypeCode.Int32, i);
 
             for (var i = 0; i < 5; i++)
-                packet.ReadInt32("StatType " + (StatType)i);
+                packet.ReadEnum<StatType>("StatType", TypeCode.Int32, i);
 
             if (SessionHandler.LoggedInCharacter != null)
                 SessionHandler.LoggedInCharacter.Level = level;
