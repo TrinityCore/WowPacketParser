@@ -504,7 +504,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILDFINDER_JOIN)]
         public static void HandleGuildFinderJoin(Packet packet)
         {
-            packet.ReadEnum <GuildFinderCommand>("Command", TypeCode.Byte);
+            packet.Writer.WriteLine("Join: {0}", (bool)packet.ReadBit());
             packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32);
             packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32);
             packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32);

@@ -10,6 +10,37 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class SpellHandler
     {
+        [Parser(Opcode.SMSG_PLAYERBOUND)]
+        public static void HandlePlayerBound(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32("Area ID");
+        }
+
+        [Parser(Opcode.CMSG_CANCEL_TEMP_ENCHANTMENT)]
+        public static void HandleCancelTempEnchantment(Packet packet)
+        {
+            packet.ReadUInt32("Slot");
+        }
+
+        [Parser(Opcode.SMSG_SUPERCEDED_SPELL)]
+        public static void HandleSupercededSpell(Packet packet)
+        {
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Next Spell ID");
+        }
+
+        [Parser(Opcode.SMSG_RESYNC_RUNES)]
+        public static void HandleResyncRunes(Packet packet)
+        {
+            var count = packet.ReadUInt32("Count");
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadByte("Rune Type");
+                packet.ReadByte("Cooldown Time");
+            }
+        }
+
         [Parser(Opcode.SMSG_COOLDOWN_EVENT)]
         public static void HandleCooldownEvent(Packet packet)
         {
@@ -552,6 +583,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("GUID");
         }
 
+        [Parser(Opcode.SMSG_MOUNTRESULT)]
+        public static void HandleMountResult(Packet packet)
+        {
+            packet.ReadUInt32("Result"); // FIXME Enum?
+        }
+
         [Parser(Opcode.SMSG_CLEAR_TARGET)]
         [Parser(Opcode.CMSG_GET_MIRRORIMAGE_DATA)]
         [Parser(Opcode.SMSG_SPIRIT_HEALER_CONFIRM)]
@@ -612,6 +649,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Target GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Dispel Spell ID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+        }
+
+        [Parser(Opcode.SMSG_TOTEM_CREATED)]
+        public static void HandleTotemCreated(Packet packet)
+        {
+            packet.ReadByte("Unk Byte");
+            packet.ReadGuid("GUID1");
+            packet.ReadGuid("GUID2");
         }
     }
 }

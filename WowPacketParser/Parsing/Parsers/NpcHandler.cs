@@ -30,6 +30,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.Writer.WriteLine("Icon Name: " + iconName);
         }
 
+        [Parser(Opcode.CMSG_TRAINER_BUY_SPELL)]
         [Parser(Opcode.SMSG_TRAINER_BUY_SUCCEEDED)]
         [Parser(Opcode.SMSG_TRAINER_BUY_FAILED)]
         public static void HandleServerTrainerBuySucceedeed(Packet packet)
@@ -132,7 +133,6 @@ namespace WowPacketParser.Parsing.Parsers
 
             Stuffing.NpcVendors.TryAdd(guid.GetEntry(), npcVendor);
         }
-
 
         [Parser(Opcode.SMSG_LIST_INVENTORY, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleVendorInventoryList422(Packet packet)

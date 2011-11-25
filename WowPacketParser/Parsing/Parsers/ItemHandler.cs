@@ -9,6 +9,14 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class ItemHandler
     {
+        [Parser(Opcode.CMSG_SOCKET_GEMS)]
+        public static void HandleSocketGems(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            for (var i = 0; i < 3; ++i)
+                packet.ReadGuid("Gem GUID", i);
+        }
+
         [Parser(Opcode.SMSG_INVENTORY_CHANGE_FAILURE)]
         public static void HandleInventoryChangeFailure(Packet packet)
         {

@@ -2,12 +2,6 @@ using System;
 
 namespace WowPacketParser.Enums
 {
-    public enum GuildFinderCommand
-    {
-        Add = 0,
-        Remove = 128,
-    }
-
     [Flags]
     public enum GuildFinderOptionsInterest
     {

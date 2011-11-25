@@ -32,6 +32,22 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("GUID");
         }
 
+        [Parser(Opcode.CMSG_REQUEST_VEHICLE_SWITCH_SEAT)]
+        public static void HandleRequestVehicleSwitchSeat(Packet packet)
+        {
+            packet.ReadPackedGuid("GUID");
+            packet.ReadByte("Seat");
+        }
+
+        [Parser(Opcode.CMSG_CHANGE_SEATS_ON_CONTROLLED_VEHICLE)]
+        public static void HandleChangeSeatsOnControlledVehicle(Packet packet)
+        {
+            packet.ReadPackedGuid("Vehicle GUID");
+            // FIXME: 3.3.3a has some data here
+            packet.ReadPackedGuid("Accesory GUID");
+            packet.ReadByte("Seat");
+        }
+
         [Parser(Opcode.SMSG_CROSSED_INEBRIATION_THRESHOLD)]
         public static void HandleCrossedInerbriationThreshold(Packet packet)
         {
