@@ -114,11 +114,57 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk int");
         }
 
+        [Parser(Opcode.SMSG_PET_ACTION_SOUND)]
+        public static void HandlePetSound(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadInt32("Sound ID");
+        }
+
+        [Parser(Opcode.SMSG_PET_DISMISS_SOUND)] // Weird name...
+        public static void HandlePetDismissSound(Packet packet)
+        {
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
+            var vector = packet.ReadVector3();
+            packet.Writer.WriteLine("Position: {0}", vector);
+        }
+
+        [Parser(Opcode.CMSG_PET_SET_ACTION)]
+        public static void HandlePetSetAction(Packet packet)
+        {
+            var i = 0;
+            packet.ReadGuid("GUID");
+            while (packet.CanRead())
+            {
+                packet.ReadUInt32("Position", i);
+                var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
+                packet.Writer.WriteLine("[{0}] Action: {1}", i, action);
+                packet.ReadEnum<ActionButtonType>("Type", TypeCode.Byte, i++);
+            }
+        }
+
+        [Parser(Opcode.CMSG_PET_ACTION)]
+        public static void HandlePetAction(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
+            packet.Writer.WriteLine("Action: {0}", action);
+            packet.ReadEnum<ActionButtonType>("Type", TypeCode.Byte);
+            packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_PET_CANCEL_AURA)]
+        public static void HandlePetCancelAura(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+        }
+
         [Parser(Opcode.SMSG_PET_LEARNED_SPELL)]
         [Parser(Opcode.SMSG_PET_REMOVED_SPELL)]
         public static void HandlePetSpellsLearnedRemoved(Packet packet)
         {
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
         }
 
         [Parser(Opcode.SMSG_PET_ACTION_FEEDBACK)]
@@ -139,7 +185,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-
+        [Parser(Opcode.CMSG_PET_STOP_ATTACK)]
         [Parser(Opcode.CMSG_DISMISS_CRITTER)]
         public static void HandleDismissCritter(Packet packet)
         {

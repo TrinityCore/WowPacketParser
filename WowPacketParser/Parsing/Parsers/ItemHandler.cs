@@ -9,6 +9,28 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class ItemHandler
     {
+        [Parser(Opcode.SMSG_ITEM_TIME_UPDATE)]
+        public static void HandleItemTimeUpdate(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32("Duration");
+        }
+
+        [Parser(Opcode.CMSG_ITEM_NAME_QUERY)]
+        public static void HandleItemNameQuery(Packet packet)
+        {
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+            packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.SMSG_ITEM_NAME_QUERY_RESPONSE)]
+        public static void HandleItemNameQueryResponse(Packet packet)
+        {
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+            packet.ReadCString("Name");
+            packet.ReadEnum<InventoryType>("Inventory Type", TypeCode.UInt32);
+        }
+
         [Parser(Opcode.CMSG_SOCKET_GEMS)]
         public static void HandleSocketGems(Packet packet)
         {
@@ -125,6 +147,22 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Item GUID");
         }
 
+        [Parser(Opcode.SMSG_ITEM_REFUND_INFO_RESPONSE)]
+        public static void HandleItemRefundInfoResponse(Packet packet)
+        {
+            packet.ReadGuid("Item GUID");
+            packet.ReadUInt32("Money Cost");
+            packet.ReadUInt32("Honor Cost");
+            packet.ReadUInt32("Arena Cost");
+            for (var i = 0; i < 5; ++i)
+            {
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Extended Cost Entry", i);
+                packet.ReadUInt32("Extended Cost Count", i);
+            }
+            packet.ReadUInt32("Unk UInt32 1");
+            packet.ReadUInt32("Time Left");
+        }
+
         [Parser(Opcode.CMSG_REPAIR_ITEM)]
         public static void HandleRepairItem(Packet packet)
         {
@@ -157,7 +195,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBuyItem(Packet packet)
         {
             packet.ReadGuid("Vendor GUID");
-            packet.ReadUInt32("Item ID");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
@@ -183,7 +221,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBuyItemInSlot(Packet packet)
         {
             packet.ReadGuid("Vendor GUID");
-            packet.ReadUInt32("Item ID");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
             packet.ReadUInt32("Slot");
             packet.ReadUInt32("Count");
             packet.ReadGuid("Bag GUID");

@@ -436,6 +436,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("SpellVisualKit ID");
         }
 
+        [Parser(Opcode.SMSG_PET_CAST_FAILED)]
         [Parser(Opcode.SMSG_CAST_FAILED)]
         public static void HandleCastFailed(Packet packet)
         {
