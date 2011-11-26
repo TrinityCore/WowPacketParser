@@ -111,7 +111,7 @@ namespace WowPacketParser.Misc
             // Entries masked with 0x8000000 are invalid entries
 
             var entry = ReadUInt32();
-            var realEntry = entry & 0x7FFFFFF;
+            var realEntry = entry & 0x7FFFFFFF;
 
             return new KeyValuePair<int, bool>((int)realEntry, realEntry != entry);
         }
