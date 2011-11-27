@@ -51,6 +51,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_LIST)]
         public static void HandleBattlefieldListServer(Packet packet)
         {
+            // TODO: 4.2.2 struct (can be found here: http://pastebin.com/S5gs2erB)
             packet.ReadGuid("GUID");
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333))
