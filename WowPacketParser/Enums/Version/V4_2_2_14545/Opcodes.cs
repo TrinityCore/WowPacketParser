@@ -156,6 +156,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0xCCDB},
             {Opcode.CMSG_REALM_SPLIT, 0xDC66},
             {Opcode.CMSG_RECLAIM_CORPSE, 0x88DB},
+            {Opcode.CMSG_REDIRECTION_AUTH_PROOF, 0x1039},
             {Opcode.CMSG_REPAIR_ITEM, 0xCF3},
             {Opcode.CMSG_REPOP_REQUEST, 0x8872},
             {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x987E},
@@ -238,6 +239,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_DESTROY_OBJECT, 0x486B},
             {Opcode.SMSG_EMOTE, 0xC67},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x18DF},
+            {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x70CE},
             {Opcode.SMSG_FISH_ESCAPED, 0x9C66},
             {Opcode.SMSG_FISH_NOT_HOOKED, 0x18C3},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0xCCF7},
@@ -257,6 +259,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_INITIAL_SPELLS, 0x88FE},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x8EFB},
             {Opcode.SMSG_INVALID_PROMOTION_CODE, 0xD8FE},
+            {Opcode.SMSG_LEARNED_DANCE_MOVES, 0x0E52},
             {Opcode.SMSG_LFGUILD_RECRUIT_DATA, 0xE0CE}, // Made up name
             {Opcode.SMSG_LFG_PLAYER_INFO, 0xC85F},
             {Opcode.SMSG_LIST_INVENTORY, 0x264C},
