@@ -344,7 +344,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 packet.ReadInt32("Unk int32");
 
-            packet.ReadEnum<PowerType>("Type", TypeCode.Byte);
+            packet.ReadEnum<PowerType>("Power type", TypeCode.Byte);
             packet.ReadInt32("Value");
         }
 

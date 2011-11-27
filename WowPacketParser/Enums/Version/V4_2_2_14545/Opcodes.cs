@@ -33,6 +33,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_CALENDAR_EVENT_INVITE, 0x1EDA},
             {Opcode.CMSG_CALENDAR_UPDATE_EVENT, 0x5CD2},
             {Opcode.CMSG_CANCEL_AUTO_REPEAT_SPELL, 0x5CEE},
+            {Opcode.CMSG_CANCEL_CAST, 0x5A73},
             {Opcode.CMSG_CANCEL_CHANNELLING, 0xC8FE},
             {Opcode.CMSG_CANCEL_GROWTH_AURA, 0xDEF7},
             {Opcode.CMSG_CANCEL_TRADE, 0x35A5},
@@ -225,12 +226,14 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_AUTH_RESPONSE, 0x8867},
             {Opcode.SMSG_BATTLEFIELD_LIST, 0xB64E},
             {Opcode.SMSG_BREAK_TARGET, 0xE7E},
+            {Opcode.SMSG_CAST_FAILED, 0x1AEB},
             {Opcode.SMSG_CHANNEL_NOTIFY, 0x9C7F},
             {Opcode.SMSG_CHAR_CREATE, 0x4C5B},
             {Opcode.SMSG_CHAR_DELETE, 0x48CE},
             {Opcode.SMSG_CHAR_ENUM, 0xA05C},
             {Opcode.SMSG_CHAT_WRONG_FACTION, 0xE66},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x88F2},
+            {Opcode.SMSG_COMBAT_LOG_MULTIPLE, 0x5C56},
             {Opcode.SMSG_COMPRESSED_CHAR_ENUM, 0x380A},
             {Opcode.SMSG_COMPRESSED_GUILD_ROSTER, 0x5A29},
             {Opcode.SMSG_COMPRESSED_UPDATE_OBJECT, 0x1CC3},
@@ -238,6 +241,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_CORPSE_NOT_IN_INSTANCE, 0xCACB},
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0xCD46},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0xD847},
+            {Opcode.SMSG_CRITERIA_UPDATE, 0xD87F},
             {Opcode.SMSG_DB_REPLY, 0x76EC},
             {Opcode.SMSG_DESTROY_OBJECT, 0x486B},
             {Opcode.SMSG_EMOTE, 0xC67},
@@ -263,10 +267,12 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x8EFB},
             {Opcode.SMSG_INVALID_PROMOTION_CODE, 0xD8FE},
             {Opcode.SMSG_LEARNED_DANCE_MOVES, 0x0E52},
+            {Opcode.SMSG_LEVELUP_INFO, 0x9A73},
             {Opcode.SMSG_LFGUILD_RECRUIT_DATA, 0xE0CE}, // Made up name
             {Opcode.SMSG_LFG_PLAYER_INFO, 0xC85F},
             {Opcode.SMSG_LIST_INVENTORY, 0x264C},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0xC86E},
+            {Opcode.SMSG_LOG_XPGAIN, 0x4E7E},
             {Opcode.SMSG_LOGOUT_COMPLETE, 0xCC6B},
             {Opcode.SMSG_LOGOUT_RESPONSE, 0x886A},
             {Opcode.SMSG_LOOT_RESPONSE, 0x0842},
@@ -289,6 +295,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_PLAY_SOUND, 0x4ACF},
             {Opcode.SMSG_PONG, 0x0380},
             {Opcode.SMSG_POWER_UPDATE, 0x487E},
+            {Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, 0x24EE},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0xCE5F},
             {Opcode.SMSG_QUESTGIVER_QUEST_FAILED, 0xD8FF},
             {Opcode.SMSG_QUESTGIVER_QUEST_LIST, 0xDEF6},
@@ -305,6 +312,8 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_REFER_A_FRIEND_FAILURE, 0x4867},
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x204C},
             {Opcode.SMSG_SHOWTAXINODES, 0x8CFB},
+            {Opcode.SMSG_SPELL_FAILED_OTHER, 0xCE4A},
+            {Opcode.SMSG_SPELL_FAILURE, 0x9A66},
             {Opcode.SMSG_SPELL_GO, 0x0A53},
             {Opcode.SMSG_SPELL_START, 0xCE43},
             {Opcode.SMSG_STANDSTATE_UPDATE, 0x4E52},
@@ -312,6 +321,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_TAXINODE_STATUS, 0x8CFB},
             {Opcode.SMSG_TOGGLE_XP_GAIN, 0x8A5B},
             {Opcode.SMSG_TRAINER_LIST, 0xC84E},
+            {Opcode.SMSG_TRIGGER_CINEMATIC, 0xCE5B},
             {Opcode.SMSG_TURN_IN_PETITION_RESULTS, 0x08DB},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x1A46},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 0x5E53},
@@ -319,6 +329,11 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_WARDEN_DATA ,0x484F},
             {Opcode.SMSG_WEATHER, 0x4ECE},
             {Opcode.SMSG_WHO, 0x4C7F},
+
+            // Unsure
+            /*
+            {Opcode.SMSG_SET_PROFICIENCY, 0x9C5F},
+            */
         };
     }
 }
