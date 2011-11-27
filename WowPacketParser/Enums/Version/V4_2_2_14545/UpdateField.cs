@@ -463,7 +463,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
         PLAYER_FIELD_BUYBACK_PRICE_1 = UnitField.UNIT_END + 0x042D, // Size: 12, Type: INT, Flags: PRIVATE
         PLAYER_FIELD_BUYBACK_TIMESTAMP_1 = UnitField.UNIT_END + 0x0439, // Size: 12, Type: INT, Flags: PRIVATE
         PLAYER_FIELD_KILLS = UnitField.UNIT_END + 0x0445, // Size: 1, Type: TWO_SHORT, Flags: PRIVATE
-        PLAYER_FIELD_LIFETIME_HONORBALE_KILLS = UnitField.UNIT_END + 0x0446, // Size: 1, Type: INT, Flags: PRIVATE
+        PLAYER_FIELD_LIFETIME_HONORABLE_KILLS = UnitField.UNIT_END + 0x0446, // Size: 1, Type: INT, Flags: PRIVATE
         PLAYER_FIELD_BYTES2 = UnitField.UNIT_END + 0x0447, // Size: 1, Type: 6, Flags: PRIVATE
         PLAYER_FIELD_WATCHED_FACTION_INDEX = UnitField.UNIT_END + 0x0448, // Size: 1, Type: INT, Flags: PRIVATE
         PLAYER_FIELD_COMBAT_RATING_1 = UnitField.UNIT_END + 0x0449, // Size: 26, Type: INT, Flags: PRIVATE

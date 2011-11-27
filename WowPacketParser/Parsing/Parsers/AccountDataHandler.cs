@@ -16,12 +16,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES, ClientVersionBuild.V3_0_2_9056)]
         public static void HandleAccountDataTimes2(Packet packet)
         {
-            packet.ReadTime("Unk Time");
+            packet.ReadTime("Server Time");
             packet.ReadByte("Unk Byte");
 
             var mask = 0;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
-                mask = packet.ReadInt32("Time Mask");
+                mask = packet.ReadInt32("Mask");
 
             for (var i = 0; i < 8; i++)
             {
@@ -29,7 +29,7 @@ namespace WowPacketParser.Parsing.Parsers
                     if ((mask & (1 << i)) == 0)
                         continue;
 
-                packet.ReadInt32("Unk Int32", i);
+                packet.ReadTime("[" + (AccountDataType)i + "]" + " Time");
             }
         }
 

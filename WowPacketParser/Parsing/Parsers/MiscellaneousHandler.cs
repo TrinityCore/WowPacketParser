@@ -497,6 +497,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
         }
 
+        [Parser(Opcode.SMSG_VERIFY_CONNECTIVITY)]
+        [Parser(Opcode.CMSG_VERIFY_CONNECTIVITY_RESPONSE)]
+        public static void HandleServerInfo(Packet packet)
+        {
+            packet.ReadCString("String");
+        }
+
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
