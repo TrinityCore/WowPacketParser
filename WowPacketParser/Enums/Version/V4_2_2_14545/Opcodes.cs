@@ -267,7 +267,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x8EFB},
             {Opcode.SMSG_INVALID_PROMOTION_CODE, 0xD8FE},
             {Opcode.SMSG_LEARNED_DANCE_MOVES, 0x0E52},
-            {Opcode.SMSG_LEVELUP_INFO, 0x9A73},
             {Opcode.SMSG_LFGUILD_RECRUIT_DATA, 0xE0CE}, // Made up name
             {Opcode.SMSG_LFG_PLAYER_INFO, 0xC85F},
             {Opcode.SMSG_LIST_INVENTORY, 0x264C},
@@ -332,7 +331,8 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
 
             // Unsure
             /*
-            {Opcode.SMSG_SET_PROFICIENCY, 0x9C5F},
+                {Opcode.SMSG_SET_PROFICIENCY, 0x9C5F},
+                {Opcode.SMSG_LEVELUP_INFO, 0x9A73},
             */
         };
     }
