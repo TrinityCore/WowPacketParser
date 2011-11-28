@@ -472,7 +472,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SERVER_MESSAGE)]
         public static void HandleServerMessage(Packet packet)
         {
-            packet.ReadUInt32("Unk UInt32");
+            packet.ReadUInt32("Server Message DBC Id");
             packet.ReadCString("Message");
         }
 

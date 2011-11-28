@@ -279,6 +279,13 @@ namespace WowPacketParser.Misc
             return entry;
         }
 
+        public Vector2 ReadVector2(string name, params int[] values)
+        {
+            Vector2 val = ReadVector2();
+            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            return val;
+        }
+
         public Vector3 ReadVector3(string name, params int[] values)
         {
             Vector3 val = ReadVector3();

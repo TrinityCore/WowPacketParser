@@ -105,7 +105,6 @@ namespace WowPacketParser.Parsing.Parsers
             var swimming = packet.ReadBit("Swimming", index);
             var interPolatedTurning = packet.ReadBit("InterPolatedTurning", index);
 
-
             var jumping = false;
             if (interPolatedTurning)
                 jumping = packet.ReadBit("Jumping", index);

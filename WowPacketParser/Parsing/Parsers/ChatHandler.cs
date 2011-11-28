@@ -133,7 +133,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) && language == Language.Addon)
-                packet.ReadCString("Addon name");
+                packet.ReadCString("Addon Message Prefix");
 
             packet.ReadInt32("Text Length");
             packet.ReadCString("Text");
@@ -188,7 +188,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleClientChatMessageAddon(Packet packet)
         {
             packet.ReadCString("Message");
-            packet.ReadCString("Addon Name");
+            packet.ReadCString("Prefix");
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT_EMOTE)]

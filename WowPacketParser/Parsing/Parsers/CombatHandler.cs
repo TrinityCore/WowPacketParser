@@ -31,8 +31,16 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleDuelWinner(Packet packet)
         {
             packet.ReadBoolean("Abnormal finish");
-            packet.ReadCString("Opponent Name");
-            packet.ReadCString("Name");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // Probably earlier
+            {
+                packet.ReadCString("Name");
+                packet.ReadCString("Opponent Name");
+            }
+            else
+            {
+                packet.ReadCString("Opponent Name");
+                packet.ReadCString("Name");
+            }
         }
 
         [Parser(Opcode.SMSG_DUEL_COUNTDOWN)]
