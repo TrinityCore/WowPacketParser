@@ -367,5 +367,18 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadBoolean("RAF Bonus");
         }
+
+        [Parser(Opcode.SMSG_TITLE_EARNED)]
+        public static void HandleTitleEarned(Packet packet)
+        {
+            packet.ReadUInt32("Title Id");
+            packet.ReadUInt32("Earned?"); // vs lost
+        }
+
+        [Parser(Opcode.CMSG_SET_TITLE)]
+        public static void HandleSetTitle(Packet packet)
+        {
+            packet.ReadUInt32("Title Id");
+        }
     }
 }

@@ -36,6 +36,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_CANCEL_CAST, 0x5A73},
             {Opcode.CMSG_CANCEL_CHANNELLING, 0xC8FE},
             {Opcode.CMSG_CANCEL_GROWTH_AURA, 0xDEF7},
+            {Opcode.CMSG_CANCEL_MOUNT_AURA, 0xD8F3},
             {Opcode.CMSG_CANCEL_TRADE, 0x35A5},
             {Opcode.CMSG_CAST_SPELL, 0x5E4E},
             {Opcode.CMSG_CHAR_CREATE, 0x1AC6},
@@ -185,6 +186,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_SET_SAVED_INSTANCE_EXTEND, 0x8E62},
             {Opcode.CMSG_SET_SELECTION, 0x4C4E},
             {Opcode.CMSG_SET_TAXI_BENCHMARK_MODE, 0x1EFF},
+            {Opcode.CMSG_SET_TITLE, 0xCE63},
             {Opcode.CMSG_SHOWING_CLOAK, 0x8AE3},
             {Opcode.CMSG_SHOWING_HELM, 0xCEFA},
             {Opcode.CMSG_SPELLCLICK, 0xC8F2},
@@ -235,6 +237,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.MSG_LIST_STABLED_PETS, 0x88CA},
             {Opcode.MSG_PETITION_DECLINE, 0x98E7},
             {Opcode.MSG_PETITION_RENAME, 0x4857},
+            {Opcode.MSG_QUERY_NEXT_MAIL_TIME, 0xCEE6},
             {Opcode.MSG_QUEST_PUSH_RESULT, 0x1863},
             {Opcode.MSG_RAID_READY_CHECK, 0x584E},
             {Opcode.MSG_RAID_READY_CHECK_CONFIRM, 0x584E},
@@ -347,6 +350,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_SPELL_START, 0xCE43},
             {Opcode.SMSG_STANDSTATE_UPDATE, 0x4E52},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x1009},
+            {Opcode.SMSG_TITLE_EARNED, 0x1AFA},
             {Opcode.SMSG_TAXINODE_STATUS, 0x8CFB},
             {Opcode.SMSG_TOGGLE_XP_GAIN, 0x8A5B},
             {Opcode.SMSG_TRAINER_LIST, 0xC84E},
@@ -364,6 +368,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
                 {Opcode.SMSG_SET_PROFICIENCY, 0x9C5F},
                 {Opcode.SMSG_LEVELUP_INFO, 0x9A73},
             */
+            // Tests
         };
     }
 }
