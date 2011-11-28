@@ -478,21 +478,27 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSingle("Vehicle Orientation", index);
             }
 
-            if (flags.HasAnyFlag(UpdateFlag.AnimKits))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
             {
-                packet.ReadInt16("Unk Int16", index);
-                packet.ReadInt16("Unk Int16", index);
-                packet.ReadInt16("Unk Int16", index);
+                if (flags.HasAnyFlag(UpdateFlag.AnimKits))
+                {
+                    packet.ReadInt16("Unk Int16", index);
+                    packet.ReadInt16("Unk Int16", index);
+                    packet.ReadInt16("Unk Int16", index);
+                }
             }
 
             if (flags.HasAnyFlag(UpdateFlag.GORotation))
                 packet.ReadPackedQuaternion("GO Rotation", index);
 
-            if (flags.HasAnyFlag(UpdateFlag.TransportUnkArray))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
             {
-                var count = packet.ReadByte("Count", index);
-                for (var i = 0; i < count; i++)
-                    packet.ReadInt32("Unk Int32", index, count);
+                if (flags.HasAnyFlag(UpdateFlag.TransportUnkArray))
+                {
+                    var count = packet.ReadByte("Count", index);
+                    for (var i = 0; i < count; i++)
+                        packet.ReadInt32("Unk Int32", index, count);
+                }
             }
 
             // Initialize fields that are not used by GOs
