@@ -567,6 +567,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_FISH_NOT_HOOKED)]
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]
         [Parser(Opcode.CMSG_MEETINGSTONE_INFO)]
+        [Parser(Opcode.CMSG_RETURN_TO_GRAVEYARD)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }
