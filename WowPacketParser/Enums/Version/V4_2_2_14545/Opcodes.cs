@@ -349,6 +349,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_SPELL_GO, 0x0A53},
             {Opcode.SMSG_SPELL_START, 0xCE43},
             {Opcode.SMSG_STANDSTATE_UPDATE, 0x4E52},
+            {Opcode.SMSG_TEXT_EMOTE, 0x9E5A},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x1009},
             {Opcode.SMSG_TITLE_EARNED, 0x1AFA},
             {Opcode.SMSG_TAXINODE_STATUS, 0x8CFB},

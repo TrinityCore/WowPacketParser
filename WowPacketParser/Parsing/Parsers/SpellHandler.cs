@@ -659,5 +659,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID1");
             packet.ReadGuid("GUID2");
         }
+
+        [Parser(Opcode.CMSG_CANCEL_CAST)]
+        public static void HandlePlayerCancelCast(Packet packet)
+        {
+            packet.ReadByte("Count");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id");
+        }
     }
 }
