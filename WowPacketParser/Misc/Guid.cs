@@ -40,9 +40,12 @@ namespace WowPacketParser.Misc
                 case HighGuidType.Vehicle:
                 case HighGuidType.Unit:
                 case HighGuidType.Pet:
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
+                        return (Full & 0x00000000FFFFFFFF) >> 0;
                     return (Full & 0x0000000000FFFFFF) >> 0;
             }
 
+            // TODO: check if entryless guids dont use now more bytes
             return (Full & 0x00000000FFFFFFFF) >> 0;
         }
 
