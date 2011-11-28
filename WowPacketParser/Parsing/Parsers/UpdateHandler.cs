@@ -445,39 +445,55 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 if (flags.HasAnyFlag(UpdateFlag.GOPosition))
                 {
-                    packet.ReadPackedGuid("[" + index + "] GO Position GUID");
+                    packet.ReadPackedGuid("GO Position GUID", index);
 
                     moveInfo.Position = packet.ReadVector3("[" + index + "] GO Position");
-                    packet.ReadVector3("[" + index + "] GO Transport Position");
+                    packet.ReadVector3("GO Transport Position", index);
 
                     moveInfo.Orientation = packet.ReadSingle("[" + index + "] GO Orientation");
-                    packet.ReadSingle("[" + index + "] GO Transport Orientation");
+                    packet.ReadSingle("GO Transport Orientation", index);
                 }
                 else if (flags.HasAnyFlag(UpdateFlag.StationaryObject))
-                    packet.ReadVector4("[" + index + "] Stationary Position");
+                    packet.ReadVector4("Stationary Position", index);
             }
 
-            if (flags.HasAnyFlag(UpdateFlag.Unknown1))
-                packet.ReadInt32("[" + index + "] Unk Int32");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
+            {
+                if (flags.HasAnyFlag(UpdateFlag.Unknown1))
+                    packet.ReadInt32("Unk Int32", index);
 
-            if (flags.HasAnyFlag(UpdateFlag.LowGuid))
-                packet.ReadInt32("[" + index + "] Low GUID");
+                if (flags.HasAnyFlag(UpdateFlag.LowGuid))
+                    packet.ReadInt32("Low GUID", index);
+            }
 
             if (flags.HasAnyFlag(UpdateFlag.AttackingTarget))
-                packet.ReadPackedGuid("[" + index + "] Target GUID");
+                packet.ReadPackedGuid("Target GUID", index);
 
             if (flags.HasAnyFlag(UpdateFlag.Transport))
-                packet.ReadInt32("[" + index + "] Transport Movement Time (ms)");
+                packet.ReadInt32("Transport Movement Time (ms)", index);
 
             if (flags.HasAnyFlag(UpdateFlag.Vehicle))
             {
                 moveInfo.VehicleId = packet.ReadUInt32("[" + index + "] Vehicle ID");
-                packet.ReadSingle("[" + index + "] Vehicle Orientation");
+                packet.ReadSingle("Vehicle Orientation", index);
+            }
+
+            if (flags.HasAnyFlag(UpdateFlag.AnimKits))
+            {
+                packet.ReadInt16("Unk Int16", index);
+                packet.ReadInt16("Unk Int16", index);
+                packet.ReadInt16("Unk Int16", index);
             }
 
             if (flags.HasAnyFlag(UpdateFlag.GORotation))
-                packet.ReadPackedQuaternion("[" + index + "] GO Rotation");
+                packet.ReadPackedQuaternion("GO Rotation", index);
 
+            if (flags.HasAnyFlag(UpdateFlag.TransportUnkArray))
+            {
+                var count = packet.ReadByte("Count", index);
+                for (var i = 0; i < count; i++)
+                    packet.ReadInt32("Unk Int32", index, count);
+            }
 
             // Initialize fields that are not used by GOs
             if (guid.GetObjectType() == ObjectType.GameObject)

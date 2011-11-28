@@ -95,10 +95,12 @@ namespace WowPacketParser.Parsing
                     handler(packet);
 
                     if (packet.GetPosition() == packet.GetLength())
+                    {
                         lock (Handlers)
                         {
                             Statistics.PacketsSuccessfullyParsed++;
                         }
+                    }
                     else
                     {
                         var pos = packet.GetPosition();

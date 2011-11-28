@@ -274,7 +274,7 @@ namespace WowPacketParser.Parsing.Parsers
                         if ((mask & playerRuneState) != 0)
                             continue;
 
-                        packet.ReadByte("Unk Byte 1", i);
+                        packet.ReadByte("Rune Cooldown Passed", i);
                     }
                 }
 
