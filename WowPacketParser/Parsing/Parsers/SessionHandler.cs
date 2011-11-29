@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects;
@@ -73,11 +74,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Byte");
             packet.ReadByte("Byte");
             packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
 
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
             packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);
+
             packet.ReadByte("Byte");
             packet.ReadByte("Byte");
             packet.ReadByte("Byte");
@@ -89,7 +91,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Byte");
             packet.ReadByte("Byte");
 
-            // for (var i = 0; i < 3; i++) ??
             packet.ReadInt32("Int32");
             packet.ReadByte("Byte");
 
@@ -99,18 +100,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Int32");
             packet.ReadByte("Byte");
 
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
+            packet.ReadInt32("Int32");
+            packet.ReadInt32("Int32");
 
-            packet.ReadInt64("Int64");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-
-            packet.ReadCString("String");
+            packet.ReadCString("Account name");
             packet.ReadInt32("Int32");
 
             AddonHandler.ReadClientAddonsList(ref packet);
