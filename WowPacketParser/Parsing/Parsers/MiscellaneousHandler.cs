@@ -133,7 +133,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Unk bool");
             packet.ReadBoolean("Enable Voice Chat");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
+                packet.ReadInt32("Complain System Status");
+            else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
             {
                 packet.ReadByte("Complain System Status");
                 packet.ReadInt32("Unknown Mail Url Related Value");
