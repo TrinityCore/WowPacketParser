@@ -368,7 +368,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
                 {Opcode.SMSG_LEVELUP_INFO, 0x9A73},
             */
             // Tests
-            {Opcode.TEST_43_34595, 0x8723},
+            {Opcode.TEST_422_41036, 0x8723},
         };
     }
 }
