@@ -63,7 +63,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.CMSG_PLAYER_LOGOUT, 0x4826},
             {Opcode.CMSG_QUERY_TIME, 0x5200},
             {Opcode.CMSG_STANDSTATECHANGE, 0x7804},
-            {Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST, 0x6A82},
+            {Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST, 0x3202},
             {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x1000},
             {Opcode.CMSG_QUESTGIVER_QUERY_QUEST, 0x2A06},
             {Opcode.CMSG_QUESTGIVER_REQUEST_REWARD, 0x66A6},
