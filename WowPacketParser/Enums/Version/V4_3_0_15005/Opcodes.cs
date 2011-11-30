@@ -6,7 +6,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
     {
         private static Dictionary<Opcode, int> _V4_3_0_opcodes = new Dictionary<Opcode, int>
         {
-            //{Opcode.TEST_COMPRESSED_PACKET, },
+            {Opcode.TEST_COMPRESSED_PACKET, 0x8723}, //0x4934
             // 0x8723 is huge and sent a LOT... Compressed?
             //{Opcode.CMSG_LOAD_SCREEN, 0x0976},
             //{Opcode.SMSG_DB_REPLY, 0x0723},
