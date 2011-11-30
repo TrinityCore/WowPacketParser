@@ -18,6 +18,8 @@ namespace WowPacketParser.Enums
         InstanceNotFound4 = 13,
         InstanceNotFound5 = 14,
         RealmOnly = 15,
-        MapNotAllowed = 16
+        MapNotAllowed = 16,
+        LockedToDifferentInstance = 18,
+        AlreadyCompletedEncounter = 19,
     }
 }
