@@ -26,5 +26,7 @@ namespace WowPacketParser.Enums
         PetMaxPower         = 0x00020000,
         PetAuras            = 0x00040000,
         VehicleSeat         = 0x00080000,
+        Unknown1            = 0x00100000,
+        Unknown2            = 0x00200000,
     }
 }

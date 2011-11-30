@@ -63,7 +63,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) &&
                 packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PARTY_MEMBER_STATS_FULL))
-                packet.ReadByte("Unk byte");
+                packet.ReadBoolean("Add arena opponent");
 
             packet.ReadPackedGuid("GUID");
             var updateFlags = packet.ReadEnum<GroupUpdateFlag>("Update Flags", TypeCode.Int32);
@@ -187,6 +187,16 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) && // no idea when this was added exactly, doesn't exist in 2.4.1
                 updateFlags.HasAnyFlag(GroupUpdateFlag.VehicleSeat))
                 packet.ReadInt32("Vehicle Seat");
+
+            if (updateFlags.HasAnyFlag(GroupUpdateFlag.Unknown1))
+                packet.ReadInt32("Unk int32");
+
+            if (updateFlags.HasAnyFlag(GroupUpdateFlag.Unknown2))
+            {
+                packet.ReadInt32("Unk int32");
+                packet.ReadInt32("Unk int32");
+                packet.ReadCString("Unk string");
+            }
         }
 
         [Parser(Opcode.CMSG_GROUP_SET_LEADER)]

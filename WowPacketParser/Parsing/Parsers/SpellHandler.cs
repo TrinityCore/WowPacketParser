@@ -94,8 +94,16 @@ namespace WowPacketParser.Parsing.Parsers
                 else
                     packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Cooldown Spell ID", i);
 
-                packet.ReadInt16("Cooldown Cast Item ID");
-                packet.ReadInt16("Cooldown Spell Category", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                    packet.ReadInt32("Cooldown Cast Item ID");
+                else
+                    packet.ReadInt16("Cooldown Cast Item ID");
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                    packet.ReadInt32("Cooldown Spell Category", i);
+                else
+                    packet.ReadInt16("Cooldown Spell Category", i);
+
                 packet.ReadInt32("Cooldown Time", i);
                 packet.ReadInt32("Cooldown Category Time", i);
             }
@@ -156,11 +164,13 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("GUID");
 
-            /*var aura = new Aura(); */
+            /*Aura aura = null; */
             while (packet.CanRead())
+            {
                 /*aura =*/
                 ReadAuraUpdateBlock(ref packet);
-            // TODO: Add this aura to a list of objects (searching by guid)
+                // TODO: Add this aura to a list of objects (searching by guid)
+            }
         }
 
         [Parser(Opcode.CMSG_CAST_SPELL)]
@@ -527,6 +537,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Debug output");
         }
 
+        [Parser(Opcode.SMSG_SPELLINSTAKILLLOG)]
+        public static void HandleSpellInstakillLog(Packet packet)
+        {
+            packet.ReadGuid("Target GUID");
+            packet.ReadGuid("Caster GUID");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+        }
+
         [Parser(Opcode.SMSG_SPELLENERGIZELOG)]
         public static void HandleSpellEnergizeLog(Packet packet)
         {
@@ -615,7 +633,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Hair Style");
             packet.ReadByte("Hair Color");
             packet.ReadByte("Facial Hair");
-            packet.ReadUInt32("Unk");
+            packet.ReadUInt32("Unk"); // uint64 in 4.3
 
             EquipmentSlotType[] slots = {
                 EquipmentSlotType.Head, EquipmentSlotType.Shoulders, EquipmentSlotType.Shirt,
