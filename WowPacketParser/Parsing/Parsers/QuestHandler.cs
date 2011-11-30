@@ -508,6 +508,8 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                packet.ReadUInt32("Unk UInt32 1");
         }
 
         [Parser(Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS)]
