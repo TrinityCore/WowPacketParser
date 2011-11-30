@@ -661,6 +661,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Amount");
         }
 
+        [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleSetSpellModifier422(Packet packet)
+        {
+            packet.ReadByte("Effect");
+            packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte);
+            packet.ReadByte("Amount");
+            packet.ReadByte("Unk");
+        }
+
         [Parser(Opcode.SMSG_DISPEL_FAILED)]
         public static void HandleDispelFailed(Packet packet)
         {

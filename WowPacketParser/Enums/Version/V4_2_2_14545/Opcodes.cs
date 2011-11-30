@@ -341,6 +341,8 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_REFER_A_FRIEND_FAILURE, 0x4867},
             {Opcode.SMSG_SERVER_MESSAGE, 0xC873},
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x204C},
+            {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x88D3}, // unsure: can be 0x98FE
+            {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x98FE}, // unsure: can be 0x88D3
             {Opcode.SMSG_SHOWTAXINODES, 0x8CFB},
             {Opcode.SMSG_SPELL_FAILED_OTHER, 0xCE4A},
             {Opcode.SMSG_SPELL_FAILURE, 0x9A66},

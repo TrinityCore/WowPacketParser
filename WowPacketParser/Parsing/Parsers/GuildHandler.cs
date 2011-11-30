@@ -31,7 +31,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleGuildRoster(Packet packet)
         {
-            packet.Writer.WriteLine(packet.AsHex());
             var bits = new bool[8];
             for (int c = 7; c >= 0; c--)
                 bits[c] = packet.ReadBit();
