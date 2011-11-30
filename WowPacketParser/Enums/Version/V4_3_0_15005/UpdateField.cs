@@ -1,7 +1,7 @@
 namespace WowPacketParser.Enums.Version.V4_3_0_15005
 {
     // ReSharper disable InconsistentNaming
-    // 4.2.2
+    // 4.3.0
     public enum ObjectField
     {
         OBJECT_FIELD_GUID = 0x0000, // Size: 2, Type: LONG, Flags: PUBLIC
@@ -51,13 +51,14 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
         ITEM_FIELD_ENCHANTMENT_13_3 = ObjectField.OBJECT_END + 0x0036, // Size: 1, Type: TWO_SHORT, Flags: PUBLIC
         ITEM_FIELD_ENCHANTMENT_14_1 = ObjectField.OBJECT_END + 0x0037, // Size: 2, Type: INT, Flags: PUBLIC
         ITEM_FIELD_ENCHANTMENT_14_3 = ObjectField.OBJECT_END + 0x0039, // Size: 1, Type: TWO_SHORT, Flags: PUBLIC
-        ITEM_FIELD_PROPERTY_SEED = ObjectField.OBJECT_END + 0x003A, // Size: 1, Type: INT, Flags: PUBLIC
-        ITEM_FIELD_RANDOM_PROPERTIES_ID = ObjectField.OBJECT_END + 0x003B, // Size: 1, Type: INT, Flags: PUBLIC
-        ITEM_FIELD_DURABILITY = ObjectField.OBJECT_END + 0x003C, // Size: 1, Type: INT, Flags: OWNER, UNUSED1
-        ITEM_FIELD_MAXDURABILITY = ObjectField.OBJECT_END + 0x003D, // Size: 1, Type: INT, Flags: OWNER, UNUSED1
-        ITEM_FIELD_CREATE_PLAYED_TIME = ObjectField.OBJECT_END + 0x003E, // Size: 1, Type: INT, Flags: PUBLIC
-        ITEM_FIELD_PAD = ObjectField.OBJECT_END + 0x003F, // Size: 1, Type: INT, Flags: NONE
-        ITEM_END = ObjectField.OBJECT_END + 0x0040,
+        ITEM_FIELD_ENCHANTMENT_15_1 = ObjectField.OBJECT_END + 0x003A, // Size: 2, Type: INT, Flags: PUBLIC
+        ITEM_FIELD_ENCHANTMENT_15_3 = ObjectField.OBJECT_END + 0x003C, // Size: 1, Type: TWO_SHORT, Flags: PUBLIC
+        ITEM_FIELD_PROPERTY_SEED = ObjectField.OBJECT_END + 0x003D, // Size: 1, Type: INT, Flags: PUBLIC
+        ITEM_FIELD_RANDOM_PROPERTIES_ID = ObjectField.OBJECT_END + 0x003E, // Size: 1, Type: INT, Flags: PUBLIC
+        ITEM_FIELD_DURABILITY = ObjectField.OBJECT_END + 0x003F, // Size: 1, Type: INT, Flags: OWNER, UNUSED1
+        ITEM_FIELD_MAXDURABILITY = ObjectField.OBJECT_END + 0x0040, // Size: 1, Type: INT, Flags: OWNER, UNUSED1
+        ITEM_FIELD_CREATE_PLAYED_TIME = ObjectField.OBJECT_END + 0x0041, // Size: 1, Type: INT, Flags: PUBLIC
+        ITEM_END = ObjectField.OBJECT_END + 0x0042,
     }
 
     public enum ContainerField

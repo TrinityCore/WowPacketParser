@@ -14,20 +14,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GOSSIP_POI)]
         public static void HandleGossipPoi(Packet packet)
         {
-            var flags = packet.ReadInt32();
-            packet.Writer.WriteLine("Flags: 0x" + flags.ToString("X8"));
-
-            var pos = packet.ReadVector2();
-            packet.Writer.WriteLine("Coordinates: " + pos);
-
-            var icon = (GossipPoiIcon)packet.ReadInt32();
-            packet.Writer.WriteLine("Icon: " + icon);
-
-            var data = packet.ReadInt32();
-            packet.Writer.WriteLine("Data: " + data);
-
-            var iconName = packet.ReadCString();
-            packet.Writer.WriteLine("Icon Name: " + iconName);
+            packet.ReadEnum<UnknownFlags>("Flags", TypeCode.Int32);
+            packet.ReadVector2("Coordinates");
+            packet.ReadEnum<GossipPoiIcon>("Icon", TypeCode.UInt32);
+            packet.ReadInt32("Data");
+            packet.ReadCString("Icon Name");
         }
 
         [Parser(Opcode.CMSG_TRAINER_BUY_SPELL)]
