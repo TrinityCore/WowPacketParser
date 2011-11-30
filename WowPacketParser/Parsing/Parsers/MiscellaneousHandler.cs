@@ -133,7 +133,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Unk bool");
             packet.ReadBoolean("Enable Voice Chat");
 
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                 packet.ReadInt32("Complain System Status");
             else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
             {
