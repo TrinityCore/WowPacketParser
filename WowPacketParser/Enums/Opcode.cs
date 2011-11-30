@@ -1538,6 +1538,7 @@
         SMSG_COMPRESSED_CHAR_ENUM,
         SMSG_COMPRESSED_GUILD_ROSTER,
         // ReSharper restore InconsistentNaming
-        TEST_COMPRESSED_PACKET
+        TEST_COMPRESSED_PACKET,
+        SMSG_RESET_COMPRESSION_CONTEXT
     }
 }

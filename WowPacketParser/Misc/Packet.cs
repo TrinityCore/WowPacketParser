@@ -6,11 +6,6 @@ using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc
 {
-    public static class InflaterHeader
-    {
-        public static bool useHeader { get; set;  }
-    }
-
     public sealed partial class Packet : BinaryReader
     {
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringWriter writer)
@@ -43,10 +38,18 @@ namespace WowPacketParser.Misc
         {
             var arr = ReadToEnd();
             var newarr = new byte[inflatedSize];
-            var inflater = new Inflater(InflaterHeader.useHeader);
-            inflater.SetInput(arr, 0, arr.Length);
-            inflater.Inflate(newarr, 0, inflatedSize);
-            InflaterHeader.useHeader = true;
+            try
+            {
+                var inflater = new Inflater();
+                inflater.SetInput(arr, 0, arr.Length);
+                inflater.Inflate(newarr, 0, inflatedSize);
+            }
+            catch (ICSharpCode.SharpZipLib.SharpZipBaseException)
+            {
+                var inflater = new Inflater(true);
+                inflater.SetInput(arr, 0, arr.Length);
+                inflater.Inflate(newarr, 0, inflatedSize);
+            }
             var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer);
             return pkt;
         }
