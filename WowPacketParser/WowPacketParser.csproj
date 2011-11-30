@@ -301,6 +301,7 @@
     <Compile Include="Loading\IPacketReader.cs" />
     <Compile Include="Loading\Reader.cs" />
     <Compile Include="Loading\SQLitePacketReader.cs" />
+    <Compile Include="Parsing\Parsers\TestHandler.cs" />
     <Compile Include="Store\Objects\Aura.cs" />
     <Compile Include="Store\Objects\LootItem.cs" />
     <Compile Include="Store\Objects\NpcVendor.cs" />

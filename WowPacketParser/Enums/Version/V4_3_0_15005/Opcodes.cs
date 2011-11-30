@@ -6,8 +6,6 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
     {
         private static Dictionary<Opcode, int> _V4_3_0_opcodes = new Dictionary<Opcode, int>
         {
-            {Opcode.TEST_COMPRESSED_PACKET, 0x8723}, //0x4934
-            // 0x8723 is huge and sent a LOT... Compressed?
             //{Opcode.CMSG_LOAD_SCREEN, 0x0976},
             //{Opcode.SMSG_DB_REPLY, 0x0723},
             {Opcode.CMSG_AUTH_SESSION, 0x1100},
@@ -41,6 +39,9 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.SMSG_TRAINER_BUY_FAILED, 0x34A2},
             {Opcode.SMSG_TRAINER_LIST, 0x4C80},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 0x40A4},
+
+            // Tests
+            {Opcode.TEST_43_34595, 0x8723},
         };
     }
 }

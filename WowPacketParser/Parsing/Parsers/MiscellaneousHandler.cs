@@ -504,17 +504,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("String");
         }
 
-        [Parser(Opcode.TEST_COMPRESSED_PACKET)]
-        public static void HandleCompressedUnknownPacket(Packet packet)
-        {
-            HandleUncompressedUnknownPacket(packet.Inflate(packet.ReadInt32()));
-        }
-
-        public static void HandleUncompressedUnknownPacket(Packet packet)
-        {
-            packet.Writer.WriteLine(packet.AsHex());
-        }
-
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
