@@ -6,8 +6,6 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
     {
         private static Dictionary<Opcode, int> _V4_3_0_opcodes = new Dictionary<Opcode, int>
         {
-            //{Opcode.CMSG_LOAD_SCREEN, 0x0976},
-            //{Opcode.SMSG_DB_REPLY, 0x0723},
             {Opcode.CMSG_AUTH_SESSION, 0x1100},
             {Opcode.CMSG_CHAR_CREATE, 0x2A86},
             {Opcode.CMSG_CHAR_DELETE, 0x38A4},
@@ -45,9 +43,80 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.SMSG_TRAINER_BUY_FAILED, 0x34A2},
             {Opcode.SMSG_TRAINER_LIST, 0x4C80},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 0x40A4},
+            {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x4CA6},
+            {Opcode.SMSG_MONSTER_MOVE, 0x60A0},
+            {Opcode.SMSG_MONSTER_MOVE_TRANSPORT, 0xEA4},
 
             // Tests
             {Opcode.TEST_43_34595, 0x8723},
+            {Opcode.CMSG_LOAD_SCREEN, 0x0976},
+            {Opcode.SMSG_MULTIPLE_PACKETS, 0x0723},
+
+
+            // SF, TODO: Rename to "TC" opcode names
+            {Opcode.SMSG_GUILD_FLAGGED_FOR_RENAME, 0x41A},
+            {Opcode.CMSG_GUILD_CHANGE_NAME_REQUEST, 0x224C},
+            {Opcode.SMSG_GUILD_CHANGE_NAME_RESULT, 0x241C},
+            {Opcode.SMSG_GUILD_MEMBER_DAILY_RESET, 0x243E},
+            {Opcode.CMSG_GUILD_REPLACE_GUILD_MASTER, 0x2A48},
+            {Opcode.CMSG_GUILD_INVITE_BY_NAME, 0x4936},
+            {Opcode.SMSG_GUILD_BANK_QUERY_RESULTS, 0x4C28}, // ???
+            {Opcode.SMSG_GUILD_ROSTER_UPDATE, 0x4E3C}, // ???
+            {Opcode.CMSG_DF_PROPOSAL_RESPONSE, 0x146},
+            {Opcode.CMSG_DF_JOIN, 0x154},
+            {Opcode.CMSG_DF_SET_ROLES, 0x304},
+            {Opcode.CMSG_DF_TELEPORT, 0x366},
+            {Opcode.CMSG_DF_BOOT_PLAYER_VOTE, 0x924},
+            {Opcode.CMSG_DF_GET_SYSTEM_INFO, 0x926},
+            {Opcode.CMSG_DF_SET_COMMENT, 0xB06},
+            {Opcode.CMSG_DF_GET_JOIN_STATUS, 0x4144},
+            {Opcode.CMSG_DF_LEAVE, 0x4306},
+            {Opcode.CMSG_DF_SEARCH_JOIN, 0x4B36},
+            {Opcode.CMSG_DF_SEARCH_LEAVE, 0x4B44},
+            {Opcode.SMSG_SET_DF_FAST_LAUNCH_RESULT, 0x661C},
+            {Opcode.SMSG_LFG_UPDATE_STATUS, 0x40A},
+            {Opcode.CMSG_SET_EVERYONE_IS_ASSISTANT, 0x376},
+            {Opcode.SMSG_RESET_COMPRESSION_CONTEXT, 0x1722}, // ??? must-implement
+            {Opcode.SMSG_CUSTOM_LOAD_SCREEN, 0x2438}, // ???
+            {Opcode.SMSG_GAME_EVENT_DEBUG_LOG, 0x2498},
+            {Opcode.SMSG_SERVER_PERF, 0x2638}, // ???
+            {Opcode.SMSG_FLOOD_DETECTED, 0x323},
+            {Opcode.SMSG_AREA_TRIGGER_MOVEMENT_UPDATE, 0x438},
+            {Opcode.SMSG_LFG_SLOT_INVALID, 0x263E},
+            {Opcode.SMSG_XP_GAIN_ABORTED, 0x2C0C},
+            {Opcode.SMSG_CHAT_IGNORED_ACCOUNT_MUTED, 0x2E3C},
+            {Opcode.SMSG_MAP_OBJ_EVENTS, 0x2E88},
+            {Opcode.SMSG_DUMP_RIDE_TICKETS_RESPONSE, 0x4C9A},
+            {Opcode.SMSG_UPDATE_SERVER_PLAYER_POSITION, 0x4E9C},
+            {Opcode.CMSG_BATTLEFIELD_LEAVE, 0x6203},
+            {Opcode.SMSG_CLEAR_COOLDOWNS, 0x64BC},
+            {Opcode.SMSG_LOOT_CONTENTS, 0x660A},
+            {Opcode.SMSG_PRINT_NOTIFICATION, 0x669A},
+            {Opcode.SMSG_GAME_OBJECT_ACTIVATE_ANIM_KIT, 0x6C0A},
+            {Opcode.SMSG_LFG_UPDATE_STATUS_NONE, 0x6C28},
+            {Opcode.SMSG_ACCOUNT_INFO_RESPONSE, 0x6C3A},
+            {Opcode.CMSG_UNLEARN_SPECIALIZATION, 0x7003},
+            {Opcode.SMSG_FAILED_PLAYER_CONDITION, 0x269A},
+            {Opcode.SMSG_DONT_AUTO_PUSH_SPELLS_TO_ACTION_BAR, 0x26BE},
+            {Opcode.SMSG_UPDATE_DUNGEON_ENCOUNTER_FOR_LOOT, 0x449C},
+            {Opcode.SMSG_UPDATE_ACTION_BUTTONS, 0x461C},
+            {Opcode.SMSG_MISSILE_CANCEL, 0x46B8},
+            {Opcode.SMSG_ITEM_EXPIRE_PURCHASE_REFUND, 0x2C08},
+            {Opcode.SMSG_VOID_ITEM_SWAP_RESPONSE, 0xC1C},
+            {Opcode.CMSG_VOID_STORAGE_TRANSFER, 0x2011},
+            {Opcode.SMSG_VOID_TRANSFER_RESULT, 0x2CA8},
+            {Opcode.CMSG_UNLOCK_VOID_STORAGE, 0x2681},
+            {Opcode.CMSG_SWAP_VOID_ITEM, 0x3291},
+            {Opcode.CMSG_QUERY_VOID_STORAGE, 0x3431},
+            {Opcode.SMSG_VOID_STORAGE_FAILED, 0x263C},
+            {Opcode.SMSG_VOID_STORAGE_CONTENTS, 0x2698},
+            {Opcode.SMSG_VOID_STORAGE_TRANSFER_CHANGES, 0x4CAE},
+            {Opcode.CMSG_TRANSMOGRIFY_ITEMS, 0x3081},
+            {Opcode.CMSG_GUILD_MEMBER_SEND_SOR_REQUEST, 0x88C},
+            {Opcode.CMSG_SEND_SOR_REQUEST_VIA_BNET_ACCOUNT_ID, 0X4956},
+            {Opcode.CMSG_SEND_SOR_REQUEST_VIA_ADDRESS, 0x4B16},
+            {Opcode.SMSG_SOR_START_EXPERIENCE_INCOMPLETE, 0x4C8C},
+
         };
     }
 }

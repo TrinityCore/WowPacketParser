@@ -1,13 +1,13 @@
- namespace WowPacketParser.Enums
+namespace WowPacketParser.Enums
 {
     public enum Opcode
     {
         // ReSharper disable InconsistentNaming
         /* Generic opcode enumeration
-         * Every opcode _name_ should be here (any version)
-         * (Important) This enum should not contain two
-         * or more opcode names that represent the same opcode
-         */
+        * Every opcode _name_ should be here (any version)
+        * (Important) This enum should not contain two
+        * or more opcode names that represent the same opcode
+        */
         MSG_NULL_ACTION,
         CMSG_BOOTME,
         CMSG_DBLOOKUP,
@@ -1537,10 +1537,74 @@
         SMSG_LFGUILD_RECRUIT_DATA,
         SMSG_COMPRESSED_CHAR_ENUM,
         SMSG_COMPRESSED_GUILD_ROSTER,
-        // ReSharper restore InconsistentNaming
 
         // Tests
         TEST_43_34595,
-        TEST_422_41036
+        TEST_422_41036,
+
+        // SF
+        SMSG_GUILD_FLAGGED_FOR_RENAME,
+        CMSG_GUILD_CHANGE_NAME_REQUEST,
+        SMSG_GUILD_CHANGE_NAME_RESULT,
+        SMSG_GUILD_MEMBER_DAILY_RESET,
+        CMSG_GUILD_REPLACE_GUILD_MASTER,
+        CMSG_GUILD_INVITE_BY_NAME,
+        SMSG_GUILD_BANK_QUERY_RESULTS,
+        SMSG_GUILD_ROSTER_UPDATE,
+        CMSG_DF_PROPOSAL_RESPONSE,
+        CMSG_DF_JOIN,
+        CMSG_DF_SET_ROLES,
+        CMSG_DF_TELEPORT,
+        CMSG_DF_BOOT_PLAYER_VOTE,
+        CMSG_DF_GET_SYSTEM_INFO,
+        CMSG_DF_SET_COMMENT,
+        CMSG_DF_GET_JOIN_STATUS,
+        CMSG_DF_LEAVE,
+        CMSG_DF_SEARCH_JOIN,
+        CMSG_DF_SEARCH_LEAVE,
+        SMSG_SET_DF_FAST_LAUNCH_RESULT,
+        SMSG_LFG_UPDATE_STATUS,
+        CMSG_SET_EVERYONE_IS_ASSISTANT,
+        SMSG_RESET_COMPRESSION_CONTEXT,
+        SMSG_CUSTOM_LOAD_SCREEN,
+        SMSG_GAME_EVENT_DEBUG_LOG,
+        SMSG_SERVER_PERF,
+        SMSG_FLOOD_DETECTED,
+        SMSG_AREA_TRIGGER_MOVEMENT_UPDATE,
+        SMSG_LFG_SLOT_INVALID,
+        SMSG_XP_GAIN_ABORTED,
+        SMSG_CHAT_IGNORED_ACCOUNT_MUTED,
+        SMSG_MAP_OBJ_EVENTS,
+        SMSG_DUMP_RIDE_TICKETS_RESPONSE,
+        SMSG_UPDATE_SERVER_PLAYER_POSITION,
+        CMSG_BATTLEFIELD_LEAVE,
+        SMSG_CLEAR_COOLDOWNS,
+        SMSG_LOOT_CONTENTS,
+        SMSG_PRINT_NOTIFICATION,
+        SMSG_GAME_OBJECT_ACTIVATE_ANIM_KIT,
+        SMSG_LFG_UPDATE_STATUS_NONE,
+        SMSG_ACCOUNT_INFO_RESPONSE,
+        CMSG_UNLEARN_SPECIALIZATION,
+        SMSG_FAILED_PLAYER_CONDITION,
+        SMSG_DONT_AUTO_PUSH_SPELLS_TO_ACTION_BAR,
+        SMSG_UPDATE_DUNGEON_ENCOUNTER_FOR_LOOT,
+        SMSG_UPDATE_ACTION_BUTTONS,
+        SMSG_MISSILE_CANCEL,
+        SMSG_ITEM_EXPIRE_PURCHASE_REFUND,
+        SMSG_VOID_ITEM_SWAP_RESPONSE,
+        CMSG_VOID_STORAGE_TRANSFER,
+        SMSG_VOID_TRANSFER_RESULT,
+        CMSG_UNLOCK_VOID_STORAGE,
+        CMSG_SWAP_VOID_ITEM,
+        CMSG_QUERY_VOID_STORAGE,
+        SMSG_VOID_STORAGE_FAILED,
+        SMSG_VOID_STORAGE_CONTENTS,
+        SMSG_VOID_STORAGE_TRANSFER_CHANGES,
+        CMSG_TRANSMOGRIFY_ITEMS,
+        CMSG_GUILD_MEMBER_SEND_SOR_REQUEST,
+        CMSG_SEND_SOR_REQUEST_VIA_BNET_ACCOUNT_ID,
+        CMSG_SEND_SOR_REQUEST_VIA_ADDRESS,
+        SMSG_SOR_START_EXPERIENCE_INCOMPLETE,
+        // ReSharper restore InconsistentNaming
     }
 }
