@@ -42,7 +42,7 @@ namespace WowPacketParser.Enums.Version//.V4_1_0_13914
             {Opcode.SMSG_REPORT_PVP_AFK_RESULT, 0x01C6D}, // 4.1.0 13914
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA, 0x01C7D}, // 4.1.0 13914
             {Opcode.SMSG_DUEL_COMPLETE, 0x01C7F}, // 4.1.0 13914
-            {Opcode.SMSG_UPDATE_LFG_LIST, 0x01D7E}, // 4.1.0 13914
+            {Opcode.SMSG_LFG_LFR_LIST, 0x01D7E}, // 4.1.0 13914
             {Opcode.SMSG_CHAT_PLAYER_NOT_FOUND, 0x01E2D}, // 4.1.0 13914
             {Opcode.SMSG_DANCE_QUERY_RESPONSE, 0x01E3E}, // 4.1.0 13914
             {Opcode.SMSG_EXPECTED_SPAM_RECORDS, 0x01E3F}, // 4.1.0 13914

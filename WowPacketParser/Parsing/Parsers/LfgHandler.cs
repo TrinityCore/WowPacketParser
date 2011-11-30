@@ -20,7 +20,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Comment");
         }
 
-        [Parser(Opcode.CMSG_SET_LFG_COMMENT)]
+        [Parser(Opcode.CMSG_LFG_SET_COMMENT)]
         public static void HandleLfgComment(Packet packet)
         {
             packet.ReadCString("Comment");
@@ -268,15 +268,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<LfgError>("Error", TypeCode.Int32);
         }
 
-        [Parser(Opcode.CMSG_SEARCH_LFG_JOIN)]
-        [Parser(Opcode.CMSG_SEARCH_LFG_LEAVE)]
+        [Parser(Opcode.CMSG_LFG_LFR_JOIN)]
+        [Parser(Opcode.CMSG_LFG_LFR_LEAVE)]
         [Parser(Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER)]
         public static void HandleLfgSearch(Packet packet)
         {
             packet.ReadLfgEntry("LFG Entry");
         }
 
-        [Parser(Opcode.SMSG_UPDATE_LFG_LIST)]
+        [Parser(Opcode.SMSG_LFG_LFR_LIST)]
         public static void HandleUpdateLfgList(Packet packet)
         {
             packet.ReadEnum<LfgType>("LFG Type", TypeCode.Int32);

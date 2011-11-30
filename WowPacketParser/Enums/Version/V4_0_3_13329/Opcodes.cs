@@ -826,15 +826,15 @@ namespace WowPacketParser.Enums.Version//.V4_0_3_13329
             {Opcode.SMSG_ARENA_TEAM_STATS, 0x9B0B}, // (0x03B4)(0x035B) //
             {Opcode.CMSG_LFG_JOIN, 0x035C}, // NF()(0x035C) // // CMSG JoinLFG
             {Opcode.CMSG_LFG_LEAVE, 0x035D}, // NF()(0x035D) // // CMSG LeaveLFG
-            {Opcode.CMSG_SEARCH_LFG_JOIN, 0x035E}, // NF()(0x035E) // // CMSG SearchLFGJoin
-            {Opcode.CMSG_SEARCH_LFG_LEAVE, 0x035F}, // NF()(0x035F) // // CMSG SearchLFGLeave
-            {Opcode.SMSG_UPDATE_LFG_LIST, 0xB676}, // (0x4A95)(0x0360) //32}, uint32}, if (uint8) { uint32 count}, for (count) { uint64} }}, uint32 count2}, uint32}, for (count2) { uint64}, uint32 flags}, if (flags & 0x2) {string}}, if (flags & 0x10) {for (3) uint8}}, if (flags & 0x80) {uint64}, uint32}}}, uint32 count3}, uint32}, for (count3) {uint64}, uint32 flags}, if (flags & 0x1) {uint8}, uint8}, uint8}, for (3) uint8}, uint32}, uint32}, uint32}, uint32}, uint32}, uint32}, float}, float}, uint32}, uint32}, uint32}, uint32}, uint32}, float}, uint32}, uint32}, uint32}, uint32}, uint32}, uint32}}, if (flags&0x2) string}, if (flags&0x4) uint8}, if (flags&0x8) uint64}, if (flags&0x10) uint8}, if (flags&0x20) uint32}, if (flags&0x40) uint8}, if (flags& 0x80) {uint64}, uint32}}
+            {Opcode.CMSG_LFG_LFR_JOIN, 0x035E}, // NF()(0x035E) // // CMSG SearchLFGJoin
+            {Opcode.CMSG_LFG_LFR_LEAVE, 0x035F}, // NF()(0x035F) // // CMSG SearchLFGLeave
+            {Opcode.SMSG_LFG_LFR_LIST, 0xB676}, // (0x4A95)(0x0360) //32}, uint32}, if (uint8) { uint32 count}, for (count) { uint64} }}, uint32 count2}, uint32}, for (count2) { uint64}, uint32 flags}, if (flags & 0x2) {string}}, if (flags & 0x10) {for (3) uint8}}, if (flags & 0x80) {uint64}, uint32}}}, uint32 count3}, uint32}, for (count3) {uint64}, uint32 flags}, if (flags & 0x1) {uint8}, uint8}, uint8}, for (3) uint8}, uint32}, uint32}, uint32}, uint32}, uint32}, uint32}, float}, float}, uint32}, uint32}, uint32}, uint32}, uint32}, float}, uint32}, uint32}, uint32}, uint32}, uint32}, uint32}}, if (flags&0x2) string}, if (flags&0x4) uint8}, if (flags&0x8) uint64}, if (flags&0x10) uint8}, if (flags&0x20) uint32}, if (flags&0x40) uint8}, if (flags& 0x80) {uint64}, uint32}}
             {Opcode.SMSG_LFG_PROPOSAL_UPDATE, 0x9775}, // (0xE274)(0x0361) //32}, uint8}, uint32}, uint32}, uint8}, for (uint8) {uint32,uint8,uint8,uint8,uint8}
             {Opcode.CMSG_LFG_PROPOSAL_RESULT, 0x0362}, // NF()(0x0362) // // CMSG AcceptProposal}, RejectProposal
             {Opcode.SMSG_LFG_ROLE_CHECK_UPDATE, 0x1D75}, // (0xA3D5)(0x0363) //32}, uint8}, for (uint8) uint32}, uint8}, for (uint8) { uint64}, uint8}, uint32}, uint8}, }
             {Opcode.SMSG_LFG_JOIN_RESULT, 0xC777}, // (0x0BB5)(0x0364) //32 unk}, uint32}, if (unk == 6) { uint8 count}, for (count) uint64 }
             {Opcode.SMSG_LFG_QUEUE_STATUS, 0x977E}, // (0x8A1C)(0x0365) //32 dungeon}, uint32 lfgtype}, uint32}, uint32}, uint32}, uint32}, uint8}, uint8}, uint8}, uint8
-            {Opcode.CMSG_SET_LFG_COMMENT, 0x0366}, // NF()(0x0366) // // CMSG SetLFGComment
+            {Opcode.CMSG_LFG_SET_COMMENT, 0x0366}, // NF()(0x0366) // // CMSG SetLFGComment
             {Opcode.SMSG_LFG_UPDATE_PLAYER, 0x0C5E}, // (0x0238)(0x0367) //8}, if (uint8) { uint8}, uint8}, uint8}, uint8}, if (uint8) for (uint8) uint32}, string}
             {Opcode.SMSG_LFG_UPDATE_PARTY, 0xA775}, // (0x0B1D)(0x0368) //8}, if (uint8) { uint8}, uint8}, uint8}, for (3) uint8}, uint8}, if (uint8) for (uint8) uint32}, string}
             {Opcode.SMSG_LFG_UPDATE_LIST, 0x8674}, // (0x2BD1)(0x0369) //8
@@ -842,10 +842,10 @@ namespace WowPacketParser.Enums.Version//.V4_0_3_13329
             {Opcode.CMSG_LFG_SET_NEEDS, 0x036B}, // NF()(0x036B) // // CMSG SetLFGNeeds
             {Opcode.CMSG_LFG_SET_BOOT_VOTE, 0x036C}, // NF()(0x036C) // // CMSG SetLFGBootVote
             {Opcode.SMSG_LFG_BOOT_PROPOSAL_UPDATE, 0xCC56}, // (0x8399)(0x036D) //8}, uint8}, uint8}, uint64}, uint32}, uint32}, uint32}, uint32
-            {Opcode.CMSG_LFD_PLAYER_LOCK_INFO_REQUEST, 0x036E}, // NF()(0x036E) // // CMSG RequestLFDPlayerLockInfo
+            {Opcode.CMSG_LFG_PLAYER_LOCK_INFO_REQUEST, 0x036E}, // NF()(0x036E) // // CMSG RequestLFDPlayerLockInfo
             {Opcode.SMSG_LFG_PLAYER_INFO, 0x1C7F}, // (0x4370)(0x036F) //8}, for (uint8) { uint32}, uint8}, uint32}, uint32}, uint32}, uint32}, uint8}, for (uint8) {uint32,uint32}, uint32}}}, uint32}, for (uint32) {uint32,uint32}
             {Opcode.CMSG_LFG_TELEPORT, 0x0370}, // NF()(0x0370) // // CMSG LFGTeleport
-            {Opcode.CMSG_LFD_PARTY_LOCK_INFO_REQUEST, 0x0371}, // NF()(0x0371) // // CMSG RequestLFDPartyLockInfo
+            {Opcode.CMSG_LFG_PARTY_LOCK_INFO_REQUEST, 0x0371}, // NF()(0x0371) // // CMSG RequestLFDPartyLockInfo
             {Opcode.SMSG_LFG_PARTY_INFO, 0x867E}, // (0x03F5)(0x0372) //8}, for (uint8) uint64
             {Opcode.SMSG_TITLE_EARNED, 0x420B}, // (0x0B91)(0x0373) //
             {Opcode.CMSG_SET_TITLE, 0x0374}, // NF()(0x0374) //

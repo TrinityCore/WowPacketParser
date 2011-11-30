@@ -838,15 +838,15 @@ namespace WowPacketParser.Enums.Version//.V4_0_6_13596
             {Opcode.SMSG_ARENA_TEAM_STATS, 0x0FA80}, // 4.0.6a 13623
             {Opcode.CMSG_LFG_JOIN, 0x063C0}, // 4.0.6a 13623
             {Opcode.CMSG_LFG_LEAVE, 0x03688}, // 4.0.6a 13623
-            {Opcode.CMSG_SEARCH_LFG_JOIN, 0x061CC}, // 4.0.6a 13623
-            {Opcode.CMSG_SEARCH_LFG_LEAVE, 0x0847D}, // 4.0.3a 13329
-            {Opcode.SMSG_UPDATE_LFG_LIST, 0x0768C}, // 4.0.6a 13623
+            {Opcode.CMSG_LFG_LFR_JOIN, 0x061CC}, // 4.0.6a 13623
+            {Opcode.CMSG_LFG_LFR_LEAVE, 0x0847D}, // 4.0.3a 13329
+            {Opcode.SMSG_LFG_LFR_LIST, 0x0768C}, // 4.0.6a 13623
             {Opcode.SMSG_LFG_PROPOSAL_UPDATE, 0x032AC}, // 4.0.6a 13623
             {Opcode.CMSG_LFG_PROPOSAL_RESULT, 0x0A7A4}, // 4.0.6a 13623
             {Opcode.SMSG_LFG_ROLE_CHECK_UPDATE, 0x0F2A8}, // 4.0.6a 13623
             {Opcode.SMSG_LFG_JOIN_RESULT, 0x0338C}, // 4.0.6a 13623
             {Opcode.SMSG_LFG_QUEUE_STATUS, 0x0B388}, // 4.0.6a 13623
-            {Opcode.CMSG_SET_LFG_COMMENT, 0x0E1C4}, // 4.0.6a 13623
+            {Opcode.CMSG_LFG_SET_COMMENT, 0x0E1C4}, // 4.0.6a 13623
             {Opcode.SMSG_LFG_UPDATE_PLAYER, 0x0E284}, // 4.0.6a 13623
             {Opcode.SMSG_LFG_UPDATE_PARTY, 0x02CE8}, // 4.0.6a 13623
             {Opcode.SMSG_LFG_UPDATE_LIST, 0x03880}, // 4.0.6a 13623
@@ -854,10 +854,10 @@ namespace WowPacketParser.Enums.Version//.V4_0_6_13596
             {Opcode.CMSG_LFG_SET_NEEDS, 0x10145}, // Unknown opcode ID
             {Opcode.CMSG_LFG_SET_BOOT_VOTE, 0x0AA84}, // 4.0.6a 13623 (might be 0x0D65D)
             {Opcode.SMSG_LFG_BOOT_PROPOSAL_UPDATE, 0x079AC}, // 4.0.6a 13623
-            {Opcode.CMSG_LFD_PLAYER_LOCK_INFO_REQUEST, 0x0E5E8}, // 4.0.6a 13623 (might be 0x00C76)
+            {Opcode.CMSG_LFG_PLAYER_LOCK_INFO_REQUEST, 0x0E5E8}, // 4.0.6a 13623 (might be 0x00C76)
             {Opcode.SMSG_LFG_PLAYER_INFO, 0x0E088}, // 4.0.6a 13623
             {Opcode.CMSG_LFG_TELEPORT, 0x0FA88}, // 4.0.6a 13623
-            {Opcode.CMSG_LFD_PARTY_LOCK_INFO_REQUEST, 0x00574}, // 4.0.3a 13329
+            {Opcode.CMSG_LFG_PARTY_LOCK_INFO_REQUEST, 0x00574}, // 4.0.3a 13329
             {Opcode.SMSG_LFG_PARTY_INFO, 0x060A0}, // 4.0.6a 13623
             {Opcode.SMSG_TITLE_EARNED, 0x06C8C}, // 4.0.6a 13623
             {Opcode.CMSG_SET_TITLE, 0x0EC8C}, // 4.0.6a 13623
