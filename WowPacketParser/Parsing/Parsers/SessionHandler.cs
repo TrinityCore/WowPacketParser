@@ -108,6 +108,50 @@ namespace WowPacketParser.Parsing.Parsers
             AddonHandler.ReadClientAddonsList(ref packet);
         }
 
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_3_0_15005)]
+        public static void HandleAuthSession430(Packet packet)
+        {
+            packet.ReadInt32("Int32");
+            packet.ReadByte("Byte");
+            packet.ReadInt64("Int64");
+            packet.ReadInt32("Int32");
+            packet.ReadByte("Byte");
+            packet.ReadInt32("Int32");
+            packet.ReadByte("Byte");
+            packet.ReadInt32("Int32");
+
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);
+
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+
+            packet.ReadInt32("Int32");
+            packet.ReadByte("Byte");
+            packet.ReadByte("Byte");
+
+            packet.ReadInt32("Int32");
+
+            AddonHandler.ReadClientAddonsList(ref packet);
+
+            // This will not be read since packet been inflated and ReadToEnd() has been called.
+            packet.ReadCString("Account name");
+        }
+
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
         public static void HandleAuthResponse(Packet packet)
         {
