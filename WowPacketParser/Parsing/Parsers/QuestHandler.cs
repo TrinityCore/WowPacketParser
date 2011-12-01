@@ -637,20 +637,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Reward");
         }
 
-        [Parser(Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY)]
-        public static void HandleQuestStatusMultiple(Packet packet)
-        {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
-            {
-                var count = packet.ReadUInt32("count");
-                for (var i = 0; i < count; i++)
-                {
-                    packet.ReadGuid("GUID");
-                    packet.ReadUInt32("unk");
-                }
-            }
-        }
-
         [Parser(Opcode.SMSG_QUESTGIVER_QUEST_INVALID)]
         public static void HandleQuestInvalid(Packet packet)
         {
@@ -761,6 +747,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_QUERY_QUESTS_COMPLETED)]
         [Parser(Opcode.SMSG_QUESTLOG_FULL)]
         [Parser(Opcode.CMSG_QUESTGIVER_CANCEL)]
+        [Parser(Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY)]
         public static void HandleQuestZeroLengthPackets(Packet packet)
         {
         }
