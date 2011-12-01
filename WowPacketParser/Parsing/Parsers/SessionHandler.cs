@@ -112,44 +112,36 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleAuthSession430(Packet packet)
         {
             packet.ReadInt32("Int32");
-            packet.ReadByte("Byte");
+            packet.ReadByte("Digest (1)");
             packet.ReadInt64("Int64");
             packet.ReadInt32("Int32");
-            packet.ReadByte("Byte");
+            packet.ReadByte("Digest (2)");
             packet.ReadInt32("Int32");
-            packet.ReadByte("Byte");
-            packet.ReadInt32("Int32");
+            packet.ReadByte("Digest (3)");
 
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
+            packet.ReadInt32("Int32");
+            for (var i = 0; i < 7; i++)
+                packet.ReadByte("Digest (4)", i);
+
             packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);
 
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
+            for (var i = 0; i < 8; i++)
+                packet.ReadByte("Digest (5)",i);
 
-            packet.ReadInt32("Int32");
-            packet.ReadByte("Byte");
-            packet.ReadByte("Byte");
+            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Unk Byte");
+
+            packet.ReadInt32("Client Seed");
+
+            for (var i = 0; i < 2; i++)
+                packet.ReadByte("Digest (6)", i);
 
             packet.ReadInt32("Int32");
 
             AddonHandler.ReadClientAddonsList(ref packet);
 
-            // This will not be read since packet been inflated and ReadToEnd() has been called.
-            packet.ReadCString("Account name");
+            // This will not be read anyway since packet has been inflated and ReadToEnd() have been called.
+            //packet.ReadCString("Account name");
         }
 
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
