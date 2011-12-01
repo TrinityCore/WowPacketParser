@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects;
@@ -136,12 +137,11 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 2; i++)
                 packet.ReadByte("Digest (6)", i);
 
-            packet.ReadInt32("Int32");
-
-            AddonHandler.ReadClientAddonsList(ref packet);
-
-            // This will not be read anyway since packet has been inflated and ReadToEnd() have been called.
-            //packet.ReadCString("Account name");
+            var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer);
+            AddonHandler.ReadClientAddonsList(ref pkt);
+            packet.ReadByte("Unk Byte"); // always 00
+            packet.ReadByte("Unk Byte"); // always B0 (0B = Size of bytes to be read... coincidence?)
+            packet.Writer.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(11)));
         }
 
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
