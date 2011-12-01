@@ -171,6 +171,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.CMSG_LFG_SET_COMMENT, 2822},
             {Opcode.CMSG_LFG_TELEPORT, 870},
             {Opcode.CMSG_LIST_INVENTORY, 16422},
+            {Opcode.CMSG_LOAD_SCREEN, 2422},
             {Opcode.CMSG_LOGOUT_CANCEL, 31776},
             {Opcode.CMSG_LOOT, 21632},
             {Opcode.CMSG_LOOT_MASTER_GIVE, 1188},
@@ -231,6 +232,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.CMSG_QUERY_VOID_STORAGE, 13361},
             {Opcode.CMSG_QUESTGIVER_CANCEL, 10884},
             {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 4096},
+            {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY, 4740},
             {Opcode.CMSG_QUESTGIVER_QUERY_QUEST, 10758},
             {Opcode.CMSG_QUESTGIVER_REQUEST_REWARD, 3712},
             {Opcode.CMSG_QUESTGIVER_STATUS_QUERY, 32390},
@@ -791,7 +793,8 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 2564},
 
             // Tests
-            {Opcode.TEST_43_34595, 34595},
+            {Opcode.SMSG_COMPRESSED_MULTIPLE_PACKETS, 34595},
+            {Opcode.SMSG_MULTIPLE_PACKETS, 1827}
         };
     }
 }

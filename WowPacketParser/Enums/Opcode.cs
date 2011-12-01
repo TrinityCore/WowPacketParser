@@ -1540,7 +1540,7 @@ namespace WowPacketParser.Enums
         SMSG_COMPRESSED_GUILD_ROSTER,
 
         // Tests
-        TEST_43_34595,
+        SMSG_COMPRESSED_MULTIPLE_PACKETS,
         TEST_422_41036,
 
         // SF
