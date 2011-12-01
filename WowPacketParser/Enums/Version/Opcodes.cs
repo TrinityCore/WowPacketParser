@@ -80,7 +80,6 @@ namespace WowPacketParser.Enums.Version
                 newDict.Add(pair.Key, pair.Value);
             }*/
 
-
             foreach (var pair in GetOpcodeDictionary(build))
                 if (pair.Value == opcodeId)
                     return pair.Key.ToString();

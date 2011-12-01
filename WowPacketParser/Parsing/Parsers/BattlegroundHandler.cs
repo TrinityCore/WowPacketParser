@@ -92,10 +92,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
+        [Parser(Opcode.CMSG_BATTLEFIELD_LEAVE)] // Differences from above packet?
         [Parser(Opcode.CMSG_BATTLEFIELD_STATUS)]
-        public static void HandleBattlefieldStatusClient(Packet packet)
+        public static void HandleBGZeroLengthPackets(Packet packet)
         {
-            // Added here to have all BG related opcodes in same file
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS)]
@@ -229,24 +229,24 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadUInt32("Score count");
             for (var i = 0; i < count; i++)
             {
-                packet.ReadGuid("[" + i + "] Player GUID");
-                packet.ReadUInt32("[" + i + "] Killing Blows");
+                packet.ReadGuid("Player GUID", i);
+                packet.ReadUInt32("Killing Blows", i);
                 if (!arena)
                 {
-                    packet.ReadUInt32("[" + i + "] Honorable Kills");
-                    packet.ReadUInt32("[" + i + "] Deaths");
-                    packet.ReadUInt32("[" + i + "] Bonus Honor");
+                    packet.ReadUInt32("Honorable Kills", i);
+                    packet.ReadUInt32("Deaths", i);
+                    packet.ReadUInt32("Bonus Honor", i);
                 }
                 else
-                    packet.ReadByte("[" + i + "] BG Team");
+                    packet.ReadByte("BG Team", i);
 
-                packet.ReadUInt32("[" + i + "] Damage done");
-                packet.ReadUInt32("[" + i + "] Healing done");
+                packet.ReadUInt32("Damage done", i);
+                packet.ReadUInt32("Healing done", i);
 
-                var count2 = packet.ReadUInt32("[" + i + "] Extra values counter");
+                var count2 = packet.ReadUInt32("Extra values counter", i);
 
                 for (var j = 0; j < count2; j++)
-                    packet.ReadUInt32("[" + i + "][" + j + "] Value");
+                    packet.ReadUInt32("Value", i, j);
             }
         }
 
