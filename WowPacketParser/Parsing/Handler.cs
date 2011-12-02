@@ -74,10 +74,10 @@ namespace WowPacketParser.Parsing
         {
             var opcode = packet.Opcode;
 
-            if (!isMultiple)
-                packet.Writer.WriteLine("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}",
-                    packet.Direction, Opcodes.GetOpcodeName(opcode), opcode.ToString("X4"),
-                    packet.GetLength(), packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"), packet.Number);
+            packet.Writer.WriteLine("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}{6}",
+                packet.Direction, Opcodes.GetOpcodeName(opcode), opcode.ToString("X4"),
+                packet.GetLength(), packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
+                packet.Number, isMultiple ? " (part of another packet)" : "");
 
             if (headerOnly)
             {
@@ -100,9 +100,12 @@ namespace WowPacketParser.Parsing
 
                     if (packet.GetPosition() == packet.GetLength())
                     {
-                        lock (Handlers)
+                        if (!isMultiple)
                         {
-                            Statistics.PacketsSuccessfullyParsed++;
+                            lock (Handlers)
+                            {
+                                Statistics.PacketsSuccessfullyParsed++;
+                            }
                         }
                     }
                     else

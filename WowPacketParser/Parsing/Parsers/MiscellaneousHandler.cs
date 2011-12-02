@@ -16,19 +16,24 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MULTIPLE_PACKETS)]
         public static void HandleMultiplePackets(Packet packet)
         {
+            packet.Writer.WriteLine("{");
             var i = 0;
             while (packet.CanRead())
             {
                 var opcode = packet.ReadUInt16();
                 // Why are there so many 0s in some packets? Should we have some check if opcode == 0 here?
-                packet.Writer.WriteLine("[{0}] Opcode: {1} ({2})", i, Opcodes.GetOpcodeName(opcode), opcode.ToString("X4"));
                 var len = packet.ReadUInt16("Length", i);
                 var bytes = packet.ReadBytes(len);
                 var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer);
+
+                if (i > 0)
+                    packet.Writer.WriteLine();
+
+                packet.Writer.Write("[{0}] ", i++);
+
                 Handler.Parse(newpacket, isMultiple: true);
-                packet.Writer.WriteLine();
-                ++i;
             }
+            packet.Writer.WriteLine("}");
         }
 
         [Parser(Opcode.SMSG_STOP_DANCE)]
