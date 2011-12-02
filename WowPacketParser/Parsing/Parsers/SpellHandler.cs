@@ -245,6 +245,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (isSpellGo)
             {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                    packet.ReadInt32("unk");
                 var hitCount = packet.ReadByte("Hit Count");
                 for (var i = 0; i < hitCount; i++)
                     packet.ReadGuid("Hit GUID", i);
