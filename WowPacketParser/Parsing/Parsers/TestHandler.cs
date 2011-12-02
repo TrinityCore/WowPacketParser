@@ -1,6 +1,7 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Enums.Version;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -15,8 +16,17 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MULTIPLE_PACKETS)]
         public static void HandleMultiplePackets(Packet packet)
         {
-            packet.Writer.WriteLine(packet.AsHex());
-            packet.ReadToEnd(); // Parsing statistics will be a lie
+            var i = 0;
+            while (packet.CanRead())
+            {
+                var opcode = packet.ReadUInt16();
+                packet.Writer.WriteLine("[{0}] Opcode: {1} ({2})", i, Opcodes.GetOpcodeName(opcode), opcode.ToString("X4"));
+                var len = packet.ReadUInt16("Length", i);
+                var bytes = packet.ReadBytes(len);
+                var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer);
+                Handler.Parse(newpacket, isMultiple: true);
+                ++i;
+            }
         }
 
         [Parser(Opcode.TEST_422_41036)]
