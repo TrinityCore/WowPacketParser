@@ -699,6 +699,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.SMSG_READ_ITEM_FAILED, 5670},
             {Opcode.SMSG_READ_ITEM_OK, 22178},
             {Opcode.SMSG_REAL_GROUP_UPDATE, 17062},
+            {Opcode.SMSG_REALM_SPLIT, 6176},
             {Opcode.SMSG_RECEIVED_MAIL, 3232},
             {Opcode.SMSG_REDIRECT_CLIENT, 1795},
             {Opcode.SMSG_REFER_A_FRIEND_FAILURE, 23712},

@@ -7,6 +7,28 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class MiscellaneousParsers
     {
+        [Parser(Opcode.SMSG_COMPRESSED_MULTIPLE_PACKETS)]
+        public static void HandleCompressedMultiplePackets(Packet packet)
+        {
+            HandleMultiplePackets(packet.Inflate(packet.ReadInt32()));
+        }
+
+        [Parser(Opcode.SMSG_MULTIPLE_PACKETS)]
+        public static void HandleMultiplePackets(Packet packet)
+        {
+            var i = 0;
+            while (packet.CanRead())
+            {
+                var opcode = packet.ReadUInt16();
+                packet.Writer.WriteLine("[{0}] Opcode: {1} ({2})", i, Opcodes.GetOpcodeName(opcode), opcode.ToString("X4"));
+                var len = packet.ReadUInt16("Length", i);
+                var bytes = packet.ReadBytes(len);
+                var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer);
+                Handler.Parse(newpacket, isMultiple: true);
+                ++i;
+            }
+        }
+
         [Parser(Opcode.SMSG_STOP_DANCE)]
         [Parser(Opcode.SMSG_LEARNED_DANCE_MOVES)]
         [Parser(Opcode.SMSG_INVALIDATE_PLAYER)]
