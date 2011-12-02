@@ -139,9 +139,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer);
             AddonHandler.ReadClientAddonsList(ref pkt);
-            packet.ReadByte("Unk Byte"); // always 00
-            packet.ReadByte("Unk Byte"); // always B0 (0B = Size of bytes to be read... coincidence?)
-            packet.Writer.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(11)));
+            packet.ReadByte("Mask"); // TODO: Seems to affect how the size is read
+            var size = (packet.ReadByte() >> 4);
+            packet.Writer.WriteLine("Size: " + size);
+            packet.Writer.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(size)));
         }
 
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
@@ -230,6 +231,13 @@ namespace WowPacketParser.Parsing.Parsers
             
             packet.Writer.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(bytes, 0)));
         }
+
+        /*
+        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_0_15005)]
+        public static void HandlePlayerLogin430(Packet packet)
+        {
+        }
+        */
 
         [Parser(Opcode.SMSG_CHARACTER_LOGIN_FAILED)]
         public static void HandleLoginFailed(Packet packet)

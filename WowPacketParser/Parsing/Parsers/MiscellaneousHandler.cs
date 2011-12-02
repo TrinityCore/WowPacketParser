@@ -20,11 +20,13 @@ namespace WowPacketParser.Parsing.Parsers
             while (packet.CanRead())
             {
                 var opcode = packet.ReadUInt16();
+                // Why are there so many 0s in some packets? Should we have some check if opcode == 0 here?
                 packet.Writer.WriteLine("[{0}] Opcode: {1} ({2})", i, Opcodes.GetOpcodeName(opcode), opcode.ToString("X4"));
                 var len = packet.ReadUInt16("Length", i);
                 var bytes = packet.ReadBytes(len);
                 var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer);
                 Handler.Parse(newpacket, isMultiple: true);
+                packet.Writer.WriteLine();
                 ++i;
             }
         }

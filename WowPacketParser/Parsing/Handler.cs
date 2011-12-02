@@ -98,7 +98,7 @@ namespace WowPacketParser.Parsing
                 {
                     handler(packet);
 
-                    if (packet.GetPosition() == packet.GetLength() && !isMultiple)
+                    if (packet.GetPosition() == packet.GetLength())
                     {
                         lock (Handlers)
                         {
