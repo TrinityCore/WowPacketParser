@@ -229,7 +229,25 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_START_QUEST)]
         public static void HandleQuestPoiQuery(Packet packet)
         {
-            var count = packet.ReadInt32("Count");
+            var count = 0;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+            {
+                if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_START_QUEST))
+                {
+                    packet.ReadByte("unk");
+                    packet.ReadByte("unk2");
+                    count = packet.ReadByte("Count");
+                }
+                else
+                {
+                    count = packet.ReadByte("Count");
+                    packet.ReadByte("unk");
+                    packet.ReadByte("unk2");
+                    packet.ReadByte("unk3");
+                }
+            }
+            else
+                count = packet.ReadInt32("Count");
 
             for (var i = 0; i < count; i++)
                 packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
