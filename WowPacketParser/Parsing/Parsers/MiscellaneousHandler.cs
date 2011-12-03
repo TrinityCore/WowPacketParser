@@ -372,11 +372,16 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("GUID");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
-                packet.ReadInt32("Unk int32");
+            var count = 1;
 
-            packet.ReadEnum<PowerType>("Power type", TypeCode.Byte);
-            packet.ReadInt32("Value");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
+                count = packet.ReadInt32("Unk int32");
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadEnum<PowerType>("Power type", TypeCode.Byte); // Actually powertype for class
+                packet.ReadInt32("Value");
+            }
         }
 
         [Parser(Opcode.CMSG_SET_ACTIONBAR_TOGGLES)]

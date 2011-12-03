@@ -639,9 +639,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (!packet.CanRead())
                 return;
 
-            var tEntry = packet.ReadInt32("Transport Entry");
-            packet.Writer.WriteLine("Transport Entry: " + tEntry);
-
+            packet.ReadInt32("Transport Entry");
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Transport Map ID");
         }
 
@@ -650,40 +648,33 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
 
-            var code = (TransferAbortReason)packet.ReadByte();
-            packet.Writer.WriteLine("Reason: " + code);
+            var reason = packet.ReadEnum<TransferAbortReason>("Reason", TypeCode.Byte);
 
-            switch (code)
+            switch (reason)
             {
                 case TransferAbortReason.DifficultyUnavailable:
-                    {
-                        var arg = (MapDifficulty)packet.ReadByte();
-                        packet.Writer.WriteLine("Difficulty: " + arg);
-                        break;
-                    }
+                {
+                    packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Byte);
+                    break;
+                }
                 case TransferAbortReason.InsufficientExpansion:
-                    {
-                        var arg = (ClientType)packet.ReadByte();
-                        packet.Writer.WriteLine("Expansion: " + arg);
-                        break;
-                    }
+                {
+                    packet.ReadEnum<ClientType>("Expansion", TypeCode.Byte);
+                    break;
+                }
                 case TransferAbortReason.UniqueMessage:
-                    {
-                        var arg = packet.ReadByte();
-                        packet.Writer.WriteLine("Message ID: " + arg);
-                        break;
-                    }
+                {
+                    packet.ReadByte("Message ID");
+                    break;
+                }
             }
         }
 
         [Parser(Opcode.SMSG_FLIGHT_SPLINE_SYNC)]
         public static void HandleFlightSplineSync(Packet packet)
         {
-            var val = packet.ReadSingle();
-            packet.Writer.WriteLine("Unk Single: " + val);
-
-            var guid = packet.ReadPackedGuid();
-            packet.Writer.WriteLine("GUID: " + guid);
+            packet.ReadSingle("Duration modifier");
+            packet.ReadPackedGuid("GUID");
         }
 
         [Parser(Opcode.SMSG_CLIENT_CONTROL_UPDATE)]
