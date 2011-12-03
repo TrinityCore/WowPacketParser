@@ -9,6 +9,8 @@ namespace WowPacketParser.Misc
 {
     public sealed partial class Packet
     {
+        public static bool debug = Settings.GetBoolean("DebugReads");
+
         public Guid ReadGuid()
         {
             return new Guid(ReadUInt64());
@@ -170,14 +172,14 @@ namespace WowPacketParser.Misc
         public byte ReadByte(string name, params int[] values)
         {
             byte val = ReadByte();
-            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X2") + ")" : ""));
             return val;
         }
 
         public sbyte ReadSByte(string name, params int[] values)
         {
             sbyte val = ReadSByte();
-            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X2") + ")" : ""));
             return val;
         }
 
@@ -198,56 +200,68 @@ namespace WowPacketParser.Misc
         public short ReadInt16(string name, params int[] values)
         {
             short val = ReadInt16();
-            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X4") + ")" : ""));
             return val;
         }
 
         public ushort ReadUInt16(string name, params int[] values)
         {
             ushort val = ReadUInt16();
-            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X4") + ")" : ""));
             return val;
         }
 
         public float ReadSingle(string name, params int[] values)
         {
             float val = ReadSingle();
-            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            if (debug)
+            {
+                byte[] bytes = BitConverter.GetBytes(val);
+                Writer.WriteLine("{0}{1}: {2} (0x{3})", GetIndexString(values), name, val, BitConverter.ToString(bytes));
+            }
+            else
+                Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
 
         public double ReadDouble(string name, params int[] values)
         {
             double val = ReadDouble();
-            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            if (debug)
+            {
+                byte[] bytes = BitConverter.GetBytes(val);
+                Writer.WriteLine("{0}{1}: {2} (0x{3})", GetIndexString(values), name, val, BitConverter.ToString(bytes));
+            }
+            else
+                Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }
 
         public int ReadInt32(string name, params int[] values)
         {
             int val = ReadInt32();
-            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X8") + ")" : ""));
             return val;
         }
 
         public uint ReadUInt32(string name, params int[] values)
         {
             uint val = ReadUInt32();
-            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X8") + ")" : ""));
             return val;
         }
 
         public long ReadInt64(string name, params int[] values)
         {
             long val = ReadInt64();
-            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X16") + ")" : ""));
             return val;
         }
 
         public ulong ReadUInt64(string name, params int[] values)
         {
             ulong val = ReadUInt64();
-            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X16") + ")" : ""));
             return val;
         }
 
@@ -310,14 +324,14 @@ namespace WowPacketParser.Misc
         public DateTime ReadTime(string name, params int[] values)
         {
             DateTime val = ReadTime();
-            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X4") + ")" : ""));
             return val;
         }
 
         public DateTime ReadPackedTime(string name, params int[] values)
         {
             DateTime val = ReadPackedTime();
-            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X4") + ")" : ""));
             return val;
         }
 
@@ -371,14 +385,14 @@ namespace WowPacketParser.Misc
         public T ReadEnum<T>(string name, TypeCode code, params int[] values)
         {
             KeyValuePair<long, T> val = ReadEnum<T>(code);
-            Writer.WriteLine("{0}{1}: {2} ({3})", GetIndexString(values), name, val.Value, val.Key);
+            Writer.WriteLine("{0}{1}: {2} ({3}){4}", GetIndexString(values), name, val.Value, val.Key, (debug ? " (0x" + val.Key.ToString("X4") + ")" : ""));
             return val.Value;
         }
 
         public int ReadEntryWithName<T>(StoreNameType type, string name, params int[] values)
         {
             var val = (int) ReadValue(Type.GetTypeCode(typeof (T)));
-            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, StoreGetters.GetName(type, val));
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, StoreGetters.GetName(type, val), (debug ? " (0x" + val.ToString("X4") + ")" : ""));
             return val;
         }
 
@@ -446,7 +460,7 @@ namespace WowPacketParser.Misc
         public T ReadEnum<T>(string name, int bits, params int[] values)
         {
             var val = ReadEnum<T>(bits);
-            Writer.WriteLine("{0}{1}: {2} ({3})", GetIndexString(values), name, val.Value, val.Key);
+            Writer.WriteLine("{0}{1}: {2} ({3}){4}", GetIndexString(values), name, val.Value, val.Key, (debug ? " (0x" + val.Key.ToString("X4") + ")" : ""));
             return val.Value;
         }
     }
