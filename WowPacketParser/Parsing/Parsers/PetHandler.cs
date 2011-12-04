@@ -11,7 +11,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePetSpells(Packet packet)
         {
             var guid64 = packet.ReadUInt64();
-            if (guid64 == 0) // Sent when player leaves vehicle - empty packet
+            // Equal to "Clear spells" pre cataclysm
+            if (guid64 == 0)
                 return;
 
             var guid = new Guid(guid64);
@@ -21,31 +22,26 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                 packet.ReadEnum<CreatureFamily>("Pet Family", TypeCode.UInt16); // vehicles -> 0
 
-            var unk1 = packet.ReadUInt32(); // 0
-            packet.Writer.WriteLine("Unknown 1: " + unk1);
+            packet.ReadUInt32("Unknown 1");
 
             // Following int8,int8,int16 is sent like int32
-            var reactState = packet.ReadByte(); // 1
-            packet.Writer.WriteLine("React state: " + reactState);
-
-            var commandState = packet.ReadByte(); // 1
-            packet.Writer.WriteLine("Command state: " + commandState);
-
-            var unk2 = packet.ReadUInt16(); // pets -> 0, vehicles -> 0x800 (2048)
-            packet.Writer.WriteLine("Unknown 2: " + unk2);
+            var reactState = packet.ReadByte("React state"); // 1
+            var commandState = packet.ReadByte("Command state"); // 1
+            packet.ReadUInt16("Unknown 2"); // pets -> 0, vehicles -> 0x800 (2048)
 
             for (var i = 1; i <= (int)MiscConstants.CreatureMaxSpells + 2; i++) // Read pet/vehicle spell ids
             {
                 var spell16 = packet.ReadUInt16();
                 var spell8 = packet.ReadByte();
-                var slotid = packet.ReadSByte();
-                var spellId = spell16 | spell8;
+                var slotid = packet.ReadByte();
+                var spellId = spell16 + (spell8 << 16);
                 if (!isPet) // cleanup vehicle spells (start at 1 instead 8,
                 {           // and do not print spells with id 0)
                     slotid -= (int)MiscConstants.PetSpellsOffset - 1;
                     if (spellId == 0)
                         continue;
                 }
+
                 packet.Writer.WriteLine("Spell " + slotid + ": " + StoreGetters.GetName(StoreNameType.Spell, spellId));
             }
 

@@ -316,6 +316,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0xDCD3},
             {Opcode.SMSG_PET_LEARNED_SPELL, 0xDC5E},
             {Opcode.SMSG_PET_REMOVED_SPELL, 0x18F6}, // Should actually be called UNLEARNED_SPELL
+            {Opcode.SMSG_PET_SPELLS, 0x5A43},
             {Opcode.SMSG_PETITION_QUERY_RESPONSE, 0xCAEE},
             {Opcode.SMSG_PETITION_SHOWLIST, 0x8ED7},
             {Opcode.SMSG_PETITION_SHOW_SIGNATURES, 0x4E4A},
