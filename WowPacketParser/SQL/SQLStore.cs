@@ -50,15 +50,11 @@ namespace WowPacketParser.SQL
             _file = null;
         }
 
-        public static readonly CreatureStore Creatures = new CreatureStore();
-
         public static readonly CreatureSpawnStore CreatureSpawns = new CreatureSpawnStore();
 
         public static readonly CreatureSpawnUpdateStore CreatureSpawnUpdates = new CreatureSpawnUpdateStore();
 
         public static readonly CreatureUpdateStore CreatureUpdates = new CreatureUpdateStore();
-
-        public static readonly GameObjectStore GameObjects = new GameObjectStore();
 
         public static readonly GameObjectSpawnStore GameObjectSpawns = new GameObjectSpawnStore();
 
@@ -68,15 +64,9 @@ namespace WowPacketParser.SQL
 
         public static readonly ItemStore Items = new ItemStore();
 
-        public static readonly NpcTextStore NpcTexts = new NpcTextStore();
-
-        public static readonly PageTextStore PageTexts = new PageTextStore();
-
         public static readonly QuestPoiPointStore QuestPoiPoints = new QuestPoiPointStore();
 
         public static readonly QuestPoiStore QuestPois = new QuestPoiStore();
-
-        public static readonly QuestStore Quests = new QuestStore();
 
         public static readonly StartActionStore StartActions = new StartActionStore();
 
@@ -84,8 +74,5 @@ namespace WowPacketParser.SQL
 
         public static readonly StartSpellStore StartSpells = new StartSpellStore();
 
-        public static readonly TrainerSpellStore TrainerSpells = new TrainerSpellStore();
-
-        public static readonly VendorItemStore VendorItems = new VendorItemStore();
     }
 }
