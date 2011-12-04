@@ -4,6 +4,7 @@ namespace WowPacketParser.Enums
     {
         Fatigue = 0,
         Breath = 1,
-        Fire = 2,
+        FeignDeath = 2,
+        Unknown = 3
     }
 }

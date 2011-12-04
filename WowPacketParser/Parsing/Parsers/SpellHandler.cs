@@ -264,6 +264,9 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadEnum<SpellMissType>("Miss Reflect", TypeCode.Byte, i);
                 }
             }
+            else
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                    packet.ReadInt32("unk");
 
             var targetFlags = ReadSpellCastTargets(ref packet);
 
