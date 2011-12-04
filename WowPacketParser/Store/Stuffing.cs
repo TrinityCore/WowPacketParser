@@ -40,8 +40,6 @@ namespace WowPacketParser.Store
             new ConcurrentDictionary<uint, NpcText>();
 
         
-
-
         /* Key: Misc */
 
         // Start info (Race, Class)

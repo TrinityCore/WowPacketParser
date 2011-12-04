@@ -49,7 +49,7 @@ namespace WowPacketParser.Parsing.Parsers
                 quest.RequiredFactionValue[i] = packet.ReadInt32("Required Faction Rep", i);
             }
 
-            quest.NextQuestId = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Next Chain Quest");
+            quest.NextQuestIdChain = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Next Chain Quest");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 quest.RewardXPId = packet.ReadUInt32("Quest XP ID");
@@ -72,7 +72,7 @@ namespace WowPacketParser.Parsing.Parsers
             quest.Flags = packet.ReadEnum<QuestFlags>("Flags", TypeCode.Int32);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // Not sure when this was added
-            quest.TargetMark = packet.ReadUInt32("Minimap Target Mark"); // missing enum
+                quest.MinimapTargetMark = packet.ReadUInt32("Minimap Target Mark"); // missing enum
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_4_0_8089))
                 quest.RewardTitleId = packet.ReadUInt32("Reward Title ID");
@@ -113,18 +113,18 @@ namespace WowPacketParser.Parsing.Parsers
 
             const int repCount = 5;
             quest.RewardFactionId = new uint[repCount];
-            quest.RewardReputationId = new int[repCount];
-            quest.RewardReputationIdOverride = new uint[repCount];
+            quest.RewardFactionValueId = new int[repCount];
+            quest.RewardFactionValueIdOverride = new uint[repCount];
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
             {
                 for (var i = 0; i < repCount; i++)
                     quest.RewardFactionId[i] = packet.ReadUInt32("Reward Faction ID", i);
 
                 for (var i = 0; i < repCount; i++)
-                    quest.RewardReputationId[i] = packet.ReadInt32("Reward Reputation ID", i);
+                    quest.RewardFactionValueId[i] = packet.ReadInt32("Reward Reputation ID", i);
 
                 for (var i = 0; i < repCount; i++)
-                    quest.RewardReputationIdOverride[i] = packet.ReadUInt32("Reward Reputation ID Override", i);
+                    quest.RewardFactionValueIdOverride[i] = packet.ReadUInt32("Reward Reputation ID Override", i);
             }
 
             quest.PointMapId = packet.ReadUInt32("Point Map ID");
@@ -144,7 +144,7 @@ namespace WowPacketParser.Parsing.Parsers
             quest.EndText = packet.ReadCString("End Text");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                quest.ReturnText = packet.ReadCString("Return Text");
+                quest.CompletedText = packet.ReadCString("Return Text");
 
             var reqId = new KeyValuePair<int, bool>[4];
             quest.RequiredNpcOrGo = new int[4];
@@ -214,7 +214,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
 
                 quest.QuestGiverTextWindow = packet.ReadCString("QuestGiver Text Window");
-                quest.QuestGiverTextName = packet.ReadCString("QuestGiver Target Name");
+                quest.QuestGiverTargetName = packet.ReadCString("QuestGiver Target Name");
                 quest.QuestTurnTextWindow = packet.ReadCString("QuestTurn Text Window");
                 quest.QuestTurnTargetName = packet.ReadCString("QuestTurn Target Name");
 

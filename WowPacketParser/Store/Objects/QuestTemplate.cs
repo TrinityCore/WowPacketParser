@@ -20,7 +20,7 @@ namespace WowPacketParser.Store.Objects
 
         public int[] RequiredFactionValue;
 
-        public uint NextQuestId;
+        public uint NextQuestIdChain;
 
         public uint RewardXPId;
 
@@ -40,7 +40,7 @@ namespace WowPacketParser.Store.Objects
 
         public QuestFlags Flags;
 
-        public uint TargetMark;
+        public uint MinimapTargetMark;
 
         public uint RewardTitleId;
 
@@ -49,8 +49,6 @@ namespace WowPacketParser.Store.Objects
         public uint RewardTalents;
 
         public uint RewardArenaPoints;
-
-        public int RewardUnknown;
 
         public uint RewardSkillId;
 
@@ -72,9 +70,9 @@ namespace WowPacketParser.Store.Objects
 
         public uint[] RewardFactionId;
 
-        public int[] RewardReputationId;
+        public int[] RewardFactionValueId;
 
-        public uint[] RewardReputationIdOverride; // ?
+        public uint[] RewardFactionValueIdOverride; // ?
 
         public uint PointMapId;
 
@@ -92,7 +90,7 @@ namespace WowPacketParser.Store.Objects
 
         public string EndText;
 
-        public string ReturnText;
+        public string CompletedText;
 
         public int[] RequiredNpcOrGo;
 
@@ -120,7 +118,7 @@ namespace WowPacketParser.Store.Objects
 
         public string QuestGiverTextWindow;
 
-        public string QuestGiverTextName;
+        public string QuestGiverTargetName;
 
         public string QuestTurnTextWindow;
 

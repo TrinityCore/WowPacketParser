@@ -21,48 +21,31 @@ namespace WowPacketParser.Store.SQL
 
             var sqlQuery = new StringBuilder(String.Empty);
 
-            // Not TDB structure
             const string tableName = "quest_template";
             const string primaryKey = "Id";
             string[] tableStructure = {
                                           "Id", "Method", "Level", "MinLevel", "ZoneOrSort", "Type", "SuggestedPlayers",
-                                          "RequiredFactionId1", "RequiredFactionId2", "RequiredFactionValue1",
-                                          "RequiredFactionValue2", "NextQuestId", "RewardXPId", "RewardOrRequiredMoney",
-                                          "RewardMoneyMaxLevel", "RewardSpell", "RewardSpellCast", "RewardHonor",
-                                          "RewardHonorMultiplier", "SourceItemId", "Flags", "RewardTitleId",
-                                          "RequiredPlayerKills", "RewardTalents", "RewardArenaPoints", "RewardSkillId",
-                                          "RewardSkillPoints", "RewardReputationMask", "QuestGiverPortrait",
-                                          "QuestTurnInPortrait", "RewardItemId1", "RewardItemId2",
-                                          "RewardItemId3", "RewardItemId4", "RewardItemCount1", "RewardItemCount2",
-                                          "RewardItemCount3", "RewardItemCount4", "RewardChoiceItemId1",
-                                          "RewardChoiceItemId2", "RewardChoiceItemId3", "RewardChoiceItemId4",
-                                          "RewardChoiceItemId5", "RewardChoiceItemId6", "RewardChoiceItemCount1",
-                                          "RewardChoiceItemCount2", "RewardChoiceItemCount3", "RewardChoiceItemCount4",
-                                          "RewardChoiceItemCount5", "RewardChoiceItemCount6", "RewardFactionId1",
-                                          "RewardFactionId2", "RewardFactionId3", "RewardFactionId4", "RewardFactionId5",
-                                          "RewardReputationId1", "RewardReputationId2", "RewardReputationId3",
-                                          "RewardReputationId4", "RewardReputationId5", "RewardReputationIdOverride1",
-                                          "RewardReputationIdOverride2", "RewardReputationIdOverride3",
-                                          "RewardReputationIdOverride4", "RewardReputationIdOverride5", "PointMapId",
-                                          "PointX", "PointY", "PointOption", "Title", "Objectives", "Details", "EndText",
-                                          "ReturnText", "RequiredNpcOrGo1", "RequiredNpcOrGo2", "RequiredNpcOrGo3",
-                                          "RequiredNpcOrGo4", "RequiredNpcOrGoCount1", "RequiredNpcOrGoCount2",
-                                          "RequiredNpcOrGoCount3", "RequiredNpcOrGoCount4", "RequiredSourceItemId1",
-                                          "RequiredSourceItemId2", "RequiredSourceItemId3", "RequiredSourceItemId4",
-                                          "RequiredSourceItemCount1", "RequiredSourceItemCount2",
-                                          "RequiredSourceItemCount3", "RequiredSourceItemCount4", "RequiredItemId1",
-                                          "RequiredItemId2", "RequiredItemId3", "RequiredItemId4", "RequiredItemId5",
-                                          "RequiredItemId6", "RequiredItemCount1", "RequiredItemCount2",
-                                          "RequiredItemCount3", "RequiredItemCount4", "RequiredItemCount5",
-                                          "RequiredItemCount6", "RequiredSpell", "ObjectiveText1", "ObjectiveText2",
-                                          "ObjectiveText3", "ObjectiveText4", "RewardCurrencyId1", "RewardCurrencyId2",
-                                          "RewardCurrencyId3", "RewardCurrencyId4", "RewardCurrencyCount1",
-                                          "RewardCurrencyCount2", "RewardCurrencyCount3", "RewardCurrencyCount4",
-                                          "RequiredCurrencyId1", "RequiredCurrencyId2", "RequiredCurrencyId3",
-                                          "RequiredCurrencyId4", "RequiredCurrencyCount1", "RequiredCurrencyCount2",
-                                          "RequiredCurrencyCount3", "RequiredCurrencyCount4", "QuestGiverTextWindow",
-                                          "QuestGiverTextName", "QuestTurnTextWindow", "QuestTurnTargetName",
-                                          "SoundAccept", "SoundTurnIn"
+                                          "RequiredFactionId1", "RequiredFactionId2", "RequiredFactionValue1", "RequiredFactionValue2",
+                                          "NextQuestIdChain", "RewardXPId", "RewardOrRequiredMoney", "RewardMoneyMaxLevel", "RewardSpell",
+                                          "RewardSpellCast", "RewardHonor", "RewardHonorMultiplier", "SourceItemId", "Flags", "MinimapTargetMark",
+                                          "RewardTitleId", "RequiredPlayerKills", "RewardTalents", "RewardArenaPoints", "RewardSkillId", "RewardSkillPoints",
+                                          "RewardReputationMask", "QuestGiverPortrait", "QuestTurnInPortrait", "RewardItemId1", "RewardItemId2", "RewardItemId3",
+                                          "RewardItemId4", "RewardItemCount1", "RewardItemCount2", "RewardItemCount3", "RewardItemCount4", "RewardChoiceItemId1", 
+                                          "RewardChoiceItemId2", "RewardChoiceItemId3", "RewardChoiceItemId4", "RewardChoiceItemId5", "RewardChoiceItemId6", 
+                                          "RewardChoiceItemCount1", "RewardChoiceItemCount2", "RewardChoiceItemCount3", "RewardChoiceItemCount4", "RewardChoiceItemCount5", 
+                                          "RewardChoiceItemCount6", "RewardFactionId1", "RewardFactionId2", "RewardFactionId3", "RewardFactionId4", "RewardFactionId5", 
+                                          "RewardFactionValueId1", "RewardFactionValueId2", "RewardFactionValueId3", "RewardFactionValueId4", "RewardFactionValueId5", 
+                                          "RewardFactionValueIdOverride1", "RewardFactionValueIdOverride2", "RewardFactionValueIdOverride3", "RewardFactionValueIdOverride4", 
+                                          "RewardFactionValueIdOverride5", "PointMapId", "PointX", "PointY", "PointOption", "Title", "Objectives", "Details", "EndText",
+                                          "CompletedText", "RequiredNpcOrGo1", "RequiredNpcOrGo2", "RequiredNpcOrGo3", "RequiredNpcOrGo4", "RequiredNpcOrGoCount1", "RequiredNpcOrGoCount2", 
+                                          "RequiredNpcOrGoCount3", "RequiredNpcOrGoCount4", "RequiredSourceItemId1", "RequiredSourceItemId2", "RequiredSourceItemId3", 
+                                          "RequiredSourceItemId4", "RequiredSourceItemCount1", "RequiredSourceItemCount2", "RequiredSourceItemCount3", "RequiredSourceItemCount4", 
+                                          "RequiredItemId1", "RequiredItemId2", "RequiredItemId3", "RequiredItemId4", "RequiredItemId5", "RequiredItemId6", "RequiredItemCount1", 
+                                          "RequiredItemCount2", "RequiredItemCount3", "RequiredItemCount4", "RequiredItemCount5", "RequiredItemCount6", "RequiredSpell", "ObjectiveText1", 
+                                          "ObjectiveText2", "ObjectiveText3", "ObjectiveText4", "RewardCurrencyId1", "RewardCurrencyId2", "RewardCurrencyId3", "RewardCurrencyId4", 
+                                          "RewardCurrencyCount1", "RewardCurrencyCount2", "RewardCurrencyCount3", "RewardCurrencyCount4", "RequiredCurrencyId1", "RequiredCurrencyId2", 
+                                          "RequiredCurrencyId3", "RequiredCurrencyId4", "RequiredCurrencyCount1", "RequiredCurrencyCount2", "RequiredCurrencyCount3", "RequiredCurrencyCount4", 
+                                          "QuestGiverTextWindow", "QuestGiverTargetName", "QuestTurnTextWindow", "QuestTurnTargetName", "SoundAccept", "SoundTurnIn"
                                       };
 
             // Delete
@@ -90,7 +73,7 @@ namespace WowPacketParser.Store.SQL
                     sqlQuery.Append(n + cs);
 
                 sqlQuery.Append(
-                    quest.Value.NextQuestId + cs +
+                    quest.Value.NextQuestIdChain + cs +
                     quest.Value.RewardXPId + cs +
                     quest.Value.RewardOrRequiredMoney + cs +
                     quest.Value.RewardMoneyMaxLevel + cs +
@@ -100,11 +83,11 @@ namespace WowPacketParser.Store.SQL
                     quest.Value.RewardHonorMultiplier + cs +
                     quest.Value.SourceItemId + cs +
                     SQLUtil.Hexify((int)quest.Value.Flags) + cs +
+                    quest.Value.MinimapTargetMark + cs +
                     quest.Value.RewardTitleId + cs +
                     quest.Value.RequiredPlayerKills + cs +
                     quest.Value.RewardTalents + cs +
                     quest.Value.RewardArenaPoints + cs +
-                    // quest.Value.RewardUnknown + cs + // Always 0
                     quest.Value.RewardSkillId + cs +
                     quest.Value.RewardSkillPoints + cs +
                     quest.Value.RewardReputationMask + cs +
@@ -121,9 +104,9 @@ namespace WowPacketParser.Store.SQL
                     sqlQuery.Append(n + cs);
                 foreach (var n in quest.Value.RewardFactionId)
                     sqlQuery.Append(n + cs);
-                foreach (var n in quest.Value.RewardReputationId)
+                foreach (var n in quest.Value.RewardFactionValueId)
                     sqlQuery.Append(n + cs);
-                foreach (var n in quest.Value.RewardReputationIdOverride)
+                foreach (var n in quest.Value.RewardFactionValueIdOverride)
                     sqlQuery.Append(n + cs);
 
                 sqlQuery.Append(
@@ -135,7 +118,7 @@ namespace WowPacketParser.Store.SQL
                     SQLUtil.Stringify(quest.Value.Objectives) + cs +
                     SQLUtil.Stringify(quest.Value.Details) + cs +
                     SQLUtil.Stringify(quest.Value.EndText) + cs +
-                    SQLUtil.Stringify(quest.Value.ReturnText) + cs);
+                    SQLUtil.Stringify(quest.Value.CompletedText) + cs);
 
                 foreach (var n in quest.Value.RequiredNpcOrGo)
                     sqlQuery.Append(n + cs);
@@ -165,7 +148,7 @@ namespace WowPacketParser.Store.SQL
 
                 sqlQuery.Append(
                     SQLUtil.Stringify(quest.Value.QuestGiverTextWindow) + cs +
-                    SQLUtil.Stringify(quest.Value.QuestGiverTextName) + cs +
+                    SQLUtil.Stringify(quest.Value.QuestGiverTargetName) + cs +
                     SQLUtil.Stringify(quest.Value.QuestTurnTextWindow) + cs +
                     SQLUtil.Stringify(quest.Value.QuestTurnTargetName) + cs +
                     quest.Value.SoundAccept + cs +
