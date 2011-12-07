@@ -25,8 +25,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unknown 1");
 
             // Following int8,int8,int16 is sent like int32
-            var reactState = packet.ReadByte("React state"); // 1
-            var commandState = packet.ReadByte("Command state"); // 1
+            /*var reactState = */ packet.ReadByte("React state"); // 1
+            /*var commandState = */ packet.ReadByte("Command state"); // 1
             packet.ReadUInt16("Unknown 2"); // pets -> 0, vehicles -> 0x800 (2048)
 
             for (var i = 1; i <= (int)MiscConstants.CreatureMaxSpells + 2; i++) // Read pet/vehicle spell ids
