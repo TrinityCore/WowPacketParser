@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Runtime.InteropServices;
@@ -10,6 +11,20 @@ namespace WowPacketParser.Misc
     public sealed partial class Packet
     {
         public static bool debug = Settings.GetBoolean("DebugReads");
+
+        public BitArray ReadBitArray(int bits)
+        {
+            BitArray value = new BitArray(bits);
+
+            for (int i = bits - 1; i >= 0; --i)
+            {
+                if (ReadBit())
+                    value[i] = true;
+                else
+                    value[i] = false;
+            }
+            return value;
+        }
 
         public Guid ReadGuid()
         {
@@ -90,6 +105,23 @@ namespace WowPacketParser.Misc
                 w = 0.0f;
 
             return new Quaternion(x, y, z, w);
+        }
+
+        public string ReadWoWString(string name, int len)
+        {
+            Encoding encoding = Encoding.UTF8;
+            var bytes = ReadBytes(len);
+            string s = encoding.GetString(bytes);
+            Writer.WriteLine("{0}: {1}", name, s);
+            return s;
+        }
+
+        public string ReadWoWString(int len)
+        {
+            Encoding encoding = Encoding.UTF8;
+            var bytes = ReadBytes(len);
+            string s = encoding.GetString(bytes);
+            return s;
         }
 
         public string ReadCString(Encoding encoding)
@@ -268,6 +300,13 @@ namespace WowPacketParser.Misc
         public Guid ReadGuid(string name, params int[] values)
         {
             Guid val = ReadGuid();
+            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            return val;
+        }
+
+        public string ReadWoWString(string name, int len, params int[] values)
+        {
+            string val = ReadWoWString(len);
             Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
             return val;
         }

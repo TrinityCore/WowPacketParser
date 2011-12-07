@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -210,6 +211,16 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        public static BitArray ReverseBitArray(BitArray bits)
+        {
+            BitArray rev = new BitArray(bits.Length, false);
+            for (int i = 0; i < bits.Length; i++)
+            {
+                rev[i] = bits[bits.Length - i - 1];
+            }
+            return rev;
+        }
+
         [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleCharEnum422(Packet packet)
         {
@@ -327,10 +338,128 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V4_3_0_15005)]
+        public static void HandleCharEnum430(Packet packet)
+        {
+            uint count = 0;
+
+            BitArray bits = packet.ReadBitArray(17);
+            for (int i = 0; i < bits.Length; i++)
+                if(bits[i])
+                    count |= (uint)((1 << (i)));
+
+            packet.Writer.WriteLine("Count: " + count);
+
+            var PlrGuidBits = new bool[count, 8];
+            var GuildGuidBits = new bool[count, 8];
+            var FirstLoginBits = new bool[count];
+            var NameLenghts = new uint[count];
+
+            for (uint c = 0; c < count; c++)
+            {
+                bits = ReverseBitArray(packet.ReadBitArray(24));
+
+                GuildGuidBits[c, 2] = bits[0];
+                PlrGuidBits[c, 2] = bits[1];
+                PlrGuidBits[c, 6] = bits[2];
+                PlrGuidBits[c, 5] = bits[3];
+                PlrGuidBits[c, 4] = bits[4];
+                GuildGuidBits[c, 4] = bits[5];
+                GuildGuidBits[c, 3] = bits[6];
+                GuildGuidBits[c, 7] = bits[7];
+
+                for (int i = 0; i < 7; i++) 
+                    if (bits[14-i])
+                        NameLenghts[c] |= (uint)((1 << (i)));
+
+                //packet.Writer.WriteLine("[{0}] Name Lenght: {1}", c, NameLenghts[c]);
+
+                GuildGuidBits[c, 0] = bits[15];
+                PlrGuidBits[c, 0] = bits[16];
+                PlrGuidBits[c, 3] = bits[17];
+                PlrGuidBits[c, 1] = bits[18];
+                FirstLoginBits[c] = bits[19];
+                GuildGuidBits[c, 5] = bits[20];
+                PlrGuidBits[c, 7] = bits[21];
+                GuildGuidBits[c, 6] = bits[22];
+                GuildGuidBits[c, 1] = bits[23];
+            }
+
+            uint UnkCounter = packet.ReadBits("Unk Counter", 23);
+
+            packet.ReadBit();//no idea, not used in client
+            
+            for (int c = 0; c < count; c++)
+            {
+                var low = new byte[8];
+                var guild = new byte[8];
+
+                for (int itm = 0; itm < 19; itm++)
+                {
+                    packet.ReadEnum<InventoryType>("Item InventoryType", TypeCode.Byte, c, itm);
+                    packet.ReadInt32("Item DisplayID", c, itm);
+                    packet.ReadInt32("Item EnchantID", c, itm);
+                }
+
+                for (int itm = 0; itm < 4; itm++)
+                {
+                    packet.ReadEnum<InventoryType>("Bag InventoryType", TypeCode.Byte, c, itm);
+                    packet.ReadInt32("Bag DisplayID", c, itm);
+                    packet.ReadInt32("Bag EnchantID", c, itm);
+                }
+
+                if (GuildGuidBits[c, 0]) guild[0] = (byte)(packet.ReadByte() ^ 1);
+                if (GuildGuidBits[c, 1]) guild[1] = (byte)(packet.ReadByte() ^ 1);
+                packet.ReadByte("Face", c);
+                packet.ReadInt32("Pet Display ID", c);
+                if (GuildGuidBits[c, 7]) guild[7] = (byte)(packet.ReadByte() ^ 1);
+                packet.ReadEnum<Gender>("Gender", TypeCode.Byte, c);
+                packet.ReadByte("Level", c);
+                packet.ReadInt32("Pet Level", c);
+                packet.ReadInt32("ZoneID", c);
+                packet.ReadSingle("Position Y", c);
+                packet.ReadInt32("Pet Family", c);
+                packet.ReadByte("Hair Style", c);
+                if (PlrGuidBits[c, 1]) low[1] = (byte)(packet.ReadByte() ^ 1);
+                packet.ReadWoWString("Name", (int)(NameLenghts[(int)c]), c);
+                if (PlrGuidBits[c, 0]) low[0] = (byte)(packet.ReadByte() ^ 1);
+                packet.ReadEnum<Race>("Race", TypeCode.Byte, c);
+                packet.ReadByte("List Order", c);
+                if (PlrGuidBits[c, 7]) low[7] = (byte)(packet.ReadByte() ^ 1);
+                packet.ReadSingle("Position Z", c);
+                packet.ReadInt32("Map", c);
+                if (GuildGuidBits[c, 4]) guild[4] = (byte)(packet.ReadByte() ^ 1);
+                packet.ReadByte("Hair Color", c);
+                if (PlrGuidBits[c, 3]) low[3] = (byte)(packet.ReadByte() ^ 1);
+                packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
+                packet.ReadByte("Skin", c);
+                if (PlrGuidBits[c, 4]) low[4] = (byte)(packet.ReadByte() ^ 1);
+                if (PlrGuidBits[c, 5]) low[5] = (byte)(packet.ReadByte() ^ 1);
+                if (GuildGuidBits[c, 5]) guild[5] = (byte)(packet.ReadByte() ^ 1);
+                packet.ReadEnum<CustomizationFlag>("CustomizationFlag", TypeCode.UInt32, c);
+                packet.ReadSingle("Position X", c);
+                packet.ReadByte("Facial Hair", c);
+                if (PlrGuidBits[c, 6]) low[6] = (byte)(packet.ReadByte() ^ 1);
+                if (GuildGuidBits[c, 3]) guild[3] = (byte)(packet.ReadByte() ^ 1);
+                if (PlrGuidBits[c, 2]) low[2] = (byte)(packet.ReadByte() ^ 1);
+                packet.ReadEnum<Class>("Class", TypeCode.Byte, c);
+                if (GuildGuidBits[c, 6]) guild[6] = (byte)(packet.ReadByte() ^ 1);
+                if (GuildGuidBits[c, 2]) guild[2] = (byte)(packet.ReadByte() ^ 1);
+
+                packet.Writer.WriteLine("[{0}] Character GUID: {1}", c, new Guid(BitConverter.ToUInt64(low, 0)));
+                packet.Writer.WriteLine("[{0}] Guild GUID: {1}", c, new Guid(BitConverter.ToUInt64(guild, 0)));
+            }
+            for (int c = 0; c < UnkCounter; c++)
+                packet.Writer.WriteLine("Unk Loop: {0}, {1}", packet.ReadUInt32(), packet.ReadByte());
+        }
+
         [Parser(Opcode.SMSG_COMPRESSED_CHAR_ENUM)]
         public static void HandleCompressedCharEnum(Packet packet)
         {
-            HandleCharEnum422(packet.Inflate(packet.ReadInt32()));
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                HandleCharEnum430(packet.Inflate(packet.ReadInt32()));
+            else
+                HandleCharEnum422(packet.Inflate(packet.ReadInt32()));
         }
 
         [Parser(Opcode.SMSG_PLAYER_VEHICLE_DATA)]
