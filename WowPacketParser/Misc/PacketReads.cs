@@ -443,7 +443,7 @@ namespace WowPacketParser.Misc
             for (int i = bits - 1; i >= 0; --i)
             {
                 if (ReadBit())
-                    value |= (uint)((1 << (_bitpos)));
+                    value |= (uint)(1 << i);
             }
 
             return value;
