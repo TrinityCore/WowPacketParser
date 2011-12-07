@@ -12,20 +12,6 @@ namespace WowPacketParser.Misc
     {
         public static bool debug = Settings.GetBoolean("DebugReads");
 
-        public BitArray ReadBitArray(int bits)
-        {
-            BitArray value = new BitArray(bits);
-
-            for (int i = bits - 1; i >= 0; --i)
-            {
-                if (ReadBit())
-                    value[i] = true;
-                else
-                    value[i] = false;
-            }
-            return value;
-        }
-
         public Guid ReadGuid()
         {
             return new Guid(ReadUInt64());
@@ -105,15 +91,6 @@ namespace WowPacketParser.Misc
                 w = 0.0f;
 
             return new Quaternion(x, y, z, w);
-        }
-
-        public string ReadWoWString(string name, int len)
-        {
-            Encoding encoding = Encoding.UTF8;
-            var bytes = ReadBytes(len);
-            string s = encoding.GetString(bytes);
-            Writer.WriteLine("{0}: {1}", name, s);
-            return s;
         }
 
         public string ReadWoWString(int len)
@@ -478,12 +455,9 @@ namespace WowPacketParser.Misc
         public uint ReadBits(int bits)
         {
             uint value = 0;
-
-            for (int i = bits - 1; i >= 0; --i)
-            {
+            for (var i = bits - 1; i >= 0; --i)
                 if (ReadBit())
                     value |= (uint)(1 << i);
-            }
 
             return value;
         }
