@@ -179,12 +179,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Cast Count");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
 
-            if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
+            if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
                 packet.ReadInt32("Glyph Index");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
-                packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
-
+            packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
             ReadSpellCastTargets(ref packet);
         }
 
@@ -336,8 +334,8 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     if (flags.HasAnyFlag(CastFlag.Immunity))
                     {
-                        packet.ReadInt32("Unk Int32 4");
-                        packet.ReadInt32("Unk Int32 5");
+                        packet.ReadInt32("SchoolMask");
+                        packet.ReadInt32("Unk Flag");
                     }
                 }
             }
