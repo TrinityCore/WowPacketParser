@@ -577,6 +577,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.SMSG_GUILD_BANK_QUERY_RESULTS, 19496},
             {Opcode.SMSG_GUILD_CHANGE_NAME_RESULT, 9244},
             {Opcode.SMSG_GUILD_COMMAND_RESULT, 28314},
+            {Opcode.SMSG_GUILD_EVENT, 23716},
             {Opcode.SMSG_GUILD_FLAGGED_FOR_RENAME, 1050},
             {Opcode.SMSG_GUILD_INVITE, 9896},
             {Opcode.SMSG_GUILD_MEMBER_DAILY_RESET, 9278},
