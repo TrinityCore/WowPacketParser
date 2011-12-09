@@ -491,6 +491,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.SMSG_COMMENTATOR_PLAYER_INFO, 4768},
             {Opcode.SMSG_COMMENTATOR_STATE_CHANGED, 8230},
             {Opcode.SMSG_COMPLAIN_RESULT, 1154},
+            {Opcode.SMSG_COMPRESSED_MULTIPLE_PACKETS, 34595},
             {Opcode.SMSG_CONTACT_LIST, 17958},
             {Opcode.SMSG_CONVERT_RUNE, 7712},
             {Opcode.SMSG_COOLDOWN_CHEAT, 28832},
@@ -657,6 +658,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.SMSG_MOUNTSPECIAL_ANIM, 31398},
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 17420},
             {Opcode.SMSG_MOVE_UNSET_CAN_FLY, 17946},
+            {Opcode.SMSG_MULTIPLE_PACKETS, 1827},
             {Opcode.SMSG_NEW_TAXI_PATH, 6694},
             {Opcode.SMSG_NEW_WORLD, 25772},
             {Opcode.SMSG_NOTIFICATION, 19108},
@@ -837,10 +839,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.SMSG_XP_GAIN_ABORTED, 11276},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 2564},
 
-
             // Tests
-            {Opcode.SMSG_COMPRESSED_MULTIPLE_PACKETS, 34595},
-            {Opcode.SMSG_MULTIPLE_PACKETS, 1827}
         };
     }
 }

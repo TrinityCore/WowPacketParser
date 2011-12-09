@@ -483,7 +483,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSetProficency(Packet packet)
         {
             packet.ReadEnum<ItemClass>("Class", TypeCode.Byte);
-            packet.ReadInt32("Mask");
+            packet.ReadEnum<UnknownFlags>("Mask",TypeCode.UInt32);
         }
 
         [Parser(Opcode.SMSG_ITEM_COOLDOWN)]

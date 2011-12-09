@@ -51,32 +51,28 @@ namespace WowPacketParser.Parsing.Parsers
         {
             for (var i = 0; i < _addonCount; i++)
             {
-                packet.ReadByte("Addon State");
+                packet.ReadByte("Addon State", i);
 
-                var sendCrc = packet.ReadBoolean("Use CRC");
+                var sendCrc = packet.ReadBoolean("Use CRC", i);
 
                 if (sendCrc)
                 {
-                    var usePublicKey = packet.ReadBoolean("Use Public Key");
+                    var usePublicKey = packet.ReadBoolean("Use Public Key", i);
 
                     if (usePublicKey)
                     {
                         var pubKey = packet.ReadChars(256);
-                        packet.Writer.Write("Public Key: ");
+                        packet.Writer.Write("[{i}] Public Key: ", i);
 
                         foreach (var t in pubKey)
                             packet.Writer.Write(t);
                     }
 
-                    packet.ReadInt32("Unk Int32");
+                    packet.ReadInt32("Unk Int32", i);
                 }
 
-                var unkByte2 = packet.ReadBoolean("Use URL File");
-
-                if (!unkByte2)
-                    continue;
-
-                packet.ReadCString("Addon URL File");
+                if (packet.ReadBoolean("Use URL File", i))
+                    packet.ReadCString("Addon URL File", i);
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
@@ -85,18 +81,18 @@ namespace WowPacketParser.Parsing.Parsers
 
                 for (var i = 0; i < bannedCount; i++)
                 {
-                    packet.ReadInt32("ID");
+                    packet.ReadInt32("ID", i);
 
                     var unkStr2 = packet.ReadBytes(16);
-                    packet.Writer.WriteLine("Unk Hash 1: " + Utilities.ByteArrayToHexString(unkStr2));
+                    packet.Writer.WriteLine("[{0}] Unk Hash 1: {1}", i, Utilities.ByteArrayToHexString(unkStr2));
 
                     var unkStr3 = packet.ReadBytes(16);
-                    packet.Writer.WriteLine("Unk Hash 2: " + Utilities.ByteArrayToHexString(unkStr3));
+                    packet.Writer.WriteLine("[{0}] Unk Hash 2: {1}", i, Utilities.ByteArrayToHexString(unkStr3));
 
-                    packet.ReadInt32("Unk Int32 3");
+                    packet.ReadInt32("Unk Int32 3", i);
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3a_11723))
-                        packet.ReadInt32("Unk Int32 4");
+                        packet.ReadInt32("Unk Int32 4", i);
                 }
             }
         }

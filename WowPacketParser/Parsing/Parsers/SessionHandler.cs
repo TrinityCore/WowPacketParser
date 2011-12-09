@@ -268,16 +268,11 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleRedirectClient(Packet packet)
         {
             var ip = packet.ReadIPAddress();
-            packet.Writer.WriteLine("IP Address: " + ip);
-
-            var port = packet.ReadUInt16();
-            packet.Writer.WriteLine("Port: " + port);
-
-            var unk = packet.ReadInt32();
-            packet.Writer.WriteLine("Token: " + unk);
-
+            packet.Writer.WriteLine("IP Address: {0}", ip);
+            packet.ReadUInt16("Port");
+            packet.ReadInt32("Token");
             var hash = packet.ReadBytes(20);
-            packet.Writer.WriteLine("Address SHA-1 Hash: " + Utilities.ByteArrayToHexString(hash));
+            packet.Writer.WriteLine("Address SHA-1 Hash: {0}", Utilities.ByteArrayToHexString(hash));
         }
 
         [Parser(Opcode.CMSG_REDIRECTION_FAILED)]

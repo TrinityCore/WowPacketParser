@@ -1538,9 +1538,9 @@ namespace WowPacketParser.Enums
         SMSG_LFGUILD_RECRUIT_DATA,
         SMSG_COMPRESSED_CHAR_ENUM,
         SMSG_COMPRESSED_GUILD_ROSTER,
+        SMSG_COMPRESSED_MULTIPLE_PACKETS,
 
         // Tests
-        SMSG_COMPRESSED_MULTIPLE_PACKETS,
         TEST_422_41036,
 
         // SF

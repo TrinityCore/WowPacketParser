@@ -78,6 +78,8 @@ namespace WowPacketParser.Parsing
                 packet.Direction, Opcodes.GetOpcodeName(opcode), opcode.ToString("X4"),
                 packet.GetLength(), packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
                 packet.Number, isMultiple ? " (part of another packet)" : "");
+            if (opcode == 0)
+                return;
 
             if (headerOnly)
             {
