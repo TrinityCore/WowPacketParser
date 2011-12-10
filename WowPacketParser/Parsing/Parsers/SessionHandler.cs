@@ -46,20 +46,20 @@ namespace WowPacketParser.Parsing.Parsers
         {
             // Do not overwrite version after Handler was initialized
             packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int32);
- 
+
             packet.ReadInt32("Unk Int32 1");
             packet.ReadCString("Account");
- 
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadInt32("Unk Int32 2");
- 
+
             packet.ReadInt32("Client Seed");
- 
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
                 packet.ReadInt64("Unk Int64");
- 
+
             packet.Writer.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(packet.ReadBytes(20)));
- 
+
             AddonHandler.ReadClientAddonsList(ref packet);
         }
 
@@ -207,37 +207,41 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePlayerLogin422(Packet packet)
         {
             var bits = new bool[8];
-            for (int c = 7; c >= 0; c--)
-                bits[c] = packet.ReadBit();
+            for (var i = 0; i < 8; ++i)
+                bits[i] = packet.ReadBit();
 
             var bytes = new byte[8];
+            if (bits[6]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[0]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[4]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[1]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[2]) bytes[7] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[5]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[7]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[3]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
 
-            // Data - Real
-            // BC 04 03 03 A4 BD = 02 00 00 00 02 A5 BC 05
-            // BC F6 05 04 1E 2F = 05 00 00 00 04 1F 2E F7
-            // (BC = 10111100)
-
-            // 3C 05 04 20 9E = 05 00 00 00 04 21 9F 00
-            // (3C = 00111100)
-
-            if (bits[7]) bytes[0] = (byte)(packet.ReadByte() ^ 1); // 1
-            if (bits[6]) bytes[4] = (byte)(packet.ReadByte() ^ 1); // NOTCONF
-            if (bits[5]) bytes[3] = (byte)(packet.ReadByte() ^ 1); // 2
-            if (bits[4]) bytes[7] = (byte)(packet.ReadByte() ^ 1); // 3
-            if (bits[3]) bytes[2] = (byte)(packet.ReadByte() ^ 1); // 4
-            if (bits[2]) bytes[1] = (byte)(packet.ReadByte() ^ 1); // 5
-            if (bits[1]) bytes[5] = (byte)(packet.ReadByte() ^ 1); // NOTCONF
-            if (bits[0]) bytes[6] = (byte)(packet.ReadByte() ^ 1); // NOTCONF
-            
             packet.Writer.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(bytes, 0)));
         }
 
-        /*
         [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_0_15005)]
         public static void HandlePlayerLogin430(Packet packet)
         {
+            var bits = new bool[8];
+            for (var i = 0; i < 8; ++i)
+                bits[i] = packet.ReadBit();
+
+            var bytes = new byte[8];
+            if (bits[3]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[7]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[4]) bytes[7] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[6]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[5]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[1]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[2]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[0]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
+
+            packet.Writer.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(bytes, 0)));
         }
-        */
 
         [Parser(Opcode.SMSG_CHARACTER_LOGIN_FAILED)]
         public static void HandleLoginFailed(Packet packet)
