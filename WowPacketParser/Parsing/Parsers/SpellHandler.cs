@@ -2,7 +2,6 @@ using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
-using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using Guid = WowPacketParser.Misc.Guid;
 
@@ -367,67 +366,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadVector3("Position");
         }
 
-        [Parser(Opcode.SMSG_PERIODICAURALOG)]
-        public static void HandleAuraCastLog(Packet packet)
-        {
-            packet.ReadPackedGuid("Target GUID");
-            packet.ReadPackedGuid("Caster GUID");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadUInt32("Count");
-
-            var aura = packet.ReadEnum<AuraType>("Aura Type", TypeCode.UInt32);
-            switch (aura)
-            {
-                case AuraType.PeriodicDamage:
-                case AuraType.PeriodicDamagePercent:
-                {
-                    packet.ReadUInt32("Damage");
-
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
-                        packet.ReadUInt32("Over damage");
-
-                    packet.ReadUInt32("Spell Proto");
-                    packet.ReadUInt32("Absorb");
-                    packet.ReadUInt32("Resist");
-
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
-                        packet.ReadByte("Critical");
-
-                    break;
-                }
-                case AuraType.PeriodicHeal:
-                case AuraType.ObsModHealth:
-                {
-                    packet.ReadUInt32("Damage");
-
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
-                        packet.ReadUInt32("Over damage");
-
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685)) // no idea when this was added exactly
-                        packet.ReadUInt32("Absorb");
-
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
-                        packet.ReadByte("Critical");
-
-                    break;
-                }
-                case AuraType.ObsModPower:
-                case AuraType.PeriodicEnergize:
-                {
-                    packet.ReadEnum<PowerType>("Power type", TypeCode.Int32);
-                    packet.ReadUInt32("Amount");
-                    break;
-                }
-                case AuraType.PeriodicManaLeech:
-                {
-                    packet.ReadEnum<PowerType>("Power type", TypeCode.Int32);
-                    packet.ReadUInt32("Amount");
-                    packet.ReadSingle("Gain multiplier");
-                    break;
-                }
-            }
-        }
-
         [Parser(Opcode.SMSG_REMOVED_SPELL)]
         public static void HandleRemovedSpell(Packet packet)
         {
@@ -501,61 +439,12 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_SPELLNONMELEEDAMAGELOG)]
-        public static void HandleSpellNonMeleeDmgLog(Packet packet)
-        {
-            packet.ReadPackedGuid("Target GUID");
-            packet.ReadPackedGuid("Caster GUID");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadUInt32("Damage");
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183))
-                packet.ReadUInt32("Overkill");
-
-            packet.ReadByte("SchoolMask");
-            packet.ReadUInt32("Absorb");
-            packet.ReadUInt32("Resist");
-            packet.ReadBoolean("Show spellname in log");
-            packet.ReadByte("Unk byte");
-            packet.ReadUInt32("Blocked");
-            packet.ReadEnum<SpellHitType>("HitType", TypeCode.Int32);
-            packet.ReadBoolean("Debug output");
-        }
-
-        [Parser(Opcode.SMSG_SPELLHEALLOG)]
-        public static void HandleSpellHealLog(Packet packet)
-        {
-            packet.ReadPackedGuid("Target GUID");
-            packet.ReadPackedGuid("Caster GUID");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadUInt32("Damage");
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183))
-                packet.ReadUInt32("Overheal");
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685)) // no idea when this was added exactly
-                packet.ReadUInt32("Absorb");
-
-            packet.ReadBoolean("Critical");
-            packet.ReadBoolean("Debug output");
-        }
-
         [Parser(Opcode.SMSG_SPELLINSTAKILLLOG)]
         public static void HandleSpellInstakillLog(Packet packet)
         {
             packet.ReadGuid("Target GUID");
             packet.ReadGuid("Caster GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
-        }
-
-        [Parser(Opcode.SMSG_SPELLENERGIZELOG)]
-        public static void HandleSpellEnergizeLog(Packet packet)
-        {
-            packet.ReadPackedGuid("Target GUID");
-            packet.ReadPackedGuid("Caster GUID");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadEnum<PowerType>("Power type", TypeCode.UInt32);
-            packet.ReadUInt32("Amount");
         }
 
         [Parser(Opcode.SMSG_PROCRESIST)]
@@ -566,21 +455,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Target GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
             packet.ReadBoolean("Debug output");
-        }
-
-        [Parser(Opcode.SMSG_SPELLLOGMISS)]
-        public static void HandleSpellLogMiss(Packet packet)
-        {
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadGuid("Caster GUID");
-            packet.ReadBoolean("Unk bool");
-
-            var count = packet.ReadUInt32("Target count");
-            for (var i = 0; i < count; ++i)
-            {
-                packet.ReadGuid("Target GUID");
-                packet.ReadEnum<SpellMissType>("Miss info", TypeCode.Byte);
-            }
         }
 
         [Parser(Opcode.MSG_CHANNEL_UPDATE)]
