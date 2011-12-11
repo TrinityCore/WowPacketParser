@@ -43,17 +43,12 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     case SpellLogType422.SMSG_SPELLHEALLOG:
                     {
-                        ReadSpellHealLog(ref packet, i); // CombatLog__HandleSpellHealLog
+                        ReadSpellHealLog(ref packet, i);
                         break;
                     }
                     case SpellLogType422.SMSG_SPELLENERGIZELOG:
                     {
-                        ReadSpellEnergizeLog(ref packet, i); // CombatLog__HandleSpellLogEnergizeLog
-                        break;
-                    }
-                    case SpellLogType422.Remove3:
-                    {
-                        packet.Writer.WriteLine("CombatLog__HandleSpellRemoveLog(v10, a4, v6); - not handled");
+                        ReadSpellEnergizeLog(ref packet, i);
                         break;
                     }
                     case SpellLogType422.SMSG_PERIODICAURALOG:
@@ -78,8 +73,9 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                     case SpellLogType422.Remove1:
                     case SpellLogType422.Remove2:
+                    case SpellLogType422.Remove3:
                     {
-                        packet.Writer.WriteLine("CombatLog__HandleSpellRemoveLog(v10, a4, v6) - not handled");
+                        ReadSpellRemoveLog(ref packet, i);
                         break;
                     }
                     default:
@@ -122,6 +118,22 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSpellLogExecute(Packet packet)
         {
             ReadSpellLogExecute(ref packet);
+        }
+
+        // Unknown opcode name(s)
+        private static void ReadSpellRemoveLog(ref Packet packet, int index = -1)
+        {
+            packet.ReadPackedGuid("Target GUID", index);
+            packet.ReadPackedGuid("Caster GUID", index); // Can be 0
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell", index); // Can be 0
+            packet.ReadByte("Unknown Byte/Bool", index);
+            var count = packet.ReadInt32("Count", index);
+            
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell", index, i);
+                packet.ReadByte("Unknown Byte/Bool", index, i);
+            }
         }
 
         private static void ReadSpellLogExecute(ref Packet packet, int index = -1)
