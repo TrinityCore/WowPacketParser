@@ -107,7 +107,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePetMode(Packet packet)
         {
             packet.ReadGuid("Guid");
-            packet.ReadInt32("Unk int");
+            packet.ReadEnum<PetModeFlags>("Pet Mode Flags", TypeCode.UInt32);
         }
 
         [Parser(Opcode.SMSG_PET_ACTION_SOUND)]
@@ -117,12 +117,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Sound ID");
         }
 
-        [Parser(Opcode.SMSG_PET_DISMISS_SOUND)] // Weird name...
+        [Parser(Opcode.SMSG_PET_DISMISS_SOUND)]
         public static void HandlePetDismissSound(Packet packet)
         {
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
-            var vector = packet.ReadVector3();
-            packet.Writer.WriteLine("Position: {0}", vector);
+            packet.ReadInt32("Sound ID"); // CreatureSoundData.dbc - iRefID_soundPetDismissID
+            packet.ReadVector3("Position");
         }
 
         [Parser(Opcode.CMSG_PET_SET_ACTION)]

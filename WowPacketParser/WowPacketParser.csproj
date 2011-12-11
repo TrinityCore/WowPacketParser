@@ -150,6 +150,7 @@
     <Compile Include="Enums\ContactStatus.cs" />
     <Compile Include="Enums\BattlegroundStatus.cs" />
     <Compile Include="Enums\GuildFinder.cs" />
+    <Compile Include="Enums\PetModeFlags.cs" />
     <Compile Include="Enums\SpellModOp.cs" />
     <Compile Include="Enums\RaidInstanceResetWarning.cs" />
     <Compile Include="Enums\SniffType.cs" />
