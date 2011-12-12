@@ -118,7 +118,7 @@ namespace WowPacketParser.Parsing
                             pos, len, len - pos);
 
                         if (len < 300) // If the packet isn't "too big" and it is not full read, print its hex table
-                            packet.Writer.WriteLine(packet.AsHex());
+                            packet.AsHex();
 
                         if (!isMultiple)
                         {
@@ -146,7 +146,7 @@ namespace WowPacketParser.Parsing
             }
             else
             {
-                packet.Writer.WriteLine(packet.AsHex());
+                packet.AsHex();
                 if (!isMultiple)
                 {
                     lock (Handlers)

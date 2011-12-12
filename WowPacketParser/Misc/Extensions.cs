@@ -43,7 +43,7 @@ namespace WowPacketParser.Misc
             return dict;
         }
 
-        public static string AsHex(this Packet packet)
+        public static void AsHex(this Packet packet)
         {
             var n = Environment.NewLine;
             var hexDump = new StringBuilder();
@@ -96,7 +96,7 @@ namespace WowPacketParser.Misc
             hexDump.Append("|-------------------------------------------------|------------------" +
                            "---------------|");
 
-            return hexDump.ToString();
+            packet.Writer.WriteLine(hexDump.ToString());
         }
 
         public static ParallelQuery<TSource> SetCulture<TSource>(this ParallelQuery<TSource> source)

@@ -538,7 +538,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_INIT_CURRENCY, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleInitCurrency422(Packet packet)
         {
-            packet.Writer.WriteLine(packet.AsHex());
+            packet.AsHex();
             // FIXME Different from 4.0.6
             /*var count = packet.ReadUInt32("Count");
             for (var i = 0; i < count; ++i)

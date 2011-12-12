@@ -90,7 +90,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GUILD_ROSTER, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleGuildRoster422(Packet packet)
         {
-            packet.Writer.WriteLine(packet.AsHex()); // FIXME
+            packet.AsHex(); // FIXME
         }
 
         [Parser(Opcode.SMSG_COMPRESSED_GUILD_ROSTER)]

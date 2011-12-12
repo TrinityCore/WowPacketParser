@@ -11,22 +11,16 @@ namespace WowPacketParser.Parsing.Parsers
             // Opcode ids
             // ReSharper disable InconsistentNaming
             SMSG_SPELLHEALLOG = 56906,
-
-
             SMSG_SPELLENERGIZELOG = 55547,
-
             SMSG_SPELLLOGEXECUTE = 35543,
-
             SMSG_SPELLNONMELEEDAMAGELOG = 23759,
-
             SMSG_SPELLLOGMISS = 7423,
+            SMSG_PERIODICAURALOG = 36082,
+            // ReSharper restore InconsistentNaming
 
             Remove1 = 2275,
             Remove2 = 2282,
             Remove3 = 40543,
-
-            SMSG_PERIODICAURALOG = 36082,
-            // ReSharper restore InconsistentNaming
         }
 
         [Parser(Opcode.SMSG_COMBAT_LOG_MULTIPLE)]
