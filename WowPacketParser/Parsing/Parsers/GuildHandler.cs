@@ -240,6 +240,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<GuildEventType442>("Event Type", TypeCode.Byte);
             else
                 packet.ReadEnum<GuildEventType>("Event Type", TypeCode.Byte);
+
             var size = packet.ReadByte("Param Count");
             for (var i = 0; i < size; i++)
                 packet.ReadCString("Param", i);
@@ -511,9 +512,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Comment");
         }
 
+        [Parser(Opcode.SMSG_GUILD_DECLINE)]
+        public static void HandleGuildDecline(Packet packet)
+        {
+            packet.ReadCString("Reason");
+            packet.ReadBoolean("Auto decline");
+        }
         // Missing Opcodes
         //[Parser(Opcode.CMSG_MAELSTROM_RENAME_GUILD)]
-        //[Parser(Opcode.SMSG_GUILD_DECLINE)]
         //[Parser(Opcode.UMSG_UPDATE_GUILD)]
         //[Parser(Opcode.UMSG_DELETE_GUILD_CHARTER)]
 

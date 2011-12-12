@@ -93,7 +93,7 @@ namespace WowPacketParser.Parsing.Parsers
                 else
                     packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Cooldown Spell ID", i);
 
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                     packet.ReadInt32("Cooldown Cast Item ID");
                 else
                     packet.ReadInt16("Cooldown Cast Item ID");
