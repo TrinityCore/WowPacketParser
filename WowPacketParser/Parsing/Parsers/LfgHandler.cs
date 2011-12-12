@@ -188,7 +188,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Number of Tanks Needed");
             packet.ReadByte("Number of Healers Needed");
             packet.ReadByte("Number of Damage Dealers Needed");
-            packet.ReadInt32("Queued Time");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_5a_12340))
+                packet.ReadInt32("Queued Time");
         }
 
         [Parser(Opcode.SMSG_LFG_ROLE_CHECK_UPDATE)]
