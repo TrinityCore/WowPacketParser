@@ -341,7 +341,18 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_LOGOUT_COMPLETE, 0xCC6B},
             {Opcode.SMSG_LOGOUT_RESPONSE, 0x886A},
             {Opcode.SMSG_LOG_XPGAIN, 0x4E7E},
+            {Opcode.SMSG_LOOT_ALL_PASSED, 0x1C7A},
+            {Opcode.SMSG_LOOT_CLEAR_MONEY, 0x586E},
+            {Opcode.SMSG_LOOT_ITEM_NOTIFY, 0xD8E3},
+            {Opcode.SMSG_LOOT_MASTER_LIST, 0xDE4E},
+            {Opcode.SMSG_LOOT_MONEY_NOTIFY, 0x0EF3},
+            {Opcode.SMSG_LOOT_RELEASE_RESPONSE, 0x88FF},
+            {Opcode.SMSG_LOOT_REMOVED, 0x8E6B},
             {Opcode.SMSG_LOOT_RESPONSE, 0x0842},
+            {Opcode.SMSG_LOOT_ROLL, 0x4C4F},
+            {Opcode.SMSG_LOOT_ROLL_WON, 0x5E4B},
+            {Opcode.SMSG_LOOT_SLOT_CHANGED, 0xDCDA},
+            {Opcode.SMSG_LOOT_START_ROLL, 0xC8C2},
             {Opcode.SMSG_MESSAGECHAT, 0x5E52},
             {Opcode.SMSG_MONSTER_MOVE, 0x4C53},
             {Opcode.SMSG_MONSTER_MOVE_TRANSPORT, 0x88FB},
@@ -422,7 +433,10 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             /*
                 {Opcode.SMSG_SET_PROFICIENCY, 0x9C5F},
                 {Opcode.SMSG_LEVELUP_INFO, 0x9A73},
+                {Opcode.SMSG_COMPRESSED_UNK, 0x1381},
+                {Opcode.SMSG_COMPRESSED_UNK, 0x5C3B},
             */
+
             // Tests
             {Opcode.TEST_422_41036, 0xA04C},
         };
