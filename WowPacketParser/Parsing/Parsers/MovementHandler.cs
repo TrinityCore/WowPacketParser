@@ -229,9 +229,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (flags.HasAnyFlag(SplineFlag.Flying | SplineFlag.CatmullRom))
             {
-                packet.ReadVector3("Waypoint", 0);
-
-                for (var i = 1; i < waypoints; i++)
+                for (var i = 0; i < waypoints; i++)
                     packet.ReadVector3("Waypoint", i);
             }
             else

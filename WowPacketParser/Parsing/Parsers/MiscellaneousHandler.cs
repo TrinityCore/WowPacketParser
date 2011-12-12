@@ -376,7 +376,7 @@ namespace WowPacketParser.Parsing.Parsers
             var count = 1;
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
-                count = packet.ReadInt32("Unk int32");
+                count = packet.ReadInt32("Count");
 
             for (var i = 0; i < count; i++)
             {

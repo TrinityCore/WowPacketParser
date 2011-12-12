@@ -433,10 +433,29 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadEnum<SpellMechanics>("Mechanic", TypeCode.UInt32);
                     break;
                 case SpellCastFailureReason.EquippedItemClass:
+                case SpellCastFailureReason.EquippedItemClassMainhand:
+                case SpellCastFailureReason.EquippedItemClassOffhand:
                     packet.ReadEnum<ItemClass>("Class", TypeCode.UInt32);
                     packet.ReadUInt32("Subclass");
                     break;
+                case SpellCastFailureReason.MinSkill:
+                    packet.ReadUInt32("Skill Type"); // SkillLine.dbc
+                    packet.ReadUInt32("Skill value");
+                    break;
+                case SpellCastFailureReason.FishingTooLow:
+                    packet.ReadUInt32("Req fishing skill");
+                    break;
             }
+        }
+
+        [Parser(Opcode.SMSG_SPELL_FAILURE)]
+        [Parser(Opcode.SMSG_SPELL_FAILED_OTHER)]
+        public static void HandleSpellFailedOther(Packet packet)
+        {
+            packet.ReadPackedGuid("Guid");
+            packet.ReadByte("Cast count");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEnum<SpellCastFailureReason>("Reason", TypeCode.Byte);
         }
 
         [Parser(Opcode.SMSG_SPELLINSTAKILLLOG)]

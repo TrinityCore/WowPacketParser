@@ -148,6 +148,5 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Reset Time", i);
             }
         }
-
     }
 }
