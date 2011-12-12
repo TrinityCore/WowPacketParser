@@ -180,5 +180,17 @@ namespace WowPacketParser.Enums
         Unk175                       = 175,  // Unused (4.2.2)
         Unk176                       = 176,  // Some kind of sanctuary effect (Vanish)
         Unk177                       = 177,
+        Unk182                       = 182,
+        Unk228                       = 228,
+        Unk229                       = 229,
+        Unk230                       = 230,
+        Unk231                       = 231,
+        Unk232                       = 232,
+        Unk233                       = 233,
+        Unk237                       = 237,
+        Unk238                       = 238,
+        Unk239                       = 239,
+        Unk246                       = 246,
+        Unk247                       = 247,
     }
 }

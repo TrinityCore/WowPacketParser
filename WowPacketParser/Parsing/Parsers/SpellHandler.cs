@@ -552,15 +552,49 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER)]
         public static void HandleSetSpellModifier(Packet packet)
         {
-            packet.ReadByte("Effect");
+            packet.ReadEnum<SpellEffect>("Spell Effect", TypeCode.Byte);
             packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte);
             packet.ReadInt32("Amount");
         }
 
-        [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleSetSpellModifier422(Packet packet)
+        [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, ClientVersionBuild.V4_0_6a_13623)]
+        public static void HandleSetSpellModifierFlat406(Packet packet)
         {
-            packet.ReadByte("Effect");
+            packet.ReadUInt32("Number");
+            var count = packet.ReadUInt32("Count");
+            packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte);
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadEnum<SpellEffect>("Spell Effect", TypeCode.Byte, i);
+                packet.ReadInt32("Amount", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleSetSpellModifierFlat422(Packet packet)
+        {
+            packet.ReadEnum<SpellEffect>("Spell Effect", TypeCode.Byte);
+            packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte);
+            packet.ReadUInt32("Amount");
+        }
+
+        [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER, ClientVersionBuild.V4_0_6a_13623)]
+        public static void HandleSetSpellModifierPct406(Packet packet)
+        {
+            packet.ReadUInt32("Number");
+            var count = packet.ReadUInt32("Count");
+            packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte);
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadEnum<SpellEffect>("Spell Effect", TypeCode.Byte, i);
+                packet.ReadSingle("Amount", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleSetSpellModifierPct422(Packet packet)
+        {
+            packet.ReadEnum<SpellEffect>("Spell Effect", TypeCode.Byte);
             packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte);
             packet.ReadByte("Amount");
             packet.ReadByte("Unk");
