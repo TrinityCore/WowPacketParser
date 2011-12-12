@@ -14,7 +14,13 @@ namespace WowPacketParser.Enums.Version
         {
             var typeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", ClientVersion.GetVersionString(), fieldType);
 
-            var enumName = Enum.GetName(_assembly.GetType(typeString), updateField);
+            var newEnumType = _assembly.GetType(typeString);
+
+            // newEnumType mustn't be null to prevent Enum.GetName to crash
+            if (newEnumType == null)
+                newEnumType = _assembly.GetType(_defaultVersion + "." + fieldType);
+
+            var enumName = Enum.GetName(newEnumType, updateField);
 
             if (!String.IsNullOrEmpty(enumName))
                 return enumName;
