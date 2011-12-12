@@ -519,5 +519,34 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadUInt32("Title Id");
         }
+
+        [Parser(Opcode.SMSG_INIT_CURRENCY)]
+        public static void HandleInitCurrency(Packet packet)
+        {
+            var count = packet.ReadUInt32("Count");
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadUInt32("Week Count", i);
+                packet.ReadByte("Unk Byte", i);
+                packet.ReadUInt32("Currency ID", i);
+                packet.ReadTime("Reset Time", i);
+                packet.ReadUInt32("Week Cap", i);
+                packet.ReadInt32("Total Count", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_INIT_CURRENCY, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleInitCurrency422(Packet packet)
+        {
+            packet.Writer.WriteLine(packet.AsHex());
+            // FIXME Different from 4.0.6
+            /*var count = packet.ReadUInt32("Count");
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadUInt32("", i);
+            }
+            */
+        }
+
     }
 }
