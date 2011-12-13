@@ -115,10 +115,5 @@ namespace WowPacketParser.Misc
         {
             Thread.CurrentThread.CurrentCulture = cultureInfo;
         }
-
-        public static Int64 GetTimestamp(this DateTime value)
-        {
-            return Convert.ToInt64(value.ToString("yyyyMMddHHmmss"));
-        }
     }
 }

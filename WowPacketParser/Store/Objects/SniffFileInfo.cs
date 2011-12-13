@@ -1,6 +1,4 @@
 ﻿using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
 
 namespace WowPacketParser.Store.Objects
 {
@@ -12,7 +10,5 @@ namespace WowPacketParser.Store.Objects
         public String FileName;
 
         public int Build;
-
-        public double TimeStamp;
     }
 }

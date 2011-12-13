@@ -8,6 +8,8 @@ namespace WowPacketParser.Store.Objects
     {
         public SniffFileInfo FileInfo = new SniffFileInfo();
 
+        public double TimeStamp;
+
         public StoreNameType ObjectType = StoreNameType.None;
 
         public String Data1 = string.Empty;

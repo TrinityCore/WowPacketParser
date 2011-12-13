@@ -38,15 +38,10 @@ namespace WowPacketParser.Loading
             }
 
             int firstPacketBuild = 0;
-            double firstPacketTimeStamp = 0;
-
             while (reader.CanRead())
             {
                 if (packetNum != 0)
-                {
                     fileInfo.Build = firstPacketBuild;
-                    fileInfo.TimeStamp = firstPacketTimeStamp;
-                }
 
                 var packet = reader.Read(packetNum, fileInfo);
                 if (packet == null)
@@ -59,7 +54,6 @@ namespace WowPacketParser.Loading
                         ClientVersion.SetVersion(packet.Time);
 
                     firstPacketBuild = ClientVersion.GetBuild();
-                    firstPacketTimeStamp = Utilities.GetUnixTimeFromDateTime(packet.Time);
                 }
 
                 if (++packetNum < packetNumberLow)

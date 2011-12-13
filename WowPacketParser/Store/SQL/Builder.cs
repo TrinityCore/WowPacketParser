@@ -37,7 +37,7 @@ namespace WowPacketParser.Store.SQL
                     "(" +
                     data.FileInfo.Build + cs +
                     SQLUtil.Stringify(Path.GetFileName(data.FileInfo.FileName)) + cs +
-                    data.FileInfo.TimeStamp + cs +
+                    data.TimeStamp + cs +
                     SQLUtil.Stringify(data.ObjectType) + cs +
                     SQLUtil.Stringify(data.Data1) + cs +
                     SQLUtil.Stringify(data.Data2) + ")," + Environment.NewLine);
