@@ -1542,6 +1542,7 @@ namespace WowPacketParser.Enums
 
         // Tests
         TEST_422_41036,
+        TEST_422_63100,
 
         // SF
         SMSG_GUILD_FLAGGED_FOR_RENAME,

@@ -255,7 +255,7 @@ namespace WowPacketParser.Parsing.Parsers
                 count = packet.ReadInt32("Count");
 
             for (var i = 0; i < count; i++)
-                packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
+                packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID", i);
         }
 
         [Parser(Opcode.SMSG_QUEST_POI_QUERY_RESPONSE)]
@@ -265,7 +265,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                var questId = packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
+                var questId = packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID", i);
 
                 var counter = packet.ReadInt32("[" + i + "] POI Counter");
                 for (var j = 0; j < counter; j++)
@@ -273,7 +273,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var idx = packet.ReadInt32("POI Index", i, j);
                     var objIndex = packet.ReadInt32("Objective Index", i, j);
 
-                    var mapId = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
+                    var mapId = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID", i);
                     var wmaId = packet.ReadInt32("World Map Area", i, j);
                     var floorId = packet.ReadInt32("Floor Id", i, j);
                     var unk2 = packet.ReadInt32("Unk Int32 2", i, j);
@@ -302,6 +302,12 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleQuestForceRemoved(Packet packet)
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
+        }
+
+        [Parser(Opcode.SMSG_QUESTUPDATE_COMPLETE, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleQuestUpdateComplete422(Packet packet)
+        {
+            packet.AsHex();
         }
 
         [Parser(Opcode.SMSG_QUERY_QUESTS_COMPLETED_RESPONSE)]
@@ -336,7 +342,7 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadByte("Count");
             for (var i = 0; i < count; i++)
             {
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID", i);
                 packet.ReadUInt32("Quest Icon", i);
                 packet.ReadInt32("Quest Level", i);
                 packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32, i);
@@ -525,19 +531,32 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST)]
         [Parser(Opcode.CMSG_QUESTGIVER_REQUEST_REWARD)]
+        [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST)]
         public static void HandleQuestcompleteQuest(Packet packet)
         {
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
-            {
-                if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_QUESTGIVER_REQUEST_REWARD))
-                    packet.ReadUInt32("Unk UInt32 1");
-                else
-                    packet.ReadByte("Unk UInt32 1");
-            }
+        }
+
+        [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleQuestcompleteQuest422(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
+            packet.ReadByte("Unk UInt32 1");
+        }
+
+        [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, ClientVersionBuild.V4_3_0_15005)]
+        [Parser(Opcode.CMSG_QUESTGIVER_REQUEST_REWARD, ClientVersionBuild.V4_3_0_15005)]
+        public static void HandleQuestcompleteQuest43(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_QUESTGIVER_REQUEST_REWARD))
+                packet.ReadUInt32("Unk UInt32 1");
+            else
+                packet.ReadByte("Unk UInt32 1");
         }
 
         [Parser(Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS)]
@@ -692,6 +711,34 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.Writer.WriteLine("Arenapoints: " + arenapoints);
         }
 
+        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleQuestCompleted422(Packet packet)
+        {
+            packet.ReadByte("Unk Byte");
+            packet.ReadInt32("Unk1");
+            packet.ReadInt32("Money");
+            packet.ReadInt32("Unk3");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
+            packet.ReadInt32("Unk4");
+            packet.ReadInt32("Unk5");
+
+            /* FIXME
+            packet.ReadInt32("Reward");
+            packet.ReadInt32("Money");
+            var honor = packet.ReadInt32();
+            if (honor < 0)
+                packet.Writer.WriteLine("Honor: " + honor);
+
+            var talentpoints = packet.ReadInt32();
+            if (talentpoints < 0)
+                packet.Writer.WriteLine("Talentpoints: " + talentpoints);
+
+            var arenapoints = packet.ReadInt32();
+            if (arenapoints < 0)
+                packet.Writer.WriteLine("Arenapoints: " + arenapoints);
+             */
+        }
+
         [Parser(Opcode.CMSG_QUESTLOG_SWAP_QUEST)]
         public static void HandleQuestSwapQuest(Packet packet)
         {
@@ -775,6 +822,22 @@ namespace WowPacketParser.Parsing.Parsers
         {
         }
 
+        // Related to End quest npcs
+        [Parser(Opcode.TEST_422_63100)]
+        public static void handlerQuestRelated_63100(Packet packet)
+        {
+            var count = packet.ReadUInt32("Counter");
+
+            for (var i = 0; i < count; ++i)
+            {
+                var count2 = packet.ReadUInt32("Number of NPC", i);
+                for (var j = 0; j < count2; ++j)
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Unit, "NPC ID", i, j);
+            }
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID", i);
+        }
         //[Parser(Opcode.CMSG_FLAG_QUEST)]
         //[Parser(Opcode.CMSG_FLAG_QUEST_FINISH)]
         //[Parser(Opcode.CMSG_CLEAR_QUEST)]
