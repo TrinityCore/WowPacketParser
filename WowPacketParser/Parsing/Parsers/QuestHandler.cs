@@ -222,6 +222,11 @@ namespace WowPacketParser.Parsing.Parsers
                 quest.SoundTurnIn = packet.ReadUInt32("Sound TurnIn");
             }
 
+            packet.SniffData.ObjectType = StoreNameType.Quest;
+            packet.SniffData.Data1 = id.Key.ToString();
+            packet.SniffData.Data2 = "QUERY_RESPONSE";
+            packet.AddSniffData();
+
             Stuffing.QuestTemplates.TryAdd((uint) id.Key, quest);
         }
 

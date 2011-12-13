@@ -209,7 +209,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var gossip = new Gossip();
 
-            packet.ReadGuid("GUID"); // TODO: Use this to assign npc entries with gossip ids
+            var guid = packet.ReadGuid("GUID"); // TODO: Use this to assign npc entries with gossip ids
 
             var menuId = packet.ReadUInt32("Menu Id");
             var textId = packet.ReadUInt32("Text Id");
@@ -230,6 +230,11 @@ namespace WowPacketParser.Parsing.Parsers
 
                 gossip.GossipOptions.Add(gossipOption);
             }
+
+            packet.SniffData.ObjectType = StoreNameType.Gossip;
+            packet.SniffData.Data1 = menuId.ToString();
+            packet.SniffData.Data2 = guid.GetEntry().ToString();
+            packet.AddSniffData();
 
             Stuffing.Gossips.TryAdd(new Tuple<uint, uint>(menuId, textId), gossip);
 

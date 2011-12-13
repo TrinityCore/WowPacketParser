@@ -16,6 +16,9 @@ namespace WowPacketParser.Enums
         GameObject = 6,
         Item = 7,
         Quest = 8,
-        Opcode = 9 // Packet
+        Opcode = 9, // Packet
+        PageText = 10,
+        NpcText = 11,
+        Gossip = 12,
     }
 }

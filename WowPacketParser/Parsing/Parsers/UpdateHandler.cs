@@ -84,6 +84,20 @@ namespace WowPacketParser.Parsing.Parsers
 
             var obj = new WoWObject {Type = objType, Movement = moves, UpdateFields = updates, Map = map};
 
+            if (guid.HasEntry() && (objType == ObjectType.Unit || objType == ObjectType.GameObject))
+            {
+                var type = StoreNameType.None;
+                if (objType == ObjectType.Unit)
+                    type = StoreNameType.Unit;
+                if (objType == ObjectType.GameObject)
+                    type = StoreNameType.GameObject;
+
+                packet.SniffData.ObjectType = type;
+                packet.SniffData.Data1 = guid.GetEntry().ToString();
+                packet.SniffData.Data2 = "SPAWN";
+                packet.AddSniffData();
+            }
+
             Stuffing.Objects.TryAdd(guid, obj);
 
             HandleUpdateFieldChangedValues(guid, objType, updates, moves, true);

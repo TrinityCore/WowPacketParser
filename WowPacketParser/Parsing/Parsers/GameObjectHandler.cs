@@ -53,6 +53,11 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
                 gameObject.UnknownUInt = packet.ReadUInt32("Unknown UInt32");
 
+            packet.SniffData.ObjectType = StoreNameType.GameObject;
+            packet.SniffData.Data1 = entry.Key.ToString();
+            packet.SniffData.Data2 = "QUERY_RESPONSE";
+            packet.AddSniffData();
+
             Stuffing.GameObjectTemplates.TryAdd((uint) entry.Key, gameObject);
         }
 
