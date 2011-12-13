@@ -26,7 +26,7 @@ namespace WowPacketParser.Store.SQL
             string[] tableStructure = { "Build", "SniffName", "TimeStamp", "ObjectType", "Data1", "Data2" };
 
             // Insert
-            sqlQuery.Append(SQLUtil.InsertQueryHeader(tableStructure, tableName, "IGNORE IGNORE INTO"));
+            sqlQuery.Append(SQLUtil.InsertQueryHeader(tableStructure, tableName, "INSERT IGNORE INTO"));
 
             Console.WriteLine("SniffData count: " + Stuffing.SniffData.Count);
 

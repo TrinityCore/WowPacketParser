@@ -112,8 +112,6 @@ namespace WowPacketParser
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-            args = new string[] {@"D:\wow\Parser\355\WowPacketParser\WowPacketParser\bin\Debug\422_stormwind_to_borean_tundra.pkt"};
-
             // Read config options
             string[] filters = null;
             string[] ignoreFilters = null;
