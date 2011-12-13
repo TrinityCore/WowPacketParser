@@ -50,11 +50,11 @@ namespace WowPacketParser.SQL
         /// <summary>
         /// Escapes and quotes a string
         /// </summary>
-        public static string Stringify(string str)
+        public static string Stringify(object str)
         {
             if (str == null)
                 str = string.Empty;
-            return AddQuotes(EscapeString(str));
+            return AddQuotes(EscapeString(str.ToString()));
         }
 
         /// <summary>
@@ -116,9 +116,9 @@ namespace WowPacketParser.SQL
         /// Creates the upper part of a SQL INSERT query:
         /// "INSERT INTO `tableName` (`column1`,`column2`, ..., `columnN`) VALUES"
         /// </summary>
-        public static string InsertQueryHeader(ICollection<string> tableStructure, string tableName)
+        public static string InsertQueryHeader(ICollection<string> tableStructure, string tableName, string insertQuery = "INSERT INTO")
         {
-            var result = "INSERT INTO " + AddBackQuotes(tableName) + " (";
+            var result = insertQuery + " " + AddBackQuotes(tableName) + " (";
             var iter = 0;
             foreach (var column in tableStructure)
             {

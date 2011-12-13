@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using WowPacketParser.Enums;
@@ -13,6 +14,37 @@ namespace WowPacketParser.Store.SQL
     public static class Builder
     {
         private const string cs = SQLUtil.CommaSeparator;
+
+        public static string SniffData()
+        {
+            if (Stuffing.SniffData.IsEmpty)
+                return string.Empty;
+
+            var sqlQuery = new StringBuilder(String.Empty);
+
+            const string tableName = "SniffData";
+            string[] tableStructure = { "Build", "SniffName", "TimeStamp", "ObjectType", "Data1", "Data2" };
+
+            // Insert
+            sqlQuery.Append(SQLUtil.InsertQueryHeader(tableStructure, tableName, "IGNORE IGNORE INTO"));
+
+            Console.WriteLine("SniffData count: " + Stuffing.SniffData.Count);
+
+            // Insert rows
+            foreach (var data in Stuffing.SniffData)
+            {
+                sqlQuery.Append(
+                    "(" +
+                    data.FileInfo.Build + cs +
+                    SQLUtil.Stringify(Path.GetFileName(data.FileInfo.FileName)) + cs +
+                    data.FileInfo.TimeStamp + cs +
+                    SQLUtil.Stringify(data.ObjectType) + cs +
+                    SQLUtil.Stringify(data.Data1) + cs +
+                    SQLUtil.Stringify(data.Data2) + ")," + Environment.NewLine);
+            }
+
+            return sqlQuery.ReplaceLast(',', ';').ToString();
+        }
 
         public static string QuestTemplate()
         {

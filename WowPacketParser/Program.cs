@@ -10,6 +10,7 @@ using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.SQL;
+using WowPacketParser.Store.Objects;
 using WowPacketParser.Store.SQL;
 using DBCStore = WowPacketParser.DBC.DBCStore.DBC;
 
@@ -19,13 +20,15 @@ namespace WowPacketParser
     {
         private static void ReadFile(string file, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead, DumpFormatType dumpFormat, int threads, bool sqlOutput, bool prompt)
         {
-            string fileName = Path.GetFileName(file);
+            var fileInfo = new SniffFileInfo { FileName = file };
+            var fileName = Path.GetFileName(fileInfo.FileName);
+
             Console.WriteLine("{0}: Opening file", fileName);
             Console.WriteLine("{0}: Reading packets...", fileName);
 
             try
             {
-                var packets = Reader.Read(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead, (dumpFormat == DumpFormatType.SummaryHeader));
+                var packets = Reader.Read(fileInfo, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead, (dumpFormat == DumpFormatType.SummaryHeader));
                 if (packets.Count <= 0)
                 {
                     Console.WriteLine("{0}: Packet count is 0", fileName);
@@ -78,6 +81,7 @@ namespace WowPacketParser
                         SQLStore.WriteData(Builder.NpcText());
                         SQLStore.WriteData(Builder.Gossip());
                         SQLStore.WriteData(Builder.Loot());
+                        SQLStore.WriteData(Builder.SniffData());
                     }
 
                     SQLStore.WriteToFile();
@@ -107,6 +111,8 @@ namespace WowPacketParser
         private static void Main(string[] args)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
+            args = new string[] {@"D:\wow\Parser\355\WowPacketParser\WowPacketParser\bin\Debug\422_stormwind_to_borean_tundra.pkt"};
 
             // Read config options
             string[] filters = null;

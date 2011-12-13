@@ -8,6 +8,12 @@ namespace WowPacketParser.Store
 {
     public static class Stuffing // TODO: Rename
     {
+        // Stores opcodes read, npc/GOs/spell/item/etc IDs found in sniffs
+        // and other miscellaneous stuff
+        public static readonly ConcurrentBag<SniffData> SniffData =
+            new ConcurrentBag<SniffData>();
+
+
         /* Key: Guid */
 
         // Units, GameObjects, Players, Items

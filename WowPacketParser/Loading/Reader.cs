@@ -1,18 +1,21 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Loading
 {
     public static class Reader
     {
-        public static List<Packet> Read(string fileName, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead, bool summary)
+        public static List<Packet> Read(SniffFileInfo fileInfo, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead, bool summary)
         {
             var packets = new List<Packet>();
             var packetNum = 0;
+            var fileName = fileInfo.FileName;
 
             var extension = Path.GetExtension(fileName);
             if (extension == null)
@@ -34,15 +37,30 @@ namespace WowPacketParser.Loading
                     throw new IOException("Invalid file type");
             }
 
+            int firstPacketBuild = 0;
+            double firstPacketTimeStamp = 0;
+
             while (reader.CanRead())
             {
-                var packet = reader.Read(packetNum);
+                if (packetNum != 0)
+                {
+                    fileInfo.Build = firstPacketBuild;
+                    fileInfo.TimeStamp = firstPacketTimeStamp;
+                }
+
+                var packet = reader.Read(packetNum, fileInfo);
                 if (packet == null)
                     continue;
 
-                // determine build version based on date of first packet if not specified otherwise
-                if (packetNum == 0 && ClientVersion.IsUndefined())
-                    ClientVersion.SetVersion(packet.Time);
+                if (packetNum == 0)
+                {
+                    // determine build version based on date of first packet if not specified otherwise
+                    if (ClientVersion.IsUndefined())
+                        ClientVersion.SetVersion(packet.Time);
+
+                    firstPacketBuild = ClientVersion.GetBuild();
+                    firstPacketTimeStamp = Utilities.GetUnixTimeFromDateTime(packet.Time);
+                }
 
                 if (++packetNum < packetNumberLow)
                     continue;
@@ -50,6 +68,7 @@ namespace WowPacketParser.Loading
                 // check for filters
                 bool add = true;
                 var opcodeName = Opcodes.GetOpcodeName(packet.Opcode);
+
                 if (filters != null && filters.Length > 0)
                     add = opcodeName.MatchesFilters(filters);
                 // check for ignore filters

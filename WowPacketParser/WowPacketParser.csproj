@@ -310,6 +310,8 @@
     <Compile Include="Store\Objects\NpcVendor.cs" />
     <Compile Include="Store\Objects\GossipOption.cs" />
     <Compile Include="Store\Objects\NpcTrainer.cs" />
+    <Compile Include="Store\Objects\SniffData.cs" />
+    <Compile Include="Store\Objects\SniffFileInfo.cs" />
     <Compile Include="Store\Objects\StartAction.cs" />
     <Compile Include="Store\Objects\GameObjectTemplate.cs" />
     <Compile Include="Store\Objects\Gossip.cs" />

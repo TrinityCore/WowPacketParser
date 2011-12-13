@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Loading
 {
@@ -20,7 +21,7 @@ namespace WowPacketParser.Loading
         private readonly BinaryReader _reader;
 
         private readonly SniffType _sniffType;
-        private PktVersion pktVersion = PktVersion.NoHeader;
+        private PktVersion _pktVersion = PktVersion.NoHeader;
 
         private DateTime _startTime;
         private uint _startTickCount;
@@ -43,11 +44,11 @@ namespace WowPacketParser.Loading
                 return;
             }
 
-            pktVersion = (PktVersion)_reader.ReadUInt16();      // sniff version
+            _pktVersion = (PktVersion)_reader.ReadUInt16();      // sniff version
 
             int additionalLength;
 
-            switch (pktVersion)
+            switch (_pktVersion)
             {
                 case PktVersion.V2_1:
                     SetBuild(_reader.ReadUInt16());             // client build
@@ -96,7 +97,7 @@ namespace WowPacketParser.Loading
             return _reader.BaseStream.Position != _reader.BaseStream.Length;
         }
 
-        public Packet Read(int number)
+        public Packet Read(int number, SniffFileInfo fileInfo)
         {
             int opcode;
             int length;
@@ -106,7 +107,7 @@ namespace WowPacketParser.Loading
 
             if (_sniffType == SniffType.Pkt)
             {
-                switch (pktVersion)
+                switch (_pktVersion)
                 {
                     case PktVersion.V2_1:
                     case PktVersion.V2_2:
@@ -131,7 +132,7 @@ namespace WowPacketParser.Loading
                     case PktVersion.V3_1:
                         direction = (_reader.ReadUInt32() == 0x47534d53) ? Direction.ServerToClient : Direction.ClientToServer;
 
-                        if (pktVersion == PktVersion.V3_0)
+                        if (_pktVersion == PktVersion.V3_0)
                         {
                             time = Utilities.GetDateTimeFromUnixTime(_reader.ReadInt32());
                             var tickCount = _reader.ReadUInt32();
@@ -168,7 +169,9 @@ namespace WowPacketParser.Loading
                 data = _reader.ReadBytes(length);
             }
 
-            return new Packet(data, opcode, time, direction, number);
+            var sniffData = new SniffData { FileInfo = fileInfo };
+
+            return new Packet(data, opcode, time, direction, number, sniffData);
         }
 
         public void Close()

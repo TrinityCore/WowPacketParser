@@ -749,7 +749,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var opc = pkt.ReadInt16();
                 var data = pkt.ReadBytes(size - 2);
 
-                var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer);
+                var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer, packet.SniffData);
                 Statistics.Total += 1;
                 Handler.Parse(newPacket);
             }

@@ -15,6 +15,7 @@ namespace WowPacketParser.Enums
         Unit = 5,
         GameObject = 6,
         Item = 7,
-        Quest = 8
+        Quest = 8,
+        Opcode = 9 // Packet
     }
 }

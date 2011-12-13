@@ -2,6 +2,7 @@
 using System.Data.SQLite;
 using WowPacketParser.Misc;
 using WowPacketParser.Enums;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Loading
 {
@@ -60,7 +61,7 @@ namespace WowPacketParser.Loading
             return _reader.Read();
         }
 
-        public Packet Read(int number)
+        public Packet Read(int number, SniffFileInfo fileInfo)
         {
             var opcode = _reader.GetInt32(0);
             var time = _reader.GetDateTime(1);
@@ -72,7 +73,9 @@ namespace WowPacketParser.Loading
 
             var data = (byte[])blob;
 
-            return new Packet(data, opcode, time, direction, number);
+            var sniffData = new SniffData {FileInfo = fileInfo};
+
+            return new Packet(data, opcode, time, direction, number, sniffData);
         }
 
         public void Close()
