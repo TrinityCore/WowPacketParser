@@ -37,6 +37,11 @@ namespace WowPacketParser.Store.SQL
                 if (data.Id == 0 && data.ObjectType != StoreNameType.Map)
                     continue;
 
+                // Do not print opcode status (with errors / not parsed) if
+                // it isn't enabled in settings
+                if (data.ObjectType == StoreNameType.Opcode && !Settings.GetBoolean("OpcodeStatusDB"))
+                    continue;
+
                 sqlQuery.Append(
                     "(" +
                     data.FileInfo.Build + cs +

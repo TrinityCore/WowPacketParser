@@ -154,6 +154,11 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Effect 2 Value");
             }
 
+            packet.SniffData.ObjectType = StoreNameType.Spell;
+            packet.SniffData.Id = (int) aura.SpellId;
+            packet.SniffData.Data = "AURA_UPDATE";
+            packet.AddSniffData();
+
             return aura;
         }
 

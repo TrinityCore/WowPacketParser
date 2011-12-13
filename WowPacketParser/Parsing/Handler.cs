@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 
@@ -70,27 +71,32 @@ namespace WowPacketParser.Parsing
             writer = null;
         }
 
+        enum ParsedStatus
+        {
+            None,
+            Success,
+            WithErrors,
+            NotParsed
+        }
+
         public static void Parse(Packet packet, bool headerOnly = false, bool isMultiple = false)
         {
+            ParsedStatus status;
+
             var opcode = packet.Opcode;
 
             packet.Writer.WriteLine("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}{6}",
                 packet.Direction, Opcodes.GetOpcodeName(opcode), opcode.ToString("X4"),
                 packet.GetLength(), packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
                 packet.Number, isMultiple ? " (part of another packet)" : "");
+            
             if (opcode == 0)
                 return;
 
             if (headerOnly)
             {
-                if (!isMultiple)
-                {
-                    lock (Handlers)
-                    {
-                        Statistics.PacketsSuccessfullyParsed++;
-                    }
-                }
-                return;
+                status = ParsedStatus.Success;
+                goto Statistics;
             }
 
             Action<Packet> handler;
@@ -102,13 +108,8 @@ namespace WowPacketParser.Parsing
 
                     if (packet.GetPosition() == packet.GetLength())
                     {
-                        if (!isMultiple)
-                        {
-                            lock (Handlers)
-                            {
-                                Statistics.PacketsSuccessfullyParsed++;
-                            }
-                        }
+                        status = ParsedStatus.Success;
+                        goto Statistics;
                     }
                     else
                     {
@@ -120,13 +121,8 @@ namespace WowPacketParser.Parsing
                         if (len < 300) // If the packet isn't "too big" and it is not full read, print its hex table
                             packet.AsHex();
 
-                        if (!isMultiple)
-                        {
-                            lock (Handlers)
-                            {
-                                Statistics.PacketsParsedWithErrors++;
-                            }
-                        }
+                        status = ParsedStatus.NotParsed;
+                        goto Statistics;
                     }
                 }
                 catch (Exception ex)
@@ -135,23 +131,43 @@ namespace WowPacketParser.Parsing
                     packet.Writer.WriteLine(ex.Message);
                     packet.Writer.WriteLine(ex.StackTrace);
 
-                    if (!isMultiple)
-                    {
-                        lock (Handlers)
-                        {
-                            Statistics.PacketsParsedWithErrors++;
-                        }
-                    }
+                    status = ParsedStatus.WithErrors;
+                    goto Statistics;
                 }
             }
             else
             {
                 packet.AsHex();
-                if (!isMultiple)
+                status = ParsedStatus.NotParsed;
+                goto Statistics;
+            }
+
+
+        Statistics:
+
+            if (isMultiple)
+                return;
+
+            lock (Handlers)
+            {
+                switch (status)
                 {
-                    lock (Handlers)
-                    {
+                    case ParsedStatus.NotParsed:
                         Statistics.PacketsNotParsed++;
+                        goto default;
+                    case ParsedStatus.Success:
+                        Statistics.PacketsSuccessfullyParsed++;
+                        break;
+                    case ParsedStatus.WithErrors:
+                        Statistics.PacketsParsedWithErrors++;
+                        goto default;
+                    default:
+                    {
+                        packet.SniffData.ObjectType = StoreNameType.Opcode;
+                        packet.SniffData.Id = packet.Opcode;
+                        packet.SniffData.Data = status.ToString();
+                        packet.AddSniffData();
+                        break;
                     }
                 }
             }

@@ -470,6 +470,11 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                 item.HolidayId = packet.ReadEnum<Holiday>("Holiday", TypeCode.Int32);
 
+            packet.SniffData.ObjectType = StoreNameType.Item;
+            packet.SniffData.Id = entry.Key;
+            packet.SniffData.Data = "QUERY_RESPONSE";
+            packet.AddSniffData();
+
             Stuffing.ItemTemplates.TryAdd((uint) entry.Key, item);
         }
 
@@ -491,7 +496,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleDBReply(Packet packet)
         {
             packet.ReadUInt32("Type");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+            var itemId = packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
             var size = packet.ReadUInt32("Size");
             // returned type depends on CMSG_REQUEST_HOTFIX sent type.
             // Faster to check size
@@ -617,6 +622,11 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk UInt32 2");
             }
             packet.ReadUInt32("Received Type");
+
+            packet.SniffData.ObjectType = StoreNameType.Item;
+            packet.SniffData.Id = itemId;
+            packet.SniffData.Data = "DB_REPLY";
+            packet.AddSniffData();
         }
 
         [Parser(Opcode.SMSG_UPDATE_ITEM_ENCHANTMENTS)]
