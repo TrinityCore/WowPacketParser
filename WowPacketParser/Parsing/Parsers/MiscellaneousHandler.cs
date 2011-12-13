@@ -531,7 +531,16 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleClientEnterWorld(Packet packet)
         {
             packet.Writer.WriteLine("Loading: " + (packet.ReadBit() ? "true" : "false")); // Not sure on the meaning
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
+            var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
+            MovementHandler.CurrentMapId = (uint) mapId;
+
+            if (mapId >= 0 && mapId < 1000) // Getting some weird results in a couple of packets
+            {
+                packet.SniffData.ObjectType = StoreNameType.Map;
+                packet.SniffData.Id = mapId;
+                packet.SniffData.Data = "LOAD_SCREEN";
+                packet.AddSniffData();
+            }
         }
 
         [Parser(Opcode.SMSG_VERIFY_CONNECTIVITY)]

@@ -274,6 +274,11 @@ namespace WowPacketParser.Parsing.Parsers
             if (!CharacterHandler.Characters.TryGetValue(SessionHandler.LoginGuid, out chInfo))
                 return;
 
+            packet.SniffData.ObjectType = StoreNameType.Map;
+            packet.SniffData.Id = mapId;
+            packet.SniffData.Data = "NEW_WORLD";
+            packet.AddSniffData();
+
             SessionHandler.LoggedInCharacter = chInfo;
         }
 

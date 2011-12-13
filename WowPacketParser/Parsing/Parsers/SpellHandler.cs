@@ -230,7 +230,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadByte("Cast Count");
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            var spellId = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_2_9056) && !isSpellGo)
                 packet.ReadByte("Cast Count");
@@ -337,6 +337,14 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadInt32("Unk Flag");
                     }
                 }
+            }
+
+            if (isSpellGo)
+            {
+                packet.SniffData.ObjectType = StoreNameType.Spell;
+                packet.SniffData.Id = spellId;
+                packet.SniffData.Data = "SPELL_GO";
+                packet.AddSniffData();
             }
         }
 

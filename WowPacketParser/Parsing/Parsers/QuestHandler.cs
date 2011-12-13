@@ -223,8 +223,8 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             packet.SniffData.ObjectType = StoreNameType.Quest;
-            packet.SniffData.Data1 = id.Key.ToString();
-            packet.SniffData.Data2 = "QUERY_RESPONSE";
+            packet.SniffData.Id = id.Key;
+            packet.SniffData.Data = "QUERY_RESPONSE";
             packet.AddSniffData();
 
             Stuffing.QuestTemplates.TryAdd((uint) id.Key, quest);

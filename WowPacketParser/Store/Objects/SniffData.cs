@@ -12,8 +12,8 @@ namespace WowPacketParser.Store.Objects
 
         public StoreNameType ObjectType = StoreNameType.None;
 
-        public String Data1 = string.Empty;
+        public int Id = 0;
 
-        public String Data2 = string.Empty;
+        public String Data = string.Empty;
     }
 }

@@ -23,7 +23,7 @@ namespace WowPacketParser.Store.SQL
             var sqlQuery = new StringBuilder(String.Empty);
 
             const string tableName = "SniffData";
-            string[] tableStructure = { "Build", "SniffName", "TimeStamp", "ObjectType", "Data1", "Data2" };
+            string[] tableStructure = { "Build", "SniffName", "TimeStamp", "ObjectType", "Id", "Data" };
 
             // Insert
             sqlQuery.Append(SQLUtil.InsertQueryHeader(tableStructure, tableName, "INSERT IGNORE INTO"));
@@ -33,14 +33,18 @@ namespace WowPacketParser.Store.SQL
             // Insert rows
             foreach (var data in Stuffing.SniffData)
             {
+                // If it's not a map and Id is 0, something is wrong
+                if (data.Id == 0 && data.ObjectType != StoreNameType.Map)
+                    continue;
+
                 sqlQuery.Append(
                     "(" +
                     data.FileInfo.Build + cs +
                     SQLUtil.Stringify(Path.GetFileName(data.FileInfo.FileName)) + cs +
                     data.TimeStamp + cs +
                     SQLUtil.Stringify(data.ObjectType) + cs +
-                    SQLUtil.Stringify(data.Data1) + cs +
-                    SQLUtil.Stringify(data.Data2) + ")," + Environment.NewLine);
+                    data.Id + cs +
+                    SQLUtil.Stringify(data.Data) + ")," + Environment.NewLine);
             }
 
             return sqlQuery.ReplaceLast(',', ';').ToString();

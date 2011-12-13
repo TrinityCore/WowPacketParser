@@ -232,8 +232,8 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             packet.SniffData.ObjectType = StoreNameType.Gossip;
-            packet.SniffData.Data1 = menuId.ToString();
-            packet.SniffData.Data2 = guid.GetEntry().ToString();
+            packet.SniffData.Id = (int) menuId;
+            packet.SniffData.Data = guid.GetEntry().ToString();
             packet.AddSniffData();
 
             Stuffing.Gossips.TryAdd(new Tuple<uint, uint>(menuId, textId), gossip);

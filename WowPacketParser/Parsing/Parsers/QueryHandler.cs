@@ -137,8 +137,8 @@ namespace WowPacketParser.Parsing.Parsers
                 creature.Expansion = packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);
 
             packet.SniffData.ObjectType = StoreNameType.Unit;
-            packet.SniffData.Data1 = entry.Key.ToString();
-            packet.SniffData.Data2 = "QUERY_RESPONSE";
+            packet.SniffData.Id = entry.Key;
+            packet.SniffData.Data = "QUERY_RESPONSE";
             packet.AddSniffData();
 
             Stuffing.UnitTemplates.TryAdd((uint)entry.Key, creature);
@@ -162,8 +162,8 @@ namespace WowPacketParser.Parsing.Parsers
             pageText.NextPageId = packet.ReadUInt32("Next Page");
 
             packet.SniffData.ObjectType = StoreNameType.PageText;
-            packet.SniffData.Data1 = entry.ToString();
-            packet.SniffData.Data2 = "QUERY_RESPONSE";
+            packet.SniffData.Id = (int) entry;
+            packet.SniffData.Data = "QUERY_RESPONSE";
             packet.AddSniffData();
 
             Stuffing.PageTexts.TryAdd(entry, pageText);
@@ -208,8 +208,8 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             packet.SniffData.ObjectType = StoreNameType.NpcText;
-            packet.SniffData.Data1 = entry.ToString();
-            packet.SniffData.Data2 = "QUERY_RESPONSE";
+            packet.SniffData.Id = (int) entry;
+            packet.SniffData.Data = "QUERY_RESPONSE";
             packet.AddSniffData();
 
             Stuffing.NpcTexts.TryAdd(entry, npcText);
