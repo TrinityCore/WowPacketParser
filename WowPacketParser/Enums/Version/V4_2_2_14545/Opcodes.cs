@@ -116,7 +116,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_LOAD_SCREEN, 0x0888},
             {Opcode.CMSG_LOGOUT_CANCEL, 0xA76},
             {Opcode.CMSG_LOGOUT_REQUEST, 0x4C7A},
-            {Opcode.CMSG_LOOT, 0x0A5E},
+            // {Opcode.CMSG_LOOT, 0x0A5E}, // Wrong: 0x0A5E is ServerToClient
             {Opcode.CMSG_LOOT_RELEASE, 0x4A6A},
             {Opcode.CMSG_MAIL_CREATE_TEXT_ITEM, 0x886E},
             {Opcode.CMSG_MAIL_DELETE, 0x4CCF},
@@ -446,6 +446,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             // Tests
             {Opcode.TEST_422_41036, 0xA04C},
             {Opcode.TEST_422_63100, 63100},
+            {Opcode.TEST_422_24649, 24649},
         };
     }
 }

@@ -1535,9 +1535,6 @@ namespace WowPacketParser.Enums
         SMSG_XP_GAIN_ABORTED,
         SMSG_ZONE_MAP,
         SMSG_ZONE_UNDER_ATTACK,
-        TEST_422_41036,
-        TEST_422_63100,
-        // Tests
         UMSG_DELETE_GUILD_CHARTER,
         UMSG_UNKNOWN_1189,
         UMSG_UNKNOWN_1196,
@@ -1597,6 +1594,12 @@ namespace WowPacketParser.Enums
         UMSG_UPDATE_GROUP_INFO,
         UMSG_UPDATE_GROUP_MEMBERS,
         UMSG_UPDATE_GUILD,
+
+        // Tests
+        TEST_422_41036,
+        TEST_422_63100,
+        TEST_422_24649,
+
         // ReSharper restore InconsistentNaming
     }
 }
