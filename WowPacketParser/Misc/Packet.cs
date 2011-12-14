@@ -19,6 +19,7 @@ namespace WowPacketParser.Misc
             Number = number;
             Writer = writer;
             SniffData = sniffData;
+            Status = ParsedStatus.None;
         }
 
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, SniffData sniffData)
@@ -30,6 +31,7 @@ namespace WowPacketParser.Misc
             Number = number;
             Writer = new StringWriter();
             SniffData = sniffData;
+            Status = ParsedStatus.None;
         }
 
         public int Opcode { get; set; }
@@ -38,6 +40,7 @@ namespace WowPacketParser.Misc
         public int Number { get; private set; }
         public StringWriter Writer { get; private set; }
         public SniffData SniffData { get; set; }
+        public ParsedStatus Status { get; set; }
 
         public void AddSniffData()
         {

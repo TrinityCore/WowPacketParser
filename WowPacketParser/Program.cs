@@ -52,9 +52,8 @@ namespace WowPacketParser
                     Console.WriteLine("{0}: Assumed version: {1}", fileName, ClientVersion.GetVersionString());
                     Console.WriteLine("{0}: Parsing {1} packets with {2} threads...", fileName, packets.Count, numberOfThreads);
 
-                    Statistics.Total = (uint)packets.Count;
-
-                    Statistics.StartTime = DateTime.Now;
+                    var total = (uint)packets.Count;
+                    var startTime = DateTime.Now;
                     var outFileName = Path.ChangeExtension(file, null) + "_parsed";
                     var outLogFileName = outFileName + ".txt";
                     var outSqlFileName = outFileName + ".sql";
@@ -88,12 +87,35 @@ namespace WowPacketParser
                     if (dumpFormat != DumpFormatType.None)
                         Handler.WriteToFile(packets, outLogFileName);
 
-                    Statistics.EndTime = DateTime.Now;
+                    var span = DateTime.Now.Subtract(startTime);
+                    var statsOk = 0;
+                    var statsError = 0;
+                    var statsSkip = 0;
 
-                    Console.WriteLine(Statistics.Stats(fileName));
+                    foreach (var packet in packets)
+                    {
+                        switch (packet.Status)
+                        {
+                            case ParsedStatus.Success:
+                                statsOk++;
+                                break;
+                            case ParsedStatus.WithErrors:
+                                statsError++;
+                                break;
+                            case ParsedStatus.NotParsed:
+                                statsSkip++;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    
+                    Console.WriteLine("{0}: Finished parsing in {1} Minutes, {2} Seconds and {3} Milliseconds.",
+                        fileName, span.Minutes, span.Seconds, span.Milliseconds);
+                    Console.WriteLine("{0}: Parsed {1:F1}% packets successfully, {2:F1}% with errors and skipped {3:F1}%.",
+                        fileName, (double)statsOk / total * 100, (double)statsError / total * 100, (double)statsSkip / total * 100);
                     Console.WriteLine("{0}: Saved file to '{1}'", fileName, outLogFileName);
                     Console.WriteLine();
-                    Statistics.Reset();
                 }
             }
             catch (Exception ex)

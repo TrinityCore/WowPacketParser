@@ -755,8 +755,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var data = pkt.ReadBytes(size - 2);
 
                 var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer, packet.SniffData);
-                Statistics.Total += 1;
-                Handler.Parse(newPacket);
+                Handler.Parse(newPacket, true);
             }
 
             packet.Writer.WriteLine("}");

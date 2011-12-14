@@ -71,14 +71,6 @@ namespace WowPacketParser.Parsing
             writer = null;
         }
 
-        enum ParsedStatus
-        {
-            None,
-            Success,
-            WithErrors,
-            NotParsed
-        }
-
         public static void Parse(Packet packet, bool headerOnly = false, bool isMultiple = false)
         {
             ParsedStatus status;
@@ -94,82 +86,55 @@ namespace WowPacketParser.Parsing
                 return;
 
             if (headerOnly)
-            {
                 status = ParsedStatus.Success;
-                goto Statistics;
-            }
-
-            Action<Packet> handler;
-            if (Handlers.TryGetValue(opcode, out handler))
-            {
-                try
-                {
-                    handler(packet);
-
-                    if (packet.GetPosition() == packet.GetLength())
-                    {
-                        status = ParsedStatus.Success;
-                        goto Statistics;
-                    }
-                    else
-                    {
-                        var pos = packet.GetPosition();
-                        var len = packet.GetLength();
-                        packet.Writer.WriteLine("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.",
-                            pos, len, len - pos);
-
-                        if (len < 300) // If the packet isn't "too big" and it is not full read, print its hex table
-                            packet.AsHex();
-
-                        status = ParsedStatus.NotParsed;
-                        goto Statistics;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    packet.Writer.WriteLine(ex.GetType());
-                    packet.Writer.WriteLine(ex.Message);
-                    packet.Writer.WriteLine(ex.StackTrace);
-
-                    status = ParsedStatus.WithErrors;
-                    goto Statistics;
-                }
-            }
             else
             {
-                packet.AsHex();
-                status = ParsedStatus.NotParsed;
-                goto Statistics;
-            }
 
-
-        Statistics:
-
-            if (isMultiple)
-                return;
-
-            lock (Handlers)
-            {
-                switch (status)
+                Action<Packet> handler;
+                if (Handlers.TryGetValue(opcode, out handler))
                 {
-                    case ParsedStatus.NotParsed:
-                        Statistics.PacketsNotParsed++;
-                        goto default;
-                    case ParsedStatus.Success:
-                        Statistics.PacketsSuccessfullyParsed++;
-                        break;
-                    case ParsedStatus.WithErrors:
-                        Statistics.PacketsParsedWithErrors++;
-                        goto default;
-                    default:
+                    try
                     {
-                        packet.SniffData.ObjectType = StoreNameType.Opcode;
-                        packet.SniffData.Id = packet.Opcode;
-                        packet.SniffData.Data = status.ToString();
-                        packet.AddSniffData();
-                        break;
+                        handler(packet);
+    
+                        if (packet.GetPosition() == packet.GetLength())
+                            status = ParsedStatus.Success;
+                        else
+                        {
+                            var pos = packet.GetPosition();
+                            var len = packet.GetLength();
+                            packet.Writer.WriteLine("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.",
+                                pos, len, len - pos);
+
+                            if (len < 300) // If the packet isn't "too big" and it is not full read, print its hex table
+                                packet.AsHex();
+
+                            status = ParsedStatus.NotParsed;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        packet.Writer.WriteLine(ex.GetType());
+                        packet.Writer.WriteLine(ex.Message);
+                        packet.Writer.WriteLine(ex.StackTrace);
+
+                        status = ParsedStatus.WithErrors;
                     }
                 }
+                else
+                {
+                    packet.AsHex();
+                    status = ParsedStatus.NotParsed;
+                }
+            }
+
+            if (isMultiple == false)
+            {
+                packet.Status = status;
+                packet.SniffData.ObjectType = StoreNameType.Opcode;
+                packet.SniffData.Id = packet.Opcode;
+                packet.SniffData.Data = status.ToString();
+                packet.AddSniffData();
             }
         }
     }
