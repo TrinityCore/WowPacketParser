@@ -715,7 +715,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleQuestCompleted422(Packet packet)
         {
             packet.ReadByte("Unk Byte");
-            packet.ReadInt32("Unk1");
+            packet.ReadInt32("Reward");
             packet.ReadInt32("Money");
             packet.ReadInt32("Unk3");
             packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");

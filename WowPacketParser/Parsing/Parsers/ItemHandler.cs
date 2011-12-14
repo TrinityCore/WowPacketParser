@@ -495,7 +495,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_DB_REPLY)]
         public static void HandleDBReply(Packet packet)
         {
-            packet.AsHex();
             packet.ReadUInt32("Type");
             var itemId = packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
