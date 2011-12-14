@@ -495,8 +495,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_DB_REPLY)]
         public static void HandleDBReply(Packet packet)
         {
+            packet.AsHex();
             packet.ReadUInt32("Type");
             var itemId = packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                packet.ReadUInt32("Received Type");
             var size = packet.ReadUInt32("Size");
             // returned type depends on CMSG_REQUEST_HOTFIX sent type.
             // Faster to check size
@@ -583,9 +586,9 @@ namespace WowPacketParser.Parsing.Parsers
                     if (chars > 0)
                         packet.Writer.WriteLine("[{0}] Name: {1}", i, Encoding.UTF8.GetString(packet.ReadBytes(chars)));
                 }
-
-                packet.ReadUInt16("Description Length");
-                packet.ReadCString("Description");
+                packet.ReadByte("Unk");
+                var chars2 = packet.ReadUInt16("Description Length");
+                packet.Writer.WriteLine("Description: {0}", Encoding.UTF8.GetString(packet.ReadBytes(chars2)));
 
                 packet.ReadUInt32("Page Text");
                 packet.ReadEnum<Language>("Language", TypeCode.Int32);
@@ -621,7 +624,9 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk UInt32 1");
                 packet.ReadUInt32("Unk UInt32 2");
             }
-            packet.ReadUInt32("Received Type");
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
+                packet.ReadUInt32("Received Type");
 
             packet.SniffData.ObjectType = StoreNameType.Item;
             packet.SniffData.Id = itemId;
