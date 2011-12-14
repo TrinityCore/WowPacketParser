@@ -304,6 +304,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
         }
 
+        [Parser(Opcode.CMSG_QUEST_CONFIRM_ACCEPT, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleQuestAccept422(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
+            packet.ReadUInt32("Unk UInt32");
+        }
+
         [Parser(Opcode.SMSG_QUESTUPDATE_COMPLETE, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleQuestUpdateComplete422(Packet packet)
         {

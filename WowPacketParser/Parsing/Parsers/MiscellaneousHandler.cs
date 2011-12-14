@@ -7,13 +7,13 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class MiscellaneousParsers
     {
-        [Parser(Opcode.SMSG_SUSPEND_TOKEN)]
+        [Parser(Opcode.CMSG_SUSPEND_TOKEN)]
         public static void HandleSuspendToken(Packet packet)
         {
             packet.ReadUInt32("Count");
         }
 
-        [Parser(Opcode.CMSG_SUSPEND_TOKEN_RESPONSE)]
+        [Parser(Opcode.SMSG_SUSPEND_TOKEN_RESPONSE)]
         public static void HandleSuspendTokenResponse(Packet packet)
         {
             packet.ReadBit("Unk");
