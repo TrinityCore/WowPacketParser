@@ -404,6 +404,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_RECEIVED_MAIL, 0x0DEE2},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x0180},
             {Opcode.SMSG_REFER_A_FRIEND_FAILURE, 0x4867},
+            {Opcode.SMSG_SELL_ITEM, 0x9CD3},
             {Opcode.SMSG_SERVERTIME, 0x01CD7},
             {Opcode.SMSG_SERVER_MESSAGE, 0xC873},
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x88D3}, // unsure: can be 0x98FE
