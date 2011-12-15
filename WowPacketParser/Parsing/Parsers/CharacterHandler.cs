@@ -211,16 +211,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        public static BitArray ReverseBitArray(BitArray bits)
-        {
-            BitArray rev = new BitArray(bits.Length, false);
-            for (int i = 0; i < bits.Length; i++)
-            {
-                rev[i] = bits[bits.Length - i - 1];
-            }
-            return rev;
-        }
-
         [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleCharEnum422(Packet packet)
         {

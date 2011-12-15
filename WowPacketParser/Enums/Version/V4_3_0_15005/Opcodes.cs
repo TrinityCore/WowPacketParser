@@ -382,6 +382,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.MSG_SET_RAID_DIFFICULTY, 2086},
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 27782},
             {Opcode.MSG_TALENT_WIPE_CONFIRM, 678},
+            {Opcode.MSG_VERIFY_CONNECTIVITY, 20311},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 3200},
             {Opcode.SMSG_ACCOUNT_INFO_RESPONSE, 27706},
             {Opcode.SMSG_ACTIVATETAXIREPLY, 1028},
@@ -839,6 +840,8 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.SMSG_WHOIS, 9730},
             {Opcode.SMSG_XP_GAIN_ABORTED, 11276},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 2564},
+
+            // TEST
         };
     }
 }
