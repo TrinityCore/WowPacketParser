@@ -556,8 +556,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_VERIFY_CONNECTIVITY)]
-        [Parser(Opcode.CMSG_VERIFY_CONNECTIVITY_RESPONSE)]
+        [Parser(Opcode.MSG_VERIFY_CONNECTIVITY)]
         public static void HandleServerInfo(Packet packet)
         {
             packet.ReadCString("String");

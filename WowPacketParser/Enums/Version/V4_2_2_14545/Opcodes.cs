@@ -254,6 +254,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.MSG_SET_RAID_DIFFICULTY, 0x1A5A},
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x98EB},
             {Opcode.MSG_TALENT_WIPE_CONFIRM, 0x4C52}, // Not confirmed. ERR_NOT_ENOUGH_MONEY is sent
+            {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x5EE2},
             {Opcode.SMSG_ACTION_BUTTONS, 0x8A6B},
             {Opcode.SMSG_ACTIVATETAXIREPLY, 0x8E4F},
