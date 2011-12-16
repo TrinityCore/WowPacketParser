@@ -510,6 +510,11 @@ namespace WowPacketParser.Parsing.Parsers
             var phaseMask = packet.ReadInt32();
             packet.Writer.WriteLine("Phase Mask: 0x" + phaseMask.ToString("X8"));
             CurrentPhaseMask = phaseMask;
+
+            packet.SniffData.ObjectType = StoreNameType.Phase;
+            packet.SniffData.Id = phaseMask;
+            packet.SniffData.Data = "PHASEMASK";
+            packet.AddSniffData();
         }
 
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_0_6a_13623)]
@@ -565,11 +570,12 @@ namespace WowPacketParser.Parsing.Parsers
             if (guidFlag.HasFlag(BitMask.Byte2))
                 bytes[2] = packet.ReadByte();
 
+            var phaseMask = 0;
             count = packet.ReadUInt32();
             if (count > 0)
             {
                 int num = (int)count - 2;
-                packet.ReadUInt16("Current Mask");
+                phaseMask = packet.ReadUInt16("Current Mask");
                 if (num > 0)
                 {
                     packet.Writer.Write("Bytes: 0x");
@@ -632,6 +638,11 @@ namespace WowPacketParser.Parsing.Parsers
             }
             var guid = new Guid(tmp);
             packet.Writer.WriteLine("GUID: " + guid);
+
+            packet.SniffData.ObjectType = StoreNameType.Phase;
+            packet.SniffData.Id = phaseMask;
+            packet.SniffData.Data = "PHASEMASK 422";
+            packet.AddSniffData();
         }
 
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]

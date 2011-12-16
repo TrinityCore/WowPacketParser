@@ -16,6 +16,7 @@
         NpcText,
         Gossip,
         Zone,
-        Area
+        Area,
+        Phase,
     }
 }
