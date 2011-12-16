@@ -64,13 +64,13 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadGuid("Player GUID", i);
                         break;
                     case MailType.Creature:
-                        packet.Writer.WriteLine("[" + i + "] Entry: " + StoreGetters.GetExistingDatabaseString(StoreNameType.Unit, packet.ReadInt32()));
+                        packet.ReadEntryWithName<Int32>(StoreNameType.Unit, "Entry", i);
                         break;
                     case MailType.GameObject:
-                        packet.Writer.WriteLine("[" + i + "] Entry: " + StoreGetters.GetExistingDatabaseString(StoreNameType.GameObject, packet.ReadInt32()));
+                        packet.ReadEntryWithName<Int32>(StoreNameType.GameObject, "Entry", i);
                         break;
                     case MailType.Item:
-                        packet.Writer.WriteLine("[" + i + "] Entry: " + StoreGetters.GetExistingDatabaseString(StoreNameType.Item, packet.ReadInt32()));
+                        packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Entry", i);
                         break;
                     default:
                         packet.ReadInt32("Entry", i);

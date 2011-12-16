@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
@@ -12,7 +11,6 @@ using WowPacketParser.Parsing;
 using WowPacketParser.SQL;
 using WowPacketParser.Store.Objects;
 using WowPacketParser.Store.SQL;
-using DBCStore = WowPacketParser.DBC.DBCStore.DBC;
 
 namespace WowPacketParser
 {
@@ -168,12 +166,10 @@ namespace WowPacketParser
                 prompt = Settings.GetBoolean("ShowEndPrompt");
                 threads = Settings.GetInt32("Threads");
 
-                // Disable DB and DBCs when we don't need its data (dumping to a binary file)
+                // Disable DB when we don't need its data (dumping to a binary file)
                 if (dumpFormat == DumpFormatType.Bin || dumpFormat == DumpFormatType.Pkt)
-                {
-                    DBCStore.Enabled = false;
                     SQLConnector.Enabled = false;
-                }
+
             }
             catch (Exception ex)
             {
@@ -190,20 +186,6 @@ namespace WowPacketParser
                 return;
             }
 
-            // Read DBCs
-            if (DBCStore.Enabled)
-            {
-                var startTime = DateTime.Now;
-                Console.WriteLine("Loading DBCs...");
-
-                new DBCLoader();
-
-                var endTime = DateTime.Now;
-                var span = endTime.Subtract(startTime);
-                Console.WriteLine("Finished loading DBCs - {0} Minutes, {1} Seconds and {2} Milliseconds.", span.Minutes, span.Seconds, span.Milliseconds);
-                Console.WriteLine();
-            }
-
             // Read DB
             if (SQLConnector.Enabled)
             {
@@ -217,7 +199,9 @@ namespace WowPacketParser
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex.GetType());
                     Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
                     SQLConnector.Enabled = false; // Something failed, disabling everything SQL related
                 }
                 

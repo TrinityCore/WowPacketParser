@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using MySql.Data.MySqlClient;
-using WowPacketParser.DBC.DBCStructures;
 
 namespace WowPacketParser.Misc
 {
