@@ -11,7 +11,7 @@ namespace WowPacketParser.SQL
         public static readonly Dictionary<StoreNameType, Dictionary<int, string>> NameStores =
             new Dictionary<StoreNameType, Dictionary<int, string>>();
 
-        private static readonly StoreNameType[] ObjectTypes = new StoreNameType[]
+        public static readonly StoreNameType[] ObjectTypes = new StoreNameType[]
                                                    {
                                                        StoreNameType.Spell,
                                                        StoreNameType.Map,

@@ -19,6 +19,9 @@ namespace WowPacketParser.Misc
             if (type != StoreNameType.Map && entry == 0)
                 return "0"; // map can be 0
 
+            if (!SQLDatabase.NameStores.ContainsKey(type))
+                return entry.ToString();
+
             string name;
             if (!SQLDatabase.NameStores[type].TryGetValue(entry, out name))
                 if (!withEntry)
