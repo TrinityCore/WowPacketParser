@@ -133,7 +133,7 @@ namespace WowPacketParser.Parsing
                 packet.Status = status;
                 packet.SniffData.ObjectType = StoreNameType.Opcode;
                 packet.SniffData.Id = packet.Opcode;
-                packet.SniffData.Data = status.ToString();
+                packet.SniffData.Data = status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode) : status.ToString();
                 packet.AddSniffData();
             }
         }
