@@ -22,7 +22,7 @@ namespace WowPacketParser.Misc
             Status = ParsedStatus.None;
         }
 
-        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, SniffData sniffData)
+        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, SniffFileInfo fileInfo)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
             Opcode = opcode;
@@ -30,24 +30,34 @@ namespace WowPacketParser.Misc
             Direction = direction;
             Number = number;
             Writer = new StringWriter();
-            SniffData = sniffData;
+            SniffData = new SniffData {FileInfo = fileInfo};
             Status = ParsedStatus.None;
         }
 
-        public int Opcode { get; set; }
+        public int Opcode { get; private set; }
         public DateTime Time { get; private set; }
         public Direction Direction { get; private set; }
         public int Number { get; private set; }
         public StringWriter Writer { get; private set; }
-        public SniffData SniffData { get; set; }
+        public SniffData SniffData { get; private set; }
         public ParsedStatus Status { get; set; }
 
         public void AddSniffData()
         {
             SniffData.TimeStamp = Utilities.GetUnixTimeFromDateTime(Time);
 
-            if (SniffData.ObjectType != StoreNameType.None)
-                Stuffing.SniffData.Add(SniffData);
+            if (SniffData.ObjectType == StoreNameType.None)
+                return;
+
+            if (SniffData.Id == 0 && SniffData.ObjectType != StoreNameType.Map)
+                return; // Only maps can have id 0
+
+            if (SniffData.ObjectType == StoreNameType.Opcode)
+                if (!Settings.GetBoolean("OpcodeStatusDB"))
+                    return; // Don't add opcodes if its config is not enabled
+
+            var sniffData = (SniffData) SniffData.Clone(); // WHY???
+            Stuffing.SniffData.Add(sniffData);
         }
 
         public Packet Inflate(int inflatedSize)

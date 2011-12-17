@@ -169,9 +169,7 @@ namespace WowPacketParser.Loading
                 data = _reader.ReadBytes(length);
             }
 
-            var sniffData = new SniffData { FileInfo = fileInfo };
-
-            return new Packet(data, opcode, time, direction, number, sniffData);
+            return new Packet(data, opcode, time, direction, number, fileInfo);
         }
 
         public void Close()

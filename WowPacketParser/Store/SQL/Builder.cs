@@ -28,19 +28,10 @@ namespace WowPacketParser.Store.SQL
             // Insert
             sqlQuery.Append(SQLUtil.InsertQueryHeader(tableStructure, tableName, "INSERT IGNORE INTO"));
 
-            Console.WriteLine("SniffData count: " + Stuffing.SniffData.Count);
-
             // Insert rows
             foreach (var data in Stuffing.SniffData)
             {
-                // If it's not a map and Id is 0, something is wrong
-                if (data.Id == 0 && data.ObjectType != StoreNameType.Map)
-                    continue;
 
-                // Do not print opcode status (with errors / not parsed) if
-                // it isn't enabled in settings
-                if (data.ObjectType == StoreNameType.Opcode && !Settings.GetBoolean("OpcodeStatusDB"))
-                    continue;
 
                 sqlQuery.Append(
                     "(" +

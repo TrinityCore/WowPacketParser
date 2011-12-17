@@ -4,7 +4,7 @@ using WowPacketParser.Misc;
 
 namespace WowPacketParser.Store.Objects
 {
-    public class SniffData
+    public class SniffData : ICloneable
     {
         public SniffFileInfo FileInfo = new SniffFileInfo();
 
@@ -15,5 +15,10 @@ namespace WowPacketParser.Store.Objects
         public int Id = 0;
 
         public String Data = string.Empty;
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }
