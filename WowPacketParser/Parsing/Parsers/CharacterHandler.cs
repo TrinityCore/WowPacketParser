@@ -141,8 +141,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Facial Hair");
 
                 var level = packet.ReadByte("Level");
-                var zone = packet.ReadInt32("Zone Id");
-                var mapId = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
+                var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id");
+                var mapId = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
 
                 var pos = packet.ReadVector3("Position");
                 packet.ReadInt32("Guild Id");
@@ -255,7 +255,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (bits[c, 11])
                     low[0] = (byte)(packet.ReadByte() ^ 1);
 
-                packet.ReadInt32("ZoneID", c);
+                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", c);
                 packet.ReadInt32("Pet Level", c);
 
                 if (bits[c, 8])
@@ -395,7 +395,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<Gender>("Gender", TypeCode.Byte, c);
                 packet.ReadByte("Level", c);
                 packet.ReadInt32("Pet Level", c);
-                packet.ReadInt32("ZoneID", c);
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
                 packet.ReadSingle("Position Y", c);
                 packet.ReadInt32("Pet Family", c);
                 packet.ReadByte("Hair Style", c);

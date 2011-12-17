@@ -100,7 +100,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt16("Level");
 
             if (updateFlags.HasAnyFlag(GroupUpdateFlag.Zone))
-                packet.ReadInt16("Zone ID");
+                packet.ReadEntryWithName<Int16>(StoreNameType.Zone, "Zone Id");
 
             if (updateFlags.HasAnyFlag(GroupUpdateFlag.Position))
             {

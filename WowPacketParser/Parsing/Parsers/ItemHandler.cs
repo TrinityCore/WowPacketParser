@@ -435,12 +435,11 @@ namespace WowPacketParser.Parsing.Parsers
 
             item.MaxDurability = packet.ReadUInt32("Max Durability");
 
-            item.AreaId = packet.ReadUInt32("Area");
+            item.AreaId = (uint) packet.ReadEntryWithName<UInt32>(StoreNameType.Area, "Area");
 
             // In this single (?) case, map 0 means no map
-            item.MapId = packet.ReadUInt32();
-            packet.Writer.WriteLine("Map ID: " + (item.MapId != 0 ? StoreGetters.GetName(StoreNameType.Map, (int) item.MapId) : item.MapId + " (No map)"));
-
+            item.MapId = (uint) packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
+            
             item.BagFamily = packet.ReadEnum<BagFamilyMask>("Bag Family", TypeCode.Int32);
 
             item.TotemCategory = packet.ReadEnum<TotemCategory>("Totem Category", TypeCode.Int32);
@@ -600,7 +599,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Random Suffix");
                 packet.ReadUInt32("Item Set");
                 packet.ReadUInt32("Max Durability");
-                packet.ReadUInt32("Area");
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Area, "Area");
                 // In this single (?) case, map 0 means no map
                 var map = packet.ReadUInt32();
                 packet.Writer.WriteLine("Map ID: " + (map != 0 ? StoreGetters.GetName(StoreNameType.Map, (int) map) : map + " (No map)"));

@@ -13,7 +13,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePlayerBound(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadUInt32("Area ID");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Area, "Area ID");
         }
 
         [Parser(Opcode.CMSG_CANCEL_TEMP_ENCHANTMENT)]
@@ -434,7 +434,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Spell Focus");
                     break;
                 case SpellCastFailureReason.RequiresArea:
-                    packet.ReadUInt32("Area ID");
+                    packet.ReadEntryWithName<UInt32>(StoreNameType.Area, "Area ID");
                     break;
                 case SpellCastFailureReason.NotReady:
                     packet.ReadInt32("Unk");

@@ -339,7 +339,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_EXPLORATION_EXPERIENCE)]
         public static void HandleExplorationExperience(Packet packet)
         {
-            packet.ReadUInt32("Area Id");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Area, "Area ID");
             packet.ReadUInt32("Experience");
         }
 

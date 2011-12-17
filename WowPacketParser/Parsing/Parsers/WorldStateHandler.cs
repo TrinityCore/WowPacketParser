@@ -10,8 +10,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleInitWorldStates(Packet packet)
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
-            packet.ReadInt32("Zone ID");
-            packet.ReadInt32("Area ID");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area Id");
 
             var numFields = packet.ReadInt16("Field Count");
             for (var i = 0; i < numFields; i++)
