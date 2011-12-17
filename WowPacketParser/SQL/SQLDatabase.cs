@@ -5,13 +5,12 @@ using WowPacketParser.Misc;
 
 namespace WowPacketParser.SQL
 {
-    // Note: When adding more queries here, do not forget to update StoreGetters.cs
     public static class SQLDatabase
     {
         public static readonly Dictionary<StoreNameType, Dictionary<int, string>> NameStores =
             new Dictionary<StoreNameType, Dictionary<int, string>>();
 
-        public static readonly StoreNameType[] ObjectTypes = new StoreNameType[]
+        private static readonly StoreNameType[] ObjectTypes = new[]
                                                    {
                                                        StoreNameType.Spell,
                                                        StoreNameType.Map,
@@ -39,11 +38,15 @@ namespace WowPacketParser.SQL
         {
             using (var reader = SQLConnector.ExecuteQuery(query))
             {
-                if (reader == null) // Not sure why I am doing this.
-                    return null;    // Probably because I don't know
-                                    // a better alternative
+                if (reader == null)
+                    return null;
 
-                return reader.GetDictionary<T, TK>();
+                var dict = new Dictionary<T, TK>();
+
+                while (reader.Read())
+                    dict.Add((T)reader.GetValue(0), (TK)reader.GetValue(1));
+
+                return dict;
             }
                 
         }

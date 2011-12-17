@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -9,8 +8,46 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
+
+
 namespace WowPacketParser.Store.SQL
 {
+
+    public class SQLInsertRow
+    {
+        private readonly List<string> _row = new List<string>();
+        private readonly List<string> _fieldNames = new List<string>();
+
+        public void AddValue(string field, object value, bool isFlag = false)
+        {
+            if (value == null)
+                return;
+
+            if (value is string)
+                value = SQLUtil.Stringify(value);
+
+            if ((value is int || value is Enum) && isFlag)
+                value = SQLUtil.Hexify((int)value);
+
+            _row.Add(value.ToString());
+            _fieldNames.Add(field);
+        }
+
+        public string Build()
+        {
+            var row = new StringBuilder();
+            row.Append("(");
+
+            foreach (var value in _row)
+            {
+                row.Append(value);
+                row.Append(_row.Last() != value ? SQLUtil.CommaSeparator : "),");
+            }
+
+            return row.ToString();
+        }
+    }
+
     public static class Builder
     {
         private const string cs = SQLUtil.CommaSeparator;
@@ -31,16 +68,16 @@ namespace WowPacketParser.Store.SQL
             // Insert rows
             foreach (var data in Stuffing.SniffData)
             {
+                var row = new SQLInsertRow();
 
+                row.AddValue("Build",      data.FileInfo.Build);
+                row.AddValue("SniffName",  (Path.GetFileName(data.FileInfo.FileName)));
+                row.AddValue("TimeStamp",  data.TimeStamp);
+                row.AddValue("ObjectType", data.ObjectType.ToString());
+                row.AddValue("Id",         data.Id);
+                row.AddValue("Data",       data.Data);
 
-                sqlQuery.Append(
-                    "(" +
-                    data.FileInfo.Build + cs +
-                    SQLUtil.Stringify(Path.GetFileName(data.FileInfo.FileName)) + cs +
-                    data.TimeStamp + cs +
-                    SQLUtil.Stringify(data.ObjectType) + cs +
-                    data.Id + cs +
-                    SQLUtil.Stringify(data.Data) + ")," + Environment.NewLine);
+                sqlQuery.Append(row.Build() + Environment.NewLine);
             }
 
             return sqlQuery.ReplaceLast(',', ';').ToString();
