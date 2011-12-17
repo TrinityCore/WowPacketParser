@@ -55,7 +55,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleClientCharRename(Packet packet)
         {
             packet.ReadGuid("GUID");
-
             packet.ReadCString("New Name");
         }
 

@@ -296,10 +296,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBindPointUpdate(Packet packet)
         {
             packet.ReadVector3("Position");
-
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
-
-            packet.ReadInt32("Zone ID");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
         }
 
         [Parser(Opcode.MSG_MOVE_TELEPORT_ACK)]

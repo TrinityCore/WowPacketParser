@@ -10,7 +10,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_WARDEN_DATA)]
         public static void HandleServerWardenData(Packet packet)
         {
-
             var opcode = packet.ReadEnum<WardenServerOpcode>("Warden Server Opcode", TypeCode.Byte);
 
             packet.SetPosition(0);
@@ -96,6 +95,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                     var result = packet.ReadBytes(length);
                     packet.Writer.WriteLine("Check Results: " + Utilities.ByteArrayToHexString(result));
+                    
                     break;
                 }
                 case WardenClientOpcode.TransformedSeed:

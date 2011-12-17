@@ -77,7 +77,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Level", i);
                 packet.ReadByte("Class", i);
                 packet.ReadByte("Unk", i);
-                packet.ReadUInt32("Zone Id", i);
+                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", i);
 
                 if (!online)
                     packet.ReadUInt32("Last Online", i);

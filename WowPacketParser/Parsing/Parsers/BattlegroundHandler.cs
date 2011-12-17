@@ -261,7 +261,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldMgrInviteSend(Packet packet)
         {
             packet.ReadInt32("Battle Id");
-            packet.ReadInt32("Zone Id");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
             packet.ReadTime("Invite lasts until");
         }
 
@@ -283,11 +283,10 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldMgrQueueRequestResponse(Packet packet)
         {
             packet.ReadInt32("Battle Id");
-            packet.ReadInt32("Zone Id");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone ID");
             packet.ReadByte("Accepted");
             packet.ReadByte("Logging In");
             packet.ReadByte("Warmup");
-
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERED)]

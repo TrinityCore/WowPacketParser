@@ -366,7 +366,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadEnum<LfgRoleFlag>("Role", TypeCode.Byte, i);
 
                 if (flags2.HasAnyFlag(LfgUpdateFlag.Area))
-                    packet.ReadInt32("Area ID", i);
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area ID", i);
 
                 if (flags2.HasAnyFlag(LfgUpdateFlag.Unknown7))
                     packet.ReadBoolean("Unknown byte", i);
