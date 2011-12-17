@@ -60,7 +60,7 @@ namespace WowPacketParser.Store.SQL
             var sqlQuery = new StringBuilder(String.Empty);
 
             const string tableName = "SniffData";
-            string[] tableStructure = { "Build", "SniffName", "TimeStamp", "ObjectType", "Id", "Data" };
+            string[] tableStructure = { "Build", "SniffName", "TimeStamp", "ObjectType", "Id", "Data", "Number"};
 
             // Insert
             sqlQuery.Append(SQLUtil.InsertQueryHeader(tableStructure, tableName, "INSERT IGNORE INTO"));
@@ -76,6 +76,7 @@ namespace WowPacketParser.Store.SQL
                 row.AddValue("ObjectType", data.ObjectType.ToString());
                 row.AddValue("Id",         data.Id);
                 row.AddValue("Data",       data.Data);
+                row.AddValue("Number",     data.Number);
 
                 sqlQuery.Append(row.Build() + Environment.NewLine);
             }

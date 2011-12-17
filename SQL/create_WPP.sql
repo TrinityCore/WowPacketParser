@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS `WPP`.`SniffData` (
   `ObjectType` ENUM('None','Spell','Map','LFGDungeon','Battleground','Unit','GameObject','Item','Quest','Opcode','PageText','NpcText','Gossip','Zone','Area','Phase') NOT NULL DEFAULT 'None', -- StoreNameType.cs enum
   `Id` INT(10) NOT NULL DEFAULT '0',
   `Data` TEXT NOT NULL,
+  `Number` INT(10) NOT NULL DEFAULT '0',
   UNIQUE KEY `SniffName` (`Timestamp`,`ObjectType`,`Id`,`Data`(255))
 ) ENGINE=INNODB DEFAULT CHARSET=latin1;
 

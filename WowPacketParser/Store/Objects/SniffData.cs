@@ -1,6 +1,5 @@
 ﻿using System;
 using WowPacketParser.Enums;
-using WowPacketParser.Misc;
 
 namespace WowPacketParser.Store.Objects
 {
@@ -15,6 +14,8 @@ namespace WowPacketParser.Store.Objects
         public int Id = 0;
 
         public String Data = string.Empty;
+
+        public int Number = 0;
 
         public object Clone()
         {

@@ -45,6 +45,7 @@ namespace WowPacketParser.Misc
         public void AddSniffData()
         {
             SniffData.TimeStamp = Utilities.GetUnixTimeFromDateTime(Time);
+            SniffData.Number = Number;
 
             if (SniffData.ObjectType == StoreNameType.None)
                 return;
