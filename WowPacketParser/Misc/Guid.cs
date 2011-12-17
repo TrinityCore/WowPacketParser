@@ -33,7 +33,7 @@ namespace WowPacketParser.Misc
                 case HighGuidType.DynObject:
                 case HighGuidType.Group:
                 case HighGuidType.Item:
-                    return (Full & 0x000FFFFFFFFFFFFF) >> 0;
+                    return Full & 0x000FFFFFFFFFFFFF;
                 case HighGuidType.GameObject:
                 case HighGuidType.Transport:
                 case HighGuidType.MOTransport:
@@ -41,12 +41,12 @@ namespace WowPacketParser.Misc
                 case HighGuidType.Unit:
                 case HighGuidType.Pet:
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
-                        return (Full & 0x00000000FFFFFFFF) >> 0;
-                    return (Full & 0x0000000000FFFFFF) >> 0;
+                        return Full & 0x00000000FFFFFFFF;
+                    return Full & 0x0000000000FFFFFF;
             }
 
             // TODO: check if entryless guids dont use now more bytes
-            return (Full & 0x00000000FFFFFFFF) >> 0;
+            return Full & 0x00000000FFFFFFFF;
         }
 
         public uint GetEntry()
