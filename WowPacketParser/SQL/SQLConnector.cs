@@ -67,7 +67,15 @@ namespace WowPacketParser.SQL
         {
             get
             {
-                return String.Format("Server={0};Port={1};Username={2};Password={3};Database={4};CharSet={5}",
+                if (Settings.GetString("Server") == ".")
+                    return String.Format("Server=localhost;Pipe={0};UserID={1};Password={2};Database={3};CharacterSet={4};ConnectionTimeout=5;ConnectionProtocol=Pipe;",
+                                        Settings.GetString("Port"),
+                                        Settings.GetString("Username"),
+                                        Settings.GetString("Password"),
+                                        Settings.GetString("Database"),
+                                        Settings.GetString("CharacterSet"));
+
+                return String.Format("Server={0};Port={1};Username={2};Password={3};Database={4};CharSet={5};ConnectionTimeout=5;",
                                     Settings.GetString("Server"),
                                     Settings.GetString("Port"),
                                     Settings.GetString("Username"),
