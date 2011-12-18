@@ -43,7 +43,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
                 packet.ReadInt32("Unk Int32");
-            
+
             var count = packet.ReadInt32("Count");
             npcTrainer.TrainerSpells = new List<TrainerSpell>(count);
             for (var i = 0; i < count; i++)
@@ -231,10 +231,7 @@ namespace WowPacketParser.Parsing.Parsers
                 gossip.GossipOptions.Add(gossipOption);
             }
 
-            packet.SniffData.ObjectType = StoreNameType.Gossip;
-            packet.SniffData.Id = (int) menuId;
-            packet.SniffData.Data = guid.GetEntry().ToString();
-            packet.AddSniffData();
+            packet.AddSniffData(StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString());
 
             Stuffing.Gossips.TryAdd(new Tuple<uint, uint>(menuId, textId), gossip);
 

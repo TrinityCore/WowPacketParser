@@ -81,7 +81,7 @@ namespace WowPacketParser.Parsing
                 packet.Direction, Opcodes.GetOpcodeName(opcode), opcode.ToString("X4"),
                 packet.GetLength(), packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
                 packet.Number, isMultiple ? " (part of another packet)" : "");
-            
+
             if (opcode == 0)
                 return;
 
@@ -96,7 +96,7 @@ namespace WowPacketParser.Parsing
                     try
                     {
                         handler(packet);
-    
+
                         if (packet.GetPosition() == packet.GetLength())
                             status = ParsedStatus.Success;
                         else
@@ -131,10 +131,8 @@ namespace WowPacketParser.Parsing
             if (isMultiple == false)
             {
                 packet.Status = status;
-                packet.SniffData.ObjectType = StoreNameType.Opcode;
-                packet.SniffData.Id = packet.Opcode;
-                packet.SniffData.Data = status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode) : status.ToString();
-                packet.AddSniffData();
+                var data = status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode) : status.ToString();
+                packet.AddSniffData(StoreNameType.Opcode, packet.Opcode, data);
             }
         }
     }

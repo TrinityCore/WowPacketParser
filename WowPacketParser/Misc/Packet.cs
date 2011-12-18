@@ -10,7 +10,7 @@ namespace WowPacketParser.Misc
 {
     public sealed partial class Packet : BinaryReader
     {
-        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringWriter writer, SniffData sniffData)
+        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringWriter writer, SniffFileInfo fileInfo)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
             Opcode = opcode;
@@ -18,7 +18,7 @@ namespace WowPacketParser.Misc
             Direction = direction;
             Number = number;
             Writer = writer;
-            SniffData = sniffData;
+            SniffFileInfo = fileInfo;
             Status = ParsedStatus.None;
         }
 
@@ -30,7 +30,7 @@ namespace WowPacketParser.Misc
             Direction = direction;
             Number = number;
             Writer = new StringWriter();
-            SniffData = new SniffData {FileInfo = fileInfo};
+            SniffFileInfo = fileInfo;
             Status = ParsedStatus.None;
         }
 
@@ -39,25 +39,30 @@ namespace WowPacketParser.Misc
         public Direction Direction { get; private set; }
         public int Number { get; private set; }
         public StringWriter Writer { get; private set; }
-        public SniffData SniffData { get; private set; }
+        public SniffFileInfo SniffFileInfo { get; private set; }
         public ParsedStatus Status { get; set; }
 
-        public void AddSniffData()
+        public void AddSniffData(StoreNameType type, int id, string data)
         {
-            SniffData.TimeStamp = Utilities.GetUnixTimeFromDateTime(Time);
-            SniffData.Number = Number;
-
-            if (SniffData.ObjectType == StoreNameType.None)
+            if (type == StoreNameType.None)
                 return;
 
-            if (SniffData.Id == 0 && SniffData.ObjectType != StoreNameType.Map)
+            if (id == 0 && type != StoreNameType.Map)
                 return; // Only maps can have id 0
 
-            if (SniffData.ObjectType == StoreNameType.Opcode)
+            if (type == StoreNameType.Opcode)
                 if (!Settings.GetBoolean("OpcodeStatusDB"))
                     return; // Don't add opcodes if its config is not enabled
 
-            var sniffData = (SniffData) SniffData.Clone(); // WHY???
+            var sniffData = new SniffData()
+            {
+                FileInfo = SniffFileInfo,
+                TimeStamp = Utilities.GetUnixTimeFromDateTime(Time),
+                ObjectType = type,
+                Id = id,
+                Data = data,
+                Number = Number,
+            };
             Stuffing.SniffData.Add(sniffData);
         }
 
@@ -77,7 +82,7 @@ namespace WowPacketParser.Misc
                 inflater.SetInput(arr, 0, arr.Length);
                 inflater.Inflate(newarr, 0, inflatedSize);
             }
-            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, SniffData);
+            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, SniffFileInfo);
             return pkt;
         }
 

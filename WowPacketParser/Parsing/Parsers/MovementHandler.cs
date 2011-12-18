@@ -274,10 +274,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (!CharacterHandler.Characters.TryGetValue(SessionHandler.LoginGuid, out chInfo))
                 return;
 
-            packet.SniffData.ObjectType = StoreNameType.Map;
-            packet.SniffData.Id = mapId;
-            packet.SniffData.Data = "NEW_WORLD";
-            packet.AddSniffData();
+            packet.AddSniffData(StoreNameType.Map, mapId, "NEW_WORLD");
 
             SessionHandler.LoggedInCharacter = chInfo;
         }
@@ -509,10 +506,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.Writer.WriteLine("Phase Mask: 0x" + phaseMask.ToString("X8"));
             CurrentPhaseMask = phaseMask;
 
-            packet.SniffData.ObjectType = StoreNameType.Phase;
-            packet.SniffData.Id = phaseMask;
-            packet.SniffData.Data = "PHASEMASK";
-            packet.AddSniffData();
+            packet.AddSniffData(StoreNameType.Phase, phaseMask, "PHASEMASK");
         }
 
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_0_6a_13623)]
@@ -637,10 +631,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = new Guid(tmp);
             packet.Writer.WriteLine("GUID: " + guid);
 
-            packet.SniffData.ObjectType = StoreNameType.Phase;
-            packet.SniffData.Id = phaseMask;
-            packet.SniffData.Data = "PHASEMASK 422";
-            packet.AddSniffData();
+            packet.AddSniffData(StoreNameType.Phase, phaseMask, "PHASEMASK 422");
         }
 
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
@@ -763,7 +754,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var opc = pkt.ReadInt16();
                 var data = pkt.ReadBytes(size - 2);
 
-                var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer, packet.SniffData);
+                var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer, packet.SniffFileInfo);
                 Handler.Parse(newPacket, true);
             }
 

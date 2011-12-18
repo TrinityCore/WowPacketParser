@@ -439,7 +439,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             // In this single (?) case, map 0 means no map
             item.MapId = (uint) packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
-            
+
             item.BagFamily = packet.ReadEnum<BagFamilyMask>("Bag Family", TypeCode.Int32);
 
             item.TotemCategory = packet.ReadEnum<TotemCategory>("Totem Category", TypeCode.Int32);
@@ -469,10 +469,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                 item.HolidayId = packet.ReadEnum<Holiday>("Holiday", TypeCode.Int32);
 
-            packet.SniffData.ObjectType = StoreNameType.Item;
-            packet.SniffData.Id = entry.Key;
-            packet.SniffData.Data = "QUERY_RESPONSE";
-            packet.AddSniffData();
+            packet.AddSniffData(StoreNameType.Item, entry.Key, "QUERY_RESPONSE");
 
             Stuffing.ItemTemplates.TryAdd((uint) entry.Key, item);
         }
@@ -626,10 +623,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
                 packet.ReadUInt32("Received Type");
 
-            packet.SniffData.ObjectType = StoreNameType.Item;
-            packet.SniffData.Id = itemId;
-            packet.SniffData.Data = "DB_REPLY";
-            packet.AddSniffData();
+            packet.AddSniffData(StoreNameType.Item, itemId, "DB_REPLY");
         }
 
         [Parser(Opcode.SMSG_UPDATE_ITEM_ENCHANTMENTS)]

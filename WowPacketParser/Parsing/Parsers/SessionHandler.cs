@@ -137,7 +137,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 2; i++)
                 packet.ReadByte("Digest (6)", i);
 
-            var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.SniffData);
+            var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.SniffFileInfo);
             AddonHandler.ReadClientAddonsList(ref pkt);
             packet.ReadByte("Mask"); // TODO: Seems to affect how the size is read
             var size = (packet.ReadByte() >> 4);

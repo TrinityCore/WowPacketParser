@@ -3,23 +3,18 @@ using WowPacketParser.Enums;
 
 namespace WowPacketParser.Store.Objects
 {
-    public class SniffData : ICloneable
+    public struct SniffData
     {
-        public SniffFileInfo FileInfo = new SniffFileInfo();
+        public SniffFileInfo FileInfo { get; set; }
 
-        public double TimeStamp;
+        public double TimeStamp { get; set; }
 
-        public StoreNameType ObjectType = StoreNameType.None;
+        public StoreNameType ObjectType { get; set; }
 
-        public int Id = 0;
+        public int Id { get; set; }
 
-        public String Data = string.Empty;
+        public String Data { get; set; }
 
-        public int Number = 0;
-
-        public object Clone()
-        {
-            return this.MemberwiseClone();
-        }
+        public int Number { get; set; }
     }
 }

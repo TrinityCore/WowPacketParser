@@ -92,10 +92,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (objType == ObjectType.GameObject)
                     type = StoreNameType.GameObject;
 
-                packet.SniffData.ObjectType = type;
-                packet.SniffData.Id = (int) guid.GetEntry();
-                packet.SniffData.Data = "SPAWN";
-                packet.AddSniffData();
+                packet.AddSniffData(type, (int)guid.GetEntry(), "SPAWN");
             }
 
             Stuffing.Objects.TryAdd(guid, obj);
