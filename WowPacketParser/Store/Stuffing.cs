@@ -59,5 +59,9 @@ namespace WowPacketParser.Store
         // Loot (ItemId, LootType)
         public static readonly ConcurrentDictionary<Tuple<uint, ObjectType>, Loot> Loots =
             new ConcurrentDictionary<Tuple<uint, ObjectType>, Loot>();
+
+        // Quest POI (QuestId, Id)
+        public static readonly ConcurrentDictionary<Tuple<uint, uint>, QuestPOI> QuestPOIs =
+            new ConcurrentDictionary<Tuple<uint, uint>, QuestPOI>();
     }
 }

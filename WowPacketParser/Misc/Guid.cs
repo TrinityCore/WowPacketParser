@@ -126,11 +126,7 @@ namespace WowPacketParser.Misc
             // name next to the entry (from a database, if enabled)
             if (HasEntry())
             {
-                StoreNameType type = StoreNameType.None;
-                if (GetObjectType() == ObjectType.Unit)
-                    type = StoreNameType.Unit;
-                if (GetObjectType() == ObjectType.GameObject)
-                    type = StoreNameType.GameObject;
+                var type = Utilities.ObjectTypeToStore(GetObjectType());
 
                 return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()
                        + " Entry: " + StoreGetters.GetName(type, (int)GetEntry()) + " Low: " + GetLow();
@@ -139,11 +135,11 @@ namespace WowPacketParser.Misc
             if (GetHighType() == HighGuidType.BattleGround)
             {
                 var bgType    = (Full & 0x00FF0000) >> 16;
-                var UnkId     = (Full & 0x0000FF00) >> 8;
+                var unkId     = (Full & 0x0000FF00) >> 8;
                 var arenaType = (Full & 0x000000FF) >> 0;
                 return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()
                     + " BgType: " + StoreGetters.GetName(StoreNameType.Battleground, (int)bgType)
-                    + " Unk: " + UnkId + (arenaType > 0 ? (" ArenaType: " + arenaType) : "");
+                    + " Unk: " + unkId + (arenaType > 0 ? (" ArenaType: " + arenaType) : "");
             }
 
             return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()

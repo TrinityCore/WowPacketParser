@@ -86,11 +86,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (guid.HasEntry() && (objType == ObjectType.Unit || objType == ObjectType.GameObject))
             {
-                var type = StoreNameType.None;
-                if (objType == ObjectType.Unit)
-                    type = StoreNameType.Unit;
-                if (objType == ObjectType.GameObject)
-                    type = StoreNameType.GameObject;
+                var type = Utilities.ObjectTypeToStore(objType);
 
                 packet.AddSniffData(type, (int)guid.GetEntry(), "SPAWN");
             }

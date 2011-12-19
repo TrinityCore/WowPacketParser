@@ -264,29 +264,32 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var questId = packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID", i);
 
-                var counter = packet.ReadInt32("[" + i + "] POI Counter");
+                var counter = packet.ReadInt32("POI Counter", i);
                 for (var j = 0; j < counter; j++)
                 {
+                    var questPOI = new QuestPOI();
+
                     var idx = packet.ReadInt32("POI Index", i, j);
-                    var objIndex = packet.ReadInt32("Objective Index", i, j);
+                    questPOI.ObjectiveIndex = packet.ReadInt32("Objective Index", i, j);
 
-                    var mapId = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID", i);
-                    var wmaId = packet.ReadInt32("World Map Area", i, j);
-                    var floorId = packet.ReadInt32("Floor Id", i, j);
-                    var unk2 = packet.ReadInt32("Unk Int32 2", i, j);
-                    var unk3 = packet.ReadInt32("Unk Int32 3", i, j);
+                    questPOI.Map = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id", i);
+                    questPOI.WorldMapAreaId = packet.ReadInt32("World Map Area", i, j);
+                    questPOI.FloorId = packet.ReadInt32("Floor Id", i, j);
+                    questPOI.UnkInt1 = packet.ReadInt32("Unk Int32 2", i, j);
+                    questPOI.UnkInt2 = packet.ReadInt32("Unk Int32 3", i, j);
 
-                    SQLStore.WriteData(SQLStore.QuestPois.GetCommand(questId, idx, objIndex, mapId, wmaId,
-                        floorId, unk2, unk3));
-
-                    var pointsSize = packet.ReadInt32("Points counter", i, j);
+                    var pointsSize = packet.ReadInt32("Points Counter", i, j);
+                    questPOI.Points = new List<QuestPOIPoint>(pointsSize);
                     for (var k = 0; k < pointsSize; k++)
                     {
-                        var pointX = packet.ReadInt32("Point X", i, j, k);
-                        var pointY = packet.ReadInt32("Point Y", i, j, k);
-                        SQLStore.WriteData(SQLStore.QuestPoiPoints.GetCommand(questId, idx, objIndex, pointX,
-                            pointY));
+                        var questPOIPoint = new QuestPOIPoint();
+                        questPOIPoint.Index = k;
+                        questPOIPoint.X = packet.ReadInt32("Point X", i, j, k);
+                        questPOIPoint.Y = packet.ReadInt32("Point Y", i, j, k);
+                        questPOI.Points.Add(questPOIPoint);
                     }
+
+                    Stuffing.QuestPOIs.TryAdd(new Tuple<uint, uint>((uint) questId, (uint) idx), questPOI);
                 }
             }
         }

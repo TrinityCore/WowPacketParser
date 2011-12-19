@@ -79,6 +79,7 @@ namespace WowPacketParser
                         SQLStore.WriteData(Builder.Gossip());
                         SQLStore.WriteData(Builder.Loot());
                         SQLStore.WriteData(Builder.SniffData());
+                        SQLStore.WriteData(Builder.QuestPOI());
                     }
 
                     SQLStore.WriteToFile();

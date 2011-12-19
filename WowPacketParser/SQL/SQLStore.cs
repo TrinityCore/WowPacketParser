@@ -64,10 +64,6 @@ namespace WowPacketParser.SQL
 
         public static readonly ItemStore Items = new ItemStore();
 
-        public static readonly QuestPoiPointStore QuestPoiPoints = new QuestPoiPointStore();
-
-        public static readonly QuestPoiStore QuestPois = new QuestPoiStore();
-
         public static readonly StartActionStore StartActions = new StartActionStore();
 
         public static readonly StartPositionStore StartPositions = new StartPositionStore();

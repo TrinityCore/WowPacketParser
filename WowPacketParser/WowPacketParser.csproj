@@ -298,10 +298,12 @@
     <Compile Include="Parsing\Parsers\CombatLogHandler.cs" />
     <Compile Include="Parsing\Parsers\TestHandler.cs" />
     <Compile Include="Store\Objects\Aura.cs" />
+    <Compile Include="Store\Objects\QuestPOI.cs" />
     <Compile Include="Store\Objects\LootItem.cs" />
     <Compile Include="Store\Objects\NpcVendor.cs" />
     <Compile Include="Store\Objects\GossipOption.cs" />
     <Compile Include="Store\Objects\NpcTrainer.cs" />
+    <Compile Include="Store\Objects\QuestPOIPoint.cs" />
     <Compile Include="Store\Objects\SniffData.cs" />
     <Compile Include="Store\Objects\SniffFileInfo.cs" />
     <Compile Include="Store\Objects\StartAction.cs" />
@@ -398,8 +400,6 @@
     <Compile Include="SQL\Stores\GameObjectSpawnUpdateStore.cs" />
     <Compile Include="SQL\Stores\GameObjectUpdateStore.cs" />
     <Compile Include="SQL\Stores\ItemStore.cs" />
-    <Compile Include="SQL\Stores\QuestPoiPointStore.cs" />
-    <Compile Include="SQL\Stores\QuestPoiStore.cs" />
     <Compile Include="SQL\Stores\StartActionStore.cs" />
     <Compile Include="SQL\Stores\StartPositionStore.cs" />
     <Compile Include="SQL\Stores\StartSpellStore.cs" />

@@ -67,6 +67,8 @@ namespace WowPacketParser.Store.SQL
                 foreach (var row in Rows)
                     result.Append(row.Build());
 
+                result.Append(Environment.NewLine);
+
                 return result.ReplaceLast(',', ';').ToString();
             }
         }
@@ -185,6 +187,7 @@ namespace WowPacketParser.Store.SQL
                         if (ValuesDouble.Count != iter)
                             query.Append(" OR ");
                     }
+                    query.Append(";");
                 }
                 else
                 {
@@ -199,11 +202,10 @@ namespace WowPacketParser.Store.SQL
                         if (Values.Count != iter)
                             query.Append(SQLUtil.CommaSeparator);
                     }
+                    query.Append(");");
                 }
 
-                query.Append(");");
                 query.Append(Environment.NewLine);
-
                 return query.ToString();
             }
         }
