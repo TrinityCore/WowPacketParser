@@ -306,7 +306,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.Writer.WriteLine("[{0}] Character GUID: {1}", c, playerGuid);
                 packet.Writer.WriteLine("[{0}] Guild GUID: {1}", c, new Guid(BitConverter.ToUInt64(guild, 0)));
 
-                //if (firstLogin)
+                var firstLogin = bits[c, 16];
+                if (firstLogin)
                 {
                     var startPos = new StartPosition();
                     startPos.Map = mapId;
@@ -320,7 +321,7 @@ namespace WowPacketParser.Parsing.Parsers
                 chInfo.Race = race;
                 chInfo.Class = clss;
                 chInfo.Name = name;
-                chInfo.FirstLogin = true; // Where's that goddamn "IsFirstLogin" boolean?
+                chInfo.FirstLogin = firstLogin;
                 chInfo.Level = level;
 
                 Characters.Add(playerGuid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects

@@ -5,6 +5,8 @@ namespace WowPacketParser.SQL
 {
     public sealed class SQLCommandBuilder
     {
+        // TODO: Delete this file, use QueryBuilder.cs instead
+
         public readonly List<KeyValuePair<string, object>> InsertValues =
             new List<KeyValuePair<string, object>>();
 
