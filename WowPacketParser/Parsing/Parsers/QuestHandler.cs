@@ -191,9 +191,9 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333)) // Probably earlier
                 quest.RequiredSpell = (uint) packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Required Spell");
 
-            quest.ObjectiveTexts = new string[4];
+            quest.ObjectiveText = new string[4];
             for (var i = 0; i < 4; i++)
-                quest.ObjectiveTexts[i] = packet.ReadCString("Objective Text", i);
+                quest.ObjectiveText[i] = packet.ReadCString("Objective Text", i);
 
             quest.RewardCurrencyId = new uint[4];
             quest.RewardCurrencyCount = new uint[4];

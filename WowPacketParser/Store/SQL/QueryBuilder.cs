@@ -29,10 +29,22 @@ namespace WowPacketParser.Store.SQL
 
                 TableStructure = Rows.First().FieldNames;
                 InsertHeader = new SQLInsertHeader(Table, TableStructure, ignore);
-                
+
             }
 
-            public SQLInsert(string table, ICollection<Object> values, ICollection<string> primaryKeys, List<SQLInsertRow> rows, bool ignore = false)
+            public SQLInsert(string table, ICollection<uint> values, ICollection<string> primaryKeys,
+                             List<SQLInsertRow> rows, bool ignore = false)
+            {
+                Table = table;
+                Rows = rows;
+
+                TableStructure = Rows.First().FieldNames;
+                Delete = new SQLDelete(values, primaryKeys, Table);
+                InsertHeader = new SQLInsertHeader(Table, TableStructure, ignore);
+            }
+
+            public SQLInsert(string table, ICollection<Tuple<uint, uint>> values, ICollection<string> primaryKeys,
+                             List<SQLInsertRow> rows, bool ignore = false)
             {
                 Table = table;
                 Rows = rows;
@@ -57,6 +69,51 @@ namespace WowPacketParser.Store.SQL
             }
         }
 
+        public class SQLInsertRow : ISQLQuery
+        {
+            private readonly List<string> _row = new List<string>();
+            public string Comment { get; set; }
+            public readonly List<string> FieldNames = new List<string>();
+
+            public void AddValue(string field, object value, bool isFlag = false)
+            {
+                if (value == null)
+                    return;
+
+                if (value is string)
+                    value = SQLUtil.Stringify(value);
+
+                if (value is Enum)
+                    value = (int) value;
+
+                if (value is int && isFlag)
+                    value = SQLUtil.Hexify((int) value);
+
+                _row.Add(value.ToString());
+                FieldNames.Add(field);
+            }
+
+            public string Build()
+            {
+                var row = new StringBuilder();
+                row.Append("(");
+
+                var iter = 0;
+                foreach (var value in _row)
+                {
+                    iter++;
+                    row.Append(value);
+
+                    row.Append(_row.Count != iter ? SQLUtil.CommaSeparator : "),");
+                    if (!String.IsNullOrWhiteSpace(Comment))
+                        row.Append(" -- " + Comment);
+                }
+                row.Append(Environment.NewLine);
+
+                return row.ToString();
+            }
+        }
+
         private class SQLDelete : ISQLQuery
         {
             // TODO: Support any number of values (only single and double supported atm)
@@ -66,21 +123,22 @@ namespace WowPacketParser.Store.SQL
             private string Table { get; set; }
             private ICollection<string> PrimaryKeys { get; set; }
 
-            public SQLDelete(ICollection<Object> values, ICollection<string> primaryKeys, string tableName)
+            public SQLDelete(ICollection<uint> values, ICollection<string> primaryKeys, string tableName)
             {
                 PrimaryKeys = primaryKeys;
                 Table = tableName;
 
-                if (values is ICollection<uint> || values is ICollection<int>)
-                {
-                    Values = (ICollection<uint>) values;
-                    _double = false;
-                }
-                else
-                {
-                    ValuesDouble = (ICollection<Tuple<uint, uint>>) values;
-                    _double = true;
-                }
+                Values = values;
+                _double = false;
+            }
+
+            public SQLDelete(ICollection<Tuple<uint, uint>> values, ICollection<string> primaryKeys, string tableName)
+            {
+                PrimaryKeys = primaryKeys;
+                Table = tableName;
+
+                ValuesDouble = values;
+                _double = true;
             }
 
             public string Build()
@@ -148,7 +206,7 @@ namespace WowPacketParser.Store.SQL
             public string Build()
             {
                 var insertCommand = "INSERT " +
-                    (Ignore ? string.Empty : "IGNORE ") + "INTO";
+                    (Ignore ? "IGNORE " : string.Empty) + "INTO";
 
                 var result = insertCommand + " " + SQLUtil.AddBackQuotes(Table) + " (";
                 var iter = 0;
@@ -162,45 +220,6 @@ namespace WowPacketParser.Store.SQL
                 result += ") VALUES" + Environment.NewLine;
 
                 return result;
-            }
-        }
-
-        public class SQLInsertRow : ISQLQuery
-        {
-            private readonly List<string> _row = new List<string>();
-            public string Comment { get; set; }
-            public readonly List<string> FieldNames = new List<string>();
-
-            public void AddValue(string field, object value, bool isFlag = false)
-            {
-                if (value == null)
-                    return;
-
-                if (value is string)
-                    value = SQLUtil.Stringify(value);
-
-                if ((value is int || value is Enum) && isFlag)
-                    value = SQLUtil.Hexify((int)value);
-
-                _row.Add(value.ToString());
-                FieldNames.Add(field);
-            }
-
-            public string Build()
-            {
-                var row = new StringBuilder();
-                row.Append("(");
-
-                foreach (var value in _row)
-                {
-                    row.Append(value);
-                    row.Append(_row.Last() != value ? SQLUtil.CommaSeparator : "),");
-                    if (!String.IsNullOrWhiteSpace(Comment))
-                        row.Append(" -- " + Comment);
-                }
-                row.Append(Environment.NewLine);
-
-                return row.ToString();
             }
         }
     }

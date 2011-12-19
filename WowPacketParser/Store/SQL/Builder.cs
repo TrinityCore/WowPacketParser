@@ -47,143 +47,128 @@ namespace WowPacketParser.Store.SQL
             if (Stuffing.QuestTemplates.IsEmpty)
                 return string.Empty;
 
-            var sqlQuery = new StringBuilder(String.Empty);
-
             const string tableName = "quest_template";
-            const string primaryKey = "Id";
-            string[] tableStructure = {
-                                          "Id", "Method", "Level", "MinLevel", "ZoneOrSort", "Type", "SuggestedPlayers",
-                                          "RequiredFactionId1", "RequiredFactionId2", "RequiredFactionValue1", "RequiredFactionValue2",
-                                          "NextQuestIdChain", "RewardXPId", "RewardOrRequiredMoney", "RewardMoneyMaxLevel", "RewardSpell",
-                                          "RewardSpellCast", "RewardHonor", "RewardHonorMultiplier", "SourceItemId", "Flags", "MinimapTargetMark",
-                                          "RewardTitleId", "RequiredPlayerKills", "RewardTalents", "RewardArenaPoints", "RewardSkillId", "RewardSkillPoints",
-                                          "RewardReputationMask", "QuestGiverPortrait", "QuestTurnInPortrait", "RewardItemId1", "RewardItemId2", "RewardItemId3",
-                                          "RewardItemId4", "RewardItemCount1", "RewardItemCount2", "RewardItemCount3", "RewardItemCount4", "RewardChoiceItemId1",
-                                          "RewardChoiceItemId2", "RewardChoiceItemId3", "RewardChoiceItemId4", "RewardChoiceItemId5", "RewardChoiceItemId6",
-                                          "RewardChoiceItemCount1", "RewardChoiceItemCount2", "RewardChoiceItemCount3", "RewardChoiceItemCount4", "RewardChoiceItemCount5",
-                                          "RewardChoiceItemCount6", "RewardFactionId1", "RewardFactionId2", "RewardFactionId3", "RewardFactionId4", "RewardFactionId5",
-                                          "RewardFactionValueId1", "RewardFactionValueId2", "RewardFactionValueId3", "RewardFactionValueId4", "RewardFactionValueId5",
-                                          "RewardFactionValueIdOverride1", "RewardFactionValueIdOverride2", "RewardFactionValueIdOverride3", "RewardFactionValueIdOverride4",
-                                          "RewardFactionValueIdOverride5", "PointMapId", "PointX", "PointY", "PointOption", "Title", "Objectives", "Details", "EndText",
-                                          "CompletedText", "RequiredNpcOrGo1", "RequiredNpcOrGo2", "RequiredNpcOrGo3", "RequiredNpcOrGo4", "RequiredNpcOrGoCount1", "RequiredNpcOrGoCount2",
-                                          "RequiredNpcOrGoCount3", "RequiredNpcOrGoCount4", "RequiredSourceItemId1", "RequiredSourceItemId2", "RequiredSourceItemId3",
-                                          "RequiredSourceItemId4", "RequiredSourceItemCount1", "RequiredSourceItemCount2", "RequiredSourceItemCount3", "RequiredSourceItemCount4",
-                                          "RequiredItemId1", "RequiredItemId2", "RequiredItemId3", "RequiredItemId4", "RequiredItemId5", "RequiredItemId6", "RequiredItemCount1",
-                                          "RequiredItemCount2", "RequiredItemCount3", "RequiredItemCount4", "RequiredItemCount5", "RequiredItemCount6", "RequiredSpell", "ObjectiveText1",
-                                          "ObjectiveText2", "ObjectiveText3", "ObjectiveText4", "RewardCurrencyId1", "RewardCurrencyId2", "RewardCurrencyId3", "RewardCurrencyId4",
-                                          "RewardCurrencyCount1", "RewardCurrencyCount2", "RewardCurrencyCount3", "RewardCurrencyCount4", "RequiredCurrencyId1", "RequiredCurrencyId2",
-                                          "RequiredCurrencyId3", "RequiredCurrencyId4", "RequiredCurrencyCount1", "RequiredCurrencyCount2", "RequiredCurrencyCount3", "RequiredCurrencyCount4",
-                                          "QuestGiverTextWindow", "QuestGiverTargetName", "QuestTurnTextWindow", "QuestTurnTargetName", "SoundAccept", "SoundTurnIn"
-                                      };
 
-            // Delete
-            sqlQuery.Append(SQLUtil.DeleteQuerySingle(Stuffing.QuestTemplates.Keys, primaryKey, tableName));
-
-            // Insert
-            sqlQuery.Append(SQLUtil.InsertQueryHeader(tableStructure, tableName));
-
-            // Insert rows
+            var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var quest in Stuffing.QuestTemplates)
             {
-                sqlQuery.Append(
-                    "(" +
-                    quest.Key + cs +
-                    (int)quest.Value.Method + cs +
-                    quest.Value.Level + cs +
-                    quest.Value.MinLevel + cs +
-                    (int)quest.Value.ZoneOrSort + cs +
-                    (int)quest.Value.Type + cs +
-                    quest.Value.SuggestedPlayers + cs);
+                var row = new QueryBuilder.SQLInsertRow();
 
-                foreach (var n in quest.Value.RequiredFactionId)
-                    sqlQuery.Append(n + cs);
-                foreach (var n in quest.Value.RequiredFactionValue)
-                    sqlQuery.Append(n + cs);
+                row.AddValue("Id"                                      , quest.Key);
+                row.AddValue("Method"                                  , quest.Value.Method);
+                row.AddValue("Level"                                   , quest.Value.Level);
+                row.AddValue("MinLevel"                                , quest.Value.MinLevel);
+                row.AddValue("ZoneOrSort"                              , quest.Value.ZoneOrSort);
+                row.AddValue("Type"                                    , quest.Value.Type);
+                row.AddValue("SuggestedPlayers"                        , quest.Value.SuggestedPlayers);
+                
+                for (var i = 0; i < quest.Value.RequiredFactionId.Count(); i++)
+                    row.AddValue("RequiredFactionId" + (i + 1)         , quest.Value.RequiredFactionId[i]);
+                
+                for (var i = 0; i < quest.Value.RequiredFactionId.Count(); i++)
+                    row.AddValue("RequiredFactionValue" + (i + 1)      , quest.Value.RequiredFactionValue[i]);
+                
+                row.AddValue("NextQuestIdChain"                        , quest.Value.NextQuestIdChain);
+                row.AddValue("RewardXPId"                              , quest.Value.RewardXPId);
+                row.AddValue("RewardOrRequiredMoney"                   , quest.Value.RewardOrRequiredMoney);
+                row.AddValue("RewardMoneyMaxLevel"                     , quest.Value.RewardMoneyMaxLevel);
+                row.AddValue("RewardSpell"                             , quest.Value.RewardSpell);
+                row.AddValue("RewardSpellCast"                         , quest.Value.RewardSpellCast);
+                row.AddValue("RewardHonor"                             , quest.Value.RewardHonor);
+                row.AddValue("RewardHonorMultiplier"                   , quest.Value.RewardHonorMultiplier);
+                row.AddValue("SourceItemId"                            , quest.Value.SourceItemId);
+                row.AddValue("Flags"                                   , quest.Value.Flags, true);
+                row.AddValue("MinimapTargetMark"                       , quest.Value.MinimapTargetMark);
+                row.AddValue("RewardTitleId"                           , quest.Value.RewardTitleId);
+                row.AddValue("RequiredPlayerKills"                     , quest.Value.RequiredPlayerKills);
+                row.AddValue("RewardTalents"                           , quest.Value.RewardTalents);
+                row.AddValue("RewardArenaPoints"                       , quest.Value.RewardArenaPoints);
+                row.AddValue("RewardSkillId"                           , quest.Value.RewardSkillId);
+                row.AddValue("RewardSkillPoints"                       , quest.Value.RewardSkillPoints);
+                row.AddValue("RewardReputationMask"                    , quest.Value.RewardReputationMask);
+                row.AddValue("QuestGiverPortrait"                      , quest.Value.QuestGiverPortrait);
+                row.AddValue("QuestTurnInPortrait"                     , quest.Value.QuestTurnInPortrait);
+                
+                for (var i = 0; i < quest.Value.RewardItemId.Count(); i++)
+                    row.AddValue("RewardItemId" + (i + 1)              , quest.Value.RewardItemId[i]);
+                
+                for (var i = 0; i < quest.Value.RewardItemCount.Count(); i++)
+                    row.AddValue("RewardItemCount" + (i + 1)           , quest.Value.RewardItemCount[i]);
+                
+                for (var i = 0; i < quest.Value.RewardChoiceItemId.Count(); i++)
+                    row.AddValue("RewardChoiceItemId" + (i + 1)        , quest.Value.RewardChoiceItemId[i]);
+                
+                for (var i = 0; i < quest.Value.RewardChoiceItemCount.Count(); i++)
+                    row.AddValue("RewardChoiceItemCount" + (i + 1)     , quest.Value.RewardChoiceItemCount[i]);
+                
+                for (var i = 0; i < quest.Value.RewardFactionId.Count(); i++)
+                    row.AddValue("RewardFactionId" + (i + 1)           , quest.Value.RewardFactionId[i]);
+                
+                for (var i = 0; i < quest.Value.RewardFactionValueId.Count(); i++)
+                    row.AddValue("RewardFactionValueId" + (i + 1)      , quest.Value.RewardFactionValueId[i]);
+                
+                for (var i = 0; i < quest.Value.RewardFactionValueIdOverride.Count(); i++)
+                    row.AddValue("RewardFactionValueIdOverride" + (i + 1), quest.Value.RewardFactionValueIdOverride[i]);
+                
+                row.AddValue("PointMapId"                              , quest.Value.PointMapId);
+                row.AddValue("PointX"                                  , quest.Value.PointX);
+                row.AddValue("PointY"                                  , quest.Value.PointY);
+                row.AddValue("PointOption"                             , quest.Value.PointOption);
+                row.AddValue("Title"                                   , quest.Value.Title);
+                row.AddValue("Objectives"                              , quest.Value.Objectives);
+                row.AddValue("Details"                                 , quest.Value.Details);
+                row.AddValue("EndText"                                 , quest.Value.EndText);
+                row.AddValue("CompletedText"                           , quest.Value.CompletedText);
+                
+                for (var i = 0; i < quest.Value.RequiredNpcOrGo.Count(); i++)
+                    row.AddValue("RequiredNpcOrGo" + (i + 1)           , quest.Value.RequiredNpcOrGo[i]);
+                
+                for (var i = 0; i < quest.Value.RequiredNpcOrGoCount.Count(); i++)
+                    row.AddValue("RequiredNpcOrGoCount" + (i + 1)      , quest.Value.RequiredNpcOrGoCount[i]);
+                
+                for (var i = 0; i < quest.Value.RequiredSourceItemId.Count(); i++)
+                    row.AddValue("RequiredSourceItemId" + (i + 1)      , quest.Value.RequiredSourceItemId[i]);
+                
+                for (var i = 0; i < quest.Value.RequiredSourceItemCount.Count(); i++)
+                    row.AddValue("RequiredSourceItemCount" + (i + 1)   , quest.Value.RequiredSourceItemCount[i]);
+                
+                for (var i = 0; i < quest.Value.RequiredItemId.Count(); i++)
+                    row.AddValue("RequiredItemId" + (i + 1)            , quest.Value.RequiredItemId[i]);
+                
+                for (var i = 0; i < quest.Value.RequiredItemCount.Count(); i++)
+                    row.AddValue("RequiredItemCount" + (i + 1)         , quest.Value.RequiredItemCount[i]);
+                
+                for (var i = 0; i < quest.Value.RequiredSourceItemCount.Count(); i++)
+                    row.AddValue("RequiredSourceItemCount" + (i + 1)   , quest.Value.RequiredSourceItemCount[i]);
+                
+                row.AddValue("RequiredSpell"                           , quest.Value.RequiredSpell);
+                
+                for (var i = 0; i < quest.Value.ObjectiveText.Count(); i++)
+                    row.AddValue("ObjectiveText" + (i + 1)             , quest.Value.ObjectiveText[i]);
+                
+                for (var i = 0; i < quest.Value.RewardCurrencyId.Count(); i++)
+                    row.AddValue("RewardCurrencyId" + (i + 1)          , quest.Value.RewardCurrencyId[i]);
+                
+                for (var i = 0; i < quest.Value.RewardCurrencyCount.Count(); i++)
+                    row.AddValue("RewardCurrencyCount" + (i + 1)       , quest.Value.RewardCurrencyCount[i]);
+                
+                for (var i = 0; i < quest.Value.RequiredCurrencyId.Count(); i++)
+                    row.AddValue("RequiredCurrencyId" + (i + 1)        , quest.Value.RequiredCurrencyId[i]);
+                
+                for (var i = 0; i < quest.Value.RequiredCurrencyCount.Count(); i++)
+                    row.AddValue("RequiredCurrencyCount" + (i + 1)     , quest.Value.RequiredCurrencyCount[i]);
+                
+                row.AddValue("QuestGiverTextWindow"                    , quest.Value.QuestGiverTextWindow);
+                row.AddValue("QuestGiverTargetName"                    , quest.Value.QuestGiverTargetName);
+                row.AddValue("QuestTurnTextWindow"                     , quest.Value.QuestTurnTextWindow);
+                row.AddValue("QuestTurnTargetName"                     , quest.Value.QuestTurnTargetName);
+                row.AddValue("SoundAccept"                             , quest.Value.SoundAccept);
+                row.AddValue("SoundTurnIn"                             , quest.Value.SoundTurnIn);
 
-                sqlQuery.Append(
-                    quest.Value.NextQuestIdChain + cs +
-                    quest.Value.RewardXPId + cs +
-                    quest.Value.RewardOrRequiredMoney + cs +
-                    quest.Value.RewardMoneyMaxLevel + cs +
-                    quest.Value.RewardSpell + cs +
-                    quest.Value.RewardSpellCast + cs +
-                    quest.Value.RewardHonor + cs +
-                    quest.Value.RewardHonorMultiplier + cs +
-                    quest.Value.SourceItemId + cs +
-                    SQLUtil.Hexify((int)quest.Value.Flags) + cs +
-                    quest.Value.MinimapTargetMark + cs +
-                    quest.Value.RewardTitleId + cs +
-                    quest.Value.RequiredPlayerKills + cs +
-                    quest.Value.RewardTalents + cs +
-                    quest.Value.RewardArenaPoints + cs +
-                    quest.Value.RewardSkillId + cs +
-                    quest.Value.RewardSkillPoints + cs +
-                    quest.Value.RewardReputationMask + cs +
-                    quest.Value.QuestGiverPortrait + cs +
-                    quest.Value.QuestTurnInPortrait + cs);
-
-                foreach (var n in quest.Value.RewardItemId)
-                    sqlQuery.Append(n + cs);
-                foreach (var n in quest.Value.RewardItemCount)
-                    sqlQuery.Append(n + cs);
-                foreach (var n in quest.Value.RewardChoiceItemId)
-                    sqlQuery.Append(n + cs);
-                foreach (var n in quest.Value.RewardChoiceItemCount)
-                    sqlQuery.Append(n + cs);
-                foreach (var n in quest.Value.RewardFactionId)
-                    sqlQuery.Append(n + cs);
-                foreach (var n in quest.Value.RewardFactionValueId)
-                    sqlQuery.Append(n + cs);
-                foreach (var n in quest.Value.RewardFactionValueIdOverride)
-                    sqlQuery.Append(n + cs);
-
-                sqlQuery.Append(
-                    quest.Value.PointMapId + cs +
-                    quest.Value.PointX + cs +
-                    quest.Value.PointY + cs +
-                    quest.Value.PointOption + cs +
-                    SQLUtil.Stringify(quest.Value.Title) + cs +
-                    SQLUtil.Stringify(quest.Value.Objectives) + cs +
-                    SQLUtil.Stringify(quest.Value.Details) + cs +
-                    SQLUtil.Stringify(quest.Value.EndText) + cs +
-                    SQLUtil.Stringify(quest.Value.CompletedText) + cs);
-
-                foreach (var n in quest.Value.RequiredNpcOrGo)
-                    sqlQuery.Append(n + cs);
-                foreach (var n in quest.Value.RequiredNpcOrGoCount)
-                    sqlQuery.Append(n + cs);
-                foreach (var n in quest.Value.RequiredSourceItemId)
-                    sqlQuery.Append(n + cs);
-                foreach (var n in quest.Value.RequiredSourceItemCount)
-                    sqlQuery.Append(n + cs);
-                foreach (var n in quest.Value.RequiredItemId)
-                    sqlQuery.Append(n + cs);
-                foreach (var n in quest.Value.RequiredItemCount)
-                    sqlQuery.Append(n + cs);
-
-                sqlQuery.Append(quest.Value.RequiredSpell + cs);
-
-                foreach (var s in quest.Value.ObjectiveTexts)
-                    sqlQuery.Append(SQLUtil.Stringify(s) + cs);
-                foreach (var n in quest.Value.RewardCurrencyId)
-                    sqlQuery.Append(n + cs);
-                foreach (var n in quest.Value.RewardCurrencyCount)
-                    sqlQuery.Append(n + cs);
-                foreach (var n in quest.Value.RequiredCurrencyId)
-                    sqlQuery.Append(n + cs);
-                foreach (var n in quest.Value.RequiredCurrencyCount)
-                    sqlQuery.Append(n + cs);
-
-                sqlQuery.Append(
-                    SQLUtil.Stringify(quest.Value.QuestGiverTextWindow) + cs +
-                    SQLUtil.Stringify(quest.Value.QuestGiverTargetName) + cs +
-                    SQLUtil.Stringify(quest.Value.QuestTurnTextWindow) + cs +
-                    SQLUtil.Stringify(quest.Value.QuestTurnTargetName) + cs +
-                    quest.Value.SoundAccept + cs +
-                    quest.Value.SoundTurnIn + ")," + " -- " + quest.Value.Title + Environment.NewLine);
+                rows.Add(row);
             }
 
-            return sqlQuery.ReplaceLast(',', ';').ToString();
+            return new QueryBuilder.SQLInsert(tableName, Stuffing.QuestTemplates.Keys, new[] { "Id" }, rows).Build();
         }
 
         public static string NpcTrainer()

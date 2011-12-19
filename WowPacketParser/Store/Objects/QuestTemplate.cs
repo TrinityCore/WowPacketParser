@@ -106,7 +106,7 @@ namespace WowPacketParser.Store.Objects
 
         public uint RequiredSpell;
 
-        public string[] ObjectiveTexts;
+        public string[] ObjectiveText;
 
         public uint[] RewardCurrencyId;
 
