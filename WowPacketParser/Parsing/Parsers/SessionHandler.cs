@@ -198,8 +198,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_PLAYER_LOGIN)]
         public static void HandlePlayerLogin(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            packet.Writer.WriteLine("GUID: " + guid);
+            var guid = packet.ReadGuid("GUID");
             LoginGuid = guid;
         }
 
@@ -220,7 +219,9 @@ namespace WowPacketParser.Parsing.Parsers
             if (bits[7]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
             if (bits[3]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
 
-            packet.Writer.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(bytes, 0)));
+            var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
+            packet.Writer.WriteLine("GUID: {0}", guid);
+            LoginGuid = guid;
         }
 
         [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_0_15005)]
@@ -240,7 +241,9 @@ namespace WowPacketParser.Parsing.Parsers
             if (bits[2]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
             if (bits[0]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
 
-            packet.Writer.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(bytes, 0)));
+            var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
+            packet.Writer.WriteLine("GUID: {0}", guid);
+            LoginGuid = guid;
         }
 
         [Parser(Opcode.SMSG_CHARACTER_LOGIN_FAILED)]

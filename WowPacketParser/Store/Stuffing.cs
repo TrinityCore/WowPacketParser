@@ -49,8 +49,15 @@ namespace WowPacketParser.Store
         /* Key: Misc */
 
         // Start info (Race, Class)
-        public static readonly ConcurrentDictionary<Tuple<Race, Class>, StartInfo> StartInformation =
-            new ConcurrentDictionary<Tuple<Race, Class>, StartInfo>();
+        public static readonly ConcurrentDictionary<Tuple<Race, Class>, StartAction> StartActions =
+            new ConcurrentDictionary<Tuple<Race, Class>, StartAction>();
+
+        public static readonly ConcurrentDictionary<Tuple<Race, Class>, StartSpell> StartSpells =
+            new ConcurrentDictionary<Tuple<Race, Class>, StartSpell>();
+
+        public static readonly ConcurrentDictionary<Tuple<Race, Class>, StartPosition> StartPositions =
+            new ConcurrentDictionary<Tuple<Race, Class>, StartPosition>();
+
 
         // Gossips (MenuId, TextId)
         public static readonly ConcurrentDictionary<Tuple<uint, uint>, Gossip> Gossips =

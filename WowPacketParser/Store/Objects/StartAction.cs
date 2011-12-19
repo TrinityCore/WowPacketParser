@@ -1,11 +1,19 @@
-﻿namespace WowPacketParser.Store.Objects
+﻿using System.Collections.Generic;
+using WowPacketParser.Enums;
+
+namespace WowPacketParser.Store.Objects
 {
     public class StartAction
     {
+        public List<Action> Actions;
+    }
+
+    public class Action
+    {
         public uint Button;
 
-        public uint Action;
+        public uint Id;
 
-        public uint Type;
+        public ActionButtonType Type;
     }
 }

@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using Guid = WowPacketParser.Misc.Guid;
 
@@ -75,15 +77,25 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Talent Spec");
 
             var count = packet.ReadInt16("Spell Count");
+            var spells = new List<uint>(count);
             for (var i = 0; i < count; i++)
             {
+                uint spellId;
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
-                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+                    spellId = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
                 else
-                    packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Spell ID", i);
+                    spellId = (uint) packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Spell ID", i);
 
                 packet.ReadInt16("Unk Int16", i);
+
+                spells.Add(spellId);
             }
+
+            var startSpell = new StartSpell();
+            startSpell.Spells = spells;
+
+            if (SessionHandler.LoggedInCharacter.FirstLogin)
+                Stuffing.StartSpells.TryAdd(new Tuple<Race, Class>(SessionHandler.LoggedInCharacter.Race, SessionHandler.LoggedInCharacter.Class), startSpell);
 
             var cooldownCount = packet.ReadInt16("Cooldown Count");
             for (var i = 0; i < cooldownCount; i++)

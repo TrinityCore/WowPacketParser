@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -19,19 +22,30 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             var buttonCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 144 : 132;
+
+            var startAction = new StartAction();
+            startAction.Actions = new List<Store.Objects.Action>(buttonCount);
             for (var i = 0; i < buttonCount; i++)
             {
+                var action = new Store.Objects.Action();
+                action.Button = (uint) i;
+
                 var packed = packet.ReadInt32();
 
                 if (packed == 0)
                     continue;
 
-                var action = packed & 0x00FFFFFF;
-                packet.Writer.WriteLine("Action " + i + ": " + action);
+                action.Id = (uint)(packed & 0x00FFFFFF);
+                packet.Writer.WriteLine("Action " + i + ": " + action.Id);
 
-                var type = (ActionButtonType)((packed & 0xFF000000) >> 24);
-                packet.Writer.WriteLine("Type " + i + ": " + type);
+                action.Type = (ActionButtonType)((packed & 0xFF000000) >> 24);
+                packet.Writer.WriteLine("Type " + i + ": " + action.Type);
+
+                startAction.Actions.Add(action);
             }
+
+            if (SessionHandler.LoggedInCharacter.FirstLogin)
+                Stuffing.StartActions.TryAdd(new Tuple<Race, Class>(SessionHandler.LoggedInCharacter.Race, SessionHandler.LoggedInCharacter.Class), startAction);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace WowPacketParser.Store.Objects
 {
-    public class StartPos
+    public class StartPosition
     {
         public Vector3 Position;
 

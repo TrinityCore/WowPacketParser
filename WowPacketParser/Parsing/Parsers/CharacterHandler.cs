@@ -16,8 +16,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static readonly Dictionary<Guid, Player> Characters =
             new Dictionary<Guid, Player>();
 
-        public static readonly List<StartInfo> StartInfos = new List<StartInfo>();
-
         [Parser(Opcode.CMSG_STANDSTATECHANGE)]
         public static void HandleStandStateChange(Packet packet)
         {
@@ -170,39 +168,22 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Bag Aura Id");
                 }
 
-                bool all = true;
-                foreach (StartInfo info in StartInfos)
+                if (firstLogin)
                 {
-                    if (info.Race == race || info.Class == clss)
-                    {
-                        all = false;
-                        break;
-                    }
-                }
-                if (firstLogin && all)
-                {
-                    var startInfo = new StartInfo
-                                        {
-                                            StartPos = new StartPos
-                                                           {
-                                                               Map = mapId,
-                                                               Position = pos,
-                                                               Zone = zone
-                                                           }
-                                        };
+                    var startPos = new StartPosition();
+                    startPos.Map = mapId;
+                    startPos.Position = pos;
+                    startPos.Zone = zone;
 
-                    Stuffing.StartInformation.TryAdd(new Tuple<Race, Class>(race, clss), startInfo);
-                    SQLStore.WriteData(SQLStore.StartPositions.GetCommand(race, clss, mapId, zone, pos));
+                    Stuffing.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
                 }
 
-                var chInfo = new Player
-                                 {
-                                     Race = race,
-                                     Class = clss,
-                                     Name = name,
-                                     FirstLogin = firstLogin,
-                                     Level = level
-                                 };
+                var chInfo = new Player();
+                chInfo.Race = race;
+                chInfo.Class = clss;
+                chInfo.Name = name;
+                chInfo.FirstLogin = firstLogin;
+                chInfo.Level = level;
 
                 Characters.Add(guid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects
                 Stuffing.Objects.TryAdd(guid, chInfo);
@@ -227,13 +208,13 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var low = new byte[8];
                 var guild = new byte[8];
-                packet.ReadCString("Name", c);
+                var name = packet.ReadCString("Name", c);
 
                 if (bits[c, 0])
                     guild[5] = (byte)(packet.ReadByte() ^ 1);
 
                 packet.ReadByte("Face", c);
-                packet.ReadInt32("Map", c);
+                var mapId = packet.ReadInt32("Map", c);
 
                 if (bits[c, 12])
                     low[1] = (byte)(packet.ReadByte() ^ 1);
@@ -247,14 +228,12 @@ namespace WowPacketParser.Parsing.Parsers
                 if (bits[c, 15])
                     guild[0] = (byte)(packet.ReadByte() ^ 1);
 
-                packet.ReadSingle("Position X", c);
-                packet.ReadSingle("Position Y", c);
-                packet.ReadSingle("Position Z", c);
+                var pos = packet.ReadVector3("Position", c);
 
                 if (bits[c, 11])
                     low[0] = (byte)(packet.ReadByte() ^ 1);
 
-                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", c);
+                var zone = packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", c);
                 packet.ReadInt32("Pet Level", c);
 
                 if (bits[c, 8])
@@ -265,7 +244,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadByte("Facial Hair", c);
                 packet.ReadByte("Skin", c);
-                packet.ReadEnum<Class>("Class", TypeCode.Byte, c);
+                var clss = packet.ReadEnum<Class>("Class", TypeCode.Byte, c);
                 packet.ReadInt32("Pet Family", c);
                 packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
 
@@ -277,7 +256,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (bits[c, 3])
                     guild[7] = (byte)(packet.ReadByte() ^ 1);
 
-                packet.ReadByte("Level", c);
+                var level = packet.ReadByte("Level", c);
 
                 if (bits[c, 7])
                     low[6] = (byte)(packet.ReadByte() ^ 1);
@@ -287,7 +266,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (bits[c, 13])
                     guild[2] = (byte)(packet.ReadByte() ^ 1);
 
-                packet.ReadEnum<Race>("Race", TypeCode.Byte, c);
+                var race = packet.ReadEnum<Race>("Race", TypeCode.Byte, c);
                 packet.ReadByte("Hair Color", c);
 
                 if (bits[c, 5])
@@ -322,8 +301,30 @@ namespace WowPacketParser.Parsing.Parsers
                 if (bits[c, 4])
                     guild[1] = (byte)(packet.ReadByte() ^ 1);
 
-                packet.Writer.WriteLine("[{0}] Character GUID: {1}", c, new Guid(BitConverter.ToUInt64(low, 0)));
+                var playerGuid = new Guid(BitConverter.ToUInt64(low, 0));
+
+                packet.Writer.WriteLine("[{0}] Character GUID: {1}", c, playerGuid);
                 packet.Writer.WriteLine("[{0}] Guild GUID: {1}", c, new Guid(BitConverter.ToUInt64(guild, 0)));
+
+                //if (firstLogin)
+                {
+                    var startPos = new StartPosition();
+                    startPos.Map = mapId;
+                    startPos.Position = pos;
+                    startPos.Zone = zone;
+
+                    Stuffing.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
+                }
+
+                var chInfo = new Player();
+                chInfo.Race = race;
+                chInfo.Class = clss;
+                chInfo.Name = name;
+                chInfo.FirstLogin = true; // Where's that goddamn "IsFirstLogin" boolean?
+                chInfo.Level = level;
+
+                Characters.Add(playerGuid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects
+                Stuffing.Objects.TryAdd(playerGuid, chInfo);
             }
         }
 
@@ -363,7 +364,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             var unkCounter = packet.ReadBits("Unk Counter", 23);
-            packet.ReadBit();//no idea, not used in client
+            packet.ReadBit(); // no idea, not used in client
 
             for (int c = 0; c < count; ++c)
             {
@@ -392,26 +393,26 @@ namespace WowPacketParser.Parsing.Parsers
                     guildGuids[c][7] ^= packet.ReadByte();
 
                 packet.ReadEnum<Gender>("Gender", TypeCode.Byte, c);
-                packet.ReadByte("Level", c);
+                var level = packet.ReadByte("Level", c);
                 packet.ReadInt32("Pet Level", c);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
-                packet.ReadSingle("Position Y", c);
+                var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
+                var y = packet.ReadSingle("Position Y", c);
                 packet.ReadInt32("Pet Family", c);
                 packet.ReadByte("Hair Style", c);
                 if (charGuids[c][1] != 0)
                     charGuids[c][1] ^= packet.ReadByte();
 
-                packet.ReadWoWString("Name", (int)nameLenghts[c], c);
+                var name = packet.ReadWoWString("Name", (int)nameLenghts[c], c);
                 if (charGuids[c][0] != 0)
                     charGuids[c][0] ^= packet.ReadByte();
 
-                packet.ReadEnum<Race>("Race", TypeCode.Byte, c);
+                var race = packet.ReadEnum<Race>("Race", TypeCode.Byte, c);
                 packet.ReadByte("List Order", c);
                 if (charGuids[c][7] != 0)
                     charGuids[c][7] ^= packet.ReadByte();
 
-                packet.ReadSingle("Position Z", c);
-                packet.ReadInt32("Map", c);
+                var z = packet.ReadSingle("Position Z", c);
+                var mapId = packet.ReadInt32("Map", c);
                 if (guildGuids[c][4] != 0)
                     guildGuids[c][4] ^= packet.ReadByte();
 
@@ -429,7 +430,7 @@ namespace WowPacketParser.Parsing.Parsers
                     guildGuids[c][5] ^= packet.ReadByte();
 
                 packet.ReadEnum<CustomizationFlag>("CustomizationFlag", TypeCode.UInt32, c);
-                packet.ReadSingle("Position X", c);
+                var x = packet.ReadSingle("Position X", c);
                 packet.ReadByte("Facial Hair", c);
                 if (charGuids[c][6] != 0)
                     charGuids[c][6] ^= packet.ReadByte();
@@ -438,14 +439,36 @@ namespace WowPacketParser.Parsing.Parsers
                 if (charGuids[c][2] != 0)
                     charGuids[c][2] ^= packet.ReadByte();
 
-                packet.ReadEnum<Class>("Class", TypeCode.Byte, c);
+                var clss = packet.ReadEnum<Class>("Class", TypeCode.Byte, c);
                 if (guildGuids[c][6] != 0)
                     guildGuids[c][6] ^= packet.ReadByte();
                 if (guildGuids[c][2] != 0)
                     guildGuids[c][2] ^= packet.ReadByte();
 
-                packet.Writer.WriteLine("[{0}] Character GUID: {1}", c, new Guid(BitConverter.ToUInt64(charGuids[c], 0)));
+                var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
+
+                packet.Writer.WriteLine("[{0}] Character GUID: {1}", c, playerGuid);
                 packet.Writer.WriteLine("[{0}] Guild GUID: {1}", c, new Guid(BitConverter.ToUInt64(guildGuids[c], 0)));
+
+                if (firstLogins[c])
+                {
+                    var startPos = new StartPosition();
+                    startPos.Map = mapId;
+                    startPos.Position = new Vector3(x, y, z);
+                    startPos.Zone = zone;
+
+                    Stuffing.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
+                }
+
+                var chInfo = new Player();
+                chInfo.Race = race;
+                chInfo.Class = clss;
+                chInfo.Name = name;
+                chInfo.FirstLogin = firstLogins[c];
+                chInfo.Level = level;
+
+                Characters.Add(playerGuid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects
+                Stuffing.Objects.TryAdd(playerGuid, chInfo);
             }
 
             for (var c = 0; c < unkCounter; c++)

@@ -519,5 +519,110 @@ namespace WowPacketParser.Store.SQL
 
             return new QueryBuilder.SQLInsert(tableName, lootKeys, new[] {"Id", "Type" }, rows).Build();
         }
+
+        public static string StartInformation()
+        {
+            var result = string.Empty;
+
+            if (!Stuffing.StartActions.IsEmpty)
+            {
+                // Can't cast the collection directly
+                ICollection<Tuple<uint, uint>> keys = new Collection<Tuple<uint, uint>>();
+                foreach (var key in Stuffing.StartActions.Keys)
+                    keys.Add(new Tuple<uint, uint>((uint) key.Item1, (uint)key.Item2));
+
+                var rows = new List<QueryBuilder.SQLInsertRow>();
+                foreach (var startActions in Stuffing.StartActions)
+                {
+                    var comment = new QueryBuilder.SQLInsertRow();
+                    comment.HeaderComment = startActions.Key.Item1 + " - " + startActions.Key.Item2;
+                    rows.Add(comment);
+
+                    foreach (var action in startActions.Value.Actions)
+                    {
+                        var row = new QueryBuilder.SQLInsertRow();
+
+                        row.AddValue("race", startActions.Key.Item1);
+                        row.AddValue("class", startActions.Key.Item2);
+                        row.AddValue("button", action.Button);
+                        row.AddValue("action", action.Id);
+                        row.AddValue("type", action.Type);
+                        if (action.Type == ActionButtonType.Spell)
+                            row.Comment = StoreGetters.GetName(StoreNameType.Spell, (int) action.Id, false);
+                        if (action.Type == ActionButtonType.Item)
+                            row.Comment = StoreGetters.GetName(StoreNameType.Item, (int) action.Id, false);
+
+                        rows.Add(row);
+                    }
+                }
+
+                result = new QueryBuilder.SQLInsert("playercreateinfo_action", keys, new[] { "race", "class" }, rows).Build();
+            }
+
+            if (!Stuffing.StartPositions.IsEmpty)
+            {
+                // Can't cast the collection directly
+                ICollection<Tuple<uint, uint>> keys = new Collection<Tuple<uint, uint>>();
+                foreach (var key in Stuffing.StartPositions.Keys)
+                    keys.Add(new Tuple<uint, uint>((uint)key.Item1, (uint)key.Item2));
+
+                var rows = new List<QueryBuilder.SQLInsertRow>();
+                foreach (var startPosition in Stuffing.StartPositions)
+                {
+                    var comment = new QueryBuilder.SQLInsertRow();
+                    comment.HeaderComment = startPosition.Key.Item1 + " - " + startPosition.Key.Item2;
+                    rows.Add(comment);
+
+                    var row = new QueryBuilder.SQLInsertRow();
+
+                    row.AddValue("race", startPosition.Key.Item1);
+                    row.AddValue("class", startPosition.Key.Item2);
+                    row.AddValue("map", startPosition.Value.Map);
+                    row.AddValue("zone", startPosition.Value.Zone);
+                    row.AddValue("position_x", startPosition.Value.Position.X);
+                    row.AddValue("position_x", startPosition.Value.Position.Y);
+                    row.AddValue("position_x", startPosition.Value.Position.Z);
+
+                    row.Comment = StoreGetters.GetName(StoreNameType.Map, startPosition.Value.Map, false) + " - " +
+                                  StoreGetters.GetName(StoreNameType.Zone, startPosition.Value.Zone, false);
+
+                    rows.Add(row);
+                }
+
+                result += new QueryBuilder.SQLInsert("playercreateinfo", keys, new[] { "race", "class" }, rows).Build();
+            }
+
+            if (!Stuffing.StartSpells.IsEmpty)
+            {
+                // Can't cast the collection directly
+                ICollection<Tuple<uint, uint>> keys = new Collection<Tuple<uint, uint>>();
+                foreach (var key in Stuffing.StartSpells.Keys)
+                    keys.Add(new Tuple<uint, uint>((uint)key.Item1, (uint)key.Item2));
+
+                var rows = new List<QueryBuilder.SQLInsertRow>();
+                foreach (var startSpells in Stuffing.StartSpells)
+                {
+                    var comment = new QueryBuilder.SQLInsertRow();
+                    comment.HeaderComment = startSpells.Key.Item1 + " - " + startSpells.Key.Item2;
+                    rows.Add(comment);
+
+                    foreach (var spell in startSpells.Value.Spells)
+                    {
+                        var row = new QueryBuilder.SQLInsertRow();
+
+                        row.AddValue("race", startSpells.Key.Item1);
+                        row.AddValue("class", startSpells.Key.Item2);
+                        row.AddValue("Spell", spell);
+                        row.AddValue("Note",  StoreGetters.GetName(StoreNameType.Spell, (int)spell, false));
+
+                        rows.Add(row);
+                    }
+                }
+
+                result = new QueryBuilder.SQLInsert("playercreateinfo_spell", keys, new[] { "race", "class" }, rows).Build();
+            }
+
+            return result;
+        }
     }
 }

@@ -64,11 +64,5 @@ namespace WowPacketParser.SQL
 
         public static readonly ItemStore Items = new ItemStore();
 
-        public static readonly StartActionStore StartActions = new StartActionStore();
-
-        public static readonly StartPositionStore StartPositions = new StartPositionStore();
-
-        public static readonly StartSpellStore StartSpells = new StartSpellStore();
-
     }
 }

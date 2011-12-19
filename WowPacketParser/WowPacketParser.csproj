@@ -324,13 +324,12 @@
     <Compile Include="Store\Objects\GameObject.cs" />
     <Compile Include="Store\Objects\QuestTemplate.cs" />
     <Compile Include="Store\Objects\StartItem.cs" />
-    <Compile Include="Store\Objects\StartPos.cs" />
+    <Compile Include="Store\Objects\StartPosition.cs" />
     <Compile Include="Store\Objects\StartSpell.cs" />
     <Compile Include="Store\Objects\TrainerSpell.cs" />
     <Compile Include="Store\Objects\Unit.cs" />
     <Compile Include="Misc\Quaternion.cs" />
     <Compile Include="Misc\Settings.cs" />
-    <Compile Include="Store\Objects\StartInfo.cs" />
     <Compile Include="Misc\StoreGetters.cs" />
     <Compile Include="Misc\UpdateField.cs" />
     <Compile Include="Store\Objects\UnitTemplate.cs" />
@@ -400,9 +399,6 @@
     <Compile Include="SQL\Stores\GameObjectSpawnUpdateStore.cs" />
     <Compile Include="SQL\Stores\GameObjectUpdateStore.cs" />
     <Compile Include="SQL\Stores\ItemStore.cs" />
-    <Compile Include="SQL\Stores\StartActionStore.cs" />
-    <Compile Include="SQL\Stores\StartPositionStore.cs" />
-    <Compile Include="SQL\Stores\StartSpellStore.cs" />
     <Compile Include="Store\SQL\Builder.cs" />
     <Compile Include="Store\SQL\QueryBuilder.cs" />
     <Compile Include="Store\Stuffing.cs" />
