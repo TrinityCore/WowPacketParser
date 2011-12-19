@@ -178,7 +178,7 @@ namespace WowPacketParser.Store.SQL
             foreach (var npcTrainer in Stuffing.NpcTrainers)
             {
                 var comment = new QueryBuilder.SQLInsertRow();
-                comment.HeaderComment = StoreGetters.GetName(StoreNameType.Unit, (int) npcTrainer.Key);
+                comment.HeaderComment = StoreGetters.GetName(StoreNameType.Unit, (int) npcTrainer.Key, false);
                 rows.Add(comment);
                 foreach (var trainerSpell in npcTrainer.Value.TrainerSpells)
                 {
@@ -380,15 +380,18 @@ namespace WowPacketParser.Store.SQL
             const string tableName1 = "gossip_menu";
             const string tableName2 = "gossip_menu_option";
 
+            // TODO: Add creature_template gossip_menu_id update query or similar
+
             // `gossip`
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var pair in Stuffing.Gossips.Keys)
+            foreach (var gossip in Stuffing.Gossips)
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
-                row.AddValue("entry", pair.Item1);
-                row.AddValue("text_id", pair.Item2);
-                // row.Comment = npc name
+                row.AddValue("entry", gossip.Key.Item1);
+                row.AddValue("text_id", gossip.Key.Item2);
+                row.Comment = StoreGetters.GetName(Utilities.ObjectTypeToStore(gossip.Value.ObjectType),
+                                                   (int) gossip.Value.ObjectEntry, false);
 
                 rows.Add(row);
             }
@@ -501,7 +504,7 @@ namespace WowPacketParser.Store.SQL
             {
                 var comment = new QueryBuilder.SQLInsertRow();
                 comment.HeaderComment =
-                    StoreGetters.GetName(Utilities.ObjectTypeToStore(Stuffing.Loots.Keys.First().Item2), (int) loot.Key.Item1) +
+                    StoreGetters.GetName(Utilities.ObjectTypeToStore(Stuffing.Loots.Keys.First().Item2), (int) loot.Key.Item1, false) +
                                         " (" + loot.Value.Gold + " gold)";
                 rows.Add(comment);
                 foreach (var lootItem in loot.Value.LootItems)

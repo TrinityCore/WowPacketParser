@@ -211,6 +211,9 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guid = packet.ReadGuid("GUID"); // TODO: Use this to assign npc entries with gossip ids
 
+            gossip.ObjectType = guid.GetObjectType();
+            gossip.ObjectEntry = guid.GetEntry();
+
             var menuId = packet.ReadUInt32("Menu Id");
             var textId = packet.ReadUInt32("Text Id");
 
