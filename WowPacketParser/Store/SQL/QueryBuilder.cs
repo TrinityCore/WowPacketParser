@@ -28,7 +28,11 @@ namespace WowPacketParser.Store.SQL
                 Rows = rows;
                 Delete = null;
 
-                TableStructure = Rows.Find(row => String.IsNullOrWhiteSpace(row.HeaderComment)).FieldNames;
+                TableStructure = new List<string>();
+                var firstProperRow = Rows.Find(row => String.IsNullOrWhiteSpace(row.HeaderComment));
+                if (firstProperRow != null)
+                    TableStructure = firstProperRow.FieldNames;
+
                 InsertHeader = new SQLInsertHeader(Table, TableStructure, ignore);
             }
 
@@ -39,7 +43,11 @@ namespace WowPacketParser.Store.SQL
                 Table = table;
                 Rows = rows;
 
-                TableStructure = Rows.Find(row => String.IsNullOrWhiteSpace(row.HeaderComment)).FieldNames;
+                TableStructure = new List<string>();
+                var firstProperRow = Rows.Find(row => String.IsNullOrWhiteSpace(row.HeaderComment));
+                if (firstProperRow != null)
+                    TableStructure = firstProperRow.FieldNames;
+                
                 Delete = new SQLDelete(values, primaryKey, Table);
                 InsertHeader = new SQLInsertHeader(Table, TableStructure);
             }
@@ -51,13 +59,21 @@ namespace WowPacketParser.Store.SQL
                 Table = table;
                 Rows = rows;
 
-                TableStructure = Rows.Find(row => String.IsNullOrWhiteSpace(row.HeaderComment)).FieldNames;
+                TableStructure = new List<string>();
+                var firstProperRow = Rows.Find(row => String.IsNullOrWhiteSpace(row.HeaderComment));
+                if (firstProperRow != null)
+                    TableStructure = firstProperRow.FieldNames;
+
                 Delete = new SQLDelete(values, primaryKeys, Table);
                 InsertHeader = new SQLInsertHeader(Table, TableStructure);
             }
 
             public string Build()
             {
+                // If we only have rows with comment, do not print any query
+                if (Rows.All(row => !String.IsNullOrWhiteSpace(row.HeaderComment)))
+                    return "-- " + SQLUtil.AddBackQuotes(Table) + " has empty data." + Environment.NewLine;
+
                 var result = new StringBuilder();
 
                 if (Delete != null)
@@ -228,16 +244,25 @@ namespace WowPacketParser.Store.SQL
                 var insertCommand = "INSERT " +
                     (Ignore ? "IGNORE " : string.Empty) + "INTO";
 
-                var result = insertCommand + " " + SQLUtil.AddBackQuotes(Table) + " (";
-                var iter = 0;
-                foreach (var column in TableStructure)
+                var result = insertCommand + " " + SQLUtil.AddBackQuotes(Table);
+
+                if (TableStructure.Count != 0)
                 {
-                    iter++;
-                    result += SQLUtil.AddBackQuotes(column);
-                    if (TableStructure.Count != iter)
-                        result += SQLUtil.CommaSeparator;
+
+                    result += " (";
+
+                    var iter = 0;
+                    foreach (var column in TableStructure)
+                    {
+                        iter++;
+                        result += SQLUtil.AddBackQuotes(column);
+                        if (TableStructure.Count != iter)
+                            result += SQLUtil.CommaSeparator;
+                    }
+                    result += ")";
                 }
-                result += ") VALUES" + Environment.NewLine;
+
+                result += " VALUES" + Environment.NewLine;
 
                 return result;
             }
