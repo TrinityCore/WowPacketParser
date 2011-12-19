@@ -86,8 +86,20 @@ namespace WowPacketParser.Store.SQL
                 if (value is string)
                     value = SQLUtil.Stringify(value);
 
-                if (value is Enum)
-                    value = (int) value;
+                if (value is bool)
+                    value = value.Equals(true) ? 1 : 0;
+
+                if (value is Enum) // A bit hackish but oh well...
+                {
+                    try
+                    {
+                        value = (int)value;
+                    }
+                    catch (InvalidCastException)
+                    {
+                        value = (uint)value;
+                    }
+                }
 
                 if (value is int && isFlag)
                     value = SQLUtil.Hexify((int) value);
@@ -170,7 +182,7 @@ namespace WowPacketParser.Store.SQL
                         query.Append("=");
                         query.Append(tuple.Item2);
                         query.Append(")");
-                        if (Values.Count != iter)
+                        if (ValuesDouble.Count != iter)
                             query.Append(" OR ");
                     }
                 }

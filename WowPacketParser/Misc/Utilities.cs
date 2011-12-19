@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc
 {
@@ -45,6 +46,28 @@ namespace WowPacketParser.Misc
             var year = (packedDate >> 24) & 0x1F;
 
             return new DateTime(year + 2000, month + 1, day + 1, hour, minute, 0);
+        }
+
+        public static StoreNameType ObjectTypeToStore(ObjectType type)
+        {
+            var result = StoreNameType.None;
+
+            switch (type)
+            {
+                case ObjectType.Item:
+                    result = StoreNameType.Item;
+                    break;
+                case ObjectType.Corpse:
+                case ObjectType.Unit:
+                    result = StoreNameType.Unit;
+                    break;
+                case ObjectType.Container: // ?
+                case ObjectType.GameObject:
+                    result = StoreNameType.GameObject;
+                    break;
+            }
+
+            return result;
         }
     }
 }
