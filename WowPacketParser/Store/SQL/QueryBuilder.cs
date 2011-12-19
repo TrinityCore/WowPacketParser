@@ -21,37 +21,39 @@ namespace WowPacketParser.Store.SQL
             private SQLInsertHeader InsertHeader { get; set; }
             private List<string> TableStructure { get; set; }
 
+            // Without delete
             public SQLInsert(string table, List<SQLInsertRow> rows, bool ignore = false)
             {
                 Table = table;
                 Rows = rows;
                 Delete = null;
 
-                TableStructure = Rows.First().FieldNames;
+                TableStructure = Rows.Find(row => String.IsNullOrWhiteSpace(row.HeaderComment)).FieldNames;
                 InsertHeader = new SQLInsertHeader(Table, TableStructure, ignore);
-
             }
 
-            public SQLInsert(string table, ICollection<uint> values, ICollection<string> primaryKeys,
-                             List<SQLInsertRow> rows, bool ignore = false)
+            // Single primary key
+            public SQLInsert(string table, ICollection<uint> values, string primaryKey,
+                             List<SQLInsertRow> rows)
             {
                 Table = table;
                 Rows = rows;
 
-                TableStructure = Rows.First().FieldNames;
-                Delete = new SQLDelete(values, primaryKeys, Table);
-                InsertHeader = new SQLInsertHeader(Table, TableStructure, ignore);
+                TableStructure = Rows.Find(row => String.IsNullOrWhiteSpace(row.HeaderComment)).FieldNames;
+                Delete = new SQLDelete(values, primaryKey, Table);
+                InsertHeader = new SQLInsertHeader(Table, TableStructure);
             }
 
+            // Double primary key
             public SQLInsert(string table, ICollection<Tuple<uint, uint>> values, ICollection<string> primaryKeys,
-                             List<SQLInsertRow> rows, bool ignore = false)
+                             List<SQLInsertRow> rows)
             {
                 Table = table;
                 Rows = rows;
 
-                TableStructure = Rows.First().FieldNames;
+                TableStructure = Rows.Find(row => String.IsNullOrWhiteSpace(row.HeaderComment)).FieldNames;
                 Delete = new SQLDelete(values, primaryKeys, Table);
-                InsertHeader = new SQLInsertHeader(Table, TableStructure, ignore);
+                InsertHeader = new SQLInsertHeader(Table, TableStructure);
             }
 
             public string Build()
@@ -73,6 +75,7 @@ namespace WowPacketParser.Store.SQL
         {
             private readonly List<string> _row = new List<string>();
             public string Comment { get; set; }
+            public string HeaderComment { get; set; }
             public readonly List<string> FieldNames = new List<string>();
 
             public void AddValue(string field, object value, bool isFlag = false)
@@ -95,6 +98,9 @@ namespace WowPacketParser.Store.SQL
 
             public string Build()
             {
+                if (!String.IsNullOrWhiteSpace(HeaderComment))
+                    return "-- " + HeaderComment + Environment.NewLine;
+
                 var row = new StringBuilder();
                 row.Append("(");
 
@@ -105,9 +111,9 @@ namespace WowPacketParser.Store.SQL
                     row.Append(value);
 
                     row.Append(_row.Count != iter ? SQLUtil.CommaSeparator : "),");
-                    if (!String.IsNullOrWhiteSpace(Comment))
-                        row.Append(" -- " + Comment);
                 }
+                if (!String.IsNullOrWhiteSpace(Comment))
+                    row.Append(" -- " + Comment);
                 row.Append(Environment.NewLine);
 
                 return row.ToString();
@@ -123,9 +129,9 @@ namespace WowPacketParser.Store.SQL
             private string Table { get; set; }
             private ICollection<string> PrimaryKeys { get; set; }
 
-            public SQLDelete(ICollection<uint> values, ICollection<string> primaryKeys, string tableName)
+            public SQLDelete(ICollection<uint> values, string primaryKey, string tableName)
             {
-                PrimaryKeys = primaryKeys;
+                PrimaryKeys = new[] {primaryKey};
                 Table = tableName;
 
                 Values = values;

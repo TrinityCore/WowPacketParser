@@ -168,7 +168,7 @@ namespace WowPacketParser.Store.SQL
                 rows.Add(row);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, Stuffing.QuestTemplates.Keys, new[] { "Id" }, rows).Build();
+            return new QueryBuilder.SQLInsert(tableName, Stuffing.QuestTemplates.Keys, "Id", rows).Build();
         }
 
         public static string NpcTrainer()
@@ -176,38 +176,29 @@ namespace WowPacketParser.Store.SQL
             if (Stuffing.NpcTrainers.IsEmpty)
                 return string.Empty;
 
-            var sqlQuery = new StringBuilder(String.Empty);
-
             const string tableName = "npc_trainer";
-            const string primaryKey = "entry";
-            string[] tableStructure = { "entry", "spell", "spellcost", "reqskill", "reqskillvalue", "reqlevel" };
 
-            // Delete
-            sqlQuery.Append(SQLUtil.DeleteQuerySingle(Stuffing.NpcTrainers.Keys, primaryKey, tableName));
-
-            // Insert
-            sqlQuery.Append(SQLUtil.InsertQueryHeader(tableStructure, tableName));
-
-            // Insert rows
+            var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var npcTrainer in Stuffing.NpcTrainers)
             {
-                sqlQuery.Append("-- " + StoreGetters.GetName(StoreNameType.Unit, (int)npcTrainer.Key) +
-                                Environment.NewLine);
+                var comment = new QueryBuilder.SQLInsertRow();
+                comment.HeaderComment = StoreGetters.GetName(StoreNameType.Unit, (int) npcTrainer.Key);
+                rows.Add(comment);
                 foreach (var trainerSpell in npcTrainer.Value.TrainerSpells)
                 {
-                    sqlQuery.Append("(" +
-                                    npcTrainer.Key + ", " +
-                                    trainerSpell.Spell + ", " +
-                                    trainerSpell.Cost + ", " +
-                                    trainerSpell.RequiredSkill + ", " +
-                                    trainerSpell.RequiredSkillLevel + ", " +
-                                    trainerSpell.RequiredLevel + ")," + " -- " +
-                                    StoreGetters.GetName(StoreNameType.Spell, (int)trainerSpell.Spell, false) +
-                                    Environment.NewLine);
+                    var row = new QueryBuilder.SQLInsertRow();
+                    row.AddValue("entry", npcTrainer.Key);
+                    row.AddValue("spell", trainerSpell.Spell);
+                    row.AddValue("spellcost", trainerSpell.Spell);
+                    row.AddValue("reqskill", trainerSpell.Spell);
+                    row.AddValue("reqskillvalue", trainerSpell.Spell);
+                    row.AddValue("reqlevel", trainerSpell.Spell);
+                    row.Comment = StoreGetters.GetName(StoreNameType.Spell, (int) trainerSpell.Spell, false);
+                    rows.Add(row);
                 }
             }
 
-            return sqlQuery.ReplaceLast(',', ';').ToString();
+            return new QueryBuilder.SQLInsert(tableName, Stuffing.NpcTrainers.Keys, "entry", rows).Build();
         }
 
         public static string NpcVendor()

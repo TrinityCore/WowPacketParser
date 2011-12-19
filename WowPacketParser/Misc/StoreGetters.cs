@@ -6,14 +6,6 @@ namespace WowPacketParser.Misc
 {
     public static class StoreGetters
     {
-        public static string GetDatabaseObjectName(StoreNameType type, int entry)
-        {
-            if (entry <= 0 || !SQLConnector.Enabled)
-                return string.Empty;
-
-            return string.Empty;
-        }
-
         public static string GetName(StoreNameType type, int entry, bool withEntry = true)
         {
             if (type != StoreNameType.Map && entry == 0)
