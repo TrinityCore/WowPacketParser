@@ -404,6 +404,7 @@
     <Compile Include="SQL\Stores\StartPositionStore.cs" />
     <Compile Include="SQL\Stores\StartSpellStore.cs" />
     <Compile Include="Store\SQL\Builder.cs" />
+    <Compile Include="Store\SQL\QueryBuilder.cs" />
     <Compile Include="Store\Stuffing.cs" />
     <Compile Include="Enums\BankSlotResult.cs" />
     <Compile Include="Enums\EmoteType.cs" />
