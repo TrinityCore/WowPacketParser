@@ -44,6 +44,9 @@ namespace WowPacketParser.Misc
 
         public void AddSniffData(StoreNameType type, int id, string data)
         {
+            if (!Settings.GetBoolean("SniffData:Opcodes"))
+                return;
+
             if (type == StoreNameType.None)
                 return;
 
@@ -51,7 +54,7 @@ namespace WowPacketParser.Misc
                 return; // Only maps can have id 0
 
             if (type == StoreNameType.Opcode)
-                if (!Settings.GetBoolean("OpcodeStatusDB"))
+                if (!Settings.GetBoolean("SniffData:Opcodes"))
                     return; // Don't add opcodes if its config is not enabled
 
             var sniffData = new SniffData()
