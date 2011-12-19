@@ -189,10 +189,10 @@ namespace WowPacketParser.Store.SQL
                     var row = new QueryBuilder.SQLInsertRow();
                     row.AddValue("entry", npcTrainer.Key);
                     row.AddValue("spell", trainerSpell.Spell);
-                    row.AddValue("spellcost", trainerSpell.Spell);
-                    row.AddValue("reqskill", trainerSpell.Spell);
-                    row.AddValue("reqskillvalue", trainerSpell.Spell);
-                    row.AddValue("reqlevel", trainerSpell.Spell);
+                    row.AddValue("spellcost", trainerSpell.Cost);
+                    row.AddValue("reqskill", trainerSpell.RequiredSkill);
+                    row.AddValue("reqskillvalue", trainerSpell.RequiredSkillLevel);
+                    row.AddValue("reqlevel", trainerSpell.RequiredLevel);
                     row.Comment = StoreGetters.GetName(StoreNameType.Spell, (int) trainerSpell.Spell, false);
                     rows.Add(row);
                 }
@@ -206,37 +206,28 @@ namespace WowPacketParser.Store.SQL
             if (Stuffing.NpcVendors.IsEmpty)
                 return string.Empty;
 
-            var sqlQuery = new StringBuilder(String.Empty);
-
             const string tableName = "npc_vendor";
-            const string primaryKey = "entry";
-            string[] tableStructure = { "entry", "slot", "item", "maxcount", "ExtendedCost" };
 
-            // Delete
-            sqlQuery.Append(SQLUtil.DeleteQuerySingle(Stuffing.NpcVendors.Keys, primaryKey, tableName));
-
-            // Insert
-            sqlQuery.Append(SQLUtil.InsertQueryHeader(tableStructure, tableName));
-
-            // Insert rows
+            var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var npcVendor in Stuffing.NpcVendors)
             {
-                sqlQuery.Append("-- " + StoreGetters.GetName(StoreNameType.Unit, (int)npcVendor.Key) +
-                                Environment.NewLine);
+                var comment = new QueryBuilder.SQLInsertRow();
+                comment.HeaderComment = StoreGetters.GetName(StoreNameType.Unit, (int)npcVendor.Key);
+                rows.Add(comment);
                 foreach (var vendorItem in npcVendor.Value.VendorItems)
                 {
-                    sqlQuery.Append("(" +
-                                    npcVendor.Key + ", " +
-                                    vendorItem.Slot + ", " +
-                                    vendorItem.ItemId + ", " +
-                                    vendorItem.MaxCount + ", " +
-                                    vendorItem.ExtendedCostId + ")," + " -- " +
-                                    StoreGetters.GetName(StoreNameType.Item, (int)vendorItem.ItemId, false) +
-                                    Environment.NewLine);
+                    var row = new QueryBuilder.SQLInsertRow();
+                    row.AddValue("entry", npcVendor.Key);
+                    row.AddValue("slot", vendorItem.Slot);
+                    row.AddValue("item", vendorItem.ItemId);
+                    row.AddValue("maxcount", vendorItem.MaxCount);
+                    row.AddValue("ExtendedCost", vendorItem.ExtendedCostId);
+                    row.Comment = StoreGetters.GetName(StoreNameType.Item, (int)vendorItem.ItemId, false);
+                    rows.Add(row);
                 }
             }
 
-            return sqlQuery.ReplaceLast(',', ';').ToString();
+            return new QueryBuilder.SQLInsert(tableName, Stuffing.NpcVendors.Keys, "entry", rows).Build();
         }
 
         public static string NpcTemplate()
