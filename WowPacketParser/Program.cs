@@ -16,7 +16,7 @@ namespace WowPacketParser
 {
     public static class Program
     {
-        private static void ReadFile(string file, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead, DumpFormatType dumpFormat, int threads, bool sqlOutput, bool prompt)
+        private static void ReadFile(string file, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead, DumpFormatType dumpFormat, int threads, bool sqlOutput)
         {
             var fileInfo = new SniffFileInfo { FileName = file };
             var fileName = Path.GetFileName(fileInfo.FileName);
@@ -125,10 +125,6 @@ namespace WowPacketParser
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
             }
-            finally
-            {
-                EndPrompt(prompt);
-            }
         }
 
         private static void Main(string[] args)
@@ -231,9 +227,11 @@ namespace WowPacketParser
             }
 
             if (threads == 0) // Number of threads is automatically choosen by the Parallel library
-                files.AsParallel().SetCulture().ForAll(file => ReadFile(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead, dumpFormat, threads, sqlOutput, prompt));
+                files.AsParallel().SetCulture().ForAll(file => ReadFile(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead, dumpFormat, threads, sqlOutput));
             else
-                files.AsParallel().SetCulture().WithDegreeOfParallelism(threads).ForAll(file => ReadFile(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead, dumpFormat, threads, sqlOutput, prompt));
+                files.AsParallel().SetCulture().WithDegreeOfParallelism(threads).ForAll(file => ReadFile(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead, dumpFormat, threads, sqlOutput));
+
+            EndPrompt(prompt);
         }
 
         private static void EndPrompt(bool prompt)
