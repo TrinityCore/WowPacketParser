@@ -167,8 +167,10 @@ namespace WowPacketParser
 
                 // Disable DB when we don't need its data (dumping to a binary file)
                 if (dumpFormat == DumpFormatType.Bin || dumpFormat == DumpFormatType.Pkt)
+                {
                     SQLConnector.Enabled = false;
-
+                    SSHTunnel.Enabled = false;
+                }
             }
             catch (Exception ex)
             {
@@ -188,6 +190,13 @@ namespace WowPacketParser
             // Read DB
             if (SQLConnector.Enabled)
             {
+                // Enable SSH Tunnel
+                if (SSHTunnel.Enabled)
+                {
+                    Console.WriteLine("Enabling SSH Tunnel");
+                    SSHTunnel.Connect();
+                }
+
                 var startTime = DateTime.Now;
                 Console.WriteLine("Loading DB...");
 
@@ -231,6 +240,8 @@ namespace WowPacketParser
             else
                 files.AsParallel().SetCulture().WithDegreeOfParallelism(threads).ForAll(file => ReadFile(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead, dumpFormat, threads, sqlOutput));
 
+            SQLConnector.Disconnect();
+            SSHTunnel.Disconnect();
             EndPrompt(prompt);
         }
 
