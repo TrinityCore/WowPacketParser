@@ -109,7 +109,7 @@ namespace WowPacketParser.Parsing
                             if (len < 300) // If the packet isn't "too big" and it is not full read, print its hex table
                                 packet.AsHex();
 
-                            status = ParsedStatus.NotParsed;
+                            status = ParsedStatus.WithErrors;
                         }
                     }
                     catch (Exception ex)
