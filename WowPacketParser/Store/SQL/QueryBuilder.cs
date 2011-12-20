@@ -95,6 +95,7 @@ namespace WowPacketParser.Store.SQL
             public string Comment { get; set; }
             public string HeaderComment { get; set; }
             public readonly List<string> FieldNames = new List<string>();
+            public bool CommentOut { get; set; }
 
             public void AddValue(string field, object value, bool isFlag = false)
             {
@@ -132,6 +133,9 @@ namespace WowPacketParser.Store.SQL
                     return "-- " + HeaderComment + Environment.NewLine;
 
                 var row = new StringBuilder();
+                if (CommentOut)
+                    row.Append("-- ");
+
                 row.Append("(");
 
                 var iter = 0;

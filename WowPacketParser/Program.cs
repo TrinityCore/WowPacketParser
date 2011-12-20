@@ -69,6 +69,7 @@ namespace WowPacketParser
                     if (sqlOutput)
                     {
                         // Experimental, will remove
+                        SQLStore.WriteData(Builder.CreatureSpawns());
                         SQLStore.WriteData(Builder.QuestTemplate());
                         SQLStore.WriteData(Builder.NpcTrainer());
                         SQLStore.WriteData(Builder.NpcVendor());

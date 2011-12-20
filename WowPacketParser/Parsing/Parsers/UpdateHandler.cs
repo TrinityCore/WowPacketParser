@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
-using WowPacketParser.SQL;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using Guid=WowPacketParser.Misc.Guid;
@@ -38,31 +37,38 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     case "Values":
                     {
-                        var guid = packet.ReadPackedGuid("[" + i + "] GUID");
+                        var guid = packet.ReadPackedGuid("GUID", i);
 
                         WoWObject obj;
                         var updates = ReadValuesUpdateBlock(ref packet, guid.GetObjectType(), i);
 
-                        if (Objects.ContainsKey(map) && Objects[map].TryGetValue(guid, out obj))
-                            HandleUpdateFieldChangedValues(guid, obj.Type, updates, obj.Movement);
+                        if (Stuffing.Objects.TryGetValue(guid, out obj))
+                        {
+                            if (obj.ChangedUpdateFieldsList == null)
+                                obj.ChangedUpdateFieldsList = new List<Dictionary<int, UpdateField>>();
+                            obj.ChangedUpdateFieldsList.Add(updates);
+                        }
+
                         break;
                     }
                     case "Movement":
                     {
                         Guid guid;
                         if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
-                            guid = packet.ReadPackedGuid("[" + i + "] GUID");
+                            guid = packet.ReadPackedGuid("GUID", i);
                         else
-                            guid = packet.ReadGuid("[" + i + "] GUID");
+                            guid = packet.ReadGuid("GUID", i);
 
                         ReadMovementUpdateBlock(ref packet, guid, i);
+
+                        // Should we update Stuffing.Object?
                         break;
                     }
                     case "CreateObject1":
                     case "CreateObject2": // Might != CreateObject1 on Cata
                     {
-                        var guid = packet.ReadPackedGuid("[" + i + "] GUID");
-                        ReadCreateObjectBlock(ref packet, guid, (uint)map, i);
+                        var guid = packet.ReadPackedGuid("GUID", i);
+                        ReadCreateObjectBlock(ref packet, guid, map, i);
                         break;
                     }
                     case "FarObjects":
@@ -82,18 +88,11 @@ namespace WowPacketParser.Parsing.Parsers
             var moves = ReadMovementUpdateBlock(ref packet, guid, index);
             var updates = ReadValuesUpdateBlock(ref packet, objType, index);
 
-            var obj = new WoWObject {Type = objType, Movement = moves, UpdateFields = updates, Map = map};
-
-            if (guid.HasEntry() && (objType == ObjectType.Unit || objType == ObjectType.GameObject))
-            {
-                var type = Utilities.ObjectTypeToStore(objType);
-
-                packet.AddSniffData(type, (int)guid.GetEntry(), "SPAWN");
-            }
-
+            var obj = new WoWObject {Type = objType, Movement = moves, UpdateFields = updates, Map = map, PhaseMask = (uint) MovementHandler.CurrentPhaseMask};
             Stuffing.Objects.TryAdd(guid, obj);
 
-            HandleUpdateFieldChangedValues(guid, objType, updates, moves, true);
+            if (guid.HasEntry() && (objType == ObjectType.Unit || objType == ObjectType.GameObject))
+                packet.AddSniffData(Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");
         }
 
         public static void ReadObjectsBlock(ref Packet packet, int index)
@@ -178,194 +177,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             return dict;
-        }
-
-        // Outdated, not using new UpdateFields. Plix rewrite.
-        public static void HandleUpdateFieldChangedValues(Guid guid, ObjectType objType,
-            Dictionary<int, UpdateField> updates, MovementInfo moves, bool updatingObject = false)
-        {
-           /* bool shouldCommit;
-            bool isIntValue;
-            bool flags;
-            const bool isTemplate = true;
-            var isCreated = false;
-            string sql;
-            string fieldName = null;
-
-            if (objType == ObjectType.Unit && guid.GetHighType() != HighGuidType.Pet)
-            {
-                if (!updatingObject)
-                {
-                    SQLStore.WriteData(SQLStore.CreatureUpdates.GetCommand("speed_walk", guid.GetEntry(), moves.WalkSpeed));
-                    SQLStore.WriteData(SQLStore.CreatureUpdates.GetCommand("speed_run", guid.GetEntry(), moves.RunSpeed));
-                }
-
-                foreach (var upVal in updates)
-                {
-                    shouldCommit = true;
-                    isIntValue = true;
-                    flags = false;
-
-                    var idx = (UnitField)upVal.Key;
-                    var val = upVal.Value;
-
-                    switch (idx)
-                    {
-                        case UnitField.UNIT_CREATED_BY_SPELL:
-                        case UnitField.UNIT_FIELD_CREATEDBY:
-                        case UnitField.UNIT_FIELD_SUMMONEDBY:
-                        {
-                            isCreated = true;
-                            shouldCommit = false;
-                            break;
-                        }
-                        case (UnitField)ObjectField.OBJECT_FIELD_SCALE_X:
-                        {
-                            fieldName = "scale";
-                            isIntValue = false;
-                            break;
-                        }
-                        case UnitField.UNIT_DYNAMIC_FLAGS:
-                        {
-                            fieldName = "dynamicflags";
-                            flags = true;
-                            break;
-                        }
-                        case UnitField.UNIT_NPC_FLAGS:
-                        {
-                            fieldName = "npcflag";
-                            flags = true;
-                            break;
-                        }
-                        case UnitField.UNIT_FIELD_FLAGS:
-                        {
-                            fieldName = "unit_flags";
-                            flags = true;
-                            break;
-                        }
-                        case UnitField.UNIT_FIELD_ATTACK_POWER:
-                        {
-                            fieldName = "attackpower";
-                            break;
-                        }
-                        case UnitField.UNIT_FIELD_BASEATTACKTIME:
-                        {
-                            fieldName = "baseattacktime";
-                            break;
-                        }
-                        case UnitField.UNIT_FIELD_LEVEL:
-                        {
-                            fieldName = "minlevel = " + val.Int32Value + ", maxlevel";
-                            break;
-                        }
-                        case UnitField.UNIT_FIELD_RANGED_ATTACK_POWER:
-                        {
-                            fieldName = "rangedattackpower";
-                            break;
-                        }
-                        case UnitField.UNIT_FIELD_RANGEDATTACKTIME:
-                        {
-                            fieldName = "rangeattacktime";
-                            break;
-                        }
-                        case UnitField.UNIT_FIELD_FACTIONTEMPLATE:
-                        {
-                            fieldName = "faction_A = " + val.Int32Value + ", faction_H";
-                            break;
-                        }
-                        default:
-                        {
-                            shouldCommit = false;
-                            break;
-                        }
-                    }
-
-                    if (!shouldCommit)
-                        continue;
-
-                    var finalValue = isIntValue ? (object)val.Int32Value : val.SingleValue;
-
-                    if (flags)
-                        finalValue = "0x" + ((int)finalValue).ToString("X8");
-
-                    if (updatingObject)
-                        sql = SQLStore.CreatureSpawnUpdates.GetCommand(fieldName, (uint) guid.GetLow(), finalValue);
-                    else sql = SQLStore.CreatureUpdates.GetCommand(fieldName, guid.GetEntry(), finalValue);
-
-                    SQLStore.WriteData(sql);
-                }
-
-                if (!isCreated)
-                    SQLStore.WriteData(SQLStore.CreatureSpawns.GetCommand(guid.GetEntry(),
-                        MovementHandler.CurrentMapId, MovementHandler.CurrentPhaseMask,
-                        moves.Position, moves.Orientation));
-            }
-
-            if (objType != ObjectType.GameObject)
-                return;
-
-            foreach (var upVal in updates)
-            {
-                shouldCommit = true;
-                isIntValue = true;
-                flags = false;
-
-                var idx = (GameObjectField)upVal.Key;
-                var val = upVal.Value;
-
-                switch (idx)
-                {
-                    //case GameObjectField.GAMEOBJECT_FIELD_CREATED_BY:
-                    //{
-                    //    isCreated = true;
-                    //    shouldCommit = false;
-                    //  break;
-                    //}
-                    case (GameObjectField)ObjectField.OBJECT_FIELD_SCALE_X:
-                    {
-                        fieldName = "size";
-                        isIntValue = false;
-                        break;
-                    }
-                    case GameObjectField.GAMEOBJECT_FACTION:
-                    {
-                        fieldName = "faction";
-                        break;
-                    }
-                    case GameObjectField.GAMEOBJECT_FLAGS:
-                    {
-                        fieldName = "flags";
-                        flags = true;
-                        break;
-                    }
-                    default:
-                    {
-                        shouldCommit = false;
-                        break;
-                    }
-                }
-
-                if (!shouldCommit)
-                    continue;
-
-                var finalValue = isIntValue ? (object)val.Int32Value : val.SingleValue;
-
-                if (flags)
-                    finalValue = "0x" + ((int)finalValue).ToString("X8");
-
-                if (isTemplate)
-                    sql = SQLStore.GameObjectUpdates.GetCommand(fieldName, guid.GetEntry(), finalValue);
-                //else
-                //    sql = SQLStore.GameObjectSpawnUpdates.GetCommand(fieldName, (uint)guid.GetLow(),
-                //        finalValue);
-
-                SQLStore.WriteData(sql);
-            }
-
-            if (!isCreated)
-                SQLStore.WriteData(SQLStore.GameObjectSpawns.GetCommand(guid.GetEntry(), MovementHandler.CurrentMapId,
-                    MovementHandler.CurrentPhaseMask, moves.Position, moves.Orientation));
-            * */
         }
 
         public static MovementInfo ReadMovementUpdateBlock(ref Packet packet, Guid guid, int index)

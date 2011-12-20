@@ -10,8 +10,6 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class MovementHandler
     {
-        public static Vector4 CurrentPosition;
-
         public static uint CurrentMapId;
 
         public static int CurrentPhaseMask = 1;
@@ -261,9 +259,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             CurrentMapId = (uint)mapId;
 
-            var position = packet.ReadVector4();
-            packet.Writer.WriteLine("Position: " + position);
-            CurrentPosition = position;
+            packet.ReadVector4("Position");
 
             UpdateHandler.Objects[CurrentMapId] = new Dictionary<Guid, WoWObject>();
 
@@ -271,12 +267,10 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
 
             Player chInfo;
-            if (!CharacterHandler.Characters.TryGetValue(SessionHandler.LoginGuid, out chInfo))
-                return;
+            if (CharacterHandler.Characters.TryGetValue(SessionHandler.LoginGuid, out chInfo))
+                SessionHandler.LoggedInCharacter = chInfo;
 
             packet.AddSniffData(StoreNameType.Map, mapId, "NEW_WORLD");
-
-            SessionHandler.LoggedInCharacter = chInfo;
         }
 
         [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]

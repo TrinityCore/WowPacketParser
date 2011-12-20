@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects;
 
@@ -12,6 +13,62 @@ namespace WowPacketParser.Store.SQL
 {
     public static class Builder
     {
+        public static string CreatureSpawns()
+        {
+            if (!Stuffing.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit))
+                return string.Empty;
+
+            var units = Stuffing.Objects.Where(x => x.Value.Type == ObjectType.Unit);
+
+            const string tableName = "creature";
+
+            ICollection<Tuple<uint, uint>> keys = new Collection<Tuple<uint, uint>>();
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var unit in units)
+            {
+                var row = new QueryBuilder.SQLInsertRow();
+
+                var creature = unit.Value;
+
+                // If our unit got any of the folowing updated fields set,
+                // it's probably a temporary spawn
+                UpdateField uf;
+                creature.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_SUMMONEDBY), out uf);
+                creature.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_CREATED_BY_SPELL), out uf);
+                creature.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_CREATEDBY), out uf);
+                var temporarySpawn = (uf != null && uf.Int32Value != 0);
+                row.CommentOut = temporarySpawn;
+
+                // If map is Eastern Kingdoms, Kalimdor, Outland, Northrend or Ebon Hold use a lower respawn time
+                // TODO: Rank and if npc is needed for quest kill should change spawntime as well
+                var spawnTimeSecs = (unit.Value.Map == 0 || unit.Value.Map == 1 || unit.Value.Map == 530 ||
+                                     unit.Value.Map == 571 || unit.Value.Map == 609) ? 120 : 7200;
+                var movementType = 0; // TODO: Find a way to check if our unit got random movement
+                var spawnDist = (movementType == 1) ? 5 : 0;
+
+                row.AddValue("guid", unit.Key.GetLow());
+                row.AddValue("id", unit.Key.GetEntry());
+                row.AddValue("map", creature.Map);
+                row.AddValue("spawnMask", 1);
+                row.AddValue("phaseMask", creature.PhaseMask);
+                row.AddValue("position_x", creature.Movement.Position.X);
+                row.AddValue("position_y", creature.Movement.Position.Y);
+                row.AddValue("position_z", creature.Movement.Position.Z);
+                row.AddValue("orientation", creature.Movement.Orientation);
+                row.AddValue("spawntimesecs", spawnTimeSecs);
+                row.AddValue("spawndist", spawnDist);
+                row.AddValue("MovementType", movementType);
+                row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int) unit.Key.GetEntry(), false);
+                if (temporarySpawn)
+                    row.Comment += " - !!! might be temporary spawn !!!";
+
+                rows.Add(row);
+                keys.Add(new Tuple<uint, uint>((uint) unit.Key.GetLow(), unit.Key.GetEntry()));
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, keys, new[] { "guid", "id" }, rows).Build();
+        }
+
         public static string SniffData()
         {
             if (Stuffing.SniffData.IsEmpty)
@@ -495,9 +552,7 @@ namespace WowPacketParser.Store.SQL
             // Can't cast the collection directly
             ICollection<Tuple<uint, uint>> lootKeys = new Collection<Tuple<uint, uint>>();
             foreach (var tuple in Stuffing.Loots.Keys)
-            {
                 lootKeys.Add(new Tuple<uint, uint>(tuple.Item1, (uint)tuple.Item2));
-            }
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var loot in Stuffing.Loots)
