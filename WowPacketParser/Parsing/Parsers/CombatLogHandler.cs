@@ -168,7 +168,7 @@ namespace WowPacketParser.Parsing.Parsers
                         }
                         case SpellEffect.OpenLock:
                         {
-                            packet.ReadInt32("Unknown Int32", index, i, j); // Lock Id?
+                            packet.ReadPackedGuid("Target", i, j);
                             break;
                         }
                         case SpellEffect.CreateItem:
