@@ -184,7 +184,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Receivers Name");
         }
 
-        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_PARTY)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_GUILD)]
         public static void HandleClientChatMessageAddon(Packet packet)
         {
             packet.ReadCString("Message");
