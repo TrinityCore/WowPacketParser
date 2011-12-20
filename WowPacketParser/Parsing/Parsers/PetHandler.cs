@@ -146,6 +146,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.Writer.WriteLine("Action: {0}", action);
             packet.ReadEnum<ActionButtonType>("Type", TypeCode.Byte);
             packet.ReadGuid("GUID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                packet.ReadVector3("Position");
         }
 
         [Parser(Opcode.CMSG_PET_CANCEL_AURA)]
