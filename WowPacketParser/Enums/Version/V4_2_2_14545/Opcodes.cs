@@ -266,6 +266,8 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_ARENA_TEAM_INVITE, 0x05EDB},
             {Opcode.SMSG_ARENA_TEAM_QUERY_RESPONSE, 0x08CCE},
             {Opcode.SMSG_ARENA_TEAM_STATS, 0x0DEF2},
+            {Opcode.SMSG_ATTACKSTART, 0xCA4A},
+            {Opcode.SMSG_ATTACKSTOP, 0xCED7},
             {Opcode.SMSG_AUCTION_LIST_RESULT, 0x0DEDE},
             {Opcode.SMSG_AURA_UPDATE, 0x4C66},
             {Opcode.SMSG_AURA_UPDATE_ALL, 0x18EE},
