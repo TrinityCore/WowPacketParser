@@ -1125,7 +1125,7 @@ namespace WowPacketParser.Enums.Version//.V4_0_3_13329
             {Opcode.SMSG_CONVERT_RUNE, 0xFF9C}, // NF(0x4B75)(0x0486) //
             {Opcode.SMSG_RESYNC_RUNES, 0xFF9B}, // NF(0x4AF0)(0x0487) //
             {Opcode.SMSG_ADD_RUNE_POWER, 0xFF9A}, // NF(0x4A3D)(0x0488) //
-            {Opcode.CMSG_START_QUEST, 0x0489}, // NF()(0x0489) //
+            {Opcode.CMSG_QUEST_NPC_QUERY, 0x0489}, // NF()(0x0489) //
             {Opcode.CMSG_REMOVE_GLYPH, 0x048A}, // NF()(0x048A) //
             {Opcode.CMSG_DUMP_OBJECTS, 0x048B}, // NF()(0x048B) //
             {Opcode.SMSG_DUMP_OBJECTS_DATA, 0x048C}, // NF()(0x048C) //

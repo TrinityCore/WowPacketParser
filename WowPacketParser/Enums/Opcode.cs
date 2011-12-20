@@ -520,6 +520,7 @@ namespace WowPacketParser.Enums
         CMSG_QUESTGIVER_STATUS_QUERY,
         CMSG_QUESTLOG_REMOVE_QUEST,
         CMSG_QUESTLOG_SWAP_QUEST,
+        CMSG_QUEST_NPC_QUERY,
         CMSG_QUEST_POI_QUERY,
         CMSG_QUEST_QUERY,
         CMSG_RANDOMIZE_CHAR_NAME,
@@ -634,7 +635,6 @@ namespace WowPacketParser.Enums
         CMSG_STABLE_SWAP_PET,
         CMSG_STANDSTATECHANGE,
         CMSG_START_BATTLEFIELD_CHEAT,
-        CMSG_START_QUEST,
         CMSG_STOP_DANCE,
         CMSG_STORE_LOOT_IN_SLOT,
         CMSG_SUMMON_CANCEL,
@@ -1327,6 +1327,7 @@ namespace WowPacketParser.Enums
         SMSG_QUESTGIVER_STATUS,
         SMSG_QUESTGIVER_STATUS_MULTIPLE,
         SMSG_QUESTLOG_FULL,
+        SMSG_QUEST_NPC_QUERY_RESPONSE,
         SMSG_QUEST_POI_QUERY_RESPONSE,
         SMSG_QUEST_QUERY_RESPONSE,
         SMSG_QUESTUPDATE_ADD_ITEM,
@@ -1596,7 +1597,6 @@ namespace WowPacketParser.Enums
 
         // Tests
         TEST_422_41036,
-        TEST_422_63100,
         TEST_422_24649,
 
         // ReSharper restore InconsistentNaming

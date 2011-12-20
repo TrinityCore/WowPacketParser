@@ -1167,7 +1167,7 @@ namespace WowPacketParser.Enums.Version//.V3_3_5a_12340
             {Opcode.SMSG_CONVERT_RUNE, 0x486},
             {Opcode.SMSG_RESYNC_RUNES, 0x487},
             {Opcode.SMSG_ADD_RUNE_POWER, 0x488},
-            {Opcode.CMSG_START_QUEST, 0x489},
+            {Opcode.CMSG_QUEST_NPC_QUERY, 0x489},
             {Opcode.CMSG_REMOVE_GLYPH, 0x48A},
             {Opcode.CMSG_DUMP_OBJECTS, 0x48B},
             {Opcode.SMSG_DUMP_OBJECTS_DATA, 0x48C},

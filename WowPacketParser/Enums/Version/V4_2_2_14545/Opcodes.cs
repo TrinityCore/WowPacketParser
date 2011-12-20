@@ -192,7 +192,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_SET_SELECTION, 0x4C4E},
             {Opcode.CMSG_SET_TAXI_BENCHMARK_MODE, 0x1EFF},
             {Opcode.CMSG_SET_TITLE, 0xCE63},
-            {Opcode.CMSG_START_QUEST, 0x9ED6},
+            {Opcode.CMSG_QUEST_NPC_QUERY, 0x9ED6},
             {Opcode.CMSG_QUEST_POI_QUERY, 0x12A5},
             {Opcode.CMSG_SHOWING_CLOAK, 0x8AE3},
             {Opcode.CMSG_SHOWING_HELM, 0xCEFA},
@@ -399,6 +399,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_QUESTUPDATE_FAILED, 0x9EF6},
             {Opcode.SMSG_QUESTUPDATE_ADD_ITEM, 0x9CCF},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x9E56},
+            {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 0xF67C},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x8CC3},
             {Opcode.SMSG_RAID_INSTANCE_MESSAGE, 0x0D862},
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0xF0DC},
@@ -448,7 +449,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
 
             // Tests
             {Opcode.TEST_422_41036, 0xA04C},
-            {Opcode.TEST_422_63100, 63100},
             {Opcode.TEST_422_24649, 24649},
         };
     }

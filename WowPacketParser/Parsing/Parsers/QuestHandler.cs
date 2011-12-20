@@ -228,13 +228,13 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
-        [Parser(Opcode.CMSG_START_QUEST)]
+        [Parser(Opcode.CMSG_QUEST_NPC_QUERY)]
         public static void HandleQuestPoiQuery(Packet packet)
         {
             var count = 0;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
             {
-                if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_START_QUEST))
+                if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_QUEST_NPC_QUERY))
                 {
                     packet.ReadByte("unk");
                     packet.ReadByte("unk2");
@@ -252,6 +252,22 @@ namespace WowPacketParser.Parsing.Parsers
                 count = packet.ReadInt32("Count");
 
             for (var i = 0; i < count; i++)
+                packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID", i);
+        }
+
+        [Parser(Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE)]
+        public static void HandleQuestNpcQueryResponse(Packet packet)
+        {
+            var count = packet.ReadUInt32("Count");
+
+            for (var i = 0; i < count; ++i)
+            {
+                var count2 = packet.ReadUInt32("Number of NPC", i);
+                for (var j = 0; j < count2; ++j)
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Unit, "NPC ID", i, j);
+            }
+
+            for (var i = 0; i < count; ++i)
                 packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID", i);
         }
 
@@ -830,22 +846,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
         }
 
-        // Related to End quest npcs
-        [Parser(Opcode.TEST_422_63100)]
-        public static void handlerQuestRelated_63100(Packet packet)
-        {
-            var count = packet.ReadUInt32("Counter");
-
-            for (var i = 0; i < count; ++i)
-            {
-                var count2 = packet.ReadUInt32("Number of NPC", i);
-                for (var j = 0; j < count2; ++j)
-                    packet.ReadEntryWithName<Int32>(StoreNameType.Unit, "NPC ID", i, j);
-            }
-
-            for (var i = 0; i < count; ++i)
-                packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID", i);
-        }
         //[Parser(Opcode.CMSG_FLAG_QUEST)]
         //[Parser(Opcode.CMSG_FLAG_QUEST_FINISH)]
         //[Parser(Opcode.CMSG_CLEAR_QUEST)]
