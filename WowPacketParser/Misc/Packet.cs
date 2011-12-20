@@ -20,6 +20,7 @@ namespace WowPacketParser.Misc
             Writer = writer;
             SniffFileInfo = fileInfo;
             Status = ParsedStatus.None;
+            WriteToFile = true;
         }
 
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, SniffFileInfo fileInfo)
@@ -32,6 +33,7 @@ namespace WowPacketParser.Misc
             Writer = new StringWriter();
             SniffFileInfo = fileInfo;
             Status = ParsedStatus.None;
+            WriteToFile = true;
         }
 
         public int Opcode { get; private set; }
@@ -41,6 +43,7 @@ namespace WowPacketParser.Misc
         public StringWriter Writer { get; private set; }
         public SniffFileInfo SniffFileInfo { get; private set; }
         public ParsedStatus Status { get; set; }
+        public bool WriteToFile { get; private set; }
 
         public void AddSniffData(StoreNameType type, int id, string data)
         {

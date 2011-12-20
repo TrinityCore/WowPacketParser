@@ -95,19 +95,24 @@ namespace WowPacketParser
 
                     foreach (var packet in packets)
                     {
-                        switch (packet.Status)
+                        if (!packet.WriteToFile)
+                            statsSkip++;
+                        else
                         {
-                            case ParsedStatus.Success:
-                                statsOk++;
-                                break;
-                            case ParsedStatus.WithErrors:
-                                statsError++;
-                                break;
-                            case ParsedStatus.NotParsed:
-                                statsSkip++;
-                                break;
-                            default:
-                                break;
+                            switch (packet.Status)
+                            {
+                                case ParsedStatus.Success:
+                                    statsOk++;
+                                    break;
+                                case ParsedStatus.WithErrors:
+                                    statsError++;
+                                    break;
+                                case ParsedStatus.NotParsed:
+                                    statsSkip++;
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
                     }
                     
@@ -158,6 +163,10 @@ namespace WowPacketParser
                 filtersString = Settings.GetString("IgnoreFilters");
                 if (filtersString != null)
                     ignoreFilters = filtersString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                filtersString = Settings.GetString("IgnoreByEntryFilters");
+                if (filtersString != null)
+                    Filters.Initialize(filtersString);
 
                 sqlOutput = Settings.GetBoolean("SQLOutput");
                 dumpFormat = (DumpFormatType)Settings.GetInt32("DumpFormat");

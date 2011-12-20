@@ -14,7 +14,9 @@ namespace WowPacketParser.Misc
 
         public Guid ReadGuid()
         {
-            return new Guid(ReadUInt64());
+            Guid guid = new Guid(ReadUInt64());
+            WriteToFile = Filters.CheckFilter(guid);
+            return guid;
         }
 
         public Guid ReadPackedGuid()
@@ -35,7 +37,9 @@ namespace WowPacketParser.Misc
                 i++;
             }
 
-            return new Guid(res);
+            Guid guid = new Guid(res);
+            WriteToFile = Filters.CheckFilter(guid);
+            return guid;
         }
 
         public DateTime ReadTime()
@@ -409,6 +413,7 @@ namespace WowPacketParser.Misc
         {
             var val = (int) ReadValue(Type.GetTypeCode(typeof (T)));
             Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, StoreGetters.GetName(type, val), (debug ? " (0x" + val.ToString("X4") + ")" : ""));
+            WriteToFile = Filters.CheckFilter(type, val);
             return val;
         }
 

@@ -64,7 +64,8 @@ namespace WowPacketParser.Parsing
             var writer = new StreamWriter(file, true);
 
             foreach (var packet in packets)
-                writer.WriteLine(packet.Writer);
+                if (packet.WriteToFile)
+                    writer.WriteLine(packet.Writer);
 
             writer.Flush();
             writer.Close();
