@@ -124,9 +124,14 @@ namespace WowPacketParser.Misc
             return _build == ClientVersionBuild.Zero;
         }
 
-        public static int GetBuild()
+        public static int GetBuildInt()
         {
             return (int)_build;
+        }
+
+        public static ClientVersionBuild GetBuild()
+        {
+            return _build;
         }
 
         public static string GetVersionString()

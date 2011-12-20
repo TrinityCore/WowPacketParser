@@ -66,7 +66,7 @@ namespace WowPacketParser.Enums.Version
 
         public static string GetOpcodeName(int opcodeId)
         {
-            return GetOpcodeName(opcodeId, ClientVersion.GetBuild());
+            return GetOpcodeName(opcodeId, ClientVersion.GetBuildInt());
         }
 
         public static string GetOpcodeName(int opcodeId, int build)
@@ -90,7 +90,7 @@ namespace WowPacketParser.Enums.Version
 
         public static int GetOpcode(Opcode opcode)
         {
-            return GetOpcode(opcode, ClientVersion.GetBuild());
+            return GetOpcode(opcode, ClientVersion.GetBuildInt());
         }
 
         public static int GetOpcode(Opcode opcode, int build)

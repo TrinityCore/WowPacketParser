@@ -188,10 +188,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (flags.HasAnyFlag(UpdateFlag.Living))
             {
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
-                    moveInfo = MovementHandler.ReadMovementInfo420(ref packet, guid, index);
-                else
-                    moveInfo = MovementHandler.ReadMovementInfo(ref packet, guid, index);
+                moveInfo = MovementHandler.ReadMovementInfo(ref packet, guid, index);
                 var moveFlags = moveInfo.Flags;
 
                 var speedCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056) ? 9 : 8;

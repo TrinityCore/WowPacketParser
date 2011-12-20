@@ -90,7 +90,6 @@ namespace WowPacketParser.Parsing
                 status = ParsedStatus.Success;
             else
             {
-
                 Action<Packet> handler;
                 if (Handlers.TryGetValue(opcode, out handler))
                 {

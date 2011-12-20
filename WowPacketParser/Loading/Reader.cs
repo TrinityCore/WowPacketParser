@@ -53,7 +53,7 @@ namespace WowPacketParser.Loading
                     if (ClientVersion.IsUndefined())
                         ClientVersion.SetVersion(packet.Time);
 
-                    firstPacketBuild = ClientVersion.GetBuild();
+                    firstPacketBuild = ClientVersion.GetBuildInt();
                 }
 
                 if (++packetNum < packetNumberLow)
