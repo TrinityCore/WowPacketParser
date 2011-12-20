@@ -63,12 +63,13 @@ namespace WowPacketParser.SQL
 
         public static bool Connected()
         {
-            return session.isConnected();
+            return session != null ? session.isConnected() : false;
         }
 
         public static void Disconnect()
         {
-            session.disconnect();
+            if (session != null)
+                session.disconnect();
         }
     }
 }
