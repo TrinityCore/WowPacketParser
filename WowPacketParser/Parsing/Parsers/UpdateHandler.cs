@@ -224,18 +224,28 @@ namespace WowPacketParser.Parsing.Parsers
                 // this is incorrect for certain objects but I can't figure out why
                 if (moveFlags.HasAnyFlag(MovementFlag.SplineEnabled) || moveInfo.HasSplineData)
                 {
-                    var splineFlags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32, index);
-
-                    // HACK: Fix splineflags for next ifs. Need to use different enum for TBC
-                    if (ClientVersion.RemovedInVersion(ClientType.WrathOfTheLichKing))
-                        splineFlags = (SplineFlag)((int)splineFlags >> 1);
-
-                    if (splineFlags.HasAnyFlag(SplineFlag.FinalTarget))
-                        packet.ReadGuid("Final Spline Target GUID", index);
-                    else if (splineFlags.HasAnyFlag(SplineFlag.FinalOrientation))
-                        packet.ReadSingle("Final Spline Orientation", index);
-                    else if (splineFlags.HasAnyFlag(SplineFlag.FinalPoint))
-                        packet.ReadVector3("Final Spline Coords", index);
+                    // Temp solution
+                    // TODO: Make Enums version friendly
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                    {
+                        var splineFlags422 = packet.ReadEnum<SplineFlag422>("Spline Flags", TypeCode.Int32, index);
+                        if (splineFlags422.HasAnyFlag(SplineFlag.FinalTarget))
+                            packet.ReadGuid("Final Spline Target GUID", index);
+                        else if (splineFlags422.HasAnyFlag(SplineFlag.FinalOrientation))
+                            packet.ReadSingle("Final Spline Orientation", index);
+                        else if (splineFlags422.HasAnyFlag(SplineFlag.FinalPoint))
+                            packet.ReadVector3("Final Spline Coords", index);
+                    }
+                    else
+                    {
+                        var splineFlags = packet.ReadEnum<SplineFlag422>("Spline Flags", TypeCode.Int32, index);
+                        if (splineFlags.HasAnyFlag(SplineFlag.FinalTarget))
+                            packet.ReadGuid("Final Spline Target GUID", index);
+                        else if (splineFlags.HasAnyFlag(SplineFlag.FinalOrientation))
+                            packet.ReadSingle("Final Spline Orientation", index);
+                        else if (splineFlags.HasAnyFlag(SplineFlag.FinalPoint))
+                            packet.ReadVector3("Final Spline Coords", index);
+                    }
 
                     packet.ReadInt32("Spline Time", index);
                     packet.ReadInt32("Spline Full Time", index);

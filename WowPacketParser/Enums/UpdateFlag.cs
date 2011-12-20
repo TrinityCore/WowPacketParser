@@ -20,5 +20,6 @@ namespace WowPacketParser.Enums
         AnimKits = 0x800, // 4.x
         TransportUnkArray = 0x1000, // 4.x
         EnablePortals = 0x2000, // 4.x
+        Unknown = 0x4000, // 4.x
     }
 }

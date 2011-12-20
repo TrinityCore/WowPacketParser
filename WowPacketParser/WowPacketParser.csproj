@@ -274,6 +274,7 @@
     <Compile Include="Enums\SpeedType.cs" />
     <Compile Include="Enums\SpellCastFailureReason.cs" />
     <Compile Include="Enums\SplineFlag.cs" />
+    <Compile Include="Enums\SplineFlag422.cs" />
     <Compile Include="Enums\StatType.cs" />
     <Compile Include="Enums\TaxiError.cs" />
     <Compile Include="Enums\TargetFlag.cs" />
