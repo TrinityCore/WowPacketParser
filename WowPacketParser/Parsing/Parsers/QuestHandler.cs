@@ -437,7 +437,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Required Spell");
             }
 
-            if ((flags & QuestFlags.HiddenRewards) > 0)
+            if (flags.HasFlag(QuestFlags.HiddenRewards))
             {
                 packet.ReadUInt32("Hidden Chosen Items");
                 packet.ReadUInt32("Hidden Items");
@@ -449,22 +449,25 @@ namespace WowPacketParser.Parsing.Parsers
             else
             {
                 var choiceCount = packet.ReadUInt32("Choice Item Count");
+                var effectiveChoiceCount = ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) ? 6 : choiceCount;
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 {
-                    for (var i = 0; i < choiceCount; i++)
+                    for (var i = 0; i < effectiveChoiceCount; i++)
                         packet.ReadUInt32("Choice Item Id", i);
-                    for (var i = 0; i < choiceCount; i++)
+                    for (var i = 0; i < effectiveChoiceCount; i++)
                         packet.ReadUInt32("Choice Item Count", i);
-                    for (var i = 0; i < choiceCount; i++)
+                    for (var i = 0; i < effectiveChoiceCount; i++)
                         packet.ReadUInt32("Choice Item Display Id", i);
 
                     var rewardCount = packet.ReadUInt32("Reward Item Count");
-                    for (var i = 0; i < rewardCount; i++)
+                    var effectiveRewardCount = ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) ? 4 : rewardCount;
+
+                    for (var i = 0; i < effectiveRewardCount; i++)
                         packet.ReadUInt32("Reward Item Id", i);
-                    for (var i = 0; i < rewardCount; i++)
+                    for (var i = 0; i < effectiveRewardCount; i++)
                         packet.ReadUInt32("Reward Item Count", i);
-                    for (var i = 0; i < rewardCount; i++)
+                    for (var i = 0; i < effectiveRewardCount; i++)
                         packet.ReadUInt32("Reward Item Display Id", i);
                 }
                 else
