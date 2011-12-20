@@ -229,16 +229,16 @@ namespace WowPacketParser.Parsing.Parsers
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                     {
                         var splineFlags422 = packet.ReadEnum<SplineFlag422>("Spline Flags", TypeCode.Int32, index);
-                        if (splineFlags422.HasAnyFlag(SplineFlag.FinalTarget))
+                        if (splineFlags422.HasAnyFlag(SplineFlag422.FinalTarget))
                             packet.ReadGuid("Final Spline Target GUID", index);
-                        else if (splineFlags422.HasAnyFlag(SplineFlag.FinalOrientation))
+                        else if (splineFlags422.HasAnyFlag(SplineFlag422.FinalOrientation))
                             packet.ReadSingle("Final Spline Orientation", index);
-                        else if (splineFlags422.HasAnyFlag(SplineFlag.FinalPoint))
+                        else if (splineFlags422.HasAnyFlag(SplineFlag422.FinalPoint))
                             packet.ReadVector3("Final Spline Coords", index);
                     }
                     else
                     {
-                        var splineFlags = packet.ReadEnum<SplineFlag422>("Spline Flags", TypeCode.Int32, index);
+                        var splineFlags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32, index);
                         if (splineFlags.HasAnyFlag(SplineFlag.FinalTarget))
                             packet.ReadGuid("Final Spline Target GUID", index);
                         else if (splineFlags.HasAnyFlag(SplineFlag.FinalOrientation))
