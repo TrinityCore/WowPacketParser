@@ -122,7 +122,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_MAIL_TAKE_ITEM, 0xCC2},
             {Opcode.CMSG_MAIL_TAKE_MONEY, 0x4CD6},
             {Opcode.CMSG_MEETINGSTONE_INFO, 0xCA5B},
-            {Opcode.CMSG_MESSAGECHAT_ADDON, 0x24D9},
+            {Opcode.CMSG_MESSAGECHAT_ADDON, 0x6041},
             {Opcode.CMSG_MESSAGECHAT_CHANNEL, 0x7459},
             {Opcode.CMSG_MESSAGECHAT_EMOTE, 0x6449},
             {Opcode.CMSG_MESSAGECHAT_GUILD, 0x60C1},
