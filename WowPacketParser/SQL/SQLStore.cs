@@ -50,8 +50,6 @@ namespace WowPacketParser.SQL
             _file = null;
         }
 
-        public static readonly CreatureSpawnStore CreatureSpawns = new CreatureSpawnStore();
-
         public static readonly CreatureSpawnUpdateStore CreatureSpawnUpdates = new CreatureSpawnUpdateStore();
 
         public static readonly CreatureUpdateStore CreatureUpdates = new CreatureUpdateStore();

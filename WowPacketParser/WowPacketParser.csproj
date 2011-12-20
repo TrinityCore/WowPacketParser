@@ -396,7 +396,6 @@
     <Compile Include="SQL\SQLCommandBuilder.cs" />
     <Compile Include="SQL\SQLConnector.cs" />
     <Compile Include="SQL\SQLStore.cs" />
-    <Compile Include="SQL\Stores\CreatureSpawnStore.cs" />
     <Compile Include="SQL\Stores\CreatureSpawnUpdateStore.cs" />
     <Compile Include="SQL\Stores\CreatureUpdateStore.cs" />
     <Compile Include="SQL\Stores\GameObjectSpawnStore.cs" />
