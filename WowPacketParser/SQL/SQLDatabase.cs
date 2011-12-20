@@ -21,8 +21,9 @@ namespace WowPacketParser.SQL
                                                        StoreNameType.Item,
                                                        StoreNameType.Quest,
                                                        StoreNameType.Zone,
-                                                       StoreNameType.Area
-                                                   };
+                                                       StoreNameType.Area,
+                                                       StoreNameType.Player,
+        };
 
         public static void GrabData()
         {

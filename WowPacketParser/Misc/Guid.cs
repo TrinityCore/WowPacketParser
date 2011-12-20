@@ -132,14 +132,22 @@ namespace WowPacketParser.Misc
                        + " Entry: " + StoreGetters.GetName(type, (int)GetEntry()) + " Low: " + GetLow();
             }
 
-            if (GetHighType() == HighGuidType.BattleGround)
+            switch (GetHighType())
             {
-                var bgType    = (Full & 0x00FF0000) >> 16;
-                var unkId     = (Full & 0x0000FF00) >> 8;
-                var arenaType = (Full & 0x000000FF) >> 0;
-                return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()
-                    + " BgType: " + StoreGetters.GetName(StoreNameType.Battleground, (int)bgType)
-                    + " Unk: " + unkId + (arenaType > 0 ? (" ArenaType: " + arenaType) : "");
+                case HighGuidType.BattleGround:
+                {
+                    var bgType    = (Full & 0x00FF0000) >> 16;
+                    var unkId     = (Full & 0x0000FF00) >> 8;
+                    var arenaType = (Full & 0x000000FF) >> 0;
+                    return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()
+                        + " BgType: " + StoreGetters.GetName(StoreNameType.Battleground, (int)bgType)
+                        + " Unk: " + unkId + (arenaType > 0 ? (" ArenaType: " + arenaType) : "");
+                }
+                case HighGuidType.Player:
+                {
+                    return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()
+                    + " Low: " + StoreGetters.GetName(StoreNameType.Player, (int)GetLow());
+                }
             }
 
             return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()

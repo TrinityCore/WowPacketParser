@@ -18,5 +18,6 @@
         Zone,
         Area,
         Phase,
+        Player
     }
 }
