@@ -186,10 +186,20 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_PARTY)]
         [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_GUILD)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_RAID)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_BATTLEGROUND)]
         public static void HandleClientChatMessageAddon(Packet packet)
         {
             packet.ReadCString("Message");
             packet.ReadCString("Prefix");
+        }
+
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_WHISPER)]
+        public static void HandleClientChatMessageAddonWhisper(Packet packet)
+        {
+            packet.ReadCString("Prefix");
+            packet.ReadCString("Sender Name");
+            packet.ReadCString("Message");
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT_EMOTE)]
