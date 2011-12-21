@@ -155,6 +155,8 @@ namespace WowPacketParser.Parsing.Parsers
             // All packets have 0 on first one and 95% of second = false. Leaving as Unk till further test
             packet.ReadByte("Unk byte 1");
             packet.ReadByte("Unk byte 2");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");   // Used only for: <if (Spell ID == 83968 && Unit_HasAura(95223) return 1;>
         }
 
         [Parser(Opcode.CMSG_RESURRECT_RESPONSE)]
@@ -310,7 +312,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_PRE_RESURRECT)]
-        public static void HandlePreRessurect(Packet packet)
+        public static void HandlePreResurrect(Packet packet)
         {
             packet.ReadPackedGuid("GUID");
         }

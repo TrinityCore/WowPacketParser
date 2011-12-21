@@ -17,7 +17,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Gold");
 
             if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing)) // no idea when this was added, doesn't exist in 2.4.1
-                packet.ReadBoolean("Solo Loot");
+                packet.ReadBoolean("Solo Loot"); // true = YOU_LOOT_MONEY, false = LOOT_MONEY_SPLIT
         }
 
         [Parser(Opcode.CMSG_LOOT)]
