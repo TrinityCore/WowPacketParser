@@ -224,6 +224,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_TURN_IN_PETITION, 0x9C67},
             {Opcode.CMSG_UNLEARN_SKILL, 0xAC3},
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x4AFE},
+            {Opcode.CMSG_USE_ITEM, 0xD8EA},
             {Opcode.CMSG_WARDEN_DATA, 0x5847},
             {Opcode.CMSG_WHO, 0x9AD7},
             {Opcode.CMSG_WHOIS, 0xCCE6},
@@ -296,7 +297,9 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_CHAR_CREATE, 0x4C5B},
             {Opcode.SMSG_CHAR_DELETE, 0x48CE},
             {Opcode.SMSG_CHAR_ENUM, 0xA05C},
-            {Opcode.SMSG_CHAR_RENAME, 0x05EF6},
+            {Opcode.SMSG_CHAR_RENAME, 0x5EF6},
+            {Opcode.SMSG_CHAR_CUSTOMIZE, 0xAE3},
+            {Opcode.SMSG_CHAR_FACTION_CHANGE, 0x885A},
             {Opcode.SMSG_CHAT_WRONG_FACTION, 0xE66},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x88F2},
             {Opcode.SMSG_CLIENT_CONTROL_UPDATE, 0x008CB},
@@ -427,6 +430,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x88D3}, // unsure: can be 0x98FE
             {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x98FE}, // unsure: can be 0x88D3
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x204C},
+            {Opcode.SMSG_SET_PLAYER_DECLINED_NAMES_RESULT, 0xE67},
             {Opcode.SMSG_SPELL_FAILED_OTHER, 0xCE4A},
             {Opcode.SMSG_SPELL_FAILURE, 0x9A66},
             {Opcode.SMSG_SPELL_GO, 0x0A53},
