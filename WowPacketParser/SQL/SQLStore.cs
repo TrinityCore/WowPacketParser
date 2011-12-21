@@ -4,22 +4,19 @@ using WowPacketParser.SQL.Stores;
 
 namespace WowPacketParser.SQL
 {
-    public static class SQLStore
+    public class SQLStore
     {
-        private static StreamWriter _file;
+        private StreamWriter _file;
 
-        private static readonly List<string> Sqls = new List<string>();
+        private readonly List<string> Sqls = new List<string>();
 
-        public static void Initialize(string file, bool output)
+        public SQLStore(string file)
         {
-            if (!output)
-                return;
-
             File.Delete(file);
             _file = new StreamWriter(file, true);
         }
 
-        public static void WriteData(string sql)
+        public void WriteData(string sql)
         {
             if (_file == null)
                 return;
@@ -30,7 +27,7 @@ namespace WowPacketParser.SQL
             Sqls.Add(sql);
         }
 
-        public static void WriteToFile()
+        public void WriteToFile()
         {
             if (_file == null)
                 return;
@@ -43,24 +40,23 @@ namespace WowPacketParser.SQL
             Flush();
         }
 
-        private static void Flush()
+        private void Flush()
         {
             _file.Flush();
             _file.Close();
             _file = null;
         }
 
-        public static readonly CreatureSpawnUpdateStore CreatureSpawnUpdates = new CreatureSpawnUpdateStore();
+        public readonly CreatureSpawnUpdateStore CreatureSpawnUpdates = new CreatureSpawnUpdateStore();
 
-        public static readonly CreatureUpdateStore CreatureUpdates = new CreatureUpdateStore();
+        public readonly CreatureUpdateStore CreatureUpdates = new CreatureUpdateStore();
 
-        public static readonly GameObjectSpawnStore GameObjectSpawns = new GameObjectSpawnStore();
+        public readonly GameObjectSpawnStore GameObjectSpawns = new GameObjectSpawnStore();
 
-        public static readonly GameObjectSpawnUpdateStore GameObjectSpawnUpdates = new GameObjectSpawnUpdateStore();
+        public readonly GameObjectSpawnUpdateStore GameObjectSpawnUpdates = new GameObjectSpawnUpdateStore();
 
-        public static readonly GameObjectUpdateStore GameObjectUpdates = new GameObjectUpdateStore();
+        public readonly GameObjectUpdateStore GameObjectUpdates = new GameObjectUpdateStore();
 
-        public static readonly ItemStore Items = new ItemStore();
-
+        public readonly ItemStore Items = new ItemStore();
     }
 }

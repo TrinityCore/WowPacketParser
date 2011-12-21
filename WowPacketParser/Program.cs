@@ -56,8 +56,6 @@ namespace WowPacketParser
                     var outLogFileName = outFileName + ".txt";
                     var outSqlFileName = outFileName + ".sql";
 
-                    SQLStore.Initialize(outSqlFileName, sqlOutput);
-
                     bool headersOnly = (dumpFormat == DumpFormatType.TextHeader || dumpFormat == DumpFormatType.SummaryHeader);
                     if (threads == 0) // Number of threads is automatically choosen by the Parallel library
                         packets.AsParallel().SetCulture().ForAll(packet => Handler.Parse(packet, headersOnly));
@@ -69,22 +67,23 @@ namespace WowPacketParser
                     if (sqlOutput)
                     {
                         // Experimental, will remove
-                        SQLStore.WriteData(Builder.CreatureSpawns());
-                        SQLStore.WriteData(Builder.QuestTemplate());
-                        SQLStore.WriteData(Builder.NpcTrainer());
-                        SQLStore.WriteData(Builder.NpcVendor());
-                        SQLStore.WriteData(Builder.NpcTemplate());
-                        SQLStore.WriteData(Builder.GameObjectTemplate());
-                        SQLStore.WriteData(Builder.PageText());
-                        SQLStore.WriteData(Builder.NpcText());
-                        SQLStore.WriteData(Builder.Gossip());
-                        SQLStore.WriteData(Builder.Loot());
-                        SQLStore.WriteData(Builder.SniffData());
-                        SQLStore.WriteData(Builder.QuestPOI());
-                        SQLStore.WriteData(Builder.StartInformation());
+                        var store = new SQLStore(outSqlFileName);
+                        store.WriteData(Builder.CreatureSpawns());
+                        store.WriteData(Builder.QuestTemplate());
+                        store.WriteData(Builder.NpcTrainer());
+                        store.WriteData(Builder.NpcVendor());
+                        store.WriteData(Builder.NpcTemplate());
+                        store.WriteData(Builder.GameObjectTemplate());
+                        store.WriteData(Builder.PageText());
+                        store.WriteData(Builder.NpcText());
+                        store.WriteData(Builder.Gossip());
+                        store.WriteData(Builder.Loot());
+                        store.WriteData(Builder.SniffData());
+                        store.WriteData(Builder.QuestPOI());
+                        store.WriteData(Builder.StartInformation());
+                        store.WriteToFile();
                     }
 
-                    SQLStore.WriteToFile();
                     if (dumpFormat != DumpFormatType.None)
                         Handler.WriteToFile(packets, outLogFileName);
 
