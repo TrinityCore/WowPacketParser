@@ -3,7 +3,7 @@ using WowPacketParser.Enums;
 
 namespace WowPacketParser.Store.Objects
 {
-    public struct SniffData
+    public sealed class SniffData
     {
         public SniffFileInfo FileInfo { get; set; }
 

@@ -22,8 +22,10 @@ namespace WowPacketParser.Misc
         public static byte[] HexStringToBinary(string data)
         {
             var bytes = new List<byte>();
+            byte result;
             for (var i = 0; i < data.Length; i += 2)
-                bytes.Add(Byte.Parse(data.Substring(i, 2), NumberStyles.HexNumber));
+                if (Byte.TryParse(data.Substring(i, 2), NumberStyles.HexNumber, null as IFormatProvider, out result))
+                    bytes.Add(result);
 
             return bytes.ToArray();
         }

@@ -6,6 +6,6 @@ namespace WowPacketParser.Store.Objects
     {
         public uint Gold;
 
-        public List<LootItem> LootItems;
+        public ICollection<LootItem> LootItems;
     }
 }

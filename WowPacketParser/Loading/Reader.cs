@@ -11,7 +11,7 @@ namespace WowPacketParser.Loading
 {
     public static class Reader
     {
-        public static List<Packet> Read(SniffFileInfo fileInfo, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead, bool summary)
+        public static ICollection<Packet> Read(SniffFileInfo fileInfo, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead, bool summary)
         {
             var packets = new List<Packet>();
             var packetNum = 0;

@@ -481,10 +481,13 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_COMPRESSED_CHAR_ENUM)]
         public static void HandleCompressedCharEnum(Packet packet)
         {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
-                HandleCharEnum430(packet.Inflate(packet.ReadInt32()));
-            else
-                HandleCharEnum422(packet.Inflate(packet.ReadInt32()));
+            using (var packet2 = packet.Inflate(packet.ReadInt32()))
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                    HandleCharEnum430(packet2);
+                else
+                    HandleCharEnum422(packet2);
+            }
         }
 
         [Parser(Opcode.SMSG_PLAYER_VEHICLE_DATA)]

@@ -58,18 +58,19 @@ namespace WowPacketParser.Parsing
         private static readonly Dictionary<int, Action<Packet>> Handlers =
             new Dictionary<int, Action<Packet>>();
 
-        public static void WriteToFile(List<Packet> packets, string file)
+        public static void WriteToFile(IEnumerable<Packet> packets, string file)
         {
             File.Delete(file);
-            var writer = new StreamWriter(file, true);
-
-            foreach (var packet in packets)
-                if (packet.WriteToFile)
-                    writer.WriteLine(packet.Writer);
-
-            writer.Flush();
-            writer.Close();
-            writer = null;
+            using (var writer = new StreamWriter(file, true))
+            {
+    
+                foreach (var packet in packets)
+                    if (packet.WriteToFile)
+                        writer.WriteLine(packet.Writer);
+    
+                writer.Flush();
+                writer.Close();
+            }
         }
 
         public static void Parse(Packet packet, bool headerOnly = false, bool isMultiple = false)
@@ -81,7 +82,7 @@ namespace WowPacketParser.Parsing
             packet.Writer.WriteLine("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}{6}",
                 packet.Direction, Opcodes.GetOpcodeName(opcode), opcode.ToString("X4"),
                 packet.GetLength(), packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
-                packet.Number, isMultiple ? " (part of another packet)" : "");
+                packet.Number, isMultiple ? " (part of another packet)" : String.Empty);
 
             if (opcode == 0)
                 return;

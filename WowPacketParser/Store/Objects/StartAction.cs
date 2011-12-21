@@ -5,7 +5,7 @@ namespace WowPacketParser.Store.Objects
 {
     public class StartAction
     {
-        public List<Action> Actions;
+        public ICollection<Action> Actions;
     }
 
     public class Action

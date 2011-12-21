@@ -21,9 +21,11 @@ namespace WowPacketParser.Loading
             // packets table (id integer primary key autoincrement, timestamp datetime, direction integer, opcode integer, data blob)
             ReadHeader();
 
-            SQLiteCommand command = _connection.CreateCommand();
-            command.CommandText = "SELECT opcode, timestamp, direction, data FROM packets;";
-            _reader = command.ExecuteReader();
+            using (SQLiteCommand command = _connection.CreateCommand())
+            {
+                command.CommandText = "SELECT opcode, timestamp, direction, data FROM packets;";
+                _reader = command.ExecuteReader();
+            }
         }
 
         void ReadHeader()
@@ -83,6 +85,15 @@ namespace WowPacketParser.Loading
 
             if (_connection != null)
                 _connection.Close();
+        }
+
+        public void Dispose()
+        {
+            if (_reader != null)
+                _reader.Dispose();
+
+            if (_connection != null)
+                _connection.Dispose();
         }
     }
 }

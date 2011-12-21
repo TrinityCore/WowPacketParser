@@ -6,7 +6,7 @@ namespace WowPacketParser.SQL
 {
     public static class SQLUtil
     {
-        public const string CommaSeparator = ", ";
+        public static readonly string CommaSeparator = ", ";
 
         public static string AddBackQuotes(string str)
         {
@@ -92,7 +92,7 @@ namespace WowPacketParser.SQL
         /// Creates a SQL DELETE query:
         /// "DELETE FROM `tableName` WHERE (`primaryKey[0]`=entries1[0] AND `primaryKey[1]`=entries1[1]) OR ..."
         /// </summary>
-        public static string DeleteQueryDouble(ICollection<Tuple<uint, uint>> entries, string[] primaryKeys, string tableName)
+        public static string DeleteQueryDouble(ICollection<uint[]> entries, string[] primaryKeys, string tableName)
         {
             var result = "DELETE FROM " + AddBackQuotes(tableName) + " WHERE ";
 
@@ -101,8 +101,8 @@ namespace WowPacketParser.SQL
             {
                 iter++;
                 result += "(" +
-                          AddBackQuotes(primaryKeys[0]) + "=" + tuple.Item1 + " AND " +
-                          AddBackQuotes(primaryKeys[1]) + "=" + tuple.Item2 + ")";
+                          AddBackQuotes(primaryKeys[0]) + "=" + tuple[0] + " AND " +
+                          AddBackQuotes(primaryKeys[1]) + "=" + tuple[1] + ")";
                 if (entries.Count != iter)
                     result += " OR ";
             }

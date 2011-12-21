@@ -9,6 +9,6 @@ namespace WowPacketParser.Store.Objects
 
         public uint ObjectEntry;
 
-        public List<GossipOption> GossipOptions;
+        public ICollection<GossipOption> GossipOptions;
     }
 }

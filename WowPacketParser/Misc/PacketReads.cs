@@ -10,7 +10,7 @@ namespace WowPacketParser.Misc
 {
     public sealed partial class Packet
     {
-        public static bool debug = Settings.GetBoolean("DebugReads");
+        public static readonly bool debug = Settings.GetBoolean("DebugReads");
 
         public Guid ReadGuid()
         {
@@ -55,7 +55,7 @@ namespace WowPacketParser.Misc
 
         public DateTime ReadMillisecondTime()
         {
-            return Utilities.GetDateTimeFromUnixTime(ReadInt32()/1000);
+            return Utilities.GetDateTimeFromUnixTime((double)ReadInt32()/1000);
         }
 
         public DateTime ReadPackedTime()
@@ -191,14 +191,14 @@ namespace WowPacketParser.Misc
         public byte ReadByte(string name, params int[] values)
         {
             byte val = ReadByte();
-            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X2") + ")" : ""));
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X2") + ")" : String.Empty));
             return val;
         }
 
         public sbyte ReadSByte(string name, params int[] values)
         {
             sbyte val = ReadSByte();
-            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X2") + ")" : ""));
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X2") + ")" : String.Empty));
             return val;
         }
 
@@ -219,14 +219,14 @@ namespace WowPacketParser.Misc
         public short ReadInt16(string name, params int[] values)
         {
             short val = ReadInt16();
-            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X4") + ")" : ""));
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X4") + ")" : String.Empty));
             return val;
         }
 
         public ushort ReadUInt16(string name, params int[] values)
         {
             ushort val = ReadUInt16();
-            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X4") + ")" : ""));
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X4") + ")" : String.Empty));
             return val;
         }
 
@@ -259,28 +259,28 @@ namespace WowPacketParser.Misc
         public int ReadInt32(string name, params int[] values)
         {
             int val = ReadInt32();
-            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X8") + ")" : ""));
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X8") + ")" : String.Empty));
             return val;
         }
 
         public uint ReadUInt32(string name, params int[] values)
         {
             uint val = ReadUInt32();
-            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X8") + ")" : ""));
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X8") + ")" : String.Empty));
             return val;
         }
 
         public long ReadInt64(string name, params int[] values)
         {
             long val = ReadInt64();
-            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X16") + ")" : ""));
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X16") + ")" : String.Empty));
             return val;
         }
 
         public ulong ReadUInt64(string name, params int[] values)
         {
             ulong val = ReadUInt64();
-            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X16") + ")" : ""));
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X16") + ")" : String.Empty));
             return val;
         }
 
@@ -350,14 +350,14 @@ namespace WowPacketParser.Misc
         public DateTime ReadTime(string name, params int[] values)
         {
             DateTime val = ReadTime();
-            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X4") + ")" : ""));
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X4") + ")" : String.Empty));
             return val;
         }
 
         public DateTime ReadPackedTime(string name, params int[] values)
         {
             DateTime val = ReadPackedTime();
-            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X4") + ")" : ""));
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (debug ? " (0x" + val.ToString("X4") + ")" : String.Empty));
             return val;
         }
 
@@ -411,14 +411,14 @@ namespace WowPacketParser.Misc
         public T ReadEnum<T>(string name, TypeCode code, params int[] values)
         {
             KeyValuePair<long, T> val = ReadEnum<T>(code);
-            Writer.WriteLine("{0}{1}: {2} ({3}){4}", GetIndexString(values), name, val.Value, val.Key, (debug ? " (0x" + val.Key.ToString("X4") + ")" : ""));
+            Writer.WriteLine("{0}{1}: {2} ({3}){4}", GetIndexString(values), name, val.Value, val.Key, (debug ? " (0x" + val.Key.ToString("X4") + ")" : String.Empty));
             return val.Value;
         }
 
         public int ReadEntryWithName<T>(StoreNameType type, string name, params int[] values)
         {
             var val = (int) ReadValue(Type.GetTypeCode(typeof (T)));
-            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, StoreGetters.GetName(type, val), (debug ? " (0x" + val.ToString("X4") + ")" : ""));
+            Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, StoreGetters.GetName(type, val), (debug ? " (0x" + val.ToString("X4") + ")" : String.Empty));
             WriteToFile = Filters.CheckFilter(type, val);
             return val;
         }
@@ -428,7 +428,7 @@ namespace WowPacketParser.Misc
         /// </summary>
 
         private byte _bitpos = 8;
-        private byte _curbitval = 0;
+        private byte _curbitval;
 
         public bool ReadBit(string name, params int[] values)
         {
@@ -484,7 +484,7 @@ namespace WowPacketParser.Misc
         public T ReadEnum<T>(string name, int bits, params int[] values)
         {
             var val = ReadEnum<T>(bits);
-            Writer.WriteLine("{0}{1}: {2} ({3}){4}", GetIndexString(values), name, val.Value, val.Key, (debug ? " (0x" + val.Key.ToString("X4") + ")" : ""));
+            Writer.WriteLine("{0}{1}: {2} ({3}){4}", GetIndexString(values), name, val.Value, val.Key, (debug ? " (0x" + val.Key.ToString("X4") + ")" : String.Empty));
             return val.Value;
         }
     }

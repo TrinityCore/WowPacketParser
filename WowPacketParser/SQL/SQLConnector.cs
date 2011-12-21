@@ -7,6 +7,7 @@ namespace WowPacketParser.SQL
 {
     public static class SQLConnector
     {
+        [ThreadStatic]
         private static MySqlConnection _conn;
 
         public static bool Enabled = Settings.GetBoolean("DBEnabled");
@@ -53,7 +54,6 @@ namespace WowPacketParser.SQL
             }
             catch (Exception e)
             {
-
                 // Something wrong happened, disabling everything MySQL/DB related
                 Enabled = false;
                 Console.WriteLine(e.Message + " at query \"" + input + "\"");

@@ -21,7 +21,7 @@ namespace WowPacketParser.Loading
         private readonly BinaryReader _reader;
 
         private readonly SniffType _sniffType;
-        private PktVersion _pktVersion = PktVersion.NoHeader;
+        private PktVersion _pktVersion;
 
         private DateTime _startTime;
         private uint _startTickCount;
@@ -176,6 +176,12 @@ namespace WowPacketParser.Loading
         {
             if (_reader != null)
                 _reader.Close();
+        }
+
+        public void Dispose()
+        {
+            if (_reader != null)
+                _reader.Dispose();
         }
     }
 }

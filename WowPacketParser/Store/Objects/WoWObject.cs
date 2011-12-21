@@ -19,7 +19,7 @@ namespace WowPacketParser.Store.Objects
 
         public Dictionary<int, UpdateField> UpdateFields; // SMSG_UPDATE_OBJECT - CreateObject
 
-        public List<Dictionary<int, UpdateField>> ChangedUpdateFieldsList; // SMSG_UPDATE_OBJECT - Values
+        public ICollection<Dictionary<int, UpdateField>> ChangedUpdateFieldsList; // SMSG_UPDATE_OBJECT - Values
 
         public uint PhaseMask;
     }

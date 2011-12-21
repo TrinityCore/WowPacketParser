@@ -1,3 +1,4 @@
+using System;
 using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc
@@ -138,7 +139,7 @@ namespace WowPacketParser.Misc
                     var arenaType = (Full & 0x000000FF) >> 0;
                     return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()
                         + " BgType: " + StoreGetters.GetName(StoreNameType.Battleground, (int)bgType)
-                        + " Unk: " + unkId + (arenaType > 0 ? (" ArenaType: " + arenaType) : "");
+                        + " Unk: " + unkId + (arenaType > 0 ? (" ArenaType: " + arenaType) : String.Empty);
                 }
                 case HighGuidType.Player:
                 {

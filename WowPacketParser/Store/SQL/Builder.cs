@@ -115,10 +115,10 @@ namespace WowPacketParser.Store.SQL
                 row.AddValue("Type", quest.Value.Type);
                 row.AddValue("SuggestedPlayers", quest.Value.SuggestedPlayers);
 
-                for (var i = 0; i < quest.Value.RequiredFactionId.Count(); i++)
+                for (var i = 0; i < quest.Value.RequiredFactionId.Length; i++)
                     row.AddValue("RequiredFactionId" + (i + 1), quest.Value.RequiredFactionId[i]);
 
-                for (var i = 0; i < quest.Value.RequiredFactionId.Count(); i++)
+                for (var i = 0; i < quest.Value.RequiredFactionId.Length; i++)
                     row.AddValue("RequiredFactionValue" + (i + 1), quest.Value.RequiredFactionValue[i]);
 
                 row.AddValue("NextQuestIdChain", quest.Value.NextQuestIdChain);
@@ -142,25 +142,25 @@ namespace WowPacketParser.Store.SQL
                 row.AddValue("QuestGiverPortrait", quest.Value.QuestGiverPortrait);
                 row.AddValue("QuestTurnInPortrait", quest.Value.QuestTurnInPortrait);
 
-                for (var i = 0; i < quest.Value.RewardItemId.Count(); i++)
+                for (var i = 0; i < quest.Value.RewardItemId.Length; i++)
                     row.AddValue("RewardItemId" + (i + 1), quest.Value.RewardItemId[i]);
 
-                for (var i = 0; i < quest.Value.RewardItemCount.Count(); i++)
+                for (var i = 0; i < quest.Value.RewardItemCount.Length; i++)
                     row.AddValue("RewardItemCount" + (i + 1), quest.Value.RewardItemCount[i]);
 
-                for (var i = 0; i < quest.Value.RewardChoiceItemId.Count(); i++)
+                for (var i = 0; i < quest.Value.RewardChoiceItemId.Length; i++)
                     row.AddValue("RewardChoiceItemId" + (i + 1), quest.Value.RewardChoiceItemId[i]);
 
-                for (var i = 0; i < quest.Value.RewardChoiceItemCount.Count(); i++)
+                for (var i = 0; i < quest.Value.RewardChoiceItemCount.Length; i++)
                     row.AddValue("RewardChoiceItemCount" + (i + 1), quest.Value.RewardChoiceItemCount[i]);
 
-                for (var i = 0; i < quest.Value.RewardFactionId.Count(); i++)
+                for (var i = 0; i < quest.Value.RewardFactionId.Length; i++)
                     row.AddValue("RewardFactionId" + (i + 1), quest.Value.RewardFactionId[i]);
 
-                for (var i = 0; i < quest.Value.RewardFactionValueId.Count(); i++)
+                for (var i = 0; i < quest.Value.RewardFactionValueId.Length; i++)
                     row.AddValue("RewardFactionValueId" + (i + 1), quest.Value.RewardFactionValueId[i]);
 
-                for (var i = 0; i < quest.Value.RewardFactionValueIdOverride.Count(); i++)
+                for (var i = 0; i < quest.Value.RewardFactionValueIdOverride.Length; i++)
                     row.AddValue("RewardFactionValueIdOverride" + (i + 1), quest.Value.RewardFactionValueIdOverride[i]);
 
                 row.AddValue("PointMapId", quest.Value.PointMapId);
@@ -173,42 +173,42 @@ namespace WowPacketParser.Store.SQL
                 row.AddValue("EndText", quest.Value.EndText);
                 row.AddValue("CompletedText", quest.Value.CompletedText);
 
-                for (var i = 0; i < quest.Value.RequiredNpcOrGo.Count(); i++)
+                for (var i = 0; i < quest.Value.RequiredNpcOrGo.Length; i++)
                     row.AddValue("RequiredNpcOrGo" + (i + 1), quest.Value.RequiredNpcOrGo[i]);
 
-                for (var i = 0; i < quest.Value.RequiredNpcOrGoCount.Count(); i++)
+                for (var i = 0; i < quest.Value.RequiredNpcOrGoCount.Length; i++)
                     row.AddValue("RequiredNpcOrGoCount" + (i + 1), quest.Value.RequiredNpcOrGoCount[i]);
 
-                for (var i = 0; i < quest.Value.RequiredSourceItemId.Count(); i++)
+                for (var i = 0; i < quest.Value.RequiredSourceItemId.Length; i++)
                     row.AddValue("RequiredSourceItemId" + (i + 1), quest.Value.RequiredSourceItemId[i]);
 
-                for (var i = 0; i < quest.Value.RequiredSourceItemCount.Count(); i++)
+                for (var i = 0; i < quest.Value.RequiredSourceItemCount.Length; i++)
                     row.AddValue("RequiredSourceItemCount" + (i + 1), quest.Value.RequiredSourceItemCount[i]);
 
-                for (var i = 0; i < quest.Value.RequiredItemId.Count(); i++)
+                for (var i = 0; i < quest.Value.RequiredItemId.Length; i++)
                     row.AddValue("RequiredItemId" + (i + 1), quest.Value.RequiredItemId[i]);
 
-                for (var i = 0; i < quest.Value.RequiredItemCount.Count(); i++)
+                for (var i = 0; i < quest.Value.RequiredItemCount.Length; i++)
                     row.AddValue("RequiredItemCount" + (i + 1), quest.Value.RequiredItemCount[i]);
 
-                for (var i = 0; i < quest.Value.RequiredSourceItemCount.Count(); i++)
+                for (var i = 0; i < quest.Value.RequiredSourceItemCount.Length; i++)
                     row.AddValue("RequiredSourceItemCount" + (i + 1), quest.Value.RequiredSourceItemCount[i]);
 
                 row.AddValue("RequiredSpell", quest.Value.RequiredSpell);
 
-                for (var i = 0; i < quest.Value.ObjectiveText.Count(); i++)
+                for (var i = 0; i < quest.Value.ObjectiveText.Length; i++)
                     row.AddValue("ObjectiveText" + (i + 1), quest.Value.ObjectiveText[i]);
 
-                for (var i = 0; i < quest.Value.RewardCurrencyId.Count(); i++)
+                for (var i = 0; i < quest.Value.RewardCurrencyId.Length; i++)
                     row.AddValue("RewardCurrencyId" + (i + 1), quest.Value.RewardCurrencyId[i]);
 
-                for (var i = 0; i < quest.Value.RewardCurrencyCount.Count(); i++)
+                for (var i = 0; i < quest.Value.RewardCurrencyCount.Length; i++)
                     row.AddValue("RewardCurrencyCount" + (i + 1), quest.Value.RewardCurrencyCount[i]);
 
-                for (var i = 0; i < quest.Value.RequiredCurrencyId.Count(); i++)
+                for (var i = 0; i < quest.Value.RequiredCurrencyId.Length; i++)
                     row.AddValue("RequiredCurrencyId" + (i + 1), quest.Value.RequiredCurrencyId[i]);
 
-                for (var i = 0; i < quest.Value.RequiredCurrencyCount.Count(); i++)
+                for (var i = 0; i < quest.Value.RequiredCurrencyCount.Length; i++)
                     row.AddValue("RequiredCurrencyCount" + (i + 1), quest.Value.RequiredCurrencyCount[i]);
 
                 row.AddValue("QuestGiverTextWindow", quest.Value.QuestGiverTextWindow);
@@ -310,14 +310,14 @@ namespace WowPacketParser.Store.SQL
                 row.AddValue("UnkInt", unitTemplate.Value.UnkInt);
                 row.AddValue("PetSpellData", unitTemplate.Value.PetSpellData);
 
-                for (var i = 0; i < unitTemplate.Value.DisplayIds.Count(); i++)
+                for (var i = 0; i < unitTemplate.Value.DisplayIds.Length; i++)
                     row.AddValue("DisplayId" + (i + 1), unitTemplate.Value.DisplayIds[i]);
 
                 row.AddValue("Modifier1", unitTemplate.Value.Modifier1);
                 row.AddValue("Modifier2", unitTemplate.Value.Modifier2);
                 row.AddValue("RacialLeader", unitTemplate.Value.RacialLeader);
 
-                for (var i = 0; i < unitTemplate.Value.QuestItems.Count(); i++)
+                for (var i = 0; i < unitTemplate.Value.QuestItems.Length; i++)
                     row.AddValue("QuestItem" + (i + 1), unitTemplate.Value.QuestItems[i]);
 
                 row.AddValue("MovementId", unitTemplate.Value.MovementId);
@@ -350,12 +350,12 @@ namespace WowPacketParser.Store.SQL
                 row.AddValue("CastCaption", goTemplate.Value.CastCaption);
                 row.AddValue("UnkString", goTemplate.Value.UnkString);
 
-                for (var i = 0; i < goTemplate.Value.Data.Count(); i++)
+                for (var i = 0; i < goTemplate.Value.Data.Length; i++)
                     row.AddValue("Data" + (i + 1), goTemplate.Value.Data[i]);
 
                 row.AddValue("Size", goTemplate.Value.Size);
 
-                for (var i = 0; i < goTemplate.Value.QuestItems.Count(); i++)
+                for (var i = 0; i < goTemplate.Value.QuestItems.Length; i++)
                     row.AddValue("QuestItem" + (i + 1), goTemplate.Value.QuestItems[i]);
 
                 row.AddValue("UnknownUInt", goTemplate.Value.UnknownUInt);
@@ -403,24 +403,24 @@ namespace WowPacketParser.Store.SQL
 
                 row.AddValue("Id", npcText.Key);
 
-                for (var i = 0; i < npcText.Value.Probabilities.Count(); i++)
+                for (var i = 0; i < npcText.Value.Probabilities.Length; i++)
                     row.AddValue("Probability" + (i + 1), npcText.Value.Probabilities[i]);
 
-                for (var i = 0; i < npcText.Value.Texts1.Count(); i++)
+                for (var i = 0; i < npcText.Value.Texts1.Length; i++)
                     row.AddValue("Text1_" + (i + 1), npcText.Value.Texts1[i]);
 
-                for (var i = 0; i < npcText.Value.Texts2.Count(); i++)
+                for (var i = 0; i < npcText.Value.Texts2.Length; i++)
                     row.AddValue("Text2_" + (i + 1), npcText.Value.Texts2[i]);
 
-                for (var i = 0; i < npcText.Value.Languages.Count(); i++)
+                for (var i = 0; i < npcText.Value.Languages.Length; i++)
                     row.AddValue("Language" + (i + 1), npcText.Value.Languages[i]);
 
-                for (var i = 0; i < npcText.Value.EmoteDelays[0].Count(); i++)
-                    for (var j = 0; j < npcText.Value.EmoteDelays[1].Count(); j++)
+                for (var i = 0; i < npcText.Value.EmoteDelays[0].Length; i++)
+                    for (var j = 0; j < npcText.Value.EmoteDelays[1].Length; j++)
                         row.AddValue("EmoteDelay" + (i + 1) + "_" + (j + 1), npcText.Value.EmoteDelays[i][j]);
 
-                for (var i = 0; i < npcText.Value.EmoteIds[0].Count(); i++)
-                    for (var j = 0; j < npcText.Value.EmoteIds[1].Count(); j++)
+                for (var i = 0; i < npcText.Value.EmoteIds[0].Length; i++)
+                    for (var j = 0; j < npcText.Value.EmoteIds[1].Length; j++)
                         row.AddValue("EmoteId" + (i + 1) + "_" + (j + 1), npcText.Value.EmoteDelays[i][j]);
 
                 rows.Add(row);

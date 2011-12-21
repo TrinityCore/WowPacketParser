@@ -48,7 +48,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_GUILD_ROSTER)]
-        public static void HandleGuildRosterPacket(Packet packet)
+        public static void HandleGuildRosterResponse(Packet packet)
         {
             var size = packet.ReadUInt32("Number Of Members");
             packet.ReadCString("MOTD");
@@ -96,7 +96,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_COMPRESSED_GUILD_ROSTER)]
         public static void HandleCompressedGuildRoster(Packet packet)
         {
-            HandleGuildRoster422(packet.Inflate(packet.ReadInt32()));
+            using (var packet2 = packet.Inflate(packet.ReadInt32()))
+            {
+                HandleGuildRoster422(packet2);
+            }
         }
 
         [Parser(Opcode.CMSG_GUILD_QUERY)]
@@ -212,14 +215,14 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_GUILD_INVITE)]
-        public static void HandleGuildInvitePacket(Packet packet)
+        public static void HandleGuildInvite(Packet packet)
         {
             packet.ReadCString("Invitee Name");
             packet.ReadCString("Guild Name");
         }
 
         [Parser(Opcode.SMSG_GUILD_INFO)]
-        public static void HandleGuildInfoPacket(Packet packet)
+        public static void HandleGuildInfo(Packet packet)
         {
             packet.ReadCString("Name");
             packet.ReadPackedTime("Creation Date");

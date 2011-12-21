@@ -21,6 +21,7 @@ namespace WowPacketParser.SQL.Stores
             int gemProps, int reqDisEnchSkill, float armorDmgMod, int duration, int limitCategory,
             Holiday holidayId)
         {
+            // FIXME Gendarme Report: Parameter 'flags2' of type 'WowPacketParser.Enums.ItemFlagExtra' is never used in the method.
             var builder = new SQLCommandBuilder("item_template");
 
             builder.AddColumnValue("entry", entry);

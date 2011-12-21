@@ -5,6 +5,6 @@ namespace WowPacketParser.Store.Objects
 {
     public class NpcVendor
     {
-        public List<VendorItem> VendorItems;
+        public ICollection<VendorItem> VendorItems;
     }
 }

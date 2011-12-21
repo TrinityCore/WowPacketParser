@@ -89,7 +89,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Pet number");
 
             var petName = packet.ReadCString("Pet name");
-            if (petName == string.Empty)
+            if (petName.Length == 0)
             {
                 packet.ReadBytes(7); // 0s
                 return;

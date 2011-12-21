@@ -9,6 +9,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class SessionHandler
     {
+        [ThreadStatic]
         public static Guid LoginGuid;
 
         public static Player LoggedInCharacter;
@@ -137,8 +138,11 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 2; i++)
                 packet.ReadByte("Digest (6)", i);
 
-            var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.SniffFileInfo);
-            AddonHandler.ReadClientAddonsList(ref pkt);
+            using (var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.SniffFileInfo))
+            {
+                var pkt2 = pkt;
+                AddonHandler.ReadClientAddonsList(ref pkt2);
+            }
             packet.ReadByte("Mask"); // TODO: Seems to affect how the size is read
             var size = (packet.ReadByte() >> 4);
             packet.Writer.WriteLine("Size: " + size);

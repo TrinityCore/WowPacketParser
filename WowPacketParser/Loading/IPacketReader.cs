@@ -8,5 +8,6 @@ namespace WowPacketParser.Loading
         bool CanRead();
         Packet Read(int number, SniffFileInfo fileInfo);
         void Close();
+        void Dispose();
     }
 }

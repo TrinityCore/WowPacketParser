@@ -13,10 +13,10 @@ namespace WowPacketParser.Misc
             return (byte)(boolean ? 1 : 0);
         }
 
-        public static bool HasAnyFlag(this Enum value, Enum flag)
+        public static bool HasAnyFlag(this IConvertible value, IConvertible flag)
         {
-            var uFlag = ((IConvertible)flag).ToUInt64(null);
-            var uThis = ((IConvertible)value).ToUInt64(null);
+            var uFlag = flag.ToUInt64(null);
+            var uThis = value.ToUInt64(null);
 
             return (uThis & uFlag) != 0;
         }

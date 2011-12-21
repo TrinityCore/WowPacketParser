@@ -40,5 +40,11 @@ namespace WowPacketParser.Loading
             }
             _writer.Close();
         }
+
+        public void Dispose()
+        {
+            if (_writer != null)
+                _writer.Dispose();
+        }
     }
 }

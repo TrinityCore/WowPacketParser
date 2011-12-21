@@ -10,6 +10,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class MovementHandler
     {
+        [ThreadStatic]
         public static uint CurrentMapId;
 
         public static int CurrentPhaseMask = 1;
@@ -154,7 +155,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static MovementInfo ReadMovementInfo422(ref Packet packet, Guid guid, int index)
         {
-            var info = new MovementInfo();
+            //var info = new MovementInfo();
 
             packet.ReadEnum<MovementFlag>("Movement flags", 30);
 
@@ -875,18 +876,22 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_COMPRESSED_MOVES)]
         public static void HandleCompressedMoves(Packet packet)
         {
-            var pkt = packet.Inflate(packet.ReadInt32());
             packet.Writer.WriteLine("{"); // To be able to see what is inside this packet.
             packet.Writer.WriteLine();
 
-            while (pkt.CanRead())
+            using (var pkt = packet.Inflate(packet.ReadInt32()))
             {
-                var size = pkt.ReadByte();
-                var opc = pkt.ReadInt16();
-                var data = pkt.ReadBytes(size - 2);
+                while (pkt.CanRead())
+                {
+                    var size = pkt.ReadByte();
+                    var opc = pkt.ReadInt16();
+                    var data = pkt.ReadBytes(size - 2);
 
-                var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer, packet.SniffFileInfo);
-                Handler.Parse(newPacket, true);
+                    using (var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer, packet.SniffFileInfo))
+                    {
+                        Handler.Parse(newPacket, true);
+                    }
+                }
             }
 
             packet.Writer.WriteLine("}");

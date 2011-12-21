@@ -16,6 +16,6 @@ namespace WowPacketParser.Store.Objects
 
         public int UnkInt2;
 
-        public List<QuestPOIPoint> Points;
+        public ICollection<QuestPOIPoint> Points;
     }
 }

@@ -23,7 +23,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_COMPRESSED_MULTIPLE_PACKETS)]
         public static void HandleCompressedMultiplePackets(Packet packet)
         {
-            HandleMultiplePackets(packet.Inflate(packet.ReadInt32()));
+            using (var packet2 = packet.Inflate(packet.ReadInt32()))
+            {
+                HandleMultiplePackets(packet2);
+            }
         }
 
         [Parser(Opcode.SMSG_MULTIPLE_PACKETS)]
@@ -38,14 +41,15 @@ namespace WowPacketParser.Parsing.Parsers
                 // Why are there so many 0s in some packets? Should we have some check if opcode == 0 here?
                 var len = packet.ReadUInt16();
                 var bytes = packet.ReadBytes(len);
-                var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.SniffFileInfo);
-
                 if (i > 0)
                     packet.Writer.WriteLine();
 
                 packet.Writer.Write("[{0}] ", i++);
 
-                Handler.Parse(newpacket, isMultiple: true);
+                using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.SniffFileInfo))
+                {
+                    Handler.Parse(newpacket, isMultiple: true);
+                }
             }
             packet.Writer.WriteLine("}");
         }

@@ -20,14 +20,11 @@ namespace WowPacketParser.SQL
         public bool promptPassphrase(String message) { return true; }
         public bool promptPassword(String message) { return true; }
         public void showMessage(String message) { }
-        public string[] PromptKeyboardInteractive(string destination, string name, string instruction, string[] prompt, bool[] echo)
-        {
-            return new string[] { passwd };
-        }
     }
 
     public static class SSHTunnel
     {
+        [ThreadStatic]
         private static Session _session;
         public static bool Enabled = Settings.GetBoolean("SSHEnabled");
 

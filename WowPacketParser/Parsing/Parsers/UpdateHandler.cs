@@ -12,6 +12,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class UpdateHandler
     {
+        [ThreadStatic]
         public static Dictionary<uint, Dictionary<Guid, WoWObject>> Objects =
             new Dictionary<uint, Dictionary<Guid, WoWObject>>();
 
@@ -340,7 +341,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_COMPRESSED_UPDATE_OBJECT)]
         public static void HandleCompressedUpdateObject(Packet packet)
         {
-            HandleUpdateObject(packet.Inflate(packet.ReadInt32()));
+            using (var packet2 = packet.Inflate(packet.ReadInt32()))
+            {
+                HandleUpdateObject(packet2);
+            }
         }
 
         [Parser(Opcode.SMSG_DESTROY_OBJECT)]
