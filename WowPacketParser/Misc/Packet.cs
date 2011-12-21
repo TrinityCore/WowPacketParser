@@ -10,6 +10,9 @@ namespace WowPacketParser.Misc
 {
     public sealed partial class Packet : BinaryReader
     {
+        private static readonly bool sniffData = ((SQLOutputFlags)Settings.GetInt32("SQLOutput")).HasFlag(SQLOutputFlags.SniffData);
+        private static readonly bool sniffDataOpcodes = ((SQLOutputFlags)Settings.GetInt32("SQLOutput")).HasFlag(SQLOutputFlags.SniffDataOpcodes);
+
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringWriter writer, SniffFileInfo fileInfo)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
@@ -47,7 +50,7 @@ namespace WowPacketParser.Misc
 
         public void AddSniffData(StoreNameType type, int id, string data)
         {
-            if (!Settings.GetBoolean("SniffData:Opcodes"))
+            if (!Packet.sniffData)
                 return;
 
             if (type == StoreNameType.None)
@@ -57,7 +60,7 @@ namespace WowPacketParser.Misc
                 return; // Only maps can have id 0
 
             if (type == StoreNameType.Opcode)
-                if (!Settings.GetBoolean("SniffData:Opcodes"))
+                if (!Packet.sniffDataOpcodes)
                     return; // Don't add opcodes if its config is not enabled
 
             var sniffData = new SniffData()

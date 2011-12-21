@@ -16,7 +16,7 @@ namespace WowPacketParser
 {
     public static class Program
     {
-        private static void ReadFile(string file, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead, DumpFormatType dumpFormat, int threads, bool sqlOutput)
+        private static void ReadFile(string file, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead, DumpFormatType dumpFormat, int threads, SQLOutputFlags sqlOutput)
         {
             var fileInfo = new SniffFileInfo { FileName = file };
             var fileName = Path.GetFileName(fileInfo.FileName);
@@ -64,23 +64,53 @@ namespace WowPacketParser
 
                     Console.WriteLine("{0}: Writing data to file...", fileName);
 
-                    if (sqlOutput)
+                    if (sqlOutput > 0)
                     {
                         // Experimental, will remove
                         var store = new SQLStore(outSqlFileName);
-                        store.WriteData(Builder.CreatureSpawns());
-                        store.WriteData(Builder.QuestTemplate());
-                        store.WriteData(Builder.NpcTrainer());
-                        store.WriteData(Builder.NpcVendor());
-                        store.WriteData(Builder.NpcTemplate());
-                        store.WriteData(Builder.GameObjectTemplate());
-                        store.WriteData(Builder.PageText());
-                        store.WriteData(Builder.NpcText());
-                        store.WriteData(Builder.Gossip());
-                        store.WriteData(Builder.Loot());
-                        store.WriteData(Builder.SniffData());
-                        store.WriteData(Builder.QuestPOI());
-                        store.WriteData(Builder.StartInformation());
+
+                        if (sqlOutput.HasFlag(SQLOutputFlags.GameObjectTemplate))
+                            store.WriteData(Builder.GameObjectTemplate());
+
+                        //if (sqlOutput.HasFlag(SQLOutputFlags.GameObjectSpawns)
+                        //    store.WriteData(Builder.GameObjectSpawns());
+
+                        if (sqlOutput.HasFlag(SQLOutputFlags.QuestTemplate))
+                            store.WriteData(Builder.QuestTemplate());
+
+                        if (sqlOutput.HasFlag(SQLOutputFlags.QuestPOI))
+                            store.WriteData(Builder.QuestPOI());
+
+                        if (sqlOutput.HasFlag(SQLOutputFlags.CreatureTemplate))
+                            store.WriteData(Builder.NpcTemplate());
+
+                        if (sqlOutput.HasFlag(SQLOutputFlags.CreatureSpawns))
+                            store.WriteData(Builder.CreatureSpawns());
+
+                        if (sqlOutput.HasFlag(SQLOutputFlags.NpcTrainer))
+                            store.WriteData(Builder.NpcTrainer());
+
+                        if (sqlOutput.HasFlag(SQLOutputFlags.NpcVendor))
+                            store.WriteData(Builder.NpcVendor());
+
+                        if (sqlOutput.HasFlag(SQLOutputFlags.NpcText))
+                            store.WriteData(Builder.PageText());
+
+                        if (sqlOutput.HasFlag(SQLOutputFlags.PageText))
+                            store.WriteData(Builder.NpcText());
+
+                        if (sqlOutput.HasFlag(SQLOutputFlags.Gossip))
+                            store.WriteData(Builder.Gossip());
+
+                        if (sqlOutput.HasFlag(SQLOutputFlags.Loot))
+                            store.WriteData(Builder.Loot());
+
+                        if (sqlOutput.HasFlag(SQLOutputFlags.SniffData))
+                            store.WriteData(Builder.SniffData());
+
+                        if (sqlOutput.HasFlag(SQLOutputFlags.StartInformation))
+                            store.WriteData(Builder.StartInformation());
+
                         store.WriteToFile();
                     }
 
@@ -138,7 +168,7 @@ namespace WowPacketParser
             // Read config options
             string[] filters = null;
             string[] ignoreFilters = null;
-            bool sqlOutput = false;
+            SQLOutputFlags sqlOutput = 0;
             DumpFormatType dumpFormat = DumpFormatType.Text;
             int packetsToRead = 0; // 0 -> All packets
             int packetNumberLow = 0; // 0 -> No low limit
@@ -167,7 +197,7 @@ namespace WowPacketParser
                 if (filtersString != null)
                     Filters.Initialize(filtersString);
 
-                sqlOutput = Settings.GetBoolean("SQLOutput");
+                sqlOutput = (SQLOutputFlags)Settings.GetInt32("SQLOutput");
                 dumpFormat = (DumpFormatType)Settings.GetInt32("DumpFormat");
                 packetsToRead = Settings.GetInt32("PacketsNum");
                 prompt = Settings.GetBoolean("ShowEndPrompt");
