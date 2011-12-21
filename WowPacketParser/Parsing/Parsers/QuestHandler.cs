@@ -441,7 +441,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Title");
             packet.ReadCString("Complete Text");
             packet.ReadCString("QuestGiver Text Window");
-            packet.ReadCString("QuestGiver Target Name);
+            packet.ReadCString("QuestGiver Target Name");
             packet.ReadCString("QuestTurn Text Window");
             packet.ReadCString("QuestTurn Target Name");
             packet.ReadInt32("QuestGiver Portrait");
