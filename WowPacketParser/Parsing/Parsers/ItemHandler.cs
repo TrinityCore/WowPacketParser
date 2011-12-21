@@ -576,14 +576,11 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<ItemBonding>("Bonding", TypeCode.Int32);
 
                 for (var i = 0; i < 4; i++)
-                {
-                    var chars = packet.ReadUInt16();
-                    if (chars > 0)
-                        packet.Writer.WriteLine("[{0}] Name: {1}", i, Encoding.UTF8.GetString(packet.ReadBytes(chars)));
-                }
-                packet.ReadByte("Unk");
-                var chars2 = packet.ReadUInt16("Description Length");
-                packet.Writer.WriteLine("Description: {0}", Encoding.UTF8.GetString(packet.ReadBytes(chars2)));
+                    if (packet.ReadUInt16() > 0)
+                        packet.ReadCString("Name", i);
+
+                if (packet.ReadUInt16() > 0)
+                    packet.ReadCString("Description");
 
                 packet.ReadUInt32("Page Text");
                 packet.ReadEnum<Language>("Language", TypeCode.Int32);
@@ -645,6 +642,20 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+        }
+
+        [Parser(Opcode.TEST_422_41036)]
+        public static void HandleUnk422_41036(Packet packet)
+        {
+            var count = packet.ReadUInt32("Count");
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadUInt32("Type", i);
+                var unk = packet.ReadUInt32();
+                packet.Writer.WriteLine("[{0}] Unk 0x{1}", i, unk.ToString("X4"));
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+            }
+
         }
     }
 }
