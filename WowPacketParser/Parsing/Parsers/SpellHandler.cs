@@ -462,6 +462,9 @@ namespace WowPacketParser.Parsing.Parsers
                 case SpellCastFailureReason.FishingTooLow:
                     packet.ReadUInt32("Req fishing skill");
                     break;
+                case SpellCastFailureReason.Silenced:
+                    packet.ReadUInt32("Unk");
+                    break;
             }
         }
 
