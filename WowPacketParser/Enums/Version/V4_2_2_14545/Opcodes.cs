@@ -341,6 +341,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_GODMODE, 0xDEEE},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0xCCEB},
             {Opcode.SMSG_GOSSIP_POI, 0x1866},
+            {Opcode.SMSG_GUILDFINDER_SEARCH_RESULT, 0xE0CE},
             {Opcode.SMSG_GUILD_BANK_LIST, 0x5EFB},
             {Opcode.SMSG_GUILD_COMMAND_RESULT, 56023},
             {Opcode.SMSG_GUILD_EVENT, 0x8AC2},
@@ -359,7 +360,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x8EFB},
             {Opcode.SMSG_ITEM_TEXT_QUERY_RESPONSE, 0x0984A},
             {Opcode.SMSG_LEARNED_DANCE_MOVES, 0x0E52},
-            {Opcode.SMSG_LFGUILD_RECRUIT_DATA, 0xE0CE}, // Made up name
             {Opcode.SMSG_LFG_PLAYER_INFO, 0xC85F},
             {Opcode.SMSG_LIST_INVENTORY, 0x264C},
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x05ECA},
