@@ -15,7 +15,10 @@ namespace WowPacketParser.Misc
         public Guid ReadGuid()
         {
             Guid guid = new Guid(ReadUInt64());
-            WriteToFile = Filters.CheckFilter(guid);
+
+            if (WriteToFile)
+                WriteToFile = Filters.CheckFilter(guid);
+
             return guid;
         }
 
@@ -38,7 +41,10 @@ namespace WowPacketParser.Misc
             }
 
             Guid guid = new Guid(res);
-            WriteToFile = Filters.CheckFilter(guid);
+
+            if (WriteToFile)
+                WriteToFile = Filters.CheckFilter(guid);
+
             return guid;
         }
 
