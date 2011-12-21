@@ -33,7 +33,7 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var i = 0; i < effectiveRewardCount; i++)
                     packet.ReadUInt32("Reward Item Count", i);
                 for (var i = 0; i < effectiveRewardCount; i++)
-                    packet.ReadUInt32("effectiveRewardCount Item Display Id", i);
+                    packet.ReadUInt32("Reward Item Display Id", i);
             }
             else
             {
@@ -538,8 +538,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("QuestGiver Target Name");
                 packet.ReadCString("QuestTurn Text Window");
                 packet.ReadCString("QuestTurn Target Name");
-                packet.ReadUInt32("QuestGiverPortrait");
-                packet.ReadUInt32("QuestTurnInPortrait");
+                packet.ReadUInt32("QuestGiver Portrait");
+                packet.ReadUInt32("QuestTurn Portrait");
             }
 
             var flags = QuestFlags.None;
@@ -862,6 +862,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleQuestPushResult(Packet packet)
         {
             packet.ReadGuid("GUID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest Id");
             packet.ReadEnum<QuestPartyResult>("Result", TypeCode.Byte);
         }
 
