@@ -12,7 +12,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class QuestHandler
     {
-        public static void ReadExtraQuestInfo(ref Packet packet)
+        private static void ReadExtraQuestInfo(ref Packet packet)
         {
             var choiceCount = packet.ReadUInt32("Choice Item Count");
             var effectiveChoiceCount = ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) ? 6 : choiceCount;
