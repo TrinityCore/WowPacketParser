@@ -440,12 +440,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
             packet.ReadCString("Title");
             packet.ReadCString("Complete Text");
-            packet.ReadCString("Unk text");
-            packet.ReadCString("Unk text");
-            packet.ReadCString("Unk text");
-            packet.ReadCString("Unk text");
-            packet.ReadInt32("Unk Int32");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadCString("QuestGiver Text Window");
+            packet.ReadCString("QuestGiver Target Name);
+            packet.ReadCString("QuestTurn Text Window");
+            packet.ReadCString("QuestTurn Target Name");
+            packet.ReadInt32("QuestGiver Portrait");
+            packet.ReadInt32("QuestTurn Portrait");
             packet.ReadByte("Unk Byte");
             packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
             packet.ReadInt32("Unk Int32");
