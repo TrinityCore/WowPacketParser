@@ -321,6 +321,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_DB_REPLY, 0x76EC},
             {Opcode.SMSG_DEFENSE_MESSAGE, 0x09EC3},
             {Opcode.SMSG_DESTROY_OBJECT, 0x486B},
+            {Opcode.SMSG_DISMOUNT, 0xCEE7},
             {Opcode.SMSG_DUEL_WINNER, 0xDA52},
             {Opcode.SMSG_EMOTE, 0xC67},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x18DF},
