@@ -4,7 +4,7 @@ namespace WowPacketParser.Enums.Version//.V4_0_6_13596
 {
     public static partial class Opcodes
     {
-        private static Dictionary<Opcode, int> _V4_0_6_opcodes = new Dictionary<Opcode, int>
+        private static readonly Dictionary<Opcode, int> _V4_0_6_opcodes = new Dictionary<Opcode, int>
         {
             {Opcode.CMSG_WORLD_TELEPORT, 0x08581}, // 4.0.6a 13623
             {Opcode.CMSG_TELEPORT_TO_UNIT, 0x0E1AC}, // 4.0.6a 13623

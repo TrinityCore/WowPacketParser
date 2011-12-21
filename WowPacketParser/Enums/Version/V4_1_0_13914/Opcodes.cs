@@ -4,7 +4,7 @@ namespace WowPacketParser.Enums.Version//.V4_1_0_13914
 {
     public static partial class Opcodes
     {
-        private static Dictionary<Opcode, int> _V4_1_0_opcodes = new Dictionary<Opcode, int>
+        private static readonly Dictionary<Opcode, int> _V4_1_0_opcodes = new Dictionary<Opcode, int>
         {
             {Opcode.SMSG_RECEIVED_MAIL, 0x0083C}, // 4.1.0 13914
             {Opcode.SMSG_INSTANCE_RESET, 0x0083E}, // 4.1.0 13914

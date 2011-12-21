@@ -63,10 +63,7 @@ namespace WowPacketParser.Misc
         {
             var highGUID = (HighGuidType)((Full & 0xF0F0000000000000) >> 52);
 
-            if (highGUID == 0)
-                return HighGuidType.Player;
-
-            return highGUID;
+            return highGUID == 0 ? HighGuidType.Player : highGUID;
         }
 
         public ObjectType GetObjectType()

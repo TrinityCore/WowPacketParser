@@ -11,19 +11,19 @@ namespace WowPacketParser.Misc
 
         public static void Initialize(string config)
         {
-            string[] filters = config.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            var filters = config.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var filter in filters)
             {
-                string[] elements = filter.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
+                var elements = filter.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
                 if (elements.Length < 2)
                     continue;
 
                 StoreNameType type;
-                if (!Enum.TryParse<StoreNameType>(elements[0], out type))
+                if (!Enum.TryParse(elements[0], out type))
                     continue;
 
-                List<int> list = new List<int>();
-                int element = 0;
+                var list = new List<int>();
+                var element = 0;
                 for (var i = 1; i < elements.Length; ++i)
                     if (Int32.TryParse(elements[i], out element))
                         list.Add(element);
@@ -34,7 +34,7 @@ namespace WowPacketParser.Misc
 
         public static bool CheckFilter(StoreNameType type, int entry)
         {
-            bool result = true;
+            var result = true;
             List<int> filters;
 
             if (NameStores.TryGetValue(type, out filters))
@@ -45,10 +45,10 @@ namespace WowPacketParser.Misc
 
         public static bool CheckFilter(Guid guid)
         {
-            bool result = true;
+            var result = true;
 
             if (guid.HasEntry())
-                result = Filters.CheckFilter(Utilities.ObjectTypeToStore(guid.GetObjectType()), (int)guid.GetEntry());
+                result = CheckFilter(Utilities.ObjectTypeToStore(guid.GetObjectType()), (int)guid.GetEntry());
 
             return result;
         }

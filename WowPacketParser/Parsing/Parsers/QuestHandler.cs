@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
-using WowPacketParser.SQL;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -130,11 +129,11 @@ namespace WowPacketParser.Parsing.Parsers
             if (id.Value) // entry is masked
                 return;
 
-            var quest = new QuestTemplate();
-
-            quest.Method = packet.ReadEnum<QuestMethod>("Method", TypeCode.Int32);
-
-            quest.Level = packet.ReadInt32("Level");
+            var quest = new QuestTemplate
+                        {
+                            Method = packet.ReadEnum<QuestMethod>("Method", TypeCode.Int32),
+                            Level = packet.ReadInt32("Level")
+                        };
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 quest.MinLevel = packet.ReadInt32("Min Level");
@@ -263,10 +262,10 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 reqId[i] = packet.ReadEntry();
                 quest.RequiredNpcOrGo[i] = reqId[i].Key;
-                var isGO = reqId[i].Value;
+                var isGo = reqId[i].Value;
 
-                packet.Writer.WriteLine("[" + i + "] Required " + (isGO ? "GO" : "NPC") +
-                    " ID: " + StoreGetters.GetName(isGO ? StoreNameType.GameObject : StoreNameType.Unit, reqId[i].Key));
+                packet.Writer.WriteLine("[" + i + "] Required " + (isGo ? "GO" : "NPC") +
+                    " ID: " + StoreGetters.GetName(isGo ? StoreNameType.GameObject : StoreNameType.Unit, reqId[i].Key));
 
                 quest.RequiredNpcOrGoCount[i] = packet.ReadUInt32("Required Count", i);
 
@@ -335,7 +334,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_QUEST_NPC_QUERY)]
         public static void HandleQuestPoiQuery(Packet packet)
         {
-            var count = 0;
+            int count;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
             {
                 if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_QUEST_NPC_QUERY))
@@ -387,29 +386,31 @@ namespace WowPacketParser.Parsing.Parsers
                 var counter = packet.ReadInt32("POI Counter", i);
                 for (var j = 0; j < counter; j++)
                 {
-                    var questPOI = new QuestPOI();
+                    var questPoi = new QuestPOI();
 
                     var idx = packet.ReadInt32("POI Index", i, j);
-                    questPOI.ObjectiveIndex = packet.ReadInt32("Objective Index", i, j);
+                    questPoi.ObjectiveIndex = packet.ReadInt32("Objective Index", i, j);
 
-                    questPOI.Map = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id", i);
-                    questPOI.WorldMapAreaId = packet.ReadInt32("World Map Area", i, j);
-                    questPOI.FloorId = packet.ReadInt32("Floor Id", i, j);
-                    questPOI.UnkInt1 = packet.ReadInt32("Unk Int32 2", i, j);
-                    questPOI.UnkInt2 = packet.ReadInt32("Unk Int32 3", i, j);
+                    questPoi.Map = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id", i);
+                    questPoi.WorldMapAreaId = packet.ReadInt32("World Map Area", i, j);
+                    questPoi.FloorId = packet.ReadInt32("Floor Id", i, j);
+                    questPoi.UnkInt1 = packet.ReadInt32("Unk Int32 2", i, j);
+                    questPoi.UnkInt2 = packet.ReadInt32("Unk Int32 3", i, j);
 
                     var pointsSize = packet.ReadInt32("Points Counter", i, j);
-                    questPOI.Points = new List<QuestPOIPoint>(pointsSize);
+                    questPoi.Points = new List<QuestPOIPoint>(pointsSize);
                     for (var k = 0; k < pointsSize; k++)
                     {
-                        var questPOIPoint = new QuestPOIPoint();
-                        questPOIPoint.Index = k;
-                        questPOIPoint.X = packet.ReadInt32("Point X", i, j, k);
-                        questPOIPoint.Y = packet.ReadInt32("Point Y", i, j, k);
-                        questPOI.Points.Add(questPOIPoint);
+                        var questPoiPoint = new QuestPOIPoint
+                                            {
+                                                Index = k,
+                                                X = packet.ReadInt32("Point X", i, j, k),
+                                                Y = packet.ReadInt32("Point Y", i, j, k)
+                                            };
+                        questPoi.Points.Add(questPoiPoint);
                     }
 
-                    Stuffing.QuestPOIs.TryAdd(new Tuple<uint, uint>((uint) questId, (uint) idx), questPOI);
+                    Stuffing.QuestPOIs.TryAdd(new Tuple<uint, uint>((uint) questId, (uint) idx), questPoi);
                 }
             }
         }

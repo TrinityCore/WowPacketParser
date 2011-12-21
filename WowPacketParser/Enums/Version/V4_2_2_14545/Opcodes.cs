@@ -4,7 +4,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
 {
     public static partial class Opcodes
     {
-        private static Dictionary<Opcode, int> _V4_2_2_opcodes = new Dictionary<Opcode, int>
+        private static readonly Dictionary<Opcode, int> _V4_2_2_opcodes = new Dictionary<Opcode, int>
         {
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0xDC4B},
             {Opcode.CMSG_ACTIVATETAXI, 0x8CDB},

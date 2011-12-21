@@ -64,7 +64,7 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V4_2_0a_14480, new DateTime(2011, 9, 8)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V4_2_2_14545, new DateTime(2011, 9, 30)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V4_3_0_15005, new DateTime(2011, 11, 30)),
-            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V4_3_0_15050, new DateTime(2011, 12, 02)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V4_3_0_15050, new DateTime(2011, 12, 02))
         };
 
         private static ClientType GetExpansion(ClientVersionBuild build)
@@ -75,13 +75,13 @@ namespace WowPacketParser.Misc
                 return ClientType.WrathOfTheLichKing;
             else if (build >= ClientVersionBuild.V2_0_3_6299)
                 return ClientType.TheBurningCrusade;
-            else
-                return ClientType.WorldOfWarcraft;
+
+            return ClientType.WorldOfWarcraft;
         }
 
         private static ClientVersionBuild GetVersion(DateTime time)
         {
-            for (int i = 1; i < _clientBuilds.Length; i++)
+            for (var i = 1; i < _clientBuilds.Length; i++)
                 if (_clientBuilds[i].Value > time)
                     return _clientBuilds[i - 1].Key;
 

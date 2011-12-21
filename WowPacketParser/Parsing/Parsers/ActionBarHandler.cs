@@ -23,12 +23,17 @@ namespace WowPacketParser.Parsing.Parsers
 
             var buttonCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 144 : 132;
 
-            var startAction = new StartAction();
-            startAction.Actions = new List<Store.Objects.Action>(buttonCount);
+            var startAction = new StartAction
+                              {
+                                  Actions = new List<Store.Objects.Action>(buttonCount)
+                              };
+
             for (var i = 0; i < buttonCount; i++)
             {
-                var action = new Store.Objects.Action();
-                action.Button = (uint) i;
+                var action = new Store.Objects.Action
+                             {
+                                 Button = (uint)i
+                             };
 
                 var packed = packet.ReadInt32();
 
