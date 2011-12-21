@@ -191,9 +191,6 @@ namespace WowPacketParser.Store.SQL
                 for (var i = 0; i < quest.Value.RequiredItemCount.Length; i++)
                     row.AddValue("RequiredItemCount" + (i + 1), quest.Value.RequiredItemCount[i]);
 
-                for (var i = 0; i < quest.Value.RequiredSourceItemCount.Length; i++)
-                    row.AddValue("RequiredSourceItemCount" + (i + 1), quest.Value.RequiredSourceItemCount[i]);
-
                 row.AddValue("RequiredSpell", quest.Value.RequiredSpell);
 
                 for (var i = 0; i < quest.Value.ObjectiveText.Length; i++)
