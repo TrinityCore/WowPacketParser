@@ -103,6 +103,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_GUILD_BANK_SWAP_ITEMS, 0x85B},
             {Opcode.CMSG_GUILD_INFO, 0xCE76},
             {Opcode.CMSG_GUILD_INVITE, 0x8C67},
+            {Opcode.CMSG_GUILD_LEADER, 0x28C4},
             {Opcode.CMSG_GUILD_QUERY, 0x8E57},
             {Opcode.CMSG_GUILD_RANK, 0x8D50},
             {Opcode.CMSG_GUILD_ROSTER, 0x9952},

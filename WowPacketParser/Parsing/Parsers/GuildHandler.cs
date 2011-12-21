@@ -504,17 +504,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_GUILDFINDER_JOIN)]
-        public static void HandleGuildFinderJoin(Packet packet)
-        {
-            packet.Writer.WriteLine("Join: {0}", (bool)packet.ReadBit());
-            packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32);
-            packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32);
-            packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32);
-            packet.ReadEnum<GuildFinderOptionsLevel>("Level", TypeCode.UInt32);
-            packet.ReadCString("Comment");
-        }
-
         [Parser(Opcode.SMSG_GUILD_DECLINE)]
         public static void HandleGuildDecline(Packet packet)
         {
@@ -679,5 +668,23 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("Petition GUID");
         }
+
+        [Parser(Opcode.CMSG_GUILDFINDER_JOIN)]
+        public static void HandleGuildFinderJoin(Packet packet)
+        {
+            packet.Writer.WriteLine("Join: {0}", (bool)packet.ReadBit());
+            packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsLevel>("Level", TypeCode.UInt32);
+            packet.ReadCString("Comment");
+        }
+
+        [Parser(Opcode.SMSG_GUILDFINDER_SEARCH_RESULT)]
+        public static void HandleGuildFinderSearchResult(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
     }
 }

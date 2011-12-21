@@ -824,7 +824,6 @@ namespace WowPacketParser.Enums
         MSG_VIEW_PHASE_SHIFT,
         NUM_MSG_TYPES,
         OBSOLETE_DROP_ITEM,
-        // SF
         SMSG_ACCOUNT_DATA_TIMES,
         SMSG_ACCOUNT_INFO_RESPONSE,
         SMSG_ACHIEVEMENT_DELETED,
