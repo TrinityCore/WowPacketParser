@@ -41,18 +41,12 @@ namespace WowPacketParser.Enums.Version
                 }
                 case ClientVersionBuild.V4_0_6_13596:
                 case ClientVersionBuild.V4_0_6a_13623:
-                {
-                    return "V4_0_6_13596";
-                }
                 case ClientVersionBuild.V4_1_0_13914:
                 case ClientVersionBuild.V4_1_0a_14007:
-                {
-                    return "V4_1_0a_14007";
-                }
                 case ClientVersionBuild.V4_2_0_14333:
                 case ClientVersionBuild.V4_2_0a_14480:
                 {
-                    return "V4_2_0a_14480";
+                    return "V4_0_6_13596";
                 }
                 case ClientVersionBuild.V4_2_2_14545:
                 {
