@@ -534,12 +534,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
-                packet.ReadCString("Target Text Window");
-                packet.ReadCString("Target Name");
-                packet.ReadCString("Target unk1");
-                packet.ReadCString("Target unk2");
-                packet.ReadUInt32("Quest Giver Portrait Id");
-                packet.ReadUInt32("Unknown UInt32");
+                packet.ReadCString("QuestGiver Text Window");
+                packet.ReadCString("QuestGiver Target Name");
+                packet.ReadCString("QuestTurn Text Window");
+                packet.ReadCString("QuestTurn Target Name");
+                packet.ReadUInt32("QuestGiverPortrait");
+                packet.ReadUInt32("QuestTurnInPortrait");
             }
 
             var flags = QuestFlags.None;

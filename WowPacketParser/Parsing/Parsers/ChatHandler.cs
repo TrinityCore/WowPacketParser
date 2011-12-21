@@ -198,7 +198,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleClientChatMessageAddonWhisper(Packet packet)
         {
             packet.ReadCString("Prefix");
-            packet.ReadCString("Sender Name");
+            packet.ReadCString("Target Name");
             packet.ReadCString("Message");
         }
 
