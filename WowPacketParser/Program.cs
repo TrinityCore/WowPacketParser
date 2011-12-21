@@ -199,7 +199,7 @@ namespace WowPacketParser
 
                 sqlOutput = (SQLOutputFlags)Settings.GetInt32("SQLOutput");
                 dumpFormat = (DumpFormatType)Settings.GetInt32("DumpFormat");
-                packetsToRead = Settings.GetInt32("PacketsNum");
+                packetsToRead = Settings.GetInt32("FilterPacketsNum");
                 prompt = Settings.GetBoolean("ShowEndPrompt");
                 threads = Settings.GetInt32("Threads");
 
