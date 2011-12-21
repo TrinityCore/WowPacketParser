@@ -98,6 +98,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_GROUP_SWAP_SUB_GROUP, 0x5AD7},
             {Opcode.CMSG_GUILDFINDER_JOIN, 0x68C5},
             {Opcode.CMSG_GUILD_BANKER_ACTIVATE, 0x4E77},
+            {Opcode.CMSG_GUILD_BANK_DEPOSIT_MONEY, 0x4847},
             {Opcode.CMSG_GUILD_BANK_QUERY_TAB, 0xDE46},
             {Opcode.CMSG_GUILD_BANK_SWAP_ITEMS, 0x85B},
             {Opcode.CMSG_GUILD_INFO, 0xCE76},
@@ -183,6 +184,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x8AF2},
             {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x987E},
             {Opcode.CMSG_REQUEST_PET_INFO, 0x9A47},
+            {Opcode.CMSG_REQUEST_RAID_INFO, 0xECF},
             {Opcode.CMSG_REQUEST_VEHICLE_EXIT, 0xCC6},
             {Opcode.CMSG_REQUEST_VEHICLE_NEXT_SEAT, 0xCAD6},
             {Opcode.CMSG_REQUEST_VEHICLE_PREV_SEAT, 0x1AE2},
@@ -470,6 +472,13 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             // Tests
             {Opcode.TEST_422_41036, 0xA04C},
             {Opcode.TEST_422_24649, 24649},
+
+            // CMSG Handlers
+            // 4120 - sub_65D6A0 - CMSG_LFG_LFR_JOIN ?
+            // 4152 - sub_65D540 - CMSG_LFG_LFR_LEAVE ?
+            // 1061 - sub_664260
+            // 35467 - sub_660390
+            // 33476 - sub_B0C690 (4.3: 10764 - sub_69AFC0) (guid bitstreaming)
         };
     }
 }
