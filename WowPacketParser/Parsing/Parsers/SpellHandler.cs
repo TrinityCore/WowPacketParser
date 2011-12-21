@@ -441,6 +441,8 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadEntryWithName<UInt32>(StoreNameType.Area, "Area ID");
                     break;
                 case SpellCastFailureReason.NotReady:
+                case SpellCastFailureReason.Silenced:
+                case SpellCastFailureReason.NotStanding:
                     packet.ReadInt32("Unk");
                     break;
                 case SpellCastFailureReason.CustomError:
@@ -461,9 +463,6 @@ namespace WowPacketParser.Parsing.Parsers
                     break;
                 case SpellCastFailureReason.FishingTooLow:
                     packet.ReadUInt32("Req fishing skill");
-                    break;
-                case SpellCastFailureReason.Silenced:
-                    packet.ReadUInt32("Unk");
                     break;
             }
         }
