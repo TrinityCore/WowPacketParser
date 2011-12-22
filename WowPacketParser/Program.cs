@@ -230,7 +230,7 @@ namespace WowPacketParser
 
             int packetNumberHigh = Settings.GetInt32("FilterPacketNumHigh", 0);
             if (packetNumberHigh < 0)
-                throw new Exception("FilterPacketNumLow must be positive");
+                throw new Exception("FilterPacketNumHigh must be positive");
 
             if (packetNumberLow > packetNumberHigh)
                 throw new Exception("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
