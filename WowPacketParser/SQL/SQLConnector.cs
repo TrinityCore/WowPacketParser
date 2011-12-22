@@ -67,16 +67,19 @@ namespace WowPacketParser.SQL
         {
             get
             {
-                string server = Settings.GetString("Server", "localhost");
-                string protocol = String.Empty;
+                var server = Settings.GetString("Server", "localhost");
+                var protocol = String.Empty;
+                var portOrPipe = "Port";
                 if (server == ".")
                 {
                     server = "localhost";
+                    portOrPipe = "Pipe";
                     protocol = "ConnectionProtocol=Pipe;";
                 }
 
-                return String.Format("Server={0};Port={1};Username={2};Password={3};Database={4};CharSet={5};ConnectionTimeout=5;{6}",
+                return String.Format("Server={0};{1}={2};Username={3};Password={4};Database={5};CharSet={6};ConnectionTimeout=5;{7}",
                     server,
+                    portOrPipe,
                     Settings.GetString("Port", "3306"),
                     Settings.GetString("Username", "root"),
                     Settings.GetString("Password", ""),
