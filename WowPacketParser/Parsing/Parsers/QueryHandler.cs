@@ -14,7 +14,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleTimeQueryResponse(Packet packet)
         {
             packet.ReadTime("Current Time");
-
             packet.ReadInt32("Daily Quest Reset");
         }
 

@@ -55,7 +55,6 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_STOP_DANCE)]
-        [Parser(Opcode.SMSG_LEARNED_DANCE_MOVES)]
         [Parser(Opcode.SMSG_INVALIDATE_PLAYER)]
         [Parser(Opcode.CMSG_SET_SELECTION)]
         [Parser(Opcode.CMSG_INSPECT)]
@@ -649,6 +648,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CORPSE_NOT_IN_INSTANCE)]
         [Parser(Opcode.SMSG_ENABLE_BARBER_SHOP)]
         [Parser(Opcode.SMSG_FISH_NOT_HOOKED)]
+        [Parser(Opcode.SMSG_FISH_ESCAPED)]
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]
         [Parser(Opcode.CMSG_MEETINGSTONE_INFO)]
         [Parser(Opcode.CMSG_RETURN_TO_GRAVEYARD)]

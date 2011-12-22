@@ -579,8 +579,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MOUNTSPECIAL_ANIM)]
         public static void HandleSetActiveMover(Packet packet)
         {
-            var guid = packet.ReadGuid();
-            packet.Writer.WriteLine("GUID: " + guid);
+            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.SMSG_SUMMON_REQUEST)]

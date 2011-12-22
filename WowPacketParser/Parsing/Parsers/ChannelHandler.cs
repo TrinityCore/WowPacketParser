@@ -33,13 +33,9 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleChannelSendList(Packet packet)
         {
             packet.ReadByte("Type");
-
             packet.ReadCString("Channel Name");
-
             packet.ReadEnum<ChannelFlag>("Flags", TypeCode.Byte);
-
             var count = packet.ReadInt32("Counter");
-
             for (var i = 0; i < count; i++)
             {
                 packet.ReadGuid("Player GUID " + i);

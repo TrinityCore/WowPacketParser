@@ -10,17 +10,12 @@ namespace WowPacketParser.Parsing.Parsers
         public static void ReadSetInfo(ref Packet packet)
         {
             packet.ReadPackedGuid("Set ID");
-
             packet.ReadInt32("Index");
-
             packet.ReadCString("Set Name");
-
             packet.ReadCString("Set Icon");
 
             for (var j = 0; j < NumSlots; j++)
-            {
                 packet.ReadPackedGuid("Item GUID " + j);
-            }
         }
 
         [Parser(Opcode.SMSG_EQUIPMENT_SET_LIST)]
