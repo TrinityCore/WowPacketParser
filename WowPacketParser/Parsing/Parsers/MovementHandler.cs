@@ -645,15 +645,25 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePhaseShift406(Packet packet)
         {
             packet.ReadGuid("GUID");
-            for (var i = 0; i < 4; ++i)
-            {
-                var count = packet.ReadUInt32("Count of bytes: {0}", i + 1);
-                if (count > 0)
-                {
-                    byte[] bytes1 = packet.ReadBytes((int)count);
-                    packet.Writer.WriteLine("Bytes: " + bytes1);
-                }
-            }
+            var i = 0;
+            int count = packet.ReadInt32();
+            for (var j = 0; j < count / 2; ++j)
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Unk", i, j);
+
+            i++;
+            count = packet.ReadInt32();
+            for (var j = 0; j < count / 2; ++j)
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Terrain Swap 1", i, j);
+
+            i++;
+            count = packet.ReadInt32();
+            for (var j = 0; j < count / 2; ++j)
+                packet.ReadInt16("Phases", ++i, j);
+
+            i++; 
+            count = packet.ReadInt32();
+            for (var j = 0; j < count / 2; ++j)
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Terrain Swap 2", i, j);
 
             packet.ReadUInt32("Flag"); // can be 0, 4 or 8, 8 = normal world, others are unknown
         }
@@ -661,107 +671,54 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_2_2_14545)]
         public static void HandlePhaseShift422(Packet packet)
         {
-            byte[] bytes = { 0, 0, 0, 0, 0, 0, 0, 0 };
-
-            var guidFlag = packet.ReadEnum<BitMask>("Guid Mask Flags",TypeCode.Byte);
-
-            if (guidFlag.HasFlag(BitMask.Byte0))
-                bytes[0] = packet.ReadByte();
-
-            if (guidFlag.HasFlag(BitMask.Byte4))
-                bytes[4] = packet.ReadByte();
-
-            var count = packet.ReadUInt32();
-            if (count > 0)
+            //packet.Writer.Write("Bits (0..7): ");
+            var bits = new bool[8];
+            for (var x = 0; x < 8; ++x)
             {
-                int num = (int)count - 2;
-                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 1");
-                if (num > 0)
-                {
-                    packet.Writer.Write("Bytes: 0x");
-                    byte[] bytes1 = packet.ReadBytes(num);
-                    for (var i = 0; i < num; ++i)
-                        packet.Writer.Write(bytes1[i].ToString("X2"));
-                    packet.Writer.WriteLine();
-                }
+                bits[x] = packet.ReadBit();
+                //packet.Writer.Write("{0}", bits[x] ? 1: 0);
             }
+            //packet.Writer.WriteLine();
 
-            if (guidFlag.HasFlag(BitMask.Byte3))
-                bytes[3] = packet.ReadByte();
+            var bytes = new byte[8];
+            if (bits[6]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[7]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
 
-            packet.ReadUInt32("Flag?");
+            var i = 0;
+            int count = packet.ReadInt32();
+            for (var j = 0; j < count / 2; ++j)
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 1", i, j);
 
-            if (guidFlag.HasFlag(BitMask.Byte2))
-                bytes[2] = packet.ReadByte();
+            if (bits[2]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
+
+            packet.ReadUInt32("Flags");
+
+            if (bits[4]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
 
             var phaseMask = 0;
-            count = packet.ReadUInt32();
-            if (count > 0)
-            {
-                int num = (int)count - 2;
-                phaseMask = packet.ReadUInt16("Current Mask");
-                if (num > 0)
-                {
-                    packet.Writer.Write("Bytes: 0x");
-                    byte[] bytes1 = packet.ReadBytes(num);
-                    for (var i = 0; i < num; ++i)
-                        packet.Writer.Write(bytes1[i].ToString("X2"));
-                    packet.Writer.WriteLine();
-                }
-            }
+            count = packet.ReadInt32();
+            for (var j = 0; j < count / 2; ++j)
+                phaseMask = packet.ReadUInt16("Current Mask", i, j);
 
-            if (!guidFlag.HasFlag(BitMask.Byte2))
-                bytes[6] = packet.ReadByte();
+            if (!bits[4]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
 
-            count = packet.ReadUInt32();
-            if (count > 0)
-            {
-                int num = (int)count - 2;
-                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 2");
-                if (num > 0)
-                {
-                    packet.Writer.Write("Bytes: 0x");
-                    byte[] bytes1 = packet.ReadBytes(num);
-                    for (var i = 0; i < num; ++i)
-                        packet.Writer.Write(bytes1[i].ToString("X2"));
-                    packet.Writer.WriteLine();
-                }
-            }
+            i++;
+            count = packet.ReadInt32();
+            for (var j = 0; j < count / 2; ++j)
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 1", i, j);
 
-            if (guidFlag.HasFlag(BitMask.Byte7))
-                bytes[7] = packet.ReadByte();
+            if (bits[1]) bytes[7] = (byte)(packet.ReadByte() ^ 1);
 
-                        count = packet.ReadUInt32();
-            if (count > 0)
-            {
-                int num = (int)count - 2;
-                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 3");
-                if (num > 0)
-                {
-                    packet.Writer.Write("Bytes: 0x");
-                    byte[] bytes1 = packet.ReadBytes(num);
-                    for (var i = 0; i < num; ++i)
-                        packet.Writer.Write(bytes1[i].ToString("X2"));
-                    packet.Writer.WriteLine();
-                }
-            }
+            i++;
+            count = packet.ReadInt32();
+            for (var j = 0; j < count / 2; ++j)
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 3", i, j);
 
-            if (guidFlag.HasFlag(BitMask.Byte1))
-                bytes[1] = packet.ReadByte();
+            if (bits[5]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[0]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
 
-            if (guidFlag.HasFlag(BitMask.Byte5))
-                bytes[5] = packet.ReadByte();
-
-            ulong tmp = 0;
-            for (var i = 7; i > 0; --i)
-            {
-                if (bytes[i] > 0)
-                    bytes[i] ^= 1;
-                tmp += bytes[i];
-                tmp <<= 8;
-            }
-            var guid = new Guid(tmp);
-            packet.Writer.WriteLine("GUID: " + guid);
+            var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
+            packet.Writer.WriteLine("GUID: {0}", guid);
 
             packet.AddSniffData(StoreNameType.Phase, phaseMask, "PHASEMASK 422");
         }

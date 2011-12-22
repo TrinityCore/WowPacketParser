@@ -129,10 +129,10 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596)) // Not sure when it was changed
             {
                 for (var i = 0; i < 10; i++)
-                    packet.ReadUInt32("Order1", i);
+                    packet.ReadUInt32("Creation Order", i);
 
                 for (var i = 0; i < 10; i++)
-                    packet.ReadUInt32("Order2", i);
+                    packet.ReadUInt32("Rights Order", i);
             }
 
             ReadEmblemInfo(ref packet);
@@ -163,8 +163,8 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadUInt32("Rank Count");
             for (var i = 0; i < count; i++)
             {
-                packet.ReadUInt32("Order1", i);
-                packet.ReadUInt32("Order2", i);
+                packet.ReadUInt32("Creation Order", i);
+                packet.ReadUInt32("Rights Order", i);
                 packet.ReadCString("Name", i);
                 packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.Int32, i);
 
@@ -187,7 +187,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (int i = 0; i < count; i++)
             {
                 packet.ReadCString("Name", i);
-                packet.ReadInt32("Order1", i);
+                packet.ReadInt32("Creation Order", i);
 
                 for (int j = 0; j < guildBankMaxTabs; j++)
                     packet.ReadEnum<GuildBankRightsFlag>("Tab Rights", TypeCode.Int32, i, j);
@@ -197,7 +197,7 @@ namespace WowPacketParser.Parsing.Parsers
                 for (int j = 0; j < guildBankMaxTabs; j++)
                     packet.ReadInt32("Tab Slots", i, j);
 
-                packet.ReadInt32("Order2", i);
+                packet.ReadInt32("Rights Order", i);
                 packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.Int32, i);
             }
         }

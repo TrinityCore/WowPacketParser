@@ -213,8 +213,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_MESSAGECHAT_SAY)]
         public static void HandleClientChatMessageSay(Packet packet)
         {
-            packet.AsHex();
-
             packet.ReadEnum<Language>("Language", TypeCode.Int32);
             // 4.3.0 some kind of strlen is send before string, size of 2 bytes
             packet.ReadCString("Message");
