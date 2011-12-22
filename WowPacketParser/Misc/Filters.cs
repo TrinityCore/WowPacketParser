@@ -11,7 +11,7 @@ namespace WowPacketParser.Misc
 
         public static void Initialize()
         {
-            string[] filters = Settings.GetStringList("IgnoreByEntryFilters", null);
+            string[] filters = Settings.GetStringList("IgnoreByEntryFilters", new string[0]/*empty array*/);
             foreach (var filter in filters)
             {
                 var elements = filter.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
