@@ -363,6 +363,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x8EFB},
             {Opcode.SMSG_ITEM_TEXT_QUERY_RESPONSE, 0x0984A},
             {Opcode.SMSG_LEARNED_DANCE_MOVES, 0x0E52},
+            {Opcode.SMSG_LEVELUP_INFO, 0x9A73},
             {Opcode.SMSG_LFG_PLAYER_INFO, 0xC85F},
             {Opcode.SMSG_LIST_INVENTORY, 0x264C},
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x05ECA},
@@ -385,6 +386,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_LOOT_SLOT_CHANGED, 0xDCDA},
             {Opcode.SMSG_LOOT_START_ROLL, 0xC8C2},
             {Opcode.SMSG_MESSAGECHAT, 0x5E52},
+            {Opcode.SMSG_MIRRORIMAGE_DATA, 0x8AFB},
             {Opcode.SMSG_MONSTER_MOVE, 0x4C53},
             {Opcode.SMSG_MONSTER_MOVE_TRANSPORT, 0x88FB},
             {Opcode.SMSG_MOTD, 0xCA4B},
@@ -471,6 +473,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_USERLIST_ADD, 0x4CEE},
             {Opcode.SMSG_USERLIST_REMOVE, 0x9A6B},
             {Opcode.SMSG_USERLIST_UPDATE, 0x4A4B},
+            {Opcode.SMSG_VOICE_CHAT_STATUS, 0x9ADF},
             {Opcode.SMSG_WARDEN_DATA, 0x484F},
             {Opcode.SMSG_WEATHER, 0x4ECE},
             {Opcode.SMSG_WHO, 0x4C7F},
@@ -478,7 +481,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             // Unsure
             /*
                 {Opcode.SMSG_SET_PROFICIENCY, 0x9C5F},
-                {Opcode.SMSG_LEVELUP_INFO, 0x9A73},
                 {Opcode.SMSG_COMPRESSED_UNK, 0x1381},
                 {Opcode.SMSG_COMPRESSED_UNK, 0x5C3B},
             */
