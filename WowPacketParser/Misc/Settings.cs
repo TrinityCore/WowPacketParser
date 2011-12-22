@@ -92,22 +92,40 @@ namespace WowPacketParser.Misc
 
         public static T GetEnum<T>(string key, T defValue)
         {
-            object val;
-            T aux;
-            if (!objectValues.TryGetValue(key, out val))
-            {
-                var s = ConfigurationManager.AppSettings[key];
-                if (s == null || !Enum.IsDefined(typeof(T), key))
-                    aux = defValue;
-                else
-                    aux = (T)Enum.Parse(typeof(T), s);
+            return GetEnum<T>(key, defValue, true);
+        }
 
-                objectValues.Add(key, (object)aux);
-            }
+        public static T GetEnum<T>(string key, T defValue, bool fromInt)
+        {
+            object aux;
+            if (objectValues.TryGetValue(key, out aux))
+                return (T)aux;
+
+            var s = ConfigurationManager.AppSettings[key];
+            if (s == null)
+                aux = defValue;
             else
-                aux = (T)Enum.ToObject(typeof(T), val);
+            {
+                if (fromInt)
+                {
+                    int value;
+                    if (!int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out value))
+                        aux = defValue;
+                    else
+                        aux = (object)value;
+                }
+                else
+                {
+                    // cant use Enum.TryParse as that is not supported in .NET 3.5
+                    if (!Enum.IsDefined(typeof(T), s))
+                        aux = defValue;
+                    else
+                        aux = Enum.Parse(typeof(T), s);
+                }
+            }
 
-            return aux;
+            objectValues.Add(key, aux);
+            return (T)aux;
         }
     }
 }

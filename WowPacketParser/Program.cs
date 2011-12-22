@@ -260,7 +260,7 @@ namespace WowPacketParser
                 {
                     string[] filters = Settings.GetStringList("Filters", null);
                     string[] ignoreFilters = Settings.GetStringList("IgnoreFilters", null);
-                    SQLOutputFlags sqlOutput = Settings.GetEnum<SQLOutputFlags>("SQLOutputFlags", SQLOutputFlags.None);
+                    SQLOutputFlags sqlOutput = Settings.GetEnum<SQLOutputFlags>("SQLOutput", SQLOutputFlags.None);
                     int packetsToRead = Settings.GetInt32("FilterPacketsNum", 0);
 
                     int threads = Settings.GetInt32("Threads", 0);
