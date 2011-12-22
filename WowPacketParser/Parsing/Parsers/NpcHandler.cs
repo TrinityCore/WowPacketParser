@@ -32,6 +32,14 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Reason");
         }
 
+        [Parser(Opcode.CMSG_TRAINER_BUY_SPELL, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleTrainerBuySpell(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadInt32("Unknown Int32");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+        }
+
         [Parser(Opcode.SMSG_TRAINER_LIST)]
         public static void HandleServerTrainerList(Packet packet)
         {
