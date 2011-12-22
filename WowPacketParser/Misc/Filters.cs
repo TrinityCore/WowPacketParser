@@ -9,9 +9,9 @@ namespace WowPacketParser.Misc
         public static readonly Dictionary<StoreNameType, List<int>> NameStores =
             new Dictionary<StoreNameType, List<int>>();
 
-        public static void Initialize(string config)
+        public static void Initialize()
         {
-            var filters = config.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] filters = Settings.GetStringList("IgnoreByEntryFilters", null);
             foreach (var filter in filters)
             {
                 var elements = filter.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);

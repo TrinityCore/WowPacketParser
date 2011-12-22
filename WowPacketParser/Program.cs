@@ -17,6 +17,60 @@ namespace WowPacketParser
 {
     public static class Program
     {
+        private static string[] GetFiles(string[] args)
+        {
+            string[] files = args;
+            if (args.Length == 1 && args[0].Contains('*'))
+            {
+                try
+                {
+                    files = Directory.GetFiles(@".\", args[0]);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.GetType());
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+                    files = null;
+                }
+            }
+            return files;
+        }
+
+        private static void ReadDB()
+        {
+            if (SQLConnector.Enabled)
+            {
+                // Enable SSH Tunnel
+                if (SSHTunnel.Enabled)
+                {
+                    Console.WriteLine("Enabling SSH Tunnel");
+                    SSHTunnel.Connect();
+                }
+
+                var startTime = DateTime.Now;
+                Console.WriteLine("Loading DB...");
+
+                try
+                {
+                    SQLConnector.Connect();
+                    SQLDatabase.GrabData();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.GetType());
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+                    SQLConnector.Enabled = false; // Something failed, disabling everything SQL related
+                }
+                
+                var endTime = DateTime.Now;
+                var span = endTime.Subtract(startTime);
+                Console.WriteLine("Finished loading DB - {0} Minutes, {1} Seconds and {2} Milliseconds.", span.Minutes, span.Seconds, span.Milliseconds);
+                Console.WriteLine();
+            }
+        }
+
         private static void ReadFile(string file, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead, DumpFormatType dumpFormat, int threads, SQLOutputFlags sqlOutput)
         {
             var stuffing = new Stuffing();
@@ -79,7 +133,7 @@ namespace WowPacketParser
                             store.WriteData(builder.GameObjectTemplate());
 
                         //if (sqlOutput.HasFlag(SQLOutputFlags.Game.Objectspawns)
-                        //    store.WriteData(Builder.Game.Objectspawns());
+                        //    store.WriteData(Builder.GameObjectspawns());
 
                         if (sqlOutput.HasFlag(SQLOutputFlags.QuestTemplate))
                             store.WriteData(builder.QuestTemplate());
@@ -168,133 +222,69 @@ namespace WowPacketParser
         private static void Main(string[] args)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            ClientVersion.SetVersion(Settings.GetEnum<ClientVersionBuild>("ClientBuild", ClientVersionBuild.Zero));
 
-            // Read config options
-            string[] filters = null;
-            string[] ignoreFilters = null;
-            SQLOutputFlags sqlOutput = 0;
-            DumpFormatType dumpFormat = DumpFormatType.Text;
-            int packetsToRead = 0; // 0 -> All packets
-            int packetNumberLow = 0; // 0 -> No low limit
-            int packetNumberHigh = 0; // 0 -> No high limit
-            bool prompt = false;
-            int threads = 0;
-            try
+            int packetNumberLow = Settings.GetInt32("FilterPacketNumLow", 0);
+            if (packetNumberLow < 0)
+                throw new Exception("FilterPacketNumLow must be positive");
+
+            int packetNumberHigh = Settings.GetInt32("FilterPacketNumHigh", 0);
+            if (packetNumberHigh < 0)
+                throw new Exception("FilterPacketNumLow must be positive");
+
+            if (packetNumberLow > packetNumberHigh)
+                throw new Exception("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
+
+            DumpFormatType dumpFormat = Settings.GetEnum<DumpFormatType>("DumpFormat", DumpFormatType.Text);
+
+            // Disable DB when we don't need its data (dumping to a binary file)
+            if (dumpFormat == DumpFormatType.Bin || dumpFormat == DumpFormatType.Pkt)
             {
-                ClientVersion.SetVersion(Settings.GetEnum<ClientVersionBuild>("ClientBuild"));
-
-                packetNumberLow = Settings.GetInt32("FilterPacketNumLow");
-                packetNumberHigh = Settings.GetInt32("FilterPacketNumHigh");
-
-                if (packetNumberLow > 0 && packetNumberHigh > 0 && packetNumberLow > packetNumberHigh)
-                    throw new Exception("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
-
-                var filtersString = Settings.GetString("Filters");
-                if (filtersString != null)
-                    filters = filtersString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-                filtersString = Settings.GetString("IgnoreFilters");
-                if (filtersString != null)
-                    ignoreFilters = filtersString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-                filtersString = Settings.GetString("IgnoreByEntryFilters");
-                if (filtersString != null)
-                    Filters.Initialize(filtersString);
-
-                sqlOutput = (SQLOutputFlags)Settings.GetInt32("SQLOutput");
-                dumpFormat = (DumpFormatType)Settings.GetInt32("DumpFormat");
-                packetsToRead = Settings.GetInt32("FilterPacketsNum");
-                prompt = Settings.GetBoolean("ShowEndPrompt");
-                threads = Settings.GetInt32("Threads");
-
-                // Disable DB when we don't need its data (dumping to a binary file)
-                if (dumpFormat == DumpFormatType.Bin || dumpFormat == DumpFormatType.Pkt)
-                {
-                    SQLConnector.Enabled = false;
-                    SSHTunnel.Enabled = false;
-                }
+                SQLConnector.Enabled = false;
+                SSHTunnel.Enabled = false;
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.GetType());
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
-            }
+            else
+                Filters.Initialize();
 
             // Quit if no arguments are given
             if (args.Length == 0)
-            {
                 Console.WriteLine("No files specified.");
-                EndPrompt(prompt);
-                return;
+            else
+            {
+                // Read DB
+                ReadDB();
+
+                // Read binaries
+                string[] files = GetFiles(args);
+                if (files != null)
+                {
+                    string[] filters = Settings.GetStringList("Filters", null);
+                    string[] ignoreFilters = Settings.GetStringList("Filters", null);
+                    SQLOutputFlags sqlOutput = Settings.GetEnum<SQLOutputFlags>("SQLOutputFlags", SQLOutputFlags.None);
+                    int packetsToRead = Settings.GetInt32("FilterPacketsNum", 0);
+
+                    int threads = Settings.GetInt32("Threads", 0);
+                    if (threads == 0) // Number of threads is automatically choosen by the Parallel library
+                        files.AsParallel().SetCulture().ForAll(file => ReadFile(file,
+                            filters, ignoreFilters, packetNumberLow, packetNumberHigh,
+                            packetsToRead, dumpFormat, threads, sqlOutput));
+                    else
+                        files.AsParallel().SetCulture().WithDegreeOfParallelism(threads).ForAll(
+                            file => ReadFile(file, filters, ignoreFilters,
+                            packetNumberLow, packetNumberHigh, packetsToRead,
+                            dumpFormat, threads, sqlOutput));
+                }
+
+                SQLConnector.Disconnect();
+                SSHTunnel.Disconnect();
             }
 
-            // Read DB
-            if (SQLConnector.Enabled)
+            if (Settings.GetBoolean("ShowEndPrompt", false))
             {
-                // Enable SSH Tunnel
-                if (SSHTunnel.Enabled)
-                {
-                    Console.WriteLine("Enabling SSH Tunnel");
-                    SSHTunnel.Connect();
-                }
-
-                var startTime = DateTime.Now;
-                Console.WriteLine("Loading DB...");
-
-                try
-                {
-                    SQLConnector.Connect();
-                    SQLDatabase.GrabData();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.GetType());
-                    Console.WriteLine(ex.Message);
-                    Console.WriteLine(ex.StackTrace);
-                    SQLConnector.Enabled = false; // Something failed, disabling everything SQL related
-                }
-                
-                var endTime = DateTime.Now;
-                var span = endTime.Subtract(startTime);
-                Console.WriteLine("Finished loading DB - {0} Minutes, {1} Seconds and {2} Milliseconds.", span.Minutes, span.Seconds, span.Milliseconds);
+                Console.WriteLine("Press any key to continue.");
+                Console.ReadKey();
                 Console.WriteLine();
             }
-
-            // Read binaries
-            string[] files = args;
-            if (args.Length == 1 && args[0].Contains('*'))
-            {
-                try
-                {
-                    files = Directory.GetFiles(@".\", args[0]);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.GetType());
-                    Console.WriteLine(ex.Message);
-                    Console.WriteLine(ex.StackTrace);
-                }
-            }
-
-            if (threads == 0) // Number of threads is automatically choosen by the Parallel library
-                files.AsParallel().SetCulture().ForAll(file => ReadFile(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead, dumpFormat, threads, sqlOutput));
-            else
-                files.AsParallel().SetCulture().WithDegreeOfParallelism(threads).ForAll(file => ReadFile(file, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead, dumpFormat, threads, sqlOutput));
-
-            SQLConnector.Disconnect();
-            SSHTunnel.Disconnect();
-            EndPrompt(prompt);
-        }
-
-        private static void EndPrompt(bool prompt)
-        {
-            if (!prompt)
-                return;
-
-            Console.WriteLine("Press any key to continue.");
-            Console.ReadKey();
-            Console.WriteLine();
         }
     }
 }

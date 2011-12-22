@@ -10,7 +10,7 @@ namespace WowPacketParser.Misc
 {
     public sealed partial class Packet
     {
-        public static readonly bool debug = Settings.GetBoolean("DebugReads");
+        public static readonly bool debug = Settings.GetBoolean("DebugReads", false);
 
         public Guid ReadGuid()
         {

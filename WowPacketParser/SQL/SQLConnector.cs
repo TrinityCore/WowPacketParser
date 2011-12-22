@@ -10,7 +10,7 @@ namespace WowPacketParser.SQL
         [ThreadStatic]
         private static MySqlConnection _conn;
 
-        public static bool Enabled = Settings.GetBoolean("DBEnabled");
+        public static bool Enabled = Settings.GetBoolean("DBEnabled", false);
 
         public static void Connect()
         {
@@ -20,7 +20,7 @@ namespace WowPacketParser.SQL
                 return;
             }
 
-            Console.WriteLine("Connecting to MySQL server: " + ConnectionString.Replace("Password=" + Settings.GetString("Password") + ";", string.Empty)); // Do not print password
+            Console.WriteLine("Connecting to MySQL server: " + ConnectionString.Replace("Password=" + Settings.GetString("Password", "") + ";", string.Empty)); // Do not print password
             _conn = new MySqlConnection(ConnectionString);
 
             try
@@ -67,21 +67,22 @@ namespace WowPacketParser.SQL
         {
             get
             {
-                if (Settings.GetString("Server") == ".")
-                    return String.Format("Server=localhost;Pipe={0};UserID={1};Password={2};Database={3};CharacterSet={4};ConnectionTimeout=5;ConnectionProtocol=Pipe;",
-                                        Settings.GetString("Port"),
-                                        Settings.GetString("Username"),
-                                        Settings.GetString("Password"),
-                                        Settings.GetString("Database"),
-                                        Settings.GetString("CharacterSet"));
+                string server = Settings.GetString("Server", "localhost");
+                string protocol = String.Empty;
+                if (server == ".")
+                {
+                    server = "localhost";
+                    protocol = "ConnectionProtocol=Pipe;";
+                }
 
-                return String.Format("Server={0};Port={1};Username={2};Password={3};Database={4};CharSet={5};ConnectionTimeout=5;",
-                                    Settings.GetString("Server"),
-                                    Settings.GetString("Port"),
-                                    Settings.GetString("Username"),
-                                    Settings.GetString("Password"),
-                                    Settings.GetString("Database"),
-                                    Settings.GetString("CharacterSet"));
+                return String.Format("Server={0};Port={1};Username={2};Password={3};Database={4};CharSet={5};ConnectionTimeout=5;{6}",
+                    server,
+                    Settings.GetString("Port", "3306"),
+                    Settings.GetString("Username", "root"),
+                    Settings.GetString("Password", ""),
+                    Settings.GetString("Database", "WPP"),
+                    Settings.GetString("CharacterSet", "utf8"),
+                    protocol);
             }
         }
     }

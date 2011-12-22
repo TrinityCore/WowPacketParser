@@ -26,19 +26,19 @@ namespace WowPacketParser.SQL
     {
         [ThreadStatic]
         private static Session _session;
-        public static bool Enabled = Settings.GetBoolean("SSHEnabled");
+        public static bool Enabled = Settings.GetBoolean("SSHEnabled", false);
 
         public static void Connect()
         {
             try
              {
                  var jsch = new JSch();
-                 var host = Settings.GetString("SSHHost");
-                 var user = Settings.GetString("SSHUsername");
-                 var pass = Settings.GetString("SSHPassword");
-                 var port = Settings.GetInt32("SSHPort");
-                 var rPort = Settings.GetInt32("Port");  // Taken from Database settings
-                 var lPort = Settings.GetInt32("SSHLocalPort");
+                 var host = Settings.GetString("SSHHost", "localhost");
+                 var user = Settings.GetString("SSHUsername", "");
+                 var pass = Settings.GetString("SSHPassword", "");
+                 var port = Settings.GetInt32("SSHPort", 22);
+                 var rPort = Settings.GetInt32("Port", 3306);  // Taken from Database settings
+                 var lPort = Settings.GetInt32("SSHLocalPort", 3307);
 
                  _session = jsch.getSession(user, host, port);
                  _session.setHost(host);
