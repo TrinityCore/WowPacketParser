@@ -187,7 +187,7 @@ namespace WowPacketParser.Parsing.Parsers
                 chInfo.FirstLogin = firstLogin;
                 chInfo.Level = level;
 
-                Characters.Add(guid, chInfo); // TODO Remove when its usage is converted topacket.SniffFileInfo.Stuffing.Objects
+                Characters.Add(guid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects
                 packet.SniffFileInfo.Stuffing.Objects.TryAdd(guid, chInfo);
 
             }
@@ -326,7 +326,7 @@ namespace WowPacketParser.Parsing.Parsers
                 chInfo.FirstLogin = firstLogin;
                 chInfo.Level = level;
 
-                Characters.Add(playerGuid, chInfo); // TODO Remove when its usage is converted topacket.SniffFileInfo.Stuffing.Objects
+                Characters.Add(playerGuid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects
                 packet.SniffFileInfo.Stuffing.Objects.TryAdd(playerGuid, chInfo);
             }
         }
@@ -470,7 +470,7 @@ namespace WowPacketParser.Parsing.Parsers
                 chInfo.FirstLogin = firstLogins[c];
                 chInfo.Level = level;
 
-                Characters.Add(playerGuid, chInfo); // TODO Remove when its usage is converted topacket.SniffFileInfo.Stuffing.Objects
+                Characters.Add(playerGuid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects
                 packet.SniffFileInfo.Stuffing.Objects.TryAdd(playerGuid, chInfo);
             }
 

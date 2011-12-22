@@ -63,7 +63,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                         ReadMovementUpdateBlock(ref packet, guid, i);
 
-                        // Should we updatepacket.SniffFileInfo.Stuffing.bject?
+                        // Should we update Stuffing.Object?
                         break;
                     }
                     case "CreateObject1":
@@ -220,7 +220,7 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                 }
 
-                // this is incorrect for certain .Objects but I can't figure out why
+                // this is incorrect for certain objects but I can't figure out why
                 if (moveFlags.HasAnyFlag(MovementFlag.SplineEnabled) || moveInfo.HasSplineData)
                 {
                     // Temp solution
