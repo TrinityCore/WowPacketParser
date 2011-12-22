@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Enums.Version
@@ -28,6 +30,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V3_3_0_10958:
                 case ClientVersionBuild.V3_3_0a_11159:
                 case ClientVersionBuild.V3_3_3_11685:
+                case ClientVersionBuild.V3_3_3a_11723:
                 case ClientVersionBuild.V3_3_5a_12340:
                 {
                     return _V3_3_5_opcodes;
@@ -81,9 +84,8 @@ namespace WowPacketParser.Enums.Version
                 newDict.Add(pair.Key, pair.Value);
             }*/
 
-            foreach (var pair in GetOpcodeDictionary(build))
-                if (pair.Value == opcodeId)
-                    return pair.Key.ToString();
+            foreach (var pair in GetOpcodeDictionary(build).Where(pair => pair.Value == opcodeId))
+                return pair.Key.ToString();
 
             return opcodeId.ToString();
         }
@@ -95,7 +97,7 @@ namespace WowPacketParser.Enums.Version
 
         public static int GetOpcode(Opcode opcode, int build)
         {
-            int opcodeId = -1;
+            var opcodeId = -1;
             GetOpcodeDictionary(build).TryGetValue(opcode, out opcodeId);
             return opcodeId;
         }

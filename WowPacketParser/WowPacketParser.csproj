@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -411,7 +411,6 @@
     <Compile Include="Enums\EmoteType.cs" />
     <Compile Include="Enums\EncounterFrame.cs" />
     <Compile Include="Enums\DrunkenState.cs" />
-    <Compile Include="Enums\BitMask.cs" />
     <Compile Include="Enums\ParsedStatus.cs" />
     <Compile Include="SQL\SSHTunnel.cs" />
   </ItemGroup>
