@@ -120,15 +120,15 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 WoWObject item;
                 UpdateField itemEntry;
-                if (Stuffing.Objects.TryGetValue(guid, out item))
+                if (packet.SniffFileInfo.Stuffing.Objects.TryGetValue(guid, out item))
                     if (item.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out itemEntry))
                     {
-                        Stuffing.Loots.TryAdd(new Tuple<uint, ObjectType>((uint) itemEntry.Int32Value, guid.GetObjectType()), loot);
+                        packet.SniffFileInfo.Stuffing.Loots.TryAdd(new Tuple<uint, ObjectType>((uint) itemEntry.Int32Value, guid.GetObjectType()), loot);
                         return;
                     }
             }
 
-            Stuffing.Loots.TryAdd(new Tuple<uint, ObjectType>(guid.GetEntry(), guid.GetObjectType()), loot);
+            packet.SniffFileInfo.Stuffing.Loots.TryAdd(new Tuple<uint, ObjectType>(guid.GetEntry(), guid.GetObjectType()), loot);
         }
 
         [Parser(Opcode.CMSG_LOOT_ROLL)]

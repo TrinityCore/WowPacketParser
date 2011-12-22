@@ -9,6 +9,7 @@ using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.SQL;
+using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using WowPacketParser.Store.SQL;
 
@@ -18,11 +19,16 @@ namespace WowPacketParser
     {
         private static void ReadFile(string file, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead, DumpFormatType dumpFormat, int threads, SQLOutputFlags sqlOutput)
         {
-            var fileInfo = new SniffFileInfo { FileName = file };
+            var stuffing = new Stuffing();
+            var fileInfo = new SniffFileInfo { FileName = file, Stuffing = stuffing };
             var fileName = Path.GetFileName(fileInfo.FileName);
 
             Console.WriteLine("{0}: Opening file", fileName);
             Console.WriteLine("{0}: Reading packets...", fileName);
+
+            Builder builder = null;
+            if (sqlOutput > 0)
+                builder = new Builder(stuffing);
 
             try
             {
@@ -64,52 +70,52 @@ namespace WowPacketParser
 
                     Console.WriteLine("{0}: Writing data to file...", fileName);
 
-                    if (sqlOutput > 0)
+                    if (builder != null)
                     {
                         // Experimental, will remove
                         var store = new SQLStore(outSqlFileName);
 
                         if (sqlOutput.HasFlag(SQLOutputFlags.GameObjectTemplate))
-                            store.WriteData(Builder.GameObjectTemplate());
+                            store.WriteData(builder.GameObjectTemplate());
 
-                        //if (sqlOutput.HasFlag(SQLOutputFlags.GameObjectSpawns)
-                        //    store.WriteData(Builder.GameObjectSpawns());
+                        //if (sqlOutput.HasFlag(SQLOutputFlags.Game.Objectspawns)
+                        //    store.WriteData(Builder.Game.Objectspawns());
 
                         if (sqlOutput.HasFlag(SQLOutputFlags.QuestTemplate))
-                            store.WriteData(Builder.QuestTemplate());
+                            store.WriteData(builder.QuestTemplate());
 
                         if (sqlOutput.HasFlag(SQLOutputFlags.QuestPOI))
-                            store.WriteData(Builder.QuestPOI());
+                            store.WriteData(builder.QuestPOI());
 
                         if (sqlOutput.HasFlag(SQLOutputFlags.CreatureTemplate))
-                            store.WriteData(Builder.NpcTemplate());
+                            store.WriteData(builder.NpcTemplate());
 
                         if (sqlOutput.HasFlag(SQLOutputFlags.CreatureSpawns))
-                            store.WriteData(Builder.CreatureSpawns());
+                            store.WriteData(builder.CreatureSpawns());
 
                         if (sqlOutput.HasFlag(SQLOutputFlags.NpcTrainer))
-                            store.WriteData(Builder.NpcTrainer());
+                            store.WriteData(builder.NpcTrainer());
 
                         if (sqlOutput.HasFlag(SQLOutputFlags.NpcVendor))
-                            store.WriteData(Builder.NpcVendor());
+                            store.WriteData(builder.NpcVendor());
 
                         if (sqlOutput.HasFlag(SQLOutputFlags.NpcText))
-                            store.WriteData(Builder.PageText());
+                            store.WriteData(builder.PageText());
 
                         if (sqlOutput.HasFlag(SQLOutputFlags.PageText))
-                            store.WriteData(Builder.NpcText());
+                            store.WriteData(builder.NpcText());
 
                         if (sqlOutput.HasFlag(SQLOutputFlags.Gossip))
-                            store.WriteData(Builder.Gossip());
+                            store.WriteData(builder.Gossip());
 
                         if (sqlOutput.HasFlag(SQLOutputFlags.Loot))
-                            store.WriteData(Builder.Loot());
+                            store.WriteData(builder.Loot());
 
                         if (sqlOutput.HasFlag(SQLOutputFlags.SniffData))
-                            store.WriteData(Builder.SniffData());
+                            store.WriteData(builder.SniffData());
 
                         if (sqlOutput.HasFlag(SQLOutputFlags.StartInformation))
-                            store.WriteData(Builder.StartInformation());
+                            store.WriteData(builder.StartInformation());
 
                         store.WriteToFile();
                     }
@@ -138,8 +144,6 @@ namespace WowPacketParser
                                     break;
                                 case ParsedStatus.NotParsed:
                                     statsSkip++;
-                                    break;
-                                default:
                                     break;
                             }
                         }
@@ -185,7 +189,7 @@ namespace WowPacketParser
                 if (packetNumberLow > 0 && packetNumberHigh > 0 && packetNumberLow > packetNumberHigh)
                     throw new Exception("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
 
-                string filtersString = Settings.GetString("Filters");
+                var filtersString = Settings.GetString("Filters");
                 if (filtersString != null)
                     filters = filtersString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 

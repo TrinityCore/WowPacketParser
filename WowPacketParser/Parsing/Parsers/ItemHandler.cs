@@ -471,7 +471,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.Item, entry.Key, "QUERY_RESPONSE");
 
-            Stuffing.ItemTemplates.TryAdd((uint) entry.Key, item);
+            packet.SniffFileInfo.Stuffing.ItemTemplates.TryAdd((uint) entry.Key, item);
         }
 
         [Parser(Opcode.CMSG_REQUEST_HOTFIX)]

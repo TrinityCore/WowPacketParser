@@ -327,7 +327,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.Quest, id.Key, "QUERY_RESPONSE");
 
-            Stuffing.QuestTemplates.TryAdd((uint) id.Key, quest);
+            packet.SniffFileInfo.Stuffing.QuestTemplates.TryAdd((uint) id.Key, quest);
         }
 
         [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
@@ -410,7 +410,7 @@ namespace WowPacketParser.Parsing.Parsers
                         questPoi.Points.Add(questPoiPoint);
                     }
 
-                    Stuffing.QuestPOIs.TryAdd(new Tuple<uint, uint>((uint) questId, (uint) idx), questPoi);
+                    packet.SniffFileInfo.Stuffing.QuestPOIs.TryAdd(new Tuple<uint, uint>((uint) questId, (uint) idx), questPoi);
                 }
             }
         }

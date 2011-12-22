@@ -10,5 +10,7 @@ namespace WowPacketParser.Store.Objects
         public String FileName;
 
         public int Build;
+
+        public Stuffing Stuffing;
     }
 }

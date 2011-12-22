@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using WowPacketParser.SQL.Stores;
 
 namespace WowPacketParser.SQL
 {
@@ -8,7 +7,7 @@ namespace WowPacketParser.SQL
     {
         private StreamWriter _file;
 
-        private readonly List<string> Sqls = new List<string>();
+        private readonly List<string> _sqls = new List<string>();
 
         public SQLStore(string file)
         {
@@ -21,10 +20,10 @@ namespace WowPacketParser.SQL
             if (_file == null)
                 return;
 
-            if (Sqls.BinarySearch(sql) > -1)
+            if (_sqls.BinarySearch(sql) > -1)
                 return;
 
-            Sqls.Add(sql);
+            _sqls.Add(sql);
         }
 
         public void WriteToFile()
@@ -32,9 +31,9 @@ namespace WowPacketParser.SQL
             if (_file == null)
                 return;
 
-            Sqls.Sort();
+            _sqls.Sort();
 
-            foreach (var sql in Sqls)
+            foreach (var sql in _sqls)
                 _file.WriteLine(sql);
 
             Flush();
@@ -46,17 +45,5 @@ namespace WowPacketParser.SQL
             _file.Close();
             _file = null;
         }
-
-        public readonly CreatureSpawnUpdateStore CreatureSpawnUpdates = new CreatureSpawnUpdateStore();
-
-        public readonly CreatureUpdateStore CreatureUpdates = new CreatureUpdateStore();
-
-        public readonly GameObjectSpawnStore GameObjectSpawns = new GameObjectSpawnStore();
-
-        public readonly GameObjectSpawnUpdateStore GameObjectSpawnUpdates = new GameObjectSpawnUpdateStore();
-
-        public readonly GameObjectUpdateStore GameObjectUpdates = new GameObjectUpdateStore();
-
-        public readonly ItemStore Items = new ItemStore();
     }
 }

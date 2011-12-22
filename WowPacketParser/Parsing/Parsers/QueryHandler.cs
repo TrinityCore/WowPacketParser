@@ -138,7 +138,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 
-            Stuffing.UnitTemplates.TryAdd((uint)entry.Key, creature);
+            packet.SniffFileInfo.Stuffing.UnitTemplates.TryAdd((uint)entry.Key, creature);
         }
 
         [Parser(Opcode.CMSG_PAGE_TEXT_QUERY)]
@@ -160,7 +160,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
 
-            Stuffing.PageTexts.TryAdd(entry, pageText);
+            packet.SniffFileInfo.Stuffing.PageTexts.TryAdd(entry, pageText);
         }
 
         [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
@@ -203,7 +203,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.NpcText, (int)entry, "QUERY_RESPONSE");
 
-            Stuffing.NpcTexts.TryAdd(entry, npcText);
+            packet.SniffFileInfo.Stuffing.NpcTexts.TryAdd(entry, npcText);
         }
     }
 }

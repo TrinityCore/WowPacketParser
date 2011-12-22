@@ -55,7 +55,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.GameObject, entry.Key, "QUERY_RESPONSE");
 
-            Stuffing.GameObjectTemplates.TryAdd((uint) entry.Key, gameObject);
+            packet.SniffFileInfo.Stuffing.GameObjectTemplates.TryAdd((uint) entry.Key, gameObject);
         }
 
         [Parser(Opcode.SMSG_DESTRUCTIBLE_BUILDING_DAMAGE)]

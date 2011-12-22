@@ -13,6 +13,7 @@ namespace WowPacketParser.Parsing.Parsers
     public static class UpdateHandler
     {
         [ThreadStatic]
+
         public static Dictionary<uint, Dictionary<Guid, WoWObject>> Objects =
             new Dictionary<uint, Dictionary<Guid, WoWObject>>();
 
@@ -43,7 +44,7 @@ namespace WowPacketParser.Parsing.Parsers
                         WoWObject obj;
                         var updates = ReadValuesUpdateBlock(ref packet, guid.GetObjectType(), i);
 
-                        if (Stuffing.Objects.TryGetValue(guid, out obj))
+                        if (packet.SniffFileInfo.Stuffing.Objects.TryGetValue(guid, out obj))
                         {
                             if (obj.ChangedUpdateFieldsList == null)
                                 obj.ChangedUpdateFieldsList = new List<Dictionary<int, UpdateField>>();
@@ -62,7 +63,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                         ReadMovementUpdateBlock(ref packet, guid, i);
 
-                        // Should we update Stuffing.Object?
+                        // Should we updatepacket.SniffFileInfo.Stuffing.bject?
                         break;
                     }
                     case "CreateObject1":
@@ -90,7 +91,7 @@ namespace WowPacketParser.Parsing.Parsers
             var updates = ReadValuesUpdateBlock(ref packet, objType, index);
 
             var obj = new WoWObject {Type = objType, Movement = moves, UpdateFields = updates, Map = map, PhaseMask = (uint) MovementHandler.CurrentPhaseMask};
-            Stuffing.Objects.TryAdd(guid, obj);
+            packet.SniffFileInfo.Stuffing.Objects.TryAdd(guid, obj);
 
             if (guid.HasEntry() && (objType == ObjectType.Unit || objType == ObjectType.GameObject))
                 packet.AddSniffData(Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");
@@ -219,7 +220,7 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                 }
 
-                // this is incorrect for certain objects but I can't figure out why
+                // this is incorrect for certain .Objects but I can't figure out why
                 if (moveFlags.HasAnyFlag(MovementFlag.SplineEnabled) || moveInfo.HasSplineData)
                 {
                     // Temp solution

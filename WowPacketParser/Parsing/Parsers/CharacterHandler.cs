@@ -177,7 +177,7 @@ namespace WowPacketParser.Parsing.Parsers
                     startPos.Position = pos;
                     startPos.Zone = zone;
 
-                    Stuffing.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
+                    packet.SniffFileInfo.Stuffing.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
                 }
 
                 var chInfo = new Player();
@@ -187,8 +187,8 @@ namespace WowPacketParser.Parsing.Parsers
                 chInfo.FirstLogin = firstLogin;
                 chInfo.Level = level;
 
-                Characters.Add(guid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects
-                Stuffing.Objects.TryAdd(guid, chInfo);
+                Characters.Add(guid, chInfo); // TODO Remove when its usage is converted topacket.SniffFileInfo.Stuffing.Objects
+                packet.SniffFileInfo.Stuffing.Objects.TryAdd(guid, chInfo);
 
             }
         }
@@ -316,7 +316,7 @@ namespace WowPacketParser.Parsing.Parsers
                     startPos.Position = pos;
                     startPos.Zone = zone;
 
-                    Stuffing.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
+                    packet.SniffFileInfo.Stuffing.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
                 }
 
                 var chInfo = new Player();
@@ -326,8 +326,8 @@ namespace WowPacketParser.Parsing.Parsers
                 chInfo.FirstLogin = firstLogin;
                 chInfo.Level = level;
 
-                Characters.Add(playerGuid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects
-                Stuffing.Objects.TryAdd(playerGuid, chInfo);
+                Characters.Add(playerGuid, chInfo); // TODO Remove when its usage is converted topacket.SniffFileInfo.Stuffing.Objects
+                packet.SniffFileInfo.Stuffing.Objects.TryAdd(playerGuid, chInfo);
             }
         }
 
@@ -460,7 +460,7 @@ namespace WowPacketParser.Parsing.Parsers
                     startPos.Position = new Vector3(x, y, z);
                     startPos.Zone = zone;
 
-                    Stuffing.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
+                    packet.SniffFileInfo.Stuffing.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
                 }
 
                 var chInfo = new Player();
@@ -470,8 +470,8 @@ namespace WowPacketParser.Parsing.Parsers
                 chInfo.FirstLogin = firstLogins[c];
                 chInfo.Level = level;
 
-                Characters.Add(playerGuid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects
-                Stuffing.Objects.TryAdd(playerGuid, chInfo);
+                Characters.Add(playerGuid, chInfo); // TODO Remove when its usage is converted topacket.SniffFileInfo.Stuffing.Objects
+                packet.SniffFileInfo.Stuffing.Objects.TryAdd(playerGuid, chInfo);
             }
 
             for (var c = 0; c < unkCounter; c++)

@@ -50,7 +50,7 @@ namespace WowPacketParser.Misc
 
         public void AddSniffData(StoreNameType type, int id, string data)
         {
-            if (!Packet.sniffData)
+            if (!sniffData)
                 return;
 
             if (type == StoreNameType.None)
@@ -60,10 +60,10 @@ namespace WowPacketParser.Misc
                 return; // Only maps can have id 0
 
             if (type == StoreNameType.Opcode)
-                if (!Packet.sniffDataOpcodes)
+                if (!sniffDataOpcodes)
                     return; // Don't add opcodes if its config is not enabled
 
-            var sniffData = new SniffData()
+            var item = new SniffData
             {
                 FileInfo = SniffFileInfo,
                 TimeStamp = Utilities.GetUnixTimeFromDateTime(Time),
@@ -72,7 +72,7 @@ namespace WowPacketParser.Misc
                 Data = data,
                 Number = Number,
             };
-            Stuffing.SniffData.Add(sniffData);
+           SniffFileInfo.Stuffing.SniffData.Add(item);
         }
 
         public Packet Inflate(int inflatedSize)

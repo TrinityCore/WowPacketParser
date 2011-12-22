@@ -84,7 +84,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             npcTrainer.Title = packet.ReadCString("Title");
 
-            Stuffing.NpcTrainers.TryAdd(guid.GetEntry(), npcTrainer);
+            packet.SniffFileInfo.Stuffing.NpcTrainers.TryAdd(guid.GetEntry(), npcTrainer);
         }
 
         private static ulong ReadByte(ref Packet packet, int index)
@@ -122,7 +122,7 @@ namespace WowPacketParser.Parsing.Parsers
                 vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
             }
 
-            Stuffing.NpcVendors.TryAdd(guid.GetEntry(), npcVendor);
+            packet.SniffFileInfo.Stuffing.NpcVendors.TryAdd(guid.GetEntry(), npcVendor);
         }
 
         [Parser(Opcode.SMSG_LIST_INVENTORY, ClientVersionBuild.V4_2_2_14545)]
@@ -179,7 +179,7 @@ namespace WowPacketParser.Parsing.Parsers
                 npcVendor.VendorItems.Add(vendorItem);
             }
 
-            Stuffing.NpcVendors.TryAdd(guid.GetEntry(), npcVendor);
+            packet.SniffFileInfo.Stuffing.NpcVendors.TryAdd(guid.GetEntry(), npcVendor);
         }
 
         [Parser(Opcode.CMSG_GOSSIP_HELLO)]
@@ -236,7 +236,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString());
 
-            Stuffing.Gossips.TryAdd(new Tuple<uint, uint>(menuId, textId), gossip);
+            packet.SniffFileInfo.Stuffing.Gossips.TryAdd(new Tuple<uint, uint>(menuId, textId), gossip);
 
             var questgossips = packet.ReadUInt32("Amount of Quest gossips");
             for (var i = 0; i < questgossips; i++)

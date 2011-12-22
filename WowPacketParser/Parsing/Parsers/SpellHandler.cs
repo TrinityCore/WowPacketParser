@@ -95,7 +95,7 @@ namespace WowPacketParser.Parsing.Parsers
             startSpell.Spells = spells;
 
             if (SessionHandler.LoggedInCharacter.FirstLogin)
-                Stuffing.StartSpells.TryAdd(new Tuple<Race, Class>(SessionHandler.LoggedInCharacter.Race, SessionHandler.LoggedInCharacter.Class), startSpell);
+                packet.SniffFileInfo.Stuffing.StartSpells.TryAdd(new Tuple<Race, Class>(SessionHandler.LoggedInCharacter.Race, SessionHandler.LoggedInCharacter.Class), startSpell);
 
             var cooldownCount = packet.ReadInt16("Cooldown Count");
             for (var i = 0; i < cooldownCount; i++)
