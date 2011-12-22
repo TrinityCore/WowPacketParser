@@ -259,7 +259,7 @@ namespace WowPacketParser
                 if (files != null)
                 {
                     string[] filters = Settings.GetStringList("Filters", null);
-                    string[] ignoreFilters = Settings.GetStringList("Filters", null);
+                    string[] ignoreFilters = Settings.GetStringList("IgnoreFilters", null);
                     SQLOutputFlags sqlOutput = Settings.GetEnum<SQLOutputFlags>("SQLOutputFlags", SQLOutputFlags.None);
                     int packetsToRead = Settings.GetInt32("FilterPacketsNum", 0);
 
