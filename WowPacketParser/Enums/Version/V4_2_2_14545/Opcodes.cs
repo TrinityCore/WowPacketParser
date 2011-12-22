@@ -477,6 +477,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_WARDEN_DATA, 0x484F},
             {Opcode.SMSG_WEATHER, 0x4ECE},
             {Opcode.SMSG_WHO, 0x4C7F},
+            {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0xDE5E},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x08CF},
             // Unsure
             /*
