@@ -576,8 +576,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Amount");
         }
 
-        [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_0_14545)]
-        [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_0_14545)]
+        [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_0_14333)]
+        [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_0_14333)]
         public static void HandleSetSpellModifierFlat406(Packet packet)
         {
             packet.ReadUInt32("Number");
