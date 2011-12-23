@@ -362,6 +362,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_INVALID_PROMOTION_CODE, 0xD8FE},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x8EFB},
             {Opcode.SMSG_ITEM_TEXT_QUERY_RESPONSE, 0x984A},
+            {Opcode.SMSG_KICK_REASON, 0x8A67},
             {Opcode.SMSG_LEARNED_DANCE_MOVES, 0xE52},
             {Opcode.SMSG_LEVELUP_INFO, 0x9A73},
             {Opcode.SMSG_LFG_PLAYER_INFO, 0xC85F},
