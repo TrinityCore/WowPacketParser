@@ -305,7 +305,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
-                packet.ReadBoolean("Unk Boolean"); // Something to do with IsVehicleExitVoluntary ?
+                packet.ReadBoolean("Toggle MovementFlagExtra 0x20 (AlwaysAllowPitching)"); // Not sure for transport
 
             var pos = packet.ReadVector3("Position");
 
@@ -363,6 +363,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var waypoints = packet.ReadInt32("Waypoints");
 
+            // if (flags.HasAnyFlag(SplineFlag.MovingBackwards)) // 0x08000000 for 4.2.2
             if (flags.HasAnyFlag(SplineFlag.Flying | SplineFlag.CatmullRom))
             {
                 for (var i = 0; i < waypoints; i++)

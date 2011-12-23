@@ -165,12 +165,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             var count = packet.ReadInt32("Invite Count");
 
-            if (count <= 0)
-                return;
-
-            packet.ReadPackedGuid("Creator GUID");
-            packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte);
-            packet.ReadEnum<CalendarModerationRank>("Moderation Rank", TypeCode.Byte);
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadPackedGuid("Creator GUID");
+                packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte);
+                packet.ReadEnum<CalendarModerationRank>("Moderation Rank", TypeCode.Byte);
+            }
         }
 
         [Parser(Opcode.CMSG_CALENDAR_UPDATE_EVENT)]
