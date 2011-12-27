@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc
@@ -70,6 +71,25 @@ namespace WowPacketParser.Misc
             }
 
             return result;
+        }
+
+        public static bool FileIsInUse(string fileName)
+        {
+            // If the file does not exists or does not return any exception
+            // when trying to open it, we assume that it is safe to be written
+            try
+            {
+                if (!File.Exists(fileName))
+                    return false;
+
+                File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.None);
+            }
+            catch (IOException)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

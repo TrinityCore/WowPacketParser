@@ -19,7 +19,7 @@ namespace WowPacketParser
     {
         private static string[] GetFiles(string[] args)
         {
-            string[] files = args;
+            var files = args;
             if (args.Length == 1 && args[0].Contains('*'))
             {
                 try
@@ -73,6 +73,18 @@ namespace WowPacketParser
 
         private static void ReadFile(string file, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead, DumpFormatType dumpFormat, int threads, SQLOutputFlags sqlOutput)
         {
+            // If our dump format requires a .txt to be created,
+            // check if we can write to that .txt before starting parsing
+            if (dumpFormat != DumpFormatType.Bin && dumpFormat != DumpFormatType.Pkt)
+            {
+                var outFileName = Path.ChangeExtension(file, null) + "_parsed.txt";
+                if (Utilities.FileIsInUse(outFileName))
+                {
+                    Console.WriteLine("Save file {0} is in use, parsing will not be done.", outFileName);
+                    return;
+                }
+            }
+
             var stuffing = new Stuffing();
             var fileInfo = new SniffFileInfo { FileName = file, Stuffing = stuffing };
             var fileName = Path.GetFileName(fileInfo.FileName);
