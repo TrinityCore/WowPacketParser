@@ -181,7 +181,7 @@ namespace WowPacketParser.Parsing.Parsers
             return dict;
         }
 
-        public static MovementInfo ReadMovementUpdateBlock(ref Packet packet, Guid guid, int index)
+        private static MovementInfo ReadMovementUpdateBlock(ref Packet packet, Guid guid, int index)
         {
             var moveInfo = new MovementInfo();
 
