@@ -14,7 +14,7 @@ namespace WowPacketParser.Misc
 
         public static void CheckForMissingValues<T>(long rawValue)
         {
-            if (!Enabled || !typeof(T).IsEnum)
+            if (!Enabled || !typeof(T).IsEnum || !Attribute.IsDefined(typeof(T), typeof(FlagsAttribute)))
                 return;
 
             var key = typeof(T).ToString().Replace("WowPacketParser.Enums.", "");
@@ -26,19 +26,13 @@ namespace WowPacketParser.Misc
             if (rawValue == 0)
                 return;
 
-            if (Attribute.IsDefined(typeof(T), typeof(FlagsAttribute)))
+            long temp = 1;
+            while (temp < rawValue)
             {
-                key = "[F] " + key;
-                long temp = 1;
-                while (temp < rawValue)
-                {
-                    if ((rawValue & temp) == temp)
-                        AddEnumErrorLog(key, temp);
-                    temp <<= 2;
-                }
+                if ((rawValue & temp) == temp)
+                    AddEnumErrorLog(key, temp);
+                temp <<= 2;
             }
-            else
-                AddEnumErrorLog(key, rawValue);
         }
 
         private static void AddEnumErrorLog(string key, long rawValue)
@@ -65,8 +59,6 @@ namespace WowPacketParser.Misc
             foreach (var pair in enumLogs)
             {
                 pair.Value.Sort();
-                var flags = pair.Key.Contains("[F]");
-                var key = flags ? pair.Key.Replace("[F] ", "") : pair.Key;
 
                 var errors = "";
                 foreach (var error in pair.Value)
@@ -75,20 +67,14 @@ namespace WowPacketParser.Misc
                         errors += ", ";
 
                     var str = "";
-                    if (flags)
-                    {
-                        UnknownFlags enumFlag;
-                        if (Enum.TryParse<UnknownFlags>(error.ToString(), out enumFlag))
-                            str = enumFlag.ToString();
-                    }
-                    else
-                        str = error.ToString();
+                    UnknownFlags enumFlag;
+                    if (Enum.TryParse<UnknownFlags>(error.ToString(), out enumFlag))
+                        str = enumFlag.ToString();
+
                     errors += str;
                 }
 
-                var text = flags ? "flags" : "values";
-
-                Console.WriteLine("{0} has undefined {1}: {2}", key, text, errors);
+                Console.WriteLine("{0} has undefined flags: {1}", pair.Key, errors);
             }
         }
     }
