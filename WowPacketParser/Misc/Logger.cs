@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc
 {
@@ -17,13 +19,26 @@ namespace WowPacketParser.Misc
 
             var key = typeof(T).ToString().Replace("WowPacketParser.Enums.", "");
 
+            // Remove all know values
+            foreach (T value in Enum.GetValues(typeof(T)))
+                rawValue = rawValue & ~Convert.ToInt64(value, CultureInfo.InvariantCulture);
+
+            if (rawValue == 0)
+                return;
+
             if (Attribute.IsDefined(typeof(T), typeof(FlagsAttribute)))
             {
-               // TODO: Add missing values only, not raw values
-               key = "[F] " + key;
+                key = "[F] " + key;
+                long temp = 1;
+                while (temp < rawValue)
+                {
+                    if ((rawValue & temp) == temp)
+                        AddEnumErrorLog(key, temp);
+                    temp <<= 2;
+                }
             }
-
-            AddEnumErrorLog(key, rawValue);
+            else
+                AddEnumErrorLog(key, rawValue);
         }
 
         private static void AddEnumErrorLog(string key, long rawValue)
@@ -50,19 +65,30 @@ namespace WowPacketParser.Misc
             foreach (var pair in enumLogs)
             {
                 pair.Value.Sort();
+                var flags = pair.Key.Contains("[F]");
+                var key = flags ? pair.Key.Replace("[F] ", "") : pair.Key;
+
                 var errors = "";
                 foreach (var error in pair.Value)
                 {
                     if (errors.Length > 0)
                         errors += ", ";
-                    errors += error.ToString();
+
+                    var str = "";
+                    if (flags)
+                    {
+                        UnknownFlags enumFlag;
+                        if (Enum.TryParse<UnknownFlags>(error.ToString(), out enumFlag))
+                            str = enumFlag.ToString();
+                    }
+                    else
+                        str = error.ToString();
+                    errors += str;
                 }
 
-                var flags = pair.Key.Contains("[F]");
-                var key = flags ? pair.Key.Replace("[F] ", "") : pair.Key;
-                var text = flags ? "flags contained in " : String.Empty;
+                var text = flags ? "flags" : "values";
 
-                Console.WriteLine("{0} has undefined {1}values: {2}", key, text, errors);
+                Console.WriteLine("{0} has undefined {1}: {2}", key, text, errors);
             }
         }
     }
