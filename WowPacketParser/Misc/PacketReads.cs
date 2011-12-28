@@ -405,6 +405,10 @@ namespace WowPacketParser.Misc
         {
             long rawValue = ReadValue(code);
             object value = Enum.ToObject(typeof (T), rawValue);
+
+            if (rawValue > 0)
+                Logger.CheckForMissingValues<T>(rawValue);
+
             return new KeyValuePair<long, T>(rawValue, (T) value);
         }
 

@@ -25,6 +25,17 @@ namespace WowPacketParser.Enums
         AutoComplete  = 0x00010000,
         SpecialItem   = 0x00020000,
         ObjText       = 0x00040000,
-        AutoAccept    = 0x00080000
-    }
+        AutoAccept    = 0x00080000,
+/*        Unk100000     = 0x00100000, // Show Auto complete box after it's finished?
+        Unk200000     = 0x00200000,
+        Unk400000     = 0x00400000,
+        Unk800000     = 0x00800000,
+        Unk1000000    = 0x01000000,
+        Unk2000000    = 0x02000000,
+        Unk4000000    = 0x04000000,
+        Unk8000000    = 0x08000000,
+        Unk10000000   = 0x10000000,
+        Unk20000000   = 0x20000000,
+        Unk40000000   = 0x40000000,
+*/    }
 }

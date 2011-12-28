@@ -289,6 +289,7 @@ namespace WowPacketParser
 
                 SQLConnector.Disconnect();
                 SSHTunnel.Disconnect();
+                Logger.WriteErrors();
             }
 
             if (Settings.GetBoolean("ShowEndPrompt", false))
