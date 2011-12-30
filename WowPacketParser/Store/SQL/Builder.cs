@@ -368,6 +368,63 @@ namespace WowPacketParser.Store.SQL
             return new QueryBuilder.SQLInsert(tableName, _stuffing.GameObjectTemplates.Keys, "Id", rows).Build();
         }
 
+        public string GameObjectSpawns()
+        {
+            if (!_stuffing.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.GameObject))
+                return string.Empty;
+
+            var gameobjects = _stuffing.Objects.Where(x => x.Value.Type == ObjectType.GameObject);
+
+            const string tableName = "gameobject";
+
+            ICollection<Tuple<uint, uint>> keys = new Collection<Tuple<uint, uint>>();
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var gameobject in gameobjects)
+            {
+                var row = new QueryBuilder.SQLInsertRow();
+
+                var go = gameobject.Value;
+
+                uint animprogress = 0;
+                var state = 0;
+                UpdateField uf;
+                if (go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(GameObjectField.GAMEOBJECT_BYTES_1), out uf))
+                {
+                    var bytes = uf.Int32Value;
+                    state = (bytes & 0x000000FF);
+                    animprogress = Convert.ToUInt32((bytes & 0xFF000000) >> 24);
+                }
+
+                // If map is Eastern Kingdoms, Kalimdor, Outland, Northrend or Ebon Hold use a lower respawn time
+                // TODO: Rank and if npc is needed for quest kill should change spawntime as well
+                var map = gameobject.Value.Map;
+                var spawnTimeSecs = (map == 0 || map == 1 || map == 530 || map == 571 || map == 609) ? 120 : 7200;
+
+                row.AddValue("guid", gameobject.Key.GetLow());
+                row.AddValue("id", gameobject.Key.GetEntry());
+                row.AddValue("map", go.Map);
+                row.AddValue("spawnMask", 1);
+                row.AddValue("phaseMask", go.PhaseMask);
+                row.AddValue("position_x", go.Movement.Position.X);
+                row.AddValue("position_y", go.Movement.Position.Y);
+                row.AddValue("position_z", go.Movement.Position.Z);
+                row.AddValue("orientation", go.Movement.Orientation);
+                row.AddValue("rotation0", go.Movement.Rotation.X);
+                row.AddValue("rotation1", go.Movement.Rotation.Y);
+                row.AddValue("rotation2", go.Movement.Rotation.Z);
+                row.AddValue("rotation3", go.Movement.Rotation.W);
+                row.AddValue("spawntimesecs", spawnTimeSecs);
+                row.AddValue("animprogress", animprogress);
+                row.AddValue("state", state);
+                row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int) gameobject.Key.GetEntry(), false);
+
+                rows.Add(row);
+                keys.Add(new Tuple<uint, uint>((uint) gameobject.Key.GetLow(), gameobject.Key.GetEntry()));
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, keys, new[] { "guid", "id" }, rows).Build();
+        }
+
         public string PageText()
         {
             if (_stuffing.PageTexts.IsEmpty)

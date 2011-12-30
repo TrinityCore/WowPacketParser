@@ -125,6 +125,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var blockVal = packet.ReadUpdateField();
                 string key = "Block Value " + i;
                 string value = blockVal.Int32Value + "/" + blockVal.SingleValue;
+
                 if (i < objectEnd)
                     key = UpdateFields.GetUpdateFieldName(i, "ObjectField");
                 else
@@ -281,7 +282,11 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadSingle("GO Transport Orientation", index);
                 }
                 else if (flags.HasAnyFlag(UpdateFlag.StationaryObject))
-                    packet.ReadVector4("Stationary Position", index);
+                {
+                    moveInfo.Position = packet.ReadVector3();
+                    moveInfo.Orientation = packet.ReadSingle();
+                    packet.Writer.WriteLine("[{0}] Stationary Position: {1}, O: {2}", index, moveInfo.Position, moveInfo.Orientation);
+                }
             }
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
@@ -316,7 +321,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (flags.HasAnyFlag(UpdateFlag.GORotation))
-                packet.ReadPackedQuaternion("GO Rotation", index);
+                moveInfo.Rotation = packet.ReadPackedQuaternion("GO Rotation", index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
             {

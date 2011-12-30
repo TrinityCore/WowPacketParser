@@ -13,6 +13,8 @@ namespace WowPacketParser.Misc
 
         public float Orientation;
 
+        public Quaternion Rotation;
+
         public float WalkSpeed;
 
         public float RunSpeed;

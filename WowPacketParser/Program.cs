@@ -144,8 +144,8 @@ namespace WowPacketParser
                         if (sqlOutput.HasFlag(SQLOutputFlags.GameObjectTemplate))
                             store.WriteData(builder.GameObjectTemplate());
 
-                        //if (sqlOutput.HasFlag(SQLOutputFlags.Game.Objectspawns)
-                        //    store.WriteData(Builder.GameObjectspawns());
+                        if (sqlOutput.HasFlag(SQLOutputFlags.GameObjectSpawns))
+                            store.WriteData(builder.GameObjectSpawns());
 
                         if (sqlOutput.HasFlag(SQLOutputFlags.QuestTemplate))
                             store.WriteData(builder.QuestTemplate());
