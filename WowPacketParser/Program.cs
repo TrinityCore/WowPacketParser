@@ -71,7 +71,7 @@ namespace WowPacketParser
             }
         }
 
-        private static void DumpSQLs(string fileName, Builder builder, SQLOutputFlags sqlOutput)
+        private static void DumpSQLs(string prefix, string fileName, Builder builder, SQLOutputFlags sqlOutput)
         {
             if (builder == null)
                 return;
@@ -123,6 +123,7 @@ namespace WowPacketParser
             if (sqlOutput.HasFlag(SQLOutputFlags.ObjectNames))
                 store.WriteData(builder.ObjectNames());
 
+            Console.WriteLine("{0}: Saved file to '{1}'", prefix, fileName);
             store.WriteToFile();
         }
 
@@ -156,7 +157,7 @@ namespace WowPacketParser
             Console.WriteLine("{0}: Opening file", fileName);
             Console.WriteLine("{0}: Reading packets...", fileName);
 
-            Builder builder = globalBuilder != null ? globalBuilder : sqlOutput != null ? new Builder(stuffing) : null;
+            Builder builder = globalBuilder != null ? globalBuilder : sqlOutput > 0 ? new Builder(stuffing) : null;
 
             try
             {
@@ -200,11 +201,14 @@ namespace WowPacketParser
                     if (sqlOutput > 0 && globalStuffing == null) // No global Stuffing, write sql data to particular sql file
                     {
                         var outSqlFileName = outFileName + ".sql";
-                        DumpSQLs(outSqlFileName, builder, sqlOutput);
+                        DumpSQLs(fileName, outSqlFileName, builder, sqlOutput);
                     }
 
                     if (dumpFormat != DumpFormatType.None)
+                    {
+                        Console.WriteLine("{0}: Saved file to '{1}'", fileName, outLogFileName);
                         Handler.WriteToFile(packets, outLogFileName);
+                    }
 
                     var span = DateTime.Now.Subtract(startTime);
                     var statsOk = 0;
@@ -232,11 +236,10 @@ namespace WowPacketParser
                         }
                     }
                     
-                    Console.WriteLine("{0}: Finished parsing in {1} Minutes, {2} Seconds and {3} Milliseconds.",
-                        fileName, span.Minutes, span.Seconds, span.Milliseconds);
-                    Console.WriteLine("{0}: Parsed {1:F1}% packets successfully, {2:F1}% with errors and skipped {3:F1}%.",
-                        fileName, (double)statsOk / total * 100, (double)statsError / total * 100, (double)statsSkip / total * 100);
-                    Console.WriteLine("{0}: Saved file to '{1}'", fileName, outLogFileName);
+                    Console.WriteLine("{0}: Parsed {1:F1}% packets successfully, {2:F1}% with errors and skipped {3:F1}% in {4} Minutes, {5} Seconds and {6} Milliseconds.",
+                        fileName, (double)statsOk / total * 100, (double)statsError / total * 100, (double)statsSkip / total * 100,
+                        span.Minutes, span.Seconds, span.Milliseconds);
+
                     Console.WriteLine();
                 }
             }
@@ -318,10 +321,7 @@ namespace WowPacketParser
                 files.AsParallel().SetCulture().WithDegreeOfParallelism(threads)
                     .ForAll(file => ReadFile(file, stuffing, builder));
 
-            if (builder != null)
-            {
-                DumpSQLs(outSqlFileName, builder, sqlOutput);
-            }
+            DumpSQLs("Dumping global sql", outSqlFileName, builder, sqlOutput);
 
             SQLConnector.Disconnect();
             SSHTunnel.Disconnect();
