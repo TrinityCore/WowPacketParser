@@ -21,5 +21,6 @@ namespace WowPacketParser.Enums
         StartInformation   = 0x1000,
         SniffData          = 0x2000,
         SniffDataOpcodes   = 0x4000,
+        ObjectNames        = 0x8000,
     }
 }

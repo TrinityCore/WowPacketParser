@@ -70,5 +70,9 @@ namespace WowPacketParser.Store
         // Quest POI (QuestId, Id)
         public readonly ConcurrentDictionary<Tuple<uint, uint>, QuestPOI> QuestPOIs =
             new ConcurrentDictionary<Tuple<uint, uint>, QuestPOI>();
+
+        // Names
+        public readonly ConcurrentDictionary<uint, ObjectName> ObjectNames =
+            new ConcurrentDictionary<uint, ObjectName>();
     }
 }

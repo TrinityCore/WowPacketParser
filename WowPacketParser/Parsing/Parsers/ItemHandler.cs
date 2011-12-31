@@ -27,9 +27,16 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ITEM_NAME_QUERY_RESPONSE)]
         public static void HandleItemNameQueryResponse(Packet packet)
         {
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
-            packet.ReadCString("Name");
+            var entry = packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+            var name = packet.ReadCString("Name");
             packet.ReadEnum<InventoryType>("Inventory Type", TypeCode.UInt32);
+
+            var objectName = new ObjectName
+            {
+                type = ObjectType.Item,
+                Name = name,
+            };
+            packet.SniffFileInfo.Stuffing.ObjectNames.TryAdd((uint)entry, objectName);
         }
 
         [Parser(Opcode.CMSG_SOCKET_GEMS)]

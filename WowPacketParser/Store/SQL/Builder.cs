@@ -297,33 +297,34 @@ namespace WowPacketParser.Store.SQL
             foreach (var unitTemplate in _stuffing.UnitTemplates)
             {
                 var row = new QueryBuilder.SQLInsertRow();
+                var template = unitTemplate.Value;
 
                 row.AddValue("Id", unitTemplate.Key);
-                row.AddValue("Name", unitTemplate.Value.Name);
-                row.AddValue("SubName", unitTemplate.Value.SubName);
-                row.AddValue("IconName", unitTemplate.Value.IconName);
-                row.AddValue("TypeFlags", unitTemplate.Value.TypeFlags);
-                row.AddValue("TypeFlags2", unitTemplate.Value.TypeFlags2);
-                row.AddValue("Type", unitTemplate.Value.Type);
-                row.AddValue("Family", unitTemplate.Value.Family);
-                row.AddValue("Rank", unitTemplate.Value.Rank);
-                row.AddValue("KillCredit1", unitTemplate.Value.KillCredit1);
-                row.AddValue("KillCredit2", unitTemplate.Value.KillCredit2);
-                row.AddValue("UnkInt", unitTemplate.Value.UnkInt);
-                row.AddValue("PetSpellData", unitTemplate.Value.PetSpellData);
+                row.AddValue("Name", template.Name);
+                row.AddValue("SubName", template.SubName);
+                row.AddValue("IconName", template.IconName);
+                row.AddValue("TypeFlags", template.TypeFlags);
+                row.AddValue("TypeFlags2", template.TypeFlags2);
+                row.AddValue("Type", template.Type);
+                row.AddValue("Family", template.Family);
+                row.AddValue("Rank", template.Rank);
+                row.AddValue("KillCredit1", template.KillCredit1);
+                row.AddValue("KillCredit2", template.KillCredit2);
+                row.AddValue("UnkInt", template.UnkInt);
+                row.AddValue("PetSpellData", template.PetSpellData);
 
-                for (var i = 0; i < unitTemplate.Value.DisplayIds.Length; i++)
-                    row.AddValue("DisplayId" + (i + 1), unitTemplate.Value.DisplayIds[i]);
+                for (var i = 0; i < template.DisplayIds.Length; i++)
+                    row.AddValue("DisplayId" + (i + 1), template.DisplayIds[i]);
 
-                row.AddValue("Modifier1", unitTemplate.Value.Modifier1);
-                row.AddValue("Modifier2", unitTemplate.Value.Modifier2);
-                row.AddValue("RacialLeader", unitTemplate.Value.RacialLeader);
+                row.AddValue("Modifier1", template.Modifier1);
+                row.AddValue("Modifier2", template.Modifier2);
+                row.AddValue("RacialLeader", template.RacialLeader);
 
-                for (var i = 0; i < unitTemplate.Value.QuestItems.Length; i++)
-                    row.AddValue("QuestItem" + (i + 1), unitTemplate.Value.QuestItems[i]);
+                for (var i = 0; i < template.QuestItems.Length; i++)
+                    row.AddValue("QuestItem" + (i + 1), template.QuestItems[i]);
 
-                row.AddValue("MovementId", unitTemplate.Value.MovementId);
-                row.AddValue("Expansion", unitTemplate.Value.Expansion);
+                row.AddValue("MovementId", template.MovementId);
+                row.AddValue("Expansion", template.Expansion);
 
                 rows.Add(row);
             }
@@ -740,6 +741,28 @@ namespace WowPacketParser.Store.SQL
             }
 
             return result;
+        }
+
+        public string ObjectNames()
+        {
+            if (_stuffing.ObjectNames.IsEmpty)
+                return string.Empty;
+
+            const string tableName = "ObjectNames";
+
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var data in _stuffing.ObjectNames)
+            {
+                var row = new QueryBuilder.SQLInsertRow();
+
+                row.AddValue("ObjectType", data.Value.type.ToString());
+                row.AddValue("Id", data.Key);
+                row.AddValue("Name", data.Value.Name);
+
+                rows.Add(row);
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows, true).Build();
         }
     }
 }

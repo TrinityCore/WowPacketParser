@@ -183,6 +183,9 @@ namespace WowPacketParser
                         if (sqlOutput.HasFlag(SQLOutputFlags.StartInformation))
                             store.WriteData(builder.StartInformation());
 
+                        if (sqlOutput.HasFlag(SQLOutputFlags.ObjectNames))
+                            store.WriteData(builder.ObjectNames());
+
                         store.WriteToFile();
                     }
 

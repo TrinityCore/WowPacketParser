@@ -4,7 +4,7 @@ using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-
+using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -26,17 +26,18 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_NAME_QUERY_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
+            Guid guid;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
-                packet.ReadPackedGuid("GUID");
+                guid = packet.ReadPackedGuid("GUID");
                 var end = packet.ReadBoolean("Name Not Found");
                 if (end)
                     return;
             }
             else
-                packet.ReadGuid("GUID");
+                guid = packet.ReadGuid("GUID");
 
-            packet.ReadCString("Name");
+            var name = packet.ReadCString("Name");
             packet.ReadCString("Realm Name");
 
             TypeCode typeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767) ? TypeCode.Byte : TypeCode.Int32;
@@ -49,6 +50,13 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < 5; i++)
                 packet.ReadCString("Declined Name", i);
+
+            var objectName = new ObjectName
+            {
+                type = ObjectType.Player,
+                Name = name,
+            };
+            packet.SniffFileInfo.Stuffing.ObjectNames.TryAdd((uint)guid.GetLow(), objectName);
         }
 
         public static void ReadQueryHeader(ref Packet packet)
@@ -138,6 +146,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 
             packet.SniffFileInfo.Stuffing.UnitTemplates.TryAdd((uint)entry.Key, creature);
+
+            var objectName = new ObjectName
+            {
+                type = ObjectType.Unit,
+                Name = creature.Name,
+            };
+            packet.SniffFileInfo.Stuffing.ObjectNames.TryAdd((uint)entry.Key, objectName);
         }
 
         [Parser(Opcode.CMSG_PAGE_TEXT_QUERY)]
