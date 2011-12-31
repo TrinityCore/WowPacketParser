@@ -31,7 +31,7 @@ namespace WowPacketParser
                     Console.WriteLine(ex.GetType());
                     Console.WriteLine(ex.Message);
                     Console.WriteLine(ex.StackTrace);
-                    files = null;
+                    files = new string[0];
                 }
             }
             return files;
@@ -71,8 +71,72 @@ namespace WowPacketParser
             }
         }
 
-        private static void ReadFile(string file, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead, DumpFormatType dumpFormat, int threads, SQLOutputFlags sqlOutput)
+        private static void DumpSQLs(string fileName, Builder builder, SQLOutputFlags sqlOutput)
         {
+            if (builder == null)
+                return;
+
+            var store = new SQLStore(fileName);
+
+            if (sqlOutput.HasFlag(SQLOutputFlags.GameObjectTemplate))
+                store.WriteData(builder.GameObjectTemplate());
+
+            if (sqlOutput.HasFlag(SQLOutputFlags.GameObjectSpawns))
+                store.WriteData(builder.GameObjectSpawns());
+
+            if (sqlOutput.HasFlag(SQLOutputFlags.QuestTemplate))
+                store.WriteData(builder.QuestTemplate());
+
+            if (sqlOutput.HasFlag(SQLOutputFlags.QuestPOI))
+                store.WriteData(builder.QuestPOI());
+
+            if (sqlOutput.HasFlag(SQLOutputFlags.CreatureTemplate))
+                store.WriteData(builder.NpcTemplate());
+
+            if (sqlOutput.HasFlag(SQLOutputFlags.CreatureSpawns))
+                store.WriteData(builder.CreatureSpawns());
+
+            if (sqlOutput.HasFlag(SQLOutputFlags.NpcTrainer))
+                store.WriteData(builder.NpcTrainer());
+
+            if (sqlOutput.HasFlag(SQLOutputFlags.NpcVendor))
+                store.WriteData(builder.NpcVendor());
+
+            if (sqlOutput.HasFlag(SQLOutputFlags.NpcText))
+                store.WriteData(builder.PageText());
+
+            if (sqlOutput.HasFlag(SQLOutputFlags.PageText))
+                store.WriteData(builder.NpcText());
+
+            if (sqlOutput.HasFlag(SQLOutputFlags.Gossip))
+                store.WriteData(builder.Gossip());
+
+            if (sqlOutput.HasFlag(SQLOutputFlags.Loot))
+                store.WriteData(builder.Loot());
+
+            if (sqlOutput.HasFlag(SQLOutputFlags.SniffData))
+                store.WriteData(builder.SniffData());
+
+            if (sqlOutput.HasFlag(SQLOutputFlags.StartInformation))
+                store.WriteData(builder.StartInformation());
+
+            if (sqlOutput.HasFlag(SQLOutputFlags.ObjectNames))
+                store.WriteData(builder.ObjectNames());
+
+            store.WriteToFile();
+        }
+
+        private static void ReadFile(string file, Stuffing globalStuffing, Builder globalBuilder)
+        {
+            string[] filters = Settings.GetStringList("Filters", null);
+            string[] ignoreFilters = Settings.GetStringList("IgnoreFilters", null);
+            int packetsToRead = Settings.GetInt32("FilterPacketsNum", 0);
+            int packetNumberLow = Settings.GetInt32("FilterPacketNumLow", 0);
+            int packetNumberHigh = Settings.GetInt32("FilterPacketNumHigh", 0);
+            DumpFormatType dumpFormat = Settings.GetEnum<DumpFormatType>("DumpFormat", DumpFormatType.Text);
+            SQLOutputFlags sqlOutput = Settings.GetEnum<SQLOutputFlags>("SQLOutput", SQLOutputFlags.None);
+            int threads = Settings.GetInt32("Threads", 0);
+
             // If our dump format requires a .txt to be created,
             // check if we can write to that .txt before starting parsing
             if (dumpFormat != DumpFormatType.Bin && dumpFormat != DumpFormatType.Pkt)
@@ -85,16 +149,14 @@ namespace WowPacketParser
                 }
             }
 
-            var stuffing = new Stuffing();
+            var stuffing = globalStuffing != null ? globalStuffing : new Stuffing();
             var fileInfo = new SniffFileInfo { FileName = file, Stuffing = stuffing };
             var fileName = Path.GetFileName(fileInfo.FileName);
 
             Console.WriteLine("{0}: Opening file", fileName);
             Console.WriteLine("{0}: Reading packets...", fileName);
 
-            Builder builder = null;
-            if (sqlOutput > 0)
-                builder = new Builder(stuffing);
+            Builder builder = globalBuilder != null ? globalBuilder : sqlOutput != null ? new Builder(stuffing) : null;
 
             try
             {
@@ -126,7 +188,6 @@ namespace WowPacketParser
                     var startTime = DateTime.Now;
                     var outFileName = Path.ChangeExtension(file, null) + "_parsed";
                     var outLogFileName = outFileName + ".txt";
-                    var outSqlFileName = outFileName + ".sql";
 
                     bool headersOnly = (dumpFormat == DumpFormatType.TextHeader || dumpFormat == DumpFormatType.SummaryHeader);
                     if (threads == 0) // Number of threads is automatically choosen by the Parallel library
@@ -136,57 +197,10 @@ namespace WowPacketParser
 
                     Console.WriteLine("{0}: Writing data to file...", fileName);
 
-                    if (builder != null)
+                    if (sqlOutput > 0 && globalStuffing == null) // No global Stuffing, write sql data to particular sql file
                     {
-                        // Experimental, will remove
-                        var store = new SQLStore(outSqlFileName);
-
-                        if (sqlOutput.HasFlag(SQLOutputFlags.GameObjectTemplate))
-                            store.WriteData(builder.GameObjectTemplate());
-
-                        if (sqlOutput.HasFlag(SQLOutputFlags.GameObjectSpawns))
-                            store.WriteData(builder.GameObjectSpawns());
-
-                        if (sqlOutput.HasFlag(SQLOutputFlags.QuestTemplate))
-                            store.WriteData(builder.QuestTemplate());
-
-                        if (sqlOutput.HasFlag(SQLOutputFlags.QuestPOI))
-                            store.WriteData(builder.QuestPOI());
-
-                        if (sqlOutput.HasFlag(SQLOutputFlags.CreatureTemplate))
-                            store.WriteData(builder.NpcTemplate());
-
-                        if (sqlOutput.HasFlag(SQLOutputFlags.CreatureSpawns))
-                            store.WriteData(builder.CreatureSpawns());
-
-                        if (sqlOutput.HasFlag(SQLOutputFlags.NpcTrainer))
-                            store.WriteData(builder.NpcTrainer());
-
-                        if (sqlOutput.HasFlag(SQLOutputFlags.NpcVendor))
-                            store.WriteData(builder.NpcVendor());
-
-                        if (sqlOutput.HasFlag(SQLOutputFlags.NpcText))
-                            store.WriteData(builder.PageText());
-
-                        if (sqlOutput.HasFlag(SQLOutputFlags.PageText))
-                            store.WriteData(builder.NpcText());
-
-                        if (sqlOutput.HasFlag(SQLOutputFlags.Gossip))
-                            store.WriteData(builder.Gossip());
-
-                        if (sqlOutput.HasFlag(SQLOutputFlags.Loot))
-                            store.WriteData(builder.Loot());
-
-                        if (sqlOutput.HasFlag(SQLOutputFlags.SniffData))
-                            store.WriteData(builder.SniffData());
-
-                        if (sqlOutput.HasFlag(SQLOutputFlags.StartInformation))
-                            store.WriteData(builder.StartInformation());
-
-                        if (sqlOutput.HasFlag(SQLOutputFlags.ObjectNames))
-                            store.WriteData(builder.ObjectNames());
-
-                        store.WriteToFile();
+                        var outSqlFileName = outFileName + ".sql";
+                        DumpSQLs(outSqlFileName, builder, sqlOutput);
                     }
 
                     if (dumpFormat != DumpFormatType.None)
@@ -234,8 +248,29 @@ namespace WowPacketParser
             }
         }
 
+        private static void EndPrompt()
+        {
+            if (Settings.GetBoolean("ShowEndPrompt", false))
+            {
+                Console.WriteLine("Press any key to continue.");
+                Console.ReadKey();
+                Console.WriteLine();
+            }
+        }
+
         private static void Main(string[] args)
         {
+            string[] files = GetFiles(args);
+            if (files.Length == 0)
+            {
+                if (args.Length == 0)
+                    Console.WriteLine("No files specified.");
+                else
+                    Console.WriteLine("No files found with pattern {0}", args[0]);
+                EndPrompt();
+                return;
+            }
+
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             ClientVersion.SetVersion(Settings.GetEnum<ClientVersionBuild>("ClientBuild", ClientVersionBuild.Zero));
 
@@ -261,46 +296,37 @@ namespace WowPacketParser
             else
                 Filters.Initialize();
 
-            // Quit if no arguments are given
-            if (args.Length == 0)
-                Console.WriteLine("No files specified.");
+            // Read DB
+            ReadDB();
+
+            Stuffing stuffing = null;
+            Builder builder = null;
+
+            SQLOutputFlags sqlOutput = Settings.GetEnum<SQLOutputFlags>("SQLOutput", SQLOutputFlags.None);
+            string outSqlFileName = Settings.GetString("SQLFileName", "");
+            if (sqlOutput > 0 && outSqlFileName.Length > 0)
+            {
+                stuffing = new Stuffing();
+                builder = new Builder(stuffing);
+            }
+
+            int threads = Settings.GetInt32("Threads", 0);
+            if (threads == 0) // Number of threads is automatically choosen by the Parallel library
+                files.AsParallel().SetCulture()
+                    .ForAll(file => ReadFile(file, stuffing, builder));
             else
+                files.AsParallel().SetCulture().WithDegreeOfParallelism(threads)
+                    .ForAll(file => ReadFile(file, stuffing, builder));
+
+            if (builder != null)
             {
-                // Read DB
-                ReadDB();
-
-                // Read binaries
-                string[] files = GetFiles(args);
-                if (files != null)
-                {
-                    string[] filters = Settings.GetStringList("Filters", null);
-                    string[] ignoreFilters = Settings.GetStringList("IgnoreFilters", null);
-                    SQLOutputFlags sqlOutput = Settings.GetEnum<SQLOutputFlags>("SQLOutput", SQLOutputFlags.None);
-                    int packetsToRead = Settings.GetInt32("FilterPacketsNum", 0);
-
-                    int threads = Settings.GetInt32("Threads", 0);
-                    if (threads == 0) // Number of threads is automatically choosen by the Parallel library
-                        files.AsParallel().SetCulture().ForAll(file => ReadFile(file,
-                            filters, ignoreFilters, packetNumberLow, packetNumberHigh,
-                            packetsToRead, dumpFormat, threads, sqlOutput));
-                    else
-                        files.AsParallel().SetCulture().WithDegreeOfParallelism(threads).ForAll(
-                            file => ReadFile(file, filters, ignoreFilters,
-                            packetNumberLow, packetNumberHigh, packetsToRead,
-                            dumpFormat, threads, sqlOutput));
-                }
-
-                SQLConnector.Disconnect();
-                SSHTunnel.Disconnect();
-                Logger.WriteErrors();
+                DumpSQLs(outSqlFileName, builder, sqlOutput);
             }
 
-            if (Settings.GetBoolean("ShowEndPrompt", false))
-            {
-                Console.WriteLine("Press any key to continue.");
-                Console.ReadKey();
-                Console.WriteLine();
-            }
+            SQLConnector.Disconnect();
+            SSHTunnel.Disconnect();
+            Logger.WriteErrors();
+            EndPrompt();
         }
     }
 }
