@@ -129,18 +129,10 @@ namespace WowPacketParser
 
         private static void ReadFile(string file, Stuffing globalStuffing, Builder globalBuilder)
         {
-            string[] filters = Settings.GetStringList("Filters", null);
-            string[] ignoreFilters = Settings.GetStringList("IgnoreFilters", null);
-            int packetsToRead = Settings.GetInt32("FilterPacketsNum", 0);
-            int packetNumberLow = Settings.GetInt32("FilterPacketNumLow", 0);
-            int packetNumberHigh = Settings.GetInt32("FilterPacketNumHigh", 0);
-            DumpFormatType dumpFormat = Settings.GetEnum<DumpFormatType>("DumpFormat", DumpFormatType.Text);
-            SQLOutputFlags sqlOutput = Settings.GetEnum<SQLOutputFlags>("SQLOutput", SQLOutputFlags.None);
-            int threads = Settings.GetInt32("Threads", 0);
 
             // If our dump format requires a .txt to be created,
             // check if we can write to that .txt before starting parsing
-            if (dumpFormat != DumpFormatType.Bin && dumpFormat != DumpFormatType.Pkt)
+            if (Settings.DumpFormat != DumpFormatType.Bin && Settings.DumpFormat != DumpFormatType.Pkt)
             {
                 var outFileName = Path.ChangeExtension(file, null) + "_parsed.txt";
                 if (Utilities.FileIsInUse(outFileName))
@@ -157,21 +149,21 @@ namespace WowPacketParser
             Console.WriteLine("{0}: Opening file", fileName);
             Console.WriteLine("{0}: Reading packets...", fileName);
 
-            Builder builder = globalBuilder != null ? globalBuilder : sqlOutput > 0 ? new Builder(stuffing) : null;
+            Builder builder = globalBuilder != null ? globalBuilder : Settings.SQLOutput > 0 ? new Builder(stuffing) : null;
 
             try
             {
-                var packets = Reader.Read(fileInfo, filters, ignoreFilters, packetNumberLow, packetNumberHigh, packetsToRead, (dumpFormat == DumpFormatType.SummaryHeader));
+                var packets = Reader.Read(fileInfo);
                 if (packets.Count <= 0)
                 {
                     Console.WriteLine("{0}: Packet count is 0", fileName);
                     return;
                 }
 
-                if (dumpFormat == DumpFormatType.Bin || dumpFormat == DumpFormatType.Pkt)
+                if (Settings.DumpFormat == DumpFormatType.Bin || Settings.DumpFormat == DumpFormatType.Pkt)
                 {
-                    SniffType format = dumpFormat == DumpFormatType.Bin ? SniffType.Bin : SniffType.Pkt;
-                    var fileExtension = dumpFormat.ToString().ToLower();
+                    SniffType format = Settings.DumpFormat == DumpFormatType.Bin ? SniffType.Bin : SniffType.Pkt;
+                    var fileExtension = Settings.DumpFormat.ToString().ToLower();
                     Console.WriteLine("{0}: Copying {1} packets to .{2} format...", fileName, packets.Count, fileExtension);
 
                     var dumpFileName = Path.ChangeExtension(file, null) + "_excerpt." + fileExtension;
@@ -180,7 +172,7 @@ namespace WowPacketParser
                 }
                 else
                 {
-                    var numberOfThreads = threads != 0 ? threads.ToString() : "a recommended number of";
+                    var numberOfThreads = Settings.Threads != 0 ? Settings.Threads.ToString() : "a recommended number of";
 
                     Console.WriteLine("{0}: Assumed version: {1}", fileName, ClientVersion.GetVersionString());
                     Console.WriteLine("{0}: Parsing {1} packets with {2} threads...", fileName, packets.Count, numberOfThreads);
@@ -190,21 +182,21 @@ namespace WowPacketParser
                     var outFileName = Path.ChangeExtension(file, null) + "_parsed";
                     var outLogFileName = outFileName + ".txt";
 
-                    bool headersOnly = (dumpFormat == DumpFormatType.TextHeader || dumpFormat == DumpFormatType.SummaryHeader);
-                    if (threads == 0) // Number of threads is automatically choosen by the Parallel library
+                    bool headersOnly = (Settings.DumpFormat == DumpFormatType.TextHeader || Settings.DumpFormat == DumpFormatType.SummaryHeader);
+                    if (Settings.Threads == 0) // Number of threads is automatically choosen by the Parallel library
                         packets.AsParallel().SetCulture().ForAll(packet => Handler.Parse(packet, headersOnly));
                     else
-                        packets.AsParallel().SetCulture().WithDegreeOfParallelism(threads).ForAll(packet => Handler.Parse(packet, headersOnly));
+                        packets.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads).ForAll(packet => Handler.Parse(packet, headersOnly));
 
                     Console.WriteLine("{0}: Writing data to file...", fileName);
 
-                    if (sqlOutput > 0 && globalStuffing == null) // No global Stuffing, write sql data to particular sql file
+                    if (Settings.SQLOutput > 0 && globalStuffing == null) // No global Stuffing, write sql data to particular sql file
                     {
                         var outSqlFileName = outFileName + ".sql";
-                        DumpSQLs(fileName, outSqlFileName, builder, sqlOutput);
+                        DumpSQLs(fileName, outSqlFileName, builder, Settings.SQLOutput);
                     }
 
-                    if (dumpFormat != DumpFormatType.None)
+                    if (Settings.DumpFormat != DumpFormatType.None)
                     {
                         Console.WriteLine("{0}: Saved file to '{1}'", fileName, outLogFileName);
                         Handler.WriteToFile(packets, outLogFileName);
@@ -253,7 +245,7 @@ namespace WowPacketParser
 
         private static void EndPrompt()
         {
-            if (Settings.GetBoolean("ShowEndPrompt", false))
+            if (Settings.ShowEndPrompt)
             {
                 Console.WriteLine("Press any key to continue.");
                 Console.ReadKey();
@@ -275,23 +267,19 @@ namespace WowPacketParser
             }
 
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            ClientVersion.SetVersion(Settings.GetEnum<ClientVersionBuild>("ClientBuild", ClientVersionBuild.Zero));
+            ClientVersion.SetVersion(Settings.ClientBuild);
 
-            int packetNumberLow = Settings.GetInt32("FilterPacketNumLow", 0);
-            if (packetNumberLow < 0)
+            if (Settings.FilterPacketNumLow < 0)
                 throw new Exception("FilterPacketNumLow must be positive");
 
-            int packetNumberHigh = Settings.GetInt32("FilterPacketNumHigh", 0);
-            if (packetNumberHigh < 0)
+            if (Settings.FilterPacketNumHigh < 0)
                 throw new Exception("FilterPacketNumHigh must be positive");
 
-            if (packetNumberLow > packetNumberHigh)
+            if (Settings.FilterPacketNumLow > Settings.FilterPacketNumHigh)
                 throw new Exception("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
 
-            DumpFormatType dumpFormat = Settings.GetEnum<DumpFormatType>("DumpFormat", DumpFormatType.Text);
-
             // Disable DB when we don't need its data (dumping to a binary file)
-            if (dumpFormat == DumpFormatType.Bin || dumpFormat == DumpFormatType.Pkt)
+            if (Settings.DumpFormat == DumpFormatType.Bin || Settings.DumpFormat == DumpFormatType.Pkt)
             {
                 SQLConnector.Enabled = false;
                 SSHTunnel.Enabled = false;
@@ -305,23 +293,20 @@ namespace WowPacketParser
             Stuffing stuffing = null;
             Builder builder = null;
 
-            SQLOutputFlags sqlOutput = Settings.GetEnum<SQLOutputFlags>("SQLOutput", SQLOutputFlags.None);
-            string outSqlFileName = Settings.GetString("SQLFileName", "");
-            if (sqlOutput > 0 && outSqlFileName.Length > 0)
+            if (Settings.SQLOutput > 0 && Settings.SQLFileName.Length > 0)
             {
                 stuffing = new Stuffing();
                 builder = new Builder(stuffing);
             }
 
-            int threads = Settings.GetInt32("Threads", 0);
-            if (threads == 0) // Number of threads is automatically choosen by the Parallel library
+            if (Settings.Threads == 0) // Number of threads is automatically choosen by the Parallel library
                 files.AsParallel().SetCulture()
                     .ForAll(file => ReadFile(file, stuffing, builder));
             else
-                files.AsParallel().SetCulture().WithDegreeOfParallelism(threads)
+                files.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads)
                     .ForAll(file => ReadFile(file, stuffing, builder));
 
-            DumpSQLs("Dumping global sql", outSqlFileName, builder, sqlOutput);
+            DumpSQLs("Dumping global sql", Settings.SQLFileName, builder, Settings.SQLOutput);
 
             SQLConnector.Disconnect();
             SSHTunnel.Disconnect();

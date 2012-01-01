@@ -11,8 +11,9 @@ namespace WowPacketParser.Loading
 {
     public static class Reader
     {
-        public static ICollection<Packet> Read(SniffFileInfo fileInfo, string[] filters, string[] ignoreFilters, int packetNumberLow, int packetNumberHigh, int packetsToRead, bool summary)
+        public static ICollection<Packet> Read(SniffFileInfo fileInfo)
         {
+            bool summary = Settings.DumpFormat == DumpFormatType.SummaryHeader;
             var packets = new List<Packet>();
             var packetNum = 0;
             var fileName = fileInfo.FileName;
@@ -56,18 +57,18 @@ namespace WowPacketParser.Loading
                     firstPacketBuild = ClientVersion.GetBuildInt();
                 }
 
-                if (++packetNum < packetNumberLow)
+                if (++packetNum < Settings.FilterPacketNumLow)
                     continue;
 
                 // check for filters
                 bool add = true;
                 var opcodeName = Opcodes.GetOpcodeName(packet.Opcode);
 
-                if (filters != null && filters.Length > 0)
-                    add = opcodeName.MatchesFilters(filters);
+                if (Settings.Filters.Length > 0)
+                    add = opcodeName.MatchesFilters(Settings.Filters);
                 // check for ignore filters
-                if (add && ignoreFilters != null && ignoreFilters.Length > 0)
-                    add = !opcodeName.MatchesFilters(ignoreFilters);
+                if (add && Settings.IgnoreFilters.Length > 0)
+                    add = !opcodeName.MatchesFilters(Settings.IgnoreFilters);
 
                 if (add && summary)
                 {
@@ -80,11 +81,11 @@ namespace WowPacketParser.Loading
                 if (add)
                 {
                     packets.Add(packet);
-                    if (packetsToRead > 0 && packets.Count == packetsToRead)
+                    if (Settings.FilterPacketsNum > 0 && packets.Count == Settings.FilterPacketsNum)
                         break;
                 }
 
-                if (packetNumberHigh > 0 && packetNum > packetNumberHigh)
+                if (Settings.FilterPacketNumHigh > 0 && packetNum > Settings.FilterPacketNumHigh)
                     break;
             }
 

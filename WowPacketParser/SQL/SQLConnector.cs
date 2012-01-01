@@ -10,7 +10,7 @@ namespace WowPacketParser.SQL
         [ThreadStatic]
         private static MySqlConnection _conn;
 
-        public static bool Enabled = Settings.GetBoolean("DBEnabled", false);
+        public static bool Enabled = Settings.DBEnabled;
 
         public static void Connect()
         {
@@ -20,7 +20,7 @@ namespace WowPacketParser.SQL
                 return;
             }
 
-            Console.WriteLine("Connecting to MySQL server: " + ConnectionString.Replace("Password=" + Settings.GetString("Password", "") + ";", string.Empty)); // Do not print password
+            Console.WriteLine("Connecting to MySQL server: " + ConnectionString.Replace("Password=" + Settings.Password + ";", string.Empty)); // Do not print password
             _conn = new MySqlConnection(ConnectionString);
 
             try
@@ -67,9 +67,10 @@ namespace WowPacketParser.SQL
         {
             get
             {
-                var server = Settings.GetString("Server", "localhost");
+                var server = Settings.Server;
                 var protocol = String.Empty;
                 var portOrPipe = "Port";
+
                 if (server == ".")
                 {
                     server = "localhost";
@@ -78,14 +79,8 @@ namespace WowPacketParser.SQL
                 }
 
                 return String.Format("Server={0};{1}={2};Username={3};Password={4};Database={5};CharSet={6};ConnectionTimeout=5;{7}",
-                    server,
-                    portOrPipe,
-                    Settings.GetString("Port", "3306"),
-                    Settings.GetString("Username", "root"),
-                    Settings.GetString("Password", ""),
-                    Settings.GetString("Database", "WPP"),
-                    Settings.GetString("CharacterSet", "utf8"),
-                    protocol);
+                    server, portOrPipe, Settings.Port, Settings.Username, Settings.Password, Settings.Database,
+                    Settings.CharacterSet, protocol);
             }
         }
     }

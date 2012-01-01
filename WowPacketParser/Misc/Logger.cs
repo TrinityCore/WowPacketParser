@@ -7,14 +7,12 @@ namespace WowPacketParser.Misc
 {
     public static class Logger
     {
-        public static bool Enabled = Settings.GetBoolean("LogErrors", false);
-
         private static readonly Dictionary<string, List<long>> enumLogs =
             new Dictionary<string, List<long>>();
 
         public static void CheckForMissingValues<T>(long rawValue)
         {
-            if (!Enabled || !typeof(T).IsEnum || !Attribute.IsDefined(typeof(T), typeof(FlagsAttribute)))
+            if (!Settings.LogErrors || !typeof(T).IsEnum || !Attribute.IsDefined(typeof(T), typeof(FlagsAttribute)))
                 return;
 
             var key = typeof(T).ToString().Replace("WowPacketParser.Enums.", "");
@@ -52,7 +50,7 @@ namespace WowPacketParser.Misc
 
         public static void WriteErrors()
         {
-            if (!Enabled)
+            if (!Settings.LogErrors)
                 return;
 
             Console.WriteLine();

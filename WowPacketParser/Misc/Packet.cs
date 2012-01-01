@@ -10,10 +10,8 @@ namespace WowPacketParser.Misc
 {
     public sealed partial class Packet : BinaryReader
     {
-        private static readonly SQLOutputFlags outputFlags =
-            Settings.GetEnum<SQLOutputFlags>("SQLOutput", SQLOutputFlags.None);
-        private static readonly bool sniffData = outputFlags.HasFlag(SQLOutputFlags.SniffData);
-        private static readonly bool sniffDataOpcodes = outputFlags.HasFlag(SQLOutputFlags.SniffDataOpcodes);
+        private static readonly bool sniffData = Settings.SQLOutput.HasFlag(SQLOutputFlags.SniffData);
+        private static readonly bool sniffDataOpcodes = Settings.SQLOutput.HasFlag(SQLOutputFlags.SniffDataOpcodes);
 
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringWriter writer, SniffFileInfo fileInfo)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)

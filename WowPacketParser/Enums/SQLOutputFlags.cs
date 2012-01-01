@@ -3,7 +3,7 @@
 namespace WowPacketParser.Enums
 {
     [Flags]
-    enum SQLOutputFlags
+    public enum SQLOutputFlags
     {
         None               = 0,
         GameObjectTemplate = 0x0001,
