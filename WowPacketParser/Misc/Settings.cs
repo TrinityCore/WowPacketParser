@@ -10,9 +10,9 @@ namespace WowPacketParser.Misc
         public static readonly string[] Filters = _GetStringList("Filters", new string[0]);
         public static readonly string[] IgnoreFilters = _GetStringList("IgnoreFilters", new string[0]);
         public static readonly string[] IgnoreByEntryFilters = _GetStringList("IgnoreByEntryFilters", new string[0]);
-        public static readonly int FilterPacketNumLow = _GetInt32("IgnoreByEntryFilters", 0);
-        public static readonly int FilterPacketNumHigh = _GetInt32("IgnoreByEntryFilters", 0);
-        public static readonly int FilterPacketsNum = _GetInt32("IgnoreByEntryFilters", 0);
+        public static readonly int FilterPacketNumLow = _GetInt32("FilterPacketNumLow", 0);
+        public static readonly int FilterPacketNumHigh = _GetInt32("FilterPacketNumHigh", 0);
+        public static readonly int FilterPacketsNum = _GetInt32("FilterPacketsNum", 0);
         public static readonly ClientVersionBuild ClientBuild = _GetEnum<ClientVersionBuild>("ClientBuild", ClientVersionBuild.Zero);
         public static readonly int Threads = _GetInt32("Threads", 0);
         public static readonly DumpFormatType DumpFormat = _GetEnum<DumpFormatType>("DumpFormat", DumpFormatType.Text);

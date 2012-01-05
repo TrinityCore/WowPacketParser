@@ -127,9 +127,8 @@ namespace WowPacketParser
             store.WriteToFile();
         }
 
-        private static void ReadFile(string file, Stuffing globalStuffing, Builder globalBuilder)
+        private static void ReadFile(string file, Stuffing globalStuffing, Builder globalBuilder, string prefix)
         {
-
             // If our dump format requires a .txt to be created,
             // check if we can write to that .txt before starting parsing
             if (Settings.DumpFormat != DumpFormatType.Bin && Settings.DumpFormat != DumpFormatType.Pkt)
@@ -146,8 +145,7 @@ namespace WowPacketParser
             var fileInfo = new SniffFileInfo { FileName = file, Stuffing = stuffing };
             var fileName = Path.GetFileName(fileInfo.FileName);
 
-            Console.WriteLine("{0}: Opening file", fileName);
-            Console.WriteLine("{0}: Reading packets...", fileName);
+            Console.WriteLine("{0}: Reading packets...", prefix);
 
             Builder builder = globalBuilder != null ? globalBuilder : Settings.SQLOutput > 0 ? new Builder(stuffing) : null;
 
@@ -156,7 +154,7 @@ namespace WowPacketParser
                 var packets = Reader.Read(fileInfo);
                 if (packets.Count <= 0)
                 {
-                    Console.WriteLine("{0}: Packet count is 0", fileName);
+                    Console.WriteLine("{0}: Packet count is 0", prefix);
                     return;
                 }
 
@@ -164,7 +162,7 @@ namespace WowPacketParser
                 {
                     SniffType format = Settings.DumpFormat == DumpFormatType.Bin ? SniffType.Bin : SniffType.Pkt;
                     var fileExtension = Settings.DumpFormat.ToString().ToLower();
-                    Console.WriteLine("{0}: Copying {1} packets to .{2} format...", fileName, packets.Count, fileExtension);
+                    Console.WriteLine("{0}: Copying {1} packets to .{2} format...", prefix, packets.Count, fileExtension);
 
                     var dumpFileName = Path.ChangeExtension(file, null) + "_excerpt." + fileExtension;
                     var writer = new BinaryPacketWriter(format, dumpFileName, Encoding.ASCII);
@@ -172,10 +170,7 @@ namespace WowPacketParser
                 }
                 else
                 {
-                    var numberOfThreads = Settings.Threads != 0 ? Settings.Threads.ToString() : "a recommended number of";
-
-                    Console.WriteLine("{0}: Assumed version: {1}", fileName, ClientVersion.GetVersionString());
-                    Console.WriteLine("{0}: Parsing {1} packets with {2} threads...", fileName, packets.Count, numberOfThreads);
+                    Console.WriteLine("{0}: Parsing {1} packets. Assumed version {2}", prefix, packets.Count, ClientVersion.GetVersionString());
 
                     var total = (uint)packets.Count;
                     var startTime = DateTime.Now;
@@ -188,8 +183,6 @@ namespace WowPacketParser
                     else
                         packets.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads).ForAll(packet => Handler.Parse(packet, headersOnly));
 
-                    Console.WriteLine("{0}: Writing data to file...", fileName);
-
                     if (Settings.SQLOutput > 0 && globalStuffing == null) // No global Stuffing, write sql data to particular sql file
                     {
                         var outSqlFileName = outFileName + ".sql";
@@ -198,7 +191,7 @@ namespace WowPacketParser
 
                     if (Settings.DumpFormat != DumpFormatType.None)
                     {
-                        Console.WriteLine("{0}: Saved file to '{1}'", fileName, outLogFileName);
+                        Console.WriteLine("{0}: Saved file to '{1}'", prefix, outLogFileName);
                         Handler.WriteToFile(packets, outLogFileName);
                     }
 
@@ -229,7 +222,7 @@ namespace WowPacketParser
                     }
                     
                     Console.WriteLine("{0}: Parsed {1:F1}% packets successfully, {2:F1}% with errors and skipped {3:F1}% in {4} Minutes, {5} Seconds and {6} Milliseconds.",
-                        fileName, (double)statsOk / total * 100, (double)statsError / total * 100, (double)statsSkip / total * 100,
+                        prefix, (double)statsOk / total * 100, (double)statsError / total * 100, (double)statsSkip / total * 100,
                         span.Minutes, span.Seconds, span.Milliseconds);
 
                     Console.WriteLine();
@@ -299,12 +292,16 @@ namespace WowPacketParser
                 builder = new Builder(stuffing);
             }
 
+            var numberOfThreads = Settings.Threads != 0 ? Settings.Threads.ToString() : "a recommended number of";
+            Console.WriteLine("Using {0} threads to process {1} files", numberOfThreads, files.Length);
+            var count = 0;
             if (Settings.Threads == 0) // Number of threads is automatically choosen by the Parallel library
                 files.AsParallel().SetCulture()
-                    .ForAll(file => ReadFile(file, stuffing, builder));
+                    .ForAll(file =>
+                        ReadFile(file, stuffing, builder, "[" + (++count).ToString() + "/" + files.Length + " " + file + "]"));
             else
                 files.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads)
-                    .ForAll(file => ReadFile(file, stuffing, builder));
+                    .ForAll(file => ReadFile(file, stuffing, builder, "[" + (++count).ToString() + "/" + files.Length + " " + file + "]"));
 
             DumpSQLs("Dumping global sql", Settings.SQLFileName, builder, Settings.SQLOutput);
 
