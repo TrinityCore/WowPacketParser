@@ -31,7 +31,7 @@ namespace WowPacketParser.Misc
 
         public static readonly bool DBEnabled = _GetBoolean("DBEnabled", false);
         public static readonly string Server = _GetString("Server", "localhost");
-        public static readonly int Port = _GetInt32("Port", 3306);
+        public static readonly string Port = _GetString("Port", "3306");
         public static readonly string Username = _GetString("Username", "root");
         public static readonly string Password = _GetString("Password", "");
         public static readonly string Database = _GetString("Database", "WPP");

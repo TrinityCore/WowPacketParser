@@ -40,7 +40,10 @@ namespace WowPacketParser.SQL
                  UserInfo ui = new MyUserInfo(Settings.SSHPassword);
                  _session.setUserInfo(ui);
                  _session.connect();
-                 _session.setPortForwardingL(Settings.SSHLocalPort, "localhost", Settings.Port);
+                 int port;
+                 if (!int.TryParse(Settings.Port, out port))
+                     port = 3306;
+                 _session.setPortForwardingL(Settings.SSHLocalPort, "localhost", port);
                  if (!_session.isConnected())
                     Enabled = false;
              }
