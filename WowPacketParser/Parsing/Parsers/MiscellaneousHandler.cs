@@ -7,6 +7,15 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class MiscellaneousParsers
     {
+        [Parser(5)]
+        public static void HandleUnk5(Packet packet)
+        {
+            packet.ReadSingle("X");
+            packet.ReadSingle("Y");
+            packet.ReadSingle("Z");
+            packet.ReadSingle("O");
+        }
+
         [Parser(Opcode.CMSG_SUSPEND_TOKEN)]
         public static void HandleSuspendToken(Packet packet)
         {

@@ -521,9 +521,13 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_SET_FACTION_ATWAR, 0x1E47},
             {Opcode.SMSG_SET_FACTION_STANDING, 0x1AE3},
             {Opcode.SMSG_SET_FACTION_VISIBLE, 0x4CEB},
-            {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x88D3}, // unsure: can be 0x98FE //{Opcode.SMSG_LEARNED_SPELL, 0x88D3},
+
+            {Opcode.SMSG_LEARNED_SPELL, 0x88D3},
+            {Opcode.SMSG_REMOVED_SPELL, 0x98FE},
+            {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x4EF2},
+            {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x485B},
+
             {Opcode.SMSG_SET_FORCED_REACTIONS, 0xD8C3},
-            {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x98FE}, // unsure: can be 0x88D3 //{Opcode.SMSG_REMOVED_SPELL, 0x98FE},
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x204C},
             {Opcode.SMSG_SET_PLAYER_DECLINED_NAMES_RESULT, 0xE67},
             {Opcode.SMSG_SET_PROFICIENCY, 0x9C5F},

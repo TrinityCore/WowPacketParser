@@ -331,23 +331,22 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                packet.ReadGuid("[" + i + "] GUID");
-                packet.ReadBoolean("[" + i + "] Online");
-                packet.ReadCString("[" + i + "] Name");
-                packet.ReadUInt32("[" + i + "] Captain");
-                packet.ReadByte("[" + i + "] Level");
-                packet.ReadByte("[" + i + "] Class");
-                packet.ReadUInt32("[" + i + "] Week Games");
-                packet.ReadUInt32("[" + i + "] Week Win");
-                packet.ReadUInt32("[" + i + "] Seasonal Games");
-                packet.ReadUInt32("[" + i + "] Seasonal Wins");
-                packet.ReadUInt32("[" + i + "] Personal Rating");
+                packet.ReadGuid(" GUID", i);
+                packet.ReadBoolean("Online", i);
+                packet.ReadCString("Name", i);
+                packet.ReadUInt32("Captain", i);
+                packet.ReadByte("Level", i);
+                packet.ReadByte("Class", i);
+                packet.ReadUInt32("Week Games", i);
+                packet.ReadUInt32("Week Win", i);
+                packet.ReadUInt32("Seasonal Games", i);
+                packet.ReadUInt32("Seasonal Wins", i);
+                packet.ReadUInt32("Personal Rating", i);
                 if (unk > 0)
                 {
-                    packet.ReadSingle("[" + i + "] Unk float 1");
-                    packet.ReadSingle("[" + i + "] Unk float 2");
+                    packet.ReadSingle("Unk float 1", i);
+                    packet.ReadSingle("Unk float 2", i);
                 }
-
             }
         }
 
