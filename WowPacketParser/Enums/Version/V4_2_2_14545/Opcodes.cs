@@ -423,6 +423,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_ITEM_TEXT_QUERY_RESPONSE, 0x984A},
             {Opcode.SMSG_KICK_REASON, 0x8A67},
             {Opcode.SMSG_LEARNED_DANCE_MOVES, 0xE52},
+            {Opcode.SMSG_LEARNED_SPELL, 0x88D3},
             {Opcode.SMSG_LEVELUP_INFO, 0x9A73},
             {Opcode.SMSG_LFG_PLAYER_INFO, 0xC85F},
             {Opcode.SMSG_LIST_INVENTORY, 0x264C},
@@ -511,6 +512,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_RECEIVED_MAIL, 0x0DEE2},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x0180},
             {Opcode.SMSG_REFER_A_FRIEND_FAILURE, 0x4867},
+            {Opcode.SMSG_REMOVED_SPELL, 0x98FE},
             {Opcode.SMSG_RWHOIS, 0xCCE2},
             {Opcode.SMSG_SELL_ITEM, 0x9CD3},
             {Opcode.SMSG_SEND_MAIL_RESULT, 0x8CC2},
@@ -521,12 +523,8 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_SET_FACTION_ATWAR, 0x1E47},
             {Opcode.SMSG_SET_FACTION_STANDING, 0x1AE3},
             {Opcode.SMSG_SET_FACTION_VISIBLE, 0x4CEB},
-
-            {Opcode.SMSG_LEARNED_SPELL, 0x88D3},
-            {Opcode.SMSG_REMOVED_SPELL, 0x98FE},
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x4EF2},
             {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x485B},
-
             {Opcode.SMSG_SET_FORCED_REACTIONS, 0xD8C3},
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x204C},
             {Opcode.SMSG_SET_PLAYER_DECLINED_NAMES_RESULT, 0xE67},
@@ -586,7 +584,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
 
             // Unsure
             /*
-                {Opcode.SMSG_SET_PROFICIENCY, 0x9C5F},
                 {Opcode.SMSG_COMPRESSED_UNK, 0x1381},
                 {Opcode.SMSG_COMPRESSED_UNK, 0x5C3B},
             */

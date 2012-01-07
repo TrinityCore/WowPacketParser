@@ -844,6 +844,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 2564},
 
             // TEST
+            {Opcode.TEST_430_SYNC_PLAYER_MOVE, 0x5}
         };
     }
 }

@@ -7,7 +7,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class MiscellaneousParsers
     {
-        [Parser(5)]
+        [Parser(Opcode.TEST_430_SYNC_PLAYER_MOVE)]
         public static void HandleUnk5(Packet packet)
         {
             packet.ReadSingle("X");
