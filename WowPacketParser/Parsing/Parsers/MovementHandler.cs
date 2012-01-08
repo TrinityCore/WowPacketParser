@@ -451,6 +451,142 @@ namespace WowPacketParser.Parsing.Parsers
             packet.Writer.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
         }
 
+        [Parser(Opcode.MSG_MOVE_SET_PITCH, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleMovementSetPitch(Packet packet)
+        {
+            var guidBytes = new byte[8];
+            guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            packet.ReadEnum<MovementFlag>("Movement flags", 30);
+
+            guidBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            packet.ReadBit("HasSplineData");
+
+            guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            packet.ReadEnum<MovementFlagExtra>("Movement flags extra", 12);
+
+            var splineElevation = packet.ReadBit("SplineElevation"); // OR Swimming
+            var onTransport = packet.ReadBit("OnTransport");
+
+            var transportBytes = new byte[8];
+            var hasInterpolatedMovement = false;
+            var time3 = false;
+            if (onTransport)
+            {
+                transportBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
+                transportBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
+                transportBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
+                transportBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
+                transportBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
+                transportBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
+                transportBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
+                transportBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
+                hasInterpolatedMovement = packet.ReadBit("HasInterpolatedMovement");
+                time3 = packet.ReadBit("HasTime3");
+            }
+
+            var swimming = packet.ReadBit("HasPitch");  // OR SplineElevation
+            var interPolatedTurning = packet.ReadBit("HasFallData");
+            var jumping = false;
+            if (interPolatedTurning)
+                jumping = packet.ReadBit("HasFallDirection");
+
+            packet.ReadVector3("Position");
+            packet.ReadInt32("Time");
+            packet.ReadSingle("Orientation");
+
+            if (guidBytes[1] != 0)
+                guidBytes[1] ^= packet.ReadByte();
+
+            if (guidBytes[4] != 0)
+                guidBytes[4] ^= packet.ReadByte();
+
+            if (splineElevation)
+                packet.ReadSingle("Spline Elevation");
+
+            if (onTransport)
+            {
+                packet.ReadByte("Transport Seat");
+                packet.ReadSingle("Transport Orientation");
+                packet.ReadVector3("Transport Position");
+                packet.ReadInt32("Transport Time");
+                if (hasInterpolatedMovement)
+                    packet.ReadInt32("Transport Time 2");
+
+                if (transportBytes[3] != 0)
+                    transportBytes[3] ^= packet.ReadByte();
+
+                if (transportBytes[6] != 0)
+                    transportBytes[6] ^= packet.ReadByte();
+
+                if (time3)
+                    packet.ReadInt32("Transport Time 3");
+
+                if (transportBytes[7] != 0)
+                    transportBytes[7] ^= packet.ReadByte();
+
+                if (transportBytes[5] != 0)
+                    transportBytes[5] ^= packet.ReadByte();
+
+                if (transportBytes[2] != 0)
+                    transportBytes[2] ^= packet.ReadByte();
+
+                if (transportBytes[1] != 0)
+                    transportBytes[1] ^= packet.ReadByte();
+
+                if (transportBytes[0] != 0)
+                    transportBytes[0] ^= packet.ReadByte();
+
+                if (transportBytes[4] != 0)
+                    transportBytes[4] ^= packet.ReadByte();
+
+                packet.Writer.WriteLine("Transport GUID: {0}", new Guid(BitConverter.ToUInt64(transportBytes, 0)));
+            }
+
+            if (swimming)
+                packet.ReadSingle("Swim Pitch");
+
+            if (guidBytes[5] != 0)
+                guidBytes[5] ^= packet.ReadByte();
+
+            if (interPolatedTurning)
+            {
+                packet.ReadInt32("Time Fallen");
+                packet.ReadSingle("Fall Start Velocity");
+                if (jumping)
+                {
+                    packet.ReadSingle("Jump Velocity");
+                    packet.ReadSingle("Jump Sin");
+                    packet.ReadSingle("Jump Cos");
+
+                }
+            }
+
+            if (guidBytes[0] != 0)
+                guidBytes[0] ^= packet.ReadByte();
+
+            if (guidBytes[3] != 0)
+                guidBytes[3] ^= packet.ReadByte();
+
+            if (guidBytes[6] != 0)
+                guidBytes[6] ^= packet.ReadByte();
+
+            if (guidBytes[7] != 0)
+                guidBytes[7] ^= packet.ReadByte();
+
+            if (guidBytes[2] != 0)
+                guidBytes[2] ^= packet.ReadByte();
+
+            packet.Writer.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
+        }
+
         [Parser(Opcode.MSG_MOVE_START_FORWARD)]
         [Parser(Opcode.MSG_MOVE_START_BACKWARD)]
         [Parser(Opcode.MSG_MOVE_STOP)]
@@ -471,7 +607,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_MOVE_SET_WALK_MODE)]
         [Parser(Opcode.MSG_MOVE_TELEPORT)]
         [Parser(Opcode.MSG_MOVE_SET_FACING)]
-        [Parser(Opcode.MSG_MOVE_SET_PITCH)]
+        [Parser(Opcode.MSG_MOVE_SET_PITCH, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         [Parser(Opcode.MSG_MOVE_TOGGLE_COLLISION_CHEAT)]
         [Parser(Opcode.MSG_MOVE_GRAVITY_CHNG)]
         [Parser(Opcode.MSG_MOVE_ROOT)]
@@ -658,7 +794,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             CurrentPhaseMask = phaseMask;
 
-            i++; 
+            i++;
             count = packet.ReadInt32();
             for (var j = 0; j < count / 2; ++j)
                 packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Terrain Swap 2", i, j);
