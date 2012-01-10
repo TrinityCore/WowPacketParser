@@ -304,7 +304,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183))
                 packet.ReadUInt32("Overheal", index);
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685)) // no idea when this was added exactly
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183)) // no idea when this was added exactly
                 packet.ReadUInt32("Absorb", index);
 
             packet.ReadBoolean("Critical", index);
