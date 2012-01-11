@@ -188,10 +188,10 @@ namespace WowPacketParser.Parsing.Parsers
                 updateFlags.HasAnyFlag(GroupUpdateFlag.VehicleSeat))
                 packet.ReadInt32("Vehicle Seat");
 
-            if (updateFlags.HasAnyFlag(GroupUpdateFlag.Unknown1))
+            if (updateFlags.HasAnyFlag(GroupUpdateFlag.Unk100000))
                 packet.ReadInt32("Unk int32");
 
-            if (updateFlags.HasAnyFlag(GroupUpdateFlag.Unknown2))
+            if (updateFlags.HasAnyFlag(GroupUpdateFlag.Unk200000))
             {
                 packet.ReadInt32("Unk int32");
                 packet.ReadInt32("Unk int32");
