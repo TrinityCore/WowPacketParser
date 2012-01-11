@@ -331,6 +331,8 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE, 2180},
             {Opcode.CMSG_WORLD_TELEPORT, 16740},
             {Opcode.CMSG_ZONEUPDATE, 13824},
+            {Opcode.CMSG_WARDEN_DATA, 264},
+            {Opcode.CMSG_LOG_DISCONNECT, 18740},
             {Opcode.MSG_AUCTION_HELLO, 1664},
             {Opcode.MSG_CORPSE_QUERY, 20486},
             {Opcode.MSG_INSPECT_ARENA_TEAMS, 19074},
@@ -386,6 +388,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 27782},
             {Opcode.MSG_TALENT_WIPE_CONFIRM, 678},
             {Opcode.MSG_VERIFY_CONNECTIVITY, 20311},
+            {Opcode.MSG_MOVE_SET_RUN_SPEED, 18088},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 3200},
             {Opcode.SMSG_ACCOUNT_INFO_RESPONSE, 27706},
             {Opcode.SMSG_ACTIVATETAXIREPLY, 1028},
@@ -844,6 +847,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.SMSG_WHOIS, 9730},
             {Opcode.SMSG_XP_GAIN_ABORTED, 11276},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 2564},
+            {Opcode.SMSG_NAME_QUERY_RESPONSE, 24096},
 
             // TEST
             {Opcode.TEST_430_SYNC_PLAYER_MOVE, 0x5}
