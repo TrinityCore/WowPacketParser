@@ -5,15 +5,18 @@ namespace WowPacketParser.Enums
     [Flags]
     public enum AuraFlag
     {
-        None = 0x00,
-        EffectIndex0 = 0x01,
-        EffectIndex1 = 0x02,
-        EffectIndex2 = 0x04,
-        NotCaster = 0x08,
-        Positive = 0x10,
-        Duration = 0x20,
-        Scalable = 0x40,
-        Negative = 0x80,
-        Unknown = 0x100,
+        None         = 0x0000,
+        EffectIndex0 = 0x0001,
+        EffectIndex1 = 0x0002,
+        EffectIndex2 = 0x0004,
+        NotCaster    = 0x0008,
+        Positive     = 0x0010,
+        Duration     = 0x0020,
+        Scalable     = 0x0040,
+        Negative     = 0x0080,
+        Unk100       = 0x0100,
+        Unk400       = 0x0400,
+        Unk1000      = 0x1000,
+        Unk4000      = 0x4000
     }
 }

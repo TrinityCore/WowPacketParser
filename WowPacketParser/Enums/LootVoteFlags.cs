@@ -9,5 +9,7 @@ namespace WowPacketParser.Enums
         Need         = 0x02,
         Greed        = 0x04,
         Disenchant   = 0x08,
+        Unk10        = 0x10,
+        Unk40        = 0x40
     }
 }

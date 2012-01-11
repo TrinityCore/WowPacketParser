@@ -5,10 +5,12 @@ namespace WowPacketParser.Enums
     [Flags]
     public enum LfgRoleFlag
     {
-        None = 0x0,
-        Leader = 0x1,
-        Tank = 0x2,
-        Healer = 0x4,
-        Damage = 0x8
+        None   = 0x00,
+        Leader = 0x01,
+        Tank   = 0x02,
+        Healer = 0x04,
+        Damage = 0x08,
+        Unk10  = 0x10,
+        Unk40  = 0x40
     }
 }
