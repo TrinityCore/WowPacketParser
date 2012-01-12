@@ -24,11 +24,13 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_TRAINER_BUY_SPELL)]
         [Parser(Opcode.SMSG_TRAINER_BUY_SUCCEEDED)]
         [Parser(Opcode.SMSG_TRAINER_BUY_FAILED)]
+        [Parser(Opcode.SMSG_TRAINER_BUY_RESULT)]
         public static void HandleServerTrainerBuySucceedeed(Packet packet)
         {
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_TRAINER_BUY_FAILED))
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_TRAINER_BUY_FAILED)
+                || packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_TRAINER_BUY_RESULT))
                 packet.ReadUInt32("Reason");
         }
 

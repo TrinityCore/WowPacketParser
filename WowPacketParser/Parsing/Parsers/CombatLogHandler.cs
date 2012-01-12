@@ -147,7 +147,7 @@ namespace WowPacketParser.Parsing.Parsers
                         case SpellEffect.PowerDrain:
                         case SpellEffect.PowerBurn:
                         {
-                            packet.ReadGuid("Target GUID", index, i, j);
+                            packet.ReadPackedGuid("Target GUID", index, i, j);
                             packet.ReadInt32("Unknown Int32", index, i, j);
                             packet.ReadInt32("Unknown Int32", index, i, j);
                             packet.ReadSingle("Unknown Float", index, i, j);
@@ -155,13 +155,13 @@ namespace WowPacketParser.Parsing.Parsers
                         }
                         case SpellEffect.AddExtraAttacks:
                         {
-                            packet.ReadGuid("Target GUID", index, i, j);
+                            packet.ReadPackedGuid("Target GUID", index, i, j);
                             packet.ReadInt32("Unknown Int32", index, i, j);
                             break;
                         }
                         case SpellEffect.DurabilityDamage:
                         {
-                            packet.ReadGuid("Target GUID", index, i, j);
+                            packet.ReadPackedGuid("Target GUID", index, i, j);
                             packet.ReadInt32("Unknown Int32", index, i, j);
                             packet.ReadInt32("Unknown Int32", index, i, j);
                             break;
@@ -187,7 +187,7 @@ namespace WowPacketParser.Parsing.Parsers
                         case SpellEffect.SummonObjectSlot1:
                         case SpellEffect.Unk171:
                         {
-                            packet.ReadGuid("Summoned GUID", index, i, j);
+                            packet.ReadPackedGuid("Summoned GUID", index, i, j);
                             break;
                         }
                         case SpellEffect.FeedPet:
@@ -197,14 +197,14 @@ namespace WowPacketParser.Parsing.Parsers
                         }
                         case SpellEffect.DismissPet:
                         {
-                            packet.ReadGuid("GUID", index, i, j);
+                            packet.ReadPackedGuid("GUID", index, i, j);
                             break;
                         }
                         case SpellEffect.Resurrect:
                         case SpellEffect.ResurrectNew:
                         case SpellEffect.RessurectAOE:
                         {
-                            packet.ReadGuid("GUID", index, i, j);
+                            packet.ReadPackedGuid("GUID", index, i, j);
                             break;
                         }
                         default:
