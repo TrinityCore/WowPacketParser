@@ -204,5 +204,30 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; ++i)
                 packet.ReadGuid("Guid", i);
         }
+
+        [Parser(Opcode.MSG_LIST_STABLED_PETS)]
+        public static void HandleListStabledPets(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+
+            if (packet.Direction == Direction.ClientToServer)
+                return;
+
+            var count = packet.ReadByte("Count");
+            packet.ReadByte("Stable Slots");
+
+            for (var i = 0; i < count; i++)
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // not verified
+                    packet.ReadInt32("Unk", i);
+
+                packet.ReadInt32("Pet Number", i);
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Unit, "Pet Entry", i);
+                packet.ReadInt32("Pet Level", i);
+                packet.ReadCString("Pet Name", i);
+                packet.ReadByte("Stable Type", i); // 1 = current, 2/3 = in stable
+            }
+
+        }
     }
 }

@@ -152,7 +152,7 @@ namespace WowPacketParser
             try
             {
                 var packets = Reader.Read(fileInfo);
-                if (packets.Count <= 0)
+                if (packets.Count == 0)
                 {
                     Console.WriteLine("{0}: Packet count is 0", prefix);
                     return;
