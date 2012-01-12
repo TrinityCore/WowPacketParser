@@ -900,6 +900,9 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadByte("Message ID");
                     break;
                 }
+                default:
+                    packet.ReadByte(); // Does nothing
+                    break;
             }
         }
 
