@@ -333,5 +333,19 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<SpellMissType>("Miss Info", TypeCode.Byte, index);
             }
         }
+
+        [Parser(Opcode.SMSG_SPELLDAMAGESHIELD)]
+        public static void ReadSpellDamageShield(Packet packet)
+        {
+            packet.ReadGuid("Victim");
+            packet.ReadGuid("Caster");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id");
+            packet.ReadInt32("Damage");
+            packet.ReadInt32("Overkill");
+            packet.ReadInt32("SpellSchoolMask");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // not verified
+                packet.ReadInt32("Unknown Int32");
+        }
     }
 }
