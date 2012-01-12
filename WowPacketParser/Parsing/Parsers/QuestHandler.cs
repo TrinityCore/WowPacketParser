@@ -766,28 +766,12 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleQuestCompleted422(Packet packet)
         {
             packet.ReadByte("Unk Byte");
-            packet.ReadInt32("Reward");
+            packet.ReadInt32("Reward XP");
             packet.ReadInt32("Money");
-            packet.ReadInt32("Unk3");
+            packet.ReadInt32("Reward Skill Points");
             packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
-            packet.ReadInt32("Unk4");
-            packet.ReadInt32("Unk5");
-
-            /* FIXME
-            packet.ReadInt32("Reward");
-            packet.ReadInt32("Money");
-            var honor = packet.ReadInt32();
-            if (honor < 0)
-                packet.Writer.WriteLine("Honor: " + honor);
-
-            var talentpoints = packet.ReadInt32();
-            if (talentpoints < 0)
-                packet.Writer.WriteLine("Talentpoints: " + talentpoints);
-
-            var arenapoints = packet.ReadInt32();
-            if (arenapoints < 0)
-                packet.Writer.WriteLine("Arenapoints: " + arenapoints);
-             */
+            packet.ReadInt32("Reward Skill Id");
+            packet.ReadInt32("Unk5"); // Talent points?
         }
 
         [Parser(Opcode.CMSG_QUESTLOG_SWAP_QUEST)]
