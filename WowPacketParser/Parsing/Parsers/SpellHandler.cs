@@ -508,6 +508,28 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
             packet.ReadInt32("Duration");
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333))
+                return;
+
+            var unkbool = packet.ReadBoolean("Unk");
+
+            if (unkbool)
+            {
+                packet.ReadUInt32("Unk");
+                packet.ReadUInt32("Unk");
+            }
+
+            var unkbool2 = packet.ReadBoolean("Unk");
+
+            if (unkbool2)
+            {
+                packet.ReadPackedGuid("GUID");
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+                var unkbyte = packet.ReadByte("Unk");
+                if (unkbyte == 2)
+                    packet.ReadPackedGuid("GUID");
+            }
         }
 
         [Parser(Opcode.SMSG_BREAK_TARGET)]

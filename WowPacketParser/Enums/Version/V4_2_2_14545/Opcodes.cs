@@ -251,6 +251,8 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x58F6},
             {Opcode.CMSG_ZONEUPDATE, 0x4AE2},
             {Opcode.MSG_AUCTION_HELLO, 0xCC7A},
+            {Opcode.MSG_CHANNEL_START, 0xDCC2},
+            {Opcode.MSG_CHANNEL_UPDATE, 0xCC5E},
             {Opcode.MSG_GUILD_BANK_MONEY_WITHDRAWN, 0xDE77},
             {Opcode.MSG_GUILD_EVENT_LOG_QUERY, 0xCEDA},
             {Opcode.MSG_GUILD_PERMISSIONS, 0xDC73},
@@ -592,7 +594,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
 
             // Unsure
             /*
-                
                 {Opcode.SMSG_COMPRESSED_UNK, 0x1381},
                 {Opcode.SMSG_COMPRESSED_UNK, 0x5C3B},
             */
