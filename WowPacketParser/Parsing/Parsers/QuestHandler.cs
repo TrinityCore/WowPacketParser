@@ -62,7 +62,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadUInt32("Title Id");
                 packet.ReadUInt32("Unknown UInt32");
-                packet.ReadUInt32("Unknown UInt32");
+                packet.ReadSingle("Unknown float");
                 packet.ReadUInt32("Bonus Talents");
                 packet.ReadUInt32("Unknown UInt32");
                 packet.ReadUInt32("Unknown UInt32");
@@ -106,9 +106,9 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell Cast Id");
 
                 for (var i = 0; i < 4; i++)
-                    packet.ReadUInt32("Unknown UInt32 1", i);
+                    packet.ReadUInt32("Currency Id", i);
                 for (var i = 0; i < 4; i++)
-                    packet.ReadUInt32("Unknown UInt32 2", i);
+                    packet.ReadUInt32("Currency Count", i);
 
                 packet.ReadUInt32("Unknown UInt32");
                 packet.ReadUInt32("Unknown UInt32");
