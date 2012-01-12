@@ -249,14 +249,14 @@ namespace WowPacketParser.Parsing.Parsers
 
                     packet.ReadInt32("Spline Time", index);
                     packet.ReadInt32("Spline Full Time", index);
-                    packet.ReadInt32("Spline Unk Int32 1", index);
+                    packet.ReadInt32("Spline ID", index);
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                     {
                         packet.ReadSingle("Spline Duration Multiplier", index);
-                        packet.ReadSingle("Spline Unit Interval", index);
-                        packet.ReadSingle("Spline Unk Float 2", index);
-                        packet.ReadInt32("Spline Height Time", index);
+                        packet.ReadSingle("Spline Duration Multiplier Next", index);
+                        packet.ReadSingle("Spline Vertical Acceleration", index);
+                        packet.ReadInt32("Spline Start Time", index);
                     }
 
                     var splineCount = packet.ReadInt32();
@@ -302,7 +302,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadPackedGuid("Target GUID", index);
 
             if (flags.HasAnyFlag(UpdateFlag.Transport))
-                packet.ReadInt32("Transport Movement Time (ms)", index);
+                packet.ReadInt32("Transport unk timer", index);
 
             if (flags.HasAnyFlag(UpdateFlag.Vehicle))
             {

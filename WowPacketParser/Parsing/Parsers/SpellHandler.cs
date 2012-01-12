@@ -331,7 +331,7 @@ namespace WowPacketParser.Parsing.Parsers
                     }
 
                     if (targetFlags.HasAnyFlag(TargetFlag.DestinationLocation))
-                        packet.ReadByte("Unk Byte 2");
+                        packet.ReadByte("Unk Byte 2"); // Some count
 
                     if (targetFlags.HasAnyFlag(TargetFlag.ExtraTargets))
                     {

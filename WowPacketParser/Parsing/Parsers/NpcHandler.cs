@@ -278,7 +278,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadPackedGuid("Hostile");
                 var threat = packet.ReadUInt32();
-                // No idea why, but this is in core.
+                // No idea why, but this is in core. There is nothing about this in client
                 /*if (packet.Opcode == Opcode.SMSG_THREAT_UPDATE)
                     threat *= 100;*/
                 packet.Writer.WriteLine("Threat: " + threat);
