@@ -635,6 +635,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]
         [Parser(Opcode.CMSG_MEETINGSTONE_INFO)]
         [Parser(Opcode.CMSG_RETURN_TO_GRAVEYARD)]
+        [Parser(Opcode.CMSG_BATTLEFIELD_REQUEST_SCORE_DATA)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

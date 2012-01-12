@@ -203,6 +203,10 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBuyItem(Packet packet)
         {
             packet.ReadGuid("Vendor GUID");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // not verified
+                packet.ReadByte("Unk (byte)");
+
             packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
@@ -213,7 +217,10 @@ namespace WowPacketParser.Parsing.Parsers
             else
                 packet.ReadByte("Count");
 
-            packet.ReadByte("Unk");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // not verified
+                packet.ReadGuid("Unk (int64)");
+
+            packet.ReadByte("Unk (byte)");
         }
 
         [Parser(Opcode.SMSG_BUY_ITEM)]
