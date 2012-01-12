@@ -141,13 +141,13 @@ namespace WowPacketParser
                 }
             }
 
-            var stuffing = globalStuffing != null ? globalStuffing : new Stuffing();
+            var stuffing = globalStuffing ?? new Stuffing();
             var fileInfo = new SniffFileInfo { FileName = file, Stuffing = stuffing };
             var fileName = Path.GetFileName(fileInfo.FileName);
 
             Console.WriteLine("{0}: Reading packets...", prefix);
 
-            Builder builder = globalBuilder != null ? globalBuilder : Settings.SQLOutput > 0 ? new Builder(stuffing) : null;
+            Builder builder = globalBuilder ?? (Settings.SQLOutput > 0 ? new Builder(stuffing) : null);
 
             try
             {

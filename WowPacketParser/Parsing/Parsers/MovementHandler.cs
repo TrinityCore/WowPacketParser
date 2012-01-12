@@ -76,8 +76,9 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSingle("Fall Speed", index);
             }
 
-            if (info.Flags.HasAnyFlag(MovementFlag.SplineElevation))
-                packet.ReadSingle("Spline Elevation", index);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
+                if (info.Flags.HasAnyFlag(MovementFlag.SplineElevation))
+                    packet.ReadSingle("Spline Elevation", index);
 
             return info;
         }
@@ -195,7 +196,11 @@ namespace WowPacketParser.Parsing.Parsers
                     return;
             }
 
-            var flags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32);
+            dynamic flags;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                flags = packet.ReadEnum<SplineFlag422>("Spline Flags", TypeCode.Int32);
+            else
+                flags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32);
 
             if (flags.HasAnyFlag(SplineFlag.AnimationTier))
             {
