@@ -19,6 +19,8 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadEnum<InstanceStatus>("Group Type Status", TypeCode.Byte);
                 packet.ReadLfgEntry("LFG Entry");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                    packet.ReadBoolean("Unk bool");
             }
 
             packet.ReadGuid("Group GUID");
@@ -54,7 +56,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<MapDifficulty>("Raid Difficulty", TypeCode.Byte);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                packet.ReadByte("Unk Byte");
+                packet.ReadByte("Unk Byte"); // Has something to do with difficulty too
         }
 
         [Parser(Opcode.SMSG_PARTY_MEMBER_STATS)]

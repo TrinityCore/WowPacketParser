@@ -44,9 +44,11 @@ namespace WowPacketParser.Misc
         {
             var minute = packedDate & 0x3F;
             var hour = (packedDate >> 6) & 0x1F;
+            // something = (packedDate >> 11) & 7;
             var day = (packedDate >> 14) & 0x3F;
             var month = (packedDate >> 20) & 0xF;
             var year = (packedDate >> 24) & 0x1F;
+            // something = (packedDate >> 29) & 3;
 
             return new DateTime(year + 2000, month + 1, day + 1, hour, minute, 0);
         }

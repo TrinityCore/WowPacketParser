@@ -196,11 +196,12 @@ namespace WowPacketParser.Parsing.Parsers
                     return;
             }
 
-            dynamic flags;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                flags = packet.ReadEnum<SplineFlag422>("Spline Flags", TypeCode.Int32);
-            else
-                flags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32);
+            var flags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32);
+
+            //if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+            //    flags = packet.ReadEnum<SplineFlag422>("Spline Flags", TypeCode.Int32);
+            //else
+            //    flags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32);
 
             if (flags.HasAnyFlag(SplineFlag.AnimationTier))
             {
