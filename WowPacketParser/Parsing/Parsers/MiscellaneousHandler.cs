@@ -288,40 +288,14 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
                 powerCount = 7;
             if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
-                powerCount = 11;
+                powerCount = 5;
 
+            // TODO: Exclude happiness on Cata
             for (var i = 0; i < powerCount; i++)
-                packet.ReadEnum<PowerType>("Power", TypeCode.Int32, i);
+                packet.Writer.WriteLine("Power " + (PowerType)i + ": " + packet.ReadInt32());
 
             for (var i = 0; i < 5; i++)
-                packet.ReadEnum<StatType>("StatType", TypeCode.Int32, i);
-
-            if (SessionHandler.LoggedInCharacter != null)
-                SessionHandler.LoggedInCharacter.Level = level;
-        }
-
-        [Parser(Opcode.SMSG_LEVELUP_INFO, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleLevelUp422(Packet packet)
-        {
-            // FIXME - Structure unknown
-            var level = packet.ReadInt32();
-
-            packet.Writer.WriteLine("Level: {0}, Health: {1}, Unk: {2}, Unk: {3}, Unk(byte): {4}",
-                level, packet.ReadInt32(), packet.ReadInt32(), packet.ReadInt32(), packet.ReadByte());
-
-            packet.Writer.Write("Powers?: {0}", packet.ReadByte());
-            for (var i = 0; i < 10; i++)
-                packet.Writer.Write(", {0}", packet.ReadByte());
-            packet.Writer.WriteLine();
-
-            packet.Writer.Write("Stats:");
-            for (var i = 0; i < 5; i++)
-            {
-                if (i > 0)
-                    packet.Writer.Write(",");
-                packet.Writer.Write(" {0}: {1}", (StatType)i, packet.ReadInt32());
-            }
-            packet.Writer.WriteLine();
+                packet.Writer.WriteLine("Stat " + (StatType)i + ": " + packet.ReadInt32());
 
             if (SessionHandler.LoggedInCharacter != null)
                 SessionHandler.LoggedInCharacter.Level = level;
