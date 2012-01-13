@@ -590,6 +590,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_TRIGGER_CINEMATIC, 0xCE5B},
             {Opcode.SMSG_TURN_IN_PETITION_RESULTS, 0x08DB},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x1A46},
+            {Opcode.SMSG_UNIT_SPELLCAST_START, 0x8C63},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA, 0x4A73},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 0x5E53},
             {Opcode.SMSG_UPDATE_COMBO_POINTS, 0x9AF6},

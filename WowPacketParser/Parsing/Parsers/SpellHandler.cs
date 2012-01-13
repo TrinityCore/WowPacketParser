@@ -647,5 +647,21 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Count");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id");
         }
+
+        [Parser(Opcode.SMSG_UNIT_SPELLCAST_START)]
+        public static void HandleUnitSpellcastStart(Packet packet)
+        {
+            packet.ReadPackedGuid("Caster GUID");
+            packet.ReadPackedGuid("Target GUID");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id");
+            packet.ReadInt32("Unknown int32");
+            packet.ReadInt32("Cast time");
+
+            if (packet.ReadBoolean("Unknown bool"))
+            {
+                packet.ReadUInt32("Unk");
+                packet.ReadUInt32("Unk");
+            }
+        }
     }
 }
