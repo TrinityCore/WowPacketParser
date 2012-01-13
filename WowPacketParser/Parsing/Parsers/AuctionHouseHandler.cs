@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -8,6 +7,9 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class AuctionHouseHandler
     {
+        // TODO: Use this in more places
+        private static readonly TypeCode _auctionSize = ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) ? TypeCode.UInt64 : TypeCode.UInt32;
+
         [Parser(Opcode.MSG_AUCTION_HELLO)]
         public static void HandleAuctionHello(Packet packet)
         {
@@ -93,8 +95,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Auction House ID");
             packet.ReadUInt32("Auction ID");
             packet.ReadGuid("Bidder GUID");
-            packet.ReadUInt32("Bid");
-            packet.ReadUInt32("Diff");
+            packet.ReadValue("Bid", _auctionSize);
+            packet.ReadValue("Diff", _auctionSize);
             packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry");
             packet.ReadUInt32("Unk UInt32 1");
         }

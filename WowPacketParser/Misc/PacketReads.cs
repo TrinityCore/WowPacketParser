@@ -366,6 +366,13 @@ namespace WowPacketParser.Misc
             return val;
         }
 
+        public long ReadValue(string name, TypeCode typeCode, params int[] values)
+        {
+            var val = ReadValue(typeCode);
+            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            return val;
+        }
+
         private long ReadValue(TypeCode code)
         {
             long rawValue = 0;
