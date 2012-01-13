@@ -578,6 +578,20 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("String");
         }
 
+        [Parser(Opcode.SMSG_OVERRIDE_LIGHT)]
+        public static void HandleOverrideLight(Packet packet)
+        {
+            packet.ReadUInt32("Current Light.dbc entry");
+            packet.ReadUInt32("Target Light.dbc entry");
+            packet.ReadUInt32("Fade in time");
+        }
+
+        [Parser(Opcode.SMSG_PROPOSE_LEVEL_GRANT)]
+        public static void HandleProposeLevelGrant(Packet packet)
+        {
+            packet.ReadPackedGuid("Guid");
+        }
+
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]

@@ -28,6 +28,9 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleUpdateWorldState(Packet packet)
         {
             ReadWorldStateBlock(ref packet);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                packet.ReadByte("Unk byte");
         }
 
         [Parser(Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE)]
