@@ -150,7 +150,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.CMSG_ITEM_REFUND_INFO)]
         [Parser(Opcode.SMSG_READ_ITEM_OK)]
-        [Parser(Opcode.SMSG_READ_ITEM_FAILED)] // Guessed
+        [Parser(Opcode.SMSG_READ_ITEM_FAILED)]
         public static void HandleReadItem(Packet packet)
         {
             packet.ReadGuid("Item GUID");
