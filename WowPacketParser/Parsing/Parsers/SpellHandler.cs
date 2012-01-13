@@ -589,6 +589,18 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
+        [Parser(Opcode.SMSG_SPELL_COOLDOWN)]
+        public static void HandleSpellCooldown(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadByte("Unk mask");
+            while (packet.CanRead())
+            {
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+                packet.ReadInt32("Time");
+            }
+        }
+
         [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER)]
         [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER)]
         public static void HandleSetSpellModifier(Packet packet)

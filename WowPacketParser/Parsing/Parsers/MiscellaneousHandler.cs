@@ -517,14 +517,20 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        // Guessed
+        [Parser(Opcode.SMSG_GAMETIME_SET)]
+        public static void HandleGametimeSet(Packet packet)
+        {
+            packet.ReadUInt32("Unk time");
+            packet.ReadUInt32("Unk int32");
+        }
+
         [Parser(Opcode.SMSG_GAMETIME_UPDATE)]
         public static void HandleGametimeUpdate(Packet packet)
         {
-            packet.ReadUInt32("Unk1");
+            packet.ReadUInt32("Unk time"); // Time online?
 
             if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing)) // no idea when this was added exactly, doesn't exist in 2.4.0
-                packet.ReadUInt32("Unk2");
+                packet.ReadUInt32("Unk int32");
         }
 
         [Parser(Opcode.CMSG_FAR_SIGHT)]
