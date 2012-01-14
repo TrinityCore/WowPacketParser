@@ -232,6 +232,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_SELF_RES, 0xCCFE},
             {Opcode.CMSG_SELL_ITEM, 0x5EE3},
             {Opcode.CMSG_SETSHEATHED, 0xCA5F},
+            {Opcode.CMSG_SET_ACTION_BUTTON, 0xDAC3},
             {Opcode.CMSG_SET_ACTIONBAR_TOGGLES, 0x584F},
             {Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID1, 0xC863},
             {Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID2, 0x4CE7},
