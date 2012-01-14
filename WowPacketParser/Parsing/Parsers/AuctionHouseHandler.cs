@@ -106,13 +106,12 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleAuctionOwnerNotification(Packet packet)
         {
             packet.ReadUInt32("Auction ID");
-            packet.ReadUInt32("Bid");
-            packet.ReadUInt32("Unk UInt32 1");
-            packet.ReadUInt32("Unk UInt32 2");
-            packet.ReadUInt32("Unk UInt32 3");
+            packet.ReadValue("Bid", _auctionSize);
+            packet.ReadValue("Unk 1", _auctionSize);
+            packet.ReadUInt64("Unk UInt64 2");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry");
             packet.ReadUInt32("Unk UInt32 4");
-            packet.ReadUInt32("Unk UInt32 5");
+            packet.ReadSingle("Unk float 5");
         }
 
 
