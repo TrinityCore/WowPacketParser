@@ -70,13 +70,13 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_CHANNEL_KICK, 0x3049},
             {Opcode.CMSG_CHANNEL_MODERATOR, 0x20D1},
             {Opcode.CMSG_CHANNEL_MUTE, 0x34C9},
-            {Opcode.CMSG_CHANNEL_SET_OWNER, 0x7449}
-            {Opcode.CMSG_CHANNEL_UNBAN, 0x6451}
-            {Opcode.CMSG_CHANNEL_UNMODERATOR, 0x6051}
-            {Opcode.CMSG_CHANNEL_UNMUTE, 0x74C9}
-            {Opcode.CMSG_DECLINE_CHANNEL_INVITE, 0x4EFB}
-            {Opcode.CMSG_DUEL_ACCEPTED, 0x9CCB}
-            {Opcode.CMSG_DUEL_CANCELLED, 0x1E4F}
+            {Opcode.CMSG_CHANNEL_SET_OWNER, 0x7449},
+            {Opcode.CMSG_CHANNEL_UNBAN, 0x6451},
+            {Opcode.CMSG_CHANNEL_UNMODERATOR, 0x6051},
+            {Opcode.CMSG_CHANNEL_UNMUTE, 0x74C9},
+            {Opcode.CMSG_DECLINE_CHANNEL_INVITE, 0x4EFB},
+            {Opcode.CMSG_DUEL_ACCEPTED, 0x9CCB},
+            {Opcode.CMSG_DUEL_CANCELLED, 0x1E4F},
             {Opcode.CMSG_CHANNEL_BAN, 0x2041},
             {Opcode.CMSG_CHANNEL_INVITE, 0x7451},
             {Opcode.CMSG_CHAR_CREATE, 0x1AC6},
