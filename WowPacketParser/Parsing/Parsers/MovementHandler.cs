@@ -811,51 +811,47 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_2_2_14545)]
         public static void HandlePhaseShift422(Packet packet)
         {
-            //packet.Writer.Write("Bits (0..7): ");
-            var bits = new bool[8];
+            var bits = new bool[9]; // Really?
             for (var x = 0; x < 8; ++x)
-            {
                 bits[x] = packet.ReadBit();
-                //packet.Writer.Write("{0}", bits[x] ? 1: 0);
-            }
-            //packet.Writer.WriteLine();
 
             var bytes = new byte[8];
             if (bits[6]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[7]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[3]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
 
             var i = 0;
-            int count = packet.ReadInt32();
+            var count = packet.ReadInt32("Count");
             for (var j = 0; j < count / 2; ++j)
                 packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 1", i, j);
 
-            if (bits[2]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[5]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
 
-            packet.ReadUInt32("Flags");
+            packet.Writer.WriteLine("[" + i + "]" + " Flags: 0x" + packet.ReadUInt32().ToString("X2"));
+            ;
 
-            if (bits[4]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[2]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
 
             var phaseMask = 0;
             count = packet.ReadInt32();
             for (var j = 0; j < count / 2; ++j)
                 phaseMask = packet.ReadUInt16("Current Mask", i, j);
 
-            if (!bits[4]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[8]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
 
             i++;
             count = packet.ReadInt32();
             for (var j = 0; j < count / 2; ++j)
                 packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 1", i, j);
 
-            if (bits[1]) bytes[7] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[2]) bytes[7] = (byte)(packet.ReadByte() ^ 1);
 
             i++;
             count = packet.ReadInt32();
             for (var j = 0; j < count / 2; ++j)
                 packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 3", i, j);
 
-            if (bits[5]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[0]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[7]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[1]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
 
             var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
             packet.Writer.WriteLine("GUID: {0}", guid);
