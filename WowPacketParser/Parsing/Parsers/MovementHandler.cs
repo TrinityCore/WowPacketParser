@@ -811,7 +811,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_2_2_14545)]
         public static void HandlePhaseShift422(Packet packet)
         {
-            var bits = new bool[9]; // Really?
+            var bits = new bool[8];
             for (var x = 0; x < 8; ++x)
                 bits[x] = packet.ReadBit();
 
@@ -820,14 +820,13 @@ namespace WowPacketParser.Parsing.Parsers
             if (bits[3]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
 
             var i = 0;
-            var count = packet.ReadInt32("Count");
+            var count = packet.ReadInt32();
             for (var j = 0; j < count / 2; ++j)
                 packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 1", i, j);
 
             if (bits[5]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
 
-            packet.Writer.WriteLine("[" + i + "]" + " Flags: 0x" + packet.ReadUInt32().ToString("X2"));
-            ;
+            packet.Writer.WriteLine("[" + i + "]" + " Mask: 0x" + packet.ReadUInt32().ToString("X2"));
 
             if (bits[2]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
 
@@ -836,7 +835,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var j = 0; j < count / 2; ++j)
                 phaseMask = packet.ReadUInt16("Current Mask", i, j);
 
-            if (bits[8]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[0]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
 
             i++;
             count = packet.ReadInt32();
@@ -850,8 +849,8 @@ namespace WowPacketParser.Parsing.Parsers
             for (var j = 0; j < count / 2; ++j)
                 packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 3", i, j);
 
-            if (bits[7]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[1]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[7]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[1]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
 
             var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
             packet.Writer.WriteLine("GUID: {0}", guid);
