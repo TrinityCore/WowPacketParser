@@ -240,5 +240,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Message");
             packet.ReadEnum<ChatTag>("Chat Tag", TypeCode.Byte);
         }
+
+        [Parser(Opcode.SMSG_CHAT_RESTRICTED)]
+        public static void HandleChatRestricted(Packet packet)
+        {
+            packet.ReadEnum<ChatRestrictionType>("Restriction", TypeCode.Byte);
+        }
     }
 }
