@@ -1,6 +1,7 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -48,10 +49,83 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Unk Byte (BattlefieldList)");
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_LIST)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleBattlefieldListServer422(Packet packet)
+        {
+            var guidBytes = new byte[8];
+            
+            var full = packet.ReadByte();
+            
+            guidBytes[5] = (byte)(full >> 7);
+            full *= 2;
+            guidBytes[0] = (byte)(full >> 7);
+            full *= 2;
+            guidBytes[4] = (byte)(full >> 7);
+            full *= 2;
+            guidBytes[1] = (byte)(full >> 7);
+            full *= 2;
+            guidBytes[3] = (byte)(full >> 7);
+            full *= 2;
+            
+            var v9 = (byte)(full >> 7);
+            full *= 2;
+            guidBytes[6] = (byte)(((byte)(2 * full)) >> 7);
+            
+            var a2 = packet.ReadByte("a2");
+            
+            guidBytes[2] = (byte)(a2 >> 7);
+            
+            a2 *= 4;
+            guidBytes[7] = (byte)(((byte)(a2 * 2)) >> 7);
+            
+            packet.ReadInt32("Unk 1");
+
+            if (guidBytes[3] != 0)
+                guidBytes[3] ^= packet.ReadByte();
+                
+            if (guidBytes[5] != 0)
+                guidBytes[5] ^= packet.ReadByte();
+                
+            packet.ReadInt32("Unk 2");
+            
+            if (guidBytes[0] != 0)
+                guidBytes[0] ^= packet.ReadByte();
+            
+            packet.ReadByte("Unk 3");
+            
+            if (guidBytes[7] != 0)
+                guidBytes[7] ^= packet.ReadByte();
+                
+            if (guidBytes[1] != 0)
+                guidBytes[1] ^= packet.ReadByte();
+                
+            if (guidBytes[2] != 0)
+                guidBytes[2] ^= packet.ReadByte();
+                
+            if (guidBytes[4] != 0)
+                guidBytes[4] ^= packet.ReadByte();
+                
+            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
+            packet.ReadInt32("Unk");
+            packet.ReadInt32("Unk");
+            
+            if (guidBytes[6] != 0)
+                guidBytes[6] ^= packet.ReadByte();
+
+            packet.ReadInt32("Unk 4");
+            packet.ReadByte("Unk 5");
+            packet.ReadInt32("Unk 6");
+
+            var count = packet.ReadUInt32("BG Instance count");
+            for (var i = 0; i < count; i++)
+                packet.ReadUInt32("Instance ID", i);
+                
+            packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
+        }
+        
+        [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleBattlefieldListServer(Packet packet)
         {
-            // TODO: 4.2.2 struct (can be found here: http://pastebin.com/S5gs2erB)
             packet.ReadGuid("GUID");
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333))
