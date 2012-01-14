@@ -324,5 +324,12 @@ namespace WowPacketParser.Parsing.Parsers
             var position = packet.ReadVector2();
             packet.Writer.WriteLine("Position: " + position);
         }
+
+        [Parser(Opcode.CMSG_GROUP_RAID_CONVERT)]
+        public static void HandleGroupRaidConvert(Packet packet)
+        {
+            if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
+                packet.ReadBoolean("ToRaid");
+        }
     }
 }

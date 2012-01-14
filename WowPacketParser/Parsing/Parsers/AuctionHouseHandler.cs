@@ -75,7 +75,9 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("Auctioneer GUID");
             packet.ReadUInt32("Auction Id");
-            packet.ReadUInt32("Price");
+
+            // I think Blizz got this wrong. Auction Id should be 64 on 4.x, not price.
+            packet.ReadValue("Price", _auctionSize);
         }
 
         [Parser(Opcode.SMSG_AUCTION_COMMAND_RESULT)]
@@ -86,7 +88,6 @@ namespace WowPacketParser.Parsing.Parsers
             var error = packet.ReadEnum<AuctionHouseAction>("Error", TypeCode.UInt32);
             if (error == 0 && action > 0)
                 packet.ReadUInt32("Bid Error");
-
         }
 
         [Parser(Opcode.SMSG_AUCTION_BIDDER_NOTIFICATION)]
@@ -105,13 +106,12 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleAuctionOwnerNotification(Packet packet)
         {
             packet.ReadUInt32("Auction ID");
-            packet.ReadUInt32("Bid");
-            packet.ReadUInt32("Unk UInt32 1");
-            packet.ReadUInt32("Unk UInt32 2");
-            packet.ReadUInt32("Unk UInt32 3");
+            packet.ReadValue("Bid", _auctionSize);
+            packet.ReadValue("Unk 1", _auctionSize);
+            packet.ReadUInt64("Unk UInt64 2");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry");
             packet.ReadUInt32("Unk UInt32 4");
-            packet.ReadUInt32("Unk UInt32 5");
+            packet.ReadSingle("Unk float 5");
         }
 
 
