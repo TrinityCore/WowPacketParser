@@ -94,6 +94,9 @@ namespace WowPacketParser.Store.SQL
                 row.AddValue("Data",       data.Data);
                 row.AddValue("Number",     data.Number);
 
+                if (data.ObjectType == StoreNameType.Opcode)
+                    row.Comment = Opcodes.GetOpcodeName(data.Id);
+
                 rows.Add(row);
             }
 
