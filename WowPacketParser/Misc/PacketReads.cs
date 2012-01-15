@@ -114,7 +114,7 @@ namespace WowPacketParser.Misc
             var bytes = new List<byte>();
 
             byte b;
-            while ((b = ReadByte()) != 0)
+            while (CanRead() && (b = ReadByte()) != 0)  // CDataStore::GetCString calls CanRead too
                 bytes.Add(b);
 
             return encoding.GetString(bytes.ToArray());
