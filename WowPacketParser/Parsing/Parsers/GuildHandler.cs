@@ -433,8 +433,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Rank Id");
             packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.UInt32);
             packet.ReadInt32("Remaining Money");
-            packet.ReadByte("Tab size");
-            for (var i = 0; i < 6; i++)
+            var tabSize = packet.ReadByte("Tab size");
+            for (var i = 0; i < tabSize; i++)
             {
                 packet.ReadEnum<GuildBankRightsFlag>("Tab Rights", TypeCode.Int32, i);
                 packet.ReadInt32("Tab Slots", i);
