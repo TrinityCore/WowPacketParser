@@ -137,6 +137,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_GUILD_RANK, 0x8D50},
             {Opcode.CMSG_GUILD_ROSTER, 0x9952},
             {Opcode.CMSG_GUILD_SET_NOTE, 0x9958},
+            {Opcode.CMSG_HEARTH_AND_RESURRECT, 0xDC4E},
             {Opcode.CMSG_INSPECT, 0x9A7B},
             {Opcode.CMSG_INSTANCE_LOCK_WARNING_RESPONSE, 0x8CF7},
             {Opcode.CMSG_ITEM_REFUND, 0xCC3},

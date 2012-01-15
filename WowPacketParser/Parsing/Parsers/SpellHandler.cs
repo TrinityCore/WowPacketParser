@@ -346,6 +346,14 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadInt32("SchoolMask");
                         packet.ReadInt32("Unk Flag");
                     }
+
+                    if (flags.HasAnyFlag(CastFlag.Unknown26))
+                    {
+                        packet.ReadInt32("Unk int32");
+
+                        if (packet.ReadByte("Unk Byte") == 2)
+                            packet.ReadPackedGuid("Unk Guid");
+                    }
                 }
             }
 

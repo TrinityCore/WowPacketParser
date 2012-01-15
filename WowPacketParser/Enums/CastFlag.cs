@@ -36,5 +36,6 @@ namespace WowPacketParser.Enums
         Unknown23 = 0x08000000,
         Unknown24 = 0x10000000,
         Unknown25 = 0x20000000,
+        Unknown26 = 0x40000000,
     }
 }
