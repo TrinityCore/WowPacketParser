@@ -1,5 +1,6 @@
 using System;
 using WowPacketParser.Misc;
+using Guid = WowPacketParser.Misc.Guid;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 
@@ -14,6 +15,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Active Spec");
             for (var i = 0; i < speccount; ++i)
             {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                    packet.ReadUInt32("TalentBranchSpec", i);
                 var count2 = packet.ReadByte("Spec Talent Count ", i);
                 for (var j = 0; j < count2; ++j)
                 {
@@ -36,7 +39,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_INSPECT_TALENT)]
         public static void HandleInspectTalent(Packet packet)
         {
-            packet.ReadPackedGuid("GUID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                packet.Writer.WriteLine("Guid: {0}", new Guid(packet.ReadUInt64()));
+            else
+                packet.ReadPackedGuid("GUID");
+                
             ReadTalentInfo(ref packet);
 
             var slotMask = packet.ReadUInt32("Slot Mask");
