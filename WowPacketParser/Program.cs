@@ -292,16 +292,16 @@ namespace WowPacketParser
                 builder = new Builder(stuffing);
             }
 
-            var numberOfThreads = Settings.Threads != 0 ? Settings.Threads.ToString() : "a recommended number of";
+            var numberOfThreads = Settings.Threads != 0 ? Settings.Threads.ToString(CultureInfo.InvariantCulture) : "a recommended number of";
             Console.WriteLine("Using {0} threads to process {1} files", numberOfThreads, files.Length);
             var count = 0;
             if (Settings.Threads == 0) // Number of threads is automatically choosen by the Parallel library
                 files.AsParallel().SetCulture()
                     .ForAll(file =>
-                        ReadFile(file, stuffing, builder, "[" + (++count).ToString() + "/" + files.Length + " " + file + "]"));
+                        ReadFile(file, stuffing, builder, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Length + " " + file + "]"));
             else
                 files.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads)
-                    .ForAll(file => ReadFile(file, stuffing, builder, "[" + (++count).ToString() + "/" + files.Length + " " + file + "]"));
+                    .ForAll(file => ReadFile(file, stuffing, builder, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Length + " " + file + "]"));
 
             DumpSQLs("Dumping global sql", Settings.SQLFileName, builder, Settings.SQLOutput);
 

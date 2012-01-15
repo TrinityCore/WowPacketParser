@@ -22,7 +22,7 @@ namespace WowPacketParser.Misc
                     continue;
 
                 var list = new List<int>();
-                var element = 0;
+                int element;
                 for (var i = 1; i < elements.Length; ++i)
                     if (Int32.TryParse(elements[i], out element))
                         list.Add(element);

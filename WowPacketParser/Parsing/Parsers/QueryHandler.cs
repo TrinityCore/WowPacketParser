@@ -52,7 +52,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var objectName = new ObjectName
             {
-                type = ObjectType.Player,
+                ObjectType = ObjectType.Player,
                 Name = name,
             };
             packet.SniffFileInfo.Stuffing.ObjectNames.TryAdd((uint)guid.GetLow(), objectName);
@@ -148,7 +148,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var objectName = new ObjectName
             {
-                type = ObjectType.Unit,
+                ObjectType = ObjectType.Unit,
                 Name = creature.Name,
             };
             packet.SniffFileInfo.Stuffing.ObjectNames.TryAdd((uint)entry.Key, objectName);

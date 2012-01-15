@@ -57,7 +57,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var objectName = new ObjectName
             {
-                type = ObjectType.GameObject,
+                ObjectType = ObjectType.GameObject,
                 Name = gameObject.Name,
             };
             packet.SniffFileInfo.Stuffing.ObjectNames.TryAdd((uint)entry.Key, objectName);

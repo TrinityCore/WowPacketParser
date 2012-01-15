@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.SQL;
 
@@ -12,7 +13,7 @@ namespace WowPacketParser.Misc
                 return "0"; // map can be 0
 
             if (!SQLDatabase.NameStores.ContainsKey(type))
-                return entry.ToString();
+                return entry.ToString(CultureInfo.InvariantCulture);
 
             string name;
             if (!SQLDatabase.NameStores[type].TryGetValue(entry, out name))
@@ -26,7 +27,7 @@ namespace WowPacketParser.Misc
                 return name;
             }
 
-            return entry.ToString();
+            return entry.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

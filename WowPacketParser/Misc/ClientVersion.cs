@@ -71,9 +71,9 @@ namespace WowPacketParser.Misc
         {
             if (build >= ClientVersionBuild.V4_0_3_13329)
                 return ClientType.Cataclysm;
-            else if (build >= ClientVersionBuild.V3_0_3_9183)
+            if (build >= ClientVersionBuild.V3_0_3_9183)
                 return ClientType.WrathOfTheLichKing;
-            else if (build >= ClientVersionBuild.V2_0_3_6299)
+            if (build >= ClientVersionBuild.V2_0_3_6299)
                 return ClientType.TheBurningCrusade;
 
             return ClientType.WorldOfWarcraft;

@@ -6,7 +6,7 @@ namespace WowPacketParser.SQL
 {
     public static class SQLUtil
     {
-        public static readonly string CommaSeparator = ", ";
+        public const string CommaSeparator = ", ";
 
         public static string AddBackQuotes(string str)
         {

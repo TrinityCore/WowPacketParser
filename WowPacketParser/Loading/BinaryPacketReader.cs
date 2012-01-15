@@ -118,7 +118,7 @@ namespace WowPacketParser.Loading
 
                         if (direction == Direction.ServerToClient)
                         {
-                            opcode = (int)_reader.ReadInt16();
+                            opcode = _reader.ReadInt16();
                             data = _reader.ReadBytes(length - 2);
                         }
                         else

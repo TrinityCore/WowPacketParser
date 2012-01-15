@@ -80,9 +80,7 @@ namespace WowPacketParser.Store.SQL
                     result.Append(Delete.Build());
                 result.Append(InsertHeader.Build());
 
-                List<string> rowsStrings = new List<string>();
-                foreach (var row in Rows)
-                    rowsStrings.Add(row.Build());
+                var rowsStrings = Rows.Select(row => row.Build()).ToList();
 
                 rowsStrings.Sort();
                 foreach (var rowString in rowsStrings)

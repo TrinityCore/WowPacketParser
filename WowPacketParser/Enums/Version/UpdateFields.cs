@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Enums.Version
 {
-    public static partial class UpdateFields
+    public static class UpdateFields
     {
         private static readonly Assembly _assembly = Assembly.GetExecutingAssembly();
 
@@ -74,7 +74,7 @@ namespace WowPacketParser.Enums.Version
             if (!String.IsNullOrEmpty(enumName))
                 return enumName;
 
-            return updateField.ToString();
+            return updateField.ToString(CultureInfo.InvariantCulture);
         }
 
         // I wonder if the next methods could be merged into one....

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Runtime.InteropServices;
@@ -12,7 +11,7 @@ namespace WowPacketParser.Misc
     {
         public Guid ReadGuid()
         {
-            Guid guid = new Guid(ReadUInt64());
+            var guid = new Guid(ReadUInt64());
 
             if (WriteToFile)
                 WriteToFile = Filters.CheckFilter(guid);
@@ -38,7 +37,7 @@ namespace WowPacketParser.Misc
                 i++;
             }
 
-            Guid guid = new Guid(res);
+            var guid = new Guid(res);
 
             if (WriteToFile)
                 WriteToFile = Filters.CheckFilter(guid);

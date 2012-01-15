@@ -30,7 +30,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var objectName = new ObjectName
             {
-                type = ObjectType.Item,
+                ObjectType = ObjectType.Item,
                 Name = name,
             };
             packet.SniffFileInfo.Stuffing.ObjectNames.TryAdd((uint)entry, objectName);

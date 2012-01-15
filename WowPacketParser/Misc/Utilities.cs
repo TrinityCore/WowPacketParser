@@ -25,7 +25,7 @@ namespace WowPacketParser.Misc
             var bytes = new List<byte>();
             byte result;
             for (var i = 0; i < data.Length; i += 2)
-                if (Byte.TryParse(data.Substring(i, 2), NumberStyles.HexNumber, null as IFormatProvider, out result))
+                if (Byte.TryParse(data.Substring(i, 2), NumberStyles.HexNumber, null, out result))
                     bytes.Add(result);
 
             return bytes.ToArray();

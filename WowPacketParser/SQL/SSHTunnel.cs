@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using Tamir.SharpSsh.jsch;
 using WowPacketParser.Misc;
 
@@ -7,14 +6,14 @@ namespace WowPacketParser.SQL
 {
     public class MyUserInfo : UserInfo
     {
-        private readonly String passwd;
+        private readonly String _passwd;
 
         public MyUserInfo(string password)
         {
-            passwd = password;
+            _passwd = password;
         }
 
-        public String getPassword() { return passwd; }
+        public String getPassword() { return _passwd; }
         public bool promptYesNo(String str) { return true; }
         public String getPassphrase() { return null; }
         public bool promptPassphrase(String message) { return true; }

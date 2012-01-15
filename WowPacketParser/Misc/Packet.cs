@@ -3,15 +3,14 @@ using System.IO;
 using System.Text;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using WowPacketParser.Enums;
-using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Misc
 {
     public sealed partial class Packet : BinaryReader
     {
-        private static readonly bool sniffData = Settings.SQLOutput.HasFlag(SQLOutputFlags.SniffData);
-        private static readonly bool sniffDataOpcodes = Settings.SQLOutput.HasFlag(SQLOutputFlags.SniffDataOpcodes);
+        private static readonly bool _sniffData = Settings.SQLOutput.HasFlag(SQLOutputFlags.SniffData);
+        private static readonly bool _sniffDataOpcodes = Settings.SQLOutput.HasFlag(SQLOutputFlags.SniffDataOpcodes);
 
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringWriter writer, SniffFileInfo fileInfo)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
@@ -50,7 +49,7 @@ namespace WowPacketParser.Misc
 
         public void AddSniffData(StoreNameType type, int id, string data)
         {
-            if (!sniffData)
+            if (!_sniffData)
                 return;
 
             if (type == StoreNameType.None)
@@ -60,7 +59,7 @@ namespace WowPacketParser.Misc
                 return; // Only maps can have id 0
 
             if (type == StoreNameType.Opcode)
-                if (!sniffDataOpcodes)
+                if (!_sniffDataOpcodes)
                     return; // Don't add opcodes if its config is not enabled
 
             var item = new SniffData

@@ -758,7 +758,7 @@ namespace WowPacketParser.Store.SQL
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
-                row.AddValue("ObjectType", data.Value.type.ToString());
+                row.AddValue("ObjectType", data.Value.ObjectType.ToString());
                 row.AddValue("Id", data.Key);
                 row.AddValue("Name", data.Value.Name);
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -21,13 +22,9 @@ namespace WowPacketParser.Misc
             return (uThis & uFlag) != 0;
         }
 
-        public static bool MatchesFilters(this string value, string[] filters)
+        public static bool MatchesFilters(this string value, IEnumerable<string> filters)
         {
-            foreach (var filter in filters)
-                if (value.Contains(filter))
-                    return true;
-
-            return false;
+            return filters.Any(value.Contains);
         }
 
         public static void AsHex(this Packet packet)

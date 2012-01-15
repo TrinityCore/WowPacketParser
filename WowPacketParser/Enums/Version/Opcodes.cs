@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using WowPacketParser.Misc;
@@ -87,7 +86,7 @@ namespace WowPacketParser.Enums.Version
             foreach (var pair in GetOpcodeDictionary(build).Where(pair => pair.Value == opcodeId))
                 return pair.Key.ToString();
 
-            return opcodeId.ToString();
+            return opcodeId.ToString(CultureInfo.InvariantCulture);
         }
 
         public static int GetOpcode(Opcode opcode)
@@ -95,9 +94,9 @@ namespace WowPacketParser.Enums.Version
             return GetOpcode(opcode, ClientVersion.GetBuildInt());
         }
 
-        public static int GetOpcode(Opcode opcode, int build)
+        private static int GetOpcode(Opcode opcode, int build)
         {
-            var opcodeId = -1;
+            int opcodeId;
             GetOpcodeDictionary(build).TryGetValue(opcode, out opcodeId);
             return opcodeId;
         }

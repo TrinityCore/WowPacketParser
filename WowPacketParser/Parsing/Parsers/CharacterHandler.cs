@@ -169,21 +169,11 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (firstLogin)
                 {
-                    var startPos = new StartPosition();
-                    startPos.Map = mapId;
-                    startPos.Position = pos;
-                    startPos.Zone = zone;
-
+                    var startPos = new StartPosition {Map = mapId, Position = pos, Zone = zone};
                     packet.SniffFileInfo.Stuffing.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
                 }
 
-                var chInfo = new Player();
-                chInfo.Race = race;
-                chInfo.Class = clss;
-                chInfo.Name = name;
-                chInfo.FirstLogin = firstLogin;
-                chInfo.Level = level;
-
+                var chInfo = new Player {Race = race, Class = clss, Name = name, FirstLogin = firstLogin, Level = level};
                 Characters.Add(guid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects
                 packet.SniffFileInfo.Stuffing.Objects.TryAdd(guid, chInfo);
 
@@ -308,20 +298,12 @@ namespace WowPacketParser.Parsing.Parsers
                 var firstLogin = bits[c, 16];
                 if (firstLogin)
                 {
-                    var startPos = new StartPosition();
-                    startPos.Map = mapId;
-                    startPos.Position = pos;
-                    startPos.Zone = zone;
+                    var startPos = new StartPosition {Map = mapId, Position = pos, Zone = zone};
 
                     packet.SniffFileInfo.Stuffing.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
                 }
 
-                var chInfo = new Player();
-                chInfo.Race = race;
-                chInfo.Class = clss;
-                chInfo.Name = name;
-                chInfo.FirstLogin = firstLogin;
-                chInfo.Level = level;
+                var chInfo = new Player {Race = race, Class = clss, Name = name, FirstLogin = firstLogin, Level = level};
 
                 Characters.Add(playerGuid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects
                 packet.SniffFileInfo.Stuffing.Objects.TryAdd(playerGuid, chInfo);

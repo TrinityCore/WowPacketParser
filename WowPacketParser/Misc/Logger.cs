@@ -35,11 +35,7 @@ namespace WowPacketParser.Misc
 
         private static void AddEnumErrorLog(string key, long rawValue)
         {
-            List<long> list;
-            if (enumLogs.ContainsKey(key))
-                list = enumLogs[key];
-            else
-                list = new List<long>();
+            var list = enumLogs.ContainsKey(key) ? enumLogs[key] : new List<long>();
 
             if (list.Contains(rawValue))
                 return;
@@ -66,7 +62,7 @@ namespace WowPacketParser.Misc
 
                     var str = "";
                     UnknownFlags enumFlag;
-                    if (Enum.TryParse<UnknownFlags>(error.ToString(), out enumFlag))
+                    if (Enum.TryParse(error.ToString(CultureInfo.InvariantCulture), out enumFlag))
                         str = enumFlag.ToString();
 
                     errors += str;

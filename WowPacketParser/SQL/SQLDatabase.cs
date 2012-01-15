@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
-using WowPacketParser.Misc;
 
 namespace WowPacketParser.SQL
 {
@@ -10,19 +9,19 @@ namespace WowPacketParser.SQL
         public static readonly Dictionary<StoreNameType, Dictionary<int, string>> NameStores =
             new Dictionary<StoreNameType, Dictionary<int, string>>();
 
-        private static readonly StoreNameType[] ObjectTypes = new[]
-                                                   {
-                                                       StoreNameType.Spell,
-                                                       StoreNameType.Map,
-                                                       StoreNameType.LFGDungeon,
-                                                       StoreNameType.Battleground,
-                                                       StoreNameType.Unit,
-                                                       StoreNameType.GameObject,
-                                                       StoreNameType.Item,
-                                                       StoreNameType.Quest,
-                                                       StoreNameType.Zone,
-                                                       StoreNameType.Area,
-                                                       StoreNameType.Player,
+        private static readonly StoreNameType[] _objectTypes = new[]
+        {
+            StoreNameType.Spell,
+            StoreNameType.Map,
+            StoreNameType.LFGDungeon,
+            StoreNameType.Battleground,
+            StoreNameType.Unit,
+            StoreNameType.GameObject,
+            StoreNameType.Item,
+            StoreNameType.Quest,
+            StoreNameType.Zone,
+            StoreNameType.Area,
+            StoreNameType.Player
         };
 
         public static void GrabData()
@@ -30,7 +29,7 @@ namespace WowPacketParser.SQL
             if (!SQLConnector.Connected())
                 throw new Exception("Cannot get DB data without an active DB connection.");
 
-            foreach (var objectType in ObjectTypes)
+            foreach (var objectType in _objectTypes)
                 NameStores.Add(objectType, GetDict<int, string>(string.Format("SELECT `Id`, `Name` FROM `ObjectNames` WHERE `ObjectType`='{0}';", objectType)));
         }
 

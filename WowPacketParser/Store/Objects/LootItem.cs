@@ -1,6 +1,4 @@
-﻿using WowPacketParser.Enums;
-
-namespace WowPacketParser.Store.Objects
+﻿namespace WowPacketParser.Store.Objects
 {
     public class LootItem
     {
