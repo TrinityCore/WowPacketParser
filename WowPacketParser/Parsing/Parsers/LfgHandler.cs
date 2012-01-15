@@ -64,13 +64,51 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Base XP");
             packet.ReadInt32("Variable Money");
             packet.ReadInt32("Variable XP");
+            
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+            {
+                packet.ReadInt32("Unk 1");
+                packet.ReadInt32("Unk 2");
+                packet.ReadInt32("Unk 3");
+                packet.ReadInt32("Unk 4");
+                packet.ReadInt32("Unk 5");
+                packet.ReadInt32("Unk 6");
+                packet.ReadInt32("Unk 7");
+                packet.ReadInt32("Unk 8");
+                packet.ReadByte("Unk 9");
+                
+                // LFG_SLOT_INFO_LOOT related
+                for (var i = 0; i < 3; ++i)
+                {
+                    var unk1 = packet.ReadInt32("Unk 1", i);
+                    if (unk1 != 0)
+                    {
+                        packet.ReadInt32("Unk 2", i);
+                        packet.ReadInt32("Unk 3", i);
+                        var unk4 = packet.ReadByte("Unk 4", i);
+                        for (var j = 0; j < unk4; ++j)
+                        {
+                            packet.ReadInt32("Unk 5", j);
+                            packet.ReadInt32("Unk 6", j);
+                            packet.ReadInt32("Unk 7", j);
+                            packet.ReadByte("Unk 8", j);
+                        }
+                    }
+                }
+                
+                packet.ReadInt32("Unk 10");
+                packet.ReadInt32("Unk 11");
+            }
 
             var numFields = packet.ReadByte("Reward Item Count");
             for (var i = 0; i < numFields; i++)
             {
-                packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Item Id", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                    packet.ReadInt32("Reward Currency Id", i);
+                else
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Item Id", i);
                 packet.ReadInt32("Reward Item Display ID", i);
-                packet.ReadInt32("Reward Item Stack Count", i);
+                packet.ReadInt32(ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) ? "Unk" : "Reward Item Stack Count", i);
             }
         }
 
@@ -139,6 +177,11 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadLfgEntry("LFG Entry", j);
                 packet.ReadEnum<LfgEntryCheckResult>("Entry Check Result", TypeCode.UInt32, j);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                {
+                    packet.ReadInt32("Unk 1", j);
+                    packet.ReadInt32("Unk 2", j);
+                }
             }
         }
 

@@ -430,7 +430,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_GOSSIP_MESSAGE, 0xCCEB},
             {Opcode.SMSG_GOSSIP_POI, 0x1866},
             {Opcode.SMSG_GROUP_CANCEL, 0xED6},
-            {Opcode.SMSG_GROUP_JOINED_BATTLEGROUND, 0x265C},
             {Opcode.SMSG_GROUP_LIST, 0x5C7E},
             {Opcode.SMSG_GROUP_SET_LEADER, 0xCCF2},
             {Opcode.SMSG_GUILDFINDER_SEARCH_RESULT, 0xE0CE},
@@ -646,6 +645,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             // Tests
             {Opcode.TEST_422_41036, 0xA04C},
             {Opcode.TEST_422_24649, 24649},
+            {Opcode.TEST_422_265C, 0x265C},
 
             // CMSG Handlers
             // 4120 - sub_65D6A0 - CMSG_LFG_LFR_JOIN ?

@@ -272,8 +272,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
         
         
-        // THIS OPCODE ID IS NOT SMSG_GROUP_JOINED_BATTLEGROUND
-        [Parser(Opcode.SMSG_GROUP_JOINED_BATTLEGROUND, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.TEST_422_265C, ClientVersionBuild.V4_2_2_14545)] // SMSG
         public static void HandleRGroupJoinedBattleground422(Packet packet)
         {
             var guidBytes = new byte[8];
