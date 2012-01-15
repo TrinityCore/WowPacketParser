@@ -417,26 +417,38 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_NEW_WORLD)]
+        [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
         public static void HandleEnterWorld(Packet packet)
         {
-            var mapId = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
-
-            CurrentMapId = (uint)mapId;
-
+            CurrentMapId = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
             packet.ReadVector4("Position");
 
-            UpdateHandler.Objects[CurrentMapId] = new Dictionary<Guid, WoWObject>();
-
-            if (packet.Opcode != Opcodes.GetOpcode(Opcode.SMSG_LOGIN_VERIFY_WORLD))
-                return;
+            if (UpdateHandler.Objects != null && UpdateHandler.Objects.ContainsKey(CurrentMapId))
+                UpdateHandler.Objects[CurrentMapId] = new Dictionary<Guid, WoWObject>();
 
             Player chInfo;
             if (CharacterHandler.Characters.TryGetValue(SessionHandler.LoginGuid, out chInfo))
                 SessionHandler.LoggedInCharacter = chInfo;
 
-            packet.AddSniffData(StoreNameType.Map, mapId, "NEW_WORLD");
+            packet.AddSniffData(StoreNameType.Map, (int) CurrentMapId, "NEW_WORLD");
+        }
+
+        [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleNewWorld(Packet packet)
+        {
+            packet.ReadVector3("Position");
+            CurrentMapId = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
+            packet.ReadSingle("Orientation");
+
+            if (UpdateHandler.Objects != null && UpdateHandler.Objects.ContainsKey(CurrentMapId))
+                UpdateHandler.Objects[CurrentMapId] = new Dictionary<Guid, WoWObject>();
+
+            Player chInfo;
+            if (CharacterHandler.Characters.TryGetValue(SessionHandler.LoginGuid, out chInfo))
+                SessionHandler.LoggedInCharacter = chInfo;
+
+            packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
         }
 
         [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]
