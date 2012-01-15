@@ -5,7 +5,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class EquipmentSetHandler
     {
-        public static readonly int NumSlots = 19;
+        private const int NumSlots = 19;
 
         public static void ReadSetInfo(ref Packet packet)
         {

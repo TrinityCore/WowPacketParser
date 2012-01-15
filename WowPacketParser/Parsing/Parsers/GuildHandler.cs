@@ -596,10 +596,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_PETITION_DECLINE)]
         public static void HandlePetitionDecline(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-                packet.ReadGuid("Petition GUID");
-            else
-                packet.ReadGuid("Player GUID");
+            packet.ReadGuid(packet.Direction == Direction.ClientToServer ? "Petition GUID" : "Player GUID");
         }
 
         [Parser(Opcode.CMSG_OFFER_PETITION)]
@@ -672,7 +669,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILDFINDER_JOIN)]
         public static void HandleGuildFinderJoin(Packet packet)
         {
-            packet.Writer.WriteLine("Join: {0}", (bool)packet.ReadBit());
+            packet.ReadBit("Join");
             packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32);
             packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32);
             packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32);

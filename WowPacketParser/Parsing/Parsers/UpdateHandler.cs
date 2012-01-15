@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
-using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using Guid=WowPacketParser.Misc.Guid;
 
@@ -12,9 +11,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class UpdateHandler
     {
-        [ThreadStatic]
-
-        public static Dictionary<uint, Dictionary<Guid, WoWObject>> Objects =
+        public static readonly Dictionary<uint, Dictionary<Guid, WoWObject>> Objects =
             new Dictionary<uint, Dictionary<Guid, WoWObject>>();
 
         [Parser(Opcode.SMSG_UPDATE_OBJECT)]
@@ -55,11 +52,7 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                     case "Movement":
                     {
-                        Guid guid;
-                        if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
-                            guid = packet.ReadPackedGuid("GUID", i);
-                        else
-                            guid = packet.ReadGuid("GUID", i);
+                        var guid = ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901) ? packet.ReadPackedGuid("GUID", i) : packet.ReadGuid("GUID", i);
 
                         ReadMovementUpdateBlock(ref packet, guid, i);
 

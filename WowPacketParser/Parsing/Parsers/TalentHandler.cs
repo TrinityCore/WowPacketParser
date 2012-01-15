@@ -1,6 +1,5 @@
 using System;
 using WowPacketParser.Misc;
-using Guid = WowPacketParser.Misc.Guid;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 
@@ -40,10 +39,10 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleInspectTalent(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                packet.Writer.WriteLine("Guid: {0}", new Guid(packet.ReadUInt64()));
+                packet.ReadGuid("GUID");
             else
                 packet.ReadPackedGuid("GUID");
-                
+            
             ReadTalentInfo(ref packet);
 
             var slotMask = packet.ReadUInt32("Slot Mask");

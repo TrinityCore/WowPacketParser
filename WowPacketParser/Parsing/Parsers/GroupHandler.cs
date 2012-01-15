@@ -55,7 +55,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadEnum<MapDifficulty>("Raid Difficulty", TypeCode.Byte);
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958) && ClientVersion.GetBuild() < ClientVersionBuild.V4_2_2_14545) // Removed somewhere between wotlk and cataclysm
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958) &&
+                ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545)) // Removed somewhere between wotlk and cataclysm
                 packet.ReadByte("Unk Byte"); // Has something to do with difficulty too
         }
 
@@ -119,11 +120,7 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     if ((auraMask & ((ulong)1 << i)) != 0)
                     {
-                        int aura;
-                        if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                            aura = packet.ReadInt32();
-                        else
-                            aura = packet.ReadUInt16();
+                        var aura = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? packet.ReadInt32() : packet.ReadUInt16();
 
                         packet.Writer.WriteLine("Slot: [" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, aura));
                         packet.ReadEnum<AuraFlag>("Slot: [" + i + "] Aura flag", TypeCode.Byte);
@@ -174,11 +171,7 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     if ((auraMask & ((ulong)1 << i)) != 0)
                     {
-                        int aura;
-                        if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                            aura = packet.ReadInt32();
-                        else
-                            aura = packet.ReadUInt16();
+                        var aura = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? packet.ReadInt32() : packet.ReadUInt16();
 
                         packet.Writer.WriteLine("Slot: [" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, aura));
                         packet.ReadEnum<AuraFlag>("Slot: [" + i + "] Aura flag", TypeCode.Byte);

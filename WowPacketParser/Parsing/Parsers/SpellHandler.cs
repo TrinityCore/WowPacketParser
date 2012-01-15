@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
-using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using Guid = WowPacketParser.Misc.Guid;
 
@@ -138,10 +137,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             aura.Charges = packet.ReadByte("Charges");
 
-            if (!aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster))
-                aura.CasterGuid = packet.ReadPackedGuid("Caster GUID");
-            else
-                aura.CasterGuid = new Guid(); // Is this needed?
+            aura.CasterGuid = !aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster) ? packet.ReadPackedGuid("Caster GUID") : new Guid();
 
             if (aura.AuraFlags.HasAnyFlag(AuraFlag.Duration))
             {

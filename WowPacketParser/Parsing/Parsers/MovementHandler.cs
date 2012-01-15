@@ -18,15 +18,15 @@ namespace WowPacketParser.Parsing.Parsers
         public static MovementInfo ReadMovementInfo(ref Packet packet, Guid guid, int index = -1)
         {
             if (ClientVersion.GetBuild() == ClientVersionBuild.V4_2_0_14333)
-                return ReadMovementInfo420(ref packet, guid, index);
+                return ReadMovementInfo420(ref packet, index);
                 
             if (ClientVersion.GetBuild() == ClientVersionBuild.V4_2_2_14545)
-                return ReadMovementInfo422(ref packet, guid, index);
+                return ReadMovementInfo422(ref packet, index);
 
             return ReadMovementInfo335(ref packet, guid, index);
         }
         
-        private static MovementInfo ReadMovementInfo422(ref Packet packet, Guid guid, int index)
+        private static MovementInfo ReadMovementInfo422(ref Packet packet, int index)
         {
             var info = new MovementInfo();
             var guidBytes = new byte[8];
@@ -49,23 +49,23 @@ namespace WowPacketParser.Parsing.Parsers
                 guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
                 guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
                 guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
-                
                 guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
+
                 var splineElevation = packet.ReadBit("HaveSplineElevation", index);
                 
-                var HavePitch = packet.ReadBit("HavePitch", index);
-                var HaveFallData = packet.ReadBit("HaveFallData", index);
-                var HaveFallDirection = false;
+                var havePitch = packet.ReadBit("HavePitch", index);
+                var haveFallData = packet.ReadBit("HaveFallData", index);
+                var haveFallDirection = false;
                 
-                if (HaveFallData)
-                    HaveFallDirection = packet.ReadBit("HaveFallDirection", index);
+                if (haveFallData)
+                    haveFallDirection = packet.ReadBit("HaveFallDirection", index);
                     
-                var HaveTransportData = packet.ReadBit("HaveTransportData", index);
+                var haveTransportData = packet.ReadBit("HaveTransportData", index);
                 
-                bool HaveTransportTime2 = false;
-                bool HaveTransportTime3 = false;
+                var haveTransportTime2 = false;
+                var haveTransportTime3 = false;
                 
-                if (HaveTransportData)
+                if (haveTransportData)
                 {
                     transportGuidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
                     transportGuidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
@@ -76,48 +76,36 @@ namespace WowPacketParser.Parsing.Parsers
                     transportGuidBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
                     transportGuidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
                     
-                    HaveTransportTime2 = packet.ReadBit("HaveTransportTime2", index);
-                    HaveTransportTime3 = packet.ReadBit("HaveTransportTime3", index);
+                    haveTransportTime2 = packet.ReadBit("HaveTransportTime2", index);
+                    haveTransportTime3 = packet.ReadBit("HaveTransportTime3", index);
                 }
                 
                 info.Orientation = packet.ReadSingle("Orientation", index);
                 
                 packet.ReadUInt32("Timestamp", index);
                 
-                var X = packet.ReadSingle("Position X", index);
-                var Y = packet.ReadSingle("Position Y", index);
-                var Z = packet.ReadSingle("Position Z", index);
+                info.Position = packet.ReadVector3("Position", index);
                 
-                info.Position = new Vector3(X, Y, Z);
-                
-                if (guidBytes[7] != 0)
-                    guidBytes[7] ^= packet.ReadByte();
-                    
-                if (guidBytes[5] != 0)
-                    guidBytes[5] ^= packet.ReadByte();
+                if (guidBytes[7] != 0) guidBytes[7] ^= packet.ReadByte();
+                if (guidBytes[5] != 0) guidBytes[5] ^= packet.ReadByte();
                     
                 if (splineElevation)
                     packet.ReadSingle("Spline Elevation", index);
                     
-                if (guidBytes[4] != 0)
-                    guidBytes[4] ^= packet.ReadByte();
+                if (guidBytes[4] != 0) guidBytes[4] ^= packet.ReadByte();
+                if (guidBytes[1] != 0) guidBytes[1] ^= packet.ReadByte();
+                if (guidBytes[2] != 0) guidBytes[2] ^= packet.ReadByte();
                     
-                if (guidBytes[1] != 0)
-                    guidBytes[1] ^= packet.ReadByte();
-                    
-                if (guidBytes[2] != 0)
-                    guidBytes[2] ^= packet.ReadByte();
-                    
-                if (HavePitch)
+                if (havePitch)
                     packet.ReadSingle("Pitch", index);
                     
-                if (HaveFallData)
+                if (haveFallData)
                 {
                     packet.ReadUInt32("Fall Time", index);
                     packet.ReadSingle("Fall Vertical Speed", index);
                     packet.ReadSingle("Fall Horizontal Speed", index);
                     
-                    if (HaveFallDirection)
+                    if (haveFallDirection)
                     {
                         packet.ReadSingle("Fall Cos Angle", index);
                         packet.ReadSingle("Fall Sin Angle", index);
@@ -130,7 +118,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (guidBytes[0] != 0)
                     guidBytes[0] ^= packet.ReadByte();
                     
-                if (HaveTransportData)
+                if (haveTransportData)
                 {
                     packet.ReadByte("Transport Seat", index);
                     packet.ReadSingle("Transport Orientation", index);
@@ -140,45 +128,30 @@ namespace WowPacketParser.Parsing.Parsers
                     
                     packet.ReadUInt32("Transport Time");
                     
-                    if (HaveTransportTime2)
+                    if (haveTransportTime2)
                         packet.ReadUInt32("Transport Time 2");
                         
-                    if (transportGuidBytes[3] != 0)
-                        transportGuidBytes[3] ^= packet.ReadByte();
-                    
-                    if (transportGuidBytes[6] != 0)
-                        transportGuidBytes[6] ^= packet.ReadByte();
+                    if (transportGuidBytes[3] != 0) transportGuidBytes[3] ^= packet.ReadByte();
+                    if (transportGuidBytes[6] != 0) transportGuidBytes[6] ^= packet.ReadByte();
                         
-                    if (HaveTransportTime3)
+                    if (haveTransportTime3)
                         packet.ReadUInt32("Transport Time 3");
                         
-                    if (transportGuidBytes[7] != 0)
-                        transportGuidBytes[7] ^= packet.ReadByte();
-                    
-                    if (transportGuidBytes[5] != 0)
-                        transportGuidBytes[5] ^= packet.ReadByte();
-                        
-                    if (transportGuidBytes[2] != 0)
-                        transportGuidBytes[2] ^= packet.ReadByte();
-                    
-                    if (transportGuidBytes[1] != 0)
-                        transportGuidBytes[1] ^= packet.ReadByte();
-                        
-                    if (transportGuidBytes[0] != 0)
-                        transportGuidBytes[0] ^= packet.ReadByte();
-                        
-                    if (transportGuidBytes[4] != 0)
-                        transportGuidBytes[4] ^= packet.ReadByte();
+                    if (transportGuidBytes[7] != 0) transportGuidBytes[7] ^= packet.ReadByte();
+                    if (transportGuidBytes[5] != 0) transportGuidBytes[5] ^= packet.ReadByte();
+                    if (transportGuidBytes[2] != 0) transportGuidBytes[2] ^= packet.ReadByte();
+                    if (transportGuidBytes[1] != 0) transportGuidBytes[1] ^= packet.ReadByte();
+                    if (transportGuidBytes[0] != 0) transportGuidBytes[0] ^= packet.ReadByte();
+                    if (transportGuidBytes[4] != 0) transportGuidBytes[4] ^= packet.ReadByte();
                 }
                 
-                if (guidBytes[3] != 0)
-                    guidBytes[3] ^= packet.ReadByte();
+                if (guidBytes[3] != 0) guidBytes[3] ^= packet.ReadByte();
             }
-            
-            var _guid = new Guid(BitConverter.ToUInt64(guidBytes, 0));
-            var _tguid = new Guid(BitConverter.ToUInt64(transportGuidBytes, 0));
-            packet.Writer.WriteLine("Guid: {0}", _guid);
-            packet.Writer.WriteLine("Transport Guid: {0}", _tguid);
+
+            var guid = new Guid(BitConverter.ToUInt64(guidBytes, 0));
+            var transportGuid = new Guid(BitConverter.ToUInt64(transportGuidBytes, 0));
+            packet.Writer.WriteLine("Guid: {0}", guid);
+            packet.Writer.WriteLine("Transport Guid: {0}", transportGuid);
             
             return info;
         }
@@ -243,7 +216,7 @@ namespace WowPacketParser.Parsing.Parsers
             return info;
         }
 
-        private static MovementInfo ReadMovementInfo420(ref Packet packet, Guid guid, int index)
+        private static MovementInfo ReadMovementInfo420(ref Packet packet, int index)
         {
             var info = new MovementInfo();
 
@@ -276,9 +249,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID 2", index);
 
             packet.ReadInt32("Time", index);
-            var pos = packet.ReadVector4("Position", index);
-            info.Position = new Vector3(pos.X, pos.Y, pos.Z);
-            info.Orientation = pos.O;
+
+            info.Position = packet.ReadVector3("Position", index);
+            info.Orientation = packet.ReadSingle("Orientation", index);
 
             if (onTransport)
             {

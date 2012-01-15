@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
@@ -62,7 +61,7 @@ namespace WowPacketParser.Parsing.Parsers
                     if (usePublicKey)
                     {
                         var pubKey = packet.ReadChars(256);
-                        packet.Writer.Write("[{i}] Public Key: ", i);
+                        packet.Writer.Write("[{0}] Public Key: ", i);
 
                         foreach (var t in pubKey)
                             packet.Writer.Write(t);
