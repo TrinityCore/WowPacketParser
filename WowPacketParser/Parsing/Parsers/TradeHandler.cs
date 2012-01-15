@@ -1,6 +1,7 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -95,12 +96,52 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadUInt32("Unk UInt32");
         }
+        
+        [Parser(Opcode.CMSG_BEGIN_TRADE)]
+        public static void HandleBeginTrade(Packet packet)
+        {
+            var guid = new byte[8];
+            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            
+            if (guid[5] != 0)
+                guid[5] ^= packet.ReadByte();
+                
+            if (guid[2] != 0)
+                guid[2] ^= packet.ReadByte();
+                
+            if (guid[3] != 0)
+                guid[3] ^= packet.ReadByte();
+                
+            if (guid[4] != 0)
+                guid[4] ^= packet.ReadByte();
+                
+            if (guid[1] != 0)
+                guid[1] ^= packet.ReadByte();
+                
+            if (guid[0] != 0)
+                guid[0] ^= packet.ReadByte();
+                
+            if (guid[6] != 0)
+                guid[6] ^= packet.ReadByte();
+                
+            if (guid[7] != 0)
+                guid[7] ^= packet.ReadByte();
+                
+            packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+        }
 
         [Parser(Opcode.CMSG_IGNORE_TRADE)]
         [Parser(Opcode.CMSG_BUSY_TRADE)]
         [Parser(Opcode.CMSG_CANCEL_TRADE)]
         [Parser(Opcode.CMSG_UNACCEPT_TRADE)]
-        [Parser(Opcode.CMSG_BEGIN_TRADE)]
+        [Parser(Opcode.CMSG_BEGIN_TRADE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleNullTrade(Packet packet)
         {
         }
