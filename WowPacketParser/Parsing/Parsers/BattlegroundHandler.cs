@@ -48,25 +48,23 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Unk Byte (BattlefieldList)");
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleBattlefieldListServer422(Packet packet)
         {
             var guidBytes = new byte[8];
-
-            packet.ReadByte();
 
             guidBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
             guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
             guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
             guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
             guidBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            packet.ReadBit("UnkBit1");
             guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            packet.ReadBit("UnkBit1");
             packet.ReadBit("UnkBit2");
             guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
             packet.ReadBit("UnkBit3");
-            guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
             packet.ReadBit("UnkBit4");
+            guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
 
             packet.ReadInt32("Unk 1");
 
@@ -77,7 +75,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (guidBytes[0] != 0) guidBytes[0] ^= packet.ReadByte();
 
-            packet.ReadByte("Unk 3");
+            packet.ReadByte("Max level");
 
             if (guidBytes[7] != 0) guidBytes[7] ^= packet.ReadByte();
             if (guidBytes[1] != 0) guidBytes[1] ^= packet.ReadByte();
@@ -85,13 +83,13 @@ namespace WowPacketParser.Parsing.Parsers
             if (guidBytes[4] != 0) guidBytes[4] ^= packet.ReadByte();
 
             packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
-            packet.ReadInt32("Unk");
-            packet.ReadInt32("Unk");
+            packet.ReadInt32("Unk 3");
+            packet.ReadInt32("Unk 4");
 
             if (guidBytes[6] != 0) guidBytes[6] ^= packet.ReadByte();
 
-            packet.ReadInt32("Unk 4");
-            packet.ReadByte("Unk 5");
+            packet.ReadInt32("Unk 5");
+            packet.ReadByte("Min level");
             packet.ReadInt32("Unk 6");
 
             var count = packet.ReadUInt32("BG Instance count");
@@ -257,13 +255,13 @@ namespace WowPacketParser.Parsing.Parsers
             else
                 packet.Writer.WriteLine("Result: Joined (BGType: " + StoreGetters.GetName(StoreNameType.Battleground, val) + ")");
         }
-        
-        
+
+
         [Parser(Opcode.TEST_422_265C, ClientVersionBuild.V4_2_2_14545)] // SMSG
         public static void HandleRGroupJoinedBattleground422(Packet packet)
         {
             var guidBytes = new byte[8];
-            
+
             guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
             guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
             guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
@@ -272,16 +270,16 @@ namespace WowPacketParser.Parsing.Parsers
             guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
             guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
             guidBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            
+
             if (guidBytes[2] != 0) guidBytes[2] ^= packet.ReadByte();
             if (guidBytes[6] != 0) guidBytes[6] ^= packet.ReadByte();
             if (guidBytes[3] != 0) guidBytes[3] ^= packet.ReadByte();
             if (guidBytes[4] != 0) guidBytes[4] ^= packet.ReadByte();
             if (guidBytes[5] != 0) guidBytes[5] ^= packet.ReadByte();
-            if (guidBytes[7] != 0) guidBytes[7] ^= packet.ReadByte();    
+            if (guidBytes[7] != 0) guidBytes[7] ^= packet.ReadByte();
             if (guidBytes[1] != 0) guidBytes[1] ^= packet.ReadByte();
             if (guidBytes[0] != 0) guidBytes[0] ^= packet.ReadByte();
-                
+
             packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
         }
 

@@ -521,29 +521,29 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleInitCurrency422(Packet packet)
         {
             var count = packet.ReadUInt32("Count");
-            var ifs = new bool[count, 3];
- 
+            var bits = new bool[count, 3];
+
             for (var i = 0; i < count; ++i)
                 for (var j = 0; j < 3; ++j)
-                    ifs[i, j] = packet.ReadBit();
- 
+                    bits[i, j] = packet.ReadBit();
+
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadInt32("Currency Id", i);
-                if (ifs[i, 0])
+                if (bits[i, 0])
                     packet.ReadInt32("Weekly Cap", i);
- 
+
                 packet.ReadInt32("Total Count", i);
                 packet.ReadByte("Unk Byte1", i);
- 
-                if (ifs[i, 1])
+
+                if (bits[i, 1])
                     packet.ReadInt32("Season Total Earned?", i);
- 
-                if (ifs[i, 2])
+
+                if (bits[i, 2])
                     packet.ReadUInt32("Week Count", i);
             }
         }
-        
+
         [Parser(Opcode.SMSG_INIT_CURRENCY, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleInitCurrency(Packet packet)
         {
