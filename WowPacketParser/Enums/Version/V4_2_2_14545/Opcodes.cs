@@ -587,6 +587,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x5CCF},
             {Opcode.SMSG_SPELLORDAMAGE_IMMUNE, 0x48FA},
             {Opcode.SMSG_SPELL_COOLDOWN, 0x88D6},
+            {Opcode.SMSG_SPELL_DELAYED, 0x1AD3},
             {Opcode.SMSG_SPELL_FAILED_OTHER, 0xCE4A},
             {Opcode.SMSG_SPELL_FAILURE, 0x9A66},
             {Opcode.SMSG_SPELL_GO, 0x0A53},

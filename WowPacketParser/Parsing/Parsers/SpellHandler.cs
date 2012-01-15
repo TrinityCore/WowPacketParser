@@ -663,5 +663,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk");
             }
         }
+
+        [Parser(Opcode.SMSG_SPELL_DELAYED)]
+        public static void HandleSpellDelayed(Packet packet)
+        {
+            packet.ReadPackedGuid("Caster GUID");
+            packet.ReadInt32("Delay Time");
+        }
     }
 }
