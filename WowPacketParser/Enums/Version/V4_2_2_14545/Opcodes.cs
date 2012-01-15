@@ -281,6 +281,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.MSG_LIST_STABLED_PETS, 0x88CA},
             {Opcode.MSG_MOVE_HEARTBEAT, 0xB024},
             {Opcode.MSG_MOVE_JUMP, 0x9225},
+            {Opcode.MSG_MOVE_KNOCK_BACK, 0x60FE}, // Not sure
             {Opcode.MSG_MOVE_SET_FACING, 0x02a4},
             {Opcode.MSG_MOVE_SET_PITCH, 0xA7A5},
             {Opcode.MSG_MOVE_SET_RUN_MODE, 0x21A4},
@@ -304,7 +305,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.MSG_MOVE_STOP_TURN, 0x90A4},
             {Opcode.MSG_PETITION_DECLINE, 0x98E7},
             {Opcode.MSG_PETITION_RENAME, 0x4857},
-            {Opcode.MSG_PVP_LOG_DATA, 0x60FE},
             {Opcode.MSG_QUERY_NEXT_MAIL_TIME, 0xCEE6},
             {Opcode.MSG_QUEST_PUSH_RESULT, 0x1863},
             {Opcode.MSG_RAID_READY_CHECK, 0x584E},
