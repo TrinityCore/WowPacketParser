@@ -142,10 +142,15 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID", i);
                 packet.ReadEnum<MapDifficulty>("Map Difficulty", TypeCode.UInt32, i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                    packet.ReadUInt32("Unk1", i);
                 packet.ReadGuid("Instance GUID", i);
                 packet.ReadBoolean("Expired", i);
                 packet.ReadBoolean("Extended", i);
                 packet.ReadUInt32("Reset Time", i);
+                
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                    packet.ReadUInt32("Unk2", i);
             }
         }
     }
