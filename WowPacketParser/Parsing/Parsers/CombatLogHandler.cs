@@ -219,57 +219,61 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Target GUID", index);
             packet.ReadPackedGuid("Caster GUID", index);
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", index);
-            packet.ReadUInt32("Count", index);
+            var count = packet.ReadInt32("Count", index);
 
-            var aura = packet.ReadEnum<AuraType>("Aura Type", TypeCode.UInt32, index);
-            switch (aura)
+            for (var i = 0; i < count; i++)
             {
-                case AuraType.PeriodicDamage:
-                case AuraType.PeriodicDamagePercent:
+                var aura = packet.ReadEnum<AuraType>("Aura Type", TypeCode.UInt32, index);
+                switch (aura)
                 {
-                    packet.ReadUInt32("Damage", index);
+                    case AuraType.PeriodicDamage:
+                    case AuraType.PeriodicDamagePercent:
+                    {
+                        packet.ReadUInt32("Damage", index);
 
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
-                        packet.ReadUInt32("Over damage", index);
+                        if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
+                            packet.ReadUInt32("Over damage", index);
 
-                    packet.ReadUInt32("Spell Proto", index);
-                    packet.ReadUInt32("Absorb", index);
-                    packet.ReadUInt32("Resist", index);
-
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
-                        packet.ReadByte("Critical", index);
-
-                    break;
-                }
-                case AuraType.PeriodicHeal:
-                case AuraType.ObsModHealth:
-                {
-                    packet.ReadUInt32("Damage", index);
-
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
-                        packet.ReadUInt32("Over damage", index);
-
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685)) // no idea when this was added exactly
+                        packet.ReadUInt32("Spell Proto", index);
                         packet.ReadUInt32("Absorb", index);
+                        packet.ReadUInt32("Resist", index);
 
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
-                        packet.ReadByte("Critical", index);
+                        if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
+                            packet.ReadByte("Critical", index);
 
-                    break;
-                }
-                case AuraType.ObsModPower:
-                case AuraType.PeriodicEnergize:
-                {
-                    packet.ReadEnum<PowerType>("Power type", TypeCode.Int32, index);
-                    packet.ReadUInt32("Amount", index);
-                    break;
-                }
-                case AuraType.PeriodicManaLeech:
-                {
-                    packet.ReadEnum<PowerType>("Power type", TypeCode.Int32, index);
-                    packet.ReadUInt32("Amount", index);
-                    packet.ReadSingle("Gain multiplier", index);
-                    break;
+                        break;
+                    }
+                    case AuraType.PeriodicHeal:
+                    case AuraType.ObsModHealth:
+                    {
+                        packet.ReadUInt32("Damage", index);
+
+                        if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
+                            packet.ReadUInt32("Over damage", index);
+
+                        if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
+                            // no idea when this was added exactly
+                            packet.ReadUInt32("Absorb", index);
+
+                        if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
+                            packet.ReadByte("Critical", index);
+
+                        break;
+                    }
+                    case AuraType.ObsModPower:
+                    case AuraType.PeriodicEnergize:
+                    {
+                        packet.ReadEnum<PowerType>("Power type", TypeCode.Int32, index);
+                        packet.ReadUInt32("Amount", index);
+                        break;
+                    }
+                    case AuraType.PeriodicManaLeech:
+                    {
+                        packet.ReadEnum<PowerType>("Power type", TypeCode.Int32, index);
+                        packet.ReadUInt32("Amount", index);
+                        packet.ReadSingle("Gain multiplier", index);
+                        break;
+                    }
                 }
             }
         }
