@@ -140,7 +140,11 @@ namespace WowPacketParser.Parsing.Parsers
             guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
             guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
 
-            // The following byte order makes no sense, according to IDA the guidBytes[2] and guidBytes[3] should be BEFORE the itemCount, anyhow, this works, and the other does not work
+            if (guidBytes[2] != 0)
+                guidBytes[2] ^= packet.ReadByte();
+
+            if (guidBytes[3] != 0)
+                guidBytes[3] ^= packet.ReadByte();
 
             var itemCount = packet.ReadUInt32("Item Count");
 
@@ -153,14 +157,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guidBytes[1] != 0)
                 guidBytes[1] ^= packet.ReadByte();
 
-            if (guidBytes[3] != 0)
-                guidBytes[3] ^= packet.ReadByte();
-
-
             packet.ReadByte("Unk Byte");
-
-            if (guidBytes[2] != 0)
-                guidBytes[2] ^= packet.ReadByte();
 
             if (guidBytes[4] != 0)
                 guidBytes[4] ^= packet.ReadByte();
