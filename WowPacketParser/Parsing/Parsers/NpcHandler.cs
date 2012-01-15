@@ -140,33 +140,20 @@ namespace WowPacketParser.Parsing.Parsers
             guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
             guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
 
-            if (guidBytes[2] != 0)
-                guidBytes[2] ^= packet.ReadByte();
-
-            if (guidBytes[3] != 0)
-                guidBytes[3] ^= packet.ReadByte();
+            if (guidBytes[2] != 0) guidBytes[2] ^= packet.ReadByte();
+            if (guidBytes[3] != 0) guidBytes[3] ^= packet.ReadByte();
 
             var itemCount = packet.ReadUInt32("Item Count");
 
-            if (guidBytes[5] != 0)
-                guidBytes[5] ^= packet.ReadByte();
-
-            if (guidBytes[0] != 0)
-                guidBytes[0] ^= packet.ReadByte();
-
-            if (guidBytes[1] != 0)
-                guidBytes[1] ^= packet.ReadByte();
+            if (guidBytes[5] != 0) guidBytes[5] ^= packet.ReadByte();
+            if (guidBytes[0] != 0) guidBytes[0] ^= packet.ReadByte();
+            if (guidBytes[1] != 0) guidBytes[1] ^= packet.ReadByte();
 
             packet.ReadByte("Unk Byte");
 
-            if (guidBytes[4] != 0)
-                guidBytes[4] ^= packet.ReadByte();
-
-            if (guidBytes[7] != 0)
-                guidBytes[7] ^= packet.ReadByte();
-
-            if (guidBytes[6] != 0)
-                guidBytes[6] ^= packet.ReadByte();
+            if (guidBytes[4] != 0) guidBytes[4] ^= packet.ReadByte();
+            if (guidBytes[7] != 0) guidBytes[7] ^= packet.ReadByte();
+            if (guidBytes[6] != 0) guidBytes[6] ^= packet.ReadByte();
 
 
             var guid = new Guid(BitConverter.ToUInt64(guidBytes, 0));

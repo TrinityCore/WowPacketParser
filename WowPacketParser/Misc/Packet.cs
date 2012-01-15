@@ -49,18 +49,20 @@ namespace WowPacketParser.Misc
 
         public void AddSniffData(StoreNameType type, int id, string data)
         {
-            if (!_sniffData)
-                return;
-
             if (type == StoreNameType.None)
                 return;
 
             if (id == 0 && type != StoreNameType.Map)
                 return; // Only maps can have id 0
 
-            if (type == StoreNameType.Opcode)
-                if (!_sniffDataOpcodes)
-                    return; // Don't add opcodes if its config is not enabled
+            if (type == StoreNameType.Opcode && !_sniffDataOpcodes)
+                return; // Don't add opcodes if its config is not enabled
+
+            if (type != StoreNameType.Opcode && !_sniffData)
+                return;
+
+            if (data != "WithErrors")
+                return;
 
             var item = new SniffData
             {
@@ -71,6 +73,7 @@ namespace WowPacketParser.Misc
                 Data = data,
                 Number = Number,
             };
+
            SniffFileInfo.Stuffing.SniffData.Add(item);
         }
 

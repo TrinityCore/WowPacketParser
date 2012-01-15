@@ -114,7 +114,7 @@ namespace WowPacketParser
             if (sqlOutput.HasFlag(SQLOutputFlags.Loot))
                 store.WriteData(builder.Loot());
 
-            if (sqlOutput.HasFlag(SQLOutputFlags.SniffData))
+            if (sqlOutput.HasFlag(SQLOutputFlags.SniffData) || sqlOutput.HasFlag(SQLOutputFlags.SniffDataOpcodes))
                 store.WriteData(builder.SniffData());
 
             if (sqlOutput.HasFlag(SQLOutputFlags.StartInformation))

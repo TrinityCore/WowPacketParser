@@ -77,7 +77,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        public static void ReadCreateObjectBlock(ref Packet packet, Guid guid, uint map, int index)
+        private static void ReadCreateObjectBlock(ref Packet packet, Guid guid, uint map, int index)
         {
             var objType = packet.ReadEnum<ObjectType>("Object Type", TypeCode.Byte, index);
             var moves = ReadMovementUpdateBlock(ref packet, guid, index);
@@ -90,14 +90,14 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.AddSniffData(Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");
         }
 
-        public static void ReadObjectsBlock(ref Packet packet, int index)
+        private static void ReadObjectsBlock(ref Packet packet, int index)
         {
             var objCount = packet.ReadInt32("Object Count", index);
             for (var j = 0; j < objCount; j++)
                 packet.ReadPackedGuid("Object GUID", index, j);
         }
 
-        public static Dictionary<int, UpdateField> ReadValuesUpdateBlock(ref Packet packet, ObjectType type, int index)
+        private static Dictionary<int, UpdateField> ReadValuesUpdateBlock(ref Packet packet, ObjectType type, int index)
         {
             var maskSize = packet.ReadByte();
 
