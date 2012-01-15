@@ -305,7 +305,9 @@ namespace WowPacketParser.Parsing.Parsers
 
                 var chInfo = new Player {Race = race, Class = clss, Name = name, FirstLogin = firstLogin, Level = level};
 
-                Characters.Add(playerGuid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects
+                if (!Characters.ContainsKey(playerGuid))
+                    Characters.Add(playerGuid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects
+                
                 packet.SniffFileInfo.Stuffing.Objects.TryAdd(playerGuid, chInfo);
             }
         }
