@@ -48,6 +48,60 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Unk Byte (BattlefieldList)");
         }
 
+        [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.V4_3_0_15005)]
+        public static void HandleBattlefieldListServer430(Packet packet)
+        {
+            var guidBytes = new byte[8];
+
+            guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            packet.ReadBit("UnkBit1");
+            var count = packet.ReadBits("BG Instance count", 21);
+            guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            packet.ReadBit("UnkBit2");
+            guidBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            packet.ReadBit("UnkBit3");
+            guidBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            packet.ReadBit("Random Has Win");
+            guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            if (guidBytes[4] != 0) guidBytes[4] ^= packet.ReadByte();
+
+            packet.ReadInt32("Loser Honor Reward");
+            packet.ReadInt32("Winner Honor Reward");
+            for (var i = 0; i < count; i++)
+                packet.ReadUInt32("Instance ID", i);
+
+            if (guidBytes[7] != 0) guidBytes[7] ^= packet.ReadByte();
+
+            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BG type");
+
+            if (guidBytes[1] != 0) guidBytes[1] ^= packet.ReadByte();
+
+            packet.ReadInt32("Random Loser Honor Reward");
+            packet.ReadInt32("Random Winner Conquest Reward");
+
+            if (guidBytes[2] != 0) guidBytes[2] ^= packet.ReadByte();
+
+            packet.ReadByte("Max level");
+
+            if (guidBytes[0] != 0) guidBytes[0] ^= packet.ReadByte();
+
+            packet.ReadInt32("Winner Conquest Reward");
+            packet.ReadByte("Min level");
+
+            if (guidBytes[5] != 0) guidBytes[5] ^= packet.ReadByte();
+
+            packet.ReadInt32("Random Winner Honor Reward");
+
+            if (guidBytes[3] != 0) guidBytes[3] ^= packet.ReadByte();
+            if (guidBytes[6] != 0) guidBytes[6] ^= packet.ReadByte();
+
+            packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
+        }
+
         [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleBattlefieldListServer422(Packet packet)
         {
@@ -66,12 +120,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBit("UnkBit4");
             guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
 
-            packet.ReadInt32("Unk 1");
+            packet.ReadInt32("Winner Honor Reward");
 
             if (guidBytes[3] != 0) guidBytes[3] ^= packet.ReadByte();
             if (guidBytes[5] != 0) guidBytes[5] ^= packet.ReadByte();
 
-            packet.ReadInt32("Unk 2");
+            packet.ReadInt32("Random Winner Honor Reward");
 
             if (guidBytes[0] != 0) guidBytes[0] ^= packet.ReadByte();
 
@@ -83,14 +137,14 @@ namespace WowPacketParser.Parsing.Parsers
             if (guidBytes[4] != 0) guidBytes[4] ^= packet.ReadByte();
 
             packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
-            packet.ReadInt32("Unk 3");
-            packet.ReadInt32("Unk 4");
+            packet.ReadInt32("Random Winner Conquest Reward");
+            packet.ReadInt32("Winner Conquest Reward");
 
             if (guidBytes[6] != 0) guidBytes[6] ^= packet.ReadByte();
 
-            packet.ReadInt32("Unk 5");
+            packet.ReadInt32("Random Loser Honor Reward");
             packet.ReadByte("Min level");
-            packet.ReadInt32("Unk 6");
+            packet.ReadInt32("Loser Honor Reward");
 
             var count = packet.ReadUInt32("BG Instance count");
             for (var i = 0; i < count; i++)
@@ -113,7 +167,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Has Win");
             packet.ReadInt32("Winner Honor Reward");
             packet.ReadInt32("Winner Arena Reward");
-            packet.ReadInt32("Losser Honor Reward");
+            packet.ReadInt32("Loser Honor Reward");
 
             var random = packet.ReadBoolean("Is random");
             if (random)
@@ -121,7 +175,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Random Has Win");
                 packet.ReadInt32("Random Winner Honor Reward");
                 packet.ReadInt32("Random Winner Arena Reward");
-                packet.ReadInt32("Random Losser Honor Reward");
+                packet.ReadInt32("Random Loser Honor Reward");
             }
 
             var count = packet.ReadUInt32("BG Instance count");
