@@ -255,7 +255,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt16("Unk Uint16 (afkResult)");
         }
 
-        [Parser(Opcode.SMSG_GROUP_JOINED_BATTLEGROUND)]
+        [Parser(Opcode.SMSG_GROUP_JOINED_BATTLEGROUND, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleRGroupJoinedBattleground(Packet packet)
         {
             var val = packet.ReadInt32();
@@ -269,6 +269,49 @@ namespace WowPacketParser.Parsing.Parsers
             }
             else
                 packet.Writer.WriteLine("Result: Joined (BGType: " + StoreGetters.GetName(StoreNameType.Battleground, val) + ")");
+        }
+        
+        
+        // THIS OPCODE ID IS NOT SMSG_GROUP_JOINED_BATTLEGROUND
+        [Parser(Opcode.SMSG_GROUP_JOINED_BATTLEGROUND, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleRGroupJoinedBattleground422(Packet packet)
+        {
+            var guidBytes = new byte[8];
+            
+            guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            
+            if (guidBytes[2] != 0)
+                guidBytes[2] ^= packet.ReadByte();
+            
+            if (guidBytes[6] != 0)
+                guidBytes[6] ^= packet.ReadByte();
+            
+            if (guidBytes[3] != 0)
+                guidBytes[3] ^= packet.ReadByte();
+            
+            if (guidBytes[4] != 0)
+                guidBytes[4] ^= packet.ReadByte();
+            
+            if (guidBytes[5] != 0)
+                guidBytes[5] ^= packet.ReadByte();
+                
+            if (guidBytes[7] != 0)
+                guidBytes[7] ^= packet.ReadByte();
+                
+            if (guidBytes[1] != 0)
+                guidBytes[1] ^= packet.ReadByte();
+                
+            if (guidBytes[0] != 0)
+                guidBytes[0] ^= packet.ReadByte();
+                
+            packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
         }
 
         [Parser(Opcode.MSG_PVP_LOG_DATA)]
