@@ -108,7 +108,7 @@ namespace WowPacketParser.Parsing.Parsers
             return (tmp << 8*index);
         }
 
-        [Parser(Opcode.SMSG_LIST_INVENTORY)]
+        [Parser(Opcode.SMSG_LIST_INVENTORY, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleVendorInventoryList(Packet packet)
         {
             var npcVendor = new NpcVendor();
@@ -140,34 +140,50 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var npcVendor = new NpcVendor();
 
-            var bits = new bool[8];
-            for (int c = 7; c >= 0; c--)
-                bits[c] = packet.ReadBit();
-
-            var bytes = new byte[8];
-
-            // Data - real
-            // E7| 30 64 26 |A0| EE F0 31 = F1 30 31 EF 00 00 27 65
-            //                               7  6  5  4  3  2  1  0
-            // (E7 = 11100111)
-
-            // If there is any error, change bytes[3] to 2 and bytes[2] to 3
-
+            var guidBytes = new byte[8];
+            
+            guidBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            
+            // The following byte order makes no sense, according to IDA the guidBytes[2] and guidBytes[3] should be BEFORE the itemCount, anyhow, this works, and the other does not work
+               
             var itemCount = packet.ReadUInt32("Item Count");
-
-            if (bits[7]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[6]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[5]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[4]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
-
+            
+            if (guidBytes[5] != 0)
+                guidBytes[5] ^= packet.ReadByte();
+                
+            if (guidBytes[0] != 0)
+                guidBytes[0] ^= packet.ReadByte();
+                
+            if (guidBytes[1] != 0)
+                guidBytes[1] ^= packet.ReadByte();
+                
+            if (guidBytes[3] != 0)
+                guidBytes[3] ^= packet.ReadByte();
+            
+                
             packet.ReadByte("Unk Byte");
+            
+            if (guidBytes[2] != 0)
+                guidBytes[2] ^= packet.ReadByte();
+                
+            if (guidBytes[4] != 0)
+                guidBytes[4] ^= packet.ReadByte();
+                
+            if (guidBytes[7] != 0)
+                guidBytes[7] ^= packet.ReadByte();
+                
+            if (guidBytes[6] != 0)
+                guidBytes[6] ^= packet.ReadByte();
+            
 
-            if (bits[3]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[2]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[1]) bytes[7] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[0]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
-
-            var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
+            var guid = new Guid(BitConverter.ToUInt64(guidBytes, 0));
             packet.Writer.WriteLine("GUID: {0}", guid);
 
             npcVendor.VendorItems = new List<VendorItem>((int)itemCount);
