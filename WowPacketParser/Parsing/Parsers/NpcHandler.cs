@@ -97,17 +97,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.SniffFileInfo.Stuffing.NpcTrainers.TryAdd(guid.GetEntry(), npcTrainer);
         }
 
-        private static ulong ReadByte(ref Packet packet, int index)
-        {
-            var tmp = (ulong)packet.ReadByte();
-            if ((tmp % 2) == 0)
-                tmp++;
-            else
-                tmp--;
-            // Debug: packet.Writer.WriteLine("Read {0} = {1}", index, tmp.ToString("X2"));
-            return (tmp << 8*index);
-        }
-
         [Parser(Opcode.SMSG_LIST_INVENTORY, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleVendorInventoryList(Packet packet)
         {
@@ -141,47 +130,47 @@ namespace WowPacketParser.Parsing.Parsers
             var npcVendor = new NpcVendor();
 
             var guidBytes = new byte[8];
-            
+
             guidBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
             guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
             guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
             guidBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
             guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
             guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
             guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            
+
             // The following byte order makes no sense, according to IDA the guidBytes[2] and guidBytes[3] should be BEFORE the itemCount, anyhow, this works, and the other does not work
-               
+
             var itemCount = packet.ReadUInt32("Item Count");
-            
+
             if (guidBytes[5] != 0)
                 guidBytes[5] ^= packet.ReadByte();
-                
+
             if (guidBytes[0] != 0)
                 guidBytes[0] ^= packet.ReadByte();
-                
+
             if (guidBytes[1] != 0)
                 guidBytes[1] ^= packet.ReadByte();
-                
+
             if (guidBytes[3] != 0)
                 guidBytes[3] ^= packet.ReadByte();
-            
-                
+
+
             packet.ReadByte("Unk Byte");
-            
+
             if (guidBytes[2] != 0)
                 guidBytes[2] ^= packet.ReadByte();
-                
+
             if (guidBytes[4] != 0)
                 guidBytes[4] ^= packet.ReadByte();
-                
+
             if (guidBytes[7] != 0)
                 guidBytes[7] ^= packet.ReadByte();
-                
+
             if (guidBytes[6] != 0)
                 guidBytes[6] ^= packet.ReadByte();
-            
+
 
             var guid = new Guid(BitConverter.ToUInt64(guidBytes, 0));
             packet.Writer.WriteLine("GUID: {0}", guid);
