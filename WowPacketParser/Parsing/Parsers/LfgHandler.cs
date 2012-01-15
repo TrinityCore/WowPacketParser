@@ -45,6 +45,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("In Progress");
             packet.ReadBoolean("Did Vote");
             packet.ReadBoolean("Vote");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                packet.ReadByte("Unk");
             packet.ReadGuid("Victim GUID");
             packet.ReadInt32("Total Votes");
             packet.ReadInt32("Agree Count");
