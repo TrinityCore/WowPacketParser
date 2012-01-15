@@ -574,7 +574,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Hair Style");
             packet.ReadByte("Hair Color");
             packet.ReadByte("Facial Hair");
-            packet.ReadUInt32("Unk"); // uint64 in 4.3
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                packet.ReadGuid("Unk");
+            else
+                packet.ReadUInt32("Unk");
 
             EquipmentSlotType[] slots = {
                 EquipmentSlotType.Head, EquipmentSlotType.Shoulders, EquipmentSlotType.Shirt,
