@@ -144,7 +144,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BUSY_TRADE)]
         [Parser(Opcode.CMSG_CANCEL_TRADE)]
         [Parser(Opcode.CMSG_UNACCEPT_TRADE)]
-        [Parser(Opcode.CMSG_BEGIN_TRADE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+
         public static void HandleNullTrade(Packet packet)
         {
         }
