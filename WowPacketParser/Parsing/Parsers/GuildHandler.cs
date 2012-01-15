@@ -433,7 +433,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Rank Id");
             packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.UInt32);
             packet.ReadInt32("Remaining Money");
-            var tabSize = packet.ReadByte("Tab size");
+            packet.ReadByte("Tab size");
+            var tabSize = ClientVersion.AddedInVersion(ClientType.Cataclysm) ? 8 : 6;
             for (var i = 0; i < tabSize; i++)
             {
                 packet.ReadEnum<GuildBankRightsFlag>("Tab Rights", TypeCode.Int32, i);
