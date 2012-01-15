@@ -837,8 +837,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleQuestPushResult(Packet packet)
         {
             packet.ReadGuid("GUID");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest Id");
             packet.ReadEnum<QuestPartyResult>("Result", TypeCode.Byte);
         }
 
