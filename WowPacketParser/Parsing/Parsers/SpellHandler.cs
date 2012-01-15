@@ -248,7 +248,7 @@ namespace WowPacketParser.Parsing.Parsers
             var flagsTypeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056) ? TypeCode.Int32 : TypeCode.UInt16;
             var flags = packet.ReadEnum<CastFlag>("Cast Flags", flagsTypeCode);
 
-            packet.ReadInt32("Time");
+            packet.ReadUInt32("Time");
 
             if (isSpellGo)
             {
@@ -289,12 +289,15 @@ namespace WowPacketParser.Parsing.Parsers
 
                     for (var i = 0; i < 6; i++)
                     {
-                        var mask = 1 << i;
-                        if ((mask & spellRuneState) == 0)
-                            continue;
+                        if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
+                        {
+                            var mask = 1 << i;
+                            if ((mask & spellRuneState) == 0)
+                                continue;
 
-                        if ((mask & playerRuneState) != 0)
-                            continue;
+                            if ((mask & playerRuneState) != 0)
+                                continue;
+                        }
 
                         packet.ReadByte("Rune Cooldown Passed", i);
                     }
