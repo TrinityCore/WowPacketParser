@@ -109,7 +109,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_EQUIPMENT_SET_USE, 0x4853},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0xCEFF},
             {Opcode.CMSG_GAMEOBJ_REPORT_USE, 0x9A4A},
-            {Opcode.CMSG_GAMEOBJ_USE, 0x9A4A},
+            {Opcode.CMSG_GAMEOBJ_USE, 0x1E77},
             {Opcode.CMSG_GET_MAIL_LIST, 0xB284},
             {Opcode.CMSG_GET_MIRRORIMAGE_DATA, 0xDAF3},
             {Opcode.CMSG_GMTICKET_DELETETICKET, 0x0C87F},
