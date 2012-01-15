@@ -277,6 +277,8 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadLfgEntry("LFG Entry");
             packet.ReadEnum<LfgEntryCheckResult>("Entry Check Result", TypeCode.Int32);
+            packet.ReadInt32("Unk 1");
+            packet.ReadInt32("Unk 2");
         }
 
         [Parser(Opcode.SMSG_LFG_ROLE_CHOSEN)]

@@ -149,6 +149,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_LEARN_TALENT, 0x98F3},
             {Opcode.CMSG_LEAVE_BATTLEFIELD, 0x1AE7},
             {Opcode.CMSG_LFG_LFR_JOIN, 0x8CFA},
+            {Opcode.SMSG_LFG_PARTY_INFO, 0x5E47},
             {Opcode.CMSG_LFG_PARTY_LOCK_INFO_REQUEST, 0xC867},
             {Opcode.CMSG_LFG_SET_ROLES, 0x4843},
             {Opcode.CMSG_LFG_TELEPORT, 0x8C7A},
