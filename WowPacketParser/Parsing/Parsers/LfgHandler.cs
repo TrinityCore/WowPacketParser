@@ -103,12 +103,11 @@ namespace WowPacketParser.Parsing.Parsers
             var numFields = packet.ReadByte("Reward Item Count");
             for (var i = 0; i < numFields; i++)
             {
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                    packet.ReadInt32("Reward Currency Id", i);
-                else
-                    packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Item Id", i);
+                packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Item Or Currency Id", i);
                 packet.ReadInt32("Reward Item Display ID", i);
-                packet.ReadInt32(ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) ? "Unk" : "Reward Item Stack Count", i);
+                packet.ReadInt32("Reward Item Stack Count", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                    packet.ReadByte("Unk", i);
             }
         }
 
