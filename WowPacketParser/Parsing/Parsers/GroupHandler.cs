@@ -55,7 +55,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadEnum<MapDifficulty>("Raid Difficulty", TypeCode.Byte);
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958) && ClientVersion.GetBuild() < ClientVersionBuild.V4_2_2_14545) // Removed somewhere between wotlk and cataclysm
                 packet.ReadByte("Unk Byte"); // Has something to do with difficulty too
         }
 
