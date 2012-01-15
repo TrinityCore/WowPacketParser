@@ -504,6 +504,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x18D2},
             {Opcode.SMSG_PARTYKILLLOG, 0xCCC2},
             {Opcode.SMSG_PARTY_MEMBER_STATS, 0xDC5A},
+            {Opcode.SMSG_PARTY_MEMBER_STATS_FULL, 0x0EDF},
             {Opcode.SMSG_PETITION_QUERY_RESPONSE, 0xCAEE},
             {Opcode.SMSG_PETITION_SHOWLIST, 0x8ED7},
             {Opcode.SMSG_PETITION_SHOW_SIGNATURES, 0x4E4A},
