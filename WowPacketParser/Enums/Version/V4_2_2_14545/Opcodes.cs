@@ -170,6 +170,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_LOGOUT_CANCEL, 0xA76},
             {Opcode.CMSG_LOGOUT_REQUEST, 0x4C7A},
             {Opcode.CMSG_LOOT, 0x1E62},
+            {Opcode.CMSG_LOOT_MONEY, 0x4A42},
             {Opcode.CMSG_LOOT_RELEASE, 0x4A6A},
             {Opcode.CMSG_MAIL_CREATE_TEXT_ITEM, 0x886E},
             {Opcode.CMSG_MAIL_DELETE, 0x4CCF},
@@ -380,6 +381,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_BUY_FAILED, 0x4A7F},
             {Opcode.SMSG_BUY_ITEM, 0xCA67},
             {Opcode.SMSG_CALENDAR_COMMAND_RESULT, 0x9A4E},
+            {Opcode.SMSG_CALENDAR_SEND_CALENDAR, 0x08FB},
             {Opcode.SMSG_CANCEL_AUTO_REPEAT, 0x5ACB},
             {Opcode.SMSG_CAST_FAILED, 0x1AEB},
             {Opcode.SMSG_CHANNEL_LIST, 0x9C47},
@@ -661,6 +663,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.TEST_422_41036, 0xA04C},
             {Opcode.TEST_422_24649, 24649},
             {Opcode.TEST_422_265C, 0x265C},
+            {Opcode.TEST_422_26948, 26948},
 
             // CMSG Handlers
             // 4120 - sub_65D6A0 - CMSG_LFG_LFR_JOIN ?
