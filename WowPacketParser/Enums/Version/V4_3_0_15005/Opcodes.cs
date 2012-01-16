@@ -333,6 +333,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.CMSG_ZONEUPDATE, 13824},
             {Opcode.CMSG_WARDEN_DATA, 264},
             {Opcode.CMSG_LOG_DISCONNECT, 18740},
+            {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 17190},
             {Opcode.MSG_AUCTION_HELLO, 1664},
             {Opcode.MSG_CORPSE_QUERY, 20486},
             {Opcode.MSG_INSPECT_ARENA_TEAMS, 19074},
@@ -848,6 +849,8 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.SMSG_XP_GAIN_ABORTED, 11276},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 2564},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 24096},
+            {Opcode.SMSG_WARDEN_DATA, 1214},
+            {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 9402},
 
             // TEST
             {Opcode.TEST_430_SYNC_PLAYER_MOVE, 0x5}
