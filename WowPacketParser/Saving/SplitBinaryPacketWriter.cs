@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -7,11 +8,11 @@ using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 
-namespace WowPacketParser.Loading
+namespace WowPacketParser.Saving
 {
     public class FileLock<T>
     {
-        private const int _timeout = 3000;
+        private const int Timeout = 3000;
         private static readonly Dictionary<T, References> _locks = new Dictionary<T, References>();
 
         public IDisposable Lock(T fileName)
@@ -22,7 +23,7 @@ namespace WowPacketParser.Loading
             {
                 obj.Addquire();
                 Monitor.Exit(_locks);
-                if (!Monitor.TryEnter(obj, _timeout))
+                if (!Monitor.TryEnter(obj, Timeout))
                     throw new TimeoutException(String.Format("{0}", fileName));
             }
             else
@@ -82,35 +83,45 @@ namespace WowPacketParser.Loading
 
     public static class SplitBinaryPacketWriter
     {
-        private static readonly FileLock<string> locks = new FileLock<string>();
+        private static readonly FileLock<string> _locks = new FileLock<string>();
+        private const string Folder = "split"; // might want to move to config later
 
         public static void Write(IEnumerable<Packet> packets, Encoding encoding)
         {
+            Directory.CreateDirectory(Folder); // not doing anything if it exists already
+
             foreach (var packet in packets)
             {
-                var fileName = Opcodes.GetOpcodeName(packet.Opcode) + "." + Settings.DumpFormat.ToString().ToLower();
-                using (locks.Lock(fileName))
+                var fileName = Folder + "/" + Opcodes.GetOpcodeName(packet.Opcode) + "." + Settings.DumpFormat.ToString().ToLower();
+                try
                 {
-                    using (var writer = new BinaryWriter(new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None), encoding))
+                    using (_locks.Lock(fileName))
                     {
-                        if (Settings.DumpFormat == DumpFormatType.Pkt)
+                        using (var writer = new BinaryWriter(new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None), encoding))
                         {
-                            writer.Write((ushort)packet.Opcode);
-                            writer.Write((int)packet.GetLength());
-                            writer.Write((byte)packet.Direction);
-                            writer.Write((ulong)Utilities.GetUnixTimeFromDateTime(packet.Time));
-                            writer.Write(packet.GetStream(0));
+                            if (Settings.DumpFormat == DumpFormatType.Pkt)
+                            {
+                                writer.Write((ushort)packet.Opcode);
+                                writer.Write((int)packet.GetLength());
+                                writer.Write((byte)packet.Direction);
+                                writer.Write((ulong)Utilities.GetUnixTimeFromDateTime(packet.Time));
+                                writer.Write(packet.GetStream(0));
+                            }
+                            else
+                            {
+                                writer.Write(packet.Opcode);
+                                writer.Write((int)packet.GetLength());
+                                writer.Write((int)Utilities.GetUnixTimeFromDateTime(packet.Time));
+                                writer.Write((byte)packet.Direction);
+                                writer.Write(packet.GetStream(0));
+                            }
+                            writer.Close();
                         }
-                        else
-                        {
-                            writer.Write(packet.Opcode);
-                            writer.Write((int)packet.GetLength());
-                            writer.Write((int)Utilities.GetUnixTimeFromDateTime(packet.Time));
-                            writer.Write((byte)packet.Direction);
-                            writer.Write(packet.GetStream(0));
-                        }
-                        writer.Close();
                     }
+                }
+                catch(TimeoutException)
+                {
+                    Trace.WriteLine(string.Format("Timeout trying to write Opcode to {0} ignoring opcode", fileName));
                 }
             }
         }

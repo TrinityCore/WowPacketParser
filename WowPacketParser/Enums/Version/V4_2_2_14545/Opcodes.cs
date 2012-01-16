@@ -470,10 +470,12 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_INVALIDATE_DANCE, 0x1EEF},
             {Opcode.SMSG_INVALIDATE_PLAYER, 0x5C5F},
             {Opcode.SMSG_INVALID_PROMOTION_CODE, 0xD8FE},
+            {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0xDCE6},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x8EFB},
             {Opcode.SMSG_ITEM_REFUND_INFO_RESPONSE, 0x304E},
             {Opcode.SMSG_ITEM_REFUND_RESULT, 0x60DC},
             {Opcode.SMSG_ITEM_TEXT_QUERY_RESPONSE, 0x984A},
+            {Opcode.SMSG_ITEM_TIME_UPDATE, 0x8AEB},
             {Opcode.SMSG_KICK_REASON, 0x8A67},
             {Opcode.SMSG_LEARNED_DANCE_MOVES, 0xE52},
             {Opcode.SMSG_LEARNED_SPELL, 0x88D3},
@@ -635,6 +637,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 0x5E53},
             {Opcode.SMSG_UPDATE_COMBO_POINTS, 0x9AF6},
             {Opcode.SMSG_UPDATE_INSTANCE_OWNERSHIP, 0xCA73},
+            {Opcode.SMSG_UPDATE_ITEM_ENCHANTMENTS, 0xCA43},
             {Opcode.SMSG_UPDATE_LAST_INSTANCE, 0x58FE},
             {Opcode.SMSG_UPDATE_OBJECT, 0x1EE7},
             {Opcode.SMSG_UPDATE_WORLD_STATE, 0x08E2},
@@ -664,6 +667,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.TEST_422_24649, 24649},
             {Opcode.TEST_422_265C, 0x265C},
             {Opcode.TEST_422_26948, 26948},
+            {Opcode.TEST_422_9838, 9838}
 
             // CMSG Handlers
             // 4120 - sub_65D6A0 - CMSG_LFG_LFR_JOIN ?

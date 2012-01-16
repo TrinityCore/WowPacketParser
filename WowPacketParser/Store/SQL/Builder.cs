@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using WowPacketParser.Enums;
@@ -36,7 +37,7 @@ namespace WowPacketParser.Store.SQL
                 var creature = unit.Value;
 
                 if (Settings.AreaFilters.Length > 0)
-                    if (!(creature.Area.ToString().MatchesFilters(Settings.AreaFilters)))
+                    if (!(creature.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
                         continue;
 
                 // If our unit got any of the folowing updated fields set,
@@ -105,7 +106,7 @@ namespace WowPacketParser.Store.SQL
                         equipData[i] = equip.Int32Value;
 
                 // check if fields are empty
-                if (!equipData.Any(value => value != 0))
+                if (equipData.All(value => value == 0))
                     continue;
 
                 row.AddValue("entry", unit.Key.GetEntry());
@@ -436,7 +437,7 @@ namespace WowPacketParser.Store.SQL
                 var go = gameobject.Value;
 
                 if (Settings.AreaFilters.Length > 0)
-                    if (!(go.Area.ToString().MatchesFilters(Settings.AreaFilters)))
+                    if (!(go.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
                         continue;
 
                 uint animprogress = 0;

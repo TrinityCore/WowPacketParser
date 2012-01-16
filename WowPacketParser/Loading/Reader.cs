@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using WowPacketParser.Enums;
@@ -96,12 +97,12 @@ namespace WowPacketParser.Loading
             catch(Exception ex)
             {
                 if (parsingPacket != null)
-                    Console.WriteLine("Failed at parsing packet: (Opcode: {0}, Number: {1})", parsingPacket.Opcode, parsingPacket.Number);
+                    Trace.WriteLine(string.Format("Failed at parsing packet: (Opcode: {0}, Number: {1})", parsingPacket.Opcode, parsingPacket.Number));
 
-                Console.WriteLine(ex.Data);
-                Console.WriteLine(ex.GetType());
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
+                Trace.WriteLine(ex.Data);
+                Trace.WriteLine(ex.GetType());
+                Trace.WriteLine(ex.Message);
+                Trace.WriteLine(ex.StackTrace);
             }
 
             reader.Close();

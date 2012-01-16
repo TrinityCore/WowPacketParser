@@ -103,6 +103,8 @@ namespace WowPacketParser.Parsing.Parsers
                 case ChatMessageType.BattlegroundLeader:
                 case ChatMessageType.Achievement:
                 case ChatMessageType.GuildAchievement:
+                case ChatMessageType.Restricted:
+                case ChatMessageType.Dnd:
                 {
                     if (type == ChatMessageType.Channel)
                         packet.ReadCString("Channel Name");
@@ -127,6 +129,12 @@ namespace WowPacketParser.Parsing.Parsers
                     {
                         packet.ReadInt32("Receiver Name Length");
                         packet.ReadCString("Receiver Name");
+                    } 
+
+                    if (target.GetHighType() == HighGuidType.GameObject)
+                    {
+                        packet.ReadInt32("Unk Int32 GO");
+                        packet.ReadByte("Unk Byte GO");
                     }
                     break;
                 }

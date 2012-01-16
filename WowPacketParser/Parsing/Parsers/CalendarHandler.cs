@@ -31,7 +31,10 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadPackedTime("Event Time", i);
                 packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32, i);
                 packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID", i);
-                
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                    packet.ReadInt64("Unk int64");
+
                 packet.ReadPackedGuid("Creator GUID", i);
             }
 
