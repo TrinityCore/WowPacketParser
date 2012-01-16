@@ -513,7 +513,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_DB_REPLY)]
         public static void HandleDBReply(Packet packet)
         {
-            packet.ReadUInt32("Type");
+            var type = packet.ReadUInt32("Type");
             var itemId = packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                 packet.ReadUInt32("Received Type");
@@ -521,13 +521,10 @@ namespace WowPacketParser.Parsing.Parsers
             // returned type depends on CMSG_REQUEST_HOTFIX sent type.
             // Faster to check size
             if (size == 0)
-            {
-                packet.ReadUInt32("Received Type");
                 return;
-            }
 
             packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
-            if (size == 32)
+            if (type == 1344507586)
             {
                 packet.ReadEnum<ItemClass>("Class", TypeCode.Int32);
                 packet.ReadUInt32("Sub Class");
@@ -537,7 +534,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<InventoryType>("Inventory Type", TypeCode.UInt32);
                 packet.ReadEnum<SheathType>("Sheath Type", TypeCode.Int32);
             }
-            else
+            else if (type == 2442913102)
             {
                 packet.ReadEnum<ItemQuality>("Quality", TypeCode.Int32);
                 packet.ReadEnum<ItemFlag>("Flags", TypeCode.Int32);
