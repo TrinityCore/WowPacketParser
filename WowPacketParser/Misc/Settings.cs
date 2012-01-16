@@ -16,6 +16,7 @@ namespace WowPacketParser.Misc
         public static readonly ClientVersionBuild ClientBuild = GetEnum("ClientBuild", ClientVersionBuild.Zero);
         public static readonly int Threads = GetInt32("Threads", 0);
         public static readonly DumpFormatType DumpFormat = GetEnum("DumpFormat", DumpFormatType.Text);
+        public static readonly StatsOutputFlags StatsOutput = GetEnum("StatsOutput", StatsOutputFlags.Local);
         public static readonly SQLOutputFlags SQLOutput = GetEnum("SQLOutput", SQLOutputFlags.None);
         public static readonly string SQLFileName = GetString("SQLFileName", "");
         public static readonly bool ShowEndPrompt = GetBoolean("ShowEndPrompt", false);

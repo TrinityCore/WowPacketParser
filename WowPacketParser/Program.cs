@@ -17,6 +17,12 @@ namespace WowPacketParser
 {
     public static class Program
     {
+        private static Object _lockStats = new Object();
+        private static int globalStatsOk;
+        private static int globalStatsSkip;
+        private static int globalStatsError;
+        private static int globalStatsTotal;
+
         private static string[] GetFiles(string[] args)
         {
             var files = args;
@@ -195,6 +201,9 @@ namespace WowPacketParser
                         Handler.WriteToFile(packets, outLogFileName);
                     }
 
+                    if (Settings.StatsOutput == StatsOutputFlags.None)
+                        return;
+
                     var span = DateTime.Now.Subtract(startTime);
                     var statsOk = 0;
                     var statsError = 0;
@@ -220,12 +229,24 @@ namespace WowPacketParser
                             }
                         }
                     }
-                    
-                    Console.WriteLine("{0}: Parsed {1:F1}% packets successfully, {2:F1}% with errors and skipped {3:F1}% in {4} Minutes, {5} Seconds and {6} Milliseconds.",
-                        prefix, (double)statsOk / total * 100, (double)statsError / total * 100, (double)statsSkip / total * 100,
-                        span.Minutes, span.Seconds, span.Milliseconds);
 
-                    Console.WriteLine();
+                    if (Settings.StatsOutput.HasAnyFlag(StatsOutputFlags.Global))
+                    {
+                        lock (_lockStats)
+                        {
+                            globalStatsOk = statsOk;
+                            globalStatsError = statsError;
+                            globalStatsSkip = statsSkip;
+                            globalStatsTotal = (int)total;
+                        }
+                    }
+
+                    if (Settings.StatsOutput.HasAnyFlag(StatsOutputFlags.Local))
+                    {
+                        Console.WriteLine("{0}: Parsed {1:F3}% packets successfully, {2:F3}% with errors and skipped {3:F3}% in {4} Minutes, {5} Seconds and {6} Milliseconds.",
+                            prefix, (double)statsOk / total * 100, (double)statsError / total * 100, (double)statsSkip / total * 100,
+                            span.Minutes, span.Seconds, span.Milliseconds);
+                    }
                 }
             }
             catch (Exception ex)
@@ -294,7 +315,10 @@ namespace WowPacketParser
 
             var numberOfThreads = Settings.Threads != 0 ? Settings.Threads.ToString(CultureInfo.InvariantCulture) : "a recommended number of";
             Console.WriteLine("Using {0} threads to process {1} files", numberOfThreads, files.Length);
+
+            var startTime = DateTime.Now;
             var count = 0;
+
             if (Settings.Threads == 0) // Number of threads is automatically choosen by the Parallel library
                 files.AsParallel().SetCulture()
                     .ForAll(file =>
@@ -302,6 +326,15 @@ namespace WowPacketParser
             else
                 files.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads)
                     .ForAll(file => ReadFile(file, stuffing, builder, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Length + " " + file + "]"));
+
+            if (Settings.StatsOutput.HasAnyFlag(StatsOutputFlags.Global))
+            {
+                var span = DateTime.Now.Subtract(startTime);
+                Console.WriteLine("Parsed {0} packets from {1} files: {2:F3}% successfully, {3:F3}% with errors and skipped {4:F3}% in {5} Minutes, {6} Seconds and {7} Milliseconds.",
+                    globalStatsTotal, files.Length, (double)globalStatsOk / globalStatsTotal * 100,
+                    (double)globalStatsError / globalStatsTotal * 100, (double)globalStatsSkip / globalStatsTotal * 100,
+                    span.Minutes, span.Seconds, span.Milliseconds);
+            }
 
             DumpSQLs("Dumping global sql", Settings.SQLFileName, builder, Settings.SQLOutput);
 
