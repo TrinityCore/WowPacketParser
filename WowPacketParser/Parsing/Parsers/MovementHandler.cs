@@ -908,7 +908,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var j = 0; j < count / 2; ++j)
                 phaseMask = packet.ReadInt16("Phases", ++i, j);
 
-            CurrentPhaseMask = phaseMask;
+            //CurrentPhaseMask = phaseMask;
 
             i++;
             count = packet.ReadInt32();
@@ -965,7 +965,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
             packet.Writer.WriteLine("GUID: {0}", guid);
 
-            CurrentPhaseMask = phaseMask;
+            //CurrentPhaseMask = phaseMask;
             packet.AddSniffData(StoreNameType.Phase, phaseMask, "PHASEMASK 422");
         }
 
