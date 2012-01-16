@@ -6,12 +6,14 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class WorldStateHandler
     {
+        public static int CurrentAreaId = -1;
+
         [Parser(Opcode.SMSG_INIT_WORLD_STATES)]
         public static void HandleInitWorldStates(Packet packet)
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
             packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area Id");
+            CurrentAreaId = packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area Id");
 
             var numFields = packet.ReadInt16("Field Count");
             for (var i = 0; i < numFields; i++)

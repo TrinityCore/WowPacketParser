@@ -35,6 +35,10 @@ namespace WowPacketParser.Store.SQL
 
                 var creature = unit.Value;
 
+                if (Settings.AreaFilters.Length > 0)
+                    if (!(creature.Area.ToString().MatchesFilters(Settings.AreaFilters)))
+                        continue;
+
                 // If our unit got any of the folowing updated fields set,
                 // it's probably a temporary spawn
                 UpdateField uf;
@@ -64,6 +68,7 @@ namespace WowPacketParser.Store.SQL
                 row.AddValue("spawndist", spawnDist);
                 row.AddValue("MovementType", movementType);
                 row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int) unit.Key.GetEntry(), false);
+                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + ")";
                 if (temporarySpawn)
                     row.Comment += " - !!! might be temporary spawn !!!";
 
@@ -430,6 +435,10 @@ namespace WowPacketParser.Store.SQL
 
                 var go = gameobject.Value;
 
+                if (Settings.AreaFilters.Length > 0)
+                    if (!(go.Area.ToString().MatchesFilters(Settings.AreaFilters)))
+                        continue;
+
                 uint animprogress = 0;
                 var state = 0;
                 UpdateField uf;
@@ -462,6 +471,7 @@ namespace WowPacketParser.Store.SQL
                 row.AddValue("animprogress", animprogress);
                 row.AddValue("state", state);
                 row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int) gameobject.Key.GetEntry(), false);
+                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + ")";
 
                 rows.Add(row);
                 keys.Add(new Tuple<uint, uint>((uint) gameobject.Key.GetLow(), gameobject.Key.GetEntry()));

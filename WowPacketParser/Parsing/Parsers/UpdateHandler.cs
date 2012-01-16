@@ -83,7 +83,7 @@ namespace WowPacketParser.Parsing.Parsers
             var moves = ReadMovementUpdateBlock(ref packet, guid, index);
             var updates = ReadValuesUpdateBlock(ref packet, objType, index);
 
-            var obj = new WoWObject {Type = objType, Movement = moves, UpdateFields = updates, Map = map, PhaseMask = (uint) MovementHandler.CurrentPhaseMask};
+            var obj = new WoWObject {Type = objType, Movement = moves, UpdateFields = updates, Map = map, Area = WorldStateHandler.CurrentAreaId, PhaseMask = (uint) MovementHandler.CurrentPhaseMask};
             packet.SniffFileInfo.Stuffing.Objects.TryAdd(guid, obj);
 
             if (guid.HasEntry() && (objType == ObjectType.Unit || objType == ObjectType.GameObject))
