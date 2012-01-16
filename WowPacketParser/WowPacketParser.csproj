@@ -418,6 +418,7 @@
     <Compile Include="SQL\SSHTunnel.cs" />
     <Compile Include="Misc\Logger.cs" />
     <Compile Include="Enums\StatsOutputFlags.cs" />
+    <Compile Include="Saving\SplitBinaryPacketWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

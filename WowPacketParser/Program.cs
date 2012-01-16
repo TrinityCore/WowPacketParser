@@ -168,11 +168,20 @@ namespace WowPacketParser
                 {
                     SniffType format = Settings.DumpFormat == DumpFormatType.Bin ? SniffType.Bin : SniffType.Pkt;
                     var fileExtension = Settings.DumpFormat.ToString().ToLower();
-                    Console.WriteLine("{0}: Copying {1} packets to .{2} format...", prefix, packets.Count, fileExtension);
 
-                    var dumpFileName = Path.ChangeExtension(file, null) + "_excerpt." + fileExtension;
-                    var writer = new BinaryPacketWriter(format, dumpFileName, Encoding.ASCII);
-                    writer.Write(packets);
+                    if (Settings.SplitOutput)
+                    {
+                        Console.WriteLine("{0}: Splitting {1} packets to multiple files in {2} format...", prefix, packets.Count, fileExtension);
+                        SplitBinaryPacketWriter.Write(packets, Encoding.ASCII);
+                    }
+                    else
+                    {
+                        Console.WriteLine("{0}: Copying {1} packets to .{2} format...", prefix, packets.Count, fileExtension);
+
+                        var dumpFileName = Path.ChangeExtension(file, null) + "_excerpt." + fileExtension;
+                        var writer = new BinaryPacketWriter(format, dumpFileName, Encoding.ASCII);
+                        writer.Write(packets);
+                    }
                 }
                 else
                 {

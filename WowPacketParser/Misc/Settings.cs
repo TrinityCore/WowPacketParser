@@ -22,6 +22,7 @@ namespace WowPacketParser.Misc
         public static readonly bool ShowEndPrompt = GetBoolean("ShowEndPrompt", false);
         public static readonly bool LogErrors = GetBoolean("LogErrors", false);
         public static readonly bool DebugReads = GetBoolean("DebugReads", false);
+        public static readonly bool SplitOutput = GetBoolean("SplitOutput", false);
 
         public static readonly bool SSHEnabled = GetBoolean("SSHEnabled", false);
         public static readonly string SSHHost = GetString("SSHHost", "localhost");
