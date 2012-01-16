@@ -7,11 +7,11 @@ using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 
-namespace WowPacketParser.Loading
+namespace WowPacketParser.Saving
 {
     public class FileLock<T>
     {
-        private const int _timeout = 3000;
+        private const int Timeout = 3000;
         private static readonly Dictionary<T, References> _locks = new Dictionary<T, References>();
 
         public IDisposable Lock(T fileName)
@@ -22,7 +22,7 @@ namespace WowPacketParser.Loading
             {
                 obj.Addquire();
                 Monitor.Exit(_locks);
-                if (!Monitor.TryEnter(obj, _timeout))
+                if (!Monitor.TryEnter(obj, Timeout))
                     throw new TimeoutException(String.Format("{0}", fileName));
             }
             else
@@ -82,16 +82,19 @@ namespace WowPacketParser.Loading
 
     public static class SplitBinaryPacketWriter
     {
-        private static readonly FileLock<string> locks = new FileLock<string>();
+        private static readonly FileLock<string> _locks = new FileLock<string>();
+        private const string Folder = "split"; // might want to move to config later
 
         public static void Write(IEnumerable<Packet> packets, Encoding encoding)
         {
+            Directory.CreateDirectory(Folder); // not doing anything if it exists already
+
             foreach (var packet in packets)
             {
-                var fileName = Opcodes.GetOpcodeName(packet.Opcode) + "." + Settings.DumpFormat.ToString().ToLower();
+                var fileName = Folder + "/" + Opcodes.GetOpcodeName(packet.Opcode) + "." + Settings.DumpFormat.ToString().ToLower();
                 try
                 {
-                    using (locks.Lock(fileName))
+                    using (_locks.Lock(fileName))
                     {
                         using (var writer = new BinaryWriter(new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None), encoding))
                         {

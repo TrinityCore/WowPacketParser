@@ -61,9 +61,6 @@ namespace WowPacketParser.Misc
             if (type != StoreNameType.Opcode && !_sniffData)
                 return;
 
-            if (data != "WithErrors")
-                return;
-
             var item = new SniffData
             {
                 FileInfo = SniffFileInfo,
