@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Tamir.SharpSsh.jsch;
 using WowPacketParser.Misc;
 
@@ -49,7 +50,7 @@ namespace WowPacketParser.SQL
              catch (Exception ex)
              {
                 Enabled = false;
-                Console.WriteLine(ex.Message + " at ssh connect.");
+                Trace.WriteLine(ex.Message + " at ssh connect.");
                 Disconnect();
             }
         }

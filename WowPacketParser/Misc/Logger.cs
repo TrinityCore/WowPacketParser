@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using WowPacketParser.Enums;
 
@@ -49,7 +50,7 @@ namespace WowPacketParser.Misc
             if (!Settings.LogErrors)
                 return;
 
-            Console.WriteLine();
+            Trace.WriteLine(Environment.NewLine);
             foreach (var pair in enumLogs)
             {
                 pair.Value.Sort();
@@ -68,7 +69,7 @@ namespace WowPacketParser.Misc
                     errors += str;
                 }
 
-                Console.WriteLine("{0} has undefined flags: {1}", pair.Key, errors);
+                Trace.WriteLine(string.Format("{0} has undefined flags: {1}", pair.Key, errors));
             }
         }
     }

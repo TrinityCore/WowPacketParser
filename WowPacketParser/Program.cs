@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -18,11 +19,11 @@ namespace WowPacketParser
 {
     public static class Program
     {
-        private static Object _lockStats = new Object();
-        private static int globalStatsOk;
-        private static int globalStatsSkip;
-        private static int globalStatsError;
-        private static int globalStatsTotal;
+        private static readonly Object _lockStats = new Object();
+        private static int _globalStatsOk;
+        private static int _globalStatsSkip;
+        private static int _globalStatsError;
+        private static int _globalStatsTotal;
 
         private static string[] GetFiles(string[] args)
         {
@@ -35,9 +36,9 @@ namespace WowPacketParser
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.GetType());
-                    Console.WriteLine(ex.Message);
-                    Console.WriteLine(ex.StackTrace);
+                    Trace.WriteLine(ex.GetType());
+                    Trace.WriteLine(ex.Message);
+                    Trace.WriteLine(ex.StackTrace);
                     files = new string[0];
                 }
             }
@@ -51,12 +52,12 @@ namespace WowPacketParser
                 // Enable SSH Tunnel
                 if (SSHTunnel.Enabled)
                 {
-                    Console.WriteLine("Enabling SSH Tunnel");
+                    Trace.WriteLine("Enabling SSH Tunnel");
                     SSHTunnel.Connect();
                 }
 
                 var startTime = DateTime.Now;
-                Console.WriteLine("Loading DB...");
+                Trace.WriteLine("Loading DB...");
 
                 try
                 {
@@ -65,16 +66,16 @@ namespace WowPacketParser
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.GetType());
-                    Console.WriteLine(ex.Message);
-                    Console.WriteLine(ex.StackTrace);
+                    Trace.WriteLine(ex.GetType());
+                    Trace.WriteLine(ex.Message);
+                    Trace.WriteLine(ex.StackTrace);
                     SQLConnector.Enabled = false; // Something failed, disabling everything SQL related
                 }
                 
                 var endTime = DateTime.Now;
                 var span = endTime.Subtract(startTime);
-                Console.WriteLine("Finished loading DB - {0} Minutes, {1} Seconds and {2} Milliseconds.", span.Minutes, span.Seconds, span.Milliseconds);
-                Console.WriteLine();
+                Trace.WriteLine(string.Format("Finished loading DB - {0} Minutes, {1} Seconds and {2} Milliseconds.", span.Minutes, span.Seconds, span.Milliseconds));
+                Trace.WriteLine(Environment.NewLine);
             }
         }
 
@@ -133,7 +134,7 @@ namespace WowPacketParser
             if (sqlOutput.HasFlag(SQLOutputFlags.CreatureEquip))
                 store.WriteData(builder.CreatureEquip());
 
-            Console.WriteLine("{0}: Saved file to '{1}'", prefix, fileName);
+            Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", prefix, fileName));
             store.WriteToFile();
         }
 
@@ -146,7 +147,7 @@ namespace WowPacketParser
                 var outFileName = Path.ChangeExtension(file, null) + "_parsed.txt";
                 if (Utilities.FileIsInUse(outFileName))
                 {
-                    Console.WriteLine("Save file {0} is in use, parsing will not be done.", outFileName);
+                    Trace.WriteLine(string.Format("Save file {0} is in use, parsing will not be done.", outFileName));
                     return;
                 }
             }
@@ -155,7 +156,7 @@ namespace WowPacketParser
             var fileInfo = new SniffFileInfo { FileName = file, Stuffing = stuffing };
             var fileName = Path.GetFileName(fileInfo.FileName);
 
-            Console.WriteLine("{0}: Reading packets...", prefix);
+            Trace.WriteLine(string.Format("{0}: Reading packets...", prefix));
 
             Builder builder = globalBuilder ?? (Settings.SQLOutput > 0 ? new Builder(stuffing) : null);
 
@@ -164,7 +165,7 @@ namespace WowPacketParser
                 var packets = Reader.Read(fileInfo);
                 if (packets.Count == 0)
                 {
-                    Console.WriteLine("{0}: Packet count is 0", prefix);
+                    Trace.WriteLine(string.Format("{0}: Packet count is 0", prefix));
                     return;
                 }
 
@@ -175,12 +176,12 @@ namespace WowPacketParser
 
                     if (Settings.SplitOutput)
                     {
-                        Console.WriteLine("{0}: Splitting {1} packets to multiple files in {2} format...", prefix, packets.Count, fileExtension);
+                        Trace.WriteLine(string.Format("{0}: Splitting {1} packets to multiple files in {2} format...", prefix, packets.Count, fileExtension));
                         SplitBinaryPacketWriter.Write(packets, Encoding.ASCII);
                     }
                     else
                     {
-                        Console.WriteLine("{0}: Copying {1} packets to .{2} format...", prefix, packets.Count, fileExtension);
+                        Trace.WriteLine(string.Format("{0}: Copying {1} packets to .{2} format...", prefix, packets.Count, fileExtension));
 
                         var dumpFileName = Path.ChangeExtension(file, null) + "_excerpt." + fileExtension;
                         var writer = new BinaryPacketWriter(format, dumpFileName, Encoding.ASCII);
@@ -189,7 +190,7 @@ namespace WowPacketParser
                 }
                 else
                 {
-                    Console.WriteLine("{0}: Parsing {1} packets. Assumed version {2}", prefix, packets.Count, ClientVersion.GetVersionString());
+                    Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Assumed version {2}", prefix, packets.Count, ClientVersion.GetVersionString()));
 
                     var total = (uint)packets.Count;
                     var startTime = DateTime.Now;
@@ -210,7 +211,7 @@ namespace WowPacketParser
 
                     if (Settings.DumpFormat != DumpFormatType.None)
                     {
-                        Console.WriteLine("{0}: Saved file to '{1}'", prefix, outLogFileName);
+                        Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", prefix, outLogFileName));
                         Handler.WriteToFile(packets, outLogFileName);
                     }
 
@@ -247,26 +248,26 @@ namespace WowPacketParser
                     {
                         lock (_lockStats)
                         {
-                            globalStatsOk = statsOk;
-                            globalStatsError = statsError;
-                            globalStatsSkip = statsSkip;
-                            globalStatsTotal = (int)total;
+                            _globalStatsOk = statsOk;
+                            _globalStatsError = statsError;
+                            _globalStatsSkip = statsSkip;
+                            _globalStatsTotal = (int)total;
                         }
                     }
 
                     if (Settings.StatsOutput.HasAnyFlag(StatsOutputFlags.Local))
                     {
-                        Console.WriteLine("{0}: Parsed {1:F3}% packets successfully, {2:F3}% with errors and skipped {3:F3}% in {4} Minutes, {5} Seconds and {6} Milliseconds.",
+                        Trace.WriteLine(string.Format("{0}: Parsed {1:F3}% packets successfully, {2:F3}% with errors and skipped {3:F3}% in {4} Minutes, {5} Seconds and {6} Milliseconds.",
                             prefix, (double)statsOk / total * 100, (double)statsError / total * 100, (double)statsSkip / total * 100,
-                            span.Minutes, span.Seconds, span.Milliseconds);
+                            span.Minutes, span.Seconds, span.Milliseconds));
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.GetType());
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
+                Trace.WriteLine(ex.GetType());
+                Trace.WriteLine(ex.Message);
+                Trace.WriteLine(ex.StackTrace);
             }
         }
 
@@ -282,13 +283,14 @@ namespace WowPacketParser
 
         private static void Main(string[] args)
         {
+            SetUpListeners();
+
             string[] files = GetFiles(args);
             if (files.Length == 0)
             {
-                if (args.Length == 0)
-                    Console.WriteLine("No files specified.");
-                else
-                    Console.WriteLine("No files found with pattern {0}", args[0]);
+                Trace.WriteLine(args.Length == 0
+                                    ? "No files specified."
+                                    : string.Format("No files found with pattern {0}", args[0]));
                 EndPrompt();
                 return;
             }
@@ -327,7 +329,7 @@ namespace WowPacketParser
             }
 
             var numberOfThreads = Settings.Threads != 0 ? Settings.Threads.ToString(CultureInfo.InvariantCulture) : "a recommended number of";
-            Console.WriteLine("Using {0} threads to process {1} files", numberOfThreads, files.Length);
+            Trace.WriteLine(string.Format("Using {0} threads to process {1} files", numberOfThreads, files.Length));
 
             var startTime = DateTime.Now;
             var count = 0;
@@ -343,10 +345,10 @@ namespace WowPacketParser
             if (Settings.StatsOutput.HasAnyFlag(StatsOutputFlags.Global))
             {
                 var span = DateTime.Now.Subtract(startTime);
-                Console.WriteLine("Parsed {0} packets from {1} files: {2:F3}% successfully, {3:F3}% with errors and skipped {4:F3}% in {5} Minutes, {6} Seconds and {7} Milliseconds.",
-                    globalStatsTotal, files.Length, (double)globalStatsOk / globalStatsTotal * 100,
-                    (double)globalStatsError / globalStatsTotal * 100, (double)globalStatsSkip / globalStatsTotal * 100,
-                    span.Minutes, span.Seconds, span.Milliseconds);
+                Trace.WriteLine(string.Format("Parsed {0} packets from {1} files: {2:F3}% successfully, {3:F3}% with errors and skipped {4:F3}% in {5} Minutes, {6} Seconds and {7} Milliseconds.",
+                    _globalStatsTotal, files.Length, (double)_globalStatsOk / _globalStatsTotal * 100,
+                    (double)_globalStatsError / _globalStatsTotal * 100, (double)_globalStatsSkip / _globalStatsTotal * 100,
+                    span.Minutes, span.Seconds, span.Milliseconds));
             }
 
             DumpSQLs("Dumping global sql", Settings.SQLFileName, builder, Settings.SQLOutput);
@@ -355,6 +357,20 @@ namespace WowPacketParser
             SSHTunnel.Disconnect();
             Logger.WriteErrors();
             EndPrompt();
+        }
+
+        private static void SetUpListeners()
+        {
+            Trace.Listeners.Clear();
+
+            var fileListener = new TextWriterTraceListener(string.Format("parsing_log_ {0} .txt", Path.GetRandomFileName()));
+            fileListener.Name = "ConsoleMirror";
+
+            var consoleListener = new ConsoleTraceListener(true);
+
+            Trace.Listeners.Add(fileListener);
+            Trace.Listeners.Add(consoleListener);
+            Trace.AutoFlush = true;
         }
     }
 }

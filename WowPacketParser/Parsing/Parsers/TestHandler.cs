@@ -112,6 +112,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.TEST_422_9838)]
         public static void Handle9838(Packet packet)
         {
+            // sub_6C2FD0
+
             packet.ReadInt32("Unknown 01"); // v3 + 40
             packet.ReadInt32("Unknown 02"); // v3 + 36
             packet.ReadInt32("Unknown 03"); // v3 + 68

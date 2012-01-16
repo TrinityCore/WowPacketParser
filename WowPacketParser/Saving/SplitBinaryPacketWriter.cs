@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -120,7 +121,7 @@ namespace WowPacketParser.Saving
                 }
                 catch(TimeoutException)
                 {
-                    Console.WriteLine("Timeout trying to write Opcode to {0} ignoring opcode", fileName);
+                    Trace.WriteLine(string.Format("Timeout trying to write Opcode to {0} ignoring opcode", fileName));
                 }
             }
         }
