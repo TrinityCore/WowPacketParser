@@ -908,14 +908,15 @@ namespace WowPacketParser.Parsing.Parsers
             for (var j = 0; j < count / 2; ++j)
                 phaseMask = packet.ReadInt16("Phases", ++i, j);
 
-            //CurrentPhaseMask = phaseMask;
-
             i++;
             count = packet.ReadInt32();
             for (var j = 0; j < count / 2; ++j)
                 packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Terrain Swap 2", i, j);
 
             packet.ReadUInt32("Flag"); // can be 0, 4 or 8, 8 = normal world, others are unknown
+
+            //CurrentPhaseMask = phaseMask;
+            packet.AddSniffData(StoreNameType.Phase, phaseMask, "PHASEMASK 406");
         }
 
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_2_2_14545)]

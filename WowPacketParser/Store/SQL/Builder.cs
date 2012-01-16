@@ -74,6 +74,47 @@ namespace WowPacketParser.Store.SQL
             return new QueryBuilder.SQLInsert(tableName, keys, new[] { "guid", "id" }, rows).Build();
         }
 
+        public string CreatureEquip()
+        {
+            if (!_stuffing.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit))
+                return string.Empty;
+
+            var units = _stuffing.Objects.Where(x => x.Value.Type == ObjectType.Unit);
+            const string tableName = "creature_equip_template";
+
+            ICollection<uint> key = new Collection<uint>();
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var unit in units)
+            {
+                // don't save if duplicate
+                if (key.Contains(unit.Key.GetEntry()))
+                    continue;
+
+                var row = new QueryBuilder.SQLInsertRow();
+                var creature = unit.Value;
+                UpdateField equip;
+                int[] equipData = {0,0,0};
+
+                for (var i = 0; i < 3; i++)
+                    if (creature.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_VIRTUAL_ITEM_SLOT_ID1 + i), out equip))
+                        equipData[i] = equip.Int32Value;
+
+                // check if fields are empty
+                if (!equipData.Any(value => value != 0))
+                    continue;
+
+                row.AddValue("entry", unit.Key.GetEntry());
+                row.AddValue("itemEntry1", equipData[0]);
+                row.AddValue("itemEntry2", equipData[1]);
+                row.AddValue("itemEntry3", equipData[2]);
+                row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
+                rows.Add(row);
+                key.Add(unit.Key.GetEntry());
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, key, "entry", rows).Build();
+        }
+
         public string SniffData()
         {
             if (_stuffing.SniffData.IsEmpty)
