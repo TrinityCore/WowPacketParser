@@ -89,28 +89,35 @@ namespace WowPacketParser.Loading
             foreach (var packet in packets)
             {
                 var fileName = Opcodes.GetOpcodeName(packet.Opcode) + "." + Settings.DumpFormat.ToString().ToLower();
-                using (locks.Lock(fileName))
+                try
                 {
-                    using (var writer = new BinaryWriter(new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None), encoding))
+                    using (locks.Lock(fileName))
                     {
-                        if (Settings.DumpFormat == DumpFormatType.Pkt)
+                        using (var writer = new BinaryWriter(new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None), encoding))
                         {
-                            writer.Write((ushort)packet.Opcode);
-                            writer.Write((int)packet.GetLength());
-                            writer.Write((byte)packet.Direction);
-                            writer.Write((ulong)Utilities.GetUnixTimeFromDateTime(packet.Time));
-                            writer.Write(packet.GetStream(0));
+                            if (Settings.DumpFormat == DumpFormatType.Pkt)
+                            {
+                                writer.Write((ushort)packet.Opcode);
+                                writer.Write((int)packet.GetLength());
+                                writer.Write((byte)packet.Direction);
+                                writer.Write((ulong)Utilities.GetUnixTimeFromDateTime(packet.Time));
+                                writer.Write(packet.GetStream(0));
+                            }
+                            else
+                            {
+                                writer.Write(packet.Opcode);
+                                writer.Write((int)packet.GetLength());
+                                writer.Write((int)Utilities.GetUnixTimeFromDateTime(packet.Time));
+                                writer.Write((byte)packet.Direction);
+                                writer.Write(packet.GetStream(0));
+                            }
+                            writer.Close();
                         }
-                        else
-                        {
-                            writer.Write(packet.Opcode);
-                            writer.Write((int)packet.GetLength());
-                            writer.Write((int)Utilities.GetUnixTimeFromDateTime(packet.Time));
-                            writer.Write((byte)packet.Direction);
-                            writer.Write(packet.GetStream(0));
-                        }
-                        writer.Close();
                     }
+                }
+                catch(TimeoutException)
+                {
+                    Console.WriteLine("Timeout trying to write Opcode to {0} ignoring opcode", fileName);
                 }
             }
         }
