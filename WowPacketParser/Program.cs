@@ -363,7 +363,7 @@ namespace WowPacketParser
         {
             Trace.Listeners.Clear();
 
-            var fileListener = new TextWriterTraceListener(string.Format("parsing_log_ {0} .txt", Path.GetRandomFileName()));
+            var fileListener = new TextWriterTraceListener(string.Format("parsing_log_{0}.txt", Path.GetRandomFileName()));
             fileListener.Name = "ConsoleMirror";
 
             var consoleListener = new ConsoleTraceListener(true);
