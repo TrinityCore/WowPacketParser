@@ -667,6 +667,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.TEST_422_24649, 24649},
             {Opcode.TEST_422_265C, 0x265C},
             {Opcode.TEST_422_26948, 26948},
+            {Opcode.TEST_422_9838, 9838}
 
             // CMSG Handlers
             // 4120 - sub_65D6A0 - CMSG_LFG_LFR_JOIN ?

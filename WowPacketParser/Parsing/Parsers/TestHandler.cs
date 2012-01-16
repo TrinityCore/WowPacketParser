@@ -108,5 +108,28 @@ namespace WowPacketParser.Parsing.Parsers
             using (var uncompressed = packet.Inflate(packet.ReadInt32()))
                 uncompressed.AsHex();
         }
+
+        [Parser(Opcode.TEST_422_9838)]
+        public static void Handle9838(Packet packet)
+        {
+            packet.ReadInt32("Unknown 01"); // v3 + 40
+            packet.ReadInt32("Unknown 02"); // v3 + 36
+            packet.ReadInt32("Unknown 03"); // v3 + 68
+            packet.ReadInt32("Unknown 04"); // v3 + 72
+            packet.ReadInt32("Unknown 05"); // v3 + 44
+            packet.ReadInt32("Unknown 06"); // v3 + 60
+            packet.ReadInt32("Unknown 07"); // v3 + 52
+            packet.ReadInt32("Unknown 08"); // v3 + 24
+            packet.ReadInt32("Unknown 09"); // v3 + 48
+            packet.ReadInt32("Unknown 10"); // v3 + 76
+            packet.ReadInt32("Unknown 11"); // v3 + 64
+            packet.ReadInt32("Unknown 12"); // v3 + 56
+            packet.ReadInt32("Unknown 13"); // v3 + 20
+            packet.ReadInt32("Unknown 14"); // v3 + 32
+            packet.ReadInt32("Unknown 15"); // v3 + 16
+            packet.ReadInt32("Unknown 16"); // v3 + 84
+            packet.ReadInt32("Unknown 17"); // v3 + 80
+            packet.ReadInt32("Unknown 18"); // v3 + 28
+        }
     }
 }
