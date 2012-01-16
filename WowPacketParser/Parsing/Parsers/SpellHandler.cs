@@ -425,6 +425,19 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.RemovedInVersion(ClientType.WrathOfTheLichKing))
                 packet.ReadByte("Cast count");
 
+            // This is *retarded*
+            /* sub_89C2F0
+             * CDataStore__GetInt8(a11, (int)&v16); // Count
+             * CDataStore__GetInt32(a11, (int)&v19); // Spell Id
+             * CDataStore__GetInt8(a11, (int)&v20); // Reason
+             * v18 = -1;
+             * v17 = -1;
+             * if ( *(_DWORD *)(a11 + 20) < *(_DWORD *)(a11 + 16) ) <- ?
+             *   CDataStore__GetInt32(a11, (int)&v18);
+             * if ( *(_DWORD *)(a11 + 20) < *(_DWORD *)(a11 + 16) ) <- ?
+             *   CDataStore__GetInt32(a11, (int)&v17);
+             */
+
             switch (result)
             {
                 case SpellCastFailureReason.TooManyOfItem:
@@ -442,18 +455,22 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Reagent ID");
                     break;
                 case SpellCastFailureReason.RequiresSpellFocus:
-                    packet.ReadUInt32("Spell Focus");
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Spell Focus");
                     break;
                 case SpellCastFailureReason.RequiresArea:
-                    packet.ReadEntryWithName<UInt32>(StoreNameType.Area, "Area ID");
+                    if (packet.CanRead())
+                        packet.ReadEntryWithName<UInt32>(StoreNameType.Area, "Area ID");
                     break;
                 case SpellCastFailureReason.NotReady:
                 case SpellCastFailureReason.Silenced:
                 case SpellCastFailureReason.NotStanding:
-                    packet.ReadInt32("Unk");
+                    if (packet.CanRead())
+                        packet.ReadInt32("Unk");
                     break;
                 case SpellCastFailureReason.CustomError:
-                    packet.ReadUInt32("Error ID");
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Error ID");
                     break;
                 case SpellCastFailureReason.PreventedByMechanic:
                     packet.ReadEnum<SpellMechanics>("Mechanic", TypeCode.UInt32);
@@ -461,15 +478,26 @@ namespace WowPacketParser.Parsing.Parsers
                 case SpellCastFailureReason.EquippedItemClass:
                 case SpellCastFailureReason.EquippedItemClassMainhand:
                 case SpellCastFailureReason.EquippedItemClassOffhand:
-                    packet.ReadEnum<ItemClass>("Class", TypeCode.UInt32);
-                    packet.ReadUInt32("Subclass");
+                    if (packet.CanRead())
+                        packet.ReadEnum<ItemClass>("Class", TypeCode.UInt32);
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Subclass");
                     break;
                 case SpellCastFailureReason.MinSkill:
-                    packet.ReadUInt32("Skill Type"); // SkillLine.dbc
-                    packet.ReadUInt32("Skill value");
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Skill Type"); // SkillLine.dbc
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Skill value");
                     break;
                 case SpellCastFailureReason.FishingTooLow:
-                    packet.ReadUInt32("Req fishing skill");
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Req fishing skill");
+                    break;
+                default:
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Unknown1");
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Unknown2");
                     break;
             }
         }
