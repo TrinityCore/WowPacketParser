@@ -518,8 +518,6 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                 packet.ReadUInt32("Received Type");
             var size = packet.ReadUInt32("Size");
-            // returned type depends on CMSG_REQUEST_HOTFIX sent type.
-            // Faster to check size
             if (size == 0)
                 return;
 
