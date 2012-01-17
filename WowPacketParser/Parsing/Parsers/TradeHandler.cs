@@ -181,8 +181,8 @@ namespace WowPacketParser.Parsing.Parsers
                 if (guids1[i][3] != 0)
                     guids1[i][3] ^= packet.ReadByte();
                     
-                packet.Writer.WriteLine("Guid 1: {0}", new Guid(BitConverter.ToUInt64(guids1[i], 0)));
-                packet.Writer.WriteLine("Guid 2: {0}", new Guid(BitConverter.ToUInt64(guids2[i], 0)));
+                packet.Writer.WriteLine("Item Creator Guid: {0}", new Guid(BitConverter.ToUInt64(guids1[i], 0)));
+                packet.Writer.WriteLine("Item Gift Creator Guid: {0}", new Guid(BitConverter.ToUInt64(guids2[i], 0)));
             }
                     
             
