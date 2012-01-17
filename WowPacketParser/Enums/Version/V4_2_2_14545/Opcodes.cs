@@ -317,6 +317,8 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.MSG_MOVE_STOP_STRAFE, 0x0125},
             {Opcode.MSG_MOVE_STOP_SWIM, 0xB424},
             {Opcode.MSG_MOVE_STOP_TURN, 0x90A4},
+            {Opcode.MSG_MOVE_SET_RUN_SPEED, 0xE24E},
+            {Opcode.SMSG_SPLINE_SET_RUN_SPEED, 0xB2CE},
             {Opcode.MSG_PETITION_DECLINE, 0x98E7},
             {Opcode.MSG_PETITION_RENAME, 0x4857},
             {Opcode.MSG_QUERY_NEXT_MAIL_TIME, 0xCEE6},
