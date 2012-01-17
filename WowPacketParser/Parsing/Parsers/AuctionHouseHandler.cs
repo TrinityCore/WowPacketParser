@@ -62,6 +62,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Quality");
             packet.ReadByte("Usable");
             packet.ReadByte("Unk Byte 1");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                packet.ReadByte("Unk Byte 2");
+
             var count = packet.ReadByte("Unk Count");
             for (var i = 0; i < count; ++i)
             {
@@ -181,6 +185,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadUInt32("Own Count");
             packet.ReadUInt32("Unk UInt32 1");
+
         }
 
         [Parser(Opcode.SMSG_AUCTION_REMOVED_NOTIFICATION)]
