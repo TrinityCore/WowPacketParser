@@ -589,6 +589,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Guid");
         }
 
+        [Parser(Opcode.SMSG_CAMERA_SHAKE)]
+        public static void HandleCameraShake(Packet packet)
+        {
+            packet.ReadInt32("SpellEffectCameraShakes"); // index from dbc
+            packet.ReadInt32("Unknown"); // Sound related
+        }
+
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]

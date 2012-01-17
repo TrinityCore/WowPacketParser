@@ -384,6 +384,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_BUY_ITEM, 0xCA67},
             {Opcode.SMSG_CALENDAR_COMMAND_RESULT, 0x9A4E},
             {Opcode.SMSG_CALENDAR_SEND_CALENDAR, 0x08FB},
+            {Opcode.SMSG_CAMERA_SHAKE, 0x5CFB},
             {Opcode.SMSG_CANCEL_AUTO_REPEAT, 0x5ACB},
             {Opcode.SMSG_CAST_FAILED, 0x1AEB},
             {Opcode.SMSG_CHANNEL_LIST, 0x9C47},

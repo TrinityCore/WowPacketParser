@@ -33,6 +33,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Reason");
         }
 
+        // Might be a completely different opcode on 4.2.2 (trainer related)
+        // Subv says it is SMSG_TRAINER_REPORT_ERROR_IN_CONSOLE but I think he is trolling me.
         [Parser(Opcode.SMSG_TRAINER_BUY_SUCCEEDED)]
         public static void HandleServerTrainerBuySucceedeed(Packet packet)
         {
