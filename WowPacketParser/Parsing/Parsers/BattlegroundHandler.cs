@@ -36,21 +36,20 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_BATTLEFIELD_JOIN)]
+        [Parser(Opcode.CMSG_BATTLEFIELD_JOIN, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleBattlefieldJoin(Packet packet)
         {
             var someBytes = new byte[8];
 
             someBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
             someBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            //b0 = guidBytes[4]; // unsure which one it goes with, but it is used.
+            //uint somebyte = guidBytes[4]; // unsure which one it goes with, but it is used around here.
             someBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
             someBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
             someBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
             someBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
             someBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
             someBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            // do we have to read a full byte instead here? dont think so..
 
             packet.ReadUInt32("someuint");
 
@@ -63,7 +62,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (someBytes[1] != 0)
                 someBytes[1] ^= packet.ReadByte("unk1");
             if (someBytes[4] != 0)
-                someBytes[4] ^= packet.ReadByte("MaybeBGId"); // guess this is the BG ID
+                someBytes[4] ^= packet.ReadByte("BattlefieldId");
             if (someBytes[6] != 0)
                 someBytes[6] ^= packet.ReadByte("unk6");
             if (someBytes[3] != 0)
