@@ -1605,7 +1605,8 @@ namespace WowPacketParser.Enums
         TEST_430_SYNC_PLAYER_MOVE,
         TEST_422_265C,
         TEST_422_26948,
-        TEST_422_9838
+        TEST_422_9838,
+        TEST_422_51447,
 
         // ReSharper restore InconsistentNaming
     }

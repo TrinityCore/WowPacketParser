@@ -133,5 +133,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unknown 17"); // v3 + 80
             packet.ReadInt32("Unknown 18"); // v3 + 28
         }
+        
+        [Parser(Opcode.TEST_422_51447)]
+        public static void Handle51447(Packet packet)
+        {
+            packet.ReadGuid("Guid");
+            packet.ReadByte("Unk 1");
+            packet.ReadVector3("Position");
+        }
     }
 }
