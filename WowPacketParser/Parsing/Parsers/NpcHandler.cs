@@ -22,16 +22,30 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_TRAINER_BUY_SPELL)]
-        [Parser(Opcode.SMSG_TRAINER_BUY_SUCCEEDED)]
         [Parser(Opcode.SMSG_TRAINER_BUY_FAILED)]
         [Parser(Opcode.SMSG_TRAINER_BUY_RESULT)]
-        public static void HandleServerTrainerBuySucceedeed(Packet packet)
+        public static void HandleServerTrainerBuy(Packet packet)
         {
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_TRAINER_BUY_FAILED)
                 || packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_TRAINER_BUY_RESULT))
                 packet.ReadUInt32("Reason");
+        }
+
+        [Parser(Opcode.SMSG_TRAINER_BUY_SUCCEEDED)]
+        public static void HandleServerTrainerBuySucceedeed(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                packet.ReadInt32("Trainer Service"); // <TS>
+
+            /* Comments about TS:
+             * if !TS, "Trainer service <TS> unavailable"
+             * if TS == 1, "Not enough money for trainer service <TS>"
+             * Anyway... could only find 0s (and one 1)
+             * */
         }
 
         [Parser(Opcode.CMSG_TRAINER_BUY_SPELL, ClientVersionBuild.V4_2_2_14545)]
