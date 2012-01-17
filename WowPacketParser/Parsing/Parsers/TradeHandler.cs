@@ -60,7 +60,135 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED)]
+        [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleTradeStatusExtended422(Packet packet)
+        {
+            packet.AsHex();
+            packet.ReadInt32("Unk 1");
+            packet.ReadInt32("Unk 2");
+            packet.ReadInt32("Unk 3");
+            packet.ReadInt32("Unk 4");
+            packet.ReadUInt64("Gold");
+            packet.ReadByte("Trader?");
+            var count = packet.ReadInt32("Unk Count");
+            packet.ReadInt32("Unk 7");
+            packet.ReadInt32("Unk 8");
+            
+            var guids1 = new byte[count][];
+            var guids2 = new byte[count][];
+            for (var i = 0; i < count; ++i)
+            {
+                guids1[i] = new byte[8];
+                guids2[i] = new byte[8];
+            }
+            
+            for (var i = 0; i < count; ++i)
+            {
+                guids1[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids1[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids1[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids1[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids1[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
+                
+                guids2[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids2[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids2[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids2[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids2[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids2[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids2[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
+                
+                guids1[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
+                
+                guids2[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
+                
+                guids1[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids1[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
+            }
+            
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Unk 1", i);
+                
+                if (guids2[i][0] != 0)
+                    guids2[i][0] ^= packet.ReadByte();
+                    
+                if (guids2[i][3] != 0)
+                    guids2[i][3] ^= packet.ReadByte();
+                    
+                if (guids2[i][4] != 0)
+                    guids2[i][4] ^= packet.ReadByte();
+                    
+                packet.ReadInt32("Unk 2", i);
+                
+                if (guids1[i][7] != 0)
+                    guids1[i][7] ^= packet.ReadByte();
+                    
+                packet.ReadInt32("Unk 3", i);
+                packet.ReadInt32("Unk 4", i);
+                packet.ReadInt32("Unk 5", i);
+                
+                if (guids2[i][2] != 0)
+                    guids2[i][2] ^= packet.ReadByte();
+                    
+                if (guids2[i][5] != 0)
+                    guids2[i][5] ^= packet.ReadByte();
+                    
+                packet.ReadInt32("Unk 6", i);
+                
+                if (guids1[i][1] != 0)
+                    guids1[i][1] ^= packet.ReadByte();
+                    
+                if (guids2[i][6] != 0)
+                    guids2[i][6] ^= packet.ReadByte();
+                    
+                if (guids1[i][0] != 0)
+                    guids1[i][0] ^= packet.ReadByte();
+                    
+                packet.ReadInt32("Unk 7", i);
+                packet.ReadUInt32("Unk 8", i);
+                packet.ReadInt32("Unk 9", i);
+                
+                if (guids1[i][5] != 0)
+                    guids1[i][5] ^= packet.ReadByte();
+                    
+                packet.ReadInt32("Unk 10", i);
+                
+                if (guids1[i][6] != 0)
+                    guids1[i][6] ^= packet.ReadByte();
+                    
+                if (guids2[i][7] != 0)
+                    guids2[i][7] ^= packet.ReadByte();
+                    
+                packet.ReadInt32("Unk 11", i);
+                packet.ReadByte("Unk 12", i);
+                
+                if (guids2[i][1] != 0)
+                    guids2[i][1] ^= packet.ReadByte();
+                
+                packet.ReadInt32("Unk 13", i);                
+                packet.ReadInt32("Unk 14", i);
+                packet.ReadByte("Unk 15", i);
+                
+                if (guids1[i][4] != 0)
+                    guids1[i][4] ^= packet.ReadByte();
+                    
+                if (guids1[i][2] != 0)
+                    guids1[i][2] ^= packet.ReadByte();
+                    
+                packet.ReadInt32("Unk 16", i);
+                
+                if (guids1[i][3] != 0)
+                    guids1[i][3] ^= packet.ReadByte();
+                    
+                packet.Writer.WriteLine("Guid 1: {0}", new Guid(BitConverter.ToUInt64(guids1[i], 0)));
+                packet.Writer.WriteLine("Guid 2: {0}", new Guid(BitConverter.ToUInt64(guids2[i], 0)));
+            }
+                    
+            
+        }
+        
+        [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleTradeStatusExtended(Packet packet)
         {
             packet.ReadByte("Trader");
