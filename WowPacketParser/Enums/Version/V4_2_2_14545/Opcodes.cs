@@ -8,6 +8,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
         {
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0xDC4B},
             {Opcode.CMSG_ACCEPT_TRADE, 0xB4A5},
+            {Opcode.SMSG_TRADE_STATUS_EXTENDED, 0xF0EC},
             {Opcode.CMSG_ACTIVATETAXI, 0x8CDB},
             {Opcode.CMSG_ACTIVATETAXIEXPRESS, 0x5E7F},
             {Opcode.CMSG_ADD_FRIEND, 0x5C57},
