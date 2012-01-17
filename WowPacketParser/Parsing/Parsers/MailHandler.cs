@@ -27,6 +27,9 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("Mailbox GUID");
             packet.ReadUInt32("Mail Id");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                packet.ReadUInt64("Money");
         }
 
         [Parser(Opcode.CMSG_MAIL_DELETE)]
