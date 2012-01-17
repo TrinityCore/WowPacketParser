@@ -335,9 +335,17 @@ namespace WowPacketParser.Parsing.Parsers
                     var ramdonEnchant = packet.ReadInt32("Random Item Property Id", i);
                     if (ramdonEnchant != 0)
                         packet.ReadUInt32("Item Suffix Factor", i);
+
                     packet.ReadUInt32("Stack Count", i);
                     packet.ReadUInt32("Unk Uint32 2", i); // Only seen 0
                     packet.ReadByte("Spell Charges", i);
+
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                    {
+                        packet.ReadInt32("Unk 1 Int32", i);
+                        packet.ReadInt32("Unk 2 Int32", i);
+                    }
+
                     var enchantment = packet.ReadByte("Number of Enchantments", i);
                     for (var j = 0; j < enchantment; j++)
                     {
