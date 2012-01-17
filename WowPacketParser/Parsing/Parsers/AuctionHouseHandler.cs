@@ -62,6 +62,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Quality");
             packet.ReadByte("Usable");
             packet.ReadByte("Unk Byte 1");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                packet.ReadByte("Unk Byte 2");
+
             var count = packet.ReadByte("Unk Count");
             for (var i = 0; i < count; ++i)
             {
@@ -75,8 +79,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("Auctioneer GUID");
             packet.ReadUInt32("Auction Id");
-
-            // I think Blizz got this wrong. Auction Id should be 64 on 4.x, not price.
             packet.ReadValue("Price", _auctionSize);
         }
 
@@ -85,9 +87,23 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadUInt32("Auction ID");
             var action = packet.ReadEnum<AuctionHouseAction>("Action", TypeCode.UInt32);
-            var error = packet.ReadEnum<AuctionHouseAction>("Error", TypeCode.UInt32);
-            if (error == 0 && action > 0)
-                packet.ReadUInt32("Bid Error");
+            var error = packet.ReadEnum<AuctionHouseError>("Error", TypeCode.UInt32);
+
+            if (error == AuctionHouseError.Inventory)
+                packet.ReadInt32("Error Inventory Int32");
+
+            switch (error)
+            {
+                case AuctionHouseError.Ok:
+                    if (action == AuctionHouseAction.Bid)
+                        packet.ReadInt64("Unknown Bid Int64");
+                    break;
+                case AuctionHouseError.HigherBid:
+                    packet.ReadInt64("Unknown HigherBid Int64");
+                    packet.ReadInt64("Unknown HigherBid Int64");
+                    packet.ReadInt64("Unknown HigherBid Int64");
+                    break;
+            }
         }
 
         [Parser(Opcode.SMSG_AUCTION_BIDDER_NOTIFICATION)]
@@ -140,7 +156,11 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Auction Id", i);
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
 
-                int enchantmentCount = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 7 : 6;
+                int enchantmentCount = 6;
+                if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
+                    enchantmentCount = 7;
+                if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
+                    enchantmentCount = 9;
                 for (var j = 0; j < enchantmentCount; ++j)
                 {
                     packet.ReadUInt32("Item Enchantment ID", i, j);
@@ -155,16 +175,17 @@ namespace WowPacketParser.Parsing.Parsers
                 //packet.ReadEnum<ItemFlag>("Item Flags", TypeCode.UInt32, i);
                 packet.ReadUInt32("Unk UInt32 1", i);
                 packet.ReadGuid("Owner", i);
-                packet.ReadUInt32("Start Bid", i);
-                packet.ReadUInt32("Out Bid", i);
-                packet.ReadUInt32("Buyout ", i);
+                packet.ReadValue("Start Bid", _auctionSize, i);
+                packet.ReadValue("Out Bid", _auctionSize, i);
+                packet.ReadValue("Buyout ", _auctionSize, i);
                 packet.ReadUInt32("Time Left", i);
                 packet.ReadGuid("Bidder", i);
-                packet.ReadUInt32("Bid", i);
+                packet.ReadValue("Bid", _auctionSize, i);
             }
 
             packet.ReadUInt32("Own Count");
             packet.ReadUInt32("Unk UInt32 1");
+
         }
 
         [Parser(Opcode.SMSG_AUCTION_REMOVED_NOTIFICATION)]
