@@ -43,6 +43,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_AUTOSTORE_LOOT_ITEM, 0xD876},
             {Opcode.CMSG_BANKER_ACTIVATE, 0xA5A},
             {Opcode.CMSG_AUTO_DECLINE_GUILD_INVITES, 0x586F},
+            {Opcode.CMSG_BATTLEFIELD_JOIN, 0x225},
             {Opcode.CMSG_BATTLEFIELD_LIST, 0x32A4},
             {Opcode.CMSG_BATTLEFIELD_REQUEST_SCORE_DATA, 0x85A5},
             {Opcode.CMSG_BEGIN_TRADE, 0x3724},

@@ -36,6 +36,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.CMSG_AUTOSTORE_BAG_ITEM, 13952},
             {Opcode.CMSG_AUTOSTORE_LOOT_ITEM, 1060},
             {Opcode.CMSG_AUTO_DECLINE_GUILD_INVITES, 18594},
+            {Opcode.CMSG_BATTLEFIELD_JOIN, 25219},
             {Opcode.CMSG_BATTLEFIELD_LEAVE, 25091},
             {Opcode.CMSG_BATTLEFIELD_LIST, 29731},
             {Opcode.CMSG_BATTLEFIELD_PORT, 25121},
