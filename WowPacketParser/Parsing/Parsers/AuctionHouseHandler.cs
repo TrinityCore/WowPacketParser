@@ -62,6 +62,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Quality");
             packet.ReadByte("Usable");
             packet.ReadByte("Unk Byte 1");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                packet.ReadByte("Unk Byte");
             var count = packet.ReadByte("Unk Count");
             for (var i = 0; i < count; ++i)
             {
