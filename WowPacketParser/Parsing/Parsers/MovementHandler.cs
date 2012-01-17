@@ -672,9 +672,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadByte("Transport Seat");
                 packet.ReadSingle("Transport Orientation");
-                packet.ReadSingle("Transport Position X");
-                packet.ReadSingle("Transport Position Y");
-                packet.ReadSingle("Transport Position Z");
+                packet.ReadVector3("Transport Position");
 
                 packet.ReadUInt32("Transport Time");
 

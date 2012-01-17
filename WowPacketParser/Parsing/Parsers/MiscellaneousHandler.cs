@@ -10,10 +10,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.TEST_430_SYNC_PLAYER_MOVE)]
         public static void HandleUnk5(Packet packet)
         {
-            packet.ReadSingle("X");
-            packet.ReadSingle("Y");
-            packet.ReadSingle("Z");
-            packet.ReadSingle("O");
+            packet.ReadVector4("Position");
         }
 
         [Parser(Opcode.CMSG_SUSPEND_TOKEN)]

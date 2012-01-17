@@ -199,8 +199,11 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleNpcGossipSelectOption(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadUInt32("Menu id");
-            packet.ReadUInt32("Gossip id");
+            packet.ReadUInt32("Menu Id");
+            packet.ReadUInt32("Gossip Id");
+
+            if (packet.CanRead()) // if ( byte_F3777C[v3] & 1 )
+                packet.ReadCString("Box Text");
         }
 
         [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
