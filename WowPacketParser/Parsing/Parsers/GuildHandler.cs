@@ -335,17 +335,9 @@ namespace WowPacketParser.Parsing.Parsers
                     var ramdonEnchant = packet.ReadInt32("Random Item Property Id", i);
                     if (ramdonEnchant != 0)
                         packet.ReadUInt32("Item Suffix Factor", i);
-
                     packet.ReadUInt32("Stack Count", i);
                     packet.ReadUInt32("Unk Uint32 2", i); // Only seen 0
                     packet.ReadByte("Spell Charges", i);
-
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                    {
-                        packet.ReadInt32("Unk 1 Int32", i);
-                        packet.ReadInt32("Unk 2 Int32", i);
-                    }
-
                     var enchantment = packet.ReadByte("Number of Enchantments", i);
                     for (var j = 0; j < enchantment; j++)
                     {
@@ -722,7 +714,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (guids[i][6] != 0) // 14
                     guids[i][6] ^= packet.ReadByte();
                     
-                packet.ReadInt32("Guild Emblem Texture File", i);
+                packet.ReadInt32("Unk 1", i); // Guild Emblem related
                 packet.ReadInt32("Guild Level", i);
                 
                 if (guids[i][5] != 0) // 13
@@ -731,7 +723,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Unk 2", i);
                 packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32, i);
                 packet.ReadCString("Guild Name", i);
-                packet.ReadByte("Cached", i);
+                packet.ReadByte("Unk 3", i);
                 
                 if (guids[i][3] != 0) // 11
                     guids[i][3] ^= packet.ReadByte();
@@ -743,9 +735,9 @@ namespace WowPacketParser.Parsing.Parsers
                     
                 packet.ReadInt32("Guild Emblem Color", i);
                 packet.ReadInt32("Guild Emblem Background Color", i);
-                packet.ReadByte("Request Pending", i);
+                packet.ReadByte("Unk 4", i);
                 packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32, i);
-                packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32, i);
+                packet.ReadEnum<GuildFinderOptionsAvailability>("Availability3", TypeCode.UInt32, i);
                 
                 if (guids[i][7] != 0) // 15
                     guids[i][7] ^= packet.ReadByte();

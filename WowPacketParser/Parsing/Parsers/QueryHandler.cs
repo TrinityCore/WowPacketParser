@@ -187,9 +187,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var npcText = new NpcText();
 
-            var entry = packet.ReadEntry("Entry");
-            if (entry.Value) // Can be masked
-                return;
+            var entry = packet.ReadUInt32("Entry");
 
             npcText.Probabilities = new float[8];
             npcText.Texts1 = new string[8];
@@ -216,9 +214,9 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
+            packet.AddSniffData(StoreNameType.NpcText, (int)entry, "QUERY_RESPONSE");
 
-            packet.SniffFileInfo.Stuffing.NpcTexts.TryAdd((uint) entry.Key, npcText);
+            packet.SniffFileInfo.Stuffing.NpcTexts.TryAdd(entry, npcText);
         }
     }
 }

@@ -753,8 +753,8 @@ namespace WowPacketParser.Store.SQL
                     row.AddValue("map", startPosition.Value.Map);
                     row.AddValue("zone", startPosition.Value.Zone);
                     row.AddValue("position_x", startPosition.Value.Position.X);
-                    row.AddValue("position_y", startPosition.Value.Position.Y);
-                    row.AddValue("position_z", startPosition.Value.Position.Z);
+                    row.AddValue("position_x", startPosition.Value.Position.Y);
+                    row.AddValue("position_x", startPosition.Value.Position.Z);
 
                     row.Comment = StoreGetters.GetName(StoreNameType.Map, startPosition.Value.Map, false) + " - " +
                                   StoreGetters.GetName(StoreNameType.Zone, startPosition.Value.Zone, false);

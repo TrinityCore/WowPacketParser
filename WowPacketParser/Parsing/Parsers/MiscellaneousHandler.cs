@@ -30,7 +30,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.TEST_430_SYNC_PLAYER_MOVE)]
         public static void HandleUnk5(Packet packet)
         {
-            packet.ReadVector4("Position");
+            packet.ReadSingle("X");
+            packet.ReadSingle("Y");
+            packet.ReadSingle("Z");
+            packet.ReadSingle("O");
         }
 
         [Parser(Opcode.CMSG_SUSPEND_TOKEN)]
@@ -607,13 +610,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleProposeLevelGrant(Packet packet)
         {
             packet.ReadPackedGuid("Guid");
-        }
-
-        [Parser(Opcode.SMSG_CAMERA_SHAKE)]
-        public static void HandleCameraShake(Packet packet)
-        {
-            packet.ReadInt32("SpellEffectCameraShakes"); // index from dbc
-            packet.ReadInt32("Unknown"); // Sound related
         }
 
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
