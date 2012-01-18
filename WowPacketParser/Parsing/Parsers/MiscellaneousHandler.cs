@@ -406,7 +406,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ZONE_UNDER_ATTACK)]
         public static void HandleZoneUpdate(Packet packet)
         {
-            packet.ReadUInt32("Zone Id");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id");
         }
 
         [Parser(Opcode.SMSG_HEALTH_UPDATE)]
@@ -518,7 +518,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<Class>("Class", TypeCode.UInt32);
                 packet.ReadEnum<Race>("Race", TypeCode.UInt32);
                 packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
-                packet.ReadUInt32("Zone Id");
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id");
             }
         }
 

@@ -74,7 +74,7 @@ namespace WowPacketParser
                 
                 var endTime = DateTime.Now;
                 var span = endTime.Subtract(startTime);
-                Trace.WriteLine(string.Format("Finished loading DB - {0} Minutes, {1} Seconds and {2} Milliseconds.", span.Minutes, span.Seconds, span.Milliseconds));
+                Trace.WriteLine(string.Format("Finished loading DB in {0}.", span.ToFormattedString()));
                 Trace.WriteLine(Environment.NewLine);
             }
         }
@@ -257,9 +257,9 @@ namespace WowPacketParser
 
                     if (Settings.StatsOutput.HasAnyFlag(StatsOutputFlags.Local))
                     {
-                        Trace.WriteLine(string.Format("{0}: Parsed {1:F3}% packets successfully, {2:F3}% with errors and skipped {3:F3}% in {4} Minutes, {5} Seconds and {6} Milliseconds.",
+                        Trace.WriteLine(string.Format("{0}: Parsed {1:F3}% packets successfully, {2:F3}% with errors and skipped {3:F3}% in {4}.",
                             prefix, (double)statsOk / total * 100, (double)statsError / total * 100, (double)statsSkip / total * 100,
-                            span.Minutes, span.Seconds, span.Milliseconds));
+                            span.ToFormattedString()));
                     }
                 }
             }
