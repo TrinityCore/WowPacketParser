@@ -142,7 +142,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Auction Id", i);
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
 
-                int enchantmentCount = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 7 : 6;
+                int enchantmentCount = ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005) ? 10 : ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) ? 9 : ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 7 : 6;
                 for (var j = 0; j < enchantmentCount; ++j)
                 {
                     packet.ReadUInt32("Item Enchantment ID", i, j);
@@ -157,12 +157,12 @@ namespace WowPacketParser.Parsing.Parsers
                 //packet.ReadEnum<ItemFlag>("Item Flags", TypeCode.UInt32, i);
                 packet.ReadUInt32("Unk UInt32 1", i);
                 packet.ReadGuid("Owner", i);
-                packet.ReadUInt32("Start Bid", i);
-                packet.ReadUInt32("Out Bid", i);
-                packet.ReadUInt32("Buyout ", i);
+                packet.ReadValue("Start Bid", _auctionSize, i);
+                packet.ReadValue("Out Bid", _auctionSize, i);
+                packet.ReadValue("Buyout ", _auctionSize, i);
                 packet.ReadUInt32("Time Left", i);
                 packet.ReadGuid("Bidder", i);
-                packet.ReadUInt32("Bid", i);
+                packet.ReadValue("Bid", _auctionSize, i);
             }
 
             packet.ReadUInt32("Own Count");
