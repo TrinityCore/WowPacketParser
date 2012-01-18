@@ -425,6 +425,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 packet.ReadUInt32("LFG Boot Cooldown");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                packet.ReadUInt64("Player GUID");
         }
 
         [Parser(Opcode.SMSG_RAID_GROUP_ONLY)]
