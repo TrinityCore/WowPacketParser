@@ -9,6 +9,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0xDC4B},
             {Opcode.CMSG_ACCEPT_TRADE, 0xB4A5},
             {Opcode.SMSG_TRADE_STATUS_EXTENDED, 0xF0EC},
+            {Opcode.SMSG_TRADE_STATUS, 0xA0DC},
             {Opcode.CMSG_ACTIVATETAXI, 0x8CDB},
             {Opcode.CMSG_ACTIVATETAXIEXPRESS, 0x5E7F},
             {Opcode.CMSG_ADD_FRIEND, 0x5C57},
@@ -299,6 +300,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.MSG_INSPECT_ARENA_TEAMS, 0xDA4F},
             {Opcode.MSG_LIST_STABLED_PETS, 0x88CA},
             {Opcode.MSG_MOVE_HEARTBEAT, 0xB024},
+            {Opcode.MSG_MOVE_TELEPORT, 0xF25C},
             {Opcode.MSG_MOVE_JUMP, 0x9225},
             {Opcode.MSG_MOVE_KNOCK_BACK, 0x60FE}, // Not sure
             {Opcode.MSG_MOVE_SET_FACING, 0x02a4},
@@ -322,8 +324,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.MSG_MOVE_STOP_STRAFE, 0x0125},
             {Opcode.MSG_MOVE_STOP_SWIM, 0xB424},
             {Opcode.MSG_MOVE_STOP_TURN, 0x90A4},
-            {Opcode.MSG_MOVE_SET_RUN_SPEED, 0xE24E},
-            {Opcode.SMSG_SPLINE_SET_RUN_SPEED, 0xB2CE},
             {Opcode.MSG_PETITION_DECLINE, 0x98E7},
             {Opcode.MSG_PETITION_RENAME, 0x4857},
             {Opcode.MSG_QUERY_NEXT_MAIL_TIME, 0xCEE6},
@@ -389,7 +389,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_BUY_ITEM, 0xCA67},
             {Opcode.SMSG_CALENDAR_COMMAND_RESULT, 0x9A4E},
             {Opcode.SMSG_CALENDAR_SEND_CALENDAR, 0x08FB},
-            {Opcode.SMSG_CAMERA_SHAKE, 0x5CFB},
             {Opcode.SMSG_CANCEL_AUTO_REPEAT, 0x5ACB},
             {Opcode.SMSG_CAST_FAILED, 0x1AEB},
             {Opcode.SMSG_CHANNEL_LIST, 0x9C47},
@@ -675,8 +674,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.TEST_422_24649, 24649},
             {Opcode.TEST_422_265C, 0x265C},
             {Opcode.TEST_422_26948, 26948},
-            {Opcode.TEST_422_9838, 9838},
-            {Opcode.TEST_422_51447, 0xC8F7},
+            {Opcode.TEST_422_9838, 9838}
 
             // CMSG Handlers
             // 4120 - sub_65D6A0 - CMSG_LFG_LFR_JOIN ?

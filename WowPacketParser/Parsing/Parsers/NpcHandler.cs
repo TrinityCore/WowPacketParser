@@ -22,32 +22,16 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_TRAINER_BUY_SPELL)]
+        [Parser(Opcode.SMSG_TRAINER_BUY_SUCCEEDED)]
         [Parser(Opcode.SMSG_TRAINER_BUY_FAILED)]
         [Parser(Opcode.SMSG_TRAINER_BUY_RESULT)]
-        public static void HandleServerTrainerBuy(Packet packet)
+        public static void HandleServerTrainerBuySucceedeed(Packet packet)
         {
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_TRAINER_BUY_FAILED)
                 || packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_TRAINER_BUY_RESULT))
                 packet.ReadUInt32("Reason");
-        }
-
-        // Might be a completely different opcode on 4.2.2 (trainer related)
-        // Subv says it is SMSG_TRAINER_REPORT_ERROR_IN_CONSOLE but I think he is trolling me.
-        [Parser(Opcode.SMSG_TRAINER_BUY_SUCCEEDED)]
-        public static void HandleServerTrainerBuySucceedeed(Packet packet)
-        {
-            packet.ReadGuid("GUID");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                packet.ReadInt32("Trainer Service"); // <TS>
-
-            /* Comments about TS:
-             * if !TS, "Trainer service <TS> unavailable"
-             * if TS == 1, "Not enough money for trainer service <TS>"
-             * Anyway... could only find 0s (and one 1)
-             * */
         }
 
         [Parser(Opcode.CMSG_TRAINER_BUY_SPELL, ClientVersionBuild.V4_2_2_14545)]
@@ -215,11 +199,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleNpcGossipSelectOption(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadUInt32("Menu Id");
-            packet.ReadUInt32("Gossip Id");
-
-            if (packet.CanRead()) // if ( byte_F3777C[v3] & 1 )
-                packet.ReadCString("Box Text");
+            packet.ReadUInt32("Menu id");
+            packet.ReadUInt32("Gossip id");
         }
 
         [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]

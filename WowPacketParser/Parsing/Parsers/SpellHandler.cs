@@ -93,7 +93,7 @@ namespace WowPacketParser.Parsing.Parsers
             var startSpell = new StartSpell();
             startSpell.Spells = spells;
 
-            if (SessionHandler.LoggedInCharacter != null && SessionHandler.LoggedInCharacter.FirstLogin)
+            if (SessionHandler.LoggedInCharacter.FirstLogin)
                 packet.SniffFileInfo.Stuffing.StartSpells.TryAdd(new Tuple<Race, Class>(SessionHandler.LoggedInCharacter.Race, SessionHandler.LoggedInCharacter.Class), startSpell);
 
             var cooldownCount = packet.ReadInt16("Cooldown Count");
@@ -593,11 +593,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadUInt32("Display ID");
-            var race = packet.ReadEnum<Race>("Race", TypeCode.Byte);
-
-            if (race == Race.None)
-                return;
-
+            packet.ReadEnum<Race>("Race", TypeCode.Byte);
             packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
             packet.ReadEnum<Class>("Class", TypeCode.Byte);
 

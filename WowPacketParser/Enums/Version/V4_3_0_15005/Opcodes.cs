@@ -336,6 +336,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.CMSG_ZONEUPDATE, 13824},
             {Opcode.CMSG_WARDEN_DATA, 264},
             {Opcode.CMSG_LOG_DISCONNECT, 18740},
+            {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 17190},
             {Opcode.MSG_AUCTION_HELLO, 1664},
             {Opcode.MSG_CORPSE_QUERY, 20486},
             {Opcode.MSG_INSPECT_ARENA_TEAMS, 19074},
@@ -635,7 +636,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.SMSG_LIST_INVENTORY, 9262},
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 8194},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 7296},
-            {Opcode.SMSG_LOGOUT_CANCEL_ACK, 19968},
+            {Opcode.SMSG_LOGOUT_CANCEL_ACK, 15394},
             {Opcode.SMSG_LOGOUT_COMPLETE, 9222},
             {Opcode.SMSG_LOG_XPGAIN, 27682},
             {Opcode.SMSG_LOOT_ALL_PASSED, 29348},
@@ -851,6 +852,10 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.SMSG_XP_GAIN_ABORTED, 11276},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 2564},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 24096},
+            {Opcode.SMSG_WARDEN_DATA, 1214},
+            {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 9402},
+            {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 25122},
+            {Opcode.SMSG_FORCE_MOVE_ROOT, 17950},
 
             // TEST
             {Opcode.TEST_430_SYNC_PLAYER_MOVE, 0x5}

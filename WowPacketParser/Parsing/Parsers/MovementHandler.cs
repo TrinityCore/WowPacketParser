@@ -17,7 +17,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static MovementInfo ReadMovementInfo(ref Packet packet, Guid guid, int index = -1)
         {
-            if (ClientVersion.GetBuild() >= ClientVersionBuild.V4_2_0_14333)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
                 return ReadMovementInfo420(ref packet, index);
 
             return ReadMovementInfoGen(ref packet, guid, index);
@@ -166,7 +166,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
-                packet.ReadBoolean("Toggle MovementFlagExtra 0x20 (AlwaysAllowPitching)"); // Not sure for transport
+                packet.ReadBoolean("Toggle AlwaysAllowPitching");
 
             var pos = packet.ReadVector3("Position");
 
@@ -195,12 +195,14 @@ namespace WowPacketParser.Parsing.Parsers
                     return;
             }
 
-            var flags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+            {
+                // Not the best way
+                ReadSplineMovement422(ref packet, pos);
+                return;
+            }
 
-            //if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-            //    flags = packet.ReadEnum<SplineFlag422>("Spline Flags", TypeCode.Int32);
-            //else
-            //    flags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32);
+            var flags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32);
 
             if (flags.HasAnyFlag(SplineFlag.AnimationTier))
             {
@@ -208,15 +210,11 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Asynctime in ms"); // Async-time in ms
             }
 
-            // Cannot find anything similar to this in 4.2.2 client
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
+            if (flags.HasAnyFlag(SplineFlag.Falling)) // Could be SplineFlag.UsePathSmoothing
             {
-                if (flags.HasAnyFlag(SplineFlag.Falling)) // Could be SplineFlag.UsePathSmoothing
-                {
-                    packet.ReadInt32("Unknown");
-                    packet.ReadInt16("Unknown");
-                    packet.ReadInt16("Unknown");
-                }
+                packet.ReadInt32("Unknown");
+                packet.ReadInt16("Unknown");
+                packet.ReadInt16("Unknown");
             }
 
             packet.ReadInt32("Move Time");
@@ -229,8 +227,53 @@ namespace WowPacketParser.Parsing.Parsers
 
             var waypoints = packet.ReadInt32("Waypoints");
 
-            // if (flags.HasAnyFlag(SplineFlag.MovingBackwards)) // 0x08000000 for 4.2.2
             if (flags.HasAnyFlag(SplineFlag.Flying | SplineFlag.CatmullRom))
+            {
+                for (var i = 0; i < waypoints; i++)
+                    packet.ReadVector3("Waypoint", i);
+            }
+            else
+            {
+                var newpos = packet.ReadVector3("Waypoint Endpoint");
+
+                var mid = new Vector3();
+                mid.X = (pos.X + newpos.X) * 0.5f;
+                mid.Y = (pos.Y + newpos.Y) * 0.5f;
+                mid.Z = (pos.Z + newpos.Z) * 0.5f;
+
+                for (var i = 1; i < waypoints; i++)
+                {
+                    var vec = packet.ReadPackedVector3();
+                    vec.X += mid.X;
+                    vec.Y += mid.Y;
+                    vec.Z += mid.Z;
+
+                    packet.Writer.WriteLine("[" + i + "]" + " Waypoint: " + vec);
+                }
+            }
+        }
+
+        private static void ReadSplineMovement422(ref Packet packet, Vector3 pos)
+        {
+            var flags = packet.ReadEnum<SplineFlag422>("Spline Flags", TypeCode.Int32);
+
+            if (flags.HasAnyFlag(SplineFlag422.AnimationTier))
+            {
+                packet.ReadEnum<MovementAnimationState>("Animation State", TypeCode.Byte);
+                packet.ReadInt32("Asynctime in ms"); // Async-time in ms
+            }
+
+            packet.ReadInt32("Move Time");
+
+            if (flags.HasAnyFlag(SplineFlag422.Trajectory))
+            {
+                packet.ReadSingle("Vertical Speed");
+                packet.ReadInt32("Unk Int32 2");
+            }
+
+            var waypoints = packet.ReadInt32("Waypoints");
+
+            if (flags.HasAnyFlag(SplineFlag422.UsePathSmoothing))
             {
                 for (var i = 0; i < waypoints; i++)
                     packet.ReadVector3("Waypoint", i);
@@ -672,7 +715,9 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadByte("Transport Seat");
                 packet.ReadSingle("Transport Orientation");
-                packet.ReadVector3("Transport Position");
+                packet.ReadSingle("Transport Position X");
+                packet.ReadSingle("Transport Position Y");
+                packet.ReadSingle("Transport Position Z");
 
                 packet.ReadUInt32("Transport Time");
 
@@ -701,6 +746,46 @@ namespace WowPacketParser.Parsing.Parsers
             packet.Writer.WriteLine("Transport Guid: {0}", transportGuid);
         }
 
+        [Parser(Opcode.MSG_MOVE_TELEPORT, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleMoveTeleport422(Packet packet)
+        {
+            var guid = new byte[8];
+            var OnTransport = packet.ReadBit("OnTransport");
+            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[1] = (byte)(packet.ReadBit() ? 1 : 0); // Another byte
+            var unk2 = packet.ReadBit("Unk Bit Boolean 2");
+            
+            packet.ReadVector3("Destination Position");
+            
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            
+            if (OnTransport)
+                packet.ReadGuid("Transport Guid");
+                
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            
+            packet.ReadInt32("Unk 1");
+            
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            
+            if (unk2)
+                packet.ReadByte("Unk 2");
+                
+            packet.ReadSingle("Arrive Orientation");
+            packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+        }
+        
         [Parser(Opcode.MSG_MOVE_START_FORWARD)]
         [Parser(Opcode.MSG_MOVE_START_BACKWARD)]
         [Parser(Opcode.MSG_MOVE_STOP)]
@@ -719,7 +804,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_MOVE_STOP_PITCH)]
         [Parser(Opcode.MSG_MOVE_SET_RUN_MODE)]
         [Parser(Opcode.MSG_MOVE_SET_WALK_MODE)]
-        [Parser(Opcode.MSG_MOVE_TELEPORT)]
+        [Parser(Opcode.MSG_MOVE_TELEPORT, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         [Parser(Opcode.MSG_MOVE_SET_FACING, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         [Parser(Opcode.MSG_MOVE_SET_PITCH, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         [Parser(Opcode.MSG_MOVE_TOGGLE_COLLISION_CHEAT)]
@@ -762,63 +847,8 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_SPLINE_SET_RUN_SPEED, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleSplineMovementSetRunSpeed422(Packet packet)
-        {
-            var guid = new byte[8];
-            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            
-            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
-            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
-            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
-            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
-            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
-            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
-            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
-            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
-            
-            packet.ReadSingle("Speed");
-            packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
-        }
-        
-        [Parser(Opcode.MSG_MOVE_SET_RUN_SPEED, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleMovementSetRunSpeed422(Packet packet)
-        {
-            var guid = new byte[8];
-            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            
-            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
-            
-            packet.ReadSingle("Speed");
-            
-            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
-            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
-            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
-            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
-            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
-            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
-            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
-            
-            packet.ReadUInt32("Move Event");
-            packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
-        }
-        
         [Parser(Opcode.MSG_MOVE_SET_WALK_SPEED)]
-        [Parser(Opcode.MSG_MOVE_SET_RUN_SPEED, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.MSG_MOVE_SET_RUN_SPEED)]
         [Parser(Opcode.MSG_MOVE_SET_RUN_BACK_SPEED)]
         [Parser(Opcode.MSG_MOVE_SET_SWIM_SPEED)]
         [Parser(Opcode.MSG_MOVE_SET_SWIM_BACK_SPEED)]
@@ -1119,7 +1149,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_SPLINE_SET_WALK_SPEED)]
-        [Parser(Opcode.SMSG_SPLINE_SET_RUN_SPEED, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_SPLINE_SET_RUN_SPEED)]
         [Parser(Opcode.SMSG_SPLINE_SET_SWIM_SPEED)]
         [Parser(Opcode.SMSG_SPLINE_SET_FLIGHT_SPEED)]
         [Parser(Opcode.SMSG_SPLINE_SET_RUN_BACK_SPEED)]

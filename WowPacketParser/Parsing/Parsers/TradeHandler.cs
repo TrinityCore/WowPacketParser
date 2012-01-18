@@ -36,7 +36,50 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Gold");
         }
 
-        [Parser(Opcode.SMSG_TRADE_STATUS)]
+        [Parser(Opcode.SMSG_TRADE_STATUS, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleTradeStatus422(Packet packet)
+        {
+            var guid = new byte[8];
+            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            packet.ReadBit("Unk Bit");
+            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            
+            packet.ReadUInt32("Unk 1");
+            packet.ReadByte("Unk 2");
+            
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            
+            packet.ReadInt32("Unk 3");
+            packet.ReadUInt32("Unk 4");
+            
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            
+            packet.ReadUInt32("Unk 5");
+            packet.ReadByte("Unk 6");
+            
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            
+            packet.ReadUInt32("Unk 7");
+            
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            
+            packet.ReadUInt32("Unk 8");
+            
+            packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+        }
+        
+        [Parser(Opcode.SMSG_TRADE_STATUS, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleTradeStatus(Packet packet)
         {
             var status = packet.ReadEnum<TradeStatus>("Status", TypeCode.UInt32);
@@ -124,7 +167,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (guids1[i][7] != 0)
                     guids1[i][7] ^= packet.ReadByte();
                     
-                packet.ReadInt32("Unk 3", i);
+                packet.ReadInt32("Item Id", i);
                 packet.ReadInt32("Unk 4", i);
                 packet.ReadInt32("Unk 5", i);
                 
@@ -205,7 +248,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Item Display ID", slot);
                 packet.ReadUInt32("Item Count", slot);
                 packet.ReadUInt32("Item Wrapped", slot);
-                packet.ReadGuid("Item Gift Creator GUID", slot);
+                packet.ReadUInt64("Item Gift Creator GUID", slot);
                 packet.ReadUInt32("Item Perm Enchantment Id", slot);
                 for (var i = 0; i < 3; ++i)
                     packet.ReadUInt32("Item Enchantment Id", slot, i);

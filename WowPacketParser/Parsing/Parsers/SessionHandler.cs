@@ -285,6 +285,16 @@ namespace WowPacketParser.Parsing.Parsers
             packet.Writer.WriteLine("Address SHA-1 Hash: {0}", Utilities.ByteArrayToHexString(hash));
         }
 
+        [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleRedirectClient422(Packet packet)
+        {
+            var hash = packet.ReadBytes(255);
+            packet.Writer.WriteLine("RSA Hash: {0}", Utilities.ByteArrayToHexString(hash));
+            packet.ReadInt16("Int 16");
+            packet.ReadEnum<UnknownFlags>("Unknown int32 flag", TypeCode.Int32);
+            packet.ReadInt64("Int 64");
+        }
+
         [Parser(Opcode.CMSG_REDIRECTION_FAILED)]
         public static void HandleRedirectFailed(Packet packet)
         {
@@ -308,28 +318,30 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REDIRECTION_AUTH_PROOF, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleRedirectionAuthProof422(Packet packet)
         {
-            packet.ReadByte("Unk byte 1");
-            packet.ReadByte("Unk byte 2");
-            packet.ReadByte("Unk byte 3");
-            packet.ReadByte("Unk byte 4");
-            packet.ReadByte("Unk byte 5");
-            packet.ReadByte("Unk byte 6");
-            packet.ReadByte("Unk byte 7");
-            packet.ReadByte("Unk byte 8");
-            packet.ReadByte("Unk byte 9");
-            packet.ReadByte("Unk byte 10");
-            packet.ReadByte("Unk byte 11");
-            packet.ReadByte("Unk byte 12");
-            packet.ReadByte("Unk byte 13");
+            var bytes = new byte[20];
+            bytes[0] = packet.ReadByte();
+            bytes[12] = packet.ReadByte();
+            bytes[3] = packet.ReadByte();
+            bytes[17] = packet.ReadByte();
+            bytes[11] = packet.ReadByte();
+            bytes[13] = packet.ReadByte();
+            bytes[5] = packet.ReadByte();
+            bytes[9] = packet.ReadByte();
+            bytes[6] = packet.ReadByte();
+            bytes[19] = packet.ReadByte();
+            bytes[15] = packet.ReadByte();
+            bytes[18] = packet.ReadByte();
+            bytes[8] = packet.ReadByte();
             packet.ReadInt64("Unk long 1");
-            packet.ReadByte("Unk byte 14");
-            packet.ReadByte("Unk byte 15");
+            bytes[2] = packet.ReadByte();
+            bytes[1] = packet.ReadByte();
             packet.ReadInt64("Unk long 2");
-            packet.ReadByte("Unk byte 16");
-            packet.ReadByte("Unk byte 17");
-            packet.ReadByte("Unk byte 18");
-            packet.ReadByte("Unk byte 19");
-            packet.ReadByte("Unk byte 20");
+            bytes[7] = packet.ReadByte();
+            bytes[4] = packet.ReadByte();
+            bytes[16] = packet.ReadByte();
+            bytes[14] = packet.ReadByte();
+            bytes[10] = packet.ReadByte();
+            packet.Writer.WriteLine("Proof RSA Hash: " + Utilities.ByteArrayToHexString(bytes));
         }
 
         [Parser(Opcode.SMSG_KICK_REASON)]
