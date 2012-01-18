@@ -104,7 +104,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.TEST_422_26948)]
         public static void Handle26948(Packet packet)
         {
-            packet.AsHex();
+            //packet.AsHex();
             using (var uncompressed = packet.Inflate(packet.ReadInt32()))
                 uncompressed.AsHex();
         }
