@@ -339,6 +339,38 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32");
         }
 
+        [Parser(Opcode.CMSG_GROUP_INVITE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
+        public static void HandleGroupInvite422(Packet packet)
+        {
+            // note: this handler is different in 4.3.0, it got a bit fancy.
+            byte[] guidBytes = new byte[8];
+
+            guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            packet.ReadInt32("unk0");
+            packet.ReadInt32("unk1");
+            packet.ReadCString("string0");
+
+            if (guidBytes[0] != 0) guidBytes[0] ^= packet.ReadByte();
+            if (guidBytes[7] != 0) guidBytes[7] ^= packet.ReadByte();
+            if (guidBytes[4] != 0) guidBytes[4] ^= packet.ReadByte();
+            if (guidBytes[1] != 0) guidBytes[1] ^= packet.ReadByte();
+            if (guidBytes[2] != 0) guidBytes[2] ^= packet.ReadByte();
+            if (guidBytes[6] != 0) guidBytes[6] ^= packet.ReadByte();
+            if (guidBytes[5] != 0) guidBytes[5] ^= packet.ReadByte();
+            packet.ReadCString("string1");
+            if (guidBytes[3] != 0) guidBytes[3] ^= packet.ReadByte();
+
+            packet.Writer.WriteLine("GUID: 0x{0:X16}", BitConverter.ToUInt64(guidBytes, 0));
+        }
+
         [Parser(Opcode.SMSG_GROUP_INVITE)]
         public static void HandleGroupInviteResponse(Packet packet)
         {
