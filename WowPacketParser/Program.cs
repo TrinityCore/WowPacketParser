@@ -86,52 +86,52 @@ namespace WowPacketParser
 
             var store = new SQLStore(fileName);
 
-            if (sqlOutput.HasFlag(SQLOutputFlags.GameObjectTemplate))
+            if (sqlOutput.HasAnyFlag(SQLOutputFlags.GameObjectTemplate))
                 store.WriteData(builder.GameObjectTemplate());
 
-            if (sqlOutput.HasFlag(SQLOutputFlags.GameObjectSpawns))
+            if (sqlOutput.HasAnyFlag(SQLOutputFlags.GameObjectSpawns))
                 store.WriteData(builder.GameObjectSpawns());
 
-            if (sqlOutput.HasFlag(SQLOutputFlags.QuestTemplate))
+            if (sqlOutput.HasAnyFlag(SQLOutputFlags.QuestTemplate))
                 store.WriteData(builder.QuestTemplate());
 
-            if (sqlOutput.HasFlag(SQLOutputFlags.QuestPOI))
+            if (sqlOutput.HasAnyFlag(SQLOutputFlags.QuestPOI))
                 store.WriteData(builder.QuestPOI());
 
-            if (sqlOutput.HasFlag(SQLOutputFlags.CreatureTemplate))
+            if (sqlOutput.HasAnyFlag(SQLOutputFlags.CreatureTemplate))
                 store.WriteData(builder.NpcTemplate());
 
-            if (sqlOutput.HasFlag(SQLOutputFlags.CreatureSpawns))
+            if (sqlOutput.HasAnyFlag(SQLOutputFlags.CreatureSpawns))
                 store.WriteData(builder.CreatureSpawns());
 
-            if (sqlOutput.HasFlag(SQLOutputFlags.NpcTrainer))
+            if (sqlOutput.HasAnyFlag(SQLOutputFlags.NpcTrainer))
                 store.WriteData(builder.NpcTrainer());
 
-            if (sqlOutput.HasFlag(SQLOutputFlags.NpcVendor))
+            if (sqlOutput.HasAnyFlag(SQLOutputFlags.NpcVendor))
                 store.WriteData(builder.NpcVendor());
 
-            if (sqlOutput.HasFlag(SQLOutputFlags.NpcText))
+            if (sqlOutput.HasAnyFlag(SQLOutputFlags.NpcText))
                 store.WriteData(builder.PageText());
 
-            if (sqlOutput.HasFlag(SQLOutputFlags.PageText))
+            if (sqlOutput.HasAnyFlag(SQLOutputFlags.PageText))
                 store.WriteData(builder.NpcText());
 
-            if (sqlOutput.HasFlag(SQLOutputFlags.Gossip))
+            if (sqlOutput.HasAnyFlag(SQLOutputFlags.Gossip))
                 store.WriteData(builder.Gossip());
 
-            if (sqlOutput.HasFlag(SQLOutputFlags.Loot))
+            if (sqlOutput.HasAnyFlag(SQLOutputFlags.Loot))
                 store.WriteData(builder.Loot());
 
-            if (sqlOutput.HasFlag(SQLOutputFlags.SniffData) || sqlOutput.HasFlag(SQLOutputFlags.SniffDataOpcodes))
+            if (sqlOutput.HasAnyFlag(SQLOutputFlags.SniffData | SQLOutputFlags.SniffDataOpcodes))
                 store.WriteData(builder.SniffData());
 
-            if (sqlOutput.HasFlag(SQLOutputFlags.StartInformation))
+            if (sqlOutput.HasAnyFlag(SQLOutputFlags.StartInformation))
                 store.WriteData(builder.StartInformation());
 
-            if (sqlOutput.HasFlag(SQLOutputFlags.ObjectNames))
+            if (sqlOutput.HasAnyFlag(SQLOutputFlags.ObjectNames))
                 store.WriteData(builder.ObjectNames());
 
-            if (sqlOutput.HasFlag(SQLOutputFlags.CreatureEquip))
+            if (sqlOutput.HasAnyFlag(SQLOutputFlags.CreatureEquip))
                 store.WriteData(builder.CreatureEquip());
 
             Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", prefix, fileName));
