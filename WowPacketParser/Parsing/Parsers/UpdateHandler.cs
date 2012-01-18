@@ -212,20 +212,26 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                 }
 
-                // this is incorrect for certain objects but I can't figure out why
-                if (moveFlags.HasAnyFlag(MovementFlag.SplineEnabled) || moveInfo.HasSplineData)
+                // Either movement flags are incorrect for 4.2.2 or this has been removed
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545) && moveFlags.HasAnyFlag(MovementFlag.SplineEnabled)
+                    || moveInfo.HasSplineData)
                 {
                     // Temp solution
                     // TODO: Make Enums version friendly
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                     {
                         var splineFlags422 = packet.ReadEnum<SplineFlag422>("Spline Flags", TypeCode.Int32, index);
-                        if (splineFlags422.HasAnyFlag(SplineFlag422.FinalTarget))
-                            packet.ReadGuid("Final Spline Target GUID", index);
-                        else if (splineFlags422.HasAnyFlag(SplineFlag422.FinalOrientation))
+                        if (splineFlags422.HasAnyFlag(SplineFlag422.FinalOrientation))
+                        {
                             packet.ReadSingle("Final Spline Orientation", index);
-                        else if (splineFlags422.HasAnyFlag(SplineFlag422.FinalPoint))
-                            packet.ReadVector3("Final Spline Coords", index);
+                        }
+                        else
+                        {
+                            if (splineFlags422.HasAnyFlag(SplineFlag422.FinalTarget))
+                                packet.ReadGuid("Final Spline Target GUID", index);
+                            else if (splineFlags422.HasAnyFlag(SplineFlag422.FinalPoint))
+                                packet.ReadVector3("Final Spline Coords", index);
+                        }
                     }
                     else
                     {
