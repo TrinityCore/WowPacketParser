@@ -701,6 +701,46 @@ namespace WowPacketParser.Parsing.Parsers
             packet.Writer.WriteLine("Transport Guid: {0}", transportGuid);
         }
 
+        [Parser(Opcode.MSG_MOVE_TELEPORT, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleMoveTeleport422(Packet packet)
+        {
+            var guid = new byte[8];
+            var OnTransport = packet.ReadBit("OnTransport");
+            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[1] = (byte)(packet.ReadBit() ? 1 : 0); // Another byte
+            var unk2 = packet.ReadBit("Unk Bit Boolean 2");
+            
+            packet.ReadVector3("Destination Position");
+            
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            
+            if (OnTransport)
+                packet.ReadGuid("Transport Guid");
+                
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            
+            packet.ReadInt32("Unk 1");
+            
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            
+            if (unk2)
+                packet.ReadByte("Unk 2");
+                
+            packet.ReadSingle("Arrive Orientation");
+            packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+        }
+        
         [Parser(Opcode.MSG_MOVE_START_FORWARD)]
         [Parser(Opcode.MSG_MOVE_START_BACKWARD)]
         [Parser(Opcode.MSG_MOVE_STOP)]
@@ -719,7 +759,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_MOVE_STOP_PITCH)]
         [Parser(Opcode.MSG_MOVE_SET_RUN_MODE)]
         [Parser(Opcode.MSG_MOVE_SET_WALK_MODE)]
-        [Parser(Opcode.MSG_MOVE_TELEPORT)]
+        [Parser(Opcode.MSG_MOVE_TELEPORT, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         [Parser(Opcode.MSG_MOVE_SET_FACING, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         [Parser(Opcode.MSG_MOVE_SET_PITCH, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         [Parser(Opcode.MSG_MOVE_TOGGLE_COLLISION_CHEAT)]

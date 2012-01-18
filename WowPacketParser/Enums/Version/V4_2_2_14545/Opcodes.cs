@@ -9,6 +9,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0xDC4B},
             {Opcode.CMSG_ACCEPT_TRADE, 0xB4A5},
             {Opcode.SMSG_TRADE_STATUS_EXTENDED, 0xF0EC},
+            {Opcode.SMSG_TRADE_STATUS, 0xA0DC},
             {Opcode.CMSG_ACTIVATETAXI, 0x8CDB},
             {Opcode.CMSG_ACTIVATETAXIEXPRESS, 0x5E7F},
             {Opcode.CMSG_ADD_FRIEND, 0x5C57},
@@ -295,6 +296,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.MSG_INSPECT_ARENA_TEAMS, 0xDA4F},
             {Opcode.MSG_LIST_STABLED_PETS, 0x88CA},
             {Opcode.MSG_MOVE_HEARTBEAT, 0xB024},
+            {Opcode.MSG_MOVE_TELEPORT, 0xF25C},
             {Opcode.MSG_MOVE_JUMP, 0x9225},
             {Opcode.MSG_MOVE_KNOCK_BACK, 0x60FE}, // Not sure
             {Opcode.MSG_MOVE_SET_FACING, 0x02a4},
