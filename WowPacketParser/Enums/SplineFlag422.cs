@@ -31,11 +31,11 @@ namespace WowPacketParser.Enums
         Unknown7 = 0x00400000,
         Unknown8 = 0x00800000,
         Unknown9 = 0x01000000,
-        MovingBackwards = 0x02000000,
-        UsePathSmoothing = 0x04000000,
-        Animation = 0x08000000,
-        UncompressedPath = 0x10000000,
-        Unknown10 = 0x20000000,
+        Unknown10 = 0x02000000,
+        MovingBackwards = 0x04000000,
+        UsePathSmoothing = 0x08000000,
+        Animation = 0x10000000,
+        UncompressedPath = 0x20000000,
         Unknown11 = 0x40000000,
         Unknown12 = 0x80000000
     }

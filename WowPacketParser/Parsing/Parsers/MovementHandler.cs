@@ -166,7 +166,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
-                packet.ReadBoolean("Toggle MovementFlagExtra 0x20 (AlwaysAllowPitching)"); // Not sure for transport
+                packet.ReadBoolean("Toggle AlwaysAllowPitching");
 
             var pos = packet.ReadVector3("Position");
 
@@ -195,12 +195,14 @@ namespace WowPacketParser.Parsing.Parsers
                     return;
             }
 
-            var flags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+            {
+                // Not the best way
+                ReadSplineMovement422(ref packet, pos);
+                return;
+            }
 
-            //if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-            //    flags = packet.ReadEnum<SplineFlag422>("Spline Flags", TypeCode.Int32);
-            //else
-            //    flags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32);
+            var flags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32);
 
             if (flags.HasAnyFlag(SplineFlag.AnimationTier))
             {
@@ -208,15 +210,11 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Asynctime in ms"); // Async-time in ms
             }
 
-            // Cannot find anything similar to this in 4.2.2 client
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
+            if (flags.HasAnyFlag(SplineFlag.Falling)) // Could be SplineFlag.UsePathSmoothing
             {
-                if (flags.HasAnyFlag(SplineFlag.Falling)) // Could be SplineFlag.UsePathSmoothing
-                {
-                    packet.ReadInt32("Unknown");
-                    packet.ReadInt16("Unknown");
-                    packet.ReadInt16("Unknown");
-                }
+                packet.ReadInt32("Unknown");
+                packet.ReadInt16("Unknown");
+                packet.ReadInt16("Unknown");
             }
 
             packet.ReadInt32("Move Time");
@@ -229,8 +227,53 @@ namespace WowPacketParser.Parsing.Parsers
 
             var waypoints = packet.ReadInt32("Waypoints");
 
-            // if (flags.HasAnyFlag(SplineFlag.MovingBackwards)) // 0x08000000 for 4.2.2
             if (flags.HasAnyFlag(SplineFlag.Flying | SplineFlag.CatmullRom))
+            {
+                for (var i = 0; i < waypoints; i++)
+                    packet.ReadVector3("Waypoint", i);
+            }
+            else
+            {
+                var newpos = packet.ReadVector3("Waypoint Endpoint");
+
+                var mid = new Vector3();
+                mid.X = (pos.X + newpos.X) * 0.5f;
+                mid.Y = (pos.Y + newpos.Y) * 0.5f;
+                mid.Z = (pos.Z + newpos.Z) * 0.5f;
+
+                for (var i = 1; i < waypoints; i++)
+                {
+                    var vec = packet.ReadPackedVector3();
+                    vec.X += mid.X;
+                    vec.Y += mid.Y;
+                    vec.Z += mid.Z;
+
+                    packet.Writer.WriteLine("[" + i + "]" + " Waypoint: " + vec);
+                }
+            }
+        }
+
+        private static void ReadSplineMovement422(ref Packet packet, Vector3 pos)
+        {
+            var flags = packet.ReadEnum<SplineFlag422>("Spline Flags", TypeCode.Int32);
+
+            if (flags.HasAnyFlag(SplineFlag422.AnimationTier))
+            {
+                packet.ReadEnum<MovementAnimationState>("Animation State", TypeCode.Byte);
+                packet.ReadInt32("Asynctime in ms"); // Async-time in ms
+            }
+
+            packet.ReadInt32("Move Time");
+
+            if (flags.HasAnyFlag(SplineFlag422.Trajectory))
+            {
+                packet.ReadSingle("Vertical Speed");
+                packet.ReadInt32("Unk Int32 2");
+            }
+
+            var waypoints = packet.ReadInt32("Waypoints");
+
+            if (flags.HasAnyFlag(SplineFlag422.UsePathSmoothing))
             {
                 for (var i = 0; i < waypoints; i++)
                     packet.ReadVector3("Waypoint", i);

@@ -53,9 +53,7 @@ namespace WowPacketParser.Parsing.Parsers
                     case "Movement":
                     {
                         var guid = ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901) ? packet.ReadPackedGuid("GUID", i) : packet.ReadGuid("GUID", i);
-
                         ReadMovementUpdateBlock(ref packet, guid, i);
-
                         // Should we update Stuffing.Object?
                         break;
                     }
