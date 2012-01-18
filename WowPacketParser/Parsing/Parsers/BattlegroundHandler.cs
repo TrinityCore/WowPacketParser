@@ -39,36 +39,43 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BATTLEFIELD_JOIN, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleBattlefieldJoin(Packet packet)
         {
-            var someBytes = new byte[8];
+            var bytes = new byte[8];
 
-            someBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            someBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
             //uint somebyte = guidBytes[4]; // unsure which one it goes with, but it is used around here.
-            someBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            someBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            someBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            someBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            someBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            someBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
 
-            packet.ReadUInt32("someuint");
+            packet.ReadUInt32("Unknown uint32");
 
-            if (someBytes[5] != 0)
-                someBytes[5] ^= packet.ReadByte("unk5");
-            if (someBytes[0] != 0)
-                someBytes[0] ^= packet.ReadByte("unk0");
-            if (someBytes[2] != 0)
-                someBytes[2] ^= packet.ReadByte("unk2");
-            if (someBytes[1] != 0)
-                someBytes[1] ^= packet.ReadByte("unk1");
-            if (someBytes[4] != 0)
-                someBytes[4] ^= packet.ReadByte("BattlefieldId");
-            if (someBytes[6] != 0)
-                someBytes[6] ^= packet.ReadByte("unk6");
-            if (someBytes[3] != 0)
-                someBytes[3] ^= packet.ReadByte("unk3");
-            if (someBytes[7] != 0)
-                someBytes[7] ^= packet.ReadByte("unk7");
+            if (bytes[5] != 0)
+                bytes[5] ^= packet.ReadByte("unk5");
+
+            if (bytes[0] != 0)
+                bytes[0] ^= packet.ReadByte("unk0");
+
+            if (bytes[2] != 0)
+                bytes[2] ^= packet.ReadByte("unk2");
+
+            if (bytes[1] != 0)
+                bytes[1] ^= packet.ReadByte("unk1");
+
+            if (bytes[4] != 0)
+                bytes[4] ^= packet.ReadByte("BattlefieldId");
+
+            if (bytes[6] != 0)
+                bytes[6] ^= packet.ReadByte("unk6");
+
+            if (bytes[3] != 0)
+                bytes[3] ^= packet.ReadByte("unk3");
+
+            if (bytes[7] != 0)
+                bytes[7] ^= packet.ReadByte("unk7");
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_LIST)]
