@@ -672,7 +672,9 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadByte("Transport Seat");
                 packet.ReadSingle("Transport Orientation");
-                packet.ReadVector3("Transport Position");
+                packet.ReadSingle("Transport Position X");
+                packet.ReadSingle("Transport Position Y");
+                packet.ReadSingle("Transport Position Z");
 
                 packet.ReadUInt32("Transport Time");
 
@@ -802,63 +804,8 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_SPLINE_SET_RUN_SPEED, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleSplineMovementSetRunSpeed422(Packet packet)
-        {
-            var guid = new byte[8];
-            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            
-            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
-            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
-            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
-            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
-            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
-            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
-            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
-            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
-            
-            packet.ReadSingle("Speed");
-            packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
-        }
-        
-        [Parser(Opcode.MSG_MOVE_SET_RUN_SPEED, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleMovementSetRunSpeed422(Packet packet)
-        {
-            var guid = new byte[8];
-            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            
-            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
-            
-            packet.ReadSingle("Speed");
-            
-            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
-            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
-            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
-            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
-            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
-            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
-            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
-            
-            packet.ReadUInt32("Move Event");
-            packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
-        }
-        
         [Parser(Opcode.MSG_MOVE_SET_WALK_SPEED)]
-        [Parser(Opcode.MSG_MOVE_SET_RUN_SPEED, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.MSG_MOVE_SET_RUN_SPEED)]
         [Parser(Opcode.MSG_MOVE_SET_RUN_BACK_SPEED)]
         [Parser(Opcode.MSG_MOVE_SET_SWIM_SPEED)]
         [Parser(Opcode.MSG_MOVE_SET_SWIM_BACK_SPEED)]
@@ -1159,7 +1106,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_SPLINE_SET_WALK_SPEED)]
-        [Parser(Opcode.SMSG_SPLINE_SET_RUN_SPEED, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_SPLINE_SET_RUN_SPEED)]
         [Parser(Opcode.SMSG_SPLINE_SET_SWIM_SPEED)]
         [Parser(Opcode.SMSG_SPLINE_SET_FLIGHT_SPEED)]
         [Parser(Opcode.SMSG_SPLINE_SET_RUN_BACK_SPEED)]

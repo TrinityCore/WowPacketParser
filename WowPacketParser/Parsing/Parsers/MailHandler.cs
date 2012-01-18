@@ -27,9 +27,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("Mailbox GUID");
             packet.ReadUInt32("Mail Id");
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                packet.ReadUInt64("Money");
         }
 
         [Parser(Opcode.CMSG_MAIL_DELETE)]
@@ -80,20 +77,14 @@ namespace WowPacketParser.Parsing.Parsers
                         break;
                 }
 
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                    packet.ReadUInt64("COD", i);
-                else
-                    packet.ReadUInt32("COD", i);
+                packet.ReadUInt32("COD", i);
 
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_0_10958))
                     packet.ReadUInt32("Item Text Id", i);
 
                 packet.ReadUInt32("Unk uint32", i);
                 packet.ReadUInt32("Stationery", i);
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                    packet.ReadUInt64("Money", i);
-                else
-                    packet.ReadUInt32("Money", i);
+                packet.ReadUInt32("Money", i);
                 packet.ReadUInt32("Flags", i);
                 packet.ReadSingle("Time?", i);
                 packet.ReadUInt32("Template Id", i);
@@ -109,12 +100,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Item GuidLow", i, j);
                     packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Id", i, j);
 
-                    int enchantmentCount = 6;
-                    if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                        enchantmentCount = 7;
-                    if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
-                        enchantmentCount = 9;
-
+                    int enchantmentCount = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 7 : 6;
                     for (var k = 0; k < enchantmentCount; ++k)
                     {
                         packet.ReadUInt32("Item Enchantment Id", i, j, k);
