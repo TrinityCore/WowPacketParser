@@ -139,30 +139,15 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.TEST_422_13022, ClientVersionBuild.V4_2_2_14545)]
         public static void Handle13022(Packet packet)
         {
-            var bytes = new byte[8];
+            var guid = packet.StartBitStream(3, 7, 6, 2, 5, 4, 0, 1);
 
-            bytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            packet.ParseBitStream(guid, 4, 1, 5, 2);
 
-            if (bytes[2] != 0) bytes[2] ^= packet.ReadByte();
-            if (bytes[4] != 0) bytes[4] ^= packet.ReadByte();
-            if (bytes[7] != 0) bytes[7] ^= packet.ReadByte();
-            if (bytes[0] != 0) bytes[0] ^= packet.ReadByte();
+            packet.ReadInt32("Unk Int32");
 
-            packet.ReadSingle("Unk float");
+            packet.ParseBitStream(guid, 0, 3, 7, 6);
 
-            if (bytes[5] != 0) bytes[5] ^= packet.ReadByte();
-            if (bytes[1] != 0) bytes[1] ^= packet.ReadByte();
-            if (bytes[6] != 0) bytes[6] ^= packet.ReadByte();
-            if (bytes[3] != 0) bytes[3] ^= packet.ReadByte();
-
-            packet.Writer.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(bytes, 0)));
+            packet.ToGuid("Unk Guid?", guid);
         }
     }
 }

@@ -757,18 +757,18 @@ namespace WowPacketParser.Parsing.Parsers
             
             packet.ReadVector3("Destination Position");
 
-            packet.ParseBitStream(5);
-            packet.ParseBitStream(4);
+            packet.ParseBitStream(guid, 5);
+            packet.ParseBitStream(guid, 4);
 
             if (onTransport)
                 packet.ReadGuid("Transport Guid");
 
-            packet.ParseBitStream(2);
-            packet.ParseBitStream(7);
+            packet.ParseBitStream(guid, 2);
+            packet.ParseBitStream(guid, 7);
 
             packet.ReadInt32("Unk 1");
-            
-            packet.ParseBitStream(1, 0, 6, 3);
+
+            packet.ParseBitStream(guid, 1, 0, 6, 3);
 
             if (unk2)
                 packet.ReadByte("Unk 2");
@@ -1186,18 +1186,18 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(5, 2, 6, 3, 1, 4, 0, 7);
 
-            packet.ParseBitStream(0);
+            packet.ParseBitStream(guid, 0);
 
             packet.ReadSingle("Jump Sin");
             packet.ReadUInt32("Fall time");
             packet.ReadSingle("Fall Start Velocity");
 
-            packet.ParseBitStream(6);
+            packet.ParseBitStream(guid, 6);
 
             packet.ReadSingle("Jump Cos");
             packet.ReadSingle("Jump Velocity");
 
-            packet.ParseBitStream(3, 1, 2, 4, 7, 5);
+            packet.ParseBitStream(guid, 3, 1, 2, 4, 7, 5);
 
             packet.ToGuid("Guid", guid);
         }

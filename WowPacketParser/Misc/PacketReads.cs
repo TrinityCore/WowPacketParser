@@ -437,7 +437,6 @@ namespace WowPacketParser.Misc
 
         private byte _bitpos = 8;
         private byte _curbitval;
-        private byte[] _bytes;
 
         public bool ReadBit(string name, params int[] values)
         {
@@ -499,55 +498,54 @@ namespace WowPacketParser.Misc
 
         public byte[] BitStream(int size)
         {
-            _bytes = new byte[size];
-            return _bytes;
+            return new byte[size];
         }
 
         public byte[] StartBitStream(params int[] values)
         {
-            _bytes = new byte[values.Length];
+            var bytes = new byte[values.Length];
 
             foreach (var value in values)
-                _bytes[value] = (byte)(ReadBit() ? 1 : 0);
+                bytes[value] = (byte)(ReadBit() ? 1 : 0);
 
-            return _bytes;
+            return bytes;
         }
 
-        public byte ParseBitStream(byte value)
+        public byte ParseBitStream(byte[] stream, byte value)
         {
-            if (_bytes[value] != 0)
-                return _bytes[value] ^= ReadByte();
+            if (stream[value] != 0)
+                return stream[value] ^= ReadByte();
 
             return 0;
         }
 
-        public byte[] ParseBitStream(params byte[] values)
+        public byte[] ParseBitStream(byte[] stream, params byte[] values)
         {
             var tempBytes = new byte[values.Length];
             var i = 0;
 
             foreach (var value in values)
             {
-                if (_bytes[value] != 0)
-                    _bytes[value] ^= ReadByte();
+                if (stream[value] != 0)
+                    stream[value] ^= ReadByte();
 
-                tempBytes[i++] = _bytes[value];
+                tempBytes[i++] = stream[value];
             }
 
             return tempBytes;
         }
 
-        public byte ParseBitStream(string name, byte value)
+        public byte ParseBitStream(byte[] stream, string name, byte value)
         {
-            if (_bytes[value] != 0)
-                return _bytes[value] ^= ReadByte(name);
+            if (stream[value] != 0)
+                return stream[value] ^= ReadByte(name);
 
             return 0;
         }
 
-        public string ToGuid()
+        public string ToGuid(byte[] stream)
         {
-            var val = new Guid(BitConverter.ToUInt64(_bytes, 0));
+            var val = new Guid(BitConverter.ToUInt64(stream, 0));
             Writer.WriteLine("Guid: {0}", val);
             return val.ToString();
         }
