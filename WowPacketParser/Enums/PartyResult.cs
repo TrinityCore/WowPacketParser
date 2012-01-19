@@ -31,5 +31,11 @@ namespace WowPacketParser.Enums
         LfgBootDungeonComplete = 28,
         LfgBootLootRolls       = 29,
         LfgTeleportIncombat    = 30,
+        AlreadyInBGQueue       = 31,
+        AlreadyConfirmingBGQueue = 32,
+        CrossRealmRaidInvite   = 33,
+        CrossRealmRaidConvert  = 34,
+        PartyRoleNotAvailable  = 35,
+        PartyLFGBootVoteRegistered = 36,
     }
 }

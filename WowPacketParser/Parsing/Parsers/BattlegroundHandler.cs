@@ -352,6 +352,81 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.Writer.WriteLine("Result: Joined (BGType: " + StoreGetters.GetName(StoreNameType.Battleground, val) + ")");
         }
 
+        [Parser(Opcode.SMSG_JOINED_BATTLEGROUND_QUEUE, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleJoinedBattlegroundQueue(Packet packet)
+        {
+            var guidBytes = new byte[8];
+            var field14 = new byte[4];
+            var field10 = new byte[4];
+            var field38 = new byte[4];
+            var field3C = new byte[4];
+
+            guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            field38[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            field10[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            field14[0] = (byte)(packet.ReadBit() ? 1 : 0); 
+            field14[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            field10[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            field14[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            field3C[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            field3C[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            field3C[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            field38[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            field3C[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            field38[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            field10[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            field14[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            field38[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            field10[0] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            if (guidBytes[4] != 0) guidBytes[4] ^= packet.ReadByte();
+            BattlegroundError430 BGError = (BattlegroundError430)packet.ReadUInt32();
+            if (guidBytes[1] != 0) guidBytes[1] ^= packet.ReadByte();
+            if (field10[1] != 0) field10[1] ^= packet.ReadByte();
+            if (guidBytes[6] != 0) guidBytes[6] ^= packet.ReadByte();
+            if (field3C[2] != 0) field3C[2] ^= packet.ReadByte();
+            if (field14[1] != 0) field14[1] ^= packet.ReadByte();
+            if (field14[2] != 0) field14[2] ^= packet.ReadByte();
+            uint field18 = packet.ReadUInt32("field18");
+            if (field38[0] != 0) field38[0] ^= packet.ReadByte();
+            if (field3C[1] != 0) field3C[1] ^= packet.ReadByte();
+            if (field10[0] != 0) field10[0] ^= packet.ReadByte();
+            uint field20 = packet.ReadUInt32("BattlegroundId"); // seems wrong? Value is huge.
+            if (field38[3] != 0) field38[3] ^= packet.ReadByte();
+            if (field3C[3] != 0) field3C[3] ^= packet.ReadByte();
+            if (guidBytes[5] != 0) guidBytes[5] ^= packet.ReadByte();
+            if (field10[2] != 0) field10[2] ^= packet.ReadByte();
+            if (guidBytes[0] != 0) guidBytes[0] ^= packet.ReadByte();
+            if (guidBytes[7] != 0) guidBytes[7] ^= packet.ReadByte();
+            if (field14[3] != 0) field14[3] ^= packet.ReadByte();
+            if (field10[3] != 0) field10[3] ^= packet.ReadByte();
+            if (field38[2] != 0) field38[2] ^= packet.ReadByte();
+            if (guidBytes[2] != 0) guidBytes[2] ^= packet.ReadByte();
+            if (field38[1] != 0) field38[1] ^= packet.ReadByte();
+            if (guidBytes[3] != 0) guidBytes[3] ^= packet.ReadByte();
+            if (field14[0] != 0) field14[0] ^= packet.ReadByte();
+            if (field3C[0] != 0) field3C[0] ^= packet.ReadByte();
+            uint field1C = packet.ReadUInt32("field1C");
+
+            // note: guid is used to identify the player who's unable to join queue when it happens.
+
+            // on id 0xB, 0xC and 8
+            if (BGError == BattlegroundError430.CouldntJoinQueueInTime 
+                || BGError == BattlegroundError430.NotAllowedInBattleground 
+                || BGError == BattlegroundError430.JoinFailedAsGroup)
+            {
+                packet.Writer.WriteLine("GUID: {0:X16}", BitConverter.ToUInt64(guidBytes, 0));
+            }
+
+            packet.Writer.WriteLine("BGError: {0}", BGError.ToString());
+        }
 
         [Parser(Opcode.TEST_422_265C, ClientVersionBuild.V4_2_2_14545)] // SMSG
         public static void HandleRGroupJoinedBattleground422(Packet packet)
