@@ -122,6 +122,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_GOSSIP_HELLO, 0xAD3},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x984E},
             {Opcode.CMSG_GRANT_LEVEL, 0x1CD6},
+            {Opcode.CMSG_GROUP_ACCEPT_DECLINE, 0x8A88},
             {Opcode.CMSG_GROUP_ASSISTANT_LEADER, 0xC8CA},
             {Opcode.CMSG_GROUP_CHANGE_SUB_GROUP, 0x1AD2},
             {Opcode.CMSG_GROUP_INVITE, 0xC88A},

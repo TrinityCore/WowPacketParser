@@ -397,6 +397,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32");
         }
 
+        [Parser(Opcode.CMSG_GROUP_ACCEPT_DECLINE)]
+        public static void HandleGroupAcceptDecline(Packet packet)
+        {
+            packet.ReadUInt32("Accepted");
+        }
+
         [Parser(Opcode.MSG_RANDOM_ROLL)]
         public static void HandleRandomRollPackets(Packet packet)
         {
