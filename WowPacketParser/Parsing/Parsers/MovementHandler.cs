@@ -166,7 +166,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
-                packet.ReadBoolean("Toggle AlwaysAllowPitching");
+                packet.ReadBoolean("Toggle AnimTierInTrans");
 
             var pos = packet.ReadVector3("Position");
 
