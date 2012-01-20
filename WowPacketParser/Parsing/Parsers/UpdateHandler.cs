@@ -185,17 +185,10 @@ namespace WowPacketParser.Parsing.Parsers
                 moveInfo = MovementHandler.ReadMovementInfo(ref packet, guid, index);
                 var moveFlags = moveInfo.Flags;
 
-                var speedCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056) ? 9 : 8;
-                int speedShift;
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_1_0_13914) &&
-                    ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
-                    speedShift = 1;  // enums shifted by one
-                else speedShift = 0;
-
-                for (var i = 0; i < speedCount - speedShift; i++)
+                for (var i = 0; i < 9; ++i)
                 {
-                    var speedType = (SpeedType)(i + speedShift);
-                    var speed = packet.ReadSingle("["+ index + "] " + speedType + " Speed");
+                    var speedType = (SpeedType)i;
+                    var speed = packet.ReadSingle(speedType + " Speed", index);
 
                     switch (speedType)
                     {
@@ -212,9 +205,8 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                 }
 
-                // Either movement flags are incorrect for 4.2.2 or this has been removed
-                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545) && moveFlags.HasAnyFlag(MovementFlag.SplineEnabled)
-                    || moveInfo.HasSplineData)
+                // Movement flags seem incorrect for 4.2.2
+                if (/*moveFlags.HasAnyFlag(MovementFlag.SplineEnabled) || */moveInfo.HasSplineData)
                 {
                     // Temp solution
                     // TODO: Make Enums version friendly
