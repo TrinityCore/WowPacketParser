@@ -1,5 +1,7 @@
+using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -104,7 +106,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.TEST_422_26948)]
         public static void Handle26948(Packet packet)
         {
-            packet.AsHex();
+            //packet.AsHex();
             using (var uncompressed = packet.Inflate(packet.ReadInt32()))
                 uncompressed.AsHex();
         }
@@ -132,6 +134,35 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unknown 16"); // v3 + 84
             packet.ReadInt32("Unknown 17"); // v3 + 80
             packet.ReadInt32("Unknown 18"); // v3 + 28
+        }
+
+        [Parser(Opcode.TEST_422_13022, ClientVersionBuild.V4_2_2_14545)]
+        public static void Handle13022(Packet packet)
+        {
+            var bytes = new byte[8];
+
+            bytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            if (bytes[2] != 0) bytes[2] ^= packet.ReadByte();
+            if (bytes[4] != 0) bytes[4] ^= packet.ReadByte();
+            if (bytes[7] != 0) bytes[7] ^= packet.ReadByte();
+            if (bytes[0] != 0) bytes[0] ^= packet.ReadByte();
+
+            packet.ReadSingle("Unk float");
+
+            if (bytes[5] != 0) bytes[5] ^= packet.ReadByte();
+            if (bytes[1] != 0) bytes[1] ^= packet.ReadByte();
+            if (bytes[6] != 0) bytes[6] ^= packet.ReadByte();
+            if (bytes[3] != 0) bytes[3] ^= packet.ReadByte();
+
+            packet.Writer.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(bytes, 0)));
         }
     }
 }

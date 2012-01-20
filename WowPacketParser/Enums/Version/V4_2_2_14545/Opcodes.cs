@@ -9,6 +9,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0xDC4B},
             {Opcode.CMSG_ACCEPT_TRADE, 0xB4A5},
             {Opcode.SMSG_TRADE_STATUS_EXTENDED, 0xF0EC},
+            {Opcode.SMSG_TRADE_STATUS, 0xA0DC},
             {Opcode.CMSG_ACTIVATETAXI, 0x8CDB},
             {Opcode.CMSG_ACTIVATETAXIEXPRESS, 0x5E7F},
             {Opcode.CMSG_ADD_FRIEND, 0x5C57},
@@ -44,6 +45,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_AUTOSTORE_LOOT_ITEM, 0xD876},
             {Opcode.CMSG_BANKER_ACTIVATE, 0xA5A},
             {Opcode.CMSG_AUTO_DECLINE_GUILD_INVITES, 0x586F},
+            {Opcode.CMSG_BATTLEFIELD_JOIN, 0x225},
             {Opcode.CMSG_BATTLEFIELD_LIST, 0x32A4},
             {Opcode.CMSG_BATTLEFIELD_REQUEST_SCORE_DATA, 0x85A5},
             {Opcode.CMSG_BEGIN_TRADE, 0x3724},
@@ -127,10 +129,12 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_GROUP_SWAP_SUB_GROUP, 0x5AD7},
             {Opcode.CMSG_GROUP_UNINVITE_GUID, 0xCE66},
             {Opcode.CMSG_GUILDFINDER_JOIN, 0x68C5},
+            {Opcode.CMSG_GUILD_ACCEPT, 0x8889},
             {Opcode.CMSG_GUILD_BANKER_ACTIVATE, 0x4E77},
             {Opcode.CMSG_GUILD_BANK_DEPOSIT_MONEY, 0x4847},
             {Opcode.CMSG_GUILD_BANK_QUERY_TAB, 0xDE46},
             {Opcode.CMSG_GUILD_BANK_SWAP_ITEMS, 0x85B},
+            {Opcode.CMSG_GUILD_DECLINE, 0x8D5A},
             {Opcode.CMSG_GUILD_INFO, 0xCE76},
             {Opcode.CMSG_GUILD_INVITE, 0x8C67},
             {Opcode.CMSG_GUILD_LEADER, 0x28C4},
@@ -258,6 +262,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_SET_SELECTION, 0x4C4E},
             {Opcode.CMSG_SET_TAXI_BENCHMARK_MODE, 0x1EFF},
             {Opcode.CMSG_SET_TITLE, 0xCE63},
+            {Opcode.CMSG_SET_TRADE_GOLD, 0x27A4},
             {Opcode.CMSG_SHOWING_CLOAK, 0x8AE3},
             {Opcode.CMSG_SHOWING_HELM, 0xCEFA},
             {Opcode.CMSG_SPELLCLICK, 0xC8F2},
@@ -295,6 +300,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.MSG_INSPECT_ARENA_TEAMS, 0xDA4F},
             {Opcode.MSG_LIST_STABLED_PETS, 0x88CA},
             {Opcode.MSG_MOVE_HEARTBEAT, 0xB024},
+            {Opcode.MSG_MOVE_TELEPORT, 0xF25C},
             {Opcode.MSG_MOVE_JUMP, 0x9225},
             {Opcode.MSG_MOVE_KNOCK_BACK, 0x60FE}, // Not sure
             {Opcode.MSG_MOVE_SET_FACING, 0x02a4},
@@ -668,7 +674,8 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.TEST_422_24649, 24649},
             {Opcode.TEST_422_265C, 0x265C},
             {Opcode.TEST_422_26948, 26948},
-            {Opcode.TEST_422_9838, 9838}
+            {Opcode.TEST_422_9838, 9838},
+            {Opcode.TEST_422_13022, 13022}
 
             // CMSG Handlers
             // 4120 - sub_65D6A0 - CMSG_LFG_LFR_JOIN ?

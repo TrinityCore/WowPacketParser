@@ -153,5 +153,10 @@ namespace WowPacketParser.Misc
         {
             Thread.CurrentThread.CurrentCulture = cultureInfo;
         }
+
+        public static string ToFormattedString(this TimeSpan span)
+        {
+            return string.Format("{0:00}:{1:00}:{2:00}.{3:000}", span.Hours, span.Minutes, span.Seconds, span.Milliseconds);
+        }
     }
 }

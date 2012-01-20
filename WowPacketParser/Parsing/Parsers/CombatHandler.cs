@@ -133,7 +133,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("GUID");
             packet.ReadPackedGuid("Victim GUID");
-            packet.ReadInt32("Unk int");
+            packet.ReadInt32("Unk int"); // Has something to do with facing?
         }
 
         [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]

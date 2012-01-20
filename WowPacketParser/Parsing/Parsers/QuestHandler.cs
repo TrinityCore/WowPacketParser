@@ -553,7 +553,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Required Spell");
             }
 
-            if (flags.HasFlag(QuestFlags.HiddenRewards))
+            if (flags.HasAnyFlag(QuestFlags.HiddenRewards))
             {
                 packet.ReadUInt32("Hidden Chosen Items");
                 packet.ReadUInt32("Hidden Items");

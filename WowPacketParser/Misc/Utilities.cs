@@ -50,7 +50,7 @@ namespace WowPacketParser.Misc
             var year = (packedDate >> 24) & 0x1F;
             // something = (packedDate >> 29) & 3;
 
-            return new DateTime(year + 2000, month + 1, day + 1, hour, minute, 0);
+            return new DateTime(2000, 1, 1).AddYears(year).AddMonths(month).AddDays(day).AddHours(hour).AddMinutes(minute);
         }
 
         public static StoreNameType ObjectTypeToStore(ObjectType type)

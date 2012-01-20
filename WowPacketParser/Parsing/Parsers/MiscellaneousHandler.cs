@@ -7,6 +7,26 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class MiscellaneousParsers
     {
+        [Parser(Opcode.SMSG_HOTFIX_NOTIFY)]
+        public static void HandleHotfixNotify(Packet packet)
+        {
+            packet.ReadInt32("Unk int32");
+            packet.ReadUInt32("Unk int32");
+            packet.ReadUInt32("Unk int32");
+        }
+
+        [Parser(Opcode.SMSG_HOTFIX_NOTIFY_BLOP)]
+        public static void HandleHotfixNotifyBlob(Packet packet)
+        {
+            var count = packet.ReadInt32("Count");
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadInt32("Unk int32"); // Also time?
+                packet.ReadTime("Hotfix date");
+                packet.ReadInt32("Hotfixed entry");
+            }
+        }
+
         [Parser(Opcode.TEST_430_SYNC_PLAYER_MOVE)]
         public static void HandleUnk5(Packet packet)
         {
@@ -386,7 +406,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ZONE_UNDER_ATTACK)]
         public static void HandleZoneUpdate(Packet packet)
         {
-            packet.ReadUInt32("Zone Id");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id");
         }
 
         [Parser(Opcode.SMSG_HEALTH_UPDATE)]
@@ -498,7 +518,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<Class>("Class", TypeCode.UInt32);
                 packet.ReadEnum<Race>("Race", TypeCode.UInt32);
                 packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
-                packet.ReadUInt32("Zone Id");
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id");
             }
         }
 
