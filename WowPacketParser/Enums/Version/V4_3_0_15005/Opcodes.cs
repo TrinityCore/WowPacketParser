@@ -334,6 +334,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.CMSG_WARDEN_DATA, 264},
             {Opcode.CMSG_LOG_DISCONNECT, 18740},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 17190},
+            {Opcode.CMSG_GMTICKET_CREATE, 27778},
             {Opcode.MSG_AUCTION_HELLO, 1664},
             {Opcode.MSG_CORPSE_QUERY, 20486},
             {Opcode.MSG_INSPECT_ARENA_TEAMS, 19074},
