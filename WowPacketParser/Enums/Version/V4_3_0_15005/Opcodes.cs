@@ -337,6 +337,11 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.CMSG_WARDEN_DATA, 264},
             {Opcode.CMSG_LOG_DISCONNECT, 18740},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 17190},
+            {Opcode.CMSG_GMTICKET_CREATE, 27778},
+            {Opcode.CMSG_ADD_IGNORE, 22182},
+            {Opcode.CMSG_DEL_IGNORE, 11430},
+            {Opcode.CMSG_GROUP_DECLINE, 2326},
+            {Opcode.CMSG_GROUP_UNINVITE, 11812},
             {Opcode.MSG_AUCTION_HELLO, 1664},
             {Opcode.MSG_CORPSE_QUERY, 20486},
             {Opcode.MSG_INSPECT_ARENA_TEAMS, 19074},
@@ -856,6 +861,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 9402},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 25122},
             {Opcode.SMSG_FORCE_MOVE_ROOT, 17950},
+            {Opcode.SMSG_GROUP_INVITE, 11402},
 
             // TEST
             {Opcode.TEST_430_SYNC_PLAYER_MOVE, 0x5}
