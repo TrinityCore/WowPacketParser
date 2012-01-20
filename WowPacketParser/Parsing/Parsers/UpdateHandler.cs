@@ -206,7 +206,8 @@ namespace WowPacketParser.Parsing.Parsers
                 }
 
                 // Movement flags seem incorrect for 4.2.2
-                if (/*moveFlags.HasAnyFlag(MovementFlag.SplineEnabled) || */moveInfo.HasSplineData)
+                // guess in which version they stopped checking movement flag and used bits
+                if ((ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333) && moveFlags.HasAnyFlag(MovementFlag.SplineEnabled)) || moveInfo.HasSplineData)
                 {
                     // Temp solution
                     // TODO: Make Enums version friendly
