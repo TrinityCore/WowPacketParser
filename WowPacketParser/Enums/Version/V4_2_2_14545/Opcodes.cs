@@ -302,7 +302,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.MSG_MOVE_HEARTBEAT, 0xB024},
             {Opcode.MSG_MOVE_TELEPORT, 0xF25C},
             {Opcode.MSG_MOVE_JUMP, 0x9225},
-            {Opcode.MSG_MOVE_KNOCK_BACK, 0x60FE}, // Not sure
             {Opcode.MSG_MOVE_SET_FACING, 0x02a4},
             {Opcode.MSG_MOVE_SET_PITCH, 0xA7A5},
             {Opcode.MSG_MOVE_SET_RUN_MODE, 0x21A4},
@@ -516,6 +515,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_MONSTER_MOVE, 0x4C53},
             {Opcode.SMSG_MONSTER_MOVE_TRANSPORT, 0x88FB},
             {Opcode.SMSG_MOTD, 0xCA4B},
+            {Opcode.SMSG_MOVE_KNOCK_BACK, 0x60FE}, // Not sure
             {Opcode.SMSG_MOUNTSPECIAL_ANIM, 0x09E77},
             {Opcode.SMSG_MULTIPLE_PACKETS, 0xDCEA},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x9CE6},

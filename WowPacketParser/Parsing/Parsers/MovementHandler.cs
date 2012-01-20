@@ -166,7 +166,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
-                packet.ReadBoolean("Toggle AlwaysAllowPitching");
+                packet.ReadBoolean("Toggle AnimTierInTrans");
 
             var pos = packet.ReadVector3("Position");
 
@@ -749,41 +749,32 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_MOVE_TELEPORT, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleMoveTeleport422(Packet packet)
         {
-            var guid = new byte[8];
-            var OnTransport = packet.ReadBit("OnTransport");
-            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[1] = (byte)(packet.ReadBit() ? 1 : 0); // Another byte
+            var onTransport = packet.ReadBit("OnTransport");
+
+            var guid = packet.StartBitStream(0, 2, 6, 7, 4, 5, 3, 1);
+
             var unk2 = packet.ReadBit("Unk Bit Boolean 2");
             
             packet.ReadVector3("Destination Position");
-            
-            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
-            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
-            
-            if (OnTransport)
+
+            packet.ParseBitStream(guid, 5);
+            packet.ParseBitStream(guid, 4);
+
+            if (onTransport)
                 packet.ReadGuid("Transport Guid");
-                
-            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
-            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
-            
+
+            packet.ParseBitStream(guid, 2);
+            packet.ParseBitStream(guid, 7);
+
             packet.ReadInt32("Unk 1");
-            
-            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
-            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
-            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
-            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
-            
+
+            packet.ParseBitStream(guid, 1, 0, 6, 3);
+
             if (unk2)
                 packet.ReadByte("Unk 2");
                 
             packet.ReadSingle("Arrive Orientation");
-            packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.ToGuid("Guid", guid);
         }
         
         [Parser(Opcode.MSG_MOVE_START_FORWARD)]
@@ -838,13 +829,14 @@ namespace WowPacketParser.Parsing.Parsers
                 guid = new Guid();
 
             ReadMovementInfo(ref packet, guid);
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.MSG_MOVE_KNOCK_BACK))
-            {
-                packet.ReadSingle("Sin Angle");
-                packet.ReadSingle("Cos Angle");
-                packet.ReadSingle("Speed");
-                packet.ReadSingle("Velocity");
-            }
+
+            if (packet.Opcode != Opcodes.GetOpcode(Opcode.MSG_MOVE_KNOCK_BACK))
+                return;
+
+            packet.ReadSingle("Sin Angle");
+            packet.ReadSingle("Cos Angle");
+            packet.ReadSingle("Speed");
+            packet.ReadSingle("Velocity");
         }
 
         [Parser(Opcode.MSG_MOVE_SET_WALK_SPEED)]
@@ -1189,52 +1181,25 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         // Not sure about opcode
-        [Parser(Opcode.MSG_MOVE_KNOCK_BACK, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_MOVE_KNOCK_BACK, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleMoveKnockBack422(Packet packet)
         {
-            var guidBytes = new byte[8];
+            var guid = packet.StartBitStream(5, 2, 6, 3, 1, 4, 0, 7);
 
-            guidBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
-
-            if (guidBytes[0] != 0)
-                guidBytes[0] ^= packet.ReadByte();
+            packet.ParseBitStream(guid, 0);
 
             packet.ReadSingle("Jump Sin");
             packet.ReadUInt32("Fall time");
             packet.ReadSingle("Fall Start Velocity");
 
-            if (guidBytes[6] != 0)
-                guidBytes[6] ^= packet.ReadByte();
+            packet.ParseBitStream(guid, 6);
 
             packet.ReadSingle("Jump Cos");
             packet.ReadSingle("Jump Velocity");
 
-            if (guidBytes[3] != 0)
-                guidBytes[3] ^= packet.ReadByte();
+            packet.ParseBitStream(guid, 3, 1, 2, 4, 7, 5);
 
-            if (guidBytes[1] != 0)
-                guidBytes[1] ^= packet.ReadByte();
-
-            if (guidBytes[2] != 0)
-                guidBytes[2] ^= packet.ReadByte();
-
-            if (guidBytes[4] != 0)
-                guidBytes[4] ^= packet.ReadByte();
-
-            if (guidBytes[7] != 0)
-                guidBytes[7] ^= packet.ReadByte();
-
-            if (guidBytes[5] != 0)
-                guidBytes[5] ^= packet.ReadByte();
-
-            packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
+            packet.ToGuid("Guid", guid);
         }
     }
 }

@@ -307,8 +307,8 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     if (flags.HasAnyFlag(CastFlag.AdjustMissile))
                     {
-                        packet.ReadSingle("Unk Single");
-                        packet.ReadInt32("Unk Int32 1");
+                        packet.ReadSingle("Evelation");
+                        packet.ReadInt32("Delay time");
                     }
                 }
             }

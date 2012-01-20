@@ -495,5 +495,66 @@ namespace WowPacketParser.Misc
             Writer.WriteLine("{0}{1}: {2} ({3}){4}", GetIndexString(values), name, val.Value, val.Key, (Settings.DebugReads ? " (0x" + val.Key.ToString("X4") + ")" : String.Empty));
             return val.Value;
         }
+
+        public byte[] BitStream(int size)
+        {
+            return new byte[size];
+        }
+
+        public byte[] StartBitStream(params int[] values)
+        {
+            var bytes = new byte[values.Length];
+
+            foreach (var value in values)
+                bytes[value] = (byte)(ReadBit() ? 1 : 0);
+
+            return bytes;
+        }
+
+        public byte ParseBitStream(byte[] stream, byte value)
+        {
+            if (stream[value] != 0)
+                return stream[value] ^= ReadByte();
+
+            return 0;
+        }
+
+        public byte[] ParseBitStream(byte[] stream, params byte[] values)
+        {
+            var tempBytes = new byte[values.Length];
+            var i = 0;
+
+            foreach (var value in values)
+            {
+                if (stream[value] != 0)
+                    stream[value] ^= ReadByte();
+
+                tempBytes[i++] = stream[value];
+            }
+
+            return tempBytes;
+        }
+
+        public byte ParseBitStream(byte[] stream, string name, byte value)
+        {
+            if (stream[value] != 0)
+                return stream[value] ^= ReadByte(name);
+
+            return 0;
+        }
+
+        public string ToGuid(byte[] stream)
+        {
+            var val = new Guid(BitConverter.ToUInt64(stream, 0));
+            Writer.WriteLine("Guid: {0}", val);
+            return val.ToString();
+        }
+
+        public string ToGuid(string name, byte[] stream, params int[] values)
+        {
+            var val = new Guid(BitConverter.ToUInt64(stream, 0));
+            Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            return val.ToString();
+        }
     }
 }

@@ -43,6 +43,14 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_CHANNEL_MEMBER_COUNT)]
+        public static void HandleChannelMemberCount(Packet packet)
+        {
+            packet.ReadCString("Channel Name");
+            packet.ReadEnum<ChannelFlag>("Flags", TypeCode.Byte);
+            packet.ReadInt32("Unk int32");
+        }
+
         [Parser(Opcode.SMSG_CHANNEL_NOTIFY)]
         public static void HandleChannelNotify(Packet packet)
         {

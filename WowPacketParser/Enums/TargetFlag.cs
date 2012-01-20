@@ -24,7 +24,7 @@ namespace WowPacketParser.Enums
         CorpseAlly          = 0x00008000,
         UnitMinipet         = 0x00010000,
         Glyph               = 0x00020000,
-        Unknown40000        = 0x00040000,
+        DestinationTarget   = 0x00040000,
         ExtraTargets        = 0x00080000, // 4.x VisualChain
         UnitPassenger       = 0x00100000,
         Unk400000           = 0x00400000,
