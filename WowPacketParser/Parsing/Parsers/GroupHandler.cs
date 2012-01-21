@@ -2,6 +2,7 @@ using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -350,6 +351,41 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk Uint32", i);
 
             packet.ReadInt32("Unk Int32 2");
+        }
+
+        [Parser(Opcode.CMSG_GROUP_INVITE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
+        public static void HandleGroupInvite422(Packet packet)
+        {
+            // note: this handler is different in 4.3.0, it got a bit fancy.
+            var guidBytes = new byte[8];
+
+            guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            packet.ReadInt32("Unk0"); // Always 0
+            packet.ReadInt32("Unk1"); // Non-zero in cross realm parties (1383)
+            packet.ReadCString("Name");
+
+            if (guidBytes[0] != 0) guidBytes[0] ^= packet.ReadByte();
+            if (guidBytes[7] != 0) guidBytes[7] ^= packet.ReadByte();
+            if (guidBytes[4] != 0) guidBytes[4] ^= packet.ReadByte();
+            if (guidBytes[1] != 0) guidBytes[1] ^= packet.ReadByte();
+            if (guidBytes[2] != 0) guidBytes[2] ^= packet.ReadByte();
+            if (guidBytes[6] != 0) guidBytes[6] ^= packet.ReadByte();
+            if (guidBytes[5] != 0) guidBytes[5] ^= packet.ReadByte();
+        	
+            packet.ReadCString("Realm Name"); // Non-empty in cross realm parties
+        	
+            if (guidBytes[3] != 0) guidBytes[3] ^= packet.ReadByte();
+
+            // Non-zero in cross realm parties
+            packet.Writer.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
         }
 
         [Parser(Opcode.CMSG_GROUP_UNINVITE_GUID)]

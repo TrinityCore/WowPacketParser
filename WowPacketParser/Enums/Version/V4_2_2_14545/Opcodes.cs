@@ -124,6 +124,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_GRANT_LEVEL, 0x1CD6},
             {Opcode.CMSG_GROUP_ASSISTANT_LEADER, 0xC8CA},
             {Opcode.CMSG_GROUP_CHANGE_SUB_GROUP, 0x1AD2},
+            {Opcode.CMSG_GROUP_INVITE, 0xC88A},
             {Opcode.CMSG_GROUP_RAID_CONVERT, 0xC85A},
             {Opcode.CMSG_GROUP_SET_LEADER, 0xCEC7},
             {Opcode.CMSG_GROUP_SWAP_SUB_GROUP, 0x5AD7},
