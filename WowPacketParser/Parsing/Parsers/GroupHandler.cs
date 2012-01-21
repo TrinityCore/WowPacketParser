@@ -401,6 +401,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32");
         }
 
+        [Parser(Opcode.CMSG_GROUP_ACCEPT_DECLINE)]
+        public static void HandleGroupAcceptDecline(Packet packet)
+        {
+            packet.ReadBit("Accepted");
+            // 7 0 bits here
+            packet.ReadUInt32("Unknown");
+        }
+
         [Parser(Opcode.MSG_RANDOM_ROLL)]
         public static void HandleRandomRollPackets(Packet packet)
         {
@@ -429,6 +437,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 packet.ReadUInt32("LFG Boot Cooldown");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                packet.ReadGuid("Player Guid"); // Usually 0
         }
 
         [Parser(Opcode.SMSG_RAID_GROUP_ONLY)]
