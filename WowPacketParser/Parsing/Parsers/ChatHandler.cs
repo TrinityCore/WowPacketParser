@@ -219,11 +219,19 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_MESSAGECHAT_GUILD)]
         [Parser(Opcode.CMSG_MESSAGECHAT_YELL)]
         [Parser(Opcode.CMSG_MESSAGECHAT_SAY)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_RAID)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_OFFICER)]
         public static void HandleClientChatMessageSay(Packet packet)
         {
             packet.ReadEnum<Language>("Language", TypeCode.Int32);
             // 4.3.0 some kind of strlen is send before string, size of 2 bytes
             packet.ReadCString("Message");
+        }
+
+        [Parser(Opcode.CMSG_MESSAGECHAT_AFK)]
+        public static void HandleMessageChatAfk(Packet packet)
+        {
+            packet.ReadCString("Away Message");
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT_CHANNEL)]
