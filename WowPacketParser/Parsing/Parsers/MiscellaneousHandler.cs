@@ -612,6 +612,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Guid");
         }
 
+        [Parser(Opcode.SMSG_DURABILITY_DAMAGE_DEATH)]
+        public static void HandleDurabilityDamageDeath(Packet packet)
+        {
+            // Confirm
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                packet.ReadInt32("Durability");
+        }
+
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
