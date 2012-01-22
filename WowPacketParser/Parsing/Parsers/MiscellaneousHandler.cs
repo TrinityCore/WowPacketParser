@@ -623,6 +623,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("SpellEffectCameraShakes"); // index from dbc
             packet.ReadInt32("Unknown"); // Sound related
         }
+
+        [Parser(Opcode.SMSG_COMPLAIN_RESULT)]
+        public static void HandleComplainResult(Packet packet)
+        {
+            packet.ReadByte("Unknown1"); // value 1 resets CGChat::m_complaintsSystemStatus in client. (unused?)
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // guessing
+                packet.ReadByte("Unknown2"); // value 0xC generates a "CalendarError" in client.
+        }
         
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]

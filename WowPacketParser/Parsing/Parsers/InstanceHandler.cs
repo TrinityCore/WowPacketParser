@@ -132,6 +132,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Time");
             packet.ReadInt32("Encounter Mask");
             packet.ReadByte("Unk");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // guessing
+                packet.ReadByte("Unk2"); // events it throws: 1 : INSTANCE_LOCK_WARNING  0 : INSTANCE_LOCK_STOP / INSTANCE_LOCK_START
         }
 
         [Parser(Opcode.SMSG_RAID_INSTANCE_INFO)]
