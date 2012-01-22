@@ -1,7 +1,5 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -148,6 +146,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 0, 3, 7, 6);
 
             packet.ToGuid("Unk Guid?", guid);
+        }
+
+        [Parser(Opcode.TEST_422_51447)]
+        public static void Handle51447(Packet packet)
+        {
+            packet.ReadGuid("Guid");
+            packet.ReadByte("Unk 1");
+            packet.ReadVector3("Position");
         }
     }
 }

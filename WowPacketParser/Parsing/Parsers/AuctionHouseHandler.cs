@@ -62,7 +62,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Quality");
             packet.ReadByte("Usable");
             packet.ReadByte("Unk Byte 1");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                 packet.ReadByte("Unk Byte");
             var count = packet.ReadByte("Unk Count");
             for (var i = 0; i < count; ++i)
@@ -87,9 +87,23 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadUInt32("Auction ID");
             var action = packet.ReadEnum<AuctionHouseAction>("Action", TypeCode.UInt32);
-            var error = packet.ReadEnum<AuctionHouseAction>("Error", TypeCode.UInt32);
-            if (error == 0 && action > 0)
-                packet.ReadUInt32("Bid Error");
+            var error = packet.ReadEnum<AuctionHouseError>("Error", TypeCode.UInt32);
+            
+            if (error == AuctionHouseError.Inventory)
+                packet.ReadInt32("Error Inventory Int32");
+
+            switch (error)
+            {
+                case AuctionHouseError.Ok:
+                    if (action == AuctionHouseAction.Bid)
+                        packet.ReadInt64("Unknown Bid Int64");
+                    break;
+                case AuctionHouseError.HigherBid:
+                    packet.ReadInt64("Unknown HigherBid Int64");
+                    packet.ReadInt64("Unknown HigherBid Int64");
+                    packet.ReadInt64("Unknown HigherBid Int64");
+                    break;
+            }
         }
 
         [Parser(Opcode.SMSG_AUCTION_BIDDER_NOTIFICATION)]

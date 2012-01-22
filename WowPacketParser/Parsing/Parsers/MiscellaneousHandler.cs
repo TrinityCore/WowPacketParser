@@ -30,10 +30,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.TEST_430_SYNC_PLAYER_MOVE)]
         public static void HandleUnk5(Packet packet)
         {
-            packet.ReadSingle("X");
-            packet.ReadSingle("Y");
-            packet.ReadSingle("Z");
-            packet.ReadSingle("O");
+            packet.ReadVector4("Position");
         }
 
         [Parser(Opcode.CMSG_SUSPEND_TOKEN)]
@@ -620,6 +617,13 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Durability");
         }
 
+        [Parser(Opcode.SMSG_CAMERA_SHAKE)]
+        public static void HandleCameraShake(Packet packet)
+        {
+            packet.ReadInt32("SpellEffectCameraShakes"); // index from dbc
+            packet.ReadInt32("Unknown"); // Sound related
+        }
+        
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]

@@ -248,7 +248,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Item Display ID", slot);
                 packet.ReadUInt32("Item Count", slot);
                 packet.ReadUInt32("Item Wrapped", slot);
-                packet.ReadUInt64("Item Gift Creator GUID", slot);
+                packet.ReadGuid("Item Gift Creator GUID", slot);
                 packet.ReadUInt32("Item Perm Enchantment Id", slot);
                 for (var i = 0; i < 3; ++i)
                     packet.ReadUInt32("Item Enchantment Id", slot, i);

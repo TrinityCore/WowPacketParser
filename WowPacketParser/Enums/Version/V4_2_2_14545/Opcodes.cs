@@ -333,6 +333,8 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.MSG_MOVE_STOP_STRAFE, 0x0125},
             {Opcode.MSG_MOVE_STOP_SWIM, 0xB424},
             {Opcode.MSG_MOVE_STOP_TURN, 0x90A4},
+            {Opcode.MSG_MOVE_SET_RUN_SPEED, 0xE24E},
+            {Opcode.SMSG_SPLINE_SET_RUN_SPEED, 0xB2CE},
             {Opcode.MSG_PETITION_DECLINE, 0x98E7},
             {Opcode.MSG_PETITION_RENAME, 0x4857},
             {Opcode.MSG_QUERY_NEXT_MAIL_TIME, 0xCEE6},
@@ -401,6 +403,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_BUY_ITEM, 0xCA67},
             {Opcode.SMSG_CALENDAR_COMMAND_RESULT, 0x9A4E},
             {Opcode.SMSG_CALENDAR_SEND_CALENDAR, 0x08FB},
+            {Opcode.SMSG_CAMERA_SHAKE, 0x5CFB},
             {Opcode.SMSG_CANCEL_AUTO_REPEAT, 0x5ACB},
             {Opcode.SMSG_CAST_FAILED, 0x1AEB},
             {Opcode.SMSG_CHANNEL_LIST, 0x9C47},
@@ -710,6 +713,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.TEST_422_265C, 0x265C},
             {Opcode.TEST_422_26948, 26948},
             {Opcode.TEST_422_9838, 9838},
+            {Opcode.TEST_422_51447, 0xC8F7},
             {Opcode.TEST_422_13022, 13022}
 
             // CMSG Handlers
