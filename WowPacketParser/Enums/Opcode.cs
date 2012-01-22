@@ -1102,6 +1102,7 @@ namespace WowPacketParser.Enums
         SMSG_GUILD_ACHIEVEMENT_EARNED,
         SMSG_GUILD_BANK_LIST,
         SMSG_GUILD_BANK_QUERY_RESULTS,
+        SMSG_GUILD_CANCEL,
         SMSG_GUILD_CHANGE_NAME_RESULT,
         SMSG_GUILD_COMMAND_RESULT,
         SMSG_GUILD_DECLINE,
@@ -1605,7 +1606,7 @@ namespace WowPacketParser.Enums
         TEST_422_265C,
         TEST_422_26948,
         TEST_422_9838,
-        TEST_422_13022
+        TEST_422_13022,
 
         // ReSharper restore InconsistentNaming
     }
