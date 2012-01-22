@@ -76,6 +76,12 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_PET_TAME_FAILURE)]
+        public static void HandlePetTameFailure(Packet packet)
+        {
+            packet.ReadEnum<PetTameFailureReason>("Reason", TypeCode.Byte);
+        }
+
         [Parser(Opcode.CMSG_PET_NAME_QUERY)]
         public static void HandlePetNameQuery(Packet packet)
         {

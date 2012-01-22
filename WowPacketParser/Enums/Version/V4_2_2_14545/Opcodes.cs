@@ -582,6 +582,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0xDCD3},
             {Opcode.SMSG_PET_REMOVED_SPELL, 0x18F6}, // Should actually be called UNLEARNED_SPELL
             {Opcode.SMSG_PET_SPELLS, 0x5A43},
+            {Opcode.SMSG_PET_TAME_FAILURE, 0x48F7},
             {Opcode.SMSG_PET_UPDATE_COMBO_POINTS, 0x1A47},
             {Opcode.SMSG_PLAYED_TIME, 0x187F},
             {Opcode.SMSG_PLAYERBINDERROR, 0x5A4F},
