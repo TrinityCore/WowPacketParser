@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -27,8 +28,10 @@ namespace WowPacketParser.Store.SQL
             var units = _stuffing.Objects.Where(x => x.Value.Type == ObjectType.Unit);
 
             const string tableName = "creature";
+            uint count = 0;
 
-            ICollection<Tuple<uint, uint>> keys = new Collection<Tuple<uint, uint>>();
+            units = units.OrderBy(unit => unit.Key.GetEntry());
+
             var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var unit in units)
             {
@@ -56,7 +59,7 @@ namespace WowPacketParser.Store.SQL
                 var movementType = 0; // TODO: Find a way to check if our unit got random movement
                 var spawnDist = (movementType == 1) ? 5 : 0;
 
-                row.AddValue("guid", unit.Key.GetLow());
+                row.AddValue("guid", "@GUID+" + count.ToString(), false, true);
                 row.AddValue("id", unit.Key.GetEntry());
                 row.AddValue("map", creature.Map);
                 row.AddValue("spawnMask", 1);
@@ -72,12 +75,21 @@ namespace WowPacketParser.Store.SQL
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + ")";
                 if (temporarySpawn)
                     row.Comment += " - !!! might be temporary spawn !!!";
+                else
+                    ++count;
 
                 rows.Add(row);
-                keys.Add(new Tuple<uint, uint>((uint) unit.Key.GetLow(), unit.Key.GetEntry()));
             }
 
-            return new QueryBuilder.SQLInsert(tableName, keys, new[] { "guid", "id" }, rows).Build();
+            var result = new StringBuilder();
+            // delete query for GUIDs
+            QueryBuilder.SQLDelete delete = new QueryBuilder.SQLDelete(new Tuple<uint, uint>(0, count), "guid", tableName, "@GUID+");
+            result.Append(delete.Build());
+            result.Append(Environment.NewLine);
+
+            var sql = new QueryBuilder.SQLInsert(tableName, rows);
+            result.Append(sql.Build());
+            return result.ToString();
         }
 
         public string CreatureEquip()
@@ -427,8 +439,10 @@ namespace WowPacketParser.Store.SQL
             var gameobjects = _stuffing.Objects.Where(x => x.Value.Type == ObjectType.GameObject);
 
             const string tableName = "gameobject";
+            uint count = 0;
 
-            ICollection<Tuple<uint, uint>> keys = new Collection<Tuple<uint, uint>>();
+            gameobjects = gameobjects.OrderBy(go => go.Key.GetEntry());
+
             var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var gameobject in gameobjects)
             {
@@ -455,7 +469,7 @@ namespace WowPacketParser.Store.SQL
                 var map = gameobject.Value.Map;
                 var spawnTimeSecs = (map == 0 || map == 1 || map == 530 || map == 571 || map == 609) ? 120 : 7200;
 
-                row.AddValue("guid", gameobject.Key.GetLow());
+                row.AddValue("guid", "@GUID+" + count.ToString(), false, true);
                 row.AddValue("id", gameobject.Key.GetEntry());
                 row.AddValue("map", go.Map);
                 row.AddValue("spawnMask", 1);
@@ -475,10 +489,20 @@ namespace WowPacketParser.Store.SQL
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + ")";
 
                 rows.Add(row);
-                keys.Add(new Tuple<uint, uint>((uint) gameobject.Key.GetLow(), gameobject.Key.GetEntry()));
+
+                ++count;
             }
 
-            return new QueryBuilder.SQLInsert(tableName, keys, new[] { "guid", "id" }, rows).Build();
+            var result = new StringBuilder();
+
+            // delete query for GUIDs
+            QueryBuilder.SQLDelete delete = new QueryBuilder.SQLDelete(new Tuple<uint, uint>(0, count), "guid", tableName, "@GUID+");
+            result.Append(delete.Build());
+            result.Append(Environment.NewLine);
+
+            var sql = new QueryBuilder.SQLInsert(tableName, rows);
+            result.Append(sql.Build());
+            return result.ToString();
         }
 
         public string PageText()
