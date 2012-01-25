@@ -95,7 +95,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                     var result = packet.ReadBytes(length);
                     packet.Writer.WriteLine("Check Results: " + Utilities.ByteArrayToHexString(result));
-                    
+
                     break;
                 }
                 case WardenClientOpcode.TransformedSeed:

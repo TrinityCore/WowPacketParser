@@ -151,7 +151,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadBoolean("Expired", i);
                 packet.ReadBoolean("Extended", i);
                 packet.ReadUInt32("Reset Time", i);
-                
+
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                     packet.ReadUInt32("Unk2", i);
             }

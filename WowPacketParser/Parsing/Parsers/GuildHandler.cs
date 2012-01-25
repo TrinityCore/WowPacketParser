@@ -694,7 +694,7 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
             var guids = new byte[count][];
 
-            for (int x = 0; x < guids.Length; x++) 
+            for (int x = 0; x < guids.Length; x++)
                guids[x] = new byte[8];
 
             for (var i = 0; i < count; ++i)
@@ -708,57 +708,57 @@ namespace WowPacketParser.Parsing.Parsers
                 guids[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
                 guids[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
             }
-                    
+
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadInt32("Guild Emblem Border Color", i);
-                
+
                 if (guids[i][4] != 0) // 12
                     guids[i][4] ^= packet.ReadByte();
-                    
+
                 packet.ReadCString("Guild Description", i);
-                    
+
                 if (guids[i][6] != 0) // 14
                     guids[i][6] ^= packet.ReadByte();
 
                 packet.ReadInt32("Guild Emblem Texture File", i);
                 packet.ReadInt32("Guild Level", i);
-                
+
                 if (guids[i][5] != 0) // 13
                     guids[i][5] ^= packet.ReadByte();
-                    
+
                 packet.ReadInt32("Unk 2", i);
                 packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32, i);
                 packet.ReadCString("Guild Name", i);
                 packet.ReadByte("Cached", i);
-                
+
                 if (guids[i][3] != 0) // 11
                     guids[i][3] ^= packet.ReadByte();
-                
+
                 packet.ReadInt32("Achievement Points", i);
-                
+
                 if (guids[i][0] != 0) // 8
                     guids[i][0] ^= packet.ReadByte();
-                    
+
                 packet.ReadInt32("Guild Emblem Color", i);
                 packet.ReadInt32("Guild Emblem Background Color", i);
                 packet.ReadByte("Request Pending", i);
                 packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32, i);
                 packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32, i);
-                
+
                 if (guids[i][7] != 0) // 15
                     guids[i][7] ^= packet.ReadByte();
-                    
+
                 packet.ReadInt32("Number of members", i);
-                
+
                 if (guids[i][2] != 0) // 10
                     guids[i][2] ^= packet.ReadByte();
-                    
+
                 packet.ReadInt32("Unk 5", i);
-                
+
                 if (guids[i][1] != 0) // 9
                     guids[i][1] ^= packet.ReadByte();
-                
+
                 packet.Writer.WriteLine("[{0}] Guild Guid: {1}", i, new Guid(BitConverter.ToUInt64(guids[i], 0)));
             }
         }

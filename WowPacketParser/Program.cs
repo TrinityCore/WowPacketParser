@@ -71,7 +71,7 @@ namespace WowPacketParser
                     Trace.WriteLine(ex.StackTrace);
                     SQLConnector.Enabled = false; // Something failed, disabling everything SQL related
                 }
-                
+
                 var endTime = DateTime.Now;
                 var span = endTime.Subtract(startTime);
                 Trace.WriteLine(string.Format("Finished loading DB in {0}.", span.ToFormattedString()));

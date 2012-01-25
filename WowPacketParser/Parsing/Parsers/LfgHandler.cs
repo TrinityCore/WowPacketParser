@@ -66,7 +66,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Base XP");
             packet.ReadInt32("Variable Money");
             packet.ReadInt32("Variable XP");
-            
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
             {
                 packet.ReadInt32("Unk 1");
@@ -78,7 +78,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Unk 7");
                 packet.ReadInt32("Unk 8");
                 packet.ReadByte("Unk 9");
-                
+
                 // LFG_SLOT_INFO_LOOT related
                 for (var i = 0; i < 3; ++i)
                 {
@@ -97,7 +97,7 @@ namespace WowPacketParser.Parsing.Parsers
                         }
                     }
                 }
-                
+
                 packet.ReadInt32("Unk 10");
                 packet.ReadInt32("Unk 11");
             }

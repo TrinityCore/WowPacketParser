@@ -308,7 +308,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (!Characters.ContainsKey(playerGuid))
                     Characters.Add(playerGuid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects
-                
+
                 packet.SniffFileInfo.Stuffing.Objects.TryAdd(playerGuid, chInfo);
             }
         }

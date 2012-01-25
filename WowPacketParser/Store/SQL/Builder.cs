@@ -20,6 +20,13 @@ namespace WowPacketParser.Store.SQL
 
         private readonly Stuffing _stuffing;
 
+        private static int getSpawnTime(uint map)
+        {
+            // If map is Eastern Kingdoms, Kalimdor, Outland, Northrend or Ebon Hold use a lower respawn time
+            // TODO: Rank and if npc is needed for quest kill should change spawntime as well
+            return (map == 0 || map == 1 || map == 530 || map == 571 || map == 609) ? 120 : 7200;
+        }
+
         public string CreatureSpawns()
         {
             if (!_stuffing.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit))
@@ -52,10 +59,7 @@ namespace WowPacketParser.Store.SQL
                 var temporarySpawn = (uf != null && uf.Int32Value != 0);
                 row.CommentOut = temporarySpawn;
 
-                // If map is Eastern Kingdoms, Kalimdor, Outland, Northrend or Ebon Hold use a lower respawn time
-                // TODO: Rank and if npc is needed for quest kill should change spawntime as well
-                var spawnTimeSecs = (unit.Value.Map == 0 || unit.Value.Map == 1 || unit.Value.Map == 530 ||
-                                     unit.Value.Map == 571 || unit.Value.Map == 609) ? 120 : 7200;
+                var spawnTimeSecs = getSpawnTime(creature.Map);
                 var movementType = 0; // TODO: Find a way to check if our unit got random movement
                 var spawnDist = (movementType == 1) ? 5 : 0;
 
@@ -464,10 +468,7 @@ namespace WowPacketParser.Store.SQL
                     animprogress = Convert.ToUInt32((bytes & 0xFF000000) >> 24);
                 }
 
-                // If map is Eastern Kingdoms, Kalimdor, Outland, Northrend or Ebon Hold use a lower respawn time
-                // TODO: Rank and if npc is needed for quest kill should change spawntime as well
-                var map = gameobject.Value.Map;
-                var spawnTimeSecs = (map == 0 || map == 1 || map == 530 || map == 571 || map == 609) ? 120 : 7200;
+                var spawnTimeSecs = getSpawnTime(go.Map);
 
                 row.AddValue("guid", "@GUID+" + count.ToString(), false, true);
                 row.AddValue("id", gameobject.Key.GetEntry());

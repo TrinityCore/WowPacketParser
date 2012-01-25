@@ -108,7 +108,7 @@ namespace WowPacketParser.Misc
                     if (j + i < end)
                     {
                         var val = stream[j + i];
-                        
+
                         hex.Append(Convert.ToString(stream[j + i], 2).PadLeft(8, '0'));
                         hex.Append(" ");
 

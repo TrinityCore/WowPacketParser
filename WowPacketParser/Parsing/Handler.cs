@@ -63,11 +63,11 @@ namespace WowPacketParser.Parsing
             File.Delete(file);
             using (var writer = new StreamWriter(file, true))
             {
-    
+
                 foreach (var packet in packets)
                     if (packet.WriteToFile)
                         writer.WriteLine(packet.Writer);
-    
+
                 writer.Flush();
                 writer.Close();
             }

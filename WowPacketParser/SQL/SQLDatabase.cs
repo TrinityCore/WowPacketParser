@@ -48,7 +48,7 @@ namespace WowPacketParser.SQL
 
                 return dict;
             }
-                
+
         }
     }
 }

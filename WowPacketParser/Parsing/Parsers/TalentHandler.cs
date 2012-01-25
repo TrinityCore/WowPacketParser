@@ -42,7 +42,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("GUID");
             else
                 packet.ReadPackedGuid("GUID");
-            
+
             ReadTalentInfo(ref packet);
 
             var slotMask = packet.ReadUInt32("Slot Mask");

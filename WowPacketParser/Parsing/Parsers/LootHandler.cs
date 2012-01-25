@@ -113,7 +113,7 @@ namespace WowPacketParser.Parsing.Parsers
                 loot.LootItems.Add(lootItem);
             }
 
-            // Items do not have item id in its guid, we need to query the wowobject store go 
+            // Items do not have item id in its guid, we need to query the wowobject store go
             if (guid.GetObjectType() == ObjectType.Item)
             {
                 WoWObject item;

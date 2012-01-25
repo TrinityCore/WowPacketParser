@@ -594,10 +594,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
             packet.ReadUInt32("Display ID");
             var race = packet.ReadEnum<Race>("Race", TypeCode.Byte);
-            
+
             if (race == Race.None)
                 return;
-            
+
             packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
             packet.ReadEnum<Class>("Class", TypeCode.Byte);
 

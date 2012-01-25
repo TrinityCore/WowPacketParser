@@ -122,7 +122,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell", index); // Can be 0
             packet.ReadByte("Unknown Byte/Bool", index);
             var count = packet.ReadInt32("Count", index);
-            
+
             for (int i = 0; i < count; i++)
             {
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell", index, i);

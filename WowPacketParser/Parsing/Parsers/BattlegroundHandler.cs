@@ -365,7 +365,7 @@ namespace WowPacketParser.Parsing.Parsers
             guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
             field38[2] = (byte)(packet.ReadBit() ? 1 : 0);
             field10[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            field14[0] = (byte)(packet.ReadBit() ? 1 : 0); 
+            field14[0] = (byte)(packet.ReadBit() ? 1 : 0);
             field14[1] = (byte)(packet.ReadBit() ? 1 : 0);
             guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
             field10[3] = (byte)(packet.ReadBit() ? 1 : 0);
@@ -436,8 +436,8 @@ namespace WowPacketParser.Parsing.Parsers
             // note: guid is used to identify the player who's unable to join queue when it happens.
 
             // on id 0xB, 0xC and 8
-            if (bgError == BattlegroundError430.CouldntJoinQueueInTime 
-                || bgError == BattlegroundError430.NotAllowedInBattleground 
+            if (bgError == BattlegroundError430.CouldntJoinQueueInTime
+                || bgError == BattlegroundError430.NotAllowedInBattleground
                 || bgError == BattlegroundError430.JoinFailedAsGroup)
             {
                 packet.Writer.WriteLine("GUID: {0:X16}", BitConverter.ToUInt64(guidBytes, 0));

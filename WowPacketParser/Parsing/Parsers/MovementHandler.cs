@@ -22,7 +22,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             return ReadMovementInfoGen(ref packet, guid, index);
         }
-        
+
         private static MovementInfo ReadMovementInfoGen(ref Packet packet, Guid guid, int index)
         {
             var info = new MovementInfo();
@@ -752,7 +752,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(0, 2, 6, 7, 4, 5, 3, 1);
 
             var unk2 = packet.ReadBit("Unk Bit Boolean 2");
-            
+
             packet.ReadVector3("Destination Position");
 
             packet.ParseBitStream(guid, 5);
@@ -770,11 +770,11 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (unk2)
                 packet.ReadByte("Unk 2");
-                
+
             packet.ReadSingle("Arrive Orientation");
             packet.ToGuid("Guid", guid);
         }
-        
+
         [Parser(Opcode.MSG_MOVE_START_FORWARD)]
         [Parser(Opcode.MSG_MOVE_START_BACKWARD)]
         [Parser(Opcode.MSG_MOVE_STOP)]
@@ -849,7 +849,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
             guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
             guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            
+
             if (guid[6] != 0) guid[6] ^= packet.ReadByte();
             if (guid[7] != 0) guid[7] ^= packet.ReadByte();
             if (guid[4] != 0) guid[4] ^= packet.ReadByte();
@@ -858,11 +858,11 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid[5] != 0) guid[5] ^= packet.ReadByte();
             if (guid[0] != 0) guid[0] ^= packet.ReadByte();
             if (guid[1] != 0) guid[1] ^= packet.ReadByte();
-            
+
             packet.ReadSingle("Speed");
             packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
         }
-        
+
         [Parser(Opcode.MSG_MOVE_SET_RUN_SPEED, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleMovementSetRunSpeed422(Packet packet)
         {
@@ -875,11 +875,11 @@ namespace WowPacketParser.Parsing.Parsers
             guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
             guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
             guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            
+
             if (guid[1] != 0) guid[1] ^= packet.ReadByte();
-            
+
             packet.ReadSingle("Speed");
-            
+
             if (guid[6] != 0) guid[6] ^= packet.ReadByte();
             if (guid[2] != 0) guid[2] ^= packet.ReadByte();
             if (guid[3] != 0) guid[3] ^= packet.ReadByte();
@@ -887,11 +887,11 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid[4] != 0) guid[4] ^= packet.ReadByte();
             if (guid[0] != 0) guid[0] ^= packet.ReadByte();
             if (guid[5] != 0) guid[5] ^= packet.ReadByte();
-            
+
             packet.ReadUInt32("Move Event");
             packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
         }
-        
+
 
         [Parser(Opcode.MSG_MOVE_SET_WALK_SPEED)]
         [Parser(Opcode.MSG_MOVE_SET_RUN_SPEED, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]

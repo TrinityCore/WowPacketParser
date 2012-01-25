@@ -175,7 +175,7 @@
         Unk171                       = 171,  // Summons gamebject
         RessurectAOE                 = 172,
         Unk173                       = 173,  // Guild tab unlocked (guild perk)
-        Unk174                       = 174,  // 
+        Unk174                       = 174,  //
         Unk175                       = 175,  // Unused (4.2.2)
         Unk176                       = 176,  // Some kind of sanctuary effect (Vanish)
         Unk177                       = 177,

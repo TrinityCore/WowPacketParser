@@ -129,7 +129,7 @@ namespace WowPacketParser.Parsing.Parsers
                     {
                         packet.ReadInt32("Receiver Name Length");
                         packet.ReadCString("Receiver Name");
-                    } 
+                    }
 
                     if (target.GetHighType() == HighGuidType.GameObject)
                     {
