@@ -294,8 +294,35 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Show spellname in log", index);
             packet.ReadByte("Unk byte", index);
             packet.ReadUInt32("Blocked", index);
-            packet.ReadEnum<SpellHitType>("HitType", TypeCode.Int32, index);
-            packet.ReadBoolean("Debug output", index);
+            var type = packet.ReadEnum<SpellHitType>("HitType", TypeCode.Int32, index);
+            var debug = packet.ReadBoolean("Debug output", index);
+            if (debug)
+            {
+                if (!type.HasAnyFlag(SpellHitType.SPELL_HIT_TYPE_UNK4))
+                {
+                    if (type.HasAnyFlag(SpellHitType.SPELL_HIT_TYPE_UNK1))
+                    {
+                        packet.ReadSingle("Unk float");
+                        packet.ReadSingle("Unk float");
+                    }
+
+                    if (type.HasAnyFlag(SpellHitType.SPELL_HIT_TYPE_UNK3))
+                    {
+                        packet.ReadSingle("Unk float");
+                        packet.ReadSingle("Unk float");
+                    }
+
+                    if (type.HasAnyFlag(SpellHitType.SPELL_HIT_TYPE_UNK6))
+                    {
+                        packet.ReadSingle("Unk float");
+                        packet.ReadSingle("Unk float");
+                        packet.ReadSingle("Unk float");
+                        packet.ReadSingle("Unk float");
+                        packet.ReadSingle("Unk float");
+                        packet.ReadSingle("Unk float");
+                    }
+                }
+            }
         }
 
         private static void ReadSpellHealLog(ref Packet packet, int index = -1)
@@ -328,13 +355,18 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", index);
             packet.ReadGuid("Caster GUID", index);
-            packet.ReadBoolean("Unk bool", index);
+            var unkbool = packet.ReadBoolean("Unk bool", index);
 
             var count = packet.ReadUInt32("Target Count", index);
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadGuid("Target GUID", index);
                 packet.ReadEnum<SpellMissType>("Miss Info", TypeCode.Byte, index);
+                if (unkbool)
+                {
+                    packet.ReadSingle("Unk float");
+                    packet.ReadSingle("Unk float");
+                }
             }
         }
 
