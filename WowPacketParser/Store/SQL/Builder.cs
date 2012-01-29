@@ -50,14 +50,7 @@ namespace WowPacketParser.Store.SQL
                     if (!(creature.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
                         continue;
 
-                // If our unit got any of the folowing updated fields set,
-                // it's probably a temporary spawn
-                UpdateField uf;
-                creature.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_SUMMONEDBY), out uf);
-                creature.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_CREATED_BY_SPELL), out uf);
-                creature.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_CREATEDBY), out uf);
-                var temporarySpawn = (uf != null && uf.Int32Value != 0);
-                row.CommentOut = temporarySpawn;
+                row.CommentOut = creature.IsTemporarySpawn();
 
                 var spawnTimeSecs = GetSpawnTime(creature.Map);
                 var movementType = 0; // TODO: Find a way to check if our unit got random movement
@@ -77,7 +70,7 @@ namespace WowPacketParser.Store.SQL
                 row.AddValue("MovementType", movementType);
                 row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int) unit.Key.GetEntry(), false);
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + ")";
-                if (temporarySpawn)
+                if (row.CommentOut)
                     row.Comment += " - !!! might be temporary spawn !!!";
                 else
                     ++count;
