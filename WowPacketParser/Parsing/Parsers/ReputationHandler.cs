@@ -20,7 +20,8 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_SET_FACTION_VISIBLE)]
-        public static void HandleSetFactionVisible(Packet packet)
+        [Parser(Opcode.CMSG_SET_WATCHED_FACTION)]
+        public static void HandleSetFactionMisc(Packet packet)
         {
             packet.ReadUInt32("Faction Id");
         }
