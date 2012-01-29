@@ -20,13 +20,6 @@ namespace WowPacketParser.Store.SQL
 
         private readonly Stuffing _stuffing;
 
-        private static int GetSpawnTime(uint map)
-        {
-            // If map is Eastern Kingdoms, Kalimdor, Outland, Northrend or Ebon Hold use a lower respawn time
-            // TODO: Rank and if npc is needed for quest kill should change spawntime as well
-            return (map == 0 || map == 1 || map == 530 || map == 571 || map == 609) ? 120 : 7200;
-        }
-
         public string CreatureSpawns()
         {
             if (!_stuffing.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit))
@@ -52,7 +45,7 @@ namespace WowPacketParser.Store.SQL
 
                 row.CommentOut = creature.IsTemporarySpawn();
 
-                var spawnTimeSecs = GetSpawnTime(creature.Map);
+                var spawnTimeSecs = creature.GetDefaultSpawnTime();
                 var movementType = 0; // TODO: Find a way to check if our unit got random movement
                 var spawnDist = (movementType == 1) ? 5 : 0;
 
@@ -461,7 +454,7 @@ namespace WowPacketParser.Store.SQL
                     animprogress = Convert.ToUInt32((bytes & 0xFF000000) >> 24);
                 }
 
-                var spawnTimeSecs = GetSpawnTime(go.Map);
+                var spawnTimeSecs = go.GetDefaultSpawnTime();
 
                 row.AddValue("guid", "@GUID+" + count.ToString(CultureInfo.InvariantCulture), false, true);
                 row.AddValue("id", gameobject.Key.GetEntry());

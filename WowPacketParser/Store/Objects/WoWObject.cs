@@ -43,5 +43,12 @@ namespace WowPacketParser.Store.Objects
 
             return false;
         }
+
+        public int GetDefaultSpawnTime()
+        {
+            // If map is Eastern Kingdoms, Kalimdor, Outland, Northrend or Ebon Hold use a lower respawn time
+            // TODO: Rank and if npc is needed for quest kill should change spawntime as well
+            return (Map == 0 || Map == 1 || Map == 530 || Map == 571 || Map == 609) ? 120 : 7200;
+        }
     }
 }
