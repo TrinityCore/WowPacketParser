@@ -20,7 +20,7 @@ namespace WowPacketParser.Store.SQL
 
         private readonly Stuffing _stuffing;
 
-        private static int getSpawnTime(uint map)
+        private static int GetSpawnTime(uint map)
         {
             // If map is Eastern Kingdoms, Kalimdor, Outland, Northrend or Ebon Hold use a lower respawn time
             // TODO: Rank and if npc is needed for quest kill should change spawntime as well
@@ -59,11 +59,11 @@ namespace WowPacketParser.Store.SQL
                 var temporarySpawn = (uf != null && uf.Int32Value != 0);
                 row.CommentOut = temporarySpawn;
 
-                var spawnTimeSecs = getSpawnTime(creature.Map);
+                var spawnTimeSecs = GetSpawnTime(creature.Map);
                 var movementType = 0; // TODO: Find a way to check if our unit got random movement
                 var spawnDist = (movementType == 1) ? 5 : 0;
 
-                row.AddValue("guid", "@GUID+" + count.ToString(), false, true);
+                row.AddValue("guid", "@GUID+" + count.ToString(CultureInfo.InvariantCulture), false, true);
                 row.AddValue("id", unit.Key.GetEntry());
                 row.AddValue("map", creature.Map);
                 row.AddValue("spawnMask", 1);
@@ -87,7 +87,7 @@ namespace WowPacketParser.Store.SQL
 
             var result = new StringBuilder();
             // delete query for GUIDs
-            QueryBuilder.SQLDelete delete = new QueryBuilder.SQLDelete(new Tuple<uint, uint>(0, count), "guid", tableName, "@GUID+");
+            var delete = new QueryBuilder.SQLDelete(new Tuple<uint, uint>(0, count), "guid", tableName, "@GUID+");
             result.Append(delete.Build());
             result.Append(Environment.NewLine);
 
@@ -468,9 +468,9 @@ namespace WowPacketParser.Store.SQL
                     animprogress = Convert.ToUInt32((bytes & 0xFF000000) >> 24);
                 }
 
-                var spawnTimeSecs = getSpawnTime(go.Map);
+                var spawnTimeSecs = GetSpawnTime(go.Map);
 
-                row.AddValue("guid", "@GUID+" + count.ToString(), false, true);
+                row.AddValue("guid", "@GUID+" + count.ToString(CultureInfo.InvariantCulture), false, true);
                 row.AddValue("id", gameobject.Key.GetEntry());
                 row.AddValue("map", go.Map);
                 row.AddValue("spawnMask", 1);
@@ -497,7 +497,7 @@ namespace WowPacketParser.Store.SQL
             var result = new StringBuilder();
 
             // delete query for GUIDs
-            QueryBuilder.SQLDelete delete = new QueryBuilder.SQLDelete(new Tuple<uint, uint>(0, count), "guid", tableName, "@GUID+");
+            var delete = new QueryBuilder.SQLDelete(new Tuple<uint, uint>(0, count), "guid", tableName, "@GUID+");
             result.Append(delete.Build());
             result.Append(Environment.NewLine);
 

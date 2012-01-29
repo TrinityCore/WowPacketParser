@@ -61,11 +61,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < cdCount; i++)
             {
-                int spellId;
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
-                    spellId = packet.ReadInt32();
-                else
-                    spellId = packet.ReadUInt16();
+                var spellId = ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767) ? packet.ReadInt32() : packet.ReadUInt16();
 
                 var category = packet.ReadUInt16();
                 var cooldown = packet.ReadUInt32();

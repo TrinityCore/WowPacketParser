@@ -4,7 +4,7 @@ using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
-namespace WowPacketParser.Loading
+namespace WowPacketParser.Saving
 {
     public class BinaryPacketWriter
     {

@@ -232,7 +232,9 @@ namespace WowPacketParser.Store.SQL
                 {
                     try
                     {
+// ReSharper disable PossibleInvalidCastException
                         value = (int)value;
+// ReSharper restore PossibleInvalidCastException
                     }
                     catch (InvalidCastException)
                     {
