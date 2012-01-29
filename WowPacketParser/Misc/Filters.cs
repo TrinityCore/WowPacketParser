@@ -6,7 +6,7 @@ namespace WowPacketParser.Misc
 {
     public static class Filters
     {
-        public static readonly Dictionary<StoreNameType, List<int>> NameStores =
+        private static readonly Dictionary<StoreNameType, List<int>> _nameStores =
             new Dictionary<StoreNameType, List<int>>();
 
         public static void Initialize()
@@ -27,7 +27,7 @@ namespace WowPacketParser.Misc
                     if (Int32.TryParse(elements[i], out element))
                         list.Add(element);
                 if (list.Count > 0)
-                    NameStores.Add(type, list);
+                    _nameStores.Add(type, list);
             }
         }
 
@@ -36,7 +36,7 @@ namespace WowPacketParser.Misc
             var result = true;
             List<int> filters;
 
-            if (NameStores.TryGetValue(type, out filters))
+            if (_nameStores.TryGetValue(type, out filters))
                 result = !filters.Contains(entry);
 
             return result;

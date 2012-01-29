@@ -47,36 +47,35 @@ namespace WowPacketParser
 
         private static void ReadDB()
         {
-            if (SQLConnector.Enabled)
+            if (!SQLConnector.Enabled) return;
+
+            // Enable SSH Tunnel
+            if (SSHTunnel.Enabled)
             {
-                // Enable SSH Tunnel
-                if (SSHTunnel.Enabled)
-                {
-                    Trace.WriteLine("Enabling SSH Tunnel");
-                    SSHTunnel.Connect();
-                }
-
-                var startTime = DateTime.Now;
-                Trace.WriteLine("Loading DB...");
-
-                try
-                {
-                    SQLConnector.Connect();
-                    SQLDatabase.GrabData();
-                }
-                catch (Exception ex)
-                {
-                    Trace.WriteLine(ex.GetType());
-                    Trace.WriteLine(ex.Message);
-                    Trace.WriteLine(ex.StackTrace);
-                    SQLConnector.Enabled = false; // Something failed, disabling everything SQL related
-                }
-
-                var endTime = DateTime.Now;
-                var span = endTime.Subtract(startTime);
-                Trace.WriteLine(string.Format("Finished loading DB in {0}.", span.ToFormattedString()));
-                Trace.WriteLine(Environment.NewLine);
+                Trace.WriteLine("Enabling SSH Tunnel");
+                SSHTunnel.Connect();
             }
+
+            var startTime = DateTime.Now;
+            Trace.WriteLine("Loading DB...");
+
+            try
+            {
+                SQLConnector.Connect();
+                SQLDatabase.GrabData();
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.GetType());
+                Trace.WriteLine(ex.Message);
+                Trace.WriteLine(ex.StackTrace);
+                SQLConnector.Enabled = false; // Something failed, disabling everything SQL related
+            }
+
+            var endTime = DateTime.Now;
+            var span = endTime.Subtract(startTime);
+            Trace.WriteLine(string.Format("Finished loading DB in {0}.", span.ToFormattedString()));
+            Trace.WriteLine(Environment.NewLine);
         }
 
         private static void DumpSQLs(string prefix, string fileName, Builder builder, SQLOutputFlags sqlOutput)
@@ -197,7 +196,8 @@ namespace WowPacketParser
                     var outFileName = Path.ChangeExtension(file, null) + "_parsed";
                     var outLogFileName = outFileName + ".txt";
 
-                    bool headersOnly = (Settings.DumpFormat == DumpFormatType.TextHeader || Settings.DumpFormat == DumpFormatType.SummaryHeader);
+                    bool headersOnly = Settings.DumpFormat == DumpFormatType.TextHeader || Settings.DumpFormat == DumpFormatType.SummaryHeader;
+                    
                     if (Settings.Threads == 0) // Number of threads is automatically choosen by the Parallel library
                         packets.AsParallel().SetCulture().ForAll(packet => Handler.Parse(packet, headersOnly));
                     else

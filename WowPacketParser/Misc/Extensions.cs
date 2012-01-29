@@ -24,7 +24,9 @@ namespace WowPacketParser.Misc
 
         public static bool MatchesFilters(this string value, IEnumerable<string> filters)
         {
-            return filters.Any(value.Contains);
+            // Return true if our string is a substring of any filter (case insensitive)
+            // Note: IndexOf returns -1 if string was not found
+            return filters.Any(filter => value.IndexOf(filter, StringComparison.InvariantCultureIgnoreCase) != -1);
         }
 
         public static void AsHex(this Packet packet)
