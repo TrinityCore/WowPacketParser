@@ -444,6 +444,8 @@ namespace WowPacketParser.Store.SQL
                     if (!(go.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
                         continue;
 
+                row.CommentOut = go.IsTemporarySpawn();
+
                 uint animprogress = 0;
                 var state = 0;
                 UpdateField uf;
@@ -474,10 +476,12 @@ namespace WowPacketParser.Store.SQL
                 row.AddValue("state", state);
                 row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int) gameobject.Key.GetEntry(), false);
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + ")";
+                if (row.CommentOut)
+                    row.Comment += " - !!! might be temporary spawn !!!";
+                else
+                    ++count;
 
                 rows.Add(row);
-
-                ++count;
             }
 
             var result = new StringBuilder();

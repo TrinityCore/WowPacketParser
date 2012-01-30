@@ -520,7 +520,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
 
     enum GameObjectField
     {
-        OBJECT_FIELD_CREATED_BY = ObjectField.OBJECT_END + 0x0000, // Size: 2, Type: LONG, Flags: PUBLIC
+        GAMEOBJECT_FIELD_CREATED_BY = ObjectField.OBJECT_END + 0x0000, // Size: 2, Type: LONG, Flags: PUBLIC
         GAMEOBJECT_DISPLAYID = ObjectField.OBJECT_END + 0x0002, // Size: 1, Type: INT, Flags: PUBLIC
         GAMEOBJECT_FLAGS = ObjectField.OBJECT_END + 0x0003, // Size: 1, Type: INT, Flags: PUBLIC
         GAMEOBJECT_PARENTROTATION = ObjectField.OBJECT_END + 0x0004, // Size: 4, Type: FLOAT, Flags: PUBLIC
