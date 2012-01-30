@@ -1,7 +1,19 @@
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
+
 namespace WowPacketParser.Store.Objects
 {
     public sealed class GameObject : WoWObject
     {
-        // Do we need to store anything else here?
+        public override bool IsTemporarySpawn()
+        {
+            // If our gameobject got the following update field set,
+            // it's probably a temporary spawn
+            UpdateField uf;
+            if (UpdateFields.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(GameObjectField.GAMEOBJECT_FIELD_CREATED_BY), out uf))
+                return uf.Int32Value != 0;
+
+            return false;
+        }
     }
 }

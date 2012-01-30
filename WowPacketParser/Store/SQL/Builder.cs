@@ -49,7 +49,7 @@ namespace WowPacketParser.Store.SQL
                 var movementType = 0; // TODO: Find a way to check if our unit got random movement
                 var spawnDist = (movementType == 1) ? 5 : 0;
 
-                row.AddValue("guid", "@GUID+" + count.ToString(CultureInfo.InvariantCulture), false, true);
+                row.AddValue("guid", "@GUID+" + count, noQuotes: true);
                 row.AddValue("id", unit.Key.GetEntry());
                 row.AddValue("map", creature.Map);
                 row.AddValue("spawnMask", 1);
@@ -456,7 +456,7 @@ namespace WowPacketParser.Store.SQL
 
                 var spawnTimeSecs = go.GetDefaultSpawnTime();
 
-                row.AddValue("guid", "@GUID+" + count.ToString(CultureInfo.InvariantCulture), false, true);
+                row.AddValue("guid", "@GUID+" + count, noQuotes: true);
                 row.AddValue("id", gameobject.Key.GetEntry());
                 row.AddValue("map", go.Map);
                 row.AddValue("spawnMask", 1);
