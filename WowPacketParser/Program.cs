@@ -197,7 +197,7 @@ namespace WowPacketParser
                     var outLogFileName = outFileName + ".txt";
 
                     bool headersOnly = Settings.DumpFormat == DumpFormatType.TextHeader || Settings.DumpFormat == DumpFormatType.SummaryHeader;
-                    
+
                     if (Settings.Threads == 0) // Number of threads is automatically choosen by the Parallel library
                         packets.AsParallel().SetCulture().ForAll(packet => Handler.Parse(packet, headersOnly));
                     else

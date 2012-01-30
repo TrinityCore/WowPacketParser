@@ -77,13 +77,13 @@ namespace WowPacketParser.Parsing.Parsers
                     opcode = packet.ReadUInt16();
                     bytes = packet.ReadBytes(len - 2);
                 }
-                
+
                 if (bytes == null || len == 0)
                     continue;
-                    
+
                 if (i > 0)
                     packet.Writer.WriteLine();
-                    
+
                 packet.Writer.Write("[{0}] ", i++);
 
                 using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.SniffFileInfo))
