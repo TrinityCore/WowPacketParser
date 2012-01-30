@@ -438,7 +438,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_COOLDOWN_CHEAT, 0x9856},
             {Opcode.SMSG_COOLDOWN_EVENT, 0x185F},
             {Opcode.SMSG_CORPSE_NOT_IN_INSTANCE, 0xCACB},
-            {Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0xCD46},
+            {Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0x885E},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0xD847},
             {Opcode.SMSG_CRITERIA_DELETED, 0x1A5B},
             {Opcode.SMSG_CRITERIA_UPDATE, 0xD87F},
