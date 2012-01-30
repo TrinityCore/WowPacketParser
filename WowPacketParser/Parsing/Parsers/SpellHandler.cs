@@ -647,7 +647,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER)]
         public static void HandleSetSpellModifier(Packet packet)
         {
-            packet.ReadEnum<SpellEffect>("Spell Effect", TypeCode.Byte);
+            packet.ReadByte("Spell Mask bitpos");
             packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte);
             packet.ReadInt32("Amount");
         }
@@ -656,13 +656,16 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleSetSpellModifierFlat406(Packet packet)
         {
-            packet.ReadUInt32("Number");
-            var count = packet.ReadUInt32("Count");
-            packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte);
-            for (var i = 0; i < count; ++i)
+            var modCount = packet.ReadUInt32("Modifier type count");
+            for (var j = 0; j < modCount; ++j)
             {
-                packet.ReadEnum<SpellEffect>("Spell Effect", TypeCode.Byte, i);
-                packet.ReadInt32("Amount", i);
+                var modTypeCount = packet.ReadUInt32("Count", j);
+                packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte, j);
+                for (var i = 0; i < modTypeCount; ++i)
+                {
+                    packet.ReadByte("Spell Mask bitpos", j, i);
+                    packet.ReadSingle("Amount", j, i);
+                }
             }
         }
 
