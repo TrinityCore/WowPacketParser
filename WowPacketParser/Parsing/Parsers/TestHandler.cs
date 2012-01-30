@@ -101,14 +101,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk");
         }
 
-        [Parser(Opcode.TEST_422_26948)]
-        public static void Handle26948(Packet packet)
-        {
-            //packet.AsHex();
-            using (var uncompressed = packet.Inflate(packet.ReadInt32()))
-                uncompressed.AsHex();
-        }
-
         [Parser(Opcode.TEST_422_9838)]
         public static void Handle9838(Packet packet)
         {

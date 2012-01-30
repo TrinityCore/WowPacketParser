@@ -50,10 +50,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleCompressedMultiplePackets(Packet packet)
         {
             using (var packet2 = packet.Inflate(packet.ReadInt32()))
-            {
-                HandleMultiplePackets(packet2);
-            }
-        }
+                 HandleMultiplePackets(packet2);
+         }
 
         [Parser(Opcode.SMSG_MULTIPLE_PACKETS)]
         public static void HandleMultiplePackets(Packet packet)
@@ -63,19 +61,33 @@ namespace WowPacketParser.Parsing.Parsers
             var i = 0;
             while (packet.CanRead())
             {
-                var opcode = packet.ReadUInt16();
-                // Why are there so many 0s in some packets? Should we have some check if opcode == 0 here?
-                var len = packet.ReadUInt16();
-                var bytes = packet.ReadBytes(len);
+                var opcode = 0;
+                var len = 0;
+                byte[] bytes = null;
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                {
+                    opcode = packet.ReadUInt16();
+                    // Why are there so many 0s in some packets? Should we have some check if opcode == 0 here?
+                    len = packet.ReadUInt16();
+                    bytes = packet.ReadBytes(len);
+                }
+                else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                {
+                    len = packet.ReadUInt16();
+                    opcode = packet.ReadUInt16();
+                    bytes = packet.ReadBytes(len - 2);
+                }
+                
+                if (bytes == null || len == 0)
+                    continue;
+                    
                 if (i > 0)
                     packet.Writer.WriteLine();
-
+                    
                 packet.Writer.Write("[{0}] ", i++);
 
                 using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.SniffFileInfo))
-                {
                     Handler.Parse(newpacket, isMultiple: true);
-                }
             }
             packet.Writer.WriteLine("}");
         }
