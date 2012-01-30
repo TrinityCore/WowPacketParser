@@ -11,9 +11,6 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class UpdateHandler
     {
-        public static readonly Dictionary<uint, Dictionary<Guid, WoWObject>> Objects =
-            new Dictionary<uint, Dictionary<Guid, WoWObject>>();
-
         [Parser(Opcode.SMSG_UPDATE_OBJECT)]
         public static void HandleUpdateObject(Packet packet)
         {
@@ -41,7 +38,7 @@ namespace WowPacketParser.Parsing.Parsers
                         WoWObject obj;
                         var updates = ReadValuesUpdateBlock(ref packet, guid.GetObjectType(), i);
 
-                        if (packet.SniffFileInfo.Stuffing.Objects.TryGetValue(guid, out obj))
+                        if (packet.SniffFileInfo.Storage.Objects.TryGetValue(guid, out obj))
                         {
                             if (obj.ChangedUpdateFieldsList == null)
                                 obj.ChangedUpdateFieldsList = new List<Dictionary<int, UpdateField>>();
@@ -54,7 +51,7 @@ namespace WowPacketParser.Parsing.Parsers
                     {
                         var guid = ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901) ? packet.ReadPackedGuid("GUID", i) : packet.ReadGuid("GUID", i);
                         ReadMovementUpdateBlock(ref packet, guid, i);
-                        // Should we update Stuffing.Object?
+                        // Should we update Storage.Object?
                         break;
                     }
                     case "CreateObject1":
@@ -85,23 +82,23 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 case ObjectType.Unit:
                     var unit = new Unit {Type = objType, Movement = moves, UpdateFields = updates, Map = map, Area = WorldStateHandler.CurrentAreaId, PhaseMask = (uint) MovementHandler.CurrentPhaseMask};
-                    packet.SniffFileInfo.Stuffing.Objects.TryAdd(guid, unit);
+                    packet.SniffFileInfo.Storage.Objects.TryAdd(guid, unit);
                     break;
                 case ObjectType.GameObject:
                     var go = new GameObject {Type = objType, Movement = moves, UpdateFields = updates, Map = map, Area = WorldStateHandler.CurrentAreaId, PhaseMask = (uint) MovementHandler.CurrentPhaseMask};
-                    packet.SniffFileInfo.Stuffing.Objects.TryAdd(guid, go);
+                    packet.SniffFileInfo.Storage.Objects.TryAdd(guid, go);
                     break;
                 case ObjectType.Item:
                     var item = new Item {Type = objType, Movement = moves, UpdateFields = updates, Map = map, Area = WorldStateHandler.CurrentAreaId, PhaseMask = (uint) MovementHandler.CurrentPhaseMask};
-                    packet.SniffFileInfo.Stuffing.Objects.TryAdd(guid, item);
+                    packet.SniffFileInfo.Storage.Objects.TryAdd(guid, item);
                     break;
                 case ObjectType.Player:
                     var player = new Player {Type = objType, Movement = moves, UpdateFields = updates, Map = map, Area = WorldStateHandler.CurrentAreaId, PhaseMask = (uint) MovementHandler.CurrentPhaseMask};
-                    packet.SniffFileInfo.Stuffing.Objects.TryAdd(guid, player);
+                    packet.SniffFileInfo.Storage.Objects.TryAdd(guid, player);
                     break;
                 default:
                     var obj = new WoWObject {Type = objType, Movement = moves, UpdateFields = updates, Map = map, Area = WorldStateHandler.CurrentAreaId, PhaseMask = (uint) MovementHandler.CurrentPhaseMask};
-                    packet.SniffFileInfo.Stuffing.Objects.TryAdd(guid, obj);
+                    packet.SniffFileInfo.Storage.Objects.TryAdd(guid, obj);
                     break;
             }
 

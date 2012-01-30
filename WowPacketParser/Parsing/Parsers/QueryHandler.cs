@@ -55,7 +55,7 @@ namespace WowPacketParser.Parsing.Parsers
                 ObjectType = ObjectType.Player,
                 Name = name,
             };
-            packet.SniffFileInfo.Stuffing.ObjectNames.TryAdd((uint)guid.GetLow(), objectName);
+            packet.SniffFileInfo.Storage.ObjectNames.TryAdd((uint)guid.GetLow(), objectName);
         }
 
         public static void ReadQueryHeader(ref Packet packet)
@@ -144,14 +144,14 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 
-            packet.SniffFileInfo.Stuffing.UnitTemplates.TryAdd((uint)entry.Key, creature);
+            packet.SniffFileInfo.Storage.UnitTemplates.TryAdd((uint)entry.Key, creature);
 
             var objectName = new ObjectName
             {
                 ObjectType = ObjectType.Unit,
                 Name = creature.Name,
             };
-            packet.SniffFileInfo.Stuffing.ObjectNames.TryAdd((uint)entry.Key, objectName);
+            packet.SniffFileInfo.Storage.ObjectNames.TryAdd((uint)entry.Key, objectName);
         }
 
         [Parser(Opcode.CMSG_PAGE_TEXT_QUERY)]
@@ -173,7 +173,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
 
-            packet.SniffFileInfo.Stuffing.PageTexts.TryAdd(entry, pageText);
+            packet.SniffFileInfo.Storage.PageTexts.TryAdd(entry, pageText);
         }
 
         [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
@@ -218,7 +218,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
 
-            packet.SniffFileInfo.Stuffing.NpcTexts.TryAdd((uint)entry.Key, npcText);
+            packet.SniffFileInfo.Storage.NpcTexts.TryAdd((uint)entry.Key, npcText);
         }
     }
 }

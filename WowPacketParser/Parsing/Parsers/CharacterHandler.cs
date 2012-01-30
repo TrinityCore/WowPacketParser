@@ -1,18 +1,15 @@
 using System;
-using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects;
+using WowPacketParser.Store;
 using Guid=WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
     public static class CharacterHandler
     {
-        public static readonly Dictionary<Guid, Player> Characters =
-            new Dictionary<Guid, Player>();
-
         [Parser(Opcode.CMSG_STANDSTATECHANGE)]
         public static void HandleStandStateChange(Packet packet)
         {
@@ -118,8 +115,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CHAR_ENUM)]
         public static void HandleCharEnum(Packet packet)
         {
-            Characters.Clear();
-
             var count = packet.ReadByte("Count");
 
             for (var i = 0; i < count; i++)
@@ -170,20 +165,17 @@ namespace WowPacketParser.Parsing.Parsers
                 if (firstLogin)
                 {
                     var startPos = new StartPosition {Map = mapId, Position = pos, Zone = zone};
-                    packet.SniffFileInfo.Stuffing.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
+                    packet.SniffFileInfo.Storage.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
                 }
 
-                var chInfo = new Player {Race = race, Class = clss, Name = name, FirstLogin = firstLogin, Level = level};
-                Characters.Add(guid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects
-                packet.SniffFileInfo.Stuffing.Objects.TryAdd(guid, chInfo);
-
+                var playerInfo = new Player {Race = race, Class = clss, Name = name, FirstLogin = firstLogin, Level = level};
+                packet.SniffFileInfo.Storage.Objects.AddOrUpdate(guid, playerInfo);
             }
         }
 
         [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleCharEnum422(Packet packet)
         {
-            Characters.Clear();
             packet.ReadByte("Unk Flag");
             int count = packet.ReadInt32("Char Count");
             packet.ReadInt32("Unk Count");
@@ -301,22 +293,17 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     var startPos = new StartPosition {Map = mapId, Position = pos, Zone = zone};
 
-                    packet.SniffFileInfo.Stuffing.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
+                    packet.SniffFileInfo.Storage.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
                 }
 
-                var chInfo = new Player {Race = race, Class = clss, Name = name, FirstLogin = firstLogin, Level = level};
-
-                if (!Characters.ContainsKey(playerGuid))
-                    Characters.Add(playerGuid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects
-
-                packet.SniffFileInfo.Stuffing.Objects.TryAdd(playerGuid, chInfo);
+                var playerInfo = new Player { Race = race, Class = clss, Name = name, FirstLogin = firstLogin, Level = level };
+                packet.SniffFileInfo.Storage.Objects.AddOrUpdate(playerGuid, playerInfo);
             }
         }
 
         [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleCharEnum430(Packet packet)
         {
-            Characters.Clear();
             var count = packet.ReadBits("Char count", 17);
 
             var charGuids = new byte[count][];
@@ -443,18 +430,11 @@ namespace WowPacketParser.Parsing.Parsers
                     startPos.Position = new Vector3(x, y, z);
                     startPos.Zone = zone;
 
-                    packet.SniffFileInfo.Stuffing.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
+                    packet.SniffFileInfo.Storage.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
                 }
 
-                var chInfo = new Player();
-                chInfo.Race = race;
-                chInfo.Class = clss;
-                chInfo.Name = name;
-                chInfo.FirstLogin = firstLogins[c];
-                chInfo.Level = level;
-
-                Characters.Add(playerGuid, chInfo); // TODO Remove when its usage is converted to Stuffing.Objects
-                packet.SniffFileInfo.Stuffing.Objects.TryAdd(playerGuid, chInfo);
+                var playerInfo = new Player{Race = race, Class = clss, Name = name, FirstLogin = firstLogins[c], Level = level};
+                packet.SniffFileInfo.Storage.Objects.AddOrUpdate(playerGuid, playerInfo);
             }
 
             for (var c = 0; c < unkCounter; c++)

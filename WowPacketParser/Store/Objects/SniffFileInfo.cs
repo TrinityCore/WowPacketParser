@@ -11,6 +11,6 @@ namespace WowPacketParser.Store.Objects
 
         public int Build;
 
-        public Stuffing Stuffing;
+        public Storage Storage;
     }
 }

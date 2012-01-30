@@ -49,7 +49,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (SessionHandler.LoggedInCharacter != null && SessionHandler.LoggedInCharacter.FirstLogin)
-                packet.SniffFileInfo.Stuffing.StartActions.TryAdd(new Tuple<Race, Class>(SessionHandler.LoggedInCharacter.Race, SessionHandler.LoggedInCharacter.Class), startAction);
+                packet.SniffFileInfo.Storage.StartActions.TryAdd(new Tuple<Race, Class>(SessionHandler.LoggedInCharacter.Race, SessionHandler.LoggedInCharacter.Class), startAction);
         }
     }
 }

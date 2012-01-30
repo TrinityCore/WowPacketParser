@@ -6,7 +6,7 @@ using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Store
 {
-    public class Stuffing // TODO: Rename
+    public class Storage
     {
         // Stores opcodes read, npc/GOs/spell/item/etc IDs found in sniffs
         // and other miscellaneous stuff
@@ -16,7 +16,7 @@ namespace WowPacketParser.Store
 
         /* Key: Guid */
 
-        // Units, Game.Objects, Players, Items
+        // Units, GameObjects, Players, Items
         public readonly ConcurrentDictionary<Guid, WoWObject> Objects =
             new ConcurrentDictionary<Guid, WoWObject>();
 
@@ -74,5 +74,15 @@ namespace WowPacketParser.Store
         // Names
         public readonly ConcurrentDictionary<uint, ObjectName> ObjectNames =
             new ConcurrentDictionary<uint, ObjectName>();
+    }
+
+    // Utilities extension methods to aid dealing with the above dictionaries
+    public static class StorageExtensions
+    {
+        // Adds to or update an entry in Objects dictionary for SMSG_CHAR_ENUM player data
+        public static void AddOrUpdate(this ConcurrentDictionary<Guid, WoWObject> dict, Guid guid, Player playerInfo)
+        {
+            dict.AddOrUpdate(guid, playerInfo, (guid1, wowObject) => Player.UpdatePlayerInfo((Player)wowObject, playerInfo));
+        }
     }
 }

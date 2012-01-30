@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using Guid = WowPacketParser.Misc.Guid;
 
@@ -306,12 +307,9 @@ namespace WowPacketParser.Parsing.Parsers
             CurrentMapId = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
             packet.ReadVector4("Position");
 
-            if (UpdateHandler.Objects != null && UpdateHandler.Objects.ContainsKey(CurrentMapId))
-                UpdateHandler.Objects[CurrentMapId] = new Dictionary<Guid, WoWObject>();
-
-            Player chInfo;
-            if (CharacterHandler.Characters.TryGetValue(SessionHandler.LoginGuid, out chInfo))
-                SessionHandler.LoggedInCharacter = chInfo;
+            WoWObject character;
+            if (packet.SniffFileInfo.Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
+                SessionHandler.LoggedInCharacter = (Player) character;
 
             packet.AddSniffData(StoreNameType.Map, (int) CurrentMapId, "NEW_WORLD");
         }
@@ -323,12 +321,9 @@ namespace WowPacketParser.Parsing.Parsers
             CurrentMapId = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
             packet.ReadSingle("Orientation");
 
-            if (UpdateHandler.Objects != null && UpdateHandler.Objects.ContainsKey(CurrentMapId))
-                UpdateHandler.Objects[CurrentMapId] = new Dictionary<Guid, WoWObject>();
-
-            Player chInfo;
-            if (CharacterHandler.Characters.TryGetValue(SessionHandler.LoginGuid, out chInfo))
-                SessionHandler.LoggedInCharacter = chInfo;
+            WoWObject character;
+            if (packet.SniffFileInfo.Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
+                SessionHandler.LoggedInCharacter = (Player) character;
 
             packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
         }

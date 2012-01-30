@@ -400,7 +400,7 @@
     <Compile Include="SQL\Stores\ItemStore.cs" />
     <Compile Include="Store\SQL\Builder.cs" />
     <Compile Include="Store\SQL\QueryBuilder.cs" />
-    <Compile Include="Store\Stuffing.cs" />
+    <Compile Include="Store\Storage.cs" />
     <Compile Include="Enums\BankSlotResult.cs" />
     <Compile Include="Enums\EmoteType.cs" />
     <Compile Include="Enums\EncounterFrame.cs" />

@@ -71,7 +71,7 @@ namespace WowPacketParser.Misc
                 Number = Number,
             };
 
-           SniffFileInfo.Stuffing.SniffData.Add(item);
+           SniffFileInfo.Storage.SniffData.Add(item);
         }
 
         public Packet Inflate(int inflatedSize)

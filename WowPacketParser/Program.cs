@@ -137,7 +137,7 @@ namespace WowPacketParser
             store.WriteToFile();
         }
 
-        private static void ReadFile(string file, Stuffing globalStuffing, Builder globalBuilder, string prefix)
+        private static void ReadFile(string file, Storage globalStorage, Builder globalBuilder, string prefix)
         {
             // If our dump format requires a .txt to be created,
             // check if we can write to that .txt before starting parsing
@@ -151,8 +151,8 @@ namespace WowPacketParser
                 }
             }
 
-            var stuffing = globalStuffing ?? new Stuffing();
-            var fileInfo = new SniffFileInfo { FileName = file, Stuffing = stuffing };
+            var stuffing = globalStorage ?? new Storage();
+            var fileInfo = new SniffFileInfo { FileName = file, Storage = stuffing };
             var fileName = Path.GetFileName(fileInfo.FileName);
 
             Trace.WriteLine(string.Format("{0}: Reading packets...", prefix));
@@ -203,7 +203,7 @@ namespace WowPacketParser
                     else
                         packets.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads).ForAll(packet => Handler.Parse(packet, headersOnly));
 
-                    if (Settings.SQLOutput > 0 && globalStuffing == null) // No global Stuffing, write sql data to particular sql file
+                    if (Settings.SQLOutput > 0 && globalStorage == null) // No global Storage, write sql data to particular sql file
                     {
                         var outSqlFileName = outFileName + ".sql";
                         DumpSQLs(fileName, outSqlFileName, builder, Settings.SQLOutput);
@@ -319,13 +319,13 @@ namespace WowPacketParser
             // Read DB
             ReadDB();
 
-            Stuffing stuffing = null;
+            Storage storage = null;
             Builder builder = null;
 
             if (Settings.SQLOutput > 0 && Settings.SQLFileName.Length > 0)
             {
-                stuffing = new Stuffing();
-                builder = new Builder(stuffing);
+                storage = new Storage();
+                builder = new Builder(storage);
             }
 
             var numberOfThreads = Settings.Threads != 0 ? Settings.Threads.ToString(CultureInfo.InvariantCulture) : "a recommended number of";
@@ -337,10 +337,10 @@ namespace WowPacketParser
             if (Settings.Threads == 0) // Number of threads is automatically choosen by the Parallel library
                 files.AsParallel().SetCulture()
                     .ForAll(file =>
-                        ReadFile(file, stuffing, builder, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Length + " " + file + "]"));
+                        ReadFile(file, storage, builder, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Length + " " + file + "]"));
             else
                 files.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads)
-                    .ForAll(file => ReadFile(file, stuffing, builder, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Length + " " + file + "]"));
+                    .ForAll(file => ReadFile(file, storage, builder, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Length + " " + file + "]"));
 
             if (Settings.StatsOutput.HasAnyFlag(StatsOutputFlags.Global))
             {

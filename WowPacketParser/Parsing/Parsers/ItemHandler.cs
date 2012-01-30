@@ -33,7 +33,7 @@ namespace WowPacketParser.Parsing.Parsers
                 ObjectType = ObjectType.Item,
                 Name = name,
             };
-            packet.SniffFileInfo.Stuffing.ObjectNames.TryAdd((uint)entry, objectName);
+            packet.SniffFileInfo.Storage.ObjectNames.TryAdd((uint)entry, objectName);
         }
 
         [Parser(Opcode.CMSG_SOCKET_GEMS)]
@@ -493,7 +493,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.Item, entry.Key, "QUERY_RESPONSE");
 
-            packet.SniffFileInfo.Stuffing.ItemTemplates.TryAdd((uint) entry.Key, item);
+            packet.SniffFileInfo.Storage.ItemTemplates.TryAdd((uint) entry.Key, item);
         }
 
         [Parser(Opcode.CMSG_REQUEST_HOTFIX)]

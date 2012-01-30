@@ -13,19 +13,19 @@ namespace WowPacketParser.Store.SQL
 {
     public class Builder
     {
-        public Builder(Stuffing stuffing)
+        public Builder(Storage storage)
         {
-            _stuffing = stuffing;
+            _storage = storage;
         }
 
-        private readonly Stuffing _stuffing;
+        private readonly Storage _storage;
 
         public string CreatureSpawns()
         {
-            if (!_stuffing.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit))
+            if (!_storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit))
                 return string.Empty;
 
-            var units = _stuffing.Objects.Where(x => x.Value.Type == ObjectType.Unit);
+            var units = _storage.Objects.Where(x => x.Value.Type == ObjectType.Unit);
 
             const string tableName = "creature";
             uint count = 0;
@@ -84,10 +84,10 @@ namespace WowPacketParser.Store.SQL
 
         public string CreatureEquip()
         {
-            if (!_stuffing.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit))
+            if (!_storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit))
                 return string.Empty;
 
-            var units = _stuffing.Objects.Where(x => x.Value.Type == ObjectType.Unit);
+            var units = _storage.Objects.Where(x => x.Value.Type == ObjectType.Unit);
             const string tableName = "creature_equip_template";
 
             ICollection<uint> key = new Collection<uint>();
@@ -125,13 +125,13 @@ namespace WowPacketParser.Store.SQL
 
         public string SniffData()
         {
-            if (_stuffing.SniffData.IsEmpty)
+            if (_storage.SniffData.IsEmpty)
                 return string.Empty;
 
             const string tableName = "SniffData";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var data in _stuffing.SniffData)
+            foreach (var data in _storage.SniffData)
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
@@ -154,13 +154,13 @@ namespace WowPacketParser.Store.SQL
 
         public string QuestTemplate()
         {
-            if (_stuffing.QuestTemplates.IsEmpty)
+            if (_storage.QuestTemplates.IsEmpty)
                 return string.Empty;
 
             const string tableName = "quest_template";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var quest in _stuffing.QuestTemplates)
+            foreach (var quest in _storage.QuestTemplates)
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
@@ -275,18 +275,18 @@ namespace WowPacketParser.Store.SQL
                 rows.Add(row);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, _stuffing.QuestTemplates.Keys, "Id", rows).Build();
+            return new QueryBuilder.SQLInsert(tableName, _storage.QuestTemplates.Keys, "Id", rows).Build();
         }
 
         public string NpcTrainer()
         {
-            if (_stuffing.NpcTrainers.IsEmpty)
+            if (_storage.NpcTrainers.IsEmpty)
                 return string.Empty;
 
             const string tableName = "npc_trainer";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var npcTrainer in _stuffing.NpcTrainers)
+            foreach (var npcTrainer in _storage.NpcTrainers)
             {
                 var comment = new QueryBuilder.SQLInsertRow();
                 comment.HeaderComment = StoreGetters.GetName(StoreNameType.Unit, (int) npcTrainer.Key, false);
@@ -305,18 +305,18 @@ namespace WowPacketParser.Store.SQL
                 }
             }
 
-            return new QueryBuilder.SQLInsert(tableName, _stuffing.NpcTrainers.Keys, "entry", rows).Build();
+            return new QueryBuilder.SQLInsert(tableName, _storage.NpcTrainers.Keys, "entry", rows).Build();
         }
 
         public string NpcVendor()
         {
-            if (_stuffing.NpcVendors.IsEmpty)
+            if (_storage.NpcVendors.IsEmpty)
                 return string.Empty;
 
             const string tableName = "npc_vendor";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var npcVendor in _stuffing.NpcVendors)
+            foreach (var npcVendor in _storage.NpcVendors)
             {
                 var comment = new QueryBuilder.SQLInsertRow();
                 comment.HeaderComment = StoreGetters.GetName(StoreNameType.Unit, (int)npcVendor.Key);
@@ -334,19 +334,19 @@ namespace WowPacketParser.Store.SQL
                 }
             }
 
-            return new QueryBuilder.SQLInsert(tableName, _stuffing.NpcVendors.Keys, "entry", rows).Build();
+            return new QueryBuilder.SQLInsert(tableName, _storage.NpcVendors.Keys, "entry", rows).Build();
         }
 
         public string NpcTemplate()
         {
-            if (_stuffing.UnitTemplates.IsEmpty)
+            if (_storage.UnitTemplates.IsEmpty)
                 return string.Empty;
 
             // Not TDB structure
             const string tableName = "creature_template";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var unitTemplate in _stuffing.UnitTemplates)
+            foreach (var unitTemplate in _storage.UnitTemplates)
             {
                 var row = new QueryBuilder.SQLInsertRow();
                 var template = unitTemplate.Value;
@@ -381,19 +381,19 @@ namespace WowPacketParser.Store.SQL
                 rows.Add(row);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, _stuffing.UnitTemplates.Keys, "Id", rows).Build();
+            return new QueryBuilder.SQLInsert(tableName, _storage.UnitTemplates.Keys, "Id", rows).Build();
         }
 
         public string GameObjectTemplate()
         {
-            if (_stuffing.GameObjectTemplates.IsEmpty)
+            if (_storage.GameObjectTemplates.IsEmpty)
                 return string.Empty;
 
             // Not TDB structure
             const string tableName = "gameobject_template";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var goTemplate in _stuffing.GameObjectTemplates)
+            foreach (var goTemplate in _storage.GameObjectTemplates)
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
@@ -418,15 +418,15 @@ namespace WowPacketParser.Store.SQL
                 rows.Add(row);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, _stuffing.GameObjectTemplates.Keys, "Id", rows).Build();
+            return new QueryBuilder.SQLInsert(tableName, _storage.GameObjectTemplates.Keys, "Id", rows).Build();
         }
 
         public string GameObjectSpawns()
         {
-            if (!_stuffing.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.GameObject))
+            if (!_storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.GameObject))
                 return string.Empty;
 
-            var gameobjects = _stuffing.Objects.Where(x => x.Value.Type == ObjectType.GameObject);
+            var gameobjects = _storage.Objects.Where(x => x.Value.Type == ObjectType.GameObject);
 
             const string tableName = "gameobject";
             uint count = 0;
@@ -498,13 +498,13 @@ namespace WowPacketParser.Store.SQL
 
         public string PageText()
         {
-            if (_stuffing.PageTexts.IsEmpty)
+            if (_storage.PageTexts.IsEmpty)
                 return string.Empty;
 
             const string tableName = "page_Text";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var pageText in _stuffing.PageTexts)
+            foreach (var pageText in _storage.PageTexts)
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
@@ -515,19 +515,19 @@ namespace WowPacketParser.Store.SQL
                 rows.Add(row);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, _stuffing.PageTexts.Keys, "entry", rows).Build();
+            return new QueryBuilder.SQLInsert(tableName, _storage.PageTexts.Keys, "entry", rows).Build();
         }
 
         public string NpcText()
         {
-            if (_stuffing.NpcTexts.IsEmpty)
+            if (_storage.NpcTexts.IsEmpty)
                 return string.Empty;
 
             // Not TDB structure
             const string tableName = "npc_text";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var npcText in _stuffing.NpcTexts)
+            foreach (var npcText in _storage.NpcTexts)
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
@@ -556,12 +556,12 @@ namespace WowPacketParser.Store.SQL
                 rows.Add(row);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, _stuffing.NpcTexts.Keys, "Id", rows).Build();
+            return new QueryBuilder.SQLInsert(tableName, _storage.NpcTexts.Keys, "Id", rows).Build();
         }
 
         public string Gossip()
         {
-            if (_stuffing.Gossips.IsEmpty)
+            if (_storage.Gossips.IsEmpty)
                 return string.Empty;
 
             const string tableName1 = "gossip_menu";
@@ -571,7 +571,7 @@ namespace WowPacketParser.Store.SQL
 
             // `gossip`
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var gossip in _stuffing.Gossips)
+            foreach (var gossip in _storage.Gossips)
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
@@ -583,12 +583,12 @@ namespace WowPacketParser.Store.SQL
                 rows.Add(row);
             }
 
-            var result = new QueryBuilder.SQLInsert(tableName1, _stuffing.Gossips.Keys, new[] { "entry", "text_id" }, rows).Build();
+            var result = new QueryBuilder.SQLInsert(tableName1, _storage.Gossips.Keys, new[] { "entry", "text_id" }, rows).Build();
 
             // `gossip_menu_option`
             rows = new List<QueryBuilder.SQLInsertRow>();
             ICollection<Tuple<uint, uint>> keys = new Collection<Tuple<uint, uint>>();
-            foreach (var gossip in _stuffing.Gossips)
+            foreach (var gossip in _storage.Gossips)
             {
                 if (gossip.Value.GossipOptions != null) // Needed?
                     foreach (var gossipOption in gossip.Value.GossipOptions)
@@ -616,14 +616,14 @@ namespace WowPacketParser.Store.SQL
 
         public string QuestPOI()
         {
-            if (_stuffing.QuestPOIs.IsEmpty)
+            if (_storage.QuestPOIs.IsEmpty)
                 return string.Empty;
 
             const string tableName1 = "quest_poi";
             const string tableName2 = "quest_poi_points";
 
             // Trying something..
-            var orderedDict = _stuffing.QuestPOIs.OrderBy(key => key.Key.Item1);
+            var orderedDict = _storage.QuestPOIs.OrderBy(key => key.Key.Item1);
 
             // `quest_poi`
             var rows = new List<QueryBuilder.SQLInsertRow>();
@@ -644,7 +644,7 @@ namespace WowPacketParser.Store.SQL
                 rows.Add(row);
             }
 
-            var result = new QueryBuilder.SQLInsert(tableName1, _stuffing.QuestPOIs.Keys, new[] { "questId", "id" }, rows).Build();
+            var result = new QueryBuilder.SQLInsert(tableName1, _storage.QuestPOIs.Keys, new[] { "questId", "id" }, rows).Build();
 
             // `quest_poi_points`
             rows = new List<QueryBuilder.SQLInsertRow>();
@@ -666,14 +666,14 @@ namespace WowPacketParser.Store.SQL
                     }
             }
 
-            result += new QueryBuilder.SQLInsert(tableName2, _stuffing.QuestPOIs.Keys, new[] { "questId", "id" }, rows).Build();
+            result += new QueryBuilder.SQLInsert(tableName2, _storage.QuestPOIs.Keys, new[] { "questId", "id" }, rows).Build();
 
             return result;
         }
 
         public string Loot()
         {
-            if (_stuffing.Loots.IsEmpty)
+            if (_storage.Loots.IsEmpty)
                 return string.Empty;
 
             // Not TDB structure
@@ -681,15 +681,15 @@ namespace WowPacketParser.Store.SQL
 
             // Can't cast the collection directly
             ICollection<Tuple<uint, uint>> lootKeys = new Collection<Tuple<uint, uint>>();
-            foreach (var tuple in _stuffing.Loots.Keys)
+            foreach (var tuple in _storage.Loots.Keys)
                 lootKeys.Add(new Tuple<uint, uint>(tuple.Item1, (uint)tuple.Item2));
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var loot in _stuffing.Loots)
+            foreach (var loot in _storage.Loots)
             {
                 var comment = new QueryBuilder.SQLInsertRow();
                 comment.HeaderComment =
-                    StoreGetters.GetName(Utilities.ObjectTypeToStore(_stuffing.Loots.Keys.First().Item2), (int) loot.Key.Item1, false) +
+                    StoreGetters.GetName(Utilities.ObjectTypeToStore(_storage.Loots.Keys.First().Item2), (int) loot.Key.Item1, false) +
                                         " (" + loot.Value.Gold + " gold)";
                 rows.Add(comment);
                 foreach (var lootItem in loot.Value.LootItems)
@@ -712,15 +712,15 @@ namespace WowPacketParser.Store.SQL
         {
             var result = string.Empty;
 
-            if (!_stuffing.StartActions.IsEmpty)
+            if (!_storage.StartActions.IsEmpty)
             {
                 // Can't cast the collection directly
                 ICollection<Tuple<uint, uint>> keys = new Collection<Tuple<uint, uint>>();
-                foreach (var key in _stuffing.StartActions.Keys)
+                foreach (var key in _storage.StartActions.Keys)
                     keys.Add(new Tuple<uint, uint>((uint) key.Item1, (uint)key.Item2));
 
                 var rows = new List<QueryBuilder.SQLInsertRow>();
-                foreach (var startActions in _stuffing.StartActions)
+                foreach (var startActions in _storage.StartActions)
                 {
                     var comment = new QueryBuilder.SQLInsertRow();
                     comment.HeaderComment = startActions.Key.Item1 + " - " + startActions.Key.Item2;
@@ -747,15 +747,15 @@ namespace WowPacketParser.Store.SQL
                 result = new QueryBuilder.SQLInsert("playercreateinfo_action", keys, new[] { "race", "class" }, rows).Build();
             }
 
-            if (!_stuffing.StartPositions.IsEmpty)
+            if (!_storage.StartPositions.IsEmpty)
             {
                 // Can't cast the collection directly
                 ICollection<Tuple<uint, uint>> keys = new Collection<Tuple<uint, uint>>();
-                foreach (var key in _stuffing.StartPositions.Keys)
+                foreach (var key in _storage.StartPositions.Keys)
                     keys.Add(new Tuple<uint, uint>((uint)key.Item1, (uint)key.Item2));
 
                 var rows = new List<QueryBuilder.SQLInsertRow>();
-                foreach (var startPosition in _stuffing.StartPositions)
+                foreach (var startPosition in _storage.StartPositions)
                 {
                     var comment = new QueryBuilder.SQLInsertRow();
                     comment.HeaderComment = startPosition.Key.Item1 + " - " + startPosition.Key.Item2;
@@ -780,15 +780,15 @@ namespace WowPacketParser.Store.SQL
                 result += new QueryBuilder.SQLInsert("playercreateinfo", keys, new[] { "race", "class" }, rows).Build();
             }
 
-            if (!_stuffing.StartSpells.IsEmpty)
+            if (!_storage.StartSpells.IsEmpty)
             {
                 // Can't cast the collection directly
                 ICollection<Tuple<uint, uint>> keys = new Collection<Tuple<uint, uint>>();
-                foreach (var key in _stuffing.StartSpells.Keys)
+                foreach (var key in _storage.StartSpells.Keys)
                     keys.Add(new Tuple<uint, uint>((uint)key.Item1, (uint)key.Item2));
 
                 var rows = new List<QueryBuilder.SQLInsertRow>();
-                foreach (var startSpells in _stuffing.StartSpells)
+                foreach (var startSpells in _storage.StartSpells)
                 {
                     var comment = new QueryBuilder.SQLInsertRow();
                     comment.HeaderComment = startSpells.Key.Item1 + " - " + startSpells.Key.Item2;
@@ -815,13 +815,13 @@ namespace WowPacketParser.Store.SQL
 
         public string ObjectNames()
         {
-            if (_stuffing.ObjectNames.IsEmpty)
+            if (_storage.ObjectNames.IsEmpty)
                 return string.Empty;
 
             const string tableName = "ObjectNames";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var data in _stuffing.ObjectNames)
+            foreach (var data in _storage.ObjectNames)
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
