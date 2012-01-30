@@ -92,11 +92,11 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.SniffFileInfo.Stuffing.Objects.TryAdd(guid, go);
                     break;
                 case ObjectType.Item:
-                    var item = new GameObject {Type = objType, Movement = moves, UpdateFields = updates, Map = map, Area = WorldStateHandler.CurrentAreaId, PhaseMask = (uint) MovementHandler.CurrentPhaseMask};
+                    var item = new Item {Type = objType, Movement = moves, UpdateFields = updates, Map = map, Area = WorldStateHandler.CurrentAreaId, PhaseMask = (uint) MovementHandler.CurrentPhaseMask};
                     packet.SniffFileInfo.Stuffing.Objects.TryAdd(guid, item);
                     break;
                 case ObjectType.Player:
-                    var player = new GameObject {Type = objType, Movement = moves, UpdateFields = updates, Map = map, Area = WorldStateHandler.CurrentAreaId, PhaseMask = (uint) MovementHandler.CurrentPhaseMask};
+                    var player = new Player {Type = objType, Movement = moves, UpdateFields = updates, Map = map, Area = WorldStateHandler.CurrentAreaId, PhaseMask = (uint) MovementHandler.CurrentPhaseMask};
                     packet.SniffFileInfo.Stuffing.Objects.TryAdd(guid, player);
                     break;
                 default:
