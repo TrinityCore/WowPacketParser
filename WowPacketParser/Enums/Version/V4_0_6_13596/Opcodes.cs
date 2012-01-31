@@ -48,7 +48,7 @@ namespace WowPacketParser.Enums.Version//.V4_0_6_13596
             {Opcode.CMSG_COMMENTATOR_START_WARGAME, 0x08588}, // 4.0.6a 13623 (might be CMSG_ITEM_QUERY_SINGLE)
             {Opcode.CMSG_ITEM_QUERY_MULTIPLE, 0x10008}, // Unknown opcode ID
             {Opcode.SMSG_DB_REPLY, 0x00C4E}, // 4.0.6a 13623 (was SMSG_ITEM_QUERY_SINGLE_RESPONSE)
-            {Opcode.SMSG_HOTFIX_NOTIFY_BLOP, 0x04C1E}, // 4.0.6a 13623 (sent after SMSG_AUTH_RESPONSE)
+            {Opcode.SMSG_HOTFIX_INFO, 0x04C1E}, // 4.0.6a 13623 (sent after SMSG_AUTH_RESPONSE)
             {Opcode.SMSG_HOTFIX_NOTIFY, 0x04C0E}, // 4.0.6a 13623 can be sent while ingame
             {Opcode.CMSG_REQUEST_HOTFIX, 0x08589}, // 4.0.6a 13623 (the client sends this after we send SMSG_HOTFIX_NOTIFY[_BLOP], only sent for the items that the player has in his inventory, that are flagged to be hotfixed)
             {Opcode.CMSG_PAGE_TEXT_QUERY, 0x0AC8C}, // 4.0.6a 13623

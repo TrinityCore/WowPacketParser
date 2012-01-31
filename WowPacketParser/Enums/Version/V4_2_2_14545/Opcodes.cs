@@ -241,6 +241,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_REPAIR_ITEM, 0xCF3},
             {Opcode.CMSG_REPOP_REQUEST, 0x8872},
             {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x8AF2},
+            {Opcode.CMSG_REQUEST_HOTFIX, 0x8A8B},
             {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x987E},
             {Opcode.CMSG_REQUEST_PET_INFO, 0x9A47},
             {Opcode.CMSG_REQUEST_RAID_INFO, 0xECF},
@@ -500,6 +501,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_GUILD_ROSTER, 0x664C},
             {Opcode.SMSG_GUILD_SET_NOTE, 0xB6CE},
             {Opcode.SMSG_HIGHEST_THREAT_UPDATE, 0x5E7B},
+            {Opcode.SMSG_HOTFIX_INFO, 0xA04C},
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0xCC6F},
             {Opcode.SMSG_INITIAL_SPELLS, 0x88FE},
             {Opcode.SMSG_INIT_CURRENCY, 0x227E},
@@ -743,7 +745,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             */
 
             // Tests
-            {Opcode.TEST_422_41036, 0xA04C},
             {Opcode.TEST_422_24649, 24649},
             {Opcode.TEST_422_265C, 0x265C},
             {Opcode.TEST_422_9838, 9838},

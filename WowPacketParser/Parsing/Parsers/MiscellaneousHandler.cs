@@ -15,8 +15,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk int32");
         }
 
-        [Parser(Opcode.SMSG_HOTFIX_NOTIFY_BLOP)]
-        public static void HandleHotfixNotifyBlob(Packet packet)
+        [Parser(Opcode.SMSG_HOTFIX_INFO)]
+        public static void HandleHotfixInfo(Packet packet)
         {
             var count = packet.ReadInt32("Count");
             for (var i = 0; i < count; i++)

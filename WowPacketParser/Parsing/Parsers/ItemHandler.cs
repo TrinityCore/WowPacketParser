@@ -496,7 +496,24 @@ namespace WowPacketParser.Parsing.Parsers
             packet.SniffFileInfo.Storage.ItemTemplates.TryAdd((uint) entry.Key, item);
         }
 
-        [Parser(Opcode.CMSG_REQUEST_HOTFIX)]
+        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
+        public static void HandleItemRequestHotfix422(Packet packet)
+        {
+            packet.ReadUInt32("Type");
+            var count = packet.ReadUInt32("Count");
+            var guidBytes = new byte[count][];
+            for (var i = 0; i < count; ++i)
+                guidBytes[i] = packet.StartBitStream(7, 3, 0, 5, 6, 4, 1, 2);
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadUInt32("Entry", i);
+                guidBytes[i] = packet.ParseBitStream(guidBytes[i], 2, 6, 3, 0, 5, 7, 1, 4);
+                packet.ToGuid("GUID", guidBytes[i], i);
+            }
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleItemRequestHotFix(Packet packet)
         {
             var count = packet.ReadUInt32("Count");
@@ -659,20 +676,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
-        }
-
-        [Parser(Opcode.TEST_422_41036)]
-        public static void HandleUnk422_41036(Packet packet)
-        {
-            var count = packet.ReadUInt32("Count");
-            for (var i = 0; i < count; ++i)
-            {
-                packet.ReadUInt32("Type", i);
-                var unk = packet.ReadUInt32();
-                packet.Writer.WriteLine("[{0}] Unk 0x{1}", i, unk.ToString("X4"));
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
-            }
-
         }
     }
 }

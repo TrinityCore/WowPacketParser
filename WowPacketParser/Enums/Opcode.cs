@@ -1130,7 +1130,7 @@ namespace WowPacketParser.Enums
         SMSG_HEALTH_UPDATE,
         SMSG_HIGHEST_THREAT_UPDATE,
         SMSG_HOTFIX_NOTIFY,
-        SMSG_HOTFIX_NOTIFY_BLOP,
+        SMSG_HOTFIX_INFO,
         SMSG_IGNORE_DIMINISHING_RETURNS_CHEAT,
         SMSG_IGNORE_REQUIREMENTS_CHEAT,
         SMSG_INIT_CURRENCY,
@@ -1605,7 +1605,6 @@ namespace WowPacketParser.Enums
         UMSG_UPDATE_GUILD,
 
         // Tests
-        TEST_422_41036,
         TEST_422_24649,
         TEST_430_SYNC_PLAYER_MOVE,
         TEST_422_265C,
