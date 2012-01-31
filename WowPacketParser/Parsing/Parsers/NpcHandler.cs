@@ -87,6 +87,8 @@ namespace WowPacketParser.Parsing.Parsers
                     trainerSpell.RequiredLevel = packet.ReadByte("Required Level", i);
                     trainerSpell.RequiredSkill = packet.ReadUInt32("Required Skill", i);
                     trainerSpell.RequiredSkillLevel = packet.ReadUInt32("Required Skill Level", i);
+                    packet.ReadInt32("Chain Node 1", i);
+                    packet.ReadInt32("Chain Node 2", i);
                 }
 
                 packet.ReadInt32("Profession Dialog", i);
@@ -97,10 +99,10 @@ namespace WowPacketParser.Parsing.Parsers
                     trainerSpell.RequiredLevel = packet.ReadByte("Required Level", i);
                     trainerSpell.RequiredSkill = packet.ReadUInt32("Required Skill", i);
                     trainerSpell.RequiredSkillLevel = packet.ReadUInt32("Required Skill Level", i);
+                    packet.ReadInt32("Chain Node 1", i);
+                    packet.ReadInt32("Chain Node 2", i);
                 }
 
-                packet.ReadInt32("Chain Node 1", i);
-                packet.ReadInt32("Chain Node 2", i);
 
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333))
                     packet.ReadInt32("Unk Int32", i);
