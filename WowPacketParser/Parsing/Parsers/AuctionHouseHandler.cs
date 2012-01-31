@@ -88,7 +88,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Auction ID");
             var action = packet.ReadEnum<AuctionHouseAction>("Action", TypeCode.UInt32);
             var error = packet.ReadEnum<AuctionHouseError>("Error", TypeCode.UInt32);
-            
+
             if (error == AuctionHouseError.Inventory)
                 packet.ReadInt32("Error Inventory Int32");
 
