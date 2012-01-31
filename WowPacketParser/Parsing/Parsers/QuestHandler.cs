@@ -13,7 +13,7 @@ namespace WowPacketParser.Parsing.Parsers
         private static void ReadExtraQuestInfo(ref Packet packet)
         {
             var choiceCount = packet.ReadUInt32("Choice Item Count");
-            var effectiveChoiceCount = ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) ? 6 : choiceCount;
+            var effectiveChoiceCount = ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164) ? 6 : choiceCount;
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
@@ -25,7 +25,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Choice Item Display Id", i);
 
                 var rewardCount = packet.ReadUInt32("Reward Item Count");
-                var effectiveRewardCount = ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) ? 4 : rewardCount;
+                var effectiveRewardCount = ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164) ? 4 : rewardCount;
 
                 for (var i = 0; i < effectiveRewardCount; i++)
                     packet.ReadUInt32("Reward Item Id", i);
