@@ -54,6 +54,7 @@ namespace WowPacketParser.Parsing.Parsers
          }
 
         [Parser(Opcode.SMSG_MULTIPLE_PACKETS)]
+        [Parser(Opcode.SMSG_MULTIPLE_PACKETS_DECOMPRESSED)]
         public static void HandleMultiplePackets(Packet packet)
         {
             // Testing: packet.Writer.WriteLine(packet.AsHex());

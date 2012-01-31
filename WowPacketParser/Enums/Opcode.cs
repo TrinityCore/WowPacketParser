@@ -1250,6 +1250,7 @@ namespace WowPacketParser.Enums
         SMSG_MOVE_UNSET_WALK_IN_AIR,
         SMSG_MOVE_WATER_WALK,
         SMSG_MULTIPLE_PACKETS,
+        SMSG_MULTIPLE_PACKETS_DECOMPRESSED, // in 4.2.2 this opcode is different to SMSG_MULTIPLE_PACKETS but both have handlers in client
         SMSG_NAME_QUERY_RESPONSE,
         SMSG_NEW_TAXI_PATH,
         SMSG_NEW_WORLD,

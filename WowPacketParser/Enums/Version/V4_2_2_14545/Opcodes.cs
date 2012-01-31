@@ -570,6 +570,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_MOUNTSPECIAL_ANIM, 0x09E77},
             {Opcode.SMSG_MOVE_KNOCK_BACK, 0x60FE}, // Not sure
             {Opcode.SMSG_MULTIPLE_PACKETS, 0xDCEA},
+            {Opcode.SMSG_MULTIPLE_PACKETS_DECOMPRESSED, 0x1381},
             {Opcode.SMSG_COMPRESSED_MULTIPLE_PACKETS, 0x6944},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x9CE6},
             {Opcode.SMSG_NEW_TAXI_PATH, 0xC8FF}, // Might be 0x98CF
