@@ -173,8 +173,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             quest.Flags = packet.ReadEnum<QuestFlags>("Flags", TypeCode.Int32);
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // Not sure when this was added
-                quest.MinimapTargetMark = packet.ReadUInt32("Minimap Target Mark"); // missing enum
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
+                quest.MinimapTargetMark = packet.ReadUInt32("Minimap Target Mark"); // missing enum. 1- Skull, 16 - Unknown, but exist
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_4_0_8089))
                 quest.RewardTitleId = packet.ReadUInt32("Reward Title ID");
@@ -188,7 +188,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 quest.RewardArenaPoints = packet.ReadUInt32("Bonus Arena Points");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333)) // Probably added earlier
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
                 quest.RewardSkillId = packet.ReadUInt32("RewSkillId");
                 quest.RewardSkillPoints = packet.ReadUInt32("RewSkillPoints");
@@ -290,7 +290,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333)) // Probably earlier
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 quest.RequiredSpell = (uint) packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Required Spell");
 
             quest.ObjectiveText = new string[4];
@@ -301,7 +301,7 @@ namespace WowPacketParser.Parsing.Parsers
             quest.RewardCurrencyCount = new uint[4];
             quest.RequiredCurrencyId = new uint[4];
             quest.RequiredCurrencyCount = new uint[4];
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
                 for (var i = 0; i < 4; ++i)
                 {
