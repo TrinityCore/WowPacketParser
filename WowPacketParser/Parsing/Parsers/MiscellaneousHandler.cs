@@ -21,7 +21,7 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadInt32("Count");
             for (var i = 0; i < count; i++)
             {
-                packet.ReadInt32("Unk int32"); // Also time?
+                packet.ReadInt32("Hotfix type"); // Also time?
                 packet.ReadTime("Hotfix date");
                 packet.ReadInt32("Hotfixed entry");
             }
