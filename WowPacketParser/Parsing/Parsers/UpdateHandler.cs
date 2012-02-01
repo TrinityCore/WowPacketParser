@@ -28,7 +28,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var type = packet.ReadByte();
                 var typeString = ClientVersion.AddedInVersion(ClientType.Cataclysm) ? ((UpdateTypeCataclysm)type).ToString() : ((UpdateType)type).ToString();
 
-                packet.Writer.WriteLine("[" + i + "] UpdateType: " + typeString);
+                packet.WriteLine("[" + i + "] UpdateType: " + typeString);
                 switch (typeString)
                 {
                     case "Values":
@@ -184,7 +184,7 @@ namespace WowPacketParser.Parsing.Parsers
                         }
                     }
                 }
-                packet.Writer.WriteLine("[" + index + "] " + key + ": " + value);
+                packet.WriteLine("[" + index + "] " + key + ": " + value);
                 dict.Add(i, blockVal);
             }
 
@@ -293,7 +293,7 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     moveInfo.Position = packet.ReadVector3();
                     moveInfo.Orientation = packet.ReadSingle();
-                    packet.Writer.WriteLine("[{0}] Stationary Position: {1}, O: {2}", index, moveInfo.Position, moveInfo.Orientation);
+                    packet.WriteLine("[{0}] Stationary Position: {1}, O: {2}", index, moveInfo.Position, moveInfo.Orientation);
                 }
             }
 

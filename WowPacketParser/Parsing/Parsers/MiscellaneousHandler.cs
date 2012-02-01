@@ -57,8 +57,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MULTIPLE_PACKETS_DECOMPRESSED)]
         public static void HandleMultiplePackets(Packet packet)
         {
-            // Testing: packet.Writer.WriteLine(packet.AsHex());
-            packet.Writer.WriteLine("{");
+            // Testing: packet.WriteLine(packet.AsHex());
+            packet.WriteLine("{");
             var i = 0;
             while (packet.CanRead())
             {
@@ -83,14 +83,14 @@ namespace WowPacketParser.Parsing.Parsers
                     continue;
 
                 if (i > 0)
-                    packet.Writer.WriteLine();
+                    packet.WriteLine();
 
-                packet.Writer.Write("[{0}] ", i++);
+                packet.Write("[{0}] ", i++);
 
                 using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.SniffFileInfo))
                     Handler.Parse(newpacket, isMultiple: true);
             }
-            packet.Writer.WriteLine("}");
+            packet.WriteLine("}");
         }
 
         [Parser(Opcode.SMSG_STOP_DANCE)]
@@ -184,7 +184,7 @@ namespace WowPacketParser.Parsing.Parsers
             var data = packet.ReadInt32();
             var type = (ActionButtonType)((data & 0xFF000000) >> 24);
             var action = (data & 0x00FFFFFF);
-            packet.Writer.WriteLine("Type: " + type + " ID: " + action);
+            packet.WriteLine("Type: " + type + " ID: " + action);
         }
 
         [Parser(Opcode.SMSG_RESURRECT_REQUEST)]
@@ -322,10 +322,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             // TODO: Exclude happiness on Cata
             for (var i = 0; i < powerCount; i++)
-                packet.Writer.WriteLine("Power " + (PowerType)i + ": " + packet.ReadInt32());
+                packet.WriteLine("Power " + (PowerType)i + ": " + packet.ReadInt32());
 
             for (var i = 0; i < 5; i++)
-                packet.Writer.WriteLine("Stat " + (StatType)i + ": " + packet.ReadInt32());
+                packet.WriteLine("Stat " + (StatType)i + ": " + packet.ReadInt32());
 
             if (SessionHandler.LoggedInCharacter != null)
                 SessionHandler.LoggedInCharacter.Level = level;
@@ -335,7 +335,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleTutorialFlag(Packet packet)
         {
             var flag = packet.ReadInt32();
-            packet.Writer.WriteLine("Flag: 0x" + flag.ToString("X8"));
+            packet.WriteLine("Flag: 0x" + flag.ToString("X8"));
         }
 
         [Parser(Opcode.SMSG_TUTORIAL_FLAGS)]
@@ -344,7 +344,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 8; i++)
             {
                 var flag = packet.ReadInt32();
-                packet.Writer.WriteLine("Flags " + i + ": 0x" + flag.ToString("X8"));
+                packet.WriteLine("Flags " + i + ": 0x" + flag.ToString("X8"));
             }
         }
 
@@ -467,11 +467,11 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var unk4 = packet.ReadInt32();
                 if (unk4 == 1)
-                    packet.Writer.WriteLine("Error msg = ERR_DANCE_SAVE_FAILED");
+                    packet.WriteLine("Error msg = ERR_DANCE_SAVE_FAILED");
                 else if (unk4 == 2)
-                    packet.Writer.WriteLine("Error msg = ERR_DANCE_DELETE_FAILED");
+                    packet.WriteLine("Error msg = ERR_DANCE_DELETE_FAILED");
                 else if (unk4 == 0)
-                    packet.Writer.WriteLine("Error msg = ERR_DANCE_CREATE_DUPLICATE");
+                    packet.WriteLine("Error msg = ERR_DANCE_CREATE_DUPLICATE");
             }
             else
             {
@@ -594,7 +594,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LOAD_SCREEN)] // Also named CMSG_LOADING_SCREEN_NOTIFY
         public static void HandleClientEnterWorld(Packet packet)
         {
-            packet.Writer.WriteLine("Loading: " + (packet.ReadBit() ? "true" : "false")); // Not sure on the meaning
+            packet.WriteLine("Loading: " + (packet.ReadBit() ? "true" : "false")); // Not sure on the meaning
             var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
             MovementHandler.CurrentMapId = (uint) mapId;
 

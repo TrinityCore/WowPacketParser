@@ -40,10 +40,10 @@ namespace WowPacketParser.Parsing.Parsers
                     continue;
 
                 action.Id = (uint)(packed & 0x00FFFFFF);
-                packet.Writer.WriteLine("Action " + i + ": " + action.Id);
+                packet.WriteLine("Action " + i + ": " + action.Id);
 
                 action.Type = (ActionButtonType)((packed & 0xFF000000) >> 24);
-                packet.Writer.WriteLine("Type " + i + ": " + action.Type);
+                packet.WriteLine("Type " + i + ": " + action.Type);
 
                 startAction.Actions.Add(action);
             }

@@ -215,6 +215,10 @@ namespace WowPacketParser
                         Handler.WriteToFile(packets, outLogFileName);
                     }
 
+                    // Force to close the StringWriter to improve mem use
+                    foreach(var packet in packets)
+                        packet.CloseWriter();
+
                     if (Settings.StatsOutput == StatsOutputFlags.None)
                         return;
 

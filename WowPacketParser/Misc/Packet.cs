@@ -32,7 +32,7 @@ namespace WowPacketParser.Misc
             Time = time;
             Direction = direction;
             Number = number;
-            Writer = new StringWriter();
+            Writer = null;
             SniffFileInfo = fileInfo;
             Status = ParsedStatus.None;
             WriteToFile = true;
@@ -121,6 +121,31 @@ namespace WowPacketParser.Misc
         public bool CanRead()
         {
             return GetPosition() != GetLength();
+        }
+
+        public void Write(params Object[] args)
+        {
+            if (Writer == null)
+                Writer = new System.IO.StringWriter();
+
+            Writer.Write(args);
+        }
+
+        public void WriteLine(params Object[] args)
+        {
+            if (Writer == null)
+                Writer = new System.IO.StringWriter();
+
+            Writer.WriteLine(args);
+        }
+
+        public void CloseWriter()
+        {
+            if (Writer != null)
+            {
+                Writer.Close();
+                Writer = null;
+            }
         }
     }
 }

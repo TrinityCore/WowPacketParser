@@ -175,7 +175,7 @@ namespace WowPacketParser.Parsing.Parsers
 
 
             var guid = new Guid(BitConverter.ToUInt64(guidBytes, 0));
-            packet.Writer.WriteLine("GUID: {0}", guid);
+            packet.WriteLine("GUID: {0}", guid);
 
             npcVendor.VendorItems = new List<VendorItem>((int)itemCount);
             for (var i = 0; i < itemCount; i++)
@@ -276,16 +276,16 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleThreatlistUpdate(Packet packet)
         {
             var guid = packet.ReadPackedGuid();
-            packet.Writer.WriteLine("GUID: " + guid);
+            packet.WriteLine("GUID: " + guid);
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_HIGHEST_THREAT_UPDATE))
             {
                 var newhigh = packet.ReadPackedGuid();
-                packet.Writer.WriteLine("New Highest: " + newhigh);
+                packet.WriteLine("New Highest: " + newhigh);
             }
 
             var count = packet.ReadUInt32();
-            packet.Writer.WriteLine("Size: " + count);
+            packet.WriteLine("Size: " + count);
             for (int i = 0; i < count; i++)
             {
                 packet.ReadPackedGuid("Hostile");
@@ -293,7 +293,7 @@ namespace WowPacketParser.Parsing.Parsers
                 // No idea why, but this is in core. There is nothing about this in client
                 /*if (packet.Opcode == Opcode.SMSG_THREAT_UPDATE)
                     threat *= 100;*/
-                packet.Writer.WriteLine("Threat: " + threat);
+                packet.WriteLine("Threat: " + threat);
             }
         }
 

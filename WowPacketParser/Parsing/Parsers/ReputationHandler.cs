@@ -10,7 +10,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleInitializeFactions(Packet packet)
         {
             var flags = packet.ReadInt32();
-            packet.Writer.WriteLine("Flags: 0x" + flags.ToString("X8"));
+            packet.WriteLine("Flags: 0x" + flags.ToString("X8"));
 
             for (var i = 0; i < 128; i++)
             {

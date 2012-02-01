@@ -248,7 +248,7 @@ namespace WowPacketParser.Parsing.Parsers
                     {
                         var aura = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? packet.ReadInt32() : packet.ReadUInt16();
 
-                        packet.Writer.WriteLine("Slot: [" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, aura));
+                        packet.WriteLine("Slot: [" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, aura));
                         packet.ReadEnum<AuraFlag>("Slot: [" + i + "] Aura flag", TypeCode.Byte);
                     }
                 }
@@ -299,7 +299,7 @@ namespace WowPacketParser.Parsing.Parsers
                     {
                         var aura = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? packet.ReadInt32() : packet.ReadUInt16();
 
-                        packet.Writer.WriteLine("Slot: [" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, aura));
+                        packet.WriteLine("Slot: [" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, aura));
                         packet.ReadEnum<AuraFlag>("Slot: [" + i + "] Aura flag", TypeCode.Byte);
                     }
                 }
@@ -372,7 +372,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guidBytes[3] != 0) guidBytes[3] ^= packet.ReadByte();
 
             // Non-zero in cross realm parties
-            packet.Writer.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
+            packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
         }
 
         [Parser(Opcode.SMSG_GROUP_INVITE)]
@@ -486,7 +486,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("GUID");
 
             var position = packet.ReadVector2();
-            packet.Writer.WriteLine("Position: " + position);
+            packet.WriteLine("Position: " + position);
         }
 
         [Parser(Opcode.CMSG_GROUP_RAID_CONVERT)]

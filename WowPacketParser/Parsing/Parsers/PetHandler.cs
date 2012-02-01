@@ -16,7 +16,7 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
 
             var guid = new Guid(guid64);
-            packet.Writer.WriteLine("GUID: " + guid);
+            packet.WriteLine("GUID: " + guid);
             var isPet = guid.GetHighType() == HighGuidType.Pet;
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
@@ -42,22 +42,22 @@ namespace WowPacketParser.Parsing.Parsers
                         continue;
                 }
 
-                packet.Writer.WriteLine("Spell " + slotid + ": " + StoreGetters.GetName(StoreNameType.Spell, spellId));
+                packet.WriteLine("Spell " + slotid + ": " + StoreGetters.GetName(StoreNameType.Spell, spellId));
             }
 
             var spellCount = packet.ReadByte(); // vehicles -> 0, pets -> != 0. Could this be auras?
-            packet.Writer.WriteLine("Spell count: " + spellCount);
+            packet.WriteLine("Spell count: " + spellCount);
 
             for (var i = 0; i < spellCount; i++)
             {
                 // Sent as int32
                 var spellId = packet.ReadUInt16();
                 var active = packet.ReadInt16();
-                packet.Writer.WriteLine("Spell " + i + ": " + StoreGetters.GetName(StoreNameType.Spell, spellId) + ", active: " + active);
+                packet.WriteLine("Spell " + i + ": " + StoreGetters.GetName(StoreNameType.Spell, spellId) + ", active: " + active);
             }
 
             var cdCount = packet.ReadByte();
-            packet.Writer.WriteLine("Cooldown count: " + cdCount);
+            packet.WriteLine("Cooldown count: " + cdCount);
 
             for (var i = 0; i < cdCount; i++)
             {
@@ -67,7 +67,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var cooldown = packet.ReadUInt32();
                 var categoryCooldown = packet.ReadUInt32();
 
-                packet.Writer.WriteLine("Cooldown: Spell: " + StoreGetters.GetName(StoreNameType.Spell, spellId) + " category: " + category +
+                packet.WriteLine("Cooldown: Spell: " + StoreGetters.GetName(StoreNameType.Spell, spellId) + " category: " + category +
                     " cooldown: " + cooldown + " category cooldown: " + categoryCooldown);
             }
         }
@@ -135,7 +135,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadUInt32("Position", i);
                 var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
-                packet.Writer.WriteLine("[{0}] Action: {1}", i, action);
+                packet.WriteLine("[{0}] Action: {1}", i, action);
                 packet.ReadEnum<ActionButtonType>("Type", TypeCode.Byte, i++);
             }
         }
@@ -145,7 +145,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
-            packet.Writer.WriteLine("Action: {0}", action);
+            packet.WriteLine("Action: {0}", action);
             packet.ReadEnum<ActionButtonType>("Type", TypeCode.Byte);
             packet.ReadGuid("GUID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))

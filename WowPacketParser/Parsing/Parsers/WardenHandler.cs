@@ -21,10 +21,10 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadByte();
 
                     var md5 = packet.ReadBytes(16);
-                    packet.Writer.WriteLine("Module MD5: " + Utilities.ByteArrayToHexString(md5));
+                    packet.WriteLine("Module MD5: " + Utilities.ByteArrayToHexString(md5));
 
                     var rc4 = packet.ReadBytes(16);
-                    packet.Writer.WriteLine("Module RC4: " + Utilities.ByteArrayToHexString(rc4));
+                    packet.WriteLine("Module RC4: " + Utilities.ByteArrayToHexString(rc4));
 
                     packet.ReadUInt32("Module Length");
                     break;
@@ -36,7 +36,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var length = packet.ReadUInt16("Chunk Length");
 
                     var chunk = packet.ReadBytes(length);
-                    packet.Writer.WriteLine("Module Chunk: " + Utilities.ByteArrayToHexString(chunk));
+                    packet.WriteLine("Module Chunk: " + Utilities.ByteArrayToHexString(chunk));
                     break;
                 }
                 case WardenServerOpcode.CheatChecks:
@@ -48,7 +48,7 @@ namespace WowPacketParser.Parsing.Parsers
                     {
                         var strBytes = packet.ReadBytes(length);
                         var str = Encoding.ASCII.GetString(strBytes);
-                        packet.Writer.WriteLine("String: " + str);
+                        packet.WriteLine("String: " + str);
                     }
 
                     // var rest = (int)(packet.GetLength() - packet.GetPosition());
@@ -65,7 +65,7 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadInt32("Data Checksum");
 
                         var data = packet.ReadBytes(length);
-                        packet.Writer.WriteLine("Data: " + Utilities.ByteArrayToHexString(data));
+                        packet.WriteLine("Data: " + Utilities.ByteArrayToHexString(data));
                     }
                     break;
                 }
@@ -74,7 +74,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadByte();
 
                     var seed = packet.ReadBytes(16);
-                    packet.Writer.WriteLine("Seed: " + Utilities.ByteArrayToHexString(seed));
+                    packet.WriteLine("Seed: " + Utilities.ByteArrayToHexString(seed));
                     break;
                 }
             }
@@ -94,14 +94,14 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Check Result Checksum");
 
                     var result = packet.ReadBytes(length);
-                    packet.Writer.WriteLine("Check Results: " + Utilities.ByteArrayToHexString(result));
+                    packet.WriteLine("Check Results: " + Utilities.ByteArrayToHexString(result));
 
                     break;
                 }
                 case WardenClientOpcode.TransformedSeed:
                 {
                     var sha1 = packet.ReadBytes(20);
-                    packet.Writer.WriteLine("SHA1 Seed: " + Utilities.ByteArrayToHexString(sha1));
+                    packet.WriteLine("SHA1 Seed: " + Utilities.ByteArrayToHexString(sha1));
                     break;
                 }
             }
@@ -134,7 +134,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void ReadCheatCheckDecryptionBlock(ref Packet packet)
         {
             var arc4 = packet.ReadBytes(16);
-            packet.Writer.WriteLine("ARC4 Key: " + Utilities.ByteArrayToHexString(arc4));
+            packet.WriteLine("ARC4 Key: " + Utilities.ByteArrayToHexString(arc4));
         }
     }
 }

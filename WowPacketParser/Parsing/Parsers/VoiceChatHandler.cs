@@ -22,7 +22,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Channel Name");
 
             var key = Encoding.UTF8.GetString(packet.ReadBytes(16));
-            packet.Writer.WriteLine("Encryption Key: " + key);
+            packet.WriteLine("Encryption Key: " + key);
 
             packet.ReadUInt32("Voice Server IP");
             packet.ReadByte("Voice Server Port");
@@ -32,10 +32,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Leader GUID");
 
             var leaderFlags1 = packet.ReadByte();
-            packet.Writer.WriteLine("Leader Flags 1: 0x" + leaderFlags1.ToString("X2"));
+            packet.WriteLine("Leader Flags 1: 0x" + leaderFlags1.ToString("X2"));
 
             var leaderFlags2 = packet.ReadByte();
-            packet.Writer.WriteLine("Leader Flags 2: 0x" + leaderFlags2.ToString("X2"));
+            packet.WriteLine("Leader Flags 2: 0x" + leaderFlags2.ToString("X2"));
 
             for (var i = 0; i < count - 1; i++)
             {
@@ -44,10 +44,10 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Index");
 
                 var flags1 = packet.ReadByte();
-                packet.Writer.WriteLine("Flags 1: 0x" + flags1.ToString("X2"));
+                packet.WriteLine("Flags 1: 0x" + flags1.ToString("X2"));
 
                 var flags2 = packet.ReadByte();
-                packet.Writer.WriteLine("Flags 2: 0x" + flags2.ToString("X2"));
+                packet.WriteLine("Flags 2: 0x" + flags2.ToString("X2"));
             }
         }
 

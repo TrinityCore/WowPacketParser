@@ -63,7 +63,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Unk");
 
             for (var i = 0; i < count; i++)
-                packet.Writer.WriteLine(packet.ReadPackedTime());
+                packet.WriteLine(packet.ReadPackedTime());
         }
 
         [Parser(30332)]

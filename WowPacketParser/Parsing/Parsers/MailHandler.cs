@@ -152,11 +152,11 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var data = packet.ReadUInt64();
                 if (data == 0 || ((data & 0xFFFFFFFF00000000) >> 32) == 0)
-                    packet.Writer.WriteLine("Entry: " + ((data & 0x00000000FFFFFFFF) >> 32));
+                    packet.WriteLine("Entry: " + ((data & 0x00000000FFFFFFFF) >> 32));
                 else
                 {
                     var guid = new Guid(data);
-                    packet.Writer.WriteLine("[" + i + "] GUID: " + guid);
+                    packet.WriteLine("[" + i + "] GUID: " + guid);
                 }
                 packet.ReadUInt32("COD", i);
                 packet.ReadUInt32("Unk uint32", i);

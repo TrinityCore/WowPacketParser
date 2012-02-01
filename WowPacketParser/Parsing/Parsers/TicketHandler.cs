@@ -12,7 +12,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
             var vector = packet.ReadVector3();
-            packet.Writer.WriteLine("Position: {0}", vector);
+            packet.WriteLine("Position: {0}", vector);
             packet.ReadCString("Text");
             packet.ReadUInt32("Unk UInt32 1");
             packet.ReadBoolean("Need Response");

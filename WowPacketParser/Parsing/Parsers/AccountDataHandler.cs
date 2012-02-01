@@ -49,12 +49,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet = packet.Inflate(decompCount);
 
             var data = packet.ReadBytes(decompCount);
-            packet.Writer.WriteLine("Account Data: ");
+            packet.WriteLine("Account Data: ");
 
             foreach (var b in data)
-                packet.Writer.Write((char)b);
+                packet.Write((char)b);
 
-            packet.Writer.WriteLine();
+            packet.WriteLine();
         }
 
         [Parser(Opcode.CMSG_UPDATE_ACCOUNT_DATA)]

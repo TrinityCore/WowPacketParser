@@ -82,7 +82,7 @@ namespace WowPacketParser.Misc
             hexDump.Append("|-------------------------------------------------|------------------" +
                            "---------------|");
 
-            packet.Writer.WriteLine(hexDump.ToString());
+            packet.WriteLine(hexDump.ToString());
         }
 
         public static void AsBinary(this Packet packet)
@@ -136,7 +136,7 @@ namespace WowPacketParser.Misc
 
             hexDump.Append("|-------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------|");
 
-            packet.Writer.WriteLine(hexDump.ToString());
+            packet.WriteLine(hexDump.ToString());
         }
 
         public static ParallelQuery<TSource> SetCulture<TSource>(this ParallelQuery<TSource> source)

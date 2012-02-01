@@ -141,7 +141,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guidBytes[3] != 0) guidBytes[3] ^= packet.ReadByte();
             if (guidBytes[6] != 0) guidBytes[6] ^= packet.ReadByte();
 
-            packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
+            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
@@ -192,7 +192,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
                 packet.ReadUInt32("Instance ID", i);
 
-            packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
+            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
@@ -343,13 +343,13 @@ namespace WowPacketParser.Parsing.Parsers
             if (val < 1)
             {
                 var result = (BattlegroundError)val;
-                packet.Writer.WriteLine("Result: " + result);
+                packet.WriteLine("Result: " + result);
                 if (result == BattlegroundError.JoinFailedAsGroup ||
                     result == BattlegroundError.CouldntJoinQueueInTime)
                     packet.ReadGuid("GUID");
             }
             else
-                packet.Writer.WriteLine("Result: Joined (BGType: " + StoreGetters.GetName(StoreNameType.Battleground, val) + ")");
+                packet.WriteLine("Result: Joined (BGType: " + StoreGetters.GetName(StoreNameType.Battleground, val) + ")");
         }
 
         [Parser(Opcode.SMSG_JOINED_BATTLEGROUND_QUEUE, ClientVersionBuild.V4_2_2_14545)]
@@ -440,10 +440,10 @@ namespace WowPacketParser.Parsing.Parsers
                 || bgError == BattlegroundError430.NotAllowedInBattleground
                 || bgError == BattlegroundError430.JoinFailedAsGroup)
             {
-                packet.Writer.WriteLine("GUID: {0:X16}", BitConverter.ToUInt64(guidBytes, 0));
+                packet.WriteLine("GUID: {0:X16}", BitConverter.ToUInt64(guidBytes, 0));
             }
 
-            packet.Writer.WriteLine("BGError: {0}", bgError);
+            packet.WriteLine("BGError: {0}", bgError);
         }
 
         [Parser(Opcode.TEST_422_265C, ClientVersionBuild.V4_2_2_14545)] // SMSG
@@ -469,7 +469,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guidBytes[1] != 0) guidBytes[1] ^= packet.ReadByte();
             if (guidBytes[0] != 0) guidBytes[0] ^= packet.ReadByte();
 
-            packet.Writer.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
+            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
         }
 
         [Parser(Opcode.MSG_PVP_LOG_DATA)]

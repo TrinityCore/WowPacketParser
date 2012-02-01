@@ -63,7 +63,6 @@ namespace WowPacketParser.Parsing
             File.Delete(file);
             using (var writer = new StreamWriter(file, true))
             {
-
                 foreach (var packet in packets)
                     if (packet.WriteToFile)
                         writer.WriteLine(packet.Writer);
@@ -79,7 +78,7 @@ namespace WowPacketParser.Parsing
 
             var opcode = packet.Opcode;
 
-            packet.Writer.WriteLine("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}{6}",
+            packet.WriteLine("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}{6}",
                 packet.Direction, Opcodes.GetOpcodeName(opcode), opcode.ToString("X4"),
                 packet.GetLength(), packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
                 packet.Number, isMultiple ? " (part of another packet)" : String.Empty);
@@ -104,7 +103,7 @@ namespace WowPacketParser.Parsing
                         {
                             var pos = packet.GetPosition();
                             var len = packet.GetLength();
-                            packet.Writer.WriteLine("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.",
+                            packet.WriteLine("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.",
                                 pos, len, len - pos);
 
                             if (len < 300) // If the packet isn't "too big" and it is not full read, print its hex table
@@ -115,9 +114,9 @@ namespace WowPacketParser.Parsing
                     }
                     catch (Exception ex)
                     {
-                        packet.Writer.WriteLine(ex.GetType());
-                        packet.Writer.WriteLine(ex.Message);
-                        packet.Writer.WriteLine(ex.StackTrace);
+                        packet.WriteLine(ex.GetType());
+                        packet.WriteLine(ex.Message);
+                        packet.WriteLine(ex.StackTrace);
 
                         status = ParsedStatus.WithErrors;
                     }

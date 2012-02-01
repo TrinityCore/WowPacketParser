@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -92,6 +93,13 @@ namespace WowPacketParser.Misc
             }
 
             return false;
+        }
+
+        public static void GetMemUse(string prefix)
+        {
+            Process MyProcess = System.Diagnostics.Process.GetCurrentProcess();
+            Trace.WriteLine(String.Format("Memory GC: {0,5}M, Process: {1,5}M - {2}",
+                System.GC.GetTotalMemory(true) / 1048576, MyProcess.PrivateMemorySize64 / 1048576, prefix));
         }
     }
 }

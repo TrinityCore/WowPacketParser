@@ -263,7 +263,7 @@ namespace WowPacketParser.Parsing.Parsers
                 quest.RequiredNpcOrGo[i] = reqId[i].Key;
                 var isGo = reqId[i].Value;
 
-                packet.Writer.WriteLine("[" + i + "] Required " + (isGo ? "GO" : "NPC") +
+                packet.WriteLine("[" + i + "] Required " + (isGo ? "GO" : "NPC") +
                     " ID: " + StoreGetters.GetName(isGo ? StoreNameType.GameObject : StoreNameType.Unit, reqId[i].Key));
 
                 quest.RequiredNpcOrGoCount[i] = packet.ReadUInt32("Required Count", i);
@@ -459,7 +459,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
                 packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Rewarded Quest");
             */
-            packet.Writer.WriteLine("Packet is currently not printed");
+            packet.WriteLine("Packet is currently not printed");
             packet.ReadBytes((int)packet.GetLength());
         }
 
@@ -742,15 +742,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Money");
             var honor = packet.ReadInt32();
             if (honor < 0)
-                packet.Writer.WriteLine("Honor: " + honor);
+                packet.WriteLine("Honor: " + honor);
 
             var talentpoints = packet.ReadInt32();
             if (talentpoints < 0)
-                packet.Writer.WriteLine("Talentpoints: " + talentpoints);
+                packet.WriteLine("Talentpoints: " + talentpoints);
 
             var arenapoints = packet.ReadInt32();
             if (arenapoints < 0)
-                packet.Writer.WriteLine("Arenapoints: " + arenapoints);
+                packet.WriteLine("Arenapoints: " + arenapoints);
         }
 
         [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.V4_2_2_14545)]
