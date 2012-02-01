@@ -89,6 +89,11 @@ namespace WowPacketParser.Loading
                         if (Settings.FilterPacketsNum > 0 && packets.Count == Settings.FilterPacketsNum)
                             break;
                     }
+                    else
+                    {
+                        packet.CloseWriter();
+                        packet = null;
+                    }
 
                     if (Settings.FilterPacketNumHigh > 0 && packetNum > Settings.FilterPacketNumHigh)
                         break;
@@ -97,7 +102,11 @@ namespace WowPacketParser.Loading
             catch(Exception ex)
             {
                 if (parsingPacket != null)
+                {
                     Trace.WriteLine(string.Format("Failed at parsing packet: (Opcode: {0}, Number: {1})", parsingPacket.Opcode, parsingPacket.Number));
+                    parsingPacket.CloseWriter();
+                    parsingPacket = null;
+                }
 
                 Trace.WriteLine(ex.Data);
                 Trace.WriteLine(ex.GetType());
@@ -105,7 +114,7 @@ namespace WowPacketParser.Loading
                 Trace.WriteLine(ex.StackTrace);
             }
 
-            reader.Close();
+            reader.Dispose();
 
             return packets;
         }

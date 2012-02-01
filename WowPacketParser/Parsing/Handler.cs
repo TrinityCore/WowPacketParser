@@ -71,6 +71,21 @@ namespace WowPacketParser.Parsing
                 writer.Close();
             }
         }
+        
+        public static void WriteToFile(StringWriter text, string file)
+        {
+            if (!File.Exists(file))
+                File.Create(file);
+
+            using (var writer = new StreamWriter(file, true))
+            {
+                writer.WriteLine(text.ToString());
+                writer.Flush();
+                writer.Close();
+                text.Dispose();
+                text = null;
+            }
+        }
 
         public static void Parse(Packet packet, bool headerOnly = false, bool isMultiple = false)
         {

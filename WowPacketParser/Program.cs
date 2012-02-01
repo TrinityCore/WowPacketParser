@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -162,6 +163,7 @@ namespace WowPacketParser
             try
             {
                 var packets = Reader.Read(fileInfo);
+                var writers = new List<StringWriter>();
                 if (packets.Count == 0)
                 {
                     Trace.WriteLine(string.Format("{0}: Packet count is 0", prefix));
@@ -199,9 +201,21 @@ namespace WowPacketParser
                     bool headersOnly = Settings.DumpFormat == DumpFormatType.TextHeader || Settings.DumpFormat == DumpFormatType.SummaryHeader;
 
                     if (Settings.Threads == 0) // Number of threads is automatically choosen by the Parallel library
-                        packets.AsParallel().SetCulture().ForAll(packet => Handler.Parse(packet, headersOnly));
+                        packets.AsParallel().SetCulture().ForAll(packet =>
+                                                                            {
+                                                                                Handler.Parse(packet, headersOnly);
+                                                                                writers.Add(packet.Writer);
+                                                                                packet.CloseWriter();
+                                                                                packet = null;
+                                                                            });
                     else
-                        packets.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads).ForAll(packet => Handler.Parse(packet, headersOnly));
+                        packets.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads).ForAll(packet =>
+                                                                                                                    {
+                                                                                                                        Handler.Parse(packet, headersOnly);
+                                                                                                                        writers.Add(packet.Writer);
+                                                                                                                        packet.CloseWriter();
+                                                                                                                        packet = null;
+                                                                                                                    });
 
                     if (Settings.SQLOutput > 0 && globalStorage == null) // No global Storage, write sql data to particular sql file
                     {
@@ -211,13 +225,16 @@ namespace WowPacketParser
 
                     if (Settings.DumpFormat != DumpFormatType.None)
                     {
+                        //File.Delete(outLogFileName);
                         Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", prefix, outLogFileName));
-                        Handler.WriteToFile(packets, outLogFileName);
+                        if (Settings.DumpFormat != DumpFormatType.None)
+                            foreach (var writer in writers)
+                                Handler.WriteToFile(writer, outLogFileName);
                     }
 
-                    // Force to close the StringWriter to improve mem use
+                    /*// Force to close the StringWriter to improve mem use
                     foreach(var packet in packets)
-                        packet.CloseWriter();
+                        packet.CloseWriter();*/
 
                     if (Settings.StatsOutput == StatsOutputFlags.None)
                         return;
@@ -266,6 +283,12 @@ namespace WowPacketParser
                             span.ToFormattedString()));
                     }
                 }
+            }
+            catch (AggregateException aex)
+            {
+                Trace.WriteLine(aex.InnerException.GetType());
+                Trace.WriteLine(aex.InnerException.Message);
+                Trace.WriteLine(aex.InnerException.StackTrace);
             }
             catch (Exception ex)
             {

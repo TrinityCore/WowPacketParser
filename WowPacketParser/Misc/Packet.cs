@@ -47,6 +47,12 @@ namespace WowPacketParser.Misc
         public ParsedStatus Status { get; set; }
         public bool WriteToFile { get; private set; }
 
+        private void InitializeWriter()
+        {
+            if (Writer == null)
+                Writer = new StringWriter();
+        }
+
         public void AddSniffData(StoreNameType type, int id, string data)
         {
             if (type == StoreNameType.None)
@@ -123,20 +129,33 @@ namespace WowPacketParser.Misc
             return GetPosition() != GetLength();
         }
 
-        public void Write(params Object[] args)
+        public void Write(object format, params object[] args)
         {
-            if (Writer == null)
-                Writer = new System.IO.StringWriter();
+            InitializeWriter();
 
-            Writer.Write(args);
+            Writer.Write(format.ToString(), args);
         }
 
-        public void WriteLine(params Object[] args)
+        public void WriteLine()
         {
-            if (Writer == null)
-                Writer = new System.IO.StringWriter();
+            InitializeWriter();
+            Writer.WriteLine();
+        }
 
-            Writer.WriteLine(args);
+        public void WriteLine(string value)
+        {
+            InitializeWriter();
+            Writer.WriteLine(value);
+        }
+
+        public void WriteLine(object format, params object[] args)
+        {
+            InitializeWriter();
+
+            if (args == null)
+                Writer.WriteLine(format);
+            else
+                Writer.WriteLine(format.ToString(), args);
         }
 
         public void CloseWriter()
@@ -145,6 +164,7 @@ namespace WowPacketParser.Misc
             {
                 Writer.Close();
                 Writer = null;
+                base.Dispose();
             }
         }
     }
