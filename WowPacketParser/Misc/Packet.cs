@@ -152,10 +152,7 @@ namespace WowPacketParser.Misc
         {
             InitializeWriter();
 
-            if (args == null)
-                Writer.WriteLine(format);
-            else
-                Writer.WriteLine(format.ToString(), args);
+            Writer.WriteLine(format.ToString(), args);
         }
 
         public void CloseWriter()

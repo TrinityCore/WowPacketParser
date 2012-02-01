@@ -86,11 +86,11 @@ namespace WowPacketParser.Saving
         private static readonly FileLock<string> _locks = new FileLock<string>();
         private const string Folder = "split"; // might want to move to config later
 
-        public static void Write(IEnumerable<Packet> packets, Encoding encoding)
+        public static void Write(Dictionary<int, Packet> packets, Encoding encoding)
         {
             Directory.CreateDirectory(Folder); // not doing anything if it exists already
 
-            foreach (var packet in packets)
+            foreach (var packet in packets.Values)
             {
                 var fileName = Folder + "/" + Opcodes.GetOpcodeName(packet.Opcode) + "." + Settings.DumpFormat.ToString().ToLower();
                 try

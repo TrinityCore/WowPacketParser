@@ -1156,10 +1156,9 @@ namespace WowPacketParser.Parsing.Parsers
                     var opc = pkt.ReadInt16();
                     var data = pkt.ReadBytes(size - 2);
 
-                    using (var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer, packet.SniffFileInfo))
-                    {
-                        Handler.Parse(newPacket, true);
-                    }
+                    var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer, packet.SniffFileInfo);
+                    Handler.Parse(ref newPacket, true);
+                    //newPacket.CloseWriter();
                 }
             }
 

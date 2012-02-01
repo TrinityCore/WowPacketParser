@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -12,10 +13,10 @@ namespace WowPacketParser.Loading
 {
     public static class Reader
     {
-        public static ICollection<Packet> Read(SniffFileInfo fileInfo)
+        public static Dictionary<int, Packet> Read(SniffFileInfo fileInfo)
         {
             bool summary = Settings.DumpFormat == DumpFormatType.SummaryHeader;
-            var packets = new List<Packet>();
+            var packets = new Dictionary<int, Packet>();
             var packetNum = 0;
             var fileName = fileInfo.FileName;
 
@@ -78,14 +79,11 @@ namespace WowPacketParser.Loading
                         add = !opcodeName.MatchesFilters(Settings.IgnoreFilters);
 
                     if (add && summary)
-                    {
-                        add = packets.Find(found => (found.Opcode == packet.Opcode &&
-                                                     found.Direction == packet.Direction)) == null;
-                    }
+                        add = !packets.Values.Any(p => p.Opcode == packet.Opcode && p.Direction == packet.Direction);
 
                     if (add)
                     {
-                        packets.Add(packet);
+                        packets[packet.Number] = packet;
                         if (Settings.FilterPacketsNum > 0 && packets.Count == Settings.FilterPacketsNum)
                             break;
                     }
@@ -93,6 +91,7 @@ namespace WowPacketParser.Loading
                     {
                         packet.CloseWriter();
                         packet = null;
+                        parsingPacket = null;
                     }
 
                     if (Settings.FilterPacketNumHigh > 0 && packetNum > Settings.FilterPacketNumHigh)

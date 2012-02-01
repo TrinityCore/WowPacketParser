@@ -84,18 +84,17 @@ namespace WowPacketParser.Parsing
             }
         }
 
+        public static StreamWriter Writer;
         public static void WriteToFile(string text, string file)
         {
-            File.Delete(file);
-            using (var writer = new StreamWriter(file, true))
-            {
-                writer.WriteLine(text);
-                writer.Flush();
-                writer.Close();
-            }
+            if (Writer == null)
+                Writer = new StreamWriter(file, false);
+
+            Writer.WriteLine(text);
+            Writer.Flush();
         }
 
-        public static void Parse(Packet packet, bool headerOnly = false, bool isMultiple = false)
+        public static void Parse(ref Packet packet, bool headerOnly = false, bool isMultiple = false)
         {
             ParsedStatus status;
 

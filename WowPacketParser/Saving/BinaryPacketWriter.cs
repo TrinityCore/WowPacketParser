@@ -17,9 +17,9 @@ namespace WowPacketParser.Saving
             _writer = new BinaryWriter(new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.None), encoding);
         }
 
-        public void Write(IEnumerable<Packet> packets)
+        public void Write(Dictionary<int, Packet> packets)
         {
-            foreach (var packet in packets)
+            foreach (var packet in packets.Values)
             {
                 if (_sniffType == SniffType.Pkt)
                 {
