@@ -74,9 +74,6 @@ namespace WowPacketParser.Parsing
         
         public static void WriteToFile(StringWriter text, string file)
         {
-            if (!File.Exists(file))
-                File.Create(file);
-
             using (var writer = new StreamWriter(file, true))
             {
                 writer.WriteLine(text.ToString());
@@ -84,6 +81,17 @@ namespace WowPacketParser.Parsing
                 writer.Close();
                 text.Dispose();
                 text = null;
+            }
+        }
+
+        public static void WriteToFile(string text, string file)
+        {
+            File.Delete(file);
+            using (var writer = new StreamWriter(file, true))
+            {
+                writer.WriteLine(text);
+                writer.Flush();
+                writer.Close();
             }
         }
 

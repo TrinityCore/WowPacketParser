@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -163,7 +164,7 @@ namespace WowPacketParser
             try
             {
                 var packets = Reader.Read(fileInfo);
-                var writers = new List<StringWriter>();
+                var writers = new ConcurrentDictionary<int, StringWriter>();
                 if (packets.Count == 0)
                 {
                     Trace.WriteLine(string.Format("{0}: Packet count is 0", prefix));
@@ -204,17 +205,15 @@ namespace WowPacketParser
                         packets.AsParallel().SetCulture().ForAll(packet =>
                                                                             {
                                                                                 Handler.Parse(packet, headersOnly);
-                                                                                writers.Add(packet.Writer);
+                                                                                writers.TryAdd(packet.Number, packet.Writer);
                                                                                 packet.CloseWriter();
-                                                                                packet = null;
                                                                             });
                     else
                         packets.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads).ForAll(packet =>
                                                                                                                     {
                                                                                                                         Handler.Parse(packet, headersOnly);
-                                                                                                                        writers.Add(packet.Writer);
+                                                                                                                        writers.TryAdd(packet.Number, packet.Writer);
                                                                                                                         packet.CloseWriter();
-                                                                                                                        packet = null;
                                                                                                                     });
 
                     if (Settings.SQLOutput > 0 && globalStorage == null) // No global Storage, write sql data to particular sql file
@@ -227,9 +226,8 @@ namespace WowPacketParser
                     {
                         //File.Delete(outLogFileName);
                         Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", prefix, outLogFileName));
-                        if (Settings.DumpFormat != DumpFormatType.None)
-                            foreach (var writer in writers)
-                                Handler.WriteToFile(writer, outLogFileName);
+                        var result = string.Join(Environment.NewLine, writers.OrderBy(kvp => kvp.Key).ToDictionary(k => k.Key, k => k.Value).Values);
+                        Handler.WriteToFile(result, outLogFileName);
                     }
 
                     /*// Force to close the StringWriter to improve mem use
