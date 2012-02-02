@@ -297,8 +297,11 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadInt32("Sound Id");
 
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PLAY_OBJECT_SOUND))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
                 packet.ReadGuid("GUID");
+
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PLAY_OBJECT_SOUND))
+                packet.ReadGuid("GUID 2");
         }
 
         [Parser(Opcode.SMSG_WEATHER)]
