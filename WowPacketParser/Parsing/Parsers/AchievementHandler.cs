@@ -98,5 +98,56 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Player GUID");
             ReadAllAchievementData(ref packet);
         }
+
+        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_DATA)]
+        public static void HandleGuildAchievementData(Packet packet)
+        {
+            var cnt = packet.ReadUInt32("Count");
+            for (var i = 0; i < cnt; ++i)
+                packet.ReadPackedTime("Date", i);
+
+            for (var i = 0; i < cnt; ++i)
+                packet.ReadUInt32("Achievement Id", i);
+        }
+
+        [Parser(Opcode.SMSG_COMPRESSED_ACHIEVEMENT_DATA)]
+        public static void HandleCompressedAllAchievementData(Packet packet)
+        {
+            using (var packet2 = packet.Inflate(packet.ReadInt32()))
+                HandleAllAchievementData422(packet2);
+        }
+
+        [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleAllAchievementData422(Packet packet)
+        {
+            var count1 = packet.ReadUInt32("Count1");
+            for (var i = 0; i < count1; ++i)
+                packet.ReadBits("Flag", 2, 0, i);
+
+            for (var i = 0; i < count1; ++i)
+                packet.ReadUInt64("Counter", 0, i);
+
+            var count2 = packet.ReadUInt32("Count2");
+            for (var i = 0; i < count2; ++i)
+                packet.ReadPackedTime("Achievement Time", 1, i);
+
+            for (var i = 0; i < count1; ++i)
+                packet.ReadGuid("Player GUID", 0, i);
+
+            for (var i = 0; i < count1; ++i)
+                packet.ReadPackedTime("Criteria Time", 0, i);
+
+            for (var i = 0; i < count1; ++i)
+                packet.ReadUInt32("Timer 1", 0, i);
+
+            for (var i = 0; i < count2; ++i)
+                packet.ReadUInt32("Achievement Id", 1, i);
+
+            for (var i = 0; i < count1; ++i)
+                packet.ReadUInt32("Criteria Id", 0, i);
+
+            for (var i = 0; i < count1; ++i)
+                packet.ReadUInt32("Timer 2", 0, i);
+        }
     }
 }

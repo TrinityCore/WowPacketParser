@@ -358,6 +358,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_ACTIVATETAXIREPLY, 0x8E4F},
             {Opcode.SMSG_ADDON_INFO, 0x9863},
             {Opcode.SMSG_AI_REACTION, 0xCEC2},
+            {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0xE6EC},
             {Opcode.SMSG_AREA_TRIGGER_MESSAGE, 0xCC42},
             {Opcode.SMSG_ARENA_ERROR, 0x8C7},
             {Opcode.SMSG_ARENA_OPPONENT_UPDATE, 0xAD6},
@@ -430,6 +431,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_COMMENTATOR_PLAYER_INFO, 0x9A6E},
             {Opcode.SMSG_COMMENTATOR_STATE_CHANGED, 0x4EEE},
             {Opcode.SMSG_COMPLAIN_RESULT, 0x8A4B},
+            {Opcode.SMSG_COMPRESSED_ACHIEVEMENT_DATA, 0x5C3B},
             {Opcode.SMSG_COMPRESSED_CHAR_ENUM, 0x380A},
             {Opcode.SMSG_COMPRESSED_GUILD_ROSTER, 0x5A29},
             {Opcode.SMSG_COMPRESSED_MOVES, 0x00862},
@@ -490,6 +492,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_GROUP_LIST, 0x5C7E},
             {Opcode.SMSG_GROUP_SET_LEADER, 0xCCF2},
             {Opcode.SMSG_GUILDFINDER_SEARCH_RESULT, 0xE0CE},
+            {Opcode.SMSG_GUILD_ACHIEVEMENT_DATA, 0xA67E},
             {Opcode.SMSG_GUILD_BANK_LIST, 0x5EFB},
             {Opcode.SMSG_GUILD_CANCEL, 0x08C3}, // New 4.x?
             {Opcode.SMSG_GUILD_COMMAND_RESULT, 56023},
@@ -737,12 +740,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_WHOIS, 0x9CFF},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0xDE5E},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x08CF},
-
-            // Unsure
-            /*
-                {Opcode.SMSG_COMPRESSED_UNK, 0x1381},
-                {Opcode.SMSG_COMPRESSED_UNK, 0x5C3B},
-            */
 
             // Tests
             {Opcode.TEST_422_24649, 24649},
