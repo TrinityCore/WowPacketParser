@@ -6,18 +6,22 @@ namespace WowPacketParser.Enums.Version//.V4_3_2_15211
     {
         private static readonly Dictionary<Opcode, int> _V4_3_2_opcodes = new Dictionary<Opcode, int>
         {
-            {Opcode.CMSG_AUTH_SESSION, 16450},
-            {Opcode.CMSG_CHAR_ENUM, 16465},
-            {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 17707},
-            {Opcode.CMSG_REDIRECTION_AUTH_PROOF, 74},
-            {Opcode.SMSG_ACCOUNT_DATA_TIMES, 1419},
-            {Opcode.SMSG_ADDON_INFO, 28045},
-            {Opcode.SMSG_AUTH_CHALLENGE, 297},
-            {Opcode.SMSG_AUTH_RESPONSE, 3668},
-            {Opcode.SMSG_CHAR_ENUM, 3317},
-            {Opcode.SMSG_CLIENTCACHE_VERSION, 17725},
-            {Opcode.SMSG_REDIRECT_CLIENT, 4905},
-            {Opcode.SMSG_TUTORIAL_FLAGS, 19855},
+            {Opcode.CMSG_AUTH_SESSION, 0x4042},
+            {Opcode.CMSG_CHAR_ENUM, 0x4051},
+            {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x452B},
+            {Opcode.CMSG_REDIRECTION_AUTH_PROOF, 0x4A},
+            {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x58B},
+            {Opcode.SMSG_ADDON_INFO, 0x6D8D},
+            {Opcode.SMSG_AUTH_CHALLENGE, 0x129},
+            {Opcode.SMSG_AUTH_RESPONSE, 0xE54},
+            {Opcode.SMSG_CHAR_ENUM, 0xCF5},
+            {Opcode.SMSG_CLIENTCACHE_VERSION, 0x453D},
+            {Opcode.SMSG_MESSAGECHAT, 0x0529},
+            {Opcode.SMSG_PLAY_MUSIC, 0x256D},
+            {Opcode.SMSG_PLAY_OBJECT_SOUND, 0x451F},
+            {Opcode.SMSG_PLAY_SOUND, 0x2DE5},
+            {Opcode.SMSG_REDIRECT_CLIENT, 0x1329},
+            {Opcode.SMSG_TUTORIAL_FLAGS, 0x4D8F},
         };
     }
 }
