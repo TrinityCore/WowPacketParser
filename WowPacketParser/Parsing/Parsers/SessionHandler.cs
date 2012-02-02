@@ -138,7 +138,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 2; i++)
                 packet.ReadByte("Digest (6)", i);
 
-            using (var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.SniffFileInfo))
+            using (var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.SniffFileInfo, packet.Builder))
             {
                 var pkt2 = pkt;
                 AddonHandler.ReadClientAddonsList(ref pkt2);

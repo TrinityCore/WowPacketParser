@@ -14,7 +14,7 @@ namespace WowPacketParser.Misc
         private static readonly bool _sniffData = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffData);
         private static readonly bool _sniffDataOpcodes = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffDataOpcodes);
 
-        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, SniffFileInfo fileInfo)
+        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, SniffFileInfo fileInfo, StringBuilder builder = null)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
             Opcode = opcode;
@@ -24,10 +24,10 @@ namespace WowPacketParser.Misc
             SniffFileInfo = fileInfo;
             Status = ParsedStatus.None;
             WriteToFile = true;
-            Builder = new StringBuilder();
+            Builder = builder ?? new StringBuilder();
         }
 
-        public int Opcode { get; private set; }
+        public int Opcode { get; set; }
         public DateTime Time { get; private set; }
         public Direction Direction { get; private set; }
         public int Number { get; private set; }
@@ -79,7 +79,7 @@ namespace WowPacketParser.Misc
                 inflater.SetInput(arr, 0, arr.Length);
                 inflater.Inflate(newarr, 0, inflatedSize);
             }
-            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, SniffFileInfo);
+            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, SniffFileInfo, Builder);
             return pkt;
         }
 

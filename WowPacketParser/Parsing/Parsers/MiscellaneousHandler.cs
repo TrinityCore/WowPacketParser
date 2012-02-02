@@ -86,7 +86,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.Write("[{0}] ", i++);
 
-                var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.SniffFileInfo);
+                var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.SniffFileInfo, packet.Builder);
                 Handler.Parse(ref newpacket, isMultiple: true);
                 //newpacket.DisposePacket();
             }
