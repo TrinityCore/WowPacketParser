@@ -15,7 +15,7 @@ namespace WowPacketParser.Loading
     {
         public static SortedList<int, Packet> Read(SniffFileInfo fileInfo)
         {
-            bool summary = Settings.DumpFormat == DumpFormatType.SummaryHeader;
+            var summary = Settings.DumpFormat == DumpFormatType.SummaryHeader;
             var packets = new SortedList<int, Packet>();
             var packetNum = 0;
             var fileName = fileInfo.FileName;
