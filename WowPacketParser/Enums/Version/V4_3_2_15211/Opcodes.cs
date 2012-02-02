@@ -8,6 +8,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_2_15211
         {
             {Opcode.CMSG_AUTH_SESSION, 0x4042},
             {Opcode.CMSG_CHAR_ENUM, 0x4051},
+            {Opcode.CMSG_CREATURE_QUERY, 0x2591},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x452B},
             {Opcode.CMSG_REDIRECTION_AUTH_PROOF, 0x4A},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x58B},
@@ -16,6 +17,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_2_15211
             {Opcode.SMSG_AUTH_RESPONSE, 0xE54},
             {Opcode.SMSG_CHAR_ENUM, 0xCF5},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x453D},
+            {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x25FB},
             {Opcode.SMSG_MESSAGECHAT, 0x0529},
             {Opcode.SMSG_PLAY_MUSIC, 0x256D},
             {Opcode.SMSG_PLAY_OBJECT_SOUND, 0x451F},
