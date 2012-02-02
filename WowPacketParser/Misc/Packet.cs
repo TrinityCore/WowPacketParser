@@ -1,4 +1,6 @@
 using System;
+using WowPacketParser.Parsing;
+using System.IO.Compression;
 using System.IO;
 using System.Text;
 using ICSharpCode.SharpZipLib.Zip.Compression;
@@ -12,19 +14,6 @@ namespace WowPacketParser.Misc
         private static readonly bool _sniffData = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffData);
         private static readonly bool _sniffDataOpcodes = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffDataOpcodes);
 
-        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringWriter writer, SniffFileInfo fileInfo)
-            : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
-        {
-            Opcode = opcode;
-            Time = time;
-            Direction = direction;
-            Number = number;
-            Writer = writer;
-            SniffFileInfo = fileInfo;
-            Status = ParsedStatus.None;
-            WriteToFile = true;
-        }
-
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, SniffFileInfo fileInfo)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
@@ -32,7 +21,6 @@ namespace WowPacketParser.Misc
             Time = time;
             Direction = direction;
             Number = number;
-            Writer = null;
             SniffFileInfo = fileInfo;
             Status = ParsedStatus.None;
             WriteToFile = true;
@@ -42,16 +30,9 @@ namespace WowPacketParser.Misc
         public DateTime Time { get; private set; }
         public Direction Direction { get; private set; }
         public int Number { get; private set; }
-        public StringWriter Writer { get; private set; }
         public SniffFileInfo SniffFileInfo { get; private set; }
         public ParsedStatus Status { get; set; }
         public bool WriteToFile { get; private set; }
-
-        private void InitializeWriter()
-        {
-            if (Writer == null)
-                Writer = new StringWriter();
-        }
 
         public void AddSniffData(StoreNameType type, int id, string data)
         {
@@ -96,7 +77,7 @@ namespace WowPacketParser.Misc
                 inflater.SetInput(arr, 0, arr.Length);
                 inflater.Inflate(newarr, 0, inflatedSize);
             }
-            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, SniffFileInfo);
+            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, SniffFileInfo);
             return pkt;
         }
 
@@ -131,38 +112,29 @@ namespace WowPacketParser.Misc
 
         public void Write(object format, params object[] args)
         {
-            InitializeWriter();
-
-            Writer.Write(format.ToString(), args);
+            var str = string.Format(format.ToString(), args);
+            Handler.WriteToFile(str, Handler.TextOutputFile, false);
         }
 
         public void WriteLine()
         {
-            InitializeWriter();
-            Writer.WriteLine();
+            Handler.WriteToFile(Environment.NewLine, Handler.TextOutputFile);
         }
 
         public void WriteLine(string value)
         {
-            InitializeWriter();
-            Writer.WriteLine(value);
+            Handler.WriteToFile(value, Handler.TextOutputFile);
         }
 
         public void WriteLine(object format, params object[] args)
         {
-            InitializeWriter();
-
-            Writer.WriteLine(format.ToString(), args);
+            var str = string.Format(format.ToString(), args);
+            Handler.WriteToFile(str, Handler.TextOutputFile);
         }
 
-        public void CloseWriter()
+        public void DisposePacket()
         {
-            if (Writer != null)
-            {
-                Writer.Close();
-                Writer = null;
-                base.Dispose();
-            }
+            base.Dispose();
         }
     }
 }

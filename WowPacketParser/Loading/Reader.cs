@@ -13,10 +13,10 @@ namespace WowPacketParser.Loading
 {
     public static class Reader
     {
-        public static Dictionary<int, Packet> Read(SniffFileInfo fileInfo)
+        public static SortedList<int, Packet> Read(SniffFileInfo fileInfo)
         {
             bool summary = Settings.DumpFormat == DumpFormatType.SummaryHeader;
-            var packets = new Dictionary<int, Packet>();
+            var packets = new SortedList<int, Packet>();
             var packetNum = 0;
             var fileName = fileInfo.FileName;
 
@@ -89,7 +89,7 @@ namespace WowPacketParser.Loading
                     }
                     else
                     {
-                        packet.CloseWriter();
+                        packet.DisposePacket();
                         packet = null;
                         parsingPacket = null;
                     }
@@ -103,7 +103,7 @@ namespace WowPacketParser.Loading
                 if (parsingPacket != null)
                 {
                     Trace.WriteLine(string.Format("Failed at parsing packet: (Opcode: {0}, Number: {1})", parsingPacket.Opcode, parsingPacket.Number));
-                    parsingPacket.CloseWriter();
+                    parsingPacket.DisposePacket();
                     parsingPacket = null;
                 }
 

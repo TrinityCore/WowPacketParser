@@ -17,7 +17,7 @@ namespace WowPacketParser.Saving
             _writer = new BinaryWriter(new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.None), encoding);
         }
 
-        public void Write(Dictionary<int, Packet> packets)
+        public void Write(SortedList<int, Packet> packets)
         {
             foreach (var packet in packets.Values)
             {

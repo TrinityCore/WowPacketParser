@@ -191,31 +191,29 @@ namespace WowPacketParser
                 }
                 else
                 {
-                    var writers = new ConcurrentDictionary<int, StringWriter>();
                     Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Assumed version {2}", prefix, packets.Count, ClientVersion.GetVersionString()));
 
                     var total = (uint)packets.Count;
                     var startTime = DateTime.Now;
                     var outFileName = Path.ChangeExtension(file, null) + "_parsed";
                     var outLogFileName = outFileName + ".txt";
-
+                    Handler.TextOutputFile = outLogFileName;
                     bool headersOnly = Settings.DumpFormat == DumpFormatType.TextHeader || Settings.DumpFormat == DumpFormatType.SummaryHeader;
+                    File.Delete(outLogFileName);
 
                     if (Settings.Threads == 0) // Number of threads is automatically choosen by the Parallel library
                         packets.Values.AsParallel().SetCulture().ForAll(packet =>
                                                                             {
                                                                                 Handler.Parse(ref packet, headersOnly);
-                                                                                writers.TryAdd(packet.Number, packet.Writer);
-                                                                                packets[packet.Number].CloseWriter();
-                                                                                //packets[packet.Number] = null;
+                                                                                packets[packet.Number].DisposePacket();
+                                                                                Handler.WriteToFile("", Handler.TextOutputFile);
                                                                             });
                     else
                         packets.Values.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads).ForAll(packet =>
                                                                                                                     {
                                                                                                                         Handler.Parse(ref packet, headersOnly);
-                                                                                                                        writers.TryAdd(packet.Number, packet.Writer);
-                                                                                                                        packets[packet.Number].CloseWriter();
-                                                                                                                        //packets[packet.Number] = null;
+                                                                                                                        packets[packet.Number].DisposePacket();
+                                                                                                                        Handler.WriteToFile("", Handler.TextOutputFile);
                                                                                                                     });
                     if (Settings.SQLOutput > 0 && globalStorage == null) // No global Storage, write sql data to particular sql file
                     {
@@ -224,20 +222,7 @@ namespace WowPacketParser
                     }
 
                     if (Settings.DumpFormat != DumpFormatType.None)
-                    {
-                        //File.Delete(outLogFileName);
                         Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", prefix, outLogFileName));
-                        var values = writers.OrderBy(kvp => kvp.Key).ToDictionary(k => k.Key, k => k.Value).Values;
-                        foreach(var val in values)
-                            Handler.WriteToFile(val.ToString(), outLogFileName);
-                        Handler.Writer = null;
-                        writers.Clear();
-                        writers = null;
-                    }
-
-                    /*// Force to close the StringWriter to improve mem use
-                    foreach(var packet in packets)
-                        packet.CloseWriter();*/
 
                     if (Settings.StatsOutput == StatsOutputFlags.None)
                         return;

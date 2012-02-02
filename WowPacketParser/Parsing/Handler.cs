@@ -58,40 +58,22 @@ namespace WowPacketParser.Parsing
         private static readonly Dictionary<int, Action<Packet>> Handlers =
             new Dictionary<int, Action<Packet>>();
 
-        public static void WriteToFile(IEnumerable<Packet> packets, string file)
+        public static string TextOutputFile = "";
+
+        public static TextWriter Writer;
+        public static object _lock = new object();
+        public static void WriteToFile(string text, string file, bool newLine = true)
         {
-            File.Delete(file);
-            using (var writer = new StreamWriter(file, true))
+            lock (_lock)
             {
-                foreach (var packet in packets)
-                    if (packet.WriteToFile)
-                        writer.WriteLine(packet.Writer);
-
-                writer.Flush();
-                writer.Close();
+                if (Writer == null)
+                    Writer = TextWriter.Synchronized(File.AppendText(file)); //Writer = new StreamWriter(file, false);
+                if (newLine)
+                    Writer.WriteLine(text);
+                else
+                    Writer.Write(text);
+                Writer.Flush();
             }
-        }
-        
-        public static void WriteToFile(StringWriter text, string file)
-        {
-            using (var writer = new StreamWriter(file, true))
-            {
-                writer.WriteLine(text.ToString());
-                writer.Flush();
-                writer.Close();
-                text.Dispose();
-                text = null;
-            }
-        }
-
-        public static StreamWriter Writer;
-        public static void WriteToFile(string text, string file)
-        {
-            if (Writer == null)
-                Writer = new StreamWriter(file, false);
-
-            Writer.WriteLine(text);
-            Writer.Flush();
         }
 
         public static void Parse(ref Packet packet, bool headerOnly = false, bool isMultiple = false)
