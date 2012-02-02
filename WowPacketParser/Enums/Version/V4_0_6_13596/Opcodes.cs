@@ -1195,7 +1195,7 @@ namespace WowPacketParser.Enums.Version//.V4_0_6_13596
             {Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET, 0x0BCE8}, // 4.0.6a 13623
             {Opcode.SMSG_ARENA_OPPONENT_UPDATE, 0x028CC}, // 4.0.6a 13623
             {Opcode.SMSG_ARENA_TEAM_CHANGE_FAILED_QUEUED, 0x0B2A0}, // 4.0.6a 13623
-            {Opcode.SMSG_MULTIPLE_PACKETS, 0x0FEC0}, // 4.0.6a 13623
+            {Opcode.SMSG_MULTIPLE_PACKETS_2, 0x0FEC0}, // 4.0.6a 13623
             {Opcode.SMSG_FORCE_UNK1_SPEED_CHANGE, 0x10219}, // Unknown opcode ID
             {Opcode.CMSG_FORCE_UNK1_SPEED_CHANGE_ACK, 0x0F0C0}, // 4.0.6a 13623
             {Opcode.SMSG_FORCE_UNK2_SPEED_CHANGE, 0x1021B}, // Unknown opcode ID

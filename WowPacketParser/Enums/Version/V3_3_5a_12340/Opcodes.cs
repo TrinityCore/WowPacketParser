@@ -1235,7 +1235,7 @@ namespace WowPacketParser.Enums.Version//.V3_3_5a_12340
             {Opcode.SMSG_PROFILEDATA_RESPONSE, 0x4CA},
             {Opcode.CMSG_START_BATTLEFIELD_CHEAT, 0x4CB},
             {Opcode.CMSG_END_BATTLEFIELD_CHEAT, 0x4CC},
-            {Opcode.SMSG_MULTIPLE_PACKETS, 0x4CD},
+            {Opcode.SMSG_MULTIPLE_PACKETS_2, 0x4CD},
             {Opcode.SMSG_FORCE_UNK1_SPEED_CHANGE, 0x4CE},
             {Opcode.CMSG_FORCE_UNK1_SPEED_CHANGE_ACK, 0x4CF},
             {Opcode.SMSG_FORCE_UNK2_SPEED_CHANGE, 0x4D0},

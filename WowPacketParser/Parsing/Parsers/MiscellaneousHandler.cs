@@ -54,7 +54,6 @@ namespace WowPacketParser.Parsing.Parsers
          }
 
         [Parser(Opcode.SMSG_MULTIPLE_PACKETS)]
-        [Parser(Opcode.SMSG_MULTIPLE_PACKETS_DECOMPRESSED)]
         public static void HandleMultiplePackets(Packet packet)
         {
             // Testing: packet.WriteLine(packet.AsHex());
@@ -90,6 +89,26 @@ namespace WowPacketParser.Parsing.Parsers
                 var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.SniffFileInfo);
                 Handler.Parse(ref newpacket, isMultiple: true);
                 //newpacket.DisposePacket();
+            }
+            packet.WriteLine("}");
+        }
+
+        [Parser(Opcode.SMSG_MULTIPLE_PACKETS_2)]
+        public static void HandleMultiplePackets2(Packet packet)
+        {
+            // Testing: packet.WriteLine(packet.AsHex());
+            packet.WriteLine("{");
+            var i = 0;
+            while (packet.CanRead())
+            {
+                packet.Opcode = packet.ReadUInt16();
+
+                if (i > 0)
+                    packet.WriteLine();
+
+                packet.Write("[{0}] ", i++);
+
+                Handler.Parse(ref packet, isMultiple: true);
             }
             packet.WriteLine("}");
         }

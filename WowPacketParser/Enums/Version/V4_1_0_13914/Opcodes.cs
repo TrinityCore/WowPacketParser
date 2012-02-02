@@ -91,7 +91,7 @@ namespace WowPacketParser.Enums.Version//.V4_1_0_13914
             {Opcode.SMSG_AVAILABLE_VOICE_CHANNEL, 0x04C7E}, // 4.1.0 13914
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x04D7E}, // 4.1.0 13914
             {Opcode.SMSG_INSPECT, 0x04D7F}, // 4.1.0 13914
-            {Opcode.SMSG_MULTIPLE_PACKETS, 0x04F2E}, // 4.1.0 13914
+            {Opcode.SMSG_MULTIPLE_PACKETS_2, 0x04F2E}, // 4.1.0 13914
             {Opcode.MSG_NOTIFY_PARTY_SQUELCH, 0x0583D}, // 4.1.0 13914
             {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0x0587C}, // 4.1.0 13914
             {Opcode.SMSG_LFG_OPEN_FROM_GOSSIP, 0x05A7D}, // 4.1.0 13914

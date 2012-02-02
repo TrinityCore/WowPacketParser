@@ -1193,7 +1193,7 @@ namespace WowPacketParser.Enums.Version//.V4_0_3_13329
             {Opcode.UMSG_UNKNOWN_1226, 0x04CA}, // NF()(0x04CA) // // not found 3.2
             {Opcode.UMSG_UNKNOWN_1227, 0x04CB}, // NF()(0x04CB) // // not found 3.2
             {Opcode.UMSG_UNKNOWN_1228, 0x04CC}, // NF()(0x04CC) // // not found 3.2
-            {Opcode.SMSG_MULTIPLE_PACKETS, 0x957E}, // (0x0B5C)(0x04CD) //dles any opcode
+            {Opcode.SMSG_MULTIPLE_PACKETS_2, 0x957E}, // (0x0B5C)(0x04CD) //dles any opcode
             {Opcode.SMSG_FORCE_UNK1_SPEED_CHANGE, 0x04CE}, // NF()(0x04CE) // // SMSG}, movement related
             {Opcode.CMSG_FORCE_UNK1_SPEED_CHANGE_ACK, 0x04CF}, // NF()(0x04CF) // // movement related
             {Opcode.SMSG_FORCE_UNK2_SPEED_CHANGE, 0x04D0}, // NF()(0x04D0) // // SMSG}, movement related

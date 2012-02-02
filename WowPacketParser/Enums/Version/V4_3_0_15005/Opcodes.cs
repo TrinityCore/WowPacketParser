@@ -678,7 +678,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_0_15005
             {Opcode.SMSG_MOUNTSPECIAL_ANIM, 31398},
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 17420},
             {Opcode.SMSG_MOVE_UNSET_CAN_FLY, 17946},
-            {Opcode.SMSG_MULTIPLE_PACKETS, 1827},
+            {Opcode.SMSG_MULTIPLE_PACKETS_2, 1827},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 24096},
             {Opcode.SMSG_NEW_TAXI_PATH, 6694},
             {Opcode.SMSG_NEW_WORLD, 25772},
