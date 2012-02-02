@@ -170,6 +170,8 @@ namespace WowPacketParser
                     return;
                 }
 
+                Handler.TotalPackets = packets.Count;
+
                 if (Settings.DumpFormat == DumpFormatType.Bin || Settings.DumpFormat == DumpFormatType.Pkt)
                 {
                     SniffType format = Settings.DumpFormat == DumpFormatType.Bin ? SniffType.Bin : SniffType.Pkt;
@@ -199,21 +201,33 @@ namespace WowPacketParser
                     var outLogFileName = outFileName + ".txt";
                     Handler.TextOutputFile = outLogFileName;
                     bool headersOnly = Settings.DumpFormat == DumpFormatType.TextHeader || Settings.DumpFormat == DumpFormatType.SummaryHeader;
+
+                    if (Settings.UseQueuedLog)
+                    {
+                        Thread UpdateFileThread = new Thread(new ThreadStart(Handler.Update));
+                        UpdateFileThread.Start();
+                    }
                     File.Delete(outLogFileName);
 
                     if (Settings.Threads == 0) // Number of threads is automatically choosen by the Parallel library
                         packets.Values.AsParallel().SetCulture().ForAll(packet =>
                                                                             {
                                                                                 Handler.Parse(ref packet, headersOnly);
-                                                                                packets[packet.Number].DisposePacket();
-                                                                                Handler.WriteToFile("", Handler.TextOutputFile);
+                                                                                if (Settings.UseQueuedLog)
+                                                                                {
+                                                                                    Handler.AddToWriteQueue(packet.Number, packet.Builder);
+                                                                                    packets[packet.Number].DisposePacket();
+                                                                                }
                                                                             });
                     else
                         packets.Values.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads).ForAll(packet =>
                                                                                                                     {
                                                                                                                         Handler.Parse(ref packet, headersOnly);
-                                                                                                                        packets[packet.Number].DisposePacket();
-                                                                                                                        Handler.WriteToFile("", Handler.TextOutputFile);
+                                                                                                                        if (Settings.UseQueuedLog)
+                                                                                                                        {
+                                                                                                                            Handler.AddToWriteQueue(packet.Number, packet.Builder);
+                                                                                                                            packets[packet.Number].DisposePacket();
+                                                                                                                        }
                                                                                                                     });
                     if (Settings.SQLOutput > 0 && globalStorage == null) // No global Storage, write sql data to particular sql file
                     {
@@ -222,7 +236,12 @@ namespace WowPacketParser
                     }
 
                     if (Settings.DumpFormat != DumpFormatType.None)
+                    {
                         Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", prefix, outLogFileName));
+                        if (!Settings.UseQueuedLog)
+                            foreach (var packet in packets)
+                                Handler.WriteToFile(packet.Value.Builder.ToString(), outLogFileName);
+                    }
 
                     if (Settings.StatsOutput == StatsOutputFlags.None)
                         return;

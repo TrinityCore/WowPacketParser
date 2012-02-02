@@ -24,6 +24,7 @@ namespace WowPacketParser.Misc
             SniffFileInfo = fileInfo;
             Status = ParsedStatus.None;
             WriteToFile = true;
+            Builder = new StringBuilder();
         }
 
         public int Opcode { get; private set; }
@@ -31,6 +32,7 @@ namespace WowPacketParser.Misc
         public Direction Direction { get; private set; }
         public int Number { get; private set; }
         public SniffFileInfo SniffFileInfo { get; private set; }
+        public StringBuilder Builder { get; private set; }
         public ParsedStatus Status { get; set; }
         public bool WriteToFile { get; private set; }
 
@@ -113,27 +115,32 @@ namespace WowPacketParser.Misc
         public void Write(object format, params object[] args)
         {
             var str = string.Format(format.ToString(), args);
-            Handler.WriteToFile(str, Handler.TextOutputFile, false);
+            Builder.Append(str);
+            //Handler.WriteToFile(str, Handler.TextOutputFile, false);
         }
 
         public void WriteLine()
         {
-            Handler.WriteToFile(Environment.NewLine, Handler.TextOutputFile);
+            Builder.AppendLine();
+            //Handler.WriteToFile(Environment.NewLine, Handler.TextOutputFile);
         }
 
         public void WriteLine(string value)
         {
-            Handler.WriteToFile(value, Handler.TextOutputFile);
+            Builder.AppendLine(value);
+            //Handler.WriteToFile(value, Handler.TextOutputFile);
         }
 
         public void WriteLine(object format, params object[] args)
         {
             var str = string.Format(format.ToString(), args);
-            Handler.WriteToFile(str, Handler.TextOutputFile);
+            Builder.AppendLine(str);
+            //Handler.WriteToFile(str, Handler.TextOutputFile);
         }
 
         public void DisposePacket()
         {
+            Builder = null;
             base.Dispose();
         }
     }
