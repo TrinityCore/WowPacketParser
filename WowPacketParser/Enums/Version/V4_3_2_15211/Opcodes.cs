@@ -8,6 +8,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_2_15211
         {
             {Opcode.CMSG_AUTH_SESSION, 0x4042},
             {Opcode.CMSG_CHAR_ENUM, 0x4051},
+            {Opcode.CMSG_REALM_SPLIT, 0x0DB7},
             {Opcode.CMSG_CREATURE_QUERY, 0x2591},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x4523},
             {Opcode.CMSG_MESSAGECHAT_SAY, 0x22E0},
