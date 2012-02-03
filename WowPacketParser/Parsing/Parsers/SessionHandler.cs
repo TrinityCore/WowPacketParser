@@ -128,7 +128,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);
 
             for (var i = 0; i < 8; i++)
-                packet.ReadByte("Digest (5)",i);
+                packet.ReadByte("Digest (5)", i);
 
             packet.ReadByte("Unk Byte");
             packet.ReadByte("Unk Byte");
@@ -147,6 +147,59 @@ namespace WowPacketParser.Parsing.Parsers
             var size = (packet.ReadByte() >> 4);
             packet.WriteLine("Size: " + size);
             packet.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(size)));
+        }
+
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_3_2_15211)]
+        public static void HandleAuthSession432(Packet packet)
+        {
+            var sha = new byte[20];
+            packet.ReadInt32("Int32");
+            sha[12] = packet.ReadByte();
+            packet.ReadInt32("Int32");
+            packet.ReadInt32("Int32");
+            sha[0] = packet.ReadByte();
+            sha[2] = packet.ReadByte();
+            sha[18] = packet.ReadByte();
+            sha[7] = packet.ReadByte();
+            sha[9] = packet.ReadByte();
+            sha[19] = packet.ReadByte();
+            sha[17] = packet.ReadByte();
+            sha[6] = packet.ReadByte();
+            sha[11] = packet.ReadByte();
+
+            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);
+
+            sha[15] = packet.ReadByte();
+
+            packet.ReadInt64("Int64");
+            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Unk Byte");
+            sha[3] = packet.ReadByte();
+            sha[10] = packet.ReadByte();
+
+            packet.ReadInt32("Client Seed");
+
+            sha[16] = packet.ReadByte();
+            sha[4] = packet.ReadByte();
+            packet.ReadInt32("Int32");
+            sha[14] = packet.ReadByte();
+            sha[8] = packet.ReadByte();
+            sha[5] = packet.ReadByte();
+            sha[1] = packet.ReadByte();
+            sha[13] = packet.ReadByte();
+
+            using (var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.SniffFileInfo, packet.Builder))
+            {
+                var pkt2 = pkt;
+                AddonHandler.ReadClientAddonsList(ref pkt2);
+            }
+
+            var highBits = packet.ReadByte() << 5;
+            var lowBits = packet.ReadByte() >> 3;
+            var size = lowBits | highBits;
+            packet.WriteLine("Size: " + size);
+            packet.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(size)));
+            packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
         }
 
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
