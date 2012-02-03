@@ -152,6 +152,48 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_3_2_15211)]
         public static void HandleAuthSession432(Packet packet)
         {
+            packet.ReadInt32("Unk Int32");
+            packet.ReadByte("Digest (1)");
+            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32");
+
+            for (var i = 0; i < 9; i++)
+                packet.ReadByte("Digest (2)", i);
+
+            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);
+
+            packet.ReadByte("Digest (3)");
+            packet.ReadInt64("Unk Int64");
+            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Unk Byte");
+
+            for (var i = 0; i < 2; i++)
+                packet.ReadByte("Digest (4)", i);
+
+            packet.ReadInt32("Int32");
+
+            for (var i = 0; i < 2; i++)
+                packet.ReadByte("Digest (5)", i);
+
+            packet.ReadInt32("Client Seed");
+
+            for (var i = 0; i < 5; i++)
+                packet.ReadByte("Digest (6)", i);
+
+            using (var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.SniffFileInfo))
+            {
+                var pkt2 = pkt;
+                AddonHandler.ReadClientAddonsList(ref pkt2);
+            }
+            packet.ReadByte("Mask"); // TODO: Seems to affect how the size is read
+            var size = (packet.ReadByte() >> 3);
+            packet.WriteLine("Size: " + size);
+            packet.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(size)));
+        }
+
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_3_2_15211)]
+        public static void HandleAuthSession432(Packet packet)
+        {
             var sha = new byte[20];
             packet.ReadInt32("Int32");
             sha[12] = packet.ReadByte();
