@@ -30,9 +30,13 @@ namespace WowPacketParser.Enums.Version//.V4_3_2_15211
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x453D},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x25FB},
             {Opcode.SMSG_DB_REPLY, 0x06D1},
+            {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x4D9B},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x253D},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x25B7},
+            {Opcode.SMSG_GUILD_EVENT, 0x65F5},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x2D33},
+            {Opcode.SMSG_GUILD_RANK, 0x1EB1}, // Not confirmed
+            {Opcode.SMSG_GUILD_ROSTER, 0x1E94}, // Not confirmed
             {Opcode.SMSG_MESSAGECHAT, 0x0529},
             {Opcode.SMSG_MOTD, 0x6D11},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x455D},
@@ -41,6 +45,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_2_15211
             {Opcode.SMSG_PLAY_OBJECT_SOUND, 0x451F},
             {Opcode.SMSG_PLAY_SOUND, 0x2DE5},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x0D91},
+            {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x25CB},
             {Opcode.SMSG_REALM_SPLIT, 0x0581},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x1329},
             {Opcode.SMSG_TRAINER_LIST, 0x6D85},
