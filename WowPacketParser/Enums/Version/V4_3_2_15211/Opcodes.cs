@@ -51,6 +51,17 @@ namespace WowPacketParser.Enums.Version//.V4_3_2_15211
             {Opcode.SMSG_TRAINER_LIST, 0x6D85},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x4D8F},
             {Opcode.SMSG_WARDEN_DATA, 0x0CF0},
+            {Opcode.SMSG_SPELL_GO, 0x6DEF},
+            {Opcode.SMSG_SPELL_START, 0x6D27},
+            {Opcode.SMSG_EMOTE, 0x65F9},
+            {Opcode.SMSG_STANDSTATE_UPDATE, 0x25DF},
+            {Opcode.SMSG_AURA_UPDATE, 0x4D1B},
+            {Opcode.SMSG_ATTACKERSTATEUPDATE, 0x2D59},
+            {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x053F},
+            {Opcode.SMSG_MONSTER_MOVE, 0x2561},
+            {Opcode.SMSG_FLIGHT_SPLINE_SYNC, 0x6533},
+            {Opcode.SMSG_SPELLENERGIZELOG, 0x05EF},
+            {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x250F},
         };
     }
 }
