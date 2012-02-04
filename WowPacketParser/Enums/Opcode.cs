@@ -18,6 +18,7 @@ namespace WowPacketParser.Enums
         CMSG_ADD_IGNORE,
         CMSG_ADD_PVP_MEDAL_CHEAT,
         CMSG_ADD_VOICE_IGNORE,
+        CMSG_ADDON_REGISTERED_PREFIXES,
         CMSG_ADVANCE_SPAWN_TIME,
         CMSG_AFK_MONITOR_INFO_CLEAR,
         CMSG_AFK_MONITOR_INFO_REQUEST,
@@ -1605,7 +1606,6 @@ namespace WowPacketParser.Enums
         UMSG_UPDATE_GUILD,
 
         // Tests
-        TEST_422_24649,
         TEST_430_SYNC_PLAYER_MOVE,
         TEST_422_265C,
         TEST_422_9838,

@@ -7,6 +7,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_2_15211
         private static readonly Dictionary<Opcode, int> _V4_3_2_opcodes = new Dictionary<Opcode, int>
         {
             {Opcode.CMSG_AUTH_SESSION, 0x4042},
+            {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x2860},
             {Opcode.CMSG_CHAR_ENUM, 0x4051},
             {Opcode.CMSG_CREATURE_QUERY, 0x2591},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x4523},

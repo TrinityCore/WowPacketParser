@@ -13,6 +13,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_ADD_FRIEND, 0x5C57},
             {Opcode.CMSG_ADD_IGNORE, 0xCEEA},
             {Opcode.CMSG_ADD_VOICE_IGNORE, 0xA7A},
+            {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x6049},
             {Opcode.CMSG_ALTER_APPEARANCE, 0x5CE3},
             {Opcode.CMSG_AREATRIGGER, 0x5862},
             {Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY, 0xDC7E},
@@ -742,7 +743,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x08CF},
 
             // Tests
-            {Opcode.TEST_422_24649, 24649},
             {Opcode.TEST_422_265C, 0x265C},
             {Opcode.TEST_422_9838, 9838},
             {Opcode.TEST_422_51447, 0xC8F7},

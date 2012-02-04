@@ -96,9 +96,10 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.TEST_422_24649)]
-        public static void Handle24649(Packet packet)
+        [Parser(Opcode.CMSG_ADDON_REGISTERED_PREFIXES)]
+        public static void HandleAddonPrefixes(Packet packet)
         {
+            // Changed on 4.3.2, bitshiffted
             var count = packet.ReadUInt32("Count");
             for (var i = 0; i < count; ++i)
                 packet.ReadCString("Addon", i);
