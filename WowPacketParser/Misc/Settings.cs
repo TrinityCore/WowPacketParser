@@ -7,7 +7,6 @@ namespace WowPacketParser.Misc
 {
     public static class Settings
     {
-        public static readonly bool UseQueuedLog = GetBoolean("UseQueuedLog", true);
         public static readonly string[] Filters = GetStringList("Filters", new string[0]);
         public static readonly string[] IgnoreFilters = GetStringList("IgnoreFilters", new string[0]);
         public static readonly string[] IgnoreByEntryFilters = GetStringList("IgnoreByEntryFilters", new string[0]);

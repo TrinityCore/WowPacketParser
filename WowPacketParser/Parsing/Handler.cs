@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Concurrent;
-using System.Text;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -60,70 +58,21 @@ namespace WowPacketParser.Parsing
         private static readonly Dictionary<int, Action<Packet>> Handlers =
             new Dictionary<int, Action<Packet>>();
 
-        private static SortedList<int, StringBuilder> queue = new SortedList<int, StringBuilder>();
-        private static List<int> _remove = new List<int>();
-        private static object _lock2 = new object();
-        public static void AddToWriteQueue(int index, StringBuilder str)
+        public static void WriteToFile(IEnumerable<Packet> packets, string file)
         {
-            lock (_lock2)
-                queue.Add(index, str);
-        }
-
-        private static uint _curIndex = 0;
-        public static void Update()
-        {
-            while (true)
+            File.Delete(file);
+            using (var writer = new StreamWriter(file, true))
             {
-                lock (_lock2)
-                {
-                    foreach (var kvp in queue)
-                    {
-                        if (kvp.Key == _curIndex)
-                        {
-                            ++_curIndex;
-                            WriteToFile(kvp.Value.ToString(), TextOutputFile);
-                            WriteToFile("", TextOutputFile);
-                            kvp.Value.DestroySelf();
-                            _remove.Add(kvp.Key);
-                        }
-                    }
-                    if ((_curIndex != 0 && _curIndex % 100 == 0) || _curIndex == TotalPackets)
-                    {
-                        foreach (var i in _remove)
-                            queue.Remove(i);
-                        _remove.Clear();
-                        GC.Collect(); // I know this is a bad techique, but the normal GC is just not fast enough to keep up with this threads deletes
-                    }
-                    if (queue.Count == 0 && _curIndex == TotalPackets)
-                        break;
-                }
-                //System.Threading.Thread.Sleep(50);
+                foreach (var packet in packets)
+                    if (packet.WriteToFile)
+                        writer.WriteLine(packet.Writer);
+
+                writer.Flush();
+                writer.Close();
             }
         }
 
-        public static int TotalPackets = 0;
-        public static string TextOutputFile = "";
-
-        public static TextWriter Writer;
-        public static object _lock = new object();
-        public static void WriteToFile(string text, string file, bool newLine = true)
-        {
-            //Console.WriteLine("Trying to adquire lock by thread {0}", System.Threading.Thread.CurrentThread.ManagedThreadId);
-            lock (_lock)
-            {
-                //Console.WriteLine("Lock adquired by thread {0}", System.Threading.Thread.CurrentThread.ManagedThreadId);
-                if (Writer == null)
-                    Writer = TextWriter.Synchronized(File.AppendText(file)); //Writer = new StreamWriter(file, false);
-                if (newLine)
-                    Writer.WriteLine(text);
-                else
-                    Writer.Write(text);
-                Writer.Flush();
-                //Console.WriteLine("Lock finishing, thread {0}", System.Threading.Thread.CurrentThread.ManagedThreadId);
-            }
-        }
-
-        public static void Parse(ref Packet packet, bool headerOnly = false, bool isMultiple = false)
+        public static void Parse(Packet packet, bool headerOnly = false, bool isMultiple = false)
         {
             ParsedStatus status;
 

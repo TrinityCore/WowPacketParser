@@ -1,6 +1,4 @@
 using System;
-using WowPacketParser.Parsing;
-using System.IO.Compression;
 using System.IO;
 using System.Text;
 using ICSharpCode.SharpZipLib.Zip.Compression;
@@ -14,25 +12,38 @@ namespace WowPacketParser.Misc
         private static readonly bool _sniffData = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffData);
         private static readonly bool _sniffDataOpcodes = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffDataOpcodes);
 
-        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, SniffFileInfo fileInfo, StringBuilder builder = null)
+        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringWriter writer, SniffFileInfo fileInfo)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
             Opcode = opcode;
             Time = time;
             Direction = direction;
             Number = number;
+            Writer = writer;
             SniffFileInfo = fileInfo;
             Status = ParsedStatus.None;
             WriteToFile = true;
-            Builder = builder ?? new StringBuilder();
+        }
+
+        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, SniffFileInfo fileInfo)
+            : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
+        {
+            Opcode = opcode;
+            Time = time;
+            Direction = direction;
+            Number = number;
+            Writer = null;
+            SniffFileInfo = fileInfo;
+            Status = ParsedStatus.None;
+            WriteToFile = true;
         }
 
         public int Opcode { get; set; }
         public DateTime Time { get; private set; }
         public Direction Direction { get; private set; }
         public int Number { get; private set; }
+        public StringWriter Writer { get; private set; }
         public SniffFileInfo SniffFileInfo { get; private set; }
-        public StringBuilder Builder { get; private set; }
         public ParsedStatus Status { get; set; }
         public bool WriteToFile { get; private set; }
 
@@ -79,7 +90,7 @@ namespace WowPacketParser.Misc
                 inflater.SetInput(arr, 0, arr.Length);
                 inflater.Inflate(newarr, 0, inflatedSize);
             }
-            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, SniffFileInfo, Builder);
+            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, SniffFileInfo);
             return pkt;
         }
 
@@ -114,34 +125,53 @@ namespace WowPacketParser.Misc
 
         public void Write(object format, params object[] args)
         {
+            if (Writer == null)
+                Writer = new StringWriter();
+
             var str = string.Format(format.ToString(), args);
-            Builder.Append(str);
-            //Handler.WriteToFile(str, Handler.TextOutputFile, false);
+            Writer.Write(str);
         }
 
         public void WriteLine()
         {
-            Builder.AppendLine();
-            //Handler.WriteToFile(Environment.NewLine, Handler.TextOutputFile);
+            if (Writer == null)
+                Writer = new StringWriter();
+
+            Writer.WriteLine();
         }
 
         public void WriteLine(string value)
         {
-            Builder.AppendLine(value);
-            //Handler.WriteToFile(value, Handler.TextOutputFile);
+            if (Writer == null)
+                Writer = new StringWriter();
+
+            Writer.WriteLine(value);
         }
 
-        public void WriteLine(object format, params object[] args)
+        public void WriteLine(object value)
         {
-            var str = string.Format(format.ToString(), args);
-            Builder.AppendLine(str);
-            //Handler.WriteToFile(str, Handler.TextOutputFile);
+            if (Writer == null)
+                Writer = new StringWriter();
+
+            Writer.WriteLine(value);
         }
 
-        public void DisposePacket()
+        public void WriteLine(string format, params object[] args)
         {
-            Builder = null;
-            base.Dispose();
+            if (Writer == null)
+                Writer = new StringWriter();
+
+            Writer.WriteLine(string.Format(format, args));
+        }
+
+
+        public void CloseWriter()
+        {
+            if (Writer != null)
+            {
+                Writer.Close();
+                Writer = null;
+            }
         }
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -13,10 +12,10 @@ namespace WowPacketParser.Loading
 {
     public static class Reader
     {
-        public static SortedList<int, Packet> Read(SniffFileInfo fileInfo)
+        public static ICollection<Packet> Read(SniffFileInfo fileInfo)
         {
-            var summary = Settings.DumpFormat == DumpFormatType.SummaryHeader;
-            var packets = new SortedList<int, Packet>();
+            bool summary = Settings.DumpFormat == DumpFormatType.SummaryHeader;
+            var packets = new List<Packet>();
             var packetNum = 0;
             var fileName = fileInfo.FileName;
 
@@ -79,19 +78,16 @@ namespace WowPacketParser.Loading
                         add = !opcodeName.MatchesFilters(Settings.IgnoreFilters);
 
                     if (add && summary)
-                        add = !packets.Values.Any(p => p.Opcode == packet.Opcode && p.Direction == packet.Direction);
+                    {
+                        add = packets.Find(found => (found.Opcode == packet.Opcode &&
+                                                     found.Direction == packet.Direction)) == null;
+                    }
 
                     if (add)
                     {
-                        packets[packet.Number] = packet;
+                        packets.Add(packet);
                         if (Settings.FilterPacketsNum > 0 && packets.Count == Settings.FilterPacketsNum)
                             break;
-                    }
-                    else
-                    {
-                        packet.DisposePacket();
-                        packet = null;
-                        parsingPacket = null;
                     }
 
                     if (Settings.FilterPacketNumHigh > 0 && packetNum > Settings.FilterPacketNumHigh)
@@ -101,11 +97,7 @@ namespace WowPacketParser.Loading
             catch(Exception ex)
             {
                 if (parsingPacket != null)
-                {
                     Trace.WriteLine(string.Format("Failed at parsing packet: (Opcode: {0}, Number: {1})", parsingPacket.Opcode, parsingPacket.Number));
-                    parsingPacket.DisposePacket();
-                    parsingPacket = null;
-                }
 
                 Trace.WriteLine(ex.Data);
                 Trace.WriteLine(ex.GetType());
@@ -113,7 +105,7 @@ namespace WowPacketParser.Loading
                 Trace.WriteLine(ex.StackTrace);
             }
 
-            reader.Dispose();
+            reader.Close();
 
             return packets;
         }

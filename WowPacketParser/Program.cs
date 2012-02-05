@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -170,8 +168,6 @@ namespace WowPacketParser
                     return;
                 }
 
-                Handler.TotalPackets = packets.Count;
-
                 if (Settings.DumpFormat == DumpFormatType.Bin || Settings.DumpFormat == DumpFormatType.Pkt)
                 {
                     SniffType format = Settings.DumpFormat == DumpFormatType.Bin ? SniffType.Bin : SniffType.Pkt;
@@ -199,36 +195,14 @@ namespace WowPacketParser
                     var startTime = DateTime.Now;
                     var outFileName = Path.ChangeExtension(file, null) + "_parsed";
                     var outLogFileName = outFileName + ".txt";
-                    Handler.TextOutputFile = outLogFileName;
+
                     bool headersOnly = Settings.DumpFormat == DumpFormatType.TextHeader || Settings.DumpFormat == DumpFormatType.SummaryHeader;
 
-                    if (Settings.UseQueuedLog)
-                    {
-                        Thread UpdateFileThread = new Thread(new ThreadStart(Handler.Update));
-                        UpdateFileThread.Start();
-                    }
-                    File.Delete(outLogFileName);
-
                     if (Settings.Threads == 0) // Number of threads is automatically choosen by the Parallel library
-                        packets.Values.AsParallel().SetCulture().ForAll(packet =>
-                                                                            {
-                                                                                Handler.Parse(ref packet, headersOnly);
-                                                                                if (Settings.UseQueuedLog)
-                                                                                {
-                                                                                    Handler.AddToWriteQueue(packet.Number, packet.Builder);
-                                                                                    packets[packet.Number].DisposePacket();
-                                                                                }
-                                                                            });
+                        packets.AsParallel().SetCulture().ForAll(packet => Handler.Parse(packet, headersOnly));
                     else
-                        packets.Values.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads).ForAll(packet =>
-                                                                                                                    {
-                                                                                                                        Handler.Parse(ref packet, headersOnly);
-                                                                                                                        if (Settings.UseQueuedLog)
-                                                                                                                        {
-                                                                                                                            Handler.AddToWriteQueue(packet.Number, packet.Builder);
-                                                                                                                            packets[packet.Number].DisposePacket();
-                                                                                                                        }
-                                                                                                                    });
+                        packets.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads).ForAll(packet => Handler.Parse(packet, headersOnly));
+
                     if (Settings.SQLOutput > 0 && globalStorage == null) // No global Storage, write sql data to particular sql file
                     {
                         var outSqlFileName = outFileName + ".sql";
@@ -238,30 +212,31 @@ namespace WowPacketParser
                     if (Settings.DumpFormat != DumpFormatType.None)
                     {
                         Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", prefix, outLogFileName));
-                        if (!Settings.UseQueuedLog)
-                            foreach (var packet in packets)
-                                Handler.WriteToFile(packet.Value.Builder.ToString(), outLogFileName);
+                        Handler.WriteToFile(packets, outLogFileName);
                     }
+
+                    // Force to close the StringWriter to improve mem use
+                    foreach(var packet in packets)
+                        packet.CloseWriter();
 
                     if (Settings.StatsOutput == StatsOutputFlags.None)
                         return;
 
                     var span = DateTime.Now.Subtract(startTime);
-
                     var statsOk = 0;
                     var statsError = 0;
                     var statsSkip = 0;
 
-                    foreach (var packet in packets.Values)
+                    foreach (var packet in packets)
                     {
                         if (!packet.WriteToFile)
-                           statsSkip++;
+                            statsSkip++;
                         else
                         {
                             switch (packet.Status)
                             {
                                 case ParsedStatus.Success:
-                                   statsOk++;
+                                    statsOk++;
                                     break;
                                 case ParsedStatus.WithErrors:
                                     statsError++;
@@ -291,12 +266,6 @@ namespace WowPacketParser
                             span.ToFormattedString()));
                     }
                 }
-            }
-            catch (AggregateException aex)
-            {
-                Trace.WriteLine(aex.InnerException.GetType());
-                Trace.WriteLine(aex.InnerException.Message);
-                Trace.WriteLine(aex.InnerException.StackTrace);
             }
             catch (Exception ex)
             {
@@ -404,8 +373,8 @@ namespace WowPacketParser
             if (Settings.ParsingLog)
             {
                 var fileListener =
-                    new TextWriterTraceListener(string.Format("parsing_log_{0}.txt", Path.GetRandomFileName()));
-                fileListener.Name = "ConsoleMirror";
+                    new TextWriterTraceListener(string.Format("parsing_log_{0}.txt", Path.GetRandomFileName()))
+                        {Name = "ConsoleMirror"};
                 Trace.Listeners.Add(fileListener);
             }
 

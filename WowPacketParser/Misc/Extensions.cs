@@ -160,12 +160,5 @@ namespace WowPacketParser.Misc
         {
             return string.Format("{0:00}:{1:00}:{2:00}.{3:000}", span.Hours, span.Minutes, span.Seconds, span.Milliseconds);
         }
-
-        public static void DestroySelf(this StringBuilder sb)
-        {
-            sb.Clear();
-            sb = null;
-            //GC.Collect(2, GCCollectionMode.Forced);
-        }
     }
 }
