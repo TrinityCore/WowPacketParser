@@ -22,10 +22,10 @@ namespace WowPacketParser.Store.SQL
 
         public string CreatureSpawns()
         {
-            if (!_storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit))
+            if (!_storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet))
                 return string.Empty;
 
-            var units = _storage.Objects.Where(x => x.Value.Type == ObjectType.Unit);
+            var units = _storage.Objects.Where(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet);
 
             const string tableName = "creature";
             uint count = 0;
