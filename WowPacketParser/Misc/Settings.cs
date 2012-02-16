@@ -15,7 +15,8 @@ namespace WowPacketParser.Misc
         public static readonly int FilterPacketNumHigh = GetInt32("FilterPacketNumHigh", 0);
         public static readonly int FilterPacketsNum = GetInt32("FilterPacketsNum", 0);
         public static readonly ClientVersionBuild ClientBuild = GetEnum("ClientBuild", ClientVersionBuild.Zero);
-        public static readonly int Threads = GetInt32("Threads", 0);
+        public static readonly int ThreadsRead = GetInt32("Threads.Read", 0);
+        public static readonly int ThreadsParse = GetInt32("Threads.Parse", 0);
         public static readonly DumpFormatType DumpFormat = GetEnum("DumpFormat", DumpFormatType.Text);
         public static readonly StatsOutputFlags StatsOutput = GetEnum("StatsOutput", StatsOutputFlags.Local);
         public static readonly SQLOutputFlags SQLOutput = GetEnum("SQLOutput", SQLOutputFlags.None);

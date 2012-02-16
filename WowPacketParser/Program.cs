@@ -196,10 +196,10 @@ namespace WowPacketParser
                     var outFileName = Path.ChangeExtension(file, null) + "_parsed";
                     var outLogFileName = outFileName + ".txt";
 
-                    if (Settings.Threads == 0) // Number of threads is automatically choosen by the Parallel library
+                    if (Settings.ThreadsParse == 0) // Number of threads is automatically choosen by the Parallel library
                         packets.AsParallel().SetCulture().ForAll(packet => Handler.Parse(packet));
                     else
-                        packets.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads).ForAll(packet => Handler.Parse(packet));
+                        packets.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.ThreadsParse).ForAll(packet => Handler.Parse(packet));
 
                     if (Settings.SQLOutput > 0 && globalStorage == null) // No global Storage, write sql data to particular sql file
                     {
@@ -330,27 +330,28 @@ namespace WowPacketParser
                 builder = new Builder(storage);
             }
 
-            var numberOfThreads = Settings.Threads != 0 ? Settings.Threads.ToString(CultureInfo.InvariantCulture) : "a recommended number of";
-            Trace.WriteLine(string.Format("Using {0} threads to process {1} files", numberOfThreads, files.Length));
+            var numberOfThreadsRead = Settings.ThreadsRead != 0 ? Settings.ThreadsRead.ToString(CultureInfo.InvariantCulture) : "a recommended number of";
+            var numberOfThreadsParse = Settings.ThreadsParse != 0 ? Settings.ThreadsParse.ToString(CultureInfo.InvariantCulture) : "a recommended number of";
+            Trace.WriteLine(string.Format("Using {0} threads to process {1} files", numberOfThreadsRead, files.Length));
 
             var startTime = DateTime.Now;
             var count = 0;
 
-            if (Settings.Threads == 0) // Number of threads is automatically choosen by the Parallel library
+            if (Settings.ThreadsRead == 0) // Number of threads is automatically choosen by the Parallel library
                 files.AsParallel().SetCulture()
                     .ForAll(file =>
                         ReadFile(file, storage, builder, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Length + " " + file + "]"));
             else
-                files.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads)
+                files.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.ThreadsRead)
                     .ForAll(file => ReadFile(file, storage, builder, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Length + " " + file + "]"));
 
             if (Settings.StatsOutput.HasAnyFlag(StatsOutputFlags.Global))
             {
                 var span = DateTime.Now.Subtract(startTime);
-                Trace.WriteLine(string.Format("Parsed {0} packets from {1} files: {2:F3}% successfully, {3:F3}% with errors and skipped {4:F3}% in {5} Minutes, {6} Seconds and {7} Milliseconds.",
+                Trace.WriteLine(string.Format("Parsed {0} packets from {1} files: {2:F3}% successfully, {3:F3}% with errors and skipped {4:F3}% in {5} Minutes, {6} Seconds and {7} Milliseconds using {8} threads",
                     _globalStatsTotal, files.Length, (double)_globalStatsOk / _globalStatsTotal * 100,
                     (double)_globalStatsError / _globalStatsTotal * 100, (double)_globalStatsSkip / _globalStatsTotal * 100,
-                    span.Minutes, span.Seconds, span.Milliseconds));
+                    span.Minutes, span.Seconds, span.Milliseconds, numberOfThreadsParse));
             }
 
             DumpSQLs("Dumping global sql", Settings.SQLFileName, builder, Settings.SQLOutput);
