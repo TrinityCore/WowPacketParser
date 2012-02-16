@@ -141,7 +141,7 @@ namespace WowPacketParser
         {
             // If our dump format requires a .txt to be created,
             // check if we can write to that .txt before starting parsing
-            if (Settings.DumpFormat != DumpFormatType.Bin && Settings.DumpFormat != DumpFormatType.Pkt)
+            if (Settings.DumpFormat != DumpFormatType.Pkt)
             {
                 var outFileName = Path.ChangeExtension(file, null) + "_parsed.txt";
                 if (Utilities.FileIsInUse(outFileName))
@@ -168,9 +168,9 @@ namespace WowPacketParser
                     return;
                 }
 
-                if (Settings.DumpFormat == DumpFormatType.Bin || Settings.DumpFormat == DumpFormatType.Pkt)
+                if (Settings.DumpFormat == DumpFormatType.Pkt)
                 {
-                    SniffType format = Settings.DumpFormat == DumpFormatType.Bin ? SniffType.Bin : SniffType.Pkt;
+                    SniffType format = SniffType.Pkt;
                     var fileExtension = Settings.DumpFormat.ToString().ToLower();
 
                     if (Settings.SplitOutput)
@@ -196,12 +196,10 @@ namespace WowPacketParser
                     var outFileName = Path.ChangeExtension(file, null) + "_parsed";
                     var outLogFileName = outFileName + ".txt";
 
-                    bool headersOnly = Settings.DumpFormat == DumpFormatType.TextHeader || Settings.DumpFormat == DumpFormatType.SummaryHeader;
-
                     if (Settings.Threads == 0) // Number of threads is automatically choosen by the Parallel library
-                        packets.AsParallel().SetCulture().ForAll(packet => Handler.Parse(packet, headersOnly));
+                        packets.AsParallel().SetCulture().ForAll(packet => Handler.Parse(packet));
                     else
-                        packets.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads).ForAll(packet => Handler.Parse(packet, headersOnly));
+                        packets.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.Threads).ForAll(packet => Handler.Parse(packet));
 
                     if (Settings.SQLOutput > 0 && globalStorage == null) // No global Storage, write sql data to particular sql file
                     {
@@ -312,7 +310,7 @@ namespace WowPacketParser
                 throw new Exception("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
 
             // Disable DB when we don't need its data (dumping to a binary file)
-            if (Settings.DumpFormat == DumpFormatType.Bin || Settings.DumpFormat == DumpFormatType.Pkt)
+            if (Settings.DumpFormat == DumpFormatType.Pkt)
             {
                 SQLConnector.Enabled = false;
                 SSHTunnel.Enabled = false;

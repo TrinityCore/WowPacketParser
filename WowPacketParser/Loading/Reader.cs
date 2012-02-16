@@ -14,7 +14,6 @@ namespace WowPacketParser.Loading
     {
         public static ICollection<Packet> Read(SniffFileInfo fileInfo)
         {
-            bool summary = Settings.DumpFormat == DumpFormatType.SummaryHeader;
             var packets = new List<Packet>();
             var packetNum = 0;
             var fileName = fileInfo.FileName;
@@ -76,12 +75,6 @@ namespace WowPacketParser.Loading
                     // check for ignore filters
                     if (add && Settings.IgnoreFilters.Length > 0)
                         add = !opcodeName.MatchesFilters(Settings.IgnoreFilters);
-
-                    if (add && summary)
-                    {
-                        add = packets.Find(found => (found.Opcode == packet.Opcode &&
-                                                     found.Direction == packet.Direction)) == null;
-                    }
 
                     if (add)
                     {

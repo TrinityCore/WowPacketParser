@@ -72,7 +72,7 @@ namespace WowPacketParser.Parsing
             }
         }
 
-        public static void Parse(Packet packet, bool headerOnly = false, bool isMultiple = false)
+        public static void Parse(Packet packet, bool isMultiple = false)
         {
             ParsedStatus status;
 
@@ -86,46 +86,41 @@ namespace WowPacketParser.Parsing
             if (opcode == 0)
                 return;
 
-            if (headerOnly)
-                status = ParsedStatus.Success;
-            else
+            Action<Packet> handler;
+            if (Handlers.TryGetValue(opcode, out handler))
             {
-                Action<Packet> handler;
-                if (Handlers.TryGetValue(opcode, out handler))
+                try
                 {
-                    try
+                    handler(packet);
+
+                    if (packet.GetPosition() == packet.GetLength())
+                        status = ParsedStatus.Success;
+                    else
                     {
-                        handler(packet);
+                        var pos = packet.GetPosition();
+                        var len = packet.GetLength();
+                        packet.WriteLine("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.",
+                            pos, len, len - pos);
 
-                        if (packet.GetPosition() == packet.GetLength())
-                            status = ParsedStatus.Success;
-                        else
-                        {
-                            var pos = packet.GetPosition();
-                            var len = packet.GetLength();
-                            packet.WriteLine("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.",
-                                pos, len, len - pos);
-
-                            if (len < 300) // If the packet isn't "too big" and it is not full read, print its hex table
-                                packet.AsHex();
-
-                            status = ParsedStatus.WithErrors;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        packet.WriteLine(ex.GetType());
-                        packet.WriteLine(ex.Message);
-                        packet.WriteLine(ex.StackTrace);
+                        if (len < 300) // If the packet isn't "too big" and it is not full read, print its hex table
+                            packet.AsHex();
 
                         status = ParsedStatus.WithErrors;
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    packet.AsHex();
-                    status = ParsedStatus.NotParsed;
+                    packet.WriteLine(ex.GetType());
+                    packet.WriteLine(ex.Message);
+                    packet.WriteLine(ex.StackTrace);
+
+                    status = ParsedStatus.WithErrors;
                 }
+            }
+            else
+            {
+                packet.AsHex();
+                status = ParsedStatus.NotParsed;
             }
 
             if (isMultiple == false)
