@@ -1,6 +1,6 @@
 ﻿namespace SettingsUI
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -893,7 +893,7 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Num";
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -911,7 +911,7 @@
             this.Controls.Add(this.CloseButton);
             this.Controls.Add(this.SaveButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "WPP Settings";
             this.Load += new System.EventHandler(this.Form1Load);
             filtersGroupBox.ResumeLayout(false);
