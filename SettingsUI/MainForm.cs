@@ -30,11 +30,11 @@ namespace SettingsUI
 
         private void DBEnabledCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-                foreach (var control in dbTabPage.Controls.OfType<Control>())
-                    control.Enabled = dbEnabledCheckBox.Checked;
+            foreach (var control in dbTabPage.Controls.OfType<Control>())
+                control.Enabled = dbEnabledCheckBox.Checked;
 
-                if (dbEnabledCheckBox.Checked)
-                    connectionControl.SelectTab(dbTabPage);
+            if (dbEnabledCheckBox.Checked)
+                connectionControl.SelectTab(dbTabPage);
         }
 
         private void SSHEnabledCheckBoxCheckedChanged(object sender, EventArgs e)
@@ -51,23 +51,25 @@ namespace SettingsUI
             DBEnabledCheckBoxCheckedChanged(sender, e);
             SSHEnabledCheckBoxCheckedChanged(sender, e);
             _sqlOutputValues = new Dictionary<CheckBox, uint>
-                                   {
-                                       {gotCheckBox,  0x0001},
-                                       {gosCheckBox,  0x0002},
-                                       {qtCheckBox,   0x0004},
-                                       {qpoiCheckBox, 0x0008},
-                                       {ctCheckBox,   0x0010},
-                                       {csCheckBox,   0x0020},
-                                       {ntCheckBox,   0x0040},
-                                       {nvCheckBox,   0x0080},
-                                       {ntxtCheckBox, 0x0100},
-                                       {lCheckBox,    0x0200},
-                                       {gCheckBox,    0x0400},
-                                       {ptCheckBox,   0x0800},
-                                       {siCheckBox,   0x1000},
-                                       {sdCheckBox,   0x2000},
-                                       {sdoCheckBox,  0x4000}
-                                   };
+            {
+                {gotCheckBox,  0x0001}, // GameObjectTemplate
+                {gosCheckBox,  0x0002}, // GameObjectSpawns
+                {qtCheckBox,   0x0004}, // QuestTemplate
+                {qpoiCheckBox, 0x0008}, // QuestPOI
+                {ctCheckBox,   0x0010}, // CreatureTemplate
+                {csCheckBox,   0x0020}, // CreatureSpawns
+                {ntCheckBox,   0x0040}, // NpcTrainer
+                {nvCheckBox,   0x0080}, // NpcVendor
+                {ntxtCheckBox, 0x0100}, // NpcText
+                {lCheckBox,    0x0200}, // Loot
+                {gCheckBox,    0x0400}, // Gossip
+                {ptCheckBox,   0x0800}, // PageText
+                {siCheckBox,   0x1000}, // StartInformation
+                {sdCheckBox,   0x2000}, // SniffData
+                {sdoCheckBox,  0x4000}, // SniffData:Opcodes
+                {onCheckBox,   0x8000}, // ObjectNames
+                {ceCheckBox,  0x10000}  // CreatureEquip
+            };
         }
 
         private void CloseButtonClick(object sender, EventArgs e)

@@ -29,6 +29,13 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.GroupBox filtersGroupBox;
+            this.maxPacketNumLabel = new System.Windows.Forms.Label();
+            this.minPacketNumLabel = new System.Windows.Forms.Label();
+            this.numPacketLabel = new System.Windows.Forms.Label();
+            this.areasLabel = new System.Windows.Forms.Label();
+            this.filtersEntryLabel = new System.Windows.Forms.Label();
+            this.ignoreOpcodesLabel = new System.Windows.Forms.Label();
+            this.opcodesLabel = new System.Windows.Forms.Label();
             this.SaveButton = new System.Windows.Forms.Button();
             this.CloseButton = new System.Windows.Forms.Button();
             this.connectionControl = new System.Windows.Forms.TabControl();
@@ -56,9 +63,11 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.sshServerLabel = new System.Windows.Forms.Label();
-            this.threadsLabel = new System.Windows.Forms.Label();
-            this.threadsNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.threadsReadLabel = new System.Windows.Forms.Label();
+            this.threadsReadNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.threadsPanel = new System.Windows.Forms.Panel();
+            this.threadsParseNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.threadsParseLabel = new System.Windows.Forms.Label();
             this.dumpFormatComboBox = new System.Windows.Forms.ComboBox();
             this.dumpFormatLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -69,6 +78,8 @@
             this.debugReadsCheckBox = new System.Windows.Forms.CheckBox();
             this.sqlOutputGroupBox = new System.Windows.Forms.GroupBox();
             this.sqlOutputTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.ceCheckBox = new System.Windows.Forms.CheckBox();
+            this.onCheckBox = new System.Windows.Forms.CheckBox();
             this.gotCheckBox = new System.Windows.Forms.CheckBox();
             this.gosCheckBox = new System.Windows.Forms.CheckBox();
             this.qtCheckBox = new System.Windows.Forms.CheckBox();
@@ -89,10 +100,18 @@
             this.sqlOutputMaskLabel = new System.Windows.Forms.Label();
             this.sshEnabledCheckBox = new System.Windows.Forms.CheckBox();
             this.dbEnabledCheckBox = new System.Windows.Forms.CheckBox();
-            this.labelFilters = new System.Windows.Forms.Label();
-            this.ignoreLabel = new System.Windows.Forms.Label();
-            this.filtersEntryLabel = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.logErrorCheckBox = new System.Windows.Forms.CheckBox();
+            this.splitOutputCheckBox = new System.Windows.Forms.CheckBox();
+            this.parsingLogCheckBox = new System.Windows.Forms.CheckBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.opcodesTextBox = new System.Windows.Forms.TextBox();
+            this.ignoreOpcodesTextBox = new System.Windows.Forms.TextBox();
+            this.filtersEntryTextBox = new System.Windows.Forms.TextBox();
+            this.areasTextLabel = new System.Windows.Forms.TextBox();
+            this.minPacketNumUpDown = new System.Windows.Forms.NumericUpDown();
+            this.maxPacketNumUpDown = new System.Windows.Forms.NumericUpDown();
+            this.packetNumUpDown = new System.Windows.Forms.NumericUpDown();
             filtersGroupBox = new System.Windows.Forms.GroupBox();
             filtersGroupBox.SuspendLayout();
             this.connectionControl.SuspendLayout();
@@ -101,31 +120,108 @@
             this.sshTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sshLocalPortNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sshPortNumericUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.threadsNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.threadsReadNumericUpDown)).BeginInit();
             this.threadsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.threadsParseNumericUpDown)).BeginInit();
             this.panel1.SuspendLayout();
             this.clientBuildPanel.SuspendLayout();
             this.sqlOutputGroupBox.SuspendLayout();
             this.sqlOutputTableLayoutPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.minPacketNumUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxPacketNumUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.packetNumUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // filtersGroupBox
             // 
-            filtersGroupBox.Controls.Add(this.label2);
+            filtersGroupBox.Controls.Add(this.packetNumUpDown);
+            filtersGroupBox.Controls.Add(this.maxPacketNumUpDown);
+            filtersGroupBox.Controls.Add(this.minPacketNumUpDown);
+            filtersGroupBox.Controls.Add(this.areasTextLabel);
+            filtersGroupBox.Controls.Add(this.filtersEntryTextBox);
+            filtersGroupBox.Controls.Add(this.ignoreOpcodesTextBox);
+            filtersGroupBox.Controls.Add(this.opcodesTextBox);
+            filtersGroupBox.Controls.Add(this.maxPacketNumLabel);
+            filtersGroupBox.Controls.Add(this.minPacketNumLabel);
+            filtersGroupBox.Controls.Add(this.numPacketLabel);
+            filtersGroupBox.Controls.Add(this.areasLabel);
             filtersGroupBox.Controls.Add(this.filtersEntryLabel);
-            filtersGroupBox.Controls.Add(this.ignoreLabel);
-            filtersGroupBox.Controls.Add(this.labelFilters);
+            filtersGroupBox.Controls.Add(this.ignoreOpcodesLabel);
+            filtersGroupBox.Controls.Add(this.opcodesLabel);
             filtersGroupBox.Location = new System.Drawing.Point(12, 215);
             filtersGroupBox.Name = "filtersGroupBox";
-            filtersGroupBox.Size = new System.Drawing.Size(457, 107);
+            filtersGroupBox.Size = new System.Drawing.Size(457, 124);
             filtersGroupBox.TabIndex = 17;
             filtersGroupBox.TabStop = false;
             filtersGroupBox.Text = "Filters";
             // 
+            // maxPacketNumLabel
+            // 
+            this.maxPacketNumLabel.AutoSize = true;
+            this.maxPacketNumLabel.Location = new System.Drawing.Point(262, 50);
+            this.maxPacketNumLabel.Name = "maxPacketNumLabel";
+            this.maxPacketNumLabel.Size = new System.Drawing.Size(104, 13);
+            this.maxPacketNumLabel.TabIndex = 7;
+            this.maxPacketNumLabel.Text = "Max packet number:";
+            // 
+            // minPacketNumLabel
+            // 
+            this.minPacketNumLabel.AutoSize = true;
+            this.minPacketNumLabel.Location = new System.Drawing.Point(262, 22);
+            this.minPacketNumLabel.Name = "minPacketNumLabel";
+            this.minPacketNumLabel.Size = new System.Drawing.Size(101, 13);
+            this.minPacketNumLabel.TabIndex = 6;
+            this.minPacketNumLabel.Text = "Min packet number:";
+            // 
+            // numPacketLabel
+            // 
+            this.numPacketLabel.AutoSize = true;
+            this.numPacketLabel.Location = new System.Drawing.Point(262, 75);
+            this.numPacketLabel.Name = "numPacketLabel";
+            this.numPacketLabel.Size = new System.Drawing.Size(100, 13);
+            this.numPacketLabel.TabIndex = 5;
+            this.numPacketLabel.Text = "Number of packets:";
+            // 
+            // areasLabel
+            // 
+            this.areasLabel.AutoSize = true;
+            this.areasLabel.Location = new System.Drawing.Point(7, 98);
+            this.areasLabel.Name = "areasLabel";
+            this.areasLabel.Size = new System.Drawing.Size(37, 13);
+            this.areasLabel.TabIndex = 4;
+            this.areasLabel.Text = "Areas:";
+            // 
+            // filtersEntryLabel
+            // 
+            this.filtersEntryLabel.AutoSize = true;
+            this.filtersEntryLabel.Location = new System.Drawing.Point(7, 75);
+            this.filtersEntryLabel.Name = "filtersEntryLabel";
+            this.filtersEntryLabel.Size = new System.Drawing.Size(110, 13);
+            this.filtersEntryLabel.TabIndex = 2;
+            this.filtersEntryLabel.Text = "Ignore Filters by entry:";
+            // 
+            // ignoreOpcodesLabel
+            // 
+            this.ignoreOpcodesLabel.AutoSize = true;
+            this.ignoreOpcodesLabel.Location = new System.Drawing.Point(6, 46);
+            this.ignoreOpcodesLabel.Name = "ignoreOpcodesLabel";
+            this.ignoreOpcodesLabel.Size = new System.Drawing.Size(86, 13);
+            this.ignoreOpcodesLabel.TabIndex = 1;
+            this.ignoreOpcodesLabel.Text = "Ignore Opcodes:";
+            // 
+            // opcodesLabel
+            // 
+            this.opcodesLabel.AutoSize = true;
+            this.opcodesLabel.Location = new System.Drawing.Point(7, 22);
+            this.opcodesLabel.Name = "opcodesLabel";
+            this.opcodesLabel.Size = new System.Drawing.Size(53, 13);
+            this.opcodesLabel.TabIndex = 0;
+            this.opcodesLabel.Text = "Opcodes:";
+            // 
             // SaveButton
             // 
             this.SaveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.SaveButton.Location = new System.Drawing.Point(313, 516);
+            this.SaveButton.Location = new System.Drawing.Point(313, 543);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(75, 23);
             this.SaveButton.TabIndex = 0;
@@ -135,7 +231,7 @@
             // CloseButton
             // 
             this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.CloseButton.Location = new System.Drawing.Point(394, 516);
+            this.CloseButton.Location = new System.Drawing.Point(394, 543);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(75, 23);
             this.CloseButton.TabIndex = 1;
@@ -416,35 +512,58 @@
             this.sshServerLabel.TabIndex = 0;
             this.sshServerLabel.Text = "Server:";
             // 
-            // threadsLabel
+            // threadsReadLabel
             // 
-            this.threadsLabel.AutoSize = true;
-            this.threadsLabel.Location = new System.Drawing.Point(3, 5);
-            this.threadsLabel.Name = "threadsLabel";
-            this.threadsLabel.Size = new System.Drawing.Size(49, 13);
-            this.threadsLabel.TabIndex = 4;
-            this.threadsLabel.Text = "Threads:";
+            this.threadsReadLabel.AutoSize = true;
+            this.threadsReadLabel.Location = new System.Drawing.Point(3, 5);
+            this.threadsReadLabel.Name = "threadsReadLabel";
+            this.threadsReadLabel.Size = new System.Drawing.Size(78, 13);
+            this.threadsReadLabel.TabIndex = 4;
+            this.threadsReadLabel.Text = "Threads.Read:";
             // 
-            // threadsNumericUpDown
+            // threadsReadNumericUpDown
             // 
-            this.threadsNumericUpDown.Location = new System.Drawing.Point(58, 3);
-            this.threadsNumericUpDown.Maximum = new decimal(new int[] {
+            this.threadsReadNumericUpDown.Location = new System.Drawing.Point(85, 3);
+            this.threadsReadNumericUpDown.Maximum = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.threadsNumericUpDown.Name = "threadsNumericUpDown";
-            this.threadsNumericUpDown.Size = new System.Drawing.Size(48, 20);
-            this.threadsNumericUpDown.TabIndex = 5;
+            this.threadsReadNumericUpDown.Name = "threadsReadNumericUpDown";
+            this.threadsReadNumericUpDown.Size = new System.Drawing.Size(48, 20);
+            this.threadsReadNumericUpDown.TabIndex = 5;
             // 
             // threadsPanel
             // 
-            this.threadsPanel.Controls.Add(this.threadsLabel);
-            this.threadsPanel.Controls.Add(this.threadsNumericUpDown);
+            this.threadsPanel.Controls.Add(this.threadsParseNumericUpDown);
+            this.threadsPanel.Controls.Add(this.threadsParseLabel);
+            this.threadsPanel.Controls.Add(this.threadsReadLabel);
+            this.threadsPanel.Controls.Add(this.threadsReadNumericUpDown);
             this.threadsPanel.Location = new System.Drawing.Point(12, 12);
             this.threadsPanel.Name = "threadsPanel";
-            this.threadsPanel.Size = new System.Drawing.Size(110, 28);
+            this.threadsPanel.Size = new System.Drawing.Size(227, 28);
             this.threadsPanel.TabIndex = 6;
+            // 
+            // threadsParseNumericUpDown
+            // 
+            this.threadsParseNumericUpDown.Location = new System.Drawing.Point(175, 3);
+            this.threadsParseNumericUpDown.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.threadsParseNumericUpDown.Name = "threadsParseNumericUpDown";
+            this.threadsParseNumericUpDown.Size = new System.Drawing.Size(48, 20);
+            this.threadsParseNumericUpDown.TabIndex = 7;
+            // 
+            // threadsParseLabel
+            // 
+            this.threadsParseLabel.AutoSize = true;
+            this.threadsParseLabel.Location = new System.Drawing.Point(138, 5);
+            this.threadsParseLabel.Name = "threadsParseLabel";
+            this.threadsParseLabel.Size = new System.Drawing.Size(37, 13);
+            this.threadsParseLabel.TabIndex = 6;
+            this.threadsParseLabel.Text = "Parse:";
             // 
             // dumpFormatComboBox
             // 
@@ -456,10 +575,7 @@
             this.dumpFormatComboBox.Items.AddRange(new object[] {
             "No dump",
             "Text",
-            "Text (only the headers of each packet)",
-            "Text: (summary - only the header of 1st occurrence of each opc)",
-            "Binary (.pkt)",
-            "Binary (.bin)"});
+            "Binary (.pkt)"});
             this.dumpFormatComboBox.Location = new System.Drawing.Point(82, 3);
             this.dumpFormatComboBox.Name = "dumpFormatComboBox";
             this.dumpFormatComboBox.Size = new System.Drawing.Size(128, 21);
@@ -581,7 +697,7 @@
             // debugReadsCheckBox
             // 
             this.debugReadsCheckBox.AutoSize = true;
-            this.debugReadsCheckBox.Location = new System.Drawing.Point(18, 185);
+            this.debugReadsCheckBox.Location = new System.Drawing.Point(18, 139);
             this.debugReadsCheckBox.Name = "debugReadsCheckBox";
             this.debugReadsCheckBox.Size = new System.Drawing.Size(92, 17);
             this.debugReadsCheckBox.TabIndex = 13;
@@ -595,9 +711,9 @@
             this.sqlOutputGroupBox.Controls.Add(this.selectAllButton);
             this.sqlOutputGroupBox.Controls.Add(this.selectNoneButton);
             this.sqlOutputGroupBox.Controls.Add(this.sqlOutputMaskLabel);
-            this.sqlOutputGroupBox.Location = new System.Drawing.Point(12, 340);
+            this.sqlOutputGroupBox.Location = new System.Drawing.Point(12, 345);
             this.sqlOutputGroupBox.Name = "sqlOutputGroupBox";
-            this.sqlOutputGroupBox.Size = new System.Drawing.Size(457, 170);
+            this.sqlOutputGroupBox.Size = new System.Drawing.Size(457, 192);
             this.sqlOutputGroupBox.TabIndex = 14;
             this.sqlOutputGroupBox.TabStop = false;
             this.sqlOutputGroupBox.Text = "SQL Output";
@@ -608,6 +724,8 @@
             this.sqlOutputTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.sqlOutputTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.sqlOutputTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.sqlOutputTableLayoutPanel.Controls.Add(this.ceCheckBox, 1, 5);
+            this.sqlOutputTableLayoutPanel.Controls.Add(this.onCheckBox, 0, 5);
             this.sqlOutputTableLayoutPanel.Controls.Add(this.gotCheckBox, 0, 0);
             this.sqlOutputTableLayoutPanel.Controls.Add(this.gosCheckBox, 0, 1);
             this.sqlOutputTableLayoutPanel.Controls.Add(this.qtCheckBox, 0, 2);
@@ -627,23 +745,46 @@
             this.sqlOutputTableLayoutPanel.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.sqlOutputTableLayoutPanel.Location = new System.Drawing.Point(3, 16);
             this.sqlOutputTableLayoutPanel.Name = "sqlOutputTableLayoutPanel";
-            this.sqlOutputTableLayoutPanel.RowCount = 5;
+            this.sqlOutputTableLayoutPanel.RowCount = 6;
             this.sqlOutputTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.sqlOutputTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.sqlOutputTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.sqlOutputTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.sqlOutputTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.sqlOutputTableLayoutPanel.Size = new System.Drawing.Size(451, 120);
+            this.sqlOutputTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.sqlOutputTableLayoutPanel.Size = new System.Drawing.Size(451, 139);
             this.sqlOutputTableLayoutPanel.TabIndex = 18;
+            // 
+            // ceCheckBox
+            // 
+            this.ceCheckBox.AutoSize = true;
+            this.ceCheckBox.Location = new System.Drawing.Point(153, 118);
+            this.ceCheckBox.Name = "ceCheckBox";
+            this.ceCheckBox.Size = new System.Drawing.Size(124, 17);
+            this.ceCheckBox.TabIndex = 16;
+            this.ceCheckBox.Text = "Creature Equipments";
+            this.ceCheckBox.UseVisualStyleBackColor = true;
+            this.ceCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
+            // 
+            // onCheckBox
+            // 
+            this.onCheckBox.AutoSize = true;
+            this.onCheckBox.Location = new System.Drawing.Point(3, 118);
+            this.onCheckBox.Name = "onCheckBox";
+            this.onCheckBox.Size = new System.Drawing.Size(90, 17);
+            this.onCheckBox.TabIndex = 15;
+            this.onCheckBox.Text = "ObjectNames";
+            this.onCheckBox.UseVisualStyleBackColor = true;
+            this.onCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
             // 
             // gotCheckBox
             // 
             this.gotCheckBox.AutoSize = true;
             this.gotCheckBox.Location = new System.Drawing.Point(3, 3);
             this.gotCheckBox.Name = "gotCheckBox";
-            this.gotCheckBox.Size = new System.Drawing.Size(129, 17);
+            this.gotCheckBox.Size = new System.Drawing.Size(132, 17);
             this.gotCheckBox.TabIndex = 0;
-            this.gotCheckBox.Text = "GameObjectTemplate";
+            this.gotCheckBox.Text = "GameObject Template";
             this.gotCheckBox.UseVisualStyleBackColor = true;
             this.gotCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
             // 
@@ -652,9 +793,9 @@
             this.gosCheckBox.AutoSize = true;
             this.gosCheckBox.Location = new System.Drawing.Point(3, 26);
             this.gosCheckBox.Name = "gosCheckBox";
-            this.gosCheckBox.Size = new System.Drawing.Size(123, 17);
+            this.gosCheckBox.Size = new System.Drawing.Size(126, 17);
             this.gosCheckBox.TabIndex = 1;
-            this.gosCheckBox.Text = "GameObjectSpawns";
+            this.gosCheckBox.Text = "GameObject Spawns";
             this.gosCheckBox.UseVisualStyleBackColor = true;
             this.gosCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
             // 
@@ -674,9 +815,9 @@
             this.qpoiCheckBox.AutoSize = true;
             this.qpoiCheckBox.Location = new System.Drawing.Point(3, 72);
             this.qpoiCheckBox.Name = "qpoiCheckBox";
-            this.qpoiCheckBox.Size = new System.Drawing.Size(72, 17);
+            this.qpoiCheckBox.Size = new System.Drawing.Size(75, 17);
             this.qpoiCheckBox.TabIndex = 3;
-            this.qpoiCheckBox.Text = "QuestPOI";
+            this.qpoiCheckBox.Text = "Quest POI";
             this.qpoiCheckBox.UseVisualStyleBackColor = true;
             this.qpoiCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
             // 
@@ -696,9 +837,9 @@
             this.sdoCheckBox.AutoSize = true;
             this.sdoCheckBox.Location = new System.Drawing.Point(303, 95);
             this.sdoCheckBox.Name = "sdoCheckBox";
-            this.sdoCheckBox.Size = new System.Drawing.Size(116, 17);
+            this.sdoCheckBox.Size = new System.Drawing.Size(119, 17);
             this.sdoCheckBox.TabIndex = 14;
-            this.sdoCheckBox.Text = "SniffData:Opcodes";
+            this.sdoCheckBox.Text = "Sniff Data:Opcodes";
             this.sdoCheckBox.UseVisualStyleBackColor = true;
             this.sdoCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
             // 
@@ -707,9 +848,9 @@
             this.ctCheckBox.AutoSize = true;
             this.ctCheckBox.Location = new System.Drawing.Point(3, 95);
             this.ctCheckBox.Name = "ctCheckBox";
-            this.ctCheckBox.Size = new System.Drawing.Size(110, 17);
+            this.ctCheckBox.Size = new System.Drawing.Size(113, 17);
             this.ctCheckBox.TabIndex = 4;
-            this.ctCheckBox.Text = "CreatureTemplate";
+            this.ctCheckBox.Text = "Creature Template";
             this.ctCheckBox.UseVisualStyleBackColor = true;
             this.ctCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
             // 
@@ -784,9 +925,9 @@
             this.sdCheckBox.AutoSize = true;
             this.sdCheckBox.Location = new System.Drawing.Point(303, 72);
             this.sdCheckBox.Name = "sdCheckBox";
-            this.sdCheckBox.Size = new System.Drawing.Size(70, 17);
+            this.sdCheckBox.Size = new System.Drawing.Size(73, 17);
             this.sdCheckBox.TabIndex = 13;
-            this.sdCheckBox.Text = "SniffData";
+            this.sdCheckBox.Text = "Sniff Data";
             this.sdCheckBox.UseVisualStyleBackColor = true;
             this.sdCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
             // 
@@ -795,16 +936,16 @@
             this.siCheckBox.AutoSize = true;
             this.siCheckBox.Location = new System.Drawing.Point(303, 49);
             this.siCheckBox.Name = "siCheckBox";
-            this.siCheckBox.Size = new System.Drawing.Size(100, 17);
+            this.siCheckBox.Size = new System.Drawing.Size(103, 17);
             this.siCheckBox.TabIndex = 12;
-            this.siCheckBox.Text = "StartInformation";
+            this.siCheckBox.Text = "Start Information";
             this.siCheckBox.UseVisualStyleBackColor = true;
             this.siCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
             // 
             // selectAllButton
             // 
             this.selectAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.selectAllButton.Location = new System.Drawing.Point(295, 139);
+            this.selectAllButton.Location = new System.Drawing.Point(295, 161);
             this.selectAllButton.Name = "selectAllButton";
             this.selectAllButton.Size = new System.Drawing.Size(75, 23);
             this.selectAllButton.TabIndex = 17;
@@ -815,7 +956,7 @@
             // selectNoneButton
             // 
             this.selectNoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.selectNoneButton.Location = new System.Drawing.Point(376, 139);
+            this.selectNoneButton.Location = new System.Drawing.Point(376, 161);
             this.selectNoneButton.Name = "selectNoneButton";
             this.selectNoneButton.Size = new System.Drawing.Size(75, 23);
             this.selectNoneButton.TabIndex = 16;
@@ -827,7 +968,7 @@
             // 
             this.sqlOutputMaskLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.sqlOutputMaskLabel.AutoSize = true;
-            this.sqlOutputMaskLabel.Location = new System.Drawing.Point(6, 144);
+            this.sqlOutputMaskLabel.Location = new System.Drawing.Point(6, 166);
             this.sqlOutputMaskLabel.Name = "sqlOutputMaskLabel";
             this.sqlOutputMaskLabel.Size = new System.Drawing.Size(86, 13);
             this.sqlOutputMaskLabel.TabIndex = 15;
@@ -836,7 +977,7 @@
             // sshEnabledCheckBox
             // 
             this.sshEnabledCheckBox.AutoSize = true;
-            this.sshEnabledCheckBox.Location = new System.Drawing.Point(18, 139);
+            this.sshEnabledCheckBox.Location = new System.Drawing.Point(132, 116);
             this.sshEnabledCheckBox.Name = "sshEnabledCheckBox";
             this.sshEnabledCheckBox.Size = new System.Drawing.Size(90, 17);
             this.sshEnabledCheckBox.TabIndex = 15;
@@ -857,47 +998,117 @@
             this.dbEnabledCheckBox.UseVisualStyleBackColor = true;
             this.dbEnabledCheckBox.CheckedChanged += new System.EventHandler(this.DBEnabledCheckBoxCheckedChanged);
             // 
-            // labelFilters
+            // logErrorCheckBox
             // 
-            this.labelFilters.AutoSize = true;
-            this.labelFilters.Location = new System.Drawing.Point(15, 20);
-            this.labelFilters.Name = "labelFilters";
-            this.labelFilters.Size = new System.Drawing.Size(37, 13);
-            this.labelFilters.TabIndex = 0;
-            this.labelFilters.Text = "Filters:";
+            this.logErrorCheckBox.AutoSize = true;
+            this.logErrorCheckBox.Location = new System.Drawing.Point(132, 139);
+            this.logErrorCheckBox.Name = "logErrorCheckBox";
+            this.logErrorCheckBox.Size = new System.Drawing.Size(74, 17);
+            this.logErrorCheckBox.TabIndex = 18;
+            this.logErrorCheckBox.Text = "Log Errors";
+            this.logErrorCheckBox.UseVisualStyleBackColor = true;
             // 
-            // ignoreLabel
+            // splitOutputCheckBox
             // 
-            this.ignoreLabel.AutoSize = true;
-            this.ignoreLabel.Location = new System.Drawing.Point(12, 49);
-            this.ignoreLabel.Name = "ignoreLabel";
-            this.ignoreLabel.Size = new System.Drawing.Size(70, 13);
-            this.ignoreLabel.TabIndex = 1;
-            this.ignoreLabel.Text = "Ignore Filters:";
+            this.splitOutputCheckBox.AutoSize = true;
+            this.splitOutputCheckBox.Location = new System.Drawing.Point(132, 162);
+            this.splitOutputCheckBox.Name = "splitOutputCheckBox";
+            this.splitOutputCheckBox.Size = new System.Drawing.Size(81, 17);
+            this.splitOutputCheckBox.TabIndex = 19;
+            this.splitOutputCheckBox.Text = "Split Output";
+            this.splitOutputCheckBox.UseVisualStyleBackColor = true;
             // 
-            // filtersEntryLabel
+            // parsingLogCheckBox
             // 
-            this.filtersEntryLabel.AutoSize = true;
-            this.filtersEntryLabel.Location = new System.Drawing.Point(12, 75);
-            this.filtersEntryLabel.Name = "filtersEntryLabel";
-            this.filtersEntryLabel.Size = new System.Drawing.Size(107, 13);
-            this.filtersEntryLabel.TabIndex = 2;
-            this.filtersEntryLabel.Text = "Ignore Filters by entry";
+            this.parsingLogCheckBox.AutoSize = true;
+            this.parsingLogCheckBox.Location = new System.Drawing.Point(18, 185);
+            this.parsingLogCheckBox.Name = "parsingLogCheckBox";
+            this.parsingLogCheckBox.Size = new System.Drawing.Size(82, 17);
+            this.parsingLogCheckBox.TabIndex = 20;
+            this.parsingLogCheckBox.Text = "Parsing Log";
+            this.parsingLogCheckBox.UseVisualStyleBackColor = true;
             // 
-            // label2
+            // comboBox1
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(187, 20);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Num";
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "No output",
+            "Individual",
+            "Global"});
+            this.comboBox1.Location = new System.Drawing.Point(153, 181);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(69, 21);
+            this.comboBox1.TabIndex = 21;
+            this.comboBox1.Text = "Individual";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(116, 186);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(34, 13);
+            this.label10.TabIndex = 22;
+            this.label10.Text = "Stats:";
+            // 
+            // opcodesTextBox
+            // 
+            this.opcodesTextBox.Location = new System.Drawing.Point(122, 17);
+            this.opcodesTextBox.Name = "opcodesTextBox";
+            this.opcodesTextBox.Size = new System.Drawing.Size(129, 20);
+            this.opcodesTextBox.TabIndex = 8;
+            // 
+            // ignoreOpcodesTextBox
+            // 
+            this.ignoreOpcodesTextBox.Location = new System.Drawing.Point(122, 43);
+            this.ignoreOpcodesTextBox.Name = "ignoreOpcodesTextBox";
+            this.ignoreOpcodesTextBox.Size = new System.Drawing.Size(129, 20);
+            this.ignoreOpcodesTextBox.TabIndex = 9;
+            // 
+            // filtersEntryTextBox
+            // 
+            this.filtersEntryTextBox.Location = new System.Drawing.Point(122, 69);
+            this.filtersEntryTextBox.Name = "filtersEntryTextBox";
+            this.filtersEntryTextBox.Size = new System.Drawing.Size(129, 20);
+            this.filtersEntryTextBox.TabIndex = 10;
+            // 
+            // areasTextLabel
+            // 
+            this.areasTextLabel.Location = new System.Drawing.Point(122, 95);
+            this.areasTextLabel.Name = "areasTextLabel";
+            this.areasTextLabel.Size = new System.Drawing.Size(129, 20);
+            this.areasTextLabel.TabIndex = 12;
+            // 
+            // minPacketNumUpDown
+            // 
+            this.minPacketNumUpDown.Location = new System.Drawing.Point(369, 22);
+            this.minPacketNumUpDown.Name = "minPacketNumUpDown";
+            this.minPacketNumUpDown.Size = new System.Drawing.Size(60, 20);
+            this.minPacketNumUpDown.TabIndex = 13;
+            // 
+            // maxPacketNumUpDown
+            // 
+            this.maxPacketNumUpDown.Location = new System.Drawing.Point(370, 48);
+            this.maxPacketNumUpDown.Name = "maxPacketNumUpDown";
+            this.maxPacketNumUpDown.Size = new System.Drawing.Size(60, 20);
+            this.maxPacketNumUpDown.TabIndex = 14;
+            // 
+            // packetNumUpDown
+            // 
+            this.packetNumUpDown.Location = new System.Drawing.Point(370, 75);
+            this.packetNumUpDown.Name = "packetNumUpDown";
+            this.packetNumUpDown.Size = new System.Drawing.Size(60, 20);
+            this.packetNumUpDown.TabIndex = 15;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(481, 551);
+            this.ClientSize = new System.Drawing.Size(481, 578);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.parsingLogCheckBox);
+            this.Controls.Add(this.splitOutputCheckBox);
+            this.Controls.Add(this.logErrorCheckBox);
             this.Controls.Add(filtersGroupBox);
             this.Controls.Add(this.dbEnabledCheckBox);
             this.Controls.Add(this.sshEnabledCheckBox);
@@ -910,7 +1121,8 @@
             this.Controls.Add(this.connectionControl);
             this.Controls.Add(this.CloseButton);
             this.Controls.Add(this.SaveButton);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "WPP Settings";
             this.Load += new System.EventHandler(this.Form1Load);
@@ -924,9 +1136,10 @@
             this.sshTabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sshLocalPortNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sshPortNumericUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.threadsNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.threadsReadNumericUpDown)).EndInit();
             this.threadsPanel.ResumeLayout(false);
             this.threadsPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.threadsParseNumericUpDown)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.clientBuildPanel.ResumeLayout(false);
@@ -935,6 +1148,9 @@
             this.sqlOutputGroupBox.PerformLayout();
             this.sqlOutputTableLayoutPanel.ResumeLayout(false);
             this.sqlOutputTableLayoutPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.minPacketNumUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxPacketNumUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.packetNumUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -969,8 +1185,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label sshServerLabel;
-        private System.Windows.Forms.Label threadsLabel;
-        private System.Windows.Forms.NumericUpDown threadsNumericUpDown;
+        private System.Windows.Forms.Label threadsReadLabel;
+        private System.Windows.Forms.NumericUpDown threadsReadNumericUpDown;
         private System.Windows.Forms.Panel threadsPanel;
         private System.Windows.Forms.ComboBox dumpFormatComboBox;
         private System.Windows.Forms.Label dumpFormatLabel;
@@ -1002,10 +1218,29 @@
         private System.Windows.Forms.Button selectNoneButton;
         private System.Windows.Forms.Label sqlOutputMaskLabel;
         private System.Windows.Forms.TableLayoutPanel sqlOutputTableLayoutPanel;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label filtersEntryLabel;
-        private System.Windows.Forms.Label ignoreLabel;
-        private System.Windows.Forms.Label labelFilters;
+        private System.Windows.Forms.Label ignoreOpcodesLabel;
+        private System.Windows.Forms.Label opcodesLabel;
+        private System.Windows.Forms.Label maxPacketNumLabel;
+        private System.Windows.Forms.Label minPacketNumLabel;
+        private System.Windows.Forms.Label numPacketLabel;
+        private System.Windows.Forms.Label areasLabel;
+        private System.Windows.Forms.NumericUpDown threadsParseNumericUpDown;
+        private System.Windows.Forms.Label threadsParseLabel;
+        private System.Windows.Forms.CheckBox ceCheckBox;
+        private System.Windows.Forms.CheckBox onCheckBox;
+        private System.Windows.Forms.CheckBox logErrorCheckBox;
+        private System.Windows.Forms.CheckBox splitOutputCheckBox;
+        private System.Windows.Forms.CheckBox parsingLogCheckBox;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.NumericUpDown packetNumUpDown;
+        private System.Windows.Forms.NumericUpDown maxPacketNumUpDown;
+        private System.Windows.Forms.NumericUpDown minPacketNumUpDown;
+        private System.Windows.Forms.TextBox areasTextLabel;
+        private System.Windows.Forms.TextBox filtersEntryTextBox;
+        private System.Windows.Forms.TextBox ignoreOpcodesTextBox;
+        private System.Windows.Forms.TextBox opcodesTextBox;
     }
 }
 
