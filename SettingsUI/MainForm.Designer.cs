@@ -112,6 +112,8 @@
             this.minPacketNumUpDown = new System.Windows.Forms.NumericUpDown();
             this.maxPacketNumUpDown = new System.Windows.Forms.NumericUpDown();
             this.packetNumUpDown = new System.Windows.Forms.NumericUpDown();
+            this.sqlFileNameLabel = new System.Windows.Forms.Label();
+            this.sqlFileNameTextBox = new System.Windows.Forms.TextBox();
             filtersGroupBox = new System.Windows.Forms.GroupBox();
             filtersGroupBox.SuspendLayout();
             this.connectionControl.SuspendLayout();
@@ -134,6 +136,8 @@
             // 
             // filtersGroupBox
             // 
+            filtersGroupBox.Controls.Add(this.sqlFileNameTextBox);
+            filtersGroupBox.Controls.Add(this.sqlFileNameLabel);
             filtersGroupBox.Controls.Add(this.packetNumUpDown);
             filtersGroupBox.Controls.Add(this.maxPacketNumUpDown);
             filtersGroupBox.Controls.Add(this.minPacketNumUpDown);
@@ -276,13 +280,13 @@
             // charSetComboBox
             // 
             this.charSetComboBox.Items.AddRange(new object[] {
-            "utf8",
+            "UTF8",
             "latin1"});
             this.charSetComboBox.Location = new System.Drawing.Point(67, 139);
             this.charSetComboBox.Name = "charSetComboBox";
             this.charSetComboBox.Size = new System.Drawing.Size(121, 21);
             this.charSetComboBox.TabIndex = 5;
-            this.charSetComboBox.Text = "utf8";
+            this.charSetComboBox.Text = "UTF8";
             // 
             // databaseTextBox
             // 
@@ -1082,22 +1086,38 @@
             // 
             this.minPacketNumUpDown.Location = new System.Drawing.Point(369, 22);
             this.minPacketNumUpDown.Name = "minPacketNumUpDown";
-            this.minPacketNumUpDown.Size = new System.Drawing.Size(60, 20);
+            this.minPacketNumUpDown.Size = new System.Drawing.Size(82, 20);
             this.minPacketNumUpDown.TabIndex = 13;
             // 
             // maxPacketNumUpDown
             // 
             this.maxPacketNumUpDown.Location = new System.Drawing.Point(370, 48);
             this.maxPacketNumUpDown.Name = "maxPacketNumUpDown";
-            this.maxPacketNumUpDown.Size = new System.Drawing.Size(60, 20);
+            this.maxPacketNumUpDown.Size = new System.Drawing.Size(81, 20);
             this.maxPacketNumUpDown.TabIndex = 14;
             // 
             // packetNumUpDown
             // 
             this.packetNumUpDown.Location = new System.Drawing.Point(370, 75);
             this.packetNumUpDown.Name = "packetNumUpDown";
-            this.packetNumUpDown.Size = new System.Drawing.Size(60, 20);
+            this.packetNumUpDown.Size = new System.Drawing.Size(81, 20);
             this.packetNumUpDown.TabIndex = 15;
+            // 
+            // sqlFileNameLabel
+            // 
+            this.sqlFileNameLabel.AutoSize = true;
+            this.sqlFileNameLabel.Location = new System.Drawing.Point(262, 98);
+            this.sqlFileNameLabel.Name = "sqlFileNameLabel";
+            this.sqlFileNameLabel.Size = new System.Drawing.Size(109, 13);
+            this.sqlFileNameLabel.TabIndex = 16;
+            this.sqlFileNameLabel.Text = "SQL Global Filename:";
+            // 
+            // sqlFileNameTextBox
+            // 
+            this.sqlFileNameTextBox.Location = new System.Drawing.Point(370, 98);
+            this.sqlFileNameTextBox.Name = "sqlFileNameTextBox";
+            this.sqlFileNameTextBox.Size = new System.Drawing.Size(81, 20);
+            this.sqlFileNameTextBox.TabIndex = 17;
             // 
             // MainForm
             // 
@@ -1241,6 +1261,8 @@
         private System.Windows.Forms.TextBox filtersEntryTextBox;
         private System.Windows.Forms.TextBox ignoreOpcodesTextBox;
         private System.Windows.Forms.TextBox opcodesTextBox;
+        private System.Windows.Forms.TextBox sqlFileNameTextBox;
+        private System.Windows.Forms.Label sqlFileNameLabel;
     }
 }
 
