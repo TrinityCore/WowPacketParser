@@ -27,6 +27,7 @@ namespace SettingsUI
         }
 
         private Dictionary<CheckBox, uint> _sqlOutputValues;
+        private Dictionary<Control, Tuple<string, object>> _settings;
 
         private void DBEnabledCheckBoxCheckedChanged(object sender, EventArgs e)
         {
@@ -70,6 +71,63 @@ namespace SettingsUI
                 {onCheckBox,   0x8000}, // ObjectNames
                 {ceCheckBox,  0x10000}  // CreatureEquip
             };
+
+            _settings = new Dictionary<Control, Tuple<string, object>>
+            {
+                // UI element - setting name - default value
+	            {opcodesTextBox, new Tuple<string, object>("Filters", string.Empty)},
+                {ignoreOpcodesTextBox, new Tuple<string, object>("IgnoreFilters", string.Empty)},
+                {filtersEntryTextBox, new Tuple<string, object>("IgnoreByEntryFilters", string.Empty)},
+                {areasTextBox, new Tuple<string, object>("AreaFilters", string.Empty)},
+                {sqlFileNameTextBox, new Tuple<string, object>("SQLFileName", string.Empty)},
+                {packetNumUpDown, new Tuple<string, object>("FilterPacketsNum", 0)},
+                {minPacketNumUpDown, new Tuple<string, object>("FilterPacketNumLow", 0)},
+                {maxPacketNumUpDown, new Tuple<string, object>("FilterPacketNumHigh", 0)},
+                {clientBuildComboBox, new Tuple<string, object>("ClientBuild", 0)},
+                {threadsReadNumericUpDown, new Tuple<string, object>("ThreadsRead", 0)},
+                {threadsParseNumericUpDown, new Tuple<string, object>("ThreadsParse", 0)},
+                {sqlOutputMaskLabel, new Tuple<string, object>("SQLOutput", 0)},
+                {showPromptCheckBox, new Tuple<string, object>("ShowEndPrompt", true)},
+                {logErrorCheckBox, new Tuple<string, object>("LogErrors", false)},
+                {splitOutputCheckBox, new Tuple<string, object>("SplitOutput", false)},
+                {debugReadsCheckBox, new Tuple<string, object>("DebugReads", false)},
+                {parsingLogCheckBox, new Tuple<string, object>("ParsingLog", false)},
+                {dumpFormatComboBox, new Tuple<string, object>("DumpFormat", DumpFormat.Text)},
+                {statsComboBox, new Tuple<string, object>("StatsOutput", StatsOutput.Global)},
+                {sshEnabledCheckBox, new Tuple<string, object>("SSHEnabled", false)},
+                {sshServerTextBox, new Tuple<string, object>("SSHHost", string.Empty)},
+                {sshUsernameTextBox, new Tuple<string, object>("SSHUsername", string.Empty)},
+                {sshPasswordTextBox, new Tuple<string, object>("SSHPassword", string.Empty)},
+                {sshPortNumericUpDown, new Tuple<string, object>("SSHPort", 22)},
+                {sshLocalPortNumericUpDown, new Tuple<string, object>("SSHLocalPort", 3307)},
+                {dbEnabledCheckBox, new Tuple<string, object>("DBEnabled", false)},
+                {serverTextBox, new Tuple<string, object>("Server", "localhost")},
+                {portNumericUpDown, new Tuple<string, object>("Port", 3306)},
+                {usernameTextBox, new Tuple<string, object>("Username", "root")},
+                {passwordTextBox, new Tuple<string, object>("Password", string.Empty)},
+                {databaseTextBox, new Tuple<string, object>("Database", "WPP")},
+                {charSetComboBox, new Tuple<string, object>("CharacterSet", CharacterSet.UTF8)},
+	        };
+
+            LoadDefaults();
+        }
+
+        // Returns all controls (including childs and subchilds) of a specified control
+        private static IEnumerable<Control> GetAll(Control control)
+        {
+            var controls = control.Controls.Cast<Control>();
+            return controls.SelectMany(GetAll).Concat(controls);
+        }
+
+        private void LoadDefaults()
+        {
+            foreach (var control in GetAll(this).Where(control => _settings.ContainsKey(control)))
+            {
+                if (control is CheckBox) // special case for checkboxes, changing "Text" is not enough
+                    ((CheckBox) control).Checked = (bool) _settings[control].Item2;
+                else
+                    control.Text = _settings[control].Item2.ToString();
+            }
         }
 
         private void CloseButtonClick(object sender, EventArgs e)

@@ -29,6 +29,15 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.GroupBox filtersGroupBox;
+            this.sqlFileNameTextBox = new System.Windows.Forms.TextBox();
+            this.sqlFileNameLabel = new System.Windows.Forms.Label();
+            this.packetNumUpDown = new System.Windows.Forms.NumericUpDown();
+            this.maxPacketNumUpDown = new System.Windows.Forms.NumericUpDown();
+            this.minPacketNumUpDown = new System.Windows.Forms.NumericUpDown();
+            this.areasTextBox = new System.Windows.Forms.TextBox();
+            this.filtersEntryTextBox = new System.Windows.Forms.TextBox();
+            this.ignoreOpcodesTextBox = new System.Windows.Forms.TextBox();
+            this.opcodesTextBox = new System.Windows.Forms.TextBox();
             this.maxPacketNumLabel = new System.Windows.Forms.Label();
             this.minPacketNumLabel = new System.Windows.Forms.Label();
             this.numPacketLabel = new System.Windows.Forms.Label();
@@ -103,19 +112,13 @@
             this.logErrorCheckBox = new System.Windows.Forms.CheckBox();
             this.splitOutputCheckBox = new System.Windows.Forms.CheckBox();
             this.parsingLogCheckBox = new System.Windows.Forms.CheckBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.opcodesTextBox = new System.Windows.Forms.TextBox();
-            this.ignoreOpcodesTextBox = new System.Windows.Forms.TextBox();
-            this.filtersEntryTextBox = new System.Windows.Forms.TextBox();
-            this.areasTextLabel = new System.Windows.Forms.TextBox();
-            this.minPacketNumUpDown = new System.Windows.Forms.NumericUpDown();
-            this.maxPacketNumUpDown = new System.Windows.Forms.NumericUpDown();
-            this.packetNumUpDown = new System.Windows.Forms.NumericUpDown();
-            this.sqlFileNameLabel = new System.Windows.Forms.Label();
-            this.sqlFileNameTextBox = new System.Windows.Forms.TextBox();
+            this.statsComboBox = new System.Windows.Forms.ComboBox();
+            this.statsLabel = new System.Windows.Forms.Label();
             filtersGroupBox = new System.Windows.Forms.GroupBox();
             filtersGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.packetNumUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxPacketNumUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.minPacketNumUpDown)).BeginInit();
             this.connectionControl.SuspendLayout();
             this.dbTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.portNumericUpDown)).BeginInit();
@@ -129,9 +132,6 @@
             this.clientBuildPanel.SuspendLayout();
             this.sqlOutputGroupBox.SuspendLayout();
             this.sqlOutputTableLayoutPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.minPacketNumUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maxPacketNumUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.packetNumUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // filtersGroupBox
@@ -141,7 +141,7 @@
             filtersGroupBox.Controls.Add(this.packetNumUpDown);
             filtersGroupBox.Controls.Add(this.maxPacketNumUpDown);
             filtersGroupBox.Controls.Add(this.minPacketNumUpDown);
-            filtersGroupBox.Controls.Add(this.areasTextLabel);
+            filtersGroupBox.Controls.Add(this.areasTextBox);
             filtersGroupBox.Controls.Add(this.filtersEntryTextBox);
             filtersGroupBox.Controls.Add(this.ignoreOpcodesTextBox);
             filtersGroupBox.Controls.Add(this.opcodesTextBox);
@@ -158,6 +158,71 @@
             filtersGroupBox.TabIndex = 17;
             filtersGroupBox.TabStop = false;
             filtersGroupBox.Text = "Filters";
+            // 
+            // sqlFileNameTextBox
+            // 
+            this.sqlFileNameTextBox.Location = new System.Drawing.Point(370, 98);
+            this.sqlFileNameTextBox.Name = "sqlFileNameTextBox";
+            this.sqlFileNameTextBox.Size = new System.Drawing.Size(81, 20);
+            this.sqlFileNameTextBox.TabIndex = 17;
+            // 
+            // sqlFileNameLabel
+            // 
+            this.sqlFileNameLabel.AutoSize = true;
+            this.sqlFileNameLabel.Location = new System.Drawing.Point(262, 98);
+            this.sqlFileNameLabel.Name = "sqlFileNameLabel";
+            this.sqlFileNameLabel.Size = new System.Drawing.Size(109, 13);
+            this.sqlFileNameLabel.TabIndex = 16;
+            this.sqlFileNameLabel.Text = "SQL Global Filename:";
+            // 
+            // packetNumUpDown
+            // 
+            this.packetNumUpDown.Location = new System.Drawing.Point(370, 75);
+            this.packetNumUpDown.Name = "packetNumUpDown";
+            this.packetNumUpDown.Size = new System.Drawing.Size(81, 20);
+            this.packetNumUpDown.TabIndex = 15;
+            // 
+            // maxPacketNumUpDown
+            // 
+            this.maxPacketNumUpDown.Location = new System.Drawing.Point(370, 48);
+            this.maxPacketNumUpDown.Name = "maxPacketNumUpDown";
+            this.maxPacketNumUpDown.Size = new System.Drawing.Size(81, 20);
+            this.maxPacketNumUpDown.TabIndex = 14;
+            // 
+            // minPacketNumUpDown
+            // 
+            this.minPacketNumUpDown.Location = new System.Drawing.Point(369, 22);
+            this.minPacketNumUpDown.Name = "minPacketNumUpDown";
+            this.minPacketNumUpDown.Size = new System.Drawing.Size(82, 20);
+            this.minPacketNumUpDown.TabIndex = 13;
+            // 
+            // areasTextBox
+            // 
+            this.areasTextBox.Location = new System.Drawing.Point(122, 95);
+            this.areasTextBox.Name = "areasTextBox";
+            this.areasTextBox.Size = new System.Drawing.Size(129, 20);
+            this.areasTextBox.TabIndex = 12;
+            // 
+            // filtersEntryTextBox
+            // 
+            this.filtersEntryTextBox.Location = new System.Drawing.Point(122, 69);
+            this.filtersEntryTextBox.Name = "filtersEntryTextBox";
+            this.filtersEntryTextBox.Size = new System.Drawing.Size(129, 20);
+            this.filtersEntryTextBox.TabIndex = 10;
+            // 
+            // ignoreOpcodesTextBox
+            // 
+            this.ignoreOpcodesTextBox.Location = new System.Drawing.Point(122, 43);
+            this.ignoreOpcodesTextBox.Name = "ignoreOpcodesTextBox";
+            this.ignoreOpcodesTextBox.Size = new System.Drawing.Size(129, 20);
+            this.ignoreOpcodesTextBox.TabIndex = 9;
+            // 
+            // opcodesTextBox
+            // 
+            this.opcodesTextBox.Location = new System.Drawing.Point(122, 17);
+            this.opcodesTextBox.Name = "opcodesTextBox";
+            this.opcodesTextBox.Size = new System.Drawing.Size(129, 20);
+            this.opcodesTextBox.TabIndex = 8;
             // 
             // maxPacketNumLabel
             // 
@@ -281,12 +346,11 @@
             // 
             this.charSetComboBox.Items.AddRange(new object[] {
             "UTF8",
-            "latin1"});
+            "Latin1"});
             this.charSetComboBox.Location = new System.Drawing.Point(67, 139);
             this.charSetComboBox.Name = "charSetComboBox";
             this.charSetComboBox.Size = new System.Drawing.Size(121, 21);
             this.charSetComboBox.TabIndex = 5;
-            this.charSetComboBox.Text = "UTF8";
             // 
             // databaseTextBox
             // 
@@ -294,7 +358,6 @@
             this.databaseTextBox.Name = "databaseTextBox";
             this.databaseTextBox.Size = new System.Drawing.Size(100, 20);
             this.databaseTextBox.TabIndex = 4;
-            this.databaseTextBox.Text = "WPP";
             // 
             // passwordTextBox
             // 
@@ -311,7 +374,6 @@
             this.usernameTextBox.Name = "usernameTextBox";
             this.usernameTextBox.Size = new System.Drawing.Size(100, 20);
             this.usernameTextBox.TabIndex = 2;
-            this.usernameTextBox.Text = "root";
             // 
             // portNumericUpDown
             // 
@@ -324,11 +386,6 @@
             this.portNumericUpDown.Name = "portNumericUpDown";
             this.portNumericUpDown.Size = new System.Drawing.Size(120, 20);
             this.portNumericUpDown.TabIndex = 1;
-            this.portNumericUpDown.Value = new decimal(new int[] {
-            3306,
-            0,
-            0,
-            0});
             // 
             // serverTextBox
             // 
@@ -336,7 +393,6 @@
             this.serverTextBox.Name = "serverTextBox";
             this.serverTextBox.Size = new System.Drawing.Size(100, 20);
             this.serverTextBox.TabIndex = 0;
-            this.serverTextBox.Text = "localhost";
             // 
             // characterSetLabel
             // 
@@ -423,11 +479,6 @@
             this.sshLocalPortNumericUpDown.Name = "sshLocalPortNumericUpDown";
             this.sshLocalPortNumericUpDown.Size = new System.Drawing.Size(120, 20);
             this.sshLocalPortNumericUpDown.TabIndex = 5;
-            this.sshLocalPortNumericUpDown.Value = new decimal(new int[] {
-            3307,
-            0,
-            0,
-            0});
             // 
             // label1
             // 
@@ -453,7 +504,6 @@
             this.sshUsernameTextBox.Name = "sshUsernameTextBox";
             this.sshUsernameTextBox.Size = new System.Drawing.Size(100, 20);
             this.sshUsernameTextBox.TabIndex = 2;
-            this.sshUsernameTextBox.Text = "root";
             // 
             // sshPortNumericUpDown
             // 
@@ -466,11 +516,6 @@
             this.sshPortNumericUpDown.Name = "sshPortNumericUpDown";
             this.sshPortNumericUpDown.Size = new System.Drawing.Size(120, 20);
             this.sshPortNumericUpDown.TabIndex = 1;
-            this.sshPortNumericUpDown.Value = new decimal(new int[] {
-            22,
-            0,
-            0,
-            0});
             // 
             // sshServerTextBox
             // 
@@ -478,7 +523,6 @@
             this.sshServerTextBox.Name = "sshServerTextBox";
             this.sshServerTextBox.Size = new System.Drawing.Size(100, 20);
             this.sshServerTextBox.TabIndex = 0;
-            this.sshServerTextBox.Text = "localhost";
             // 
             // label3
             // 
@@ -571,20 +615,16 @@
             // 
             // dumpFormatComboBox
             // 
-            this.dumpFormatComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.dumpFormatComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.dumpFormatComboBox.DisplayMember = "Text";
             this.dumpFormatComboBox.FormattingEnabled = true;
             this.dumpFormatComboBox.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.dumpFormatComboBox.Items.AddRange(new object[] {
-            "No dump",
+            "NoDump",
             "Text",
-            "Binary (.pkt)"});
+            "Binary"});
             this.dumpFormatComboBox.Location = new System.Drawing.Point(82, 3);
             this.dumpFormatComboBox.Name = "dumpFormatComboBox";
             this.dumpFormatComboBox.Size = new System.Drawing.Size(128, 21);
             this.dumpFormatComboBox.TabIndex = 7;
-            this.dumpFormatComboBox.Text = "Text";
             // 
             // dumpFormatLabel
             // 
@@ -626,7 +666,6 @@
             // 
             this.clientBuildComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.clientBuildComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.clientBuildComboBox.DisplayMember = "Text";
             this.clientBuildComboBox.FormattingEnabled = true;
             this.clientBuildComboBox.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.clientBuildComboBox.Items.AddRange(new object[] {
@@ -684,13 +723,10 @@
             this.clientBuildComboBox.Name = "clientBuildComboBox";
             this.clientBuildComboBox.Size = new System.Drawing.Size(128, 21);
             this.clientBuildComboBox.TabIndex = 7;
-            this.clientBuildComboBox.Text = "Auto";
             // 
             // showPromptCheckBox
             // 
             this.showPromptCheckBox.AutoSize = true;
-            this.showPromptCheckBox.Checked = true;
-            this.showPromptCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showPromptCheckBox.Location = new System.Drawing.Point(18, 162);
             this.showPromptCheckBox.Name = "showPromptCheckBox";
             this.showPromptCheckBox.Size = new System.Drawing.Size(111, 17);
@@ -992,8 +1028,6 @@
             // dbEnabledCheckBox
             // 
             this.dbEnabledCheckBox.AutoSize = true;
-            this.dbEnabledCheckBox.Checked = true;
-            this.dbEnabledCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.dbEnabledCheckBox.Location = new System.Drawing.Point(18, 116);
             this.dbEnabledCheckBox.Name = "dbEnabledCheckBox";
             this.dbEnabledCheckBox.Size = new System.Drawing.Size(83, 17);
@@ -1032,100 +1066,34 @@
             this.parsingLogCheckBox.Text = "Parsing Log";
             this.parsingLogCheckBox.UseVisualStyleBackColor = true;
             // 
-            // comboBox1
+            // statsComboBox
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "No output",
+            this.statsComboBox.FormattingEnabled = true;
+            this.statsComboBox.Items.AddRange(new object[] {
+            "NoOutput",
             "Individual",
             "Global"});
-            this.comboBox1.Location = new System.Drawing.Point(153, 181);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(69, 21);
-            this.comboBox1.TabIndex = 21;
-            this.comboBox1.Text = "Individual";
+            this.statsComboBox.Location = new System.Drawing.Point(153, 181);
+            this.statsComboBox.Name = "statsComboBox";
+            this.statsComboBox.Size = new System.Drawing.Size(69, 21);
+            this.statsComboBox.TabIndex = 21;
             // 
-            // label10
+            // statsLabel
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(116, 186);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(34, 13);
-            this.label10.TabIndex = 22;
-            this.label10.Text = "Stats:";
-            // 
-            // opcodesTextBox
-            // 
-            this.opcodesTextBox.Location = new System.Drawing.Point(122, 17);
-            this.opcodesTextBox.Name = "opcodesTextBox";
-            this.opcodesTextBox.Size = new System.Drawing.Size(129, 20);
-            this.opcodesTextBox.TabIndex = 8;
-            // 
-            // ignoreOpcodesTextBox
-            // 
-            this.ignoreOpcodesTextBox.Location = new System.Drawing.Point(122, 43);
-            this.ignoreOpcodesTextBox.Name = "ignoreOpcodesTextBox";
-            this.ignoreOpcodesTextBox.Size = new System.Drawing.Size(129, 20);
-            this.ignoreOpcodesTextBox.TabIndex = 9;
-            // 
-            // filtersEntryTextBox
-            // 
-            this.filtersEntryTextBox.Location = new System.Drawing.Point(122, 69);
-            this.filtersEntryTextBox.Name = "filtersEntryTextBox";
-            this.filtersEntryTextBox.Size = new System.Drawing.Size(129, 20);
-            this.filtersEntryTextBox.TabIndex = 10;
-            // 
-            // areasTextLabel
-            // 
-            this.areasTextLabel.Location = new System.Drawing.Point(122, 95);
-            this.areasTextLabel.Name = "areasTextLabel";
-            this.areasTextLabel.Size = new System.Drawing.Size(129, 20);
-            this.areasTextLabel.TabIndex = 12;
-            // 
-            // minPacketNumUpDown
-            // 
-            this.minPacketNumUpDown.Location = new System.Drawing.Point(369, 22);
-            this.minPacketNumUpDown.Name = "minPacketNumUpDown";
-            this.minPacketNumUpDown.Size = new System.Drawing.Size(82, 20);
-            this.minPacketNumUpDown.TabIndex = 13;
-            // 
-            // maxPacketNumUpDown
-            // 
-            this.maxPacketNumUpDown.Location = new System.Drawing.Point(370, 48);
-            this.maxPacketNumUpDown.Name = "maxPacketNumUpDown";
-            this.maxPacketNumUpDown.Size = new System.Drawing.Size(81, 20);
-            this.maxPacketNumUpDown.TabIndex = 14;
-            // 
-            // packetNumUpDown
-            // 
-            this.packetNumUpDown.Location = new System.Drawing.Point(370, 75);
-            this.packetNumUpDown.Name = "packetNumUpDown";
-            this.packetNumUpDown.Size = new System.Drawing.Size(81, 20);
-            this.packetNumUpDown.TabIndex = 15;
-            // 
-            // sqlFileNameLabel
-            // 
-            this.sqlFileNameLabel.AutoSize = true;
-            this.sqlFileNameLabel.Location = new System.Drawing.Point(262, 98);
-            this.sqlFileNameLabel.Name = "sqlFileNameLabel";
-            this.sqlFileNameLabel.Size = new System.Drawing.Size(109, 13);
-            this.sqlFileNameLabel.TabIndex = 16;
-            this.sqlFileNameLabel.Text = "SQL Global Filename:";
-            // 
-            // sqlFileNameTextBox
-            // 
-            this.sqlFileNameTextBox.Location = new System.Drawing.Point(370, 98);
-            this.sqlFileNameTextBox.Name = "sqlFileNameTextBox";
-            this.sqlFileNameTextBox.Size = new System.Drawing.Size(81, 20);
-            this.sqlFileNameTextBox.TabIndex = 17;
+            this.statsLabel.AutoSize = true;
+            this.statsLabel.Location = new System.Drawing.Point(116, 186);
+            this.statsLabel.Name = "statsLabel";
+            this.statsLabel.Size = new System.Drawing.Size(34, 13);
+            this.statsLabel.TabIndex = 22;
+            this.statsLabel.Text = "Stats:";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(481, 578);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.statsLabel);
+            this.Controls.Add(this.statsComboBox);
             this.Controls.Add(this.parsingLogCheckBox);
             this.Controls.Add(this.splitOutputCheckBox);
             this.Controls.Add(this.logErrorCheckBox);
@@ -1148,6 +1116,9 @@
             this.Load += new System.EventHandler(this.Form1Load);
             filtersGroupBox.ResumeLayout(false);
             filtersGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.packetNumUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxPacketNumUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.minPacketNumUpDown)).EndInit();
             this.connectionControl.ResumeLayout(false);
             this.dbTabPage.ResumeLayout(false);
             this.dbTabPage.PerformLayout();
@@ -1168,9 +1139,6 @@
             this.sqlOutputGroupBox.PerformLayout();
             this.sqlOutputTableLayoutPanel.ResumeLayout(false);
             this.sqlOutputTableLayoutPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.minPacketNumUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maxPacketNumUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.packetNumUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1252,12 +1220,12 @@
         private System.Windows.Forms.CheckBox logErrorCheckBox;
         private System.Windows.Forms.CheckBox splitOutputCheckBox;
         private System.Windows.Forms.CheckBox parsingLogCheckBox;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.ComboBox statsComboBox;
+        private System.Windows.Forms.Label statsLabel;
         private System.Windows.Forms.NumericUpDown packetNumUpDown;
         private System.Windows.Forms.NumericUpDown maxPacketNumUpDown;
         private System.Windows.Forms.NumericUpDown minPacketNumUpDown;
-        private System.Windows.Forms.TextBox areasTextLabel;
+        private System.Windows.Forms.TextBox areasTextBox;
         private System.Windows.Forms.TextBox filtersEntryTextBox;
         private System.Windows.Forms.TextBox ignoreOpcodesTextBox;
         private System.Windows.Forms.TextBox opcodesTextBox;
