@@ -13,13 +13,17 @@ namespace SettingsUI
         {
             try
             {
-                _xmlDocument.Load(_documentPath); 
+                ExistingFile = true;
+                _xmlDocument.Load(_documentPath);
             }
             catch
             {
+                ExistingFile = false;
                 _xmlDocument.LoadXml("<settings></settings>");
             }
         }
+
+        public bool ExistingFile;
 
         public bool GetSetting(string xPath, bool defaultValue)
         {

@@ -75,7 +75,7 @@ namespace SettingsUI
             _settings = new Dictionary<Control, Tuple<string, object>>
             {
                 // UI element - setting name - default value
-	            {opcodesTextBox, new Tuple<string, object>("Filters", string.Empty)},
+                {opcodesTextBox, new Tuple<string, object>("Filters", string.Empty)},
                 {ignoreOpcodesTextBox, new Tuple<string, object>("IgnoreFilters", string.Empty)},
                 {filtersEntryTextBox, new Tuple<string, object>("IgnoreByEntryFilters", string.Empty)},
                 {areasTextBox, new Tuple<string, object>("AreaFilters", string.Empty)},
@@ -95,8 +95,8 @@ namespace SettingsUI
                 {dumpFormatComboBox, new Tuple<string, object>("DumpFormat", DumpFormat.Text)},
                 {statsComboBox, new Tuple<string, object>("StatsOutput", StatsOutput.Global)},
                 {sshEnabledCheckBox, new Tuple<string, object>("SSHEnabled", false)},
-                {sshServerTextBox, new Tuple<string, object>("SSHHost", string.Empty)},
-                {sshUsernameTextBox, new Tuple<string, object>("SSHUsername", string.Empty)},
+                {sshServerTextBox, new Tuple<string, object>("SSHHost", "localhost")},
+                {sshUsernameTextBox, new Tuple<string, object>("SSHUsername", "root")},
                 {sshPasswordTextBox, new Tuple<string, object>("SSHPassword", string.Empty)},
                 {sshPortNumericUpDown, new Tuple<string, object>("SSHPort", 22)},
                 {sshLocalPortNumericUpDown, new Tuple<string, object>("SSHLocalPort", 3307)},
@@ -109,24 +109,19 @@ namespace SettingsUI
                 {charSetComboBox, new Tuple<string, object>("CharacterSet", CharacterSet.UTF8)},
 	        };
 
-            LoadDefaults();
-        }
-
-        // Returns all controls (including childs and subchilds) of a specified control
-        private static IEnumerable<Control> GetAll(Control control)
-        {
-            var controls = control.Controls.Cast<Control>();
-            return controls.SelectMany(GetAll).Concat(controls);
+            var set = new Settings();
+            if (!set.ExistingFile)
+                LoadDefaults();
         }
 
         private void LoadDefaults()
         {
-            foreach (var control in GetAll(this).Where(control => _settings.ContainsKey(control)))
+            foreach (var element in _settings)
             {
-                if (control is CheckBox) // special case for checkboxes, changing "Text" is not enough
-                    ((CheckBox) control).Checked = (bool) _settings[control].Item2;
+                if (element.Key is CheckBox) // special case for checkboxes, changing "Text" is not correct
+                    ((CheckBox) element.Key).Checked = (bool) element.Value.Item2;
                 else
-                    control.Text = _settings[control].Item2.ToString();
+                    element.Key.Text = element.Value.Item2.ToString();
             }
         }
 
