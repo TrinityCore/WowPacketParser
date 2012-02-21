@@ -139,13 +139,5 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ToGuid("Unk Guid?", guid);
         }
-
-        [Parser(Opcode.TEST_422_51447)]
-        public static void Handle51447(Packet packet)
-        {
-            packet.ReadGuid("Guid");
-            packet.ReadByte("Unk 1");
-            packet.ReadVector3("Position");
-        }
     }
 }

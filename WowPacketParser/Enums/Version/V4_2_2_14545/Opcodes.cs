@@ -57,7 +57,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_CALENDAR_EVENT_INVITE, 0x1EDA},
             {Opcode.CMSG_CALENDAR_EVENT_MODERATOR_STATUS, 0xCCFA},
             {Opcode.CMSG_CALENDAR_EVENT_REMOVE_INVITE, 0xCCD2},
-            {Opcode.CMSG_CALENDAR_EVENT_RSVP, 0x1EDA},
             {Opcode.CMSG_CALENDAR_EVENT_STATUS, 0x4E67},
             {Opcode.CMSG_CALENDAR_UPDATE_EVENT, 0x5CD2},
             {Opcode.CMSG_CANCEL_AURA, 0x9C43},
@@ -138,7 +137,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.CMSG_GUILD_ACCEPT, 0x8889},
             {Opcode.CMSG_GUILD_BANKER_ACTIVATE, 0x4E77},
             {Opcode.CMSG_GUILD_BANK_DEPOSIT_MONEY, 0x4847},
-            {Opcode.CMSG_GUILD_BANK_QUERY_TAB, 0xDE46},
             {Opcode.CMSG_GUILD_BANK_SWAP_ITEMS, 0x85B},
             {Opcode.CMSG_GUILD_DECLINE, 0x8D5A},
             {Opcode.CMSG_GUILD_DISBAND, 0x8958},
@@ -343,7 +341,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.MSG_QUERY_NEXT_MAIL_TIME, 0xCEE6},
             {Opcode.MSG_QUEST_PUSH_RESULT, 0x1863},
             {Opcode.MSG_RAID_READY_CHECK, 0x584E},
-            {Opcode.MSG_RAID_READY_CHECK_CONFIRM, 0x584E},
             {Opcode.MSG_RAID_TARGET_UPDATE, 0x1E5F},
             {Opcode.MSG_RANDOM_ROLL, 0x4C57},
             {Opcode.MSG_SAVE_GUILD_EMBLEM, 0x4EE3},
@@ -645,7 +642,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_RAID_GROUP_ONLY, 0xDCDB},
             {Opcode.SMSG_RAID_INSTANCE_INFO, 0x4ACA},
             {Opcode.SMSG_RAID_INSTANCE_MESSAGE, 0x0D862},
-            {Opcode.SMSG_RAID_READY_CHECK, 0x584E},
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0xF0DC},
             {Opcode.SMSG_READ_ITEM_FAILED, 0x0C5B},
             {Opcode.SMSG_READ_ITEM_OK, 0x9ECE},
@@ -745,7 +741,6 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             // Tests
             {Opcode.TEST_422_265C, 0x265C},
             {Opcode.TEST_422_9838, 9838},
-            {Opcode.TEST_422_51447, 0xC8F7},
             {Opcode.TEST_422_13022, 13022}
 
             // CMSG Handlers
