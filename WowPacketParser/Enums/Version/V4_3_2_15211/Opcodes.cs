@@ -31,12 +31,14 @@ namespace WowPacketParser.Enums.Version//.V4_3_2_15211
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x25FB},
             {Opcode.SMSG_DB_REPLY, 0x06D1},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x4D9B},
+            {Opcode.SMSG_GAMEOBJECT_CUSTOM_ANIM, 0x4543},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x253D},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x25B7},
             {Opcode.SMSG_GUILD_EVENT, 0x65F5},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x2D33},
             {Opcode.SMSG_GUILD_RANK, 0x1EB1}, // Not confirmed
             {Opcode.SMSG_GUILD_ROSTER, 0x1E94}, // Not confirmed
+            {Opcode.SMSG_INIT_WORLD_STATES, 0x0D25},
             {Opcode.SMSG_MESSAGECHAT, 0x0529},
             {Opcode.SMSG_MOTD, 0x6D11},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x455D},
@@ -50,6 +52,8 @@ namespace WowPacketParser.Enums.Version//.V4_3_2_15211
             {Opcode.SMSG_REDIRECT_CLIENT, 0x1329},
             {Opcode.SMSG_TRAINER_LIST, 0x6D85},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x4D8F},
+            {Opcode.SMSG_UPDATE_OBJECT, 0x0D63},
+            {Opcode.SMSG_UPDATE_WORLD_STATE, 0x45E5},
             {Opcode.SMSG_WARDEN_DATA, 0x0CF0},
             {Opcode.SMSG_SPELL_GO, 0x6DEF},
             {Opcode.SMSG_SPELL_START, 0x6D27},
