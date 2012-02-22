@@ -75,7 +75,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadUInt32("Honor");
             packet.ReadGuid("GUID");
-            packet.ReadUInt32("Rank");
+            packet.ReadInt32("Rank");
         }
 
         [Parser(Opcode.CMSG_SETSHEATHED)]
