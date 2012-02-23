@@ -677,5 +677,22 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
         }
+
+        [Parser(Opcode.SMSG_ITEM_REFUND_RESULT)]
+        public static void HandleItemRefundResult(Packet packet)
+        {
+            packet.ReadGuid("Item Guid");
+            packet.ReadInt32("Error ID");
+        }
+
+        [Parser(Opcode.SMSG_ITEM_REFUND_RESULT, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleItemRefundResult422(Packet packet)
+        {
+            var guid = packet.StartBitStream(5, 0, 3, 7, 4, 1, 6, 2);
+            packet.ParseBitStream(guid, 1, 5);
+            packet.ReadInt32("Error ID");
+            packet.ParseBitStream(guid, 2, 4, 7, 3, 6, 0);
+            packet.ToGuid("Item Guid", guid);
+        }
     }
 }
