@@ -104,9 +104,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedTime("Unk PackedTime");
             packet.ReadInt32("Guild");
 
-            if ((flags & CalendarFlag.WithoutInvites) != 0)
-                return;
-
             var invCount = packet.ReadInt32("Invite Count");
 
             for (var i = 0; i < invCount; i++)
@@ -392,15 +389,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk int32 (UpdatedAlert)");
         }
 
-        //[Parser(Opcode.SMSG_CALENDAR_COMMAND_RESULT)]
+        [Parser(Opcode.SMSG_CALENDAR_COMMAND_RESULT)]
         public static void HandleCalendarCommandResult(Packet packet)
         {
-            /* Find correct order
-              packet.ReadInt32("Unk 3");
-              packet.ReadByte("Unk 1");
-              packet.ReadInt32("Unk 4");
-              packet.ReadByte("Unk 2");
-            */
+            packet.ReadInt32("UnkInt1");
+            packet.ReadCString("UnkString1");
+            packet.ReadCString("Param 1"); // if %s is used in the error message
+            packet.ReadEnum<CalendarError>("Error", TypeCode.Int32);
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_REMOVED_ALERT)]
