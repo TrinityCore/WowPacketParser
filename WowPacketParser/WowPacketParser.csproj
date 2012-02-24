@@ -115,6 +115,7 @@
     <Compile Include="Enums\BarberShopResult.cs" />
     <Compile Include="Enums\BattlegroundError.cs" />
     <Compile Include="Enums\BillingFlag.cs" />
+    <Compile Include="Enums\CalendarError.cs" />
     <Compile Include="Enums\CalendarEventStatus.cs" />
     <Compile Include="Enums\CalendarEventType.cs" />
     <Compile Include="Enums\CalendarFlag.cs" />
