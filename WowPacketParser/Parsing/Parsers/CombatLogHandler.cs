@@ -286,7 +286,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Damage", index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183))
-                packet.ReadUInt32("Overkill", index);
+                packet.ReadInt32("Overkill", index);
 
             packet.ReadByte("SchoolMask", index);
             packet.ReadUInt32("Absorb", index);
