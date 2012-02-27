@@ -427,7 +427,8 @@ namespace WowPacketParser.Misc
         {
             var val = (int) ReadValue(Type.GetTypeCode(typeof (T)));
             WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, StoreGetters.GetName(type, val), (Settings.DebugReads ? " (0x" + val.ToString("X4") + ")" : String.Empty));
-            WriteToFile = Filters.CheckFilter(type, val);
+            if (WriteToFile)
+                WriteToFile = Filters.CheckFilter(type, val);
             return val;
         }
 
