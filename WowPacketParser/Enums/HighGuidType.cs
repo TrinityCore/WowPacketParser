@@ -3,9 +3,10 @@ namespace WowPacketParser.Enums
     public enum HighGuidType
     {
         Player          = 0x000, // Seen 0x280 for players too
+        BattleGround1   = 0x101,
         InstanceSave    = 0x104,
         Group           = 0x105,
-        BattleGround    = 0x109,
+        BattleGround2   = 0x109,
         MOTransport     = 0x10C,
         Guild           = 0x10F,
         Item            = 0x400, // Container

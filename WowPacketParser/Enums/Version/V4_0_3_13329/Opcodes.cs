@@ -248,7 +248,7 @@ namespace WowPacketParser.Enums.Version//.V4_0_3_13329
             {Opcode.CMSG_SPLIT_ITEM, 0x010E}, // NF()(0x010E) //
             {Opcode.CMSG_AUTOEQUIP_ITEM_SLOT, 0x010F}, // NF()(0x010F) //
             {Opcode.OBSOLETE_DROP_ITEM, 0x0110}, // NF()(0x0110) //
-            {Opcode.CMSG_DESTROYITEM, 0x0111}, // NF()(0x0111) //
+            {Opcode.CMSG_DESTROY_ITEM, 0x0111}, // NF()(0x0111) //
             {Opcode.SMSG_INVENTORY_CHANGE_FAILURE, 0xD655}, // (0x4319)(0x0112) //
             {Opcode.SMSG_OPEN_CONTAINER, 0x1C5F}, // (0x6AB0)(0x0113) //
             {Opcode.CMSG_INSPECT, 0xAF7F}, // (0x2334)(0x0114) //
@@ -688,7 +688,7 @@ namespace WowPacketParser.Enums.Version//.V4_0_3_13329
             {Opcode.SMSG_PLAY_SOUND, 0xA47F}, // (0xA2D1)(0x02D2) //
             {Opcode.CMSG_BATTLEFIELD_STATUS, 0x02D3}, // NF()(0x02D3) //
             {Opcode.SMSG_BATTLEFIELD_STATUS, 0x02D4}, // NF()(0x02D4) //
-            {Opcode.CMSG_BATTLEFIELD_PORT, 0xFFBD}, // NF(0x1373)(0x02D5) //
+            {Opcode.CMSG_BATTLEGROUND_PORT_AND_LEAVE, 0xFFBD}, // NF(0x1373)(0x02D5) //
             {Opcode.MSG_INSPECT_HONOR_STATS, 0x02D6}, // NF()(0x02D6) //
             {Opcode.CMSG_BATTLEMASTER_HELLO, 0x02D7}, // NF()(0x02D7) //
             {Opcode.CMSG_MOVE_START_SWIM_CHEAT, 0x02D8}, // NF()(0x02D8) //
@@ -1194,13 +1194,13 @@ namespace WowPacketParser.Enums.Version//.V4_0_3_13329
             {Opcode.UMSG_UNKNOWN_1227, 0x04CB}, // NF()(0x04CB) // // not found 3.2
             {Opcode.UMSG_UNKNOWN_1228, 0x04CC}, // NF()(0x04CC) // // not found 3.2
             {Opcode.SMSG_MULTIPLE_PACKETS_2, 0x957E}, // (0x0B5C)(0x04CD) //dles any opcode
-            {Opcode.SMSG_FORCE_UNK1_SPEED_CHANGE, 0x04CE}, // NF()(0x04CE) // // SMSG}, movement related
-            {Opcode.CMSG_FORCE_UNK1_SPEED_CHANGE_ACK, 0x04CF}, // NF()(0x04CF) // // movement related
-            {Opcode.SMSG_FORCE_UNK2_SPEED_CHANGE, 0x04D0}, // NF()(0x04D0) // // SMSG}, movement related
-            {Opcode.CMSG_FORCE_UNK2_SPEED_CHANGE_ACK, 0x04D1}, // NF()(0x04D1) // // movement related
+            {Opcode.SMSG_MOVE_GRAVITY_DISABLE, 0x04CE}, // NF()(0x04CE) // // SMSG}, movement related
+            {Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK, 0x04CF}, // NF()(0x04CF) // // movement related
+            {Opcode.SMSG_MOVE_GRAVITY_ENABLE, 0x04D0}, // NF()(0x04D0) // // SMSG}, movement related
+            {Opcode.CMSG_MOVE_GRAVITY_ENABLE_ACK, 0x04D1}, // NF()(0x04D1) // // movement related
             {Opcode.MSG_MOVE_UNKNOWN_1234, 0x04D2}, // NF()(0x04D2) // // SMSG}, movement related
-            {Opcode.SMSG_SPLINE_MOVE_UNKNOWN_1235, 0x04D3}, // NF()(0x04D3) // // SMSG}, movement related
-            {Opcode.SMSG_SPLINE_MOVE_UNKNOWN_1236, 0x04D4}, // NF()(0x04D4) // // SMSG}, movement related
+            {Opcode.SMSG_SPLINE_MOVE_GRAVITY_DISABLE, 0x04D3}, // NF()(0x04D3) // // SMSG}, movement related
+            {Opcode.SMSG_SPLINE_MOVE_GRAVITY_ENABLE, 0x04D4}, // NF()(0x04D4) // // SMSG}, movement related
             {Opcode.CMSG_EQUIPMENT_SET_USE, 0x04D5}, // NF()(0x04D5) // // CMSG}, lua: UseEquipmentSet
             {Opcode.SMSG_EQUIPMENT_SET_USE_RESULT, 0xF657}, // (0x02D9)(0x04D6) //EquipmentSetResult?
             {Opcode.UMSG_UNKNOWN_1239, 0x04D7}, // NF()(0x04D7) // // not found 3.2

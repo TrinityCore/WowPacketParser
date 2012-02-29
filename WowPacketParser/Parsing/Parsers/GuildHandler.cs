@@ -29,6 +29,13 @@ namespace WowPacketParser.Parsing.Parsers
             // Moved here to have all Guild related opcodes together
         }
 
+        [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleGuildRoster406(Packet packet)
+        {
+            packet.ReadGuid("Guild GUID");
+            packet.ReadGuid("Player GUID");
+        }
+
         [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleGuildRoster(Packet packet)
         {
@@ -101,6 +108,13 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 HandleGuildRoster422(packet2);
             }
+        }
+
+        [Parser(Opcode.CMSG_GUILD_UPDATE_PARTY_STATE)]
+        public static void HandleGuildUpdatePartyState(Packet packet)
+        {
+            packet.ReadGuid("Guild GUID");
+            packet.ReadGuid("Player GUID");
         }
 
         [Parser(Opcode.CMSG_GUILD_QUERY)]
@@ -290,6 +304,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_INFO_TEXT)]
         public static void HandleGuildInfoText(Packet packet)
         {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
+            {
+                packet.ReadGuid("Player GUID");
+                packet.ReadGuid("Guild GUID");
+            }
             packet.ReadCString("Text");
         }
 

@@ -8,7 +8,7 @@ namespace WowPacketParser.Parsing.Parsers
     public static class AuctionHouseHandler
     {
         // TODO: Use this in more places
-        private static readonly TypeCode _auctionSize = ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) ? TypeCode.UInt64 : TypeCode.UInt32;
+        private static readonly TypeCode _auctionSize = ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623) ? TypeCode.UInt64 : TypeCode.UInt32;
 
         [Parser(Opcode.MSG_AUCTION_HELLO)]
         public static void HandleAuctionHello(Packet packet)

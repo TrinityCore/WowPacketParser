@@ -202,7 +202,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("Vendor GUID");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // not verified
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623)) // not verified
                 packet.ReadByte("Unk (byte)");
 
             packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
@@ -215,10 +215,10 @@ namespace WowPacketParser.Parsing.Parsers
             else
                 packet.ReadByte("Count");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // not verified
-                packet.ReadGuid("Unk (int64)");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623)) // not verified
+                packet.ReadGuid("Bag GUID");
 
-            packet.ReadByte("Unk (byte)");
+            packet.ReadByte("Bag Slot");
         }
 
         [Parser(Opcode.SMSG_BUY_ITEM)]
@@ -263,7 +263,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Slot");
         }
 
-        [Parser(Opcode.CMSG_DESTROYITEM)]
+        [Parser(Opcode.CMSG_DESTROY_ITEM)]
         public static void HandleDestroyItem(Packet packet)
         {
             packet.ReadSByte("Bag");

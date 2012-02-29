@@ -39,7 +39,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Accept");
         }
 
-        [Parser(Opcode.SMSG_LFG_BOOT_PLAYER)]
+        [Parser(Opcode.SMSG_LFG_BOOT_PROPOSAL_UPDATE)]
         public static void HandleLfgBootProposalUpdate(Packet packet)
         {
             packet.ReadBoolean("In Progress");
@@ -108,8 +108,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Item Or Currency Id", i);
                 packet.ReadInt32("Reward Item Display ID", i);
                 packet.ReadInt32("Reward Item Stack Count", i);
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                    packet.ReadByte("Unk", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
+                    packet.ReadBoolean("Is Currency", i);
             }
         }
 
@@ -163,6 +163,24 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadLfgEntry("LFG Entry");
         }
 
+        public static void ReadDungeonJoinResults(ref Packet packet, params int[] values)
+        {
+            var entry = packet.ReadLfgEntry("LFG Entry", values);
+            packet.ReadEnum<LfgEntryCheckResult>("Entry Check Result", TypeCode.UInt32, values);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
+            {
+                packet.ReadInt32("needed ILvL", values);
+                packet.ReadInt32("player ILvL", values);
+            }
+        }
+
+        public static void ReadPlayerLockedDungeons(ref Packet packet, int i)
+        {
+            var numFields = packet.ReadInt32("Entry Count", i);
+            for (var j = 0; j < numFields; j++)
+                ReadDungeonJoinResults(ref packet, i, j);
+        }
+
         [Parser(Opcode.SMSG_LFG_PLAYER_INFO)]
         public static void HandleLfgPlayerLockInfoResponse(Packet packet)
         {
@@ -173,17 +191,7 @@ namespace WowPacketParser.Parsing.Parsers
                 ReadLfgRewardBlock(ref packet);
             }
 
-            var numFields3 = packet.ReadInt32("Entry Count");
-            for (var j = 0; j < numFields3; j++)
-            {
-                packet.ReadLfgEntry("LFG Entry", j);
-                packet.ReadEnum<LfgEntryCheckResult>("Entry Check Result", TypeCode.UInt32, j);
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                {
-                    packet.ReadInt32("Unk 1", j);
-                    packet.ReadInt32("Unk 2", j);
-                }
-            }
+            ReadPlayerLockedDungeons(ref packet, -1);
         }
 
         [Parser(Opcode.SMSG_LFG_PARTY_INFO)]
@@ -193,9 +201,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < numFields; i++)
             {
                 packet.ReadGuid("GUID", i);
-                var numFields2 = packet.ReadInt32("Entry Count");
-                for (var j = 0; j < numFields2; j++)
-                    ReadDungeonJoinResults(ref packet);
+                ReadPlayerLockedDungeons(ref packet, i);
             }
         }
 
@@ -271,18 +277,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("GUID", i);
                 var cnt2 = packet.ReadInt32("Dungeon Count", i);
                 for (var j = 0; j < cnt2; j++)
-                    ReadDungeonJoinResults(ref packet);
-            }
-        }
-
-        public static void ReadDungeonJoinResults(ref Packet packet)
-        {
-            packet.ReadLfgEntry("LFG Entry");
-            packet.ReadEnum<LfgEntryCheckResult>("Entry Check Result", TypeCode.Int32);
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-            {
-                packet.ReadInt32("Unk 1");
-                packet.ReadInt32("Unk 2");
+                    ReadDungeonJoinResults(ref packet, i, j);
             }
         }
 

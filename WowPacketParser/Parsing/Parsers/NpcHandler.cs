@@ -27,6 +27,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleServerTrainerBuy(Packet packet)
         {
             packet.ReadGuid("GUID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_3_13329))
+                packet.ReadInt32("Unk");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_TRAINER_BUY_FAILED)
                 || packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_TRAINER_BUY_RESULT))

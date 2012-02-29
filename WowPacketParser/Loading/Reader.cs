@@ -35,7 +35,7 @@ namespace WowPacketParser.Loading
                     reader = new SQLitePacketReader(fileName);
                     break;
                 default:
-                    throw new IOException("Invalid file type");
+                    throw new IOException(String.Format("Invalid file type {0}", extension.ToLower()));
             }
 
             int firstPacketBuild = 0;

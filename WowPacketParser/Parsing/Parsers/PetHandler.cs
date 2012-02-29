@@ -148,7 +148,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Action: {0}", action);
             packet.ReadEnum<ActionButtonType>("Type", TypeCode.Byte);
             packet.ReadGuid("GUID");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596))
                 packet.ReadVector3("Position");
         }
 

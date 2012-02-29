@@ -99,7 +99,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Repeatable");
             packet.ReadInt32("Max Invites");
             packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
-            var flags = packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
+            packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
             packet.ReadPackedTime("Event Time");
             packet.ReadPackedTime("Unk PackedTime");
             packet.ReadInt32("Guild");

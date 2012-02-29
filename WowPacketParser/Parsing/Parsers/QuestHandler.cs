@@ -18,17 +18,17 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
                 for (var i = 0; i < effectiveChoiceCount; i++)
-                    packet.ReadUInt32("Choice Item Id", i);
+                    packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Choice Item Id", i);
                 for (var i = 0; i < effectiveChoiceCount; i++)
                     packet.ReadUInt32("Choice Item Count", i);
                 for (var i = 0; i < effectiveChoiceCount; i++)
                     packet.ReadUInt32("Choice Item Display Id", i);
 
-                var rewardCount = packet.ReadUInt32("Reward Item Count");
-                var effectiveRewardCount = ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164) ? 4 : rewardCount;
+                packet.ReadUInt32("Reward Item Count");
+                var effectiveRewardCount = 4;
 
                 for (var i = 0; i < effectiveRewardCount; i++)
-                    packet.ReadUInt32("Reward Item Id", i);
+                    packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Reward Item Id", i);
                 for (var i = 0; i < effectiveRewardCount; i++)
                     packet.ReadUInt32("Reward Item Count", i);
                 for (var i = 0; i < effectiveRewardCount; i++)
@@ -38,7 +38,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 for (var i = 0; i < choiceCount; i++)
                 {
-                    packet.ReadUInt32("Choice Item Id", i);
+                    packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Choice Item Id", i);
                     packet.ReadUInt32("Choice Item Count", i);
                     packet.ReadUInt32("Choice Item Display Id", i);
                 }
@@ -46,7 +46,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var rewardCount = packet.ReadUInt32("Reward Item Count");
                 for (var i = 0; i < rewardCount; i++)
                 {
-                    packet.ReadUInt32("Reward Item Id", i);
+                    packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Reward Item Id", i);
                     packet.ReadUInt32("Reward Item Count", i);
                     packet.ReadUInt32("Reward Item Display Id", i);
                 }
@@ -581,7 +581,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
         }
 
-        [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleQuestcompleteQuest422(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -647,6 +647,16 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Title");
             packet.ReadCString("Text");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
+            {
+                packet.ReadCString("QuestGiver Text Window");
+                packet.ReadCString("QuestGiver Target Name");
+                packet.ReadCString("QuestTurn Text Window");
+                packet.ReadCString("QuestTurn Target Name");
+                packet.ReadUInt32("QuestGiverPortrait");
+                packet.ReadUInt32("QuestTurnInPortrait");
+            }
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 packet.ReadBoolean("Auto Finish");
             else
@@ -664,53 +674,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<EmoteType>("Emote Id", TypeCode.UInt32, i);
             }
 
-            var count2 = packet.ReadUInt32("Choice Item Count");
-            for (var i = 0; i < count2; i++)
-            {
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Choice Item Id", i);
-                packet.ReadUInt32("Choice Item Count", i);
-                packet.ReadUInt32("Choice Item Display Id", i);
-            }
-
-            var count3 = packet.ReadUInt32("Reward Item Count");
-            for (var i = 0; i < count3; i++)
-            {
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Reward Item Id", i);
-                packet.ReadUInt32("Reward Item Count", i);
-                packet.ReadUInt32("Reward Item Display Id", i);
-            }
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                packet.ReadUInt32("Money");
-
-            packet.ReadUInt32("XP");
-            packet.ReadUInt32("Honor Points");
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                packet.ReadSingle("Honor Multiplier");
-
-            packet.ReadUInt32("Unk UInt32 1");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell Id");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell Cast Id");
-            packet.ReadUInt32("Title Id");
-
-            if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                packet.ReadUInt32("Bonus Talent");
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-            {
-                packet.ReadUInt32("Arena Points");
-                packet.ReadUInt32("Unk Uint32");
-
-                for (var i = 0; i < 5; i++)
-                    packet.ReadUInt32("Reputation Faction", i);
-
-                for (var i = 0; i < 5; i++)
-                    packet.ReadUInt32("Reputation Value Id", i);
-
-                for (var i = 0; i < 5; i++)
-                    packet.ReadInt32("Reputation Value", i);
-            }
+            ReadExtraQuestInfo(ref packet);
         }
 
         [Parser(Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD)]
@@ -797,12 +761,21 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE))
                 count = packet.ReadUInt32("Count");
 
-            var typeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333) ? TypeCode.Int32 : TypeCode.Byte;
-
-            for (int i = 0; i < count; i++)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
             {
-                packet.ReadGuid("GUID", i);
-                packet.ReadEnum<QuestGiverStatus>("Status", typeCode, i);
+                for (int i = 0; i < count; i++)
+                {
+                    packet.ReadGuid("GUID", i);
+                    packet.ReadEnum<QuestGiverStatus4x>("Status", TypeCode.Int32, i);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    packet.ReadGuid("GUID", i);
+                    packet.ReadEnum<QuestGiverStatus>("Status", TypeCode.Byte, i);
+                }
             }
         }
 

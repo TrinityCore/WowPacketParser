@@ -132,7 +132,13 @@ namespace WowPacketParser.Misc
 
             switch (GetHighType())
             {
-                case HighGuidType.BattleGround:
+                case HighGuidType.BattleGround1:
+                {
+                    var bgType = Full & 0x00000000000000FF;
+                    return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()
+                        + " BgType: " + StoreGetters.GetName(StoreNameType.Battleground, (int)bgType);
+                }
+                case HighGuidType.BattleGround2:
                 {
                     var bgType    = (Full & 0x00FF0000) >> 16;
                     var unkId     = (Full & 0x0000FF00) >> 8;

@@ -6,8 +6,60 @@ using Guid = WowPacketParser.Misc.Guid;
 namespace WowPacketParser.Parsing.Parsers
 {
     public static class BattlegroundHandler
-
     {
+        [Parser(Opcode.SMSG_BATTLEGROUND_EXIT_QUEUE)]
+        public static void HandleBattlefieldStatus1(Packet packet)
+        {
+            packet.ReadUInt32("Queue slot");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEGROUND_IN_PROGRESS)]
+        public static void HandleBattlefieldStatus2(Packet packet)
+        {
+            packet.ReadBit("IsRated");
+            packet.ReadUInt32("Time since started");
+            packet.ReadUInt32("Queue slot");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadGuid("BG Guid");
+            packet.ReadUInt32("Time until closed");
+            packet.ReadByte("Teamsize");
+            packet.ReadByte("Max Level");
+            packet.ReadUInt32("Client Instance ID");
+            packet.ReadByte("Min Level");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEGROUND_WAIT_JOIN)]
+        public static void HandleBattlefieldStatus3(Packet packet)
+        {
+            packet.ReadBit("IsArena");
+            packet.ReadByte("Min Level");
+            packet.ReadUInt32("Client Instance ID");
+            packet.ReadGuid("BG Guid");
+            packet.ReadInt32("Queue slot");
+            packet.ReadByte("Teamsize");
+            packet.ReadUInt32("Expire Time");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadByte("Max Level");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEGROUND_WAIT_LEAVE)]
+        public static void HandleBattlefieldStatus4(Packet packet)
+        {
+            packet.ReadByte("Unk");
+            packet.ReadUInt32("Time left");
+            packet.ReadByte("Min Level");
+            packet.ReadByte("Unk2");
+            packet.ReadByte("Unk3");
+            packet.ReadInt32("Queue slot");
+            packet.ReadByte("Max Level");
+            packet.ReadUInt32("Time2");
+            packet.ReadByte("Teamsize");
+            packet.ReadUInt32("Client Instance ID");
+            packet.ReadByte("Unk4");
+            packet.ReadGuid("BG Guid");
+            packet.ReadByte("Unk5");
+        }
+
         [Parser(Opcode.SMSG_AREA_SPIRIT_HEALER_TIME)]
         public static void HandleAreaSpiritHealerTime(Packet packet)
         {
@@ -37,7 +89,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_JOIN, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleBattlefieldJoin(Packet packet)
+        public static void HandleBattlefieldJoin422(Packet packet)
         {
             var bytes = new byte[8];
 
@@ -76,6 +128,14 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (bytes[7] != 0)
                 bytes[7] ^= packet.ReadByte("unk7");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEFIELD_JOIN)]
+        public static void HandleBattlefieldJoin(Packet packet)
+        {
+            packet.ReadBit("asGroup");
+            packet.ReadUInt32("Unk1");
+            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_LIST)]
@@ -195,7 +255,28 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleBattlefieldListServer406(Packet packet)
+        {
+            packet.ReadEnum<UnknownFlags>("Flags", TypeCode.Byte); // 0x10 Already won, 0x20 all cases, 0x80 From UI
+            packet.ReadByte("Min level");
+            packet.ReadInt32("Winner Honor Reward");
+            packet.ReadGuid("GUID");
+            packet.ReadInt32("Random Winner Honor Reward");
+            packet.ReadByte("Max level");
+            packet.ReadInt32("Random Loser Honor Reward");
+            packet.ReadInt32("Random Winner Conquest Reward");
+            packet.ReadInt32("Winner Conquest Reward");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
+
+            var count = packet.ReadUInt32("BG Instance count");
+            for (var i = 0; i < count; i++)
+                packet.ReadUInt32("Instance ID", i);
+
+            packet.ReadInt32("Loser Honor Reward");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleBattlefieldListServer(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -225,7 +306,14 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("[" + i + "] Instance ID");
         }
 
-        [Parser(Opcode.CMSG_BATTLEFIELD_PORT)]
+        [Parser(Opcode.CMSG_BATTLEGROUND_PORT_AND_LEAVE, ClientVersionBuild.V4_0_6a_13623)]
+        public static void HandleBattlefieldPort406(Packet packet)
+        {
+            packet.ReadBit("Join");
+            packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEGROUND_PORT_AND_LEAVE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleBattlefieldPort(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -353,7 +441,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_JOINED_BATTLEGROUND_QUEUE, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleJoinedBattlegroundQueue(Packet packet)
+        public static void HandleJoinedBattlegroundQueue422(Packet packet)
         {
             var guidBytes = new byte[8];
             var field14 = new byte[4];
@@ -446,6 +534,20 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("BGError: {0}", bgError);
         }
 
+        [Parser(Opcode.SMSG_JOINED_BATTLEGROUND_QUEUE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleJoinedBattlegroundQueue(Packet packet)
+        {
+            packet.ReadByte("Flags");
+            packet.ReadByte("Max Level");
+            packet.ReadInt32("Avg Wait Time");
+            packet.ReadInt32("Queue Slot");
+            packet.ReadInt32("Instance ID");
+            packet.ReadByte("Min Level");
+            packet.ReadGuid("BG Guid");
+            packet.ReadByte("Team Size");
+            packet.ReadInt32("Time in queue");
+        }
+
         [Parser(Opcode.TEST_422_265C, ClientVersionBuild.V4_2_2_14545)] // SMSG
         public static void HandleRGroupJoinedBattleground422(Packet packet)
         {
@@ -516,6 +618,13 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGE, ClientVersionBuild.V4_0_6a_13623)]
+        public static void HandleBattlefieldMgrStateChanged406(Packet packet)
+        {
+            packet.ReadEnum<BattlegroundStatus>("status", TypeCode.UInt32);
+            packet.ReadGuid("BG Guid");
+        }
+
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGE)]
         public static void HandleBattlefieldMgrStateChanged(Packet packet)
         {
@@ -553,6 +662,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Accepted");
             packet.ReadByte("Logging In");
             packet.ReadByte("Warmup");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERED, ClientVersionBuild.V4_0_6a_13623)]
+        public static void HandleBattlefieldMgrEntered406(Packet packet)
+        {
+            packet.ReadByte("Unk");
+            packet.ReadGuid("BG Guid");
+
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERED)]
@@ -691,7 +808,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Rank");
         }
 
-        //[Parser(Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_REQUEST)]
+        [Parser(Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_REQUEST)]
+        public static void HandleBattelfieldMgrQueueRequest(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+        }
+
         //[Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING)]
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE)]
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_SET_NEXT_TRANSITION_TIME)]

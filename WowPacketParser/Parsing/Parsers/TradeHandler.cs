@@ -33,7 +33,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_SET_TRADE_GOLD)]
         public static void HandleTradeGold(Packet packet)
         {
-            packet.ReadUInt32("Gold");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596)) // Need correct version
+                packet.ReadUInt64("Gold");
+            else
+                packet.ReadUInt32("Gold");
         }
 
         [Parser(Opcode.SMSG_TRADE_STATUS, ClientVersionBuild.V4_2_2_14545)]

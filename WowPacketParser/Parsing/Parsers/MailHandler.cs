@@ -27,7 +27,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("Mailbox GUID");
             packet.ReadUInt32("Mail Id");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596)) // need correct version
                 packet.ReadUInt64("Money");
         }
 
