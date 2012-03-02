@@ -27,6 +27,7 @@ namespace WowPacketParser.Enums
         ObjText       = 0x00040000,
         AutoAccept    = 0x00080000,
         Unk400000     = 0x00400000,
+        Unk800000     = 0x00800000,
         Unk1000000    = 0x01000000
     }
 }

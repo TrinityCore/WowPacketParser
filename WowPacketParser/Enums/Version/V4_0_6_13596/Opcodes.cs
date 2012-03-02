@@ -417,7 +417,7 @@ namespace WowPacketParser.Enums.Version//.V4_0_6_13596
             {Opcode.CMSG_QUERY_TIME, 0x0B1C0}, // 4.0.6a 13623
             {Opcode.CMSG_QUERY_VEHICLE_STATUS, 0x101F0}, // 4.0.6a 1623 (might be 0x069A0)
             {Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST, 0x020C4}, // 4.0.6a 13623 FIXME CMSG_GAMETIME_SET
-            {Opcode.CMSG_QUESTGIVER_CANCEL, 0x061EC}, // 4.0.6a 13623 FIXME SMSG_QUESTLOG_FULL
+            //{Opcode.CMSG_QUESTGIVER_CANCEL, 0x00000}, // 4.0.6a 13623
             {Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD, 0x06AC0}, // 4.0.6a 13623
             {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x0B5AC}, // 4.0.6a 13623
             {Opcode.CMSG_QUESTGIVER_HELLO, 0x036AC}, // 4.0.6a 13623
@@ -950,7 +950,7 @@ namespace WowPacketParser.Enums.Version//.V4_0_6_13596
             {Opcode.SMSG_INVENTORY_CHANGE_FAILURE, 0x0AFCC}, // 4.0.6a 13623
             {Opcode.SMSG_ITEM_COOLDOWN, 0x06CC8}, // 4.0.6a 13623
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x066A0}, // 4.0.6a 13623
-            {Opcode.SMSG_ITEM_NAME_QUERY_RESPONSE, 0x07BC8}, // 4.0.6a 13623 FIXME SMSG_NAME_QUERY_RESPONSE
+            //{Opcode.SMSG_ITEM_NAME_QUERY_RESPONSE, 0x00000}, // 4.0.6a 13623
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x0FBE8}, // 4.0.6a 13623
             {Opcode.SMSG_ITEM_REFUND_INFO_RESPONSE, 0x0095E}, // 4.0.6a 13623
             {Opcode.SMSG_ITEM_REFUND_RESULT, 0x0441E}, // 4.0.6a 13623
@@ -1034,7 +1034,7 @@ namespace WowPacketParser.Enums.Version//.V4_0_6_13596
             {Opcode.SMSG_MOVE_UNSET_WALK_IN_AIR, 0x07784}, // 4.0.6a 13623
             {Opcode.SMSG_MOVE_WATER_WALK, 0x02E84}, // 4.0.6a 13623
             {Opcode.SMSG_MULTIPLE_PACKETS_2, 0x0FEC0}, // 4.0.6a 13623
-            {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x07BC8}, // 4.0.6a 13623 FIXME SMSG_ITEM_NAME_QUERY_RESPONSE
+            {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x07BC8}, // 4.0.6a 13623
             {Opcode.SMSG_NEW_TAXI_PATH, 0x0E5E4}, // 4.0.6a 13623
             {Opcode.SMSG_NEW_WORLD, 0x0451E}, // 4.0.6a 13623
             {Opcode.SMSG_NOTIFICATION, 0x0BC88}, // 4.0.6a 13623
@@ -1105,7 +1105,7 @@ namespace WowPacketParser.Enums.Version//.V4_0_6_13596
             {Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS, 0x06EE0}, // 4.0.6a 13623 (might be 0x023A8)
             {Opcode.SMSG_QUESTGIVER_STATUS, 0x07988}, // 4.0.6a 13623
             {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, 0x0F5C0}, // 4.0.6a 13623
-            {Opcode.SMSG_QUESTLOG_FULL, 0x061EC}, // 4.0.6a 13623 FIXME CMSG_QUESTGIVER_CANCEL
+            {Opcode.SMSG_QUESTLOG_FULL, 0x061EC}, // 4.0.6a 13623
             {Opcode.SMSG_QUESTUPDATE_ADD_ITEM, 0x1006B}, // 4.0.6a 13623
             {Opcode.SMSG_QUESTUPDATE_ADD_KILL, 0x0ADA0}, // 4.0.6a 13623
             {Opcode.SMSG_QUESTUPDATE_ADD_PVP_KILL, 0x078E0}, // 4.0.6a 13623

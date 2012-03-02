@@ -8,13 +8,13 @@ namespace WowPacketParser.Parsing.Parsers
     public static class BattlegroundHandler
     {
         [Parser(Opcode.SMSG_BATTLEGROUND_EXIT_QUEUE)]
-        public static void HandleBattlefieldStatus1(Packet packet)
+        public static void HandleBattlegroundExitQueue(Packet packet)
         {
             packet.ReadUInt32("Queue slot");
         }
 
         [Parser(Opcode.SMSG_BATTLEGROUND_IN_PROGRESS)]
-        public static void HandleBattlefieldStatus2(Packet packet)
+        public static void HandleBattlegroundInProgress(Packet packet)
         {
             packet.ReadBit("IsRated");
             packet.ReadUInt32("Time since started");
@@ -29,7 +29,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_BATTLEGROUND_WAIT_JOIN)]
-        public static void HandleBattlefieldStatus3(Packet packet)
+        public static void HandleBattlegroundWaitJoin(Packet packet)
         {
             packet.ReadBit("IsArena");
             packet.ReadByte("Min Level");
@@ -43,7 +43,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_BATTLEGROUND_WAIT_LEAVE)]
-        public static void HandleBattlefieldStatus4(Packet packet)
+        public static void HandleBattlegroundWaitLeave(Packet packet)
         {
             packet.ReadByte("Unk");
             packet.ReadUInt32("Time left");
@@ -130,7 +130,7 @@ namespace WowPacketParser.Parsing.Parsers
                 bytes[7] ^= packet.ReadByte("unk7");
         }
 
-        [Parser(Opcode.CMSG_BATTLEFIELD_JOIN)]
+        [Parser(Opcode.CMSG_BATTLEFIELD_JOIN, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleBattlefieldJoin(Packet packet)
         {
             packet.ReadBit("asGroup");

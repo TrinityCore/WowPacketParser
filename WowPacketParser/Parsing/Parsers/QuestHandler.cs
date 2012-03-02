@@ -632,7 +632,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk flags 3");
             packet.ReadUInt32("Unk flags 4");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
                 packet.ReadUInt32("Unk flags 5");
                 packet.ReadUInt32("Unk flags 6");
@@ -698,7 +698,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<QuestReasonType>("Reason", TypeCode.UInt32);
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE)]
+        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleQuestCompleted(Packet packet)
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
@@ -715,6 +715,18 @@ namespace WowPacketParser.Parsing.Parsers
             var arenapoints = packet.ReadInt32();
             if (arenapoints < 0)
                 packet.WriteLine("Arenapoints: " + arenapoints);
+        }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleQuestCompleted406(Packet packet)
+        {
+            packet.ReadBit("Unk");
+            packet.ReadUInt32("Reward Skill Id");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
+            packet.ReadInt32("Money");
+            packet.ReadInt32("Talent Points");
+            packet.ReadUInt32("Reward Skill Points");
+            packet.ReadInt32("Reward XP");
         }
 
         [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.V4_2_2_14545)]
