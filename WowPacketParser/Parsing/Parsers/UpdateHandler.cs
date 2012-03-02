@@ -287,7 +287,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadVector3("GO Transport Position", index);
 
                     moveInfo.Orientation = packet.ReadSingle("[" + index + "] GO Orientation");
-                    packet.ReadSingle("GO Transport Orientation", index);
+                    packet.ReadSingle("Corpse Orientation", index);
                 }
                 else if (flags.HasAnyFlag(UpdateFlag.StationaryObject))
                 {
@@ -300,17 +300,17 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
             {
                 if (flags.HasAnyFlag(UpdateFlag.Unknown1))
-                    packet.ReadInt32("Unk Int32", index);
+                    packet.ReadUInt32("Unk Int32", index);
 
                 if (flags.HasAnyFlag(UpdateFlag.LowGuid))
-                    packet.ReadInt32("Low GUID", index);
+                    packet.ReadUInt32("Low GUID", index);
             }
 
             if (flags.HasAnyFlag(UpdateFlag.AttackingTarget))
                 packet.ReadPackedGuid("Target GUID", index);
 
             if (flags.HasAnyFlag(UpdateFlag.Transport))
-                packet.ReadInt32("Transport unk timer", index);
+                packet.ReadUInt32("Transport unk timer", index);
 
             if (flags.HasAnyFlag(UpdateFlag.Vehicle))
             {

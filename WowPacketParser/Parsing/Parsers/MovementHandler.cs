@@ -206,7 +206,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (flags.HasAnyFlag(SplineFlag.AnimationTier))
             {
                 packet.ReadEnum<MovementAnimationState>("Animation State", TypeCode.Byte);
-                packet.ReadInt32("Asynctime in ms"); // Async-time in ms
+                packet.ReadInt32("Async-time in ms");
             }
 
             if (flags.HasAnyFlag(SplineFlag.Falling)) // Could be SplineFlag.UsePathSmoothing
@@ -221,7 +221,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (flags.HasAnyFlag(SplineFlag.Trajectory))
             {
                 packet.ReadSingle("Vertical Speed");
-                packet.ReadInt32("Unk Int32 2");
+                packet.ReadInt32("Async-time in ms");
             }
 
             var waypoints = packet.ReadInt32("Waypoints");

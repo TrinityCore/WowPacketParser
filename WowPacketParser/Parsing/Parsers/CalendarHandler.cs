@@ -38,7 +38,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadPackedGuid("Creator GUID", i);
             }
 
-            packet.ReadTime("Current Time");
+            var currentTime = packet.ReadTime("Current Time");
             packet.ReadPackedTime("Zone Time?");
 
             var instanceResetCount = packet.ReadInt32("Instance Reset Count");
@@ -51,15 +51,16 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("Instance ID", i);
             }
 
-            packet.ReadTime("Constant Date");
+            var unkTime = packet.ReadTime("Constant Date");
 
             var raidResetCount = packet.ReadInt32("Raid Reset Count");
 
             for (var i = 0; i < raidResetCount; i++)
             {
                 packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID", i);
-                packet.ReadInt32("Time left", i);
-                packet.ReadInt32("Unk Time", i);
+                var timeLeft = packet.ReadInt32("Time left", i);
+                var unkTime2 = packet.ReadInt32("Unk Time", i);
+                //Some time = timeLeft + unkTime2 + unkTime - currentTime;
             }
 
             var holidayCount = packet.ReadInt32("Holiday Count");
@@ -407,14 +408,23 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte);
         }
 
-        //[Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_STATUS_ALERT)]
+        [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_STATUS_ALERT)]
         public static void HandleCalendarEventInviteStatusAlert(Packet packet)
         {
+            packet.ReadInt64("Event ID");
+            packet.ReadPackedTime("Event Time");
+            packet.ReadInt32("Unk flag"); // (v38 & 0x440) != 0
+            packet.ReadBoolean("DeletePendingInvite");
         }
 
-        //[Parser(Opcode.SMSG_CALENDAR_RAID_LOCKOUT_UPDATED)]
+        [Parser(Opcode.SMSG_CALENDAR_RAID_LOCKOUT_UPDATED)]
         public static void HandleCalendarRaidLockoutUpdated(Packet packet)
         {
+            packet.ReadPackedTime("");
+            packet.ReadInt32("Unk");
+            packet.ReadInt32("Unk");
+            packet.ReadInt16("Hours ?");
+            packet.ReadInt16("Hours ?");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_EVENT_SIGNUP)]
