@@ -417,7 +417,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<MirrorTimerType>("Timer Type", TypeCode.UInt32);
             packet.ReadUInt32("Current Value");
             packet.ReadUInt32("Max Value");
-            packet.ReadUInt32("Regen");
+            packet.ReadInt32("Regen");
             packet.ReadByte("Unk Byte");
             packet.ReadUInt32("Spell Id");
         }
