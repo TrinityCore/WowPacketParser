@@ -344,6 +344,29 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
         }
 
+        [Parser(Opcode.CMSG_UPDATE_MISSILE_TRAJECTORY)]
+        public static void HandleUpdateMissileTrajectory(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadSingle("Elevation");
+            packet.ReadSingle("Missile speed?");
+            packet.ReadVector3("Current Position");
+            packet.ReadVector3("Targeted Position");
+
+            // Boolean if it will send MSG_MOVE_STOP
+            if (!packet.ReadBoolean())
+                return;
+
+            var opcode = packet.ReadInt32();
+            // None length is recieved, so we have to calculate the remaining bytes.
+            var remainingLength = packet.GetLength() - packet.GetPosition();
+            var bytes = packet.ReadBytes((int)remainingLength);
+
+            using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.SniffFileInfo))
+                Handler.Parse(newpacket, isMultiple: true);
+        }
+
         [Parser(Opcode.MSG_MOVE_TELEPORT_ACK)]
         public static void HandleTeleportAck(Packet packet)
         {

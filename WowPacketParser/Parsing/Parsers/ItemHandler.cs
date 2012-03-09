@@ -1,5 +1,6 @@
 using System;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects;
 
@@ -95,9 +96,26 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
             packet.ReadGuid("GUID");
             packet.ReadUInt32("Glyph Index");
-            packet.ReadByte("CastFlags");
+            var castflag = packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
 
             SpellHandler.ReadSpellCastTargets(ref packet);
+
+            if (!castflag.HasAnyFlag(CastFlag.Unknown1))
+                return;
+
+            packet.ReadSingle("Elevation");
+            packet.ReadSingle("Missile speed?");
+
+            // Boolean if it will send MSG_MOVE_STOP
+            if (!packet.ReadBoolean())
+                return;
+
+            var opcode = packet.ReadInt32();
+            var remainingLength = packet.GetLength() - packet.GetPosition();
+            var bytes = packet.ReadBytes((int)remainingLength);
+
+            using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.SniffFileInfo))
+                Handler.Parse(newpacket, isMultiple: true);
         }
 
         [Parser(Opcode.CMSG_AUTOSTORE_LOOT_ITEM)]
