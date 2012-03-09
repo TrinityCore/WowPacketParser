@@ -38,7 +38,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadPackedGuid("Creator GUID", i);
             }
 
-            var currentTime = packet.ReadTime("Current Time");
+            /*var currentTime = */packet.ReadTime("Current Time");
             packet.ReadPackedTime("Zone Time?");
 
             var instanceResetCount = packet.ReadInt32("Instance Reset Count");
@@ -51,15 +51,15 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("Instance ID", i);
             }
 
-            var unkTime = packet.ReadTime("Constant Date");
+            /*var unkTime = */packet.ReadTime("Constant Date");
 
             var raidResetCount = packet.ReadInt32("Raid Reset Count");
 
             for (var i = 0; i < raidResetCount; i++)
             {
                 packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID", i);
-                var timeLeft = packet.ReadInt32("Time left", i);
-                var unkTime2 = packet.ReadInt32("Unk Time", i);
+                /*var timeLeft = */packet.ReadInt32("Time left", i);
+                /*var unkTime2 = */packet.ReadInt32("Unk Time", i);
                 //Some time = timeLeft + unkTime2 + unkTime - currentTime;
             }
 

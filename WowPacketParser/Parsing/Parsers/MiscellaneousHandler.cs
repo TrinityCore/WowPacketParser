@@ -669,6 +669,28 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Unknown2"); // value 0xC generates a "CalendarError" in client.
         }
 
+        [Parser(Opcode.CMSG_MINIGAME_MOVE)]
+        public static void HandleMinigameMove(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadByte("MoveType");
+            packet.ReadUInt32("Param");
+        }
+
+        [Parser(Opcode.SMSG_MINIGAME_SETUP)]
+        public static void HandleMiniGameSetup(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadByte("unk byte");
+            byte unk1 = packet.ReadByte("unk byte");
+            packet.ReadGuid("unk guid");
+            packet.ReadGuid("unk guid");
+            packet.ReadCString("string");
+            if (unk1 == 2)
+                packet.ReadByte("unk byte");
+        }
+
+        [Parser(Opcode.SMSG_MINIGAME_STATE)]
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
