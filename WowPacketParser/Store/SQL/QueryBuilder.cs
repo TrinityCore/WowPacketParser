@@ -51,9 +51,33 @@ namespace WowPacketParser.Store.SQL
             private readonly List<KeyValuePair<string, object>> _whereClause =
                 new List<KeyValuePair<string, object>>();
 
-            public void AddValue(string name, object value)
+            public void AddValue(string field, object value, bool isFlag = false, bool noQuotes = false)
             {
-                _values.Add(new KeyValuePair<string, object>(SQLUtil.AddBackQuotes(name), value));
+                if (value == null)
+                    return;
+
+                if (!noQuotes && value is string)
+                    value = SQLUtil.Stringify(value);
+
+                if (value is bool)
+                    value = value.Equals(true) ? 1 : 0;
+
+                if (value is Enum) // A bit hackish but oh well...
+                {
+                    try
+                    {
+                        value = (int)value;
+                    }
+                    catch (InvalidCastException)
+                    {
+                        value = (uint)value;
+                    }
+                }
+
+                if (value is int && isFlag)
+                    value = SQLUtil.Hexify((int)value);
+
+                _values.Add(new KeyValuePair<string, object>(SQLUtil.AddBackQuotes(field), value));
             }
 
             public void AddWhere(string name, object value)
@@ -92,7 +116,7 @@ namespace WowPacketParser.Store.SQL
                 {
                     iter++;
                     row.Append(values.Key);
-                    row.Append(" = ");
+                    row.Append("=");
                     row.Append(values.Value);
                     if (_values.Count != iter)
                         row.Append(SQLUtil.CommaSeparator);
@@ -105,7 +129,7 @@ namespace WowPacketParser.Store.SQL
                 {
                     iter++;
                     row.Append(whereClause.Key);
-                    row.Append(" = ");
+                    row.Append("=");
                     row.Append(whereClause.Value);
                     if (_whereClause.Count != iter)
                         row.Append(" AND ");
@@ -232,9 +256,7 @@ namespace WowPacketParser.Store.SQL
                 {
                     try
                     {
-// ReSharper disable PossibleInvalidCastException
                         value = (int)value;
-// ReSharper restore PossibleInvalidCastException
                     }
                     catch (InvalidCastException)
                     {

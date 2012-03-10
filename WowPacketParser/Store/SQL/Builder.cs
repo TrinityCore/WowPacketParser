@@ -384,6 +384,45 @@ namespace WowPacketParser.Store.SQL
             return new QueryBuilder.SQLInsert(tableName, _storage.UnitTemplates.Keys, "Id", rows).Build();
         }
 
+        //! Non-WDB data but nevertheless data that should be saved to creature_template
+        public string NpcTemplateNonWDB()
+        {
+            if (!_storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet))
+                return string.Empty;
+
+            var units = _storage.Objects.Where(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet);
+
+            const string tableName = "creature_template";
+
+            var rows = new List<QueryBuilder.SQLUpdateRow>();
+           
+            foreach (var unit in units)
+            {
+                var row = new QueryBuilder.SQLUpdateRow();
+                var npc = unit.Value;
+
+                // Only movement flags in 335 are being read correctly - fix them and remove this if
+                if (ClientVersion.GetBuild() == ClientVersionBuild.V3_3_5a_12340)
+                {
+                    if (npc.Movement.Flags.HasFlag(MovementFlag.CanFly | MovementFlag.WalkMode))
+                        row.AddValue("InhabitType", InhabitType.Ground | InhabitType.Air, isFlag: true);
+                    else if (npc.Movement.Flags.HasFlag(MovementFlag.DisableGravity))
+                        row.AddValue("InhabitType", InhabitType.Air, isFlag: true);
+                }
+
+                UpdateField hoverHeight;
+                if (npc.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_HOVERHEIGHT), out hoverHeight))
+                    row.AddValue("HoverHeight", hoverHeight.SingleValue);
+
+                row.AddWhere("entry", unit.Key.GetEntry());
+                row.Table = tableName;
+                row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
+                rows.Add(row);
+            }
+
+            return new QueryBuilder.SQLUpdate(rows).Build();
+        }
+
         public string GameObjectTemplate()
         {
             if (_storage.GameObjectTemplates.IsEmpty)

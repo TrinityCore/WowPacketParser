@@ -98,7 +98,10 @@ namespace WowPacketParser
                 store.WriteData(builder.QuestPOI());
 
             if (sqlOutput.HasAnyFlag(SQLOutputFlags.CreatureTemplate))
+            {
                 store.WriteData(builder.NpcTemplate());
+                store.WriteData(builder.NpcTemplateNonWDB());
+            }
 
             if (sqlOutput.HasAnyFlag(SQLOutputFlags.CreatureSpawns))
                 store.WriteData(builder.CreatureSpawns());

@@ -138,6 +138,7 @@
     <Compile Include="Enums\ContactResult.cs" />
     <Compile Include="Enums\ContactStatus.cs" />
     <Compile Include="Enums\BattlegroundStatus.cs" />
+    <Compile Include="Enums\InhabitType.cs" />
     <Compile Include="Enums\SQLOutputFlags.cs" />
     <Compile Include="Enums\GuildFinder.cs" />
     <Compile Include="Enums\PetModeFlags.cs" />
