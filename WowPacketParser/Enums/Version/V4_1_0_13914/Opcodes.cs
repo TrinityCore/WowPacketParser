@@ -243,6 +243,7 @@ namespace WowPacketParser.Enums.Version//.V4_1_0_13914
             {Opcode.SMSG_ACTION_BUTTONS, 0x0FD6F}, // 4.1.0 13914
             {Opcode.SMSG_BARBER_SHOP_RESULT, 0x0FF2C}, // 4.1.0 13914
             {Opcode.SMSG_GUILD_COMMAND_RESULT, 0x0FF7D}, // 4.1.0 13914
+            {Opcode.SMSG_COMPRESSED_UPDATE_OBJECT, 0xAE3F}, // 4.1.0 13914
         };
     }
 }
