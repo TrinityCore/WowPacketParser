@@ -404,9 +404,9 @@ namespace WowPacketParser.Store.SQL
                 // Only movement flags in 335 are being read correctly - fix them and remove this if
                 if (ClientVersion.GetBuild() == ClientVersionBuild.V3_3_5a_12340)
                 {
-                    if (npc.Movement.Flags.HasFlag(MovementFlag.CanFly | MovementFlag.WalkMode))
+                    if (npc.Movement.Flags.HasAnyFlag(MovementFlag.CanFly) && npc.Movement.Flags.HasAnyFlag(MovementFlag.WalkMode))
                         row.AddValue("InhabitType", InhabitType.Ground | InhabitType.Air, isFlag: true);
-                    else if (npc.Movement.Flags.HasFlag(MovementFlag.DisableGravity))
+                    else if (npc.Movement.Flags.HasAnyFlag(MovementFlag.DisableGravity))
                         row.AddValue("InhabitType", InhabitType.Air, isFlag: true);
                 }
 
