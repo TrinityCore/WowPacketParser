@@ -58,6 +58,13 @@ namespace WowPacketParser.Enums.Version//.V4_3_3_15354
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x6424}, 
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x6B65}, 
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x64AC}, 
+            {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x23E5},
+            {Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST, 0x3065},
+            {Opcode.CMSG_QUESTGIVER_QUERY_QUEST, 0x7AED},
+            {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY, 0x77E4},
+            {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x2AAD},
+            {Opcode.CMSG_QUERY_TIME, 0x3625},
+            {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x796D},
         };
     }
 }
