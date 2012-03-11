@@ -34,7 +34,6 @@ namespace WowPacketParser.Enums.Version//.V4_3_3_15354
             {Opcode.SMSG_REDIRECT_CLIENT, 0x0855},
             {Opcode.SMSG_MOTD, 0x3C6D},
             {Opcode.SMSG_MONSTER_MOVE, 0x29A5},
-            {Opcode.SMSG_QUESTGIVER_STATUS, 0x6B65},
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x6B2D},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x3EE5},
             {Opcode.SMSG_LEARNED_DANCE_MOVES, 0x2CEC},
@@ -49,7 +48,16 @@ namespace WowPacketParser.Enums.Version//.V4_3_3_15354
             {Opcode.SMSG_SPELL_START, 0x212D},
             {Opcode.SMSG_MESSAGECHAT, 0x2FEC},
             {Opcode.SMSG_AURA_UPDATE, 0x3A24},
-          
+            {Opcode.CMSG_GOSSIP_HELLO, 0x65AC}, 
+            {Opcode.CMSG_SET_SELECTION, 0x2325}, 
+            {Opcode.SMSG_GOSSIP_COMPLETE, 0x21AC}, 
+            {Opcode.SMSG_GOSSIP_MESSAGE, 0x7664}, 
+            {Opcode.CMSG_NPC_TEXT_QUERY, 0x7CA5}, 
+            {Opcode.SMSG_NPC_TEXT_UPDATE, 0x646C}, 
+            {Opcode.CMSG_CREATURE_QUERY, 0x23ED}, 
+            {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x6424}, 
+            {Opcode.CMSG_GAMEOBJECT_QUERY, 0x6B65}, 
+            {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x64AC}, 
         };
     }
 }
