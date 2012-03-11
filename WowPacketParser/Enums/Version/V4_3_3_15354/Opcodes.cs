@@ -45,7 +45,10 @@ namespace WowPacketParser.Enums.Version//.V4_3_3_15354
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x25A4},
             {Opcode.SMSG_UPDATE_ACTION_BUTTONS, 0x604C},
             {Opcode.SMSG_UPDATE_OBJECT, 0x6264},
-
+            {Opcode.SMSG_SPELL_GO, 0x6425},
+            {Opcode.SMSG_SPELL_START, 0x212D},
+            {Opcode.SMSG_MESSAGECHAT, 0x2FEC},
+            {Opcode.SMSG_AURA_UPDATE, 0x3A24},
           
         };
     }
