@@ -81,6 +81,16 @@ namespace WowPacketParser.Enums.Version
 
         public static Opcode GetOpcode(int opcodeId, int build)
         {
+            /*var dict = GetOpcodeDictionary(build);
+            var newDict = new Dictionary<Opcode, int>();
+            foreach (var pair in dict)
+            {
+                if (newDict.ContainsKey(pair.Key) || newDict.ContainsValue(pair.Value))
+                    throw new Exception(string.Format("Opcode dictionary got duplicated key ({0}) or value ({1}).",
+                                                      pair.Key, pair.Value));
+                newDict.Add(pair.Key, pair.Value);
+            }*/
+
             foreach (var pair in GetOpcodeDictionary(build).Where(pair => pair.Value == opcodeId))
                 return pair.Key;
 
