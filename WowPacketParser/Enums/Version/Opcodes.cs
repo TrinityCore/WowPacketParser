@@ -74,27 +74,17 @@ namespace WowPacketParser.Enums.Version
             return _V3_3_5_opcodes; // Default case, should pick a better one
         }
 
-        public static string GetOpcodeName(int opcodeId)
+        public static Opcode GetOpcode(int opcodeId)
         {
-            return GetOpcodeName(opcodeId, ClientVersion.GetBuildInt());
+            return GetOpcode(opcodeId, ClientVersion.GetBuildInt());
         }
 
-        public static string GetOpcodeName(int opcodeId, int build)
+        public static Opcode GetOpcode(int opcodeId, int build)
         {
-            /*var dict = GetOpcodeDictionary(build);
-            var newDict = new Dictionary<Opcode, int>();
-            foreach (var pair in dict)
-            {
-                if (newDict.ContainsKey(pair.Key) || newDict.ContainsValue(pair.Value))
-                    throw new Exception(string.Format("Opcode dictionary got duplicated key ({0}) or value ({1}).",
-                                                      pair.Key, pair.Value));
-                newDict.Add(pair.Key, pair.Value);
-            }*/
-
             foreach (var pair in GetOpcodeDictionary(build).Where(pair => pair.Value == opcodeId))
-                return pair.Key.ToString();
+                return pair.Key;
 
-            return opcodeId.ToString(CultureInfo.InvariantCulture);
+            return (Opcode)opcodeId;
         }
 
         public static int GetOpcode(Opcode opcode)
@@ -107,6 +97,11 @@ namespace WowPacketParser.Enums.Version
             int opcodeId;
             GetOpcodeDictionary(build).TryGetValue(opcode, out opcodeId);
             return opcodeId;
+        }
+
+        public static string GetOpcodeName(int opcodeId)
+        {
+            return GetOpcode(opcodeId, ClientVersion.GetBuildInt()).ToString();
         }
     }
 }

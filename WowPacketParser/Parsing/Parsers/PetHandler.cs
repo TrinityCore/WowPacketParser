@@ -229,7 +229,16 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("Pet Name", i);
                 packet.ReadByte("Stable Type", i); // 1 = current, 2/3 = in stable
             }
+        }
 
+        [Parser(Opcode.CMSG_PET_CAST_SPELL)]
+        public static void HandlePetCastSpell(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadByte("Cast Count");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
+            SpellHandler.ReadSpellCastTargets(ref packet);
         }
     }
 }

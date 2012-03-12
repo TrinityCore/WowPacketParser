@@ -715,5 +715,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Caster GUID");
             packet.ReadInt32("Delay Time");
         }
+
+        [Parser(Opcode.CMSG_CANCEL_AURA)]
+        public static void HandleCancelAura(Packet packet)
+        {
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+        }
     }
 }

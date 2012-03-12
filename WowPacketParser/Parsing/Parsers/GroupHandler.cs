@@ -195,7 +195,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadBoolean("Add arena opponent");
 
             packet.ReadPackedGuid("GUID");
-            var updateFlags = packet.ReadEnum<GroupUpdateFlag>("Update Flags", TypeCode.Int32);
+            var updateFlags = packet.ReadEnum<GroupUpdateFlag>("Update Flags", TypeCode.UInt32);
 
             if (updateFlags.HasAnyFlag(GroupUpdateFlag.Status))
                 packet.ReadEnum<GroupMemberStatusFlag>("Status", TypeCode.Int16);
@@ -241,16 +241,15 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var auraMask = packet.ReadUInt64("Auramask");
 
-                int maxAura = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 64 : 56;
+                var maxAura = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 64 : 56;
                 for (var i = 0; i < maxAura; ++i)
                 {
-                    if ((auraMask & ((ulong)1 << i)) != 0)
-                    {
-                        var aura = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? packet.ReadInt32() : packet.ReadUInt16();
+                    if ((auraMask & (1ul << i)) == 0)
+                        continue;
 
-                        packet.WriteLine("Slot: [" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, aura));
-                        packet.ReadEnum<AuraFlag>("Slot: [" + i + "] Aura flag", TypeCode.Byte);
-                    }
+                    var aura = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? packet.ReadInt32() : packet.ReadUInt16();
+                    packet.WriteLine("Slot: [" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, aura));
+                    packet.ReadEnum<AuraFlag>("Slot: [" + i + "] Aura flag", TypeCode.Byte);
                 }
             }
 
@@ -292,32 +291,21 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var auraMask = packet.ReadUInt64("Pet Auramask");
 
-                int maxAura = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 64 : 56;
+                var maxAura = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 64 : 56;
                 for (var i = 0; i < maxAura; ++i)
                 {
-                    if ((auraMask & ((ulong)1 << i)) != 0)
-                    {
-                        var aura = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? packet.ReadInt32() : packet.ReadUInt16();
+                    if ((auraMask & (1ul << i)) == 0)
+                        continue;
 
-                        packet.WriteLine("Slot: [" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, aura));
-                        packet.ReadEnum<AuraFlag>("Slot: [" + i + "] Aura flag", TypeCode.Byte);
-                    }
+                    var aura = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? packet.ReadInt32() : packet.ReadUInt16();
+                    packet.WriteLine("Slot: [" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, aura));
+                    packet.ReadEnum<AuraFlag>("Slot: [" + i + "] Aura flag", TypeCode.Byte);
                 }
             }
 
             if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) && // no idea when this was added exactly, doesn't exist in 2.4.1
                 updateFlags.HasAnyFlag(GroupUpdateFlag.VehicleSeat))
                 packet.ReadInt32("Vehicle Seat");
-
-            if (updateFlags.HasAnyFlag(GroupUpdateFlag.Unk100000))
-                packet.ReadInt32("Unk int32");
-
-            if (updateFlags.HasAnyFlag(GroupUpdateFlag.Unk200000))
-            {
-                packet.ReadInt32("Unk int32");
-                packet.ReadInt32("Unk int32");
-                packet.ReadCString("Unk string");
-            }
         }
 
         [Parser(Opcode.CMSG_GROUP_SET_LEADER)]

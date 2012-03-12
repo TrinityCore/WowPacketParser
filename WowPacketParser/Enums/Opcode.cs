@@ -1367,7 +1367,6 @@ namespace WowPacketParser.Enums
         SMSG_RWHOIS,
         SMSG_SCRIPT_MESSAGE,
         SMSG_SELL_ITEM,
-        SMSG_SEND_ALL_COMBAT_LOG,
         SMSG_SEND_MAIL_RESULT,
         SMSG_SEND_QUEUED_PACKETS,
         SMSG_SEND_UNLEARN_SPELLS,

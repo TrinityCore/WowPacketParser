@@ -1,28 +1,12 @@
 ﻿using System;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Parsing.Parsers
 {
     public static class CombatLogHandler
     {
-        enum SpellLogType422
-        {
-            // Opcode ids
-            // ReSharper disable InconsistentNaming
-            SMSG_SPELLHEALLOG = 56906,
-            SMSG_SPELLENERGIZELOG = 55547,
-            SMSG_SPELLLOGEXECUTE = 35543,
-            SMSG_SPELLNONMELEEDAMAGELOG = 23759,
-            SMSG_SPELLLOGMISS = 7423,
-            SMSG_PERIODICAURALOG = 36082,
-            // ReSharper restore InconsistentNaming
-
-            Remove1 = 2275,
-            Remove2 = 2282,
-            Remove3 = 40543,
-        }
-
         [Parser(Opcode.SMSG_COMBAT_LOG_MULTIPLE)]
         public static void HandleCombatLogMultiple(Packet packet)
         {
@@ -32,42 +16,43 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
             {
                 packet.ReadInt32("Unk2", i);
-                var opcode = packet.ReadEnum<SpellLogType422>("Log Type", TypeCode.Int32, i);
+                var opcode = Opcodes.GetOpcode(packet.ReadInt32());
+                packet.WriteLine("Opcode: " + opcode);
                 switch (opcode)
                 {
-                    case SpellLogType422.SMSG_SPELLHEALLOG:
+                    case Opcode.SMSG_SPELLHEALLOG:
                     {
                         ReadSpellHealLog(ref packet, i);
                         break;
                     }
-                    case SpellLogType422.SMSG_SPELLENERGIZELOG:
+                    case Opcode.SMSG_SPELLENERGIZELOG:
                     {
                         ReadSpellEnergizeLog(ref packet, i);
                         break;
                     }
-                    case SpellLogType422.SMSG_PERIODICAURALOG:
+                    case Opcode.SMSG_PERIODICAURALOG:
                     {
                         ReadPeriodicAuraLog(ref packet, i); // sub_5EEE10
                         break;
                     }
-                    case SpellLogType422.SMSG_SPELLLOGEXECUTE:
+                    case Opcode.SMSG_SPELLLOGEXECUTE:
                     {
                         ReadSpellLogExecute(ref packet, i);
                         break;
                     }
-                    case SpellLogType422.SMSG_SPELLNONMELEEDAMAGELOG:
+                    case Opcode.SMSG_SPELLNONMELEEDAMAGELOG:
                     {
                         ReadSpellNonMeleeDamageLog(ref packet, i);
                         break;
                     }
-                    case SpellLogType422.SMSG_SPELLLOGMISS:
+                    case Opcode.SMSG_SPELLLOGMISS:
                     {
                         ReadSpellMissLog(ref packet, i);
                         break;
                     }
-                    case SpellLogType422.Remove1:
-                    case SpellLogType422.Remove2:
-                    case SpellLogType422.Remove3:
+                    case Opcode.SMSG_SPELLSTEALLOG:
+                    case Opcode.SMSG_SPELLDISPELLOG:
+                    case Opcode.SMSG_SPELLBREAKLOG:
                     {
                         ReadSpellRemoveLog(ref packet, i);
                         break;
@@ -76,6 +61,14 @@ namespace WowPacketParser.Parsing.Parsers
                         throw new Exception("Unknown Spell Log Type/Opcode: " + opcode);
                 }
             }
+        }
+
+        [Parser(Opcode.SMSG_SPELLSTEALLOG)]
+        [Parser(Opcode.SMSG_SPELLDISPELLOG)]
+        [Parser(Opcode.SMSG_SPELLBREAKLOG)]
+        public static void HandleSpellRemoveLog(Packet packet)
+        {
+            ReadSpellRemoveLog(ref packet);
         }
 
         [Parser(Opcode.SMSG_PERIODICAURALOG)]
