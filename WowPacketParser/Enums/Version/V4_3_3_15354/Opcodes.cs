@@ -65,6 +65,13 @@ namespace WowPacketParser.Enums.Version//.V4_3_3_15354
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x2AAD},
             {Opcode.CMSG_QUERY_TIME, 0x3625},
             {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x796D},
+            {Opcode.CMSG_PING, 0x0226},
+            {Opcode.SMSG_PONG, 0x0302},
+            {Opcode.SMSG_DESTROY_OBJECT, 0x3324},
+            {Opcode.SMSG_REALM_SPLIT, 0x7444},
+            {Opcode.SMSG_SET_FORCED_REACTIONS, 0x38EC},
+            {Opcode.SMSG_BINDPOINTUPDATE, 0x696D},
+            {Opcode.SMSG_INSTANCE_DIFFICULTY, 0x1755},
         };
     }
 }

@@ -232,13 +232,30 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void ReadAuthResponseInfo(ref Packet packet)
         {
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_3_15354))
+            {
+                packet.ReadByte("Unk1:");
+                packet.ReadInt32("Position in Queue");
+
+            }
+            
             packet.ReadInt32("Billing Time Remaining");
-            packet.ReadEnum<BillingFlag>("Billing Flags", TypeCode.Byte);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_2_15211))
+                packet.ReadEnum<BillingFlag>("Billing Flags", TypeCode.Byte);
             packet.ReadInt32("Billing Time Rested");
 
             // Unknown, these two show the same as expansion payed for.
             // Eg. If account only has payed for Wotlk expansion it will show 2 for both.
-            packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_3_15354))
+                packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_2_15211))
+                packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_3_15354))
+                packet.ReadEnum<BillingFlag>("Billing Flags", TypeCode.Byte);
+                packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_3_13329))
                 packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
         }
@@ -297,6 +314,28 @@ namespace WowPacketParser.Parsing.Parsers
             if (bits[1]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
             if (bits[2]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
             if (bits[0]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
+
+            var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
+            packet.WriteLine("GUID: {0}", guid);
+            LoginGuid = guid;
+        }
+
+        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_3_15354)]
+        public static void HandlePlayerLogin433(Packet packet)
+        {
+            var bits = new bool[8];
+            for (var i = 0; i < 8; ++i)
+                bits[i] = packet.ReadBit();
+
+            var bytes = new byte[8];
+            if (bits[5]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[2]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[1]) bytes[7] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[7]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[6]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[0]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[4]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[3]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
 
             var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
             packet.WriteLine("GUID: {0}", guid);

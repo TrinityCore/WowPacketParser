@@ -32,8 +32,16 @@ namespace WowPacketParser.Parsing.Parsers
             var counter = packet.ReadInt32("Factions");
             for (var i = 0; i < counter; i++)
             {
+                
                 packet.ReadUInt32("Faction Id");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_3_15354))
+                    for (var y = 0; y < 8; y++)
+                    {
+                        packet.ReadUInt32("Reputation Rank433");
+                       
+                    }
                 packet.ReadUInt32("Reputation Rank");
+               
             }
         }
 
