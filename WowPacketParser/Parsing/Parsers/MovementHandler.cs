@@ -209,13 +209,6 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Async-time in ms");
             }
 
-            if (flags.HasAnyFlag(SplineFlag.Falling)) // Could be SplineFlag.UsePathSmoothing
-            {
-                packet.ReadInt32("Unknown");
-                packet.ReadInt16("Unknown");
-                packet.ReadInt16("Unknown");
-            }
-
             packet.ReadInt32("Move Time");
 
             if (flags.HasAnyFlag(SplineFlag.Trajectory))
