@@ -395,11 +395,18 @@ namespace WowPacketParser.Store.SQL
             const string tableName = "creature_template";
 
             var rows = new List<QueryBuilder.SQLUpdateRow>();
-           
+            ICollection<uint> key = new Collection<uint>();
+
             foreach (var unit in units)
             {
+                // don't save duplicates
+                if (key.Contains(unit.Key.GetEntry()))
+                    continue;
+
                 var row = new QueryBuilder.SQLUpdateRow();
                 var npc = unit.Value;
+
+                var name = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
 
                 // Only movement flags in 335 are being read correctly - fix them and remove this if
                 if (ClientVersion.GetBuild() == ClientVersionBuild.V3_3_5a_12340)
@@ -416,8 +423,10 @@ namespace WowPacketParser.Store.SQL
 
                 row.AddWhere("entry", unit.Key.GetEntry());
                 row.Table = tableName;
-                row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
+                row.Comment = name;
+
                 rows.Add(row);
+                key.Add(unit.Key.GetEntry());
             }
 
             return new QueryBuilder.SQLUpdate(rows).Build();

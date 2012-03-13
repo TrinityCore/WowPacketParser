@@ -165,7 +165,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void ReadDungeonJoinResults(ref Packet packet, params int[] values)
         {
-            var entry = packet.ReadLfgEntry("LFG Entry", values);
+            packet.ReadLfgEntry("LFG Entry", values);
             packet.ReadEnum<LfgEntryCheckResult>("Entry Check Result", TypeCode.UInt32, values);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
             {

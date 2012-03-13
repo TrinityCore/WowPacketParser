@@ -548,7 +548,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_DB_REPLY)]
         public static void HandleDBReply(Packet packet)
         {
-            var type = packet.ReadUInt32("Type");
+            packet.ReadUInt32("Type");
             var itemId = packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                 packet.ReadUInt32("Received Type");
@@ -557,7 +557,7 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
 
             packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
-            if (type == 1344507586)
+            if (size == 32)
             {
                 packet.ReadEnum<ItemClass>("Class", TypeCode.Int32);
                 packet.ReadUInt32("Sub Class");
@@ -567,7 +567,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<InventoryType>("Inventory Type", TypeCode.UInt32);
                 packet.ReadEnum<SheathType>("Sheath Type", TypeCode.Int32);
             }
-            else if (type == 2442913102)
+            else
             {
                 packet.ReadEnum<ItemQuality>("Quality", TypeCode.Int32);
                 packet.ReadEnum<ItemFlag>("Flags", TypeCode.Int32);
