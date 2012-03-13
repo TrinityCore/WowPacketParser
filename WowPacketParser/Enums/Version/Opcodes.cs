@@ -6,9 +6,9 @@ namespace WowPacketParser.Enums.Version
 {
     public static partial class Opcodes
     {
-        private static Dictionary<Opcode, int> GetOpcodeDictionary(int build)
+        private static Dictionary<Opcode, int> GetOpcodeDictionary(ClientVersionBuild build)
         {
-            switch ((ClientVersionBuild)build)
+            switch (build)
             {
                 case ClientVersionBuild.V2_4_3_8606:
                 case ClientVersionBuild.V3_0_2_9056:
@@ -75,10 +75,10 @@ namespace WowPacketParser.Enums.Version
 
         public static Opcode GetOpcode(int opcodeId)
         {
-            return GetOpcode(opcodeId, ClientVersion.GetBuildInt());
+            return GetOpcode(opcodeId, ClientVersion.GetBuild());
         }
 
-        public static Opcode GetOpcode(int opcodeId, int build)
+        public static Opcode GetOpcode(int opcodeId, ClientVersionBuild build)
         {
             /* Remove this comment block if you need to find duplicated opcode
              * values in the opcode dictionaries.
@@ -102,10 +102,10 @@ namespace WowPacketParser.Enums.Version
 
         public static int GetOpcode(Opcode opcode)
         {
-            return GetOpcode(opcode, ClientVersion.GetBuildInt());
+            return GetOpcode(opcode, ClientVersion.GetBuild());
         }
 
-        private static int GetOpcode(Opcode opcode, int build)
+        private static int GetOpcode(Opcode opcode, ClientVersionBuild build)
         {
             int opcodeId;
             GetOpcodeDictionary(build).TryGetValue(opcode, out opcodeId);
@@ -114,7 +114,7 @@ namespace WowPacketParser.Enums.Version
 
         public static string GetOpcodeName(int opcodeId)
         {
-            return GetOpcode(opcodeId, ClientVersion.GetBuildInt()).ToString();
+            return GetOpcode(opcodeId, ClientVersion.GetBuild()).ToString();
         }
     }
 }
