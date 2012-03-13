@@ -137,7 +137,7 @@ namespace WowPacketParser.Parsing.Parsers
                 vendorItem.MaxCount = packet.ReadInt32("Max Count", i);
                 packet.ReadInt32("Price", i);
                 packet.ReadInt32("Max Durability", i);
-                vendorItem.BuyCount = packet.ReadUInt32("Buy Count", i);
+                packet.ReadUInt32("Buy Count", i);
                 vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
             }
 
@@ -190,7 +190,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Unk Int32 1", i);
                 packet.ReadInt32("Display ID", i);
                 vendorItem.MaxCount = packet.ReadInt32("Max Count", i);
-                vendorItem.BuyCount = packet.ReadUInt32("Buy Count", i);
+                packet.ReadUInt32("Buy Count", i);
                 vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
                 packet.ReadInt32("Unk Int32 2", i);
                 packet.ReadInt32("Price", i);

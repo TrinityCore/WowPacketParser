@@ -140,14 +140,6 @@ namespace WowPacketParser.Misc
             Writer.WriteLine();
         }
 
-        public void WriteLine(string value)
-        {
-            if (Writer == null)
-                Writer = new StringWriter();
-
-            Writer.WriteLine(value);
-        }
-
         public void WriteLine(object value)
         {
             if (Writer == null)

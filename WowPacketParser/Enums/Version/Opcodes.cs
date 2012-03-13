@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using WowPacketParser.Misc;
 
@@ -71,7 +70,7 @@ namespace WowPacketParser.Enums.Version
                     return _V4_3_3_opcodes;
                 }
             }
-            return _V3_3_5_opcodes; // Default case, should pick a better one
+            return _V3_3_5_opcodes; // Default case
         }
 
         public static Opcode GetOpcode(int opcodeId)
@@ -81,7 +80,11 @@ namespace WowPacketParser.Enums.Version
 
         public static Opcode GetOpcode(int opcodeId, int build)
         {
-            /*var dict = GetOpcodeDictionary(build);
+            /* Remove this comment block if you need to find duplicated opcode
+             * values in the opcode dictionaries.
+             * This is not enabled by default because it is slow as sh*t.
+             *
+            var dict = GetOpcodeDictionary(build);
             var newDict = new Dictionary<Opcode, int>();
             foreach (var pair in dict)
             {

@@ -8,8 +8,6 @@
 
         public int MaxCount;
 
-        public uint BuyCount;
-
         public uint ExtendedCostId;
     }
 }
