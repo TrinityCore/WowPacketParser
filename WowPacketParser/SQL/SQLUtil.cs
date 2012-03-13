@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace WowPacketParser.SQL
 {
@@ -56,11 +57,49 @@ namespace WowPacketParser.SQL
         }
 
         /// <summary>
-        /// Converts an int to a string hex.
+        /// Converts an int to a hex string.
         /// </summary>
         public static string Hexify(int n)
         {
             return "0x" + n.ToString("X");
+        }
+
+        /// <summary>
+        /// "Modifies" any value to be used in SQL data
+        /// </summary>
+        /// <param name="value">Any value (string, number, enum, ...)</param>
+        /// <param name="isFlag">If set to true the value, "0x" will be append to value</param>
+        /// <param name="noQuotes">If value is a string and this is set to true, value will not be 'quoted' (SQL variables)</param>
+        /// <returns></returns>
+        public static object ToSQLValue(object value, bool isFlag = false, bool noQuotes = false)
+        {
+            //if (value == null)
+            //    return value; // mhmmm
+
+            if (value is string && !noQuotes)
+                value = Stringify(value);
+
+            if (value is bool)
+                value = value.Equals(true) ? 1 : 0;
+
+            if (value is Enum) // A bit hackish but oh well...
+            {
+                try
+                {
+// ReSharper disable PossibleInvalidCastException
+                    value = (int)value;
+// ReSharper restore PossibleInvalidCastException
+                }
+                catch (InvalidCastException)
+                {
+                    value = (uint)value;
+                }
+            }
+
+            if (value is int && isFlag)
+                value = Hexify((int)value);
+
+            return value;
         }
     }
 }

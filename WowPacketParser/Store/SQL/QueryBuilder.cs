@@ -15,15 +15,21 @@ namespace WowPacketParser.Store.SQL
     {
         public class SQLUpdate : ISQLQuery
         {
-            private string Table { get; set; }
             private List<SQLUpdateRow> Rows { get; set; }
-            private List<string> TableStructure { get; set; }
 
+            /// <summary>
+            /// Creates multiple update rows
+            /// </summary>
+            /// <param name="rows">A list of <see cref="SQLUpdateRow"/> rows</param>
             public SQLUpdate(List<SQLUpdateRow> rows)
             {
                 Rows = rows;
             }
 
+            /// <summary>
+            /// Constructs the actual query
+            /// </summary>
+            /// <returns>Multiple update rows</returns>
             public string Build()
             {
                 var result = new StringBuilder();
@@ -41,64 +47,63 @@ namespace WowPacketParser.Store.SQL
 
         public class SQLUpdateRow : ISQLQuery
         {
-            public string Comment { get; set; }
-            public string HeaderComment { get; set; }
+            /// <summary>
+            /// <para>Comment appended to the values</para>
+            /// <code>UPDATE...; -- this comment</code>
+            /// </summary>
+            public string Comment { private get; set; }
+
+            /// <summary>
+            /// <para>The row will be commented out</para>
+            /// <code>-- UPDATE..., </code>
+            /// </summary>
             public bool CommentOut { get; set; }
 
             private readonly List<KeyValuePair<string, object>> _values =
             new List<KeyValuePair<string, object>>();
 
-            private readonly List<KeyValuePair<string, object>> _whereClause =
-                new List<KeyValuePair<string, object>>();
+            private readonly List<KeyValuePair<string, uint>> _whereClause =
+                new List<KeyValuePair<string, uint>>();
 
+            /// <summary>
+            /// Adds a field-value pair to be updated
+            /// </summary>
+            /// <param name="field">The field name associated with the value</param>
+            /// <param name="value">Any value (string, number, enum, ...)</param>
+            /// <param name="isFlag">If set to true the value, "0x" will be append to value</param>
+            /// <param name="noQuotes">If value is a string and this is set to true, value will not be 'quoted' (SQL variables)</param>
             public void AddValue(string field, object value, bool isFlag = false, bool noQuotes = false)
             {
-                if (value == null)
-                    return;
-
-                if (!noQuotes && value is string)
-                    value = SQLUtil.Stringify(value);
-
-                if (value is bool)
-                    value = value.Equals(true) ? 1 : 0;
-
-                if (value is Enum) // A bit hackish but oh well...
-                {
-                    try
-                    {
-                        value = (int)value;
-                    }
-                    catch (InvalidCastException)
-                    {
-                        value = (uint)value;
-                    }
-                }
-
-                if (value is int && isFlag)
-                    value = SQLUtil.Hexify((int)value);
-
-                _values.Add(new KeyValuePair<string, object>(SQLUtil.AddBackQuotes(field), value));
+                _values.Add(new KeyValuePair<string, object>(SQLUtil.AddBackQuotes(field), SQLUtil.ToSQLValue(value, isFlag, noQuotes)));
             }
 
-            public void AddWhere(string name, object value)
+            /// <summary>
+            /// Adds to this row what will be updated
+            /// </summary>
+            /// <param name="field">The field name associated with the value</param>
+            /// <param name="value">The value used in the where clause</param>
+            public void AddWhere(string field, uint value)
             {
-                _whereClause.Add(new KeyValuePair<string, object>(SQLUtil.AddBackQuotes(name), value));
+                _whereClause.Add(new KeyValuePair<string, uint>(SQLUtil.AddBackQuotes(field), value));
             }
 
             private string _table;
 
+            /// <summary>
+            /// The table that will be updated
+            /// </summary>
             public string Table
             {
-                get { return SQLUtil.AddBackQuotes(_table); }
+                private get { return SQLUtil.AddBackQuotes(_table); }
                 set { _table = value; }
             }
 
+            /// <summary>
+            /// Constructs the actual query
+            /// </summary>
+            /// <returns>A single update query</returns>
             public string Build()
             {
-
-                if (!String.IsNullOrWhiteSpace(HeaderComment))
-                    return "-- " + HeaderComment + Environment.NewLine;
-
                 var row = new StringBuilder();
                 if (CommentOut)
                     row.Append("-- ");
@@ -111,27 +116,27 @@ namespace WowPacketParser.Store.SQL
                 row.Append(Table);
                 row.Append(" SET ");
 
-                var iter = 0;
+                var count = 0;
                 foreach (var values in _values)
                 {
-                    iter++;
+                    count++;
                     row.Append(values.Key);
                     row.Append("=");
                     row.Append(values.Value);
-                    if (_values.Count != iter)
+                    if (_values.Count != count)
                         row.Append(SQLUtil.CommaSeparator);
                 }
 
                 row.Append(" WHERE ");
 
-                iter = 0;
+                count = 0;
                 foreach (var whereClause in _whereClause)
                 {
-                    iter++;
+                    count++;
                     row.Append(whereClause.Key);
                     row.Append("=");
                     row.Append(whereClause.Value);
-                    if (_whereClause.Count != iter)
+                    if (_whereClause.Count != count)
                         row.Append(" AND ");
                 }
 
@@ -149,132 +154,164 @@ namespace WowPacketParser.Store.SQL
         {
             private string Table { get; set; }
             private List<SQLInsertRow> Rows { get; set; }
-            private SQLDelete Delete { get; set; }
-            private SQLInsertHeader InsertHeader { get; set; }
+            private string Delete { get; set; }
+            private string InsertHeader { get; set; }
             private List<string> TableStructure { get; set; }
 
-            // Without delete
-            public SQLInsert(string table, List<SQLInsertRow> rows, bool ignore = false)
-            {
-                Table = table;
-                Rows = rows;
-                Delete = null;
+            // Add a new insert header every 500 rows
+            private const int MaxRowsPerInsert = 500;
 
+            /// <summary>
+            /// Creates an insert query including the insert header and its rows
+            /// Single primary key (for delete)
+            /// </summary>
+            /// <param name="tableName">Table name</param>
+            /// <param name="rows">A list of <see cref="SQLInsertRow"/> rows</param>
+            /// <param name="primaryKeyNumber">The number of primary keys. Only 1 and 2 supported.</param>
+            /// <param name="withDelete">If set to false the full query will not include a delete query</param>
+            /// <param name="ignore">If set to true the INSERT INTO query will be INSERT IGNORE INTO</param>
+            public SQLInsert(string tableName, List<SQLInsertRow> rows, int primaryKeyNumber = 1, bool withDelete = true, bool ignore = false)
+            {
+                Table = tableName;
+                Rows = rows;
+
+                // Get the field names from the first row that is not a comment
                 TableStructure = new List<string>();
-                var firstProperRow = Rows.Find(row => String.IsNullOrWhiteSpace(row.HeaderComment));
+                var firstProperRow = Rows.Find(row => !row.NoData);
                 if (firstProperRow != null)
                     TableStructure = firstProperRow.FieldNames;
 
-                InsertHeader = new SQLInsertHeader(Table, TableStructure, ignore);
+                InsertHeader = new SQLInsertHeader(Table, TableStructure, ignore).Build();
+
+                if (!withDelete)
+                {
+                    Delete = string.Empty;
+                    return;
+                }
+
+                if (primaryKeyNumber == 1)
+                {
+                    ICollection<uint> values =
+                        rows.Select(row => UInt32.Parse(row.GetPrimaryKeys(primaryKeyNumber).Item2.First())).ToArray();
+                    var primaryKey = rows.First().GetPrimaryKeys(primaryKeyNumber).Item1.First();
+
+                    Delete = new SQLDelete(values, primaryKey, Table).Build();
+                }
+                else if (primaryKeyNumber == 2)
+                {
+                    ICollection<Tuple<uint, uint>> values =
+                        rows.Select(row => row.GetPrimaryKeys(primaryKeyNumber).Item2).Select(
+                            vals => Tuple.Create(UInt32.Parse(vals[0]), UInt32.Parse(vals[1]))).ToArray();
+
+                    var pks = rows.First().GetPrimaryKeys(primaryKeyNumber).Item1;
+                    var primaryKeys = Tuple.Create(pks[0], pks[1]);
+
+                    Delete = new SQLDelete(values, primaryKeys, tableName).Build();
+                }
+                else
+                    throw new Exception("Cannot have a delete query with more than 2 primary keys.");
             }
 
-            // Single primary key
-            public SQLInsert(string table, ICollection<uint> values, string primaryKey,
-                             List<SQLInsertRow> rows)
-            {
-                Table = table;
-                Rows = rows;
-
-                TableStructure = new List<string>();
-                var firstProperRow = Rows.Find(row => String.IsNullOrWhiteSpace(row.HeaderComment));
-                if (firstProperRow != null)
-                    TableStructure = firstProperRow.FieldNames;
-
-                Delete = new SQLDelete(values, primaryKey, Table);
-                InsertHeader = new SQLInsertHeader(Table, TableStructure);
-            }
-
-            // Double primary key
-            public SQLInsert(string table, ICollection<Tuple<uint, uint>> values, ICollection<string> primaryKeys,
-                             List<SQLInsertRow> rows)
-            {
-                Table = table;
-                Rows = rows;
-
-                TableStructure = new List<string>();
-                var firstProperRow = Rows.Find(row => String.IsNullOrWhiteSpace(row.HeaderComment));
-                if (firstProperRow != null)
-                    TableStructure = firstProperRow.FieldNames;
-
-                Delete = new SQLDelete(values, primaryKeys, Table);
-                InsertHeader = new SQLInsertHeader(Table, TableStructure);
-            }
-
+            /// <summary>
+            /// Constructs the actual query
+            /// </summary>
+            /// <returns>Full insert AND delete queries</returns>
             public string Build()
             {
                 // If we only have rows with comment, do not print any query
-                if (Rows.All(row => !String.IsNullOrWhiteSpace(row.HeaderComment)))
+                if (Rows.All(row => row.NoData))
                     return "-- " + SQLUtil.AddBackQuotes(Table) + " has empty data." + Environment.NewLine;
 
-                var result = new StringBuilder();
+                var query = new StringBuilder();
 
-                if (Delete != null)
-                    result.Append(Delete.Build());
-                result.Append(InsertHeader.Build());
+                query.Append(Delete); // Can be empty
+                query.Append(InsertHeader);
 
                 var rowsStrings = Rows.Select(row => row.Build()).ToList();
 
-                int cnt = 0;
+                var count = 0;
                 foreach (var rowString in rowsStrings)
                 {
-                    if (cnt >= 500)
+                    if (count >= MaxRowsPerInsert)
                     {
-                        result.ReplaceLast(',', ';');
-                        result.Append(InsertHeader.Build());
-                        cnt = 0;
+                        query.ReplaceLast(',', ';');
+                        query.Append(InsertHeader);
+                        count = 0;
                     }
-                    result.Append(rowString);
-                    cnt++;
+                    query.Append(rowString);
+                    count++;
                 }
 
-                result.Append(Environment.NewLine);
+                query.Append(Environment.NewLine);
 
-                return result.ReplaceLast(',', ';').ToString();
+                return query.ReplaceLast(',', ';').ToString();
             }
         }
 
         public class SQLInsertRow : ISQLQuery
         {
-            private readonly List<string> _row = new List<string>();
-            public string Comment { get; set; }
-            public string HeaderComment { get; set; }
             public readonly List<string> FieldNames = new List<string>();
+            private readonly List<string> _values = new List<string>();
+
+            // Assuming that the first <count> values will be the primary key
+            public Tuple<List<string>, List<string>> GetPrimaryKeys(int count = 1)
+            {
+                return Tuple.Create(FieldNames.GetRange(0, count), _values.GetRange(0, count));
+            }
+
+            private string _headerComment;
+
+            /// <summary>
+            /// <para>Comment appended to the values</para>
+            /// <code>(a, ..., z), -- this comment</code>
+            /// </summary>
+            public string Comment { get; set; }
+
+            /// <summary>
+            /// <para>The comment that will replace the values</para>
+            /// <code>-- this comment</code>
+            /// </summary>
+            public string HeaderComment
+            {
+                set
+                {
+                    _headerComment = value;
+                    NoData = true;
+                }
+            }
+
+            /// <summary>
+            /// Row has no data, it is just a comment
+            /// </summary>
+            public bool NoData { get; private set; }
+
+            /// <summary>
+            /// <para>The row will be commented out</para>
+            /// <code>-- (a, ..., z), </code>
+            /// </summary>
             public bool CommentOut { get; set; }
 
+            /// <summary>
+            /// Adds a value to this row
+            /// </summary>
+            /// <param name="field">The field name associated with the value</param>
+            /// <param name="value">Any value (string, number, enum, ...)</param>
+            /// <param name="isFlag">If set to true the value, "0x" will be append to value</param>
+            /// <param name="noQuotes">If value is a string and this is set to true, value will not be 'quoted' (SQL variables)</param>
             public void AddValue(string field, object value, bool isFlag = false, bool noQuotes = false)
             {
-                if (value == null)
-                    return;
-
-                if (!noQuotes && value is string)
-                    value = SQLUtil.Stringify(value);
-
-                if (value is bool)
-                    value = value.Equals(true) ? 1 : 0;
-
-                if (value is Enum) // A bit hackish but oh well...
-                {
-                    try
-                    {
-                        value = (int)value;
-                    }
-                    catch (InvalidCastException)
-                    {
-                        value = (uint)value;
-                    }
-                }
-
-                if (value is int && isFlag)
-                    value = SQLUtil.Hexify((int) value);
-
-                _row.Add(value.ToString());
+                _values.Add(SQLUtil.ToSQLValue(value, isFlag, noQuotes).ToString());
                 FieldNames.Add(field);
             }
 
+            /// <summary>
+            /// Constructs the actual query
+            /// </summary>
+            /// <returns>Single insert row (data)</returns>
             public string Build()
             {
-                if (!String.IsNullOrWhiteSpace(HeaderComment))
-                    return "-- " + HeaderComment + Environment.NewLine;
+                if (NoData)
+                    return "-- " + _headerComment + Environment.NewLine;
 
                 var row = new StringBuilder();
                 if (CommentOut)
@@ -282,13 +319,14 @@ namespace WowPacketParser.Store.SQL
 
                 row.Append("(");
 
-                var iter = 0;
-                foreach (var value in _row)
+                var counter = 0;
+                foreach (var value in _values)
                 {
-                    iter++;
+                    counter++;
                     row.Append(value);
 
-                    row.Append(_row.Count != iter ? SQLUtil.CommaSeparator : "),");
+                    // Append parenthesis if end of values
+                    row.Append(_values.Count != counter ? SQLUtil.CommaSeparator : "),");
                 }
                 if (!String.IsNullOrWhiteSpace(Comment))
                     row.Append(" -- " + Comment);
@@ -302,16 +340,30 @@ namespace WowPacketParser.Store.SQL
         {
             // TODO: Support any number of values (only single and double supported atm)
             private readonly bool _double;
+            private readonly bool _between;
+
             private ICollection<uint> Values { get; set; }
             private ICollection<Tuple<uint, uint>> ValuesDouble { get; set; }
+            private Tuple<uint, uint> ValuesBetween { get; set; }
+
             private string Table { get; set; }
-            private ICollection<string> PrimaryKeys { get; set; }
-            private readonly bool _between;
+
+            private string PrimaryKey { get; set; }
+            private Tuple<string, string> PrimaryKeys { get; set; }
+
             private string Prefix { get; set; }
 
+            /// <summary>
+            /// <para>Creates a delete query with a single primary key and an arbitrary number of values</para>
+            /// <code>DELETE FROM `tableName` WHERE `primaryKey` IN (values[0], ..., values[n]);</code>
+            /// <code>DELETE FROM `tableName` WHERE `primaryKey`=values[0];</code>
+            /// </summary>
+            /// <param name="values">Collection of values to be deleted</param>
+            /// <param name="primaryKey">Field used in the WHERE clause</param>
+            /// <param name="tableName">Table name</param>
             public SQLDelete(ICollection<uint> values, string primaryKey, string tableName)
             {
-                PrimaryKeys = new[] {primaryKey};
+                PrimaryKey = primaryKey;
                 Table = tableName;
 
                 Values = values;
@@ -319,7 +371,14 @@ namespace WowPacketParser.Store.SQL
                 _between = false;
             }
 
-            public SQLDelete(ICollection<Tuple<uint, uint>> values, ICollection<string> primaryKeys, string tableName)
+            /// <summary>
+            /// <para>Creates a delete query that uses two primary keys and an arbitrary number of values</para>
+            /// <code>DELETE FROM `tableName` WHERE (`primaryKeys[0]`=values[0][0] AND `primaryKeys[1]`=values[1][0]) AND ...);</code>
+            /// </summary>
+            /// <param name="values">Collection of pairs of values to be deleted</param>
+            /// <param name="primaryKeys">Collection of pairs of fields used in the WHERE clause</param>
+            /// <param name="tableName">Table name</param>
+            public SQLDelete(ICollection<Tuple<uint, uint>> values, Tuple<string, string> primaryKeys, string tableName)
             {
                 PrimaryKeys = primaryKeys;
                 Table = tableName;
@@ -329,17 +388,29 @@ namespace WowPacketParser.Store.SQL
                 _between = false;
             }
 
-            public SQLDelete(Tuple<uint, uint> values, string primaryKey, string tableName, string prefix = null)
+            /// <summary>
+            /// <para>Creates a delete query that deletes between two values</para>
+            /// <code>DELETE FROM `tableName` WHERE `primaryKey` BETWEEN values[0] AND values[n];</code>
+            /// </summary>
+            /// <param name="values">Pair of values</param>
+            /// <param name="primaryKey">Field used in the WHERE clause</param>
+            /// <param name="tableName">Table name</param>
+            /// <param name="prefix">String to be appended to values[0] and values[1]</param>
+            public SQLDelete(Tuple<uint, uint> values, string primaryKey, string tableName, string prefix = "")
             {
-                PrimaryKeys = new[] {primaryKey};
+                PrimaryKey = primaryKey;
                 Table = tableName;
 
-                ValuesDouble = new[] {values};
+                ValuesBetween = values;
                 _double = true;
                 _between = true;
                 Prefix = prefix;
             }
 
+            /// <summary>
+            /// Constructs the actual query
+            /// </summary>
+            /// <returns>Delete query</returns>
             public string Build()
             {
                 var query = new StringBuilder();
@@ -350,53 +421,52 @@ namespace WowPacketParser.Store.SQL
 
                 if (_between)
                 {
-                    var keys = PrimaryKeys.ToArray();
-                    var tuple = ValuesDouble.First();
-                    query.Append(SQLUtil.AddBackQuotes(keys[0]));
+                    query.Append(SQLUtil.AddBackQuotes(PrimaryKey));
                     query.Append(" BETWEEN ");
                     if (Prefix != null)
                         query.Append(Prefix);
-                    query.Append(tuple.Item1);
+                    query.Append(ValuesBetween.Item1);
                     query.Append(" AND ");
                     if (Prefix != null)
                         query.Append(Prefix);
-                    query.Append(tuple.Item2);
+                    query.Append(ValuesBetween.Item2);
                     query.Append(";");
                 }
                 else
                 {
                     if (_double)
                     {
-                        var iter = 0;
-                        var keys = PrimaryKeys.ToArray();
+                        var counter = 0;
                         foreach (var tuple in ValuesDouble)
                         {
-                            iter++;
+                            counter++;
                             query.Append("(");
-                            query.Append(SQLUtil.AddBackQuotes(keys[0]));
+                            query.Append(SQLUtil.AddBackQuotes(PrimaryKeys.Item1));
                             query.Append("=");
                             query.Append(tuple.Item1);
                             query.Append(" AND ");
-                            query.Append(SQLUtil.AddBackQuotes(keys[1]));
+                            query.Append(SQLUtil.AddBackQuotes(PrimaryKeys.Item2));
                             query.Append("=");
                             query.Append(tuple.Item2);
                             query.Append(")");
-                            if (ValuesDouble.Count != iter)
+                            // Append an OR if not end of items
+                            if (ValuesDouble.Count != counter)
                                 query.Append(" OR ");
                         }
                         query.Append(";");
                     }
                     else
                     {
-                        query.Append(SQLUtil.AddBackQuotes(PrimaryKeys.First()));
+                        query.Append(SQLUtil.AddBackQuotes(PrimaryKey));
                         query.Append(Values.Count == 1 ? " = " : " IN (");
 
-                        var iter = 0;
+                        var counter = 0;
                         foreach (var entry in Values)
                         {
-                            iter++;
+                            counter++;
                             query.Append(entry);
-                            if (Values.Count != iter)
+                            // Append comma if not end of items
+                            if (Values.Count != counter)
                                 query.Append(SQLUtil.CommaSeparator);
                         }
                         query.Append(");");
@@ -414,39 +484,53 @@ namespace WowPacketParser.Store.SQL
             private ICollection<string> TableStructure { get; set; }
             private bool Ignore { get; set; }
 
-            public SQLInsertHeader(string table, ICollection<string> tableStructure, bool ignore = false)
+            /// <summary>
+            /// <para>Creates the header of an INSERT query</para>
+            /// <code>INSERT INTO `tableName` (fields[0], ..., fields[n]) VALUES</code>
+            /// </summary>
+            /// <param name="tableName">Table name</param>
+            /// <param name="fields">Field names</param>
+            /// <param name="ignore">If set to true the INSERT INTO query will be INSERT IGNORE INTO</param>
+            public SQLInsertHeader(string tableName, ICollection<string> fields, bool ignore = false)
             {
-                Table = table;
-                TableStructure = tableStructure;
+                Table = tableName;
+                TableStructure = fields;
                 Ignore = ignore;
             }
 
+            /// <summary>
+            /// Constructs the actual query
+            /// </summary>
+            /// <returns>Insert query header</returns>
             public string Build()
             {
-                var insertCommand = "INSERT " +
-                    (Ignore ? "IGNORE " : string.Empty) + "INTO";
+                var query = new StringBuilder();
 
-                var result = insertCommand + " " + SQLUtil.AddBackQuotes(Table);
+                query.Append("INSERT ");
+                query.Append(Ignore ? "IGNORE " : string.Empty);
+                query.Append("INTO ");
+                query.Append(SQLUtil.AddBackQuotes(Table));
 
                 if (TableStructure.Count != 0)
                 {
+                    query.Append(" (");
 
-                    result += " (";
-
-                    var iter = 0;
+                    var count = 0;
                     foreach (var column in TableStructure)
                     {
-                        iter++;
-                        result += SQLUtil.AddBackQuotes(column);
-                        if (TableStructure.Count != iter)
-                            result += SQLUtil.CommaSeparator;
+                        count++;
+                        query.Append(SQLUtil.AddBackQuotes(column));
+                        // Append comma if not end of fields
+                        if (TableStructure.Count != count)
+                            query.Append(SQLUtil.CommaSeparator);
                     }
-                    result += ")";
+
+                    query.Append(")");
                 }
 
-                result += " VALUES" + Environment.NewLine;
+                query.Append(" VALUES" + Environment.NewLine);
 
-                return result;
+                return query.ToString();
             }
         }
     }

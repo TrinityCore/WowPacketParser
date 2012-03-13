@@ -73,7 +73,7 @@ namespace WowPacketParser.Store.SQL
 
             var result = new StringBuilder();
             // delete query for GUIDs
-            var delete = new QueryBuilder.SQLDelete(new Tuple<uint, uint>(0, count), "guid", tableName, "@GUID+");
+            var delete = new QueryBuilder.SQLDelete(Tuple.Create(0u, count), "guid", tableName, "@GUID+");
             result.Append(delete.Build());
             result.Append(Environment.NewLine);
 
@@ -90,20 +90,15 @@ namespace WowPacketParser.Store.SQL
             var units = _storage.Objects.Where(x => x.Value.Type == ObjectType.Unit);
             const string tableName = "creature_equip_template";
 
-            ICollection<uint> key = new Collection<uint>();
             var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var unit in units)
             {
-                // don't save if duplicate
-                if (key.Contains(unit.Key.GetEntry()))
-                    continue;
-
                 var row = new QueryBuilder.SQLInsertRow();
                 var creature = unit.Value;
                 UpdateField equip;
                 int[] equipData = {0,0,0};
 
-                for (var i = 0; i < 3; i++)
+                for (var i = 0; i < equipData.Length; i++)
                     if (creature.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_VIRTUAL_ITEM_SLOT_ID1 + i), out equip))
                         equipData[i] = equip.Int32Value;
 
@@ -117,10 +112,9 @@ namespace WowPacketParser.Store.SQL
                 row.AddValue("itemEntry3", equipData[2]);
                 row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
                 rows.Add(row);
-                key.Add(unit.Key.GetEntry());
             }
 
-            return new QueryBuilder.SQLInsert(tableName, key, "entry", rows).Build();
+            return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
         public string SniffData()
@@ -149,7 +143,7 @@ namespace WowPacketParser.Store.SQL
                 rows.Add(row);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, rows, true).Build();
+            return new QueryBuilder.SQLInsert(tableName, rows, ignore: true).Build();
         }
 
         public string QuestTemplate()
@@ -275,7 +269,7 @@ namespace WowPacketParser.Store.SQL
                 rows.Add(row);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, _storage.QuestTemplates.Keys, "Id", rows).Build();
+            return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
         public string NpcTrainer()
@@ -305,7 +299,7 @@ namespace WowPacketParser.Store.SQL
                 }
             }
 
-            return new QueryBuilder.SQLInsert(tableName, _storage.NpcTrainers.Keys, "entry", rows).Build();
+            return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
         public string NpcVendor()
@@ -334,7 +328,7 @@ namespace WowPacketParser.Store.SQL
                 }
             }
 
-            return new QueryBuilder.SQLInsert(tableName, _storage.NpcVendors.Keys, "entry", rows).Build();
+            return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
         public string NpcTemplate()
@@ -381,7 +375,7 @@ namespace WowPacketParser.Store.SQL
                 rows.Add(row);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, _storage.UnitTemplates.Keys, "Id", rows).Build();
+            return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
         //! Non-WDB data but nevertheless data that should be saved to creature_template
@@ -412,9 +406,9 @@ namespace WowPacketParser.Store.SQL
                 if (ClientVersion.GetBuild() == ClientVersionBuild.V3_3_5a_12340)
                 {
                     if (npc.Movement.Flags.HasAnyFlag(MovementFlag.CanFly) && npc.Movement.Flags.HasAnyFlag(MovementFlag.WalkMode))
-                        row.AddValue("InhabitType", InhabitType.Ground | InhabitType.Air, isFlag: true);
+                        row.AddValue("InhabitType", InhabitType.Ground | InhabitType.Air, true);
                     else if (npc.Movement.Flags.HasAnyFlag(MovementFlag.DisableGravity))
-                        row.AddValue("InhabitType", InhabitType.Air, isFlag: true);
+                        row.AddValue("InhabitType", InhabitType.Air, true);
                 }
 
                 UpdateField hoverHeight;
@@ -466,7 +460,7 @@ namespace WowPacketParser.Store.SQL
                 rows.Add(row);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, _storage.GameObjectTemplates.Keys, "Id", rows).Build();
+            return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
         public string GameObjectSpawns()
@@ -535,7 +529,7 @@ namespace WowPacketParser.Store.SQL
             var result = new StringBuilder();
 
             // delete query for GUIDs
-            var delete = new QueryBuilder.SQLDelete(new Tuple<uint, uint>(0, count), "guid", tableName, "@GUID+");
+            var delete = new QueryBuilder.SQLDelete(Tuple.Create(0u, count), "guid", tableName, "@GUID+");
             result.Append(delete.Build());
             result.Append(Environment.NewLine);
 
@@ -563,7 +557,7 @@ namespace WowPacketParser.Store.SQL
                 rows.Add(row);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, _storage.PageTexts.Keys, "entry", rows).Build();
+            return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
         public string NpcText()
@@ -604,7 +598,7 @@ namespace WowPacketParser.Store.SQL
                 rows.Add(row);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, _storage.NpcTexts.Keys, "Id", rows).Build();
+            return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
         public string Gossip()
@@ -631,7 +625,7 @@ namespace WowPacketParser.Store.SQL
                 rows.Add(row);
             }
 
-            var result = new QueryBuilder.SQLInsert(tableName1, _storage.Gossips.Keys, new[] { "entry", "text_id" }, rows).Build();
+            var result = new QueryBuilder.SQLInsert(tableName1, rows, 2).Build();
 
             // `gossip_menu_option`
             rows = new List<QueryBuilder.SQLInsertRow>();
@@ -653,11 +647,11 @@ namespace WowPacketParser.Store.SQL
 
                         rows.Add(row);
 
-                        keys.Add(new Tuple<uint, uint>(gossip.Key.Item1, gossipOption.Index));
+                        keys.Add(Tuple.Create(gossip.Key.Item1, gossipOption.Index));
                     }
             }
 
-            result += new QueryBuilder.SQLInsert(tableName2, keys, new[] { "menu_id", "id" }, rows).Build();
+            result += new QueryBuilder.SQLInsert(tableName2, rows, 2).Build();
 
             return result;
         }
@@ -692,7 +686,7 @@ namespace WowPacketParser.Store.SQL
                 rows.Add(row);
             }
 
-            var result = new QueryBuilder.SQLInsert(tableName1, _storage.QuestPOIs.Keys, new[] { "questId", "id" }, rows).Build();
+            var result = new QueryBuilder.SQLInsert(tableName1, rows, 2).Build();
 
             // `quest_poi_points`
             rows = new List<QueryBuilder.SQLInsertRow>();
@@ -714,7 +708,7 @@ namespace WowPacketParser.Store.SQL
                     }
             }
 
-            result += new QueryBuilder.SQLInsert(tableName2, _storage.QuestPOIs.Keys, new[] { "questId", "id" }, rows).Build();
+            result += new QueryBuilder.SQLInsert(tableName2, rows, 2).Build();
 
             return result;
         }
@@ -726,11 +720,6 @@ namespace WowPacketParser.Store.SQL
 
             // Not TDB structure
             const string tableName = "LootTemplate";
-
-            // Can't cast the collection directly
-            ICollection<Tuple<uint, uint>> lootKeys = new Collection<Tuple<uint, uint>>();
-            foreach (var tuple in _storage.Loots.Keys)
-                lootKeys.Add(new Tuple<uint, uint>(tuple.Item1, (uint)tuple.Item2));
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var loot in _storage.Loots)
@@ -753,7 +742,7 @@ namespace WowPacketParser.Store.SQL
                 }
             }
 
-            return new QueryBuilder.SQLInsert(tableName, lootKeys, new[] {"Id", "Type" }, rows).Build();
+            return new QueryBuilder.SQLInsert(tableName, rows, 2).Build();
         }
 
         public string StartInformation()
@@ -762,11 +751,6 @@ namespace WowPacketParser.Store.SQL
 
             if (!_storage.StartActions.IsEmpty)
             {
-                // Can't cast the collection directly
-                ICollection<Tuple<uint, uint>> keys = new Collection<Tuple<uint, uint>>();
-                foreach (var key in _storage.StartActions.Keys)
-                    keys.Add(new Tuple<uint, uint>((uint) key.Item1, (uint)key.Item2));
-
                 var rows = new List<QueryBuilder.SQLInsertRow>();
                 foreach (var startActions in _storage.StartActions)
                 {
@@ -792,16 +776,11 @@ namespace WowPacketParser.Store.SQL
                     }
                 }
 
-                result = new QueryBuilder.SQLInsert("playercreateinfo_action", keys, new[] { "race", "class" }, rows).Build();
+                result = new QueryBuilder.SQLInsert("playercreateinfo_action", rows, 2).Build();
             }
 
             if (!_storage.StartPositions.IsEmpty)
             {
-                // Can't cast the collection directly
-                ICollection<Tuple<uint, uint>> keys = new Collection<Tuple<uint, uint>>();
-                foreach (var key in _storage.StartPositions.Keys)
-                    keys.Add(new Tuple<uint, uint>((uint)key.Item1, (uint)key.Item2));
-
                 var rows = new List<QueryBuilder.SQLInsertRow>();
                 foreach (var startPosition in _storage.StartPositions)
                 {
@@ -825,16 +804,11 @@ namespace WowPacketParser.Store.SQL
                     rows.Add(row);
                 }
 
-                result += new QueryBuilder.SQLInsert("playercreateinfo", keys, new[] { "race", "class" }, rows).Build();
+                result += new QueryBuilder.SQLInsert("playercreateinfo", rows, 2).Build();
             }
 
             if (!_storage.StartSpells.IsEmpty)
             {
-                // Can't cast the collection directly
-                ICollection<Tuple<uint, uint>> keys = new Collection<Tuple<uint, uint>>();
-                foreach (var key in _storage.StartSpells.Keys)
-                    keys.Add(new Tuple<uint, uint>((uint)key.Item1, (uint)key.Item2));
-
                 var rows = new List<QueryBuilder.SQLInsertRow>();
                 foreach (var startSpells in _storage.StartSpells)
                 {
@@ -855,7 +829,7 @@ namespace WowPacketParser.Store.SQL
                     }
                 }
 
-                result = new QueryBuilder.SQLInsert("playercreateinfo_spell", keys, new[] { "race", "class" }, rows).Build();
+                result = new QueryBuilder.SQLInsert("playercreateinfo_spell", rows, 2).Build();
             }
 
             return result;
@@ -880,7 +854,7 @@ namespace WowPacketParser.Store.SQL
                 rows.Add(row);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, rows, true).Build();
+            return new QueryBuilder.SQLInsert(tableName, rows, ignore: true).Build();
         }
     }
 }
