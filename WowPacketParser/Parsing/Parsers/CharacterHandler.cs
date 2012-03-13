@@ -441,6 +441,150 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteLine("Unk Loop: {0}, {1}", packet.ReadUInt32(), packet.ReadByte());
         }
 
+        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V4_3_3_15354)]
+        public static void HandleCharEnum433(Packet packet)
+        {
+            var unkCounter = packet.ReadBits("Unk Counter", 23);
+            var count = packet.ReadBits("Char count", 17);
+
+            var charGuids = new byte[count][];
+            var guildGuids = new byte[count][];
+            var firstLogins = new bool[count];
+            var nameLenghts = new uint[count];
+
+            for (var c = 0; c < count; ++c)
+            {
+                charGuids[c] = new byte[8];
+                guildGuids[c] = new byte[8];
+
+                guildGuids[c][2] = (byte)(packet.ReadBit() ? 1 : 0);
+                charGuids[c][2] = (byte)(packet.ReadBit() ? 1 : 0);
+                charGuids[c][6] = (byte)(packet.ReadBit() ? 1 : 0);
+                charGuids[c][5] = (byte)(packet.ReadBit() ? 1 : 0);
+                firstLogins[c] = packet.ReadBit();
+                charGuids[c][4] = (byte)(packet.ReadBit() ? 1 : 0);
+                guildGuids[c][4] = (byte)(packet.ReadBit() ? 1 : 0);
+                nameLenghts[c] = packet.ReadBits(7);
+                guildGuids[c][3] = (byte)(packet.ReadBit() ? 1 : 0);
+                guildGuids[c][7] = (byte)(packet.ReadBit() ? 1 : 0);
+                guildGuids[c][0] = (byte)(packet.ReadBit() ? 1 : 0);
+                charGuids[c][0] = (byte)(packet.ReadBit() ? 1 : 0);
+                charGuids[c][3] = (byte)(packet.ReadBit() ? 1 : 0);
+                charGuids[c][1] = (byte)(packet.ReadBit() ? 1 : 0);
+                guildGuids[c][5] = (byte)(packet.ReadBit() ? 1 : 0);
+                charGuids[c][7] = (byte)(packet.ReadBit() ? 1 : 0);
+                guildGuids[c][6] = (byte)(packet.ReadBit() ? 1 : 0);
+                guildGuids[c][1] = (byte)(packet.ReadBit() ? 1 : 0);
+            }
+
+            
+            packet.ReadBit(); // no idea, not used in client
+
+            for (int c = 0; c < count; ++c)
+            {
+                for (var itm = 0; itm < 19; ++itm)
+                {
+                    
+                    packet.ReadInt32("Item DisplayID", c, itm);
+                    packet.ReadInt32("Item EnchantID", c, itm);
+                    packet.ReadEnum<InventoryType>("Item InventoryType", TypeCode.Byte, c, itm);
+                }
+
+                for (var itm = 0; itm < 4; ++itm)
+                {
+                   
+                    packet.ReadInt32("Bag DisplayID", c, itm);
+                    packet.ReadInt32("Bag EnchantID", c, itm);
+                    packet.ReadEnum<InventoryType>("Bag InventoryType", TypeCode.Byte, c, itm);
+                }
+
+                if (guildGuids[c][0] != 0)
+                    guildGuids[c][0] ^= packet.ReadByte();
+                if (guildGuids[c][1] != 0)
+                    guildGuids[c][1] ^= packet.ReadByte();
+
+                packet.ReadByte("Face", c);
+                packet.ReadInt32("Pet Display ID", c);
+                if (guildGuids[c][7] != 0)
+                    guildGuids[c][7] ^= packet.ReadByte();
+
+                packet.ReadEnum<Gender>("Gender", TypeCode.Byte, c);
+                var level = packet.ReadByte("Level", c);
+                packet.ReadInt32("Pet Level", c);
+                var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
+                var y = packet.ReadSingle("Position Y", c);
+                packet.ReadInt32("Pet Family", c);
+                packet.ReadByte("Hair Style", c);
+                if (charGuids[c][1] != 0)
+                    charGuids[c][1] ^= packet.ReadByte();
+
+                var name = packet.ReadWoWString("Name", (int)nameLenghts[c], c);
+                if (charGuids[c][0] != 0)
+                    charGuids[c][0] ^= packet.ReadByte();
+
+                var race = packet.ReadEnum<Race>("Race", TypeCode.Byte, c);
+                packet.ReadByte("List Order", c);
+                if (charGuids[c][7] != 0)
+                    charGuids[c][7] ^= packet.ReadByte();
+
+                var z = packet.ReadSingle("Position Z", c);
+                var mapId = packet.ReadInt32("Map", c);
+                if (guildGuids[c][4] != 0)
+                    guildGuids[c][4] ^= packet.ReadByte();
+
+                packet.ReadByte("Hair Color", c);
+                if (charGuids[c][3] != 0)
+                    charGuids[c][3] ^= packet.ReadByte();
+
+                packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
+                packet.ReadByte("Skin", c);
+                if (charGuids[c][4] != 0)
+                    charGuids[c][4] ^= packet.ReadByte();
+                if (charGuids[c][5] != 0)
+                    charGuids[c][5] ^= packet.ReadByte();
+                if (guildGuids[c][5] != 0)
+                    guildGuids[c][5] ^= packet.ReadByte();
+
+                packet.ReadEnum<CustomizationFlag>("CustomizationFlag", TypeCode.UInt32, c);
+                var x = packet.ReadSingle("Position X", c);
+                packet.ReadByte("Facial Hair", c);
+                if (charGuids[c][6] != 0)
+                    charGuids[c][6] ^= packet.ReadByte();
+                if (guildGuids[c][3] != 0)
+                    guildGuids[c][3] ^= packet.ReadByte();
+                if (charGuids[c][2] != 0)
+                    charGuids[c][2] ^= packet.ReadByte();
+
+                var clss = packet.ReadEnum<Class>("Class", TypeCode.Byte, c);
+                if (guildGuids[c][6] != 0)
+                    guildGuids[c][6] ^= packet.ReadByte();
+                if (guildGuids[c][2] != 0)
+                    guildGuids[c][2] ^= packet.ReadByte();
+
+                var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
+
+                packet.WriteLine("[{0}] Character GUID: {1}", c, playerGuid);
+                packet.WriteLine("[{0}] Guild GUID: {1}", c, new Guid(BitConverter.ToUInt64(guildGuids[c], 0)));
+
+                if (firstLogins[c])
+                {
+                    var startPos = new StartPosition();
+                    startPos.Map = mapId;
+                    startPos.Position = new Vector3(x, y, z);
+                    startPos.Zone = zone;
+
+                    packet.SniffFileInfo.Storage.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
+                }
+
+                var playerInfo = new Player { Race = race, Class = clss, Name = name, FirstLogin = firstLogins[c], Level = level };
+                packet.SniffFileInfo.Storage.Objects.AddOrUpdate(playerGuid, playerInfo);
+            }
+
+            for (var c = 0; c < unkCounter; c++)
+                packet.WriteLine("Unk Loop: {0}, {1}", packet.ReadUInt32(), packet.ReadByte());
+        }
+
+
         [Parser(Opcode.SMSG_COMPRESSED_CHAR_ENUM)]
         public static void HandleCompressedCharEnum(Packet packet)
         {
