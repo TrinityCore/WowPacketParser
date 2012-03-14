@@ -457,7 +457,7 @@ namespace WowPacketParser.Store.SQL
                     else
                     {
                         query.Append(SQLUtil.AddBackQuotes(PrimaryKey));
-                        query.Append(Values.Count == 1 ? " = " : " IN (");
+                        query.Append(Values.Count == 1 ? "=" : " IN (");
 
                         var counter = 0;
                         foreach (var entry in Values)
@@ -467,8 +467,11 @@ namespace WowPacketParser.Store.SQL
                             // Append comma if not end of items
                             if (Values.Count != counter)
                                 query.Append(SQLUtil.CommaSeparator);
+                            else if (Values.Count != 1)
+                                query.Append(")");
                         }
-                        query.Append(");");
+                        query.Append(";");
+
                     }
                 }
 
