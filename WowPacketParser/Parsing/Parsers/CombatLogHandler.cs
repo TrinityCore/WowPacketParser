@@ -244,7 +244,7 @@ namespace WowPacketParser.Parsing.Parsers
                         if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                             packet.ReadUInt32("Over damage", index);
 
-                        if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
+                        if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                             // no idea when this was added exactly
                             packet.ReadUInt32("Absorb", index);
 
