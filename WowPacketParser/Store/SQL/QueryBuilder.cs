@@ -175,6 +175,9 @@ namespace WowPacketParser.Store.SQL
                 Table = tableName;
                 Rows = rows;
 
+                if (Rows.Count == 0)
+                    return;
+
                 // Get the field names from the first row that is not a comment
                 TableStructure = new List<string>();
                 var firstProperRow = Rows.Find(row => !row.NoData);
