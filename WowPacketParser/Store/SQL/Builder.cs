@@ -319,8 +319,8 @@ namespace WowPacketParser.Store.SQL
                 {
                     var row = new QueryBuilder.SQLInsertRow();
                     row.AddValue("entry", npcVendor.Key);
-                    row.AddValue("slot", vendorItem.Slot);
                     row.AddValue("item", vendorItem.ItemId);
+                    row.AddValue("slot", vendorItem.Slot);
                     row.AddValue("maxcount", vendorItem.MaxCount);
                     row.AddValue("ExtendedCost", vendorItem.ExtendedCostId);
                     row.Comment = StoreGetters.GetName(StoreNameType.Item, (int)vendorItem.ItemId, false);
@@ -328,7 +328,7 @@ namespace WowPacketParser.Store.SQL
                 }
             }
 
-            return new QueryBuilder.SQLInsert(tableName, rows).Build();
+            return new QueryBuilder.SQLInsert(tableName, rows, 2).Build();
         }
 
         public string NpcTemplate()
@@ -847,14 +847,14 @@ namespace WowPacketParser.Store.SQL
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
-                row.AddValue("ObjectType", data.Value.ObjectType.ToString());
+                row.AddValue("ObjectType", data.Value.ObjectType/*.ToString()*/);
                 row.AddValue("Id", data.Key);
                 row.AddValue("Name", data.Value.Name);
 
                 rows.Add(row);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, rows, ignore: true).Build();
+            return new QueryBuilder.SQLInsert(tableName, rows, 2, ignore: true).Build();
         }
     }
 }

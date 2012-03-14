@@ -192,19 +192,18 @@ namespace WowPacketParser.Store.SQL
                 if (primaryKeyNumber == 1)
                 {
                     ICollection<uint> values =
-                        rows.Select(row => UInt32.Parse(row.GetPrimaryKeys(primaryKeyNumber).Item2.First())).ToArray();
-                    var primaryKey = rows.First().GetPrimaryKeys(primaryKeyNumber).Item1.First();
+                        rows.FindAll(row => !row.NoData).Select(row => UInt32.Parse(row.GetPrimaryKeys(primaryKeyNumber).Item2.First())).ToArray();
+                    var primaryKey = TableStructure[0];
 
                     Delete = new SQLDelete(values, primaryKey, Table).Build();
                 }
                 else if (primaryKeyNumber == 2)
                 {
                     ICollection<Tuple<uint, uint>> values =
-                        rows.Select(row => row.GetPrimaryKeys(primaryKeyNumber).Item2).Select(
+                        rows.FindAll(row => !row.NoData).Select(row => row.GetPrimaryKeys(primaryKeyNumber).Item2).Select(
                             vals => Tuple.Create(UInt32.Parse(vals[0]), UInt32.Parse(vals[1]))).ToArray();
 
-                    var pks = rows.First().GetPrimaryKeys(primaryKeyNumber).Item1;
-                    var primaryKeys = Tuple.Create(pks[0], pks[1]);
+                    var primaryKeys = Tuple.Create(TableStructure[0], TableStructure[1]);
 
                     Delete = new SQLDelete(values, primaryKeys, tableName).Build();
                 }
@@ -256,7 +255,16 @@ namespace WowPacketParser.Store.SQL
             // Assuming that the first <count> values will be the primary key
             public Tuple<List<string>, List<string>> GetPrimaryKeys(int count = 1)
             {
-                return Tuple.Create(FieldNames.GetRange(0, count), _values.GetRange(0, count));
+                var values = _values.GetRange(0, count);
+
+                for (int i = 0; i < values.Count; i++)
+                {
+                    var value = values[i];
+                    if (value.StartsWith("@")) // @GUID+666 -> 666
+                        values[i] = value.Substring(value.IndexOf('+'));
+                }
+
+                return Tuple.Create(FieldNames.GetRange(0, count), values);
             }
 
             private string _headerComment;
