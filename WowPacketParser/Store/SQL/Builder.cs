@@ -43,7 +43,7 @@ namespace WowPacketParser.Store.SQL
                     if (!(creature.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
                         continue;
 
-                row.CommentOut = creature.IsTemporarySpawn();
+
 
                 var spawnTimeSecs = creature.GetDefaultSpawnTime();
                 var movementType = 0; // TODO: Find a way to check if our unit got random movement
@@ -63,8 +63,12 @@ namespace WowPacketParser.Store.SQL
                 row.AddValue("MovementType", movementType);
                 row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int) unit.Key.GetEntry(), false);
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + ")";
-                if (row.CommentOut)
+
+                if (creature.IsTemporarySpawn())
+                {
+                    row.CommentOut = true;
                     row.Comment += " - !!! might be temporary spawn !!!";
+                }
                 else
                     ++count;
 
@@ -75,9 +79,8 @@ namespace WowPacketParser.Store.SQL
             // delete query for GUIDs
             var delete = new QueryBuilder.SQLDelete(Tuple.Create(0u, count), "guid", tableName, "@GUID+");
             result.Append(delete.Build());
-            result.Append(Environment.NewLine);
 
-            var sql = new QueryBuilder.SQLInsert(tableName, rows);
+            var sql = new QueryBuilder.SQLInsert(tableName, rows, withDelete: false);
             result.Append(sql.Build());
             return result.ToString();
         }
@@ -143,7 +146,7 @@ namespace WowPacketParser.Store.SQL
                 rows.Add(row);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, rows, ignore: true).Build();
+            return new QueryBuilder.SQLInsert(tableName, rows, ignore: true, withDelete: false).Build();
         }
 
         public string QuestTemplate()
@@ -486,8 +489,6 @@ namespace WowPacketParser.Store.SQL
                     if (!(go.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
                         continue;
 
-                row.CommentOut = go.IsTemporarySpawn();
-
                 uint animprogress = 0;
                 var state = 0;
                 UpdateField uf;
@@ -518,8 +519,12 @@ namespace WowPacketParser.Store.SQL
                 row.AddValue("state", state);
                 row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int) gameobject.Key.GetEntry(), false);
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + ")";
-                if (row.CommentOut)
+
+                if (go.IsTemporarySpawn())
+                {
+                    row.CommentOut = true;
                     row.Comment += " - !!! might be temporary spawn !!!";
+                }
                 else
                     ++count;
 
@@ -531,9 +536,8 @@ namespace WowPacketParser.Store.SQL
             // delete query for GUIDs
             var delete = new QueryBuilder.SQLDelete(Tuple.Create(0u, count), "guid", tableName, "@GUID+");
             result.Append(delete.Build());
-            result.Append(Environment.NewLine);
 
-            var sql = new QueryBuilder.SQLInsert(tableName, rows);
+            var sql = new QueryBuilder.SQLInsert(tableName, rows, withDelete: false);
             result.Append(sql.Build());
             return result.ToString();
         }
@@ -847,14 +851,14 @@ namespace WowPacketParser.Store.SQL
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
-                row.AddValue("ObjectType", data.Value.ObjectType/*.ToString()*/);
+                row.AddValue("ObjectType", data.Value.ObjectType.ToString());
                 row.AddValue("Id", data.Key);
                 row.AddValue("Name", data.Value.Name);
 
                 rows.Add(row);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, rows, 2, ignore: true).Build();
+            return new QueryBuilder.SQLInsert(tableName, rows, 2, ignore: true, withDelete: false).Build();
         }
     }
 }
