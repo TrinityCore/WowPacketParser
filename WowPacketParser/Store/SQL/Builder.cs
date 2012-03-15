@@ -77,7 +77,7 @@ namespace WowPacketParser.Store.SQL
 
             var result = new StringBuilder();
             // delete query for GUIDs
-            var delete = new QueryBuilder.SQLDelete(Tuple.Create(0u, count), "guid", tableName, "@GUID+");
+            var delete = new QueryBuilder.SQLDelete(Tuple.Create("@GUID+0", "@GUID+" + count), "guid", tableName);
             result.Append(delete.Build());
 
             var sql = new QueryBuilder.SQLInsert(tableName, rows, withDelete: false);
@@ -87,10 +87,11 @@ namespace WowPacketParser.Store.SQL
 
         public string CreatureEquip()
         {
-            if (!_storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit))
+            if (!_storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet))
                 return string.Empty;
 
-            var units = _storage.Objects.Where(x => x.Value.Type == ObjectType.Unit);
+            var units = _storage.Objects.Where(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet);
+
             const string tableName = "creature_equip_template";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
@@ -416,7 +417,11 @@ namespace WowPacketParser.Store.SQL
 
                 UpdateField hoverHeight;
                 if (npc.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_HOVERHEIGHT), out hoverHeight))
-                    row.AddValue("HoverHeight", hoverHeight.SingleValue);
+                    row.AddValue("HoverHeight", hoverHeight.SingleValue, 1);
+
+                row.AddValue("WalkSpeed", npc.Movement.WalkSpeed, 1);
+                row.AddValue("RunSpeed", npc.Movement.RunSpeed, 1.142857);
+                row.AddValue<uint>("VehicleId", npc.Movement.VehicleId, 0);
 
                 row.AddWhere("entry", unit.Key.GetEntry());
                 row.Table = tableName;
@@ -534,7 +539,7 @@ namespace WowPacketParser.Store.SQL
             var result = new StringBuilder();
 
             // delete query for GUIDs
-            var delete = new QueryBuilder.SQLDelete(Tuple.Create(0u, count), "guid", tableName, "@GUID+");
+            var delete = new QueryBuilder.SQLDelete(Tuple.Create("@GUID+0", "@GUID+" + count), "guid", tableName);
             result.Append(delete.Build());
 
             var sql = new QueryBuilder.SQLInsert(tableName, rows, withDelete: false);

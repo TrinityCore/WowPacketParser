@@ -78,6 +78,30 @@ namespace WowPacketParser.Store.SQL
             }
 
             /// <summary>
+            /// Adds a field-value pair to be updated. If value is equal to defaultValue, value will NOT be added to this update row
+            /// </summary>
+            /// <param name="field">The field name associated with the value</param>
+            /// <param name="value">Any value (string, number, enum, ...)</param>
+            /// <param name="defaultValue">Default value (usually defined in database structure)</param>
+            /// <param name="isFlag">If set to true the value, "0x" will be append to value</param>
+            /// <param name="noQuotes">If value is a string and this is set to true, value will not be 'quoted' (SQL variables)</param>
+            public void AddValue<T>(string field, T value, T defaultValue, bool isFlag = false, bool noQuotes = false)
+            {
+                // T used because it is compile time safe. We know that value and defaultValue got the same type
+
+                if (value is float || value is double)
+                {
+                    if (Math.Abs(Convert.ToDouble(value) - Convert.ToDouble(defaultValue)) < 0.000001)
+                        return;
+                }
+
+                if (value.Equals(defaultValue))
+                    return;
+
+                _values.Add(new KeyValuePair<string, object>(SQLUtil.AddBackQuotes(field), SQLUtil.ToSQLValue(value, isFlag, noQuotes)));
+            }
+
+            /// <summary>
             /// Adds to this row what will be updated
             /// </summary>
             /// <param name="field">The field name associated with the value</param>
@@ -194,17 +218,17 @@ namespace WowPacketParser.Store.SQL
 
                 if (primaryKeyNumber == 1)
                 {
-                    ICollection<uint> values =
-                        rows.FindAll(row => !row.NoData).Select(row => UInt32.Parse(row.GetPrimaryKeysValues(primaryKeyNumber).First())).ToArray();
+                    ICollection<string> values =
+                        rows.FindAll(row => !row.NoData).Select(row => row.GetPrimaryKeysValues(primaryKeyNumber).First()).ToArray();
                     var primaryKey = TableStructure[0];
 
                     Delete = new SQLDelete(values, primaryKey, Table).Build();
                 }
                 else if (primaryKeyNumber == 2)
                 {
-                    ICollection<Tuple<uint, uint>> values =
-                        rows.FindAll(row => !row.NoData).Select(row => row.GetPrimaryKeysValues(primaryKeyNumber)).Select(
-                            vals => Tuple.Create(UInt32.Parse(vals[0]), UInt32.Parse(vals[1]))).ToArray();
+                    ICollection<Tuple<string, string>> values =
+                        rows.FindAll(row => !row.NoData).Select(row => row.GetPrimaryKeysValues(primaryKeyNumber)).
+                            Select(vals => Tuple.Create(vals[0], vals[1])).ToArray();
 
                     var primaryKeys = Tuple.Create(TableStructure[0], TableStructure[1]);
 
@@ -221,7 +245,7 @@ namespace WowPacketParser.Store.SQL
             public string Build()
             {
                 // If we only have rows with comment, do not print any query
-                if (Rows.All(row => row.NoData))
+                if (Rows.All(row => row.NoData)) // still true if row count = 0
                     return "-- " + SQLUtil.AddBackQuotes(Table) + " has empty data." + Environment.NewLine;
 
                 var query = new StringBuilder();
@@ -229,10 +253,8 @@ namespace WowPacketParser.Store.SQL
                 query.Append(Delete); // Can be empty
                 query.Append(InsertHeader);
 
-                var rowsStrings = Rows.Select(row => row.Build()).ToList();
-
                 var count = 0;
-                foreach (var rowString in rowsStrings)
+                foreach (var row in Rows)
                 {
                     if (count >= MaxRowsPerInsert)
                     {
@@ -240,7 +262,7 @@ namespace WowPacketParser.Store.SQL
                         query.Append(InsertHeader);
                         count = 0;
                     }
-                    query.Append(rowString);
+                    query.Append(row.Build());
                     count++;
                 }
 
@@ -258,6 +280,18 @@ namespace WowPacketParser.Store.SQL
             // Assuming that the first <count> values will be the primary key
             public List<string> GetPrimaryKeysValues(int count = 1)
             {
+
+                if (_values.Count < count)
+                {
+                    // If our row does not have the request number
+                    // of values, forge some
+
+                    var list = new List<string>();
+                    for (var i = 0; i < count; i++)
+                        list.Add("Unknown" + i);
+                    return list;
+                }
+
                 return _values.GetRange(0, count);
             }
 
@@ -344,16 +378,14 @@ namespace WowPacketParser.Store.SQL
             private readonly bool _double;
             private readonly bool _between;
 
-            private ICollection<uint> Values { get; set; }
-            private ICollection<Tuple<uint, uint>> ValuesDouble { get; set; }
-            private Tuple<uint, uint> ValuesBetween { get; set; }
+            private ICollection<string> Values { get; set; }
+            private ICollection<Tuple<string, string>> ValuesDouble { get; set; }
+            private Tuple<string, string> ValuesBetween { get; set; }
 
             private string Table { get; set; }
 
             private string PrimaryKey { get; set; }
             private Tuple<string, string> PrimaryKeys { get; set; }
-
-            private string Prefix { get; set; }
 
             /// <summary>
             /// <para>Creates a delete query with a single primary key and an arbitrary number of values</para>
@@ -363,7 +395,7 @@ namespace WowPacketParser.Store.SQL
             /// <param name="values">Collection of values to be deleted</param>
             /// <param name="primaryKey">Field used in the WHERE clause</param>
             /// <param name="tableName">Table name</param>
-            public SQLDelete(ICollection<uint> values, string primaryKey, string tableName)
+            public SQLDelete(ICollection<string> values, string primaryKey, string tableName)
             {
                 PrimaryKey = primaryKey;
                 Table = tableName;
@@ -380,7 +412,7 @@ namespace WowPacketParser.Store.SQL
             /// <param name="values">Collection of pairs of values to be deleted</param>
             /// <param name="primaryKeys">Collection of pairs of fields used in the WHERE clause</param>
             /// <param name="tableName">Table name</param>
-            public SQLDelete(ICollection<Tuple<uint, uint>> values, Tuple<string, string> primaryKeys, string tableName)
+            public SQLDelete(ICollection<Tuple<string, string>> values, Tuple<string, string> primaryKeys, string tableName)
             {
                 PrimaryKeys = primaryKeys;
                 Table = tableName;
@@ -398,7 +430,7 @@ namespace WowPacketParser.Store.SQL
             /// <param name="primaryKey">Field used in the WHERE clause</param>
             /// <param name="tableName">Table name</param>
             /// <param name="prefix">String to be appended to values[0] and values[1]</param>
-            public SQLDelete(Tuple<uint, uint> values, string primaryKey, string tableName, string prefix = "")
+            public SQLDelete(Tuple<string, string> values, string primaryKey, string tableName)
             {
                 PrimaryKey = primaryKey;
                 Table = tableName;
@@ -406,7 +438,6 @@ namespace WowPacketParser.Store.SQL
                 ValuesBetween = values;
                 _double = true;
                 _between = true;
-                Prefix = prefix;
             }
 
             /// <summary>
@@ -425,12 +456,8 @@ namespace WowPacketParser.Store.SQL
                 {
                     query.Append(SQLUtil.AddBackQuotes(PrimaryKey));
                     query.Append(" BETWEEN ");
-                    if (Prefix != null)
-                        query.Append(Prefix);
                     query.Append(ValuesBetween.Item1);
                     query.Append(" AND ");
-                    if (Prefix != null)
-                        query.Append(Prefix);
                     query.Append(ValuesBetween.Item2);
                     query.Append(";");
                 }
