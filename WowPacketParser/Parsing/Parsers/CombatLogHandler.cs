@@ -178,6 +178,7 @@ namespace WowPacketParser.Parsing.Parsers
                         case SpellEffect.CreateHouse:
                         case SpellEffect.Duel:
                         case SpellEffect.SummonObjectSlot1:
+                        case SpellEffect.SummonObjectSlot2:
                         case SpellEffect.Unk171:
                         {
                             packet.ReadPackedGuid("Summoned GUID", index, i, j);

@@ -455,7 +455,11 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleRaidReadyCheck(Packet packet)
         {
             if (packet.Direction == Direction.ClientToServer)
-                packet.ReadBoolean("Ready");
+            {
+                // Packet is sent in two different methods. One sends a byte and one doesn't
+                if (packet.CanRead())
+                    packet.ReadBoolean("Ready");
+            }
             else
                 packet.ReadGuid("GUID");
         }
