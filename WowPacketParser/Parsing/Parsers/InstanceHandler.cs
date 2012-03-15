@@ -12,19 +12,19 @@ namespace WowPacketParser.Parsing.Parsers
             var type = packet.ReadEnum<EncounterFrame>("Type", TypeCode.UInt32);
             switch (type)
             {
-                case EncounterFrame.Add:
-                case EncounterFrame.Remove:
-                case EncounterFrame.Unk2:
+                case EncounterFrame.Engage:
+                case EncounterFrame.Disengage:
+                case EncounterFrame.UpdatePriority:
                     packet.ReadPackedGuid("GUID");
                     packet.ReadByte("Param 1");
                     break;
-                case EncounterFrame.Unk3:
-                case EncounterFrame.Unk4:
-                case EncounterFrame.Unk6:
+                case EncounterFrame.AddTimer:
+                case EncounterFrame.EnableObjective:
+                case EncounterFrame.DisableObjective:
                     packet.ReadByte("Param 1");
                     packet.ReadByte("Param 2");
                     break;
-                case EncounterFrame.Unk5:
+                case EncounterFrame.UpdateObjective:
                     packet.ReadByte("Param 1");
                     break;
             }

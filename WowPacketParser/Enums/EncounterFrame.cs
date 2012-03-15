@@ -2,13 +2,13 @@ namespace WowPacketParser.Enums
 {
     public enum EncounterFrame
     {
-        Add    = 0,
-        Remove = 1,
-        Unk2   = 2,
-        Unk3   = 3,
-        Unk4   = 4,
-        Unk5   = 5,
-        Unk6   = 6,
-        Unk7   = 7
+        Engage              = 0,
+        Disengage           = 1,
+        UpdatePriority      = 2,
+        AddTimer            = 3,
+        EnableObjective     = 4,
+        UpdateObjective     = 5,
+        DisableObjective    = 6,
+        SortEncounterList   = 7 // Unsure
     }
 }
