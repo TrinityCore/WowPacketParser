@@ -428,55 +428,66 @@ namespace WowPacketParser.Parsing.Parsers
             switch (result)
             {
                 case SpellCastFailureReason.NeedExoticAmmo:
-                    packet.ReadUInt32("Item SubclassMask");
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Item SubclassMask");
                     break;
                 case SpellCastFailureReason.TooManyOfItem:
-                    packet.ReadUInt32("Limit");
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Limit");
                     break;
                 case SpellCastFailureReason.Totems:
                 case SpellCastFailureReason.TotemCategory:
-                    packet.ReadUInt32("Totem 1");
-                    packet.ReadUInt32("Totem 2");
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Totem 1");
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Totem 2");
                     break;
                 case SpellCastFailureReason.Reagents:
-                    packet.ReadUInt32("Reagent ID");
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Reagent ID");
                     break;
                 case SpellCastFailureReason.RequiresSpellFocus:
-                    packet.ReadUInt32("Spell Focus");
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Spell Focus");
                     break;
                 case SpellCastFailureReason.RequiresArea:
-                    packet.ReadEntryWithName<UInt32>(StoreNameType.Area, "Area ID");
+                    if (packet.CanRead())
+                        packet.ReadEntryWithName<UInt32>(StoreNameType.Area, "Area ID");
                     break;
                 case SpellCastFailureReason.CustomError:
-                    packet.ReadUInt32("Error ID");
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Error ID");
                     break;
                 case SpellCastFailureReason.PreventedByMechanic:
-                    packet.ReadEnum<SpellMechanics>("Mechanic", TypeCode.UInt32);
+                    if (packet.CanRead())
+                        packet.ReadEnum<SpellMechanics>("Mechanic", TypeCode.UInt32);
                     break;
                 case SpellCastFailureReason.EquippedItemClass:
                 case SpellCastFailureReason.EquippedItemClassMainhand:
                 case SpellCastFailureReason.EquippedItemClassOffhand:
-                    packet.ReadEnum<ItemClass>("Class", TypeCode.UInt32);
-                    packet.ReadUInt32("SubclassMask");
+                    if (packet.CanRead())
+                        packet.ReadEnum<ItemClass>("Class", TypeCode.UInt32);
+                    if (packet.CanRead())
+                        packet.ReadUInt32("SubclassMask");
                     break;
                 case SpellCastFailureReason.MinSkill:
-                    packet.ReadUInt32("Skill Type"); // SkillLine.dbc
-                    packet.ReadUInt32("Required Amount");
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Skill Type"); // SkillLine.dbc
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Required Amount");
                     break;
                 case SpellCastFailureReason.FishingTooLow:
-                    packet.ReadUInt32("Required fishing skill");
+                    if (packet.CanRead())
+                        packet.ReadUInt32("Required fishing skill");
                     break;
                 // Following is post 3.3.5a
                 case SpellCastFailureReason.NotReady:
                 case SpellCastFailureReason.Silenced:
                 case SpellCastFailureReason.NotStanding:
-                    packet.ReadInt32("Unk");
+                    if (packet.CanRead())
+                        packet.ReadInt32("Unk");
                     break;
                 default:
-                    /*
-                     * For SMSG_PET_CAST_FAILED:
-                     * This is how the client reads the remaining two integers.
-                     */
                     if (packet.CanRead())
                         packet.ReadUInt32("Unknown1");
                     if (packet.CanRead())
