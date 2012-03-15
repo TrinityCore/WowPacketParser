@@ -87,7 +87,7 @@ namespace WowPacketParser.Enums.Version
 
         public static int GetUpdateField<T>(T field)
         {
-            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionary(ClientVersion.GetBuild()), field.GetType().Name);
+            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionary(ClientVersion.GetBuild()), typeof(T).Name);
 
             var newEnumType = _assembly.GetType(typeString);
 

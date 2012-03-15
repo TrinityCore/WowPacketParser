@@ -136,7 +136,7 @@ namespace WowPacketParser.Parsing.Parsers
                 string value = blockVal.Int32Value + "/" + blockVal.SingleValue;
 
                 if (i < objectEnd)
-                    key = UpdateFields.GetUpdateFieldName <ObjectField>(i);
+                    key = UpdateFields.GetUpdateFieldName<ObjectField>(i);
                 else
                 {
                     switch (type)
@@ -146,7 +146,7 @@ namespace WowPacketParser.Parsing.Parsers
                             if (i < UpdateFields.GetUpdateField(ItemField.ITEM_END))
                                 goto case ObjectType.Item;
 
-                            key = UpdateFields.GetUpdateFieldName <ContainerField>(i);
+                            key = UpdateFields.GetUpdateFieldName<ContainerField>(i);
                             break;
                         }
                         case ObjectType.Item:
