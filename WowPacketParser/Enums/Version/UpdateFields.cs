@@ -9,9 +9,9 @@ namespace WowPacketParser.Enums.Version
     {
         private static readonly Assembly _assembly = Assembly.GetExecutingAssembly();
 
-        private static string GetUpdateFieldDictionary(int build)
+        private static string GetUpdateFieldDictionary(ClientVersionBuild build)
         {
-            switch ((ClientVersionBuild)build)
+            switch (build)
             {
                 case ClientVersionBuild.V2_4_3_8606:
                 case ClientVersionBuild.V3_0_2_9056:
@@ -71,111 +71,31 @@ namespace WowPacketParser.Enums.Version
             return "V3_3_5_opcodes";
         }
 
-        public static string GetUpdateFieldName(int updateField, string fieldType)
+        public static string GetUpdateFieldName<T>(int field)
         {
-            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionary(ClientVersion.GetBuildInt()), fieldType);
+            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionary(ClientVersion.GetBuild()), typeof(T).Name);
 
             var newEnumType = _assembly.GetType(typeString);
 
-            var enumName = Enum.GetName(newEnumType, updateField);
+            var enumName = Enum.GetName(newEnumType, field);
 
             if (!String.IsNullOrEmpty(enumName))
                 return enumName;
 
-            return updateField.ToString(CultureInfo.InvariantCulture);
+            return field.ToString(CultureInfo.InvariantCulture);
         }
 
-        // I wonder if the next methods could be merged into one....
-
-        public static int GetUpdateField(ObjectField objectField)
+        public static int GetUpdateField<T>(T field)
         {
-            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.ObjectField", GetUpdateFieldDictionary(ClientVersion.GetBuildInt()));
+            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionary(ClientVersion.GetBuild()), field.GetType().Name);
 
             var newEnumType = _assembly.GetType(typeString);
 
             foreach (int val in Enum.GetValues(newEnumType))
-                if (Enum.GetName(newEnumType, val) == objectField.ToString())
+                if (Enum.GetName(newEnumType, val) == field.ToString())
                     return val;
 
-            return (int)objectField;
-        }
-
-        public static int GetUpdateField(ItemField itemField)
-        {
-            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.ItemField", GetUpdateFieldDictionary(ClientVersion.GetBuildInt()));
-
-            var newEnumType = _assembly.GetType(typeString);
-
-            foreach (int val in Enum.GetValues(newEnumType))
-                if (Enum.GetName(newEnumType, val) == itemField.ToString())
-                    return val;
-
-            return (int)itemField;
-        }
-
-        public static int GetUpdateField(ContainerField containerField)
-        {
-            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.ContainerField", GetUpdateFieldDictionary(ClientVersion.GetBuildInt()));
-
-            var newEnumType = _assembly.GetType(typeString);
-
-            foreach (int val in Enum.GetValues(newEnumType))
-                if (Enum.GetName(newEnumType, val) == containerField.ToString())
-                    return val;
-
-            return (int)containerField;
-        }
-
-        public static int GetUpdateField(UnitField unitField)
-        {
-            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.UnitField", GetUpdateFieldDictionary(ClientVersion.GetBuildInt()));
-
-            var newEnumType = _assembly.GetType(typeString);
-
-            foreach (int val in Enum.GetValues(newEnumType))
-                if (Enum.GetName(newEnumType, val) == unitField.ToString())
-                    return val;
-
-            return (int)unitField;
-        }
-
-        public static int GetUpdateField(GameObjectField gameObjectField)
-        {
-            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.GameObjectField", GetUpdateFieldDictionary(ClientVersion.GetBuildInt()));
-
-            var newEnumType = _assembly.GetType(typeString);
-
-            foreach (int val in Enum.GetValues(newEnumType))
-                if (Enum.GetName(newEnumType, val) == gameObjectField.ToString())
-                    return val;
-
-            return (int)gameObjectField;
-        }
-
-        public static int GetUpdateField(DynamicObjectField dynamicObjectField)
-        {
-            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.DynamicObjectField", GetUpdateFieldDictionary(ClientVersion.GetBuildInt()));
-
-            var newEnumType = _assembly.GetType(typeString);
-
-            foreach (int val in Enum.GetValues(newEnumType))
-                if (Enum.GetName(newEnumType, val) == dynamicObjectField.ToString())
-                    return val;
-
-            return (int)dynamicObjectField;
-        }
-
-        public static int GetUpdateField(CorpseField corpseField)
-        {
-            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.CorpseField", GetUpdateFieldDictionary(ClientVersion.GetBuildInt()));
-
-            var newEnumType = _assembly.GetType(typeString);
-
-            foreach (int val in Enum.GetValues(newEnumType))
-                if (Enum.GetName(newEnumType, val) == corpseField.ToString())
-                    return val;
-
-            return (int)corpseField;
+            return Convert.ToInt32(field);
         }
     }
 }

@@ -136,7 +136,7 @@ namespace WowPacketParser.Parsing.Parsers
                 string value = blockVal.Int32Value + "/" + blockVal.SingleValue;
 
                 if (i < objectEnd)
-                    key = UpdateFields.GetUpdateFieldName(i, "ObjectField");
+                    key = UpdateFields.GetUpdateFieldName <ObjectField>(i);
                 else
                 {
                     switch (type)
@@ -146,12 +146,12 @@ namespace WowPacketParser.Parsing.Parsers
                             if (i < UpdateFields.GetUpdateField(ItemField.ITEM_END))
                                 goto case ObjectType.Item;
 
-                            key = UpdateFields.GetUpdateFieldName(i, "ContainerField");
+                            key = UpdateFields.GetUpdateFieldName <ContainerField>(i);
                             break;
                         }
                         case ObjectType.Item:
                         {
-                            key = UpdateFields.GetUpdateFieldName(i, "ItemField");
+                            key = UpdateFields.GetUpdateFieldName<ItemField>(i);
                             break;
                         }
                         case ObjectType.Player:
@@ -159,27 +159,27 @@ namespace WowPacketParser.Parsing.Parsers
                             if (i < UpdateFields.GetUpdateField(UnitField.UNIT_END))
                                 goto case ObjectType.Unit;
 
-                            key = UpdateFields.GetUpdateFieldName(i, "PlayerField");
+                            key = UpdateFields.GetUpdateFieldName<PlayerField>(i);
                             break;
                         }
                         case ObjectType.Unit:
                         {
-                            key = UpdateFields.GetUpdateFieldName(i, "UnitField");
+                            key = UpdateFields.GetUpdateFieldName<UnitField>(i);
                             break;
                         }
                         case ObjectType.GameObject:
                         {
-                            key = UpdateFields.GetUpdateFieldName(i, "GameObjectField");
+                            key = UpdateFields.GetUpdateFieldName<GameObjectField>(i);
                             break;
                         }
                         case ObjectType.DynamicObject:
                         {
-                            key = UpdateFields.GetUpdateFieldName(i, "DynamicObjectField");
+                            key = UpdateFields.GetUpdateFieldName<DynamicObjectField>(i);
                             break;
                         }
                         case ObjectType.Corpse:
                         {
-                            key = UpdateFields.GetUpdateFieldName(i, "CorpseField");
+                            key = UpdateFields.GetUpdateFieldName<CorpseField>(i);
                             break;
                         }
                     }

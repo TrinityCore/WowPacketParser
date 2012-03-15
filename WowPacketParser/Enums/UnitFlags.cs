@@ -3,7 +3,7 @@
 namespace WowPacketParser.Enums
 {
     [Flags]
-    enum UnitFlags : uint
+    public enum UnitFlags : uint
     {
         None = 0,
         NotClientControlled = 0x1,
