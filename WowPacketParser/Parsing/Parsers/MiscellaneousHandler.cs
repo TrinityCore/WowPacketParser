@@ -252,7 +252,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REALM_SPLIT)]
         public static void HandleClientRealmSplit(Packet packet)
         {
-            packet.ReadEnum<RealmSplitState>("Split State", TypeCode.Int32);
+            packet.ReadInt32("Unk Int32"); // Same as first int32 in SMSG_REALM_SPLIT
         }
 
         [Parser(Opcode.SMSG_REALM_SPLIT)]
