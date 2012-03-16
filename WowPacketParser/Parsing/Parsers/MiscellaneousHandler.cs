@@ -213,10 +213,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
             packet.ReadUInt32("Name length");
             packet.ReadCString("Resurrector Name");
-            // FIXME: TC states this is "Null terminator" and "Affected by Resurrection sickness?" but i'm not sure
-            // All packets have 0 on first one and 95% of second = false. Leaving as Unk till further test
-            packet.ReadByte("Unk byte 1");
-            packet.ReadByte("Unk byte 2");
+            packet.ReadBoolean("Resurrection Sickness");
+            packet.ReadBoolean("Use Timer");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");   // Used only for: <if (Spell ID == 83968 && Unit_HasAura(95223) return 1;>
         }
@@ -252,7 +250,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REALM_SPLIT)]
         public static void HandleClientRealmSplit(Packet packet)
         {
-            packet.ReadInt32("Unk Int32");
+            packet.ReadEnum<RealmSplitState>("Split State", TypeCode.Int32);
         }
 
         [Parser(Opcode.SMSG_REALM_SPLIT)]
