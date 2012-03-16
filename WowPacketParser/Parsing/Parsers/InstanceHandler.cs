@@ -23,10 +23,10 @@ namespace WowPacketParser.Parsing.Parsers
                 case EncounterFrame.EnableObjective:
                 case EncounterFrame.DisableObjective:
                     packet.ReadByte("Param 1");
-                    packet.ReadByte("Param 2");
                     break;
                 case EncounterFrame.UpdateObjective:
                     packet.ReadByte("Param 1");
+                    packet.ReadByte("Param 2");
                     break;
             }
         }
