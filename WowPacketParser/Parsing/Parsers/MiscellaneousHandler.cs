@@ -96,21 +96,23 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MULTIPLE_PACKETS_2)]
         public static void HandleMultiplePackets2(Packet packet)
         {
-            // Testing: packet.WriteLine(packet.AsHex());
-            packet.WriteLine("{");
-            var i = 0;
-            while (packet.CanRead())
-            {
-                packet.Opcode = packet.ReadUInt16();
+            // This opcode heavily relies on ALL of its contained packets
+            // to be parsed successfully
 
-                if (i > 0)
-                    packet.WriteLine();
+            //packet.WriteLine("{");
+            //var i = 0;
+            //while (packet.CanRead())
+            //{
+            //    packet.Opcode = packet.ReadUInt16();
 
-                packet.Write("[{0}] ", i++);
+            //    if (i > 0)
+            //        packet.WriteLine();
 
-                Handler.Parse(packet, isMultiple: true);
-            }
-            packet.WriteLine("}");
+            //    packet.Write("[{0}] ", i++);
+
+            //    Handler.Parse(packet, isMultiple: true);
+            //}
+            //packet.WriteLine("}");
         }
 
         [Parser(Opcode.SMSG_STOP_DANCE)]
