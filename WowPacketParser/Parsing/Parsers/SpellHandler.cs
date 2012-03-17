@@ -693,7 +693,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Caster GUID");
             packet.ReadPackedGuid("Target GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id");
-            packet.ReadInt32("Unknown int32");
+            packet.ReadInt32("Time Casted");
             packet.ReadInt32("Cast time");
 
             if (packet.ReadBoolean("Unknown bool"))
@@ -714,6 +714,16 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleCancelAura(Packet packet)
         {
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS)]
+        public static void HandleUpdateChainTargets(Packet packet)
+        {
+            packet.ReadGuid("Caster GUID");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            var count = packet.ReadInt32("Count");
+            for (var i = 0; i < count; i++)
+                packet.ReadGuid("Chain target");
         }
     }
 }

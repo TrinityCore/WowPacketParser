@@ -44,7 +44,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSingle("Reputation loss");
 
             if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                packet.ReadBoolean("Unk bool"); // First login = false ?
+                packet.ReadBoolean("Play Visual");
 
             var count = packet.ReadInt32("Count");
             for (var i = 0; i < count; i++)
