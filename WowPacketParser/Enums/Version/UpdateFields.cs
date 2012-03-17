@@ -74,7 +74,7 @@ namespace WowPacketParser.Enums.Version
         {
             var typeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionaryBuildName(ClientVersion.Build), typeof(T).Name);
 
-            var newEnumType = _assembly.GetType(typeString);
+            var newEnumType = Assembly.GetType(typeString);
 
             var enumName = Enum.GetName(newEnumType, field);
 
@@ -84,20 +84,12 @@ namespace WowPacketParser.Enums.Version
             return field.ToString(CultureInfo.InvariantCulture);
         }
 
-        private static readonly ConcurrentDictionary<Type, Array> _types = new ConcurrentDictionary<Type, Array>();
-        private static readonly Assembly _assembly = Assembly.GetExecutingAssembly();
+        private static readonly ConcurrentDictionary<Type, Array> Types = new ConcurrentDictionary<Type, Array>();
+        private static readonly Assembly Assembly = Assembly.GetExecutingAssembly();
 
         public static int GetUpdateField<T>(T field)
         {
-            // Reduce the amount of reflection used by storing found enums in a dictionary
-            if (!_types.ContainsKey(typeof(T)))
-            {
-                var typeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionaryBuildName(ClientVersion.Build), typeof(T).Name);
-                _types.TryAdd(typeof(T), Enum.GetValues(_assembly.GetType(typeString)));
-            }
-
-            // An enum type for a specific version like VX_Y_Z.ObjectField
-            var dict = _types[typeof (T)];
+            var dict = GetUpdateFieldDictionary<T>();
             var type = dict.GetValue(0).GetType();
 
             foreach (int val in dict)
@@ -105,6 +97,19 @@ namespace WowPacketParser.Enums.Version
                     return val;
 
             return Convert.ToInt32(field);
+        }
+
+        public static Array GetUpdateFieldDictionary<T>()
+        {
+            // Reduce the amount of reflection used by storing found enums in a dictionary
+            if (!Types.ContainsKey(typeof(T)))
+            {
+                var typeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionaryBuildName(ClientVersion.Build), typeof(T).Name);
+                Types.TryAdd(typeof(T), Enum.GetValues(Assembly.GetType(typeString)));
+            }
+
+            // An enum type for a specific version like VX_Y_Z.ObjectField
+            return Types[typeof(T)];
         }
     }
 }

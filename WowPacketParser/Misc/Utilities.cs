@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Security;
@@ -97,7 +98,7 @@ namespace WowPacketParser.Misc
         }
 
         [SecurityCritical]
-        public static void GetMemUse(string prefix, bool inKBs = false)
+        internal static void GetMemUse(string prefix, bool inKBs = false)
         {
             var process = Process.GetCurrentProcess();
             const int megabyte = 1048576;

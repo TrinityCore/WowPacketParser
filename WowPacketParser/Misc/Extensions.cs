@@ -160,5 +160,18 @@ namespace WowPacketParser.Misc
         {
             return string.Format("{0:00}:{1:00}:{2:00}.{3:000}", span.Hours, span.Minutes, span.Seconds, span.Milliseconds);
         }
+
+        // By Andrew Kennan @stackoverflow
+        public static T[] RemoveAt<T>(this T[] source, int index)
+        {
+            var dest = new T[source.Length - 1];
+            if (index > 0)
+                Array.Copy(source, 0, dest, 0, index);
+
+            if (index < source.Length - 1)
+                Array.Copy(source, index + 1, dest, index, source.Length - index - 1);
+
+            return dest;
+        }
     }
 }

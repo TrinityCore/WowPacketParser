@@ -23,7 +23,7 @@ namespace WowPacketParser.Misc
         public static readonly DumpFormatType DumpFormat = GetEnum("DumpFormat", DumpFormatType.Text);
         public static readonly StatsOutputFlags StatsOutput = GetEnum("StatsOutput", StatsOutputFlags.Local);
         public static readonly SQLOutputFlags SQLOutput = GetEnum("SQLOutput", SQLOutputFlags.None);
-        public static readonly string SQLFileName = GetString("SQLFileName", "");
+        public static readonly string SQLFileName = GetString("SQLFileName", string.Empty);
         public static readonly bool ShowEndPrompt = GetBoolean("ShowEndPrompt", false);
         public static readonly bool LogErrors = GetBoolean("LogErrors", false);
         public static readonly bool DebugReads = GetBoolean("DebugReads", false);
@@ -32,8 +32,8 @@ namespace WowPacketParser.Misc
 
         public static readonly bool SSHEnabled = GetBoolean("SSHEnabled", false);
         public static readonly string SSHHost = GetString("SSHHost", "localhost");
-        public static readonly string SSHUsername = GetString("SSHUsername", "");
-        public static readonly string SSHPassword = GetString("SSHPassword", "");
+        public static readonly string SSHUsername = GetString("SSHUsername", string.Empty);
+        public static readonly string SSHPassword = GetString("SSHPassword", string.Empty);
         public static readonly int SSHPort = GetInt32("SSHPort", 22);
         public static readonly int SSHLocalPort = GetInt32("SSHLocalPort", 3307);
 
@@ -41,7 +41,7 @@ namespace WowPacketParser.Misc
         public static readonly string Server = GetString("Server", "localhost");
         public static readonly string Port = GetString("Port", "3306");
         public static readonly string Username = GetString("Username", "root");
-        public static readonly string Password = GetString("Password", "");
+        public static readonly string Password = GetString("Password", string.Empty);
         public static readonly string Database = GetString("Database", "WPP");
         public static readonly string CharacterSet = GetString("CharacterSet", "utf8");
 

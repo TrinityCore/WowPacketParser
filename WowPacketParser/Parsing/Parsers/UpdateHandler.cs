@@ -78,29 +78,24 @@ namespace WowPacketParser.Parsing.Parsers
             var moves = ReadMovementUpdateBlock(ref packet, guid, index);
             var updates = ReadValuesUpdateBlock(ref packet, objType, index);
 
+            WoWObject obj;
             switch (objType)
-            {
-                case ObjectType.Unit:
-                    var unit = new Unit {Type = objType, Movement = moves, UpdateFields = updates, Map = map, Area = WorldStateHandler.CurrentAreaId, PhaseMask = (uint) MovementHandler.CurrentPhaseMask};
-                    packet.SniffFileInfo.Storage.Objects.TryAdd(guid, unit);
-                    break;
-                case ObjectType.GameObject:
-                    var go = new GameObject {Type = objType, Movement = moves, UpdateFields = updates, Map = map, Area = WorldStateHandler.CurrentAreaId, PhaseMask = (uint) MovementHandler.CurrentPhaseMask};
-                    packet.SniffFileInfo.Storage.Objects.TryAdd(guid, go);
-                    break;
-                case ObjectType.Item:
-                    var item = new Item {Type = objType, Movement = moves, UpdateFields = updates, Map = map, Area = WorldStateHandler.CurrentAreaId, PhaseMask = (uint) MovementHandler.CurrentPhaseMask};
-                    packet.SniffFileInfo.Storage.Objects.TryAdd(guid, item);
-                    break;
-                case ObjectType.Player:
-                    var player = new Player {Type = objType, Movement = moves, UpdateFields = updates, Map = map, Area = WorldStateHandler.CurrentAreaId, PhaseMask = (uint) MovementHandler.CurrentPhaseMask};
-                    packet.SniffFileInfo.Storage.Objects.TryAdd(guid, player);
-                    break;
-                default:
-                    var obj = new WoWObject {Type = objType, Movement = moves, UpdateFields = updates, Map = map, Area = WorldStateHandler.CurrentAreaId, PhaseMask = (uint) MovementHandler.CurrentPhaseMask};
-                    packet.SniffFileInfo.Storage.Objects.TryAdd(guid, obj);
-                    break;
+            { 
+                case ObjectType.Unit:       obj = new Unit(); break;
+                case ObjectType.GameObject: obj = new GameObject(); break;
+                case ObjectType.Item:       obj = new Item(); break;
+                case ObjectType.Player:     obj = new Player(); break;
+                default:                    obj = new WoWObject(); break;
             }
+
+            obj.Type = objType;
+            obj.Movement = moves;
+            obj.UpdateFields = updates;
+            obj.Map = map;
+            obj.Area = WorldStateHandler.CurrentAreaId;
+            obj.PhaseMask = (uint) MovementHandler.CurrentPhaseMask;
+
+            packet.SniffFileInfo.Storage.Objects.TryAdd(guid, obj);
 
             if (guid.HasEntry() && (objType == ObjectType.Unit || objType == ObjectType.GameObject))
                 packet.AddSniffData(Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");

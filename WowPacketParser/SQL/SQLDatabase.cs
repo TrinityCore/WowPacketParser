@@ -9,7 +9,7 @@ namespace WowPacketParser.SQL
         public static readonly Dictionary<StoreNameType, Dictionary<int, string>> NameStores =
             new Dictionary<StoreNameType, Dictionary<int, string>>();
 
-        private static readonly StoreNameType[] _objectTypes = new[]
+        private static readonly StoreNameType[] ObjectTypes = new[]
         {
             StoreNameType.Spell,
             StoreNameType.Map,
@@ -29,7 +29,7 @@ namespace WowPacketParser.SQL
             if (!SQLConnector.Connected())
                 throw new DataException("Cannot get DB data without an active DB connection.");
 
-            foreach (var objectType in _objectTypes)
+            foreach (var objectType in ObjectTypes)
                 NameStores.Add(objectType, GetDict<int, string>(string.Format("SELECT `Id`, `Name` FROM `ObjectNames` WHERE `ObjectType`='{0}';", objectType)));
         }
 
