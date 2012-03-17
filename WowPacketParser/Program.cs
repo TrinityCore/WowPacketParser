@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
@@ -26,13 +27,13 @@ namespace WowPacketParser
         private static int _globalStatsError;
         private static int _globalStatsTotal;
 
-        private static bool GetFiles(ref string[] args)
+        private static bool GetFiles(ref List<string> files)
         {
-            if (args.Length == 1 && args[0].Contains('*'))
+            if (files.Count == 1 && files[0].Contains('*'))
             {
                 try
                 {
-                    args = Directory.GetFiles(@".\", args[0]);
+                    files = Directory.GetFiles(@".\", files[0]).ToList();
                 }
                 catch (Exception ex)
                 {
@@ -43,17 +44,17 @@ namespace WowPacketParser
                 }
             }
 
-            for (var i = 0; i < args.Length; ++i)
+            for (var i = 0; i < files.Count; ++i)
             {
-                if (!File.Exists(args[i]))
+                if (!File.Exists(files[i]))
                 {
-                    Trace.WriteLine("File " + args[i] + " was not found, removed.");
-                    args = args.RemoveAt(i);
+                    Trace.WriteLine("File " + files[i] + " was not found, removed.");
+                    files.RemoveAt(i);
                     --i;
                 }
             }
 
-            if (args.Length == 0)
+            if (files.Count == 0)
             {
                 Trace.WriteLine("No files specified.");
                 return false;
@@ -309,8 +310,8 @@ namespace WowPacketParser
         private static void Main(string[] args)
         {
             SetUpListeners();
-            args = new[] { "422_Zangarmarsh_quests_2_parsed.pkt", "14007GoblinStarting_Level_7_11_parsed.pkt", "422_Zangarmarsh_quests_2.pkt"};
-            if (!GetFiles(ref args))
+            var files = args.ToList();
+            if (!GetFiles(ref files))
             {
                 EndPrompt();
                 return;
@@ -351,24 +352,24 @@ namespace WowPacketParser
 
             var numberOfThreadsRead = Settings.ThreadsRead != 0 ? Settings.ThreadsRead.ToString(CultureInfo.InvariantCulture) : "a recommended number of";
             var numberOfThreadsParse = Settings.ThreadsParse != 0 ? Settings.ThreadsParse.ToString(CultureInfo.InvariantCulture) : "a recommended number of";
-            Trace.WriteLine(string.Format("Using {0} threads to process {1} files", numberOfThreadsRead, args.Length));
+            Trace.WriteLine(string.Format("Using {0} threads to process {1} files", numberOfThreadsRead, files.Count));
 
             var startTime = DateTime.Now;
             var count = 0;
 
             if (Settings.ThreadsRead == 0) // Number of threads is automatically choosen by the Parallel library
-                args.AsParallel().SetCulture()
+                files.AsParallel().SetCulture()
                     .ForAll(file =>
-                        ReadFile(file, storage, builder, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + args.Length + " " + file + "]"));
+                        ReadFile(file, storage, builder, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]"));
             else
-                args.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.ThreadsRead)
-                    .ForAll(file => ReadFile(file, storage, builder, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + args.Length + " " + file + "]"));
+                files.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.ThreadsRead)
+                    .ForAll(file => ReadFile(file, storage, builder, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]"));
 
             if (Settings.StatsOutput.HasAnyFlag(StatsOutputFlags.Global))
             {
                 var span = DateTime.Now.Subtract(startTime);
                 Trace.WriteLine(string.Format("Parsed {0} packets from {1} files: {2:F3}% successfully, {3:F3}% with errors and skipped {4:F3}% in {5} Minutes, {6} Seconds and {7} Milliseconds using {8} threads",
-                    _globalStatsTotal, args.Length, (double)_globalStatsOk / _globalStatsTotal * 100,
+                    _globalStatsTotal, files.Count, (double)_globalStatsOk / _globalStatsTotal * 100,
                     (double)_globalStatsError / _globalStatsTotal * 100, (double)_globalStatsSkip / _globalStatsTotal * 100,
                     span.Minutes, span.Seconds, span.Milliseconds, numberOfThreadsParse));
             }
