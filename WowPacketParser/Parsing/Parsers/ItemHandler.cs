@@ -110,7 +110,7 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
 
             var opcode = packet.ReadInt32();
-            var remainingLength = packet.GetLength() - packet.GetPosition();
+            var remainingLength = packet.Length - packet.Position;
             var bytes = packet.ReadBytes((int)remainingLength);
 
             using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.SniffFileInfo))

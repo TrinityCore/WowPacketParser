@@ -141,7 +141,7 @@ namespace WowPacketParser.Misc
 
         public UpdateField ReadUpdateField()
         {
-            long pos = GetPosition();
+            long pos = Position;
             int svalue = ReadInt32();
             SetPosition(pos);
             float fvalue = ReadSingle();
@@ -168,11 +168,11 @@ namespace WowPacketParser.Misc
 
         public byte[] ReadToEnd()
         {
-            var length = (int) (GetLength() - GetPosition());
+            var length = (int) (Length - Position);
             return ReadBytes(length);
         }
 
-        private string GetIndexString(params int[] values)
+        private static string GetIndexString(params int[] values)
         {
             var indexes = string.Empty;
 
@@ -495,11 +495,6 @@ namespace WowPacketParser.Misc
             var val = ReadEnum<T>(bits);
             WriteLine("{0}{1}: {2} ({3}){4}", GetIndexString(values), name, val.Value, val.Key, (Settings.DebugReads ? " (0x" + val.Key.ToString("X4") + ")" : String.Empty));
             return val.Value;
-        }
-
-        public byte[] BitStream(int size)
-        {
-            return new byte[size];
         }
 
         public byte[] StartBitStream(params int[] values)

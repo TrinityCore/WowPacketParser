@@ -2,6 +2,7 @@ namespace WowPacketParser.Enums
 {
     public enum LfgError
     {
+        None                    = 0,
         PlayerDead              = 1,
         Falling                 = 2,
         InVehicle               = 3,

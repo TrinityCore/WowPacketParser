@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using ICSharpCode.SharpZipLib.Zip.Compression;
@@ -12,6 +13,7 @@ namespace WowPacketParser.Misc
         private static readonly bool _sniffData = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffData);
         private static readonly bool _sniffDataOpcodes = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffDataOpcodes);
 
+        [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringWriter writer, SniffFileInfo fileInfo)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
@@ -25,6 +27,7 @@ namespace WowPacketParser.Misc
             WriteToFile = true;
         }
 
+        [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, SniffFileInfo fileInfo)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
@@ -90,22 +93,22 @@ namespace WowPacketParser.Misc
                 inflater.SetInput(arr, 0, arr.Length);
                 inflater.Inflate(newarr, 0, inflatedSize);
             }
-            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, SniffFileInfo);
-            return pkt;
+            using (var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, SniffFileInfo))
+                return pkt;
         }
 
         public byte[] GetStream(long offset)
         {
-            var pos = GetPosition();
+            var pos = Position;
             SetPosition(offset);
             var buffer = ReadToEnd();
             SetPosition(pos);
             return buffer;
         }
 
-        public long GetPosition()
+        public long Position
         {
-            return BaseStream.Position;
+            get { return BaseStream.Position; }
         }
 
         public void SetPosition(long val)
@@ -113,14 +116,14 @@ namespace WowPacketParser.Misc
             BaseStream.Position = val;
         }
 
-        public long GetLength()
+        public long Length
         {
-            return BaseStream.Length;
+            get { return BaseStream.Length; }
         }
 
         public bool CanRead()
         {
-            return GetPosition() != GetLength();
+            return Position != Length;
         }
 
         public void Write(object format, params object[] args)
@@ -164,14 +167,16 @@ namespace WowPacketParser.Misc
             Writer.WriteLine(string.Format(format, args));
         }
 
-
-        public void CloseWriter()
+        public void ClosePacket()
         {
             if (Writer != null)
-            {
                 Writer.Close();
-                Writer = null;
-            }
+
+// ReSharper disable ConditionIsAlwaysTrueOrFalse (/slap R#)
+            if (BaseStream != null)
+// ReSharper restore ConditionIsAlwaysTrueOrFalse
+                BaseStream.Close();
+            Dispose(true);
         }
     }
 }

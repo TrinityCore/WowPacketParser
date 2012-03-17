@@ -7,7 +7,6 @@ namespace WowPacketParser.Misc
     public static class ClientVersion
     {
         private static ClientType _expansion;
-        private static ClientVersionBuild _build;
 
         // Kept in sync with http://www.wowwiki.com/Public_client_builds
         private static readonly KeyValuePair<ClientVersionBuild, DateTime>[] _clientBuilds = new []
@@ -69,6 +68,18 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V4_3_3_15354, new DateTime(2012, 2, 28))
         };
 
+        public static ClientVersionBuild Build { get; private set; }
+
+        public static int BuildInt
+        {
+            get { return (int) Build; }
+        }
+
+        public static string VersionString
+        {
+            get { return Build.ToString(); }
+        }
+
         private static ClientType GetExpansion(ClientVersionBuild build)
         {
             if (build >= ClientVersionBuild.V4_0_3_13329)
@@ -92,7 +103,7 @@ namespace WowPacketParser.Misc
 
         public static void SetVersion(ClientVersionBuild version)
         {
-            _build = version;
+            Build = version;
             _expansion = GetExpansion(version);
         }
 
@@ -103,7 +114,7 @@ namespace WowPacketParser.Misc
 
         public static bool AddedInVersion(ClientVersionBuild build)
         {
-            return _build >= build;
+            return Build >= build;
         }
 
         public static bool AddedInVersion(ClientType expansion)
@@ -113,7 +124,7 @@ namespace WowPacketParser.Misc
 
         public static bool RemovedInVersion(ClientVersionBuild build)
         {
-            return _build < build;
+            return Build < build;
         }
 
         public static bool RemovedInVersion(ClientType expansion)
@@ -123,22 +134,7 @@ namespace WowPacketParser.Misc
 
         public static bool IsUndefined()
         {
-            return _build == ClientVersionBuild.Zero;
-        }
-
-        public static int GetBuildInt()
-        {
-            return (int)_build;
-        }
-
-        public static ClientVersionBuild GetBuild()
-        {
-            return _build;
-        }
-
-        public static string GetVersionString()
-        {
-            return _build.ToString();
+            return Build == ClientVersionBuild.Zero;
         }
     }
 }

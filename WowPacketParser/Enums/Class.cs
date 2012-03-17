@@ -2,6 +2,7 @@ namespace WowPacketParser.Enums
 {
     public enum Class
     {
+        None = 0,
         Warrior = 1,
         Paladin = 2,
         Hunter = 3,

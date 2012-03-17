@@ -69,6 +69,8 @@
     <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <CodeAnalysisRuleSet>ExtendedDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -172,7 +174,7 @@
     <Compile Include="Enums\Version\V4_2_2_14545\UpdateField.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\SpellHitInfo.cs" />
-    <Compile Include="Enums\SpellMechanics.cs" />
+    <Compile Include="Enums\SpellMechanic.cs" />
     <Compile Include="Enums\VehicleFlags.cs" />
     <Compile Include="Enums\UnitDynamicFlags.cs" />
     <Compile Include="Enums\PlayerFlags.cs" />
@@ -190,7 +192,7 @@
     <Compile Include="Enums\DumpFormatType.cs" />
     <Compile Include="Enums\EquipmentSlotType.cs" />
     <Compile Include="Enums\EquipmentSetState.cs" />
-    <Compile Include="Enums\EnvironmentDamageFlags.cs" />
+    <Compile Include="Enums\EnvironmentDamage.cs" />
     <Compile Include="Enums\FactionFlag.cs" />
     <Compile Include="Enums\GameObjectFlag.cs" />
     <Compile Include="Enums\GameObjectType.cs" />
@@ -244,7 +246,6 @@
     <Compile Include="Enums\MapDifficulty.cs" />
     <Compile Include="Enums\Material.cs" />
     <Compile Include="Enums\MirrorTimerType.cs" />
-    <Compile Include="Enums\MiscConstants.cs" />
     <Compile Include="Enums\MovementAnimationState.cs" />
     <Compile Include="Enums\NPCFlags.cs" />
     <Compile Include="Enums\SheathState.cs" />

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading;
+using System.Diagnostics.CodeAnalysis;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -86,6 +87,7 @@ namespace WowPacketParser.Saving
         private static readonly FileLock<string> _locks = new FileLock<string>();
         private const string Folder = "split"; // might want to move to config later
 
+        [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "fileStream is disposed when writer is disposed.")]
         public static void Write(IEnumerable<Packet> packets, Encoding encoding)
         {
             Directory.CreateDirectory(Folder); // not doing anything if it exists already
@@ -97,25 +99,25 @@ namespace WowPacketParser.Saving
                 {
                     using (_locks.Lock(fileName))
                     {
-                        using (var writer = new BinaryWriter(new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None), encoding))
+                        var fileStream = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None);
+                        using (var writer = new BinaryWriter(fileStream, encoding))
                         {
                             if (Settings.DumpFormat == DumpFormatType.Pkt)
                             {
-                                writer.Write((ushort)packet.Opcode);
-                                writer.Write((int)packet.GetLength());
-                                writer.Write((byte)packet.Direction);
-                                writer.Write((ulong)Utilities.GetUnixTimeFromDateTime(packet.Time));
+                                writer.Write((ushort) packet.Opcode);
+                                writer.Write((int) packet.Length);
+                                writer.Write((byte) packet.Direction);
+                                writer.Write((ulong) Utilities.GetUnixTimeFromDateTime(packet.Time));
                                 writer.Write(packet.GetStream(0));
                             }
                             else
                             {
                                 writer.Write(packet.Opcode);
-                                writer.Write((int)packet.GetLength());
-                                writer.Write((int)Utilities.GetUnixTimeFromDateTime(packet.Time));
-                                writer.Write((byte)packet.Direction);
+                                writer.Write((int) packet.Length);
+                                writer.Write((int) Utilities.GetUnixTimeFromDateTime(packet.Time));
+                                writer.Write((byte) packet.Direction);
                                 writer.Write(packet.GetStream(0));
                             }
-                            writer.Close();
                         }
                     }
                 }

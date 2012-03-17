@@ -24,9 +24,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_DISBAND)]
         [Parser(Opcode.CMSG_GUILD_DEL_RANK)]
         [Parser(Opcode.SMSG_GUILD_CANCEL)] // Fires GUILD_INVITE_CANCEL
-        public static void HandleGuild(Packet packet)
+        public static void HandleGuildEmpty(Packet packet)
         {
-            // Moved here to have all Guild related opcodes together
         }
 
         [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]

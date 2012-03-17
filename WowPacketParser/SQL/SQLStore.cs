@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 
 namespace WowPacketParser.SQL
 {
-    public class SQLStore
+    public class SQLStore : IDisposable
     {
         private StreamWriter _file;
 
@@ -13,6 +14,11 @@ namespace WowPacketParser.SQL
         {
             File.Delete(file);
             _file = new StreamWriter(file, true);
+        }
+
+        ~SQLStore()
+        {
+            Dispose(false);
         }
 
         public void WriteData(string sql)
@@ -31,19 +37,27 @@ namespace WowPacketParser.SQL
             if (_file == null)
                 return;
 
-            _sqls.Sort();
-
             foreach (var sql in _sqls)
                 _file.WriteLine(sql);
-
-            Flush();
         }
 
-        private void Flush()
+        public void Dispose()
         {
-            _file.Flush();
-            _file.Close();
-            _file = null;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+                _sqls.Clear();
+
+            if (_file != null)
+            {
+                _file.Flush();
+                _file.Close();
+                _file = null;
+            }
         }
     }
 }

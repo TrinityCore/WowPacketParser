@@ -26,6 +26,7 @@ namespace WowPacketParser.Enums
 
     public enum GuildEventType442
     {
+        None                = 0,
         MOTD                = 3,
         PlayerJoined        = 4, // Untested
         PlayerLeft          = 5,

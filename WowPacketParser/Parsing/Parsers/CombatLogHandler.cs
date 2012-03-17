@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -58,7 +59,7 @@ namespace WowPacketParser.Parsing.Parsers
                         break;
                     }
                     default:
-                        throw new Exception("Unknown Spell Log Type/Opcode: " + opcode);
+                        throw new InvalidDataException("Unknown Spell Log Type/Opcode: " + opcode);
                 }
             }
         }
@@ -202,7 +203,7 @@ namespace WowPacketParser.Parsing.Parsers
                             break;
                         }
                         default:
-                            throw new Exception("Unknown Spell Effect: " + type);
+                            throw new InvalidDataException("Unknown Spell Effect: " + type);
                     }
                 }
             }

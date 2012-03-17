@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -63,12 +64,10 @@ namespace WowPacketParser.Parsing
             File.Delete(file);
             using (var writer = new StreamWriter(file, true))
             {
-                foreach (var packet in packets)
-                    if (packet.WriteToFile)
-                        writer.WriteLine(packet.Writer);
+                foreach (var packet in packets.Where(packet => packet.WriteToFile))
+                    writer.WriteLine(packet.Writer);
 
                 writer.Flush();
-                writer.Close();
             }
         }
 
@@ -80,7 +79,7 @@ namespace WowPacketParser.Parsing
 
             packet.WriteLine("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}{6}",
                 packet.Direction, Opcodes.GetOpcodeName(opcode), opcode.ToString("X4"),
-                packet.GetLength(), packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
+                packet.Length, packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
                 packet.Number, isMultiple ? " (part of another packet)" : String.Empty);
 
             if (opcode == 0)
@@ -93,12 +92,12 @@ namespace WowPacketParser.Parsing
                 {
                     handler(packet);
 
-                    if (packet.GetPosition() == packet.GetLength())
+                    if (packet.Position == packet.Length)
                         status = ParsedStatus.Success;
                     else
                     {
-                        var pos = packet.GetPosition();
-                        var len = packet.GetLength();
+                        var pos = packet.Position;
+                        var len = packet.Length;
                         packet.WriteLine("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.",
                             pos, len, len - pos);
 

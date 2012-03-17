@@ -460,7 +460,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Rewarded Quest");
             */
             packet.WriteLine("Packet is currently not printed");
-            packet.ReadBytes((int)packet.GetLength());
+            packet.ReadBytes((int)packet.Length);
         }
 
         [Parser(Opcode.CMSG_QUESTGIVER_STATUS_QUERY)]

@@ -6,11 +6,6 @@ namespace WowPacketParser.Store.Objects
 {
     public class WoWObject
     {
-        public Vector3 GetPosition()
-        {
-            return Movement.Position;
-        }
-
         public ObjectType Type;
 
         public MovementInfo Movement;

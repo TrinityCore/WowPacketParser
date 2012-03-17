@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using WowPacketParser.Enums;
@@ -6,45 +7,34 @@ using WowPacketParser.Misc;
 
 namespace WowPacketParser.Saving
 {
-    public class BinaryPacketWriter
+    public static class BinaryPacketWriter
     {
-        private readonly BinaryWriter _writer;
-        private readonly SniffType _sniffType;
-
-        public BinaryPacketWriter(SniffType type, string fileName, Encoding encoding)
+        [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "fileStream is disposed when writer is disposed.")]
+        public static void Write(SniffType type, string fileName, Encoding encoding, IEnumerable<Packet> packets)
         {
-            _sniffType = type;
-            _writer = new BinaryWriter(new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.None), encoding);
-        }
-
-        public void Write(IEnumerable<Packet> packets)
-        {
-            foreach (var packet in packets)
+            var fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.None);
+            using (var writer = new BinaryWriter(fileStream, encoding))
             {
-                if (_sniffType == SniffType.Pkt)
+                foreach (var packet in packets)
                 {
-                    _writer.Write((ushort)packet.Opcode);
-                    _writer.Write((int)packet.GetLength());
-                    _writer.Write((byte)packet.Direction);
-                    _writer.Write((ulong)Utilities.GetUnixTimeFromDateTime(packet.Time));
-                    _writer.Write(packet.GetStream(0));
-                }
-                else
-                {
-                    _writer.Write(packet.Opcode);
-                    _writer.Write((int)packet.GetLength());
-                    _writer.Write((int)Utilities.GetUnixTimeFromDateTime(packet.Time));
-                    _writer.Write((byte)packet.Direction);
-                    _writer.Write(packet.GetStream(0));
+                    if (type == SniffType.Pkt)
+                    {
+                        writer.Write((ushort) packet.Opcode);
+                        writer.Write((int) packet.Length);
+                        writer.Write((byte) packet.Direction);
+                        writer.Write((ulong) Utilities.GetUnixTimeFromDateTime(packet.Time));
+                        writer.Write(packet.GetStream(0));
+                    }
+                    else
+                    {
+                        writer.Write(packet.Opcode);
+                        writer.Write((int) packet.Length);
+                        writer.Write((int) Utilities.GetUnixTimeFromDateTime(packet.Time));
+                        writer.Write((byte) packet.Direction);
+                        writer.Write(packet.GetStream(0));
+                    }
                 }
             }
-            _writer.Close();
-        }
-
-        public void Dispose()
-        {
-            if (_writer != null)
-                _writer.Dispose();
         }
     }
 }

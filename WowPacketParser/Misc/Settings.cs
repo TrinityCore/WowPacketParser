@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.Globalization;
 using WowPacketParser.Enums;
@@ -7,6 +8,8 @@ namespace WowPacketParser.Misc
 {
     public static class Settings
     {
+        private static readonly NameValueCollection SettingsCollection = ConfigurationManager.AppSettings;
+
         public static readonly string[] Filters = GetStringList("Filters", new string[0]);
         public static readonly string[] IgnoreFilters = GetStringList("IgnoreFilters", new string[0]);
         public static readonly string[] IgnoreByEntryFilters = GetStringList("IgnoreByEntryFilters", new string[0]);
@@ -44,22 +47,20 @@ namespace WowPacketParser.Misc
 
         private static string GetString(string key, string defValue)
         {
-            string aux = ConfigurationManager.AppSettings[key];
-            if (aux == null)
-                return defValue;
-            return aux;
+            var aux = SettingsCollection[key];
+            return aux ?? defValue;
         }
 
         private static string[] GetStringList(string key, string[] defValue)
         {
-            var s = ConfigurationManager.AppSettings[key];
+            var s = SettingsCollection[key];
             return s == null ? defValue : s.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
         }
 
         private static bool GetBoolean(string key, bool defValue)
         {
             bool aux;
-            var s = ConfigurationManager.AppSettings[key];
+            var s = SettingsCollection[key];
             if (s == null || !bool.TryParse(s, out aux))
                 aux = defValue;
 
@@ -69,7 +70,7 @@ namespace WowPacketParser.Misc
         private static int GetInt32(string key, int defValue)
         {
             int aux;
-            var s = ConfigurationManager.AppSettings[key];
+            var s = SettingsCollection[key];
             if (s == null || !int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out aux))
                 aux = defValue;
 
@@ -79,7 +80,7 @@ namespace WowPacketParser.Misc
         public static float GetFloat(string key, float defValue)
         {
             float aux;
-            var s = ConfigurationManager.AppSettings[key];
+            var s = SettingsCollection[key];
             if (s == null || !float.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out aux))
                 aux = defValue;
 
@@ -90,7 +91,7 @@ namespace WowPacketParser.Misc
         {
             object aux;
 
-            var s = ConfigurationManager.AppSettings[key];
+            var s = SettingsCollection[key];
             if (s == null)
                 aux = defValue;
             else

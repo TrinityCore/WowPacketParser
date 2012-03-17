@@ -2,6 +2,7 @@ namespace WowPacketParser.Enums
 {
     public enum LfgUpdateType
     {
+        None               = 0,
         Unknown1           = 1, // Related to Group leader
         RoleCheckAborted   = 4,
         JoinProposal       = 5,

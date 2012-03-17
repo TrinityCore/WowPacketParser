@@ -2,6 +2,7 @@ namespace WowPacketParser.Enums
 {
     public enum QuestType
     {
+        None = 0,
         Elite = 1,
         Life = 21,
         PvP = 41,

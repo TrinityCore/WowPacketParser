@@ -29,7 +29,9 @@ namespace WowPacketParser.Parsing.Parsers
             /*var commandState = */ packet.ReadByte("Command state"); // 1
             packet.ReadUInt16("Unknown 2"); // pets -> 0, vehicles -> 0x800 (2048)
 
-            for (var i = 1; i <= (int)MiscConstants.CreatureMaxSpells + 2; i++) // Read pet/vehicle spell ids
+            const int creatureMaxSpells = 8;
+
+            for (var i = 1; i <= creatureMaxSpells + 2; i++) // Read pet/vehicle spell ids
             {
                 var spell16 = packet.ReadUInt16();
                 var spell8 = packet.ReadByte();
@@ -37,7 +39,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var spellId = spell16 + (spell8 << 16);
                 if (!isPet) // cleanup vehicle spells (start at 1 instead 8,
                 {           // and do not print spells with id 0)
-                    slotid -= (int)MiscConstants.PetSpellsOffset - 1;
+                    slotid -= creatureMaxSpells - 1;
                     if (spellId == 0)
                         continue;
                 }
@@ -100,8 +102,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadTime("Time");
             var declined = packet.ReadBoolean("Declined");
 
+            const int maxDeclinedNameCases = 5;
+
             if (declined)
-                for (var i = 0; i < (int)MiscConstants.MaxDeclinedNameCases; i++)
+                for (var i = 0; i < maxDeclinedNameCases; i++)
                     packet.ReadCString("Declined name", i);
         }
 

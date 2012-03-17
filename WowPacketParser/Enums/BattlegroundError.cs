@@ -22,6 +22,7 @@ namespace WowPacketParser.Enums
 
     public enum BattlegroundError430
     {
+        None                            = 0,
         GroupJoinDeserter               = 2,
         IcorrectPartySize               = 3,
         TooManyQueues                   = 4,

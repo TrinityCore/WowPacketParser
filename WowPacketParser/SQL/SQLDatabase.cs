@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data;
 using WowPacketParser.Enums;
 
 namespace WowPacketParser.SQL
@@ -27,7 +27,7 @@ namespace WowPacketParser.SQL
         public static void GrabData()
         {
             if (!SQLConnector.Connected())
-                throw new Exception("Cannot get DB data without an active DB connection.");
+                throw new DataException("Cannot get DB data without an active DB connection.");
 
             foreach (var objectType in _objectTypes)
                 NameStores.Add(objectType, GetDict<int, string>(string.Format("SELECT `Id`, `Name` FROM `ObjectNames` WHERE `ObjectType`='{0}';", objectType)));

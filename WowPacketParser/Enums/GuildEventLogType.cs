@@ -2,6 +2,7 @@
 {
     public enum  GuildEventLogType
     {
+        None           = 0,
         InvitePlayer   = 1,
         JoinGuild      = 2,
         PromotePlayer  = 3,

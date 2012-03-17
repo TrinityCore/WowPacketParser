@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -32,7 +33,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                 if (packet.ReadGuid("GUID 2", index) != guid)
-                    throw new Exception("Guids are not equal.");
+                    throw new InvalidDataException("Guids are not equal.");
 
             packet.ReadInt32("Time", index);
 
@@ -353,7 +354,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var opcode = packet.ReadInt32();
             // None length is recieved, so we have to calculate the remaining bytes.
-            var remainingLength = packet.GetLength() - packet.GetPosition();
+            var remainingLength = packet.Length - packet.Position;
             var bytes = packet.ReadBytes((int)remainingLength);
 
             using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.SniffFileInfo))
@@ -806,7 +807,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             Guid guid;
             if ((ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ||
-                packet.Direction == Direction.ServerToClient) && ClientVersion.GetBuild() != ClientVersionBuild.V4_2_2_14545)
+                packet.Direction == Direction.ServerToClient) && ClientVersion.Build != ClientVersionBuild.V4_2_2_14545)
                 guid = packet.ReadPackedGuid("GUID");
             else
                 guid = new Guid();

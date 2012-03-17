@@ -6,7 +6,7 @@ using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Loading
 {
-    public class SQLitePacketReader : IPacketReader
+    public sealed class SQLitePacketReader : IPacketReader
     {
         readonly SQLiteConnection _connection;
         SQLiteDataReader _reader;
@@ -52,7 +52,7 @@ namespace WowPacketParser.Loading
             _reader.Close();
         }
 
-        void SetBuild(int build)
+        static void SetBuild(int build)
         {
             if (ClientVersion.IsUndefined())
                 ClientVersion.SetVersion((ClientVersionBuild)build);
@@ -75,25 +75,17 @@ namespace WowPacketParser.Loading
 
             var data = (byte[])blob;
 
-            return new Packet(data, opcode, time, direction, number, fileInfo);
+            using (var packet = new Packet(data, opcode, time, direction, number, fileInfo))
+                return packet;
         }
 
-        public void Close()
+        public void Dispose()
         {
             if (_reader != null)
                 _reader.Close();
 
             if (_connection != null)
                 _connection.Close();
-        }
-
-        public void Dispose()
-        {
-            if (_reader != null)
-                _reader.Dispose();
-
-            if (_connection != null)
-                _connection.Dispose();
         }
     }
 }

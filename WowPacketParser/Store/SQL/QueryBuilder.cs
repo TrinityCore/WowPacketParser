@@ -133,7 +133,7 @@ namespace WowPacketParser.Store.SQL
                     row.Append("-- ");
 
                 // Return empty if there are no values or where clause or no table name set
-                if (_values.Count == 0 || _whereClause.Count == 0 || Table == string.Empty)
+                if (_values.Count == 0 || _whereClause.Count == 0 || string.IsNullOrEmpty(Table))
                     return string.Empty;
 
                 row.Append("UPDATE ");
@@ -235,7 +235,7 @@ namespace WowPacketParser.Store.SQL
                     Delete = new SQLDelete(values, primaryKeys, tableName).Build();
                 }
                 else
-                    throw new Exception("Cannot have a delete query with more than 2 primary keys.");
+                    throw new ArgumentOutOfRangeException("primaryKeyNumber");
             }
 
             /// <summary>
@@ -429,7 +429,6 @@ namespace WowPacketParser.Store.SQL
             /// <param name="values">Pair of values</param>
             /// <param name="primaryKey">Field used in the WHERE clause</param>
             /// <param name="tableName">Table name</param>
-            /// <param name="prefix">String to be appended to values[0] and values[1]</param>
             public SQLDelete(Tuple<string, string> values, string primaryKey, string tableName)
             {
                 PrimaryKey = primaryKey;

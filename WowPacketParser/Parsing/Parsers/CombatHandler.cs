@@ -109,7 +109,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleEnvirenmentalDamageLog(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadEnum<EnvironmentDamageFlags>("Type", TypeCode.Byte);
+            packet.ReadEnum<EnvironmentDamage>("Type", TypeCode.Byte);
             packet.ReadInt32("Damage");
             packet.ReadInt32("Absorb");
             packet.ReadInt32("Resist");

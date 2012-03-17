@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -83,61 +84,62 @@ namespace WowPacketParser
             if (builder == null)
                 return;
 
-            var store = new SQLStore(fileName);
-
-            if (sqlOutput.HasAnyFlag(SQLOutputFlags.GameObjectTemplate))
-                store.WriteData(builder.GameObjectTemplate());
-
-            if (sqlOutput.HasAnyFlag(SQLOutputFlags.GameObjectSpawns))
-                store.WriteData(builder.GameObjectSpawns());
-
-            if (sqlOutput.HasAnyFlag(SQLOutputFlags.QuestTemplate))
-                store.WriteData(builder.QuestTemplate());
-
-            if (sqlOutput.HasAnyFlag(SQLOutputFlags.QuestPOI))
-                store.WriteData(builder.QuestPOI());
-
-            if (sqlOutput.HasAnyFlag(SQLOutputFlags.CreatureTemplate))
+            using (var store = new SQLStore(fileName))
             {
-                store.WriteData(builder.NpcTemplate());
-                store.WriteData(builder.NpcTemplateNonWDB());
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.GameObjectTemplate))
+                    store.WriteData(builder.GameObjectTemplate());
+
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.GameObjectSpawns))
+                    store.WriteData(builder.GameObjectSpawns());
+
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.QuestTemplate))
+                    store.WriteData(builder.QuestTemplate());
+
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.QuestPOI))
+                    store.WriteData(builder.QuestPOI());
+
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.CreatureTemplate))
+                {
+                    store.WriteData(builder.NpcTemplate());
+                    store.WriteData(builder.NpcTemplateNonWDB());
+                }
+
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.CreatureSpawns))
+                    store.WriteData(builder.CreatureSpawns());
+
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.NpcTrainer))
+                    store.WriteData(builder.NpcTrainer());
+
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.NpcVendor))
+                    store.WriteData(builder.NpcVendor());
+
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.NpcText))
+                    store.WriteData(builder.PageText());
+
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.PageText))
+                    store.WriteData(builder.NpcText());
+
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.Gossip))
+                    store.WriteData(builder.Gossip());
+
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.Loot))
+                    store.WriteData(builder.Loot());
+
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.SniffData | SQLOutputFlags.SniffDataOpcodes))
+                    store.WriteData(builder.SniffData());
+
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.StartInformation))
+                    store.WriteData(builder.StartInformation());
+
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.ObjectNames))
+                    store.WriteData(builder.ObjectNames());
+
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.CreatureEquip))
+                    store.WriteData(builder.CreatureEquip());
+
+                Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", prefix, fileName));
+                store.WriteToFile();
             }
-
-            if (sqlOutput.HasAnyFlag(SQLOutputFlags.CreatureSpawns))
-                store.WriteData(builder.CreatureSpawns());
-
-            if (sqlOutput.HasAnyFlag(SQLOutputFlags.NpcTrainer))
-                store.WriteData(builder.NpcTrainer());
-
-            if (sqlOutput.HasAnyFlag(SQLOutputFlags.NpcVendor))
-                store.WriteData(builder.NpcVendor());
-
-            if (sqlOutput.HasAnyFlag(SQLOutputFlags.NpcText))
-                store.WriteData(builder.PageText());
-
-            if (sqlOutput.HasAnyFlag(SQLOutputFlags.PageText))
-                store.WriteData(builder.NpcText());
-
-            if (sqlOutput.HasAnyFlag(SQLOutputFlags.Gossip))
-                store.WriteData(builder.Gossip());
-
-            if (sqlOutput.HasAnyFlag(SQLOutputFlags.Loot))
-                store.WriteData(builder.Loot());
-
-            if (sqlOutput.HasAnyFlag(SQLOutputFlags.SniffData | SQLOutputFlags.SniffDataOpcodes))
-                store.WriteData(builder.SniffData());
-
-            if (sqlOutput.HasAnyFlag(SQLOutputFlags.StartInformation))
-                store.WriteData(builder.StartInformation());
-
-            if (sqlOutput.HasAnyFlag(SQLOutputFlags.ObjectNames))
-                store.WriteData(builder.ObjectNames());
-
-            if (sqlOutput.HasAnyFlag(SQLOutputFlags.CreatureEquip))
-                store.WriteData(builder.CreatureEquip());
-
-            Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", prefix, fileName));
-            store.WriteToFile();
         }
 
         private static void ReadFile(string file, Storage globalStorage, Builder globalBuilder, string prefix)
@@ -173,7 +175,7 @@ namespace WowPacketParser
 
                 if (Settings.DumpFormat == DumpFormatType.Pkt)
                 {
-                    SniffType format = SniffType.Pkt;
+                    const SniffType format = SniffType.Pkt;
                     var fileExtension = Settings.DumpFormat.ToString().ToLower();
 
                     if (Settings.SplitOutput)
@@ -186,13 +188,12 @@ namespace WowPacketParser
                         Trace.WriteLine(string.Format("{0}: Copying {1} packets to .{2} format...", prefix, packets.Count, fileExtension));
 
                         var dumpFileName = Path.ChangeExtension(file, null) + "_excerpt." + fileExtension;
-                        var writer = new BinaryPacketWriter(format, dumpFileName, Encoding.ASCII);
-                        writer.Write(packets);
+                        BinaryPacketWriter.Write(format, dumpFileName, Encoding.ASCII, packets);
                     }
                 }
                 else
                 {
-                    Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Assumed version {2}", prefix, packets.Count, ClientVersion.GetVersionString()));
+                    Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Assumed version {2}", prefix, packets.Count, ClientVersion.VersionString));
 
                     var total = (uint)packets.Count;
                     var startTime = DateTime.Now;
@@ -216,9 +217,9 @@ namespace WowPacketParser
                         Handler.WriteToFile(packets, outLogFileName);
                     }
 
-                    // Force to close the StringWriter to improve mem use
-                    foreach(var packet in packets)
-                        packet.CloseWriter();
+                    // Force to close allocated resources
+                    foreach (var packet in packets)
+                        packet.Dispose();
 
                     if (Settings.StatsOutput == StatsOutputFlags.None)
                         return;
@@ -247,7 +248,10 @@ namespace WowPacketParser
                                     break;
                             }
                         }
+
+                        packet.ClosePacket();
                     }
+                    packets.Clear();
 
                     if (Settings.StatsOutput.HasAnyFlag(StatsOutputFlags.Global))
                     {
@@ -304,13 +308,13 @@ namespace WowPacketParser
             ClientVersion.SetVersion(Settings.ClientBuild);
 
             if (Settings.FilterPacketNumLow < 0)
-                throw new Exception("FilterPacketNumLow must be positive");
+                throw new ConstraintException("FilterPacketNumLow must be positive");
 
             if (Settings.FilterPacketNumHigh < 0)
-                throw new Exception("FilterPacketNumHigh must be positive");
+                throw new ConstraintException("FilterPacketNumHigh must be positive");
 
             if (Settings.FilterPacketNumLow > Settings.FilterPacketNumHigh)
-                throw new Exception("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
+                throw new ConstraintException("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
 
             // Disable DB when we don't need its data (dumping to a binary file)
             if (Settings.DumpFormat == DumpFormatType.Pkt)
@@ -369,15 +373,16 @@ namespace WowPacketParser
         {
             Trace.Listeners.Clear();
 
-            var consoleListener = new ConsoleTraceListener(true);
-            Trace.Listeners.Add(consoleListener);
+            using (var consoleListener = new ConsoleTraceListener(true))
+                Trace.Listeners.Add(consoleListener);
 
             if (Settings.ParsingLog)
             {
-                var fileListener =
-                    new TextWriterTraceListener(string.Format("parsing_log_{0}.txt", Path.GetRandomFileName()))
-                        {Name = "ConsoleMirror"};
-                Trace.Listeners.Add(fileListener);
+                using (var fileListener = new TextWriterTraceListener(string.Format("parsing_log_{0}.txt", Path.GetRandomFileName())))
+                {
+                    fileListener.Name = "ConsoleMirror";
+                    Trace.Listeners.Add(fileListener);
+                }
             }
 
             Trace.AutoFlush = true;

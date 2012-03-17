@@ -2,6 +2,7 @@ namespace WowPacketParser.Enums
 {
     public enum LfgRoleCheckStatus
     {
+        None        = 0,
         Success     = 1,
         Initiating  = 2,
         MissingRole = 3,

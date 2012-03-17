@@ -1,6 +1,6 @@
 ﻿namespace WowPacketParser.Enums
 {
-    public enum SpellMechanics
+    public enum SpellMechanic
     {
         None = 0,
         Charm = 1,

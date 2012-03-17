@@ -2,6 +2,7 @@ namespace WowPacketParser.Enums
 {
     public enum PageMaterial
     {
+        None = 0,
         Parchment = 1,
         Stone = 2,
         Marble = 3,

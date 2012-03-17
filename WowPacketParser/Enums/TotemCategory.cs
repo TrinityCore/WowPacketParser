@@ -2,6 +2,7 @@ namespace WowPacketParser.Enums
 {
     public enum TotemCategory
     {
+        None = 0,
         SkinningSkifeOld = 1,
         EarthTotem = 2,
         AirTotem = 3,

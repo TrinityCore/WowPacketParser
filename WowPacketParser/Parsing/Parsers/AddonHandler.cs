@@ -31,7 +31,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 int count = 0;
 
-                while (packet.GetPosition() != packet.GetLength())
+                while (packet.Position != packet.Length)
                 {
                     packet.ReadCString("Name");
                     packet.ReadBoolean("Enabled");

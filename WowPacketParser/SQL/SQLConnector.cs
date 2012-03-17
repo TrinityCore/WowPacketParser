@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using MySql.Data.MySqlClient;
 using WowPacketParser.Misc;
 
@@ -45,13 +46,13 @@ namespace WowPacketParser.SQL
                 _conn.Close();
         }
 
+        [SuppressMessage("Microsoft.Security", "CA2100", Justification = "No user input.")]
         public static MySqlDataReader ExecuteQuery(string input)
         {
-            var command = new MySqlCommand(input, _conn);
-
             try
             {
-                return command.ExecuteReader();
+                using (var command = new MySqlCommand(input, _conn))
+                    return command.ExecuteReader();
             }
             catch (Exception e)
             {

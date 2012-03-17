@@ -2,6 +2,7 @@
 {
     public enum SpellEffect
     {
+        None                         = 0,
         Instakill                    = 1,
         SchoolDamage                 = 2,
         Dummy                        = 3,

@@ -75,10 +75,10 @@ namespace WowPacketParser.Enums.Version
 
         public static Opcode GetOpcode(int opcodeId)
         {
-            return GetOpcode(opcodeId, ClientVersion.GetBuild());
+            return GetOpcode(opcodeId, ClientVersion.Build);
         }
 
-        public static Opcode GetOpcode(int opcodeId, ClientVersionBuild build)
+        private static Opcode GetOpcode(int opcodeId, ClientVersionBuild build)
         {
             /* Remove this comment block if you need to find duplicated opcode
              * values in the opcode dictionaries.
@@ -102,7 +102,7 @@ namespace WowPacketParser.Enums.Version
 
         public static int GetOpcode(Opcode opcode)
         {
-            return GetOpcode(opcode, ClientVersion.GetBuild());
+            return GetOpcode(opcode, ClientVersion.Build);
         }
 
         private static int GetOpcode(Opcode opcode, ClientVersionBuild build)
@@ -114,7 +114,7 @@ namespace WowPacketParser.Enums.Version
 
         public static string GetOpcodeName(int opcodeId)
         {
-            return GetOpcode(opcodeId, ClientVersion.GetBuild()).ToString();
+            return GetOpcode(opcodeId, ClientVersion.Build).ToString();
         }
     }
 }

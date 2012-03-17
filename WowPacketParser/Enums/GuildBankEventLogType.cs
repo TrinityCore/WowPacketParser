@@ -2,6 +2,7 @@
 {
     public enum  GuildBankEventLogType
     {
+        None          = 0,
         DepositItem   = 1,
         WithdrawItem  = 2,
         MoveItem      = 3,

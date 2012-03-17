@@ -1,6 +1,6 @@
 namespace WowPacketParser.Enums
 {
-    public enum EnvironmentDamageFlags
+    public enum EnvironmentDamage
     {
         Exhausted = 0,
         Drowing = 1,

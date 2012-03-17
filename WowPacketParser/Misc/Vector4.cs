@@ -22,5 +22,37 @@ namespace WowPacketParser.Misc
         {
             return "X: " + X + " Y: " + Y + " Z: " + Z + " O: " + O;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Vector4)
+                return Equals((Vector4)obj);
+
+            return false;
+        }
+
+        public bool Equals(Vector4 other)
+        {
+            return other.X == X && other.Y == Y && other.Z == Z && other.O == O;
+        }
+
+        public static bool operator ==(Vector4 first, Vector4 other)
+        {
+            return first.Equals(other);
+        }
+
+        public static bool operator !=(Vector4 first, Vector4 other)
+        {
+            return !(first == other);
+        }
+
+        public override int GetHashCode()
+        {
+            var result = X.GetHashCode();
+            result = (result * 397) ^ Y.GetHashCode();
+            result = (result * 397) ^ Z.GetHashCode();
+            result = (result * 397) ^ O.GetHashCode();
+            return result;
+        }
     }
 }

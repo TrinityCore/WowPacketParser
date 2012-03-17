@@ -217,7 +217,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
                 case ResponseCode.AUTH_WAIT_QUEUE:
                 {
-                    if (packet.GetLength() <= 6)
+                    if (packet.Length <= 6)
                     {
                         ReadQueuePositionInfo(ref packet);
                         break;

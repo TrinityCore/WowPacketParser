@@ -2,6 +2,7 @@ namespace WowPacketParser.Enums
 {
     public enum CreatureType
     {
+        None = 0,
         Beast = 1,
         Dragonkin = 2,
         Demon = 3,

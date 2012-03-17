@@ -2,6 +2,7 @@ namespace WowPacketParser.Enums
 {
     public enum LfgEntryCheckResult
     {
+        None = 0,
         InsufficientExpansion = 1,
         TooLowLevel = 2,
         TooHighLevel = 3,

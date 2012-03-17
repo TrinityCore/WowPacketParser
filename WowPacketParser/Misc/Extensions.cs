@@ -9,9 +9,9 @@ namespace WowPacketParser.Misc
 {
     public static class Extensions
     {
-        public static byte ToByte(this bool boolean)
+        public static byte ToByte(this bool value)
         {
-            return (byte)(boolean ? 1 : 0);
+            return (byte)(value ? 1 : 0);
         }
 
         public static bool HasAnyFlag(this IConvertible value, IConvertible flag)
@@ -33,7 +33,7 @@ namespace WowPacketParser.Misc
         {
             var n = Environment.NewLine;
             var hexDump = new StringBuilder();
-            var length = packet.GetLength();
+            var length = packet.Length;
             var stream = packet.GetStream(0);
 
             var header = "|-------------------------------------------------|------------------" +
@@ -89,7 +89,7 @@ namespace WowPacketParser.Misc
         {
             var n = Environment.NewLine;
             var hexDump = new StringBuilder();
-            var length = packet.GetLength();
+            var length = packet.Length;
             var stream = packet.GetStream(0);
 
             var header = "|-------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------|" + n +

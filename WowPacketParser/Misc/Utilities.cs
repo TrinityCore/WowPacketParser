@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Security;
 using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc
@@ -85,7 +86,7 @@ namespace WowPacketParser.Misc
                 if (!File.Exists(fileName))
                     return false;
 
-                File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.None);
+                File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.None).Dispose();
             }
             catch (IOException)
             {
@@ -95,13 +96,17 @@ namespace WowPacketParser.Misc
             return false;
         }
 
-        public static void GetMemUse(string prefix)
+        [SecurityCritical]
+        public static void GetMemUse(string prefix, bool inKBs = false)
         {
             var process = Process.GetCurrentProcess();
             const int megabyte = 1048576;
+            const int kilobyte = 8192;
+            var bytesstr = inKBs ? "KB" : "MB";
+            var bytes = inKBs ? kilobyte : megabyte;
 
-            Trace.WriteLine(String.Format("Memory GC: {0,5}MB, Process: {1,5}MB - {2}",
-                GC.GetTotalMemory(true) / megabyte, process.PrivateMemorySize64 / megabyte, prefix));
+            Trace.WriteLine(String.Format("Memory GC: {0,5}{3}, Process: {1,5}{3} - {2}",
+                GC.GetTotalMemory(true) / bytes, process.PrivateMemorySize64 / bytes, prefix, bytesstr));
         }
     }
 }

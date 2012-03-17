@@ -186,7 +186,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_AUCTION_REMOVED_NOTIFICATION)]
         public static void HandleAuctionRemovedNotification(Packet packet)
         {
-
         }
 
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]

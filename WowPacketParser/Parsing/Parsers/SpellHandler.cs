@@ -460,7 +460,7 @@ namespace WowPacketParser.Parsing.Parsers
                     break;
                 case SpellCastFailureReason.PreventedByMechanic:
                     if (packet.CanRead())
-                        packet.ReadEnum<SpellMechanics>("Mechanic", TypeCode.UInt32);
+                        packet.ReadEnum<SpellMechanic>("Mechanic", TypeCode.UInt32);
                     break;
                 case SpellCastFailureReason.EquippedItemClass:
                 case SpellCastFailureReason.EquippedItemClassMainhand:

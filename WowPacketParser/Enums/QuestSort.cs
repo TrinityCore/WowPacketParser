@@ -2,6 +2,7 @@ namespace WowPacketParser.Enums
 {
     public enum QuestSort
     {
+        None = 0,
         Epic = 1,
         WailingCavernsOld = 21,
         Seasonal = 22,

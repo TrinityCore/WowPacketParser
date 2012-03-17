@@ -7,15 +7,17 @@ using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Loading
 {
-    public class BinaryPacketReader : IPacketReader
+    public sealed class BinaryPacketReader : IPacketReader
     {
         enum PktVersion
         {
             NoHeader = 0,
+// ReSharper disable InconsistentNaming
             V2_1 = 0x201,
             V2_2 = 0x202,
             V3_0 = 0x300,
             V3_1 = 0x301,
+// ReSharper restore InconsistentNaming
         }
 
         private readonly BinaryReader _reader;
@@ -29,8 +31,8 @@ namespace WowPacketParser.Loading
         public BinaryPacketReader(SniffType type, string fileName, Encoding encoding)
         {
             _sniffType = type;
-            _reader = new BinaryReader(new FileStream(@fileName, FileMode.Open, FileAccess.Read, FileShare.Read), encoding);
-
+            var fileStream = new FileStream(@fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+            _reader = new BinaryReader(fileStream, encoding);
             ReadHeader();
         }
 
@@ -86,7 +88,7 @@ namespace WowPacketParser.Loading
             }
         }
 
-        void SetBuild(uint build)
+        static void SetBuild(uint build)
         {
             if (ClientVersion.IsUndefined())
                 ClientVersion.SetVersion((ClientVersionBuild)build);
@@ -169,19 +171,18 @@ namespace WowPacketParser.Loading
                 data = _reader.ReadBytes(length);
             }
 
-            return new Packet(data, opcode, time, direction, number, fileInfo);
-        }
-
-        public void Close()
-        {
-            if (_reader != null)
-                _reader.Close();
+            var packet = new Packet(data, opcode, time, direction, number, fileInfo);
+            return packet;
         }
 
         public void Dispose()
         {
             if (_reader != null)
+            {
+                _reader.BaseStream.Dispose();
                 _reader.Dispose();
+            }
+
         }
     }
 }
