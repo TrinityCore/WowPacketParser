@@ -207,6 +207,8 @@ namespace WowPacketParser.Store.SQL
                 var firstProperRow = Rows.Find(row => !row.NoData);
                 if (firstProperRow != null)
                     TableStructure = firstProperRow.FieldNames;
+                else
+                    return; // empty insert
 
                 InsertHeader = new SQLInsertHeader(Table, TableStructure, ignore).Build();
 
@@ -336,6 +338,11 @@ namespace WowPacketParser.Store.SQL
             /// <param name="noQuotes">If value is a string and this is set to true, value will not be 'quoted' (SQL variables)</param>
             public void AddValue(string field, object value, bool isFlag = false, bool noQuotes = false)
             {
+                // i.e QuestTemplate.QuestGiverTextWindow does not exist
+                // on 3.x but it does on 4.x -- value passed will be null
+                if (value == null)
+                    return;
+
                 _values.Add(SQLUtil.ToSQLValue(value, isFlag, noQuotes).ToString());
                 FieldNames.Add(field);
             }
