@@ -93,8 +93,10 @@ namespace WowPacketParser.Misc
                 inflater.SetInput(arr, 0, arr.Length);
                 inflater.Inflate(newarr, 0, inflatedSize);
             }
-            using (var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, SniffFileInfo))
-                return pkt;
+
+            // Cannot use "using" here
+            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, SniffFileInfo);
+            return pkt;
         }
 
         public byte[] GetStream(long offset)
