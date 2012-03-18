@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using WowPacketParser.Misc;
@@ -8,6 +8,67 @@ namespace WowPacketParser.Enums.Version
 {
     public static class UpdateFields
     {
+        private static readonly Assembly Assembly = Assembly.GetExecutingAssembly();
+
+        private static readonly Dictionary<Type, Dictionary<string, int>> UpdateFieldDictionaries =
+            new Dictionary<Type, Dictionary<string, int>>();
+
+        static UpdateFields()
+        {
+            Type[] enumTypes = {
+                               typeof (ObjectField), typeof (ItemField), typeof (ContainerField), typeof (UnitField),
+                               typeof (PlayerField), typeof (GameObjectField), typeof (DynamicObjectField),
+                               typeof (CorpseField)
+                           };
+
+            foreach (var enumType in enumTypes)
+            {
+                var vTypeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionaryBuildName(ClientVersion.Build), enumType.Name);
+                var vEnumType = Assembly.GetType(vTypeString);
+                var vValues = Enum.GetValues(vEnumType);
+                var vNames = Enum.GetNames(vEnumType);
+
+                var result = new Dictionary<string, int>();
+
+                for (var i = 0; i < vValues.Length; ++i)
+                    result.Add(vNames[i], (int)vValues.GetValue(i));
+
+                UpdateFieldDictionaries.Add(enumType, result);
+            }
+
+            // Console.WriteLine(stopWatch.Elapsed); // between 1 and 2 milliseconds
+        }
+
+        /* GetUpdateField is faster than GetUpdateFieldName because the key of our dictionary
+         * is the updatefield id and not the name.
+         * If GetUpdateFieldName is called more times than GetUpdateField, it might be worth
+         * swapping the dictionary key. (int, string => string, int)
+         * */
+
+        public static int GetUpdateField<T>(T field)
+        {
+            if (UpdateFieldDictionaries.ContainsKey(typeof(T)))
+                if (UpdateFieldDictionaries[typeof(T)].ContainsKey(field.ToString()))
+                    return UpdateFieldDictionaries[typeof(T)][field.ToString()];
+
+            return Convert.ToInt32(field);
+        }
+
+        public static string GetUpdateFieldName<T>(int field)
+        {
+            if (UpdateFieldDictionaries.ContainsKey(typeof(T)))
+            {
+                //UpdateFieldDictionaries[typeof(T)].ContainsValue(field)
+                foreach (var pair in UpdateFieldDictionaries[typeof(T)])
+                {
+                    if (pair.Value == field)
+                        return pair.Key;
+                }
+            }
+
+            return field.ToString(CultureInfo.InvariantCulture);
+        }
+
         private static string GetUpdateFieldDictionaryBuildName(ClientVersionBuild build)
         {
             switch (build)
@@ -68,48 +129,6 @@ namespace WowPacketParser.Enums.Version
                 default:
                     return "V3_3_5_opcodes";
             }
-        }
-
-        public static string GetUpdateFieldName<T>(int field)
-        {
-            var typeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionaryBuildName(ClientVersion.Build), typeof(T).Name);
-
-            var newEnumType = Assembly.GetType(typeString);
-
-            var enumName = Enum.GetName(newEnumType, field);
-
-            if (!String.IsNullOrEmpty(enumName))
-                return enumName;
-
-            return field.ToString(CultureInfo.InvariantCulture);
-        }
-
-        private static readonly ConcurrentDictionary<Type, Array> Types = new ConcurrentDictionary<Type, Array>();
-        private static readonly Assembly Assembly = Assembly.GetExecutingAssembly();
-
-        public static int GetUpdateField<T>(T field)
-        {
-            var dict = GetUpdateFieldDictionary<T>();
-            var type = dict.GetValue(0).GetType();
-
-            foreach (int val in dict)
-                if (Enum.GetName(type, val) == field.ToString())
-                    return val;
-
-            return Convert.ToInt32(field);
-        }
-
-        public static Array GetUpdateFieldDictionary<T>()
-        {
-            // Reduce the amount of reflection used by storing found enums in a dictionary
-            if (!Types.ContainsKey(typeof(T)))
-            {
-                var typeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionaryBuildName(ClientVersion.Build), typeof(T).Name);
-                Types.TryAdd(typeof(T), Enum.GetValues(Assembly.GetType(typeString)));
-            }
-
-            // An enum type for a specific version like VX_Y_Z.ObjectField
-            return Types[typeof(T)];
         }
     }
 }
