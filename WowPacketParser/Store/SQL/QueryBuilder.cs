@@ -74,7 +74,8 @@ namespace WowPacketParser.Store.SQL
             /// <param name="noQuotes">If value is a string and this is set to true, value will not be 'quoted' (SQL variables)</param>
             public void AddValue(string field, object value, bool isFlag = false, bool noQuotes = false)
             {
-                _values.Add(new KeyValuePair<string, object>(SQLUtil.AddBackQuotes(field), SQLUtil.ToSQLValue(value, isFlag, noQuotes)));
+                if (value != null)
+                    _values.Add(new KeyValuePair<string, object>(SQLUtil.AddBackQuotes(field), SQLUtil.ToSQLValue(value, isFlag, noQuotes)));
             }
 
             /// <summary>
@@ -88,6 +89,9 @@ namespace WowPacketParser.Store.SQL
             public void AddValue<T>(string field, T value, T defaultValue, bool isFlag = false, bool noQuotes = false)
             {
                 // T used because it is compile time safe. We know that value and defaultValue got the same type
+
+                if (value == null)
+                    return;
 
                 if (value is float || value is double)
                 {

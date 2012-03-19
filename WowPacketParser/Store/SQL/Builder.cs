@@ -8,6 +8,7 @@ using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Store.SQL
 {
@@ -42,8 +43,6 @@ namespace WowPacketParser.Store.SQL
                 if (Settings.AreaFilters.Length > 0)
                     if (!(creature.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
                         continue;
-
-
 
                 var spawnTimeSecs = creature.GetDefaultSpawnTime();
                 var movementType = 0; // TODO: Find a way to check if our unit got random movement
@@ -98,16 +97,11 @@ namespace WowPacketParser.Store.SQL
             foreach (var unit in units)
             {
                 var row = new QueryBuilder.SQLInsertRow();
-                var creature = unit.Value;
-                UpdateField equip;
-                int[] equipData = {0,0,0};
-
-                for (var i = 0; i < equipData.Length; i++)
-                    if (creature.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_VIRTUAL_ITEM_SLOT_ID1 + i), out equip))
-                        equipData[i] = equip.Int32Value;
+                var creature = (Unit)unit.Value;
+                var equipData = creature.Equipment;
 
                 // check if fields are empty
-                if (equipData.All(value => value == 0))
+                if (equipData == null || equipData.All(value => value == 0))
                     continue;
 
                 row.AddValue("entry", unit.Key.GetEntry());
@@ -382,7 +376,7 @@ namespace WowPacketParser.Store.SQL
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
-        //! Non-WDB data but nevertheless data that should be saved to creature_template
+        // Non-WDB data but nevertheless data that should be saved to creature_template
         public string NpcTemplateNonWDB()
         {
             if (!_storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet))
@@ -402,7 +396,8 @@ namespace WowPacketParser.Store.SQL
                     continue;
 
                 var row = new QueryBuilder.SQLUpdateRow();
-                var npc = unit.Value;
+                var npc = (Unit) unit.Value;
+                npc.LoadValuesFromUpdateFields();
 
                 var name = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
 
@@ -415,13 +410,28 @@ namespace WowPacketParser.Store.SQL
                         row.AddValue("InhabitType", InhabitType.Air, true);
                 }
 
-                UpdateField hoverHeight;
-                if (npc.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_HOVERHEIGHT), out hoverHeight))
-                    row.AddValue("HoverHeight", hoverHeight.SingleValue, 1);
-
+                row.AddValue("HoverHeight", npc.HoverHeight, 1);
                 row.AddValue("WalkSpeed", npc.Movement.WalkSpeed, 1);
                 row.AddValue("RunSpeed", npc.Movement.RunSpeed, 1.142857);
                 row.AddValue<uint>("VehicleId", npc.Movement.VehicleId, 0);
+                row.AddValue("Size", npc.Size, 1);
+                row.AddValue("Level", npc.Level, 1); // min/max
+                row.AddValue("Faction", npc.Faction, 35); // faction_A, faction_H
+                row.AddValue("UnitFlags", npc.UnitFlags, UnitFlags.None, true);
+                row.AddValue("BaseAttackTime", npc.MeleeTime, 2000);
+                row.AddValue("RangeAttackTime", npc.RangedTime, 0); // 2000?
+                row.AddValue("Model", npc.Model, 0); // model1, model2, ...
+                row.AddValue("DynamicFlags", npc.DynamicFlags, UnitDynamicFlags.None, true);
+                row.AddValue("NpcFlags", npc.NpcFlags, NPCFlags.None, true);
+
+                if (npc.Resistances != null)
+                    for (var i = 1; i < npc.Resistances.Length; ++i) // No armor
+                        row.AddValue("Resistances" + i, npc.Resistances[i], 0);
+
+                // row.AddValue("ManaMod", npc.ManaMod, 1); this is not mod, it needs to be calculated
+                // row.AddValue("HealthMod", npc.HealthMod, 1);
+                row.AddValue("Class", npc.Class, Class.Warrior);
+                //row.AddValue("Race", npc.Race, Race.None);
 
                 row.AddWhere("entry", unit.Key.GetEntry());
                 row.Table = tableName;

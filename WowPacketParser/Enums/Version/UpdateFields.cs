@@ -54,6 +54,15 @@ namespace WowPacketParser.Enums.Version
             return Convert.ToInt32(field);
         }
 
+        public static int GetUpdateField<T>(int field)
+        {
+            if (UpdateFieldDictionaries.ContainsKey(typeof(T)))
+                if (UpdateFieldDictionaries[typeof(T)].ContainsKey(field.ToString(CultureInfo.InvariantCulture)))
+                    return UpdateFieldDictionaries[typeof(T)][field.ToString(CultureInfo.InvariantCulture)];
+
+            return field;
+        }
+
         public static string GetUpdateFieldName<T>(int field)
         {
             if (UpdateFieldDictionaries.ContainsKey(typeof(T)))

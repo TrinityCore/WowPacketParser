@@ -1,6 +1,6 @@
 namespace WowPacketParser.Misc
 {
-    public sealed class UpdateField
+    public struct UpdateField
     {
         public UpdateField(int val1, float val2)
         {
