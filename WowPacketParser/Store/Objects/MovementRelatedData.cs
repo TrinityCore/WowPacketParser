@@ -12,9 +12,9 @@ namespace WowPacketParser.Store.Objects
     {
         public MovementFlag MovementFlags;
         public MovementFlagExtra MovementFlagsExtra;
-        public int Bytes1;              //! UNIT_FIELD_BYTES_1
-        public int Bytes2;              //! UNIT_FIELD_BYTES_2
-        public UnitFlags Flags;         //! UNIT_FIELD_FLAGS
-        public UnitFlags2 Flags2;       //! UNIT_FIELD_FLAGS_2
+        public int? Bytes1;              //! UNIT_FIELD_BYTES_1
+        public int? Bytes2;              //! UNIT_FIELD_BYTES_2
+        public UnitFlags? Flags;         //! UNIT_FIELD_FLAGS
+        public UnitFlags2? Flags2;       //! UNIT_FIELD_FLAGS_2
     }
 }
