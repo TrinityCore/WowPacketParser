@@ -94,10 +94,8 @@ namespace WowPacketParser.Enums.Version.V4_3_2_15211
         UNIT_FIELD_MAXPOWER3 = ObjectField.OBJECT_END + 0x001B, // Size: 1, Type: INT, Flags: PUBLIC
         UNIT_FIELD_MAXPOWER4 = ObjectField.OBJECT_END + 0x001C, // Size: 1, Type: INT, Flags: PUBLIC
         UNIT_FIELD_MAXPOWER5 = ObjectField.OBJECT_END + 0x001D, // Size: 1, Type: INT, Flags: PUBLIC
-        UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER = ObjectField.OBJECT_END + 0x001E,
-        // Size: 5, Type: FLOAT, Flags: PRIVATE, OWNER, PARTY_MEMBER
-        UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER = ObjectField.OBJECT_END + 0x0023,
-        // Size: 5, Type: FLOAT, Flags: PRIVATE, OWNER, PARTY_MEMBER
+        UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER = ObjectField.OBJECT_END + 0x001E, // Size: 5, Type: FLOAT, Flags: PRIVATE, OWNER, PARTY_MEMBER
+        UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER = ObjectField.OBJECT_END + 0x0023, // Size: 5, Type: FLOAT, Flags: PRIVATE, OWNER, PARTY_MEMBER
         UNIT_FIELD_LEVEL = ObjectField.OBJECT_END + 0x0028, // Size: 1, Type: INT, Flags: PUBLIC
         UNIT_FIELD_FACTIONTEMPLATE = ObjectField.OBJECT_END + 0x0029, // Size: 1, Type: INT, Flags: PUBLIC
         UNIT_VIRTUAL_ITEM_SLOT_ID1 = ObjectField.OBJECT_END + 0x002A, // Size: 3, Type: INT, Flags: PUBLIC

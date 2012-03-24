@@ -124,9 +124,10 @@ namespace WowPacketParser.Store.Objects
             UpdateField uf;
             if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(updateField), out uf))
             {
-                if (typeof (TK) == typeof (int?))
+                if (typeof(TK) == typeof(int?) || typeof(TK) == typeof(int))
                     return (TK) (object) uf.Int32Value;
-                if (typeof (TK) == typeof (float?) || typeof (TK) == typeof (double?))
+                if (typeof (TK) == typeof (float?) || typeof (TK) == typeof (double?) ||
+                    typeof(TK) == typeof(float) || typeof(TK) == typeof(double))
                     return (TK) (object) uf.SingleValue;
             }
 
@@ -151,14 +152,20 @@ namespace WowPacketParser.Store.Objects
 
         public static TK GetEnum<T,TK>(this Dictionary<int, UpdateField> dict, T updateField)
         {
-            UpdateField uf;
-
             // typeof (TK) is a nullable type (ObjectField?)
             // typeof (TK).GetGenericArguments()[0] is the non nullable equivalent (ObjectField)
             // we need to convert our int from UpdateFields to the enum type
 
-            if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(updateField), out uf))
-                return (TK) Enum.Parse(typeof (TK).GetGenericArguments()[0], uf.Int32Value.ToString(CultureInfo.InvariantCulture));
+            try
+            {
+                UpdateField uf;
+                if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(updateField), out uf))
+                    return (TK)Enum.Parse(typeof(TK).GetGenericArguments()[0], uf.Int32Value.ToString(CultureInfo.InvariantCulture));
+            }
+            catch (OverflowException) // Data wrongly parsed can result in very wtfy values
+            {
+                return default(TK);
+            }
 
             return default(TK);
         }
