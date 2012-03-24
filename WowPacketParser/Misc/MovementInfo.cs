@@ -7,6 +7,8 @@ namespace WowPacketParser.Misc
     {
         public MovementFlag Flags;
 
+        public MovementFlagExtra FlagsExtra;
+
         public bool HasSplineData;
 
         public Vector3 Position;

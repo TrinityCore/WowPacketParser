@@ -154,6 +154,9 @@ namespace WowPacketParser
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.CreatureEquip))
                     store.WriteData(builder.CreatureEquip());
 
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.CreatureMovement))
+                    store.WriteData(builder.CreatureMovement());
+
                 Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", prefix, fileName));
                 store.WriteToFile();
             }

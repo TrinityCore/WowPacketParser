@@ -6,6 +6,7 @@ using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects;
 using Guid=WowPacketParser.Misc.Guid;
+using WowPacketParser.Store;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -99,6 +100,19 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (guid.HasEntry() && (objType == ObjectType.Unit || objType == ObjectType.GameObject))
                 packet.AddSniffData(Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");
+
+            if (objType != ObjectType.Unit)
+                return;
+
+            var movementData = new MovementRelatedData();
+            movementData.MovementFlags = moves.Flags;
+            movementData.MovementFlagsExtra = moves.FlagsExtra;
+            movementData.Bytes1 = updates.GetValue<UnitField, int?>(UnitField.UNIT_FIELD_BYTES_1);
+            movementData.Bytes2 = updates.GetValue<UnitField, int?>(UnitField.UNIT_FIELD_BYTES_2);
+            movementData.Flags = updates.GetEnum<UnitField, UnitFlags?>(UnitField.UNIT_FIELD_FLAGS);
+            movementData.Flags2 = updates.GetEnum<UnitField, UnitFlags2?>(UnitField.UNIT_FIELD_FLAGS);
+
+            packet.SniffFileInfo.Storage.MovementData.TryAdd(guid.GetEntry(), movementData);
         }
 
         private static void ReadObjectsBlock(ref Packet packet, int index)

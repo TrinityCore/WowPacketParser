@@ -29,7 +29,7 @@ namespace WowPacketParser.Parsing.Parsers
             info.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", TypeCode.Int32, index);
 
             var flagsTypeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056) ? TypeCode.Int16 : TypeCode.Byte;
-            var flags = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", flagsTypeCode, index);
+            info.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", flagsTypeCode, index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                 if (packet.ReadGuid("GUID 2", index) != guid)
@@ -53,12 +53,12 @@ namespace WowPacketParser.Parsing.Parsers
                 if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
                     packet.ReadByte("Transport Seat", index);
 
-                if (flags.HasAnyFlag(MovementFlagExtra.InterpolateMove))
+                if (info.FlagsExtra.HasAnyFlag(MovementFlagExtra.InterpolateMove))
                     packet.ReadInt32("Transport Time", index);
             }
 
             if (info.Flags.HasAnyFlag(MovementFlag.Swimming | MovementFlag.Flying) ||
-                flags.HasAnyFlag(MovementFlagExtra.AlwaysAllowPitching))
+                info.FlagsExtra.HasAnyFlag(MovementFlagExtra.AlwaysAllowPitching))
                 packet.ReadSingle("Swim Pitch", index);
 
             if (ClientVersion.RemovedInVersion(ClientType.Cataclysm))

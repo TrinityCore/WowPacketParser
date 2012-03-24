@@ -45,6 +45,9 @@ namespace WowPacketParser.Store
         public readonly ConcurrentDictionary<uint, NpcText> NpcTexts =
             new ConcurrentDictionary<uint, NpcText>();
 
+        //! Movement related data. Only useful for analysis
+        public readonly ConcurrentDictionary<uint, MovementRelatedData> MovementData =
+            new ConcurrentDictionary<uint, MovementRelatedData>();
 
         /* Key: Misc */
 

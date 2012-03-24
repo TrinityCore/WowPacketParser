@@ -115,6 +115,32 @@ namespace WowPacketParser.Store.SQL
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
+        public string CreatureMovement()
+        {
+            if (_storage.MovementData.IsEmpty)
+                return string.Empty;
+
+            const string tableName = "creature_movement";
+
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var data in _storage.MovementData)
+            {
+                var row = new QueryBuilder.SQLInsertRow();
+
+                row.AddValue("Id", data.Key);
+                row.AddValue("MovementFlags", data.Value.MovementFlags);
+                row.AddValue("MovementFlagsExtra", data.Value.MovementFlagsExtra);
+                row.AddValue("ufBytes1", data.Value.Bytes1);
+                row.AddValue("ufBytes2", data.Value.Bytes2);
+                row.AddValue("ufFlags", (int)data.Value.Flags);
+                row.AddValue("ufFlags2", (int)data.Value.Flags2);
+
+                rows.Add(row);
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows, ignore: true, withDelete: false).Build();
+        }
+
         public string SniffData()
         {
             if (_storage.SniffData.IsEmpty)

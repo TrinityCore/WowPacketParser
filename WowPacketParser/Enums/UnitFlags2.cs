@@ -3,7 +3,7 @@
 namespace WowPacketParser.Enums
 {
     [Flags]
-    enum UnitFlags2 // 4.x
+    public enum UnitFlags2 // 4.x
     {
         AppearDead = 0x1,
         Unk1 = 0x2,

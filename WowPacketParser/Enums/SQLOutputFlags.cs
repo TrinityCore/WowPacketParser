@@ -22,6 +22,7 @@ namespace WowPacketParser.Enums
         SniffData          = 0x02000,
         SniffDataOpcodes   = 0x04000,
         ObjectNames        = 0x08000,
-        CreatureEquip      = 0x10000
+        CreatureEquip      = 0x10000,
+        CreatureMovement   = 0x20000,
     }
 }
