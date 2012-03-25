@@ -9,6 +9,9 @@ namespace WowPacketParser.Misc
     {
         public static string GetName(StoreNameType type, int entry, bool withEntry = true)
         {
+            if (!SQLConnector.Enabled)
+                return entry.ToString(CultureInfo.InvariantCulture);
+
             if (type != StoreNameType.Map && entry == 0)
                 return "0"; // map can be 0
 

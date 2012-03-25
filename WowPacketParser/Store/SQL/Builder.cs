@@ -117,24 +117,35 @@ namespace WowPacketParser.Store.SQL
 
         public string CreatureMovement()
         {
-            if (_storage.MovementData.IsEmpty)
+            if (!_storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet))
                 return string.Empty;
+
+            var units = _storage.Objects.Where(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet);
 
             const string tableName = "creature_movement";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var data in _storage.MovementData)
+            foreach (var unit in units)
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
-                row.AddValue("Id", data.Key);
-                row.AddValue("MovementFlags", data.Value.MovementFlags);
-                row.AddValue("MovementFlagsExtra", data.Value.MovementFlagsExtra);
-                row.AddValue("ufBytes1", data.Value.Bytes1);
-                row.AddValue("ufBytes2", data.Value.Bytes2);
-                row.AddValue("ufFlags", (int)data.Value.Flags);
-                row.AddValue("ufFlags2", (int)data.Value.Flags2);
+                var npc = (Unit)unit.Value;
+                npc.LoadValuesFromUpdateFields();
 
+                row.AddValue("Id", unit.Key.GetEntry());
+                row.AddValue("MovementFlags", npc.Movement.Flags, true);
+                row.AddValue("MovementFlagsExtra", npc.Movement.FlagsExtra, true);
+                row.AddValue("ufBytes1", npc.Bytes1, isFlag: true, nullIsZero: true);
+                row.AddValue("ufBytes2", npc.Bytes2, isFlag: true, nullIsZero: true);
+                row.AddValue("ufFlags", npc.UnitFlags, isFlag: true, nullIsZero: true);
+                row.AddValue("ufFlags2", npc.UnitFlags2, isFlag: true, nullIsZero: true);
+
+                row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
+                /*
+                row.Comment += " - MoveFlags: " + npc.Movement.Flags + " - MoveFlags2: " + npc.Movement.FlagsExtra;
+                row.Comment += " - Bytes1: " + npc.Bytes1 + " - Bytes2: " + npc.Bytes2 + " - UnitFlags: " + npc.UnitFlags;
+                row.Comment += " - UnitFlags2: " + npc.UnitFlags2;
+                 */
                 rows.Add(row);
             }
 
@@ -439,20 +450,20 @@ namespace WowPacketParser.Store.SQL
                 row.AddValue("HoverHeight", npc.HoverHeight, 1);
                 row.AddValue("WalkSpeed", npc.Movement.WalkSpeed, 1);
                 row.AddValue("RunSpeed", npc.Movement.RunSpeed, 1.142857);
-                row.AddValue<uint>("VehicleId", npc.Movement.VehicleId, 0);
-                row.AddValue("Size", npc.Size, 1);
-                row.AddValue("Level", npc.Level, 1); // min/max
-                row.AddValue("Faction", npc.Faction, 35); // faction_A, faction_H
+                row.AddValue("VehicleId", npc.Movement.VehicleId, 0u);
+                row.AddValue("Size", npc.Size, 1u);
+                row.AddValue("Level", npc.Level, 1u); // min/max
+                row.AddValue("Faction", npc.Faction, 35u); // faction_A, faction_H
                 row.AddValue("UnitFlags", npc.UnitFlags, UnitFlags.None, true);
-                row.AddValue("BaseAttackTime", npc.MeleeTime, 2000);
-                row.AddValue("RangeAttackTime", npc.RangedTime, 0); // 2000?
-                row.AddValue("Model", npc.Model, 0); // model1, model2, ...
+                row.AddValue("BaseAttackTime", npc.MeleeTime, 2000u);
+                row.AddValue("RangeAttackTime", npc.RangedTime, 0u); // 2000?
+                row.AddValue("Model", npc.Model, 0u); // model1, model2, ...
                 row.AddValue("DynamicFlags", npc.DynamicFlags, UnitDynamicFlags.None, true);
                 row.AddValue("NpcFlags", npc.NpcFlags, NPCFlags.None, true);
 
                 if (npc.Resistances != null)
                     for (var i = 1; i < npc.Resistances.Length; ++i) // No armor
-                        row.AddValue("Resistances" + i, npc.Resistances[i], 0);
+                        row.AddValue("Resistances" + i, npc.Resistances[i], 0u);
 
                 // row.AddValue("ManaMod", npc.ManaMod, 1); this is not mod, it needs to be calculated
                 // row.AddValue("HealthMod", npc.HealthMod, 1);
@@ -531,11 +542,11 @@ namespace WowPacketParser.Store.SQL
                         continue;
 
                 uint animprogress = 0;
-                var state = 0;
+                uint state = 0;
                 UpdateField uf;
                 if (go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(GameObjectField.GAMEOBJECT_BYTES_1), out uf))
                 {
-                    var bytes = uf.Int32Value;
+                    var bytes = uf.UInt32Value;
                     state = (bytes & 0x000000FF);
                     animprogress = Convert.ToUInt32((bytes & 0xFF000000) >> 24);
                 }

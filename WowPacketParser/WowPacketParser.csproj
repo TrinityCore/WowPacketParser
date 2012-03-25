@@ -305,7 +305,6 @@
     <Compile Include="Parsing\Parsers\CombatLogHandler.cs" />
     <Compile Include="Parsing\Parsers\TestHandler.cs" />
     <Compile Include="Store\Objects\Aura.cs" />
-    <Compile Include="Store\Objects\MovementRelatedData.cs" />
     <Compile Include="Store\Objects\ObjectName.cs" />
     <Compile Include="Store\Objects\QuestPOI.cs" />
     <Compile Include="Store\Objects\LootItem.cs" />

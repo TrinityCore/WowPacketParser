@@ -121,7 +121,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (packet.SniffFileInfo.Storage.Objects.TryGetValue(guid, out item))
                     if (item.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out itemEntry))
                     {
-                        packet.SniffFileInfo.Storage.Loots.TryAdd(new Tuple<uint, ObjectType>((uint) itemEntry.Int32Value, guid.GetObjectType()), loot);
+                        packet.SniffFileInfo.Storage.Loots.TryAdd(new Tuple<uint, ObjectType>((uint) itemEntry.UInt32Value, guid.GetObjectType()), loot);
                         return;
                     }
             }

@@ -65,6 +65,14 @@ namespace WowPacketParser.SQL
         }
 
         /// <summary>
+        /// Converts an uint to a hex string.
+        /// </summary>
+        public static string Hexify(uint n)
+        {
+            return "0x" + n.ToString("X");
+        }
+
+        /// <summary>
         /// "Modifies" any value to be used in SQL data
         /// </summary>
         /// <param name="value">Any value (string, number, enum, ...)</param>
@@ -86,18 +94,19 @@ namespace WowPacketParser.SQL
             {
                 try
                 {
-// ReSharper disable PossibleInvalidCastException
-                    value = (int)value;
-// ReSharper restore PossibleInvalidCastException
+                    value = (uint)value;
                 }
                 catch (InvalidCastException)
                 {
-                    value = (uint)value;
+                    value = (int)value;
                 }
             }
 
             if (value is int && isFlag)
                 value = Hexify((int)value);
+
+            if (value is uint && isFlag)
+                value = Hexify((uint)value);
 
             return value;
         }

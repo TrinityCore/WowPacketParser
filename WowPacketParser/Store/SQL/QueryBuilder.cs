@@ -340,12 +340,18 @@ namespace WowPacketParser.Store.SQL
             /// <param name="value">Any value (string, number, enum, ...)</param>
             /// <param name="isFlag">If set to true the value, "0x" will be append to value</param>
             /// <param name="noQuotes">If value is a string and this is set to true, value will not be 'quoted' (SQL variables)</param>
-            public void AddValue(string field, object value, bool isFlag = false, bool noQuotes = false)
+            /// <param name="nullIsZero">If value is null, use 0 in sql instead of skipping it</param>
+            public void AddValue(string field, object value, bool isFlag = false, bool noQuotes = false, bool nullIsZero = false)
             {
                 // i.e QuestTemplate.QuestGiverTextWindow does not exist
                 // on 3.x but it does on 4.x -- value passed will be null
                 if (value == null)
-                    return;
+                {
+                    if (nullIsZero)
+                        value = 0;
+                    else
+                        return;
+                }
 
                 _values.Add(SQLUtil.ToSQLValue(value, isFlag, noQuotes).ToString());
                 FieldNames.Add(field);

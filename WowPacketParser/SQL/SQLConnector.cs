@@ -42,6 +42,7 @@ namespace WowPacketParser.SQL
 
         public static void Disconnect()
         {
+            Enabled = false;
             if (_conn != null)
                 _conn.Close();
         }

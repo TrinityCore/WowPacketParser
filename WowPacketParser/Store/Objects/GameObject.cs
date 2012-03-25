@@ -11,7 +11,7 @@ namespace WowPacketParser.Store.Objects
             // it's probably a temporary spawn
             UpdateField uf;
             if (UpdateFields.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(GameObjectField.GAMEOBJECT_FIELD_CREATED_BY), out uf))
-                return uf.Int32Value != 0;
+                return uf.UInt32Value != 0;
 
             return false;
         }
