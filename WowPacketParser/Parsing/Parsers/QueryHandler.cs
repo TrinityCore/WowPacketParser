@@ -29,8 +29,19 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
                 guid = packet.ReadPackedGuid("GUID");
-                var end = packet.ReadBoolean("Name Not Found");
-                if (end)
+                var end = packet.ReadByte("Result");
+                /*
+                if (end == 1)
+                    DenyItem(&WDB_CACHE_NAME, v11, v12);
+                if (end == 2)
+                    RetryItem(&WDB_CACHE_NAME, v11, v12);
+                if (end == 3)
+                {
+                    AddItem(&WDB_CACHE_NAME, (int)&v8, v11, v12);
+                    SetTemporary(&WDB_CACHE_NAME, v11, v12);
+                }
+                */
+                if (end != 0)
                     return;
             }
             else
