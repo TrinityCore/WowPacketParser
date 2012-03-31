@@ -599,8 +599,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasVehicleData)
             {
-                moveInfo.VehicleId = packet.ReadUInt32("Vehicle Id", index);
                 packet.ReadSingle("Vehicle Orientation", index);
+                moveInfo.VehicleId = packet.ReadUInt32("Vehicle Id", index);
             }
 
             packet.ResetBitReader();
