@@ -10,13 +10,13 @@ namespace WowPacketParser.Misc
             O = o;
         }
 
-        public readonly float X;
+        public float X;
 
-        public readonly float Y;
+        public float Y;
 
-        public readonly float Z;
+        public float Z;
 
-        public readonly float O;
+        public float O;
 
         public override string ToString()
         {
