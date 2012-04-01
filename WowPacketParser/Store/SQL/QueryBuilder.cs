@@ -90,7 +90,9 @@ namespace WowPacketParser.Store.SQL
             {
                 // T used because it is compile time safe. We know that value and defaultValue got the same type
 
+// ReSharper disable CompareNonConstrainedGenericWithNull
                 if (value == null)
+// ReSharper restore CompareNonConstrainedGenericWithNull
                     return;
 
                 if (value is float || value is double)

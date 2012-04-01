@@ -1,3 +1,5 @@
+using System;
+
 namespace WowPacketParser.Misc
 {
     public struct Vector3
@@ -40,7 +42,9 @@ namespace WowPacketParser.Misc
 
         public bool Equals(Vector3 other)
         {
-            return other.X == X && other.Y == Y && other.Z == Z;
+            return Math.Abs(other.X - X) < float.Epsilon &&
+                Math.Abs(other.Y - Y) < float.Epsilon &&
+                Math.Abs(other.Z - Z) < float.Epsilon;
         }
 
         public override int GetHashCode()

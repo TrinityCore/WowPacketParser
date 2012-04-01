@@ -6,7 +6,6 @@ using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects;
 using Guid=WowPacketParser.Misc.Guid;
-using WowPacketParser.Store;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -211,11 +210,9 @@ namespace WowPacketParser.Parsing.Parsers
             bool unkFloat2 = false;
             bool bit216 = false;
             bool bit256 = false;
-            uint splineMode;
             bool hasSplineDurationMult = false;
             SplineType splineType = SplineType.Normal;
             var facingTarget = new byte[8];
-            SplineFlag422 splineFlags;
             uint splineCount = 0u;
             bool hasTransportData = false;
             var transportGuid = new byte[8];
@@ -250,7 +247,7 @@ namespace WowPacketParser.Parsing.Parsers
                     if (bit216)
                     {
                         bit256 = packet.ReadBit();
-                        splineMode = packet.ReadBits(2);
+                        /*splineMode =*/ packet.ReadBits(2);
                         hasSplineDurationMult = packet.ReadBit();
                         uint bits57 = packet.ReadBits(2);
                         switch (bits57)
@@ -281,7 +278,7 @@ namespace WowPacketParser.Parsing.Parsers
                             facingTarget[5] = (byte)(packet.ReadBit() ? 1 : 0);
                         }
 
-                        splineFlags = packet.ReadEnum<SplineFlag422>("Spline flags", 25, index);
+                        /*splineFlags =*/ packet.ReadEnum<SplineFlag422>("Spline flags", 25, index);
                         splineCount = packet.ReadBits(22);
                     }
                 }
@@ -368,7 +365,7 @@ namespace WowPacketParser.Parsing.Parsers
                     {
                         for (var i = 0u; i < splineCount; ++i)
                         {
-                            Vector3 wp = new Vector3()
+                            var wp = new Vector3
                             {
                                 X = packet.ReadSingle(),
                                 Z = packet.ReadSingle(),
@@ -392,7 +389,7 @@ namespace WowPacketParser.Parsing.Parsers
                         }
                         else if (splineType == SplineType.FacingSpot)
                         {
-                            Vector3 point = new Vector3()
+                            var point = new Vector3
                             {
                                 Z = packet.ReadSingle(),
                                 Y = packet.ReadSingle(),
@@ -416,7 +413,7 @@ namespace WowPacketParser.Parsing.Parsers
                             packet.ReadSingle("Spline Duration Modifier", index);
                     }
 
-                    Vector3 endPoint = new Vector3()
+                    var endPoint = new Vector3
                     {
                         Z = packet.ReadSingle(),
                         Y = packet.ReadSingle(),
@@ -442,7 +439,7 @@ namespace WowPacketParser.Parsing.Parsers
                     if (transportGuid[7] != 0) transportGuid[7] ^= packet.ReadByte();
                     if (transportGuid[3] != 0) transportGuid[3] ^= packet.ReadByte();
 
-                    Vector4 tPos = new Vector4()
+                    var tPos = new Vector4
                     {
                         X = packet.ReadSingle(),
                         Z = packet.ReadSingle(),
@@ -526,7 +523,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasGameObjectPosition)
             {
-                Vector4 tPos = new Vector4();
+                var tPos = new Vector4();
 
                 if (goTransportGuid[6] != 0) goTransportGuid[6] ^= packet.ReadByte();
                 if (goTransportGuid[5] != 0) goTransportGuid[5] ^= packet.ReadByte();
@@ -585,7 +582,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasStationaryPosition)
             {
-                moveInfo.Position = new Vector3()
+                moveInfo.Position = new Vector3
                 {
                     Z = packet.ReadSingle(),
                     X = packet.ReadSingle(),

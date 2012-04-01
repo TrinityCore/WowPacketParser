@@ -1,3 +1,5 @@
+using System;
+
 namespace WowPacketParser.Misc
 {
     public struct Quaternion
@@ -33,7 +35,10 @@ namespace WowPacketParser.Misc
 
         public bool Equals(Quaternion other)
         {
-            return other.X == X && other.Y == Y && other.Z == Z && other.W == W;
+            return Math.Abs(other.X - X) < float.Epsilon &&
+                Math.Abs(other.Y - Y) < float.Epsilon &&
+                Math.Abs(other.Z - Z) < float.Epsilon &&
+                Math.Abs(other.W - W) < float.Epsilon;
         }
 
         public static bool operator ==(Quaternion first, Quaternion other)

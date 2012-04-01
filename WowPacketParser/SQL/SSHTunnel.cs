@@ -25,7 +25,7 @@ namespace WowPacketParser.SQL
     public static class SSHTunnel
     {
         [ThreadStatic]
-        private static Session _session;
+        private static Session Session;
         public static bool Enabled = Settings.SSHEnabled;
 
         public static void Connect()
@@ -34,17 +34,17 @@ namespace WowPacketParser.SQL
              {
                  var jsch = new JSch();
 
-                 _session = jsch.getSession(Settings.SSHUsername, Settings.SSHHost, Settings.SSHPort);
-                 _session.setHost(Settings.SSHHost);
-                 _session.setPassword(Settings.SSHPassword);
+                 Session = jsch.getSession(Settings.SSHUsername, Settings.SSHHost, Settings.SSHPort);
+                 Session.setHost(Settings.SSHHost);
+                 Session.setPassword(Settings.SSHPassword);
                  UserInfo ui = new MyUserInfo(Settings.SSHPassword);
-                 _session.setUserInfo(ui);
-                 _session.connect();
+                 Session.setUserInfo(ui);
+                 Session.connect();
                  int port;
                  if (!int.TryParse(Settings.Port, out port))
                      port = 3306;
-                 _session.setPortForwardingL(Settings.SSHLocalPort, "localhost", port);
-                 if (!_session.isConnected())
+                 Session.setPortForwardingL(Settings.SSHLocalPort, "localhost", port);
+                 if (!Session.isConnected())
                     Enabled = false;
              }
              catch (Exception ex)
@@ -57,13 +57,13 @@ namespace WowPacketParser.SQL
 
         public static bool Connected()
         {
-            return _session != null && _session.isConnected();
+            return Session != null && Session.isConnected();
         }
 
         public static void Disconnect()
         {
-            if (_session != null)
-                _session.disconnect();
+            if (Session != null)
+                Session.disconnect();
         }
     }
 }

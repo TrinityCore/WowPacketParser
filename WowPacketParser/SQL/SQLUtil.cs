@@ -94,7 +94,9 @@ namespace WowPacketParser.SQL
             {
                 try
                 {
+// ReSharper disable PossibleInvalidCastException
                     value = (uint)value;
+// ReSharper restore PossibleInvalidCastException
                 }
                 catch (InvalidCastException)
                 {

@@ -1,3 +1,5 @@
+using System;
+
 namespace WowPacketParser.Misc
 {
     public struct Vector4
@@ -33,7 +35,10 @@ namespace WowPacketParser.Misc
 
         public bool Equals(Vector4 other)
         {
-            return other.X == X && other.Y == Y && other.Z == Z && other.O == O;
+            return Math.Abs(other.X - X) < float.Epsilon &&
+                Math.Abs(other.Y - Y) < float.Epsilon &&
+                Math.Abs(other.Z - Z) < float.Epsilon &&
+                Math.Abs(other.O - O) < float.Epsilon;
         }
 
         public static bool operator ==(Vector4 first, Vector4 other)
