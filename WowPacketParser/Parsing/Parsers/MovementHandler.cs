@@ -3,6 +3,7 @@ using System.IO;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using Guid = WowPacketParser.Misc.Guid;
 
@@ -300,7 +301,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadVector4("Position");
 
             WoWObject character;
-            if (packet.SniffFileInfo.Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
+            if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
                 SessionHandler.LoggedInCharacter = (Player) character;
 
             packet.AddSniffData(StoreNameType.Map, (int) CurrentMapId, "NEW_WORLD");
@@ -314,7 +315,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Orientation");
 
             WoWObject character;
-            if (packet.SniffFileInfo.Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
+            if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
                 SessionHandler.LoggedInCharacter = (Player) character;
 
             packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
@@ -357,7 +358,7 @@ namespace WowPacketParser.Parsing.Parsers
             var remainingLength = packet.Length - packet.Position;
             var bytes = packet.ReadBytes((int)remainingLength);
 
-            using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.SniffFileInfo))
+            using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
                 Handler.Parse(newpacket, isMultiple: true);
         }
 
@@ -1173,7 +1174,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var opc = pkt.ReadInt16();
                     var data = pkt.ReadBytes(size - 2);
 
-                    using (var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer, packet.SniffFileInfo))
+                    using (var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer, packet.FileName))
                     {
                         Handler.Parse(newPacket, true);
                     }

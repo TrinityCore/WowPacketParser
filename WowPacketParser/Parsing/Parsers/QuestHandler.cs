@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
 
@@ -326,7 +327,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.Quest, id.Key, "QUERY_RESPONSE");
 
-            packet.SniffFileInfo.Storage.QuestTemplates.TryAdd((uint) id.Key, quest);
+            Storage.QuestTemplates.TryAdd((uint) id.Key, quest);
         }
 
         [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
@@ -409,7 +410,7 @@ namespace WowPacketParser.Parsing.Parsers
                         questPoi.Points.Add(questPoiPoint);
                     }
 
-                    packet.SniffFileInfo.Storage.QuestPOIs.TryAdd(new Tuple<uint, uint>((uint) questId, (uint) idx), questPoi);
+                    Storage.QuestPOIs.TryAdd(new Tuple<uint, uint>((uint) questId, (uint) idx), questPoi);
                 }
             }
         }

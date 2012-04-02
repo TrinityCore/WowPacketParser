@@ -1,6 +1,7 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -33,7 +34,7 @@ namespace WowPacketParser.Parsing.Parsers
                 ObjectType = ObjectType.Item,
                 Name = name,
             };
-            packet.SniffFileInfo.Storage.ObjectNames.TryAdd((uint)entry, objectName);
+            Storage.ObjectNames.TryAdd((uint)entry, objectName);
         }
 
         [Parser(Opcode.CMSG_SOCKET_GEMS)]
@@ -113,7 +114,7 @@ namespace WowPacketParser.Parsing.Parsers
             var remainingLength = packet.Length - packet.Position;
             var bytes = packet.ReadBytes((int)remainingLength);
 
-            using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.SniffFileInfo))
+            using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
                 Handler.Parse(newpacket, isMultiple: true);
         }
 
@@ -510,7 +511,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.Item, entry.Key, "QUERY_RESPONSE");
 
-            packet.SniffFileInfo.Storage.ItemTemplates.TryAdd((uint) entry.Key, item);
+            Storage.ItemTemplates.TryAdd((uint) entry.Key, item);
         }
 
         [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]

@@ -4,6 +4,7 @@ using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using Guid = WowPacketParser.Misc.Guid;
 
@@ -114,7 +115,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             npcTrainer.Title = packet.ReadCString("Title");
 
-            packet.SniffFileInfo.Storage.NpcTrainers.TryAdd(guid.GetEntry(), npcTrainer);
+            Storage.NpcTrainers.TryAdd(guid.GetEntry(), npcTrainer);
         }
 
         [Parser(Opcode.SMSG_LIST_INVENTORY, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
@@ -141,7 +142,7 @@ namespace WowPacketParser.Parsing.Parsers
                 vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
             }
 
-            packet.SniffFileInfo.Storage.NpcVendors.TryAdd(guid.GetEntry(), npcVendor);
+            Storage.NpcVendors.TryAdd(guid.GetEntry(), npcVendor);
         }
 
         [Parser(Opcode.SMSG_LIST_INVENTORY, ClientVersionBuild.V4_2_2_14545)]
@@ -198,7 +199,7 @@ namespace WowPacketParser.Parsing.Parsers
                 npcVendor.VendorItems.Add(vendorItem);
             }
 
-            packet.SniffFileInfo.Storage.NpcVendors.TryAdd(guid.GetEntry(), npcVendor);
+            Storage.NpcVendors.TryAdd(guid.GetEntry(), npcVendor);
         }
 
         [Parser(Opcode.CMSG_GOSSIP_HELLO)]
@@ -258,7 +259,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
 
-            packet.SniffFileInfo.Storage.Gossips.TryAdd(new Tuple<uint, uint>(menuId, textId), gossip);
+            Storage.Gossips.TryAdd(new Tuple<uint, uint>(menuId, textId), gossip);
 
             var questgossips = packet.ReadUInt32("Amount of Quest gossips");
             for (var i = 0; i < questgossips; i++)

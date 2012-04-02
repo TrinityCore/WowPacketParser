@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -118,15 +119,15 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 WoWObject item;
                 UpdateField itemEntry;
-                if (packet.SniffFileInfo.Storage.Objects.TryGetValue(guid, out item))
+                if (Storage.Objects.TryGetValue(guid, out item))
                     if (item.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out itemEntry))
                     {
-                        packet.SniffFileInfo.Storage.Loots.TryAdd(new Tuple<uint, ObjectType>(itemEntry.UInt32Value, guid.GetObjectType()), loot);
+                        Storage.Loots.TryAdd(new Tuple<uint, ObjectType>(itemEntry.UInt32Value, guid.GetObjectType()), loot);
                         return;
                     }
             }
 
-            packet.SniffFileInfo.Storage.Loots.TryAdd(new Tuple<uint, ObjectType>(guid.GetEntry(), guid.GetObjectType()), loot);
+            Storage.Loots.TryAdd(new Tuple<uint, ObjectType>(guid.GetEntry(), guid.GetObjectType()), loot);
         }
 
         [Parser(Opcode.CMSG_LOOT_ROLL)]

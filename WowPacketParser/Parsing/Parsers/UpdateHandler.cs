@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using Guid=WowPacketParser.Misc.Guid;
 
@@ -38,7 +39,7 @@ namespace WowPacketParser.Parsing.Parsers
                         WoWObject obj;
                         var updates = ReadValuesUpdateBlock(ref packet, guid.GetObjectType(), i);
 
-                        if (packet.SniffFileInfo.Storage.Objects.TryGetValue(guid, out obj))
+                        if (Storage.Objects.TryGetValue(guid, out obj))
                         {
                             if (obj.ChangedUpdateFieldsList == null)
                                 obj.ChangedUpdateFieldsList = new List<Dictionary<int, UpdateField>>();
@@ -95,7 +96,7 @@ namespace WowPacketParser.Parsing.Parsers
             obj.Area = WorldStateHandler.CurrentAreaId;
             obj.PhaseMask = (uint) MovementHandler.CurrentPhaseMask;
 
-            packet.SniffFileInfo.Storage.Objects.TryAdd(guid, obj);
+            Storage.Objects.TryAdd(guid, obj);
 
             if (guid.HasEntry() && (objType == ObjectType.Unit || objType == ObjectType.GameObject))
                 packet.AddSniffData(Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");

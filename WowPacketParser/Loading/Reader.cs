@@ -14,10 +14,8 @@ namespace WowPacketParser.Loading
     public static class Reader
     {
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "reader is disposed in the finally block.")]
-        public static ICollection<Packet> Read(SniffFileInfo fileInfo)
+        public static ICollection<Packet> Read(string fileName)
         {
-            var fileName = fileInfo.FileName;
-
             var extension = Path.GetExtension(fileName);
             if (extension == null)
                 throw new IOException("Invalid file type");
@@ -39,30 +37,21 @@ namespace WowPacketParser.Loading
                     throw new IOException(String.Format("Invalid file type {0}", extension.ToLower()));
             }
 
-            var firstPacketBuild = 0;
-            Packet parsingPacket = null; // For debugging
             var packets = new List<Packet>();
             try
             {
                 var packetNum = 0;
                 while (reader.CanRead())
                 {
-                    if (packetNum != 0)
-                        fileInfo.Build = firstPacketBuild;
-
-                    var packet = reader.Read(packetNum, fileInfo);
+                    var packet = reader.Read(packetNum, fileName);
                     if (packet == null)
                         continue;
-
-                    parsingPacket = packet;
 
                     if (packetNum == 0)
                     {
                         // determine build version based on date of first packet if not specified otherwise
                         if (ClientVersion.IsUndefined())
                             ClientVersion.SetVersion(packet.Time);
-
-                        firstPacketBuild = ClientVersion.BuildInt;
                     }
 
                     if (++packetNum < Settings.FilterPacketNumLow)
@@ -91,10 +80,6 @@ namespace WowPacketParser.Loading
             }
             catch (Exception ex)
             {
-                if (parsingPacket != null)
-                    Trace.WriteLine(string.Format("Failed at parsing packet: (Opcode: {0}, Number: {1})",
-                                                  parsingPacket.Opcode, parsingPacket.Number));
-
                 Trace.WriteLine(ex.Data);
                 Trace.WriteLine(ex.GetType());
                 Trace.WriteLine(ex.Message);

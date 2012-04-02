@@ -4,17 +4,18 @@ using System.IO;
 using System.Text;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using WowPacketParser.Enums;
+using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Misc
 {
     public sealed partial class Packet : BinaryReader
     {
-        private static readonly bool _sniffData = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffData);
-        private static readonly bool _sniffDataOpcodes = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffDataOpcodes);
+        private static readonly bool SniffData = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffData);
+        private static readonly bool SniffDataOpcodes = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffDataOpcodes);
 
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
-        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringWriter writer, SniffFileInfo fileInfo)
+        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringWriter writer, string fileName)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
             Opcode = opcode;
@@ -22,13 +23,13 @@ namespace WowPacketParser.Misc
             Direction = direction;
             Number = number;
             Writer = writer;
-            SniffFileInfo = fileInfo;
+            FileName = fileName;
             Status = ParsedStatus.None;
             WriteToFile = true;
         }
 
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
-        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, SniffFileInfo fileInfo)
+        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, string fileName)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
             Opcode = opcode;
@@ -36,7 +37,7 @@ namespace WowPacketParser.Misc
             Direction = direction;
             Number = number;
             Writer = null;
-            SniffFileInfo = fileInfo;
+            FileName = fileName;
             Status = ParsedStatus.None;
             WriteToFile = true;
         }
@@ -46,7 +47,7 @@ namespace WowPacketParser.Misc
         public Direction Direction { get; private set; }
         public int Number { get; private set; }
         public StringWriter Writer { get; private set; }
-        public SniffFileInfo SniffFileInfo { get; private set; }
+        public string FileName { get; private set; }
         public ParsedStatus Status { get; set; }
         public bool WriteToFile { get; private set; }
 
@@ -58,15 +59,15 @@ namespace WowPacketParser.Misc
             if (id == 0 && type != StoreNameType.Map)
                 return; // Only maps can have id 0
 
-            if (type == StoreNameType.Opcode && !_sniffDataOpcodes)
+            if (type == StoreNameType.Opcode && !SniffDataOpcodes)
                 return; // Don't add opcodes if its config is not enabled
 
-            if (type != StoreNameType.Opcode && !_sniffData)
+            if (type != StoreNameType.Opcode && !SniffData)
                 return;
 
             var item = new SniffData
             {
-                FileInfo = SniffFileInfo,
+                FileName = FileName,
                 TimeStamp = Utilities.GetUnixTimeFromDateTime(Time),
                 ObjectType = type,
                 Id = id,
@@ -74,7 +75,7 @@ namespace WowPacketParser.Misc
                 Number = Number,
             };
 
-           SniffFileInfo.Storage.SniffData.Add(item);
+           Storage.SniffData.Add(item);
         }
 
         public Packet Inflate(int inflatedSize)
@@ -95,7 +96,7 @@ namespace WowPacketParser.Misc
             }
 
             // Cannot use "using" here
-            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, SniffFileInfo);
+            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, FileName);
             return pkt;
         }
 

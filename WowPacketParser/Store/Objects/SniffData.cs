@@ -5,7 +5,7 @@ namespace WowPacketParser.Store.Objects
 {
     public sealed class SniffData
     {
-        public SniffFileInfo FileInfo { get; set; }
+        public string FileName { get; set; }
 
         public double TimeStamp { get; set; }
 

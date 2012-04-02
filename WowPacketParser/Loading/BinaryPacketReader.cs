@@ -98,7 +98,7 @@ namespace WowPacketParser.Loading
             return _reader.BaseStream.Position != _reader.BaseStream.Length;
         }
 
-        public Packet Read(int number, SniffFileInfo fileInfo)
+        public Packet Read(int number, string fileName)
         {
             int opcode;
             int length;
@@ -170,7 +170,7 @@ namespace WowPacketParser.Loading
                 data = _reader.ReadBytes(length);
             }
 
-            var packet = new Packet(data, opcode, time, direction, number, fileInfo);
+            var packet = new Packet(data, opcode, time, direction, number, fileName);
             return packet;
         }
 

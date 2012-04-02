@@ -69,7 +69,7 @@
     <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>BasicDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -121,6 +121,7 @@
     <Compile Include="Enums\CalendarEventStatus.cs" />
     <Compile Include="Enums\CalendarEventType.cs" />
     <Compile Include="Enums\CalendarFlag.cs" />
+    <Compile Include="Enums\CalendarRepeatType.cs" />
     <Compile Include="Enums\CalendarSendEventType.cs" />
     <Compile Include="Enums\CalendarModerationRank.cs" />
     <Compile Include="Enums\CastFlag.cs" />
@@ -313,7 +314,6 @@
     <Compile Include="Store\Objects\NpcTrainer.cs" />
     <Compile Include="Store\Objects\QuestPOIPoint.cs" />
     <Compile Include="Store\Objects\SniffData.cs" />
-    <Compile Include="Store\Objects\SniffFileInfo.cs" />
     <Compile Include="Store\Objects\StartAction.cs" />
     <Compile Include="Store\Objects\GameObjectTemplate.cs" />
     <Compile Include="Store\Objects\Gossip.cs" />

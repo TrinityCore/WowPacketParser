@@ -13,7 +13,6 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.SQL;
 using WowPacketParser.Saving;
-using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using WowPacketParser.Store.SQL;
 
@@ -21,11 +20,11 @@ namespace WowPacketParser
 {
     public static class Program
     {
-        private static readonly Object _lockStats = new Object();
-        private static int _globalStatsOk;
-        private static int _globalStatsSkip;
-        private static int _globalStatsError;
-        private static int _globalStatsTotal;
+        private static readonly Object LockStats = new Object();
+        private static int GlobalStatsOk;
+        private static int GlobalStatsSkip;
+        private static int GlobalStatsError;
+        private static int GlobalStatsTotal;
 
         private static bool GetFiles(ref List<string> files)
         {
@@ -96,73 +95,71 @@ namespace WowPacketParser
             Trace.WriteLine(Environment.NewLine);
         }
 
-        private static void DumpSQLs(string prefix, string fileName, Builder builder, SQLOutputFlags sqlOutput)
+        private static void DumpSQLs(string prefix, string fileName, SQLOutputFlags sqlOutput)
         {
-            if (builder == null)
-                return;
-
             using (var store = new SQLStore(fileName))
             {
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.GameObjectTemplate))
-                    store.WriteData(builder.GameObjectTemplate());
+                    store.WriteData(Builder.GameObjectTemplate());
 
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.GameObjectSpawns))
-                    store.WriteData(builder.GameObjectSpawns());
+                    store.WriteData(Builder.GameObjectSpawns());
 
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.QuestTemplate))
-                    store.WriteData(builder.QuestTemplate());
+                    store.WriteData(Builder.QuestTemplate());
 
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.QuestPOI))
-                    store.WriteData(builder.QuestPOI());
+                    store.WriteData(Builder.QuestPOI());
 
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.CreatureTemplate))
                 {
-                    store.WriteData(builder.NpcTemplate());
-                    store.WriteData(builder.NpcTemplateNonWDB());
+                    store.WriteData(Builder.NpcTemplate());
+                    store.WriteData(Builder.NpcTemplateNonWDB());
                 }
 
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.CreatureSpawns))
-                    store.WriteData(builder.CreatureSpawns());
+                    store.WriteData(Builder.CreatureSpawns());
 
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.NpcTrainer))
-                    store.WriteData(builder.NpcTrainer());
+                    store.WriteData(Builder.NpcTrainer());
 
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.NpcVendor))
-                    store.WriteData(builder.NpcVendor());
+                    store.WriteData(Builder.NpcVendor());
 
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.NpcText))
-                    store.WriteData(builder.PageText());
+                    store.WriteData(Builder.PageText());
 
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.PageText))
-                    store.WriteData(builder.NpcText());
+                    store.WriteData(Builder.NpcText());
 
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.Gossip))
-                    store.WriteData(builder.Gossip());
+                    store.WriteData(Builder.Gossip());
 
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.Loot))
-                    store.WriteData(builder.Loot());
+                    store.WriteData(Builder.Loot());
 
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.SniffData | SQLOutputFlags.SniffDataOpcodes))
-                    store.WriteData(builder.SniffData());
+                    store.WriteData(Builder.SniffData());
 
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.StartInformation))
-                    store.WriteData(builder.StartInformation());
+                    store.WriteData(Builder.StartInformation());
 
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.ObjectNames))
-                    store.WriteData(builder.ObjectNames());
+                    store.WriteData(Builder.ObjectNames());
 
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.CreatureEquip))
-                    store.WriteData(builder.CreatureEquip());
+                    store.WriteData(Builder.CreatureEquip());
 
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.CreatureMovement))
-                    store.WriteData(builder.CreatureMovement());
+                    store.WriteData(Builder.CreatureMovement());
 
-                Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", prefix, fileName));
-                store.WriteToFile();
+                Trace.WriteLine(store.WriteToFile()
+                                    ? string.Format("{0}: Saved file to '{1}'", prefix, fileName)
+                                    : "No SQL files created -- empty.");
             }
         }
 
-        private static void ReadFile(string file, Storage globalStorage, Builder globalBuilder, string prefix)
+        private static void ReadFile(string file, string prefix)
         {
             // If our dump format requires a .txt to be created,
             // check if we can write to that .txt before starting parsing
@@ -176,17 +173,11 @@ namespace WowPacketParser
                 }
             }
 
-            var stuffing = globalStorage ?? new Storage();
-            var fileInfo = new SniffFileInfo { FileName = file, Storage = stuffing };
-            var fileName = Path.GetFileName(fileInfo.FileName);
-
             Trace.WriteLine(string.Format("{0}: Reading packets...", prefix));
-
-            Builder builder = globalBuilder ?? (Settings.SQLOutput > 0 ? new Builder(stuffing) : null);
 
             try
             {
-                var packets = Reader.Read(fileInfo);
+                var packets = Reader.Read(file);
                 if (packets.Count == 0)
                 {
                     Trace.WriteLine(string.Format("{0}: Packet count is 0", prefix));
@@ -224,12 +215,6 @@ namespace WowPacketParser
                         packets.AsParallel().SetCulture().ForAll(packet => Handler.Parse(packet));
                     else
                         packets.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.ThreadsParse).ForAll(packet => Handler.Parse(packet));
-
-                    if (Settings.SQLOutput > 0 && globalStorage == null) // No global Storage, write sql data to particular sql file
-                    {
-                        var outSqlFileName = outFileName + ".sql";
-                        DumpSQLs(fileName, outSqlFileName, builder, Settings.SQLOutput);
-                    }
 
                     if (Settings.DumpFormat != DumpFormatType.None)
                     {
@@ -275,12 +260,12 @@ namespace WowPacketParser
 
                     if (Settings.StatsOutput.HasAnyFlag(StatsOutputFlags.Global))
                     {
-                        lock (_lockStats)
+                        lock (LockStats)
                         {
-                            _globalStatsOk = statsOk;
-                            _globalStatsError = statsError;
-                            _globalStatsSkip = statsSkip;
-                            _globalStatsTotal = (int)total;
+                            GlobalStatsOk = statsOk;
+                            GlobalStatsError = statsError;
+                            GlobalStatsSkip = statsSkip;
+                            GlobalStatsTotal = (int)total;
                         }
                     }
 
@@ -344,15 +329,6 @@ namespace WowPacketParser
             // Read DB
             ReadDB();
 
-            Storage storage = null;
-            Builder builder = null;
-
-            if (Settings.SQLOutput > 0 && Settings.SQLFileName.Length > 0)
-            {
-                storage = new Storage();
-                builder = new Builder(storage);
-            }
-
             var numberOfThreadsRead = Settings.ThreadsRead != 0 ? Settings.ThreadsRead.ToString(CultureInfo.InvariantCulture) : "a recommended number of";
             var numberOfThreadsParse = Settings.ThreadsParse != 0 ? Settings.ThreadsParse.ToString(CultureInfo.InvariantCulture) : "a recommended number of";
             Trace.WriteLine(string.Format("Using {0} threads to process {1} files", numberOfThreadsRead, files.Count));
@@ -363,21 +339,27 @@ namespace WowPacketParser
             if (Settings.ThreadsRead == 0) // Number of threads is automatically choosen by the Parallel library
                 files.AsParallel().SetCulture()
                     .ForAll(file =>
-                        ReadFile(file, storage, builder, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]"));
+                        ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]"));
             else
                 files.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.ThreadsRead)
-                    .ForAll(file => ReadFile(file, storage, builder, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]"));
+                    .ForAll(file => ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]"));
 
             if (Settings.StatsOutput.HasAnyFlag(StatsOutputFlags.Global))
             {
                 var span = DateTime.Now.Subtract(startTime);
                 Trace.WriteLine(string.Format("Parsed {0} packets from {1} files: {2:F3}% successfully, {3:F3}% with errors and skipped {4:F3}% in {5} Minutes, {6} Seconds and {7} Milliseconds using {8} threads",
-                    _globalStatsTotal, files.Count, (double)_globalStatsOk / _globalStatsTotal * 100,
-                    (double)_globalStatsError / _globalStatsTotal * 100, (double)_globalStatsSkip / _globalStatsTotal * 100,
+                    GlobalStatsTotal, files.Count, (double)GlobalStatsOk / GlobalStatsTotal * 100,
+                    (double)GlobalStatsError / GlobalStatsTotal * 100, (double)GlobalStatsSkip / GlobalStatsTotal * 100,
                     span.Minutes, span.Seconds, span.Milliseconds, numberOfThreadsParse));
             }
 
-            DumpSQLs("Dumping global sql", Settings.SQLFileName, builder, Settings.SQLOutput);
+            string sqlFileName;
+            if (String.IsNullOrWhiteSpace(Settings.SQLFileName))
+                sqlFileName = files.Aggregate(string.Empty, (current, file) => current + Path.GetFileNameWithoutExtension(file)) + ".sql";
+            else
+                sqlFileName = Settings.SQLFileName;
+
+            DumpSQLs("Dumping global sql", sqlFileName, Settings.SQLOutput);
 
             SQLConnector.Disconnect();
             SSHTunnel.Disconnect();

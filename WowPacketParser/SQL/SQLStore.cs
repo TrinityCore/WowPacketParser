@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace WowPacketParser.SQL
 {
@@ -32,13 +33,20 @@ namespace WowPacketParser.SQL
             _sqls.Add(sql);
         }
 
-        public void WriteToFile()
+        public bool WriteToFile()
         {
             if (_file == null)
-                return;
+                return false;
+
+            var empty = _sqls.All(String.IsNullOrWhiteSpace);
+
+            if (empty)
+                return false;
 
             foreach (var sql in _sqls)
                 _file.WriteLine(sql);
+
+            return true;
         }
 
         public void Dispose()

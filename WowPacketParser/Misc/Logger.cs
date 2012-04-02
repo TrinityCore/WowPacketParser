@@ -8,7 +8,7 @@ namespace WowPacketParser.Misc
 {
     public static class Logger
     {
-        private static readonly Dictionary<string, List<long>> _enumLogs =
+        private static readonly Dictionary<string, List<long>> EnumLogs =
             new Dictionary<string, List<long>>();
 
         public static void CheckForMissingValues<T>(long rawValue)
@@ -36,13 +36,13 @@ namespace WowPacketParser.Misc
 
         private static void AddEnumErrorLog(string key, long rawValue)
         {
-            var list = _enumLogs.ContainsKey(key) ? _enumLogs[key] : new List<long>();
+            var list = EnumLogs.ContainsKey(key) ? EnumLogs[key] : new List<long>();
 
             if (list.Contains(rawValue))
                 return;
 
             list.Add(rawValue);
-            _enumLogs.Add(key, list);
+            EnumLogs.Add(key, list);
         }
 
         public static void WriteErrors()
@@ -51,7 +51,7 @@ namespace WowPacketParser.Misc
                 return;
 
             Trace.WriteLine(Environment.NewLine);
-            foreach (var pair in _enumLogs)
+            foreach (var pair in EnumLogs)
             {
                 pair.Value.Sort();
 

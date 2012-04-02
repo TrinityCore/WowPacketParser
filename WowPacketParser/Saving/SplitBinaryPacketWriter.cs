@@ -14,16 +14,16 @@ namespace WowPacketParser.Saving
     public class FileLock<T>
     {
         private const int Timeout = 3000;
-        private static readonly Dictionary<T, References> _locks = new Dictionary<T, References>();
+        private static readonly Dictionary<T, References> Locks = new Dictionary<T, References>();
 
         public IDisposable Lock(T fileName)
         {
-            Monitor.Enter(_locks);
+            Monitor.Enter(Locks);
             References obj;
-            if (_locks.TryGetValue(fileName, out obj))
+            if (Locks.TryGetValue(fileName, out obj))
             {
                 obj.Addquire();
-                Monitor.Exit(_locks);
+                Monitor.Exit(Locks);
                 if (!Monitor.TryEnter(obj, Timeout))
                     throw new TimeoutException(String.Format("{0}", fileName));
             }
@@ -31,8 +31,8 @@ namespace WowPacketParser.Saving
             {
                 obj = new References();
                 Monitor.Enter(obj);
-                _locks.Add(fileName, obj);
-                Monitor.Exit(_locks);
+                Locks.Add(fileName, obj);
+                Monitor.Exit(Locks);
             }
 
             return new Locker<T>(fileName);
@@ -40,14 +40,14 @@ namespace WowPacketParser.Saving
 
         private static void Unlock(T fileName)
         {
-            lock (_locks)
+            lock (Locks)
             {
                 References obj;
-                if (_locks.TryGetValue(fileName, out obj))
+                if (Locks.TryGetValue(fileName, out obj))
                 {
                     Monitor.Exit(obj);
                     if (0 == obj.Release())
-                        _locks.Remove(fileName);
+                        Locks.Remove(fileName);
                 }
             }
         }

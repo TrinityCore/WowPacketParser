@@ -63,7 +63,7 @@ namespace WowPacketParser.Loading
             return _reader.Read();
         }
 
-        public Packet Read(int number, SniffFileInfo fileInfo)
+        public Packet Read(int number, string fileName)
         {
             var opcode = _reader.GetInt32(0);
             var time = _reader.GetDateTime(1);
@@ -75,7 +75,7 @@ namespace WowPacketParser.Loading
 
             var data = (byte[])blob;
 
-            using (var packet = new Packet(data, opcode, time, direction, number, fileInfo))
+            using (var packet = new Packet(data, opcode, time, direction, number, fileName))
                 return packet;
         }
 

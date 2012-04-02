@@ -12,21 +12,14 @@ using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Store.SQL
 {
-    public class Builder
+    public static class Builder
     {
-        public Builder(Storage storage)
+        public static string CreatureSpawns()
         {
-            _storage = storage;
-        }
-
-        private readonly Storage _storage;
-
-        public string CreatureSpawns()
-        {
-            if (!_storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet))
+            if (Storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet))
                 return string.Empty;
 
-            var units = _storage.Objects.Where(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet);
+            var units = Storage.Objects.Where(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet);
 
             const string tableName = "creature";
             uint count = 0;
@@ -84,12 +77,12 @@ namespace WowPacketParser.Store.SQL
             return result.ToString();
         }
 
-        public string CreatureEquip()
+        public static string CreatureEquip()
         {
-            if (!_storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet))
+            if (!Storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet))
                 return string.Empty;
 
-            var units = _storage.Objects.Where(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet);
+            var units = Storage.Objects.Where(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet);
 
             const string tableName = "creature_equip_template";
 
@@ -115,12 +108,12 @@ namespace WowPacketParser.Store.SQL
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
-        public string CreatureMovement()
+        public static string CreatureMovement()
         {
-            if (!_storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet))
+            if (!Storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet))
                 return string.Empty;
 
-            var units = _storage.Objects.Where(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet);
+            var units = Storage.Objects.Where(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet);
 
             const string tableName = "creature_movement";
 
@@ -152,20 +145,20 @@ namespace WowPacketParser.Store.SQL
             return new QueryBuilder.SQLInsert(tableName, rows, ignore: true, withDelete: false).Build();
         }
 
-        public string SniffData()
+        public static string SniffData()
         {
-            if (_storage.SniffData.IsEmpty)
+            if (Storage.SniffData.IsEmpty)
                 return string.Empty;
 
             const string tableName = "SniffData";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var data in _storage.SniffData)
+            foreach (var data in Storage.SniffData)
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
-                row.AddValue("Build",      data.FileInfo.Build);
-                row.AddValue("SniffName",  (Path.GetFileName(data.FileInfo.FileName)));
+                row.AddValue("Build",      ClientVersion.Build);
+                row.AddValue("SniffName",  data.FileName);
                 row.AddValue("TimeStamp",  data.TimeStamp);
                 row.AddValue("ObjectType", data.ObjectType.ToString());
                 row.AddValue("Id",         data.Id);
@@ -181,15 +174,15 @@ namespace WowPacketParser.Store.SQL
             return new QueryBuilder.SQLInsert(tableName, rows, ignore: true, withDelete: false).Build();
         }
 
-        public string QuestTemplate()
+        public static string QuestTemplate()
         {
-            if (_storage.QuestTemplates.IsEmpty)
+            if (Storage.QuestTemplates.IsEmpty)
                 return string.Empty;
 
             const string tableName = "quest_template";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var quest in _storage.QuestTemplates)
+            foreach (var quest in Storage.QuestTemplates)
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
@@ -307,15 +300,15 @@ namespace WowPacketParser.Store.SQL
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
-        public string NpcTrainer()
+        public static string NpcTrainer()
         {
-            if (_storage.NpcTrainers.IsEmpty)
+            if (Storage.NpcTrainers.IsEmpty)
                 return string.Empty;
 
             const string tableName = "npc_trainer";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var npcTrainer in _storage.NpcTrainers)
+            foreach (var npcTrainer in Storage.NpcTrainers)
             {
                 var comment = new QueryBuilder.SQLInsertRow();
                 comment.HeaderComment = StoreGetters.GetName(StoreNameType.Unit, (int) npcTrainer.Key, false);
@@ -337,15 +330,15 @@ namespace WowPacketParser.Store.SQL
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
-        public string NpcVendor()
+        public static string NpcVendor()
         {
-            if (_storage.NpcVendors.IsEmpty)
+            if (Storage.NpcVendors.IsEmpty)
                 return string.Empty;
 
             const string tableName = "npc_vendor";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var npcVendor in _storage.NpcVendors)
+            foreach (var npcVendor in Storage.NpcVendors)
             {
                 var comment = new QueryBuilder.SQLInsertRow();
                 comment.HeaderComment = StoreGetters.GetName(StoreNameType.Unit, (int)npcVendor.Key);
@@ -366,16 +359,16 @@ namespace WowPacketParser.Store.SQL
             return new QueryBuilder.SQLInsert(tableName, rows, 2).Build();
         }
 
-        public string NpcTemplate()
+        public static string NpcTemplate()
         {
-            if (_storage.UnitTemplates.IsEmpty)
+            if (Storage.UnitTemplates.IsEmpty)
                 return string.Empty;
 
             // Not TDB structure
             const string tableName = "creature_template";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var unitTemplate in _storage.UnitTemplates)
+            foreach (var unitTemplate in Storage.UnitTemplates)
             {
                 var row = new QueryBuilder.SQLInsertRow();
                 var template = unitTemplate.Value;
@@ -414,12 +407,12 @@ namespace WowPacketParser.Store.SQL
         }
 
         // Non-WDB data but nevertheless data that should be saved to creature_template
-        public string NpcTemplateNonWDB()
+        public static string NpcTemplateNonWDB()
         {
-            if (!_storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet))
+            if (!Storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet))
                 return string.Empty;
 
-            var units = _storage.Objects.Where(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet);
+            var units = Storage.Objects.Where(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet);
 
             const string tableName = "creature_template";
 
@@ -481,16 +474,16 @@ namespace WowPacketParser.Store.SQL
             return new QueryBuilder.SQLUpdate(rows).Build();
         }
 
-        public string GameObjectTemplate()
+        public static string GameObjectTemplate()
         {
-            if (_storage.GameObjectTemplates.IsEmpty)
+            if (Storage.GameObjectTemplates.IsEmpty)
                 return string.Empty;
 
             // Not TDB structure
             const string tableName = "gameobject_template";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var goTemplate in _storage.GameObjectTemplates)
+            foreach (var goTemplate in Storage.GameObjectTemplates)
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
@@ -518,12 +511,12 @@ namespace WowPacketParser.Store.SQL
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
-        public string GameObjectSpawns()
+        public static string GameObjectSpawns()
         {
-            if (!_storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.GameObject))
+            if (!Storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.GameObject))
                 return string.Empty;
 
-            var gameobjects = _storage.Objects.Where(x => x.Value.Type == ObjectType.GameObject);
+            var gameobjects = Storage.Objects.Where(x => x.Value.Type == ObjectType.GameObject);
 
             const string tableName = "gameobject";
             uint count = 0;
@@ -594,15 +587,15 @@ namespace WowPacketParser.Store.SQL
             return result.ToString();
         }
 
-        public string PageText()
+        public static string PageText()
         {
-            if (_storage.PageTexts.IsEmpty)
+            if (Storage.PageTexts.IsEmpty)
                 return string.Empty;
 
             const string tableName = "page_Text";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var pageText in _storage.PageTexts)
+            foreach (var pageText in Storage.PageTexts)
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
@@ -616,16 +609,16 @@ namespace WowPacketParser.Store.SQL
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
-        public string NpcText()
+        public static string NpcText()
         {
-            if (_storage.NpcTexts.IsEmpty)
+            if (Storage.NpcTexts.IsEmpty)
                 return string.Empty;
 
             // Not TDB structure
             const string tableName = "npc_text";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var npcText in _storage.NpcTexts)
+            foreach (var npcText in Storage.NpcTexts)
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
@@ -657,9 +650,9 @@ namespace WowPacketParser.Store.SQL
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
-        public string Gossip()
+        public static string Gossip()
         {
-            if (_storage.Gossips.IsEmpty)
+            if (Storage.Gossips.IsEmpty)
                 return string.Empty;
 
             const string tableName1 = "gossip_menu";
@@ -669,7 +662,7 @@ namespace WowPacketParser.Store.SQL
 
             // `gossip`
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var gossip in _storage.Gossips)
+            foreach (var gossip in Storage.Gossips)
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
@@ -686,7 +679,7 @@ namespace WowPacketParser.Store.SQL
             // `gossip_menu_option`
             rows = new List<QueryBuilder.SQLInsertRow>();
             ICollection<Tuple<uint, uint>> keys = new Collection<Tuple<uint, uint>>();
-            foreach (var gossip in _storage.Gossips)
+            foreach (var gossip in Storage.Gossips)
             {
                 if (gossip.Value.GossipOptions != null) // Needed?
                     foreach (var gossipOption in gossip.Value.GossipOptions)
@@ -712,16 +705,16 @@ namespace WowPacketParser.Store.SQL
             return result;
         }
 
-        public string QuestPOI()
+        public static string QuestPOI()
         {
-            if (_storage.QuestPOIs.IsEmpty)
+            if (Storage.QuestPOIs.IsEmpty)
                 return string.Empty;
 
             const string tableName1 = "quest_poi";
             const string tableName2 = "quest_poi_points";
 
             // Trying something..
-            var orderedDict = _storage.QuestPOIs.OrderBy(key => key.Key.Item1);
+            var orderedDict = Storage.QuestPOIs.OrderBy(key => key.Key.Item1);
 
             // `quest_poi`
             var rows = new List<QueryBuilder.SQLInsertRow>();
@@ -769,20 +762,20 @@ namespace WowPacketParser.Store.SQL
             return result;
         }
 
-        public string Loot()
+        public static string Loot()
         {
-            if (_storage.Loots.IsEmpty)
+            if (Storage.Loots.IsEmpty)
                 return string.Empty;
 
             // Not TDB structure
             const string tableName = "LootTemplate";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var loot in _storage.Loots)
+            foreach (var loot in Storage.Loots)
             {
                 var comment = new QueryBuilder.SQLInsertRow();
                 comment.HeaderComment =
-                    StoreGetters.GetName(Utilities.ObjectTypeToStore(_storage.Loots.Keys.First().Item2), (int) loot.Key.Item1, false) +
+                    StoreGetters.GetName(Utilities.ObjectTypeToStore(Storage.Loots.Keys.First().Item2), (int) loot.Key.Item1, false) +
                                         " (" + loot.Value.Gold + " gold)";
                 rows.Add(comment);
                 foreach (var lootItem in loot.Value.LootItems)
@@ -801,14 +794,14 @@ namespace WowPacketParser.Store.SQL
             return new QueryBuilder.SQLInsert(tableName, rows, 2).Build();
         }
 
-        public string StartInformation()
+        public static string StartInformation()
         {
             var result = string.Empty;
 
-            if (!_storage.StartActions.IsEmpty)
+            if (!Storage.StartActions.IsEmpty)
             {
                 var rows = new List<QueryBuilder.SQLInsertRow>();
-                foreach (var startActions in _storage.StartActions)
+                foreach (var startActions in Storage.StartActions)
                 {
                     var comment = new QueryBuilder.SQLInsertRow();
                     comment.HeaderComment = startActions.Key.Item1 + " - " + startActions.Key.Item2;
@@ -835,10 +828,10 @@ namespace WowPacketParser.Store.SQL
                 result = new QueryBuilder.SQLInsert("playercreateinfo_action", rows, 2).Build();
             }
 
-            if (!_storage.StartPositions.IsEmpty)
+            if (!Storage.StartPositions.IsEmpty)
             {
                 var rows = new List<QueryBuilder.SQLInsertRow>();
-                foreach (var startPosition in _storage.StartPositions)
+                foreach (var startPosition in Storage.StartPositions)
                 {
                     var comment = new QueryBuilder.SQLInsertRow();
                     comment.HeaderComment = startPosition.Key.Item1 + " - " + startPosition.Key.Item2;
@@ -863,10 +856,10 @@ namespace WowPacketParser.Store.SQL
                 result += new QueryBuilder.SQLInsert("playercreateinfo", rows, 2).Build();
             }
 
-            if (!_storage.StartSpells.IsEmpty)
+            if (!Storage.StartSpells.IsEmpty)
             {
                 var rows = new List<QueryBuilder.SQLInsertRow>();
-                foreach (var startSpells in _storage.StartSpells)
+                foreach (var startSpells in Storage.StartSpells)
                 {
                     var comment = new QueryBuilder.SQLInsertRow();
                     comment.HeaderComment = startSpells.Key.Item1 + " - " + startSpells.Key.Item2;
@@ -891,15 +884,15 @@ namespace WowPacketParser.Store.SQL
             return result;
         }
 
-        public string ObjectNames()
+        public static string ObjectNames()
         {
-            if (_storage.ObjectNames.IsEmpty)
+            if (Storage.ObjectNames.IsEmpty)
                 return string.Empty;
 
             const string tableName = "ObjectNames";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var data in _storage.ObjectNames)
+            foreach (var data in Storage.ObjectNames)
             {
                 var row = new QueryBuilder.SQLInsertRow();
 

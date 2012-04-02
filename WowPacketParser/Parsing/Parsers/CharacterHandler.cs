@@ -165,11 +165,11 @@ namespace WowPacketParser.Parsing.Parsers
                 if (firstLogin)
                 {
                     var startPos = new StartPosition {Map = mapId, Position = pos, Zone = zone};
-                    packet.SniffFileInfo.Storage.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
+                    Storage.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
                 }
 
                 var playerInfo = new Player {Race = race, Class = clss, Name = name, FirstLogin = firstLogin, Level = level};
-                packet.SniffFileInfo.Storage.Objects.AddOrUpdate(guid, playerInfo);
+                Storage.Objects.AddOrUpdate(guid, playerInfo);
             }
         }
 
@@ -293,11 +293,11 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     var startPos = new StartPosition {Map = mapId, Position = pos, Zone = zone};
 
-                    packet.SniffFileInfo.Storage.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
+                    Storage.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
                 }
 
                 var playerInfo = new Player { Race = race, Class = clss, Name = name, FirstLogin = firstLogin, Level = level };
-                packet.SniffFileInfo.Storage.Objects.AddOrUpdate(playerGuid, playerInfo);
+                Storage.Objects.AddOrUpdate(playerGuid, playerInfo);
             }
         }
 
@@ -430,11 +430,11 @@ namespace WowPacketParser.Parsing.Parsers
                     startPos.Position = new Vector3(x, y, z);
                     startPos.Zone = zone;
 
-                    packet.SniffFileInfo.Storage.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
+                    Storage.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
                 }
 
                 var playerInfo = new Player{Race = race, Class = clss, Name = name, FirstLogin = firstLogins[c], Level = level};
-                packet.SniffFileInfo.Storage.Objects.AddOrUpdate(playerGuid, playerInfo);
+                Storage.Objects.AddOrUpdate(playerGuid, playerInfo);
             }
 
             for (var c = 0; c < unkCounter; c++)

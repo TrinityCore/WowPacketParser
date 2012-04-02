@@ -1,6 +1,7 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
 
@@ -53,14 +54,14 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.GameObject, entry.Key, "QUERY_RESPONSE");
 
-            packet.SniffFileInfo.Storage.GameObjectTemplates.TryAdd((uint) entry.Key, gameObject);
+            Storage.GameObjectTemplates.TryAdd((uint) entry.Key, gameObject);
 
             var objectName = new ObjectName
             {
                 ObjectType = ObjectType.GameObject,
                 Name = gameObject.Name,
             };
-            packet.SniffFileInfo.Storage.ObjectNames.TryAdd((uint)entry.Key, objectName);
+            Storage.ObjectNames.TryAdd((uint)entry.Key, objectName);
         }
 
         [Parser(Opcode.SMSG_DESTRUCTIBLE_BUILDING_DAMAGE)]
