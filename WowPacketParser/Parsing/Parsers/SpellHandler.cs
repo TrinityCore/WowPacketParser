@@ -347,13 +347,13 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     if (flags.HasAnyFlag(CastFlag.Immunity))
                     {
-                        packet.ReadInt32("SchoolMask");
-                        packet.ReadInt32("Unk Flag");
+                        packet.ReadInt32("CastSchoolImmunities");
+                        packet.ReadInt32("CastImmunities");
                     }
 
-                    if (flags.HasAnyFlag(CastFlag.Unknown26))
+                    if (flags.HasAnyFlag(CastFlag.HealPrediction))
                     {
-                        packet.ReadInt32("Unk int32");
+                        packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Predicted Spell ID");
 
                         if (packet.ReadByte("Unk Byte") == 2)
                             packet.ReadPackedGuid("Unk Guid");
@@ -542,23 +542,23 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333))
                 return;
 
-            var unkbool = packet.ReadBoolean("Unk");
+            var unkbool = packet.ReadBoolean("Unk"); // has castflag Immunity
 
             if (unkbool)
             {
-                packet.ReadUInt32("Unk");
-                packet.ReadUInt32("Unk");
+                packet.ReadUInt32("CastSchoolImmunities");
+                packet.ReadUInt32("CastImmunities");
             }
 
-            var unkbool2 = packet.ReadBoolean("Unk");
+            var unkbool2 = packet.ReadBoolean("Unk");   // has castflag HealPrediction
 
             if (unkbool2)
             {
-                packet.ReadPackedGuid("GUID");
+                packet.ReadPackedGuid("Target GUID");
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
                 var unkbyte = packet.ReadByte("Unk");
                 if (unkbyte == 2)
-                    packet.ReadPackedGuid("GUID");
+                    packet.ReadPackedGuid("Unk GUID");
             }
         }
 

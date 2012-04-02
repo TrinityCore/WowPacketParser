@@ -195,7 +195,7 @@ namespace WowPacketParser.Enums.Version//.V4_1_0_13914
             {Opcode.SMSG_PETITION_QUERY_RESPONSE, 0x0CA2C}, // 4.1.0 13914
             {Opcode.SMSG_PET_CAST_FAILED, 0x0CA3E}, // 4.1.0 13914
             {Opcode.SMSG_NOTIFICATION, 0x0CA7C}, // 4.1.0 13914
-            {Opcode.SMSG_GAMEOBJECT_SPAWN_ANIM_OBSOLETE, 0x0CA7D}, // 4.1.0 13914
+            {Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT, 0x0CA7D}, // 4.1.0 13914
             {Opcode.SMSG_BINDER_CONFIRM, 0x0CB6C}, // 4.1.0 13914
             {Opcode.SMSG_CONTACT_LIST, 0x0CC2D}, // 4.1.0 13914
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x0CC6C}, // 4.1.0 13914

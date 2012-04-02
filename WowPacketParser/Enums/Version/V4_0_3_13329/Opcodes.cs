@@ -506,7 +506,7 @@ namespace WowPacketParser.Enums.Version//.V4_0_3_13329
             {Opcode.CMSG_GMTICKET_GETTICKET, 0x0211}, // NF()(0x0211) //
             {Opcode.SMSG_GMTICKET_GETTICKET, 0xF47F}, // (0x6A7C)(0x0212) //
             {Opcode.CMSG_UNLEARN_TALENTS, 0x0213}, // NF()(0x0213) //
-            {Opcode.SMSG_GAMEOBJECT_SPAWN_ANIM_OBSOLETE, 0xFFC9}, // NF(0xC08D)(0x0214) //
+            {Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT, 0xFFC9}, // NF(0xC08D)(0x0214) //
             {Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM, 0x1E54}, // (0x62D4)(0x0215) //
             {Opcode.MSG_CORPSE_QUERY, 0x275E}, // (0xA3B1)(0x0216) //
             {Opcode.CMSG_GMTICKET_DELETETICKET, 0x0217}, // NF()(0x0217) //
