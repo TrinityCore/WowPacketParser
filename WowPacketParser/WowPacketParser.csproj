@@ -305,6 +305,12 @@
     <Compile Include="Misc\Filters.cs" />
     <Compile Include="Parsing\Parsers\CombatLogHandler.cs" />
     <Compile Include="Parsing\Parsers\TestHandler.cs" />
+    <Compile Include="SQL\Builders\Miscellaneous.cs" />
+    <Compile Include="SQL\Builders\QuestMisc.cs" />
+    <Compile Include="SQL\Builders\Spawns.cs" />
+    <Compile Include="SQL\Builders\UnitMisc.cs" />
+    <Compile Include="SQL\Builders\WDBTemplates.cs" />
+    <Compile Include="SQL\ISQLQuery.cs" />
     <Compile Include="Store\Objects\Aura.cs" />
     <Compile Include="Store\Objects\ObjectName.cs" />
     <Compile Include="Store\Objects\QuestPOI.cs" />
@@ -396,8 +402,8 @@
     <Compile Include="SQL\SQLUtil.cs" />
     <Compile Include="SQL\SQLConnector.cs" />
     <Compile Include="SQL\SQLStore.cs" />
-    <Compile Include="Store\SQL\Builder.cs" />
-    <Compile Include="Store\SQL\QueryBuilder.cs" />
+    <Compile Include="SQL\Builder.cs" />
+    <Compile Include="SQL\QueryBuilder.cs" />
     <Compile Include="Store\Storage.cs" />
     <Compile Include="Enums\BankSlotResult.cs" />
     <Compile Include="Enums\EmoteType.cs" />

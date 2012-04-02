@@ -2,7 +2,6 @@
 using System.Data.SQLite;
 using WowPacketParser.Misc;
 using WowPacketParser.Enums;
-using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Loading
 {

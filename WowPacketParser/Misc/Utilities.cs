@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Security;
 using WowPacketParser.Enums;
 
@@ -10,16 +11,16 @@ namespace WowPacketParser.Misc
 {
     public static class Utilities
     {
-        private static readonly DateTime _epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         public static DateTime GetDateTimeFromUnixTime(double unixTime)
         {
-            return _epoch.AddSeconds(unixTime);
+            return Epoch.AddSeconds(unixTime);
         }
 
         public static double GetUnixTimeFromDateTime(DateTime time)
         {
-            return (time - _epoch).TotalSeconds;
+            return (time - Epoch).TotalSeconds;
         }
 
         public static byte[] HexStringToBinary(string data)
@@ -35,7 +36,7 @@ namespace WowPacketParser.Misc
 
         public static string ByteArrayToHexString(byte[] data)
         {
-            var str = string.Empty;
+            var str = String.Empty;
             for (var i = 0; i < data.Length; ++i)
                 str += data[i].ToString("X2", CultureInfo.InvariantCulture);
 
@@ -107,6 +108,61 @@ namespace WowPacketParser.Misc
 
             Trace.WriteLine(String.Format("Memory GC: {0,5}{3}, Process: {1,5}{3} - {2}",
                 GC.GetTotalMemory(true) / bytes, process.PrivateMemorySize64 / bytes, prefix, bytesstr));
+        }
+
+        public static void SetUpListeners()
+        {
+            Trace.Listeners.Clear();
+
+            using (var consoleListener = new ConsoleTraceListener(true))
+                Trace.Listeners.Add(consoleListener);
+
+            if (Settings.ParsingLog)
+            {
+                using (var fileListener = new TextWriterTraceListener(String.Format("parsing_log_{0}.txt", Path.GetRandomFileName())))
+                {
+                    fileListener.Name = "ConsoleMirror";
+                    Trace.Listeners.Add(fileListener);
+                }
+            }
+
+            Trace.AutoFlush = true;
+        }
+
+        public static bool GetFiles(ref List<string> files)
+        {
+            if (files.Count == 1 && files[0].Contains('*'))
+            {
+                try
+                {
+                    files = Directory.GetFiles(@".\", files[0]).ToList();
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine(ex.GetType());
+                    Trace.WriteLine(ex.Message);
+                    Trace.WriteLine(ex.StackTrace);
+                    return false;
+                }
+            }
+
+            for (var i = 0; i < files.Count; ++i)
+            {
+                if (!File.Exists(files[i]))
+                {
+                    Trace.WriteLine("File " + files[i] + " was not found, removed.");
+                    files.RemoveAt(i);
+                    --i;
+                }
+            }
+
+            if (files.Count == 0)
+            {
+                Trace.WriteLine("No files specified.");
+                return false;
+            }
+
+            return true;
         }
     }
 }

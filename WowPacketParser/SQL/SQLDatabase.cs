@@ -24,7 +24,7 @@ namespace WowPacketParser.SQL
             StoreNameType.Player
         };
 
-        public static void GrabData()
+        public static void GrabNameData()
         {
             if (!SQLConnector.Connected())
                 throw new DataException("Cannot get DB data without an active DB connection.");

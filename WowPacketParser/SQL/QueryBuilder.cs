@@ -2,15 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using WowPacketParser.SQL;
 
-namespace WowPacketParser.Store.SQL
+namespace WowPacketParser.SQL
 {
-    interface ISQLQuery
-    {
-        string Build();
-    }
-
     static class QueryBuilder
     {
         public class SQLUpdate : ISQLQuery

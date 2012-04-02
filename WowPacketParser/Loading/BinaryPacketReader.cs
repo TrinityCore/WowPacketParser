@@ -3,7 +3,6 @@ using System.IO;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Loading
 {

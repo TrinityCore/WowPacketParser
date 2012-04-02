@@ -10,11 +10,11 @@ namespace WowPacketParser.SQL
     public static class SQLConnector
     {
         [ThreadStatic]
-        private static MySqlConnection _conn;
+        private static MySqlConnection Conn;
 
         public static bool Enabled = Settings.DBEnabled;
 
-        public static void Connect()
+        private static void Connect()
         {
             if (!Enabled)
             {
@@ -22,12 +22,12 @@ namespace WowPacketParser.SQL
                 return;
             }
 
-            Trace.WriteLine("Connecting to MySQL server: " + ConnectionString.Replace("Password=" + Settings.Password + ";", string.Empty)); // Do not print password
-            _conn = new MySqlConnection(ConnectionString);
+            Trace.WriteLine("Connecting to MySQL server: " + ConnectionString.Replace("Password=" + Settings.Password + ";", String.Empty)); // Do not print password
+            Conn = new MySqlConnection(ConnectionString);
 
             try
             {
-                _conn.Open();
+                Conn.Open();
             }
             catch(Exception e)
             {
@@ -37,14 +37,14 @@ namespace WowPacketParser.SQL
 
         public static bool Connected()
         {
-            return _conn.State == ConnectionState.Open;
+            return Conn.State == ConnectionState.Open;
         }
 
         public static void Disconnect()
         {
             Enabled = false;
-            if (_conn != null)
-                _conn.Close();
+            if (Conn != null)
+                Conn.Close();
         }
 
         [SuppressMessage("Microsoft.Security", "CA2100", Justification = "No user input.")]
@@ -52,7 +52,7 @@ namespace WowPacketParser.SQL
         {
             try
             {
-                using (var command = new MySqlCommand(input, _conn))
+                using (var command = new MySqlCommand(input, Conn))
                     return command.ExecuteReader();
             }
             catch (Exception e)
@@ -85,6 +85,39 @@ namespace WowPacketParser.SQL
                     server, portOrPipe, Settings.Port, Settings.Username, Settings.Password, Settings.Database,
                     Settings.CharacterSet, protocol);
             }
+        }
+
+        public static void ReadDB()
+        {
+            if (!Enabled) return;
+
+            // Enable SSH Tunnel
+            if (SSHTunnel.Enabled)
+            {
+                Trace.WriteLine("Enabling SSH Tunnel");
+                SSHTunnel.Connect();
+            }
+
+            var startTime = DateTime.Now;
+            Trace.WriteLine("Loading DB...");
+
+            try
+            {
+                Connect();
+                SQLDatabase.GrabNameData();
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.GetType());
+                Trace.WriteLine(ex.Message);
+                Trace.WriteLine(ex.StackTrace);
+                Enabled = false; // Something failed, disabling everything SQL related
+            }
+
+            var endTime = DateTime.Now;
+            var span = endTime.Subtract(startTime);
+            Trace.WriteLine(String.Format("Finished loading DB in {0}.", span.ToFormattedString()));
+            Trace.WriteLine(Environment.NewLine);
         }
     }
 }

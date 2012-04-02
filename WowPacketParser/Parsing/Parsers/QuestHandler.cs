@@ -26,7 +26,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Choice Item Display Id", i);
 
                 packet.ReadUInt32("Reward Item Count");
-                var effectiveRewardCount = 4;
+                const int effectiveRewardCount = 4;
 
                 for (var i = 0; i < effectiveRewardCount; i++)
                     packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Reward Item Id", i);
