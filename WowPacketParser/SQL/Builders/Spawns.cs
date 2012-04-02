@@ -1,29 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
-using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
+using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.SQL.Builders
 {
     public static class Spawns
     {
-        public static string Creature()
+        public static string Creature(Dictionary<Guid, Unit> units)
         {
-            if (Storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet))
-                return String.Empty;
-
-            var units = Storage.Objects.Where(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet);
+            if (units.Count == 0)
+                return string.Empty;
 
             const string tableName = "creature";
+
             uint count = 0;
-
-            units = units.OrderBy(unit => unit.Key.GetEntry());
-
             var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var unit in units)
             {
@@ -75,20 +71,16 @@ namespace WowPacketParser.SQL.Builders
             return result.ToString();
         }
 
-        public static string GameObject()
+        public static string GameObject(Dictionary<Guid, GameObject> gameObjects)
         {
-            if (!Storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.GameObject))
-                return String.Empty;
-
-            var gameobjects = Storage.Objects.Where(x => x.Value.Type == ObjectType.GameObject);
+            if (gameObjects.Count == 0)
+                return string.Empty;
 
             const string tableName = "gameobject";
+
             uint count = 0;
-
-            gameobjects = gameobjects.OrderBy(go => go.Key.GetEntry());
-
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var gameobject in gameobjects)
+            foreach (var gameobject in gameObjects)
             {
                 var row = new QueryBuilder.SQLInsertRow();
 

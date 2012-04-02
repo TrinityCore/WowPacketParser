@@ -6,6 +6,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.SQL.Builders
 {
@@ -70,12 +71,10 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows, 2).Build();
         }
 
-        public static string CreatureEquip()
+        public static string CreatureEquip(Dictionary<Guid, Unit> units)
         {
-            if (!Storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet))
-                return String.Empty;
-
-            var units = Storage.Objects.Where(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet);
+            if (units.Count == 0)
+                return string.Empty;
 
             const string tableName = "creature_equip_template";
 
@@ -83,7 +82,7 @@ namespace WowPacketParser.SQL.Builders
             foreach (var unit in units)
             {
                 var row = new QueryBuilder.SQLInsertRow();
-                var creature = (Unit)unit.Value;
+                var creature = unit.Value;
                 var equipData = creature.Equipment;
 
                 // check if fields are empty
@@ -101,12 +100,10 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
-        public static string CreatureMovement()
+        public static string CreatureMovement(Dictionary<Guid, Unit> units)
         {
-            if (!Storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet))
-                return String.Empty;
-
-            var units = Storage.Objects.Where(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet);
+            if (units.Count == 0)
+                return string.Empty;
 
             const string tableName = "creature_movement";
 
@@ -115,7 +112,7 @@ namespace WowPacketParser.SQL.Builders
             {
                 var row = new QueryBuilder.SQLInsertRow();
 
-                var npc = (Unit)unit.Value;
+                var npc = unit.Value;
                 npc.LoadValuesFromUpdateFields();
 
                 row.AddValue("Id", unit.Key.GetEntry());
@@ -227,12 +224,10 @@ namespace WowPacketParser.SQL.Builders
 
         // Non-WDB data but nevertheless data that should be saved to creature_template
 
-        public static string NpcTemplateNonWDB()
+        public static string NpcTemplateNonWDB(Dictionary<Guid, Unit> units)
         {
-            if (!Storage.Objects.Any(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet))
-                return String.Empty;
-
-            var units = Storage.Objects.Where(wowObject => wowObject.Value.Type == ObjectType.Unit && wowObject.Key.GetHighType() != HighGuidType.Pet);
+            if (units.Count == 0)
+                return string.Empty;
 
             const string tableName = "creature_template";
 
@@ -246,7 +241,7 @@ namespace WowPacketParser.SQL.Builders
                     continue;
 
                 var row = new QueryBuilder.SQLUpdateRow();
-                var npc = (Unit)unit.Value;
+                var npc = unit.Value;
                 npc.LoadValuesFromUpdateFields();
 
                 var name = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
