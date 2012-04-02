@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -120,7 +121,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        public static Aura ReadAuraUpdateBlock(ref Packet packet)
+        private static Aura ReadAuraUpdateBlock(ref Packet packet)
         {
             var aura = new Aura();
 
@@ -172,14 +173,31 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_AURA_UPDATE)]
         public static void HandleAuraUpdate(Packet packet)
         {
-            packet.ReadPackedGuid("GUID");
+            var guid = packet.ReadPackedGuid("GUID");
 
-            /*Aura aura = null; */
+            var auras = new List<Aura>();
             while (packet.CanRead())
             {
-                /*aura =*/
-                ReadAuraUpdateBlock(ref packet);
-                // TODO: Add this aura to a list of objects (searching by guid)
+                var aura = ReadAuraUpdateBlock(ref packet);
+                auras.Add(aura);
+            }
+
+            // This only works if the parser saw UPDATE_OBJECT before this packet
+            if (Storage.Objects.ContainsKey(guid))
+            {
+                var unit = Storage.Objects[guid] as Unit;
+                if (unit != null)
+                {
+                    // If this is the first packet that sends auras
+                    // (hopefully at spawn time) add it to the "Auras" field,
+                    // if not create another row of auras in AddedAuras
+                    // (similar to ChangedUpdateFields)
+
+                    if (unit.Auras == null)
+                        unit.Auras = auras;
+                    else
+                        unit.AddedAuras.Add(auras);
+                }
             }
         }
 

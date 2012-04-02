@@ -12,6 +12,52 @@ namespace WowPacketParser.SQL.Builders
 {
     public static class UnitMisc
     {
+        public static string Addon(Dictionary<Guid, Unit> units)
+        {
+            if (units.Count == 0)
+                return string.Empty;
+
+            const string tableName = "creature_template_addon";
+
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var unit in units)
+            {
+                var npc = unit.Value;
+                npc.LoadValuesFromUpdateFields();
+
+                var row = new QueryBuilder.SQLInsertRow();
+                row.AddValue("entry", unit.Key.GetEntry());
+                row.AddValue("mount", npc.Mount);
+                row.AddValue("bytes1", npc.Bytes1, true);
+                row.AddValue("bytes1", npc.Bytes2, true);
+
+                var auras = string.Empty;
+                var commentAuras = string.Empty;
+                if (npc.Auras != null && npc.Auras.Count() != 0)
+                {
+                    foreach (var aura in npc.Auras)
+                    {
+                        if (aura.CasterGuid.Full == 0) // usually "template auras" do not have caster
+                        {
+                            auras += aura.SpellId + " ";
+                            commentAuras += StoreGetters.GetName(StoreNameType.Spell, (int) aura.SpellId, false) + ", ";
+                        }
+                    }
+                    auras = auras.TrimEnd(' ');
+                    commentAuras = commentAuras.TrimEnd(',', ' ');
+                }
+                row.AddValue("auras", auras);
+
+                row.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
+                if (!String.IsNullOrWhiteSpace(auras))
+                    row.Comment += " - " + commentAuras;
+
+                rows.Add(row);
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows).Build();
+        }
+
         public static string NpcTrainer()
         {
             if (Storage.NpcTrainers.IsEmpty)
@@ -118,10 +164,10 @@ namespace WowPacketParser.SQL.Builders
                 row.AddValue("Id", unit.Key.GetEntry());
                 row.AddValue("MovementFlags", npc.Movement.Flags, true);
                 row.AddValue("MovementFlagsExtra", npc.Movement.FlagsExtra, true);
-                row.AddValue("ufBytes1", npc.Bytes1, isFlag: true, nullIsZero: true);
-                row.AddValue("ufBytes2", npc.Bytes2, isFlag: true, nullIsZero: true);
-                row.AddValue("ufFlags", npc.UnitFlags, isFlag: true, nullIsZero: true);
-                row.AddValue("ufFlags2", npc.UnitFlags2, isFlag: true, nullIsZero: true);
+                row.AddValue("ufBytes1", npc.Bytes1, true);
+                row.AddValue("ufBytes2", npc.Bytes2, true);
+                row.AddValue("ufFlags", npc.UnitFlags, true);
+                row.AddValue("ufFlags2", npc.UnitFlags2, true);
 
                 row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
                 /*

@@ -8,7 +8,9 @@ namespace WowPacketParser.Store.Objects
 {
     public sealed class Unit : WoWObject
     {
-        public ICollection<Aura> Auras;
+        public List<Aura> Auras;
+
+        public List<List<Aura>> AddedAuras;
 
         public override bool IsTemporarySpawn()
         {
@@ -126,7 +128,8 @@ namespace WowPacketParser.Store.Objects
             UpdateField uf;
             if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(updateField), out uf))
             {
-                if (typeof(TK) == typeof(int?) || typeof(TK) == typeof(int))
+                if (typeof(TK) == typeof(int?) || typeof(TK) == typeof(int) ||
+                    typeof(TK) == typeof(uint?) || typeof(TK) == typeof(uint))
                     return (TK) (object) uf.UInt32Value;
                 if (typeof (TK) == typeof (float?) || typeof (TK) == typeof (double?) ||
                     typeof(TK) == typeof(float) || typeof(TK) == typeof(double))
