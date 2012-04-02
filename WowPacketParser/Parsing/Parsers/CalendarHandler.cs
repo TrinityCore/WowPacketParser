@@ -76,7 +76,7 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var j = 0; j < 10; j++)
                     packet.ReadInt32("Duration", i, j);
                 for (var j = 0; j < 10; j++)
-                    packet.ReadInt32("Calendar Flags", i, j);
+                    packet.ReadEnum<CalendarFlag>("Calendar Flags", TypeCode.Int32, i, j);
                 packet.ReadCString("Holiday Name", i);
             }
         }
@@ -96,7 +96,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Title");
             packet.ReadCString("Description");
             packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Byte);
-            packet.ReadBoolean("Repeatable");
+            packet.ReadEnum<CalendarRepeatType>("Repeat Type", TypeCode.Byte);
             packet.ReadInt32("Max Invites");
             packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
             packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
@@ -152,7 +152,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Title");
             packet.ReadCString("Description");
             packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Byte);
-            packet.ReadBoolean("Repeatable");
+            packet.ReadEnum<CalendarRepeatType>("Repeat Type", TypeCode.Byte);
             packet.ReadInt32("Max Invites");
             packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
             packet.ReadPackedTime("Event Time");
@@ -160,7 +160,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var flags = packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
 
-            if ((flags & CalendarFlag.WithoutInvites) != 0)
+            if ((flags & CalendarFlag.GuildAnnouncement) != 0)
                 return;
 
             var count = packet.ReadInt32("Invite Count");
@@ -181,7 +181,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Title");
             packet.ReadCString("Description");
             packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Byte);
-            packet.ReadBoolean("Repeatable");
+            packet.ReadEnum<CalendarRepeatType>("Repeat Type", TypeCode.Byte);
             packet.ReadInt32("Max Invites");
             packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
             packet.ReadPackedTime("Event Time");
@@ -222,14 +222,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt64("Event ID");
             packet.ReadInt64("Invite ID");
             packet.ReadByte("Player Level");
-            packet.ReadEnum<CalendarEventStatus>("Status?", TypeCode.Byte);
+            packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte);
 
-            var unk3 = packet.ReadBoolean("Confirmed?");
+            if (packet.ReadBoolean("Has Confirm Time"))
+                packet.ReadPackedTime("Confirm Time");
 
-            if (unk3)
-                packet.ReadPackedTime("Confirm Time?");
-
-            packet.ReadByte("Event Pending?");
+            packet.ReadBoolean("Guild Event");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_EVENT_INVITE_NOTES)]
@@ -282,7 +280,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("Invitee GUID");
             packet.ReadInt64("Event ID");
-            packet.ReadInt64("Inviteee ID");
+            packet.ReadInt64("Invitee ID");
             packet.ReadInt64("Invite ID");
             packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Int32);
         }
@@ -384,7 +382,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
             packet.ReadCString("Title");
             packet.ReadCString("Description");
-            packet.ReadBoolean("Repeatable");
+            packet.ReadEnum<CalendarRepeatType>("Repeat Type", TypeCode.Byte);
             packet.ReadInt32("Max Invites");
             packet.ReadInt32("Unk int32 (UpdatedAlert)");
         }
