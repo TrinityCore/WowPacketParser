@@ -97,9 +97,9 @@ namespace WowPacketParser.SQL.Builders
             Dictionary<uint, Tuple<float, float, Gender>> modelsDb = null;
             if (SQLConnector.Enabled)
             {
-                Dictionary<uint, object> modelsDbTemp = SQLDatabase.GetDict<uint>(string.Format(
+                var modelsDbTemp = SQLDatabase.GetDict<uint>(string.Format(
                     "SELECT `modelid`, `bounding_radius`, `combat_reach`," +
-                    "`gender` FROM `world`.{0} WHERE `modelid` IN ({1});", tableName, models.Keys.ToList().Split()));
+                    "`gender` FROM `world`.{0} WHERE `modelid` IN ({1});", tableName, String.Join(",", models.Keys)));
 
                 modelsDb = new Dictionary<uint, Tuple<float, float, Gender>>();
 

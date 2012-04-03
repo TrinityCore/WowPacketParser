@@ -5,13 +5,26 @@ namespace WowPacketParser.SQL
 {
     public static class SQLUtil
     {
+        /// <summary>
+        /// Defines that values in insert queries should be spaced
+        /// </summary>
         public const string CommaSeparator = ", ";
 
+        /// <summary>
+        /// Adds back quotes to a string. For SQL table and field names.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static string AddBackQuotes(string str)
         {
             return "`" + str + "`";
         }
 
+        /// <summary>
+        /// Adds "straight" quotes to a string. For SQL text.
+        /// </summary>
+        /// <param name="str">String</param>
+        /// <returns>Modified string</returns>
         public static string AddQuotes(string str)
         {
             return "'" + str + "'";
@@ -20,6 +33,8 @@ namespace WowPacketParser.SQL
         /// <summary>
         /// Escapes a SQL string
         /// </summary>
+        /// <param name="str">String</param>
+        /// <returns>Modified string</returns>
         public static string EscapeString(string str)
         {
             str = str.Replace("'", "''");

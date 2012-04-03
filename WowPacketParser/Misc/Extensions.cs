@@ -10,11 +10,22 @@ namespace WowPacketParser.Misc
 {
     public static class Extensions
     {
+        /// <summary>
+        /// Convert bool to byte
+        /// </summary>
+        /// <param name="value">A boolean</param>
+        /// <returns>A byte</returns>
         public static byte ToByte(this bool value)
         {
             return (byte)(value ? 1 : 0);
         }
 
+        /// <summary>
+        /// Returns true if flag exists in value (&)
+        /// </summary>
+        /// <param name="value">An enum, int, ...</param>
+        /// <param name="flag">An enum, int, ...</param>
+        /// <returns>A boolean</returns>
         public static bool HasAnyFlag(this IConvertible value, IConvertible flag)
         {
             var uFlag = flag.ToUInt64(null);
@@ -140,6 +151,12 @@ namespace WowPacketParser.Misc
             packet.WriteLine(hexDump.ToString());
         }
 
+        /// <summary>
+        /// Define the culture of the thread as CultureInfo.InvariantCulture
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
         public static ParallelQuery<TSource> SetCulture<TSource>(this ParallelQuery<TSource> source)
         {
             SetCulture(CultureInfo.InvariantCulture);
@@ -157,27 +174,14 @@ namespace WowPacketParser.Misc
             Thread.CurrentThread.CurrentCulture = cultureInfo;
         }
 
+        /// <summary>
+        /// Converts a timespan in a string (hh:mm:ss.ms)
+        /// </summary>
+        /// <param name="span">A timespan</param>
+        /// <returns>A string</returns>
         public static string ToFormattedString(this TimeSpan span)
         {
             return string.Format("{0:00}:{1:00}:{2:00}.{3:000}", span.Hours, span.Minutes, span.Seconds, span.Milliseconds);
-        }
-
-        /// <summary>
-        /// Takes a list and splits it into "val1,val2,val3,..." 
-        /// </summary>
-        /// <param name="list">The list</param>
-        /// <returns></returns>
-        public static string Split(this IList list)
-        {
-            var result = new StringBuilder();
-            for (var i = 0; i < list.Count; i++)
-            {
-                result.Append(list[i]);
-                if (i + 1 != list.Count)
-                    result.Append(',');
-            }
-
-            return result.ToString();
         }
 
         /// <summary>
