@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
-using MySql.Data.MySqlClient;
 
 namespace WowPacketParser.SQL
 {
@@ -113,27 +111,6 @@ namespace WowPacketParser.SQL
                 value = Hexify((uint)value);
 
             return value;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="data">Query result</param>
-        /// <returns></returns>
-        public static Dictionary<T, object> ToDict<T>(this MySqlDataReader data)
-        {
-            //var pkType = data.GetFieldType(0);
-            var dict = new Dictionary<T, object>();
-
-            var objs = new object[20];
-            int quant = data.GetValues(objs);
-
-            for (int i = 0; i < quant; i++)
-            {
-                Console.WriteLine(objs[i]);
-            }
-
-            return dict;
         }
     }
 }

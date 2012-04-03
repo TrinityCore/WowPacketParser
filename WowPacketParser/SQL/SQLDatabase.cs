@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.SQL
 {
@@ -73,40 +73,6 @@ namespace WowPacketParser.SQL
                 }
 
                 return dict;
-            }
-        }
-
-        private static object ToTuple(this IList<object> col, int count)
-        {
-            // I feel stupid...
-            switch (count)
-            {
-                case 2:
-                    return Tuple.Create(col[1]);
-                case 3:
-                    return Tuple.Create(col[1], col[2]);
-                case 4:
-                    return Tuple.Create(col[1], col[2], col[3]);
-                case 5:
-                    return Tuple.Create(col[1], col[2], col[3], col[4]);
-                case 6:
-                    return Tuple.Create(col[1], col[2], col[3], col[4], col[5], col[6]);
-                case 8:
-                    return Tuple.Create(col[1], col[2], col[3], col[4], col[5], col[6], col[7]);
-                case 9:
-                    return Tuple.Create(col[1], col[2], col[3], col[4], col[5], col[6], col[7], col[7]);
-                case 10:
-                    return Tuple.Create(col[1], col[2], col[3], col[4], col[5], col[6], col[7], Tuple.Create(col[8]));
-                case 11:
-                    return Tuple.Create(col[1], col[2], col[3], col[4], col[5], col[6], col[7], Tuple.Create(col[8], col[9]));
-                case 12:
-                    return Tuple.Create(col[1], col[2], col[3], col[4], col[5], col[6], col[7], Tuple.Create(col[8], col[9], col[10]));
-                case 13:
-                    return Tuple.Create(col[1], col[2], col[3], col[4], col[5], col[6], col[7], Tuple.Create(col[8], col[9], col[10], col[11]));
-                case 14:
-                    return Tuple.Create(col[1], col[2], col[3], col[4], col[5], col[6], col[7], Tuple.Create(col[8], col[9], col[10], col[11], col[12]));
-                default:
-                    throw new ArgumentOutOfRangeException("count", count, "Can't convert array to tuple.");
             }
         }
     }
