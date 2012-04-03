@@ -66,7 +66,7 @@ namespace WowPacketParser.SQL.Builders
             const string tableName = "creature_model_info";
 
             // Build a dictionary with model data; model is the key
-            var models = new Dictionary<uint, Tuple<float, float, Gender>>();
+            var models = new SortedDictionary<uint, Tuple<float, float, Gender>>();
             foreach (var unit in units)
             {
                 var npc = unit.Value;
