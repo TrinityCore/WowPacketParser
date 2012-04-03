@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
+using System.Text;
+using MySql.Data.MySqlClient;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
@@ -94,21 +97,72 @@ namespace WowPacketParser.SQL.Builders
                 models.Add(model, Tuple.Create(boundingRadius, combatReach, gender));
             }
 
-            var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var model in models)
+            Dictionary<uint, Tuple<float, float, Gender>> modelsDb = null;
+            if (SQLConnector.Enabled)
             {
-                var row = new QueryBuilder.SQLInsertRow();
-                row.AddValue("entry", model.Key);
-                row.AddValue("bounding_radius", model.Value.Item1);
-                row.AddValue("combat_reach", model.Value.Item2);
-                row.AddValue("gender", model.Value.Item3);
+                Dictionary<uint, object> modelsDbTemp = SQLDatabase.GetDict<uint>(string.Format(
+                    "SELECT `modelid`, `bounding_radius`, `combat_reach`," +
+                    "`gender` FROM `world`.{0} WHERE `modelid` IN ({1});", tableName, models.Keys.ToList().Split()));
 
-                // row.Comment += StoreGetters.GetName(StoreNameType.Model, (int)model.Key, false);
+                modelsDb = new Dictionary<uint, Tuple<float, float, Gender>>();
 
-                rows.Add(row);
+                foreach (var ele in modelsDbTemp)
+                {
+                    var a = (Tuple<Object, Object, Object>)ele.Value;
+                    var b = Tuple.Create((float)a.Item1, (float)a.Item2, (Gender)Enum.Parse(typeof(Gender), a.Item3.ToString()));
+
+                    modelsDb.Add(ele.Key, b);
+                }
             }
 
-            return new QueryBuilder.SQLInsert(tableName, rows).Build();
+            var rowsUpd = new List<QueryBuilder.SQLUpdateRow>();
+            var rowsIns = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var model in models)
+            {
+                if (modelsDb != null && modelsDb.Count != 0)
+                {
+                    if (modelsDb.ContainsKey(model.Key)) // update
+                    {
+                        var row = new QueryBuilder.SQLUpdateRow();
+
+                        if (Math.Abs(modelsDb[model.Key].Item1 - model.Value.Item1) > 0.01)
+                            row.AddValue("bounding_radius", model.Value.Item1);
+
+                        if (Math.Abs(modelsDb[model.Key].Item2 - model.Value.Item2) > 0.01)
+                            row.AddValue("combat_reach", model.Value.Item2);
+
+                        if (modelsDb[model.Key].Item3 != model.Value.Item3)
+                            row.AddValue("gender", model.Value.Item3);
+
+                        row.AddWhere("entry", model.Key);
+                        row.Table = tableName;
+
+                        if (row.ValueCount != 0)
+                            rowsUpd.Add(row);
+                    }
+                    else // insert new
+                    {
+                        var row = new QueryBuilder.SQLInsertRow();
+                        row.AddValue("entry", model.Key);
+                        row.AddValue("bounding_radius", model.Value.Item1);
+                        row.AddValue("combat_reach", model.Value.Item2);
+                        row.AddValue("gender", model.Value.Item3);
+                        rowsIns.Add(row);
+                    }
+                }
+                else // no db values, simply do inserts
+                {
+                    var row = new QueryBuilder.SQLInsertRow();
+                    row.AddValue("entry", model.Key);
+                    row.AddValue("bounding_radius", model.Value.Item1);
+                    row.AddValue("combat_reach", model.Value.Item2);
+                    row.AddValue("gender", model.Value.Item3);
+                    rowsIns.Add(row);
+                }
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rowsIns).Build() +
+                   new QueryBuilder.SQLUpdate(rowsUpd).Build();
         }
 
         public static string NpcTrainer()

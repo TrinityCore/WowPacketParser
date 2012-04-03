@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -159,6 +160,24 @@ namespace WowPacketParser.Misc
         public static string ToFormattedString(this TimeSpan span)
         {
             return string.Format("{0:00}:{1:00}:{2:00}.{3:000}", span.Hours, span.Minutes, span.Seconds, span.Milliseconds);
+        }
+
+        /// <summary>
+        /// Takes a list and splits it into "val1,val2,val3,..." 
+        /// </summary>
+        /// <param name="list">The list</param>
+        /// <returns></returns>
+        public static string Split(this IList list)
+        {
+            var result = new StringBuilder();
+            for (var i = 0; i < list.Count; i++)
+            {
+                result.Append(list[i]);
+                if (i + 1 != list.Count)
+                    result.Append(',');
+            }
+
+            return result.ToString();
         }
     }
 }

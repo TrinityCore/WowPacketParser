@@ -60,6 +60,14 @@ namespace WowPacketParser.SQL
                 new List<KeyValuePair<string, uint>>();
 
             /// <summary>
+            /// Returns the amount of values
+            /// </summary>
+            public int ValueCount
+            {
+                get { return _values.Count; }
+            }
+
+            /// <summary>
             /// Adds a field-value pair to be updated
             /// </summary>
             /// <param name="field">The field name associated with the value</param>
