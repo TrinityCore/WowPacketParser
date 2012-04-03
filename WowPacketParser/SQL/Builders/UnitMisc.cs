@@ -29,7 +29,7 @@ namespace WowPacketParser.SQL.Builders
                 row.AddValue("entry", unit.Key.GetEntry());
                 row.AddValue("mount", npc.Mount);
                 row.AddValue("bytes1", npc.Bytes1, true);
-                row.AddValue("bytes1", npc.Bytes2, true);
+                row.AddValue("bytes2", npc.Bytes2, true);
 
                 var auras = string.Empty;
                 var commentAuras = string.Empty;
