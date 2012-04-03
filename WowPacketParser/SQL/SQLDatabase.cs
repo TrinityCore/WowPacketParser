@@ -52,14 +52,14 @@ namespace WowPacketParser.SQL
         }
 
         // Returns a dictionary from a DB query with any number of parameters
-        public static Dictionary<T, object> GetDict<T>(string query)
+        public static Dictionary<T, dynamic> GetDict<T>(string query)
         {
             using (var reader = SQLConnector.ExecuteQuery(query))
             {
                 if (reader == null)
                     return null;
 
-                var dict = new Dictionary<T, object>();
+                var dict = new Dictionary<T, dynamic>();
 
                 while (reader.Read())
                 {

@@ -76,6 +76,7 @@ namespace WowPacketParser.SQL.Builders
                     continue;
                 var model = (uint)npc.Model;
 
+                // Do not add duplicate models
                 if (models.ContainsKey(model))
                     continue;
 
@@ -94,22 +95,12 @@ namespace WowPacketParser.SQL.Builders
                 models.Add(model, Tuple.Create(boundingRadius, combatReach, gender));
             }
 
-            Dictionary<uint, Tuple<float, float, Gender>> modelsDb = null;
+            Dictionary<uint, dynamic> modelsDb = null;
             if (SQLConnector.Enabled)
             {
-                var modelsDbTemp = SQLDatabase.GetDict<uint>(string.Format(
+                modelsDb = SQLDatabase.GetDict<uint>(string.Format(
                     "SELECT `modelid`, `bounding_radius`, `combat_reach`," +
                     "`gender` FROM `world`.{0} WHERE `modelid` IN ({1});", tableName, String.Join(",", models.Keys)));
-
-                modelsDb = new Dictionary<uint, Tuple<float, float, Gender>>();
-
-                foreach (var ele in modelsDbTemp)
-                {
-                    var a = (Tuple<Object, Object, Object>)ele.Value;
-                    var b = Tuple.Create((float)a.Item1, (float)a.Item2, (Gender)Enum.Parse(typeof(Gender), a.Item3.ToString()));
-
-                    modelsDb.Add(ele.Key, b);
-                }
             }
 
             var rowsUpd = new List<QueryBuilder.SQLUpdateRow>();
@@ -128,7 +119,7 @@ namespace WowPacketParser.SQL.Builders
                         if (Math.Abs(modelsDb[model.Key].Item2 - model.Value.Item2) > 0.01)
                             row.AddValue("combat_reach", model.Value.Item2);
 
-                        if (modelsDb[model.Key].Item3 != model.Value.Item3)
+                        if (modelsDb[model.Key].Item3 != (int)model.Value.Item3)
                             row.AddValue("gender", model.Value.Item3);
 
                         row.AddWhere("entry", model.Key);
