@@ -84,7 +84,7 @@ namespace WowPacketParser.Saving
 
     public static class SplitBinaryPacketWriter
     {
-        private static readonly FileLock<string> _locks = new FileLock<string>();
+        private static readonly FileLock<string> Locks = new FileLock<string>();
         private const string Folder = "split"; // might want to move to config later
 
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "fileStream is disposed when writer is disposed.")]
@@ -97,7 +97,7 @@ namespace WowPacketParser.Saving
                 var fileName = Folder + "/" + Opcodes.GetOpcodeName(packet.Opcode) + "." + Settings.DumpFormat.ToString().ToLower();
                 try
                 {
-                    using (_locks.Lock(fileName))
+                    using (Locks.Lock(fileName))
                     {
                         var fileStream = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None);
                         using (var writer = new BinaryWriter(fileStream, encoding))

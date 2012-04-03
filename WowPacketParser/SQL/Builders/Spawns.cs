@@ -35,7 +35,7 @@ namespace WowPacketParser.SQL.Builders
                 var movementType = 0; // TODO: Find a way to check if our unit got random movement
                 var spawnDist = (movementType == 1) ? 5 : 0;
 
-                row.AddValue("guid", "@GUID+" + count, noQuotes: true);
+                row.AddValue("guid", "@CGUID+" + count, noQuotes: true);
                 row.AddValue("id", unit.Key.GetEntry());
                 row.AddValue("map", creature.Map);
                 row.AddValue("spawnMask", 1);
@@ -63,7 +63,7 @@ namespace WowPacketParser.SQL.Builders
 
             var result = new StringBuilder();
             // delete query for GUIDs
-            var delete = new QueryBuilder.SQLDelete(Tuple.Create("@GUID+0", "@GUID+" + count), "guid", tableName);
+            var delete = new QueryBuilder.SQLDelete(Tuple.Create("@CGUID+0", "@CGUID+" + --count), "guid", tableName);
             result.Append(delete.Build());
 
             var sql = new QueryBuilder.SQLInsert(tableName, rows, withDelete: false);
@@ -102,7 +102,7 @@ namespace WowPacketParser.SQL.Builders
 
                 var spawnTimeSecs = go.GetDefaultSpawnTime();
 
-                row.AddValue("guid", "@GUID+" + count, noQuotes: true);
+                row.AddValue("guid", "@OGUID+" + count, noQuotes: true);
                 row.AddValue("id", gameobject.Key.GetEntry());
                 row.AddValue("map", go.Map);
                 row.AddValue("spawnMask", 1);
@@ -135,7 +135,7 @@ namespace WowPacketParser.SQL.Builders
             var result = new StringBuilder();
 
             // delete query for GUIDs
-            var delete = new QueryBuilder.SQLDelete(Tuple.Create("@GUID+0", "@GUID+" + count), "guid", tableName);
+            var delete = new QueryBuilder.SQLDelete(Tuple.Create("@OGUID+0", "@OGUID+" + --count), "guid", tableName);
             result.Append(delete.Build());
 
             var sql = new QueryBuilder.SQLInsert(tableName, rows, withDelete: false);

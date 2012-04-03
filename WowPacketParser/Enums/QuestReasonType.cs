@@ -4,6 +4,7 @@ namespace WowPacketParser.Enums
     {
         DontHaveReq = 0,
         LowLevel = 1,
+        WrongClass = 5,
         WrongRace = 6,
         AlreadyDone = 7,
         OnlyOneTimed = 12,
