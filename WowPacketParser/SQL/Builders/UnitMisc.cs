@@ -37,7 +37,7 @@ namespace WowPacketParser.SQL.Builders
                 {
                     foreach (var aura in npc.Auras)
                     {
-                        if (aura.CasterGuid.Full == 0) // usually "template auras" do not have caster
+                        if (aura.CasterGuid.Full == 0 || aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster)) // usually "template auras" do not have caster
                         {
                             auras += aura.SpellId + " ";
                             commentAuras += StoreGetters.GetName(StoreNameType.Spell, (int) aura.SpellId, false) + ", ";
