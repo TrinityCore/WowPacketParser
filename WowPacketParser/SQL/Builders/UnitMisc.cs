@@ -58,6 +58,59 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
+        public static string ModelData(Dictionary<Guid, Unit> units)
+        {
+            if (units.Count == 0)
+                return string.Empty;
+            
+            const string tableName = "creature_model_info";
+
+            // Build a dictionary with model data; model is the key
+            var models = new Dictionary<uint, Tuple<float, float, Gender>>();
+            foreach (var unit in units)
+            {
+                var npc = unit.Value;
+                npc.LoadValuesFromUpdateFields();
+
+                if (npc.Model == null)
+                    continue;
+                var model = (uint)npc.Model;
+
+                if (models.ContainsKey(model))
+                    continue;
+
+                var boundingRadius = 0.0f;
+                if (npc.BoundingRadius != null)
+                    boundingRadius = (float)npc.BoundingRadius;
+
+                var combatReach = 0.0f;
+                if (npc.CombatReach != null)
+                    combatReach = (float)npc.CombatReach;
+
+                var gender = Gender.None;
+                if (npc.Gender != null)
+                    gender = (Gender)npc.Gender;
+
+                models.Add(model, Tuple.Create(boundingRadius, combatReach, gender));
+            }
+
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var model in models)
+            {
+                var row = new QueryBuilder.SQLInsertRow();
+                row.AddValue("entry", model.Key);
+                row.AddValue("bounding_radius", model.Value.Item1);
+                row.AddValue("combat_reach", model.Value.Item2);
+                row.AddValue("gender", model.Value.Item3);
+
+                // row.Comment += StoreGetters.GetName(StoreNameType.Model, (int)model.Key, false);
+
+                rows.Add(row);
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows).Build();
+        }
+
         public static string NpcTrainer()
         {
             if (Storage.NpcTrainers.IsEmpty)
