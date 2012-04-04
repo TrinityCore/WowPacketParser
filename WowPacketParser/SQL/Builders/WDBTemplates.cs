@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.SQL.Builders
 {
@@ -137,46 +142,47 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.UnitTemplates.IsEmpty)
                 return String.Empty;
 
-            // Not TDB structure
             const string tableName = "creature_template";
 
-            var rows = new List<QueryBuilder.SQLInsertRow>();
+            var entries = Storage.UnitTemplates.Keys.ToList();
+            var templatesDb = SQLDatabase.GetDict<uint, UnitTemplateDb>(tableName, entries);
+            var templates = new Dictionary<uint, UnitTemplateDb>(Storage.UnitTemplates.Count);
+
+            // TODO: Replace this by using attributes in Store.UnitTemplate
+            // i.e [DBField("nameOfTheDbField")]
             foreach (var unitTemplate in Storage.UnitTemplates)
             {
-                var row = new QueryBuilder.SQLInsertRow();
-                var template = unitTemplate.Value;
-
-                row.AddValue("Id", unitTemplate.Key);
-                row.AddValue("Name", template.Name);
-                row.AddValue("SubName", template.SubName);
-                row.AddValue("IconName", template.IconName);
-                row.AddValue("TypeFlags", template.TypeFlags);
-                row.AddValue("TypeFlags2", template.TypeFlags2);
-                row.AddValue("Type", template.Type);
-                row.AddValue("Family", template.Family);
-                row.AddValue("Rank", template.Rank);
-                row.AddValue("KillCredit1", template.KillCredit1);
-                row.AddValue("KillCredit2", template.KillCredit2);
-                row.AddValue("UnkInt", template.UnkInt);
-                row.AddValue("PetSpellData", template.PetSpellData);
-
-                for (var i = 0; i < template.DisplayIds.Length; i++)
-                    row.AddValue("DisplayId" + (i + 1), template.DisplayIds[i]);
-
-                row.AddValue("Modifier1", template.Modifier1);
-                row.AddValue("Modifier2", template.Modifier2);
-                row.AddValue("RacialLeader", template.RacialLeader);
-
-                for (var i = 0; i < template.QuestItems.Length; i++)
-                    row.AddValue("QuestItem" + (i + 1), template.QuestItems[i]);
-
-                row.AddValue("MovementId", template.MovementId);
-                row.AddValue("Expansion", template.Expansion);
-
-                rows.Add(row);
+                var t = new UnitTemplateDb
+                {
+                    name = unitTemplate.Value.Name,
+                    subname = unitTemplate.Value.SubName,
+                    IconName = unitTemplate.Value.IconName,
+                    type_flags = (uint) unitTemplate.Value.TypeFlags,
+                    type = (uint) unitTemplate.Value.Type,
+                    family = (int) unitTemplate.Value.Family,
+                    rank = (uint) unitTemplate.Value.Rank,
+                    KillCredit1 = unitTemplate.Value.KillCredit1,
+                    KillCredit2 = unitTemplate.Value.KillCredit2,
+                    PetSpellDataId = unitTemplate.Value.PetSpellData,
+                    modelid1 = unitTemplate.Value.DisplayIds[0],
+                    modelid2 = unitTemplate.Value.DisplayIds[1],
+                    modelid3 = unitTemplate.Value.DisplayIds[2],
+                    modelid4 = unitTemplate.Value.DisplayIds[3],
+                    Health_mod = unitTemplate.Value.Modifier1,
+                    Mana_mod = unitTemplate.Value.Modifier2,
+                    RacialLeader = unitTemplate.Value.RacialLeader.ToByte(),
+                    questItem1 = unitTemplate.Value.QuestItems[0],
+                    questItem2 = unitTemplate.Value.QuestItems[1],
+                    questItem3 = unitTemplate.Value.QuestItems[2],
+                    questItem4 = unitTemplate.Value.QuestItems[3],
+                    questItem5 = unitTemplate.Value.QuestItems[4],
+                    questItem6 = unitTemplate.Value.QuestItems[5],
+                    movementId = unitTemplate.Value.MovementId
+                };
+                templates.Add(unitTemplate.Key, t);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, rows).Build();
+            return SQLUtil.CompareDicts(templates, templatesDb, tableName, StoreNameType.Unit);
         }
 
         public static string GameObject()

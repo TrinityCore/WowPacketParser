@@ -164,5 +164,43 @@ namespace WowPacketParser.Misc
 
             return true;
         }
+
+        /// <summary>
+        /// Compares two objects with special cases for enums and floats
+        /// </summary>
+        /// <param name="o1">First object</param>
+        /// <param name="o2">Second object</param>
+        /// <returns>True if equal</returns>
+        public static bool EqualValues(object o1, object o2)
+        {
+            // We can't compare an enum with an int directly
+            // so we cast any enum to the underlying type and
+            // check if their values are equals
+            if (o1 is Enum || o2 is Enum)
+            {
+                if (o1 is Enum)
+                {
+                    var enumType = o1.GetType();
+                    var undertype = Enum.GetUnderlyingType(enumType);
+                    o1 = Convert.ChangeType(o1, undertype);
+                }
+
+                if (o2 is Enum)
+                {
+                    var enumType = o2.GetType();
+                    var undertype = Enum.GetUnderlyingType(enumType);
+                    o2 = Convert.ChangeType(o2, undertype);
+                }
+
+                return o1.Equals(o2);
+            }
+
+            if (o1 is float && o2 is float)
+            {
+                return Math.Abs((float)o1 - (float)o2) < 0.01;
+            }
+
+            return o1.Equals(o2);
+        }
     }
 }

@@ -116,16 +116,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             creature.Rank = packet.ReadEnum<CreatureRank>("Rank", TypeCode.Int32);
 
-            var killCredit = new uint[2];
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
-                for (var i = 0; i < 2; i++)
-                    killCredit[i] = packet.ReadUInt32("Kill Credit", i);
-
-                creature.KillCredit1 = killCredit[0];
-                creature.KillCredit2 = killCredit[1];
+                creature.KillCredit1 = packet.ReadUInt32("Kill Credit 1");
+                creature.KillCredit2 = packet.ReadUInt32("Kill Credit 2");
             }
-            else
+            else // Did they stop sending pet spell data after 3.1?
             {
                 creature.UnkInt = packet.ReadInt32("Unk Int");
                 creature.PetSpellData = packet.ReadUInt32("Pet Spell Data Id");

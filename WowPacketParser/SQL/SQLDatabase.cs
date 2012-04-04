@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Reflection;
+using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
@@ -35,6 +38,7 @@ namespace WowPacketParser.SQL
         }
 
         // Returns a dictionary from a DB query with two parameters (e.g <creature_entry, creature_name>)
+        // TODO: Drop this and use the GetDict<T, TK> method below
         private static Dictionary<T, TK> GetDict<T, TK>(string query)
         {
             using (var reader = SQLConnector.ExecuteQuery(query))
@@ -52,6 +56,7 @@ namespace WowPacketParser.SQL
         }
 
         // Returns a dictionary from a DB query with any number of parameters
+        // TODO: Drop this and use the GetDict<T, TK> method below
         public static Dictionary<T, dynamic> GetDict<T>(string query)
         {
             using (var reader = SQLConnector.ExecuteQuery(query))
@@ -74,6 +79,62 @@ namespace WowPacketParser.SQL
 
                 return dict;
             }
+        }
+
+        /// <summary>
+        /// Gets from `world` database a dictionary of the given struct. 
+        /// Structs fields name and type must match the name and type of the DB columns
+        /// </summary>
+        /// <typeparam name="T">Type of the elements of the list of entries (usually uint)</typeparam>
+        /// <typeparam name="TK">Type of the struct</typeparam>
+        /// <param name="tableName">Name of the table</param>
+        /// <param name="entries">List of entries to select from DB</param>
+        /// <param name="primaryKeyName"> </param>
+        /// <returns>Dictionary of structs of type TK</returns>
+        public static Dictionary<T, TK> GetDict<T, TK>(string tableName, List<T> entries, string primaryKeyName = "entry")
+        {
+            var fi = typeof(TK).GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+            var fieldNames = new StringBuilder();
+            fieldNames.Append(primaryKeyName + ",");
+            for (var i = 0; i < fi.Length; i++)
+            {
+                fieldNames.Append(fi[i].Name);
+                if (i + 1 != fi.Length)
+                    fieldNames.Append(",");
+            }
+
+            var query = string.Format("SELECT {0} FROM {1}.{2} WHERE {3} IN ({4})",
+                fieldNames, Settings.TDBDatabase, tableName, primaryKeyName, String.Join(",", entries));
+
+            var dict = new Dictionary<T, TK>(entries.Count);
+
+            using (var reader = SQLConnector.ExecuteQuery(query))
+            {
+                if (reader == null)
+                    return null;
+
+                while (reader.Read())
+                {
+                    var structInstance = (TK)Activator.CreateInstance(typeof(TK));
+
+                    var values = new object[fi.Length+1];
+                    var fieldCount = reader.GetValues(values);
+
+                    // first val is the key, so we start at 1
+                    for (var i = 1; i < fieldCount; i++)
+                    {
+                        if (values[i] is DBNull && fi[i-1].FieldType == typeof(string))
+                            fi[i-1].SetValueDirect(__makeref(structInstance), string.Empty);
+                        else
+                            fi[i-1].SetValueDirect(__makeref(structInstance), values[i]);
+                    }
+
+                    dict.Add((T)values[0], structInstance);
+                }
+            }
+
+            return dict;
         }
     }
 }

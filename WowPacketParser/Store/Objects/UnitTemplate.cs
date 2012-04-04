@@ -42,4 +42,36 @@ namespace WowPacketParser.Store.Objects
 
         public ClientType Expansion;
     }
+
+    // TODO: Use the existing UnitTemplate +
+    // attributes specifying the DB field names
+    public struct UnitTemplateDb
+    {
+        // ReSharper disable InconsistentNaming, NotAccessedField.Global
+        public string name;
+        public string subname;
+        public string IconName;
+        public uint type_flags;
+        public uint type;
+        public int family;
+        public uint rank;
+        public uint KillCredit1;
+        public uint KillCredit2;
+        public uint PetSpellDataId;
+        public uint modelid1;
+        public uint modelid2;
+        public uint modelid3;
+        public uint modelid4;
+        public float Health_mod;
+        public float Mana_mod;
+        public uint RacialLeader;
+        public uint questItem1;
+        public uint questItem2;
+        public uint questItem3;
+        public uint questItem4;
+        public uint questItem5;
+        public uint questItem6;
+        public uint movementId;
+        // ReSharper restore InconsistentNaming, NotAccessedField.Global
+    }
 }

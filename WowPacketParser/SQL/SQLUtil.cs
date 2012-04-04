@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.SQL
 {
@@ -119,6 +123,68 @@ namespace WowPacketParser.SQL
                 value = Hexify((uint)value);
 
             return value;
+        }
+
+        /// <summary>
+        /// <para>Compare two dictionaries (of the same types) and creates SQL inserts
+        ///  or updates accordingly.</para>
+        /// <remarks>Second dictionary can be null (only inserts queries will be produced)</remarks>
+        /// </summary>
+        /// <typeparam name="T">Type of the primary key (uint)</typeparam>
+        /// <typeparam name="TK">Type of the WDB struct (field names and types must match DB field name and types)</typeparam>
+        /// <param name="dict1">Dictionary retrieved from  parser</param>
+        /// <param name="dict2">Dictionary retrieved from  DB</param>
+        /// <param name="tableName">The name of the table in DB</param>
+        /// <param name="storeType">Are we dealing with Spells, Quests, Units, ...?</param>
+        /// <param name="primaryKeyName">The name of the primary key, usually "entry"</param>
+        /// <returns>A string containing full SQL queries</returns>
+        public static string CompareDicts<T, TK>(IDictionary<T, TK> dict1, IDictionary<T, TK> dict2, string tableName, StoreNameType storeType, string primaryKeyName = "entry")
+        {
+            var rowsIns = new List<QueryBuilder.SQLInsertRow>();
+            var rowsUpd = new List<QueryBuilder.SQLUpdateRow>();
+
+            var fi = typeof(TK).GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var elem1 in dict1)
+            {
+                if (dict2 != null && dict2.ContainsKey(elem1.Key)) // update
+                {
+                    var row = new QueryBuilder.SQLUpdateRow();
+
+                    foreach (var field in fi)
+                    {
+                        var elem2 = dict2[elem1.Key];
+
+                        var val1 = field.GetValue(elem1.Value);
+                        var val2 = field.GetValue(elem2);
+
+                        if (!Utilities.EqualValues(val1, val2))
+                            row.AddValue(field.Name, val1);
+                    }
+
+                    row.AddWhere(primaryKeyName, Convert.ToUInt32(elem1.Key));
+                    row.Comment = StoreGetters.GetName(storeType, Convert.ToInt32(elem1.Key), false);
+                    row.Table = tableName;
+
+                    if (row.ValueCount != 0)
+                        rowsUpd.Add(row);
+                }
+                else // insert new
+                {
+                    var row = new QueryBuilder.SQLInsertRow();
+                    row.AddValue(primaryKeyName, elem1.Key);
+                    row.Comment = StoreGetters.GetName(storeType, Convert.ToInt32(elem1.Key), false);
+
+                    foreach (var field in fi)
+                        row.AddValue(field.Name, field.GetValue(elem1.Value));
+                    rowsIns.Add(row);
+                }
+            }
+
+            var result = new QueryBuilder.SQLInsert(tableName, rowsIns).Build() +
+                         new QueryBuilder.SQLUpdate(rowsUpd).Build();
+
+            return result;
         }
     }
 }
