@@ -105,18 +105,11 @@ namespace WowPacketParser.SQL
             if (value is bool)
                 value = value.Equals(true) ? 1 : 0;
 
-            if (value is Enum) // A bit hackish but oh well...
+            if (value is Enum)
             {
-                try
-                {
-// ReSharper disable PossibleInvalidCastException
-                    value = (uint)value;
-// ReSharper restore PossibleInvalidCastException
-                }
-                catch (InvalidCastException)
-                {
-                    value = (int)value;
-                }
+                var enumType = value.GetType();
+                var undertype = Enum.GetUnderlyingType(enumType);
+                value = Convert.ChangeType(value, undertype);
             }
 
             if (value is int && isFlag)
