@@ -82,7 +82,7 @@ namespace WowPacketParser.SQL
                 }
 
                 return String.Format("Server={0};{1}={2};Username={3};Password={4};Database={5};CharSet={6};ConnectionTimeout=5;{7}",
-                    server, portOrPipe, Settings.Port, Settings.Username, Settings.Password, Settings.Database,
+                    server, portOrPipe, Settings.Port, Settings.Username, Settings.Password, Settings.WPPDatabase,
                     Settings.CharacterSet, protocol);
             }
         }

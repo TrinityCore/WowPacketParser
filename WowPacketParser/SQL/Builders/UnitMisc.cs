@@ -98,7 +98,7 @@ namespace WowPacketParser.SQL.Builders
             {
                 modelsDb = SQLDatabase.GetDict<uint>(string.Format(
                     "SELECT `modelid`, `bounding_radius`, `combat_reach`," +
-                    "`gender` FROM `world`.{0} WHERE `modelid` IN ({1});", tableName, String.Join(",", models.Keys)));
+                    "`gender` FROM `{0}`.{1} WHERE `modelid` IN ({2});", Settings.TDBDatabase, tableName, String.Join(",", models.Keys)));
             }
 
             var rowsUpd = new List<QueryBuilder.SQLUpdateRow>();

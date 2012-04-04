@@ -42,7 +42,8 @@ namespace WowPacketParser.Misc
         public static readonly string Port = GetString("Port", "3306");
         public static readonly string Username = GetString("Username", "root");
         public static readonly string Password = GetString("Password", string.Empty);
-        public static readonly string Database = GetString("Database", "WPP");
+        public static readonly string WPPDatabase = GetString("WPPDatabase", "WPP");
+        public static readonly string TDBDatabase = GetString("TDBDatabase", "world");
         public static readonly string CharacterSet = GetString("CharacterSet", "utf8");
 
         private static string GetString(string key, string defValue)
