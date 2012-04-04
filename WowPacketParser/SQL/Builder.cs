@@ -19,6 +19,9 @@ namespace WowPacketParser.SQL
             //var players = Storage.Objects.Where(obj => obj.Value.Type == ObjectType.Player).ToDictionary(obj => obj.Key, obj => obj.Value as Player);
             //var items = Storage.Objects.Where(obj => obj.Value.Type == ObjectType.Item).ToDictionary(obj => obj.Key, obj => obj.Value as Item);
 
+            foreach (var unit in units)
+                unit.Value.LoadValuesFromUpdateFields();
+
             using (var store = new SQLStore(fileName))
             {
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.GameObjectTemplate))

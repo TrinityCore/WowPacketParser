@@ -23,7 +23,6 @@ namespace WowPacketParser.SQL.Builders
             foreach (var unit in units)
             {
                 var npc = unit.Value;
-                npc.LoadValuesFromUpdateFields();
 
                 var row = new QueryBuilder.SQLInsertRow();
                 row.AddValue("entry", unit.Key.GetEntry());
@@ -70,7 +69,6 @@ namespace WowPacketParser.SQL.Builders
             foreach (var unit in units)
             {
                 var npc = unit.Value;
-                npc.LoadValuesFromUpdateFields();
 
                 if (npc.Model == null)
                     continue;
@@ -254,7 +252,6 @@ namespace WowPacketParser.SQL.Builders
                 var row = new QueryBuilder.SQLInsertRow();
 
                 var npc = unit.Value;
-                npc.LoadValuesFromUpdateFields();
 
                 row.AddValue("Id", unit.Key.GetEntry());
                 row.AddValue("MovementFlags", npc.Movement.Flags, true);
@@ -383,7 +380,6 @@ namespace WowPacketParser.SQL.Builders
 
                 var row = new QueryBuilder.SQLUpdateRow();
                 var npc = unit.Value;
-                npc.LoadValuesFromUpdateFields();
 
                 var name = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
 

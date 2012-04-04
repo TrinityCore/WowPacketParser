@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -41,6 +40,10 @@ namespace WowPacketParser.Misc
             return filters.Any(filter => value.IndexOf(filter, StringComparison.InvariantCultureIgnoreCase) != -1);
         }
 
+        /// <summary>
+        /// Shows our hex representation of a packet
+        /// </summary>
+        /// <param name="packet">A packet</param>
         public static void AsHex(this Packet packet)
         {
             var n = Environment.NewLine;
@@ -48,11 +51,9 @@ namespace WowPacketParser.Misc
             var length = packet.Length;
             var stream = packet.GetStream(0);
 
-            var header = "|-------------------------------------------------|------------------" +
-                         "---------------|" + n +
-                         "| 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F | 0 1 2 3 4 5 6 7 8 9 A B C D E F |" +
-                         n + "|-------------------------------------------------|------------------" +
-                         "---------------|" + n;
+            var header = "|-------------------------------------------------|---------------------------------|" + n +
+                         "| 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F | 0 1 2 3 4 5 6 7 8 9 A B C D E F |" + n +
+                         "|-------------------------------------------------|---------------------------------|" + n;
 
             hexDump.Append(header);
 
@@ -91,68 +92,14 @@ namespace WowPacketParser.Misc
                 hexDump.Append(hex.ToString());
             }
 
-            hexDump.Append("|-------------------------------------------------|------------------" +
-                           "---------------|");
-
-            packet.WriteLine(hexDump.ToString());
-        }
-
-        public static void AsBinary(this Packet packet)
-        {
-            var n = Environment.NewLine;
-            var hexDump = new StringBuilder();
-            var length = packet.Length;
-            var stream = packet.GetStream(0);
-
-            var header = "|-------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------|" + n +
-                         "| 01234567 01234567 01234567 01234567 01234567 01234567 01234567 01234567 01234567 01234567 01234567 01234567 01234567 01234567 01234567 01234567 | 0 1 2 3 4 5 6 7 8 9 A B C D E F |" + n +
-                         "|-------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------|" + n;
-
-            hexDump.Append(header);
-
-            var end = length;
-            for (var i = 0; i < end; i += 16)
-            {
-                var text = new StringBuilder();
-                var hex = new StringBuilder();
-                hex.Append("| ");
-
-                for (var j = 0; j < 16; j++)
-                {
-                    if (j + i < end)
-                    {
-                        var val = stream[j + i];
-
-                        hex.Append(Convert.ToString(stream[j + i], 2).PadLeft(8, '0'));
-                        hex.Append(" ");
-
-                        if (val >= 32 && val <= 127)
-                            text.Append((char)val);
-                        else
-                            text.Append(".");
-
-                        text.Append(" ");
-                    }
-                    else
-                    {
-                        hex.Append("         ");
-                        text.Append("  ");
-                    }
-                }
-
-                hex.Append("| ");
-                hex.Append(text + "|");
-                hex.Append(n);
-                hexDump.Append(hex.ToString());
-            }
-
-            hexDump.Append("|-------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------|");
+            hexDump.Append("|-------------------------------------------------|---------------------------------|");
 
             packet.WriteLine(hexDump.ToString());
         }
 
         /// <summary>
-        /// Define the culture of the thread as CultureInfo.InvariantCulture
+        /// <para>Define the culture of the thread as CultureInfo.InvariantCulture</para>
+        /// <remarks>This is required since new threads will have the culture of the machine (to be changed in .NET 4.5)</remarks>
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <param name="source"></param>
