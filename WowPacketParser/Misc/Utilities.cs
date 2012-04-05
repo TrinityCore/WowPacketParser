@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security;
 using WowPacketParser.Enums;
 
@@ -201,6 +202,33 @@ namespace WowPacketParser.Misc
             }
 
             return o1.Equals(o2);
+        }
+
+        /// <summary>
+        /// Get a list of fields and attributes from a type. Only fields with the
+        /// specified attribute are returned.
+        /// </summary>
+        /// <typeparam name="T">The type</typeparam>
+        /// <typeparam name="TK">Attribute</typeparam>
+        /// <returns></returns>
+        public static List<Tuple<FieldInfo, TK>> GetFieldsAndAttribute<T, TK>() where TK : Attribute
+        {
+            var list = new List<Tuple<FieldInfo, TK>>();
+
+            var fi = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Instance);
+            if (fi.Length <= 0)
+                return null;
+
+            foreach (var field in fi)
+            {
+                var attrs = /*(TK[])*/field.GetCustomAttributes(typeof(TK), false);
+                if (attrs.Length <= 0)
+                    continue;
+
+                list.Add(Tuple.Create(field, (TK)attrs[0]));
+            }
+
+            return list;
         }
     }
 }

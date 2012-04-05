@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -140,15 +139,17 @@ namespace WowPacketParser.SQL
         /// <returns>A string containing full SQL queries</returns>
         public static string CompareDicts<T, TK>(IDictionary<T, TK> dict1, IDictionary<T, TK> dict2, StoreNameType storeType, string primaryKeyName = "entry")
         {
-            var rowsIns = new List<QueryBuilder.SQLInsertRow>();
-            var rowsUpd = new List<QueryBuilder.SQLUpdateRow>();
-
-            var fi = typeof(TK).GetFields(BindingFlags.Public | BindingFlags.Instance);
-
             var tableAttrs = (DBTableNameAttribute[])typeof(TK).GetCustomAttributes(typeof(DBTableNameAttribute), false);
             if (tableAttrs.Length <= 0)
-                return null;
+                return string.Empty;
             var tableName = tableAttrs[0].Name;
+
+            var fields = Utilities.GetFieldsAndAttribute<TK, DBFieldNameAttribute>();
+            if (fields == null)
+                return string.Empty;
+
+            var rowsIns = new List<QueryBuilder.SQLInsertRow>();
+            var rowsUpd = new List<QueryBuilder.SQLUpdateRow>();
 
             foreach (var elem1 in dict1)
             {
@@ -156,33 +157,29 @@ namespace WowPacketParser.SQL
                 {
                     var row = new QueryBuilder.SQLUpdateRow();
 
-                    foreach (var field in fi)
+                    foreach (var field in fields)
                     {
-                        var attrs = (DBFieldNameAttribute[])field.GetCustomAttributes(typeof(DBFieldNameAttribute), false);
-                        if (attrs.Length <= 0)
-                            continue;
-
                         var elem2 = dict2[elem1.Key];
 
-                        var val1 = field.GetValue(elem1.Value);
-                        var val2 = field.GetValue(elem2);
+                        var val1 = field.Item1.GetValue(elem1.Value);
+                        var val2 = field.Item1.GetValue(elem2);
 
                         if (val1 is Array) // && val2 is Array
                         {
                             var arr1 = (Array) val1;
                             var arr2 = (Array) val2;
 
-                            for (var i = 0; i < attrs[0].Count; i++)
+                            for (var i = 0; i < field.Item2.Count; i++)
                             {
                                 if (!Utilities.EqualValues(arr1.GetValue(i), arr2.GetValue(i)))
-                                    row.AddValue(attrs[0].Name + (attrs[0].StartAtZero ? i : i + 1), arr1.GetValue(i));
+                                    row.AddValue(field.Item2.Name + (field.Item2.StartAtZero ? i : i + 1), arr1.GetValue(i));
                             }
 
                             continue;
                         }
 
                         if (!Utilities.EqualValues(val1, val2))
-                            row.AddValue(attrs[0].Name, val1);
+                            row.AddValue(field.Item2.Name, val1);
                     }
 
                     var key = Convert.ToUInt32(elem1.Key);
@@ -200,22 +197,18 @@ namespace WowPacketParser.SQL
                     row.AddValue(primaryKeyName, elem1.Key);
                     row.Comment = StoreGetters.GetName(storeType, Convert.ToInt32(elem1.Key), false);
 
-                    foreach (var field in fi)
+                    foreach (var field in fields)
                     {
-                        var attrs = (DBFieldNameAttribute[])field.GetCustomAttributes(typeof(DBFieldNameAttribute), false);
-                        if (attrs.Length <= 0)
-                            continue;
-
-                        if (field.FieldType.BaseType == typeof(Array))
+                        if (field.Item1.FieldType.BaseType == typeof(Array))
                         {
-                            var arr = (Array)field.GetValue(elem1.Value);
-                            for (var i = 0; i < attrs[0].Count; i++)
-                                row.AddValue(attrs[0].Name + (attrs[0].StartAtZero ? i : i + 1), arr.GetValue(i)); // BUG: 
+                            var arr = (Array)field.Item1.GetValue(elem1.Value);
+                            for (var i = 0; i < field.Item2.Count; i++)
+                                row.AddValue(field.Item2.Name + (field.Item2.StartAtZero ? i : i + 1), arr.GetValue(i));
 
                             continue;
                         }
 
-                        row.AddValue(attrs[0].Name, field.GetValue(elem1.Value));
+                        row.AddValue(field.Item2.Name, field.Item1.GetValue(elem1.Value));
                     }
                     rowsIns.Add(row);
                 }
