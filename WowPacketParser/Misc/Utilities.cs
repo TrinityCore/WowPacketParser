@@ -208,16 +208,16 @@ namespace WowPacketParser.Misc
         /// Get a list of fields and attributes from a type. Only fields with the
         /// specified attribute are returned.
         /// </summary>
-        /// <typeparam name="T">The type</typeparam>
+        /// <typeparam name="T">Type (class/struct)</typeparam>
         /// <typeparam name="TK">Attribute</typeparam>
-        /// <returns></returns>
+        /// <returns>A list of tuples where Item1 is FieldInfo and Item2 the corresponding attribute</returns>
         public static List<Tuple<FieldInfo, TK>> GetFieldsAndAttribute<T, TK>() where TK : Attribute
         {
-            var list = new List<Tuple<FieldInfo, TK>>();
-
             var fi = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Instance);
             if (fi.Length <= 0)
                 return null;
+
+            var list = new List<Tuple<FieldInfo, TK>>(fi.Length);
 
             foreach (var field in fi)
             {

@@ -223,8 +223,18 @@ namespace WowPacketParser
             else
                 sqlFileName = Settings.SQLFileName;
 
-            Builder.DumpSQL("Dumping global sql", sqlFileName, Settings.SQLOutput);
-
+            try // temporary (?) try to hunt a bug
+            {
+                Builder.DumpSQL("Dumping global sql", sqlFileName, Settings.SQLOutput);
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Data);
+                Trace.WriteLine(ex.GetType());
+                Trace.WriteLine(ex.Message);
+                Trace.WriteLine(ex.StackTrace);
+            }
+            
             SQLConnector.Disconnect();
             SSHTunnel.Disconnect();
             Logger.WriteErrors();
