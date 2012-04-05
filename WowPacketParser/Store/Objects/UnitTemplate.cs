@@ -1,77 +1,63 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
+    [DBTableName("creature_template")]
     public class UnitTemplate
     {
+        [DBFieldName("name")]
         public string Name;
 
+        [DBFieldName("subname")]
         public string SubName;
 
+        [DBFieldName("IconName")]
         public string IconName;
 
+        [DBFieldName("type_flags")]
         public CreatureTypeFlag TypeFlags;
 
         public uint TypeFlags2;
 
+        [DBFieldName("type")]
         public CreatureType Type;
 
+        [DBFieldName("family")]
         public CreatureFamily Family;
 
+        [DBFieldName("rank")]
         public CreatureRank Rank;
 
+        [DBFieldName("KillCredit1")]
         public uint KillCredit1;
 
+        [DBFieldName("KillCredit2")]
         public uint KillCredit2;
 
         public int UnkInt;
 
+        [DBFieldName("PetSpellDataId")]
         public uint PetSpellData;
 
+        [DBFieldName("modelid", Count = 4)]
         public uint[] DisplayIds;
 
+        [DBFieldName("Health_mod")]
         public float Modifier1;
 
+        [DBFieldName("Mana_mod")]
         public float Modifier2;
 
+        [DBFieldName("RacialLeader")]
         public bool RacialLeader;
 
+        [DBFieldName("questItem", Count = 6)]
         public uint[] QuestItems;
 
+        [DBFieldName("movementId")]
         public uint MovementId;
 
         public ClientType Expansion;
-    }
-
-    // TODO: Use the existing UnitTemplate +
-    // attributes specifying the DB field names
-    public struct UnitTemplateDb
-    {
-        // ReSharper disable InconsistentNaming, NotAccessedField.Global
-        public string name;
-        public string subname;
-        public string IconName;
-        public uint type_flags;
-        public uint type;
-        public int family;
-        public uint rank;
-        public uint KillCredit1;
-        public uint KillCredit2;
-        public uint PetSpellDataId;
-        public uint modelid1;
-        public uint modelid2;
-        public uint modelid3;
-        public uint modelid4;
-        public float Health_mod;
-        public float Mana_mod;
-        public uint RacialLeader;
-        public uint questItem1;
-        public uint questItem2;
-        public uint questItem3;
-        public uint questItem4;
-        public uint questItem5;
-        public uint questItem6;
-        public uint movementId;
-        // ReSharper restore InconsistentNaming, NotAccessedField.Global
     }
 }

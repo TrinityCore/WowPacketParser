@@ -142,47 +142,11 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.UnitTemplates.IsEmpty)
                 return String.Empty;
 
-            const string tableName = "creature_template";
-
             var entries = Storage.UnitTemplates.Keys.ToList();
-            var templatesDb = SQLDatabase.GetDict<uint, UnitTemplateDb>(tableName, entries);
-            var templates = new Dictionary<uint, UnitTemplateDb>(Storage.UnitTemplates.Count);
+            var templatesDb = SQLDatabase.GetDict<uint, UnitTemplate>(entries);
+            var templates = Storage.UnitTemplates;
 
-            // TODO: Replace this by using attributes in Store.UnitTemplate
-            // i.e [DBField("nameOfTheDbField")]
-            foreach (var unitTemplate in Storage.UnitTemplates)
-            {
-                var t = new UnitTemplateDb
-                {
-                    name = unitTemplate.Value.Name,
-                    subname = unitTemplate.Value.SubName,
-                    IconName = unitTemplate.Value.IconName,
-                    type_flags = (uint) unitTemplate.Value.TypeFlags,
-                    type = (uint) unitTemplate.Value.Type,
-                    family = (int) unitTemplate.Value.Family,
-                    rank = (uint) unitTemplate.Value.Rank,
-                    KillCredit1 = unitTemplate.Value.KillCredit1,
-                    KillCredit2 = unitTemplate.Value.KillCredit2,
-                    PetSpellDataId = unitTemplate.Value.PetSpellData,
-                    modelid1 = unitTemplate.Value.DisplayIds[0],
-                    modelid2 = unitTemplate.Value.DisplayIds[1],
-                    modelid3 = unitTemplate.Value.DisplayIds[2],
-                    modelid4 = unitTemplate.Value.DisplayIds[3],
-                    Health_mod = unitTemplate.Value.Modifier1,
-                    Mana_mod = unitTemplate.Value.Modifier2,
-                    RacialLeader = unitTemplate.Value.RacialLeader.ToByte(),
-                    questItem1 = unitTemplate.Value.QuestItems[0],
-                    questItem2 = unitTemplate.Value.QuestItems[1],
-                    questItem3 = unitTemplate.Value.QuestItems[2],
-                    questItem4 = unitTemplate.Value.QuestItems[3],
-                    questItem5 = unitTemplate.Value.QuestItems[4],
-                    questItem6 = unitTemplate.Value.QuestItems[5],
-                    movementId = unitTemplate.Value.MovementId
-                };
-                templates.Add(unitTemplate.Key, t);
-            }
-
-            return SQLUtil.CompareDicts(templates, templatesDb, tableName, StoreNameType.Unit);
+            return SQLUtil.CompareDicts(templates, templatesDb, StoreNameType.Unit);
         }
 
         public static string GameObject()

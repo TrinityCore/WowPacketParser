@@ -87,25 +87,34 @@ namespace WowPacketParser.SQL
         /// </summary>
         /// <typeparam name="T">Type of the elements of the list of entries (usually uint)</typeparam>
         /// <typeparam name="TK">Type of the struct</typeparam>
-        /// <param name="tableName">Name of the table</param>
         /// <param name="entries">List of entries to select from DB</param>
         /// <param name="primaryKeyName"> </param>
         /// <returns>Dictionary of structs of type TK</returns>
-        public static Dictionary<T, TK> GetDict<T, TK>(string tableName, List<T> entries, string primaryKeyName = "entry")
+        public static Dictionary<T, TK> GetDict<T, TK>(List<T> entries, string primaryKeyName = "entry")
         {
             var fi = typeof(TK).GetFields(BindingFlags.Public | BindingFlags.Instance);
 
+            var tableAttrs = (DBTableNameAttribute[])typeof(TK).GetCustomAttributes(typeof(DBTableNameAttribute), false);
+            if (tableAttrs.Length <= 0)
+                return null;
+            var tableName = tableAttrs[0].Name;
+
+            var fieldCount = 1;
             var fieldNames = new StringBuilder();
             fieldNames.Append(primaryKeyName + ",");
-            for (var i = 0; i < fi.Length; i++)
+            foreach (var field in fi)
             {
-                fieldNames.Append(fi[i].Name);
-                if (i + 1 != fi.Length)
-                    fieldNames.Append(",");
+                var attrs = (DBFieldNameAttribute[])field.GetCustomAttributes(typeof(DBFieldNameAttribute), false);
+                if (attrs.Length <= 0)
+                    continue;
+
+                fieldNames.Append(attrs[0].ToString());
+                fieldNames.Append(",");
+                fieldCount += attrs[0].Count;
             }
 
             var query = string.Format("SELECT {0} FROM {1}.{2} WHERE {3} IN ({4})",
-                fieldNames, Settings.TDBDatabase, tableName, primaryKeyName, String.Join(",", entries));
+                fieldNames.ToString().TrimEnd(','), Settings.TDBDatabase, tableName, primaryKeyName, String.Join(",", entries));
 
             var dict = new Dictionary<T, TK>(entries.Count);
 
@@ -116,21 +125,56 @@ namespace WowPacketParser.SQL
 
                 while (reader.Read())
                 {
-                    var structInstance = (TK)Activator.CreateInstance(typeof(TK));
+                    var instance = (TK)Activator.CreateInstance(typeof(TK));
 
-                    var values = new object[fi.Length+1];
-                    var fieldCount = reader.GetValues(values);
+                    var values = new object[fieldCount];
+                    var count = reader.GetValues(values);
+                    if (count != fieldCount)
+                        throw new InvalidConstraintException(
+                            "Number of fields from DB is different of the number of fields with DBFieldName attribute");
 
-                    // first val is the key, so we start at 1
-                    for (var i = 1; i < fieldCount; i++)
+                    var i = 1;
+                    foreach (var field in fi)
                     {
-                        if (values[i] is DBNull && fi[i-1].FieldType == typeof(string))
-                            fi[i-1].SetValueDirect(__makeref(structInstance), string.Empty);
+                        var attrs = (DBFieldNameAttribute[])field.GetCustomAttributes(typeof(DBFieldNameAttribute), false);
+                        if (attrs.Length <= 0)
+                            continue;
+
+                        if (values[i] is DBNull && field.FieldType == typeof(string))
+                        {
+                            field.SetValueDirect(__makeref(instance), string.Empty);
+                        }
+                        else if (field.FieldType.BaseType == typeof(Enum))
+                        {
+                            field.SetValueDirect(__makeref(instance), Enum.Parse(field.FieldType, values[i].ToString()));
+                        }
+                        else if (field.FieldType.BaseType == typeof(Array))
+                        {
+                            var arr = Array.CreateInstance(field.FieldType.GetElementType(), attrs[0].Count);
+
+                            for (var j = 0; j < attrs[0].Count; j++)
+                            {
+                                var elemType = arr.GetType().GetElementType();
+                                var val = Convert.ChangeType(values[i + j], elemType);
+
+                                arr.SetValue(val, j);
+                            }
+
+                            field.SetValueDirect(__makeref(instance), arr);
+                        }
+                        else if (field.FieldType == typeof(bool))
+                        {
+                            field.SetValueDirect(__makeref(instance), Convert.ToBoolean(values[i]));
+                        }
                         else
-                            fi[i-1].SetValueDirect(__makeref(structInstance), values[i]);
+                        {
+                            field.SetValueDirect(__makeref(instance), values[i]);
+                        }
+
+                        i += attrs[0].Count;
                     }
 
-                    dict.Add((T)values[0], structInstance);
+                    dict.Add((T)values[0], instance);
                 }
             }
 

@@ -138,12 +138,17 @@ namespace WowPacketParser.SQL
         /// <param name="storeType">Are we dealing with Spells, Quests, Units, ...?</param>
         /// <param name="primaryKeyName">The name of the primary key, usually "entry"</param>
         /// <returns>A string containing full SQL queries</returns>
-        public static string CompareDicts<T, TK>(IDictionary<T, TK> dict1, IDictionary<T, TK> dict2, string tableName, StoreNameType storeType, string primaryKeyName = "entry")
+        public static string CompareDicts<T, TK>(IDictionary<T, TK> dict1, IDictionary<T, TK> dict2, StoreNameType storeType, string primaryKeyName = "entry")
         {
             var rowsIns = new List<QueryBuilder.SQLInsertRow>();
             var rowsUpd = new List<QueryBuilder.SQLUpdateRow>();
 
             var fi = typeof(TK).GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+            var tableAttrs = (DBTableNameAttribute[])typeof(TK).GetCustomAttributes(typeof(DBTableNameAttribute), false);
+            if (tableAttrs.Length <= 0)
+                return null;
+            var tableName = tableAttrs[0].Name;
 
             foreach (var elem1 in dict1)
             {
@@ -153,17 +158,37 @@ namespace WowPacketParser.SQL
 
                     foreach (var field in fi)
                     {
+                        var attrs = (DBFieldNameAttribute[])field.GetCustomAttributes(typeof(DBFieldNameAttribute), false);
+                        if (attrs.Length <= 0)
+                            continue;
+
                         var elem2 = dict2[elem1.Key];
 
                         var val1 = field.GetValue(elem1.Value);
                         var val2 = field.GetValue(elem2);
 
+                        if (val1 is Array) // && val2 is Array
+                        {
+                            var arr1 = (Array) val1;
+                            var arr2 = (Array) val2;
+
+                            for (var i = 0; i < arr1.Length; i++)
+                            {
+                                if (!Utilities.EqualValues(arr1.GetValue(i), arr2.GetValue(i)))
+                                    row.AddValue(attrs[0].Name, arr1.GetValue(i));
+                            }
+
+                            continue;
+                        }
+
                         if (!Utilities.EqualValues(val1, val2))
-                            row.AddValue(field.Name, val1);
+                            row.AddValue(attrs[0].Name, val1);
                     }
 
-                    row.AddWhere(primaryKeyName, Convert.ToUInt32(elem1.Key));
-                    row.Comment = StoreGetters.GetName(storeType, Convert.ToInt32(elem1.Key), false);
+                    var key = Convert.ToUInt32(elem1.Key);
+
+                    row.AddWhere(primaryKeyName, key);
+                    row.Comment = StoreGetters.GetName(storeType, (int)key, false);
                     row.Table = tableName;
 
                     if (row.ValueCount != 0)
@@ -176,7 +201,22 @@ namespace WowPacketParser.SQL
                     row.Comment = StoreGetters.GetName(storeType, Convert.ToInt32(elem1.Key), false);
 
                     foreach (var field in fi)
-                        row.AddValue(field.Name, field.GetValue(elem1.Value));
+                    {
+                        var attrs = (DBFieldNameAttribute[])field.GetCustomAttributes(typeof(DBFieldNameAttribute), false);
+                        if (attrs.Length <= 0)
+                            continue;
+
+                        if (field.FieldType.BaseType == typeof(Array))
+                        {
+                            var arr = (Array)field.GetValue(elem1.Value);
+                            for (var i = 0; i < arr.Length; i++)
+                                row.AddValue(attrs[0].Name + i, arr.GetValue(i)); // BUG: 
+
+                            continue;
+                        }
+
+                        row.AddValue(attrs[0].Name, field.GetValue(elem1.Value));
+                    }
                     rowsIns.Add(row);
                 }
             }
