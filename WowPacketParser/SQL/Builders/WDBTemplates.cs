@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using WowPacketParser.Enums;
-using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -164,21 +162,10 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.PageTexts.IsEmpty)
                 return String.Empty;
 
-            const string tableName = "page_Text";
+            var entries = Storage.PageTexts.Keys.ToList();
+            var templatesDb = SQLDatabase.GetDict<uint, PageText>(entries);
 
-            var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var pageText in Storage.PageTexts)
-            {
-                var row = new QueryBuilder.SQLInsertRow();
-
-                row.AddValue("entry", pageText.Key);
-                row.AddValue("text", pageText.Value.Text);
-                row.AddValue("next_page", pageText.Value.NextPageId);
-
-                rows.Add(row);
-            }
-
-            return new QueryBuilder.SQLInsert(tableName, rows).Build();
+            return SQLUtil.CompareDicts(Storage.PageTexts, templatesDb, StoreNameType.PageText);
         }
 
         public static string NpcText()

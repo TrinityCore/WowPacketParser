@@ -92,6 +92,10 @@ namespace WowPacketParser.SQL
         /// <returns>Dictionary of structs of type TK</returns>
         public static Dictionary<T, TK> GetDict<T, TK>(List<T> entries, string primaryKeyName = "entry")
         {
+            // TODO: Add new config option "Verify data against DB"
+            if (!SQLConnector.Enabled)
+                return null;
+
             var fi = typeof(TK).GetFields(BindingFlags.Public | BindingFlags.Instance);
 
             var tableAttrs = (DBTableNameAttribute[])typeof(TK).GetCustomAttributes(typeof(DBTableNameAttribute), false);

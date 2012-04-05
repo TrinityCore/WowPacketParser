@@ -53,10 +53,10 @@ namespace WowPacketParser.SQL
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.NpcVendor))
                     store.WriteData(UnitMisc.NpcVendor());
 
-                if (sqlOutput.HasAnyFlag(SQLOutputFlags.NpcText))
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.PageText))
                     store.WriteData(WDBTemplates.PageText());
 
-                if (sqlOutput.HasAnyFlag(SQLOutputFlags.PageText))
+                if (sqlOutput.HasAnyFlag(SQLOutputFlags.NpcText))
                     store.WriteData(WDBTemplates.NpcText());
 
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.Gossip))
