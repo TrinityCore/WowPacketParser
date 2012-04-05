@@ -172,10 +172,10 @@ namespace WowPacketParser.SQL
                             var arr1 = (Array) val1;
                             var arr2 = (Array) val2;
 
-                            for (var i = 0; i < arr1.Length; i++)
+                            for (var i = 0; i < attrs[0].Count; i++)
                             {
                                 if (!Utilities.EqualValues(arr1.GetValue(i), arr2.GetValue(i)))
-                                    row.AddValue(attrs[0].Name, arr1.GetValue(i));
+                                    row.AddValue(attrs[0].Name + (attrs[0].StartAtZero ? i : i + 1), arr1.GetValue(i));
                             }
 
                             continue;
@@ -209,8 +209,8 @@ namespace WowPacketParser.SQL
                         if (field.FieldType.BaseType == typeof(Array))
                         {
                             var arr = (Array)field.GetValue(elem1.Value);
-                            for (var i = 0; i < arr.Length; i++)
-                                row.AddValue(attrs[0].Name + i, arr.GetValue(i)); // BUG: 
+                            for (var i = 0; i < attrs[0].Count; i++)
+                                row.AddValue(attrs[0].Name + (attrs[0].StartAtZero ? i : i + 1), arr.GetValue(i)); // BUG: 
 
                             continue;
                         }

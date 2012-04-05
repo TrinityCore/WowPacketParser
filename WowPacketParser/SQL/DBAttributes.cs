@@ -14,12 +14,20 @@ namespace WowPacketParser.SQL
             set { _count = value; }
         }
 
+        public bool StartAtZero
+        {
+            get { return _startAtZero; }
+            set { _startAtZero = value; }
+        }
+
         private int _count;
+        private bool _startAtZero;
 
         public DBFieldNameAttribute(string name)
         {
             Name = name;
             Count = 1;
+            _startAtZero = false;
         }
 
         public override string ToString()
@@ -31,7 +39,7 @@ namespace WowPacketParser.SQL
             for (var i = 1; i <= _count; i++)
             {
                 result.Append(Name);
-                result.Append(i);
+                result.Append(StartAtZero ? i - 1 : i);
                 if (i != _count)
                     result.Append(",");
             }

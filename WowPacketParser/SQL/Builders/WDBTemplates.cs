@@ -144,9 +144,8 @@ namespace WowPacketParser.SQL.Builders
 
             var entries = Storage.UnitTemplates.Keys.ToList();
             var templatesDb = SQLDatabase.GetDict<uint, UnitTemplate>(entries);
-            var templates = Storage.UnitTemplates;
 
-            return SQLUtil.CompareDicts(templates, templatesDb, StoreNameType.Unit);
+            return SQLUtil.CompareDicts(Storage.UnitTemplates, templatesDb, StoreNameType.Unit);
         }
 
         public static string GameObject()
@@ -154,36 +153,10 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.GameObjectTemplates.IsEmpty)
                 return String.Empty;
 
-            // Not TDB structure
-            const string tableName = "gameobject_template";
+            var entries = Storage.GameObjectTemplates.Keys.ToList();
+            var tempatesDb = SQLDatabase.GetDict<uint, GameObjectTemplate>(entries);
 
-            var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var goTemplate in Storage.GameObjectTemplates)
-            {
-                var row = new QueryBuilder.SQLInsertRow();
-
-                row.AddValue("Id", goTemplate.Key);
-                row.AddValue("Type", goTemplate.Value.Type);
-                row.AddValue("DisplayId", goTemplate.Value.DisplayId);
-                row.AddValue("Name", goTemplate.Value.Name);
-                row.AddValue("IconName", goTemplate.Value.IconName);
-                row.AddValue("CastCaption", goTemplate.Value.CastCaption);
-                row.AddValue("UnkString", goTemplate.Value.UnkString);
-
-                for (var i = 0; i < goTemplate.Value.Data.Length; i++)
-                    row.AddValue("Data" + (i + 1), goTemplate.Value.Data[i]);
-
-                row.AddValue("Size", goTemplate.Value.Size);
-
-                for (var i = 0; i < goTemplate.Value.QuestItems.Length; i++)
-                    row.AddValue("QuestItem" + (i + 1), goTemplate.Value.QuestItems[i]);
-
-                row.AddValue("UnknownUInt", goTemplate.Value.UnknownUInt);
-
-                rows.Add(row);
-            }
-
-            return new QueryBuilder.SQLInsert(tableName, rows).Build();
+            return SQLUtil.CompareDicts(Storage.GameObjectTemplates, tempatesDb, StoreNameType.GameObject);
         }
 
         public static string PageText()
