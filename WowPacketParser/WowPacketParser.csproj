@@ -142,6 +142,7 @@
     <Compile Include="Enums\ContactResult.cs" />
     <Compile Include="Enums\ContactStatus.cs" />
     <Compile Include="Enums\BattlegroundStatus.cs" />
+    <Compile Include="Enums\GossipOptionIcon.cs" />
     <Compile Include="Enums\InhabitType.cs" />
     <Compile Include="Enums\SQLOutputFlags.cs" />
     <Compile Include="Enums\GuildFinder.cs" />
@@ -318,7 +319,6 @@
     <Compile Include="Store\Objects\QuestPOI.cs" />
     <Compile Include="Store\Objects\LootItem.cs" />
     <Compile Include="Store\Objects\NpcVendor.cs" />
-    <Compile Include="Store\Objects\GossipOption.cs" />
     <Compile Include="Store\Objects\NpcTrainer.cs" />
     <Compile Include="Store\Objects\QuestPOIPoint.cs" />
     <Compile Include="Store\Objects\SniffData.cs" />

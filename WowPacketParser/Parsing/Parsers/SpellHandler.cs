@@ -145,7 +145,7 @@ namespace WowPacketParser.Parsing.Parsers
                 aura.MaxDuration = packet.ReadInt32("Max Duration");
                 aura.Duration = packet.ReadInt32("Duration");
             }
-            else // Is this needed?
+            else
             {
                 aura.MaxDuration = 0;
                 aura.Duration = 0;

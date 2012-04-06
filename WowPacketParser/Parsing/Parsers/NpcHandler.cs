@@ -248,7 +248,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var gossipOption = new GossipOption();
 
                 gossipOption.Index = packet.ReadUInt32("Index", i);
-                gossipOption.OptionIcon = packet.ReadByte("Icon", i);
+                gossipOption.OptionIcon = packet.ReadEnum<GossipOptionIcon>("Icon", TypeCode.Byte, i);
                 gossipOption.Box = packet.ReadBoolean("Box", i);
                 gossipOption.RequiredMoney = packet.ReadUInt32("Required money", i);
                 gossipOption.OptionText = packet.ReadCString("Text", i);

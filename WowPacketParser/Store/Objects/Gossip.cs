@@ -11,4 +11,19 @@ namespace WowPacketParser.Store.Objects
 
         public ICollection<GossipOption> GossipOptions;
     }
+
+    public class GossipOption
+    {
+        public uint Index;
+
+        public GossipOptionIcon OptionIcon;
+
+        public bool Box;
+
+        public uint RequiredMoney;
+
+        public string OptionText;
+
+        public string BoxText;
+    }
 }
