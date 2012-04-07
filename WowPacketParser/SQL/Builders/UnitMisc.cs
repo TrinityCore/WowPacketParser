@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
@@ -106,17 +107,17 @@ namespace WowPacketParser.SQL.Builders
             {
                 if (modelsDb != null && modelsDb.Count != 0)
                 {
-                    if (modelsDb.ContainsKey(model.Key)) // update
+                    if (modelsDb.ContainsKey(model.Key)) // possible update
                     {
                         var row = new QueryBuilder.SQLUpdateRow();
 
-                        if (Math.Abs(modelsDb[model.Key].Item1 - model.Value.Item1) > 0.01)
+                        if (!Utilities.EqualValues(modelsDb[model.Key].Item1, model.Value.Item1))
                             row.AddValue("bounding_radius", model.Value.Item1);
 
-                        if (Math.Abs(modelsDb[model.Key].Item2 - model.Value.Item2) > 0.01)
+                        if (!Utilities.EqualValues(modelsDb[model.Key].Item2, model.Value.Item2))
                             row.AddValue("combat_reach", model.Value.Item2);
 
-                        if (modelsDb[model.Key].Item3 != (int)model.Value.Item3)
+                        if (!Utilities.EqualValues(modelsDb[model.Key].Item3, model.Value.Item3))
                             row.AddValue("gender", model.Value.Item3);
 
                         row.AddWhere("entry", model.Key);
@@ -304,63 +305,200 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows, 2).Build();
         }
 
+        // TODO: Re-write Gossip()
+        [Obsolete("This is *stupid*, I'll do it in a better way later")]
+        [DBTableName("creature_template")]
+        private struct UnitGossip
+        {
+            [DBFieldName("gossip_menu_id")]
+            public uint GossipId;
+        }
+
         public static string Gossip()
         {
             if (Storage.Gossips.IsEmpty)
                 return String.Empty;
 
-            const string tableName1 = "gossip_menu";
-            const string tableName2 = "gossip_menu_option";
+            // `creature_template`
+            var gossipIds = new Dictionary<uint, UnitGossip>();
+            foreach (var gossip in Storage.Gossips)
+            {
+                if (gossip.Value.ObjectType != ObjectType.Unit) continue;
+                // no support for entries with multiple gossips (i.e changed by script)
+                if (gossipIds.ContainsKey(gossip.Value.ObjectEntry)) continue;
 
-            // TODO: Add creature_template gossip_menu_id update query or similar
+                UnitGossip a;
+                a.GossipId = gossip.Key.Item1;
+                gossipIds.Add(gossip.Value.ObjectEntry, a);
+            }
+
+            var entries = gossipIds.Keys.ToList();
+            var gossipIdsDb = SQLDatabase.GetDict<uint, UnitGossip>(entries);
+            var result = SQLUtil.CompareDicts(gossipIds, gossipIdsDb, StoreNameType.Unit);
 
             // `gossip`
-            var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var gossip in Storage.Gossips)
+            if (SQLConnector.Enabled)
             {
-                var row = new QueryBuilder.SQLInsertRow();
+                var query = new StringBuilder("SELECT `entry`,`text_id` FROM `world`.`gossip_menu` WHERE ");
+                foreach (Tuple<uint, uint> gossip in Storage.Gossips.Keys)
+                {
+                    query.Append("(`entry`=").Append(gossip.Item1).Append(" AND ");
+                    query.Append("`text_id`=").Append(gossip.Item2).Append(") OR ");
+                }
+                query.Remove(query.Length - 4, 4).Append(";");
 
-                row.AddValue("entry", gossip.Key.Item1);
-                row.AddValue("text_id", gossip.Key.Item2);
-                row.Comment = StoreGetters.GetName(Utilities.ObjectTypeToStore(gossip.Value.ObjectType),
-                                                   (int)gossip.Value.ObjectEntry, false);
+                var rows = new List<QueryBuilder.SQLInsertRow>();
+                using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
+                {
+                    if (reader != null)
+                        while (reader.Read())
+                        {
+                            var values = new object[2];
+                            var count = reader.GetValues(values);
+                            if (count != 2)
+                                break; // error in query
 
-                rows.Add(row);
+                            var entry = Convert.ToUInt32(values[0]);
+                            var textId = Convert.ToUInt32(values[1]);
+
+                            // our table is small, 2 fields and both are PKs; no need for updates
+                            if (!Storage.Gossips.ContainsKey(Tuple.Create(entry, textId)))
+                            {
+                                var row = new QueryBuilder.SQLInsertRow();
+                                row.AddValue("entry", entry);
+                                row.AddValue("text_id", textId);
+                                row.Comment = StoreGetters.GetName(StoreNameType.Unit, // BUG: GOs can send gossips too
+                                                                   (int) entry, false);
+                                rows.Add(row);
+                            }
+                        }
+                }
+                result += new QueryBuilder.SQLInsert("gossip_menu", rows, 2).Build();
             }
+            else
+            {
+                var rows = new List<QueryBuilder.SQLInsertRow>();
+                foreach (var gossip in Storage.Gossips)
+                {
+                    var row = new QueryBuilder.SQLInsertRow();
 
-            var result = new QueryBuilder.SQLInsert(tableName1, rows, 2).Build();
+                    row.AddValue("entry", gossip.Key.Item1);
+                    row.AddValue("text_id", gossip.Key.Item2);
+                    row.Comment = StoreGetters.GetName(Utilities.ObjectTypeToStore(gossip.Value.ObjectType),
+                                                       (int) gossip.Value.ObjectEntry, false);
+
+                    rows.Add(row);
+                }
+
+                result += new QueryBuilder.SQLInsert("gossip_menu", rows, 2).Build();
+            }
 
             // `gossip_menu_option`
-            rows = new List<QueryBuilder.SQLInsertRow>();
-            ICollection<Tuple<uint, uint>> keys = new Collection<Tuple<uint, uint>>();
-            foreach (var gossip in Storage.Gossips)
+            if (SQLConnector.Enabled)
             {
-                if (gossip.Value.GossipOptions != null) // Needed?
+                var rowsIns = new List<QueryBuilder.SQLInsertRow>();
+                var rowsUpd = new List<QueryBuilder.SQLUpdateRow>();
+
+                foreach (var gossip in Storage.Gossips)
+                {
+                    if (gossip.Value.GossipOptions == null) continue;
                     foreach (var gossipOption in gossip.Value.GossipOptions)
                     {
-                        var row = new QueryBuilder.SQLInsertRow();
+                        var query =       //         0     1       2         3         4        5         6
+                            string.Format("SELECT menu_id,id,option_icon,box_coded,box_money,box_text,option_text " +
+                                          "FROM world.gossip_menu_option WHERE menu_id={0} AND id={1};", gossip.Key.Item1,
+                                          gossipOption.Index);
+                        using (var reader = SQLConnector.ExecuteQuery(query))
+                        {
+                            if (reader.HasRows) // possible update
+                            {
+                                while (reader.Read())
+                                {
+                                    var row = new QueryBuilder.SQLUpdateRow();
 
-                        row.AddValue("menu_id", gossip.Key.Item1);
-                        row.AddValue("id", gossipOption.Index);
-                        row.AddValue("option_icon", gossipOption.OptionIcon);
-                        row.AddValue("option_text", gossipOption.OptionText);
-                        row.AddValue("box_coded", gossipOption.Box);
-                        row.AddValue("box_money", gossipOption.RequiredMoney);
-                        row.AddValue("box_text", gossipOption.BoxText);
+                                    if (!Utilities.EqualValues(reader.GetValue(2), gossipOption.OptionIcon))
+                                        row.AddValue("option_icon", gossipOption.OptionIcon);
 
-                        rows.Add(row);
+                                    if (!Utilities.EqualValues(reader.GetValue(3), gossipOption.Box))
+                                        row.AddValue("box_coded", gossipOption.Box);
 
-                        keys.Add(Tuple.Create(gossip.Key.Item1, gossipOption.Index));
+                                    if (!Utilities.EqualValues(reader.GetValue(4), gossipOption.RequiredMoney))
+                                        row.AddValue("box_money", gossipOption.RequiredMoney);
+
+                                    if (!Utilities.EqualValues(reader.GetValue(5), gossipOption.BoxText))
+                                        row.AddValue("box_text", gossipOption.BoxText);
+
+                                    if (!Utilities.EqualValues(reader.GetValue(6), gossipOption.OptionText))
+                                        row.AddValue("option_text", gossipOption.OptionText);
+
+                                    row.AddWhere("menu_id", gossip.Key.Item1);
+                                    row.AddWhere("id", gossipOption.Index);
+
+                                    row.Comment =
+                                        StoreGetters.GetName(Utilities.ObjectTypeToStore(gossip.Value.ObjectType),
+                                                             (int) gossip.Value.ObjectEntry, false);
+
+                                    row.Table = "gossip_menu_option";
+
+                                    if (row.ValueCount != 0)
+                                        rowsUpd.Add(row);
+                                }
+                            }
+                            else // insert
+                            {
+                                var row = new QueryBuilder.SQLInsertRow();
+
+                                row.AddValue("menu_id", gossip.Key.Item1);
+                                row.AddValue("id", gossipOption.Index);
+                                row.AddValue("option_icon", gossipOption.OptionIcon);
+                                row.AddValue("option_text", gossipOption.OptionText);
+                                row.AddValue("box_coded", gossipOption.Box);
+                                row.AddValue("box_money", gossipOption.RequiredMoney);
+                                row.AddValue("box_text", gossipOption.BoxText);
+
+                                row.Comment = StoreGetters.GetName(Utilities.ObjectTypeToStore(gossip.Value.ObjectType),
+                                                           (int)gossip.Value.ObjectEntry, false);
+
+                                rowsIns.Add(row);
+                            }
+                        }
                     }
+                }
+                result += new QueryBuilder.SQLInsert("gossip_menu_option", rowsIns, 2).Build() +
+                          new QueryBuilder.SQLUpdate(rowsUpd).Build();
             }
+            else
+            {
+                var rows = new List<QueryBuilder.SQLInsertRow>();
+                foreach (var gossip in Storage.Gossips)
+                {
+                    if (gossip.Value.GossipOptions != null)
+                        foreach (var gossipOption in gossip.Value.GossipOptions)
+                        {
+                            var row = new QueryBuilder.SQLInsertRow();
 
-            result += new QueryBuilder.SQLInsert(tableName2, rows, 2).Build();
+                            row.AddValue("menu_id", gossip.Key.Item1);
+                            row.AddValue("id", gossipOption.Index);
+                            row.AddValue("option_icon", gossipOption.OptionIcon);
+                            row.AddValue("option_text", gossipOption.OptionText);
+                            row.AddValue("box_coded", gossipOption.Box);
+                            row.AddValue("box_money", gossipOption.RequiredMoney);
+                            row.AddValue("box_text", gossipOption.BoxText);
+
+                            row.Comment = StoreGetters.GetName(Utilities.ObjectTypeToStore(gossip.Value.ObjectType),
+                                                       (int) gossip.Value.ObjectEntry, false);
+
+                            rows.Add(row);
+                        }
+                }
+
+                result += new QueryBuilder.SQLInsert("gossip_menu_option", rows, 2).Build();
+            }
 
             return result;
         }
 
         // Non-WDB data but nevertheless data that should be saved to creature_template
-
         public static string NpcTemplateNonWDB(Dictionary<Guid, Unit> units)
         {
             if (units.Count == 0)

@@ -167,41 +167,34 @@ namespace WowPacketParser.Misc
         }
 
         /// <summary>
-        /// Compares two objects with special cases for enums and floats
+        /// Compares two objects (values) with special cases for floats and strings
         /// </summary>
         /// <param name="o1">First object</param>
         /// <param name="o2">Second object</param>
         /// <returns>True if equal</returns>
         public static bool EqualValues(object o1, object o2)
         {
-            // We can't compare an enum with an int directly
-            // so we cast any enum to the underlying type and
-            // check if their values are equals
-            if (o1 is Enum || o2 is Enum)
-            {
-                if (o1 is Enum)
-                {
-                    var enumType = o1.GetType();
-                    var undertype = Enum.GetUnderlyingType(enumType);
-                    o1 = Convert.ChangeType(o1, undertype);
-                }
-
-                if (o2 is Enum)
-                {
-                    var enumType = o2.GetType();
-                    var undertype = Enum.GetUnderlyingType(enumType);
-                    o2 = Convert.ChangeType(o2, undertype);
-                }
-
-                return o1.Equals(o2);
-            }
-
             if (o1 is float && o2 is float)
             {
                 return Math.Abs((float)o1 - (float)o2) < 0.01;
             }
 
-            return o1.Equals(o2);
+            if (o1 is double && o2 is double)
+            {
+                return Math.Abs((double)o1 - (double)o2) < 0.001;
+            }
+
+            // TODO: Simplify this
+            // Notice that if one of the values is DBNull, DBNull == "" must return true
+            if (o1 is string && !(o2 is string))
+                return (string)o1 == Convert.ToString(o2);
+            if (!(o1 is string) && o2 is string)
+                return (string)o2 == Convert.ToString(o1);
+            if (o1 is string)
+                return o1.Equals(o2);
+
+            // this still works if objects are booleans or enums
+            return Convert.ToInt64(o1) == Convert.ToInt64(o2);
         }
 
         /// <summary>

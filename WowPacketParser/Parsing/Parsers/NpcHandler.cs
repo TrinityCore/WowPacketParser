@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -232,7 +233,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var gossip = new Gossip();
 
-            var guid = packet.ReadGuid("GUID"); // TODO: Use this to assign npc entries with gossip ids
+            var guid = packet.ReadGuid("GUID");
 
             gossip.ObjectType = guid.GetObjectType();
             gossip.ObjectEntry = guid.GetEntry();
@@ -240,26 +241,29 @@ namespace WowPacketParser.Parsing.Parsers
             var menuId = packet.ReadUInt32("Menu Id");
             var textId = packet.ReadUInt32("Text Id");
 
+            if (Storage.Objects.ContainsKey(guid))
+                if (Storage.Objects[guid].Type == ObjectType.Unit)
+                    ((Unit) Storage.Objects[guid]).GossipId = menuId;
+
             var count = packet.ReadUInt32("Amount of Options");
 
             gossip.GossipOptions = new List<GossipOption>((int) count);
             for (var i = 0; i < count; i++)
             {
-                var gossipOption = new GossipOption();
-
-                gossipOption.Index = packet.ReadUInt32("Index", i);
-                gossipOption.OptionIcon = packet.ReadEnum<GossipOptionIcon>("Icon", TypeCode.Byte, i);
-                gossipOption.Box = packet.ReadBoolean("Box", i);
-                gossipOption.RequiredMoney = packet.ReadUInt32("Required money", i);
-                gossipOption.OptionText = packet.ReadCString("Text", i);
-                gossipOption.BoxText = packet.ReadCString("Box Text", i);
+                var gossipOption = new GossipOption
+                {
+                    Index = packet.ReadUInt32("Index", i),
+                    OptionIcon = packet.ReadEnum<GossipOptionIcon>("Icon", TypeCode.Byte, i),
+                    Box = packet.ReadBoolean("Box", i),
+                    RequiredMoney = packet.ReadUInt32("Required money", i),
+                    OptionText = packet.ReadCString("Text", i),
+                    BoxText = packet.ReadCString("Box Text", i)
+                };
 
                 gossip.GossipOptions.Add(gossipOption);
             }
-
+            Storage.Gossips.TryAdd(Tuple.Create(menuId, textId), gossip);
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
-
-            Storage.Gossips.TryAdd(new Tuple<uint, uint>(menuId, textId), gossip);
 
             var questgossips = packet.ReadUInt32("Amount of Quest gossips");
             for (var i = 0; i < questgossips; i++)

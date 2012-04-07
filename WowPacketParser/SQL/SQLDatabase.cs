@@ -91,6 +91,9 @@ namespace WowPacketParser.SQL
         /// <returns>Dictionary of structs of type TK</returns>
         public static Dictionary<T, TK> GetDict<T, TK>(List<T> entries, string primaryKeyName = "entry")
         {
+            if (entries.Count == 0)
+                return null;
+
             // TODO: Add new config option "Verify data against DB"
             if (!SQLConnector.Enabled)
                 return null;

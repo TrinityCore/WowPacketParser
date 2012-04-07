@@ -25,6 +25,8 @@ namespace WowPacketParser.Store.Objects
             return false;
         }
 
+        public uint GossipId;
+
         // Fields from UPDATE_FIELDS
         public float? Size;
         public uint? Bytes0;
