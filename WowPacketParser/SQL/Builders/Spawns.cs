@@ -100,8 +100,6 @@ namespace WowPacketParser.SQL.Builders
                     animprogress = Convert.ToUInt32((bytes & 0xFF000000) >> 24);
                 }
 
-                var spawnTimeSecs = go.GetDefaultSpawnTime();
-
                 row.AddValue("guid", "@OGUID+" + count, noQuotes: true);
                 row.AddValue("id", gameobject.Key.GetEntry());
                 row.AddValue("map", go.Map);
@@ -111,11 +109,24 @@ namespace WowPacketParser.SQL.Builders
                 row.AddValue("position_y", go.Movement.Position.Y);
                 row.AddValue("position_z", go.Movement.Position.Z);
                 row.AddValue("orientation", go.Movement.Orientation);
-                row.AddValue("rotation0", go.Movement.Rotation.X);
-                row.AddValue("rotation1", go.Movement.Rotation.Y);
-                row.AddValue("rotation2", go.Movement.Rotation.Z);
-                row.AddValue("rotation3", go.Movement.Rotation.W);
-                row.AddValue("spawntimesecs", spawnTimeSecs);
+
+                var rotation = go.GetRotation();
+                if (rotation != null && rotation.Length == 4)
+                {
+                    row.AddValue("rotation0", rotation[0]);
+                    row.AddValue("rotation1", rotation[1]);
+                    row.AddValue("rotation2", rotation[2]);
+                    row.AddValue("rotation3", rotation[3]);
+                }
+                else
+                {
+                    row.AddValue("rotation0", 0);
+                    row.AddValue("rotation1", 0);
+                    row.AddValue("rotation2", 0);
+                    row.AddValue("rotation3", 0);
+                }
+
+                row.AddValue("spawntimesecs", go.GetDefaultSpawnTime());
                 row.AddValue("animprogress", animprogress);
                 row.AddValue("state", state);
                 row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);

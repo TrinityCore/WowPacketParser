@@ -15,5 +15,10 @@ namespace WowPacketParser.Store.Objects
 
             return false;
         }
+
+        public float[] GetRotation()
+        {
+            return UpdateFields.GetArray<GameObjectField, float>(GameObjectField.GAMEOBJECT_PARENTROTATION, 4);
+        }
     }
 }

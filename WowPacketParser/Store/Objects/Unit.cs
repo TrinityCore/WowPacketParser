@@ -92,7 +92,7 @@ namespace WowPacketParser.Store.Objects
             MaxHealth     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_MAXHEALTH);
             Level         = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_LEVEL);
             Faction       = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_FACTIONTEMPLATE);
-            Equipment     = UpdateFields.GetArray(UnitField.UNIT_VIRTUAL_ITEM_SLOT_ID1, 3);
+            Equipment     = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_VIRTUAL_ITEM_SLOT_ID1, 3);
             UnitFlags     = UpdateFields.GetEnum<UnitField, UnitFlags?>(UnitField.UNIT_FIELD_FLAGS);
             UnitFlags2    = UpdateFields.GetEnum<UnitField, UnitFlags2?>(UnitField.UNIT_FIELD_FLAGS_2);
             MeleeTime     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASEATTACKTIME);
@@ -103,7 +103,7 @@ namespace WowPacketParser.Store.Objects
             DynamicFlags  = UpdateFields.GetEnum<UnitField, UnitDynamicFlags?>(UnitField.UNIT_DYNAMIC_FLAGS);
             NpcFlags      = UpdateFields.GetEnum<UnitField, NPCFlags?>(UnitField.UNIT_NPC_FLAGS);
             EmoteState    = UpdateFields.GetEnum<UnitField, EmoteType?>(UnitField.UNIT_NPC_EMOTESTATE);
-            Resistances   = UpdateFields.GetArray(UnitField.UNIT_FIELD_RESISTANCES_ARMOR, 7);
+            Resistances   = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_FIELD_RESISTANCES_ARMOR, 7);
             ManaMod       = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASE_MANA);
             HealthMod     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASE_HEALTH);
             Bytes2        = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_2);
@@ -145,21 +145,25 @@ namespace WowPacketParser.Store.Objects
         /// Grabs N (consecutive) values from a dictionary of UpdateFields
         /// </summary>
         /// <typeparam name="T">The type of UpdateField (ObjectField, UnitField, ...)</typeparam>
+        /// <typeparam name="TK">UInt or Float</typeparam>
         /// <param name="dict">The dictionary</param>
         /// <param name="firstUpdateField">The first update field of the sequence</param>
         /// <param name="count">Number of values to retrieve</param>
         /// <returns></returns>
-        public static uint[] GetArray<T>(this Dictionary<int, UpdateField> dict, T firstUpdateField, int count)
+        public static TK[] GetArray<T, TK>(this Dictionary<int, UpdateField> dict, T firstUpdateField, int count)
         {
-            var result = new uint[count];
+            var result = new TK[count];
 
             for (var i = 0; i < count; i++)
             {
                 UpdateField uf;
                 if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField<T>(Convert.ToInt32(firstUpdateField) + i), out uf))
-                    result[i] = uf.UInt32Value;
-                else
-                    return null;
+                    if (typeof(TK) == typeof(uint))
+                        result[i] = (TK) (object) uf.UInt32Value;
+                    else if (typeof(TK) == typeof(float))
+                        result[i] = (TK)(object) uf.SingleValue;
+                    else
+                        return null;
             }
 
             return result;
