@@ -217,14 +217,17 @@ namespace WowPacketParser
                     span.Minutes, span.Seconds, span.Milliseconds, numberOfThreadsParse));
             }
 
-            string sqlFileName;
-            if (String.IsNullOrWhiteSpace(Settings.SQLFileName))
-                sqlFileName = files.Aggregate(string.Empty, (current, file) => current + Path.GetFileNameWithoutExtension(file)) + ".sql";
-            else
-                sqlFileName = Settings.SQLFileName;
+            if (Settings.SQLOutput != 0)
+            {
+                string sqlFileName;
+                if (String.IsNullOrWhiteSpace(Settings.SQLFileName))
+                    sqlFileName = files.Aggregate(string.Empty, (current, file) => current + Path.GetFileNameWithoutExtension(file)) + ".sql";
+                else
+                    sqlFileName = Settings.SQLFileName;
 
-            Builder.DumpSQL("Dumping global sql", sqlFileName, Settings.SQLOutput);
-            
+                Builder.DumpSQL("Dumping global sql", sqlFileName, Settings.SQLOutput);
+            }
+
             SQLConnector.Disconnect();
             SSHTunnel.Disconnect();
             Logger.WriteErrors();
