@@ -1024,11 +1024,11 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static MovementInfo ReadMovementUpdateBlock(ref Packet packet, Guid guid, int index)
         {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_2_15211))
-                return ReadMovementUpdateBlock432(ref packet, guid, index);
-
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_3_15354))
                 return ReadMovementUpdateBlock433(ref packet, guid, index);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_2_15211))
+                return ReadMovementUpdateBlock432(ref packet, guid, index);
 
             var moveInfo = new MovementInfo();
 
