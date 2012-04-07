@@ -1,6 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -10,67 +14,82 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PET_SPELLS)]
         public static void HandlePetSpells(Packet packet)
         {
-            var guid64 = packet.ReadUInt64();
+            var guid = packet.ReadGuid("GUID");
             // Equal to "Clear spells" pre cataclysm
-            if (guid64 == 0)
+            if (guid.Full == 0)
                 return;
-
-            var guid = new Guid(guid64);
-            packet.WriteLine("GUID: " + guid);
-            var isPet = guid.GetHighType() == HighGuidType.Pet;
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                 packet.ReadEnum<CreatureFamily>("Pet Family", TypeCode.UInt16); // vehicles -> 0
 
             packet.ReadUInt32("Unknown 1");
 
+            var isPet = guid.GetHighType() == HighGuidType.Pet;
+            var isVehicle = guid.GetHighType() == HighGuidType.Vehicle;
+            var isMinion = guid.GetHighType() == HighGuidType.Unit;
+
             // Following int8,int8,int16 is sent like int32
             /*var reactState = */ packet.ReadByte("React state"); // 1
             /*var commandState = */ packet.ReadByte("Command state"); // 1
             packet.ReadUInt16("Unknown 2"); // pets -> 0, vehicles -> 0x800 (2048)
 
-            const int creatureMaxSpells = 8;
+            if (isPet)
+                packet.WriteLine("PET");
+            if (isMinion)
+                packet.WriteLine("MINION");
+            if (isVehicle)
+                packet.WriteLine("VEHICLE");
 
-            for (var i = 1; i <= creatureMaxSpells + 2; i++) // Read pet/vehicle spell ids
+            var spells = new List<uint>(10);
+            for (var i = 0; i < 10; i++) // Read pet/vehicle spell ids
             {
                 var spell16 = packet.ReadUInt16();
                 var spell8 = packet.ReadByte();
-                var slotid = packet.ReadByte();
                 var spellId = spell16 + (spell8 << 16);
-                if (!isPet) // cleanup vehicle spells (start at 1 instead 8,
-                {           // and do not print spells with id 0)
-                    slotid -= creatureMaxSpells - 1;
-                    if (spellId == 0)
-                        continue;
-                }
+                var slot = packet.ReadByte();
 
-                packet.WriteLine("Spell " + slotid + ": " + StoreGetters.GetName(StoreNameType.Spell, spellId));
+                var s = new StringBuilder("[");
+                s.Append(i).Append("] ").Append(" Spell/Action: ");
+                if (spellId <= 4)
+                    s.Append(spellId);
+                else
+                    s.Append(StoreGetters.GetName(StoreNameType.Spell, spellId));
+
+                s.Append(" slot: ").Append(slot);
+
+                packet.WriteLine(s.ToString());
+
+                // Spells for pets are on DBCs; also no entry in guid
+                // We don't need the ac
+                if (!isPet && (isVehicle || (isMinion && slot >= 8)))
+                    spells.Add((uint)spellId);
             }
 
-            var spellCount = packet.ReadByte(); // vehicles -> 0, pets -> != 0. Could this be auras?
-            packet.WriteLine("Spell count: " + spellCount);
+            if (spells.Count != 0)
+            {
+                SpellsX spellsCr;
+                spellsCr.Spells = spells.ToArray();
+                Storage.SpellsX.TryAdd(guid.GetEntry(), spellsCr);
+            }
 
+            var spellCount = packet.ReadByte("Spell Count"); // vehicles -> 0, pets -> != 0. Could this be auras?
             for (var i = 0; i < spellCount; i++)
             {
-                // Sent as int32
-                var spellId = packet.ReadUInt16();
-                var active = packet.ReadInt16();
-                packet.WriteLine("Spell " + i + ": " + StoreGetters.GetName(StoreNameType.Spell, spellId) + ", active: " + active);
+                packet.ReadEntryWithName<Int16>(StoreNameType.Spell, "Spell", i);
+                packet.ReadInt16("Active", i);
             }
 
-            var cdCount = packet.ReadByte();
-            packet.WriteLine("Cooldown count: " + cdCount);
-
+            var cdCount = packet.ReadByte("Cooldown count");
             for (var i = 0; i < cdCount; i++)
             {
-                var spellId = ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767) ? packet.ReadInt32() : packet.ReadUInt16();
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell", i);
+                else
+                    packet.ReadEntryWithName<Int16>(StoreNameType.Spell, "Spell", i);
 
-                var category = packet.ReadUInt16();
-                var cooldown = packet.ReadUInt32();
-                var categoryCooldown = packet.ReadUInt32();
-
-                packet.WriteLine("Cooldown: Spell: " + StoreGetters.GetName(StoreNameType.Spell, spellId) + " category: " + category +
-                    " cooldown: " + cooldown + " category cooldown: " + categoryCooldown);
+                packet.ReadUInt16("Category", i);
+                packet.ReadUInt32("Cooldown", i);
+                packet.ReadUInt32("Category Cooldown", i);
             }
         }
 

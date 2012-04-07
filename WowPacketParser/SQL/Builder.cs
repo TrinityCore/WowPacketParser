@@ -42,6 +42,7 @@ namespace WowPacketParser.SQL
                     store.WriteData(UnitMisc.NpcTemplateNonWDB(units));
                     store.WriteData(UnitMisc.Addon(units));
                     store.WriteData(UnitMisc.ModelData(units));
+                    store.WriteData(UnitMisc.SpellsX());
                 }
 
                 if (sqlOutput.HasAnyFlag(SQLOutputFlags.CreatureSpawns))

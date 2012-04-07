@@ -45,6 +45,10 @@ namespace WowPacketParser.Store
         public static readonly ConcurrentDictionary<uint, NpcText> NpcTexts =
             new ConcurrentDictionary<uint, NpcText>();
 
+        // Misc
+        public static readonly ConcurrentDictionary<uint, SpellsX> SpellsX = // creature_template.spellX
+            new ConcurrentDictionary<uint, SpellsX>();
+
         /* Key: Misc */
 
         // Start info (Race, Class)

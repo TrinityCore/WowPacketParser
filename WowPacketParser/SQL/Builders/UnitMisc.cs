@@ -562,5 +562,16 @@ namespace WowPacketParser.SQL.Builders
 
             return new QueryBuilder.SQLUpdate(rows).Build();
         }
+
+        public static string SpellsX()
+        {
+            if (Storage.SpellsX.IsEmpty)
+                return String.Empty;
+
+            var entries = Storage.SpellsX.Keys.ToList();
+            var templatesDb = SQLDatabase.GetDict<uint, SpellsX>(entries);
+
+            return SQLUtil.CompareDicts(Storage.SpellsX, templatesDb, StoreNameType.Unit);
+        }
     }
 }

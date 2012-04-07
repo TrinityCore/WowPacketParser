@@ -169,10 +169,15 @@ namespace WowPacketParser.SQL
                             var arr1 = (Array) val1;
                             var arr2 = (Array) val2;
 
+                            var isString = arr1.GetType().GetElementType() == typeof(string);
+
                             for (var i = 0; i < field.Item2.Count; i++)
                             {
-                                if (!Utilities.EqualValues(arr1.GetValue(i), arr2.GetValue(i)))
-                                    row.AddValue(field.Item2.Name + (field.Item2.StartAtZero ? i : i + 1), arr1.GetValue(i));
+                                var value1 = i >= arr1.Length ? (isString ? (object) string.Empty : 0) : arr1.GetValue(i);
+                                var value2 = i >= arr2.Length ? (isString ? (object) string.Empty : 0) : arr2.GetValue(i);
+
+                                if (!Utilities.EqualValues(value1, value2))
+                                    row.AddValue(field.Item2.Name + (field.Item2.StartAtZero ? i : i + 1), value1);
                             }
 
                             continue;
@@ -202,7 +207,7 @@ namespace WowPacketParser.SQL
                         if (field.Item1.FieldType.BaseType == typeof(Array))
                         {
                             var arr = (Array)field.Item1.GetValue(elem1.Value);
-                            for (var i = 0; i < field.Item2.Count; i++)
+                            for (var i = 0; i < arr.Length; i++)
                                 row.AddValue(field.Item2.Name + (field.Item2.StartAtZero ? i : i + 1), arr.GetValue(i));
 
                             continue;
