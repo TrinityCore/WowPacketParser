@@ -1,89 +1,79 @@
 ﻿using System;
-using System.Windows.Forms;
-using System.Xml;
+using System.Configuration;
+using System.Linq;
 
 namespace SettingsUI
 {
-    public class Settings // By circumpunct
+    public class Settings
     {
-        readonly XmlDocument _xmlDocument = new XmlDocument();
-        readonly string _documentPath = Application.StartupPath + "//settings.xml";
-
+        private readonly Configuration _config;
         public Settings()
         {
-            try
+            var fileMap = new ExeConfigurationFileMap();
+            fileMap.ExeConfigFilename = @"WowPacketParser.exe.config";
+            _config = ConfigurationManager.OpenMappedExeConfiguration(fileMap,
+                ConfigurationUserLevel.None);
+
+            if (!_config.HasFile)
+                throw new ConfigurationErrorsException("Config file not found.");
+        }
+
+        /// <summary>
+        /// Changes configuration modifications to file
+        /// </summary>
+        public void Save()
+        {
+            _config.Save(ConfigurationSaveMode.Full);
+        }
+
+        /// <summary>
+        /// Returns the value associated with the given key or 
+        /// returns the passed value if key does not exist.
+        /// </summary>
+        /// <typeparam name="T">Type of default value and return type</typeparam>
+        /// <param name="key">Key</param>
+        /// <param name="defaultVal">Return value if key does not exist</param>
+        /// <param name="createVal">If the key does not exist, add the key-default value pair to configuration</param>
+        /// <returns></returns>
+        public T GetSetting<T>(string key, T defaultVal, bool createVal = false)
+        {
+            var pair = _config.AppSettings.Settings[key];
+            if (pair == null)
             {
-                ExistingFile = true;
-                _xmlDocument.Load(_documentPath);
+                if (createVal)
+                    _config.AppSettings.Settings.Add(
+                        new KeyValueConfigurationElement(key, defaultVal.ToString()));
+                
+                return defaultVal;
             }
-            catch
-            {
-                ExistingFile = false;
-                _xmlDocument.LoadXml("<settings></settings>");
-            }
+
+            if (typeof(T).BaseType == typeof(Enum))
+                return (T) Enum.Parse(typeof (T), pair.Value, true);
+
+            return (T) Convert.ChangeType(pair.Value, typeof (T));
         }
 
-        public bool ExistingFile;
-
-        public bool GetSetting(string xPath, bool defaultValue)
+        /// <summary>
+        /// Modifies the value of an existing key or creates a new one.
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <param name="value">Value</param>
+        public void SetSetting(string key, string value)
         {
-            return Convert.ToBoolean(GetSetting(xPath, Convert.ToString(defaultValue)));
+            if (_config.AppSettings.Settings.AllKeys.Contains(key))
+                _config.AppSettings.Settings[key].Value = value;
+            else
+                _config.AppSettings.Settings.Add(new KeyValueConfigurationElement(key, value));
         }
 
-        public void PutSetting(string xPath, bool value)
+        /// <summary>
+        /// Removes a setting from the configuration.
+        /// Does nothing if key does not exist.
+        /// </summary>
+        /// <param name="key">Key</param>
+        public void RemoveSetting(string key)
         {
-            PutSetting(xPath, Convert.ToString(value));
-        }
-
-        public int GetSetting(string xPath, int defaultValue)
-        {
-            return Convert.ToInt16(GetSetting(xPath, Convert.ToString(defaultValue)));
-        }
-
-        public void PutSetting(string xPath, int value)
-        {
-            PutSetting(xPath, Convert.ToString(value));
-        }
-
-        public string GetSetting(string xPath, string defaultValue)
-        {
-            var xmlNode = _xmlDocument.SelectSingleNode("settings/" + xPath);
-            return xmlNode != null ? xmlNode.InnerText : defaultValue;
-        }
-
-        public void PutSetting(string xPath, string value)
-        {
-            var xmlNode = _xmlDocument.SelectSingleNode("settings/" + xPath) ?? CreateMissingNode("settings/" + xPath);
-            xmlNode.InnerText = value;
-            try
-            {
-                _xmlDocument.Save(_documentPath);
-            }
-// ReSharper disable EmptyGeneralCatchClause
-            catch { } // Silently error, program can still work
-// ReSharper restore EmptyGeneralCatchClause
-        }
-
-        private XmlNode CreateMissingNode(string xPath)
-        {
-            var xPathSections = xPath.Split('/');
-            var currentXPath = "";
-            var currentNode = _xmlDocument.SelectSingleNode("settings");
-            foreach (var xPathSection in xPathSections)
-            {
-                currentXPath += xPathSection;
-                var testNode = _xmlDocument.SelectSingleNode(currentXPath);
-                if (testNode == null)
-                {
-                    if (currentNode != null)
-                        currentNode.InnerXml += "<" +
-                                                xPathSection + "></" +
-                                                xPathSection + ">";
-                }
-                currentNode = _xmlDocument.SelectSingleNode(currentXPath);
-                currentXPath += "/";
-            }
-            return currentNode;
+            _config.AppSettings.Settings.Remove(key);
         }
     }
 }

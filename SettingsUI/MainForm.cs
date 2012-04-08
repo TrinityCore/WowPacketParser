@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -21,13 +23,14 @@ namespace SettingsUI
             get { return _sqlOutputMask; }
             set
             {
-                sqlOutputMaskLabel.Text = "Current value: " + value;
+                sqlOutputMaskLabel.Text = value.ToString(CultureInfo.InvariantCulture);
                 _sqlOutputMask = value;
             }
         }
 
         private Dictionary<CheckBox, uint> _sqlOutputValues;
-        private Dictionary<Control, Tuple<string, object>> _settings;
+        private Dictionary<Control, Tuple<string, dynamic>> _defaultSettings;
+        private Settings _configuration;
 
         private void DBEnabledCheckBoxCheckedChanged(object sender, EventArgs e)
         {
@@ -53,81 +56,125 @@ namespace SettingsUI
             SSHEnabledCheckBoxCheckedChanged(sender, e);
             _sqlOutputValues = new Dictionary<CheckBox, uint>
             {
-                {gotCheckBox,  0x0001}, // GameObjectTemplate
-                {gosCheckBox,  0x0002}, // GameObjectSpawns
-                {qtCheckBox,   0x0004}, // QuestTemplate
-                {qpoiCheckBox, 0x0008}, // QuestPOI
-                {ctCheckBox,   0x0010}, // CreatureTemplate
-                {csCheckBox,   0x0020}, // CreatureSpawns
-                {ntCheckBox,   0x0040}, // NpcTrainer
-                {nvCheckBox,   0x0080}, // NpcVendor
-                {ntxtCheckBox, 0x0100}, // NpcText
-                {lCheckBox,    0x0200}, // Loot
-                {gCheckBox,    0x0400}, // Gossip
-                {ptCheckBox,   0x0800}, // PageText
-                {siCheckBox,   0x1000}, // StartInformation
-                {sdCheckBox,   0x2000}, // SniffData
-                {sdoCheckBox,  0x4000}, // SniffData:Opcodes
-                {onCheckBox,   0x8000}, // ObjectNames
-                {ceCheckBox,  0x10000}  // CreatureEquip
+                {gotCheckBox,  0x00001}, // GameObjectTemplate
+                {gosCheckBox,  0x00002}, // GameObjectSpawns
+                {qtCheckBox,   0x00004}, // QuestTemplate
+                {qpoiCheckBox, 0x00008}, // QuestPOI
+                {ctCheckBox,   0x00010}, // CreatureTemplate
+                {csCheckBox,   0x00020}, // CreatureSpawns
+                {ntCheckBox,   0x00040}, // NpcTrainer
+                {nvCheckBox,   0x00080}, // NpcVendor
+                {ntxtCheckBox, 0x00100}, // NpcText
+                {lCheckBox,    0x00200}, // Loot
+                {gCheckBox,    0x00400}, // Gossip
+                {ptCheckBox,   0x00800}, // PageText
+                {siCheckBox,   0x01000}, // StartInformation
+                {sdCheckBox,   0x02000}, // SniffData
+                {sdoCheckBox,  0x04000}, // SniffData:Opcodes
+                {onCheckBox,   0x08000}, // ObjectNames
+                {ceCheckBox,   0x10000}, // CreatureEquip
+                {mCheckBox,    0x20000}, // Creature Movement
             };
 
-            _settings = new Dictionary<Control, Tuple<string, object>>
+            _defaultSettings = new Dictionary<Control, Tuple<string, dynamic>>
             {
                 // UI element - setting name - default value
-                {opcodesTextBox, new Tuple<string, object>("Filters", string.Empty)},
-                {ignoreOpcodesTextBox, new Tuple<string, object>("IgnoreFilters", string.Empty)},
-                {filtersEntryTextBox, new Tuple<string, object>("IgnoreByEntryFilters", string.Empty)},
-                {areasTextBox, new Tuple<string, object>("AreaFilters", string.Empty)},
-                {sqlFileNameTextBox, new Tuple<string, object>("SQLFileName", string.Empty)},
-                {packetNumUpDown, new Tuple<string, object>("FilterPacketsNum", 0)},
-                {minPacketNumUpDown, new Tuple<string, object>("FilterPacketNumLow", 0)},
-                {maxPacketNumUpDown, new Tuple<string, object>("FilterPacketNumHigh", 0)},
-                {clientBuildComboBox, new Tuple<string, object>("ClientBuild", 0)},
-                {threadsReadNumericUpDown, new Tuple<string, object>("ThreadsRead", 0)},
-                {threadsParseNumericUpDown, new Tuple<string, object>("ThreadsParse", 0)},
-                {sqlOutputMaskLabel, new Tuple<string, object>("SQLOutput", 0)},
-                {showPromptCheckBox, new Tuple<string, object>("ShowEndPrompt", true)},
-                {logErrorCheckBox, new Tuple<string, object>("LogErrors", false)},
-                {splitOutputCheckBox, new Tuple<string, object>("SplitOutput", false)},
-                {debugReadsCheckBox, new Tuple<string, object>("DebugReads", false)},
-                {parsingLogCheckBox, new Tuple<string, object>("ParsingLog", false)},
-                {dumpFormatComboBox, new Tuple<string, object>("DumpFormat", DumpFormat.Text)},
-                {statsComboBox, new Tuple<string, object>("StatsOutput", StatsOutput.Global)},
-                {sshEnabledCheckBox, new Tuple<string, object>("SSHEnabled", false)},
-                {sshServerTextBox, new Tuple<string, object>("SSHHost", "localhost")},
-                {sshUsernameTextBox, new Tuple<string, object>("SSHUsername", "root")},
-                {sshPasswordTextBox, new Tuple<string, object>("SSHPassword", string.Empty)},
-                {sshPortNumericUpDown, new Tuple<string, object>("SSHPort", 22)},
-                {sshLocalPortNumericUpDown, new Tuple<string, object>("SSHLocalPort", 3307)},
-                {dbEnabledCheckBox, new Tuple<string, object>("DBEnabled", false)},
-                {serverTextBox, new Tuple<string, object>("Server", "localhost")},
-                {portNumericUpDown, new Tuple<string, object>("Port", 3306)},
-                {usernameTextBox, new Tuple<string, object>("Username", "root")},
-                {passwordTextBox, new Tuple<string, object>("Password", string.Empty)},
-                {databaseTextBox, new Tuple<string, object>("Database", "WPP")},
-                {charSetComboBox, new Tuple<string, object>("CharacterSet", CharacterSet.UTF8)},
+                {opcodesTextBox, new Tuple<string, dynamic>("Filters", string.Empty)},
+                {ignoreOpcodesTextBox, new Tuple<string, dynamic>("IgnoreFilters", string.Empty)},
+                {filtersEntryTextBox, new Tuple<string, dynamic>("IgnoreByEntryFilters", string.Empty)},
+                {areasTextBox, new Tuple<string, dynamic>("AreaFilters", string.Empty)},
+                {sqlFileNameTextBox, new Tuple<string, dynamic>("SQLFileName", string.Empty)},
+                {packetNumUpDown, new Tuple<string, dynamic>("FilterPacketsNum", 0)},
+                {minPacketNumUpDown, new Tuple<string, dynamic>("FilterPacketNumLow", 0)},
+                {maxPacketNumUpDown, new Tuple<string, dynamic>("FilterPacketNumHigh", 0)},
+                {clientBuildComboBox, new Tuple<string, dynamic>("ClientBuild", 0)},
+                {threadsReadNumericUpDown, new Tuple<string, dynamic>("Threads.Read", 0)},
+                {threadsParseNumericUpDown, new Tuple<string, dynamic>("Threads.Parse", 0)},
+                {sqlOutputMaskLabel, new Tuple<string, dynamic>("SQLOutput", 0)},
+                {showPromptCheckBox, new Tuple<string, dynamic>("ShowEndPrompt", true)},
+                {logErrorCheckBox, new Tuple<string, dynamic>("LogErrors", false)},
+                {splitOutputCheckBox, new Tuple<string, dynamic>("SplitOutput", false)},
+                {debugReadsCheckBox, new Tuple<string, dynamic>("DebugReads", false)},
+                {parsingLogCheckBox, new Tuple<string, dynamic>("ParsingLog", false)},
+                {dumpFormatComboBox, new Tuple<string, dynamic>("DumpFormat", DumpFormat.Text)},
+                {statsComboBox, new Tuple<string, dynamic>("StatsOutput", StatsOutput.Global)},
+                {sshEnabledCheckBox, new Tuple<string, dynamic>("SSHEnabled", false)},
+                {sshServerTextBox, new Tuple<string, dynamic>("SSHHost", "localhost")},
+                {sshUsernameTextBox, new Tuple<string, dynamic>("SSHUsername", "root")},
+                {sshPasswordTextBox, new Tuple<string, dynamic>("SSHPassword", string.Empty)},
+                {sshPortNumericUpDown, new Tuple<string, dynamic>("SSHPort", 22)},
+                {sshLocalPortNumericUpDown, new Tuple<string, dynamic>("SSHLocalPort", 3307)},
+                {dbEnabledCheckBox, new Tuple<string, dynamic>("DBEnabled", false)},
+                {serverTextBox, new Tuple<string, dynamic>("Server", "localhost")},
+                {portNumericUpDown, new Tuple<string, dynamic>("Port", 3306)},
+                {usernameTextBox, new Tuple<string, dynamic>("Username", "root")},
+                {passwordTextBox, new Tuple<string, dynamic>("Password", string.Empty)},
+                {databaseTextBox, new Tuple<string, dynamic>("WPPDatabase", "WPP")},
+                {databaseWTextBox, new Tuple<string, dynamic>("TDBDatabase", "world")},
+                {charSetComboBox, new Tuple<string, dynamic>("CharacterSet", CharacterSet.UTF8)},
 	        };
 
-            var set = new Settings();
-            if (!set.ExistingFile)
-                LoadDefaults();
+            try
+            {
+                _configuration = new Settings();
+            }
+            catch (ConfigurationErrorsException ex)
+            {
+                MessageBox.Show(ex.Message, "Configuration Error", MessageBoxButtons.OK, MessageBoxIcon.Error,
+                                MessageBoxDefaultButton.Button1);
+
+                Close();
+            }
+
+            LoadSettings();
+
         }
 
-        private void LoadDefaults()
+        private void LoadSettings()
         {
-            foreach (var element in _settings)
+            foreach (var element in _defaultSettings)
             {
+                var val = _configuration.GetSetting(element.Value.Item1, element.Value.Item2);
+
                 if (element.Key is CheckBox) // special case for checkboxes, changing "Text" is not correct
-                    ((CheckBox) element.Key).Checked = (bool) element.Value.Item2;
+                    ((CheckBox) element.Key).Checked = Convert.ToBoolean(val);
                 else
-                    element.Key.Text = element.Value.Item2.ToString();
+                    element.Key.Text = val.ToString();
             }
+        }
+
+        private void SaveSettings()
+        {
+            foreach (var element in _defaultSettings)
+            {
+
+                string val;
+                if (element.Key is CheckBox)
+                    val = ((CheckBox)element.Key).Checked ? "true" : "false";
+                else if (element.Value.Item2 is Enum)
+                {
+                    var a = Enum.Parse(element.Value.Item2.GetType(), element.Key.Text);
+                    var enumType = element.Value.Item2.GetType();
+                    var undertype = Enum.GetUnderlyingType(enumType);
+                    val = Convert.ChangeType(a, undertype).ToString();
+                }
+                else
+                    val = element.Key.Text;
+
+                _configuration.SetSetting(element.Value.Item1, val);
+            }
+
+            _configuration.Save();
         }
 
         private void CloseButtonClick(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void SaveButtonClick(object sender, EventArgs e)
+        {
+            SaveSettings();
         }
 
         private void SQLOutputCheckBoxChanged(object sender, EventArgs e)

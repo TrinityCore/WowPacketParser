@@ -104,6 +104,7 @@
             this.lCheckBox = new System.Windows.Forms.CheckBox();
             this.sdCheckBox = new System.Windows.Forms.CheckBox();
             this.siCheckBox = new System.Windows.Forms.CheckBox();
+            this.mCheckBox = new System.Windows.Forms.CheckBox();
             this.selectAllButton = new System.Windows.Forms.Button();
             this.selectNoneButton = new System.Windows.Forms.Button();
             this.sqlOutputMaskLabel = new System.Windows.Forms.Label();
@@ -114,6 +115,7 @@
             this.parsingLogCheckBox = new System.Windows.Forms.CheckBox();
             this.statsComboBox = new System.Windows.Forms.ComboBox();
             this.statsLabel = new System.Windows.Forms.Label();
+            this.databaseWTextBox = new System.Windows.Forms.TextBox();
             filtersGroupBox = new System.Windows.Forms.GroupBox();
             filtersGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.packetNumUpDown)).BeginInit();
@@ -296,6 +298,7 @@
             this.SaveButton.TabIndex = 0;
             this.SaveButton.Text = "Save";
             this.SaveButton.UseVisualStyleBackColor = true;
+            this.SaveButton.Click += new System.EventHandler(this.SaveButtonClick);
             // 
             // CloseButton
             // 
@@ -322,6 +325,7 @@
             // 
             // dbTabPage
             // 
+            this.dbTabPage.Controls.Add(this.databaseWTextBox);
             this.dbTabPage.Controls.Add(this.charSetComboBox);
             this.dbTabPage.Controls.Add(this.databaseTextBox);
             this.dbTabPage.Controls.Add(this.passwordTextBox);
@@ -356,7 +360,7 @@
             // 
             this.databaseTextBox.Location = new System.Drawing.Point(67, 113);
             this.databaseTextBox.Name = "databaseTextBox";
-            this.databaseTextBox.Size = new System.Drawing.Size(100, 20);
+            this.databaseTextBox.Size = new System.Drawing.Size(57, 20);
             this.databaseTextBox.TabIndex = 4;
             // 
             // passwordTextBox
@@ -781,6 +785,7 @@
             this.sqlOutputTableLayoutPanel.Controls.Add(this.lCheckBox, 1, 4);
             this.sqlOutputTableLayoutPanel.Controls.Add(this.sdCheckBox, 2, 3);
             this.sqlOutputTableLayoutPanel.Controls.Add(this.siCheckBox, 2, 2);
+            this.sqlOutputTableLayoutPanel.Controls.Add(this.mCheckBox, 2, 5);
             this.sqlOutputTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.sqlOutputTableLayoutPanel.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.sqlOutputTableLayoutPanel.Location = new System.Drawing.Point(3, 16);
@@ -982,6 +987,17 @@
             this.siCheckBox.UseVisualStyleBackColor = true;
             this.siCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
             // 
+            // mCheckBox
+            // 
+            this.mCheckBox.AutoSize = true;
+            this.mCheckBox.Location = new System.Drawing.Point(303, 118);
+            this.mCheckBox.Name = "mCheckBox";
+            this.mCheckBox.Size = new System.Drawing.Size(119, 17);
+            this.mCheckBox.TabIndex = 17;
+            this.mCheckBox.Text = "Creature Movement";
+            this.mCheckBox.UseVisualStyleBackColor = true;
+            this.mCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
+            // 
             // selectAllButton
             // 
             this.selectAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -1086,6 +1102,13 @@
             this.statsLabel.Size = new System.Drawing.Size(34, 13);
             this.statsLabel.TabIndex = 22;
             this.statsLabel.Text = "Stats:";
+            // 
+            // databaseWTextBox
+            // 
+            this.databaseWTextBox.Location = new System.Drawing.Point(130, 112);
+            this.databaseWTextBox.Name = "databaseWTextBox";
+            this.databaseWTextBox.Size = new System.Drawing.Size(58, 20);
+            this.databaseWTextBox.TabIndex = 6;
             // 
             // MainForm
             // 
@@ -1231,6 +1254,8 @@
         private System.Windows.Forms.TextBox opcodesTextBox;
         private System.Windows.Forms.TextBox sqlFileNameTextBox;
         private System.Windows.Forms.Label sqlFileNameLabel;
+        private System.Windows.Forms.CheckBox mCheckBox;
+        private System.Windows.Forms.TextBox databaseWTextBox;
     }
 }
 
