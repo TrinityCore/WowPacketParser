@@ -16,16 +16,13 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_VOICE_SESSION_ROSTER_UPDATE)]
         public static void HandleVoiceRosterUpdate(Packet packet)
         {
-            packet.ReadInt64("Voice Channel ID");
+            packet.ReadGuid("Group GUID");
             packet.ReadInt16("Channel ID");
             packet.ReadByte("Channel Type"); // 0: channel, 2: party
             packet.ReadCString("Channel Name");
-
-            var key = Encoding.UTF8.GetString(packet.ReadBytes(16));
-            packet.WriteLine("Encryption Key: " + key);
-
-            packet.ReadUInt32("Voice Server IP");
-            packet.ReadByte("Voice Server Port");
+            packet.WriteLine("Encryption Key: " + Utilities.ByteArrayToHexString(packet.ReadBytes(16)));
+            packet.WriteLine("IP: " + packet.ReadIPAddress());
+            packet.ReadInt16("Voice Server Port");
 
             var count = packet.ReadByte("Player Count");
 
@@ -40,12 +37,9 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count - 1; i++)
             {
                 packet.ReadGuid("Player GUID");
-
                 packet.ReadByte("Index");
-
                 var flags1 = packet.ReadByte();
                 packet.WriteLine("Flags 1: 0x" + flags1.ToString("X2"));
-
                 var flags2 = packet.ReadByte();
                 packet.WriteLine("Flags 2: 0x" + flags2.ToString("X2"));
             }
@@ -54,8 +48,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_VOICE_SESSION_LEAVE)]
         public static void HandleVoiceLeave(Packet packet)
         {
-            packet.ReadInt64("Unk Int64 1");
-            packet.ReadInt64("Unk Int64 2");
+            packet.ReadGuid("Player GUID");
+            packet.ReadGuid("Group GUID");
         }
 
         [Parser(Opcode.SMSG_VOICE_SET_TALKER_MUTED)]
@@ -75,10 +69,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_AVAILABLE_VOICE_CHANNEL)]
         public static void HandleAvailableVoiceChannel(Packet packet)
         {
-            packet.ReadInt64("Unk Int64 1");
+            packet.ReadGuid("Group GUID");
             packet.ReadByte("Channel Type");
             packet.ReadCString("Channel Name");
-            packet.ReadInt64("Unk Int64 2");
+            packet.ReadGuid("Player GUID");
         }
 
         [Parser(Opcode.CMSG_SET_ACTIVE_VOICE_CHANNEL)]

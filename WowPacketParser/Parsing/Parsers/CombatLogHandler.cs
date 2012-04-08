@@ -153,6 +153,12 @@ namespace WowPacketParser.Parsing.Parsers
                             packet.ReadInt32("Unknown Int32", index, i, j);
                             break;
                         }
+                        case SpellEffect.InterruptCast:
+                        {
+                            packet.ReadPackedGuid("Target GUID", index, i, j);
+                            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Interrupted Spell ID", index, i, j);
+                            break;
+                        }
                         case SpellEffect.DurabilityDamage:
                         {
                             packet.ReadPackedGuid("Target GUID", index, i, j);
