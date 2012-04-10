@@ -14,6 +14,11 @@ namespace WowPacketParser.Misc
     {
         private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
+        public static E GetEnumForValue<E, T>(T value) where E : struct
+        {
+            return (E)Enum.ToObject(typeof(E), value);
+        }
+
         public static DateTime GetDateTimeFromUnixTime(double unixTime)
         {
             return Epoch.AddSeconds(unixTime);

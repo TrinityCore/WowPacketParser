@@ -10,7 +10,7 @@ namespace WowPacketParser.Store.Objects
             // If our gameobject got the following update field set,
             // it's probably a temporary spawn
             UpdateField uf;
-            if (UpdateFields.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(GameObjectField.GAMEOBJECT_FIELD_CREATED_BY), out uf))
+            if (UpdateFields.TryGetValue((int)(Enums.Version.UpdateFields.GetUpdateFieldOffset(GameObjectField.GAMEOBJECT_FIELD_CREATED_BY)), out uf))
                 return uf.UInt32Value != 0;
 
             return false;
@@ -24,7 +24,7 @@ namespace WowPacketParser.Store.Objects
         public bool IsTransport()
         {
             UpdateField uf;
-            if (UpdateFields.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(GameObjectField.GAMEOBJECT_BYTES_1), out uf))
+            if (UpdateFields.TryGetValue((int)Enums.Version.UpdateFields.GetUpdateFieldOffset(GameObjectField.GAMEOBJECT_BYTES_1), out uf))
                 return (GameObjectType)((uf.UInt32Value & 0x0000FF00) >> 8) == GameObjectType.MOTransport;
 
             return false;

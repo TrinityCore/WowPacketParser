@@ -174,7 +174,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var obj = Storage.Objects[guid].Item1;
                 UpdateField uf;
-                if (obj.UpdateFields != null && obj.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_FLAGS), out uf))
+                if (obj.UpdateFields != null && obj.UpdateFields.TryGetValue((int)Enums.Version.UpdateFields.GetUpdateFieldOffset(UnitField.UNIT_FIELD_FLAGS), out uf))
                     if ((uf.UInt32Value & (uint)UnitFlags.IsInCombat) == 0) // movement could be because of aggro so ignore that
                         obj.Movement.HasWpsOrRandMov = true;
             }

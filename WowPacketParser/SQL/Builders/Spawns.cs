@@ -32,7 +32,7 @@ namespace WowPacketParser.SQL.Builders
                         continue;
 
                 UpdateField uf;
-                if (!creature.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out uf))
+                if (!creature.UpdateFields.TryGetValue((int)Enums.Version.UpdateFields.GetUpdateFieldOffset(ObjectField.OBJECT_FIELD_ENTRY), out uf))
                     continue;   // broken entry, nothing to spawn
 
                 var entry = uf.UInt32Value;
@@ -102,12 +102,12 @@ namespace WowPacketParser.SQL.Builders
                 uint animprogress = 0;
                 uint state = 0;
                 UpdateField uf;
-                if (!go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out uf))
+                if (!go.UpdateFields.TryGetValue((int)Enums.Version.UpdateFields.GetUpdateFieldOffset(ObjectField.OBJECT_FIELD_ENTRY), out uf))
                     continue;   // broken entry, nothing to spawn
 
                 var entry = uf.UInt32Value;
 
-                if (go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(GameObjectField.GAMEOBJECT_BYTES_1), out uf))
+                if (go.UpdateFields.TryGetValue((int)UpdateFields.GetUpdateFieldOffset(GameObjectField.GAMEOBJECT_BYTES_1), out uf))
                 {
                     var bytes = uf.UInt32Value;
                     state = (bytes & 0x000000FF);
