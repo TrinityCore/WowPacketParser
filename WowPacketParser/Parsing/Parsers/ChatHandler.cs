@@ -97,9 +97,6 @@ namespace WowPacketParser.Parsing.Parsers
                 case ChatMessageType.System:
                 case ChatMessageType.Channel:
                 case ChatMessageType.Battleground:
-                case ChatMessageType.BattlegroundNeutral:
-                case ChatMessageType.BattlegroundAlliance:
-                case ChatMessageType.BattlegroundHorde:
                 case ChatMessageType.BattlegroundLeader:
                 case ChatMessageType.Achievement:
                 case ChatMessageType.GuildAchievement:
@@ -110,6 +107,24 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadCString("Channel Name");
 
                     packet.ReadGuid("Sender GUID");
+                    break;
+                }
+                case ChatMessageType.BattlegroundNeutral:
+                case ChatMessageType.BattlegroundAlliance:
+                case ChatMessageType.BattlegroundHorde:
+                {
+                    var target = packet.ReadGuid("Sender GUID");
+                    switch (target.GetHighType())
+                    {
+                        case HighGuidType.Unit:
+                        case HighGuidType.Vehicle:
+                        case HighGuidType.GameObject:
+                        case HighGuidType.Transport:
+                        case HighGuidType.Pet:
+                            packet.ReadInt32("Sender Name Length");
+                            packet.ReadCString("Sender Name");
+                            break;
+                    }
                     break;
                 }
                 case ChatMessageType.MonsterSay:
@@ -125,16 +140,15 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadCString("Name");
 
                     var target = packet.ReadGuid("Receiver GUID");
-                    if (target.GetHighType() == HighGuidType.Unit || target.GetHighType() == HighGuidType.Vehicle)
+                    switch (target.GetHighType())
                     {
-                        packet.ReadInt32("Receiver Name Length");
-                        packet.ReadCString("Receiver Name");
-                    }
-
-                    if (target.GetHighType() == HighGuidType.GameObject)
-                    {
-                        packet.ReadInt32("Unk Int32 GO");
-                        packet.ReadByte("Unk Byte GO");
+                        case HighGuidType.Unit:
+                        case HighGuidType.Vehicle:
+                        case HighGuidType.GameObject:
+                        case HighGuidType.Transport:
+                            packet.ReadInt32("Receiver Name Length");
+                            packet.ReadCString("Receiver Name");
+                            break;
                     }
                     break;
                 }
