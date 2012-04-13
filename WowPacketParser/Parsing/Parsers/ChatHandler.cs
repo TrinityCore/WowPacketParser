@@ -154,7 +154,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) && language == Language.Addon)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_1_0_13914) && language == Language.Addon)
                 packet.ReadCString("Addon Message Prefix");
 
             packet.ReadInt32("Text Length");
