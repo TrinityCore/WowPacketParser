@@ -161,7 +161,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Text");
             packet.ReadEnum<ChatTag>("Chat Tag", TypeCode.Byte);
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
             {
                 if (type == ChatMessageType.RaidBossEmote || type == ChatMessageType.RaidBossWhisper)
                 {
