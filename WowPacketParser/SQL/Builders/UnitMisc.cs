@@ -61,7 +61,7 @@ namespace WowPacketParser.SQL.Builders
         {
             if (units.Count == 0)
                 return string.Empty;
-            
+
             const string tableName = "creature_model_info";
 
             // Build a dictionary with model data; model is the key
@@ -339,7 +339,7 @@ namespace WowPacketParser.SQL.Builders
             // `gossip`
             if (SQLConnector.Enabled)
             {
-                var query = new StringBuilder("SELECT `entry`,`text_id` FROM `world`.`gossip_menu` WHERE ");
+                var query = new StringBuilder(string.Format("SELECT `entry`,`text_id` FROM {0}.`gossip_menu` WHERE ", Settings.TDBDatabase));
                 foreach (Tuple<uint, uint> gossip in Storage.Gossips.Keys)
                 {
                     query.Append("(`entry`=").Append(gossip.Item1).Append(" AND ");
@@ -406,8 +406,8 @@ namespace WowPacketParser.SQL.Builders
                     {
                         var query =       //         0     1       2         3         4        5         6
                             string.Format("SELECT menu_id,id,option_icon,box_coded,box_money,box_text,option_text " +
-                                          "FROM world.gossip_menu_option WHERE menu_id={0} AND id={1};", gossip.Key.Item1,
-                                          gossipOption.Index);
+                                          "FROM {2}.gossip_menu_option WHERE menu_id={0} AND id={1};", gossip.Key.Item1,
+                                          gossipOption.Index, Settings.TDBDatabase);
                         using (var reader = SQLConnector.ExecuteQuery(query))
                         {
                             if (reader.HasRows) // possible update
