@@ -18,15 +18,14 @@ namespace WowPacketParser
             SetUpConsole();
 
             var files = args.ToList();
+
             if (files.Count == 0)
             {
                 PrintUsage();
                 return;
             }
-
             // config options are handled in Misc.Settings
             Utilities.RemoveConfigOptions(ref files);
-
             if (!Utilities.GetFiles(ref files))
             {
                 EndPrompt();
