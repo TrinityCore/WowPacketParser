@@ -103,6 +103,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependencies\PowerCollections.dll</HintPath>
     </Reference>
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\AccountDataType.cs" />
@@ -320,9 +322,15 @@
     <Compile Include="Enums\WeatherState.cs" />
     <Compile Include="Loading\BinaryPacketReader.cs" />
     <Compile Include="Loading\IPacketReader.cs" />
+    <Compile Include="Loading\KSnifferZackReader.cs" />
+    <Compile Include="Loading\KSnifferZorReader.cs" />
+    <Compile Include="Loading\NewZorReader.cs" />
     <Compile Include="Loading\Reader.cs" />
+    <Compile Include="Loading\SniffitztReader.cs" />
     <Compile Include="Misc\BiDictionary.cs" />
     <Compile Include="Misc\Bit.cs" />
+    <Compile Include="Loading\WlpReader.cs" />
+    <Compile Include="Loading\ZorReader.cs" />
     <Compile Include="Misc\ClientVersion.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Misc\Filters.cs" />

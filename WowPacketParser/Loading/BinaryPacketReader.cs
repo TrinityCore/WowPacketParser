@@ -21,16 +21,14 @@ namespace WowPacketParser.Loading
 
         private readonly BinaryReader _reader;
 
-        private readonly SniffType _sniffType;
         private PktVersion _pktVersion;
 
         private DateTime _startTime;
         private uint _startTickCount;
 
-        public BinaryPacketReader(SniffType type, string fileName, Encoding encoding)
+        public BinaryPacketReader(string fileName)
         {
-            _sniffType = type;
-            _reader = new BinaryReader(new FileStream(@fileName, FileMode.Open, FileAccess.Read, FileShare.Read), encoding);
+            _reader = new BinaryReader(new FileStream(@fileName, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII);
             ReadHeader();
         }
 
@@ -39,9 +37,7 @@ namespace WowPacketParser.Loading
             var headerStart = _reader.ReadBytes(3);             // PKT
             if (Encoding.ASCII.GetString(headerStart) != "PKT")
             {
-                // pkt does not have a header
-                _reader.BaseStream.Position = 0;
-                return;
+                throw new Exception("not a pkt file!");
             }
 
             _pktVersion = (PktVersion)_reader.ReadUInt16();      // sniff version
@@ -124,7 +120,6 @@ namespace WowPacketParser.Loading
             Direction direction;
             byte[] data;
 
-            if (_sniffType == SniffType.Pkt)
             {
                 switch (_pktVersion)
                 {
@@ -185,14 +180,6 @@ namespace WowPacketParser.Loading
                         break;
                     }
                 }
-            }
-            else // bin
-            {
-                opcode = _reader.ReadInt32();
-                length = _reader.ReadInt32();
-                time = Utilities.GetDateTimeFromUnixTime(_reader.ReadInt32());
-                direction = (Direction)_reader.ReadByte();
-                data = _reader.ReadBytes(length);
             }
 
             // ignore opcodes that were not "decrypted" (usually because of
