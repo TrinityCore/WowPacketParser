@@ -8,10 +8,17 @@ namespace WowPacketParser.Parsing.Parsers
     {
         private static int _addonCount = -1;
 
-        public static void ReadClientAddonsList(ref Packet packet)
+        public static void ReadClientAddonsList(Packet packet, int size = -1)
         {
             var decompCount = packet.ReadInt32();
-            packet = packet.Inflate(decompCount);
+            if (size == -1)
+            {
+                packet.Inflate(decompCount);
+            }
+            else
+            {
+                packet.Inflate(decompCount, size);
+            }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
             {

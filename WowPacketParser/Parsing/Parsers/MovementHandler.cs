@@ -4265,15 +4265,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("{"); // To be able to see what is inside this packet.
             packet.WriteLine();
 
-            using (var pkt = packet.Inflate(packet.ReadInt32()))
+            packet.Inflate(packet.ReadInt32());
             {
-                while (pkt.CanRead())
+                while (packet.CanRead())
                 {
-                    var size = pkt.ReadByte();
-                    var opc = pkt.ReadInt16();
-                    var data = pkt.ReadBytes(size - 2);
+                    var size = packet.ReadByte();
+                    var opc = packet.ReadInt16();
+                    var data = packet.ReadBytes(size - 2);
 
-                    using (var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer, packet.FileName))
+                    using (var newPacket = new Packet(data, opc, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
                         Handler.Parse(newPacket, true);
                 }
             }

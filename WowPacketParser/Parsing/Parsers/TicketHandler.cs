@@ -41,7 +41,7 @@ namespace WowPacketParser.Parsing.Parsers
             else
             {
                 var decompCount = packet.ReadInt32();
-                packet = packet.Inflate(decompCount);
+                packet.Inflate(decompCount);
                 packet.WriteLine(packet.ReadCString());
             }
         }

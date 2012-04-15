@@ -1880,10 +1880,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_COMPRESSED_UPDATE_OBJECT)]
         public static void HandleCompressedUpdateObject(Packet packet)
         {
-            using (var packet2 = packet.Inflate(packet.ReadInt32()))
-            {
-                HandleUpdateObject(packet2);
-            }
+            packet.Inflate(packet.ReadInt32());
+            HandleUpdateObject(packet);
         }
 
         [Parser(Opcode.SMSG_DESTROY_OBJECT)]

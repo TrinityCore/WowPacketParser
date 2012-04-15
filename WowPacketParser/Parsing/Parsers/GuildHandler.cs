@@ -343,15 +343,13 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_COMPRESSED_GUILD_ROSTER)]
         public static void HandleCompressedGuildRoster(Packet packet)
         {
-            using (var packet2 = packet.Inflate(packet.ReadInt32()))
-            {
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
-                    HandleGuildRoster434(packet2);
-                else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                    HandleGuildRoster422(packet2);
-                else
-                    HandleGuildRoster406(packet2);
-            }
+            packet.Inflate(packet.ReadInt32());
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
+                HandleGuildRoster434(packet);
+            else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                HandleGuildRoster422(packet);
+            else
+                HandleGuildRoster406(packet);
         }
 
         [Parser(Opcode.CMSG_REQUEST_GUILD_PARTY_STATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]

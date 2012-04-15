@@ -63,8 +63,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_COMPRESSED_MULTIPLE_PACKETS)]
         public static void HandleCompressedMultiplePackets(Packet packet)
         {
-            using (var packet2 = packet.Inflate(packet.ReadInt32()))
-                 HandleMultiplePackets(packet2);
+            packet.Inflate(packet.ReadInt32());
+            HandleMultiplePackets(packet);
          }
 
         [Parser(Opcode.SMSG_MULTIPLE_PACKETS)]

@@ -18,8 +18,10 @@ namespace WowPacketParser.Misc
 
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringBuilder writer, string fileName)
-            : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
+            : base(new MemoryStream(input.Length), Encoding.UTF8)
         {
+            this.BaseStream.Write(input, 0, input.Length);
+            SetPosition(0);
             Opcode = opcode;
             Time = time;
             Direction = direction;
@@ -37,8 +39,10 @@ namespace WowPacketParser.Misc
 
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, string fileName)
-            : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
+            : base(new MemoryStream(input.Length), Encoding.UTF8)
         {
+            this.BaseStream.Write(input, 0, input.Length);
+            SetPosition(0);
             Opcode = opcode;
             Time = time;
             Direction = direction;
@@ -89,26 +93,35 @@ namespace WowPacketParser.Misc
             Storage.SniffData.Add(item, TimeSpan);
         }
 
-        public Packet Inflate(int inflatedSize)
+        public void Inflate(int inflatedSize, int bytesToInflate)
         {
-            var arr = ReadToEnd();
+            var oldPos = Position;
+            var decompress = ReadBytes(bytesToInflate);
+            var tailData = ReadToEnd();
+            this.BaseStream.SetLength(oldPos + inflatedSize + tailData.Length);
+            
             var newarr = new byte[inflatedSize];
             try
             {
                 var inflater = new Inflater();
-                inflater.SetInput(arr, 0, arr.Length);
+                inflater.SetInput(decompress, 0, bytesToInflate);
                 inflater.Inflate(newarr, 0, inflatedSize);
             }
             catch (ICSharpCode.SharpZipLib.SharpZipBaseException)
             {
                 var inflater = new Inflater(true);
-                inflater.SetInput(arr, 0, arr.Length);
+                inflater.SetInput(decompress, 0, bytesToInflate);
                 inflater.Inflate(newarr, 0, inflatedSize);
             }
+            SetPosition(oldPos);
+            this.BaseStream.Write(newarr, 0, inflatedSize);
+            this.BaseStream.Write(tailData, 0, tailData.Length);
+            SetPosition(oldPos);
+        }
 
-            // Cannot use "using" here
-            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, FileName);
-            return pkt;
+        public void Inflate(int inflatedSize)
+        {
+            Inflate(inflatedSize, (int)(Length - Position));
         }
 
         public byte[] GetStream(long offset)

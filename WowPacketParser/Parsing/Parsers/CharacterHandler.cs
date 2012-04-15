@@ -752,25 +752,23 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_COMPRESSED_CHAR_ENUM)]
         public static void HandleCompressedCharEnum(Packet packet)
         {
-            using (var packet2 = packet.Inflate(packet.ReadInt32()))
+            packet.Inflate(packet.ReadInt32());
+            switch (ClientVersion.Build)
             {
-                switch (ClientVersion.Build)
-                {
-                    case ClientVersionBuild.V4_3_4_15595:
-                        HandleCharEnum434(packet2);
-                        break;
-                    case ClientVersionBuild.V4_3_3_15354:
-                        HandleCharEnum433(packet2);
-                        break;
-                    case ClientVersionBuild.V4_3_0_15005:
-                        HandleCharEnum430(packet2);
-                        break;
-                    case ClientVersionBuild.V4_2_2_14545:
-                        HandleCharEnum422(packet2);
-                        break;
-                    default:
-                        throw new NotImplementedException();
-                }
+                case ClientVersionBuild.V4_3_4_15595:
+                    HandleCharEnum434(packet);
+                    break;
+                case ClientVersionBuild.V4_3_3_15354:
+                    HandleCharEnum433(packet);
+                    break;
+                case ClientVersionBuild.V4_3_0_15005:
+                    HandleCharEnum430(packet);
+                    break;
+                case ClientVersionBuild.V4_2_2_14545:
+                    HandleCharEnum422(packet);
+                    break;
+                default:
+                    throw new NotImplementedException();
             }
         }
 

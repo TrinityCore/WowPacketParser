@@ -100,8 +100,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(44964)] // 4.0.6a
         public static void Handle44964(Packet packet)
         {
-            using (var pkt = packet.Inflate(packet.ReadInt32()))
-                pkt.AsHex();
+            packet.Inflate(packet.ReadInt32());
+            packet.AsHex();
         }
 
         [Parser(Opcode.TEST_422_9838)]

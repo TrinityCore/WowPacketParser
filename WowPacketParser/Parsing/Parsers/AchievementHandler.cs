@@ -230,15 +230,15 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_COMPRESSED_ACHIEVEMENT_DATA)]
         public static void HandleCompressedAllAchievementData(Packet packet)
         {
-            using (var packet2 = packet.Inflate(packet.ReadInt32()))
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
-                    HandleAllAchievementData434(packet2);
-                else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                    HandleAllAchievementData422(packet2);
-                else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
-                    HandleAllAchievementData406(packet2);
-                else
-                    HandleAllAchievementData(packet2);
+            packet.Inflate(packet.ReadInt32());
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
+                HandleAllAchievementData434(packet);
+            else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                HandleAllAchievementData422(packet);
+            else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
+                HandleAllAchievementData406(packet);
+            else
+                HandleAllAchievementData(packet);
         }
 
         [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
