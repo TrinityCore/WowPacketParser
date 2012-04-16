@@ -135,8 +135,7 @@ namespace WowPacketParser.Loading
                         if (_pktVersion == PktVersion.V3_0)
                         {
                             time = Utilities.GetDateTimeFromUnixTime(_reader.ReadInt32());
-                            var tickCount = _reader.ReadUInt32();
-                            time = time.AddMilliseconds(tickCount);
+                            _reader.ReadUInt32();   // tick count since app start
                         }
                         else
                         {
