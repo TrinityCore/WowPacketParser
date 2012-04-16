@@ -296,10 +296,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(guildGuid[c], 1);
 
-                var guidPlayer = new Guid(BitConverter.ToUInt64(playerGuid[c], 0));
-
-                packet.WriteGuid("Character Guid", playerGuid[c],c);
-                packet.WriteGuid("Guild Guid", guildGuid[c],c);
+                var guidPlayer = packet.StoreBitstreamGuid("Character GUID", playerGuid[c], c);
+                packet.StoreBitstreamGuid("Guild GUID", guildGuid[c], c);
 
 
                 if (firstLogin[c])
@@ -421,8 +419,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                 var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
 
-                packet.WriteGuid("Character GUID", charGuids[c], c);
-                packet.WriteGuid("Guild GUID", guildGuids[c], c);
+                packet.StoreBitstreamGuid("Character GUID", charGuids[c], c);
+                packet.StoreBitstreamGuid("Guild GUID", guildGuids[c], c);
 
                 if (firstLogins[c])
                 {
@@ -440,7 +438,10 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             for (var c = 0; c < unkCounter; c++)
-                packet.WriteLine("Unk Loop: {0}, {1}", packet.ReadUInt32(), packet.ReadByte());
+            {
+                packet.ReadUInt32("Unk UInt32", c);
+                packet.ReadByte("Unk Byte", c);
+            }
         }
 
         [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]
@@ -578,10 +579,8 @@ namespace WowPacketParser.Parsing.Parsers
                 var mapId = packet.ReadInt32("Map", c);
                 var name = packet.ReadWoWString("Name", (int)nameLenghts[c], c);
 
-                var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
-
-                packet.WriteGuid("Character GUID", charGuids[c], c);
-                packet.WriteGuid("Guild GUID", guildGuids[c], c);
+                var playerGuid = packet.StoreBitstreamGuid("Character GUID", charGuids[c], c);
+                packet.StoreBitstreamGuid("Guild GUID", guildGuids[c], c);
 
                 if (firstLogins[c])
                 {
@@ -602,7 +601,10 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             for (var c = 0; c < unkCounter; c++)
-                packet.WriteLine("Unk Loop: {0}, {1}", packet.ReadUInt32(), packet.ReadByte());
+            {
+                packet.ReadUInt32("Unk UInt32", c);
+                packet.ReadByte("Unk Byte", c);
+            }
         }
 
         [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V4_3_4_15595)]
@@ -721,8 +723,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                 var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
 
-                packet.WriteGuid("Character GUID", charGuids[c], c);
-                packet.WriteGuid("Guild GUID", guildGuids[c], c);
+                packet.StoreBitstreamGuid("Character GUID", charGuids[c], c);
+                packet.StoreBitstreamGuid("Guild GUID", guildGuids[c], c);
 
                 if (firstLogins[c])
                 {
@@ -841,7 +843,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                packet.WriteLine("[{0}] Flags {1}", i, flags[i]);
+                packet.Store("Flags", flags[i], i);
                 packet.ReadUInt32("Currency count", i);
                 if (hasWeekCap[i])
                     packet.ReadUInt32("Weekly cap", i);
@@ -958,7 +960,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadInt32("Unk Int32 3");
 
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_FAILED_PLAYER_CONDITION)]
@@ -1002,7 +1004,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guids[i], 2);
                 packet.ReadXORByte(guids[i], 7);
 
-                packet.WriteGuid("Character Guid", guids[i], i);
+                packet.StoreBitstreamGuid("Character Guid", guids[i], i);
             }
         }
 
@@ -1020,10 +1022,16 @@ namespace WowPacketParser.Parsing.Parsers
 
             // TODO: Exclude happiness on Cata
             for (var i = 0; i < powerCount; i++)
-                packet.WriteLine("Power " + (PowerType)i + ": " + packet.ReadInt32());
+            {
+                packet.Store("Power type", (PowerType)i, i);
+                packet.ReadInt32("Value", i);
+            }
 
             for (var i = 0; i < 5; i++)
-                packet.WriteLine("Stat " + (StatType)i + ": " + packet.ReadInt32());
+            {
+                packet.Store("Stat type", (StatType)i, i);
+                packet.ReadInt32("Value", i);
+            }
 
             if (SessionHandler.LoggedInCharacter != null)
                 SessionHandler.LoggedInCharacter.Level = level;

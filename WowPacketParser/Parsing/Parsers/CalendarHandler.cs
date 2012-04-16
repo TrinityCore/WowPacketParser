@@ -113,8 +113,8 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadPackedGuid("Invitee GUID", i);
                 packet.ReadByte("Player Level", i);
-                packet.ReadEnum<CalendarEventStatus>("[" + i + "] Status", TypeCode.Byte, i);
-                packet.ReadEnum<CalendarModerationRank>("[" + i + "] Moderation Rank", TypeCode.Byte, i);
+                packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte, i);
+                packet.ReadEnum<CalendarModerationRank>("Moderation Rank", TypeCode.Byte, i);
                 packet.ReadBoolean("Guild Member", i);
                 packet.ReadInt64("Invite ID", i);
                 packet.ReadPackedTime("Status Time", i);

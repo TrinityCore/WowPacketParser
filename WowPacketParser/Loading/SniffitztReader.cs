@@ -36,7 +36,7 @@ namespace WowPacketParser.Loading
 
             _canRead = _element.MoveNext();
 
-            return new Packet(data, opcode, DateTime.Now, direction, number, fileName);
+            return new Packet(data, opcode, DateTime.Now, direction, number, fileName, null);
         }
 
         public void Dispose()

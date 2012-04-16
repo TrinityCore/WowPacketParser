@@ -17,7 +17,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(0, 3, 5, 1, 4, 6, 7, 2);
             packet.ParseBitStream(guid, 7, 4, 3, 5, 1, 2, 6, 0);
-            packet.WriteGuid(guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_SET_TRADE_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -118,7 +118,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadUInt32("Unk 8");
 
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_TRADE_STATUS, ClientVersionBuild.V4_3_4_15595)]
@@ -132,7 +132,7 @@ namespace WowPacketParser.Parsing.Parsers
                 case TradeStatus434.BeginTrade:
                     var guid = packet.StartBitStream(2, 4, 6, 0, 1, 3, 7, 5);
                     packet.ParseBitStream(guid, 4, 1, 2, 3, 0, 7, 6, 5);
-                    packet.WriteGuid("GUID", guid);
+                    packet.StoreBitstreamGuid("GUID", guid);
                     break;
                 case TradeStatus434.CloseWindow:
                     packet.ReadBit("Unk Bit");
@@ -328,8 +328,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(guids1[i], 3);
 
-                packet.WriteGuid("Item Creator Guid", guids1[i], i);
-                packet.WriteGuid("Item Gift Creator Guid", guids2[i], i);
+                packet.StoreBitstreamGuid("Item Creator Guid", guids1[i], i);
+                packet.StoreBitstreamGuid("Item Gift Creator Guid", guids2[i], i);
             }
         }
 
@@ -414,7 +414,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                     packet.ReadXORByte(guids2[i], 5);
 
-                    packet.WriteGuid("Creator Guid", guids2[i], i);
+                    packet.StoreBitstreamGuid("Creator Guid", guids2[i], i);
                 }
 
                 packet.ReadXORByte(guids1[i], 6);
@@ -429,7 +429,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guids1[i], 2);
                 packet.ReadXORByte(guids1[i], 3);
 
-                packet.WriteGuid("Gift Creator Guid", guids1[i], i);
+                packet.StoreBitstreamGuid("Gift Creator Guid", guids1[i], i);
             }
         }
 
@@ -447,7 +447,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guid = packet.StartBitStream(5, 6, 4, 0, 2, 3, 7, 1);
             packet.ParseBitStream(guid, 5, 2, 3, 4, 1, 0, 6, 7);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_IGNORE_TRADE)]

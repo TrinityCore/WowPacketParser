@@ -114,7 +114,7 @@ namespace WowPacketParser.Parsing.Parsers
             var remainingLength = packet.Length - packet.Position;
             var bytes = packet.ReadBytes((int)remainingLength);
 
-            using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
+            using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.FileName, packet))
                 Handler.Parse(newpacket, true);
         }
 
@@ -216,7 +216,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk UInt32 1");
             packet.ReadXORByte(guid, 0);
             packet.ReadUInt32("Money Cost");
-            packet.WriteGuid("Item Guid", guid);
+            packet.StoreBitstreamGuid("Item Guid", guid);
         }
 
         [Parser(Opcode.SMSG_ITEM_REFUND_RESULT, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
@@ -239,7 +239,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 0);
-            packet.WriteGuid("Item Guid", guid);
+            packet.StoreBitstreamGuid("Item Guid", guid);
         }
 
         [Parser(Opcode.SMSG_ITEM_REFUND_RESULT, ClientVersionBuild.V4_3_4_15595)]
@@ -269,7 +269,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ParseBitStream(guid, 0, 3, 1, 6, 4, 2, 7, 5);
             packet.ReadByte("Error"); // Error Id?
-            packet.WriteGuid("Item Guid", guid);
+            packet.StoreBitstreamGuid("Item Guid", guid);
         }
 
         [Parser(Opcode.CMSG_REPAIR_ITEM)]
@@ -622,7 +622,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(guidBytes[i], 2);
 
-                packet.WriteGuid("GUID", guidBytes[i], i);
+                packet.StoreBitstreamGuid("GUID", guidBytes[i], i);
             }
         }
 
@@ -639,7 +639,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
                 guidBytes[i] = packet.ParseBitStream(guidBytes[i], 2, 6, 3, 0, 5, 7, 1, 4);
-                packet.WriteGuid("GUID", guidBytes[i], i);
+                packet.StoreBitstreamGuid("GUID", guidBytes[i], i);
             }
         }
 
@@ -764,8 +764,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Max Durability");
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Area, "Area");
                 // In this single (?) case, map 0 means no map
-                var map = packet.ReadUInt32();
-                packet.WriteLine("Map ID: " + (map != 0 ? StoreGetters.GetName(StoreNameType.Map, (int) map) : map + " (No map)"));
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
                 packet.ReadEnum<BagFamilyMask>("Bag Family", TypeCode.Int32);
                 packet.ReadEnum<TotemCategory>("Totem Category", TypeCode.Int32);
 
@@ -900,7 +899,10 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadEntryWithName<UInt32>(StoreNameType.Area, "Area");
                     // In this single (?) case, map 0 means no map
                     var map = packet.ReadUInt32();
-                    packet.WriteLine("Map ID: " + (map != 0 ? StoreGetters.GetName(StoreNameType.Map, (int)map) : map + " (No map)"));
+                    if (map != 0)
+                        packet.Store("Map ID", StoreGetters.GetName(StoreNameType.Map, (int)map));
+                    else
+                        packet.Store("No map id", "");
                     packet.ReadEnum<BagFamilyMask>("Bag Family", TypeCode.Int32);
                     packet.ReadEnum<TotemCategory>("Totem Category", TypeCode.Int32);
 
@@ -965,7 +967,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guid = packet.StartBitStream(2,6,3,4,1,0,7,5);
             packet.ParseBitStream(guid,2,3,6,4,1,0,7,5);
-            packet.WriteGuid("Reforger Guid", guid);
+            packet.StoreBitstreamGuid("Reforger Guid", guid);
 
         }
 
@@ -1013,11 +1015,11 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadEnum<EquipmentSlotType>("Slot", TypeCode.UInt32, i);
 
-                packet.WriteGuid("ITem Guid", itemGuids[i], i);
+                packet.StoreBitstreamGuid("ITem Guid", itemGuids[i], i);
             }
 
             packet.ParseBitStream(npcGuid, 7, 2, 5, 4, 3, 1, 6, 0);
-            packet.WriteGuid("NPC Guid", npcGuid);
+            packet.StoreBitstreamGuid("NPC Guid", npcGuid);
         }
 
         [Parser(Opcode.SMSG_ITEM_EXPIRE_PURCHASE_REFUND)]
@@ -1025,7 +1027,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(3, 0, 5, 4, 6, 2, 1, 7);
             packet.ParseBitStream(guid, 1, 0, 3, 4, 7, 6, 5, 2);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
     }
 }

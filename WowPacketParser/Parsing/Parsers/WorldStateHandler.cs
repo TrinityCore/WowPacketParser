@@ -22,9 +22,8 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void ReadWorldStateBlock(ref Packet packet)
         {
-            var field = packet.ReadInt32();
-            var val = packet.ReadInt32();
-            packet.WriteLine("Field: {0} - Value: {1}", field, val);
+            packet.ReadInt32("Field");
+            packet.ReadInt32("Value");
         }
 
         [Parser(Opcode.SMSG_UPDATE_WORLD_STATE)]

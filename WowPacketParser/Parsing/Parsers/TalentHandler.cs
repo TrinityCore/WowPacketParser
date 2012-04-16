@@ -37,27 +37,25 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 if ((slotMask & 0x1) > 0)
                 {
-                    var name = "[" + (EquipmentSlotType)slot + "] ";
-                    packet.ReadEntryWithName<UInt32>(StoreNameType.Item, name + "Item Entry");
-                    var enchantMask = packet.ReadUInt16();
+                    packet.Store("Slot", (EquipmentSlotType)slot, slot);
+                    packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", slot);
+                    var enchantMask = packet.ReadUInt16("Enchant Mask", slot);
                     if (enchantMask > 0)
                     {
-                        var enchantName = name + "Item Enchantments: ";
+                        var enchCnt = 0;
                         while (enchantMask > 0)
                         {
                             if ((enchantMask & 0x1) > 0)
                             {
-                                enchantName += packet.ReadUInt16();
-                                if (enchantMask > 1)
-                                    enchantName += ", ";
+                                packet.ReadUInt16("Enchantment", slot, enchCnt);
                             }
                             enchantMask >>= 1;
+                            ++enchCnt;
                         }
-                        packet.WriteLine(enchantName);
                     }
-                    packet.ReadUInt16(name + "Unk Uint16");
-                    packet.ReadPackedGuid(name + "Creator GUID");
-                    packet.ReadUInt32(name + "Unk Uint32");
+                    packet.ReadUInt16("Unk Uint16", slot);
+                    packet.ReadPackedGuid("Creator GUID", slot);
+                    packet.ReadUInt32("Unk Uint32", slot);
                 }
                 ++slot;
                 slotMask >>= 1;

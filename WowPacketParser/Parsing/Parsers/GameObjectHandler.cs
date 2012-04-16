@@ -95,7 +95,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(5, 1, 0, 4, 7, 2, 3, 6);
             packet.ParseBitStream(guid, 5, 1, 0, 3, 4, 6, 2, 7);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
             packet.ReadInt32("Anim");
         }
     }

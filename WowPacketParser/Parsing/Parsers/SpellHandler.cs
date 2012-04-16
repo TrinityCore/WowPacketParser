@@ -55,8 +55,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Interrupted Spell ID");
             packet.ReadXORByte(guid2, 5);
 
-            packet.WriteGuid("GUID 1", guid1);
-            packet.WriteGuid("GUID 2", guid1);
+            packet.StoreBitstreamGuid("GUID 1", guid1);
+            packet.StoreBitstreamGuid("GUID 2", guid1);
         }
 
         [Parser(Opcode.SMSG_PLAYERBOUND)]
@@ -211,7 +211,10 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt16("Cooldown Spell Category", i);
                 packet.ReadInt32("Cooldown Time", i);
                 var catCd = packet.ReadUInt32();
-                packet.WriteLine("[{0}] Cooldown Category Time: {1}", i, ((catCd >> 31) != 0 ? "Infinite" : (catCd & 0x7FFFFFFF).ToString(CultureInfo.InvariantCulture)));
+                if ((catCd >> 31) != 0)
+                    packet.Store("Cooldown Category Time", "Infinite", i);
+                else
+                    packet.Store("Cooldown Category Time", catCd, i);
             }
         }
 
@@ -357,7 +360,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var remainingLength = packet.Length - packet.Position;
                 var bytes = packet.ReadBytes((int)remainingLength);
 
-                using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
+                using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.FileName, packet))
                     Handler.Parse(newpacket, true);
                 return;
             }
@@ -451,8 +454,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                     packet.ReadXORByte(transportGuid, 7);
 
-                    packet.WriteGuid("Transport Guid", transportGuid);
-                    packet.WriteLine("Transport Position: {0}", tpos);
+                    packet.StoreBitstreamGuid("Transport Guid", transportGuid);
+                    packet.Store("Transport Position", tpos);
                 }
 
                 if (hasO)
@@ -479,8 +482,8 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasPitch)
                     packet.ReadSingle("Pitch");
 
-                packet.WriteGuid("Guid", guid);
-                packet.WriteLine("Position: {0}", pos);
+                packet.StoreBitstreamGuid("Guid", guid);
+                packet.Store("Position", pos);
             }
         }
 
@@ -518,7 +521,6 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var i = 0; i < missCount; i++)
                 {
                     var missGuid = packet.ReadGuid("Miss GUID", i);
-                    packet.WriteLine("Miss GUID " + i + ": " + missGuid);
 
                     var missType = packet.ReadEnum<SpellMissType>("Miss Type", TypeCode.Byte, i);
                     if (missType != SpellMissType.Reflect)
@@ -721,8 +723,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid1, 2);
             packet.ReadXORByte(guid2, 3);
 
-            packet.WriteGuid("Caster Guid", guid1);
-            packet.WriteGuid("Unk Guid", guid2);
+            packet.StoreBitstreamGuid("Caster Guid", guid1);
+            packet.StoreBitstreamGuid("Unk Guid", guid2);
         }
 
         [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL_KIT)] // 4.3.4
@@ -734,7 +736,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guid = packet.StartBitStream(4, 7, 5, 3, 1, 2, 0, 6);
             packet.ParseBitStream(guid, 0, 4, 1, 6, 7, 2, 3, 5);
-            packet.WriteGuid("Caster Guid", guid);
+            packet.StoreBitstreamGuid("Caster Guid", guid);
         }
 
         [Parser(Opcode.SMSG_PET_CAST_FAILED)]
@@ -983,7 +985,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 6);
 
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPELL_COOLDOWN)]
@@ -1143,7 +1145,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Slot ID?");
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 1);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_DISENCHANT_CREDIT)] // 4.3.4
@@ -1166,7 +1168,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 0);
 
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_MISSILE_CANCEL)] // 4.3.4
@@ -1193,7 +1195,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 3);
 
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPIRIT_HEALER_CONFIRM)]

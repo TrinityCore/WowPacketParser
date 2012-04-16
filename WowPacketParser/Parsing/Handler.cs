@@ -79,7 +79,10 @@ namespace WowPacketParser.Parsing
 
             var opcode = packet.Opcode;
 
-            packet.WriteLine(packet.GetHeader(isMultiple));
+            packet.StoreOutputText("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}{6}",
+                packet.Direction, Opcodes.GetOpcodeName(opcode), opcode.ToString("X4"),
+                packet.Length, packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
+                packet.Number, isMultiple ? " (part of another packet)" : String.Empty);
 
             if (opcode == 0)
                 return;
@@ -97,7 +100,7 @@ namespace WowPacketParser.Parsing
                     {
                         var pos = packet.Position;
                         var len = packet.Length;
-                        packet.WriteLine("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.",
+                        packet.StoreOutputText("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.",
                             pos, len, len - pos);
 
                         if (len < 300) // If the packet isn't "too big" and it is not full read, print its hex table
@@ -108,9 +111,8 @@ namespace WowPacketParser.Parsing
                 }
                 catch (Exception ex)
                 {
-                    packet.WriteLine(ex.GetType().ToString());
-                    packet.WriteLine(ex.Message);
-                    packet.WriteLine(ex.StackTrace);
+                    packet.ErrorMessage = ex.GetType().ToString() + "\n" + ex.Message + "\n" + ex.StackTrace + "\n";
+                    packet.StoreOutputText(packet.ErrorMessage);
 
                     status = ParsedStatus.WithErrors;
                 }

@@ -54,7 +54,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (id == -1)
                     break;
 
-                packet.WriteLine("Achievement ID: " + id);
+                packet.Store("Achievement ID: ", id);
 
                 packet.ReadPackedTime("Achievement Time");
             }
@@ -66,10 +66,10 @@ namespace WowPacketParser.Parsing.Parsers
                 if (id == -1)
                     break;
 
-                packet.WriteLine("Criteria ID: " + id);
+                packet.Store("Criteria ID", id);
 
                 var counter = packet.ReadPackedGuid();
-                packet.WriteLine("Criteria Counter: " + counter.Full);
+                packet.Store("Criteria Counter", counter.Full);
 
                 packet.ReadPackedGuid("Player GUID");
 
@@ -205,8 +205,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(counter[i], 0);
                 packet.ReadXORByte(guid2[i], 2);
 
-                packet.WriteLine("[{0}] Criteria Counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
-                packet.WriteGuid("GUID2", guid2[i], i);
+                packet.Store("Criteria counter", BitConverter.ToUInt64(counter[i], 0));
+                packet.StoreBitstreamGuid("GUID2", guid2[i], i);
             }
 
             packet.ReadXORByte(guid, 1);
@@ -224,7 +224,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 5);
-            packet.WriteGuid("GUID", guid);
+            packet.StoreBitstreamGuid("GUID", guid);
         }
 
         [Parser(Opcode.SMSG_COMPRESSED_ACHIEVEMENT_DATA)]
@@ -335,9 +335,9 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(guid[i], 1);
 
-                packet.WriteLine("[{0}] Criteria Flags: {1}", i, flags[i]);
-                packet.WriteLine("[{0}] Criteria Counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
-                packet.WriteGuid("Criteria GUID", guid[i], i);
+                packet.Store("Criteria Flags", flags[i], i);
+                packet.Store("Criteria counter", BitConverter.ToUInt64(counter[i], 0));
+                packet.StoreBitstreamGuid("Criteria GUID", guid[i], i);
             }
 
             for (var i = 0; i < achievements; ++i)

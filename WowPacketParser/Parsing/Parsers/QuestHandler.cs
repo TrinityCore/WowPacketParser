@@ -270,8 +270,7 @@ namespace WowPacketParser.Parsing.Parsers
                 quest.RequiredNpcOrGo[i] = reqId[i].Key;
                 var isGo = reqId[i].Value;
 
-                packet.WriteLine("[" + i + "] Required " + (isGo ? "GO" : "NPC") +
-                    " ID: " + StoreGetters.GetName(isGo ? StoreNameType.GameObject : StoreNameType.Unit, reqId[i].Key));
+                packet.Store("Required " +(isGo ? "GO" : "NPC")+" Entry", new StoreEntry(isGo ? StoreNameType.GameObject : StoreNameType.Unit, reqId[i].Key));
 
                 quest.RequiredNpcOrGoCount[i] = packet.ReadUInt32("Required Count", i);
 
@@ -375,8 +374,10 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var j = 0; j < count2; ++j)
                 {
                     var entry = packet.ReadEntry();
-                    packet.WriteLine("[{0}] [{1}] {2}: {3}", i, j, entry.Value ? "Creature" : "GameObject",
-                        StoreGetters.GetName(entry.Value ? StoreNameType.GameObject : StoreNameType.Unit, entry.Key));
+                    if (entry.Value)
+                        packet.Store("GameObject", StoreGetters.GetName(StoreNameType.GameObject, entry.Key), i, j);
+                    else
+                        packet.Store("Creature", StoreGetters.GetName(StoreNameType.Unit, entry.Key), i, j);
                 }
             }
 
@@ -471,7 +472,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
                 packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Rewarded Quest");
             */
-            packet.WriteLine("Packet is currently not printed");
+            packet.StoreOutputText("Packet is currently not printed");
             packet.ReadBytes((int)packet.Length);
         }
 
@@ -818,8 +819,11 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
             var entry = packet.ReadEntry();
-            packet.WriteLine("Entry: " +
-                StoreGetters.GetName(entry.Value ? StoreNameType.GameObject : StoreNameType.Unit, entry.Key));
+            if (entry.Value)
+                packet.Store("Entry: ", StoreGetters.GetName(StoreNameType.GameObject, entry.Key));
+            else
+                packet.Store("Entry: ", StoreGetters.GetName(StoreNameType.Unit, entry.Key));
+               
             packet.ReadInt32("Count");
             packet.ReadInt32("Required Count");
             packet.ReadGuid("GUID");

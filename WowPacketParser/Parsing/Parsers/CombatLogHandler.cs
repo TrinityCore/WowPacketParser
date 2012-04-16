@@ -17,10 +17,10 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
             {
                 var unk2 = packet.ReadInt32();
-                packet.WriteLine("["+ i+ "] Unknown: {0}", unk1 - unk2);
+                packet.Store("Unknown", unk1 - unk2, i);
 
                 var opcode = Opcodes.GetOpcode(packet.ReadInt32());
-                packet.WriteLine("Opcode: " + opcode);
+                packet.Store("Opcode", opcode);
                 switch (opcode)
                 {
                     case Opcode.SMSG_SPELLHEALLOG:

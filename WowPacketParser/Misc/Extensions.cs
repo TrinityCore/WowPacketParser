@@ -99,7 +99,7 @@ namespace WowPacketParser.Misc
 
             hexDump.Append("|-------------------------------------------------|---------------------------------|");
 
-            packet.WriteLine(hexDump.ToString());
+            packet.StoreOutputText(hexDump.ToString());
         }
 
         /// <summary>

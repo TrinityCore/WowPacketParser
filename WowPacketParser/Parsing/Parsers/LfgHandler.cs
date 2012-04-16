@@ -47,7 +47,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guid = packet.StartBitStream(4, 5, 0, 6, 2, 7, 1, 3);
             packet.ParseBitStream(guid, 7, 4, 3, 2, 6, 0, 1, 5);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_LFG_SET_COMMENT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -86,7 +86,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guid2 = packet.StartBitStream(4, 5, 0, 6, 2, 7, 1, 3);
             packet.ParseBitStream(guid2, 7, 4, 3, 2, 6, 0, 1, 5);
-            packet.WriteGuid("Player Guid", guid2);
+            packet.StoreBitstreamGuid("Player Guid", guid2);
 
             var guid = new byte[8];
             guid[7] = packet.ReadBit();
@@ -100,7 +100,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid[2] = packet.ReadBit();
 
             packet.ParseBitStream(guid, 7, 1, 5, 6, 3, 4, 0, 2);
-            packet.WriteGuid("Instance Guid", guid);
+            packet.StoreBitstreamGuid("Instance Guid", guid);
 
         }
 
@@ -346,8 +346,12 @@ namespace WowPacketParser.Parsing.Parsers
                 var bits = new Bit[5];
                 for (var j = 0; j < 5; ++j)
                     bits[j] = packet.ReadBit();
-                packet.WriteLine("[{0}] Bits: In Dungeon?: {1}, Same Group?: {2}, Accept: {3}, Answer: {4}, Self: {5}",
-                    i, bits[0], bits[1], bits[2], bits[3], bits[4]); // 0 and 1 could be swapped
+                // 0 and 1 could be swapped
+                packet.Store("In Dungeon", bits[0]);
+                packet.Store("Same Group?", bits[1]);
+                packet.Store("Accept", bits[2]);
+                packet.Store("Answer", bits[3]);
+                packet.Store("Self", bits[4]);
             }
 
             guid2[5] = packet.ReadBit();
@@ -423,7 +427,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; ++i)
                 packet.ReadLfgEntry("Dungeon Entry", i);
 
-            packet.WriteGuid("GUID", guid);
+            packet.StoreBitstreamGuid("GUID", guid);
         }
 
         [Parser(Opcode.SMSG_LFG_QUEUE_STATUS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -476,7 +480,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadInt32("Wait Time"); // Matches "Role Unk2"
             packet.ReadInt32("Unk_UInt32_1"); // Same value than "Unk_UInt32_1" in SMSG_LFG_JOIN_RESULT - Only seen 3
-            packet.WriteGuid("GUID", guid);
+            packet.StoreBitstreamGuid("GUID", guid);
         }
 
         [Parser(Opcode.SMSG_LFG_ROLE_CHECK_UPDATE)]
@@ -555,11 +559,11 @@ namespace WowPacketParser.Parsing.Parsers
                     ReadDungeonJoinResults(ref packet, i, j);
 
                 packet.ParseBitStream(guids[i], 2, 5, 1, 0, 4, 3, 6, 7);
-                packet.WriteGuid("Guid", guids[i], i);
+                packet.StoreBitstreamGuid("Guid", guids[i], i);
             }
 
             packet.ParseBitStream(guid, 1, 4, 3, 5, 0, 7, 2, 6);
-            packet.WriteGuid("Join GUID", guid);
+            packet.StoreBitstreamGuid("Join GUID", guid);
         }
 
         [Parser(Opcode.SMSG_LFG_ROLE_CHOSEN)]
@@ -718,7 +722,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(1, 5, 7, 3, 2, 4, 0, 6);
             packet.ParseBitStream(guid, 4, 7, 0, 5, 1, 6, 2, 3);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_LFG_PLAYER_LOCK_INFO_REQUEST)]

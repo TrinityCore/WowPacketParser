@@ -105,7 +105,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unknown uint32");
 
             packet.ParseBitStream(guid, 5, 0, 2, 1, 4, 6, 3, 7);
-            packet.WriteGuid("BG Guid", guid);
+            packet.StoreBitstreamGuid("BG Guid", guid);
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_JOIN, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
@@ -170,7 +170,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guidBytes, 4);
             packet.ReadXORByte(guidBytes, 3);
 
-            packet.WriteGuid("Guid", guidBytes);
+            packet.StoreBitstreamGuid("Guid", guidBytes);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_2_15211)]
@@ -224,7 +224,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guidBytes, 3);
             packet.ReadXORByte(guidBytes, 6);
 
-            packet.WriteGuid("Guid", guidBytes);
+            packet.StoreBitstreamGuid("Guid", guidBytes);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
@@ -275,7 +275,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
                 packet.ReadUInt32("Instance ID", i);
 
-            packet.WriteGuid("Guid", guidBytes);
+            packet.StoreBitstreamGuid("Guid", guidBytes);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
@@ -428,7 +428,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(0, 4, 3, 5, 7, 6, 2, 1);
             packet.ParseBitStream(guid, 1, 5, 3, 2, 0, 7, 4, 6);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_LEFT, ClientVersionBuild.V4_3_4_15595)]
@@ -436,7 +436,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(7, 6, 2, 4, 5, 1, 3, 0);
             packet.ParseBitStream(guid, 4, 2, 5, 7, 0, 6, 1, 3);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_BATTLEMASTER_JOIN, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -464,7 +464,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid[7] = packet.ReadBit();
 
             packet.ParseBitStream(guid, 2, 6, 4, 3, 7, 0, 5, 1);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_ARENA, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
@@ -499,13 +499,16 @@ namespace WowPacketParser.Parsing.Parsers
             if (val < 1)
             {
                 var result = (BattlegroundError)val;
-                packet.WriteLine("Result: " + result);
+                packet.Store("Result", result);
                 if (result == BattlegroundError.JoinFailedAsGroup ||
                     result == BattlegroundError.CouldntJoinQueueInTime)
                     packet.ReadGuid("GUID");
             }
             else
-                packet.WriteLine("Result: Joined (BGType: " + StoreGetters.GetName(StoreNameType.Battleground, val) + ")");
+            {
+                packet.Store("Result", "Joined");
+                packet.Store("BGType", new StoreEntry(StoreNameType.Battleground, val));
+            }
         }
 
         [Parser(Opcode.SMSG_GROUP_JOINED_BATTLEGROUND, ClientVersionBuild.V4_3_4_15595)]
@@ -575,8 +578,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guid1, 4);
 
-            packet.WriteGuid("Player Guid", guid1);
-            packet.WriteGuid("BG Guid", guid2);
+            packet.StoreBitstreamGuid("Player Guid", guid1);
+            packet.StoreBitstreamGuid("BG Guid", guid2);
         }
 
         [Parser(Opcode.SMSG_JOINED_BATTLEGROUND_QUEUE, ClientVersionBuild.V4_2_2_14545)]
@@ -667,10 +670,10 @@ namespace WowPacketParser.Parsing.Parsers
                 || bgError == BattlegroundError430.NotAllowedInBattleground
                 || bgError == BattlegroundError430.JoinFailedAsGroup)
             {
-                packet.WriteGuid("Guid", guidBytes);
+                packet.StoreBitstreamGuid("GUID", guidBytes);
             }
 
-            packet.WriteLine("BGError: {0}", bgError);
+            packet.Store("BGError", bgError);
         }
 
         [Parser(Opcode.SMSG_JOINED_BATTLEGROUND_QUEUE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
@@ -692,7 +695,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guidBytes = packet.StartBitStream(0, 1, 4, 3, 6, 2, 7, 5);
             packet.ParseBitStream(guidBytes, 2, 6, 3, 4, 5, 7, 1, 0);
-            packet.WriteGuid("Guid", guidBytes);
+            packet.StoreBitstreamGuid("Guid", guidBytes);
         }
 
         [Parser(Opcode.MSG_PVP_LOG_DATA, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
@@ -919,7 +922,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guids[i], 7);
                 packet.ReadXORByte(guids[i], 2);
 
-                packet.WriteGuid("Player GUID", guids[i], i);
+                packet.StoreBitstreamGuid("Player GUID", guids[i], i);
             }
 
             if (arenaStrings)
@@ -950,7 +953,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 6);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGE, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_3_4_15595)]
@@ -990,7 +993,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadTime("Invite lasts until");
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 5);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -1053,7 +1056,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 7);
 
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
 
         }
 
@@ -1079,7 +1082,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid[6] = packet.ReadBit();
 
             packet.ParseBitStream(guid, 1, 3, 2, 4, 6, 7, 0, 5);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_REQUEST_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -1136,8 +1139,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone ID");
 
-            packet.WriteGuid("BG Guid", guid);
-            packet.WriteGuid("guid2", guid2);
+            packet.StoreBitstreamGuid("BG Guid", guid);
+            packet.StoreBitstreamGuid("guid2", guid2);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERED, ClientVersionBuild.V4_3_4_15595)]
@@ -1158,7 +1161,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid[2] = packet.ReadBit();
 
             packet.ParseBitStream(guid, 5, 3, 0, 4, 1, 7, 2, 6);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERED, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_3_4_15595)]
@@ -1212,7 +1215,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(bytes, 0);
             packet.ReadXORByte(bytes, 5);
 
-            packet.WriteGuid("Guid", bytes);
+            packet.StoreBitstreamGuid("Guid", bytes);
 
 
         }
@@ -1240,7 +1243,7 @@ namespace WowPacketParser.Parsing.Parsers
 
 
             packet.ParseBitStream(guid, 0, 3, 4, 2, 1, 6, 7, 5);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_MGR_EXIT_REQUEST, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -1254,7 +1257,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(2, 0, 3, 7, 4, 5, 6, 1);
             packet.ParseBitStream(guid, 5, 2, 0, 1, 4, 3, 7, 6);
-            packet.WriteGuid(guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -1288,7 +1291,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 2);
 
-            packet.WriteGuid(guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_ARENA_TEAM_ROSTER)]
@@ -1447,7 +1450,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(0, 3, 7, 4, 6, 2, 1, 5);
             packet.ParseBitStream(guid, 6, 3, 2, 4, 7, 1, 5, 0);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_REQUEST_RATED_BG_INFO, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -1470,7 +1473,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(1, 4, 6, 5, 0, 2, 7, 3);
             packet.ParseBitStream(guid, 4, 7, 2, 5, 6, 3, 0, 1);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_REQUEST_HONOR_STATS, ClientVersionBuild.V4_3_4_15595)]
@@ -1480,7 +1483,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ParseBitStream(guid, 4, 7, 0, 5, 1, 6, 2, 3);
 
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_POSITIONS)]
@@ -1522,7 +1525,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 0);
 
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_RATED_INFO)]
@@ -1574,7 +1577,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBit("Join");
 
             packet.ParseBitStream(guid, 1, 3, 5, 7, 0, 2, 6, 4);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
 
@@ -1646,9 +1649,9 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guid3, 5);
 
-            packet.WriteGuid("Guid1", guid1);
-            packet.WriteGuid("Guid2", guid2);
-            packet.WriteGuid("Guid3", guid3);
+            packet.StoreBitstreamGuid("Guid1", guid1);
+            packet.StoreBitstreamGuid("Guid2", guid2);
+            packet.StoreBitstreamGuid("Guid3", guid3);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_ACTIVE)]
@@ -1712,8 +1715,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid2, 0);
             packet.ReadXORByte(guid1, 7);
 
-            packet.WriteGuid("Player Guid", guid1);
-            packet.WriteGuid("BG Guid", guid2);
+            packet.StoreBitstreamGuid("Player Guid", guid1);
+            packet.StoreBitstreamGuid("BG Guid", guid2);
 
         }
 
@@ -1768,8 +1771,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid1, 2);
             packet.ReadXORByte(guid1, 3);
 
-            packet.WriteGuid("Player Guid", guid1);
-            packet.WriteGuid("BG Guid", guid2);
+            packet.StoreBitstreamGuid("Player Guid", guid1);
+            packet.StoreBitstreamGuid("BG Guid", guid2);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_WAITFORGROUPS)]
@@ -1827,8 +1830,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid1, 7);
             packet.ReadXORByte(guid2, 3);
 
-            packet.WriteGuid("Player Guid", guid1);
-            packet.WriteGuid("BG Guid", guid2);
+            packet.StoreBitstreamGuid("Player Guid", guid1);
+            packet.StoreBitstreamGuid("BG Guid", guid2);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_PLAYER_POSITIONS)] // 4.3.4
@@ -1864,7 +1867,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadSingle("X", i);
 
-                packet.WriteGuid("Guid 2", guids2[i], i);
+                packet.StoreBitstreamGuid("Guid 2", guids2[i], i);
             }
 
             for (int i = 0; i < count1; ++i)
@@ -1884,7 +1887,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guids1[i], 2);
                 packet.ReadXORByte(guids1[i], 4);
 
-                packet.WriteGuid("Guid 1", guids1[i], i);
+                packet.StoreBitstreamGuid("Guid 1", guids1[i], i);
             }
         }
 

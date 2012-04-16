@@ -34,7 +34,7 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadInt32("Count");
 
             for (int i = 0; i < count; i++)
-                packet.WriteLine("[" + i + "] Sent: " + (packet.Time - packet.ReadTime()).ToFormattedString());
+                packet.Store("Sent", (packet.Time - packet.ReadTime()).ToFormattedString(), i);
 
             if (count == 0)
                 packet.ReadInt32("Unk Int32");
@@ -42,7 +42,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var decompCount = packet.ReadInt32();
                 packet.Inflate(decompCount);
-                packet.WriteLine(packet.ReadCString());
+                packet.Store("String", packet.ReadCString());
             }
         }
 
@@ -142,7 +142,7 @@ namespace WowPacketParser.Parsing.Parsers
             pos.X = packet.ReadSingle();
             packet.ReadInt32("Unk Int32");
             pos.O = packet.ReadSingle();
-            packet.WriteLine("Position: {0}", pos);
+            packet.Store("Position", pos);
         }
 
         [Parser(Opcode.CMSG_SUBMIT_COMPLAIN)]
@@ -199,8 +199,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadInt32("Unk Int32 2");  // ##
 
-            packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.StoreBitstreamGuid("Guid", guid);
+            packet.Store("Position", pos);
         }
     }
 }

@@ -146,7 +146,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 6);
 
-            packet.WriteGuid("Unk Guid?", guid);
+            packet.StoreBitstreamGuid("Unk Guid?", guid);
         }
     }
 }

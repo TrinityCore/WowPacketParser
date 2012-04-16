@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
+using System.Collections.Generic;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using WowPacketParser.Enums;
 using WowPacketParser.Store;
@@ -14,10 +15,11 @@ namespace WowPacketParser.Misc
         private static readonly bool SniffData = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffData);
         private static readonly bool SniffDataOpcodes = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffDataOpcodes);
 
-        private static DateTime _firstPacketTime;
+        private readonly Packet Parent;
+        public string ErrorMessage = "";
 
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
-        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringBuilder writer, string fileName)
+        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, string fileName, Packet parent, string error = "")
             : base(new MemoryStream(input.Length), Encoding.UTF8)
         {
             this.BaseStream.Write(input, 0, input.Length);
@@ -26,7 +28,6 @@ namespace WowPacketParser.Misc
             Time = time;
             Direction = direction;
             Number = number;
-            Writer = writer;
             FileName = fileName;
             Status = ParsedStatus.None;
             WriteToFile = true;
@@ -35,38 +36,27 @@ namespace WowPacketParser.Misc
                 _firstPacketTime = Time;
 
             TimeSpan = Time - _firstPacketTime;
-        }
-
-        [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
-        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, string fileName)
-            : base(new MemoryStream(input.Length), Encoding.UTF8)
-        {
-            this.BaseStream.Write(input, 0, input.Length);
-            SetPosition(0);
-            Opcode = opcode;
-            Time = time;
-            Direction = direction;
-            Number = number;
-            Writer = null;
-            FileName = fileName;
-            Status = ParsedStatus.None;
-            WriteToFile = true;
-
-            if (number == 0)
-                _firstPacketTime = Time;
-
-            TimeSpan = Time - _firstPacketTime;
+            Parent = parent != null ? (parent.Parent != null ? parent.Parent : parent) : null;
+            if (Parent != null)
+            {
+                if (Parent.SubPackets == null)
+                    Parent.SubPackets = new LinkedList<Packet>();
+                Parent.SubPackets.AddFirst(this);
+            }
         }
 
         public int Opcode { get; set; } // setter can't be private because it's used in multiple_packets
         public DateTime Time { get; private set; }
+        private DateTime _firstPacketTime;
         public TimeSpan TimeSpan { get; private set; }
         public Direction Direction { get; private set; }
         public int Number { get; private set; }
-        public StringBuilder Writer { get; private set; }
+        public StreamWriter Writer { get; private set; }
         public string FileName { get; private set; }
         public ParsedStatus Status { get; set; }
         public bool WriteToFile { get; private set; }
+        public LinkedList<PacketData> Data;
+        public LinkedList<Packet> SubPackets;
 
         public void AddSniffData(StoreNameType type, int id, string data)
         {
@@ -118,7 +108,7 @@ namespace WowPacketParser.Misc
             this.BaseStream.Write(tailData, 0, tailData.Length);
             SetPosition(oldPos);
         }
-
+            
         public void Inflate(int inflatedSize)
         {
             Inflate(inflatedSize, (int)(Length - Position));
@@ -161,70 +151,9 @@ namespace WowPacketParser.Misc
             return Position != Length;
         }
 
-        public void Write(string value)
-        {
-            if (Settings.DumpFormat == DumpFormatType.SqlOnly)
-                return;
-
-            if (Writer == null)
-                Writer = new StringBuilder();
-
-            Writer.Append(value);
-        }
-
-        public void Write(string format, params object[] args)
-        {
-            if (Settings.DumpFormat == DumpFormatType.SqlOnly)
-                return;
-
-            if (Writer == null)
-                Writer = new StringBuilder();
-
-            Writer.AppendFormat(format, args);
-        }
-
-        public void WriteLine()
-        {
-            if (Settings.DumpFormat == DumpFormatType.SqlOnly)
-                return;
-
-            if (Writer == null)
-                Writer = new StringBuilder();
-
-            Writer.AppendLine();
-        }
-
-        public void WriteLine(string value)
-        {
-            if (Settings.DumpFormat == DumpFormatType.SqlOnly)
-                return;
-
-            if (Writer == null)
-                Writer = new StringBuilder();
-
-            Writer.AppendLine(value);
-        }
-
-        public void WriteLine(string format, params object[] args)
-        {
-            if (Settings.DumpFormat == DumpFormatType.SqlOnly)
-                return;
-
-            if (Writer == null)
-                Writer = new StringBuilder();
-
-            Writer.AppendLine(string.Format(format, args));
-        }
-
         public void ClosePacket()
         {
-            if (Writer != null)
-            {
-                if (Settings.DumpFormat != DumpFormatType.SqlOnly)
-                    Writer.Clear();
-
-                Writer = null;
-            }
+            Writer.Close();
 
             if (BaseStream != null)
                 BaseStream.Close();

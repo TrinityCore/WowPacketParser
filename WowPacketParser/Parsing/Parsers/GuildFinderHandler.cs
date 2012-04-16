@@ -119,7 +119,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(guids[i], 1);
 
-                packet.WriteGuid("Guild GUID", guids[i], i);
+                packet.StoreBitstreamGuid("Guild GUID", guids[i], i);
             }
         }
 
@@ -187,7 +187,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadInt32("Number of Members", i);
 
-                packet.WriteGuid("Guild Guid", guids[i], i);
+                packet.StoreBitstreamGuid("Guild Guid", guids[i], i);
             }
         }
 
@@ -251,7 +251,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(guids[i], 5);
 
-                packet.WriteGuid("Guid", guids[i], i);
+                packet.StoreBitstreamGuid("Guid", guids[i], i);
             }
 
             packet.ReadTime("Unk Time");
@@ -308,7 +308,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Time Since", i);
                 packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32, i);
 
-                packet.WriteGuid("Guid", guids[i], i);
+                packet.StoreBitstreamGuid("Guid", guids[i], i);
             }
 
             packet.ReadInt32("Unk int");
@@ -319,7 +319,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(1, 4, 5, 2, 6, 7, 0, 3);
             packet.ParseBitStream(guid, 5, 7, 2, 3, 4, 1, 0, 6);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_LF_GUILD_REMOVE_RECRUIT)] // 4.3.4
@@ -327,7 +327,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(0, 4, 3, 5, 7, 6, 2, 1);
             packet.ParseBitStream(guid, 4, 0, 3, 6, 5, 1, 2, 7);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         // TODO: CMSG_LF_GUILD_ADD_RECRUIT

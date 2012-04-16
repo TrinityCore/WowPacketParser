@@ -71,8 +71,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleMultiplePackets(Packet packet)
         {
             // Testing: packet.WriteLine(packet.AsHex());
-            packet.WriteLine("{");
-            var i = 0;
+            packet.StoreOutputText("{");
             while (packet.CanRead())
             {
                 var opcode = 0;
@@ -99,16 +98,11 @@ namespace WowPacketParser.Parsing.Parsers
                 if (bytes == null || len == 0)
                     continue;
 
-                if (i > 0)
-                    packet.WriteLine();
-
-                packet.Write("[{0}] ", i++);
-
-                using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
+                using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.FileName, packet))
                     Handler.Parse(newpacket, true);
 
             }
-            packet.WriteLine("}");
+            packet.StoreOutputText("}");
         }
 
         [Parser(Opcode.SMSG_MULTIPLE_PACKETS_2)]
@@ -123,7 +117,7 @@ namespace WowPacketParser.Parsing.Parsers
                 // Some sort of infinite loop happens here...
             }
 
-            packet.WriteLine("{");
+            /*packet.WriteLine("{");
             var i = 0;
             while (packet.CanRead())
             {
@@ -136,7 +130,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 Handler.Parse(packet, isMultiple: true);
             }
-            packet.WriteLine("}");
+            packet.WriteLine("}");*/
         }
 
         [Parser(Opcode.SMSG_STOP_DANCE)]
@@ -234,7 +228,8 @@ namespace WowPacketParser.Parsing.Parsers
             var data = packet.ReadInt32();
             var type = (ActionButtonType)((data & 0xFF000000) >> 24);
             var action = (data & 0x00FFFFFF);
-            packet.WriteLine("Type: " + type + " ID: " + action);
+            packet.Store("Type", type);
+            packet.Store("actionID", action);
         }
 
         [Parser(Opcode.SMSG_RESURRECT_REQUEST)]
@@ -387,8 +382,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_TUTORIAL_FLAG)]
         public static void HandleTutorialFlag(Packet packet)
         {
-            var flag = packet.ReadInt32();
-            packet.WriteLine("Flag: 0x" + flag.ToString("X8"));
+            packet.ReadEnum<UnknownFlags>("Flag", TypeCode.Int32);
         }
 
         [Parser(Opcode.SMSG_TUTORIAL_FLAGS)]
@@ -396,8 +390,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             for (var i = 0; i < 8; i++)
             {
-                var flag = packet.ReadInt32();
-                packet.WriteLine("Flags " + i + ": 0x" + flag.ToString("X8"));
+                packet.ReadEnum<UnknownFlags>("Flags", TypeCode.Int32, i);
             }
         }
 
@@ -654,13 +647,13 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ParseBitStream(guid, 7);
 
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)] // Also named CMSG_LOADING_SCREEN_NOTIFY
         public static void HandleClientEnterWorld(Packet packet)
         {
-            packet.WriteLine("Loading: " + (packet.ReadBit() ? "true" : "false")); // Not sure on the meaning
+            packet.ReadBit("Loading"); // Not sure on the meaning
             var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
             MovementHandler.CurrentMapId = (uint) mapId;
 
@@ -796,7 +789,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guid = packet.StartBitStream(3, 0, 1, 7, 2, 6, 5, 4);
             packet.ParseBitStream(guid, 5, 7, 4, 3, 2, 6, 1, 0);
-            packet.WriteGuid("Player GUID", guid);
+            packet.StoreBitstreamGuid("Player GUID", guid);
         }
 
         [Parser(Opcode.CMSG_SET_VEHICLE_REC_ID_ACK)] //  4.3.4
@@ -906,8 +899,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(transportGuid, 6);
 
-                packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.StoreBitstreamGuid("Transport Guid", transportGuid);
+                packet.Store("Transport Position", tpos);
             }
 
             if (hasTime)
@@ -919,8 +912,8 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasPitch)
                 packet.ReadSingle("Pitch");
 
-            packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.StoreBitstreamGuid("Guid", guid);
+            packet.Store("Position", pos);
         }
 
         [Parser(Opcode.SMSG_MEETINGSTONE_IN_PROGRESS)]
@@ -980,16 +973,16 @@ namespace WowPacketParser.Parsing.Parsers
                 switch (err)
                 {
                     case 48: // ERR_SPELL_FAILED_S
-                        packet.WriteLine("Spell Failed Id: {0}", AchieveOrSpellFailedIdOrCurrencyCount);
+                        packet.Store("Spell Failed Id: {0}", AchieveOrSpellFailedIdOrCurrencyCount);
                         break;
                     case 784: // ERR_REQUIRES_ACHIEVEMENT_I
-                        packet.WriteLine("Achievement Id: {0}", AchieveOrSpellFailedIdOrCurrencyCount);
+                        packet.Store("Achievement Id", AchieveOrSpellFailedIdOrCurrencyCount);
                         break;
                     case 790: // ERR_INSUFF_TRACKED_CURRENCY_IS
-                        packet.WriteLine("Currency Count: {0}", AchieveOrSpellFailedIdOrCurrencyCount);
+                        packet.Store("Currency Count", AchieveOrSpellFailedIdOrCurrencyCount);
                         break;
                     default:
-                        packet.WriteLine("Unk UInt32: {0}", AchieveOrSpellFailedIdOrCurrencyCount);
+                        packet.Store("Unk UInt32", AchieveOrSpellFailedIdOrCurrencyCount);
                         break;
                 }
 

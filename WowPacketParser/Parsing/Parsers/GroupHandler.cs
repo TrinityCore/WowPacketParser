@@ -26,7 +26,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<LfgRoleFlag>("Role", TypeCode.Int32);
             var guid = packet.StartBitStream(2, 6, 3, 7, 5, 1, 0, 4);
             packet.ParseBitStream(guid, 6, 4, 1, 3, 0, 5, 2, 7);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
 
         }
 
@@ -54,15 +54,15 @@ namespace WowPacketParser.Parsing.Parsers
             var numFields = packet.ReadInt32("Member Count");
             for (var i = 0; i < numFields; i++)
             {
-                var name = packet.ReadCString("[" + i + "] Name");
-                var guid = packet.ReadGuid("[" + i + "] GUID");
+                var name = packet.ReadCString("Name", i);
+                var guid = packet.ReadGuid("GUID", i);
                 StoreGetters.AddName(guid, name);
-                packet.ReadEnum<GroupMemberStatusFlag>("[" + i + "] Status", TypeCode.Byte);
-                packet.ReadByte("[" + i + "] Sub Group");
-                packet.ReadEnum<GroupUpdateFlag>("[" + i + "] Update Flags", TypeCode.Byte);
+                packet.ReadEnum<GroupMemberStatusFlag>("Status", TypeCode.Byte, i);
+                packet.ReadByte("Sub Group", i);
+                packet.ReadEnum<GroupUpdateFlag>("Update Flags", TypeCode.Byte, i);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                    packet.ReadEnum<LfgRoleFlag>("[" + i + "] Role", TypeCode.Byte);
+                    packet.ReadEnum<LfgRoleFlag>("Role", TypeCode.Byte, i);
             }
 
             packet.ReadGuid("Leader GUID");
@@ -276,8 +276,8 @@ namespace WowPacketParser.Parsing.Parsers
                         continue;
 
                     var aura = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? packet.ReadInt32() : packet.ReadUInt16();
-                    packet.WriteLine("Slot: [" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, aura));
-                    packet.ReadEnum<AuraFlag>("Slot: [" + i + "] Aura flag", TypeCode.Byte);
+                    packet.Store("Spell ID", new StoreEntry(StoreNameType.Spell, aura), i);
+                    packet.ReadEnum<AuraFlag>("Aura flag", TypeCode.Byte, i);
                 }
             }
 
@@ -326,8 +326,8 @@ namespace WowPacketParser.Parsing.Parsers
                         continue;
 
                     var aura = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? packet.ReadInt32() : packet.ReadUInt16();
-                    packet.WriteLine("Slot: [" + i + "] Spell ID: " + StoreGetters.GetName(StoreNameType.Spell, aura));
-                    packet.ReadEnum<AuraFlag>("Slot: [" + i + "] Aura flag", TypeCode.Byte);
+                    packet.Store("Spell ID", new StoreEntry(StoreNameType.Spell, aura), i);
+                    packet.ReadEnum<AuraFlag>("Aura flag", TypeCode.Byte, i);
                 }
             }
 
@@ -378,7 +378,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guidBytes, 3);
 
-            packet.WriteGuid("Guid", guidBytes); // Non-zero in cross realm parties
+            // Non-zero in cross realm parties
+            packet.StoreBitstreamGuid("GUID", guidBytes);
         }
 
         [Parser(Opcode.CMSG_GROUP_INVITE, ClientVersionBuild.V4_3_4_15595)]
@@ -410,7 +411,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 2);
-            packet.WriteGuid("Guid", guid); // Non-zero in cross realm parties
+            packet.StoreBitstreamGuid("Guid", guid); // Non-zero in cross realm parties
         }
 
         [Parser(Opcode.SMSG_GROUP_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -470,7 +471,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadInt32("Unk Int 32");
 
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
 
         }
 
@@ -575,8 +576,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Direction == Direction.ServerToClient)
                 packet.ReadGuid("GUID");
 
-            var position = packet.ReadVector2();
-            packet.WriteLine("Position: " + position);
+            packet.ReadVector2("Position");
         }
 
         [Parser(Opcode.CMSG_GROUP_RAID_CONVERT)]
@@ -652,8 +652,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid1, 1);
 
             packet.ReadEnum<LfgRoleFlag>("Old Roles", TypeCode.Int32);
-            packet.WriteGuid("Assigner Guid", guid1);
-            packet.WriteGuid("Target Guid", guid2);
+            packet.StoreBitstreamGuid("Assigner Guid", guid1);
+            packet.StoreBitstreamGuid("Target Guid", guid2);
         }
 
         [Parser(Opcode.SMSG_RAID_MARKERS_CHANGED)]
@@ -693,7 +693,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guids[i], 3);
                 packet.ReadXORByte(guids[i], 1);
 
-                packet.WriteGuid("Guid", guids[i], i);
+                packet.StoreBitstreamGuid("Guid", guids[i], i);
             }
 
         }

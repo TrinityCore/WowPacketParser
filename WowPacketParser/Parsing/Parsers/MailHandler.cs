@@ -245,7 +245,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (guid2[i][0] != 0) guid2[i][0] = packet.ReadByte();
                 if (guid2[i][4] != 0) guid2[i][4] = packet.ReadByte();
                 if (guid2[i][5] != 0) guid2[i][5] = packet.ReadByte();
-                packet.WriteGuid("Item Guid", guid2[i], i);
+                packet.StoreBitstreamGuid("Item Guid", guid2[i], i);
             }
 
             packet.ReadXORByte(guid, 7);
@@ -263,7 +263,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guid, 1);
 
-            packet.WriteGuid("Mailbox Guid", guid);
+            packet.StoreBitstreamGuid("Mailbox Guid", guid);
         }
 
         [Parser(Opcode.CMSG_MAIL_TAKE_ITEM)]
