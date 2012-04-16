@@ -1465,7 +1465,7 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     // Temp solution
                     // TODO: Make Enums version friendly
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
                     {
                         var splineFlags422 = packet.ReadEnum<SplineFlag422>("Spline Flags", TypeCode.Int32, index);
                         if (splineFlags422.HasAnyFlag(SplineFlag422.FinalOrientation))
