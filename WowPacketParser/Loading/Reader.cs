@@ -20,7 +20,7 @@ namespace WowPacketParser.Loading
                 throw new IOException("Invalid file type");
 
             IPacketReader reader;
-            
+
             switch (extension.ToLower())
             {
                 case ".bin":

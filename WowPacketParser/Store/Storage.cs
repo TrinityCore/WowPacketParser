@@ -92,7 +92,7 @@ namespace WowPacketParser.Store
         {
             dict.AddOrUpdate(guid, playerInfo, (guid1, wowObject) => Player.UpdatePlayerInfo((Player)wowObject, playerInfo));
         }
-        
+
         // Maybe we should rename the above extension so this workaround isn't needed
         public static void AddOrUpdate<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dict, TKey key, TValue value)
         {

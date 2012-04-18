@@ -135,9 +135,9 @@
             this.sqlOutputGroupBox.SuspendLayout();
             this.sqlOutputTableLayoutPanel.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // filtersGroupBox
-            // 
+            //
             filtersGroupBox.Controls.Add(this.sqlFileNameTextBox);
             filtersGroupBox.Controls.Add(this.sqlFileNameLabel);
             filtersGroupBox.Controls.Add(this.packetNumUpDown);
@@ -160,137 +160,137 @@
             filtersGroupBox.TabIndex = 17;
             filtersGroupBox.TabStop = false;
             filtersGroupBox.Text = "Filters";
-            // 
+            //
             // sqlFileNameTextBox
-            // 
+            //
             this.sqlFileNameTextBox.Location = new System.Drawing.Point(370, 98);
             this.sqlFileNameTextBox.Name = "sqlFileNameTextBox";
             this.sqlFileNameTextBox.Size = new System.Drawing.Size(81, 20);
             this.sqlFileNameTextBox.TabIndex = 17;
-            // 
+            //
             // sqlFileNameLabel
-            // 
+            //
             this.sqlFileNameLabel.AutoSize = true;
             this.sqlFileNameLabel.Location = new System.Drawing.Point(262, 98);
             this.sqlFileNameLabel.Name = "sqlFileNameLabel";
             this.sqlFileNameLabel.Size = new System.Drawing.Size(109, 13);
             this.sqlFileNameLabel.TabIndex = 16;
             this.sqlFileNameLabel.Text = "SQL Global Filename:";
-            // 
+            //
             // packetNumUpDown
-            // 
+            //
             this.packetNumUpDown.Location = new System.Drawing.Point(370, 75);
             this.packetNumUpDown.Name = "packetNumUpDown";
             this.packetNumUpDown.Size = new System.Drawing.Size(81, 20);
             this.packetNumUpDown.TabIndex = 15;
-            // 
+            //
             // maxPacketNumUpDown
-            // 
+            //
             this.maxPacketNumUpDown.Location = new System.Drawing.Point(370, 48);
             this.maxPacketNumUpDown.Name = "maxPacketNumUpDown";
             this.maxPacketNumUpDown.Size = new System.Drawing.Size(81, 20);
             this.maxPacketNumUpDown.TabIndex = 14;
-            // 
+            //
             // minPacketNumUpDown
-            // 
+            //
             this.minPacketNumUpDown.Location = new System.Drawing.Point(369, 22);
             this.minPacketNumUpDown.Name = "minPacketNumUpDown";
             this.minPacketNumUpDown.Size = new System.Drawing.Size(82, 20);
             this.minPacketNumUpDown.TabIndex = 13;
-            // 
+            //
             // areasTextBox
-            // 
+            //
             this.areasTextBox.Location = new System.Drawing.Point(122, 95);
             this.areasTextBox.Name = "areasTextBox";
             this.areasTextBox.Size = new System.Drawing.Size(129, 20);
             this.areasTextBox.TabIndex = 12;
-            // 
+            //
             // filtersEntryTextBox
-            // 
+            //
             this.filtersEntryTextBox.Location = new System.Drawing.Point(122, 69);
             this.filtersEntryTextBox.Name = "filtersEntryTextBox";
             this.filtersEntryTextBox.Size = new System.Drawing.Size(129, 20);
             this.filtersEntryTextBox.TabIndex = 10;
-            // 
+            //
             // ignoreOpcodesTextBox
-            // 
+            //
             this.ignoreOpcodesTextBox.Location = new System.Drawing.Point(122, 43);
             this.ignoreOpcodesTextBox.Name = "ignoreOpcodesTextBox";
             this.ignoreOpcodesTextBox.Size = new System.Drawing.Size(129, 20);
             this.ignoreOpcodesTextBox.TabIndex = 9;
-            // 
+            //
             // opcodesTextBox
-            // 
+            //
             this.opcodesTextBox.Location = new System.Drawing.Point(122, 17);
             this.opcodesTextBox.Name = "opcodesTextBox";
             this.opcodesTextBox.Size = new System.Drawing.Size(129, 20);
             this.opcodesTextBox.TabIndex = 8;
-            // 
+            //
             // maxPacketNumLabel
-            // 
+            //
             this.maxPacketNumLabel.AutoSize = true;
             this.maxPacketNumLabel.Location = new System.Drawing.Point(262, 50);
             this.maxPacketNumLabel.Name = "maxPacketNumLabel";
             this.maxPacketNumLabel.Size = new System.Drawing.Size(104, 13);
             this.maxPacketNumLabel.TabIndex = 7;
             this.maxPacketNumLabel.Text = "Max packet number:";
-            // 
+            //
             // minPacketNumLabel
-            // 
+            //
             this.minPacketNumLabel.AutoSize = true;
             this.minPacketNumLabel.Location = new System.Drawing.Point(262, 22);
             this.minPacketNumLabel.Name = "minPacketNumLabel";
             this.minPacketNumLabel.Size = new System.Drawing.Size(101, 13);
             this.minPacketNumLabel.TabIndex = 6;
             this.minPacketNumLabel.Text = "Min packet number:";
-            // 
+            //
             // numPacketLabel
-            // 
+            //
             this.numPacketLabel.AutoSize = true;
             this.numPacketLabel.Location = new System.Drawing.Point(262, 75);
             this.numPacketLabel.Name = "numPacketLabel";
             this.numPacketLabel.Size = new System.Drawing.Size(100, 13);
             this.numPacketLabel.TabIndex = 5;
             this.numPacketLabel.Text = "Number of packets:";
-            // 
+            //
             // areasLabel
-            // 
+            //
             this.areasLabel.AutoSize = true;
             this.areasLabel.Location = new System.Drawing.Point(7, 98);
             this.areasLabel.Name = "areasLabel";
             this.areasLabel.Size = new System.Drawing.Size(37, 13);
             this.areasLabel.TabIndex = 4;
             this.areasLabel.Text = "Areas:";
-            // 
+            //
             // filtersEntryLabel
-            // 
+            //
             this.filtersEntryLabel.AutoSize = true;
             this.filtersEntryLabel.Location = new System.Drawing.Point(7, 75);
             this.filtersEntryLabel.Name = "filtersEntryLabel";
             this.filtersEntryLabel.Size = new System.Drawing.Size(110, 13);
             this.filtersEntryLabel.TabIndex = 2;
             this.filtersEntryLabel.Text = "Ignore Filters by entry:";
-            // 
+            //
             // ignoreOpcodesLabel
-            // 
+            //
             this.ignoreOpcodesLabel.AutoSize = true;
             this.ignoreOpcodesLabel.Location = new System.Drawing.Point(6, 46);
             this.ignoreOpcodesLabel.Name = "ignoreOpcodesLabel";
             this.ignoreOpcodesLabel.Size = new System.Drawing.Size(86, 13);
             this.ignoreOpcodesLabel.TabIndex = 1;
             this.ignoreOpcodesLabel.Text = "Ignore Opcodes:";
-            // 
+            //
             // opcodesLabel
-            // 
+            //
             this.opcodesLabel.AutoSize = true;
             this.opcodesLabel.Location = new System.Drawing.Point(7, 22);
             this.opcodesLabel.Name = "opcodesLabel";
             this.opcodesLabel.Size = new System.Drawing.Size(53, 13);
             this.opcodesLabel.TabIndex = 0;
             this.opcodesLabel.Text = "Opcodes:";
-            // 
+            //
             // SaveButton
-            // 
+            //
             this.SaveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.SaveButton.Location = new System.Drawing.Point(313, 543);
             this.SaveButton.Name = "SaveButton";
@@ -299,9 +299,9 @@
             this.SaveButton.Text = "Save";
             this.SaveButton.UseVisualStyleBackColor = true;
             this.SaveButton.Click += new System.EventHandler(this.SaveButtonClick);
-            // 
+            //
             // CloseButton
-            // 
+            //
             this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.CloseButton.Location = new System.Drawing.Point(394, 543);
             this.CloseButton.Name = "CloseButton";
@@ -310,9 +310,9 @@
             this.CloseButton.Text = "Close";
             this.CloseButton.UseVisualStyleBackColor = true;
             this.CloseButton.Click += new System.EventHandler(this.CloseButtonClick);
-            // 
+            //
             // connectionControl
-            // 
+            //
             this.connectionControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.connectionControl.Controls.Add(this.dbTabPage);
             this.connectionControl.Controls.Add(this.sshTabPage);
@@ -322,9 +322,9 @@
             this.connectionControl.SelectedIndex = 0;
             this.connectionControl.Size = new System.Drawing.Size(215, 197);
             this.connectionControl.TabIndex = 3;
-            // 
+            //
             // dbTabPage
-            // 
+            //
             this.dbTabPage.Controls.Add(this.databaseWTextBox);
             this.dbTabPage.Controls.Add(this.charSetComboBox);
             this.dbTabPage.Controls.Add(this.databaseTextBox);
@@ -345,9 +345,9 @@
             this.dbTabPage.TabIndex = 0;
             this.dbTabPage.Text = "MySQL";
             this.dbTabPage.UseVisualStyleBackColor = true;
-            // 
+            //
             // charSetComboBox
-            // 
+            //
             this.charSetComboBox.Items.AddRange(new object[] {
             "UTF8",
             "Latin1"});
@@ -355,32 +355,32 @@
             this.charSetComboBox.Name = "charSetComboBox";
             this.charSetComboBox.Size = new System.Drawing.Size(121, 21);
             this.charSetComboBox.TabIndex = 5;
-            // 
+            //
             // databaseTextBox
-            // 
+            //
             this.databaseTextBox.Location = new System.Drawing.Point(67, 113);
             this.databaseTextBox.Name = "databaseTextBox";
             this.databaseTextBox.Size = new System.Drawing.Size(57, 20);
             this.databaseTextBox.TabIndex = 4;
-            // 
+            //
             // passwordTextBox
-            // 
+            //
             this.passwordTextBox.Location = new System.Drawing.Point(67, 86);
             this.passwordTextBox.Name = "passwordTextBox";
             this.passwordTextBox.PasswordChar = '*';
             this.passwordTextBox.Size = new System.Drawing.Size(100, 20);
             this.passwordTextBox.TabIndex = 3;
             this.passwordTextBox.UseSystemPasswordChar = true;
-            // 
+            //
             // usernameTextBox
-            // 
+            //
             this.usernameTextBox.Location = new System.Drawing.Point(67, 59);
             this.usernameTextBox.Name = "usernameTextBox";
             this.usernameTextBox.Size = new System.Drawing.Size(100, 20);
             this.usernameTextBox.TabIndex = 2;
-            // 
+            //
             // portNumericUpDown
-            // 
+            //
             this.portNumericUpDown.Location = new System.Drawing.Point(67, 33);
             this.portNumericUpDown.Maximum = new decimal(new int[] {
             65535,
@@ -390,70 +390,70 @@
             this.portNumericUpDown.Name = "portNumericUpDown";
             this.portNumericUpDown.Size = new System.Drawing.Size(120, 20);
             this.portNumericUpDown.TabIndex = 1;
-            // 
+            //
             // serverTextBox
-            // 
+            //
             this.serverTextBox.Location = new System.Drawing.Point(67, 6);
             this.serverTextBox.Name = "serverTextBox";
             this.serverTextBox.Size = new System.Drawing.Size(100, 20);
             this.serverTextBox.TabIndex = 0;
-            // 
+            //
             // characterSetLabel
-            // 
+            //
             this.characterSetLabel.AutoSize = true;
             this.characterSetLabel.Location = new System.Drawing.Point(6, 142);
             this.characterSetLabel.Name = "characterSetLabel";
             this.characterSetLabel.Size = new System.Drawing.Size(48, 13);
             this.characterSetLabel.TabIndex = 5;
             this.characterSetLabel.Text = "CharSet:";
-            // 
+            //
             // databaseLabel
-            // 
+            //
             this.databaseLabel.AutoSize = true;
             this.databaseLabel.Location = new System.Drawing.Point(6, 116);
             this.databaseLabel.Name = "databaseLabel";
             this.databaseLabel.Size = new System.Drawing.Size(56, 13);
             this.databaseLabel.TabIndex = 4;
             this.databaseLabel.Text = "Database:";
-            // 
+            //
             // passwordLabel
-            // 
+            //
             this.passwordLabel.AutoSize = true;
             this.passwordLabel.Location = new System.Drawing.Point(6, 89);
             this.passwordLabel.Name = "passwordLabel";
             this.passwordLabel.Size = new System.Drawing.Size(56, 13);
             this.passwordLabel.TabIndex = 3;
             this.passwordLabel.Text = "Password:";
-            // 
+            //
             // usernameLabel
-            // 
+            //
             this.usernameLabel.AutoSize = true;
             this.usernameLabel.Location = new System.Drawing.Point(6, 62);
             this.usernameLabel.Name = "usernameLabel";
             this.usernameLabel.Size = new System.Drawing.Size(58, 13);
             this.usernameLabel.TabIndex = 2;
             this.usernameLabel.Text = "Username:";
-            // 
+            //
             // portLabel
-            // 
+            //
             this.portLabel.AutoSize = true;
             this.portLabel.Location = new System.Drawing.Point(6, 34);
             this.portLabel.Name = "portLabel";
             this.portLabel.Size = new System.Drawing.Size(29, 13);
             this.portLabel.TabIndex = 1;
             this.portLabel.Text = "Port:";
-            // 
+            //
             // serverLabel
-            // 
+            //
             this.serverLabel.AutoSize = true;
             this.serverLabel.Location = new System.Drawing.Point(6, 9);
             this.serverLabel.Name = "serverLabel";
             this.serverLabel.Size = new System.Drawing.Size(41, 13);
             this.serverLabel.TabIndex = 0;
             this.serverLabel.Text = "Server:";
-            // 
+            //
             // sshTabPage
-            // 
+            //
             this.sshTabPage.Controls.Add(this.sshLocalPortNumericUpDown);
             this.sshTabPage.Controls.Add(this.label1);
             this.sshTabPage.Controls.Add(this.sshPasswordTextBox);
@@ -471,9 +471,9 @@
             this.sshTabPage.TabIndex = 1;
             this.sshTabPage.Text = "SSH";
             this.sshTabPage.UseVisualStyleBackColor = true;
-            // 
+            //
             // sshLocalPortNumericUpDown
-            // 
+            //
             this.sshLocalPortNumericUpDown.Location = new System.Drawing.Point(67, 112);
             this.sshLocalPortNumericUpDown.Maximum = new decimal(new int[] {
             65535,
@@ -483,34 +483,34 @@
             this.sshLocalPortNumericUpDown.Name = "sshLocalPortNumericUpDown";
             this.sshLocalPortNumericUpDown.Size = new System.Drawing.Size(120, 20);
             this.sshLocalPortNumericUpDown.TabIndex = 5;
-            // 
+            //
             // label1
-            // 
+            //
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 114);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(58, 13);
             this.label1.TabIndex = 5;
             this.label1.Text = "Local Port:";
-            // 
+            //
             // sshPasswordTextBox
-            // 
+            //
             this.sshPasswordTextBox.Location = new System.Drawing.Point(67, 86);
             this.sshPasswordTextBox.Name = "sshPasswordTextBox";
             this.sshPasswordTextBox.PasswordChar = '*';
             this.sshPasswordTextBox.Size = new System.Drawing.Size(100, 20);
             this.sshPasswordTextBox.TabIndex = 3;
             this.sshPasswordTextBox.UseSystemPasswordChar = true;
-            // 
+            //
             // sshUsernameTextBox
-            // 
+            //
             this.sshUsernameTextBox.Location = new System.Drawing.Point(67, 59);
             this.sshUsernameTextBox.Name = "sshUsernameTextBox";
             this.sshUsernameTextBox.Size = new System.Drawing.Size(100, 20);
             this.sshUsernameTextBox.TabIndex = 2;
-            // 
+            //
             // sshPortNumericUpDown
-            // 
+            //
             this.sshPortNumericUpDown.Location = new System.Drawing.Point(67, 33);
             this.sshPortNumericUpDown.Maximum = new decimal(new int[] {
             65535,
@@ -520,61 +520,61 @@
             this.sshPortNumericUpDown.Name = "sshPortNumericUpDown";
             this.sshPortNumericUpDown.Size = new System.Drawing.Size(120, 20);
             this.sshPortNumericUpDown.TabIndex = 1;
-            // 
+            //
             // sshServerTextBox
-            // 
+            //
             this.sshServerTextBox.Location = new System.Drawing.Point(67, 6);
             this.sshServerTextBox.Name = "sshServerTextBox";
             this.sshServerTextBox.Size = new System.Drawing.Size(100, 20);
             this.sshServerTextBox.TabIndex = 0;
-            // 
+            //
             // label3
-            // 
+            //
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(6, 89);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(56, 13);
             this.label3.TabIndex = 3;
             this.label3.Text = "Password:";
-            // 
+            //
             // label4
-            // 
+            //
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(6, 62);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(58, 13);
             this.label4.TabIndex = 2;
             this.label4.Text = "Username:";
-            // 
+            //
             // label5
-            // 
+            //
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(6, 34);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(29, 13);
             this.label5.TabIndex = 1;
             this.label5.Text = "Port:";
-            // 
+            //
             // sshServerLabel
-            // 
+            //
             this.sshServerLabel.AutoSize = true;
             this.sshServerLabel.Location = new System.Drawing.Point(6, 9);
             this.sshServerLabel.Name = "sshServerLabel";
             this.sshServerLabel.Size = new System.Drawing.Size(41, 13);
             this.sshServerLabel.TabIndex = 0;
             this.sshServerLabel.Text = "Server:";
-            // 
+            //
             // threadsReadLabel
-            // 
+            //
             this.threadsReadLabel.AutoSize = true;
             this.threadsReadLabel.Location = new System.Drawing.Point(3, 5);
             this.threadsReadLabel.Name = "threadsReadLabel";
             this.threadsReadLabel.Size = new System.Drawing.Size(78, 13);
             this.threadsReadLabel.TabIndex = 4;
             this.threadsReadLabel.Text = "Threads.Read:";
-            // 
+            //
             // threadsReadNumericUpDown
-            // 
+            //
             this.threadsReadNumericUpDown.Location = new System.Drawing.Point(85, 3);
             this.threadsReadNumericUpDown.Maximum = new decimal(new int[] {
             10,
@@ -584,9 +584,9 @@
             this.threadsReadNumericUpDown.Name = "threadsReadNumericUpDown";
             this.threadsReadNumericUpDown.Size = new System.Drawing.Size(48, 20);
             this.threadsReadNumericUpDown.TabIndex = 5;
-            // 
+            //
             // threadsPanel
-            // 
+            //
             this.threadsPanel.Controls.Add(this.threadsParseNumericUpDown);
             this.threadsPanel.Controls.Add(this.threadsParseLabel);
             this.threadsPanel.Controls.Add(this.threadsReadLabel);
@@ -595,9 +595,9 @@
             this.threadsPanel.Name = "threadsPanel";
             this.threadsPanel.Size = new System.Drawing.Size(227, 28);
             this.threadsPanel.TabIndex = 6;
-            // 
+            //
             // threadsParseNumericUpDown
-            // 
+            //
             this.threadsParseNumericUpDown.Location = new System.Drawing.Point(175, 3);
             this.threadsParseNumericUpDown.Maximum = new decimal(new int[] {
             10,
@@ -607,18 +607,18 @@
             this.threadsParseNumericUpDown.Name = "threadsParseNumericUpDown";
             this.threadsParseNumericUpDown.Size = new System.Drawing.Size(48, 20);
             this.threadsParseNumericUpDown.TabIndex = 7;
-            // 
+            //
             // threadsParseLabel
-            // 
+            //
             this.threadsParseLabel.AutoSize = true;
             this.threadsParseLabel.Location = new System.Drawing.Point(138, 5);
             this.threadsParseLabel.Name = "threadsParseLabel";
             this.threadsParseLabel.Size = new System.Drawing.Size(37, 13);
             this.threadsParseLabel.TabIndex = 6;
             this.threadsParseLabel.Text = "Parse:";
-            // 
+            //
             // dumpFormatComboBox
-            // 
+            //
             this.dumpFormatComboBox.FormattingEnabled = true;
             this.dumpFormatComboBox.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.dumpFormatComboBox.Items.AddRange(new object[] {
@@ -629,45 +629,45 @@
             this.dumpFormatComboBox.Name = "dumpFormatComboBox";
             this.dumpFormatComboBox.Size = new System.Drawing.Size(128, 21);
             this.dumpFormatComboBox.TabIndex = 7;
-            // 
+            //
             // dumpFormatLabel
-            // 
+            //
             this.dumpFormatLabel.AutoSize = true;
             this.dumpFormatLabel.Location = new System.Drawing.Point(3, 6);
             this.dumpFormatLabel.Name = "dumpFormatLabel";
             this.dumpFormatLabel.Size = new System.Drawing.Size(73, 13);
             this.dumpFormatLabel.TabIndex = 8;
             this.dumpFormatLabel.Text = "Dump Format:";
-            // 
+            //
             // panel1
-            // 
+            //
             this.panel1.Controls.Add(this.dumpFormatLabel);
             this.panel1.Controls.Add(this.dumpFormatComboBox);
             this.panel1.Location = new System.Drawing.Point(12, 46);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(213, 29);
             this.panel1.TabIndex = 9;
-            // 
+            //
             // clientBuildPanel
-            // 
+            //
             this.clientBuildPanel.Controls.Add(this.clientBuildLabel);
             this.clientBuildPanel.Controls.Add(this.clientBuildComboBox);
             this.clientBuildPanel.Location = new System.Drawing.Point(12, 81);
             this.clientBuildPanel.Name = "clientBuildPanel";
             this.clientBuildPanel.Size = new System.Drawing.Size(213, 29);
             this.clientBuildPanel.TabIndex = 10;
-            // 
+            //
             // clientBuildLabel
-            // 
+            //
             this.clientBuildLabel.AutoSize = true;
             this.clientBuildLabel.Location = new System.Drawing.Point(3, 6);
             this.clientBuildLabel.Name = "clientBuildLabel";
             this.clientBuildLabel.Size = new System.Drawing.Size(62, 13);
             this.clientBuildLabel.TabIndex = 8;
             this.clientBuildLabel.Text = "Client Build:";
-            // 
+            //
             // clientBuildComboBox
-            // 
+            //
             this.clientBuildComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.clientBuildComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.clientBuildComboBox.FormattingEnabled = true;
@@ -727,9 +727,9 @@
             this.clientBuildComboBox.Name = "clientBuildComboBox";
             this.clientBuildComboBox.Size = new System.Drawing.Size(128, 21);
             this.clientBuildComboBox.TabIndex = 7;
-            // 
+            //
             // showPromptCheckBox
-            // 
+            //
             this.showPromptCheckBox.AutoSize = true;
             this.showPromptCheckBox.Location = new System.Drawing.Point(18, 162);
             this.showPromptCheckBox.Name = "showPromptCheckBox";
@@ -737,9 +737,9 @@
             this.showPromptCheckBox.TabIndex = 12;
             this.showPromptCheckBox.Text = "Show End Prompt";
             this.showPromptCheckBox.UseVisualStyleBackColor = true;
-            // 
+            //
             // debugReadsCheckBox
-            // 
+            //
             this.debugReadsCheckBox.AutoSize = true;
             this.debugReadsCheckBox.Location = new System.Drawing.Point(18, 139);
             this.debugReadsCheckBox.Name = "debugReadsCheckBox";
@@ -747,9 +747,9 @@
             this.debugReadsCheckBox.TabIndex = 13;
             this.debugReadsCheckBox.Text = "Debug Reads";
             this.debugReadsCheckBox.UseVisualStyleBackColor = true;
-            // 
+            //
             // sqlOutputGroupBox
-            // 
+            //
             this.sqlOutputGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.sqlOutputGroupBox.Controls.Add(this.sqlOutputTableLayoutPanel);
             this.sqlOutputGroupBox.Controls.Add(this.selectAllButton);
@@ -761,9 +761,9 @@
             this.sqlOutputGroupBox.TabIndex = 14;
             this.sqlOutputGroupBox.TabStop = false;
             this.sqlOutputGroupBox.Text = "SQL Output";
-            // 
+            //
             // sqlOutputTableLayoutPanel
-            // 
+            //
             this.sqlOutputTableLayoutPanel.ColumnCount = 3;
             this.sqlOutputTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.sqlOutputTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
@@ -799,9 +799,9 @@
             this.sqlOutputTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.sqlOutputTableLayoutPanel.Size = new System.Drawing.Size(451, 139);
             this.sqlOutputTableLayoutPanel.TabIndex = 18;
-            // 
+            //
             // ceCheckBox
-            // 
+            //
             this.ceCheckBox.AutoSize = true;
             this.ceCheckBox.Location = new System.Drawing.Point(153, 118);
             this.ceCheckBox.Name = "ceCheckBox";
@@ -810,9 +810,9 @@
             this.ceCheckBox.Text = "Creature Equipments";
             this.ceCheckBox.UseVisualStyleBackColor = true;
             this.ceCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
-            // 
+            //
             // onCheckBox
-            // 
+            //
             this.onCheckBox.AutoSize = true;
             this.onCheckBox.Location = new System.Drawing.Point(3, 118);
             this.onCheckBox.Name = "onCheckBox";
@@ -821,9 +821,9 @@
             this.onCheckBox.Text = "ObjectNames";
             this.onCheckBox.UseVisualStyleBackColor = true;
             this.onCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
-            // 
+            //
             // gotCheckBox
-            // 
+            //
             this.gotCheckBox.AutoSize = true;
             this.gotCheckBox.Location = new System.Drawing.Point(3, 3);
             this.gotCheckBox.Name = "gotCheckBox";
@@ -832,9 +832,9 @@
             this.gotCheckBox.Text = "GameObject Template";
             this.gotCheckBox.UseVisualStyleBackColor = true;
             this.gotCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
-            // 
+            //
             // gosCheckBox
-            // 
+            //
             this.gosCheckBox.AutoSize = true;
             this.gosCheckBox.Location = new System.Drawing.Point(3, 26);
             this.gosCheckBox.Name = "gosCheckBox";
@@ -843,9 +843,9 @@
             this.gosCheckBox.Text = "GameObject Spawns";
             this.gosCheckBox.UseVisualStyleBackColor = true;
             this.gosCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
-            // 
+            //
             // qtCheckBox
-            // 
+            //
             this.qtCheckBox.AutoSize = true;
             this.qtCheckBox.Location = new System.Drawing.Point(3, 49);
             this.qtCheckBox.Name = "qtCheckBox";
@@ -854,9 +854,9 @@
             this.qtCheckBox.Text = "QuestTemplate";
             this.qtCheckBox.UseVisualStyleBackColor = true;
             this.qtCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
-            // 
+            //
             // qpoiCheckBox
-            // 
+            //
             this.qpoiCheckBox.AutoSize = true;
             this.qpoiCheckBox.Location = new System.Drawing.Point(3, 72);
             this.qpoiCheckBox.Name = "qpoiCheckBox";
@@ -865,9 +865,9 @@
             this.qpoiCheckBox.Text = "Quest POI";
             this.qpoiCheckBox.UseVisualStyleBackColor = true;
             this.qpoiCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
-            // 
+            //
             // ptCheckBox
-            // 
+            //
             this.ptCheckBox.AutoSize = true;
             this.ptCheckBox.Location = new System.Drawing.Point(303, 26);
             this.ptCheckBox.Name = "ptCheckBox";
@@ -876,9 +876,9 @@
             this.ptCheckBox.Text = "PageText";
             this.ptCheckBox.UseVisualStyleBackColor = true;
             this.ptCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
-            // 
+            //
             // sdoCheckBox
-            // 
+            //
             this.sdoCheckBox.AutoSize = true;
             this.sdoCheckBox.Location = new System.Drawing.Point(303, 95);
             this.sdoCheckBox.Name = "sdoCheckBox";
@@ -887,9 +887,9 @@
             this.sdoCheckBox.Text = "Sniff Data:Opcodes";
             this.sdoCheckBox.UseVisualStyleBackColor = true;
             this.sdoCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
-            // 
+            //
             // ctCheckBox
-            // 
+            //
             this.ctCheckBox.AutoSize = true;
             this.ctCheckBox.Location = new System.Drawing.Point(3, 95);
             this.ctCheckBox.Name = "ctCheckBox";
@@ -898,9 +898,9 @@
             this.ctCheckBox.Text = "Creature Template";
             this.ctCheckBox.UseVisualStyleBackColor = true;
             this.ctCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
-            // 
+            //
             // csCheckBox
-            // 
+            //
             this.csCheckBox.AutoSize = true;
             this.csCheckBox.Location = new System.Drawing.Point(153, 3);
             this.csCheckBox.Name = "csCheckBox";
@@ -909,9 +909,9 @@
             this.csCheckBox.Text = "CreatureSpawns";
             this.csCheckBox.UseVisualStyleBackColor = true;
             this.csCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
-            // 
+            //
             // ntCheckBox
-            // 
+            //
             this.ntCheckBox.AutoSize = true;
             this.ntCheckBox.Location = new System.Drawing.Point(153, 26);
             this.ntCheckBox.Name = "ntCheckBox";
@@ -920,9 +920,9 @@
             this.ntCheckBox.Text = "NpcTrainer";
             this.ntCheckBox.UseVisualStyleBackColor = true;
             this.ntCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
-            // 
+            //
             // nvCheckBox
-            // 
+            //
             this.nvCheckBox.AutoSize = true;
             this.nvCheckBox.Location = new System.Drawing.Point(153, 49);
             this.nvCheckBox.Name = "nvCheckBox";
@@ -931,9 +931,9 @@
             this.nvCheckBox.Text = "NpcVendor";
             this.nvCheckBox.UseVisualStyleBackColor = true;
             this.nvCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
-            // 
+            //
             // gCheckBox
-            // 
+            //
             this.gCheckBox.AutoSize = true;
             this.gCheckBox.Location = new System.Drawing.Point(303, 3);
             this.gCheckBox.Name = "gCheckBox";
@@ -942,9 +942,9 @@
             this.gCheckBox.Text = "Gossip";
             this.gCheckBox.UseVisualStyleBackColor = true;
             this.gCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
-            // 
+            //
             // ntxtCheckBox
-            // 
+            //
             this.ntxtCheckBox.AutoSize = true;
             this.ntxtCheckBox.Location = new System.Drawing.Point(153, 72);
             this.ntxtCheckBox.Name = "ntxtCheckBox";
@@ -953,9 +953,9 @@
             this.ntxtCheckBox.Text = "NpcText";
             this.ntxtCheckBox.UseVisualStyleBackColor = true;
             this.ntxtCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
-            // 
+            //
             // lCheckBox
-            // 
+            //
             this.lCheckBox.AutoSize = true;
             this.lCheckBox.Location = new System.Drawing.Point(153, 95);
             this.lCheckBox.Name = "lCheckBox";
@@ -964,9 +964,9 @@
             this.lCheckBox.Text = "Loot";
             this.lCheckBox.UseVisualStyleBackColor = true;
             this.lCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
-            // 
+            //
             // sdCheckBox
-            // 
+            //
             this.sdCheckBox.AutoSize = true;
             this.sdCheckBox.Location = new System.Drawing.Point(303, 72);
             this.sdCheckBox.Name = "sdCheckBox";
@@ -975,9 +975,9 @@
             this.sdCheckBox.Text = "Sniff Data";
             this.sdCheckBox.UseVisualStyleBackColor = true;
             this.sdCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
-            // 
+            //
             // siCheckBox
-            // 
+            //
             this.siCheckBox.AutoSize = true;
             this.siCheckBox.Location = new System.Drawing.Point(303, 49);
             this.siCheckBox.Name = "siCheckBox";
@@ -986,9 +986,9 @@
             this.siCheckBox.Text = "Start Information";
             this.siCheckBox.UseVisualStyleBackColor = true;
             this.siCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
-            // 
+            //
             // mCheckBox
-            // 
+            //
             this.mCheckBox.AutoSize = true;
             this.mCheckBox.Location = new System.Drawing.Point(303, 118);
             this.mCheckBox.Name = "mCheckBox";
@@ -997,9 +997,9 @@
             this.mCheckBox.Text = "Creature Movement";
             this.mCheckBox.UseVisualStyleBackColor = true;
             this.mCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
-            // 
+            //
             // selectAllButton
-            // 
+            //
             this.selectAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.selectAllButton.Location = new System.Drawing.Point(295, 161);
             this.selectAllButton.Name = "selectAllButton";
@@ -1008,9 +1008,9 @@
             this.selectAllButton.Text = "Select All";
             this.selectAllButton.UseVisualStyleBackColor = true;
             this.selectAllButton.Click += new System.EventHandler(this.SelectAllButtonClick);
-            // 
+            //
             // selectNoneButton
-            // 
+            //
             this.selectNoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.selectNoneButton.Location = new System.Drawing.Point(376, 161);
             this.selectNoneButton.Name = "selectNoneButton";
@@ -1019,9 +1019,9 @@
             this.selectNoneButton.Text = "Select None";
             this.selectNoneButton.UseVisualStyleBackColor = true;
             this.selectNoneButton.Click += new System.EventHandler(this.SelectNoneButtonClick);
-            // 
+            //
             // sqlOutputMaskLabel
-            // 
+            //
             this.sqlOutputMaskLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.sqlOutputMaskLabel.AutoSize = true;
             this.sqlOutputMaskLabel.Location = new System.Drawing.Point(6, 166);
@@ -1029,9 +1029,9 @@
             this.sqlOutputMaskLabel.Size = new System.Drawing.Size(86, 13);
             this.sqlOutputMaskLabel.TabIndex = 15;
             this.sqlOutputMaskLabel.Text = "SQLOutputMask";
-            // 
+            //
             // sshEnabledCheckBox
-            // 
+            //
             this.sshEnabledCheckBox.AutoSize = true;
             this.sshEnabledCheckBox.Location = new System.Drawing.Point(132, 116);
             this.sshEnabledCheckBox.Name = "sshEnabledCheckBox";
@@ -1040,9 +1040,9 @@
             this.sshEnabledCheckBox.Text = "SSH Enabled";
             this.sshEnabledCheckBox.UseVisualStyleBackColor = true;
             this.sshEnabledCheckBox.CheckedChanged += new System.EventHandler(this.SSHEnabledCheckBoxCheckedChanged);
-            // 
+            //
             // dbEnabledCheckBox
-            // 
+            //
             this.dbEnabledCheckBox.AutoSize = true;
             this.dbEnabledCheckBox.Location = new System.Drawing.Point(18, 116);
             this.dbEnabledCheckBox.Name = "dbEnabledCheckBox";
@@ -1051,9 +1051,9 @@
             this.dbEnabledCheckBox.Text = "DB Enabled";
             this.dbEnabledCheckBox.UseVisualStyleBackColor = true;
             this.dbEnabledCheckBox.CheckedChanged += new System.EventHandler(this.DBEnabledCheckBoxCheckedChanged);
-            // 
+            //
             // logErrorCheckBox
-            // 
+            //
             this.logErrorCheckBox.AutoSize = true;
             this.logErrorCheckBox.Location = new System.Drawing.Point(132, 139);
             this.logErrorCheckBox.Name = "logErrorCheckBox";
@@ -1061,9 +1061,9 @@
             this.logErrorCheckBox.TabIndex = 18;
             this.logErrorCheckBox.Text = "Log Errors";
             this.logErrorCheckBox.UseVisualStyleBackColor = true;
-            // 
+            //
             // splitOutputCheckBox
-            // 
+            //
             this.splitOutputCheckBox.AutoSize = true;
             this.splitOutputCheckBox.Location = new System.Drawing.Point(132, 162);
             this.splitOutputCheckBox.Name = "splitOutputCheckBox";
@@ -1071,9 +1071,9 @@
             this.splitOutputCheckBox.TabIndex = 19;
             this.splitOutputCheckBox.Text = "Split Output";
             this.splitOutputCheckBox.UseVisualStyleBackColor = true;
-            // 
+            //
             // parsingLogCheckBox
-            // 
+            //
             this.parsingLogCheckBox.AutoSize = true;
             this.parsingLogCheckBox.Location = new System.Drawing.Point(18, 185);
             this.parsingLogCheckBox.Name = "parsingLogCheckBox";
@@ -1081,9 +1081,9 @@
             this.parsingLogCheckBox.TabIndex = 20;
             this.parsingLogCheckBox.Text = "Parsing Log";
             this.parsingLogCheckBox.UseVisualStyleBackColor = true;
-            // 
+            //
             // statsComboBox
-            // 
+            //
             this.statsComboBox.FormattingEnabled = true;
             this.statsComboBox.Items.AddRange(new object[] {
             "NoOutput",
@@ -1093,25 +1093,25 @@
             this.statsComboBox.Name = "statsComboBox";
             this.statsComboBox.Size = new System.Drawing.Size(69, 21);
             this.statsComboBox.TabIndex = 21;
-            // 
+            //
             // statsLabel
-            // 
+            //
             this.statsLabel.AutoSize = true;
             this.statsLabel.Location = new System.Drawing.Point(116, 186);
             this.statsLabel.Name = "statsLabel";
             this.statsLabel.Size = new System.Drawing.Size(34, 13);
             this.statsLabel.TabIndex = 22;
             this.statsLabel.Text = "Stats:";
-            // 
+            //
             // databaseWTextBox
-            // 
+            //
             this.databaseWTextBox.Location = new System.Drawing.Point(130, 112);
             this.databaseWTextBox.Name = "databaseWTextBox";
             this.databaseWTextBox.Size = new System.Drawing.Size(58, 20);
             this.databaseWTextBox.TabIndex = 6;
-            // 
+            //
             // MainForm
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(481, 578);

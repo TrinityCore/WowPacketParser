@@ -27,7 +27,7 @@ namespace SettingsUI
         }
 
         /// <summary>
-        /// Returns the value associated with the given key or 
+        /// Returns the value associated with the given key or
         /// returns the passed value if key does not exist.
         /// </summary>
         /// <typeparam name="T">Type of default value and return type</typeparam>
@@ -43,7 +43,7 @@ namespace SettingsUI
                 if (createVal)
                     _config.AppSettings.Settings.Add(
                         new KeyValueConfigurationElement(key, defaultVal.ToString()));
-                
+
                 return defaultVal;
             }
 

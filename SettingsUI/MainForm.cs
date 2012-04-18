@@ -112,7 +112,7 @@ namespace SettingsUI
                 {databaseTextBox, new Tuple<string, dynamic>("WPPDatabase", "WPP")},
                 {databaseWTextBox, new Tuple<string, dynamic>("TDBDatabase", "world")},
                 {charSetComboBox, new Tuple<string, dynamic>("CharacterSet", CharacterSet.UTF8)},
-	        };
+            };
 
             try
             {

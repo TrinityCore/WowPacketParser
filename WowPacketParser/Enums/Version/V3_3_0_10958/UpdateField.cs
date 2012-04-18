@@ -54,7 +54,7 @@ namespace WowPacketParser.Enums.Version.V3_3_0_10958
         ITEM_FIELD_CREATE_PLAYED_TIME = ObjectField.OBJECT_END + 0x0039, // Size: 1, Type: INT, Flags: PUBLIC
         ITEM_END = ObjectField.OBJECT_END + 0x003A,
     }
-    
+
     public enum ContainerField
     {
         CONTAINER_FIELD_NUM_SLOTS = ItemField.ITEM_END + 0x0000, // Size: 1, Type: INT, Flags: PUBLIC
@@ -62,7 +62,7 @@ namespace WowPacketParser.Enums.Version.V3_3_0_10958
         CONTAINER_FIELD_SLOT_1 = ItemField.ITEM_END + 0x0002, // Size: 72, Type: LONG, Flags: PUBLIC
         CONTAINER_END = ItemField.ITEM_END + 0x004A,
     }
-    
+
     public enum UnitField
     {
         UNIT_FIELD_CHARM = ObjectField.OBJECT_END + 0x0000, // Size: 2, Type: LONG, Flags: PUBLIC
@@ -158,7 +158,7 @@ namespace WowPacketParser.Enums.Version.V3_3_0_10958
         UNIT_FIELD_PADDING = ObjectField.OBJECT_END + 0x008D, // Size: 1, Type: INT, Flags: NONE
         UNIT_END = ObjectField.OBJECT_END + 0x008E,
     }
-    
+
     public enum PlayerField
     {
         PLAYER_DUEL_ARBITER = UnitField.UNIT_END + 0x0000, // Size: 2, Type: LONG, Flags: PUBLIC
@@ -378,7 +378,7 @@ namespace WowPacketParser.Enums.Version.V3_3_0_10958
         PLAYER_FIELD_PADDING = UnitField.UNIT_END + 0x0499, // Size: 1, Type: INT, Flags: NONE
         PLAYER_END = UnitField.UNIT_END + 0x049A,
     }
-    
+
     public enum GameObjectField
     {
         OBJECT_FIELD_CREATED_BY = ObjectField.OBJECT_END + 0x0000, // Size: 2, Type: LONG, Flags: PUBLIC
@@ -391,8 +391,8 @@ namespace WowPacketParser.Enums.Version.V3_3_0_10958
         GAMEOBJECT_BYTES_1 = ObjectField.OBJECT_END + 0x000B, // Size: 1, Type: BYTES, Flags: PUBLIC
         GAMEOBJECT_END = ObjectField.OBJECT_END + 0x000C,
     }
-    
-    
+
+
     public enum DynamicObjectField
     {
         DYNAMICOBJECT_CASTER = ObjectField.OBJECT_END + 0x0000, // Size: 2, Type: LONG, Flags: PUBLIC
@@ -402,7 +402,7 @@ namespace WowPacketParser.Enums.Version.V3_3_0_10958
         DYNAMICOBJECT_CASTTIME = ObjectField.OBJECT_END + 0x0005, // Size: 1, Type: INT, Flags: PUBLIC
         DYNAMICOBJECT_END = ObjectField.OBJECT_END + 0x0006,
     }
-    
+
     public enum CorpseField
     {
         CORPSE_FIELD_OWNER = ObjectField.OBJECT_END + 0x0000, // Size: 2, Type: LONG, Flags: PUBLIC
