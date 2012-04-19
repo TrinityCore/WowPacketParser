@@ -62,13 +62,24 @@ namespace WowPacketParser.Loading
                     _reader.ReadBytes(64);                      // realm name
                     break;
                 case PktVersion.V3_0:
-                    _reader.ReadByte();                         // sniffer id
+                {
+                    var snifferId = _reader.ReadByte();         // sniffer id
                     SetBuild(_reader.ReadUInt32());             // client build
                     _reader.ReadBytes(4);                       // client locale
                     _reader.ReadBytes(40);                      // session key
                     additionalLength = _reader.ReadInt32();
+                    var preAdditionalPos = _reader.BaseStream.Position;
                     _reader.ReadBytes(additionalLength);
+                    var postAdditionalPos = _reader.BaseStream.Position;
+                    if (snifferId == 10)                        // xyla
+                    {
+                        _reader.BaseStream.Position = preAdditionalPos;
+                        _startTime = Utilities.GetDateTimeFromUnixTime(_reader.ReadUInt32());   // start time
+                        _startTickCount = _reader.ReadUInt32(); // start tick count
+                        _reader.BaseStream.Position = postAdditionalPos;
+                    }
                     break;
+                }
                 case PktVersion.V3_1:
                     _reader.ReadByte();                         // sniffer id
                     SetBuild(_reader.ReadUInt32());             // client build
@@ -135,7 +146,9 @@ namespace WowPacketParser.Loading
                         if (_pktVersion == PktVersion.V3_0)
                         {
                             time = Utilities.GetDateTimeFromUnixTime(_reader.ReadInt32());
-                            _reader.ReadUInt32();   // tick count since app start
+                            var tickCount = _reader.ReadUInt32();
+                            if (_startTickCount != 0)
+                                time = _startTime.AddMilliseconds(tickCount - _startTickCount);
                         }
                         else
                         {
