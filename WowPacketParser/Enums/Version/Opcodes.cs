@@ -69,6 +69,10 @@ namespace WowPacketParser.Enums.Version
                 {
                     return _V4_3_3_opcodes;
                 }
+                case ClientVersionBuild.V4_3_4_15595:
+                {
+                    return _V4_3_4_opcodes;
+                }
             }
             return _V3_3_5_opcodes; // Default case
         }
