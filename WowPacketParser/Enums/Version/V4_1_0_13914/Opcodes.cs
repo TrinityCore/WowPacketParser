@@ -140,7 +140,7 @@ namespace WowPacketParser.Enums.Version//.V4_1_0_13914
             {Opcode.SMSG_LEARNED_SPELL, 0x0882D}, // 4.1.0 13914
             {Opcode.SMSG_LEVELUP_INFO, 0x09F2C}, // 4.1.0 13914
             {Opcode.SMSG_LFG_LFR_LIST, 0x01D7E}, // 4.1.0 13914
-            {Opcode.SMSG_LFG_OPEN_FROM_GOSSIP, 0x05A7D}, // 4.1.0 13914
+            {Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER, 0x05A7D}, // 4.1.0 13914
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x0DE2C}, // 4.1.0 13914
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x00F3F}, // 4.1.0 13914
             {Opcode.SMSG_LOG_XPGAIN, 0x01F7E}, // 4.1.0 13914

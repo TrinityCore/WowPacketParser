@@ -1167,7 +1167,6 @@ namespace WowPacketParser.Enums
         SMSG_LFG_JOIN_RESULT,
         SMSG_LFG_LFR_LIST,
         SMSG_LFG_OFFER_CONTINUE,
-        SMSG_LFG_OPEN_FROM_GOSSIP,
         SMSG_LFG_PARTY_INFO,
         SMSG_LFG_PLAYER_INFO,
         SMSG_LFG_PLAYER_REWARD,

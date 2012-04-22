@@ -1265,7 +1265,7 @@ namespace WowPacketParser.Enums.Version//.V4_0_3_13329
             {Opcode.CMSG_REDIRECTION_AUTH_PROOF, 0x0512}, // NF()(0x0512) // // something with networking
             {Opcode.UMSG_UNKNOWN_1299, 0x0513}, // NF()(0x0513) // // not found
             {Opcode.SMSG_COMBAT_LOG_MULTIPLE, 0x8F75}, // (0x4AB4)(0x0514) //
-            {Opcode.SMSG_LFG_OPEN_FROM_GOSSIP, 0xA774}, // (0x0379)(0x0515) //04 (opens dungeon finder}, probably for outdoor bosses)
+            {Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER, 0xA774}, // (0x0379)(0x0515) //04 (opens dungeon finder}, probably for outdoor bosses)
             {Opcode.SMSG_UNKNOWN_1302, 0x0516}, // NF()(0x0516) // // something with player movement (move event 58?)
             {Opcode.CMSG_UNKNOWN_1303, 0x0517}, // NF()(0x0517) // // something with player movement (move event 58?)
             {Opcode.SMSG_UNKNOWN_1304, 0x2E5E}, // (0x4B70)(0x0518) // with player movement (move event 58?)}, speed packet

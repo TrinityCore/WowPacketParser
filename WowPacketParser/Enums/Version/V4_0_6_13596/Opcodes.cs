@@ -966,7 +966,7 @@ namespace WowPacketParser.Enums.Version//.V4_0_6_13596
             {Opcode.SMSG_LFG_JOIN_RESULT, 0x0338C}, // 4.0.6a 13623
             {Opcode.SMSG_LFG_LFR_LIST, 0x0768C}, // 4.0.6a 13623
             {Opcode.SMSG_LFG_OFFER_CONTINUE, 0x063EC}, // 4.0.6a 13623
-            {Opcode.SMSG_LFG_OPEN_FROM_GOSSIP, 0x071EC}, // 4.0.6a 13623
+            {Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER, 0x071EC}, // 4.0.6a 13623
             {Opcode.SMSG_LFG_PARTY_INFO, 0x060A0}, // 4.0.6a 13623
             {Opcode.SMSG_LFG_PLAYER_INFO, 0x0E088}, // 4.0.6a 13623
             {Opcode.SMSG_LFG_PLAYER_REWARD, 0x02C88}, // 4.0.6a 13623

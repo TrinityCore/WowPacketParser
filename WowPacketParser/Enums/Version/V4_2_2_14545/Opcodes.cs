@@ -544,7 +544,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_LFG_DISABLED, 0xCAEA},
             {Opcode.SMSG_LFG_JOIN_RESULT, 0xCCCB},
             {Opcode.SMSG_LFG_OFFER_CONTINUE, 0x8E7E},
-            {Opcode.SMSG_LFG_OPEN_FROM_GOSSIP, 0x0C5E},
+            {Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER, 0x0C5E},
             {Opcode.SMSG_LFG_PARTY_INFO, 0x5E47},
             {Opcode.SMSG_LFG_PLAYER_INFO, 0xC85F},
             {Opcode.SMSG_LFG_PROPOSAL_UPDATE, 0x485E},
