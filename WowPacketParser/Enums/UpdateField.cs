@@ -658,5 +658,14 @@ namespace WowPacketParser.Enums
         CORPSE_FIELD_PAD,
         CORPSE_FIELD_PARTY,
     }
+
+    public enum AreaTriggerField
+    {
+        AREATRIGGER_DURATION,
+        AREATRIGGER_END,
+        AREATRIGGER_FINAL_POS,
+        AREATRIGGER_SPELLID,
+        AREATRIGGER_SPELLVISUALID,
+    }
     // ReSharper restore InconsistentNaming, UnusedMember.Global
 }

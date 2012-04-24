@@ -163,7 +163,7 @@
     <Compile Include="Enums\Version\V4_3_2_15211\Opcodes.cs" />
     <Compile Include="Enums\Version\V4_3_2_15211\UpdateField.cs" />
     <Compile Include="Enums\Version\V4_3_3_15354\Opcodes.cs" />
-	<Compile Include="Enums\Version\V4_3_4_15595\Opcodes.cs" />
+    <Compile Include="Enums\Version\V4_3_4_15595\Opcodes.cs" />
     <Compile Include="Enums\Version\UpdateFields.cs" />
     <Compile Include="Enums\Version\V4_2_2_14545\Opcodes.cs" />
     <Compile Include="Enums\Version\V4_2_0_14480\Opcodes.cs" />
@@ -178,6 +178,7 @@
     <Compile Include="Enums\Version\V4_0_6_13596\UpdateField.cs" />
     <Compile Include="Enums\Version\V4_2_2_14545\UpdateField.cs" />
     <Compile Include="Enums\Version\V4_3_3_15354\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V4_3_4_15595\UpdateFields.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\SpellHitInfo.cs" />
     <Compile Include="Enums\SpellMechanic.cs" />

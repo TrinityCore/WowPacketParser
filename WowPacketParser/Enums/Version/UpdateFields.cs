@@ -18,13 +18,16 @@ namespace WowPacketParser.Enums.Version
             Type[] enumTypes = {
                                typeof (ObjectField), typeof (ItemField), typeof (ContainerField), typeof (UnitField),
                                typeof (PlayerField), typeof (GameObjectField), typeof (DynamicObjectField),
-                               typeof (CorpseField)
+                               typeof (CorpseField), typeof (AreaTriggerField)
                            };
 
             foreach (var enumType in enumTypes)
             {
                 var vTypeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionaryBuildName(ClientVersion.Build), enumType.Name);
                 var vEnumType = Assembly.GetType(vTypeString);
+                if (vEnumType == null)
+                    continue;   // versions prior to 4.3.0 do not have AreaTriggerField
+
                 var vValues = Enum.GetValues(vEnumType);
                 var vNames = Enum.GetNames(vEnumType);
 
@@ -138,9 +141,12 @@ namespace WowPacketParser.Enums.Version
                     return "V4_3_2_15211";
                 }
                 case ClientVersionBuild.V4_3_3_15354:
-                case ClientVersionBuild.V4_3_4_15595:
                 {
                     return "V4_3_3_15354";
+                }
+                case ClientVersionBuild.V4_3_4_15595:
+                {
+                    return "V4_3_4_15595";
                 }
                 default:
                     return "V3_3_5a_12340";
