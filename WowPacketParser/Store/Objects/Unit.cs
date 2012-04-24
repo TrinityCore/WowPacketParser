@@ -157,13 +157,17 @@ namespace WowPacketParser.Store.Objects
             for (var i = 0; i < count; i++)
             {
                 UpdateField uf;
-                if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField<T>(Convert.ToInt32(firstUpdateField) + i), out uf))
-                    if (typeof(TK) == typeof(uint))
-                        result[i] = (TK) (object) uf.UInt32Value;
-                    else if (typeof(TK) == typeof(float))
-                        result[i] = (TK)(object) uf.SingleValue;
+                if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(firstUpdateField) + i, out uf))
+                {
+                    if (typeof(TK) == typeof(int?) || typeof(TK) == typeof(int) ||
+                        typeof(TK) == typeof(uint?) || typeof(TK) == typeof(uint))
+                        result[i] = (TK)(object)uf.UInt32Value;
+                    else if (typeof(TK) == typeof(float?) || typeof(TK) == typeof(double?) ||
+                        typeof(TK) == typeof(float) || typeof(TK) == typeof(double))
+                        result[i] = (TK)(object)uf.SingleValue;
                     else
                         return null;
+                }
             }
 
             return result;
