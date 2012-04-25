@@ -31,12 +31,18 @@ namespace WowPacketParser.SQL.Builders
                     if (!(creature.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
                         continue;
 
+                UpdateField uf;
+                if (!creature.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out uf))
+                    continue;   // broken entry, nothing to spawn
+
+                var entry = uf.UInt32Value;
+
                 var spawnTimeSecs = creature.GetDefaultSpawnTime();
                 var movementType = 0; // TODO: Find a way to check if our unit got random movement
                 var spawnDist = (movementType == 1) ? 5 : 0;
 
                 row.AddValue("guid", "@CGUID+" + count, noQuotes: true);
-                row.AddValue("id", unit.Key.GetEntry());
+                row.AddValue("id", entry);
                 row.AddValue("map", creature.Map);
                 row.AddValue("spawnMask", 1);
                 row.AddValue("phaseMask", creature.PhaseMask);
@@ -93,6 +99,11 @@ namespace WowPacketParser.SQL.Builders
                 uint animprogress = 0;
                 uint state = 0;
                 UpdateField uf;
+                if (!go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out uf))
+                    continue;   // broken entry, nothing to spawn
+
+                var entry = uf.UInt32Value;
+
                 if (go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(GameObjectField.GAMEOBJECT_BYTES_1), out uf))
                 {
                     var bytes = uf.UInt32Value;
@@ -101,7 +112,7 @@ namespace WowPacketParser.SQL.Builders
                 }
 
                 row.AddValue("guid", "@OGUID+" + count, noQuotes: true);
-                row.AddValue("id", gameobject.Key.GetEntry());
+                row.AddValue("id", entry);
                 row.AddValue("map", go.Map);
                 row.AddValue("spawnMask", 1);
                 row.AddValue("phaseMask", go.PhaseMask);
@@ -136,6 +147,11 @@ namespace WowPacketParser.SQL.Builders
                 {
                     row.CommentOut = true;
                     row.Comment += " - !!! might be temporary spawn !!!";
+                }
+                else if (go.IsTransport())
+                {
+                    row.CommentOut = true;
+                    row.Comment += " - !!! transport !!!";
                 }
                 else
                     ++count;

@@ -127,15 +127,42 @@ namespace WowPacketParser.Store.Objects
         /// <returns></returns>
         public static TK GetValue<T, TK>(this Dictionary<int, UpdateField> dict, T updateField)
         {
+            var isInt = false;
+            var type = typeof(TK);
+            switch (Type.GetTypeCode(type))
+            {
+                case TypeCode.UInt32:
+                case TypeCode.Int32:
+                    isInt = true;
+                    break;
+                case TypeCode.Single:
+                case TypeCode.Double:
+                    break;
+                default:
+                {
+                    switch (Type.GetTypeCode(Nullable.GetUnderlyingType(type)))
+                    {
+                        case TypeCode.UInt32:
+                        case TypeCode.Int32:
+                            isInt = true;
+                            break;
+                        case TypeCode.Single:
+                        case TypeCode.Double:
+                            break;
+                        default:
+                            return default(TK);
+                    }
+                    break;
+                }
+            }
+
             UpdateField uf;
             if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(updateField), out uf))
             {
-                if (typeof(TK) == typeof(int?) || typeof(TK) == typeof(int) ||
-                    typeof(TK) == typeof(uint?) || typeof(TK) == typeof(uint))
-                    return (TK) (object) uf.UInt32Value;
-                if (typeof (TK) == typeof (float?) || typeof (TK) == typeof (double?) ||
-                    typeof(TK) == typeof(float) || typeof(TK) == typeof(double))
-                    return (TK) (object) uf.SingleValue;
+                if (isInt)
+                    return (TK)(object)uf.UInt32Value;
+                else
+                    return (TK)(object)uf.SingleValue;
             }
 
             return default(TK);
@@ -152,23 +179,50 @@ namespace WowPacketParser.Store.Objects
         /// <returns></returns>
         public static TK[] GetArray<T, TK>(this Dictionary<int, UpdateField> dict, T firstUpdateField, int count)
         {
-            var result = new TK[count];
-
-            for (var i = 0; i < count; i++)
+            var isInt = false;
+            var type = typeof(TK);
+            switch (Type.GetTypeCode(type))
             {
-                UpdateField uf;
-                if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(firstUpdateField) + i, out uf))
-                {
-                    if (typeof(TK) == typeof(int?) || typeof(TK) == typeof(int) ||
-                        typeof(TK) == typeof(uint?) || typeof(TK) == typeof(uint))
-                        result[i] = (TK)(object)uf.UInt32Value;
-                    else if (typeof(TK) == typeof(float?) || typeof(TK) == typeof(double?) ||
-                        typeof(TK) == typeof(float) || typeof(TK) == typeof(double))
-                        result[i] = (TK)(object)uf.SingleValue;
-                    else
-                        return null;
-                }
+                case TypeCode.UInt32:
+                case TypeCode.Int32:
+                    isInt = true;
+                    break;
+                case TypeCode.Single:
+                case TypeCode.Double:
+                    break;
+                default:
+                    {
+                        switch (Type.GetTypeCode(Nullable.GetUnderlyingType(type)))
+                        {
+                            case TypeCode.UInt32:
+                            case TypeCode.Int32:
+                                isInt = true;
+                                break;
+                            case TypeCode.Single:
+                            case TypeCode.Double:
+                                break;
+                            default:
+                                return null;
+                        }
+                        break;
+                    }
             }
+
+            var result = new TK[count];
+            UpdateField uf;
+            if (isInt)
+            {
+                for (var i = 0; i < count; i++)
+                    if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(firstUpdateField) + i, out uf))
+                        result[i] = (TK)(object)uf.UInt32Value;
+            }
+            else
+            {
+                for (var i = 0; i < count; i++)
+                    if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(firstUpdateField) + i, out uf))
+                        result[i] = (TK)(object)uf.SingleValue;
+            }
+
 
             return result;
         }

@@ -20,5 +20,16 @@ namespace WowPacketParser.Store.Objects
         {
             return UpdateFields.GetArray<GameObjectField, float>(GameObjectField.GAMEOBJECT_PARENTROTATION, 4);
         }
+
+        public bool IsTransport()
+        {
+            // If our gameobject got the following update field set,
+            // it's probably a temporary spawn
+            UpdateField uf;
+            if (UpdateFields.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(GameObjectField.GAMEOBJECT_BYTES_1), out uf))
+                return (GameObjectType)((uf.UInt32Value & 0x0000FF00) >> 8) == GameObjectType.MOTransport;
+
+            return false;
+        }
     }
 }
