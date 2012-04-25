@@ -7,7 +7,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_4_opcodes
         private static readonly Dictionary<Opcode, int> _V4_3_4_opcodes = new Dictionary<Opcode, int>
         {
            {Opcode.CMSG_AUTH_SESSION, 0x0449},
-           {Opcode.CMSG_GOSSIP_HELLO, 0x3B0C},
+           {Opcode.CMSG_GOSSIP_HELLO, 0x4525},
            {Opcode.CMSG_JOIN_CHANNEL, 0x0156},
            {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x2B16},
            {Opcode.CMSG_REALM_SPLIT, 0x2906},
@@ -15,7 +15,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_4_opcodes
            {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x6505},
            {Opcode.CMSG_RESET_FACTION_CHEAT, 0x4469},
            {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x4736},
-           {Opcode.CMSG_WARDEN_DATA, 0x446D},
+           {Opcode.CMSG_WARDEN_DATA, 0x25A2},
            {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x4B05},
            {Opcode.SMSG_ADDON_INFO, 0x2C14},
            {Opcode.SMSG_AURA_UPDATE, 0x6916},
@@ -41,6 +41,7 @@ namespace WowPacketParser.Enums.Version//.V4_3_4_opcodes
            {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x6936},
            {Opcode.SMSG_SPELL_GO, 0x6E16},
            {Opcode.SMSG_SPELL_START, 0x6415},
+           {Opcode.SMSG_TRAINER_LIST, 0x4414},
            {Opcode.SMSG_UPDATE_OBJECT, 0x4715},
         };
     }
