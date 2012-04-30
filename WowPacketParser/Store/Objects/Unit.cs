@@ -172,7 +172,7 @@ namespace WowPacketParser.Store.Objects
         /// Grabs N (consecutive) values from a dictionary of UpdateFields
         /// </summary>
         /// <typeparam name="T">The type of UpdateField (ObjectField, UnitField, ...)</typeparam>
-        /// <typeparam name="TK">UInt or Float</typeparam>
+        /// <typeparam name="TK">The type of the value (int, uint or float and their nullable counterparts)</typeparam>
         /// <param name="dict">The dictionary</param>
         /// <param name="firstUpdateField">The first update field of the sequence</param>
         /// <param name="count">Number of values to retrieve</param>
