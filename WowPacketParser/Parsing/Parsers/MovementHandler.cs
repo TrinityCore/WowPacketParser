@@ -16,7 +16,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static int CurrentPhaseMask = 1;
 
-        public static MovementInfo ReadMovementInfo(ref Packet packet, Guid guid, int index = -1)
+        public static MovementInfo ReadMovementInfo(ref Packet packet, Guid guid, params int[] index)
         {
             if (ClientVersion.Build == ClientVersionBuild.V4_2_0_14333)
                 return ReadMovementInfo420(ref packet, index);
@@ -24,7 +24,7 @@ namespace WowPacketParser.Parsing.Parsers
             return ReadMovementInfoGen(ref packet, guid, index);
         }
 
-        private static MovementInfo ReadMovementInfoGen(ref Packet packet, Guid guid, int index)
+        private static MovementInfo ReadMovementInfoGen(ref Packet packet, Guid guid, params int[] index)
         {
             var info = new MovementInfo();
             info.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", TypeCode.Int32, index);
@@ -95,7 +95,7 @@ namespace WowPacketParser.Parsing.Parsers
             return info;
         }
 
-        private static MovementInfo ReadMovementInfo420(ref Packet packet, int index)
+        private static MovementInfo ReadMovementInfo420(ref Packet packet, params int[] index)
         {
             var info = new MovementInfo();
 
@@ -247,12 +247,14 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Async-time in ms");
             }
 
-            var waypoints = packet.ReadInt32("Waypoints");
+            var waypoints = packet.ReadInt32("Waypoints Count");
 
             if (flags.HasAnyFlag(SplineFlag.Flying | SplineFlag.CatmullRom))
             {
+                packet.StoreBeginList("Waypoints");
                 for (var i = 0; i < waypoints; i++)
                     packet.ReadVector3("Waypoint", i);
+                packet.StoreEndList();
             }
             else
             {
@@ -263,6 +265,7 @@ namespace WowPacketParser.Parsing.Parsers
                 mid.Y = (pos.Y + newpos.Y) * 0.5f;
                 mid.Z = (pos.Z + newpos.Z) * 0.5f;
 
+                packet.StoreBeginList("Waypoints");
                 for (var i = 1; i < waypoints; i++)
                 {
                     var vec = packet.ReadPackedVector3();
@@ -272,6 +275,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                     packet.Store("Waypoint", vec, i);
                 }
+                packet.StoreEndList();
             }
         }
 
@@ -351,12 +355,14 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Unk Int32 2");
             }
 
-            var waypoints = packet.ReadInt32("Waypoints");
+            var waypoints = packet.ReadInt32("Waypoints Count");
 
             if (flags.HasAnyFlag(SplineFlag422.UsePathSmoothing))
             {
+                packet.StoreBeginList("Waypoints");
                 for (var i = 0; i < waypoints; i++)
                     packet.ReadVector3("Waypoint", i);
+                packet.StoreEndList();
             }
             else
             {
@@ -367,6 +373,7 @@ namespace WowPacketParser.Parsing.Parsers
                 mid.Y = (pos.Y + newpos.Y) * 0.5f;
                 mid.Z = (pos.Z + newpos.Z) * 0.5f;
 
+                packet.StoreBeginList("Waypoints");
                 for (var i = 1; i < waypoints; i++)
                 {
                     var vec = packet.ReadPackedVector3();
@@ -376,6 +383,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                     packet.Store("Waypoint", vec, i);
                 }
+                packet.StoreEndList();
             }
         }
 
@@ -456,12 +464,7 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
 
             var opcode = packet.ReadInt32();
-            // None length is recieved, so we have to calculate the remaining bytes.
-            var remainingLength = packet.Length - packet.Position;
-            var bytes = packet.ReadBytes((int)remainingLength);
-
-            using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.FileName, packet))
-                Handler.Parse(newpacket, true);
+            packet.ReadSubPacket(opcode, "MovePacket");
         }
 
         [Parser(Opcode.MSG_MOVE_TELEPORT_ACK, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -3883,14 +3886,16 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_FORCE_MOVE_UNROOT)]
         [Parser(Opcode.SMSG_MOVE_WATER_WALK)]
         [Parser(Opcode.SMSG_MOVE_LAND_WALK)]
+        [Parser(Opcode.SMSG_MOVE_FEATHER_FALL)]
+        [Parser(Opcode.SMSG_MOVE_NORMAL_FALL)]
         [Parser(Opcode.SMSG_MOVE_SET_HOVER)]
         [Parser(Opcode.SMSG_MOVE_UNSET_HOVER)]
         [Parser(Opcode.SMSG_MOVE_SET_CAN_FLY)]
         [Parser(Opcode.SMSG_MOVE_UNSET_CAN_FLY)]
         [Parser(Opcode.SMSG_MOVE_SET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY)]
         [Parser(Opcode.SMSG_MOVE_UNSET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY)]
-        [Parser(Opcode.SMSG_MOVE_FEATHER_FALL)]
-        [Parser(Opcode.SMSG_MOVE_NORMAL_FALL, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_MOVE_GRAVITY_DISABLE)]
+        [Parser(Opcode.SMSG_MOVE_GRAVITY_ENABLE)]
         public static void HandleSetMovementMessages(Packet packet)
         {
             packet.ReadPackedGuid("Guid");
@@ -3933,26 +3938,31 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePhaseShift406(Packet packet)
         {
             packet.ReadGuid("GUID");
-            var i = 0;
+
             int count = packet.ReadInt32("Count");
+            packet.StoreBeginList("Unks");
             for (var j = 0; j < count / 2; ++j)
-                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Unk", i, j);
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Unk", j);
+            packet.StoreEndList();
 
-            i++;
             count = packet.ReadInt32();
+            packet.StoreBeginList("Terrarin Swaps 1");
             for (var j = 0; j < count / 2; ++j)
-                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Terrain Swap 1", i, j);
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Terrain Swap 1", j);
+            packet.StoreEndList();
 
-            i++;
             count = packet.ReadInt32();
+            packet.StoreBeginList("Phases");
             var phaseMask = 0;
             for (var j = 0; j < count / 2; ++j)
-                phaseMask = packet.ReadInt16("Phases", ++i, j);
+                phaseMask = packet.ReadInt16("Phases", j);
+            packet.StoreEndList();
 
-            i++;
             count = packet.ReadInt32();
+            packet.StoreBeginList("Terrarin Swaps 2");
             for (var j = 0; j < count / 2; ++j)
-                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Terrain Swap 2", i, j);
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Terrain Swap 2", j);
+            packet.StoreEndList();
 
             packet.ReadUInt32("Flag"); // can be 0, 4 or 8, 8 = normal world, others are unknown
 
@@ -3977,36 +3987,40 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 4);
 
-            var i = 0;
             var count = packet.ReadInt32();
+            packet.StoreBeginList("Map swaps 1");
             for (var j = 0; j < count / 2; ++j)
-                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 1", i, j);
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 1", j);
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 3);
 
             var mask = packet.ReadUInt32("Mask");
-            packet.StoreOutputText(mask.ToString("X2"));
 
             packet.ReadXORByte(guid, 2);
 
             var phaseMask = -1;
             count = packet.ReadInt32();
+            packet.StoreBeginList("Current masks");
             for (var j = 0; j < count / 2; ++j)
-                phaseMask = packet.ReadUInt16("Current Mask", i, j);
+                phaseMask = packet.ReadUInt16("Current Mask", j);
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 6);
 
-            i++;
             count = packet.ReadInt32();
+            packet.StoreBeginList("Map swaps 2");
             for (var j = 0; j < count / 2; ++j)
-                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 1", i, j);
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 2", j);
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 7);
 
-            i++;
             count = packet.ReadInt32();
+            packet.StoreBeginList("Map swaps 3");
             for (var j = 0; j < count / 2; ++j)
-                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 3", i, j);
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Map Swap 3", j);
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 1);
@@ -4263,23 +4277,17 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_COMPRESSED_MOVES)]
         public static void HandleCompressedMoves(Packet packet)
         {
-            packet.StoreOutputText("{"); // To be able to see what is inside this packet
-
             packet.Inflate(packet.ReadInt32());
+            var i = 0;
+            packet.StoreBeginList("Packets");
+            while (packet.CanRead())
             {
-                while (packet.CanRead())
-                {
-                    var size = packet.ReadByte();
-                    var opc = packet.ReadInt16();
-                    var data = packet.ReadBytes(size - 2);
+                var size = packet.ReadByte() - 2;
+                var opc = packet.ReadInt16();
 
-                    using (var newPacket = new Packet(data, opc, packet.Time, packet.Direction, packet.Number, packet.FileName, packet))
-                        Handler.Parse(newPacket, true);
-                }
+                packet.ReadSubPacket(opc, size, "MovePacket", i++);
             }
-
-            packet.StoreOutputText("}");
-            packet.ReadToEnd();
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_MOVE_KNOCK_BACK, ClientVersionBuild.V4_2_2_14545)]

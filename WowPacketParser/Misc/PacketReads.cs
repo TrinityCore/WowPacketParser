@@ -4,9 +4,16 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using WowPacketParser.Enums;
+using WowPacketParser.Parsing;
+using System.Collections.Specialized;
 
 namespace WowPacketParser.Misc
 {
+    //using NameDict = Dictionary<string, Object>;
+    //1using IndexDict = Dictionary<int, Dictionary<string, Object>>;
+    using NameDict = OrderedDictionary;
+    using IndexDict = Dictionary<int, OrderedDictionary>;
+
     public sealed partial class Packet
     {
         public Guid ReadGuid()
@@ -164,19 +171,6 @@ namespace WowPacketParser.Misc
         {
             var length = (int) (Length - Position);
             return ReadBytes(length);
-        }
-
-        private static string GetIndexString(params int[] values)
-        {
-            var indexes = string.Empty;
-
-            foreach (var value in values)
-            {
-                if (value == -1) continue;
-                indexes += "[" + value + "] ";
-            }
-
-            return indexes;
         }
 
         public byte ReadByte(string name, params int[] values)
@@ -526,6 +520,13 @@ namespace WowPacketParser.Misc
             return 0;
         }
 
+        public char[] ReadChars(string name, int count, params int[] values)
+        {
+            var val = ReadChars(count);
+            Store(name, val, values);
+            return val;
+        }
+
         public Guid ToGuid(string name, byte[] stream, params int[] values)
         {
             var val = new Guid(BitConverter.ToUInt64(stream, 0));
@@ -538,84 +539,155 @@ namespace WowPacketParser.Misc
             return ToGuid(name, stream, values);
         }
 
+        private NameDict StoreData;
+        private LinkedList<Tuple<NameDict, IndexDict>> StoreIndexedLists;
+        private Stack<Tuple<NameDict, LinkedList<Tuple<NameDict, IndexDict>>>> StoreObjects;
+
+        public NameDict StoreGetDataByIndexes(params int[] values)
+        {
+            var listsCount = StoreIndexedLists.Count;
+
+            if (values.Length > listsCount)
+            {
+                throw new Exception(String.Format("Received to many list indexes, there're {0} lists, but {1} indexes", listsCount, values.Length));
+            }
+            else if (values.Length < listsCount)
+            {
+                throw new Exception(String.Format("Received not enough list indexes, there're {0} lists, but {1} indexes", listsCount, values.Length));
+            }
+            NameDict data;
+            if (listsCount > 0)
+            {
+                var itr = StoreIndexedLists.First;
+                for (var i = 0; i < listsCount - 1; ++i)
+                {
+                    NameDict next;
+                    if (!itr.Value.Item2.TryGetValue(values[i], out next) || next != itr.Next.Value.Item1)
+                    {
+                        throw new Exception("Incorrect sub index number!");
+                    }
+                    itr = itr.Next;
+                }
+                if (!itr.Value.Item2.TryGetValue(values[values.Length - 1], out data))
+                {
+                    data = new NameDict();
+                    itr.Value.Item2.Add(values[values.Length - 1], data);
+                }
+            }
+            else
+            {
+                data = StoreData;
+            }
+            return data;
+        }
+
+        public void StoreContinueList(Tuple<NameDict, IndexDict> list, params int[] values)
+        {
+            var dat = StoreGetDataByIndexes(values);
+            if (dat != list.Item1)
+                throw new Exception("Cannot continue reading into indexed list, incorrect scope");
+            StoreIndexedLists.AddLast(list);
+        }
+
+        // begins reading data list arranged by index number
+        public Tuple<NameDict, IndexDict> StoreBeginList(string listName, params int[] values)
+        {
+            var dat = StoreGetDataByIndexes(values);
+            var newList = new IndexDict();
+            Store(listName, newList, values);
+            var l = new Tuple<NameDict, IndexDict>(dat, newList);
+            StoreIndexedLists.AddLast(l);
+            return l;
+        }
+
+        public void StoreEndList()
+        {
+            if (StoreIndexedLists.Count == 0)
+                throw new Exception("Cannot end indexed list, no list found in this scope");
+            StoreIndexedLists.RemoveLast();
+        }
+
+        // begins code in which all data stored composes an object
+        public void StoreBeginObj(string name, params int[] values)
+        {
+            var newObj = new NameDict();
+            Store(name, newObj, values);
+            StoreObjects.Push(new Tuple<NameDict, LinkedList<Tuple<NameDict, IndexDict>>>(StoreData, StoreIndexedLists));
+            StoreData = newObj;
+            StoreIndexedLists = new LinkedList<Tuple<NameDict, IndexDict>>();
+        }
+
+        // ends code in which all data stored composes an object
+        public void StoreEndObj()
+        {
+            if (StoreObjects.Count == 0)
+                throw new Exception("Cannot end object, no object found in this scope");
+            if (StoreIndexedLists.Count != 0)
+                throw new Exception("Cannot end object, there are unfinished indexed lists in object");
+            var state = StoreObjects.Pop();
+            StoreData = state.Item1;
+            StoreIndexedLists = state.Item2;
+        }
+
         public void Store(string name, dynamic data, params int[] values)
         {
-            try
+            var dat = StoreGetDataByIndexes(values);
+
+            if (dat.Contains(name))
+                throw new Exception(String.Format("Data with name {0} already stored in this scope, names must not repeat!", name));
+            dat.Add(name, data);
+        }
+
+        // sub packet with given length
+        public Packet ReadSubPacket(int opcode, int length, string name, params int[] values)
+        {
+            byte[] bytes = ReadBytes(length);
+            var newpacket = new Packet(bytes, opcode, this);
+            Store(name, newpacket, values);
+            Handler.Parse(newpacket);
+            switch (newpacket.Status)
             {
-                // backward compatibility
-                if (data.GetType() == typeof(Single) || data.GetType() == typeof(Double))
-                {
-                    if (Settings.DebugReads)
-                    {
-                        byte[] bytes = BitConverter.GetBytes(data);
-                        Writer.WriteLine("{0}{1}: {2} (0x{3})", GetIndexString(values), name, data, BitConverter.ToString(bytes));
-                    }
-                    else
-                        Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, data);
-                }
-                else if (data.GetType() == typeof(Byte) || data.GetType() == typeof(SByte))
-                {
-                    Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, data, (Settings.DebugReads ? " (0x" + data.ToString("X2") + ")" : String.Empty));
-                }
-                else if (data.GetType() == typeof(UInt16) || data.GetType() == typeof(Int16))
-                {
-                    Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, data, (Settings.DebugReads ? " (0x" + data.ToString("X4") + ")" : String.Empty));
-                }
-                else if (data.GetType() == typeof(UInt32) || data.GetType() == typeof(Int32))
-                {
-                    Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, data, (Settings.DebugReads ? " (0x" + data.ToString("X8") + ")" : String.Empty));
-                }
-                else if (data.GetType() == typeof(UInt64) || data.GetType() == typeof(Int64))
-                {
-                    Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, data, (Settings.DebugReads ? " (0x" + data.ToString("X16") + ")" : String.Empty));
-                }
-                /*else if (data.GetType() == typeof(enum))
-                {
-                     Writer.WriteLine("{0}{1}: {2} ({3}){4}", GetIndexString(values), name, data.Value, data.Key, (Settings.DebugReads ? " (0x" + data.Key.ToString("X4") + ")" : String.Empty));
-                }*/
-                else if (data.GetType() == typeof(DateTime))
-                {
-                    Writer.WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, (DateTime)data, (Settings.DebugReads ? " (0x" + data.ToString("X4") + ")" : String.Empty));
-                }
-                else if (data.GetType() == typeof(Guid))
-                {
-                    if (WriteToFile)
-                        WriteToFile = Filters.CheckFilter((Guid)data);
-                    Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, data);
-                }
-                else if (data.GetType() == typeof(StoreEntry))
-                {
-                    var val = (StoreEntry)data;
-                    if (WriteToFile)
-                        WriteToFile = Filters.CheckFilter(val._type, val._data);
-                    Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, data);
-                }
-                else
-                {
-                    Writer.WriteLine("{0}{1}: {2}", GetIndexString(values), name, data);
-                }
+                case ParsedStatus.NotParsed:
+                    // ignore not parsed case as we can safely continue parsing
+                case ParsedStatus.Success:
+                    break;
+                case ParsedStatus.WithErrors:
+                    throw new Exception(String.Format("Sub packet (opcode {0}) was parsed with error:\n {1}", opcode, newpacket.ErrorMessage));
             }
-            catch (Exception ex)
+            return newpacket;
+        }
+
+        // sub packet with no given length
+        public Packet ReadSubPacket(int opcode, string name, params int[] values)
+        {
+            var oldOpcode = Opcode;
+            int startPos = (int)Position;
+
+            byte[] bytes = GetStream(Position);
+            var newpacket = new Packet(bytes, opcode, this);
+            Store(name, newpacket, values);
+            Handler.Parse(newpacket, false);
+            switch (newpacket.Status)
             {
-                Console.WriteLine(ex.GetType().ToString() + "\n" + ex.Message + "\n" + ex.StackTrace + "\n");
+                case ParsedStatus.NotParsed:
+                    // subpacket not parsed, we can continue parsing because we don't know the length
+                    throw new Exception(String.Format("Sub packet (opcode {0}) was not parsed, can't continue!", opcode));
+                case ParsedStatus.Success:
+                    break;
+                case ParsedStatus.WithErrors:
+                    throw new Exception(String.Format("Sub packet (opcode {0}) was parsed with error:\n {1}", opcode, newpacket.ErrorMessage));
             }
-        }
+            byte[] parsed = newpacket.GetStream(0);
+            var mypos = Position;
+            // write data from subpacket to current packet, so offsets will match in case of subpacket data change (inflate funct for example)
+            BaseStream.SetLength(mypos + parsed.Length);
+            BaseStream.Write(parsed, 0, parsed.Length);
+            // mark parsed data as used in this packet
+            SetPosition(mypos + newpacket.Position);
 
-        public void StoreOutputText(string format, params object[] args)
-        {
-            Writer.WriteLine(format, args);
-        }
-
-        public void StoreOutputText(string format)
-        {
-            Writer.WriteLine(format);
-        }
-
-        public char[] ReadChars(string name, int count, params int[] values)
-        {
-            var val = ReadChars(count);
-            Store(name, val, values);
-            return val;
+            // set length to the amount of bytes read
+            newpacket.BaseStream.SetLength(newpacket.Position);
+            return newpacket;
         }
     }
 }

@@ -195,6 +195,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("OverDamage");
 
             var subDmgCount = packet.ReadByte();
+            
+            packet.StoreBeginList("SubDamages");
             for (var i = 0; i < subDmgCount; ++i)
             {
                 packet.ReadInt32("SchoolMask", i);
@@ -209,6 +211,7 @@ namespace WowPacketParser.Parsing.Parsers
                     hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
                     packet.ReadInt32("Damage Resisted", i);
             }
+            packet.StoreEndList();
 
             var victimStateTypeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183) ? TypeCode.Byte : TypeCode.Int32;
             packet.ReadEnum<VictimStates>("VictimState", victimStateTypeCode);

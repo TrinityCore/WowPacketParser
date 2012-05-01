@@ -336,7 +336,6 @@
     <Compile Include="Misc\Bit.cs" />
     <Compile Include="Loading\WlpReader.cs" />
     <Compile Include="Loading\ZorReader.cs" />
-    <Compile Include="Misc\PacketData.cs" />
     <Compile Include="Misc\StoreEntry.cs" />
     <Compile Include="Misc\ClientVersion.cs" />
     <Compile Include="Misc\Extensions.cs" />

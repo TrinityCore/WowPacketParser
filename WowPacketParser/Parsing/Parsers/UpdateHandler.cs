@@ -24,6 +24,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadBoolean("Has Transport");
 
+            packet.StoreBeginList("Updates");
             for (var i = 0; i < count; i++)
             {
                 var type = packet.ReadByte();
@@ -33,7 +34,7 @@ namespace WowPacketParser.Parsing.Parsers
                 else
                     typeObj = ((UpdateType)type);
 
-                packet.Store("UpdateType", typeObj);
+                packet.Store("UpdateType", typeObj, i);
                 switch (typeObj.ToString())
                 {
                     case "Values":
@@ -75,6 +76,7 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                 }
             }
+            packet.StoreEndList();
         }
 
         private static void ReadCreateObjectBlock(ref Packet packet, Guid guid, uint map, int index)
@@ -133,8 +135,10 @@ namespace WowPacketParser.Parsing.Parsers
         private static void ReadObjectsBlock(ref Packet packet, int index)
         {
             var objCount = packet.ReadInt32("Object Count", index);
+            packet.StoreBeginList("Objects", index);
             for (var j = 0; j < objCount; j++)
                 packet.ReadPackedGuid("Object GUID", index, j);
+            packet.StoreEndList();
         }
 
         private static Dictionary<int, UpdateField> ReadValuesUpdateBlock(ref Packet packet, ObjectType type, int index)
@@ -150,67 +154,28 @@ namespace WowPacketParser.Parsing.Parsers
 
             int objectEnd = (int)UpdateFields.GetUpdateFieldOffset(ObjectField.OBJECT_END);
 
+            packet.StoreBeginList("UpdateFields", index);
             for (var i = 0; i < mask.Count; i++)
             {
                 if (!mask[i])
                     continue;
 
                 var blockVal = packet.ReadUpdateField();
-                string key = "Block Value " + i;
                 string value = blockVal.UInt32Value + "/" + blockVal.SingleValue;
+                string key;
 
-                if (i < objectEnd)
-                    key = UpdateFields.GetUpdateFieldName<ObjectField>(i);
-                else
+                var enumType = UpdateFields.GetUpdateFieldEnumByOffset(i, type);
+                var name = UpdateFields.GetUpdateFieldName(i, enumType);
+                if (name == null)
                 {
-                    switch (type)
-                    {
-                        case ObjectType.Container:
-                        {
-                            if (i < UpdateFields.GetUpdateFieldOffset(ItemField.ITEM_END))
-                                goto case ObjectType.Item;
-
-                            key = UpdateFields.GetUpdateFieldName<ContainerField>(i);
-                            break;
-                        }
-                        case ObjectType.Item:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<ItemField>(i);
-                            break;
-                        }
-                        case ObjectType.Player:
-                        {
-                            if (i < UpdateFields.GetUpdateFieldOffset(UnitField.UNIT_END))
-                                goto case ObjectType.Unit;
-
-                            key = UpdateFields.GetUpdateFieldName<PlayerField>(i);
-                            break;
-                        }
-                        case ObjectType.Unit:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<UnitField>(i);
-                            break;
-                        }
-                        case ObjectType.GameObject:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<GameObjectField>(i);
-                            break;
-                        }
-                        case ObjectType.DynamicObject:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<DynamicObjectField>(i);
-                            break;
-                        }
-                        case ObjectType.Corpse:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<CorpseField>(i);
-                            break;
-                        }
-                    }
+                    key = "Update field " + i;
                 }
-                packet.Store(key, value, index);
+                else
+                    key = name + " (" + i + ")";
+                packet.Store(key, value, index, i);
                 dict.Add(i, blockVal);
             }
+            packet.StoreEndList();
 
             return dict;
         }
@@ -731,8 +696,10 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             // Reading data
+            packet.StoreBeginList("UnkInts", index);
             for (var i = 0u; i < unkLoopCounter; ++i)
                 packet.ReadUInt32("Unk UInt32", index, (int)i);
+            packet.StoreEndList();
 
             if (living)
             {
@@ -741,6 +708,7 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     if (bit216)
                     {
+                        packet.StoreBeginList("Spline Waypoints", index);
                         for (var i = 0; i < splineCount; ++i)
                         {
                             var wp = new Vector3
@@ -752,6 +720,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                             packet.Store("Spline Waypoint", wp, index, i);
                         }
+                        packet.StoreEndList();
 
                         if (splineType == SplineType.FacingTarget)
                         {
@@ -884,13 +853,17 @@ namespace WowPacketParser.Parsing.Parsers
             if (unkFloats)
             {
                 int i;
+                packet.StoreBeginList("UnkFloats1", index);
                 for (i = 0; i < 13; ++i)
                     packet.ReadSingle("Unk float 456", index, i);
+                packet.StoreEndList();
 
                 packet.ReadByte("Unk byte 456", index);
 
+                packet.StoreBeginList("UnkFloats2", index);
                 for (; i < 16; ++i)
                     packet.ReadSingle("Unk float 456", index, i);
+                packet.StoreEndList();
             }
 
             if (hasGameObjectPosition)
@@ -1120,10 +1093,12 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasAttackingTarget)
                 attackingTarget = packet.StartBitStream(4, 3, 2, 5, 0, 6, 1, 7);
 
+            packet.StoreBeginList("UnkInts", index);
             for (var i = 0; i < unkLoopCounter; ++i)
             {
-                packet.ReadInt32();
+                packet.ReadInt32("UnkInt");
             }
+            packet.StoreEndList();
 
             if (hasGameObjectPosition)
             {
@@ -1166,6 +1141,7 @@ namespace WowPacketParser.Parsing.Parsers
                     if (bit216)
                     {
                         packet.ReadSingle("Unknown Spline Float 2", index);
+                        packet.StoreBeginList("Spline Waypoints", index);
                         for (var i = 0; i < splineCount; ++i)
                         {
                             var wp = new Vector3
@@ -1177,6 +1153,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                             packet.Store("Spline Waypoint", wp, index, i);
                         }
+                        packet.StoreEndList();
 
                         if (splineType == SplineType.FacingTarget)
                         {
@@ -1307,13 +1284,17 @@ namespace WowPacketParser.Parsing.Parsers
             if (unkFloats)
             {
                 int i;
+                packet.StoreBeginList("UnkFloats1", index);
                 for (i = 0; i < 13; ++i)
                     packet.ReadSingle("Unk float 456", index, i);
+                packet.StoreEndList();
 
                 packet.ReadByte("Unk byte 456", index);
 
+                packet.StoreBeginList("UnkFloats2", index);
                 for (; i < 16; ++i)
                     packet.ReadSingle("Unk float 456", index, i);
+                packet.StoreEndList();
             }
 
             if (hasVehicleData)
@@ -1502,8 +1483,10 @@ namespace WowPacketParser.Parsing.Parsers
                 attackingTarget = packet.StartBitStream(3, 4, 6, 0, 1, 7, 5, 2);
 
             // Reading data
+            packet.StoreBeginList("Unks", index);
             for (var i = 0u; i < unkLoopCounter; ++i)
                 packet.ReadUInt32("Unk UInt32", index, (int)i);
+            packet.StoreEndList();
 
             if (hasStationaryPosition)
             {
@@ -1556,6 +1539,7 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     if (bit216)
                     {
+                        packet.StoreBeginList("Spline Waypoints", index);
                         for (int i = 0; i < splineCount; ++i)
                         {
                             var wp = new Vector3
@@ -1567,6 +1551,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                             packet.Store("Spline Waypoint", wp, index, i);
                         }
+                        packet.StoreEndList();
 
                         if (hasSplineDurationMult)
                             packet.ReadSingle("Spline Duration Modifier", index);
@@ -1690,9 +1675,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (unkFloats)
             {
+                packet.StoreBeginList("UnkFloats", index);
                 for (int i = 0; i < 16; ++i)
                     packet.ReadSingle("Unk float 456", index, i);
-
+                packet.StoreEndList();
                 packet.ReadByte("Unk byte 456", index);
             }
 
@@ -1739,17 +1725,18 @@ namespace WowPacketParser.Parsing.Parsers
             var moveInfo = new MovementInfo();
 
             var flagsTypeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767) ? TypeCode.UInt16 : TypeCode.Byte;
-            var flags = packet.ReadEnum<UpdateFlag>("[" + index + "] Update Flags", flagsTypeCode);
+            var flags = packet.ReadEnum<UpdateFlag>("Update Flags", flagsTypeCode, index);
 
             if (flags.HasAnyFlag(UpdateFlag.Living))
             {
                 moveInfo = MovementHandler.ReadMovementInfo(ref packet, guid, index);
                 var moveFlags = moveInfo.Flags;
 
+                packet.StoreBeginList("Speeds", index);
                 for (var i = 0; i < 9; ++i)
                 {
                     var speedType = (SpeedType)i;
-                    var speed = packet.ReadSingle(speedType + " Speed", index);
+                    var speed = packet.ReadSingle(speedType + " Speed", index, i);
 
                     switch (speedType)
                     {
@@ -1765,6 +1752,7 @@ namespace WowPacketParser.Parsing.Parsers
                         }
                     }
                 }
+                packet.StoreEndList();
 
                 // Movement flags seem incorrect for 4.2.2
                 // guess in which version they stopped checking movement flag and used bits
@@ -1811,8 +1799,10 @@ namespace WowPacketParser.Parsing.Parsers
                     }
 
                     var splineCount = packet.ReadInt32();
+                    packet.StoreBeginList("Spline waypoints", index);
                     for (var i = 0; i < splineCount; i++)
                         packet.ReadVector3("Spline Waypoint", index, i);
+                    packet.StoreEndList();
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                         packet.ReadEnum<SplineMode>("Spline Mode", TypeCode.Byte, index);
@@ -1858,7 +1848,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (flags.HasAnyFlag(UpdateFlag.Vehicle))
             {
-                moveInfo.VehicleId = packet.ReadUInt32("[" + index + "] Vehicle ID");
+                moveInfo.VehicleId = packet.ReadUInt32("Vehicle ID", index);
                 packet.ReadSingle("Vehicle Orientation", index);
             }
 
@@ -1880,8 +1870,10 @@ namespace WowPacketParser.Parsing.Parsers
                 if (flags.HasAnyFlag(UpdateFlag.TransportUnkArray))
                 {
                     var count = packet.ReadByte("Count", index);
+                    packet.StoreBeginList("Transport unks", index);
                     for (var i = 0; i < count; i++)
                         packet.ReadInt32("Unk Int32", index, count);
+                    packet.StoreEndList();
                 }
             }
 

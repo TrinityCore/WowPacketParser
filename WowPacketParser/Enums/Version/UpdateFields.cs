@@ -11,7 +11,7 @@ namespace WowPacketParser.Enums.Version
     {
         private static readonly Dictionary<Type, BiDictionary<string, int>> UpdateFieldDictionaries = LoadUFDictionaries();
 
-        public static readonly Dictionary<Type, int> UpdateFieldMaxOffsets;
+        public static readonly Dictionary<Type, int> UpdateFieldMaxOffsets = new Dictionary<Type, int>();
 
         private static Dictionary<Type, BiDictionary<string, int>> LoadUFDictionaries()
         {
@@ -40,7 +40,7 @@ namespace WowPacketParser.Enums.Version
 
                 dicts.Add(enumType, result);
             }
-
+            
             UpdateFieldMaxOffsets.Add(typeof(ObjectField), (int)GetUpdateFieldOffset(ObjectField.OBJECT_END));
             UpdateFieldMaxOffsets.Add(typeof(ItemField), (int)GetUpdateFieldOffset(ItemField.ITEM_END));
             UpdateFieldMaxOffsets.Add(typeof(ContainerField), (int)GetUpdateFieldOffset(ContainerField.CONTAINER_END));

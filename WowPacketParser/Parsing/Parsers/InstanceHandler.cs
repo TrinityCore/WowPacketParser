@@ -216,6 +216,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleRaidInstanceInfo(Packet packet)
         {
             var counter = packet.ReadInt32("Counter");
+            packet.StoreBeginList("RaidInstances");
             for (var i = 0; i < counter; ++i)
             {
                 packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID", i);
@@ -230,6 +231,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                     packet.ReadUInt32("Unk2", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_SAVE_CUF_PROFILES)] // 4.3.4

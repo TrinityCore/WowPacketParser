@@ -83,6 +83,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var count = packet.ReadInt32("Count");
             npcTrainer.TrainerSpells = new List<TrainerSpell>(count);
+            packet.StoreBeginList("Trainer spells");
             for (var i = 0; i < count; i++)
             {
                 var trainerSpell = new TrainerSpell();
@@ -119,6 +120,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 npcTrainer.TrainerSpells.Add(trainerSpell);
             }
+            packet.StoreEndList();
 
             npcTrainer.Title = packet.ReadCString("Title");
 
@@ -135,6 +137,7 @@ namespace WowPacketParser.Parsing.Parsers
             var itemCount = packet.ReadByte("Item Count");
 
             npcVendor.VendorItems = new List<VendorItem>(itemCount);
+            packet.StoreBeginList("Vendor items");
             for (var i = 0; i < itemCount; i++)
             {
                 var vendorItem = new VendorItem();
@@ -156,6 +159,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (vendorItem.Type == 2)
                     vendorItem.MaxCount = (int)buyCount;
             }
+            packet.StoreEndList();
 
             Storage.NpcVendors.Add(guid.GetEntry(), npcVendor, packet.TimeSpan);
         }
@@ -185,6 +189,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StoreBitstreamGuid("GUID", guidBytes);
 
             npcVendor.VendorItems = new List<VendorItem>((int)itemCount);
+            packet.StoreBeginList("Vendor items");
             for (var i = 0; i < itemCount; i++)
             {
                 var vendorItem = new VendorItem();
@@ -205,6 +210,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 npcVendor.VendorItems.Add(vendorItem);
             }
+            packet.StoreEndList();
 
             Storage.NpcVendors.Add(guid.GetEntry(), npcVendor, packet.TimeSpan);
         }
@@ -326,6 +332,7 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadUInt32("Amount of Options");
 
             gossip.GossipOptions = new List<GossipOption>((int) count);
+            packet.StoreBeginList("Gossip Options");
             for (var i = 0; i < count; i++)
             {
                 var gossipOption = new GossipOption
@@ -340,10 +347,13 @@ namespace WowPacketParser.Parsing.Parsers
 
                 gossip.GossipOptions.Add(gossipOption);
             }
+            packet.StoreEndList();
             Storage.Gossips.Add(Tuple.Create(menuId, textId), gossip, packet.TimeSpan);
+
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
 
             var questgossips = packet.ReadUInt32("Amount of Quest gossips");
+            packet.StoreBeginList("Quest Gossips");
             for (var i = 0; i < questgossips; i++)
             {
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID", i);
@@ -354,6 +364,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadBoolean("Unk Bool", i);
                 packet.ReadCString("Title", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_THREAT_UPDATE)]
@@ -366,11 +377,13 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadPackedGuid("New Highest");
 
             var count = packet.ReadUInt32("Size");
+            packet.StoreBeginList("Threat lists");
             for (int i = 0; i < count; i++)
             {
                 packet.ReadPackedGuid("Hostile", i);
                 packet.ReadUInt32("Threat", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_THREAT_CLEAR)]

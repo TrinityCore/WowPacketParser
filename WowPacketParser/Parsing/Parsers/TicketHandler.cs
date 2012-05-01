@@ -64,8 +64,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Response ID");
             packet.ReadUInt32("Ticket ID");
             packet.ReadCString("Description");
+            packet.StoreBeginList("Responses");
             for (var i = 1; i <= 4; i++)
                 packet.ReadCString("Response", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_GMTICKET_GETTICKET)]

@@ -13,10 +13,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
             packet.ReadBytes(2); // always 0
             var numFields = packet.ReadByte("Join Dungeon Count");
+            packet.StoreBeginList("Dungeons");
             for (var i = 0; i < numFields; i++)
                 packet.ReadLfgEntry("Dungeon Entry", i);
+            packet.StoreEndList();
 
-            packet.ReadUInt32(); // always 0 (for 1..3) 0
+            packet.ReadUInt32("unk"); // always 0 (for 1..3) 0
             packet.ReadCString("Comment");
         }
 
@@ -120,8 +122,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Comment");
         }
 
-        public static void ReadLfgRewardBlock(ref Packet packet)
+        public static void ReadLfgRewardBlock(ref Packet packet, params int[] values)
         {
+            packet.StoreBeginObj("Lfg Reward Block", values);
             packet.ReadBoolean("First Completion");
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_LFG_PLAYER_REWARD))
@@ -148,6 +151,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadByte("Unk 9");
 
+                packet.StoreBeginList("Unks");
                 // LFG_SLOT_INFO_LOOT related
                 for (var i = 0; i < 3; ++i)
                 {
@@ -157,6 +161,7 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadInt32("Unk 2", i);
                         packet.ReadInt32("Unk 3", i);
                         var unk4 = packet.ReadByte("Unk 4", i);
+                        packet.StoreBeginList("Unks2", i);
                         for (var j = 0; j < unk4; ++j)
                         {
                             packet.ReadInt32("Unk 5", j);
@@ -164,14 +169,17 @@ namespace WowPacketParser.Parsing.Parsers
                             packet.ReadInt32("Unk 7", j);
                             packet.ReadByte("Unk 8", j);
                         }
+                        packet.StoreEndList();
                     }
                 }
+                packet.StoreEndList();
 
                 packet.ReadInt32("Unk 10");
                 packet.ReadInt32("Unk 11");
             }
 
             var numFields = packet.ReadByte("Reward Item Count");
+            packet.StoreBeginList("Reward items");
             for (var i = 0; i < numFields; i++)
             {
                 packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Item Or Currency Id", i);
@@ -180,6 +188,8 @@ namespace WowPacketParser.Parsing.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                     packet.ReadBoolean("Is Currency", i);
             }
+            packet.StoreEndList();
+            packet.StoreEndObj();
         }
 
         [Parser(Opcode.SMSG_LFG_PLAYER_REWARD, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -220,9 +230,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Queued");
             packet.ReadBytes(2); // always 0
             var numFields2 = packet.ReadByte("Slot Count");
+            packet.StoreBeginList("LfgList");
             for (var i = 0; i < numFields2; i++)
                 packet.ReadLfgEntry("LFG Entry", i);
-
+            packet.StoreEndList();
             packet.ReadCString("Comment");
         }
 
@@ -238,8 +249,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Queued");
             packet.ReadBytes(5); // always 0, 0, for (1..3) 0
             var numFields2 = packet.ReadByte("Slot Count");
+            packet.StoreBeginList("LfgList");
             for (var i = 0; i < numFields2; i++)
                 packet.ReadLfgEntry("LFG Entry", i);
+            packet.StoreEndList();
 
             packet.ReadCString("Comment");
         }
@@ -252,44 +265,54 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void ReadDungeonJoinResults(ref Packet packet, params int[] values)
         {
-            packet.ReadLfgEntry("LFG Entry", values);
-            packet.ReadEnum<LfgEntryCheckResult>("Entry Check Result", TypeCode.UInt32, values);
+            packet.StoreBeginObj("DungeonJoinResults", values);
+            packet.ReadLfgEntry("LFG Entry");
+            packet.ReadEnum<LfgEntryCheckResult>("Entry Check Result", TypeCode.UInt32);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
             {
-                packet.ReadInt32("needed ILvL", values);
-                packet.ReadInt32("player ILvL", values);
+                packet.ReadInt32("needed ILvL");
+                packet.ReadInt32("player ILvL");
             }
+            packet.StoreEndObj();
         }
 
-        public static void ReadPlayerLockedDungeons(ref Packet packet, int i)
+        public static void ReadPlayerLockedDungeons(ref Packet packet, params int[] values)
         {
-            var numFields = packet.ReadInt32("Entry Count", i);
+            packet.StoreBeginObj("PlayerLockedDungeons", values);
+            var numFields = packet.ReadInt32("Entry Count");
+            packet.StoreBeginList("LockedDungeons");
             for (var j = 0; j < numFields; j++)
-                ReadDungeonJoinResults(ref packet, i, j);
+                ReadDungeonJoinResults(ref packet, j);
+            packet.StoreEndList();
+            packet.StoreEndObj();
         }
 
         [Parser(Opcode.SMSG_LFG_PLAYER_INFO)]
         public static void HandleLfgPlayerLockInfoResponse(Packet packet)
         {
             var numFields = packet.ReadByte("Random Dungeon Count");
+            packet.StoreBeginList("Dungeons");
             for (var i = 0; i < numFields; i++)
             {
                 packet.ReadLfgEntry("Random Dungeon Entry", i);
-                ReadLfgRewardBlock(ref packet);
+                ReadLfgRewardBlock(ref packet, i);
             }
+            packet.StoreEndList();
 
-            ReadPlayerLockedDungeons(ref packet, -1);
+            ReadPlayerLockedDungeons(ref packet);
         }
 
         [Parser(Opcode.SMSG_LFG_PARTY_INFO)]
         public static void HandleLfgPlayerLockInfoUpdate(Packet packet)
         {
             var numFields = packet.ReadByte("Player Count");
+            packet.StoreBeginList("Players");
             for (var i = 0; i < numFields; i++)
             {
                 packet.ReadGuid("GUID", i);
                 ReadPlayerLockedDungeons(ref packet, i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_LFG_PROPOSAL_UPDATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -302,6 +325,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Silent");
 
             var numFields = packet.ReadByte("Response Count");
+            packet.StoreBeginList("Responses");
             for (var i = 0; i < numFields; i++)
             {
                 packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32, i);
@@ -311,6 +335,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadBoolean("Answer", i);
                 packet.ReadBoolean("Accept", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_LFG_PROPOSAL_UPDATE, ClientVersionBuild.V4_3_4_15595)]
@@ -490,10 +515,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Is Beginning");
 
             var numFields = packet.ReadByte("Entry Count");
+            packet.StoreBeginList("LfgList");
             for (var i = 0; i < numFields; i++)
                 packet.ReadLfgEntry("LFG Entry", i);
+            packet.StoreEndList();
 
             var numFields2 = packet.ReadByte("Player Count");
+            packet.StoreBeginList("Players");
             for (var i = 0; i < numFields2; i++)
             {
                 packet.ReadGuid("GUID", i);
@@ -501,6 +529,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32, i);
                 packet.ReadByte("Level", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_LFG_JOIN_RESULT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -513,13 +542,17 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
 
             var numFields = packet.ReadByte("Count");
+            packet.StoreBeginList("Players");
             for (var i = 0; i < numFields; i++)
             {
                 packet.ReadGuid("GUID", i);
                 var cnt2 = packet.ReadInt32("Dungeon Count", i);
+                packet.StoreBeginList("Join Results", i);
                 for (var j = 0; j < cnt2; j++)
                     ReadDungeonJoinResults(ref packet, i, j);
+                packet.StoreEndList();
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_LFG_JOIN_RESULT, ClientVersionBuild.V4_3_4_15595)]
@@ -620,13 +653,15 @@ namespace WowPacketParser.Parsing.Parsers
             if (unkBool)
             {
                 var count = packet.ReadInt32("Unknown count");
+                packet.StoreBeginList("UnkPlayerList");
                 for (var i = 0; i < count; i++)
                     packet.ReadGuid("Unk Player GUID", i);
+                packet.StoreEndList();
             }
 
             var count2 = packet.ReadInt32("Group count");
             packet.ReadInt32("Unknown group count");
-
+            packet.StoreBeginList("GroupList");
             for (var i = 0; i < count2; i++)
             {
                 packet.ReadGuid("Group GUID", i);
@@ -636,8 +671,13 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadCString("Comment", i);
 
                 if (flags.HasAnyFlag(LfgUpdateFlag.Roles))
+                {
+                    packet.StoreBeginList("Unk bytes", i);
                     for (var j = 0; j < 3; j++)
-                        packet.ReadByte("Unk byte 1 ", i , j); // Group have this role ?
+                        packet.ReadByte("Unk byte 1 ", i, j); // Group have this role ?
+                    packet.StoreEndList();
+                }
+
 
                 if (!flags.HasAnyFlag(LfgUpdateFlag.Binded))
                     continue;
@@ -645,10 +685,11 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("Instance GUID", i);
                 packet.ReadInt32("Encounters Mask", i);
             }
+            packet.StoreEndList();
 
             var count3 = packet.ReadInt32("Players count");
             packet.ReadInt32("Unknown player count");
-
+            packet.StoreBeginList("PlayerList");
             for (var i = 0; i < count3; i++)
             {
                 packet.ReadGuid("Player GUID", i);
@@ -660,8 +701,10 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadByte("Class", i);
                     packet.ReadByte("Race", i);
 
+                    packet.StoreBeginList("Talents", i);
                     for (var j = 0; j < 3; j++)
                         packet.ReadByte("Talents spent in row", i, j);
+                    packet.StoreEndList();
 
                     packet.ReadInt32("Armor", i);
                     packet.ReadInt32("Spell Damage Bonus", i);
@@ -709,6 +752,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("Instance GUID", i);
                 packet.ReadInt32("Encounters Mask", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_DUNGEON_FINDER_GET_SYSTEM_INFO)]

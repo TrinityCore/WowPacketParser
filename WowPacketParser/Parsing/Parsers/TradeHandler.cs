@@ -233,7 +233,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleTradeStatusExtended422(Packet packet)
         {
-            packet.AsHex();
             packet.ReadInt32("Unk 1");
             packet.ReadInt32("Unk 2");
             packet.ReadInt32("Unk 3");
@@ -276,6 +275,7 @@ namespace WowPacketParser.Parsing.Parsers
                 guids1[i][4] = packet.ReadBit();
             }
 
+            packet.StoreBeginList("UnkList");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadInt32("Unk 1", i);
@@ -331,6 +331,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.StoreBitstreamGuid("Item Creator Guid", guids1[i], i);
                 packet.StoreBitstreamGuid("Item Gift Creator Guid", guids2[i], i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED, ClientVersionBuild.V4_3_4_15595)]

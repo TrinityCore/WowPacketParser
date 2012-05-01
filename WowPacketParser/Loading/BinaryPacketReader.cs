@@ -187,7 +187,7 @@ namespace WowPacketParser.Loading
             if (opcode >= 1312 && ClientVersion.Build <= ClientVersionBuild.V3_3_5a_12340)
                 return null;
 
-            var packet = new Packet(data, opcode, time, direction, number, Path.GetFileName(fileName), null);
+            var packet = new Packet(data, opcode, time, direction, number, fileName);
             return packet;
         }
 

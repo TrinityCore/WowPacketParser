@@ -83,11 +83,13 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleResyncRunes(Packet packet)
         {
             var count = packet.ReadUInt32("Count");
+            packet.StoreBeginList("Runes");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadByte("Rune Type");
                 packet.ReadByte("Cooldown Time");
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_CONVERT_RUNE)]
@@ -151,8 +153,10 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSendUnlearnSpells(Packet packet)
         {
             var count = packet.ReadInt32("Count");
+            packet.StoreBeginList("Spells");
             for (var i = 0; i < count; i++)
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_RESUME_CAST_BAR)]
@@ -176,6 +180,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var count = packet.ReadInt16("Spell Count");
             var spells = new List<uint>(count);
+            packet.StoreBeginList("InitialSpells");
             for (var i = 0; i < count; i++)
             {
                 uint spellId;
@@ -188,6 +193,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 spells.Add(spellId);
             }
+            packet.StoreEndList();
 
             var startSpell = new StartSpell();
             startSpell.Spells = spells;
@@ -196,6 +202,7 @@ namespace WowPacketParser.Parsing.Parsers
                 Storage.StartSpells.Add(new Tuple<Race, Class>(SessionHandler.LoggedInCharacter.Race, SessionHandler.LoggedInCharacter.Class), startSpell, packet.TimeSpan);
 
             var cooldownCount = packet.ReadInt16("Cooldown Count");
+            packet.StoreBeginList("Cooldowns");
             for (var i = 0; i < cooldownCount; i++)
             {
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
@@ -216,17 +223,22 @@ namespace WowPacketParser.Parsing.Parsers
                 else
                     packet.Store("Cooldown Category Time", catCd, i);
             }
+            packet.StoreEndList();
         }
 
-        private static Aura ReadAuraUpdateBlock(ref Packet packet)
+        private static Aura ReadAuraUpdateBlock(ref Packet packet, params int[] values)
         {
+            packet.StoreBeginObj("Aura", values);
             var aura = new Aura();
 
             aura.Slot = packet.ReadByte("Slot");
 
             var id = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
             if (id <= 0)
+            {
+                packet.StoreEndObj();
                 return null;
+            }
             aura.SpellId = (uint)id;
 
             var type = ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333) ? TypeCode.Int16 : TypeCode.Byte;
@@ -262,7 +274,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             packet.AddSniffData(StoreNameType.Spell, (int)aura.SpellId, "AURA_UPDATE");
-
+            packet.StoreEndObj();
             return aura;
         }
 
@@ -273,11 +285,14 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid("GUID");
 
             var auras = new List<Aura>();
+            var i = 0;
+            packet.StoreBeginList("Auras");
             while (packet.CanRead())
             {
-                var aura = ReadAuraUpdateBlock(ref packet);
+                var aura = ReadAuraUpdateBlock(ref packet, i++);
                 auras.Add(aura);
             }
+            packet.StoreEndList();
 
             // This only works if the parser saw UPDATE_OBJECT before this packet
             if (Storage.Objects.ContainsKey(guid))
@@ -358,10 +373,8 @@ namespace WowPacketParser.Parsing.Parsers
                 var opcode = packet.ReadInt32();
                 // None length is recieved, so we have to calculate the remaining bytes.
                 var remainingLength = packet.Length - packet.Position;
-                var bytes = packet.ReadBytes((int)remainingLength);
 
-                using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.FileName, packet))
-                    Handler.Parse(newpacket, true);
+                packet.ReadSubPacket(opcode, (int)remainingLength, "SubPacket");
                 return;
             }
             if (hasMovement)
@@ -511,13 +524,19 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
                 packet.ReadUInt32("Time2");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                packet.ReadInt32("unk430");
+
             if (isSpellGo)
             {
                 var hitCount = packet.ReadByte("Hit Count");
+                packet.StoreBeginList("Hit Targets");
                 for (var i = 0; i < hitCount; i++)
                     packet.ReadGuid("Hit GUID", i);
+                packet.StoreEndList();
 
                 var missCount = packet.ReadByte("Miss Count");
+                packet.StoreBeginList("Miss Targets");
                 for (var i = 0; i < missCount; i++)
                 {
                     var missGuid = packet.ReadGuid("Miss GUID", i);
@@ -528,6 +547,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                     packet.ReadEnum<SpellMissType>("Miss Reflect", TypeCode.Byte, i);
                 }
+                packet.StoreEndList();
             }
 
             var targetFlags = ReadSpellCastTargets(ref packet);
@@ -542,6 +562,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var spellRuneState = packet.ReadByte("Spell Rune State");
                     var playerRuneState = packet.ReadByte("Player Rune State");
 
+                    packet.StoreBeginList("Rune Cooldowns");
                     for (var i = 0; i < 6; i++)
                     {
                         if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
@@ -556,6 +577,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                         packet.ReadByte("Rune Cooldown Passed", i);
                     }
+                    packet.StoreEndList();
                 }
 
                 if (isSpellGo)
@@ -590,11 +612,13 @@ namespace WowPacketParser.Parsing.Parsers
                     if (targetFlags.HasAnyFlag(TargetFlag.ExtraTargets))
                     {
                         var targetCount = packet.ReadInt32("Extra Targets Count");
+                        packet.StoreBeginList("Extra Targets");
                         for (var i = 0; i < targetCount; i++)
                         {
                             packet.ReadVector3("Extra Target Position", i);
                             packet.ReadGuid("Extra Target GUID", i);
                         }
+                        packet.StoreEndList();
                     }
                 }
                 else
@@ -1014,16 +1038,20 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSetSpellModifierFlat406(Packet packet)
         {
             var modCount = packet.ReadUInt32("Modifier type count");
+            packet.StoreBeginList("Modifiers");
             for (var j = 0; j < modCount; ++j)
             {
                 var modTypeCount = packet.ReadUInt32("Count", j);
                 packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte, j);
+                packet.StoreBeginList("Modifier Types",j);
                 for (var i = 0; i < modTypeCount; ++i)
                 {
                     packet.ReadByte("Spell Mask bitpos", j, i);
                     packet.ReadSingle("Amount", j, i);
                 }
+                packet.StoreEndList();
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_DISPEL_FAILED)]
@@ -1091,8 +1119,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Caster GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
             var count = packet.ReadInt32("Count");
+            packet.StoreBeginList("Chain Targets");
             for (var i = 0; i < count; i++)
-                packet.ReadGuid("Chain target");
+                packet.ReadGuid("Chain target", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_AURACASTLOG)]

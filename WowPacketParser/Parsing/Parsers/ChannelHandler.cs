@@ -36,11 +36,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Channel Name");
             packet.ReadEnum<ChannelFlag>("Flags", TypeCode.Byte);
             var count = packet.ReadInt32("Counter");
+            packet.StoreBeginList("ChannelMembers");
             for (var i = 0; i < count; i++)
             {
                 packet.ReadGuid("Player GUID " + i);
                 packet.ReadEnum<ChannelMemberFlag>("Player Flags " + i, TypeCode.Byte);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_CHANNEL_MEMBER_COUNT)]

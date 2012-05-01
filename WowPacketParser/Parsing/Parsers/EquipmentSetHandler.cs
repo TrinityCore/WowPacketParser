@@ -7,15 +7,19 @@ namespace WowPacketParser.Parsing.Parsers
     {
         private const int NumSlots = 19;
 
-        public static void ReadSetInfo(ref Packet packet)
+        public static void ReadSetInfo(ref Packet packet, params int[] values)
         {
+            packet.StoreBeginObj("ItemSet", values);
             packet.ReadPackedGuid("Set ID");
             packet.ReadInt32("Index");
             packet.ReadCString("Set Name");
             packet.ReadCString("Set Icon");
 
+            packet.StoreBeginList("ItemSlots");
             for (var j = 0; j < NumSlots; j++)
-                packet.ReadPackedGuid("Item GUID " + j);
+                packet.ReadPackedGuid("Item GUID", j);
+            packet.StoreEndList();
+            packet.StoreEndObj();
         }
 
         [Parser(Opcode.SMSG_EQUIPMENT_SET_LIST)]
@@ -23,8 +27,10 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var count = packet.ReadInt32("Count");
 
+            packet.StoreBeginList("ItemSets");
             for (var i = 0; i < count; i++)
-                ReadSetInfo(ref packet);
+                ReadSetInfo(ref packet, i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_EQUIPMENT_SET_SAVE)]
@@ -44,6 +50,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_EQUIPMENT_SET_USE)]
         public static void HandleEquipmentSetUse(Packet packet)
         {
+            packet.StoreBeginList("ItemSlots");
             for (var i = 0; i < NumSlots; i++)
             {
                 packet.ReadPackedGuid("Item GUID " + i);
@@ -52,6 +59,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadByte("Source Slot");
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_EQUIPMENT_SET_USE_RESULT)]

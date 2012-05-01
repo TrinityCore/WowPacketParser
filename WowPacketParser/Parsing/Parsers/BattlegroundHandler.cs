@@ -73,18 +73,22 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
 
             var count1 = packet.ReadInt32("Count1");
+            packet.StoreBeginList("Players1");
             for (var i = 0; i < count1; i++)
             {
                 packet.ReadGuid("Player GUID", i);
                 packet.ReadVector2("Position", i);
             }
+            packet.StoreEndList();
 
             var count2 = packet.ReadInt32("Count2");
+            packet.StoreBeginList("Players2");
             for (var i = 0; i < count2; i++)
             {
                 packet.ReadGuid("Player GUID", i);
                 packet.ReadVector2("Position", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_JOIN, ClientVersionBuild.V4_2_2_14545)]
@@ -196,8 +200,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadInt32("Loser Honor Reward");
             packet.ReadInt32("Winner Honor Reward");
+            packet.StoreBeginList("Instances");
             for (var i = 0; i < count; i++)
                 packet.ReadUInt32("Instance ID", i);
+            packet.StoreEndList();
 
             packet.ReadXORByte(guidBytes, 7);
 
@@ -272,8 +278,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Loser Honor Reward");
 
             var count = packet.ReadUInt32("BG Instance count");
+            packet.StoreBeginList("Instances");
             for (var i = 0; i < count; i++)
                 packet.ReadUInt32("Instance ID", i);
+            packet.StoreEndList();
 
             packet.StoreBitstreamGuid("Guid", guidBytes);
         }
@@ -293,8 +301,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
 
             var count = packet.ReadUInt32("BG Instance count");
+            packet.StoreBeginList("Instances");
             for (var i = 0; i < count; i++)
                 packet.ReadUInt32("Instance ID", i);
+            packet.StoreEndList();
 
             packet.ReadInt32("Loser Honor Reward");
         }
@@ -328,8 +338,10 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             var count = packet.ReadUInt32("BG Instance count");
+            packet.StoreBeginList("Instances");
             for (var i = 0; i < count; i++)
                 packet.ReadUInt32("Instance ID", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_BATTLEGROUND_PORT_AND_LEAVE, ClientVersionBuild.V4_0_6a_13623)]
@@ -722,6 +734,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Winner");
 
             var count = packet.ReadUInt32("Score Count");
+
+            packet.StoreBeginList("PlayerScores");
             for (var i = 0; i < count; i++)
             {
                 packet.ReadGuid("Player GUID", i);
@@ -740,9 +754,12 @@ namespace WowPacketParser.Parsing.Parsers
 
                 var count2 = packet.ReadUInt32("Extra values counter", i);
 
+                packet.StoreBeginList("Extra Values", i);
                 for (var j = 0; j < count2; j++)
                     packet.ReadUInt32("Value", i, j);
+                packet.StoreEndList();
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.MSG_PVP_LOG_DATA, ClientVersionBuild.V4_0_6a_13623)]
@@ -1302,6 +1319,7 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadUInt32("Member count");
             packet.ReadUInt32("Type");
 
+            packet.StoreBeginList("TeamMembers");
             for (var i = 0; i < count; i++)
             {
                 var guid = packet.ReadGuid("GUID", i);
@@ -1322,6 +1340,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadSingle("Unk float 2", i);
                 }
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_ARENA_TEAM_ROSTER)]
@@ -1385,8 +1404,11 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadEnum<ArenaEvent>("Event", TypeCode.Byte);
             var count = packet.ReadByte("Count");
+
+            packet.StoreBeginList("Params");
             for (var i = 0; i < count; ++i)
                 packet.ReadCString("Param", i);
+            packet.StoreEndList();
 
             if (packet.CanRead())
                 packet.ReadGuid("GUID");

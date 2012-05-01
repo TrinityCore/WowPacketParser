@@ -28,8 +28,10 @@ namespace WowPacketParser.Parsing.Parsers
             gameObject.DisplayId = packet.ReadUInt32("Display ID");
 
             var name = new string[4];
+            packet.StoreBeginList("Names");
             for (var i = 0; i < 4; i++)
                 name[i] = packet.ReadCString("Name", i);
+            packet.StoreEndList();
             gameObject.Name = name[0];
 
             gameObject.IconName = packet.ReadCString("Icon Name");
@@ -37,16 +39,20 @@ namespace WowPacketParser.Parsing.Parsers
             gameObject.UnkString = packet.ReadCString("Unk String");
 
             gameObject.Data = new int[ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596) ? 32 : 24];
+            packet.StoreBeginList("Data");
             for (var i = 0; i < gameObject.Data.Length; i++)
                 gameObject.Data[i] = packet.ReadInt32("Data", i);
+            packet.StoreEndList();
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056)) // not sure when it was added exactly - did not exist in 2.4.1 sniff
                 gameObject.Size = packet.ReadSingle("Size");
 
             gameObject.QuestItems = new uint[ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 6 : 4];
+            packet.StoreBeginList("Quest Items");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                 for (var i = 0; i < gameObject.QuestItems.Length; i++)
                     gameObject.QuestItems[i] = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item", i);
+            packet.StoreEndList();
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596))
                 gameObject.UnknownInt = packet.ReadInt32("Unknown UInt32");

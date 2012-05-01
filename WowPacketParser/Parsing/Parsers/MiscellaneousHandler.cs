@@ -33,12 +33,14 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var count = ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) ? packet.ReadBits("Count", 22) : packet.ReadUInt32("Count");
 
+            packet.StoreBeginList("Hotfixes");
             for (var i = 0; i < count; i++)
             {
                 packet.ReadInt32("Hotfix type", i); // Also time?
                 packet.ReadTime("Hotfix date", i);
                 packet.ReadInt32("Hotfixed entry", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.TEST_430_SYNC_PLAYER_MOVE)]
@@ -70,67 +72,44 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MULTIPLE_PACKETS)]
         public static void HandleMultiplePackets(Packet packet)
         {
+            var i = 0;
             // Testing: packet.WriteLine(packet.AsHex());
-            packet.StoreOutputText("{");
+            packet.StoreBeginList("Packets");
             while (packet.CanRead())
             {
                 var opcode = 0;
                 var len = 0;
-                byte[] bytes = null;
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
                 {
                     opcode = packet.ReadUInt16();
                     // Why are there so many 0s in some packets? Should we have some check if opcode == 0 here?
                     len = packet.ReadUInt16();
-                    bytes = packet.ReadBytes(len);
                 }
                 else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                 {
-                    len = packet.ReadUInt16();
+                    len = packet.ReadUInt16() - 2;
                     opcode = packet.ReadUInt16();
-                    bytes = packet.ReadBytes(len - 2);
-                }
-                else
-                {
-                    packet.ReadToEnd();
                 }
 
-                if (bytes == null || len == 0)
-                    continue;
-
-                using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.FileName, packet))
-                    Handler.Parse(newpacket, true);
-
+                packet.ReadSubPacket(opcode, len, "Packet", i);
+                ++i;
             }
-            packet.StoreOutputText("}");
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_MULTIPLE_PACKETS_2)]
         public static void HandleMultiplePackets2(Packet packet)
         {
-
-            if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
-            {
-                packet.ReadToEnd();
-                throw new NotImplementedException("This opcode heavily relies on ALL" +
-                                                  "of its contained packets to be parsed successfully");
-                // Some sort of infinite loop happens here...
-            }
-
-            /*packet.WriteLine("{");
+            // This opcode heavily relies on ALL of its contained packets
             var i = 0;
+            packet.StoreBeginList("Packets");
             while (packet.CanRead())
             {
-                packet.Opcode = packet.ReadUInt16();
-
-                if (i > 0)
-                    packet.WriteLine();
-
-                packet.Write("[{0}] ", i++);
-
-                Handler.Parse(packet, isMultiple: true);
+                var opcode = packet.ReadUInt16();
+                packet.ReadSubPacket(opcode, "Packet", i);
+                ++i;
             }
-            packet.WriteLine("}");*/
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_STOP_DANCE)]
@@ -388,10 +367,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_TUTORIAL_FLAGS)]
         public static void HandleTutorialFlags(Packet packet)
         {
+            packet.StoreBeginList("Flags");
             for (var i = 0; i < 8; i++)
-            {
                 packet.ReadEnum<UnknownFlags>("Flags", TypeCode.Int32, i);
-            }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_AREATRIGGER)]
@@ -525,12 +504,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("ClassMask");
 
             var zones = packet.ReadUInt32("Zones count");
+            packet.StoreBeginList("Zones");
             for (var i = 0; i < zones; ++i)
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id");
 
             var patterns = packet.ReadUInt32("Pattern count");
+            packet.StoreBeginList("Patterns");
             for (var i = 0; i < patterns; ++i)
                 packet.ReadCString("Pattern", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_WHO)]
@@ -539,6 +521,7 @@ namespace WowPacketParser.Parsing.Parsers
             var counter = packet.ReadUInt32("List count");
             packet.ReadUInt32("Online count");
 
+            packet.StoreBeginList("Players");
             for (var i = 0; i < counter; ++i)
             {
                 packet.ReadCString("Name", i);
@@ -549,6 +532,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<Gender>("Gender", TypeCode.Byte, i);
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_TIME_SYNC_RESP)]

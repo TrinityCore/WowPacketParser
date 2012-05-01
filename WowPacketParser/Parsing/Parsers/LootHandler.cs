@@ -107,6 +107,7 @@ namespace WowPacketParser.Parsing.Parsers
                 currencyCount = packet.ReadByte("Currency Count");
 
             loot.LootItems = new List<LootItem>(count);
+            packet.StoreBeginList("LootItems");
             for (var i = 0; i < count; ++i)
             {
                 var lootItem = new LootItem();
@@ -119,6 +120,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<LootSlotType>("Slot Type", TypeCode.Byte, i);
                 loot.LootItems.Add(lootItem);
             }
+            packet.StoreEndList();
 
             for (int i = 0; i < currencyCount; ++i)
             {

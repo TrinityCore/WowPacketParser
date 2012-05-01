@@ -31,7 +31,7 @@ namespace WowPacketParser.Loading
             if (type != 1)
                 return null;
 
-            return new Packet(data, opcode, time, direction, number, fileName, null);
+            return new Packet(data, opcode, time, direction, number, fileName);
         }
 
         public void Dispose()

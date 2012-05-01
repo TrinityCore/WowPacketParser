@@ -101,7 +101,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void Handle44964(Packet packet)
         {
             packet.Inflate(packet.ReadInt32());
-            packet.AsHex();
+            packet.Store("Hex", packet.ToHex());
         }
 
         [Parser(Opcode.TEST_422_9838)]

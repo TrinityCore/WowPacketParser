@@ -61,6 +61,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Total Mails");
 
             var count = packet.ReadByte("Shown Mails");
+            packet.StoreBeginList("ShownMails");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadUInt16("Message Size", i);
@@ -110,6 +111,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadCString("Body", i);
 
                 var items = packet.ReadByte("Item Count", i);
+                packet.StoreBeginList("Items", i);
                 for (var j = 0; j < items; ++j)
                 {
                     packet.ReadByte("Item Index", i, j);
@@ -146,7 +148,9 @@ namespace WowPacketParser.Parsing.Parsers
                     if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
                         packet.ReadByte("Unk byte", i, j);
                 }
+                packet.StoreEndList();
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.MSG_QUERY_NEXT_MAIL_TIME)]
@@ -159,6 +163,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Time since last time visiting a mailbox (can be < 0.0)");
 
             var count = packet.ReadUInt32("Count");
+            packet.StoreBeginList("Mails");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadUInt64("GUID", i);
@@ -167,6 +172,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Stationery", i);
                 packet.ReadSingle("Time?", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_SEND_MAIL_RESULT)]
@@ -194,11 +200,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Stationery?");
             packet.ReadUInt32("Unk Uint32");
             var items = packet.ReadByte("Item Count");
+            packet.StoreBeginList("Items");
             for (var i = 0; i < items; ++i)
             {
                 packet.ReadByte("Slot", i);
                 packet.ReadGuid("Item GUID", i);
             }
+            packet.StoreEndList();
             packet.ReadUInt32("Money");
             packet.ReadUInt32("COD");
             packet.ReadUInt64("Unk Uint64");

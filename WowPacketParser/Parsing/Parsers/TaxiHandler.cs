@@ -31,8 +31,10 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Node ID");
             }
             var i = 0;
+            packet.StoreBeginList("Nodes");
             while (packet.CanRead())
                 packet.ReadUInt64("NodeMask", i++);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_SHOWTAXINODES, ClientVersionBuild.V4_3_4_15595)]
@@ -73,9 +75,10 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Cost");
 
             var count = packet.ReadUInt32("Node Count");
+            packet.StoreBeginList("Nodes");
             for (var i = 0; i < count; ++i)
                 packet.ReadUInt32("Node ID", i);
-
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_SET_TAXI_BENCHMARK_MODE)]

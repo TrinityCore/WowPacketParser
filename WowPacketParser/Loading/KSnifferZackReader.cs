@@ -45,7 +45,7 @@ namespace WowPacketParser.Loading
             for (var i = 0; i < length; i++)
                 arr[i] = byte.Parse(tokens[i], NumberStyles.HexNumber, null);
 
-            return new Packet(arr, opcode, DateTime.Now, direction, number, fileName, null);
+            return new Packet(arr, opcode, DateTime.Now, direction, number, fileName);
         }
         public void Dispose()
         {

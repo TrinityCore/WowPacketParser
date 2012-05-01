@@ -7,19 +7,22 @@ using ICSharpCode.SharpZipLib.Zip.Compression;
 using WowPacketParser.Enums;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using System.Collections.Specialized;
 
 namespace WowPacketParser.Misc
 {
+    //using NameDict = Dictionary<string, Object>;
+    //1using IndexDict = Dictionary<int, Dictionary<string, Object>>;
+    using NameDict = OrderedDictionary;
+    using IndexDict = Dictionary<int, OrderedDictionary>;
+
     public sealed partial class Packet : BinaryReader
     {
         private static readonly bool SniffData = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffData);
         private static readonly bool SniffDataOpcodes = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffDataOpcodes);
 
-        private readonly Packet Parent;
-        public string ErrorMessage = "";
-
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
-        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, string fileName, Packet parent, string error = "")
+        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, string fileName)
             : base(new MemoryStream(input.Length), Encoding.UTF8)
         {
             this.BaseStream.Write(input, 0, input.Length);
@@ -28,21 +31,35 @@ namespace WowPacketParser.Misc
             Time = time;
             Direction = direction;
             Number = number;
+            StoreData = new NameDict();
+            StoreIndexedLists = new LinkedList<Tuple<NameDict, IndexDict>>();
+            StoreObjects = new Stack<Tuple<NameDict, LinkedList<Tuple<NameDict, IndexDict>>>>();
             FileName = fileName;
             Status = ParsedStatus.None;
-            WriteToFile = true;
+            Parent = null;
 
             if (number == 0)
                 _firstPacketTime = Time;
 
             TimeSpan = Time - _firstPacketTime;
-            Parent = parent != null ? (parent.Parent != null ? parent.Parent : parent) : null;
-            if (Parent != null)
-            {
-                if (Parent.SubPackets == null)
-                    Parent.SubPackets = new LinkedList<Packet>();
-                Parent.SubPackets.AddFirst(this);
-            }
+        }
+
+        [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
+        public Packet(byte[] input, int opcode, Packet parent)
+            : base(new MemoryStream(input.Length), Encoding.UTF8)
+        {
+            this.BaseStream.Write(input, 0, input.Length);
+            SetPosition(0);
+            Opcode = opcode;
+            Time = parent.Time;
+            Direction = parent.Direction;
+            Number = parent.Number;
+            StoreData = new NameDict();
+            StoreIndexedLists = new LinkedList<Tuple<NameDict, IndexDict>>();
+            StoreObjects = new Stack<Tuple<NameDict, LinkedList<Tuple<NameDict, IndexDict>>>>();
+            FileName = parent.FileName;
+            Status = ParsedStatus.None;
+            Parent = parent;
         }
 
         public int Opcode { get; set; } // setter can't be private because it's used in multiple_packets
@@ -51,12 +68,15 @@ namespace WowPacketParser.Misc
         public TimeSpan TimeSpan { get; private set; }
         public Direction Direction { get; private set; }
         public int Number { get; private set; }
-        public StreamWriter Writer { get; private set; }
         public string FileName { get; private set; }
         public ParsedStatus Status { get; set; }
-        public bool WriteToFile { get; private set; }
-        public LinkedList<PacketData> Data;
-        public LinkedList<Packet> SubPackets;
+        public string ErrorMessage = "";
+        public Packet Parent;
+
+        public NameDict GetData()
+        {
+            return StoreData;
+        }
 
         public void AddSniffData(StoreNameType type, int id, string data)
         {
@@ -153,10 +173,7 @@ namespace WowPacketParser.Misc
 
         public void ClosePacket()
         {
-            Writer.Close();
-
-            if (BaseStream != null)
-                BaseStream.Close();
+            BaseStream.Close();
 
             Dispose(true);
         }

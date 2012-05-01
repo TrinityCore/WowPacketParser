@@ -28,6 +28,7 @@ namespace WowPacketParser.Parsing.Parsers
                                   Actions = new List<Store.Objects.Action>(buttonCount)
                               };
 
+            packet.StoreBeginList("Buttons");
             for (var i = 0; i < buttonCount; i++)
             {
                 var action = new Store.Objects.Action
@@ -48,6 +49,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 startAction.Actions.Add(action);
             }
+            packet.StoreEndList();
 
             if (SessionHandler.LoggedInCharacter != null && SessionHandler.LoggedInCharacter.FirstLogin)
                 Storage.StartActions.Add(new Tuple<Race, Class>(SessionHandler.LoggedInCharacter.Race, SessionHandler.LoggedInCharacter.Class), startAction, packet.TimeSpan);

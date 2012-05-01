@@ -38,7 +38,7 @@ namespace WowPacketParser.Loading
                 _reader.ReadInt16());
             var data = _reader.ReadBytes(length - (direction == Direction.ClientToServer ? 4 : 2));
 
-            return new Packet(data, opcode, time, direction, number, fileName, null);
+            return new Packet(data, opcode, time, direction, number, fileName);
         }
 
         public void Dispose()
