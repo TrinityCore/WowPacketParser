@@ -61,6 +61,16 @@ namespace WowPacketParser.Enums.Version//.V4_3_4_opcodes
            {Opcode.SMSG_TRAINER_LIST, 0x4414},
            {Opcode.SMSG_TUTORIAL_FLAGS, 0x0B35},
            {Opcode.SMSG_UPDATE_OBJECT, 0x4715},
+           {Opcode.CMSG_PING, 0x444D},
+           {Opcode.SMSG_PONG, 0x4D42},
+           {Opcode.CMSG_PLAYER_LOGIN, 0x05B1},
+           {Opcode.SMSG_REDIRECT_CLIENT, 0x0942},
+           {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x4925},
+           {Opcode.SMSG_LEARNED_DANCE_MOVES, 0x0E05},
+           {Opcode.SMSG_CONTACT_LIST, 0x6017},
+           {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x58B1},
+           {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x4D15},
+           {Opcode.SMSG_UPDATE_WORLD_STATE, 0x4816},
         };
     }
 }
