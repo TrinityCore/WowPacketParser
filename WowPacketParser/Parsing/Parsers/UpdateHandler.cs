@@ -192,21 +192,26 @@ namespace WowPacketParser.Parsing.Parsers
             var moveInfo = new MovementInfo();
 
             // bits
-            /*var bit3 =*/ packet.ReadBit();
-            /*var bit4 =*/ packet.ReadBit();
+            /*var bit3 =*/
+            packet.ReadBit("var bit3", index);
+            /*var bit4 =*/
+            packet.ReadBit("var bit4", index);
             var hasGameObjectRotation = packet.ReadBit("Has GameObject Rotation", index);
             var hasAnimKits = packet.ReadBit("Has AnimKits", index);
             var hasAttackingTarget = packet.ReadBit("Has Attacking Target", index);
-            /*var bit0 =*/ packet.ReadBit();
+            /*var bit0 =*/
+            packet.ReadBit("var bit0", index);
             var hasVehicleData = packet.ReadBit("Has Vehicle Data", index);
             var living = packet.ReadBit("Living", index);
             var unkLoopCounter = packet.ReadBits(24);
-            /*var bit1 =*/ packet.ReadBit();
+            /*var bit1 =*/
+            packet.ReadBit("var bit1", index);
             var hasGameObjectPosition = packet.ReadBit("Has GameObject position", index);
             var hasStationaryPosition = packet.ReadBit("Has Stationary Position", index);
             var bit456 = packet.ReadBit();
-            /*var bit2 =*/ packet.ReadBit();
-            var bit408 = packet.ReadBit();
+            /*var bit2 =*/
+            packet.ReadBit("var bit2", index);
+            var bit408 = packet.ReadBit("var bit408", index);
             var hasMovementFlags = false;
             var hasOrientation = false;
             var guid2 = new byte[8];
@@ -245,7 +250,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasMovementFlags)
                     moveInfo.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
 
-                bit148 = packet.ReadBit();
+                bit148 = packet.ReadBit("var bit148", index);
                 dword28 = !packet.ReadBit();
                 moveInfo.HasSplineData = packet.ReadBit("Has Spline Data", index);
                 hasFallData = packet.ReadBit("Has Fall Data", index);
