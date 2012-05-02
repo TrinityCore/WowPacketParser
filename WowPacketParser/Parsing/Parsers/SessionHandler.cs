@@ -230,6 +230,36 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleAuthResponse434(Packet packet)
+        {
+            var isQueued = packet.ReadBit();
+            var hasAccountInfo = packet.ReadBit();
+
+            if (isQueued)
+            {
+                var unkByte = packet.ReadByte();
+                packet.WriteLine("Unk Byte: " + unkByte);
+
+                var position = packet.ReadInt32();
+                packet.WriteLine("Queue Position: " + position);
+
+                
+            }
+            if (hasAccountInfo) 
+            {
+                packet.ReadInt32("Billing Time Remaining");
+                packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
+                packet.ReadInt32("Unknown UInt32");
+                packet.ReadEnum<ClientType>("Player Expansion", TypeCode.Byte);
+                packet.ReadInt32("Billing Time Rested");
+                packet.ReadEnum<BillingFlag>("Billing Flags", TypeCode.Byte);
+            }
+
+            var code = (ResponseCode)packet.ReadByte();
+            packet.WriteLine("Auth Code: " + code);
+
+        }
         public static void ReadAuthResponseInfo(ref Packet packet)
         {
             packet.ReadInt32("Billing Time Remaining");
@@ -242,6 +272,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_3_13329))
                 packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
         }
+
 
         public static void ReadQueuePositionInfo(ref Packet packet)
         {
