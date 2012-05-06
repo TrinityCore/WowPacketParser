@@ -252,7 +252,7 @@ namespace WowPacketParser.Enums.Version//.V4_0_3_13329
             {Opcode.SMSG_INVENTORY_CHANGE_FAILURE, 0xD655}, // (0x4319)(0x0112) //
             {Opcode.SMSG_OPEN_CONTAINER, 0x1C5F}, // (0x6AB0)(0x0113) //
             {Opcode.CMSG_INSPECT, 0xAF7F}, // (0x2334)(0x0114) //
-            {Opcode.SMSG_INSPECT, 0x867D}, // (0xC2F4)(0x0115) //
+            {Opcode.SMSG_INSPECT_RESULTS_UPDATE, 0x867D}, // (0xC2F4)(0x0115) //
             {Opcode.CMSG_INITIATE_TRADE, 0xFFD8}, // NF(0x1772)(0x0116) //
             {Opcode.CMSG_BEGIN_TRADE, 0xFFD7}, // NF(0x1773)(0x0117) //
             {Opcode.CMSG_BUSY_TRADE, 0x0118}, // NF()(0x0118) //

@@ -936,8 +936,8 @@ namespace WowPacketParser.Enums.Version//.V4_0_6_13596
             {Opcode.SMSG_INIT_CURRENCY, 0x0091C}, // 4.0.6a 13623
             {Opcode.SMSG_INIT_EXTRA_AURA_INFO_OBSOLETE, 0x10168}, // Unknown opcode ID
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0F6E8}, // 4.0.6a 13623
-            {Opcode.SMSG_INSPECT, 0x07AC8}, // 4.0.6a 13623
             {Opcode.SMSG_INSPECT_HONOR_STATS, 0x0005E}, // 4.0.6a 13623
+            {Opcode.SMSG_INSPECT_RESULTS_UPDATE, 0x07AC8}, // 4.0.6a 13623
             {Opcode.SMSG_INSPECT_TALENT, 0x0F8C0}, // 4.0.6a 13623
             {Opcode.SMSG_INSTANCE_DIFFICULTY, 0x0FFE4}, // 4.0.6a 13623 (might be 0x0A55E)
             {Opcode.SMSG_INSTANCE_LOCK_WARNING_QUERY, 0x0B574}, // 4.0.3a 13329

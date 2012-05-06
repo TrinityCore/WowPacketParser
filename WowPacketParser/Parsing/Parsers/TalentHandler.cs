@@ -36,6 +36,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_INSPECT_TALENT)]
+        [Parser(Opcode.SMSG_INSPECT_RESULTS_UPDATE)]
         public static void HandleInspectTalent(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))

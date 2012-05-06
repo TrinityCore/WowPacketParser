@@ -520,7 +520,7 @@ namespace WowPacketParser.Enums.Version//.V4_2_2_14545
             {Opcode.SMSG_INITIAL_SPELLS, 0x88FE},
             {Opcode.SMSG_INIT_CURRENCY, 0x227E},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x9EDA},
-            {Opcode.SMSG_INSPECT, 0xE46},
+            {Opcode.SMSG_INSPECT_RESULTS_UPDATE, 0xE46},
             {Opcode.SMSG_INSPECT_TALENT, 0x48EF},
             {Opcode.SMSG_INSTANCE_LOCK_WARNING_QUERY, 0x4E7F},
             {Opcode.SMSG_INSTANCE_RESET, 0x0DAC2},

@@ -125,10 +125,10 @@ namespace WowPacketParser.Enums.Version//.V4_1_0_13914
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x0796E}, // 4.1.0 13914
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0x0F87E}, // 4.1.0 13914
             {Opcode.SMSG_INITIAL_SPELLS, 0x00A6F}, // 4.1.0 13914
-            {Opcode.SMSG_INSPECT, 0x04D7F}, // 4.1.0 13914
             {Opcode.SMSG_INSPECT_TALENT, 0x00F3E}, // 4.1.0 13914
             {Opcode.SMSG_INSTANCE_RESET, 0x0083E}, // 4.1.0 13914
             {Opcode.SMSG_INSTANCE_RESET_FAILED, 0x00B7F}, // 4.1.0 13914
+            {Opcode.SMSG_INSPECT_RESULTS_UPDATE, 0x04D7F}, // 4.1.0 13914
             {Opcode.SMSG_INSTANCE_SAVE_CREATED, 0x05F7E}, // 4.1.0 13914
             {Opcode.SMSG_INVALIDATE_DANCE, 0x0DE6F}, // 4.1.0 13914
             {Opcode.SMSG_INVALIDATE_PLAYER, 0x0E83D}, // 4.1.0 13914
