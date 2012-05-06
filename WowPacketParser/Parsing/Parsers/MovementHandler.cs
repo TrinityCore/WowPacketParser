@@ -815,6 +815,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Velocity");
         }
 
+        [Parser(Opcode.CMSG_MOVE_SPLINE_DONE)]
+        public static void HandleMoveSplineDone(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid("Guid");
+            ReadMovementInfo(ref packet, guid);
+            packet.ReadInt32("Unknown");
+        }
+
         [Parser(Opcode.SMSG_SPLINE_SET_RUN_SPEED, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleSplineMovementSetRunSpeed422(Packet packet)
         {
