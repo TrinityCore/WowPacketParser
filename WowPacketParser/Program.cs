@@ -76,7 +76,7 @@ namespace WowPacketParser
                     var outFileName = Path.ChangeExtension(file, null) + "_parsed";
                     var outLogFileName = outFileName + ".txt";
 
-                    switch (Settings.ThreadsRead)
+                    switch (Settings.ThreadsParse)
                     {
                         case 0: // Number of threads is automatically choosen by the Parallel library
                         {
