@@ -689,7 +689,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Caster GUID");
             packet.ReadGuid("Target GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Dispel Spell ID");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+
+            while (packet.CanRead())
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
         }
 
         [Parser(Opcode.SMSG_TOTEM_CREATED)]
