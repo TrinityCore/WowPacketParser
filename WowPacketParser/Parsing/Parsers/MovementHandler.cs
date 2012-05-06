@@ -1205,5 +1205,25 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ToGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_FORCE_WALK_SPEED_CHANGE)]
+        [Parser(Opcode.SMSG_FORCE_RUN_SPEED_CHANGE)]
+        [Parser(Opcode.SMSG_FORCE_RUN_BACK_SPEED_CHANGE)]
+        [Parser(Opcode.SMSG_FORCE_SWIM_SPEED_CHANGE)]
+        [Parser(Opcode.SMSG_FORCE_SWIM_BACK_SPEED_CHANGE)]
+        [Parser(Opcode.SMSG_FORCE_TURN_RATE_CHANGE)]
+        [Parser(Opcode.SMSG_FORCE_FLIGHT_SPEED_CHANGE)]
+        [Parser(Opcode.SMSG_FORCE_FLIGHT_BACK_SPEED_CHANGE)]
+        [Parser(Opcode.SMSG_FORCE_PITCH_RATE_CHANGE)]
+        public static void HandleForceSpeedChange(Packet packet)
+        {
+            packet.ReadPackedGuid("Guid");
+            packet.ReadUInt32("MoveEvent");
+
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_FORCE_RUN_SPEED_CHANGE))
+                packet.ReadByte("Unk Byte");
+
+            packet.ReadSingle("Speed");
+        }
     }
 }

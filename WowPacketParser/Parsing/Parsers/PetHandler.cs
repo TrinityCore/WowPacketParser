@@ -54,13 +54,11 @@ namespace WowPacketParser.Parsing.Parsers
                     s.Append(spellId);
                 else
                     s.Append(StoreGetters.GetName(StoreNameType.Spell, spellId));
-
                 s.Append(" slot: ").Append(slot);
-
                 packet.WriteLine(s.ToString());
 
                 // Spells for pets are on DBCs; also no entry in guid
-                // We don't need the ac
+                // We don't need the actions sent for minions (slots lower than 8)
                 if (!isPet && (isVehicle || (isMinion && slot >= 8)))
                     spells.Add((uint)spellId);
             }

@@ -139,13 +139,9 @@ namespace WowPacketParser.SQL
                     foreach (var field in fields)
                     {
                         if (values[i] is DBNull && field.Item1.FieldType == typeof(string))
-                        {
                             field.Item1.SetValueDirect(__makeref(instance), string.Empty);
-                        }
                         else if (field.Item1.FieldType.BaseType == typeof(Enum))
-                        {
                             field.Item1.SetValueDirect(__makeref(instance), Enum.Parse(field.Item1.FieldType, values[i].ToString()));
-                        }
                         else if (field.Item1.FieldType.BaseType == typeof(Array))
                         {
                             var arr = Array.CreateInstance(field.Item1.FieldType.GetElementType(), field.Item2.Count);
@@ -161,13 +157,9 @@ namespace WowPacketParser.SQL
                             field.Item1.SetValueDirect(__makeref(instance), arr);
                         }
                         else if (field.Item1.FieldType == typeof(bool))
-                        {
                             field.Item1.SetValueDirect(__makeref(instance), Convert.ToBoolean(values[i]));
-                        }
                         else
-                        {
                             field.Item1.SetValueDirect(__makeref(instance), values[i]);
-                        }
 
                         i += field.Item2.Count;
                     }
