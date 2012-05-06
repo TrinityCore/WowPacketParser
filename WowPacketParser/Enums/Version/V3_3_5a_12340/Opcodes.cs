@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.Enums.Version//.V3_3_5a_12340
 {
     public static partial class Opcodes
     {
-        private static readonly Dictionary<Opcode, int> _V3_3_5_opcodes = new Dictionary<Opcode, int>
+        private static readonly BiDictionary<Opcode, int> _V3_3_5_opcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.MSG_NULL_ACTION, 0x0},
             {Opcode.CMSG_BOOTME, 0x1},

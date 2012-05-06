@@ -1,10 +1,10 @@
-using System.Collections.Generic;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.Enums.Version//.V4_1_0_13914
 {
     public static partial class Opcodes
     {
-        private static readonly Dictionary<Opcode, int> _V4_1_0_opcodes = new Dictionary<Opcode, int>
+        private static readonly BiDictionary<Opcode, int> _V4_1_0_opcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.MSG_AUCTION_HELLO, 0x0FC3D}, // 4.1.0 13914
             {Opcode.MSG_GUILD_EVENT_LOG_QUERY, 0x09A7F}, // 4.1.0 13914

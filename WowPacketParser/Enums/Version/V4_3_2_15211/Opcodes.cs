@@ -1,10 +1,10 @@
-using System.Collections.Generic;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.Enums.Version//.V4_3_2_15211
 {
     public static partial class Opcodes
     {
-        private static readonly Dictionary<Opcode, int> _V4_3_2_opcodes = new Dictionary<Opcode, int>
+        private static readonly BiDictionary<Opcode, int> _V4_3_2_opcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0x0D33},
             {Opcode.CMSG_ACTIVATETAXI, 0x4DF9},

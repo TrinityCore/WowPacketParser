@@ -1,10 +1,10 @@
-using System.Collections.Generic;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.Enums.Version//.V4_3_4_opcodes
 {
     public static partial class Opcodes
     {
-        private static readonly Dictionary<Opcode, int> _V4_3_4_opcodes = new Dictionary<Opcode, int>
+        private static readonly BiDictionary<Opcode, int> _V4_3_4_opcodes = new BiDictionary<Opcode, int>
         {
            {Opcode.CMSG_AUTH_SESSION, 0x0449},
            {Opcode.CMSG_CAST_SPELL, 0x4C07},

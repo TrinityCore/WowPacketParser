@@ -307,6 +307,7 @@
     <Compile Include="Loading\IPacketReader.cs" />
     <Compile Include="Loading\Reader.cs" />
     <Compile Include="Loading\SQLitePacketReader.cs" />
+    <Compile Include="Misc\BiDictionary.cs" />
     <Compile Include="Misc\Filters.cs" />
     <Compile Include="Parsing\Parsers\CombatLogHandler.cs" />
     <Compile Include="Parsing\Parsers\TestHandler.cs" />
