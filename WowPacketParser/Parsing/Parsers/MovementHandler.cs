@@ -924,6 +924,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_FORCE_MOVE_UNROOT)]
         [Parser(Opcode.SMSG_MOVE_WATER_WALK)]
         [Parser(Opcode.SMSG_MOVE_LAND_WALK)]
+        [Parser(Opcode.SMSG_MOVE_SET_HOVER)]
+        [Parser(Opcode.SMSG_MOVE_UNSET_HOVER)]
+        [Parser(Opcode.SMSG_MOVE_SET_CAN_FLY)]
+        [Parser(Opcode.SMSG_MOVE_UNSET_CAN_FLY)]
+        [Parser(Opcode.SMSG_MOVE_SET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY)]
+        [Parser(Opcode.SMSG_MOVE_UNSET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY)]
+        [Parser(Opcode.SMSG_MOVE_FEATHER_FALL)]
+        [Parser(Opcode.SMSG_MOVE_NORMAL_FALL)]
         public static void HandleSetMovementMessages(Packet packet)
         {
             packet.ReadPackedGuid("Guid");
