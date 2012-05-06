@@ -161,8 +161,7 @@ namespace WowPacketParser.Store.Objects
             {
                 if (isInt)
                     return (TK)(object)uf.UInt32Value;
-                else
-                    return (TK)(object)uf.SingleValue;
+                return (TK)(object)uf.SingleValue;
             }
 
             return default(TK);

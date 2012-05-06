@@ -207,10 +207,8 @@ namespace WowPacketParser.Parsing.Parsers
             var bit456 = packet.ReadBit();
             /*var bit2 =*/ packet.ReadBit();
             var bit408 = packet.ReadBit();
-            var hasMovementFlags = false;
             var hasOrientation = false;
             var guid2 = new byte[8];
-            var bit148 = false;
             var dword28 = false;
             var hasFallData = false;
             var hasUnkFloat2 = false;
@@ -226,7 +224,6 @@ namespace WowPacketParser.Parsing.Parsers
             var facingTargetGuid = new byte[8];
             var hasSplineVerticalAcceleration = false;
             var hasFallDirection = false;
-            var bit149 = false;
             var goTransportGuid = new byte[8];
             var hasGOTransportTime2 = false;
             var hasGOTransportTime3 = false;
@@ -237,7 +234,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (living)
             {
-                hasMovementFlags = !packet.ReadBit();
+                var hasMovementFlags = !packet.ReadBit();
                 hasOrientation = !packet.ReadBit();
                 guid2[7] = (byte)(packet.ReadBit() ? 1 : 0);
                 guid2[3] = (byte)(packet.ReadBit() ? 1 : 0);
@@ -245,7 +242,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasMovementFlags)
                     moveInfo.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
 
-                bit148 = packet.ReadBit();
+                packet.ReadBit();
                 dword28 = !packet.ReadBit();
                 moveInfo.HasSplineData = packet.ReadBit("Has Spline Data", index);
                 hasFallData = packet.ReadBit("Has Fall Data", index);
@@ -316,7 +313,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 guid2[0] = (byte)(packet.ReadBit() ? 1 : 0);
                 guid2[1] = (byte)(packet.ReadBit() ? 1 : 0);
-                bit149 = packet.ReadBit();
+                packet.ReadBit();
                 if (!packet.ReadBit())
                     moveInfo.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 12, index);
             }

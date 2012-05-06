@@ -820,7 +820,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.ReadPackedGuid("Guid");
             ReadMovementInfo(ref packet, guid);
-            packet.ReadInt32("Unknown");
+            packet.ReadInt32("Movement Counter"); // Possibly
         }
 
         [Parser(Opcode.SMSG_SPLINE_SET_RUN_SPEED, ClientVersionBuild.V4_2_2_14545)]
@@ -918,21 +918,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSetActiveMover(Packet packet)
         {
             packet.ReadGuid("GUID");
-        }
-
-        [Parser(Opcode.SMSG_SUMMON_REQUEST)]
-        public static void HandleSummonRequest(Packet packet)
-        {
-            packet.ReadGuid("Summoner GUID");
-            packet.ReadInt32("Unk int 1");
-            packet.ReadInt32("Unk int 2");
-        }
-
-        [Parser(Opcode.CMSG_SUMMON_RESPONSE)]
-        public static void HandleSummonResponse(Packet packet)
-        {
-            packet.ReadGuid("Summoner GUID");
-            packet.ReadBoolean("Accept");
         }
 
         [Parser(Opcode.SMSG_FORCE_MOVE_ROOT)]

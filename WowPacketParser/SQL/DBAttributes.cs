@@ -14,20 +14,15 @@ namespace WowPacketParser.SQL
             set { _count = value; }
         }
 
-        public bool StartAtZero
-        {
-            get { return _startAtZero; }
-            set { _startAtZero = value; }
-        }
+        public bool StartAtZero { get; set; }
 
         private int _count;
-        private bool _startAtZero;
 
         public DBFieldNameAttribute(string name)
         {
             Name = name;
             Count = 1;
-            _startAtZero = false;
+            StartAtZero = false;
         }
 
         public override string ToString()

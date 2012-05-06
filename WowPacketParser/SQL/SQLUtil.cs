@@ -133,7 +133,6 @@ namespace WowPacketParser.SQL
         /// <typeparam name="TK">Type of the WDB struct (field names and types must match DB field name and types)</typeparam>
         /// <param name="dict1">Dictionary retrieved from  parser</param>
         /// <param name="dict2">Dictionary retrieved from  DB</param>
-        /// <param name="tableName">The name of the table in DB</param>
         /// <param name="storeType">Are we dealing with Spells, Quests, Units, ...?</param>
         /// <param name="primaryKeyName">The name of the primary key, usually "entry"</param>
         /// <returns>A string containing full SQL queries</returns>
