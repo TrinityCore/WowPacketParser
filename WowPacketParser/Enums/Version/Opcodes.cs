@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums.Version.V3_3_5a_12340;
+﻿using System.Globalization;
+using WowPacketParser.Enums.Version.V3_3_5a_12340;
 using WowPacketParser.Enums.Version.V4_0_3_13329;
 using WowPacketParser.Enums.Version.V4_0_6_13596;
 using WowPacketParser.Enums.Version.V4_1_0_13914;
@@ -97,17 +98,26 @@ namespace WowPacketParser.Enums.Version
 
         public static Opcode GetOpcode(int opcodeId)
         {
-            return Dict.GetBySecond(opcodeId);
+            Opcode opcode;
+            if (Dict.TryGetBySecond(opcodeId, out opcode))
+                return opcode;
+
+            return 0;
         }
 
         public static int GetOpcode(Opcode opcode)
         {
-            return Dict.GetByFirst(opcode);
+            int opcodeId;
+            if (Dict.TryGetByFirst(opcode, out opcodeId))
+                return opcodeId;
+
+            return (int) opcode;
         }
 
         public static string GetOpcodeName(int opcodeId)
         {
-            return GetOpcode(opcodeId).ToString();
+            var opc = GetOpcode(opcodeId);
+            return opc == 0 ? opcodeId.ToString(CultureInfo.InvariantCulture) : opc.ToString();
         }
     }
 }

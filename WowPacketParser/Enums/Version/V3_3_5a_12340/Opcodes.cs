@@ -11,7 +11,6 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
-            {Opcode.MSG_NULL_ACTION, 0x0},
             {Opcode.CMSG_BOOTME, 0x1},
             {Opcode.CMSG_DBLOOKUP, 0x2},
             {Opcode.SMSG_DBLOOKUP, 0x3},
