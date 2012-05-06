@@ -120,7 +120,7 @@ namespace WowPacketParser.Misc
 
             if (Settings.ParsingLog)
             {
-                using (var fileListener = new TextWriterTraceListener(String.Format("parsing_log_{0}.txt", Path.GetRandomFileName())))
+                using (var fileListener = new TextWriterTraceListener(String.Format("{0}_log.txt", Utilities.FormattedDateTimeForFiles())))
                 {
                     fileListener.Name = "ConsoleMirror";
                     Trace.Listeners.Add(fileListener);
@@ -222,6 +222,15 @@ namespace WowPacketParser.Misc
             }
 
             return list;
+        }
+
+        /// <summary>
+        /// Returns current date time to be used in our file names (sqls, parsing logs, ...)
+        /// </summary>
+        /// <returns></returns>
+        public static string FormattedDateTimeForFiles()
+        {
+            return DateTime.Now.ToString("yyy_MM_dd_HH_mm_ss");
         }
     }
 }
