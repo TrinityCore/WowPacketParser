@@ -257,7 +257,7 @@ namespace WowPacketParser
                 if (!String.IsNullOrWhiteSpace(Settings.SQLFileName))
                     sqlFileName = Settings.SQLFileName;
                 else if (files.Count == 1)
-                    sqlFileName = string.Format("{0}_{1}.sql", Utilities.FormattedDateTimeForFiles(), files[0]);
+                    sqlFileName = string.Format("{0}_{1}.sql", Utilities.FormattedDateTimeForFiles(), Path.GetFileName(files[0]));
                 else
                     sqlFileName = string.Format("{0}_multi_files.sql", Utilities.FormattedDateTimeForFiles());
 
