@@ -83,7 +83,7 @@ namespace WowPacketParser
                             packets.AsParallel().SetCulture().ForAll(packet => Handler.Parse(packet));
                             break;
                         }
-                        case 1: // No threading, lowest amount of memory use
+                        case 1: // No multithreading, lowest amount of memory use
                         {
                             foreach (var packet in packets)
                                 Handler.Parse(packet);
@@ -227,7 +227,7 @@ namespace WowPacketParser
                         ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]"));
                     break;
                 }
-                case 1: // No threading, lowest amount of memory use
+                case 1: // No multithreading, lowest amount of memory use
                 {
                     foreach (var file in files)
                         ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]");
@@ -254,10 +254,12 @@ namespace WowPacketParser
             if (Settings.SQLOutput != 0)
             {
                 string sqlFileName;
-                if (String.IsNullOrWhiteSpace(Settings.SQLFileName))
-                    sqlFileName = files.Aggregate(string.Empty, (current, file) => current + Path.GetFileNameWithoutExtension(file)) + ".sql";
-                else
+                if (!String.IsNullOrWhiteSpace(Settings.SQLFileName))
                     sqlFileName = Settings.SQLFileName;
+                else if (files.Count == 1)
+                    sqlFileName = string.Format("{0}_{1}.sql", DateTime.Now.ToString("yyy_MM_dd_HH_mm_ss"), files[0]);
+                else
+                    sqlFileName = string.Format("{0}_multi_files.sql", DateTime.Now.ToString("yyy_MM_dd_HH_mm_ss"));
 
                 Builder.DumpSQL("Dumping global sql", sqlFileName, Settings.SQLOutput);
             }
