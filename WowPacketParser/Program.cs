@@ -76,10 +76,25 @@ namespace WowPacketParser
                     var outFileName = Path.ChangeExtension(file, null) + "_parsed";
                     var outLogFileName = outFileName + ".txt";
 
-                    if (Settings.ThreadsParse == 0) // Number of threads is automatically choosen by the Parallel library
-                        packets.AsParallel().SetCulture().ForAll(packet => Handler.Parse(packet));
-                    else
-                        packets.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.ThreadsParse).ForAll(packet => Handler.Parse(packet));
+                    switch (Settings.ThreadsRead)
+                    {
+                        case 0: // Number of threads is automatically choosen by the Parallel library
+                        {
+                            packets.AsParallel().SetCulture().ForAll(packet => Handler.Parse(packet));
+                            break;
+                        }
+                        case 1: // No threading, lowest amount of memory use
+                        {
+                            foreach (var packet in packets)
+                                Handler.Parse(packet);
+                            break;
+                        }
+                        default: // User defined number of threads
+                        {
+                            packets.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.ThreadsParse).ForAll(packet => Handler.Parse(packet));
+                            break;
+                        }
+                    }
 
                     if (Settings.DumpFormat != DumpFormatType.None)
                     {
@@ -164,6 +179,9 @@ namespace WowPacketParser
         {
             Utilities.SetUpListeners();
             var files = args.ToList();
+
+            //files.Add("something.pkt");
+
             if (!Utilities.GetFiles(ref files))
             {
                 EndPrompt();
@@ -200,13 +218,29 @@ namespace WowPacketParser
             var startTime = DateTime.Now;
             var count = 0;
 
-            if (Settings.ThreadsRead == 0) // Number of threads is automatically choosen by the Parallel library
-                files.AsParallel().SetCulture()
-                    .ForAll(file =>
+            switch (Settings.ThreadsRead)
+            {
+                case 0: // Number of threads is automatically choosen by the Parallel library
+                {
+                    files.AsParallel().SetCulture()
+                        .ForAll(file =>
                         ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]"));
-            else
-                files.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.ThreadsRead)
-                    .ForAll(file => ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]"));
+                    break;
+                }
+                case 1: // No threading, lowest amount of memory use
+                {
+                    foreach (var file in files)
+                        ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]");
+                    break;
+                }
+                default: // User defined number of threads
+                {
+                    files.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.ThreadsRead)
+                        .ForAll(file =>
+                        ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]"));
+                    break;
+                }
+            }
 
             if (Settings.StatsOutput.HasAnyFlag(StatsOutputFlags.Global))
             {
