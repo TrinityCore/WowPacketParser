@@ -1,10 +1,15 @@
 using WowPacketParser.Misc;
 
-namespace WowPacketParser.Enums.Version//.V4_3_0_15005
+namespace WowPacketParser.Enums.Version.V4_3_0_15005
 {
-    public static partial class Opcodes
+    public static class Opcodes_4_3_0
     {
-        private static readonly BiDictionary<Opcode, int> _V4_3_0_opcodes = new BiDictionary<Opcode, int>
+        public static BiDictionary<Opcode, int> Opcodes()
+        {
+            return Opcs;
+        }
+
+        private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 3074},
             {Opcode.CMSG_ACCEPT_TRADE, 12433},

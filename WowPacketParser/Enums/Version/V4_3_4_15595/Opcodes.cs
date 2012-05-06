@@ -1,10 +1,15 @@
 using WowPacketParser.Misc;
 
-namespace WowPacketParser.Enums.Version//.V4_3_4_opcodes
+namespace WowPacketParser.Enums.Version.V4_3_4_15595
 {
-    public static partial class Opcodes
+    public static class Opcodes_4_3_4
     {
-        private static readonly BiDictionary<Opcode, int> _V4_3_4_opcodes = new BiDictionary<Opcode, int>
+        public static BiDictionary<Opcode, int> Opcodes()
+        {
+            return Opcs;
+        }
+
+        private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
            {Opcode.CMSG_AUTH_SESSION, 0x0449},
            {Opcode.CMSG_CAST_SPELL, 0x4C07},
