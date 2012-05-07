@@ -591,6 +591,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MOUNTRESULT)]
         public static void HandleMountResult(Packet packet)
         {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
+                packet.ReadPackedGuid("GUID");
             packet.ReadUInt32("Result"); // FIXME Enum?
         }
 
