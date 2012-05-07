@@ -14,10 +14,11 @@ Thanks
 --------------------------------------------------
 
 - Kaelima
-- Nay
+- Kiper
 - Machiavelli
+- Nay
+- Rat
 - Shauren
 - Spp
-- stfx
-- Rat
 - Subv
+- stfx
