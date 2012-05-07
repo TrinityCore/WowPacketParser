@@ -14,7 +14,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Active Spec");
             for (var i = 0; i < speccount; ++i)
             {
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                     packet.ReadUInt32("TalentBranchSpec", i);
                 var count2 = packet.ReadByte("Spec Talent Count ", i);
                 for (var j = 0; j < count2; ++j)

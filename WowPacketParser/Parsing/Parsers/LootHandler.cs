@@ -97,7 +97,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var count = packet.ReadByte("Drop Count");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                 packet.ReadByte("unk");
 
             loot.LootItems = new List<LootItem>(count);

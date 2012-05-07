@@ -57,7 +57,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<MapDifficulty>("Raid Difficulty", TypeCode.Byte);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958) &&
-                ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545)) // Removed somewhere between wotlk and cataclysm
+                ClientVersion.RemovedInVersion(ClientVersionBuild.V4_0_6a_13623))
                 packet.ReadByte("Unk Byte"); // Has something to do with difficulty too
         }
 
@@ -425,7 +425,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 packet.ReadUInt32("LFG Boot Cooldown");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                 packet.ReadGuid("Player Guid"); // Usually 0
         }
 

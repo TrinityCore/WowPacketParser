@@ -319,7 +319,7 @@ namespace WowPacketParser.Parsing.Parsers
                                 continue;
                         }
 
-                        packet.ReadByte("Rune Cooldown Passed", i);
+                        packet.ReadSByte("Rune Cooldown Passed", i);
                     }
                 }
 
@@ -350,7 +350,7 @@ namespace WowPacketParser.Parsing.Parsers
                     }
 
                     if (targetFlags.HasAnyFlag(TargetFlag.DestinationLocation))
-                        packet.ReadByte("Unk Byte 2"); // Some count
+                        packet.ReadSByte("Unk Byte 2"); // Some count
 
                     if (targetFlags.HasAnyFlag(TargetFlag.ExtraTargets))
                     {
@@ -558,10 +558,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
             packet.ReadInt32("Duration");
 
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333))
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_0_6a_13623))
                 return;
 
-            var unkbool = packet.ReadBoolean("Unk"); // has castflag Immunity
+            var unkbool = packet.ReadBoolean("Has castflag Immunity"); // has castflag Immunity
 
             if (unkbool)
             {
@@ -569,7 +569,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("CastImmunities");
             }
 
-            var unkbool2 = packet.ReadBoolean("Unk");   // has castflag HealPrediction
+            var unkbool2 = packet.ReadBoolean("Has castflag HealPrediction");   // has castflag HealPrediction
 
             if (unkbool2)
             {

@@ -697,7 +697,6 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("unk byte");
         }
 
-
         [Parser(Opcode.SMSG_SUMMON_REQUEST)]
         public static void HandleSummonRequest(Packet packet)
         {

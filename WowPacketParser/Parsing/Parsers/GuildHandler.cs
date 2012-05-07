@@ -253,7 +253,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GUILD_EVENT)]
         public static void HandleGuildEvent(Packet packet)
         {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                 packet.ReadEnum<GuildEventType442>("Event Type", TypeCode.Byte);
             else
                 packet.ReadEnum<GuildEventType>("Event Type", TypeCode.Byte);
@@ -357,7 +357,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Stack Count", i);
                     packet.ReadUInt32("Unk Uint32 2", i); // Only seen 0
                     packet.ReadByte("Spell Charges", i);
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                     {
                         packet.ReadInt32("Unk 1 Int32", i);
                         packet.ReadInt32("Unk 2 Int32", i);

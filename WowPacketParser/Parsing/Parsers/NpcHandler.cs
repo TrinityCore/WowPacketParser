@@ -70,7 +70,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             npcTrainer.Type = packet.ReadEnum<TrainerType>("Type", TypeCode.Int32);
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                 packet.ReadInt32("Unk Int32");
 
             var count = packet.ReadInt32("Count");
@@ -85,29 +85,29 @@ namespace WowPacketParser.Parsing.Parsers
 
                 trainerSpell.Cost = packet.ReadUInt32("Cost", i);
 
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                 {
                     trainerSpell.RequiredLevel = packet.ReadByte("Required Level", i);
                     trainerSpell.RequiredSkill = packet.ReadUInt32("Required Skill", i);
                     trainerSpell.RequiredSkillLevel = packet.ReadUInt32("Required Skill Level", i);
-                    packet.ReadInt32("Chain Node 1", i);
-                    packet.ReadInt32("Chain Node 2", i);
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Chain Spell ID", i, 0);
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Chain Spell ID", i, 1);
                 }
 
                 packet.ReadInt32("Profession Dialog", i);
                 packet.ReadInt32("Profession Button", i);
 
-                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333))
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_0_6a_13623))
                 {
                     trainerSpell.RequiredLevel = packet.ReadByte("Required Level", i);
                     trainerSpell.RequiredSkill = packet.ReadUInt32("Required Skill", i);
                     trainerSpell.RequiredSkillLevel = packet.ReadUInt32("Required Skill Level", i);
-                    packet.ReadInt32("Chain Node 1", i);
-                    packet.ReadInt32("Chain Node 2", i);
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Chain Spell ID", i, 0);
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Chain Spell ID", i, 1);
                 }
 
 
-                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333))
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_0_6a_13623))
                     packet.ReadInt32("Unk Int32", i);
 
                 npcTrainer.TrainerSpells.Add(trainerSpell);
