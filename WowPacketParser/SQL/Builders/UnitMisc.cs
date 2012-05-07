@@ -619,7 +619,7 @@ namespace WowPacketParser.SQL.Builders
             var creatureTextDb = SQLDatabase.GetDict<uint, CreatureText>(entries);
             */
 
-            const string tableName = "creature_texts";
+            const string tableName = "creature_text";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (KeyValuePair<uint, List<Tuple<CreatureText, DateTime>>> text in Storage.CreatureTexts)
