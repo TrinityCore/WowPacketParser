@@ -98,20 +98,12 @@ namespace WowPacketParser.Enums.Version
 
         public static Opcode GetOpcode(int opcodeId)
         {
-            Opcode opcode;
-            if (Dict.TryGetBySecond(opcodeId, out opcode))
-                return opcode;
-
-            return 0;
+            return Dict.GetBySecond(opcodeId);
         }
 
         public static int GetOpcode(Opcode opcode)
         {
-            int opcodeId;
-            if (Dict.TryGetByFirst(opcode, out opcodeId))
-                return opcodeId;
-
-            return (int) opcode;
+            return Dict.GetByFirst(opcode);
         }
 
         public static string GetOpcodeName(int opcodeId)

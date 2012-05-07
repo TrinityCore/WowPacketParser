@@ -17,12 +17,16 @@ namespace WowPacketParser.Parsing
         {
             if (ClientVersion.AddedInVersion(addedInVersion))
                 Opcode = Opcodes.GetOpcode(opcode);
+            else
+                Opcode = 0;
         }
 
         public ParserAttribute(Opcode opcode, ClientVersionBuild addedInVersion, ClientVersionBuild removedInVersion)
         {
             if (ClientVersion.AddedInVersion(addedInVersion) && ClientVersion.RemovedInVersion(removedInVersion))
                 Opcode = Opcodes.GetOpcode(opcode);
+            else
+                Opcode = 0;
         }
 
         public ParserAttribute(int opcode)

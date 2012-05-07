@@ -18,6 +18,9 @@ namespace WowPacketParser.Parsing
             var types = asm.GetTypes();
             foreach (var type in types)
             {
+                //if (type.Namespace != "WowPacketParser.Parsing.Parsers")
+                //    continue;
+
                 if (!type.IsAbstract)
                     continue;
 
@@ -48,12 +51,14 @@ namespace WowPacketParser.Parsing
                     foreach (var attr in attrs)
                     {
                         var opc = attr.Opcode;
+                        if (opc == 0)
+                            continue;
 
                         var del = (Action<Packet>)Delegate.CreateDelegate(typeof(Action<Packet>), method);
 
                         if (Handlers.ContainsKey(opc))
                         {
-                            Trace.WriteLine(string.Format("Error: (Build: {2}; tried to overwrite delegate for opcode {0} ({3}); handler: {1}", opc, del.Method, ClientVersion.Build, Opcodes.GetOpcodeName(opc)));
+                            Trace.WriteLine(string.Format("Error: (Build: {0}) tried to overwrite delegate for opcode {1} ({2}); new handler: {1}; old handler: {4}", ClientVersion.Build, opc, Opcodes.GetOpcodeName(opc), del.Method, Handlers[opc].Method));
                             continue;
                         }
 
