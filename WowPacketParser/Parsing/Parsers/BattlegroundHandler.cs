@@ -415,12 +415,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Slot");
         }
 
-        [Parser(Opcode.CMSG_REPORT_PVP_AFK)]
-        public static void HandleReportPvPAFK(Packet packet)
-        {
-            packet.ReadGuid("GUID");
-        }
-
         // Reading 11 Bytes in random order. Only 1st Byte seems to have data (Only seen '5')
         [Parser(Opcode.SMSG_REPORT_PVP_AFK_RESULT)]
         public static void HandleReportPvPAFKResult(Packet packet)

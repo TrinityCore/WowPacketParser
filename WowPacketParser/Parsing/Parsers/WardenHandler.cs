@@ -117,11 +117,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBotDetected(Packet packet)
         {
             packet.ReadBoolean("Glider 1 Detected");
-
             packet.ReadBoolean("Glider 2 Detected");
-
             packet.ReadBoolean("Inner Space Detected");
-
             packet.ReadBytes(20); // Hash
         }
 

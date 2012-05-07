@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -49,6 +50,12 @@ namespace WowPacketParser.Parsing
                         var opc = attr.Opcode;
 
                         var del = (Action<Packet>)Delegate.CreateDelegate(typeof(Action<Packet>), method);
+
+                        if (Handlers.ContainsKey(opc))
+                        {
+                            Trace.WriteLine(string.Format("Error: (Build: {2}; tried to overwrite delegate for opcode {0} ({3}); handler: {1}", opc, del.Method, ClientVersion.Build, Opcodes.GetOpcodeName(opc)));
+                            continue;
+                        }
 
                         Handlers[opc] = del;
                     }

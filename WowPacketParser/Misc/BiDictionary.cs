@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace WowPacketParser.Misc
 {
@@ -17,13 +18,13 @@ namespace WowPacketParser.Misc
 
             if (_firstToSecond.TryGetValue(first, out snd))
             {
-                Console.WriteLine("BiDictionary already contains <{0}, {1}>", second, first);
+                Trace.WriteLine(string.Format("BiDictionary already contains <{0}, {1}>", second, first));
                 return;
             }
 
             if (_secondToFirst.TryGetValue(second, out frst))
             {
-                Console.WriteLine("BiDictionary already contains <{0}, {1}>", first, second);
+                Trace.WriteLine(string.Format("BiDictionary already contains <{0}, {1}>", first, second));
                 return;
             }
 
