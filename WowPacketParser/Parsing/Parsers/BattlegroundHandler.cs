@@ -914,6 +914,33 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
+        [Parser(Opcode.CMSG_REQUEST_RATED_BG_INFO)]
+        [Parser(Opcode.CMSG_REQUEST_PVP_OPTIONS_ENABLED)]
+        [Parser(Opcode.CMSG_BATTLEGROUND_PLAYER_POSITIONS)]
+        public static void HandleNullBattleground(Packet packet)
+        {
+        }
+
+        [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_POSITIONS)]
+        public static void HandleBattlegroundPlayerPositions(Packet packet)
+        {
+            var count1 = packet.ReadUInt32("Count 1");
+            for (var i = 0; i < count1; ++i)
+            {
+                packet.ReadGuid("GUID", i);
+                packet.ReadVector2("Position", i);
+            }
+
+            var count2 = packet.ReadUInt32("Count 2");
+            for (var i = 0; i < count2; ++i)
+            {
+                packet.ReadGuid("GUID", i);
+                packet.ReadVector2("Position", i);
+            }
+
+
+        }
+
         //[Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING)]
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE)]
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_SET_NEXT_TRANSITION_TIME)]
