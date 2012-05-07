@@ -56,8 +56,11 @@ namespace WowPacketParser.Enums.Version
         public static int? GetUpdateFieldOffset<T>(T field)
         {
             if (UpdateFieldDictionaries.ContainsKey(typeof(T)))
-                if (UpdateFieldDictionaries[typeof(T)].ContainsKey(field.ToString()))
-                    return UpdateFieldDictionaries[typeof(T)][field.ToString()];
+            {
+                int offset;
+                if (UpdateFieldDictionaries[typeof(T)].TryGetByFirst(field.ToString(), out offset))
+                    return offset;
+            }
 
             return null;
         }
@@ -67,11 +70,9 @@ namespace WowPacketParser.Enums.Version
         {
             if (UpdateFieldDictionaries.ContainsKey(t))
             {
-                foreach (var pair in UpdateFieldDictionaries[t])
-                {
-                    if (pair.Value == fieldOffset)
-                        return pair.Key;
-                }
+                string name;
+                if (UpdateFieldDictionaries[t].TryGetBySecond(fieldOffset, out name))
+                    return name;
             }
 
             return null;
@@ -152,198 +153,6 @@ namespace WowPacketParser.Enums.Version
         public static string GetUpdateFieldNameByOffset(Int32 offset, ObjectType type)
         {
             return GetUpdateFieldName(offset, GetUpdateFieldEnumByOffset(offset, type));
-        }
-
-        public static Type GetUpdateFieldType<T>(T field)
-        {
-            if (typeof(T) == typeof(ObjectField))
-            {
-                switch (Utilities.GetEnumForValue<ObjectField, T>(field))
-                {
-                    case ObjectField.OBJECT_FIELD_GUID:
-                        return typeof(Guid);
-                    case ObjectField.OBJECT_FIELD_SCALE_X:
-                        return typeof(float);
-                    default:
-                        return typeof(UInt32);
-                }
-            }
-            else if (typeof(T) == typeof(ItemField))
-            {
-                switch (Utilities.GetEnumForValue<ItemField, T>(field))
-                {
-                    case ItemField.ITEM_FIELD_OWNER:
-                    case ItemField.ITEM_FIELD_CONTAINED:
-                    case ItemField.ITEM_FIELD_CREATOR:
-                    case ItemField.ITEM_FIELD_GIFTCREATOR:
-                        return typeof(Guid);
-                    case ItemField.ITEM_FIELD_FLAGS:
-                        return typeof(UInt32);
-                    default:
-                        return typeof(Int32);
-                }
-            }
-            else if (typeof(T) == typeof(ContainerField))
-            {
-                switch (Utilities.GetEnumForValue<ContainerField, T>(field))
-                {
-                    default:
-                    {
-                        string str = field.ToString();
-                        if (str.Contains("CONTAINER_FIELD_SLOT"))
-                            return typeof(Guid);
-                        return typeof(Int32);
-                    }
-                }
-            }
-            else if (typeof(T) == typeof(UnitField))
-            {
-                switch (Utilities.GetEnumForValue<UnitField, T>(field))
-                {
-                    case UnitField.UNIT_FIELD_CHARM:
-                    case UnitField.UNIT_FIELD_SUMMON:
-                    case UnitField.UNIT_FIELD_CRITTER:
-                    case UnitField.UNIT_FIELD_CHARMEDBY:
-                    case UnitField.UNIT_FIELD_SUMMONEDBY:
-                    case UnitField.UNIT_FIELD_CREATEDBY:
-                    case UnitField.UNIT_FIELD_TARGET:
-                    case UnitField.UNIT_FIELD_CHANNEL_OBJECT:
-                        return typeof(Guid);
-                    case UnitField.UNIT_CHANNEL_SPELL:
-                    case UnitField.UNIT_CREATED_BY_SPELL:
-                        return typeof(UInt32);
-                    case UnitField.UNIT_FIELD_BYTES_0:
-                    case UnitField.UNIT_FIELD_BYTES_1:
-                    case UnitField.UNIT_FIELD_BYTES_2:
-                    case UnitField.UNIT_FIELD_FLAGS:
-                    case UnitField.UNIT_FIELD_FLAGS_2:
-                    case UnitField.UNIT_FIELD_AURASTATE:
-                    case UnitField.UNIT_DYNAMIC_FLAGS:
-                    case UnitField.UNIT_NPC_FLAGS:
-                        return typeof(UInt32);
-                    case UnitField.UNIT_FIELD_BOUNDINGRADIUS:
-                    case UnitField.UNIT_FIELD_COMBATREACH:
-                    case UnitField.UNIT_FIELD_MINDAMAGE:
-                    case UnitField.UNIT_FIELD_MAXDAMAGE:
-                    case UnitField.UNIT_FIELD_MINOFFHANDDAMAGE:
-                    case UnitField.UNIT_FIELD_MAXOFFHANDDAMAGE:
-                    case UnitField.UNIT_MOD_CAST_SPEED:
-                    case UnitField.UNIT_FIELD_ATTACK_POWER_MULTIPLIER:
-                    case UnitField.UNIT_FIELD_MINRANGEDDAMAGE:
-                    case UnitField.UNIT_FIELD_MAXRANGEDDAMAGE:
-                    case UnitField.UNIT_FIELD_MAXHEALTHMODIFIER:
-                    case UnitField.UNIT_FIELD_HOVERHEIGHT:
-                    case UnitField.UNIT_FIELD_POWER_COST_MULTIPLIER:
-                    case UnitField.UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER:
-                    case UnitField.UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER:
-                        return typeof(Single);
-                    default:
-                        return typeof(Int32);
-                }
-            }
-            else if (typeof(T) == typeof(PlayerField))
-            {
-                switch (Utilities.GetEnumForValue<PlayerField, T>(field))
-                {
-                    case PlayerField.PLAYER_DUEL_ARBITER:
-                    case PlayerField.PLAYER_FARSIGHT:
-                        return typeof(Guid);
-                    case PlayerField.PLAYER__FIELD_KNOWN_TITLES:
-                    case PlayerField.PLAYER__FIELD_KNOWN_TITLES1:
-                    case PlayerField.PLAYER__FIELD_KNOWN_TITLES2:
-                    case PlayerField.PLAYER_FIELD_KNOWN_CURRENCIES:
-                        return typeof(ulong);
-                    case PlayerField.PLAYER_BYTES:
-                    case PlayerField.PLAYER_BYTES_2:
-                    case PlayerField.PLAYER_BYTES_3:
-                    case PlayerField.PLAYER_FLAGS:
-                    case PlayerField.PLAYER_FIELD_BYTES:
-                    case PlayerField.PLAYER_FIELD_BYTES2:
-                        return typeof(UInt32);
-                    case PlayerField.PLAYER_BLOCK_PERCENTAGE:
-                    case PlayerField.PLAYER_DODGE_PERCENTAGE:
-                    case PlayerField.PLAYER_PARRY_PERCENTAGE:
-                    case PlayerField.PLAYER_CRIT_PERCENTAGE:
-                    case PlayerField.PLAYER_RANGED_CRIT_PERCENTAGE:
-                    case PlayerField.PLAYER_OFFHAND_CRIT_PERCENTAGE:
-                    case PlayerField.PLAYER_SPELL_CRIT_PERCENTAGE1:
-                    case PlayerField.PLAYER_SHIELD_BLOCK_CRIT_PERCENTAGE:
-                    case PlayerField.PLAYER_FIELD_MOD_HEALING_PCT:
-                    case PlayerField.PLAYER_FIELD_MOD_HEALING_DONE_PCT:
-                        return typeof(Single);
-                    default:
-                    {
-                        string str = field.ToString();
-                        if (str.Contains("PLAYER_FIELD_PACK_SLOT"))
-                            return typeof(Guid);
-                        else if (str.Contains("PLAYER_FIELD_BANK_SLOT"))
-                            return typeof(Guid);
-                        else if (str.Contains("PLAYER_FIELD_BANKBAG_SLOT"))
-                            return typeof(Guid);
-                        else if (str.Contains("PLAYER_FIELD_VENDORBUYBACK_SLOT"))
-                            return typeof(Guid);
-                        else if (str.Contains("PLAYER_FIELD_KEYRING_SLOT"))
-                            return typeof(Guid);
-                        else if (str.Contains("PLAYER_FIELD_CURRENCYTOKEN_SLOT"))
-                            return typeof(Guid);
-                        else if (str.Contains("PLAYER_RUNE_REGEN"))
-                            return typeof(Single);
-                        return typeof(Int32);
-                    }
-                }
-            }
-            else if (typeof(T) == typeof(GameObjectField))
-            {
-                switch (Utilities.GetEnumForValue<GameObjectField, T>(field))
-                {
-                    case GameObjectField.GAMEOBJECT_FIELD_CREATED_BY:
-                        return typeof(Guid);
-                    case GameObjectField.GAMEOBJECT_PARENTROTATION:
-                        return typeof(Single);
-                    case GameObjectField.GAMEOBJECT_DYNAMIC:
-                    case GameObjectField.GAMEOBJECT_FLAGS:
-                    case GameObjectField.GAMEOBJECT_DISPLAYID:
-                    case GameObjectField.GAMEOBJECT_BYTES_1:
-                        return typeof(UInt32);
-                    default:
-                        return typeof(Int32);
-                }
-
-            }
-            else if (typeof(T) == typeof(DynamicObjectField))
-            {
-                switch (Utilities.GetEnumForValue<DynamicObjectField, T>(field))
-                {
-                    case DynamicObjectField.DYNAMICOBJECT_CASTER:
-                        return typeof(Guid);
-                    case DynamicObjectField.DYNAMICOBJECT_RADIUS:
-                        return typeof(Single);
-                    case DynamicObjectField.DYNAMICOBJECT_BYTES:
-                    case DynamicObjectField.DYNAMICOBJECT_SPELLID:
-                    case DynamicObjectField.DYNAMICOBJECT_CASTTIME:
-                        return typeof(UInt32);
-                    default:
-                        return typeof(Int32);
-                }
-            }
-            else if (typeof(T) == typeof(CorpseField))
-            {
-                switch (Utilities.GetEnumForValue<CorpseField, T>(field))
-                {
-                    case CorpseField.CORPSE_FIELD_OWNER:
-                        return typeof(Guid);
-                    case CorpseField.CORPSE_FIELD_PARTY:
-                        return typeof(ulong);
-                    case CorpseField.CORPSE_FIELD_BYTES_1:
-                    case CorpseField.CORPSE_FIELD_BYTES_2:
-                    case CorpseField.CORPSE_FIELD_FLAGS:
-                    case CorpseField.CORPSE_FIELD_DYNAMIC_FLAGS:
-                        return typeof(UInt32);
-                    default:
-                        return typeof(Int32);
-                }
-            }
-            return typeof(int);
         }
 
         private static string GetUpdateFieldDictionaryBuildName(ClientVersionBuild build)
