@@ -387,7 +387,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Overkill");
             packet.ReadInt32("SpellSchoolMask");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // not verified
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596))
                 packet.ReadInt32("Unknown Int32");
         }
     }
