@@ -81,8 +81,9 @@ namespace WowPacketParser.SQL
         }
 
         /// <summary>
-        /// Gets from `world` database a dictionary of the given struct.
-        /// Structs fields name and type must match the name and type of the DB columns
+        /// Gets from `world` database a dictionary of the given struct/class.
+        /// Structs fields type must match the type of the DB columns.
+        /// DB collumns names are set by using DBFieldNameAttribute.
         /// </summary>
         /// <typeparam name="T">Type of the elements of the list of entries (usually uint)</typeparam>
         /// <typeparam name="TK">Type of the struct</typeparam>
@@ -139,9 +140,17 @@ namespace WowPacketParser.SQL
                     foreach (var field in fields)
                     {
                         if (values[i] is DBNull && field.Item1.FieldType == typeof(string))
+                            #if __MonoCS__ // pre 2.12
                             field.Item1.SetValue(instance, string.Empty);
+                            #else
+                            field.Item1.SetValueDirect(__makeref(instance), string.Empty);
+                            #endif
                         else if (field.Item1.FieldType.BaseType == typeof(Enum))
+                            #if __MonoCS__ // pre 2.12
                             field.Item1.SetValue(instance, Enum.Parse(field.Item1.FieldType, values[i].ToString()));
+                            #else
+                            field.Item1.SetValueDirect(__makeref(instance), Enum.Parse(field.Item1.FieldType, values[i].ToString()));
+                            #endif
                         else if (field.Item1.FieldType.BaseType == typeof(Array))
                         {
                             var arr = Array.CreateInstance(field.Item1.FieldType.GetElementType(), field.Item2.Count);
@@ -154,12 +163,24 @@ namespace WowPacketParser.SQL
                                 arr.SetValue(val, j);
                             }
 
+                            #if __MonoCS__ // pre 2.12
                             field.Item1.SetValue(instance, arr);
+                            #else
+                            field.Item1.SetValueDirect(__makeref(instance), arr);
+                            #endif
                         }
                         else if (field.Item1.FieldType == typeof(bool))
+                            #if __MonoCS__ // pre 2.12
                             field.Item1.SetValue(instance, Convert.ToBoolean(values[i]));
+                            #else
+                            field.Item1.SetValueDirect(__makeref(instance), Convert.ToBoolean(values[i]));
+                            #endif
                         else
+                            #if __MonoCS__ // pre 2.12
                             field.Item1.SetValue(instance, values[i]);
+                            #else
+                            field.Item1.SetValueDirect(__makeref(instance), values[i]);
+                            #endif
 
                         i += field.Item2.Count;
                     }
