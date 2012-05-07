@@ -136,7 +136,10 @@ namespace WowPacketParser.Parsing.Parsers
                 var mapId = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
 
                 var pos = packet.ReadVector3("Position");
-                packet.ReadInt32("Guild Id");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_3_13329))
+                    packet.ReadGuid("Guild GUID");
+                else
+                    packet.ReadInt32("Guild Id");
                 packet.ReadEnum<CharacterFlag>("Character Flags", TypeCode.Int32);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
