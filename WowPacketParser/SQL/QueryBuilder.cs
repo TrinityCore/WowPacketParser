@@ -189,6 +189,7 @@ namespace WowPacketParser.SQL
             private string Delete { get; set; }
             private string InsertHeader { get; set; }
             private List<string> TableStructure { get; set; }
+            private bool _deleteDuplicates;
 
             // Add a new insert header every 500 rows
             private const int MaxRowsPerInsert = 500;
@@ -202,10 +203,12 @@ namespace WowPacketParser.SQL
             /// <param name="primaryKeyNumber">The number of primary keys. Only 1 and 2 supported.</param>
             /// <param name="withDelete">If set to false the full query will not include a delete query</param>
             /// <param name="ignore">If set to true the INSERT INTO query will be INSERT IGNORE INTO</param>
-            public SQLInsert(string tableName, List<SQLInsertRow> rows, int primaryKeyNumber = 1, bool withDelete = true, bool ignore = false)
+            /// <param name="deleteDuplicates">If set to true duplicated rows will be removed from final query</param>
+            public SQLInsert(string tableName, List<SQLInsertRow> rows, int primaryKeyNumber = 1, bool withDelete = true, bool ignore = false, bool deleteDuplicates = true)
             {
                 Table = tableName;
                 Rows = rows;
+                _deleteDuplicates = deleteDuplicates;
 
                 if (Rows.Count == 0)
                     return;
@@ -278,7 +281,14 @@ namespace WowPacketParser.SQL
 
                 query.Append(Environment.NewLine);
 
-                return query.ReplaceLast(',', ';').ToString();
+                query.ReplaceLast(',', ';');
+
+                // This is easier to implement that comparing raw objects in each row
+                // and certainly faster. Imagine comparing 1k rows of <string, int, int, emote, YouGotIt>
+                if (_deleteDuplicates)
+                    return String.Join("", query.ToString().Split('\n').Distinct());
+
+                return query.ToString();
             }
         }
 
