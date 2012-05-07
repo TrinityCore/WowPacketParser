@@ -197,7 +197,8 @@ namespace WowPacketParser
             if (Settings.FilterPacketNumHigh < 0)
                 throw new ConstraintException("FilterPacketNumHigh must be positive");
 
-            if (Settings.FilterPacketNumLow > Settings.FilterPacketNumHigh)
+            if (Settings.FilterPacketNumLow > 0 && Settings.FilterPacketNumHigh > 0
+                && Settings.FilterPacketNumLow > Settings.FilterPacketNumHigh)
                 throw new ConstraintException("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
 
             // Disable DB when we don't need its data (dumping to a binary file)
