@@ -747,5 +747,15 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
                 packet.ReadGuid("Chain target");
         }
+
+        [Parser(Opcode.SMSG_AURACASTLOG)]
+        public static void HandleAuraCastLog(Packet packet)
+        {
+            packet.ReadGuid("Caster GUID");
+            packet.ReadGuid("Target GUID");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32("Unk 1");
+            packet.ReadInt32("Unk 2");
+        }
     }
 }

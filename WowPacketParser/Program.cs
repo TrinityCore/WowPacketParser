@@ -78,7 +78,7 @@ namespace WowPacketParser
 
                     switch (Settings.ThreadsParse)
                     {
-                        case 0: // Number of threads is automatically choosen by the Parallel library
+                        case 0: // Number of threads is automatically chosen by the Parallel library
                         {
                             packets.AsParallel().SetCulture().ForAll(packet => Handler.Parse(packet));
                             break;
@@ -220,7 +220,7 @@ namespace WowPacketParser
 
             switch (Settings.ThreadsRead)
             {
-                case 0: // Number of threads is automatically choosen by the Parallel library
+                case 0: // Number of threads is automatically chosen by the Parallel library
                 {
                     files.AsParallel().SetCulture()
                         .ForAll(file =>
