@@ -392,7 +392,6 @@ namespace WowPacketParser.Enums.Version.V3_3_0_10958
         GAMEOBJECT_END = ObjectField.OBJECT_END + 0x000C,
     }
 
-
     public enum DynamicObjectField
     {
         DYNAMICOBJECT_CASTER = ObjectField.OBJECT_END + 0x0000, // Size: 2, Type: LONG, Flags: PUBLIC

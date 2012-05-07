@@ -6,7 +6,6 @@ using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
-
 namespace WowPacketParser.Parsing.Parsers
 {
     public static class QuestHandler
@@ -791,7 +790,6 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
         }
-
 
         public static void HandleQuestgiverStatusMultiple(Packet packet)
         {

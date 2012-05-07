@@ -130,7 +130,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Unk float 5");
         }
 
-
         [Parser(Opcode.CMSG_AUCTION_LIST_BIDDER_ITEMS)]
         [Parser(Opcode.CMSG_AUCTION_LIST_OWNER_ITEMS)]
         public static void HandleAuctionListBidderItems(Packet packet)

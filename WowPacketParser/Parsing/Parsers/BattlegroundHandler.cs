@@ -825,7 +825,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Name");
         }
 
-        
         public static void HandleArenaTeamRemove(Packet packet)
         {
             packet.ReadUInt32("Tead Id");
@@ -937,7 +936,6 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("GUID", i);
                 packet.ReadVector2("Position", i);
             }
-
 
         }
 

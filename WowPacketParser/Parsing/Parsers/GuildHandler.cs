@@ -113,7 +113,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<GuildMemberFlag>("Member Flags", TypeCode.Byte, i);
 
             for (var i = 0; i < size; ++i)
-                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", i); 
+                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", i);
 
             for (var i = 0; i < size; ++i)
                 packet.ReadUInt32("Member Achievement Points", i);
@@ -156,7 +156,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var rank = packet.ReadUInt32();
                     packet.WriteLine("[{0}][{1}] Profession: Id {2} - Value {3} - Rank {4}", i, j, id, value, rank);
                 }
-                
+
             for (var i = 0; i < size; ++i)
                 packet.ReadUInt32("Remaining guild Rep", i);
 
@@ -342,7 +342,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Invitee Name");
             packet.ReadCString("Guild Name");
         }
-
 
         [Parser(Opcode.SMSG_GUILD_INVITE, ClientVersionBuild.V4_0_6_13596)]
         public static void HandleGuildInvite406(Packet packet)

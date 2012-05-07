@@ -231,7 +231,6 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteLine("Item Gift Creator Guid: {0}", new Guid(BitConverter.ToUInt64(guids2[i], 0)));
             }
 
-
         }
 
         [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]

@@ -106,7 +106,6 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Chain Spell ID", i, 1);
                 }
 
-
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_0_6a_13623))
                     packet.ReadInt32("Unk Int32", i);
 
@@ -179,7 +178,6 @@ namespace WowPacketParser.Parsing.Parsers
             if (guidBytes[4] != 0) guidBytes[4] ^= packet.ReadByte();
             if (guidBytes[7] != 0) guidBytes[7] ^= packet.ReadByte();
             if (guidBytes[6] != 0) guidBytes[6] ^= packet.ReadByte();
-
 
             var guid = new Guid(BitConverter.ToUInt64(guidBytes, 0));
             packet.WriteLine("GUID: {0}", guid);
@@ -285,25 +283,16 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_HIGHEST_THREAT_UPDATE)]
         public static void HandleThreatlistUpdate(Packet packet)
         {
-            var guid = packet.ReadPackedGuid();
-            packet.WriteLine("GUID: " + guid);
+            packet.ReadPackedGuid("GUID");
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_HIGHEST_THREAT_UPDATE))
-            {
-                var newhigh = packet.ReadPackedGuid();
-                packet.WriteLine("New Highest: " + newhigh);
-            }
+                packet.ReadPackedGuid("New Highest");
 
-            var count = packet.ReadUInt32();
-            packet.WriteLine("Size: " + count);
+            var count = packet.ReadUInt32("Size");
             for (int i = 0; i < count; i++)
             {
                 packet.ReadPackedGuid("Hostile");
-                var threat = packet.ReadUInt32();
-                // No idea why, but this is in core. There is nothing about this in client
-                /*if (packet.Opcode == Opcode.SMSG_THREAT_UPDATE)
-                    threat *= 100;*/
-                packet.WriteLine("Threat: " + threat);
+                packet.ReadUInt32("Threat");
             }
         }
 

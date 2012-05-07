@@ -45,7 +45,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<ItemQuality>("Loot Threshold", TypeCode.UInt32);
         }
 
-
         [Parser(Opcode.CMSG_OPT_OUT_OF_LOOT)]
         public static void HandleOptOutOfLoot(Packet packet)
         {

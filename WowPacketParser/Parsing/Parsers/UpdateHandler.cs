@@ -542,7 +542,6 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasGOTransportTime2)
                     packet.ReadUInt32("GO Transport Time 2", index);
 
-
                 packet.WriteLine("[{0}] GO Transport Position: {1}", index, tPos);
                 packet.WriteLine("[{0}] GO Transport GUID {1}", index, new Guid(BitConverter.ToUInt64(goTransportGuid, 0)));
             }
@@ -998,7 +997,6 @@ namespace WowPacketParser.Parsing.Parsers
                 moveInfo.Orientation = packet.ReadSingle();
                 packet.WriteLine("[{0}] Stationary Position: {1}, O: {2}", index, moveInfo.Position, moveInfo.Orientation);
             }
-
 
             if (hasVehicleData)
             {

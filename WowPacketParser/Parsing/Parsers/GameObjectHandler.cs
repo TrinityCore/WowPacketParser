@@ -4,7 +4,6 @@ using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
-
 namespace WowPacketParser.Parsing.Parsers
 {
     public static class GameObjectHandler
