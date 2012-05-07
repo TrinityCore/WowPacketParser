@@ -62,18 +62,17 @@ namespace WowPacketParser.Parsing.Parsers
                 info.FlagsExtra.HasAnyFlag(MovementFlagExtra.AlwaysAllowPitching))
                 packet.ReadSingle("Swim Pitch", index);
 
-            if (ClientVersion.RemovedInVersion(ClientType.Cataclysm))
-                packet.ReadInt32("Fall Time", index);
-
-            if (info.Flags.HasAnyFlag(MovementFlag.Falling))
+            if (info.FlagsExtra.HasAnyFlag(MovementFlagExtra.InterpolateTurning))
             {
-                if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
-                    packet.ReadInt32("Fall Time", index);
-
+                packet.ReadInt32("Fall Time", index);
                 packet.ReadSingle("Fall Velocity", index);
-                packet.ReadSingle("Fall Sin Angle", index);
-                packet.ReadSingle("Fall Cos Angle", index);
-                packet.ReadSingle("Fall Speed", index);
+
+                if (info.Flags.HasAnyFlag(MovementFlag.Falling))
+                {
+                    packet.ReadSingle("Fall Sin Angle", index);
+                    packet.ReadSingle("Fall Cos Angle", index);
+                    packet.ReadSingle("Fall Speed", index);
+                }
             }
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
