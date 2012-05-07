@@ -62,22 +62,35 @@ namespace WowPacketParser.Parsing.Parsers
                 info.FlagsExtra.HasAnyFlag(MovementFlagExtra.AlwaysAllowPitching))
                 packet.ReadSingle("Swim Pitch", index);
 
-            if (info.FlagsExtra.HasAnyFlag(MovementFlagExtra.InterpolateTurning))
+            if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
+            {
+                if (info.FlagsExtra.HasAnyFlag(MovementFlagExtra.InterpolateTurning))
+                {
+                    packet.ReadInt32("Fall Time", index);
+                    packet.ReadSingle("Fall Velocity", index);
+
+                    if (info.Flags.HasAnyFlag(MovementFlag.Falling))
+                    {
+                        packet.ReadSingle("Fall Sin Angle", index);
+                        packet.ReadSingle("Fall Cos Angle", index);
+                        packet.ReadSingle("Fall Speed", index);
+                    }
+                }
+            }
+            else
             {
                 packet.ReadInt32("Fall Time", index);
-                packet.ReadSingle("Fall Velocity", index);
-
                 if (info.Flags.HasAnyFlag(MovementFlag.Falling))
                 {
+                    packet.ReadSingle("Fall Velocity", index);
                     packet.ReadSingle("Fall Sin Angle", index);
                     packet.ReadSingle("Fall Cos Angle", index);
                     packet.ReadSingle("Fall Speed", index);
                 }
             }
 
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
-                if (info.Flags.HasAnyFlag(MovementFlag.SplineElevation))
-                    packet.ReadSingle("Spline Elevation", index);
+            if (info.Flags.HasAnyFlag(MovementFlag.SplineElevation))
+                packet.ReadSingle("Spline Elevation", index);
 
             return info;
         }
