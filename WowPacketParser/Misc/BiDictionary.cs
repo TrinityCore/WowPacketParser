@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -30,6 +29,17 @@ namespace WowPacketParser.Misc
 
             _firstToSecond.Add(first, second);
             _secondToFirst.Add(second, first);
+        }
+
+        public int Count
+        {
+            get { return _firstToSecond.Count; }
+        }
+
+        public void Clear()
+        {
+            _firstToSecond.Clear();
+            _secondToFirst.Clear();
         }
 
         // Note potential ambiguity using indexers (e.g. mapping from int to int)
