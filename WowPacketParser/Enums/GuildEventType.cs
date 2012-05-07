@@ -27,21 +27,28 @@ namespace WowPacketParser.Enums
     public enum GuildEventType442
     {
         None                = 0,
+        Promotion           = 1,
+        Demotion            = 2,
         MOTD                = 3,
-        PlayerJoined        = 4, // Untested
+        PlayerJoined        = 4,
         PlayerLeft          = 5,
         PlayerRemoved       = 6,
+        Unk7                = 7,
         ChangeGM            = 8,
+        Disbanded           = 9,
+        TabardChange        = 10,
         RankUpdated         = 11,
         RankCreated         = 12,
         RankDeleted         = 13,
         RankOrderChanged    = 14,
-        Unk15               = 15, // At guild creation - Set founder
+        Founder             = 15,
         PlayerSignedOn      = 16,
         PlayerSignedOff     = 17,
         BankBagSlotsChanged = 18,
         BankTabPurchased    = 19,
         BankTabUpdated      = 20,
         BankMoneyUpdate     = 21,
+        BankMoneyWithdraw   = 22,
+        BankTextChanged     = 23
     }
 }
