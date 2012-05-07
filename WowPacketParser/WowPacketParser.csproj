@@ -425,6 +425,8 @@
     <Compile Include="Saving\SplitBinaryPacketWriter.cs" />
     <Compile Include="Enums\BattlegroundListFlags.cs" />
     <Compile Include="Enums\BattlegroundUpdateFlags.cs" />
+    <Compile Include="Enums\ArenaCommandResult.cs" />
+    <Compile Include="Enums\ArenaEvent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

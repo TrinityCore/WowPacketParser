@@ -778,12 +778,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                packet.ReadGuid(" GUID", i);
+                packet.ReadGuid("GUID", i);
                 packet.ReadBoolean("Online", i);
                 packet.ReadCString("Name", i);
                 packet.ReadUInt32("Captain", i);
                 packet.ReadByte("Level", i);
-                packet.ReadByte("Class", i);
+                packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
                 packet.ReadUInt32("Week Games", i);
                 packet.ReadUInt32("Week Win", i);
                 packet.ReadUInt32("Seasonal Games", i);
@@ -804,6 +804,34 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Team ID");
         }
 
+        [Parser(Opcode.CMSG_ARENA_TEAM_CREATE)]
+        public static void HandleArenaTeamCreate(Packet packet)
+        {
+            packet.ReadUInt32("Background Color");
+            packet.ReadUInt32("Icon");
+            packet.ReadUInt32("Icon Color");
+            packet.ReadUInt32("Border");
+            packet.ReadUInt32("Border Color");
+            packet.ReadUInt32("Type");
+            packet.ReadCString("Name");
+        }
+
+        [Parser(Opcode.CMSG_ARENA_TEAM_INVITE)]
+        [Parser(Opcode.CMSG_ARENA_TEAM_REMOVE)]
+        [Parser(Opcode.CMSG_ARENA_TEAM_LEADER)]
+        public static void HandleArenaTeamInvite(Packet packet)
+        {
+            packet.ReadUInt32("Tead Id");
+            packet.ReadCString("Name");
+        }
+
+        
+        public static void HandleArenaTeamRemove(Packet packet)
+        {
+            packet.ReadUInt32("Tead Id");
+            packet.ReadCString("Name");
+        }
+
         [Parser(Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT)]
         public static void HandleArenaTeamCommandResult(Packet packet)
         {
@@ -813,10 +841,18 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("ErrorId"); // FIXME: Use enum
         }
 
+        [Parser(Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT, ClientVersionBuild.V4_0_6a_13623)]
+        public static void HandleArenaTeamCommandResult406(Packet packet)
+        {
+            packet.ReadEnum<ArenaCommandResult>("Result", TypeCode.UInt32);
+            packet.ReadCString("Team Name");
+            packet.ReadCString("Player Name");
+        }
+
         [Parser(Opcode.SMSG_ARENA_TEAM_EVENT)]
         public static void HandleArenaTeamEvent(Packet packet)
         {
-            packet.ReadByte("Event"); // FIXME: Use enum
+            packet.ReadEnum<ArenaEvent>("Event", TypeCode.Byte);
             var count = packet.ReadByte("Count");
             for (var i = 0; i < count; ++i)
                 packet.ReadCString("Param", i);
@@ -881,7 +917,6 @@ namespace WowPacketParser.Parsing.Parsers
         //[Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING)]
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE)]
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_SET_NEXT_TRANSITION_TIME)]
-        //[Parser(Opcode.SMSG_JOINED_BATTLEGROUND_QUEUE)]
         //[Parser(Opcode.SMSG_BATTLEGROUND_INFO_THROTTLED)]
         //[Parser(Opcode.SMSG_BATTLEFIELD_PORT_DENIED)]
         //[Parser(Opcode.CMSG_START_BATTLEFIELD_CHEAT)]
