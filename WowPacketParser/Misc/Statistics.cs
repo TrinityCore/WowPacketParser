@@ -219,22 +219,17 @@ namespace WowPacketParser.Misc
 
             Parallel.ForEach(packets, packet =>
             {
-                if (!packet.WriteToFile)
-                    stats.AddNotParsed();
-                else
+                switch (packet.Status)
                 {
-                    switch (packet.Status)
-                    {
-                        case ParsedStatus.Success:
-                            stats.AddSucess();
-                            break;
-                        case ParsedStatus.WithErrors:
-                            stats.AddWithErrors();
-                            break;
-                        case ParsedStatus.NotParsed:
-                            stats.AddNotParsed();
-                            break;
-                    }
+                    case ParsedStatus.Success:
+                        stats.AddSucess();
+                        break;
+                    case ParsedStatus.WithErrors:
+                        stats.AddWithErrors();
+                        break;
+                    case ParsedStatus.NotParsed:
+                        stats.AddNotParsed();
+                        break;
                 }
             });
 

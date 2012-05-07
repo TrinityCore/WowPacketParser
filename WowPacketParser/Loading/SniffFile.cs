@@ -166,13 +166,6 @@ namespace WowPacketParser.Loading
                             _skippedHeaders.AddLast(packet.GetHeader());
                     }
 
-                    if (Settings.DumpFormat != DumpFormatType.SqlOnly)
-                    {
-                        // Write to file
-                        writer.WriteLine(packet.Writer);
-                        writer.Flush();
-                    }
-
                     // Close Writer, Stream - Dispose
                     packet.ClosePacket();
                 }

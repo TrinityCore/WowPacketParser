@@ -540,11 +540,18 @@ namespace WowPacketParser.Misc
         }
 
         private NameDict StoreData;
+        private NameDict StoreDataCache;
+        private int[] LastIndex = new int[0];
         private LinkedList<Tuple<NameDict, IndexDict>> StoreIndexedLists;
         private Stack<Tuple<NameDict, LinkedList<Tuple<NameDict, IndexDict>>>> StoreObjects;
 
         public NameDict StoreGetDataByIndexes(params int[] values)
         {
+            // use cached data entry if available
+            if (LastIndex != null && values.Equals(LastIndex))
+            {
+                return StoreDataCache;
+            }
             var listsCount = StoreIndexedLists.Count;
 
             if (values.Length > listsCount)
@@ -578,11 +585,18 @@ namespace WowPacketParser.Misc
             {
                 data = StoreData;
             }
+
+            // caching - save for future use
+            StoreDataCache = data;
+            LastIndex = values;
             return data;
         }
 
         public void StoreContinueList(Tuple<NameDict, IndexDict> list, params int[] values)
         {
+            // caching disable - make sure errors are checked properly
+            LastIndex = null;
+
             var dat = StoreGetDataByIndexes(values);
             if (dat != list.Item1)
                 throw new Exception("Cannot continue reading into indexed list, incorrect scope");
@@ -592,6 +606,9 @@ namespace WowPacketParser.Misc
         // begins reading data list arranged by index number
         public Tuple<NameDict, IndexDict> StoreBeginList(string listName, params int[] values)
         {
+            // caching disable - make sure errors are checked properly
+            LastIndex = null;
+
             var dat = StoreGetDataByIndexes(values);
             var newList = new IndexDict();
             Store(listName, newList, values);
@@ -602,6 +619,9 @@ namespace WowPacketParser.Misc
 
         public void StoreEndList()
         {
+            // caching disable - make sure errors are checked properly
+            LastIndex = null;
+
             if (StoreIndexedLists.Count == 0)
                 throw new Exception("Cannot end indexed list, no list found in this scope");
             StoreIndexedLists.RemoveLast();
@@ -615,6 +635,10 @@ namespace WowPacketParser.Misc
             StoreObjects.Push(new Tuple<NameDict, LinkedList<Tuple<NameDict, IndexDict>>>(StoreData, StoreIndexedLists));
             StoreData = newObj;
             StoreIndexedLists = new LinkedList<Tuple<NameDict, IndexDict>>();
+
+            // caching
+            StoreDataCache = newObj;
+            LastIndex = new int[0];
         }
 
         // ends code in which all data stored composes an object
@@ -627,9 +651,12 @@ namespace WowPacketParser.Misc
             var state = StoreObjects.Pop();
             StoreData = state.Item1;
             StoreIndexedLists = state.Item2;
+
+            // caching disable - make sure errors are checked properly
+            LastIndex = null;
         }
 
-        public void Store(string name, dynamic data, params int[] values)
+        public void Store(string name, Object data, params int[] values)
         {
             var dat = StoreGetDataByIndexes(values);
 
@@ -645,24 +672,12 @@ namespace WowPacketParser.Misc
             var newpacket = new Packet(bytes, opcode, this);
             Store(name, newpacket, values);
             Handler.Parse(newpacket);
-            switch (newpacket.Status)
-            {
-                case ParsedStatus.NotParsed:
-                    // ignore not parsed case as we can safely continue parsing
-                case ParsedStatus.Success:
-                    break;
-                case ParsedStatus.WithErrors:
-                    throw new Exception(String.Format("Sub packet (opcode {0}) was parsed with error:\n {1}", opcode, newpacket.ErrorMessage));
-            }
             return newpacket;
         }
 
         // sub packet with no given length
         public Packet ReadSubPacket(int opcode, string name, params int[] values)
         {
-            var oldOpcode = Opcode;
-            int startPos = (int)Position;
-
             byte[] bytes = GetStream(Position);
             var newpacket = new Packet(bytes, opcode, this);
             Store(name, newpacket, values);
@@ -672,10 +687,10 @@ namespace WowPacketParser.Misc
                 case ParsedStatus.NotParsed:
                     // subpacket not parsed, we can continue parsing because we don't know the length
                     throw new Exception(String.Format("Sub packet (opcode {0}) was not parsed, can't continue!", opcode));
+                case ParsedStatus.WithErrors:
+                    throw new Exception(String.Format("Sub packet (opcode {0}) was parsed with error, can't continue!", opcode));
                 case ParsedStatus.Success:
                     break;
-                case ParsedStatus.WithErrors:
-                    throw new Exception(String.Format("Sub packet (opcode {0}) was parsed with error:\n {1}", opcode, newpacket.ErrorMessage));
             }
             byte[] parsed = newpacket.GetStream(0);
             var mypos = Position;

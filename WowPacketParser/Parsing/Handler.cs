@@ -100,162 +100,123 @@ namespace WowPacketParser.Parsing
             return output.ToString();
         }
 
-        public static void DumpDataAsText(Object d, StringBuilder output, string prefix)
+        public static void DumpDataAsText(Object data, StringBuilder output, string prefix)
         {
-            try
+            var t = data.GetType();
+            switch (Type.GetTypeCode(t))
             {
-                dynamic data = d;
-                switch (Type.GetTypeCode(d.GetType()))
-                {
-                    case TypeCode.Single:
-                    case TypeCode.Double:
-                        if (Settings.DebugReads)
-                        {
-                            byte[] bytes = BitConverter.GetBytes(data);
-                            output.AppendFormat("{0} (0x{1})", data, BitConverter.ToString(bytes));
-                        }
-                        else
-                            output.Append(data);
-                        output.AppendLine();
-                        break;
-                    case TypeCode.Byte:
-                    case TypeCode.SByte:
-                        output.AppendFormat("{0}{1}", data, (Settings.DebugReads ? " (0x" + data.ToString("X2") + ")" : String.Empty));
-                        output.AppendLine();
-                        break;
-                    case TypeCode.Int16:
-                    case TypeCode.UInt16:
-                        output.AppendFormat("{0}{1}", data, (Settings.DebugReads ? " (0x" + data.ToString("X4") + ")" : String.Empty));
-                        output.AppendLine();
-                        break;
-                    case TypeCode.UInt32:
-                    case TypeCode.Int32:
-                        output.AppendFormat("{0}{1}", data, (Settings.DebugReads ? " (0x" + data.ToString("X8") + ")" : String.Empty));
-                        output.AppendLine();
-                        break;
-                    case TypeCode.UInt64:
-                    case TypeCode.Int64:
-                        output.AppendFormat("{0}{1}", data, (Settings.DebugReads ? " (0x" + data.ToString("X16") + ")" : String.Empty));
-                        output.AppendLine();
-                        break;
-                    case TypeCode.DateTime:
-                        output.AppendFormat("{0}{1}", (DateTime)data, (Settings.DebugReads ? " (0x" + data.ToString("X4") + ")" : String.Empty));
-                        output.AppendLine();
-                        break;
-                    default:
-                        //else if (data.GetType() == typeof(enum))
-                        //{
-                        //     Writer.WriteLine("{0}{1}: {2} ({3}){4}", GetIndexString(values), name, data.Value, data.Key, (Settings.DebugReads ? " (0x" + data.Key.ToString("X4") + ")" : String.Empty));
-                        //}
-                        if (data.GetType() == typeof(Guid))
-                        {
-                            //if (WriteToFile)
-                                //WriteToFile = Filters.CheckFilter((Guid)data);
-                            output.Append(data);
-                            output.AppendLine();
-                        }
-                        else if (data.GetType() == typeof(StoreEntry))
-                        {
-                            var val = (StoreEntry)data;
-                            //if (WriteToFile)
-                                //WriteToFile = Filters.CheckFilter(val._type, val._data);
-                            output.Append(data);
-                            output.AppendLine();
-                        }
-                        else if (data.GetType() == typeof(Packet))
-                        {
-                            Packet packet = (Packet)data;
-                            output.Append(String.Format("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}{6}",
-                                packet.Direction, Opcodes.GetOpcodeName(packet.Opcode), packet.Opcode.ToString("X4"),
-                                packet.Length, packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
-                                packet.Number, (packet.Parent != null) ? String.Format(" (subpacket of packet: opcode {0} (0x{1}), number {2} )", Opcodes.GetOpcodeName(packet.Parent.Opcode), packet.Parent.Opcode, packet.Parent.Number)  : String.Empty));
-
-                            DumpDataAsText(packet.GetData(), output, prefix);
-
-                            // unread packet data
-                            if (packet.Status != ParsedStatus.Success)
-                            {
-                                if (packet.Status == ParsedStatus.WithErrors)
-                                {
-                                    output.AppendLine(packet.ErrorMessage);
-                                }
-                                //output.AppendLine(packet.ToHex());
-                            }
-                        }
-                        else if (data.GetType() == typeof(NameDict))
-                        {
-                            output.AppendLine();
-                            var itr = ((NameDict)data).GetEnumerator();
-                            while (itr.MoveNext())
-                            {
-                                output.AppendFormat("{0}{1}: ",prefix, itr.Key);
-                                string offset = (data.GetType() == typeof(IndexDict)) ? "\t" : String.Empty;
-                                DumpDataAsText(itr.Value, output, prefix + offset);
-                            }
-                            //output.AppendLine();
-                        }
-                        else if (data.GetType() == typeof(IndexDict))
-                        {
-                            string offset = "\t";
-                            output.AppendLine();
-                            foreach (var itr in ((IndexDict)data))
-                            {
-                                output.AppendFormat("{0}[{1}]: ", prefix, itr.Key);
-                                DumpDataAsText(itr.Value, output, prefix + offset);
-                            }
-                            //output.AppendLine();
-                        }
-                        else
-                        {
-                            output.Append(data);
-                            output.AppendLine();
-                        }
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.GetType().ToString() + "\n" + ex.Message + "\n" + ex.StackTrace + "\n");
-            }
-            /*bool needindex = false;
-            UInt32 index = 0;
-            // dump data
-            for (var itr = data.First; itr != null; itr = itr.Next)
-            {
-                if (itr.Next != null)
-                {
-                    if (needindex)
+                case TypeCode.Single:
+                    if (Settings.DebugReads)
                     {
-                        if (itr.Next.Value.name != itr.Value.name)
-                            needindex = false; 
+                        byte[] bytes = BitConverter.GetBytes((Single)data);
+                        output.AppendFormat("{0} (0x{1})\n", data, BitConverter.ToString(bytes));
+                    }
+                    else
+                        output.AppendLine(data.ToString());
+                    break;
+                case TypeCode.Double:
+                    if (Settings.DebugReads)
+                    {
+                        byte[] bytes = BitConverter.GetBytes((Double)data);
+                        output.AppendFormat("{0} (0x{1})\n", data, BitConverter.ToString(bytes));
+                    }
+                    else
+                        output.AppendLine(data.ToString());
+                    break;
+                case TypeCode.Byte:
+                    output.AppendFormat("{0}{1}\n", data, (Settings.DebugReads ? " (0x" + ((Byte)data).ToString("X2") + ")" : String.Empty));
+                    break;
+                case TypeCode.SByte:
+                    output.AppendFormat("{0}{1}\n", data, (Settings.DebugReads ? " (0x" + ((SByte)data).ToString("X2") + ")" : String.Empty));
+                    break;
+                case TypeCode.Int16:
+                    output.AppendFormat("{0}{1}\n", data, (Settings.DebugReads ? " (0x" + ((Int16)data).ToString("X4") + ")" : String.Empty));
+                    break;
+                case TypeCode.UInt16:
+                    output.AppendFormat("{0}{1}\n", data, (Settings.DebugReads ? " (0x" + ((UInt16)data).ToString("X4") + ")" : String.Empty));
+                    break;
+                case TypeCode.UInt32:
+                    output.AppendFormat("{0}{1}\n", data, (Settings.DebugReads ? " (0x" + ((UInt32)data).ToString("X8") + ")" : String.Empty));
+                    break;
+                case TypeCode.Int32:
+                    output.AppendFormat("{0}{1}\n", data, (Settings.DebugReads ? " (0x" + ((Int32)data).ToString("X8") + ")" : String.Empty));
+                    break;
+                case TypeCode.UInt64:
+                    output.AppendFormat("{0}{1}\n", data, (Settings.DebugReads ? " (0x" + ((UInt64)data).ToString("X16") + ")" : String.Empty));
+                    break;
+                case TypeCode.Int64:
+                    output.AppendFormat("{0}{1}\n", data, (Settings.DebugReads ? " (0x" + ((Int64)data).ToString("X16") + ")" : String.Empty));
+                    break;
+                case TypeCode.DateTime:
+                    output.AppendFormat("{0}{1}\n", (DateTime)data, (Settings.DebugReads ? " (0x" + ((DateTime)data).ToString("X4") + ")" : String.Empty));
+                    break;
+                default:
+                    //else if (data.GetType() == typeof(enum))
+                    //{
+                    //     Writer.WriteLine("{0}{1}: {2} ({3}){4}", GetIndexString(values), name, data.Value, data.Key, (Settings.DebugReads ? " (0x" + data.Key.ToString("X4") + ")" : String.Empty));
+                    //}
+                    if (t == typeof(Guid))
+                    {
+                        //if (WriteToFile)
+                            //WriteToFile = Filters.CheckFilter((Guid)data);
+                        output.AppendLine(data.ToString());
+                    }
+                    else if (t == typeof(StoreEntry))
+                    {
+                        var val = (StoreEntry)data;
+                        //if (WriteToFile)
+                            //WriteToFile = Filters.CheckFilter(val._type, val._data);
+                        output.AppendLine(data.ToString());
+                    }
+                    else if (t == typeof(Packet))
+                    {
+                        Packet packet = (Packet)data;
+                        output.Append(String.Format("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}{6}",
+                            packet.Direction, Opcodes.GetOpcodeName(packet.Opcode), packet.Opcode.ToString("X4"),
+                            packet.Length, packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
+                            packet.Number, (packet.Parent != null) ? String.Format(" (subpacket of packet: opcode {0} (0x{1}), number {2} )", Opcodes.GetOpcodeName(packet.Parent.Opcode), packet.Parent.Opcode, packet.Parent.Number)  : String.Empty));
+
+                        DumpDataAsText(packet.GetData(), output, prefix);
+
+                        // unread packet data
+                        if (packet.Status != ParsedStatus.Success)
+                        {
+                            if (packet.Status == ParsedStatus.WithErrors)
+                            {
+                                output.AppendLine(packet.ErrorMessage);
+                            }
+                            //output.AppendLine(packet.ToHex());
+                        }
+                    }
+                    else if (t == typeof(NameDict))
+                    {
+                        output.AppendLine();
+                        var itr = ((NameDict)data).GetEnumerator();
+                        string offset = prefix + ((t == typeof(IndexDict)) ? "\t" : String.Empty);
+                        while (itr.MoveNext())
+                        {
+                            output.AppendFormat("{0}{1}: ",prefix, itr.Key);
+                            DumpDataAsText(itr.Value, output, offset);
+                        }
+                        //output.AppendLine();
+                    }
+                    else if (t == typeof(IndexDict))
+                    {
+                        string offset = prefix + "\t";
+                        output.AppendLine();
+                        foreach (var itr in ((IndexDict)data))
+                        {
+                            output.AppendFormat("{0}[{1}]: ", prefix, itr.Key);
+                            DumpDataAsText(itr.Value, output, offset);
+                        }
+                        //output.AppendLine();
                     }
                     else
                     {
-                        if (itr.Next.Value.name == itr.Value.name)
-                        {
-                            needindex = true;
-                            index = 0;
-                        }
+                        output.AppendLine(data.ToString());
                     }
-                }
-                var d = itr.Value;
-                string suffix = "";
-                if (needindex)
-                {
-                    suffix = "[" + index + "]";
-                    ++index;
-                }
-                if (d.item is LinkedList<PacketData>)
-                {
-                    if (((LinkedList<PacketData>)d.item).Count != 0)
-                    {
-                        output.AppendLine(prefix + d.name + suffix + ":");
-                        DumpData(packet, (LinkedList<PacketData>)d.item, output, prefix + "  ");
-                    }
-                }
-                else
-                    output.AppendLine(prefix + d.name + suffix + ": " + d.item);
-            }*/
+                    break;
+            }
         }
 
         public static void Parse(Packet packet, bool checkLength = true)
@@ -279,7 +240,6 @@ namespace WowPacketParser.Parsing
                         var pos = packet.Position;
                         var len = packet.Length;
                         packet.ErrorMessage = String.Format("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.", pos, len, len - pos);
-
                         packet.Status = ParsedStatus.WithErrors;
                     }
                 }
