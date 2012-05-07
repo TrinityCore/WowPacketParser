@@ -281,12 +281,12 @@ namespace WowPacketParser.SQL
 
                 query.Append(Environment.NewLine);
 
-                query.ReplaceLast(',', ';');
-
                 // This is easier to implement that comparing raw objects in each row
                 // and certainly faster. Imagine comparing 1k rows of <string, int, int, emote, YouGotIt>
                 if (_deleteDuplicates)
-                    return String.Join("\n", query.ToString().Split('\n').Distinct());
+                    return String.Join("\n", query.ToString().Split('\n').Distinct()); // Do not use Enviroment.NewLine
+
+                query.ReplaceLast(',', ';');
 
                 return query.ToString();
             }
