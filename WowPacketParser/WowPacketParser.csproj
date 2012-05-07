@@ -320,6 +320,7 @@
     <Compile Include="SQL\DBAttributes.cs" />
     <Compile Include="SQL\ISQLQuery.cs" />
     <Compile Include="Store\Objects\Aura.cs" />
+    <Compile Include="Store\Objects\CreatureText.cs" />
     <Compile Include="Store\Objects\ObjectName.cs" />
     <Compile Include="Store\Objects\QuestPOI.cs" />
     <Compile Include="Store\Objects\LootItem.cs" />

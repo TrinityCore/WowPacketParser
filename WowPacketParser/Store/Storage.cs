@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects;
 using Guid = WowPacketParser.Misc.Guid;
 
@@ -77,6 +78,10 @@ namespace WowPacketParser.Store
         // Names
         public static readonly ConcurrentDictionary<uint, ObjectName> ObjectNames =
             new ConcurrentDictionary<uint, ObjectName>();
+
+        public static readonly ConcurrentMultiDictionary<uint, Tuple<CreatureText, DateTime>> CreatureTexts = new ConcurrentMultiDictionary<uint, Tuple<CreatureText, DateTime>>();
+        public static readonly ConcurrentMultiDictionary<uint, Tuple<EmoteType, DateTime>> Emotes = new ConcurrentMultiDictionary<uint, Tuple<EmoteType, DateTime>>();
+        public static readonly ConcurrentMultiDictionary<uint, DateTime> Sounds = new ConcurrentMultiDictionary<uint, DateTime>();
     }
 
     // Utilities extension methods to aid dealing with the above dictionaries

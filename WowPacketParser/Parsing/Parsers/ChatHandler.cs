@@ -1,6 +1,8 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -36,8 +38,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_EMOTE)]
         public static void HandleEmote(Packet packet)
         {
-            packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
-            packet.ReadGuid("GUID");
+            var emote = packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
+            var guid = packet.ReadGuid("GUID");
+
+            if (guid.GetObjectType() == ObjectType.Unit)
+                Storage.Emotes.TryAdd(guid.GetEntry(), Tuple.Create(emote, packet.Time));
         }
 
         [Parser(Opcode.CMSG_TEXT_EMOTE)]
@@ -74,12 +79,19 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MESSAGECHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
-            var type = packet.ReadEnum<ChatMessageType>("Type", TypeCode.Byte);
-            var language = packet.ReadEnum<Language>("Language", TypeCode.Int32);
-            packet.ReadGuid("GUID");
+            var text = new CreatureText();
+
+            text.Type = packet.ReadEnum<ChatMessageType>("Type", TypeCode.Byte);
+            text.Language = packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            var guid = packet.ReadGuid("GUID");
+
+            uint entry = 0;
+            if (guid.GetObjectType() == ObjectType.Unit)
+                entry = guid.GetEntry();
+
             packet.ReadInt32("Constant time");
 
-            switch (type)
+            switch (text.Type)
             {
                 case ChatMessageType.Say:
                 case ChatMessageType.Yell:
@@ -103,7 +115,7 @@ namespace WowPacketParser.Parsing.Parsers
                 case ChatMessageType.Restricted:
                 case ChatMessageType.Dnd:
                 {
-                    if (type == ChatMessageType.Channel)
+                    if (text.Type == ChatMessageType.Channel)
                         packet.ReadCString("Channel Name");
 
                     packet.ReadGuid("Sender GUID");
@@ -137,7 +149,7 @@ namespace WowPacketParser.Parsing.Parsers
                 case ChatMessageType.BattleNet:
                 {
                     packet.ReadInt32("Name Length");
-                    packet.ReadCString("Name");
+                    text.Comment = packet.ReadCString("Name");
 
                     var target = packet.ReadGuid("Receiver GUID");
                     switch (target.GetHighType())
@@ -147,31 +159,34 @@ namespace WowPacketParser.Parsing.Parsers
                         case HighGuidType.GameObject:
                         case HighGuidType.Transport:
                             packet.ReadInt32("Receiver Name Length");
-                            packet.ReadCString("Receiver Name");
+                            text.Comment += " to " + packet.ReadCString("Receiver Name");
                             break;
                     }
                     break;
                 }
             }
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_1_0_13914) && language == Language.Addon)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_1_0_13914) && text.Language == Language.Addon)
                 packet.ReadCString("Addon Message Prefix");
 
             packet.ReadInt32("Text Length");
-            packet.ReadCString("Text");
+            text.Text = packet.ReadCString("Text");
             packet.ReadEnum<ChatTag>("Chat Tag", TypeCode.Byte);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
             {
-                if (type == ChatMessageType.RaidBossEmote || type == ChatMessageType.RaidBossWhisper)
+                if (text.Type == ChatMessageType.RaidBossEmote || text.Type == ChatMessageType.RaidBossWhisper)
                 {
                     packet.ReadSingle("Unk single");
                     packet.ReadByte("Unk byte");
                 }
             }
 
-            if (type == ChatMessageType.Achievement || type == ChatMessageType.GuildAchievement)
+            if (text.Type == ChatMessageType.Achievement || text.Type == ChatMessageType.GuildAchievement)
                 packet.ReadInt32("Achievement ID");
+
+            if (entry != 0)
+                Storage.CreatureTexts.TryAdd(entry, Tuple.Create(text, packet.Time));
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT)]

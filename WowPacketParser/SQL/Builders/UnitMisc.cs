@@ -569,9 +569,82 @@ namespace WowPacketParser.SQL.Builders
                 return String.Empty;
 
             var entries = Storage.SpellsX.Keys.ToList();
-            var templatesDb = SQLDatabase.GetDict<uint, SpellsX>(entries);
+            var spellsXDb = SQLDatabase.GetDict<uint, SpellsX>(entries);
 
-            return SQLUtil.CompareDicts(Storage.SpellsX, templatesDb, StoreNameType.Unit);
+            return SQLUtil.CompareDicts(Storage.SpellsX, spellsXDb, StoreNameType.Unit);
+        }
+
+        public static string CreatureText()
+        {
+            if (Storage.CreatureTexts.Count == 0)
+                return string.Empty;
+
+            // For each sound and emote, if the time they were send is in the +1/-1 seconds range of
+            // our texts, add that sound and emote to our Storage.CreatureTexts
+
+            foreach (KeyValuePair<uint, List<Tuple<CreatureText, DateTime>>> text in Storage.CreatureTexts)
+            {
+                // For each text
+                foreach (Tuple<CreatureText, DateTime> textValue in text.Value)
+                {
+                    // For each emote
+                    foreach (KeyValuePair<uint, List<Tuple<EmoteType, DateTime>>> emote in Storage.Emotes)
+                    {
+                        // Emote packets always have a sender (guid);
+                        // skip this one if it was sent by a different creature
+                        if (emote.Key != text.Key)
+                            continue;
+
+                        foreach (Tuple<EmoteType, DateTime> emoteValue in emote.Value)
+                        {
+                            if ((textValue.Item2 - emoteValue.Item2).Duration() <= TimeSpan.FromSeconds(1))
+                                textValue.Item1.Emote = emoteValue.Item1;
+                        }
+                    }
+
+                    // For each sound
+                    foreach (KeyValuePair<uint, List<DateTime>> sound in Storage.Sounds)
+                    {
+                        foreach (DateTime soundValue in sound.Value)
+                        {
+                            if ((textValue.Item2 - soundValue).Duration() <= TimeSpan.FromSeconds(1))
+                                textValue.Item1.Sound = sound.Key;
+                        }
+                    }
+                }
+            }
+
+            /* DB comparer not implemented yet
+            var entries = Storage.CreatureTexts.Keys.ToList();
+            var creatureTextDb = SQLDatabase.GetDict<uint, CreatureText>(entries);
+            */
+
+            const string tableName = "creature_texts";
+
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (KeyValuePair<uint, List<Tuple<CreatureText, DateTime>>> text in Storage.CreatureTexts)
+            {
+                foreach (Tuple<CreatureText, DateTime> textValue in text.Value)
+                {
+                    var row = new QueryBuilder.SQLInsertRow();
+
+                    row.AddValue("entry", text.Key);
+                    row.AddValue("groupid", "x", false, true);
+                    row.AddValue("id", "x", false, true);
+                    row.AddValue("text", textValue.Item1.Text);
+                    row.AddValue("type", textValue.Item1.Type);
+                    row.AddValue("language", textValue.Item1.Language);
+                    row.AddValue("probability", 100.0);
+                    row.AddValue("emote", textValue.Item1.Emote);
+                    row.AddValue("duration", 0);
+                    row.AddValue("sound", textValue.Item1.Sound);
+                    row.AddValue("comment", textValue.Item1.Comment);
+
+                    rows.Add(row);
+                }
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
         }
     }
 }

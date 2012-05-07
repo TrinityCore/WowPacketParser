@@ -2,6 +2,7 @@ using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -76,6 +77,10 @@ namespace WowPacketParser.Parsing.Parsers
                     len = packet.ReadUInt16();
                     opcode = packet.ReadUInt16();
                     bytes = packet.ReadBytes(len - 2);
+                }
+                else
+                {
+                    packet.ReadToEnd();
                 }
 
                 if (bytes == null || len == 0)
@@ -314,13 +319,15 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PLAY_OBJECT_SOUND)]
         public static void HandleSoundMessages(Packet packet)
         {
-            packet.ReadInt32("Sound Id");
+            var sound = packet.ReadUInt32("Sound Id");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
                 packet.ReadGuid("GUID");
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PLAY_OBJECT_SOUND))
                 packet.ReadGuid("GUID 2");
+
+            Storage.Sounds.TryAdd(sound, packet.Time);
         }
 
         [Parser(Opcode.SMSG_WEATHER)]
