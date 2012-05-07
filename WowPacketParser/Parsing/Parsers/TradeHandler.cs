@@ -234,7 +234,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         }
 
-        [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleTradeStatusExtended(Packet packet)
         {
             packet.ReadByte("Trader");
@@ -262,6 +262,51 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Item Lock ID", slot);
                 packet.ReadUInt32("Item Max Durability", slot);
                 packet.ReadUInt32("Item Durability", slot);
+            }
+        }
+
+        [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleTradeStatusExtended406(Packet packet)
+        {
+            packet.ReadUInt32("Unk 1");
+            packet.ReadUInt32("Unk 2");
+            packet.ReadBoolean("Unk (Has slots?)");
+            packet.ReadUInt32("Unk 3");
+            packet.ReadUInt32("Unk 4");
+            packet.ReadUInt32("Trade Id?");
+            var slots = packet.ReadUInt32("Trade Slots");
+            packet.ReadUInt64("Gold");
+            packet.ReadUInt32("Unk 6");
+
+            for (var i = 0; i < slots; ++i)
+            {
+                packet.ReadUInt32("Unk1", i);
+                packet.ReadGuid("Item Creator GUID", i);
+                packet.ReadUInt32("Item Perm Enchantment Id", i);
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
+                packet.ReadUInt32("Item Enchantment Id", i, 0);
+                packet.ReadUInt32("Item Durability", i);
+                packet.ReadUInt32("Unk2", i);
+                packet.ReadByte("Unk Byte", i);
+                packet.ReadGuid("Unk Guid: (Item Gift Creator GUID?)", i);
+                packet.ReadUInt32("Unk3", i);
+                packet.ReadByte("Slot Index", i);
+                packet.ReadUInt32("Item Max Durability", i);
+                packet.ReadUInt32("Item Count", i);
+                packet.ReadUInt32("Unk4", i);
+                packet.ReadUInt32("Item Temporal Enchantment", i);
+                packet.ReadUInt32("Item Enchantment Id", i, 1);
+                packet.ReadUInt32("Item Enchantment Id", i, 2);
+                packet.ReadUInt32("Unk5", i);
+
+                // Probably the unks are one of these (+ that "item Temporal Enchantment")
+                //packet.ReadUInt32("Item Display ID", slot);
+
+                //packet.ReadUInt32("Item Wrapped", slot);
+                //packet.ReadInt32("Item Spell Charges", slot);
+                //packet.ReadInt32("Item Suffix Factor", slot);
+                //packet.ReadInt32("Item Random Property ID", slot);
+                //packet.ReadUInt32("Item Lock ID", slot);
             }
         }
 
