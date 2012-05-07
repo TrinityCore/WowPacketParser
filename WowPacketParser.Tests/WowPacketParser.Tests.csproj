@@ -61,6 +61,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientVersionTest.cs" />
     <Compile Include="Misc\BiDictionaryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Misc\UpdateFieldTest.cs" />

@@ -95,6 +95,9 @@ namespace WowPacketParser.Misc
 
         private static ClientVersionBuild GetVersion(DateTime time)
         {
+            if (time < _clientBuilds[0].Value)
+                return ClientVersionBuild.Zero;
+
             for (var i = 1; i < _clientBuilds.Length; i++)
                 if (_clientBuilds[i].Value > time)
                     return _clientBuilds[i - 1].Key;
