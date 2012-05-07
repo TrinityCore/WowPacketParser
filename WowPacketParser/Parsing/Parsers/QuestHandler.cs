@@ -870,10 +870,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
             var entry = packet.ReadEntry();
-            if (entry.Value)
-                packet.Store("Entry: ", StoreGetters.GetName(StoreNameType.GameObject, entry.Key));
-            else
-                packet.Store("Entry: ", StoreGetters.GetName(StoreNameType.Unit, entry.Key));
+            packet.Store(entry.Value ? "GameObject" : "Creature", new StoreEntry(entry.Value ? StoreNameType.GameObject : StoreNameType.Unit,  entry.Key));
                
             packet.ReadInt32("Count");
             packet.ReadInt32("Required Count");
