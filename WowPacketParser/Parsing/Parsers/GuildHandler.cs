@@ -29,7 +29,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleGuildRoster406(Packet packet)
+        public static void HandleGuildRequestRoster406(Packet packet)
         {
             packet.ReadGuid("Guild GUID");
             packet.ReadGuid("Player GUID");
@@ -94,6 +94,76 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_GUILD_ROSTER, ClientVersionBuild.V4_0_6a_13623)]
+        public static void HandleGuildRoster406(Packet packet)
+        {
+            packet.ReadCString("Guild MOTD");
+            var size = packet.ReadUInt32("Members size");
+            packet.ReadBits("Unk bits", (int)size);
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadCString("Public Note", i);
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadUInt64("Week activity", i);
+
+            packet.ReadCString("Guild Info");
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadEnum<GuildMemberFlag>("Member Flags", TypeCode.Byte, i);
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", i); 
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadUInt32("Member Achievement Points", i);
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadCString("Officer Note", i);
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadUInt64("Total activity", i);
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadByte("Unk Byte", i);
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadGuid("Member GUID", i);
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadEnum<Class>("Member Class", TypeCode.Byte);
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadCString("Member Name", i);
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadUInt32("Unk", i);
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadUInt32("Member Rank", i);
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadUInt32("Unk 2", i);
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadByte("Member Level", i);
+
+            for (var i = 0; i < size; ++i)
+                for (var j = 0; j < 2; ++j)
+                {
+                    var value = packet.ReadUInt32();
+                    var id = packet.ReadUInt32();
+                    var rank = packet.ReadUInt32();
+                    packet.WriteLine("[{0}][{1}] Profession: Id {2} - Value {3} - Rank {4}", i, j, id, value, rank);
+                }
+                
+            for (var i = 0; i < size; ++i)
+                packet.ReadUInt32("Remaining guild Rep", i);
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadSingle("Last online", i);
+        }
+
         [Parser(Opcode.SMSG_GUILD_ROSTER, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleGuildRoster422(Packet packet)
         {
@@ -105,7 +175,10 @@ namespace WowPacketParser.Parsing.Parsers
         {
             using (var packet2 = packet.Inflate(packet.ReadInt32()))
             {
-                HandleGuildRoster422(packet2);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                    HandleGuildRoster422(packet2);
+                else
+                    HandleGuildRoster406(packet2);
             }
         }
 
