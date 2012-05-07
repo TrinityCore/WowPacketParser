@@ -624,6 +624,64 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.MSG_PVP_LOG_DATA, ClientVersionBuild.V4_0_6a_13623)]
+        public static void HandlePvPLogData406(Packet packet)
+        {
+            var Flags = packet.ReadEnum<BattlegroundUpdateFlags>("Flags", TypeCode.Byte);
+
+            if (Flags.HasAnyFlag(BattlegroundUpdateFlags.ArenaNames))
+                for (var i = 0; i < 2; ++i)
+                    packet.ReadCString("Name", i);
+
+            if (Flags.HasAnyFlag(BattlegroundUpdateFlags.ArenaScores))
+                for (var i = 0; i < 2; ++i)
+                {
+                    packet.ReadUInt32("Points Lost", i);
+                    packet.ReadUInt32("Points Gained", i);
+                    packet.ReadUInt32("Matchmaker Rating", i);
+                }
+
+            var count = packet.ReadUInt32("Score count");
+
+            if (Flags.HasAnyFlag(BattlegroundUpdateFlags.Finished))
+                packet.ReadByte("Team Winner");
+
+            int tempCount = (int)count;
+            do
+            {
+                packet.ReadByte("Player Update Flags", tempCount);
+                tempCount -= 2;
+            }
+            while (tempCount > 0);
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadUInt32("Damage done", i);
+
+                //if (updateFlags & 128)
+                    packet.ReadUInt32("Unk", i);
+
+                var count2 = packet.ReadUInt32("Extra values counter", i);
+
+                //if (???) Depends on read Update Flags
+                {
+                    packet.ReadUInt32("Honorable Kills", i);
+                    packet.ReadUInt32("Deaths", i);
+                    packet.ReadUInt32("Bonus Honor", i);
+                }
+
+                packet.ReadGuid("Player GUID", i);
+                packet.ReadUInt32("Killing Blows", i);
+                for (var j = 0; j < count2; j++)
+                    packet.ReadUInt32("Value", i, j);
+
+                //if (UpdateFlags & 1)
+                    packet.ReadUInt32("Unk", i);
+
+                packet.ReadUInt32("Healing done", i);
+            }
+        }
+
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGE, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleBattlefieldMgrStateChanged406(Packet packet)
         {

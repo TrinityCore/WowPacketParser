@@ -424,6 +424,7 @@
     <Compile Include="Enums\StatsOutputFlags.cs" />
     <Compile Include="Saving\SplitBinaryPacketWriter.cs" />
     <Compile Include="Enums\BattlegroundListFlags.cs" />
+    <Compile Include="Enums\BattlegroundUpdateFlags.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
