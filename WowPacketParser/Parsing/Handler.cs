@@ -178,14 +178,18 @@ namespace WowPacketParser.Parsing
 
                         DumpDataAsText(packet.GetData(), output, prefix);
 
-                        // unread packet data
-                        if (packet.Status != ParsedStatus.Success)
+                        // errors
+                        switch (packet.Status)
                         {
-                            if (packet.Status == ParsedStatus.WithErrors)
-                            {
+                            case ParsedStatus.Success:
+                                break;
+                            case ParsedStatus.WithErrors:
                                 output.AppendLine(packet.ErrorMessage);
-                            }
-                            //output.AppendLine(packet.ToHex());
+                                break;
+                            case ParsedStatus.NotParsed:
+                                output.AppendLine("Opcode not parsed");
+                                output.AppendLine(packet.ToHex());
+                                break;
                         }
                     }
                     else if (t == typeof(NameDict))

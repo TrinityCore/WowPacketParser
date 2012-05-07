@@ -317,7 +317,6 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Absorb");
 
             packet.ReadBoolean("Critical");
-
             if (packet.ReadBoolean("Debug output"))
             {
                 packet.ReadSingle("Unk float");
@@ -349,8 +348,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<SpellMissType>("Miss Info", TypeCode.Byte, i);
                 if (debug)
                 {
-                    packet.ReadSingle("Unk float", i);
-                    packet.ReadSingle("Unk float", i);
+                    packet.ReadSingle("Unk float 1", i);
+                    packet.ReadSingle("Unk float 2", i);
                 }
             }
             packet.StoreEndList();
