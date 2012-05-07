@@ -36,13 +36,15 @@ namespace WowPacketParser.Misc
 
         private static void AddEnumErrorLog(string key, long rawValue)
         {
-            var list = EnumLogs.ContainsKey(key) ? EnumLogs[key] : new List<long>();
+            var exists = EnumLogs.ContainsKey(key);
+            var list = exists ? EnumLogs[key] : new List<long>();
 
             if (list.Contains(rawValue))
                 return;
 
             list.Add(rawValue);
-            EnumLogs.Add(key, list);
+            if (!exists)
+                EnumLogs.Add(key, list);
         }
 
         public static void WriteErrors()
