@@ -258,7 +258,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleBattlefieldListServer406(Packet packet)
         {
-            packet.ReadEnum<UnknownFlags>("Flags", TypeCode.Byte); // 0x10 Already won, 0x20 all cases, 0x80 From UI
+            packet.ReadEnum<BattlegroundListFlags>("Flags", TypeCode.Byte);
             packet.ReadByte("Min level");
             packet.ReadInt32("Winner Honor Reward");
             packet.ReadGuid("GUID");
@@ -407,6 +407,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Slot");
             packet.ReadBoolean("As group");
             packet.ReadBoolean("Rated");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_ARENA, ClientVersionBuild.V4_0_6a_13623)]
+        public static void HandleBattlemasterJoinArena406(Packet packet)
+        {
+            packet.ReadByte("Slot");
         }
 
         [Parser(Opcode.CMSG_REPORT_PVP_AFK)]
