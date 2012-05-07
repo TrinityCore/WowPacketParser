@@ -58,7 +58,7 @@ namespace WowPacketParser.Parsing
 
                         if (Handlers.ContainsKey(opc))
                         {
-                            Trace.WriteLine(string.Format("Error: (Build: {0}) tried to overwrite delegate for opcode {1} ({2}); new handler: {1}; old handler: {4}", ClientVersion.Build, opc, Opcodes.GetOpcodeName(opc), del.Method, Handlers[opc].Method));
+                            Trace.WriteLine(string.Format("Error: (Build: {0}) tried to overwrite delegate for opcode {1} ({2}); new handler: {3}; old handler: {4}", ClientVersion.Build, opc, Opcodes.GetOpcodeName(opc), del.Method, Handlers[opc].Method));
                             continue;
                         }
 
