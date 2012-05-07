@@ -712,6 +712,17 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Accept");
         }
 
+        [Parser(Opcode.CMSG_SPELLCLICK)]
+        public static void HandleSpellClick(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.SMSG_UI_TIME)]
+        public static void HandleUITime(Packet packet)
+        {
+            packet.ReadUInt32("Time");
+        }
 
         [Parser(Opcode.SMSG_MINIGAME_STATE)]
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
