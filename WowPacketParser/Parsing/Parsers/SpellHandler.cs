@@ -541,7 +541,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Caster GUID");
             packet.ReadGuid("Target GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadBoolean("Debug output");
+            if (packet.ReadBoolean("Debug output"))
+            {
+                packet.ReadSingle("Unk");
+                packet.ReadSingle("Unk");
+            }
         }
 
         [Parser(Opcode.MSG_CHANNEL_UPDATE)]
