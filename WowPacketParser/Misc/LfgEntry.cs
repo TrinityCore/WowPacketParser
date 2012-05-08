@@ -52,7 +52,7 @@ namespace WowPacketParser.Misc
 
         public override int GetHashCode()
         {
-            return Full;
+            return Full.GetHashCode();
         }
     }
 }

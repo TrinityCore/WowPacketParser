@@ -1,4 +1,8 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
+using NUnit.Framework;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using System;
@@ -11,11 +15,20 @@ namespace WowPacketParser.Tests.Misc
         [Test]
         public void TestAsHex()
         {
-            var packet = new Packet(new byte[0], 1, new DateTime(2012, 1, 1), Direction.ClientToServer, 1, "Test");
-            Extensions.AsHex(packet);
+            var bytes = new byte[] {0xB, 0xA, 0xD, 0xC, 0x0, 0xD, 0xE, 66, 65, 68, 67, 79, 68, 69, 0, 0, 0x42};
+
+            var packet = new Packet(bytes, 1, new DateTime(2012, 1, 1), Direction.ClientToServer, 1, "Test");
+            packet.AsHex();
 
             var actual = packet.Writer.ToString();
-            const string expected = "|-------------------------------------------------|---------------------------------|\r\n| 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F | 0 1 2 3 4 5 6 7 8 9 A B C D E F |\r\n|-------------------------------------------------|---------------------------------|\r\n|-------------------------------------------------|---------------------------------|\r\n";
+
+            var expected =
+            "|-------------------------------------------------|---------------------------------|" + Environment.NewLine +
+            "| 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F | 0 1 2 3 4 5 6 7 8 9 A B C D E F |" + Environment.NewLine +
+            "|-------------------------------------------------|---------------------------------|" + Environment.NewLine +
+            "| 0B 0A 0D 0C 00 0D 0E 42 41 44 43 4F 44 45 00 00 | . . . . . . . B A D C O D E . . |" + Environment.NewLine +
+            "| 42                                              | B                               |" + Environment.NewLine +
+            "|-------------------------------------------------|---------------------------------|" + Environment.NewLine;
 
             Assert.AreEqual(expected, actual);
         }
@@ -23,91 +36,63 @@ namespace WowPacketParser.Tests.Misc
         [Test]
         public void TestHasAnyFlag()
         {
-            Assert.IsTrue(Extensions.HasAnyFlag(0x30, 0x10));
-            Assert.IsFalse(Extensions.HasAnyFlag(0x20, 0x10));
-            Assert.IsTrue(Extensions.HasAnyFlag(InhabitType.Anywhere, InhabitType.Water));
+            Assert.IsTrue(0x30.HasAnyFlag(0x10));
+            Assert.IsFalse(0x20.HasAnyFlag(0x10));
+            Assert.IsTrue(InhabitType.Anywhere.HasAnyFlag(InhabitType.Water));
         }
 
-        /*
-        [TestMethod]
+        [Test]
         public void TestMatchesFilters()
         {
-            string value = string.Empty; // TODO: Initialize to an appropriate value
-            IEnumerable<string> filters = null; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
-            bool actual;
-            actual = Extensions.MatchesFilters(value, filters);
-            Assert.AreEqual(expected, actual);
+            var list = new List<string> {"Foo", "Bar", "FooBar"};
+
+            Assert.IsTrue("bar".MatchesFilters(list));
+            Assert.IsFalse("baz".MatchesFilters(list));
         }
 
-        /// <summary>
-        ///A test for SetCulture
-        ///</summary>
-        public void SetCultureTestHelper<TSource>()
+        [Test]
+        public void TestToByte()
         {
-            ParallelQuery<TSource> source = null; // TODO: Initialize to an appropriate value
-            ParallelQuery<TSource> expected = null; // TODO: Initialize to an appropriate value
-            ParallelQuery<TSource> actual;
-            actual = Extensions.SetCulture<TSource>(source);
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual((byte)1, true.ToByte());
+            Assert.AreEqual((byte)0, false.ToByte());
         }
 
-        [TestMethod()]
-        public void SetCultureTest()
+        [Test]
+        public void TestToFormattedString()
         {
-            SetCultureTestHelper<GenericParameterHelper>();
+            // 42 hours = 1 day + 18 hours
+            Assert.AreEqual("18:42:42.042", new TimeSpan(0, 42, 42, 42, 42).ToFormattedString());
+            Assert.AreEqual("00:00:00.000", new TimeSpan(0, 0, 0, 0, 0).ToFormattedString());
         }
 
-        /// <summary>
-        ///A test for SetCulture
-        ///</summary>
-        [TestMethod()]
-        [DeploymentItem("WowPacketParser.exe")]
-        public void SetCultureTest1()
+        [Test]
+        public void TestSetCulture()
         {
-            CultureInfo cultureInfo = null; // TODO: Initialize to an appropriate value
-            Extensions_Accessor.SetCulture(cultureInfo);
+            var oldCulture = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.CurrentCulture;
+
+            var dummy = new List<int> {1, 2, 3};
+            dummy.AsParallel().SetCulture();
+
+            Assert.AreEqual(CultureInfo.InvariantCulture, Thread.CurrentThread.CurrentCulture);
+
+            Thread.CurrentThread.CurrentCulture = oldCulture;
         }
 
-        /// <summary>
-        ///A test for ToByte
-        ///</summary>
-        [TestMethod()]
-        public void ToByteTest()
+        [Test]
+        public void TestToTuple()
         {
-            bool value = false; // TODO: Initialize to an appropriate value
-            byte expected = 0; // TODO: Initialize to an appropriate value
-            byte actual;
-            actual = Extensions.ToByte(value);
-            Assert.AreEqual(expected, actual);
-        }
+            var list1 = new List<object> {1, "Foo", InhabitType.Air, 4};
+            var list2 = new List<object>();
 
-        /// <summary>
-        ///A test for ToFormattedString
-        ///</summary>
-        [TestMethod()]
-        public void ToFormattedStringTest()
-        {
-            TimeSpan span = new TimeSpan(); // TODO: Initialize to an appropriate value
-            string expected = string.Empty; // TODO: Initialize to an appropriate value
-            string actual;
-            actual = Extensions.ToFormattedString(span);
-            Assert.AreEqual(expected, actual);
-        }
+            var result1 = (Tuple<object, object, object>)list1.ToTuple(4);
 
-        /// <summary>
-        ///A test for ToTuple
-        ///</summary>
-        [TestMethod()]
-        public void ToTupleTest()
-        {
-            IList<object> col = null; // TODO: Initialize to an appropriate value
-            int count = 0; // TODO: Initialize to an appropriate value
-            object expected = null; // TODO: Initialize to an appropriate value
-            object actual;
-            actual = Extensions.ToTuple(col, count);
-            Assert.AreEqual(expected, actual);
+            Assert.Throws<ArgumentOutOfRangeException>(() => list2.ToTuple(0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => list1.ToTuple(5));
+
+            Assert.AreEqual(list1[1], result1.Item1);
+            Assert.AreEqual(list1[2], result1.Item2);
+            Assert.AreEqual(list1[3], result1.Item3);
         }
-         * */
     }
 }

@@ -51,7 +51,9 @@
     <Compile Include="Misc\BiDictionaryTest.cs" />
     <Compile Include="Misc\ClientVersionTest.cs" />
     <Compile Include="Misc\ConcurrentMultiDictionaryTest.cs" />
+    <Compile Include="Misc\LfgEntryTest.cs" />
     <Compile Include="Misc\ExtensionsTest.cs" />
+    <Compile Include="Misc\GuidTest.cs" />
     <Compile Include="Misc\UpdateFieldTest.cs" />
   </ItemGroup>
   <ItemGroup>

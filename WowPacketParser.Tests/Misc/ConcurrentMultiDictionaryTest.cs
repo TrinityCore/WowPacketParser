@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using WowPacketParser.Misc;
 using System.Collections.Generic;
 
@@ -42,17 +41,16 @@ namespace WowPacketParser.Tests.Misc
             var listExFoo = new List<int> { 42, 100 };
             var listExBar = new List<int> { 1 };
             var listExBaz = new List<int>();
-            var listExFoo2 = new List<int> { 42 };
 
             var listFoo = _dictionary.GetValues("Foo");
             var listBar = _dictionary.GetValues("Bar");
             var listBaz = _dictionary.GetValues("Baz");
 
-            Assert.IsFalse(listExFoo.Except(listFoo).Any() || listFoo.Except(listExFoo).Any());
-            Assert.IsFalse(listExBar.Except(listBar).Any() || listBar.Except(listExBar).Any());
-            Assert.IsFalse(listExBaz.Except(listBaz).Any() || listBaz.Except(listExBaz).Any());
+            CollectionAssert.AreEqual(listExFoo, listFoo);
+            CollectionAssert.AreEqual(listExBar, listBar);
+            CollectionAssert.AreEqual(listExBaz, listBaz);
 
-            Assert.IsTrue(listExFoo2.Except(listFoo).Any() || listFoo.Except(listExFoo2).Any());
+            CollectionAssert.AreNotEqual(listExBar, listFoo);
         }
 
         [Test]

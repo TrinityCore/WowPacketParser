@@ -33,9 +33,14 @@ namespace WowPacketParser.Misc
             return (uThis & uFlag) != 0;
         }
 
+        /// <summary>
+        /// // Return true if our string is a substring of any filter (case insensitive)
+        /// </summary>
+        /// <param name="value">String</param>
+        /// <param name="filters">List of strings</param>
+        /// <returns>A boolean</returns>
         public static bool MatchesFilters(this string value, IEnumerable<string> filters)
         {
-            // Return true if our string is a substring of any filter (case insensitive)
             // Note: IndexOf returns -1 if string was not found
             return filters.Any(filter => value.IndexOf(filter, StringComparison.InvariantCultureIgnoreCase) != -1);
         }
