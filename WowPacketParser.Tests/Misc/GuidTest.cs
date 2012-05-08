@@ -85,7 +85,10 @@ namespace WowPacketParser.Tests.Misc
 
             Assert.IsFalse(guid1 == guid2);
             Assert.IsTrue(guid1 != guid2);
+
+#pragma warning disable 1718
             Assert.IsTrue(guid3 == guid3);
+#pragma warning restore 1718
         }
 
         [Test]

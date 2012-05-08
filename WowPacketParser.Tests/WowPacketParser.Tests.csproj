@@ -51,10 +51,15 @@
     <Compile Include="Misc\BiDictionaryTest.cs" />
     <Compile Include="Misc\ClientVersionTest.cs" />
     <Compile Include="Misc\ConcurrentMultiDictionaryTest.cs" />
+    <Compile Include="Misc\UtilitiesTest.cs" />
+    <Compile Include="Misc\Vector2Test.cs" />
+    <Compile Include="Misc\Vector3Test.cs" />
     <Compile Include="Misc\LfgEntryTest.cs" />
     <Compile Include="Misc\ExtensionsTest.cs" />
     <Compile Include="Misc\GuidTest.cs" />
+    <Compile Include="Misc\QuaternionTest.cs" />
     <Compile Include="Misc\UpdateFieldTest.cs" />
+    <Compile Include="Misc\Vector4Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">

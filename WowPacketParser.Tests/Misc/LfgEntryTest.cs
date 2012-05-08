@@ -45,7 +45,11 @@ namespace WowPacketParser.Tests.Misc
 
             Assert.IsFalse(lfg1 == lfg2);
             Assert.IsTrue(lfg1 != lfg2);
+
+#pragma warning disable 1718
             Assert.IsTrue(lfg1 == lfg1);
+#pragma warning restore 1718
+
             Assert.IsTrue(lfg1 == lfg15);
         }
 
