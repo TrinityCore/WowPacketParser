@@ -75,7 +75,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_USE_ITEM)]
+        [Parser(Opcode.CMSG_USE_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V3_0_3_9183)]
         public static void HandleUseItem(Packet packet)
         {
             packet.ReadSByte("Bag");

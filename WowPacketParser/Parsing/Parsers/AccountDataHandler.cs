@@ -6,7 +6,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class AccountDataHandler
     {
-        [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES)]
+        [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES, ClientVersionBuild.Zero, ClientVersionBuild.V3_0_2_9056)]
         public static void HandleAccountDataTimes(Packet packet)
         {
             for (var i = 0; i < 32; i++)

@@ -410,7 +410,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadVector3("Position");
         }
 
-        [Parser(Opcode.SMSG_REMOVED_SPELL)]
+        [Parser(Opcode.SMSG_REMOVED_SPELL, ClientVersionBuild.Zero, ClientVersionBuild.V3_1_0_9767)]
         public static void HandleRemovedSpell(Packet packet)
         {
             packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Spell ID");
