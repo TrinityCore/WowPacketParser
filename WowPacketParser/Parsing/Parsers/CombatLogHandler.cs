@@ -114,13 +114,19 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Target GUID", index);
             packet.ReadPackedGuid("Caster GUID", index); // Can be 0
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell", index); // Can be 0
-            packet.ReadByte("Unknown Byte/Bool", index);
+            var debug = packet.ReadBoolean("Debug Output", index);
             var count = packet.ReadInt32("Count", index);
 
             for (int i = 0; i < count; i++)
             {
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell", index, i);
                 packet.ReadByte("Unknown Byte/Bool", index, i);
+            }
+
+            if (debug)
+            {
+                packet.ReadInt32("Unk int32");
+                packet.ReadInt32("Unk int32");
             }
         }
 
