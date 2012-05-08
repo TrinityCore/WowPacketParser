@@ -1,12 +1,12 @@
-﻿using WowPacketParser.Misc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.Tests.Misc
 {
-    [TestClass]
+    [TestFixture]
     public class UpdateFieldTest
     {
-        [TestMethod]
+        [Test]
         public void UpdateFieldConstructorTest()
         {
             var updateField = new UpdateField(uint.MaxValue, float.MaxValue);

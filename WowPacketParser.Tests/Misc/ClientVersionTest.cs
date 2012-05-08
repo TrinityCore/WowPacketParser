@@ -1,20 +1,20 @@
-﻿using WowPacketParser.Misc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using WowPacketParser.Misc;
 using System;
 using WowPacketParser.Enums;
 
 namespace WowPacketParser.Tests.Misc
 {
-    [TestClass]
+    [TestFixture]
     public class ClientVersionTest
     {
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             ClientVersion.SetVersion(ClientVersionBuild.V3_3_3_11685);
         }
 
-        [TestMethod]
+        [Test]
         public void TestAddedInVersion()
         {
             Assert.IsTrue(ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing));
@@ -24,7 +24,7 @@ namespace WowPacketParser.Tests.Misc
             Assert.IsFalse(ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_5a_12340));
         }
 
-        [TestMethod]
+        [Test]
         public void TestRemovedInVersion()
         {
             Assert.IsFalse(ClientVersion.RemovedInVersion(ClientType.WrathOfTheLichKing));
@@ -34,7 +34,7 @@ namespace WowPacketParser.Tests.Misc
             Assert.IsTrue(ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_5a_12340));
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsUndefined()
         {
             Assert.IsFalse(ClientVersion.IsUndefined());
@@ -44,7 +44,7 @@ namespace WowPacketParser.Tests.Misc
             Assert.IsTrue(ClientVersion.IsUndefined());
         }
 
-        [TestMethod]
+        [Test]
         public void TestBuildGetters()
         {
             Assert.AreEqual(ClientVersionBuild.V3_3_3_11685, ClientVersion.Build);
@@ -52,7 +52,7 @@ namespace WowPacketParser.Tests.Misc
             Assert.AreEqual("V3_3_3_11685", ClientVersion.VersionString);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSetVersion()
         {
             ClientVersion.SetVersion(new DateTime(1991, 1, 1));

@@ -1,14 +1,14 @@
-﻿using WowPacketParser.Enums;
+﻿using NUnit.Framework;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
 namespace WowPacketParser.Tests.Misc
 {
-    [TestClass]
+    [TestFixture]
     public class ExtensionsTest
     {
-        [TestMethod]
+        [Test]
         public void TestAsHex()
         {
             var packet = new Packet(new byte[0], 1, new DateTime(2012, 1, 1), Direction.ClientToServer, 1, "Test");
@@ -20,7 +20,7 @@ namespace WowPacketParser.Tests.Misc
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void TestHasAnyFlag()
         {
             Assert.IsTrue(Extensions.HasAnyFlag(0x30, 0x10));

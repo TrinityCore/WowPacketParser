@@ -1,14 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace WowPacketParser.Misc
 {
     // By Jon Skeet (Stack Overflow), modified
-    public class BiDictionary<TFirst, TSecond> : IEnumerable<KeyValuePair<TFirst, TSecond>>
+    public class BiDictionary<TFirst, TSecond> : IDictionary<TFirst, TSecond>
     {
         readonly IDictionary<TFirst, TSecond> _firstToSecond = new Dictionary<TFirst, TSecond>();
         readonly IDictionary<TSecond, TFirst> _secondToFirst = new Dictionary<TSecond, TFirst>();
+
+        public bool ContainsKey(TFirst key)
+        {
+            return _firstToSecond.ContainsKey(key);
+        }
 
         public void Add(TFirst first, TSecond second)
         {
@@ -31,15 +37,75 @@ namespace WowPacketParser.Misc
             _secondToFirst.Add(second, first);
         }
 
+        public bool Remove(TFirst key)
+        {
+            if (_firstToSecond.Remove(key))
+            {
+                foreach (var pair in _secondToFirst.Where(pair => Equals(pair.Value, key)))
+                {
+                    _secondToFirst.Remove(pair.Key);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool TryGetValue(TFirst key, out TSecond value)
+        {
+            return TryGetByFirst(key, out value);
+        }
+
+        TSecond IDictionary<TFirst, TSecond>.this[TFirst key]
+        {
+            get { return GetByFirst(key); }
+            set { _firstToSecond[key] = value; }
+        }
+
+        public ICollection<TFirst> Keys
+        {
+            get { return _firstToSecond.Keys; }
+        }
+
+        public ICollection<TSecond> Values
+        {
+            get { return _firstToSecond.Values; }
+        }
+
+        public bool Remove(KeyValuePair<TFirst, TSecond> item)
+        {
+            return _firstToSecond.Remove(item);
+        }
+
         public int Count
         {
             get { return _firstToSecond.Count; }
+        }
+
+        public bool IsReadOnly
+        {
+            get { return _firstToSecond.IsReadOnly; }
+        }
+
+        public void Add(KeyValuePair<TFirst, TSecond> item)
+        {
+            _firstToSecond.Add(item);
         }
 
         public void Clear()
         {
             _firstToSecond.Clear();
             _secondToFirst.Clear();
+        }
+
+        public bool Contains(KeyValuePair<TFirst, TSecond> item)
+        {
+            return _firstToSecond.Contains(item);
+        }
+
+        public void CopyTo(KeyValuePair<TFirst, TSecond>[] array, int arrayIndex)
+        {
+            _firstToSecond.CopyTo(array, arrayIndex);
         }
 
         // Note potential ambiguity using indexers (e.g. mapping from int to int)

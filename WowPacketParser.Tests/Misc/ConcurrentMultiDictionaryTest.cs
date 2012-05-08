@@ -1,16 +1,16 @@
 ﻿using System.Linq;
+using NUnit.Framework;
 using WowPacketParser.Misc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
 namespace WowPacketParser.Tests.Misc
 {
-    [TestClass]
+    [TestFixture]
     public class ConcurrentMultiDictionaryTest
     {
         private ConcurrentMultiDictionary<string, int> _dictionary;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             _dictionary = new ConcurrentMultiDictionary<string, int>();
@@ -19,13 +19,13 @@ namespace WowPacketParser.Tests.Misc
             _dictionary.TryAdd("Bar", 1);
         }
 
-        [TestCleanup]
+        [TearDown]
         public void Cleanup()
         {
             _dictionary = null;
         }
 
-        [TestMethod]
+        [Test]
         public void TestContainsValue()
         {
             Assert.IsTrue(_dictionary.ContainsValue("Foo", 42));
@@ -36,7 +36,7 @@ namespace WowPacketParser.Tests.Misc
             Assert.IsFalse(_dictionary.ContainsValue("Bar", 0));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetValues()
         {
             var listExFoo = new List<int> { 42, 100 };
@@ -55,7 +55,7 @@ namespace WowPacketParser.Tests.Misc
             Assert.IsTrue(listExFoo2.Except(listFoo).Any() || listFoo.Except(listExFoo2).Any());
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryAdd()
         {
             Assert.IsTrue(_dictionary.TryAdd("Baz", 84));

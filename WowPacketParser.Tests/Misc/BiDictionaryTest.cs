@@ -1,15 +1,15 @@
-﻿using WowPacketParser.Misc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using WowPacketParser.Misc;
 using System.Collections.Generic;
 
 namespace WowPacketParser.Tests.Misc
 {
-    [TestClass]
+    [TestFixture]
     public class BiDictionaryTest
     {
         private BiDictionary<int, double> _biDictionary;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             _biDictionary = new BiDictionary<int, double>
@@ -20,19 +20,19 @@ namespace WowPacketParser.Tests.Misc
             };
         }
 
-        [TestCleanup]
+        [TearDown]
         public void Cleanup()
         {
             _biDictionary = null;
         }
 
-        [TestMethod]
+        [Test]
         public void TestCount()
         {
             Assert.AreEqual(3, _biDictionary.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void TestClear()
         {
             _biDictionary.Clear();
@@ -40,7 +40,7 @@ namespace WowPacketParser.Tests.Misc
             Assert.AreEqual(0, _biDictionary.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void TestIndexers()
         {
             Assert.AreEqual(5.0, _biDictionary[10]);
@@ -50,7 +50,7 @@ namespace WowPacketParser.Tests.Misc
             Assert.AreEqual(default(double), _biDictionary[1]);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetters()
         {
             Assert.AreEqual(5.0, _biDictionary.GetByFirst(10));
@@ -60,7 +60,7 @@ namespace WowPacketParser.Tests.Misc
             Assert.AreEqual(default(int), _biDictionary.GetBySecond(1.0));
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryGetters()
         {
             int first;
@@ -76,7 +76,7 @@ namespace WowPacketParser.Tests.Misc
             Assert.IsFalse(_biDictionary.TryGetBySecond(1.0, out first));
         }
 
-        [TestMethod]
+        [Test]
         public void TestEnumerator()
         {
             Assert.IsNotNull(_biDictionary.GetEnumerator());
@@ -85,7 +85,7 @@ namespace WowPacketParser.Tests.Misc
                 Assert.IsNotNull(keyValuePair);
         }
 
-        [TestMethod]
+        [Test]
         public void TestAdd()
         {
             _biDictionary.Add(default(int), default(double));
