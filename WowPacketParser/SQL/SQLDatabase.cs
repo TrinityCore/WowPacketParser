@@ -83,7 +83,7 @@ namespace WowPacketParser.SQL
         /// <summary>
         /// Gets from `world` database a dictionary of the given struct/class.
         /// Structs fields type must match the type of the DB columns.
-        /// DB collumns names are set by using DBFieldNameAttribute.
+        /// DB columns names are set by using DBFieldNameAttribute.
         /// </summary>
         /// <typeparam name="T">Type of the elements of the list of entries (usually uint)</typeparam>
         /// <typeparam name="TK">Type of the struct</typeparam>
