@@ -1,7 +1,7 @@
 ﻿using WowPacketParser.Misc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WowPacketParser.Tests
+namespace WowPacketParser.Tests.Misc
 {
     [TestClass]
     public class UpdateFieldTest

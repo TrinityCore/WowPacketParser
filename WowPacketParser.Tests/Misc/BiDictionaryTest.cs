@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
-namespace WowPacketParser.Tests
+namespace WowPacketParser.Tests.Misc
 {
     [TestClass]
     public class BiDictionaryTest

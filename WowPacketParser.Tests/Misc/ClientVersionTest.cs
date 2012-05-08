@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using WowPacketParser.Enums;
 
-namespace WowPacketParser.Tests
+namespace WowPacketParser.Tests.Misc
 {
     [TestClass]
     public class ClientVersionTest
