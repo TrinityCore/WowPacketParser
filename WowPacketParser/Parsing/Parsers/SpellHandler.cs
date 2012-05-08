@@ -756,8 +756,21 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Caster GUID");
             packet.ReadGuid("Target GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadInt32("Unk 1");
-            packet.ReadInt32("Unk 2");
+            packet.ReadSingle("Unk 1");
+            packet.ReadSingle("Unk 2");
+        }
+
+
+        [Parser(Opcode.SMSG_SPELL_CHANCE_PROC_LOG)]
+        public static void HandleChanceProcLog(Packet packet)
+        {
+            packet.ReadGuid("Caster GUID");
+            packet.ReadGuid("Target GUID");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadSingle("unk1");
+            packet.ReadSingle("unk2");
+            packet.ReadEnum<UnknownFlags>("ProcFlags", TypeCode.UInt32);
+            packet.ReadEnum<UnknownFlags>("Flags2", TypeCode.UInt32);
         }
     }
 }
