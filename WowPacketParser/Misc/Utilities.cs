@@ -133,6 +133,23 @@ namespace WowPacketParser.Misc
             Trace.AutoFlush = true;
         }
 
+        public static void RemoveConfigOptions(ref List<string> files)
+        {
+            for (var i = 0; i < files.Count - 1; ++i)
+            {
+                if (files[i][0] == '/')
+                {
+                    // remove value
+                    files.RemoveAt(i + 1);
+                    // remove option name
+                    files.RemoveAt(i);
+                    --i;
+                    continue;
+                }
+                break;
+            }
+        }
+
         public static bool GetFiles(ref List<string> files)
         {
             if (files.Count == 1 && files[0].Contains('*'))
@@ -157,6 +174,7 @@ namespace WowPacketParser.Misc
                     Trace.WriteLine("File " + files[i] + " was not found, removed.");
                     files.RemoveAt(i);
                     --i;
+                    continue;
                 }
             }
 

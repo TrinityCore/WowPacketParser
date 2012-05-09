@@ -24,6 +24,108 @@ namespace WowPacketParser
         private static int GlobalStatsError;
         private static int GlobalStatsTotal;
 
+        private static void Main(string[] args)
+        {
+            Utilities.SetUpListeners();
+            var files = args.ToList();
+            if (files.Count == 0)
+            {
+                PrintUsage();
+                return;
+            }
+
+            // config options are handled in Misc.Settings
+            Utilities.RemoveConfigOptions(ref files);
+
+            if (!Utilities.GetFiles(ref files))
+            {
+                EndPrompt();
+                return;
+            }
+
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            ClientVersion.SetVersion(Settings.ClientBuild);
+
+            if (Settings.FilterPacketNumLow < 0)
+                throw new ConstraintException("FilterPacketNumLow must be positive");
+
+            if (Settings.FilterPacketNumHigh < 0)
+                throw new ConstraintException("FilterPacketNumHigh must be positive");
+
+            if (Settings.FilterPacketNumLow > 0 && Settings.FilterPacketNumHigh > 0
+                && Settings.FilterPacketNumLow > Settings.FilterPacketNumHigh)
+                throw new ConstraintException("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
+
+            // Disable DB when we don't need its data (dumping to a binary file)
+            if (Settings.DumpFormat == DumpFormatType.Pkt)
+            {
+                SQLConnector.Enabled = false;
+                SSHTunnel.Enabled = false;
+            }
+            else
+                Filters.Initialize();
+
+            SQLConnector.ReadDB();
+
+            var numberOfThreadsRead = Settings.ThreadsRead != 0 ? Settings.ThreadsRead.ToString(CultureInfo.InvariantCulture) : "a recommended number of";
+            var numberOfThreadsParse = Settings.ThreadsParse != 0 ? Settings.ThreadsParse.ToString(CultureInfo.InvariantCulture) : "a recommended number of";
+            Trace.WriteLine(string.Format("Using {0} threads to process {1} files", numberOfThreadsRead, files.Count));
+
+            var startTime = DateTime.Now;
+            var count = 0;
+
+            switch (Settings.ThreadsRead)
+            {
+                case 0: // Number of threads is automatically chosen by the Parallel library
+                    {
+                        files.AsParallel().SetCulture()
+                            .ForAll(file =>
+                            ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]"));
+                        break;
+                    }
+                case 1: // No multithreading, lowest amount of memory use
+                    {
+                        foreach (var file in files)
+                            ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]");
+                        break;
+                    }
+                default: // User defined number of threads
+                    {
+                        files.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.ThreadsRead)
+                            .ForAll(file =>
+                            ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]"));
+                        break;
+                    }
+            }
+
+            if (Settings.StatsOutput.HasAnyFlag(StatsOutputFlags.Global))
+            {
+                var span = DateTime.Now.Subtract(startTime);
+                Trace.WriteLine(string.Format("Parsed {0} packets from {1} files: {2:F3}% successfully, {3:F3}% with errors and skipped {4:F3}% in {5} Minutes, {6} Seconds and {7} Milliseconds using {8} threads",
+                    GlobalStatsTotal, files.Count, (double)GlobalStatsOk / GlobalStatsTotal * 100,
+                    (double)GlobalStatsError / GlobalStatsTotal * 100, (double)GlobalStatsSkip / GlobalStatsTotal * 100,
+                    span.Minutes, span.Seconds, span.Milliseconds, numberOfThreadsParse));
+            }
+
+            if (Settings.SQLOutput != 0)
+            {
+                string sqlFileName;
+                if (!String.IsNullOrWhiteSpace(Settings.SQLFileName))
+                    sqlFileName = Settings.SQLFileName;
+                else if (files.Count == 1)
+                    sqlFileName = string.Format("{0}_{1}.sql", Utilities.FormattedDateTimeForFiles(), Path.GetFileName(files[0]));
+                else
+                    sqlFileName = string.Format("{0}_multi_files.sql", Utilities.FormattedDateTimeForFiles());
+
+                Builder.DumpSQL("Dumping global sql", sqlFileName, Settings.SQLOutput);
+            }
+
+            SQLConnector.Disconnect();
+            SSHTunnel.Disconnect();
+            Logger.WriteErrors();
+            EndPrompt();
+        }
+
         private static void ReadFile(string file, string prefix)
         {
             // If our dump format requires a .txt to be created,
@@ -175,99 +277,14 @@ namespace WowPacketParser
             }
         }
 
-        private static void Main(string[] args)
+        private static void PrintUsage()
         {
-            Utilities.SetUpListeners();
-            var files = args.ToList();
-
-            //files.Add("something.pkt");
-
-            if (!Utilities.GetFiles(ref files))
-            {
-                EndPrompt();
-                return;
-            }
-
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            ClientVersion.SetVersion(Settings.ClientBuild);
-
-            if (Settings.FilterPacketNumLow < 0)
-                throw new ConstraintException("FilterPacketNumLow must be positive");
-
-            if (Settings.FilterPacketNumHigh < 0)
-                throw new ConstraintException("FilterPacketNumHigh must be positive");
-
-            if (Settings.FilterPacketNumLow > 0 && Settings.FilterPacketNumHigh > 0
-                && Settings.FilterPacketNumLow > Settings.FilterPacketNumHigh)
-                throw new ConstraintException("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
-
-            // Disable DB when we don't need its data (dumping to a binary file)
-            if (Settings.DumpFormat == DumpFormatType.Pkt)
-            {
-                SQLConnector.Enabled = false;
-                SSHTunnel.Enabled = false;
-            }
-            else
-                Filters.Initialize();
-
-            SQLConnector.ReadDB();
-
-            var numberOfThreadsRead = Settings.ThreadsRead != 0 ? Settings.ThreadsRead.ToString(CultureInfo.InvariantCulture) : "a recommended number of";
-            var numberOfThreadsParse = Settings.ThreadsParse != 0 ? Settings.ThreadsParse.ToString(CultureInfo.InvariantCulture) : "a recommended number of";
-            Trace.WriteLine(string.Format("Using {0} threads to process {1} files", numberOfThreadsRead, files.Count));
-
-            var startTime = DateTime.Now;
-            var count = 0;
-
-            switch (Settings.ThreadsRead)
-            {
-                case 0: // Number of threads is automatically chosen by the Parallel library
-                {
-                    files.AsParallel().SetCulture()
-                        .ForAll(file =>
-                        ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]"));
-                    break;
-                }
-                case 1: // No multithreading, lowest amount of memory use
-                {
-                    foreach (var file in files)
-                        ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]");
-                    break;
-                }
-                default: // User defined number of threads
-                {
-                    files.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.ThreadsRead)
-                        .ForAll(file =>
-                        ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]"));
-                    break;
-                }
-            }
-
-            if (Settings.StatsOutput.HasAnyFlag(StatsOutputFlags.Global))
-            {
-                var span = DateTime.Now.Subtract(startTime);
-                Trace.WriteLine(string.Format("Parsed {0} packets from {1} files: {2:F3}% successfully, {3:F3}% with errors and skipped {4:F3}% in {5} Minutes, {6} Seconds and {7} Milliseconds using {8} threads",
-                    GlobalStatsTotal, files.Count, (double)GlobalStatsOk / GlobalStatsTotal * 100,
-                    (double)GlobalStatsError / GlobalStatsTotal * 100, (double)GlobalStatsSkip / GlobalStatsTotal * 100,
-                    span.Minutes, span.Seconds, span.Milliseconds, numberOfThreadsParse));
-            }
-
-            if (Settings.SQLOutput != 0)
-            {
-                string sqlFileName;
-                if (!String.IsNullOrWhiteSpace(Settings.SQLFileName))
-                    sqlFileName = Settings.SQLFileName;
-                else if (files.Count == 1)
-                    sqlFileName = string.Format("{0}_{1}.sql", Utilities.FormattedDateTimeForFiles(), Path.GetFileName(files[0]));
-                else
-                    sqlFileName = string.Format("{0}_multi_files.sql", Utilities.FormattedDateTimeForFiles());
-
-                Builder.DumpSQL("Dumping global sql", sqlFileName, Settings.SQLOutput);
-            }
-
-            SQLConnector.Disconnect();
-            SSHTunnel.Disconnect();
-            Logger.WriteErrors();
+            Console.WriteLine("Error: No files selected to be parsed.");
+            Console.WriteLine("Usage: Drag a file, or group of files on the executable to parse it.");
+            Console.WriteLine("Command line usage: WowPacketParser.exe [/ConfigFile path /Option1 value1 ...] filetoparse1 ...");
+            Console.WriteLine("/ConfigFile path - file to read config from, default: WowPacketParser.exe.config.");
+            Console.WriteLine("/Option1 value1 - override Option1 setting from config file with value1.");
+            Console.WriteLine("Configuration: Modify WowPacketParser.exe.config file.");
             EndPrompt();
         }
     }
