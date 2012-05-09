@@ -775,21 +775,18 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE))
                 count = packet.ReadUInt32("Count");
 
-            for (int i = 0; i < count; i++) 
-            {
-                packet.ReadGuid("GUID", i);
-                packet.ReadEnum<QuestGiverStatus4x>("Status", ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623) ? TypeCode.Int32 : TypeCode.Byte, i);
-            }
-        }
-
-        public static void HandleQuestgiverStatusMultiple(Packet packet)
-        {
-            var count = packet.ReadUInt32("Count");
-            for (var i = 0; i < count; i++)
-            {
-                packet.ReadGuid("GUID");
-                packet.ReadEnum<QuestGiverStatus>("Status", TypeCode.Byte);
-            }
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
+                for (var i = 0; i < count; i++)
+                {    
+                    packet.ReadGuid("GUID", i);
+                    packet.ReadEnum<QuestGiverStatus4x>("Status", TypeCode.Int32, i);
+                }
+            else
+                for (var i = 0; i < count; i++)
+                {
+                    packet.ReadGuid("GUID", i);
+                    packet.ReadEnum<QuestGiverStatus>("Status", TypeCode.Byte, i);
+                }
         }
 
         [Parser(Opcode.SMSG_QUESTUPDATE_ADD_PVP_KILL)]

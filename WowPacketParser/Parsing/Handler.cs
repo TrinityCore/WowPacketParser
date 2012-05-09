@@ -58,7 +58,8 @@ namespace WowPacketParser.Parsing
 
                         if (Handlers.ContainsKey(opc))
                         {
-                            Trace.WriteLine(string.Format("Error: (Build: {0}) tried to overwrite delegate for opcode {1} ({2}); new handler: {3}; old handler: {4}", ClientVersion.Build, opc, Opcodes.GetOpcodeName(opc), del.Method, Handlers[opc].Method));
+                            Trace.WriteLine(string.Format("Error: (Build: {0}) tried to overwrite delegate for opcode {1} ({2}); new handler: {3}; old handler: {4}",
+                                ClientVersion.Build, opc, Opcodes.GetOpcodeName(opc), del.Method, Handlers[opc].Method));
                             continue;
                         }
 
@@ -134,7 +135,7 @@ namespace WowPacketParser.Parsing
                 status = ParsedStatus.NotParsed;
             }
 
-            if (isMultiple == false)
+            if (!isMultiple)
             {
                 packet.Status = status;
                 var data = status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode) : status.ToString();

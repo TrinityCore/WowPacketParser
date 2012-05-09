@@ -174,7 +174,6 @@ namespace WowPacketParser.Misc
                     Trace.WriteLine("File " + files[i] + " was not found, removed.");
                     files.RemoveAt(i);
                     --i;
-                    continue;
                 }
             }
 
