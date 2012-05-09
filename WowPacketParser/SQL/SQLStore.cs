@@ -27,9 +27,6 @@ namespace WowPacketParser.SQL
             if (_file == null)
                 return;
 
-            if (_sqls.BinarySearch(sql) > -1)
-                return;
-
             _sqls.Add(sql);
         }
 
@@ -38,9 +35,7 @@ namespace WowPacketParser.SQL
             if (_file == null)
                 return false;
 
-            var empty = _sqls.All(String.IsNullOrWhiteSpace);
-
-            if (empty)
+            if (_sqls.All(String.IsNullOrWhiteSpace))
                 return false;
 
             foreach (var sql in _sqls)

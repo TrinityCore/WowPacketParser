@@ -15,12 +15,7 @@ namespace WowPacketParser.Enums.Version
 {
     public static class Opcodes
     {
-        private static readonly BiDictionary<Opcode, int> Dict;
-
-        static Opcodes()
-        {
-            Dict = GetOpcodeDictionary(ClientVersion.Build);
-        }
+        private static readonly BiDictionary<Opcode, int> Dict = GetOpcodeDictionary(ClientVersion.Build);
 
         private static BiDictionary<Opcode, int> GetOpcodeDictionary(ClientVersionBuild build)
         {

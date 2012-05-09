@@ -163,9 +163,9 @@ namespace WowPacketParser.SQL
                         var val1 = field.Item1.GetValue(elem1.Value);
                         var val2 = field.Item1.GetValue(elem2);
 
-                        if (val1 is Array) // && val2 is Array
+                        var arr1 = val1 as Array;
+                        if (arr1 != null)
                         {
-                            var arr1 = (Array) val1;
                             var arr2 = (Array) val2;
 
                             var isString = arr1.GetType().GetElementType() == typeof(string);

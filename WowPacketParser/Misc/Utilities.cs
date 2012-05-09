@@ -203,14 +203,16 @@ namespace WowPacketParser.Misc
             if (o1 is float || o2 is double)
                 return false;
 
-            // TODO: Simplify this
             // Notice that if one of the values is DBNull, DBNull == "" must return true
-            if (o1 is string && !(o2 is string))
-                return (string)o1 == Convert.ToString(o2);
-            if (!(o1 is string) && o2 is string)
-                return (string)o2 == Convert.ToString(o1);
-            if (o1 is string)
-                return o1.Equals(o2);
+            var str1 = o1 as string;
+            var str2 = o2 as string;
+
+            if (str1 != null && str2 == null)
+                return str1 == Convert.ToString(o2);
+            if (str1 == null && str2 != null)
+                return str2 == Convert.ToString(o1);
+            if (str1 != null)
+                return str1.Equals(o2);
 
             // this still works if objects are booleans or enums
             return Convert.ToInt64(o1) == Convert.ToInt64(o2);

@@ -8,12 +8,9 @@ namespace WowPacketParser.Enums.Version
 {
     public static class UpdateFields
     {
-        private static readonly Assembly Assembly = Assembly.GetExecutingAssembly();
+        private static readonly Dictionary<Type, BiDictionary<string, int>> UpdateFieldDictionaries = LoadUFDictionaries();
 
-        private static readonly Dictionary<Type, BiDictionary<string, int>> UpdateFieldDictionaries =
-            new Dictionary<Type, BiDictionary<string, int>>();
-
-        static UpdateFields()
+        private static Dictionary<Type, BiDictionary<string, int>> LoadUFDictionaries()
         {
             Type[] enumTypes = {
                                typeof (ObjectField), typeof (ItemField), typeof (ContainerField), typeof (UnitField),
@@ -21,10 +18,12 @@ namespace WowPacketParser.Enums.Version
                                typeof (CorpseField), typeof (AreaTriggerField)
                            };
 
+            var dicts = new Dictionary<Type, BiDictionary<string, int>>();
+
             foreach (var enumType in enumTypes)
             {
                 var vTypeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionaryBuildName(ClientVersion.Build), enumType.Name);
-                var vEnumType = Assembly.GetType(vTypeString);
+                var vEnumType = Assembly.GetExecutingAssembly().GetType(vTypeString);
                 if (vEnumType == null)
                     continue;   // versions prior to 4.3.0 do not have AreaTriggerField
 
@@ -36,11 +35,12 @@ namespace WowPacketParser.Enums.Version
                 for (var i = 0; i < vValues.Length; ++i)
                     result.Add(vNames[i], (int)vValues.GetValue(i));
 
-                UpdateFieldDictionaries.Add(enumType, result);
+                dicts.Add(enumType, result);
             }
 
-            // Console.WriteLine(stopWatch.Elapsed); // between 1 and 2 milliseconds
+            return dicts;
         }
+
         public static int GetUpdateField<T>(T field)
         {
             if (UpdateFieldDictionaries.ContainsKey(typeof(T)))

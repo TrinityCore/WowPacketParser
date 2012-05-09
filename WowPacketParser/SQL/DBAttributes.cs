@@ -4,7 +4,7 @@ using System.Text;
 namespace WowPacketParser.SQL
 {
     [AttributeUsage(AttributeTargets.Field)]
-    public class DBFieldNameAttribute : Attribute
+    sealed public class DBFieldNameAttribute : Attribute
     {
         public readonly string Name;
 
@@ -43,7 +43,7 @@ namespace WowPacketParser.SQL
     }
 
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-    public class DBTableNameAttribute : Attribute
+    sealed public class DBTableNameAttribute : Attribute
     {
         public readonly string Name;
 

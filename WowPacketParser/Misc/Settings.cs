@@ -135,16 +135,6 @@ namespace WowPacketParser.Misc
             return aux;
         }
 
-        private static float GetFloat(string key, float defValue)
-        {
-            float aux;
-            var s = SettingsCollection[key];
-            if ((s == null || s.Value == null) || !float.TryParse(s.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out aux))
-                aux = defValue;
-
-            return aux;
-        }
-
         private static T GetEnum<T>(string key, T defValue)
         {
             object aux;
