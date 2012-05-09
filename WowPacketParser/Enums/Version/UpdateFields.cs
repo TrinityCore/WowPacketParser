@@ -10,8 +10,8 @@ namespace WowPacketParser.Enums.Version
     {
         private static readonly Assembly Assembly = Assembly.GetExecutingAssembly();
 
-        private static readonly Dictionary<Type, Dictionary<string, int>> UpdateFieldDictionaries =
-            new Dictionary<Type, Dictionary<string, int>>();
+        private static readonly Dictionary<Type, BiDictionary<string, int>> UpdateFieldDictionaries =
+            new Dictionary<Type, BiDictionary<string, int>>();
 
         static UpdateFields()
         {
@@ -31,7 +31,7 @@ namespace WowPacketParser.Enums.Version
                 var vValues = Enum.GetValues(vEnumType);
                 var vNames = Enum.GetNames(vEnumType);
 
-                var result = new Dictionary<string, int>();
+                var result = new BiDictionary<string, int>();
 
                 for (var i = 0; i < vValues.Length; ++i)
                     result.Add(vNames[i], (int)vValues.GetValue(i));
@@ -41,13 +41,6 @@ namespace WowPacketParser.Enums.Version
 
             // Console.WriteLine(stopWatch.Elapsed); // between 1 and 2 milliseconds
         }
-
-        /* GetUpdateField is faster than GetUpdateFieldName because the key of our dictionary
-         * is the updatefield id and not the name.
-         * If GetUpdateFieldName is called more times than GetUpdateField, it might be worth
-         * swapping the dictionary key. (int, string => string, int)
-         * */
-
         public static int GetUpdateField<T>(T field)
         {
             if (UpdateFieldDictionaries.ContainsKey(typeof(T)))
@@ -69,14 +62,8 @@ namespace WowPacketParser.Enums.Version
         public static string GetUpdateFieldName<T>(int field)
         {
             if (UpdateFieldDictionaries.ContainsKey(typeof(T)))
-            {
-                //UpdateFieldDictionaries[typeof(T)].ContainsValue(field)
-                foreach (var pair in UpdateFieldDictionaries[typeof(T)])
-                {
-                    if (pair.Value == field)
-                        return pair.Key;
-                }
-            }
+                if (UpdateFieldDictionaries[typeof(T)].ContainsValue(field))
+                    return UpdateFieldDictionaries[typeof (T)][field];
 
             return field.ToString(CultureInfo.InvariantCulture);
         }
@@ -149,7 +136,9 @@ namespace WowPacketParser.Enums.Version
                     return "V4_3_4_15595";
                 }
                 default:
+                {
                     return "V3_3_5a_12340";
+                }
             }
         }
     }

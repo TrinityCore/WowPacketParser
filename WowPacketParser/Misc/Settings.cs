@@ -78,7 +78,7 @@ namespace WowPacketParser.Misc
             return aux;
         }
 
-        public static float GetFloat(string key, float defValue)
+        private static float GetFloat(string key, float defValue)
         {
             float aux;
             var s = SettingsCollection[key];

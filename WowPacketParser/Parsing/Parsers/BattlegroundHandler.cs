@@ -640,7 +640,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (Flags.HasAnyFlag(BattlegroundUpdateFlags.Finished))
                 packet.ReadByte("Team Winner");
 
-            int tempCount = (int)count;
+            var tempCount = (int)count;
             do
             {
                 packet.ReadByte("Player Update Flags", tempCount);

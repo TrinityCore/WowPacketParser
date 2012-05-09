@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using NUnit.Framework;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -138,6 +137,7 @@ namespace WowPacketParser.Tests.Misc
 
         private class TestFoo
         {
+#pragma warning disable 0649
             [FieldTest]
             public int Bar;
 
@@ -146,6 +146,7 @@ namespace WowPacketParser.Tests.Misc
 
             [FieldTest]
             public double Baz;
+#pragma warning restore 0649
         }
 
         private class TestNone { }
@@ -159,8 +160,6 @@ namespace WowPacketParser.Tests.Misc
             Assert.IsNull(a);
             Assert.IsNotNull(b);
 
-            var foo = new TestFoo();
-            
             Assert.AreEqual(2, b.Count);
 
             CollectionAssert.Contains(b.Select(tuple => tuple.Item1), typeof(TestFoo).GetField("Bar"));

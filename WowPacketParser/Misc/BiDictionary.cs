@@ -16,6 +16,11 @@ namespace WowPacketParser.Misc
             return _firstToSecond.ContainsKey(key);
         }
 
+        public bool ContainsValue(TSecond value)
+        {
+            return _secondToFirst.ContainsKey(value);
+        }
+
         public void Add(TFirst first, TSecond second)
         {
             TFirst frst;

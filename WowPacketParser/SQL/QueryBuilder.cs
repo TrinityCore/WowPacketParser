@@ -189,7 +189,7 @@ namespace WowPacketParser.SQL
             private string Delete { get; set; }
             private string InsertHeader { get; set; }
             private List<string> TableStructure { get; set; }
-            private bool _deleteDuplicates;
+            private readonly bool _deleteDuplicates;
 
             // Add a new insert header every 500 rows
             private const int MaxRowsPerInsert = 500;
