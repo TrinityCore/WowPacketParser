@@ -775,21 +775,10 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE))
                 count = packet.ReadUInt32("Count");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
+            for (int i = 0; i < count; i++) 
             {
-                for (int i = 0; i < count; i++)
-                {
-                    packet.ReadGuid("GUID", i);
-                    packet.ReadEnum<QuestGiverStatus4x>("Status", TypeCode.Int32, i);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < count; i++)
-                {
-                    packet.ReadGuid("GUID", i);
-                    packet.ReadEnum<QuestGiverStatus>("Status", TypeCode.Byte, i);
-                }
+                packet.ReadGuid("GUID", i);
+                packet.ReadEnum<QuestGiverStatus4x>("Status", ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623) ? TypeCode.Int32 : TypeCode.Byte, i);
             }
         }
 
