@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -92,10 +92,6 @@
       <HintPath>Dependencies\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Data.SQLite, Version=1.0.76.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dependencies\System.Data.SQLite.dll</HintPath>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependencies\ICSharpCode.SharpZipLib.dll</HintPath>
@@ -294,7 +290,7 @@
     <Compile Include="Enums\Version\V3_3_5a_12340\UpdateField.cs" />
     <Compile Include="Enums\Version\V4_0_3_13329\Opcodes.cs" />
     <Compile Include="Enums\Version\V4_0_6_13596\Opcodes.cs">
-          <SubType>Code</SubType>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Enums\Version\V4_0_6_13596\UpdateField.cs" />
     <Compile Include="Enums\Version\V4_1_0_13914\Opcodes.cs" />
@@ -317,7 +313,6 @@
     <Compile Include="Loading\BinaryPacketReader.cs" />
     <Compile Include="Loading\IPacketReader.cs" />
     <Compile Include="Loading\Reader.cs" />
-    <Compile Include="Loading\SQLitePacketReader.cs" />
     <Compile Include="Misc\BiDictionary.cs" />
     <Compile Include="Misc\ClientVersion.cs" />
     <Compile Include="Misc\ConcurrentMultiDictionary.cs" />

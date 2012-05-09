@@ -29,9 +29,6 @@ namespace WowPacketParser.Loading
                 case ".pkt":
                     reader = new BinaryPacketReader(SniffType.Pkt, fileName, Encoding.ASCII);
                     break;
-                case ".sqlite":
-                    reader = new SQLitePacketReader(fileName);
-                    break;
                 default:
                     throw new IOException(String.Format("Invalid file type {0}", extension.ToLower()));
             }
