@@ -178,20 +178,20 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_UNK0))
             {
-                packet.ReadInt32("Unk Attacker State 3");
-                packet.ReadSingle("Unk Attacker State 3");
-                packet.ReadSingle("Unk Attacker State 3");
-                packet.ReadSingle("Unk Attacker State 3");
-                packet.ReadSingle("Unk Attacker State 3");
-                packet.ReadSingle("Unk Attacker State 3");
-                packet.ReadSingle("Unk Attacker State 3");
-                packet.ReadSingle("Unk Attacker State 3");
-                packet.ReadSingle("Unk Attacker State 3");
-                packet.ReadSingle("Unk Attacker State 3");
-                packet.ReadSingle("Unk Attacker State 3");
-                packet.ReadInt32("Unk Attacker State 3");
-                packet.ReadInt32("Unk Attacker State 3");
-                packet.ReadInt32("Unk Attacker State 3");
+                packet.ReadInt32("Unk Attacker State 3 1");
+                packet.ReadSingle("Unk Attacker State 3 2");
+                packet.ReadSingle("Unk Attacker State 3 3");
+                packet.ReadSingle("Unk Attacker State 3 4");
+                packet.ReadSingle("Unk Attacker State 3 5");
+                packet.ReadSingle("Unk Attacker State 3 6");
+                packet.ReadSingle("Unk Attacker State 3 7");
+                packet.ReadSingle("Unk Attacker State 3 8");
+                packet.ReadSingle("Unk Attacker State 3 9");
+                packet.ReadSingle("Unk Attacker State 3 10");
+                packet.ReadSingle("Unk Attacker State 3 11");
+                packet.ReadInt32("Unk Attacker State 3 12");
+                packet.ReadInt32("Unk Attacker State 3 13");
+                packet.ReadInt32("Unk Attacker State 3 14");
             }
         }
     }

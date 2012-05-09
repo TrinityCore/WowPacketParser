@@ -291,8 +291,8 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadUInt32("Size");
             for (int i = 0; i < count; i++)
             {
-                packet.ReadPackedGuid("Hostile");
-                packet.ReadUInt32("Threat");
+                packet.ReadPackedGuid("Hostile", i);
+                packet.ReadUInt32("Threat", i);
             }
         }
 

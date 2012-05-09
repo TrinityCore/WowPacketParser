@@ -552,13 +552,13 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < counter; ++i)
             {
-                packet.ReadCString("Name");
-                packet.ReadCString("Guild");
-                packet.ReadUInt32("Level");
-                packet.ReadEnum<Class>("Class", TypeCode.UInt32);
-                packet.ReadEnum<Race>("Race", TypeCode.UInt32);
-                packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id");
+                packet.ReadCString("Name", i);
+                packet.ReadCString("Guild", i);
+                packet.ReadUInt32("Level", i);
+                packet.ReadEnum<Class>("Class", TypeCode.UInt32, i);
+                packet.ReadEnum<Race>("Race", TypeCode.UInt32, i);
+                packet.ReadEnum<Gender>("Gender", TypeCode.Byte, i);
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", i);
             }
         }
 
