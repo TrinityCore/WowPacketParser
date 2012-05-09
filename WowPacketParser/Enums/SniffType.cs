@@ -4,6 +4,5 @@
     {
         Bin,
         Pkt,
-        SQLite,
     }
 }

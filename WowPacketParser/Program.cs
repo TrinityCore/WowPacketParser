@@ -77,25 +77,25 @@ namespace WowPacketParser
             switch (Settings.ThreadsRead)
             {
                 case 0: // Number of threads is automatically chosen by the Parallel library
-                    {
-                        files.AsParallel().SetCulture()
-                            .ForAll(file =>
-                            ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]"));
-                        break;
-                    }
+                {
+                    files.AsParallel().SetCulture()
+                        .ForAll(file =>
+                        ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]"));
+                    break;
+                }
                 case 1: // No multithreading, lowest amount of memory use
-                    {
-                        foreach (var file in files)
-                            ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]");
-                        break;
-                    }
+                {
+                    foreach (var file in files)
+                        ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]");
+                    break;
+                }
                 default: // User defined number of threads
-                    {
-                        files.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.ThreadsRead)
-                            .ForAll(file =>
-                            ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]"));
-                        break;
-                    }
+                {
+                    files.AsParallel().SetCulture().WithDegreeOfParallelism(Settings.ThreadsRead)
+                        .ForAll(file =>
+                        ReadFile(file, "[" + (++count).ToString(CultureInfo.InvariantCulture) + "/" + files.Count + " " + file + "]"));
+                    break;
+                }
             }
 
             if (Settings.StatsOutput.HasAnyFlag(StatsOutputFlags.Global))
