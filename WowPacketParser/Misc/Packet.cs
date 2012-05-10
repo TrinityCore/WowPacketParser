@@ -36,7 +36,7 @@ namespace WowPacketParser.Misc
             Time = time;
             Direction = direction;
             Number = number;
-            Writer = null;
+            Writer = new StringBuilder();
             FileName = fileName;
             Status = ParsedStatus.None;
             WriteToFile = true;
