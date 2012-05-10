@@ -73,7 +73,7 @@ namespace WowPacketParser.Parsing
             return handlers;
         }
 
-        private static Dictionary<int, Action<Packet>> Handlers = LoadHandlers();
+        private static readonly Dictionary<int, Action<Packet>> Handlers = LoadHandlers();
 
         public static void WriteToFile(IEnumerable<Packet> packets, string file)
         {

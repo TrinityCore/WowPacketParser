@@ -6,7 +6,9 @@ using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.SQL;
 using WowPacketParser.Saving;
+using WowPacketParser.Store;
 
 namespace WowPacketParser.Loading
 {
@@ -19,8 +21,9 @@ namespace WowPacketParser.Loading
         private readonly DumpFormatType _dumpFormat;
         private readonly string _logPrefix;
         private readonly bool _splitOutput;
+        private readonly SQLOutputFlags _sqlOutput;
 
-        public SniffFile(string fileName, DumpFormatType dumpFormat = DumpFormatType.Text, bool splitOutput = false, Tuple<int, int> number = null)
+        public SniffFile(string fileName, DumpFormatType dumpFormat = DumpFormatType.Text, bool splitOutput = false, Tuple<int, int> number = null, SQLOutputFlags sqlOutput = SQLOutputFlags.None)
         {
             if (string.IsNullOrWhiteSpace(fileName))
                 throw new ArgumentException("fileName cannot be null, empty or whitespace.", "fileName");
@@ -30,6 +33,7 @@ namespace WowPacketParser.Loading
             _fileName = fileName;
             _splitOutput = splitOutput;
             _dumpFormat = dumpFormat;
+            _sqlOutput = sqlOutput;
 
             _outFileName = Path.ChangeExtension(fileName, null) + "_parsed.txt";
 
@@ -55,6 +59,9 @@ namespace WowPacketParser.Loading
 
                     ReadPackets();
                     ParsePackets();
+
+                    if (_sqlOutput != SQLOutputFlags.None)
+                        WriteSQLs();
                     
                     break;
                 }
@@ -139,6 +146,19 @@ namespace WowPacketParser.Loading
                 Trace.WriteLine(ex.Message);
                 Trace.WriteLine(ex.StackTrace);
             }
+        }
+
+        private void WriteSQLs()
+        {
+            string sqlFileName;
+            if (String.IsNullOrWhiteSpace(Settings.SQLFileName))
+                sqlFileName = string.Format("{0}_{1}.sql",
+                    Utilities.FormattedDateTimeForFiles(), Path.GetFileName(_fileName));
+            else
+                sqlFileName = Settings.SQLFileName;
+
+            Builder.DumpSQL(string.Format("{0}: Dumping sql", _logPrefix), sqlFileName, _sqlOutput);
+            Storage.ClearContainers();
         }
     }
 }

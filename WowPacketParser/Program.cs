@@ -60,20 +60,7 @@ namespace WowPacketParser
 
             var count = 0;
             foreach (var file in files)
-                new SniffFile(file, Settings.DumpFormat, Settings.SplitOutput, Tuple.Create(++count, files.Count)).ProcessFile();
-
-            if (Settings.SQLOutput != 0)
-            {
-                string sqlFileName;
-                if (!String.IsNullOrWhiteSpace(Settings.SQLFileName))
-                    sqlFileName = Settings.SQLFileName;
-                else if (files.Count == 1)
-                    sqlFileName = string.Format("{0}_{1}.sql", Utilities.FormattedDateTimeForFiles(), Path.GetFileName(files[0]));
-                else
-                    sqlFileName = string.Format("{0}_multi_files.sql", Utilities.FormattedDateTimeForFiles());
-
-                Builder.DumpSQL("Dumping global sql", sqlFileName, Settings.SQLOutput);
-            }
+                new SniffFile(file, Settings.DumpFormat, Settings.SplitOutput, Tuple.Create(++count, files.Count), Settings.SQLOutput).ProcessFile();
 
             SQLConnector.Disconnect();
             SSHTunnel.Disconnect();

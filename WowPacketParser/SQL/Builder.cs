@@ -86,8 +86,6 @@ namespace WowPacketParser.SQL
                                     ? String.Format("{0}: Saved file to '{1}'", prefix, fileName)
                                     : "No SQL files created -- empty.");
             }
-
-            Storage.ClearContainers();
         }
     }
 }

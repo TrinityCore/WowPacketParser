@@ -13,8 +13,6 @@ namespace WowPacketParser.Store
     {
         public static void ClearContainers()
         {
-            Utilities.GetMemUse("Before ClearContainers()", true);
-
             SniffData dummy;
             while (!SniffData.IsEmpty)
                 SniffData.TryTake(out dummy);
@@ -49,8 +47,6 @@ namespace WowPacketParser.Store
             CreatureTexts.Clear();
             Emotes.Clear();
             Sounds.Clear();
-
-            Utilities.GetMemUse("After ClearContainers()", true);
         }
 
         // Stores opcodes read, npc/GOs/spell/item/etc IDs found in sniffs
