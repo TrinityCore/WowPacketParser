@@ -420,6 +420,7 @@
     <Compile Include="Store\Objects\StartSpell.cs" />
     <Compile Include="Store\Objects\TrainerSpell.cs" />
     <Compile Include="Store\Objects\Unit.cs" />
+    <Compile Include="Store\Objects\UnitGossip.cs" />
     <Compile Include="Store\Objects\UnitTemplate.cs" />
     <Compile Include="Store\Objects\VendorItem.cs" />
     <Compile Include="Store\Objects\WoWObject.cs" />

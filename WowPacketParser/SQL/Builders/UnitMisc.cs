@@ -305,17 +305,10 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows, 2).Build();
         }
 
-        // TODO: Re-write Gossip()
-        [Obsolete("This is *stupid*, I'll do it in a better way later")]
-        [DBTableName("creature_template")]
-        private struct UnitGossip
-        {
-            [DBFieldName("gossip_menu_id")]
-            public uint GossipId;
-        }
-
         public static string Gossip()
         {
+            // TODO: This should be rewritten
+
             if (Storage.Gossips.IsEmpty)
                 return String.Empty;
 
@@ -327,9 +320,7 @@ namespace WowPacketParser.SQL.Builders
                 // no support for entries with multiple gossips (i.e changed by script)
                 if (gossipIds.ContainsKey(gossip.Value.ObjectEntry)) continue;
 
-                UnitGossip a;
-                a.GossipId = gossip.Key.Item1;
-                gossipIds.Add(gossip.Value.ObjectEntry, a);
+                gossipIds.Add(gossip.Value.ObjectEntry, new UnitGossip {GossipId = gossip.Key.Item1});
             }
 
             var entries = gossipIds.Keys.ToList();
