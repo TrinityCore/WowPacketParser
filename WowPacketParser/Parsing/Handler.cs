@@ -111,7 +111,7 @@ namespace WowPacketParser.Parsing
                 }
                 catch (Exception ex)
                 {
-                    packet.WriteLine(ex.GetType());
+                    packet.WriteLine(ex.GetType().ToString());
                     packet.WriteLine(ex.Message);
                     packet.WriteLine(ex.StackTrace);
 

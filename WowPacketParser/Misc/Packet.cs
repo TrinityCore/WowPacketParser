@@ -36,7 +36,7 @@ namespace WowPacketParser.Misc
             Time = time;
             Direction = direction;
             Number = number;
-            Writer = new StringBuilder();
+            Writer = null;
             FileName = fileName;
             Status = ParsedStatus.None;
             WriteToFile = true;
@@ -131,31 +131,41 @@ namespace WowPacketParser.Misc
 
         public void Write(string value)
         {
+            if (Writer == null)
+                Writer = new StringBuilder();
+
             Writer.Append(value);
         }
 
         public void Write(string format, params object[] args)
         {
+            if (Writer == null)
+                Writer = new StringBuilder();
+
             Writer.AppendFormat(format, args);
         }
 
         public void WriteLine()
         {
+            if (Writer == null)
+                Writer = new StringBuilder();
+
             Writer.AppendLine();
         }
 
         public void WriteLine(string value)
         {
-            Writer.AppendLine(value);
-        }
+            if (Writer == null)
+                Writer = new StringBuilder();
 
-        public void WriteLine(object value)
-        {
-            Writer.AppendLine(value.ToString());
+            Writer.AppendLine(value);
         }
 
         public void WriteLine(string format, params object[] args)
         {
+            if (Writer == null)
+                Writer = new StringBuilder();
+
             Writer.AppendLine(string.Format(format, args));
         }
 
