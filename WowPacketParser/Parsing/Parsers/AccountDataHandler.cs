@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
@@ -52,7 +53,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Account Data: ");
 
             foreach (var b in data)
-                packet.Write((char)b);
+                packet.Write(b.ToString(CultureInfo.InvariantCulture));
 
             packet.WriteLine();
         }

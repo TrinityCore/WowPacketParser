@@ -15,7 +15,7 @@ namespace WowPacketParser.Misc
         private static readonly bool SniffDataOpcodes = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffDataOpcodes);
 
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
-        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringWriter writer, string fileName)
+        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringBuilder writer, string fileName)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
             Opcode = opcode;
@@ -46,7 +46,7 @@ namespace WowPacketParser.Misc
         public DateTime Time { get; private set; }
         public Direction Direction { get; private set; }
         public int Number { get; private set; }
-        public StringWriter Writer { get; private set; }
+        public StringBuilder Writer { get; private set; }
         public string FileName { get; private set; }
         public ParsedStatus Status { get; set; }
         public bool WriteToFile { get; private set; }
@@ -129,51 +129,40 @@ namespace WowPacketParser.Misc
             return Position != Length;
         }
 
-        public void Write(object format, params object[] args)
+        public void Write(string value)
         {
-            if (Writer == null)
-                Writer = new StringWriter();
+            Writer.Append(value);
+        }
 
-            var str = string.Format(format.ToString(), args);
-            Writer.Write(str);
+        public void Write(string format, params object[] args)
+        {
+            Writer.AppendFormat(format, args);
         }
 
         public void WriteLine()
         {
-            if (Writer == null)
-                Writer = new StringWriter();
-
-            Writer.WriteLine();
+            Writer.AppendLine();
         }
 
         public void WriteLine(string value)
         {
-            if (Writer == null)
-                Writer = new StringWriter();
-
-            Writer.WriteLine(value);
+            Writer.AppendLine(value);
         }
 
         public void WriteLine(object value)
         {
-            if (Writer == null)
-                Writer = new StringWriter();
-
-            Writer.WriteLine(value);
+            Writer.AppendLine(value.ToString());
         }
 
         public void WriteLine(string format, params object[] args)
         {
-            if (Writer == null)
-                Writer = new StringWriter();
-
-            Writer.WriteLine(string.Format(format, args));
+            Writer.AppendLine(string.Format(format, args));
         }
 
         public void ClosePacket()
         {
             if (Writer != null)
-                Writer.Close();
+                Writer.Clear();
 
             if (BaseStream != null)
                 BaseStream.Close();

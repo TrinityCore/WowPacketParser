@@ -1,3 +1,4 @@
+using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
@@ -72,7 +73,7 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.Write("[{0}] Public Key: ", i);
 
                         foreach (var t in pubKey)
-                            packet.Write(t);
+                            packet.Write(t.ToString(CultureInfo.InvariantCulture));
                     }
 
                     packet.ReadInt32("Unk Int32", i);

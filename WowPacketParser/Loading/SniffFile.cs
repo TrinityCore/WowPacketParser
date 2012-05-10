@@ -102,22 +102,25 @@ namespace WowPacketParser.Loading
                 _stats.SetStartTime(DateTime.Now);
                 foreach (var packet in _packets)
                 {
+                    // Parse the packet, adding text to Writer and stuff to the stores
                     Handler.Parse(packet);
+
+                    // Update statistics
                     _stats.AddByStatus(packet.Status);
+
+                    // Write to file
                     writer.WriteLine(packet.Writer);
                     writer.Flush();
-                    packet.Writer.Close();
+
+                    // Close Writer, Stream - Dispose
+                    packet.ClosePacket();
                 }
                 _stats.SetEndTime(DateTime.Now);
             }
+            _packets.Clear();
 
             Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", _logPrefix, _outFileName));
             Trace.WriteLine(string.Format("{0}: {1}", _logPrefix, _stats));
-
-            foreach (var packet in _packets)
-                packet.ClosePacket();
-
-            _packets.Clear();
         }
 
         private void SplitBinaryDump()

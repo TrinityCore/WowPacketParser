@@ -1183,9 +1183,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var data = pkt.ReadBytes(size - 2);
 
                     using (var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer, packet.FileName))
-                    {
                         Handler.Parse(newPacket, true);
-                    }
                 }
             }
 
