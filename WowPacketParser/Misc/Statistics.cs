@@ -22,6 +22,13 @@ namespace WowPacketParser.Misc
         private DateTime _endTime;
 
         /// <summary>
+        /// Initialized a new instance of Statistics.
+        /// </summary>
+        public Statistics()
+        {
+        }
+
+        /// <summary>
         /// Initializes a new instance of Statistics.
         /// </summary>
         /// <param name="packetCount">The expected total number of packets. Must be higher than zero.
@@ -99,6 +106,28 @@ namespace WowPacketParser.Misc
         }
 
         /// <summary>
+        /// Increment respective count
+        /// </summary>
+        /// <param name="status">Parsing status</param>
+        public void AddByStatus(ParsedStatus status)
+        {
+            switch (status)
+            {
+                case ParsedStatus.None:
+                    break;
+                case ParsedStatus.Success:
+                    AddSucess();
+                    break;
+                case ParsedStatus.WithErrors:
+                    AddWithErrors();
+                    break;
+                case ParsedStatus.NotParsed:
+                    AddNotParsed();
+                    break;
+            }
+        }
+
+        /// <summary>
         /// Sucessfully parsed packets percentage. [0-100]
         /// </summary>
         /// <returns></returns>
@@ -170,7 +199,7 @@ namespace WowPacketParser.Misc
                 .Append("with errors and skipped ")
                 .Append(NotParsedPacketCount)
                 .Append(" (").AppendFormat("{0:F3}", GetNotParsedPercentage()).Append("%) ")
-                .Append(" (total: ").Append(TotalPacketCount).Append(")");
+                .Append(" (total: ").Append(CalculatedTotalPacketCount).Append(")");
 
             if (parsingTime.Milliseconds != 0)
                 sb.Append("in ").Append(parsingTime.ToFormattedString());

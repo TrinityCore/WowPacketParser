@@ -21,6 +21,13 @@ namespace WowPacketParser.Tests.Misc
             Assert.AreEqual(0, stats.SucessPacketCount);
             Assert.AreEqual(0, stats.WithErrorsPacketCount);
             Assert.AreEqual(0, stats.NotParsedPacketCount);
+
+            var stats2 = new Statistics();
+            Assert.AreEqual(0, stats2.TotalPacketCount);
+            Assert.AreEqual(0, stats2.CalculatedTotalPacketCount);
+            Assert.AreEqual(0, stats2.SucessPacketCount);
+            Assert.AreEqual(0, stats2.WithErrorsPacketCount);
+            Assert.AreEqual(0, stats2.NotParsedPacketCount);
         }
 
         [Test]
@@ -38,6 +45,27 @@ namespace WowPacketParser.Tests.Misc
             Assert.AreEqual(2, stats.WithErrorsPacketCount);
             Assert.AreEqual(1, stats.NotParsedPacketCount);
             Assert.AreEqual(stats.TotalPacketCount, stats.CalculatedTotalPacketCount);
+        }
+
+        [Test]
+        public void TestAddByStatus()
+        {
+            var packet1 = new Packet(new byte[] { 1, 2 }, 1, DateTime.Now, Direction.ClientToServer, 1, "test.bin");
+            var packet2 = new Packet(new byte[] { 1, 2 }, 1, DateTime.Now, Direction.ClientToServer, 2, "test.bin");
+            var packet3 = new Packet(new byte[] { 1, 2 }, 1, DateTime.Now, Direction.ClientToServer, 3, "test.bin");
+
+            packet1.Status = ParsedStatus.Success;
+            packet2.Status = ParsedStatus.NotParsed;
+
+            var stats = new Statistics();
+            stats.AddByStatus(packet1.Status);
+            stats.AddByStatus(packet2.Status);
+            stats.AddByStatus(packet3.Status);
+
+            Assert.AreEqual(1, stats.SucessPacketCount);
+            Assert.AreEqual(0, stats.WithErrorsPacketCount);
+            Assert.AreEqual(1, stats.NotParsedPacketCount);
+            Assert.AreEqual(2, stats.CalculatedTotalPacketCount);
         }
 
         [Test]
