@@ -79,7 +79,9 @@ namespace WowPacketParser.Misc
 
         public bool Remove(KeyValuePair<TFirst, TSecond> item)
         {
-            return _firstToSecond.Remove(item);
+            var invertedPair = new KeyValuePair<TSecond, TFirst>(item.Value, item.Key);
+
+            return _firstToSecond.Remove(item) && _secondToFirst.Remove(invertedPair);
         }
 
         public int Count
