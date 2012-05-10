@@ -206,20 +206,18 @@ namespace WowPacketParser.Misc
         {
             var oldVal = _firstToSecond[key];
 
+            if (!typeof(TSecond).IsValueType && oldVal == null)
+                return;
+
             _firstToSecond[key] = value;
 
-            _secondToFirst.Remove(oldVal);
-            _secondToFirst.Add(value, key);
+            if (_secondToFirst.Remove(oldVal))
+                _secondToFirst.Add(value, key);
         }
 
         public void SetBySecond(TSecond key, TFirst value)
         {
-            var oldVal = _secondToFirst[key];
-
-            _secondToFirst[key] = value;
-
-            _firstToSecond.Remove(oldVal);
-            _firstToSecond.Add(value, key);
+            SetByFirst(value, key);
         }
 
         public IEnumerator<KeyValuePair<TFirst, TSecond>> GetEnumerator()

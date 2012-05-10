@@ -175,10 +175,9 @@ namespace WowPacketParser.Misc
             if (Writer != null)
                 Writer.Close();
 
-// ReSharper disable ConditionIsAlwaysTrueOrFalse (/slap R#)
             if (BaseStream != null)
-// ReSharper restore ConditionIsAlwaysTrueOrFalse
                 BaseStream.Close();
+
             Dispose(true);
         }
     }

@@ -202,7 +202,7 @@ namespace WowPacketParser.Misc
                 .Append(" (total: ").Append(CalculatedTotalPacketCount).Append(")");
 
             if (parsingTime.Milliseconds != 0)
-                sb.Append("in ").Append(parsingTime.ToFormattedString());
+                sb.Append(" in ").Append(parsingTime.ToFormattedString());
 
             return sb.ToString();
         }

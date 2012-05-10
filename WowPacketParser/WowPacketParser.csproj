@@ -69,7 +69,7 @@
     <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <CodeAnalysisRuleSet>BasicDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>BasicCorrectnessRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -263,7 +263,6 @@
     <Compile Include="Enums\SplineMode.cs" />
     <Compile Include="Enums\SplineType.cs" />
     <Compile Include="Enums\SQLOutputFlags.cs" />
-    <Compile Include="Enums\StatsOutputFlags.cs" />
     <Compile Include="Enums\StatType.cs" />
     <Compile Include="Enums\StoreNameType.cs" />
     <Compile Include="Enums\TargetFlag.cs" />
@@ -324,6 +323,7 @@
     <Compile Include="Misc\MovementInfo.cs" />
     <Compile Include="Misc\Packet.cs" />
     <Compile Include="Misc\PacketReads.cs" />
+    <Compile Include="Loading\SniffFile.cs" />
     <Compile Include="Misc\Statistics.cs" />
     <Compile Include="Misc\Quaternion.cs" />
     <Compile Include="Misc\Settings.cs" />

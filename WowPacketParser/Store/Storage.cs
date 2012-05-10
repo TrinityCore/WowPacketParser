@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects;
@@ -9,6 +11,48 @@ namespace WowPacketParser.Store
 {
     public static class Storage
     {
+        public static void ClearContainers()
+        {
+            Utilities.GetMemUse("Before ClearContainers()", true);
+
+            SniffData dummy;
+            while (!SniffData.IsEmpty)
+                SniffData.TryTake(out dummy);
+
+            Objects.Clear();
+
+            GameObjectTemplates.Clear();
+            ItemTemplates.Clear();
+            QuestTemplates.Clear();
+            UnitTemplates.Clear();
+
+            NpcTrainers.Clear();
+            NpcVendors.Clear();
+
+            PageTexts.Clear();
+            NpcTexts.Clear();
+
+            SpellsX.Clear();
+
+            StartActions.Clear();
+            StartSpells.Clear();
+            StartPositions.Clear();
+
+            Gossips.Clear();
+            
+            Loots.Clear();
+            
+            QuestPOIs.Clear();
+            
+            ObjectNames.Clear();
+
+            CreatureTexts.Clear();
+            Emotes.Clear();
+            Sounds.Clear();
+
+            Utilities.GetMemUse("After ClearContainers()", true);
+        }
+
         // Stores opcodes read, npc/GOs/spell/item/etc IDs found in sniffs
         // and other miscellaneous stuff
         public static readonly ConcurrentBag<SniffData> SniffData =
