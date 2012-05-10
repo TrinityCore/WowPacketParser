@@ -35,12 +35,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependencies\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Misc\BiDictionaryTest.cs" />
     <Compile Include="Misc\ClientVersionTest.cs" />
     <Compile Include="Misc\ConcurrentMultiDictionaryTest.cs" />
+    <Compile Include="Misc\StatisticsTest.cs" />
     <Compile Include="Misc\UtilitiesTest.cs" />
     <Compile Include="Misc\Vector2Test.cs" />
     <Compile Include="Misc\Vector3Test.cs" />

@@ -324,6 +324,7 @@
     <Compile Include="Misc\MovementInfo.cs" />
     <Compile Include="Misc\Packet.cs" />
     <Compile Include="Misc\PacketReads.cs" />
+    <Compile Include="Misc\Statistics.cs" />
     <Compile Include="Misc\Quaternion.cs" />
     <Compile Include="Misc\Settings.cs" />
     <Compile Include="Misc\StoreGetters.cs" />
