@@ -115,7 +115,7 @@ namespace WowPacketParser.Parsing.Parsers
             var bytes = packet.ReadBytes((int)remainingLength);
 
             using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
-                Handler.Parse(newpacket, isMultiple: true);
+                Handler.Parse(newpacket, true);
         }
 
         [Parser(Opcode.CMSG_AUTOSTORE_LOOT_ITEM)]

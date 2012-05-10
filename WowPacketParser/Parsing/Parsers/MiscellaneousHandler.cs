@@ -92,7 +92,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.Write("[{0}] ", i++);
 
                 using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
-                    Handler.Parse(newpacket, isMultiple: true);
+                    Handler.Parse(newpacket, true);
                 //newpacket.DisposePacket();
             }
             packet.WriteLine("}");

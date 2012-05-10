@@ -95,18 +95,23 @@ namespace WowPacketParser.Loading
             Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Assumed version {2}",
                 _logPrefix, _packets.Count, ClientVersion.VersionString));
 
-            _stats.SetStartTime(DateTime.Now);
-            foreach (var packet in _packets)
+            File.Delete(_outFileName);
+
+            using (var writer = new StreamWriter(_outFileName, true))
             {
-                Handler.Parse(packet);
-                _stats.AddByStatus(packet.Status);
+                _stats.SetStartTime(DateTime.Now);
+                foreach (var packet in _packets)
+                {
+                    Handler.Parse(packet);
+                    _stats.AddByStatus(packet.Status);
+                    writer.WriteLine(packet.Writer);
+                    writer.Flush();
+                    packet.Writer.Close();
+                }
+                _stats.SetEndTime(DateTime.Now);
             }
-            _stats.SetEndTime(DateTime.Now);
 
             Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", _logPrefix, _outFileName));
-
-            Handler.WriteToFile(_packets, _outFileName);
-
             Trace.WriteLine(string.Format("{0}: {1}", _logPrefix, _stats));
 
             foreach (var packet in _packets)
