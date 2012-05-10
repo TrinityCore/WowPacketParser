@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using WowPacketParser.Enums;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
-using Builder = WowPacketParser.SQL.Builder;
 
 namespace WowPacketParser
 {
@@ -16,7 +15,7 @@ namespace WowPacketParser
     {
         private static void Main(string[] args)
         {
-            Utilities.SetUpListeners();
+            SetUpConsole();
 
             var files = args.ToList();
             if (files.Count == 0)
@@ -88,6 +87,27 @@ namespace WowPacketParser
             Console.WriteLine("/Option1 value1 - override Option1 setting from config file with value1.");
             Console.WriteLine("Configuration: Modify WowPacketParser.exe.config file.");
             EndPrompt(true);
+        }
+
+        private static void SetUpConsole()
+        {
+            Console.Title = "WowPacketParser";
+
+            Trace.Listeners.Clear();
+
+            using (var consoleListener = new ConsoleTraceListener(true))
+                Trace.Listeners.Add(consoleListener);
+
+            if (Settings.ParsingLog)
+            {
+                using (var fileListener = new TextWriterTraceListener(String.Format("{0}_log.txt", Utilities.FormattedDateTimeForFiles())))
+                {
+                    fileListener.Name = "ConsoleMirror";
+                    Trace.Listeners.Add(fileListener);
+                }
+            }
+
+            Trace.AutoFlush = true;
         }
     }
 }

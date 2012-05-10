@@ -114,25 +114,6 @@ namespace WowPacketParser.Misc
                 GC.GetTotalMemory(true) / bytes, process.PrivateMemorySize64 / bytes, prefix, bytesstr));
         }
 
-        public static void SetUpListeners()
-        {
-            Trace.Listeners.Clear();
-
-            using (var consoleListener = new ConsoleTraceListener(true))
-                Trace.Listeners.Add(consoleListener);
-
-            if (Settings.ParsingLog)
-            {
-                using (var fileListener = new TextWriterTraceListener(String.Format("{0}_log.txt", FormattedDateTimeForFiles())))
-                {
-                    fileListener.Name = "ConsoleMirror";
-                    Trace.Listeners.Add(fileListener);
-                }
-            }
-
-            Trace.AutoFlush = true;
-        }
-
         public static void RemoveConfigOptions(ref List<string> files)
         {
             for (var i = 0; i < files.Count - 1; ++i)
