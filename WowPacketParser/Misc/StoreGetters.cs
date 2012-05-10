@@ -7,6 +7,8 @@ namespace WowPacketParser.Misc
 {
     public static class StoreGetters
     {
+        public static BiDictionary<Guid, string> NameDict = new BiDictionary<Guid, string>();
+
         public static string GetName(StoreNameType type, int entry, bool withEntry = true)
         {
             if (!SQLConnector.Enabled)
@@ -31,6 +33,27 @@ namespace WowPacketParser.Misc
             }
 
             return entry.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public static void AddName(Guid guid, string name)
+        {
+            if (NameDict.ContainsKey(guid))
+                return;
+
+            NameDict.Add(guid, name);
+        }
+
+        public static string GetName(Guid guid)
+        {
+            string name;
+
+            if (!NameDict.ContainsKey(guid))
+                return null;
+
+            if (NameDict.TryGetValue(guid, out name))
+                return name;
+
+            return null;
         }
     }
 }

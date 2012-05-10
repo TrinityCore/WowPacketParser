@@ -76,10 +76,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < size; i++)
             {
-                packet.ReadGuid("GUID", i);
+                var guid = packet.ReadGuid("GUID", i);
                 var online = packet.ReadBoolean("Online", i);
-
-                packet.ReadCString("Name", i);
+                var name = packet.ReadCString("Name", i);
+                StoreGetters.AddName(guid, name);
                 packet.ReadUInt32("Rank Id", i);
                 packet.ReadByte("Level", i);
                 packet.ReadByte("Class", i);

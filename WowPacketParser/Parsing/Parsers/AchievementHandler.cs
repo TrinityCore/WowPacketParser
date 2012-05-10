@@ -15,8 +15,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SERVER_FIRST_ACHIEVEMENT)]
         public static void HandleServerFirstAchievement(Packet packet)
         {
-            packet.ReadCString("Player Name");
-            packet.ReadGuid("Player GUID");
+            var name = packet.ReadCString("Player Name");
+            var guid = packet.ReadGuid("Player GUID");
+            StoreGetters.NameDict.Add(guid, name);
             packet.ReadInt32("Achievement");
             packet.ReadInt32("Linked Name");
         }

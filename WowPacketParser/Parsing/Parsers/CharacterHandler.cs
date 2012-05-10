@@ -56,8 +56,9 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.ReadEnum<ResponseCode>("Race", TypeCode.Byte) != ResponseCode.RESPONSE_SUCCESS)
                 return;
 
-            packet.ReadGuid("GUID");
-            packet.ReadCString("Name");
+            var guid = packet.ReadGuid("GUID");
+            var name = packet.ReadCString("Name");
+            StoreGetters.NameDict.Add(guid, name);
         }
 
         [Parser(Opcode.SMSG_CHAR_CREATE)]
@@ -102,8 +103,11 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.ReadEnum<ResponseCode>("Response", TypeCode.Byte) != ResponseCode.RESPONSE_SUCCESS)
                 return;
 
-            packet.ReadGuid("GUID");
-            packet.ReadCString("Name");
+            var guid = packet.ReadGuid("GUID");
+            var name = packet.ReadCString("Name");
+
+            StoreGetters.NameDict.Add(guid, name);
+
             packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
             packet.ReadByte("Skin");
             packet.ReadByte("Face");
@@ -121,6 +125,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var guid = packet.ReadGuid("GUID");
                 var name = packet.ReadCString("Name");
+                StoreGetters.AddName(guid, name);
                 var race = packet.ReadEnum<Race>("Race", TypeCode.Byte);
                 var clss = packet.ReadEnum<Class>("Class", TypeCode.Byte);
                 packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
