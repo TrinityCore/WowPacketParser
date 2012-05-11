@@ -44,7 +44,8 @@ namespace WowPacketParser.Parsing.Parsers
             else
                 packet.ReadPackedGuid("GUID");
 
-            ReadTalentInfo(ref packet);
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_INSPECT_TALENT))
+                ReadTalentInfo(ref packet);
 
             var slotMask = packet.ReadUInt32("Slot Mask");
             var slot = 0;
