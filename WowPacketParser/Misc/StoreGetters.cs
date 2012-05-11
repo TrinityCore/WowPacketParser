@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.SQL;
@@ -7,7 +8,7 @@ namespace WowPacketParser.Misc
 {
     public static class StoreGetters
     {
-        public static BiDictionary<Guid, string> NameDict = new BiDictionary<Guid, string>();
+        public static Dictionary<Guid, string> NameDict = new Dictionary<Guid, string>();
 
         public static string GetName(StoreNameType type, int entry, bool withEntry = true)
         {

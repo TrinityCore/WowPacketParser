@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -123,9 +124,12 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
             }
 
-            Guid guid;
-            if (StoreGetters.NameDict.TryGetValue(number, out guid))
-                StoreGetters.NameDict.SetByFirst(guid, petName);
+            var guidArray = (from pair in StoreGetters.NameDict where Equals(pair.Value, number) select pair.Key).ToList();
+            foreach (var guid in guidArray)
+            {
+                if (StoreGetters.NameDict.Remove(guid))
+                    StoreGetters.NameDict.Add(guid, petName);
+            }
 
             packet.ReadTime("Time");
             var declined = packet.ReadBoolean("Declined");
