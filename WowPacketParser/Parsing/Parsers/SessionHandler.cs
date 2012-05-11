@@ -252,14 +252,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Unk Byte: " + unkByte);
         }
 
-        [Parser(Opcode.CMSG_PLAYER_LOGIN)]
+        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandlePlayerLogin(Packet packet)
         {
             var guid = packet.ReadGuid("GUID");
             LoginGuid = guid;
         }
 
-        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandlePlayerLogin422(Packet packet)
         {
             var bits = new bool[8];

@@ -663,8 +663,8 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER)]
-        [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER)]
+        [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
+        [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
         public static void HandleSetSpellModifier(Packet packet)
         {
             packet.ReadByte("Spell Mask bitpos");
@@ -672,8 +672,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Amount");
         }
 
-        [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER, ClientVersionBuild.V4_0_6a_13623)]
-        [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, ClientVersionBuild.V4_0_6a_13623)]
+        [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER, ClientVersionBuild.V4_0_6_13596)]
+        [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, ClientVersionBuild.V4_0_6_13596)]
         public static void HandleSetSpellModifierFlat406(Packet packet)
         {
             var modCount = packet.ReadUInt32("Modifier type count");
