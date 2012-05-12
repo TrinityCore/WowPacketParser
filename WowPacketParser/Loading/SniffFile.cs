@@ -59,7 +59,9 @@ namespace WowPacketParser.Loading
 
                     Store.Store.Flags = _sqlOutput;
 
-                    ReadPackets();
+                    if (!ReadPackets())
+                        return;
+
                     ParsePackets();
 
                     if (_sqlOutput != SQLOutputFlags.None)
@@ -71,7 +73,8 @@ namespace WowPacketParser.Loading
                 }
                 case DumpFormatType.Pkt:
                 {
-                    ReadPackets();
+                    if (!ReadPackets())
+                        return;
 
                     if (_splitOutput)
                         SplitBinaryDump();
@@ -88,10 +91,21 @@ namespace WowPacketParser.Loading
             }
         }
 
-        private void ReadPackets()
+        private bool ReadPackets()
         {
             Trace.WriteLine(string.Format("{0}: Reading packets...", _logPrefix));
-            _packets = new LinkedList<Packet>(Reader.Read(_fileName));
+            try
+            {
+                _packets = new LinkedList<Packet>(Reader.Read(_fileName));
+                return true;
+            }
+            catch (IOException ex)
+            {
+                Trace.WriteLine(ex.Message);
+                Trace.WriteLine("Skipped.");
+                return false;
+            }
+            
         }
 
         private void ParsePackets()
