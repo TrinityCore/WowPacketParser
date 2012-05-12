@@ -33,7 +33,7 @@ namespace WowPacketParser.Loading
                     throw new IOException(String.Format("Invalid file type {0}", extension.ToLower()));
             }
 
-            var packets = new List<Packet>();
+            var packets = new LinkedList<Packet>();
             try
             {
                 var packetNum = 0;
@@ -65,7 +65,7 @@ namespace WowPacketParser.Loading
 
                     if (add)
                     {
-                        packets.Add(packet);
+                        packets.AddLast(packet);
                         if (Settings.FilterPacketsNum > 0 && packets.Count == Settings.FilterPacketsNum)
                             break;
                     }

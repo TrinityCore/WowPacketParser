@@ -96,7 +96,7 @@ namespace WowPacketParser.Loading
             Trace.WriteLine(string.Format("{0}: Reading packets...", _logPrefix));
             try
             {
-                _packets = new LinkedList<Packet>(Reader.Read(_fileName));
+                _packets = (LinkedList<Packet>) Reader.Read(_fileName);
                 return true;
             }
             catch (IOException ex)
@@ -105,7 +105,6 @@ namespace WowPacketParser.Loading
                 Trace.WriteLine("Skipped.");
                 return false;
             }
-            
         }
 
         private void ParsePackets()
@@ -146,7 +145,7 @@ namespace WowPacketParser.Loading
             Trace.WriteLine(string.Format("{0}: {1}", _logPrefix, _stats));
         }
 
-        private static int _lastPercent = 0;
+        private static int _lastPercent;
         static void ShowPercentProgress(string message, int currElementIndex, int totalElementCount)
         {
             var percent = (100 * currElementIndex) / totalElementCount;
