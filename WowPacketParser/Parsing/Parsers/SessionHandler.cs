@@ -202,7 +202,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
         }
 
-        [Parser(Opcode.SMSG_AUTH_RESPONSE)]
+        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleAuthResponse(Packet packet)
         {
             var code = (ResponseCode)packet.ReadByte();
@@ -228,6 +228,37 @@ namespace WowPacketParser.Parsing.Parsers
                     break;
                 }
             }
+        }
+        
+        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleAuthResponse434(Packet packet)
+        {
+            var isQueued = packet.ReadBit();
+            var hasAccountInfo = packet.ReadBit();
+
+            if (isQueued)
+            {
+                var unkByte = packet.ReadByte();
+                packet.WriteLine("Unk Byte: " + unkByte);
+
+                var position = packet.ReadInt32();
+                packet.WriteLine("Queue Position: " + position);
+
+                
+            }
+            if (hasAccountInfo) 
+            {
+                packet.ReadInt32("Billing Time Remaining");
+                packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
+                packet.ReadInt32("Unknown UInt32");
+                packet.ReadEnum<ClientType>("Player Expansion", TypeCode.Byte);
+                packet.ReadInt32("Billing Time Rested");
+                packet.ReadEnum<BillingFlag>("Billing Flags", TypeCode.Byte);
+            }
+
+            var code = (ResponseCode)packet.ReadByte();
+            packet.WriteLine("Auth Code: " + code);
+
         }
 
         public static void ReadAuthResponseInfo(ref Packet packet)
@@ -281,7 +312,7 @@ namespace WowPacketParser.Parsing.Parsers
             LoginGuid = guid;
         }
 
-        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_0_15005)]
+        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_3_15354)]
         public static void HandlePlayerLogin430(Packet packet)
         {
             var bits = new bool[8];
@@ -297,6 +328,50 @@ namespace WowPacketParser.Parsing.Parsers
             if (bits[1]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
             if (bits[2]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
             if (bits[0]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
+
+            var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
+            packet.WriteLine("GUID: {0}", guid);
+            LoginGuid = guid;
+        }
+        
+        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandlePlayerLogin433(Packet packet)
+        {
+            var bits = new bool[8];
+            for (var i = 0; i < 8; ++i)
+                bits[i] = packet.ReadBit();
+
+            var bytes = new byte[8];
+            if (bits[5]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[2]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[1]) bytes[7] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[7]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[6]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[0]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[4]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[3]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
+
+            var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
+            packet.WriteLine("GUID: {0}", guid);
+            LoginGuid = guid;
+        }
+
+        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandlePlayerLogin434(Packet packet)
+        {
+            var bits = new bool[8];
+            for (var i = 0; i < 8; ++i)
+                bits[i] = packet.ReadBit();
+
+            var bytes = new byte[8];
+            if (bits[0]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[7]) bytes[7] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[2]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[1]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[5]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[3]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[6]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
+            if (bits[4]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
 
             var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
             packet.WriteLine("GUID: {0}", guid);
