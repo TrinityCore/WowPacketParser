@@ -7,7 +7,6 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -69,7 +68,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 SpellsX spellsCr;
                 spellsCr.Spells = spells.ToArray();
-                Storage.SpellsX.TryAdd(guid.GetEntry(), spellsCr);
+                Storage.SpellsX.Add(guid.GetEntry(), spellsCr, packet.TimeSpan);
             }
 
             var spellCount = packet.ReadByte("Spell Count"); // vehicles -> 0, pets -> != 0. Could this be auras?

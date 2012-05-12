@@ -8,7 +8,7 @@ namespace WowPacketParser.Misc
 {
     public static class StoreGetters
     {
-        public static Dictionary<Guid, string> NameDict = new Dictionary<Guid, string>();
+        public static readonly Dictionary<Guid, string> NameDict = new Dictionary<Guid, string>();
 
         public static string GetName(StoreNameType type, int entry, bool withEntry = true)
         {

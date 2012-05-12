@@ -4,6 +4,7 @@ using System.Data;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
 
 namespace WowPacketParser.SQL
 {
@@ -90,7 +91,7 @@ namespace WowPacketParser.SQL
         /// <param name="entries">List of entries to select from DB</param>
         /// <param name="primaryKeyName"> </param>
         /// <returns>Dictionary of structs of type TK</returns>
-        public static Dictionary<T, TK> GetDict<T, TK>(List<T> entries, string primaryKeyName = "entry")
+        public static StoreDictionary<T, TK> GetDict<T, TK>(List<T> entries, string primaryKeyName = "entry")
         {
             if (entries.Count == 0)
                 return null;
@@ -189,7 +190,7 @@ namespace WowPacketParser.SQL
                 }
             }
 
-            return dict;
+            return new StoreDictionary<T, TK>(dict);
         }
     }
 }

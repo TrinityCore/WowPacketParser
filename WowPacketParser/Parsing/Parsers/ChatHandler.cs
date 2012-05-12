@@ -42,7 +42,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadGuid("GUID");
 
             if (guid.GetObjectType() == ObjectType.Unit)
-                Storage.Emotes.TryAdd(guid.GetEntry(), Tuple.Create(emote, packet.Time));
+                Storage.Emotes.Add(guid, emote, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_TEXT_EMOTE)]
@@ -186,7 +186,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Achievement ID");
 
             if (entry != 0)
-                Storage.CreatureTexts.TryAdd(entry, Tuple.Create(text, packet.Time));
+                Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT)]

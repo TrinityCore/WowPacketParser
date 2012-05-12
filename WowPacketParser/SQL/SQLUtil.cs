@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
 
 namespace WowPacketParser.SQL
 {
@@ -136,7 +137,7 @@ namespace WowPacketParser.SQL
         /// <param name="storeType">Are we dealing with Spells, Quests, Units, ...?</param>
         /// <param name="primaryKeyName">The name of the primary key, usually "entry"</param>
         /// <returns>A string containing full SQL queries</returns>
-        public static string CompareDicts<T, TK>(IDictionary<T, TK> dict1, IDictionary<T, TK> dict2, StoreNameType storeType, string primaryKeyName = "entry")
+        public static string CompareDicts<T, TK>(StoreDictionary<T, TK> dict1, StoreDictionary<T, TK> dict2, StoreNameType storeType, string primaryKeyName = "entry")
         {
             var tableAttrs = (DBTableNameAttribute[])typeof(TK).GetCustomAttributes(typeof(DBTableNameAttribute), false);
             if (tableAttrs.Length <= 0)
@@ -160,8 +161,8 @@ namespace WowPacketParser.SQL
                     {
                         var elem2 = dict2[elem1.Key];
 
-                        var val1 = field.Item1.GetValue(elem1.Value);
-                        var val2 = field.Item1.GetValue(elem2);
+                        var val1 = field.Item1.GetValue(elem1.Value.Item1);
+                        var val2 = field.Item1.GetValue(elem2.Item1);
 
                         var arr1 = val1 as Array;
                         if (arr1 != null)
@@ -205,14 +206,14 @@ namespace WowPacketParser.SQL
                     {
                         if (field.Item1.FieldType.BaseType == typeof(Array))
                         {
-                            var arr = (Array)field.Item1.GetValue(elem1.Value);
+                            var arr = (Array)field.Item1.GetValue(elem1.Value.Item1);
                             for (var i = 0; i < arr.Length; i++)
                                 row.AddValue(field.Item2.Name + (field.Item2.StartAtZero ? i : i + 1), arr.GetValue(i));
 
                             continue;
                         }
 
-                        row.AddValue(field.Item2.Name, field.Item1.GetValue(elem1.Value));
+                        row.AddValue(field.Item2.Name, field.Item1.GetValue(elem1.Value.Item1));
                     }
                     rowsIns.Add(row);
                 }

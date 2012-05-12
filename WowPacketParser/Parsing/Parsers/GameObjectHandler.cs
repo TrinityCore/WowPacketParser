@@ -53,14 +53,14 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.GameObject, entry.Key, "QUERY_RESPONSE");
 
-            Storage.GameObjectTemplates.TryAdd((uint) entry.Key, gameObject);
+            Storage.GameObjectTemplates.Add((uint) entry.Key, gameObject, packet.TimeSpan);
 
             var objectName = new ObjectName
             {
                 ObjectType = ObjectType.GameObject,
                 Name = gameObject.Name,
             };
-            Storage.ObjectNames.TryAdd((uint)entry.Key, objectName);
+            Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_DESTRUCTIBLE_BUILDING_DAMAGE)]

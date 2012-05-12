@@ -83,6 +83,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PowerCollections, Version=1.0.2141.24679, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\PowerCollections.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -391,7 +395,7 @@
     <Compile Include="SQL\QueryBuilder.cs" />
     <Compile Include="SQL\SQLConnector.cs" />
     <Compile Include="SQL\SQLDatabase.cs" />
-    <Compile Include="SQL\SQLStore.cs" />
+    <Compile Include="SQL\SQLFile.cs" />
     <Compile Include="SQL\SQLUtil.cs" />
     <Compile Include="SQL\SSHTunnel.cs" />
     <Compile Include="Store\Objects\Aura.cs" />
@@ -425,6 +429,7 @@
     <Compile Include="Store\Objects\VendorItem.cs" />
     <Compile Include="Store\Objects\WoWObject.cs" />
     <Compile Include="Store\Storage.cs" />
+    <Compile Include="Store\StoreDictionaries.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

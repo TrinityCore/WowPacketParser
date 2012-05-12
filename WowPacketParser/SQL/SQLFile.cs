@@ -5,19 +5,19 @@ using System.Linq;
 
 namespace WowPacketParser.SQL
 {
-    public class SQLStore : IDisposable
+    public class SQLFile : IDisposable
     {
         private StreamWriter _file;
 
         private readonly List<string> _sqls = new List<string>();
 
-        public SQLStore(string file)
+        public SQLFile(string file)
         {
             File.Delete(file);
             _file = new StreamWriter(file, true);
         }
 
-        ~SQLStore()
+        ~SQLFile()
         {
             Dispose(false);
         }

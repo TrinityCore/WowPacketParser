@@ -10,7 +10,7 @@ namespace WowPacketParser.SQL.Builders
     {
         public static string QuestPOI()
         {
-            if (Storage.QuestPOIs.IsEmpty)
+            if (Storage.QuestPOIs.IsEmpty())
                 return String.Empty;
 
             const string tableName1 = "quest_poi";
@@ -20,16 +20,18 @@ namespace WowPacketParser.SQL.Builders
             var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var quest in Storage.QuestPOIs)
             {
+                var questPOI = quest.Value.Item1;
+
                 var row = new QueryBuilder.SQLInsertRow();
 
                 row.AddValue("questId", quest.Key.Item1);
                 row.AddValue("id", quest.Key.Item2);
-                row.AddValue("objIndex", quest.Value.ObjectiveIndex);
-                row.AddValue("mapid", quest.Value.Map);
-                row.AddValue("WorldMapAreaId", quest.Value.WorldMapAreaId);
-                row.AddValue("FloorId", quest.Value.FloorId);
-                row.AddValue("unk3", quest.Value.UnkInt1);
-                row.AddValue("unk4", quest.Value.UnkInt2);
+                row.AddValue("objIndex", questPOI.ObjectiveIndex);
+                row.AddValue("mapid", questPOI.Map);
+                row.AddValue("WorldMapAreaId", questPOI.WorldMapAreaId);
+                row.AddValue("FloorId", questPOI.FloorId);
+                row.AddValue("unk3", questPOI.UnkInt1);
+                row.AddValue("unk4", questPOI.UnkInt2);
                 row.Comment = StoreGetters.GetName(StoreNameType.Quest, (int)quest.Key.Item1, false);
 
                 rows.Add(row);
@@ -41,8 +43,10 @@ namespace WowPacketParser.SQL.Builders
             rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var quest in Storage.QuestPOIs)
             {
-                if (quest.Value.Points != null) // Needed?
-                    foreach (var point in quest.Value.Points)
+                var questPOI = quest.Value.Item1;
+
+                if (questPOI.Points != null) // Needed?
+                    foreach (var point in questPOI.Points)
                     {
                         var row = new QueryBuilder.SQLInsertRow();
 

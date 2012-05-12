@@ -124,12 +124,12 @@ namespace WowPacketParser.Parsing.Parsers
                 if (Storage.Objects.TryGetValue(guid, out item))
                     if (item.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out itemEntry))
                     {
-                        Storage.Loots.TryAdd(new Tuple<uint, ObjectType>(itemEntry.UInt32Value, guid.GetObjectType()), loot);
+                        Storage.Loots.Add(new Tuple<uint, ObjectType>(itemEntry.UInt32Value, guid.GetObjectType()), loot, packet.TimeSpan);
                         return;
                     }
             }
 
-            Storage.Loots.TryAdd(new Tuple<uint, ObjectType>(guid.GetEntry(), guid.GetObjectType()), loot);
+            Storage.Loots.Add(new Tuple<uint, ObjectType>(guid.GetEntry(), guid.GetObjectType()), loot, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_LOOT_ROLL)]

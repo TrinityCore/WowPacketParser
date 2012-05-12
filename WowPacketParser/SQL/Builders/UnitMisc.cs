@@ -153,7 +153,7 @@ namespace WowPacketParser.SQL.Builders
 
         public static string NpcTrainer()
         {
-            if (Storage.NpcTrainers.IsEmpty)
+            if (Storage.NpcTrainers.IsEmpty())
                 return String.Empty;
 
             const string tableName = "npc_trainer";
@@ -164,7 +164,7 @@ namespace WowPacketParser.SQL.Builders
                 var comment = new QueryBuilder.SQLInsertRow();
                 comment.HeaderComment = StoreGetters.GetName(StoreNameType.Unit, (int)npcTrainer.Key, false);
                 rows.Add(comment);
-                foreach (var trainerSpell in npcTrainer.Value.TrainerSpells)
+                foreach (var trainerSpell in npcTrainer.Value.Item1.TrainerSpells)
                 {
                     var row = new QueryBuilder.SQLInsertRow();
                     row.AddValue("entry", npcTrainer.Key);
@@ -183,7 +183,7 @@ namespace WowPacketParser.SQL.Builders
 
         public static string NpcVendor()
         {
-            if (Storage.NpcVendors.IsEmpty)
+            if (Storage.NpcVendors.IsEmpty())
                 return String.Empty;
 
             const string tableName = "npc_vendor";
@@ -194,7 +194,7 @@ namespace WowPacketParser.SQL.Builders
                 var comment = new QueryBuilder.SQLInsertRow();
                 comment.HeaderComment = StoreGetters.GetName(StoreNameType.Unit, (int)npcVendor.Key);
                 rows.Add(comment);
-                foreach (var vendorItem in npcVendor.Value.VendorItems)
+                foreach (var vendorItem in npcVendor.Value.Item1.VendorItems)
                 {
                     var row = new QueryBuilder.SQLInsertRow();
                     row.AddValue("entry", npcVendor.Key);
@@ -275,7 +275,7 @@ namespace WowPacketParser.SQL.Builders
 
         public static string Loot()
         {
-            if (Storage.Loots.IsEmpty)
+            if (Storage.Loots.IsEmpty())
                 return String.Empty;
 
             // Not TDB structure
@@ -286,10 +286,10 @@ namespace WowPacketParser.SQL.Builders
             {
                 var comment = new QueryBuilder.SQLInsertRow();
                 comment.HeaderComment =
-                    StoreGetters.GetName(Utilities.ObjectTypeToStore(Storage.Loots.Keys.First().Item2), (int)loot.Key.Item1, false) +
-                    " (" + loot.Value.Gold + " gold)";
+                    StoreGetters.GetName(Utilities.ObjectTypeToStore(Storage.Loots.Keys().First().Item2), (int)loot.Key.Item1, false) +
+                    " (" + loot.Value.Item1.Gold + " gold)";
                 rows.Add(comment);
-                foreach (var lootItem in loot.Value.LootItems)
+                foreach (var lootItem in loot.Value.Item1.LootItems)
                 {
                     var row = new QueryBuilder.SQLInsertRow();
                     row.AddValue("Id", loot.Key.Item1);
@@ -309,29 +309,29 @@ namespace WowPacketParser.SQL.Builders
         {
             // TODO: This should be rewritten
 
-            if (Storage.Gossips.IsEmpty)
+            if (Storage.Gossips.IsEmpty())
                 return String.Empty;
 
             // `creature_template`
             var gossipIds = new Dictionary<uint, UnitGossip>();
             foreach (var gossip in Storage.Gossips)
             {
-                if (gossip.Value.ObjectType != ObjectType.Unit) continue;
+                if (gossip.Value.Item1.ObjectType != ObjectType.Unit) continue;
                 // no support for entries with multiple gossips (i.e changed by script)
-                if (gossipIds.ContainsKey(gossip.Value.ObjectEntry)) continue;
+                if (gossipIds.ContainsKey(gossip.Value.Item1.ObjectEntry)) continue;
 
-                gossipIds.Add(gossip.Value.ObjectEntry, new UnitGossip {GossipId = gossip.Key.Item1});
+                gossipIds.Add(gossip.Value.Item1.ObjectEntry, new UnitGossip {GossipId = gossip.Key.Item1});
             }
 
             var entries = gossipIds.Keys.ToList();
             var gossipIdsDb = SQLDatabase.GetDict<uint, UnitGossip>(entries);
-            var result = SQLUtil.CompareDicts(gossipIds, gossipIdsDb, StoreNameType.Unit);
+            var result = SQLUtil.CompareDicts(new StoreDictionary<uint, UnitGossip>(gossipIds), gossipIdsDb, StoreNameType.Unit);
 
             // `gossip`
             if (SQLConnector.Enabled)
             {
                 var query = new StringBuilder(string.Format("SELECT `entry`,`text_id` FROM {0}.`gossip_menu` WHERE ", Settings.TDBDatabase));
-                foreach (Tuple<uint, uint> gossip in Storage.Gossips.Keys)
+                foreach (Tuple<uint, uint> gossip in Storage.Gossips.Keys())
                 {
                     query.Append("(`entry`=").Append(gossip.Item1).Append(" AND ");
                     query.Append("`text_id`=").Append(gossip.Item2).Append(") OR ");
@@ -375,8 +375,8 @@ namespace WowPacketParser.SQL.Builders
 
                     row.AddValue("entry", gossip.Key.Item1);
                     row.AddValue("text_id", gossip.Key.Item2);
-                    row.Comment = StoreGetters.GetName(Utilities.ObjectTypeToStore(gossip.Value.ObjectType),
-                                                       (int) gossip.Value.ObjectEntry, false);
+                    row.Comment = StoreGetters.GetName(Utilities.ObjectTypeToStore(gossip.Value.Item1.ObjectType),
+                                                       (int) gossip.Value.Item1.ObjectEntry, false);
 
                     rows.Add(row);
                 }
@@ -392,8 +392,8 @@ namespace WowPacketParser.SQL.Builders
 
                 foreach (var gossip in Storage.Gossips)
                 {
-                    if (gossip.Value.GossipOptions == null) continue;
-                    foreach (var gossipOption in gossip.Value.GossipOptions)
+                    if (gossip.Value.Item1.GossipOptions == null) continue;
+                    foreach (var gossipOption in gossip.Value.Item1.GossipOptions)
                     {
                         var query =       //         0     1       2         3         4        5         6
                             string.Format("SELECT menu_id,id,option_icon,box_coded,box_money,box_text,option_text " +
@@ -426,8 +426,8 @@ namespace WowPacketParser.SQL.Builders
                                     row.AddWhere("id", gossipOption.Index);
 
                                     row.Comment =
-                                        StoreGetters.GetName(Utilities.ObjectTypeToStore(gossip.Value.ObjectType),
-                                                             (int) gossip.Value.ObjectEntry, false);
+                                        StoreGetters.GetName(Utilities.ObjectTypeToStore(gossip.Value.Item1.ObjectType),
+                                                             (int)gossip.Value.Item1.ObjectEntry, false);
 
                                     row.Table = "gossip_menu_option";
 
@@ -447,8 +447,8 @@ namespace WowPacketParser.SQL.Builders
                                 row.AddValue("box_money", gossipOption.RequiredMoney);
                                 row.AddValue("box_text", gossipOption.BoxText);
 
-                                row.Comment = StoreGetters.GetName(Utilities.ObjectTypeToStore(gossip.Value.ObjectType),
-                                                           (int)gossip.Value.ObjectEntry, false);
+                                row.Comment = StoreGetters.GetName(Utilities.ObjectTypeToStore(gossip.Value.Item1.ObjectType),
+                                                           (int)gossip.Value.Item1.ObjectEntry, false);
 
                                 rowsIns.Add(row);
                             }
@@ -463,8 +463,8 @@ namespace WowPacketParser.SQL.Builders
                 var rows = new List<QueryBuilder.SQLInsertRow>();
                 foreach (var gossip in Storage.Gossips)
                 {
-                    if (gossip.Value.GossipOptions != null)
-                        foreach (var gossipOption in gossip.Value.GossipOptions)
+                    if (gossip.Value.Item1.GossipOptions != null)
+                        foreach (var gossipOption in gossip.Value.Item1.GossipOptions)
                         {
                             var row = new QueryBuilder.SQLInsertRow();
 
@@ -476,8 +476,8 @@ namespace WowPacketParser.SQL.Builders
                             row.AddValue("box_money", gossipOption.RequiredMoney);
                             row.AddValue("box_text", gossipOption.BoxText);
 
-                            row.Comment = StoreGetters.GetName(Utilities.ObjectTypeToStore(gossip.Value.ObjectType),
-                                                       (int) gossip.Value.ObjectEntry, false);
+                            row.Comment = StoreGetters.GetName(Utilities.ObjectTypeToStore(gossip.Value.Item1.ObjectType),
+                                                       (int)gossip.Value.Item1.ObjectEntry, false);
 
                             rows.Add(row);
                         }
@@ -556,10 +556,10 @@ namespace WowPacketParser.SQL.Builders
 
         public static string SpellsX()
         {
-            if (Storage.SpellsX.IsEmpty)
+            if (Storage.SpellsX.IsEmpty())
                 return String.Empty;
 
-            var entries = Storage.SpellsX.Keys.ToList();
+            var entries = Storage.SpellsX.Keys();
             var spellsXDb = SQLDatabase.GetDict<uint, SpellsX>(entries);
 
             return SQLUtil.CompareDicts(Storage.SpellsX, spellsXDb, StoreNameType.Unit);
@@ -567,40 +567,39 @@ namespace WowPacketParser.SQL.Builders
 
         public static string CreatureText()
         {
-            if (Storage.CreatureTexts.Count == 0)
+            if (Storage.CreatureTexts.IsEmpty())
                 return string.Empty;
 
             // For each sound and emote, if the time they were send is in the +1/-1 seconds range of
             // our texts, add that sound and emote to our Storage.CreatureTexts
 
-            foreach (KeyValuePair<uint, List<Tuple<CreatureText, DateTime>>> text in Storage.CreatureTexts)
+            foreach (KeyValuePair<uint, ICollection<Tuple<CreatureText, TimeSpan?>>> text in Storage.CreatureTexts)
             {
                 // For each text
-                foreach (Tuple<CreatureText, DateTime> textValue in text.Value)
+                foreach (Tuple<CreatureText, TimeSpan?> textValue in text.Value)
                 {
                     // For each emote
-                    foreach (KeyValuePair<uint, List<Tuple<EmoteType, DateTime>>> emote in Storage.Emotes)
+                    foreach (KeyValuePair<Guid, ICollection<Tuple<EmoteType, TimeSpan?>>> emote in Storage.Emotes)
                     {
                         // Emote packets always have a sender (guid);
                         // skip this one if it was sent by a different creature
-                        if (emote.Key != text.Key)
+                        if (emote.Key.GetEntry() != text.Key)
                             continue;
 
-                        foreach (Tuple<EmoteType, DateTime> emoteValue in emote.Value)
+                        foreach (Tuple<EmoteType, TimeSpan?> emoteValue in emote.Value)
                         {
-                            if ((textValue.Item2 - emoteValue.Item2).Duration() <= TimeSpan.FromSeconds(1))
+                            var timeSpan = textValue.Item2 - emoteValue.Item2;
+                            if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
                                 textValue.Item1.Emote = emoteValue.Item1;
                         }
                     }
 
                     // For each sound
-                    foreach (KeyValuePair<uint, List<DateTime>> sound in Storage.Sounds)
+                    foreach (Tuple<uint, TimeSpan?> sound in Storage.Sounds)
                     {
-                        foreach (DateTime soundValue in sound.Value)
-                        {
-                            if ((textValue.Item2 - soundValue).Duration() <= TimeSpan.FromSeconds(1))
-                                textValue.Item1.Sound = sound.Key;
-                        }
+                        var timeSpan = textValue.Item2 - sound.Item2;
+                        if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
+                            textValue.Item1.Sound = sound.Item1;
                     }
                 }
             }
@@ -613,9 +612,9 @@ namespace WowPacketParser.SQL.Builders
             const string tableName = "creature_text";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (KeyValuePair<uint, List<Tuple<CreatureText, DateTime>>> text in Storage.CreatureTexts)
+            foreach (KeyValuePair<uint, ICollection<Tuple<CreatureText, TimeSpan?>>> text in Storage.CreatureTexts)
             {
-                foreach (Tuple<CreatureText, DateTime> textValue in text.Value)
+                foreach (Tuple<CreatureText, TimeSpan?> textValue in text.Value)
                 {
                     var row = new QueryBuilder.SQLInsertRow();
 

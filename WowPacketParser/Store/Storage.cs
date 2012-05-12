@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using WowPacketParser.Enums;
-using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects;
 using Guid = WowPacketParser.Misc.Guid;
 
@@ -11,11 +7,61 @@ namespace WowPacketParser.Store
 {
     public static class Storage
     {
+        // Stores opcodes read, npc/GOs/spell/item/etc IDs found in sniffs
+        // and other miscellaneous stuff
+        public static readonly StoreBag<SniffData> SniffData = new StoreBag<SniffData>("SniffData");
+
+        /* Key: Guid */
+
+        // Units, GameObjects, Players, Items
+        public static readonly StoreDictionary<Guid, WoWObject> Objects = new StoreDictionary<Guid, WoWObject>("Objects");
+
+        /* Key: Entry */
+
+        // Templates
+        public static readonly StoreDictionary<uint, GameObjectTemplate> GameObjectTemplates = new StoreDictionary<uint, GameObjectTemplate>("GameObjectTemplates");
+        public static readonly StoreDictionary<uint, ItemTemplate> ItemTemplates = new StoreDictionary<uint, ItemTemplate>("ItemTemplates");
+        public static readonly StoreDictionary<uint, QuestTemplate> QuestTemplates = new StoreDictionary<uint, QuestTemplate>("QuestTemplates");
+        public static readonly StoreDictionary<uint, UnitTemplate> UnitTemplates = new StoreDictionary<uint, UnitTemplate>("UnitTemplates");
+
+        // Vendor & trainer
+        public static readonly StoreDictionary<uint, NpcTrainer> NpcTrainers = new StoreDictionary<uint, NpcTrainer>("NpcTrainers");
+        public static readonly StoreDictionary<uint, NpcVendor> NpcVendors = new StoreDictionary<uint, NpcVendor>("NpcVendors");
+
+        // Page & npc text
+        public static readonly StoreDictionary<uint, PageText> PageTexts = new StoreDictionary<uint, PageText>("PageTexts");
+        public static readonly StoreDictionary<uint, NpcText> NpcTexts = new StoreDictionary<uint, NpcText>("NpcTexts");
+
+        // `creature_text`
+        public static readonly StoreMulti<uint, CreatureText> CreatureTexts = new StoreMulti<uint, CreatureText>("CreatureTexts");
+
+        // "Helper" stores, do not match a specific table
+        public static readonly StoreMulti<Guid, EmoteType> Emotes = new StoreMulti<Guid, EmoteType>("Emotes");
+        public static readonly StoreBag<uint> Sounds = new StoreBag<uint>("Sounds");
+        public static readonly StoreDictionary<uint, SpellsX> SpellsX = new StoreDictionary<uint, SpellsX>("SpellsX"); // `creature_template`.`spellsX`
+
+        /* Key: Misc */
+
+        // Start info (Race, Class)
+        public static readonly StoreDictionary<Tuple<Race, Class>, StartAction> StartActions = new StoreDictionary<Tuple<Race, Class>, StartAction>("StartActions");
+        public static readonly StoreDictionary<Tuple<Race, Class>, StartSpell> StartSpells = new StoreDictionary<Tuple<Race, Class>, StartSpell>("StartSpells");
+        public static readonly StoreDictionary<Tuple<Race, Class>, StartPosition> StartPositions = new StoreDictionary<Tuple<Race, Class>, StartPosition>("StartPositions");
+
+        // Gossips (MenuId, TextId)
+        public static readonly StoreDictionary<Tuple<uint, uint>, Gossip> Gossips = new StoreDictionary<Tuple<uint, uint>, Gossip>("Gossips");
+
+        // Loot (ItemId, LootType)
+        public static readonly StoreDictionary<Tuple<uint, ObjectType>, Loot> Loots = new StoreDictionary<Tuple<uint, ObjectType>, Loot>("Loots");
+
+        // Quest POI (QuestId, Id)
+        public static readonly StoreDictionary<Tuple<uint, uint>, QuestPOI> QuestPOIs = new StoreDictionary<Tuple<uint, uint>, QuestPOI>("QuestPOIs");
+
+        // Names
+        public static readonly StoreDictionary<uint, ObjectName> ObjectNames = new StoreDictionary<uint, ObjectName>("ObjectNames");
+
         public static void ClearContainers()
         {
-            SniffData dummy;
-            while (!SniffData.IsEmpty)
-                SniffData.TryTake(out dummy);
+            SniffData.Clear();
 
             Objects.Clear();
 
@@ -31,109 +77,21 @@ namespace WowPacketParser.Store
             NpcTexts.Clear();
 
             SpellsX.Clear();
+            CreatureTexts.Clear();
+            Emotes.Clear();
+            Sounds.Clear();
 
             StartActions.Clear();
             StartSpells.Clear();
             StartPositions.Clear();
 
             Gossips.Clear();
-            
+
             Loots.Clear();
-            
+
             QuestPOIs.Clear();
-            
+
             ObjectNames.Clear();
-
-            CreatureTexts.Clear();
-            Emotes.Clear();
-            Sounds.Clear();
-        }
-
-        // Stores opcodes read, npc/GOs/spell/item/etc IDs found in sniffs
-        // and other miscellaneous stuff
-        public static readonly ConcurrentBag<SniffData> SniffData =
-            new ConcurrentBag<SniffData>();
-
-        /* Key: Guid */
-
-        // Units, GameObjects, Players, Items
-        public static readonly ConcurrentDictionary<Guid, WoWObject> Objects =
-            new ConcurrentDictionary<Guid, WoWObject>();
-
-        /* Key: Entry */
-
-        // Templates
-        public static readonly ConcurrentDictionary<uint, GameObjectTemplate> GameObjectTemplates =
-            new ConcurrentDictionary<uint, GameObjectTemplate>();
-        public static readonly ConcurrentDictionary<uint, ItemTemplate> ItemTemplates =
-            new ConcurrentDictionary<uint, ItemTemplate>();
-        public static readonly ConcurrentDictionary<uint, QuestTemplate> QuestTemplates =
-            new ConcurrentDictionary<uint, QuestTemplate>();
-        public static readonly ConcurrentDictionary<uint, UnitTemplate> UnitTemplates =
-            new ConcurrentDictionary<uint, UnitTemplate>();
-
-        // Vendor & trainer
-        public static readonly ConcurrentDictionary<uint, NpcTrainer> NpcTrainers =
-            new ConcurrentDictionary<uint, NpcTrainer>();
-        public static readonly ConcurrentDictionary<uint, NpcVendor> NpcVendors =
-            new ConcurrentDictionary<uint, NpcVendor>();
-
-        // Page & npc text
-        public static readonly ConcurrentDictionary<uint, PageText> PageTexts =
-            new ConcurrentDictionary<uint, PageText>();
-        public static readonly ConcurrentDictionary<uint, NpcText> NpcTexts =
-            new ConcurrentDictionary<uint, NpcText>();
-
-        // Misc
-        public static readonly ConcurrentDictionary<uint, SpellsX> SpellsX = // creature_template.spellX
-            new ConcurrentDictionary<uint, SpellsX>();
-
-        /* Key: Misc */
-
-        // Start info (Race, Class)
-        public static readonly ConcurrentDictionary<Tuple<Race, Class>, StartAction> StartActions =
-            new ConcurrentDictionary<Tuple<Race, Class>, StartAction>();
-
-        public static readonly ConcurrentDictionary<Tuple<Race, Class>, StartSpell> StartSpells =
-            new ConcurrentDictionary<Tuple<Race, Class>, StartSpell>();
-
-        public static readonly ConcurrentDictionary<Tuple<Race, Class>, StartPosition> StartPositions =
-            new ConcurrentDictionary<Tuple<Race, Class>, StartPosition>();
-
-        // Gossips (MenuId, TextId)
-        public static readonly ConcurrentDictionary<Tuple<uint, uint>, Gossip> Gossips =
-            new ConcurrentDictionary<Tuple<uint, uint>, Gossip>();
-
-        // Loot (ItemId, LootType)
-        public static readonly ConcurrentDictionary<Tuple<uint, ObjectType>, Loot> Loots =
-            new ConcurrentDictionary<Tuple<uint, ObjectType>, Loot>();
-
-        // Quest POI (QuestId, Id)
-        public static readonly ConcurrentDictionary<Tuple<uint, uint>, QuestPOI> QuestPOIs =
-            new ConcurrentDictionary<Tuple<uint, uint>, QuestPOI>();
-
-        // Names
-        public static readonly ConcurrentDictionary<uint, ObjectName> ObjectNames =
-            new ConcurrentDictionary<uint, ObjectName>();
-
-        public static readonly ConcurrentMultiDictionary<uint, Tuple<CreatureText, DateTime>> CreatureTexts = new ConcurrentMultiDictionary<uint, Tuple<CreatureText, DateTime>>();
-        public static readonly ConcurrentMultiDictionary<uint, Tuple<EmoteType, DateTime>> Emotes = new ConcurrentMultiDictionary<uint, Tuple<EmoteType, DateTime>>();
-        public static readonly ConcurrentMultiDictionary<uint, DateTime> Sounds = new ConcurrentMultiDictionary<uint, DateTime>();
-    }
-
-    // Utilities extension methods to aid dealing with the above dictionaries
-    public static class StorageExtensions
-    {
-        // Adds to or update an entry in Objects dictionary for SMSG_CHAR_ENUM player data
-        public static void AddOrUpdate(this ConcurrentDictionary<Guid, WoWObject> dict, Guid guid, Player playerInfo)
-        {
-            dict.AddOrUpdate(guid, playerInfo, (guid1, wowObject) => Player.UpdatePlayerInfo((Player)wowObject, playerInfo));
-        }
-
-        // Maybe we should rename the above extension so this workaround isn't needed
-        public static void AddOrUpdate<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dict, TKey key, TValue value)
-        {
-            dict.AddOrUpdate(key, value, (key1, value1) => (value));
         }
     }
 }

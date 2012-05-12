@@ -96,7 +96,7 @@ namespace WowPacketParser.Parsing.Parsers
             obj.Area = WorldStateHandler.CurrentAreaId;
             obj.PhaseMask = (uint) MovementHandler.CurrentPhaseMask;
 
-            Storage.Objects.TryAdd(guid, obj);
+            Storage.Objects.Add(guid, obj, packet.TimeSpan);
 
             if (guid.HasEntry() && (objType == ObjectType.Unit || objType == ObjectType.GameObject))
                 packet.AddSniffData(Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");

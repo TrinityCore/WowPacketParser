@@ -173,11 +173,15 @@ namespace WowPacketParser.Parsing.Parsers
                 if (firstLogin)
                 {
                     var startPos = new StartPosition {Map = mapId, Position = pos, Zone = zone};
-                    Storage.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
+                    Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
 
                 var playerInfo = new Player {Race = race, Class = clss, Name = name, FirstLogin = firstLogin, Level = level};
-                Storage.Objects.AddOrUpdate(guid, playerInfo);
+
+                if (Storage.Objects.ContainsKey(guid))
+                    Storage.Objects[guid] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
+                else
+                    Storage.Objects.Add(guid, playerInfo, packet.TimeSpan);
             }
         }
 
@@ -301,11 +305,14 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     var startPos = new StartPosition {Map = mapId, Position = pos, Zone = zone};
 
-                    Storage.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
+                    Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
 
                 var playerInfo = new Player { Race = race, Class = clss, Name = name, FirstLogin = firstLogin, Level = level };
-                Storage.Objects.AddOrUpdate(playerGuid, playerInfo);
+                if (Storage.Objects.ContainsKey(playerGuid))
+                    Storage.Objects[playerGuid] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
+                else
+                    Storage.Objects.Add(playerGuid, playerInfo, packet.TimeSpan);
             }
         }
 
@@ -433,16 +440,16 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (firstLogins[c])
                 {
-                    var startPos = new StartPosition();
-                    startPos.Map = mapId;
-                    startPos.Position = new Vector3(x, y, z);
-                    startPos.Zone = zone;
+                    var startPos = new StartPosition { Map = mapId, Position = new Vector3(x, y, z), Zone = zone };
 
-                    Storage.StartPositions.TryAdd(new Tuple<Race, Class>(race, clss), startPos);
+                    Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
 
                 var playerInfo = new Player{Race = race, Class = clss, Name = name, FirstLogin = firstLogins[c], Level = level};
-                Storage.Objects.AddOrUpdate(playerGuid, playerInfo);
+                if (Storage.Objects.ContainsKey(playerGuid))
+                    Storage.Objects[playerGuid] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
+                else
+                    Storage.Objects.Add(playerGuid, playerInfo, packet.TimeSpan);
             }
 
             for (var c = 0; c < unkCounter; c++)

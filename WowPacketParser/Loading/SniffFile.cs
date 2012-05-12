@@ -57,6 +57,8 @@ namespace WowPacketParser.Loading
                         return;
                     }
 
+                    Store.Store.Flags = _sqlOutput;
+
                     ReadPackets();
                     ParsePackets();
 
