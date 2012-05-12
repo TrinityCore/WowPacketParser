@@ -78,6 +78,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_CROSSED_INEBRIATION_THRESHOLD, 0x08D3E}, // 4.1.0 13914
             {Opcode.SMSG_DAMAGE_CALC_LOG, 0x05E2D}, // 4.1.0 13914
             {Opcode.SMSG_DANCE_QUERY_RESPONSE, 0x01E3E}, // 4.1.0 13914
+            {Opcode.SMSG_DB_REPLY, 0x47CD}, // 4.1.0 13914
             {Opcode.SMSG_DEATH_RELEASE_LOC, 0x03C7D}, // 4.1.0 13914
             {Opcode.SMSG_DEFENSE_MESSAGE, 0x05C3E}, // 4.1.0 13914
             {Opcode.SMSG_DESTROY_OBJECT, 0x03C6F}, // 4.1.0 13914
@@ -130,10 +131,10 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x0796E}, // 4.1.0 13914
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0x0F87E}, // 4.1.0 13914
             {Opcode.SMSG_INITIAL_SPELLS, 0x00A6F}, // 4.1.0 13914
+            {Opcode.SMSG_INSPECT_RESULTS_UPDATE, 0x04D7F}, // 4.1.0 13914
             {Opcode.SMSG_INSPECT_TALENT, 0x00F3E}, // 4.1.0 13914
             {Opcode.SMSG_INSTANCE_RESET, 0x0083E}, // 4.1.0 13914
             {Opcode.SMSG_INSTANCE_RESET_FAILED, 0x00B7F}, // 4.1.0 13914
-            {Opcode.SMSG_INSPECT_RESULTS_UPDATE, 0x04D7F}, // 4.1.0 13914
             {Opcode.SMSG_INSTANCE_SAVE_CREATED, 0x05F7E}, // 4.1.0 13914
             {Opcode.SMSG_INVALIDATE_DANCE, 0x0DE6F}, // 4.1.0 13914
             {Opcode.SMSG_INVALIDATE_PLAYER, 0x0E83D}, // 4.1.0 13914
@@ -145,7 +146,6 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_LEARNED_SPELL, 0x0882D}, // 4.1.0 13914
             {Opcode.SMSG_LEVELUP_INFO, 0x09F2C}, // 4.1.0 13914
             {Opcode.SMSG_LFG_LFR_LIST, 0x01D7E}, // 4.1.0 13914
-            {Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER, 0x05A7D}, // 4.1.0 13914
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x0DE2C}, // 4.1.0 13914
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x00F3F}, // 4.1.0 13914
             {Opcode.SMSG_LOG_XPGAIN, 0x01F7E}, // 4.1.0 13914
@@ -164,6 +164,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x05E2E}, // 4.1.0 13914
             {Opcode.SMSG_OFFER_PETITION_ERROR, 0x04B2E}, // 4.1.0 13914
             {Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA, 0x01F7F}, // 4.1.0 13914
+            {Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER, 0x05A7D}, // 4.1.0 13914
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x09B6F}, // 4.1.0 13914
             {Opcode.SMSG_PARTYKILLLOG, 0x0982F}, // 4.1.0 13914
             {Opcode.SMSG_PARTY_COMMAND_RESULT, 0x0E92F}, // 4.1.0 13914
