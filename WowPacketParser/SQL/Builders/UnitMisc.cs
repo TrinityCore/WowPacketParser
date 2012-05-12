@@ -120,7 +120,7 @@ namespace WowPacketParser.SQL.Builders
                         if (!Utilities.EqualValues(modelsDb[model.Key].Item3, model.Value.Item3))
                             row.AddValue("gender", model.Value.Item3);
 
-                        row.AddWhere("entry", model.Key);
+                        row.AddWhere("modelid", model.Key);
                         row.Table = tableName;
 
                         if (row.ValueCount != 0)
@@ -129,7 +129,7 @@ namespace WowPacketParser.SQL.Builders
                     else // insert new
                     {
                         var row = new QueryBuilder.SQLInsertRow();
-                        row.AddValue("entry", model.Key);
+                        row.AddValue("modelid", model.Key);
                         row.AddValue("bounding_radius", model.Value.Item1);
                         row.AddValue("combat_reach", model.Value.Item2);
                         row.AddValue("gender", model.Value.Item3);
@@ -139,7 +139,7 @@ namespace WowPacketParser.SQL.Builders
                 else // no db values, simply do inserts
                 {
                     var row = new QueryBuilder.SQLInsertRow();
-                    row.AddValue("entry", model.Key);
+                    row.AddValue("modelid", model.Key);
                     row.AddValue("bounding_radius", model.Value.Item1);
                     row.AddValue("combat_reach", model.Value.Item2);
                     row.AddValue("gender", model.Value.Item3);
