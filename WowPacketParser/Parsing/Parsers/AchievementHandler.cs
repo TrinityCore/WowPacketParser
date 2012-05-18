@@ -17,7 +17,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var name = packet.ReadCString("Player Name");
             var guid = packet.ReadGuid("Player GUID");
-            StoreGetters.NameDict.Add(guid, name);
+            StoreGetters.AddName(guid, name);
             packet.ReadInt32("Achievement");
             packet.ReadInt32("Linked Name");
         }

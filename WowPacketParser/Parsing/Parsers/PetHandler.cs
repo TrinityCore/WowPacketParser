@@ -105,9 +105,6 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadGuid("Guid");
 
             // Store temporary name (will be replaced in SMSG_PET_NAME_QUERY_RESPONSE)
-            if (StoreGetters.NameDict.ContainsValue(number))
-                return;
-
             StoreGetters.AddName(guid, number);
         }
 
@@ -125,10 +122,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guidArray = (from pair in StoreGetters.NameDict where Equals(pair.Value, number) select pair.Key).ToList();
             foreach (var guid in guidArray)
-            {
-                if (StoreGetters.NameDict.Remove(guid))
-                    StoreGetters.NameDict.Add(guid, petName);
-            }
+                StoreGetters.NameDict[guid] = petName;
 
             packet.ReadTime("Time");
             var declined = packet.ReadBoolean("Declined");

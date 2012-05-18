@@ -58,7 +58,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guid = packet.ReadGuid("GUID");
             var name = packet.ReadCString("Name");
-            StoreGetters.NameDict.Add(guid, name);
+            StoreGetters.AddName(guid, name);
         }
 
         [Parser(Opcode.SMSG_CHAR_CREATE)]
@@ -106,7 +106,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadGuid("GUID");
             var name = packet.ReadCString("Name");
 
-            StoreGetters.NameDict.Add(guid, name);
+            StoreGetters.AddName(guid, name);
 
             packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
             packet.ReadByte("Skin");

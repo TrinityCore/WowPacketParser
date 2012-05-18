@@ -48,9 +48,6 @@ namespace WowPacketParser.Misc
         {
             string name;
 
-            if (!NameDict.ContainsKey(guid))
-                return null;
-
             if (NameDict.TryGetValue(guid, out name))
                 return name;
 
