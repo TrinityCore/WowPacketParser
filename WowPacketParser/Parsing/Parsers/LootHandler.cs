@@ -73,7 +73,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLootReleaseResponse(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadBoolean("Unk Bool");
+            packet.ReadBoolean("Unk Bool"); // true calls CGUnit_C::UpdateLootAnimKit and CGameUI::CloseLoot
         }
 
         [Parser(Opcode.SMSG_LOOT_REMOVED)]
@@ -193,6 +193,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk UInt32 1");
             packet.ReadInt32("Unk UInt32 2"); // only seen 0
             packet.ReadUInt32("Count");
+        }
+
+        [Parser(Opcode.SMSG_LOOT_MASTER_LIST)]
+        public static void HandleLootMasterList(Packet packet)
+        {
+            var count = packet.ReadByte("Count");
+            for (var i = 0; i < count; i++)
+                packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.SMSG_LOOT_CLEAR_MONEY)]

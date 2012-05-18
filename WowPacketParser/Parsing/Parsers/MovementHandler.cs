@@ -1086,17 +1086,21 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_MOVE_KNOCK_BACK_ACK)]
         [Parser(Opcode.CMSG_MOVE_WATER_WALK_ACK)]
         [Parser(Opcode.CMSG_MOVE_HOVER_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_CAN_FLY_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY_ACK)]
+        [Parser(Opcode.CMSG_FORCE_MOVE_UNROOT_ACK)]
+        [Parser(Opcode.CMSG_FORCE_MOVE_ROOT_ACK)]
         public static void HandleSpecialMoveAckMessages(Packet packet)
         {
             var guid = packet.ReadPackedGuid("Guid");
-            packet.ReadInt32("Unk Int32 1");
+            packet.ReadInt32("Movement Counter");
 
             ReadMovementInfo(ref packet, guid);
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_MOVE_KNOCK_BACK_ACK))
                 return;
 
-            packet.ReadInt32("Unk Int32 2");
+            packet.ReadSingle("Unk float");
         }
 
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]

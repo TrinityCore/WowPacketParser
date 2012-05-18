@@ -662,7 +662,7 @@ namespace WowPacketParser.Parsing.Parsers
             else
                 packet.ReadBoolean("Auto Finish", TypeCode.Int32);
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
 
             packet.ReadUInt32("Suggested Players");
