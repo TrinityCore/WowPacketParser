@@ -135,8 +135,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleInstanceLockWarningQuery(Packet packet)
         {
             packet.ReadInt32("Time");
-            packet.ReadInt32("Encounter Mask");
-            packet.ReadByte("Unk");
+            packet.ReadInt32("Encounters Completed Mask");
+            packet.ReadByte("Extending");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // guessing
                 packet.ReadByte("Unk2"); // events it throws: 1 : INSTANCE_LOCK_WARNING  0 : INSTANCE_LOCK_STOP / INSTANCE_LOCK_START

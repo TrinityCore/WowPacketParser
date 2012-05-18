@@ -336,10 +336,13 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldStatusServer(Packet packet)
         {
             var slot = packet.ReadUInt32("Queue Slot");
-            var guid = packet.ReadGuid("GUID");
-
-            if (slot == 1 && guid.GetLow() == 0)
+            if (slot >= 2)
+            {
+                packet.ReadToEnd(); // Client does this too
                 return;
+            }
+
+            packet.ReadGuid("GUID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
             {
@@ -373,9 +376,9 @@ namespace WowPacketParser.Parsing.Parsers
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_5_12213))
                         packet.ReadGuid("GUID");
 
-                    packet.ReadUInt32("Auto Leave Time");
-                    packet.ReadUInt32("Time in BG");
-                    packet.ReadByte("Is BG?");
+                    packet.ReadUInt32("Instance Expiration");
+                    packet.ReadUInt32("Instance Start Time");
+                    packet.ReadByte("Arena faction");
                     break;
             }
         }
