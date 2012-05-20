@@ -34,18 +34,18 @@ namespace WowPacketParser
 
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-            if (Settings.FilterPacketNumLow < 0)
+            if (Settings.ReaderFilterPacketNumLow < 0)
                 throw new ConstraintException("FilterPacketNumLow must be positive");
 
-            if (Settings.FilterPacketNumHigh < 0)
+            if (Settings.ReaderFilterPacketNumHigh < 0)
                 throw new ConstraintException("FilterPacketNumHigh must be positive");
 
-            if (Settings.FilterPacketNumLow > 0 && Settings.FilterPacketNumHigh > 0
-                && Settings.FilterPacketNumLow > Settings.FilterPacketNumHigh)
-                throw new ConstraintException("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
+            if (Settings.ReaderFilterPacketNumLow > 0 && Settings.ReaderFilterPacketNumHigh > 0
+                && Settings.ReaderFilterPacketNumLow > Settings.ReaderFilterPacketNumHigh)
+                throw new ConstraintException("FilterPacketNumLow must be less or equal than ReaderFilterPacketNumHigh");
 
             // Disable DB when we don't need its data (dumping to a binary file)
-            if (Settings.DumpFormat != DumpFormatType.Text)
+            if (!(Settings.TextOutput || Settings.SQLOutput != 0))
             {
                 SQLConnector.Enabled = false;
                 SSHTunnel.Enabled = false;
@@ -59,7 +59,7 @@ namespace WowPacketParser
             foreach (var file in files)
             {
                 ClientVersion.SetVersion(Settings.ClientBuild);
-                new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count),
+                new SniffFile(file, Tuple.Create(++count, files.Count),
                               Settings.SQLOutput).ProcessFile();
             }
 

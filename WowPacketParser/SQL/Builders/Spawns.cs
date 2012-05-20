@@ -27,8 +27,8 @@ namespace WowPacketParser.SQL.Builders
 
                 var creature = unit.Value;
 
-                if (Settings.AreaFilters.Length > 0)
-                    if (!(creature.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                if (Settings.SpawnDumpFilterArea.Length > 0)
+                    if (!(creature.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.SpawnDumpFilterArea)))
                         continue;
 
                 UpdateField uf;
@@ -95,8 +95,8 @@ namespace WowPacketParser.SQL.Builders
 
                 var go = gameobject.Value;
 
-                if (Settings.AreaFilters.Length > 0)
-                    if (!(go.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                if (Settings.SpawnDumpFilterArea.Length > 0)
+                    if (!(go.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.SpawnDumpFilterArea)))
                         continue;
 
                 uint animprogress = 0;

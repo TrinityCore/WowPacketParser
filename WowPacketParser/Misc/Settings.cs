@@ -10,16 +10,20 @@ namespace WowPacketParser.Misc
     {
         private static readonly KeyValueConfigurationCollection SettingsCollection = GetConfiguration();
 
-        public static readonly string[] Filters = GetStringList("Filters", new string[0]);
-        public static readonly string[] IgnoreFilters = GetStringList("IgnoreFilters", new string[0]);
-        public static readonly string[] IgnoreByEntryFilters = GetStringList("IgnoreByEntryFilters", new string[0]);
-        public static readonly string[] AreaFilters = GetStringList("AreaFilters", new string[0]);
-        public static readonly int FilterPacketNumLow = GetInt32("FilterPacketNumLow", 0);
-        public static readonly int FilterPacketNumHigh = GetInt32("FilterPacketNumHigh", 0);
-        public static readonly int FilterPacketsNum = GetInt32("FilterPacketsNum", 0);
+        public static readonly string[] ReaderFilterOpcode = GetStringList("ReaderFilterOpcode", new string[0]);
+        public static readonly string[] ReaderFilterIgnoreOpcode = GetStringList("ReaderFilterIgnoreOpcode", new string[0]);
+        public static readonly int ReaderFilterPacketsNum = GetInt32("ReaderFilterPacketsNum", 0);
+        public static readonly int ReaderFilterPacketNumLow = GetInt32("ReaderFilterPacketNumLow", 0);
+        public static readonly int ReaderFilterPacketNumHigh = GetInt32("ReaderFilterPacketNumHigh", 0);
+
+        public static readonly string[] TextOutputFilterIgnoreEntry = GetStringList("TextOutputFilterIgnoreEntry", new string[0]);
+        public static readonly string[] SpawnDumpFilterArea = GetStringList("SpawnDumpFilterArea", new string[0]);
+
         public static readonly ClientVersionBuild ClientBuild = GetEnum("ClientBuild", ClientVersionBuild.Zero);
         public static readonly string PacketFileType = GetString("PacketFileType", string.Empty);
-        public static readonly DumpFormatType DumpFormat = GetEnum("DumpFormat", DumpFormatType.Text);
+        public static readonly string BinaryOutputType = GetString("BinaryOutputType", string.Empty);
+        public static readonly bool SplitBinaryOutput = GetBoolean("SplitBinaryOutput", false);
+        public static readonly bool TextOutput = GetBoolean("TextOutput", false);
         public static readonly SQLOutputFlags SQLOutput = GetEnum("SQLOutput", SQLOutputFlags.None);
         public static readonly string SQLFileName = GetString("SQLFileName", string.Empty);
         public static readonly bool ShowEndPrompt = GetBoolean("ShowEndPrompt", false);

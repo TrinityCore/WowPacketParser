@@ -162,7 +162,6 @@
     <Compile Include="Enums\DifficultyChangeType.cs" />
     <Compile Include="Enums\Direction.cs" />
     <Compile Include="Enums\DrunkenState.cs" />
-    <Compile Include="Enums\DumpFormatType.cs" />
     <Compile Include="Enums\EmoteType.cs" />
     <Compile Include="Enums\EncounterFrame.cs" />
     <Compile Include="Enums\EnvironmentDamage.cs" />
@@ -262,7 +261,6 @@
     <Compile Include="Enums\SellResult.cs" />
     <Compile Include="Enums\SheathState.cs" />
     <Compile Include="Enums\SheathType.cs" />
-    <Compile Include="Enums\SniffType.cs" />
     <Compile Include="Enums\SpeedType.cs" />
     <Compile Include="Enums\SpellCastFailureReason.cs" />
     <Compile Include="Enums\SpellEffect.cs" />
@@ -352,6 +350,9 @@
     <Compile Include="Misc\Settings.cs" />
     <Compile Include="Misc\StoreGetters.cs" />
     <Compile Include="Misc\UpdateField.cs" />
+    <Compile Include="Saving\IBinaryWriter.cs" />
+    <Compile Include="Saving\KSZorBinaryPacketWriter.cs" />
+    <Compile Include="Saving\SplitBinaryOutput.cs" />
     <Compile Include="Misc\Utilities.cs" />
     <Compile Include="Misc\Vector2.cs" />
     <Compile Include="Misc\Vector3.cs" />
@@ -404,8 +405,6 @@
     <Compile Include="Parsing\Parsers\WorldStateHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Saving\BinaryPacketWriter.cs" />
-    <Compile Include="Saving\SplitBinaryPacketWriter.cs" />
     <Compile Include="SQL\Builder.cs" />
     <Compile Include="SQL\Builders\Miscellaneous.cs" />
     <Compile Include="SQL\Builders\QuestMisc.cs" />

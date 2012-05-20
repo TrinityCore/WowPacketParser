@@ -79,27 +79,27 @@ namespace WowPacketParser.Loading
                             ClientVersion.SetVersion(packet.Time);
                     }
 
-                    if (packetNum++ < Settings.FilterPacketNumLow)
+                    if (++packetNum < Settings.ReaderFilterPacketNumLow)
                         continue;
 
                     // check for filters
                     var opcodeName = Opcodes.GetOpcodeName(packet.Opcode);
 
                     var add = true;
-                    if (Settings.Filters.Length > 0)
-                        add = opcodeName.MatchesFilters(Settings.Filters);
+                    if (Settings.ReaderFilterOpcode.Length > 0)
+                        add = opcodeName.MatchesFilters(Settings.ReaderFilterOpcode);
                     // check for ignore filters
-                    if (add && Settings.IgnoreFilters.Length > 0)
-                        add = !opcodeName.MatchesFilters(Settings.IgnoreFilters);
+                    if (add && Settings.ReaderFilterIgnoreOpcode.Length > 0)
+                        add = !opcodeName.MatchesFilters(Settings.ReaderFilterIgnoreOpcode);
 
                     if (add)
                     {
                         packets.AddLast(packet);
-                        if (Settings.FilterPacketsNum > 0 && packets.Count == Settings.FilterPacketsNum)
+                        if (Settings.ReaderFilterPacketsNum > 0 && packets.Count == Settings.ReaderFilterPacketsNum)
                             break;
                     }
 
-                    if (Settings.FilterPacketNumHigh > 0 && packetNum > Settings.FilterPacketNumHigh)
+                    if (Settings.ReaderFilterPacketNumHigh > 0 && packetNum > Settings.ReaderFilterPacketNumHigh)
                         break;
                 }
             }
