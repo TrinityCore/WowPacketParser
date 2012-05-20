@@ -5,9 +5,9 @@ using System.Text;
 using WowPacketParser.Misc;
 using System.IO;
 
-namespace WowPacketParser.Saving
+namespace WowPacketParser.Processing
 {
-    public class KSZorBinaryPacketWriter : IBinaryWriter
+    public class KSZorBinaryPacketWriter : IBinaryPacketWriter
     {
         public void WritePacket(Packet packet, BinaryWriter writer)
         {

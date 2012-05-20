@@ -14,9 +14,9 @@ namespace WowPacketParser.Loading
     public static class Reader
     {
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "reader is disposed in the finally block.")]
-        public static IEnumerable<Packet> Read(string fileName)
+        public static IPacketReader GetReader(string fileName)
         {
-            IPacketReader reader;
+            IPacketReader reader = null;
             switch (Settings.PacketFileType)
             {
                 case "pkt":
@@ -62,60 +62,7 @@ namespace WowPacketParser.Loading
                 }
             }
 
-            var packets = new LinkedList<Packet>();
-            try
-            {
-                var packetNum = 0;
-                while (reader.CanRead())
-                {
-                    var packet = reader.Read(packetNum, fileName);
-                    if (packet == null)
-                        continue;
-
-                    if (packetNum == 0)
-                    {
-                        // determine build version based on date of first packet if not specified otherwise
-                        if (ClientVersion.IsUndefined())
-                            ClientVersion.SetVersion(packet.Time);
-                    }
-
-                    if (++packetNum < Settings.ReaderFilterPacketNumLow)
-                        continue;
-
-                    // check for filters
-                    var opcodeName = Opcodes.GetOpcodeName(packet.Opcode);
-
-                    var add = true;
-                    if (Settings.ReaderFilterOpcode.Length > 0)
-                        add = opcodeName.MatchesFilters(Settings.ReaderFilterOpcode);
-                    // check for ignore filters
-                    if (add && Settings.ReaderFilterIgnoreOpcode.Length > 0)
-                        add = !opcodeName.MatchesFilters(Settings.ReaderFilterIgnoreOpcode);
-
-                    if (add)
-                    {
-                        packets.AddLast(packet);
-                        if (Settings.ReaderFilterPacketsNum > 0 && packets.Count == Settings.ReaderFilterPacketsNum)
-                            break;
-                    }
-
-                    if (Settings.ReaderFilterPacketNumHigh > 0 && packetNum > Settings.ReaderFilterPacketNumHigh)
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.Data);
-                Trace.WriteLine(ex.GetType());
-                Trace.WriteLine(ex.Message);
-                Trace.WriteLine(ex.StackTrace);
-            }
-            finally
-            {
-                reader.Dispose();
-            }
-
-            return packets;
+            return reader;
         }
     }
 }

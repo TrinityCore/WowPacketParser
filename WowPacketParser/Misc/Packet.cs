@@ -37,7 +37,7 @@ namespace WowPacketParser.Misc
             StoreObjects = new Stack<Tuple<NameDict, LinkedList<Tuple<NameDict, IndexDict>>>>();
             FileName = fileName;
             Status = ParsedStatus.None;
-            Parent = null;
+            SubPacket = false;
 
             if (number == 0)
                 _firstPacketTime = Time;
@@ -61,7 +61,8 @@ namespace WowPacketParser.Misc
             StoreObjects = new Stack<Tuple<NameDict, LinkedList<Tuple<NameDict, IndexDict>>>>();
             FileName = parent.FileName;
             Status = ParsedStatus.None;
-            Parent = parent;
+            SubPacket = true;
+            ParentOpcode = parent.Opcode;
         }
 
         public int Opcode { get; set; } // setter can't be private because it's used in multiple_packets
@@ -73,7 +74,8 @@ namespace WowPacketParser.Misc
         public string FileName { get; private set; }
         public ParsedStatus Status { get; set; }
         public string ErrorMessage = "";
-        public Packet Parent;
+        public bool SubPacket;
+        public int ParentOpcode;
 
         public NameDict GetData()
         {

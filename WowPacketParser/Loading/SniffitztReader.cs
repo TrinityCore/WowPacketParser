@@ -43,5 +43,10 @@ namespace WowPacketParser.Loading
         {
             _element.Dispose();
         }
+
+        public ClientVersionBuild GetBuild()
+        {
+            return ClientVersionBuild.Zero;
+        }
     }
 }

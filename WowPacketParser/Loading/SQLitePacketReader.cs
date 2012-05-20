@@ -9,6 +9,7 @@ namespace WowPacketParser.Loading
     {
         readonly SQLiteConnection _connection;
         SQLiteDataReader _reader;
+        ClientVersionBuild _build = ClientVersionBuild.Zero;
 
         public SQLitePacketReader(string fileName)
         {
@@ -51,10 +52,14 @@ namespace WowPacketParser.Loading
             _reader.Close();
         }
 
-        static void SetBuild(int build)
+        public void SetBuild(int build)
         {
-            if (ClientVersion.IsUndefined())
-                ClientVersion.SetVersion((ClientVersionBuild)build);
+            _build = (ClientVersionBuild)build;
+        }
+
+        public ClientVersionBuild GetBuild()
+        {
+            return _build;
         }
 
         public bool CanRead()

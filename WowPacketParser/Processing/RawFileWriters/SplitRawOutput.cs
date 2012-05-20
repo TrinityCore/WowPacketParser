@@ -9,7 +9,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 
-namespace WowPacketParser.Saving
+namespace WowPacketParser.Processing
 {
     public class FileLock<T>
     {
@@ -68,21 +68,21 @@ namespace WowPacketParser.Saving
 
         class Locker<T2> : IDisposable
         {
-            private readonly T2 _fileName;
+            private readonly T2 FileName;
 
             public Locker(T2 fileName)
             {
-                _fileName = fileName;
+                FileName = fileName;
             }
 
             public void Dispose()
             {
-                FileLock<T2>.Unlock(_fileName);
+                FileLock<T2>.Unlock(FileName);
             }
         }
     }
 
-    public static class SplitBinaryOutput
+    public static class SplitRawOutput
     {
         public static readonly FileLock<string> Locks = new FileLock<string>();
         public const string Folder = "split"; // might want to move to config later

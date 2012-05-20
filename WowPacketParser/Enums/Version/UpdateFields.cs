@@ -9,9 +9,7 @@ namespace WowPacketParser.Enums.Version
 {
     public static class UpdateFields
     {
-        private static readonly Dictionary<Type, BiDictionary<string, int>> UpdateFieldDictionaries = LoadUFDictionaries();
-
-        public static readonly Dictionary<Type, int> UpdateFieldMaxOffsets = new Dictionary<Type, int>();
+        private static Dictionary<Type, BiDictionary<string, int>> UpdateFieldDictionaries = null;
 
         private static Dictionary<Type, BiDictionary<string, int>> LoadUFDictionaries()
         {
@@ -41,15 +39,12 @@ namespace WowPacketParser.Enums.Version
                 dicts.Add(enumType, result);
             }
             
-            UpdateFieldMaxOffsets.Add(typeof(ObjectField), (int)GetUpdateFieldOffset(ObjectField.OBJECT_END));
-            UpdateFieldMaxOffsets.Add(typeof(ItemField), (int)GetUpdateFieldOffset(ItemField.ITEM_END));
-            UpdateFieldMaxOffsets.Add(typeof(ContainerField), (int)GetUpdateFieldOffset(ContainerField.CONTAINER_END));
-            UpdateFieldMaxOffsets.Add(typeof(UnitField), (int)GetUpdateFieldOffset(UnitField.UNIT_END));
-            UpdateFieldMaxOffsets.Add(typeof(PlayerField), (int)GetUpdateFieldOffset(PlayerField.PLAYER_END));
-            UpdateFieldMaxOffsets.Add(typeof(GameObjectField), (int)GetUpdateFieldOffset(GameObjectField.GAMEOBJECT_END));
-            UpdateFieldMaxOffsets.Add(typeof(DynamicObjectField), (int)GetUpdateFieldOffset(DynamicObjectField.DYNAMICOBJECT_END));
-            UpdateFieldMaxOffsets.Add(typeof(CorpseField), (int)GetUpdateFieldOffset(CorpseField.CORPSE_END));
             return dicts;
+        }
+
+        public static void InitForClientVersion()
+        {
+            UpdateFieldDictionaries = LoadUFDictionaries();
         }
 
         // returns update field offset by generic - crossversion enum
@@ -85,6 +80,7 @@ namespace WowPacketParser.Enums.Version
 
         public static Type GetUpdateFieldEnumByOffset(Int32 offset, ObjectType type)
         {
+            /*
             switch (type)
             {
                 case ObjectType.Object:
@@ -147,7 +143,8 @@ namespace WowPacketParser.Enums.Version
                     }
                 default:
                     return typeof(Object);
-            }
+            }*/
+            return null;
         }
 
         public static string GetUpdateFieldNameByOffset(Int32 offset, ObjectType type)

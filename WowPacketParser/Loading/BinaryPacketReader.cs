@@ -26,6 +26,8 @@ namespace WowPacketParser.Loading
         private DateTime _startTime;
         private uint _startTickCount;
 
+        private ClientVersionBuild _build = ClientVersionBuild.Zero;
+
         public BinaryPacketReader(string fileName)
         {
             _reader = new BinaryReader(new FileStream(@fileName, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII);
@@ -101,10 +103,14 @@ namespace WowPacketParser.Loading
             }
         }
 
-        static void SetBuild(uint build)
+        public void SetBuild(uint build)
         {
-            if (ClientVersion.IsUndefined())
-                ClientVersion.SetVersion((ClientVersionBuild)build);
+            _build = (ClientVersionBuild)build;
+        }
+
+        public ClientVersionBuild GetBuild()
+        {
+            return _build;
         }
 
         public bool CanRead()

@@ -38,6 +38,11 @@ namespace WowPacketParser.Loading
                 _reader.Dispose();
             }
         }
+
+        public ClientVersionBuild GetBuild()
+        {
+            return ClientVersionBuild.Zero;
+        }
     }
 }
 

@@ -21,8 +21,8 @@ namespace WowPacketParser.Misc
 
         public static readonly ClientVersionBuild ClientBuild = GetEnum("ClientBuild", ClientVersionBuild.Zero);
         public static readonly string PacketFileType = GetString("PacketFileType", string.Empty);
-        public static readonly string BinaryOutputType = GetString("BinaryOutputType", string.Empty);
-        public static readonly bool SplitBinaryOutput = GetBoolean("SplitBinaryOutput", false);
+        public static readonly string RawOutputType = GetString("RawOutputType", string.Empty);
+        public static readonly bool SplitRawOutput = GetBoolean("SplitRawOutput", false);
         public static readonly bool TextOutput = GetBoolean("TextOutput", false);
         public static readonly SQLOutputFlags SQLOutput = GetEnum("SQLOutput", SQLOutputFlags.None);
         public static readonly string SQLFileName = GetString("SQLFileName", string.Empty);

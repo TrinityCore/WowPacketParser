@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -7,195 +8,201 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.SQL;
-using WowPacketParser.Saving;
 using WowPacketParser.Store;
+using WowPacketParser.Enums.Version;
+using WowPacketParser.Processing;
 
 namespace WowPacketParser.Loading
 {
+    using NameDict = OrderedDictionary;
+    using IndexDict = Dictionary<int, OrderedDictionary>;
     public class SniffFile
     {
-        private readonly string _fileName;
-        private readonly string _outFileName;
+        public readonly string FileName;
         private readonly Statistics _stats;
-        private LinkedList<Packet> _packets;
-        private readonly string _logPrefix;
-        private readonly SQLOutputFlags _sqlOutput;
+        public readonly string LogPrefix;
+        public LinkedList<IPacketProcessor> processors = new LinkedList<IPacketProcessor>();
 
-        public SniffFile(string fileName, Tuple<int, int> number = null, SQLOutputFlags sqlOutput = SQLOutputFlags.None)
+        public SniffFile(string fileName, Tuple<int, int> number = null)
         {
             if (string.IsNullOrWhiteSpace(fileName))
                 throw new ArgumentException("fileName cannot be null, empty or whitespace.", "fileName");
 
             _stats = new Statistics();
-            _packets = null;
-            _fileName = fileName;
-            _sqlOutput = sqlOutput;
-
-            _outFileName = Path.ChangeExtension(fileName, null) + "_parsed.txt";
+            FileName = fileName;
 
             if (number == null)
-                _logPrefix = string.Format("[{0}]", Path.GetFileName(fileName));
+                LogPrefix = string.Format("[{0}]", Path.GetFileName(fileName));
             else
-                _logPrefix = string.Format("[{0}/{1} {2}]", number.Item1, number.Item2, Path.GetFileName(fileName));          
+                LogPrefix = string.Format("[{0}/{1} {2}]", number.Item1, number.Item2, Path.GetFileName(fileName));
         }
-
-        public void ProcessFile()
-        {
-            // reset data loaded from prev file
-            Storage.ClearContainers();
-
-            // read raw packet data from file
-            ReadPackets();
-            
-            // dump raw packet data if needed
-            WriteBinary();
-
-            // parse packets, dump txt, sql etc
-            ProcessPackets();
-
-            // 
-            WriteSQLs();
-        }
-
-        private void ReadPackets()
-        {
-            Trace.WriteLine(string.Format("{0}: Reading packets...", _logPrefix));
-            _packets = new LinkedList<Packet>(Reader.Read(_fileName));
-        }
-
-        private string GetHeader()
+        
+        public string GetHeader()
         {
             return "# TrinityCore - WowPacketParser" + Environment.NewLine +
-                   "# File name: " + Path.GetFileName(_fileName) + Environment.NewLine +
+                   "# File name: " + Path.GetFileName(FileName) + Environment.NewLine +
                    "# Detected build: " + ClientVersion.Build + Environment.NewLine +
                    "# Parsing date: " + DateTime.Now.ToString() +
                    Environment.NewLine;
         }
 
-        private void ProcessPackets()
+        public void Process()
         {
-            Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Assumed version {2}",
-                _logPrefix, _packets.Count, ClientVersion.VersionString));
+            _stats.SetStartTime(DateTime.Now);
+            
+            var reader = Reader.GetReader(FileName);
+            Trace.WriteLine(string.Format("{0}: Processing packets (type {1})...", LogPrefix, reader.ToString()));
 
-            File.Delete(_outFileName);
-
-            /*
-                if (Utilities.FileIsInUse(_outFileName))
-                {
-                    // If our dump format requires a .txt to be created,
-                    // check if we can write to that .txt before starting parsing
-                    Trace.WriteLine(string.Format("Save file {0} is in use, parsing will not be done.", _outFileName));
-                    return;
-                }
-            */
-
-            using (var writer = new StreamWriter(_outFileName, true))
-            {
-                _stats.SetStartTime(DateTime.Now);
-                foreach (var packet in _packets)
-                {
-                    // Parse the packet, read the data into StoreData tree
-                    Handler.Parse(packet);
-
-                    // Update statistics
-                    _stats.AddByStatus(packet.Status);
-
-                    // Write to file
-                    writer.WriteLine(Handler.DumpAsText(packet));
-                    writer.Flush();
-
-                    // Close Writer, Stream - Dispose
-                    packet.ClosePacket();
-                }
-                _stats.SetEndTime(DateTime.Now);
-            }
-            _packets.Clear();
-
-            Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", _logPrefix, _outFileName));
-            Trace.WriteLine(string.Format("{0}: {1}", _logPrefix, _stats));
-        }
-
-        private void WriteBinary()
-        {
-            if (Settings.BinaryOutputType == "")
-                return;
             try
             {
-                IBinaryWriter packetWriter;
-                switch (Settings.BinaryOutputType)
+                var packetNum = 0;
+                var packetCount = 0;
+
+                // initialize processors
+                IPacketProcessor proc = new TextFileOutput();
+                if (proc.Init(this))
+                    processors.AddLast(proc);
+                proc = new SQLFileOutput();
+                if (proc.Init(this))
+                    processors.AddLast(proc);
+                proc = new RawFileOutput();
+                if (proc.Init(this))
+                    processors.AddLast(proc);
+                proc = new SplitRawFileOutput();
+                if (proc.Init(this))
+                    processors.AddLast(proc);
+
+                Storage.ClearContainers();
+
+                while (reader.CanRead())
+
                 {
-                    case "kszor":
-                        packetWriter = new KSZorBinaryPacketWriter();
+                    var packet = reader.Read(packetNum, FileName);
+
+                    // read error
+                    if (packet == null)
+                        continue;
+
+                    if (packetNum == 0)
+                    {
+                        // determine build version of currently read file
+                        if (Settings.ClientBuild == ClientVersionBuild.Zero)
+                        {
+                            // check if version info given
+                            if (reader.GetBuild() == ClientVersionBuild.Zero)
+                                ClientVersion.SetVersion(packet.Time);
+                            // or set version by timestamp
+                            else
+                                ClientVersion.SetVersion(packet.Time);
+                        }
+                        Trace.WriteLine(string.Format("{0}: Assumed version: {1}", LogPrefix, ClientVersion.VersionString));
+                    }
+
+                    ++packetNum;
+
+                    // finish if read packet number reached max
+                    if (Settings.ReaderFilterPacketNumHigh != 0 && packetNum > Settings.ReaderFilterPacketNumHigh)
                         break;
-                    default:
-                        throw new Exception("Unsuported binary packet writer type");
-                }
 
-                if (Settings.SplitBinaryOutput)
+                    // skip packets if they were filtered out
+                    if (packetNum < Settings.ReaderFilterPacketNumLow)
+                        continue;
+
+                    // check for filters
+                    if (!CheckReadFilters(packet.Opcode))
+                        continue;
+
+                    ProcessPacket(packet);
+                
+                    ++packetCount;
+
+                    // finish if read packet count reached max
+                    if (Settings.ReaderFilterPacketsNum > 0 && packetCount == Settings.ReaderFilterPacketsNum)
+                        break;
+                }
+                // finalize processors
+                foreach (var procs in processors)
                 {
-                    Trace.WriteLine(string.Format("{0}: Splitting {1} packets to multiple binary({2}) files...", _logPrefix, _packets.Count, Settings.BinaryOutputType));
-
-                    Directory.CreateDirectory(SplitBinaryOutput.Folder); // not doing anything if it exists already
-
-                    foreach (var packet in _packets)
-                    {
-                        var fileName = SplitBinaryOutput.Folder + "/" + Enums.Version.Opcodes.GetOpcodeName(packet.Opcode) + "." + Settings.BinaryOutputType.ToString().ToLower();
-                        try
-                        {
-                            using (SplitBinaryOutput.Locks.Lock(fileName))
-                            {
-                                bool existed = !File.Exists(fileName);
-                                var fileStream = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None);
-                                using (var writer = new BinaryWriter(fileStream, Encoding.ASCII))
-                                {
-                                    if (!existed)
-                                        packetWriter.WriteHeader(writer);
-                                    packetWriter.WritePacket(packet, writer);
-                                }
-                            }
-                        }
-                        catch (TimeoutException)
-                        {
-                            Trace.WriteLine(string.Format("Timeout trying to write Opcode to {0} ignoring opcode", fileName));
-                        }
-                    }
+                    procs.Finish();
                 }
-                else
-                {
-                    Trace.WriteLine(string.Format("{0}: Copying {1} packets to binary({2})...", _logPrefix, _packets.Count, Settings.BinaryOutputType));
-                    var dumpFileName = Path.ChangeExtension(_fileName, null) + "_excerpt.pkt";
 
-                    var fileStream = new FileStream(dumpFileName, FileMode.Create, FileAccess.Write, FileShare.None);
-                    using (var writer = new BinaryWriter(fileStream, Encoding.ASCII))
-                    {
-                        packetWriter.WriteHeader(writer);
-                        foreach (var packet in _packets)
-                        {
-                            packetWriter.WritePacket(packet, writer);
-                        }
-                    }
-                }
+                _stats.SetEndTime(DateTime.Now);
             }
             catch (Exception ex)
             {
+                Trace.WriteLine("File {0} could not be parsed", FileName);
+                Trace.WriteLine(ex.Data);
                 Trace.WriteLine(ex.GetType());
                 Trace.WriteLine(ex.Message);
                 Trace.WriteLine(ex.StackTrace);
             }
+            finally
+            {
+                reader.Dispose();
+                Trace.WriteLine(string.Format("{0}: {1}", LogPrefix, _stats));
+            }
         }
 
-        private void WriteSQLs()
+        private bool CheckReadFilters(int opc)
         {
-            if (_sqlOutput != SQLOutputFlags.None)
-                return;
-            string sqlFileName;
-            if (String.IsNullOrWhiteSpace(Settings.SQLFileName))
-                sqlFileName = string.Format("{0}_{1}.sql",
-                    Utilities.FormattedDateTimeForFiles(), Path.GetFileName(_fileName));
-            else
-                sqlFileName = Settings.SQLFileName;
+            var opcodeName = Opcodes.GetOpcodeName(opc);
+            if (Settings.ReaderFilterOpcode.Length > 0)
+                if (!opcodeName.MatchesFilters(Settings.ReaderFilterOpcode))
+                    return false;
+            // check for ignore filters
+            if (Settings.ReaderFilterIgnoreOpcode.Length > 0)
+                if (opcodeName.MatchesFilters(Settings.ReaderFilterIgnoreOpcode))
+                    return false;
 
-            Builder.DumpSQL(string.Format("{0}: Dumping sql", _logPrefix), sqlFileName, GetHeader());
+            return true;
+        }
+
+        private void ProcessPacket(Packet packet)
+        {
+            // Parse the packet, read the data into StoreData tree
+            Handler.Parse(packet);
+
+            // Update statistics
+            _stats.AddByStatus(packet.Status);
+
+            ProcessElem(packet, "Packet");
+
+            foreach (var proc in processors)
+            {
+                proc.ProcessPacket(packet);
+            }
+
+            // Close Writer, Stream - Dispose
+            packet.ClosePacket();
+        }
+
+        public void ProcessElem(Object data, string name)
+        {
+            var t = data.GetType();
+            foreach (var proc in processors)
+            {
+                proc.ProcessData(name, data, t);
+            }
+            if (t == typeof(Packet))
+            {
+                Packet packet = (Packet)data;
+                ProcessElem(packet.GetData(), "PacketData");
+            }
+            else if (t == typeof(NameDict))
+            {
+                var itr = ((NameDict)data).GetEnumerator();
+                while (itr.MoveNext())
+                {
+                    ProcessElem(itr.Value, (string)itr.Key);
+                }
+            }
+            else if (t == typeof(IndexDict))
+            {
+                foreach (var itr in ((IndexDict)data))
+                {
+                    ProcessElem(itr.Value, name);
+                }
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
-
+using WowPacketParser.Enums.Version;
 namespace WowPacketParser.Misc
 {
     public static class ClientVersion
@@ -107,8 +107,12 @@ namespace WowPacketParser.Misc
 
         public static void SetVersion(ClientVersionBuild version)
         {
+            if (version == Build)
+                return;
             Build = version;
             _expansion = GetExpansion(version);
+            UpdateFields.InitForClientVersion();
+            Opcodes.InitForClientVersion();
         }
 
         public static void SetVersion(DateTime time)
