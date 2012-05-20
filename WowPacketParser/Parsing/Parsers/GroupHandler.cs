@@ -14,7 +14,7 @@ namespace WowPacketParser.Parsing.Parsers
             var grouptype = packet.ReadEnum<GroupTypeFlag>("Group Type", TypeCode.Byte);
             packet.ReadByte("Sub Group");
             packet.ReadEnum<GroupUpdateFlag>("Flags", TypeCode.Byte);
-            packet.ReadByte("Player's Role");
+            packet.ReadByte("Player Roles Assigned");
 
             if (grouptype.HasAnyFlag(GroupTypeFlag.LookingForDungeon))
             {

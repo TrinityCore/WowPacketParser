@@ -56,6 +56,14 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadInt32("Client Seed");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_5a_12340))
+            {
+                // Some numbers about selected realm
+                packet.ReadInt32("Unk Int32 3");
+                packet.ReadInt32("Unk Int32 4");
+                packet.ReadInt32("Unk Int32 5");
+            }
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
                 packet.ReadInt64("Unk Int64");
 
