@@ -54,7 +54,7 @@ namespace WowPacketParser.Misc
                 var opt = args[i];
                 if (opt[0] != '/')
                     break;
-                
+
                 // analyze options
                 var optname = opt.Substring(1);
                 switch (optname)

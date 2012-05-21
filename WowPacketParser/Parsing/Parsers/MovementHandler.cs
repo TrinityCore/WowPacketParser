@@ -656,7 +656,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
         }
-        
+
         [Parser(Opcode.MSG_MOVE_SET_PITCH, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleMovementSetPitch422(Packet packet)
         {
@@ -1103,7 +1103,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Unk float");
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandlePhaseShift(Packet packet)
         {
             var phaseMask = packet.ReadInt32();
@@ -1144,7 +1144,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddSniffData(StoreNameType.Phase, phaseMask, "PHASEMASK 406");
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
         public static void HandlePhaseShift422(Packet packet)
         {
             var bits = new bool[8];

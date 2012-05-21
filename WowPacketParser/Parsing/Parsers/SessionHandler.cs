@@ -237,7 +237,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
         }
-        
+
         [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleAuthResponse434(Packet packet)
         {
@@ -252,9 +252,9 @@ namespace WowPacketParser.Parsing.Parsers
                 var position = packet.ReadInt32();
                 packet.WriteLine("Queue Position: " + position);
 
-                
+
             }
-            if (hasAccountInfo) 
+            if (hasAccountInfo)
             {
                 packet.ReadInt32("Billing Time Remaining");
                 packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
@@ -341,7 +341,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("GUID: {0}", guid);
             LoginGuid = guid;
         }
-        
+
         [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]
         public static void HandlePlayerLogin433(Packet packet)
         {

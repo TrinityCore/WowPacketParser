@@ -40,7 +40,7 @@ namespace WowPacketParser.Loading
             if (number == null)
                 _logPrefix = string.Format("[{0}]", Path.GetFileName(fileName));
             else
-                _logPrefix = string.Format("[{0}/{1} {2}]", number.Item1, number.Item2, Path.GetFileName(fileName));          
+                _logPrefix = string.Format("[{0}/{1} {2}]", number.Item1, number.Item2, Path.GetFileName(fileName));
         }
 
         public void ProcessFile()
@@ -151,13 +151,13 @@ namespace WowPacketParser.Loading
             var percent = (100 * currElementIndex) / totalElementCount;
             if (percent == _lastPercent)
                 return; // we only need to update if percentage changes otherwise we would be wasting precious resources
-            
+
             _lastPercent = percent;
 
             Console.Write("\r{0} {1}% complete", message, percent);
             if (currElementIndex == totalElementCount)
                 Console.WriteLine();
-        }  
+        }
 
         private void SplitBinaryDump()
         {

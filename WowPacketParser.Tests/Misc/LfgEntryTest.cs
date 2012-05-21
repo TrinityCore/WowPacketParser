@@ -15,7 +15,7 @@ namespace WowPacketParser.Tests.Misc
             Assert.IsNotNull(lfg);
             Assert.AreEqual(1, lfg.Full);
         }
-        
+
         [Test]
         public void TestLfgType()
         {

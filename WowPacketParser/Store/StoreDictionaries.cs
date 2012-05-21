@@ -26,10 +26,12 @@ namespace WowPacketParser.Store
                     return false; //return flags.HasAnyFlag(SQLOutputFlags.ItemTemplate;
                 case "QuestTemplates":
                     return flags.HasAnyFlag(SQLOutputFlags.QuestTemplate);
+                case "Gossips":
+                    return flags.HasAnyFlag(SQLOutputFlags.Gossip);
+                case "Loots":
+                    return flags.HasAnyFlag(SQLOutputFlags.Loot);
                 case "UnitTemplates":
                 case "SpellsX":
-                case "Gossips":
-                case "Loots":
                 case "CreatureTexts":
                 case "Emotes":
                 case "Sounds":
@@ -67,7 +69,7 @@ namespace WowPacketParser.Store
     public class StoreDictionary<T, TK> : Store, IEnumerable<KeyValuePair<T, Tuple<TK, TimeSpan?>>>
     {
         private readonly Dictionary<T, Tuple<TK, TimeSpan?>> _dictionary;
-        
+
         public StoreDictionary(string type)
         {
             Type = type;
@@ -117,7 +119,7 @@ namespace WowPacketParser.Store
                     return true;
                 }
             }
-            
+
             value = default(TK);
             return false;
         }
@@ -138,7 +140,7 @@ namespace WowPacketParser.Store
                     return _dictionary[key];
                 return null;
             }
-            
+
             set
             {
                 if (Enabled)
@@ -244,7 +246,7 @@ namespace WowPacketParser.Store
     public class StoreBag<T> : Store, IEnumerable<Tuple<T, TimeSpan?>>
     {
         private readonly Bag<Tuple<T, TimeSpan?>> _bag;
- 
+
         public StoreBag(string type)
         {
             Type = type;

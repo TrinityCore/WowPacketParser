@@ -472,7 +472,7 @@ namespace WowPacketParser.Parsing.Parsers
                 charGuids[c] = new byte[8];
                 guildGuids[c] = new byte[8];
                 //100%  pozition, and flag
-                //%50   flag 
+                //%50   flag
                 //20    nothing
 
                 charGuids[c][0] = (byte)(packet.ReadBit() ? 1 : 0); //100%
@@ -622,7 +622,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var c = 0; c < unkCounter; c++)
                 packet.WriteLine("Unk Loop: {0}, {1}", packet.ReadUInt32(), packet.ReadByte());
         }
-        
+
         [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleCharEnum434(Packet packet)
         {
@@ -630,7 +630,7 @@ namespace WowPacketParser.Parsing.Parsers
             var unkCounter = packet.ReadByte();
             packet.ReadByte();
             packet.ReadByte();
-            
+
             var count = packet.ReadBits("Char count", 17);
 
             var charGuids = new byte[count][];
@@ -682,7 +682,7 @@ namespace WowPacketParser.Parsing.Parsers
                 charGuids[c][0] = (byte)(packet.ReadBit() ? 1 : 0);
                 charGuids[c][2] = (byte)(packet.ReadBit() ? 1 : 0);
                 charGuids[c][6] = (byte)(packet.ReadBit() ? 1 : 0);
-                
+
                 guildGuids[c][7] = (byte)(packet.ReadBit() ? 1 : 0);
                 packet.ReadBit();
                 packet.ReadBit();
@@ -694,7 +694,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             }
 
-           
+
           //packet.ReadBit(); // no idea, not used in client
 
 
@@ -816,7 +816,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.WriteLine("Unk Loop: {0}, {1}", packet.ReadUInt32(), packet.ReadByte());
             }
         }
-        
+
         [Parser(Opcode.SMSG_COMPRESSED_CHAR_ENUM)]
         public static void HandleCompressedCharEnum(Packet packet)
         {

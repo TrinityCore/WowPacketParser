@@ -70,6 +70,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT_PARTY)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_PARTY_LEADER)]
         public static void HandleMessageChatParty(Packet packet)
         {
             packet.ReadEnum<Language>("Language", TypeCode.Int32);

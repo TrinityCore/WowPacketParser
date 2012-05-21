@@ -760,7 +760,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
             var entry = packet.ReadEntry();
-            packet.WriteLine("Entry: " + 
+            packet.WriteLine("Entry: " +
                 StoreGetters.GetName(entry.Value ? StoreNameType.GameObject : StoreNameType.Unit, entry.Key));
             packet.ReadInt32("Count");
             packet.ReadInt32("Required Count");
@@ -777,7 +777,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                 for (var i = 0; i < count; i++)
-                {    
+                {
                     packet.ReadGuid("GUID", i);
                     packet.ReadEnum<QuestGiverStatus4x>("Status", TypeCode.Int32, i);
                 }
