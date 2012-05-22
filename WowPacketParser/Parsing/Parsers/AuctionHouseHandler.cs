@@ -100,8 +100,8 @@ namespace WowPacketParser.Parsing.Parsers
                     break;
                 case AuctionHouseError.HigherBid:
                     packet.ReadInt64("Unknown HigherBid Int64");
-                    packet.ReadInt64("Unknown HigherBid Int64");
-                    packet.ReadInt64("Unknown HigherBid Int64");
+                    packet.ReadInt32("Unknown HigherBid Int32");
+                    packet.ReadInt32("Unknown HigherBid Int32");
                     break;
             }
         }

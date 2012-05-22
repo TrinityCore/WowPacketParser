@@ -242,7 +242,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
         public static void HandleFeatureSystemStatus(Packet packet)
         {
-            packet.ReadBoolean("Unk bool");
+            packet.ReadByte("Unk byte");
             packet.ReadBoolean("Enable Voice Chat");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
@@ -257,15 +257,15 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REALM_SPLIT)]
         public static void HandleClientRealmSplit(Packet packet)
         {
-            packet.ReadInt32("Unk Int32"); // Same as first int32 in SMSG_REALM_SPLIT
+            packet.ReadEnum<ClientSplitState>("Client State", TypeCode.Int32);
         }
 
         [Parser(Opcode.SMSG_REALM_SPLIT)]
         public static void HandleServerRealmSplit(Packet packet)
         {
-            packet.ReadInt32("Unk Int32");
-            packet.ReadEnum<RealmSplitState>("Split State", TypeCode.Int32);
-            packet.ReadCString("Unk String");
+            packet.ReadEnum<ClientSplitState>("Client State", TypeCode.Int32);
+            packet.ReadEnum<PendingSplitState>("Split State", TypeCode.Int32);
+            packet.ReadCString("Split Date");
         }
 
         [Parser(Opcode.CMSG_PING)]
@@ -484,7 +484,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadInt32("Unk int32 1");
             packet.ReadInt32("Unk int32 2");
-            packet.ReadInt32("Unk int32 3");
         }
 
         /*
