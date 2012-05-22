@@ -10,12 +10,11 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var status = packet.ReadEnum<ContactStatus>("Status", TypeCode.Byte);
 
-            if (onlineCheck && status != ContactStatus.Online)
+            if (onlineCheck && status == ContactStatus.Offline)
                 return;
 
             packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area");
             packet.ReadInt32("Level");
-
             packet.ReadEnum<Class>("Class", TypeCode.Int32);
         }
 
@@ -36,11 +35,11 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadGuid("GUID");
 
-                var cflags = packet.ReadEnum<ContactEntryFlag>("Flags", TypeCode.Int32);
+                var flag = packet.ReadEnum<ContactEntryFlag>("Flags", TypeCode.Int32);
 
                 packet.ReadCString("Note");
 
-                if (!cflags.HasAnyFlag(ContactEntryFlag.Friend))
+                if (!flag.HasAnyFlag(ContactEntryFlag.Friend))
                     continue;
 
                 ReadSingleContactBlock(ref packet, true);

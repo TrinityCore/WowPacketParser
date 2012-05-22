@@ -18,9 +18,9 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadInt32("Count");
 
             for (int i = 0; i < count; i++)
-                packet.ReadInt32("Unk int32");
+                packet.WriteLine("[" + i + "] Sent: " + (packet.Time - packet.ReadTime()).ToFormattedString());
 
-            if ((packet.Length - packet.Position) == 4) // is there any other way?
+            if (count == 0)
                 packet.ReadInt32("Unk Int32");
             else
             {
