@@ -37,7 +37,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Criteria ID");
             packet.ReadPackedGuid("Criteria Counter");
             packet.ReadPackedGuid("Player GUID");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32"); // some flag... & 1 -> delete
             packet.ReadPackedTime("Time");
 
             for (var i = 0; i < 2; i++)
@@ -72,7 +72,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadPackedGuid("Player GUID");
 
-                packet.ReadInt32("Unk Int32");
+                packet.ReadInt32("Unk Int32"); // Unk flag, same as in SMSG_CRITERIA_UPDATE
 
                 packet.ReadPackedTime("Criteria Time");
 

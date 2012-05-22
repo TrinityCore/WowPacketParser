@@ -1083,24 +1083,27 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Movement Counter");
         }
 
-        [Parser(Opcode.CMSG_MOVE_KNOCK_BACK_ACK)]
         [Parser(Opcode.CMSG_MOVE_WATER_WALK_ACK)]
         [Parser(Opcode.CMSG_MOVE_HOVER_ACK)]
         [Parser(Opcode.CMSG_MOVE_SET_CAN_FLY_ACK)]
         [Parser(Opcode.CMSG_MOVE_SET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY_ACK)]
+        public static void HandleSpecialMoveAckMessages(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid("Guid");
+            packet.ReadInt32("Movement Counter");
+            ReadMovementInfo(ref packet, guid);
+            packet.ReadSingle("Unk float");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_KNOCK_BACK_ACK)]
         [Parser(Opcode.CMSG_FORCE_MOVE_UNROOT_ACK)]
         [Parser(Opcode.CMSG_FORCE_MOVE_ROOT_ACK)]
-        public static void HandleSpecialMoveAckMessages(Packet packet)
+        public static void HandleSpecialMoveAckMessages2(Packet packet)
         {
             var guid = packet.ReadPackedGuid("Guid");
             packet.ReadInt32("Movement Counter");
 
             ReadMovementInfo(ref packet, guid);
-
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_MOVE_KNOCK_BACK_ACK))
-                return;
-
-            packet.ReadSingle("Unk float");
         }
 
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]

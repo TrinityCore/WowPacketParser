@@ -122,9 +122,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_CALENDAR_GUILD_FILTER)]
         public static void HandleCalendarGuildFilter(Packet packet)
         {
-            packet.ReadInt32("Unk Int32 1");
-            packet.ReadInt32("Unk Int32 2");
-            packet.ReadInt32("Unk Int32 3");
+            packet.ReadInt32("Min Level");
+            packet.ReadInt32("Max Level");
+            packet.ReadInt32("Min Rank");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_ARENA_TEAM)]
@@ -249,11 +249,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_NOTES)]
         public static void HandleCalendarSendUpdatedInviteNotes(Packet packet)
         {
-            packet.ReadInt32("Unk Int32 1");
-            packet.ReadInt32("Unk Int32 2");
-            packet.ReadInt32("Unk Int32 3");
-            packet.ReadInt32("Unk Int32 4");
-            packet.ReadInt32("Unk Int32 5");
+            packet.ReadPackedGuid("Invitee GUID");
+            packet.ReadInt64("Invite ID");
+            packet.ReadCString("Invite Text");
+            packet.ReadBoolean("Unk bool");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_EVENT_REMOVE_INVITE)]
@@ -300,7 +299,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CALENDAR_EVENT_MODERATOR_STATUS_ALERT)]
         public static void HandleSendCalendarEventModeratorStatus(Packet packet)
         {
-            packet.ReadPackedGuid("Invitede GUID");
+            packet.ReadPackedGuid("Invitee GUID");
             packet.ReadInt64("Event ID");
             packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte);
             packet.ReadBoolean("Unk Boolean");
@@ -344,6 +343,16 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
             packet.ReadInt32("Reset Time");
             packet.ReadGuid("Instance ID");
+        }
+
+        [Parser(Opcode.SMSG_CALENDAR_RAID_LOCKOUT_UPDATED)]
+        public static void HandleCalendarRaidLockoutUpdated(Packet packet)
+        {
+            packet.ReadPackedTime("Unk time"); // Elapsed time ?
+            packet.ReadInt32("Map ID");
+            packet.ReadInt32("Difficulty");
+            packet.ReadInt32("Unk time"); // Old reset time ?
+            packet.ReadInt32("Unk time"); // New reset time ?
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_ALERT)]
@@ -412,16 +421,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedTime("Event Time");
             packet.ReadInt32("Unk flag"); // (v38 & 0x440) != 0
             packet.ReadBoolean("DeletePendingInvite");
-        }
-
-        [Parser(Opcode.SMSG_CALENDAR_RAID_LOCKOUT_UPDATED)]
-        public static void HandleCalendarRaidLockoutUpdated(Packet packet)
-        {
-            packet.ReadPackedTime("");
-            packet.ReadInt32("Unk");
-            packet.ReadInt32("Unk");
-            packet.ReadInt16("Hours ?");
-            packet.ReadInt16("Hours ?");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_EVENT_SIGNUP)]

@@ -54,7 +54,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadInt32("Unk Int32 2");
 
-            packet.ReadInt32("Client Seed");
+            packet.ReadUInt32("Client Seed");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_5a_12340))
             {

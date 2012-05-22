@@ -344,6 +344,9 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadGuid("GUID");
 
+            if (!packet.CanRead())
+                return;
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
             {
                 packet.ReadByte("Min Level");
@@ -418,13 +421,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Slot");
         }
 
-        // Reading 11 Bytes in random order. Only 1st Byte seems to have data (Only seen '5')
         [Parser(Opcode.SMSG_REPORT_PVP_AFK_RESULT)]
         public static void HandleReportPvPAFKResult(Packet packet)
         {
-            packet.ReadByte("Unk Byte (afkResult)");
-            packet.ReadUInt64("Unk Uint64 (afkResult)");
-            packet.ReadUInt16("Unk Uint16 (afkResult)");
+            // First three bytes = result, 5 -> enabled, else except 6 -> disabled
+            packet.ReadByte("Unk byte");
+            packet.ReadByte("Unk byte");
+            packet.ReadByte("Unk byte");
+            packet.ReadGuid("Unk guid");
         }
 
         [Parser(Opcode.SMSG_GROUP_JOINED_BATTLEGROUND, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
@@ -580,6 +584,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_PVP_LOG_DATA)]
         public static void HandlePvPLogData(Packet packet)
         {
+            if (packet.Direction == Direction.ClientToServer)
+                return;
+
             var arena = packet.ReadBoolean("Arena");
             if (arena)
             {
@@ -705,7 +712,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldMgrQueueInvite(Packet packet)
         {
             packet.ReadInt32("Battle Id");
-            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Warmup");
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_INVITE_RESPONSE)]
@@ -730,7 +737,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadByte("Unk");
             packet.ReadGuid("BG Guid");
-
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERED)]
@@ -740,7 +746,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Unk Byte 1");
             packet.ReadByte("Unk Byte 2");
             packet.ReadByte("Clear AFK");
-
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECTED)]
@@ -765,6 +770,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Battle Id");
         }
 
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING)]
+        public static void HandleBattlefieldMgrEjectPending(Packet packet)
+        {
+            packet.ReadInt32("Battle Id");
+            packet.ReadBoolean("Remote");
+        }
+
         [Parser(Opcode.SMSG_ARENA_TEAM_ROSTER)]
         public static void HandleArenaTeamRoster(Packet packet)
         {
@@ -786,7 +798,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Seasonal Games", i);
                 packet.ReadUInt32("Seasonal Wins", i);
                 packet.ReadUInt32("Personal Rating", i);
-                if (unk > 0)
+                if (unk != 0)
                 {
                     packet.ReadSingle("Unk float 1", i);
                     packet.ReadSingle("Unk float 2", i);
@@ -818,13 +830,13 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_ARENA_TEAM_LEADER)]
         public static void HandleArenaTeamInvite(Packet packet)
         {
-            packet.ReadUInt32("Tead Id");
+            packet.ReadUInt32("Team Id");
             packet.ReadCString("Name");
         }
 
         public static void HandleArenaTeamRemove(Packet packet)
         {
-            packet.ReadUInt32("Tead Id");
+            packet.ReadUInt32("Team Id");
             packet.ReadCString("Name");
         }
 
@@ -913,6 +925,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REQUEST_RATED_BG_INFO)]
         [Parser(Opcode.CMSG_REQUEST_PVP_OPTIONS_ENABLED)]
         [Parser(Opcode.CMSG_BATTLEGROUND_PLAYER_POSITIONS)]
+        [Parser(Opcode.SMSG_BATTLEGROUND_INFO_THROTTLED)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_PORT_DENIED)]
         public static void HandleNullBattleground(Packet packet)
         {
         }
@@ -936,11 +950,8 @@ namespace WowPacketParser.Parsing.Parsers
 
         }
 
-        //[Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING)]
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE)]
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_SET_NEXT_TRANSITION_TIME)]
-        //[Parser(Opcode.SMSG_BATTLEGROUND_INFO_THROTTLED)]
-        //[Parser(Opcode.SMSG_BATTLEFIELD_PORT_DENIED)]
         //[Parser(Opcode.CMSG_START_BATTLEFIELD_CHEAT)]
         //[Parser(Opcode.CMSG_END_BATTLEFIELD_CHEAT)]
     }
