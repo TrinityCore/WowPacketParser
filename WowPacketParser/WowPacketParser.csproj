@@ -318,7 +318,6 @@
     <Compile Include="Loading\Reader.cs" />
     <Compile Include="Misc\BiDictionary.cs" />
     <Compile Include="Misc\ClientVersion.cs" />
-    <Compile Include="Misc\ConcurrentMultiDictionary.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Misc\Filters.cs" />
     <Compile Include="Misc\Guid.cs" />
