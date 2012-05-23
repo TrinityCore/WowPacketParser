@@ -348,11 +348,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CALENDAR_RAID_LOCKOUT_UPDATED)]
         public static void HandleCalendarRaidLockoutUpdated(Packet packet)
         {
-            packet.ReadPackedTime("Unk time"); // Elapsed time ?
+            packet.ReadPackedTime("Time");
             packet.ReadInt32("Map ID");
             packet.ReadInt32("Difficulty");
-            packet.ReadInt32("Unk time"); // Old reset time ?
-            packet.ReadInt32("Unk time"); // New reset time ?
+            packet.ReadInt32("Time changed (in seconds)");
+            packet.ReadInt32("Reset time");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_ALERT)]
