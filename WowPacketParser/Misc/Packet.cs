@@ -122,6 +122,14 @@ namespace WowPacketParser.Misc
             return buffer;
         }
 
+        public string GetHeader(bool isMultiple = false)
+        {
+            return string.Format("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}{6}",
+                Direction, Enums.Version.Opcodes.GetOpcodeName(Opcode), Opcode.ToString("X4"),
+                Length, Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
+                Number, isMultiple ? " (part of another packet)" : "");
+        }
+
         public long Position
         {
             get { return BaseStream.Position; }

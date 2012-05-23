@@ -79,10 +79,7 @@ namespace WowPacketParser.Parsing
 
             var opcode = packet.Opcode;
 
-            packet.WriteLine("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}{6}",
-                packet.Direction, Opcodes.GetOpcodeName(opcode), opcode.ToString("X4"),
-                packet.Length, packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
-                packet.Number, isMultiple ? " (part of another packet)" : String.Empty);
+            packet.WriteLine(packet.GetHeader(isMultiple));
 
             if (opcode == 0)
                 return;

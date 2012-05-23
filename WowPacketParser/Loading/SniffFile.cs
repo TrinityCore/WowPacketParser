@@ -23,6 +23,9 @@ namespace WowPacketParser.Loading
         private readonly bool _splitOutput;
         private readonly SQLOutputFlags _sqlOutput;
 
+        private readonly LinkedList<string> _withErrorHeaders = new LinkedList<string>();
+        private readonly LinkedList<string> _skippedHeaders = new LinkedList<string>();
+
         public SniffFile(string fileName, DumpFormatType dumpFormat = DumpFormatType.Text, bool splitOutput = false, Tuple<int, int> number = null, SQLOutputFlags sqlOutput = SQLOutputFlags.None)
         {
             if (string.IsNullOrWhiteSpace(fileName))
@@ -130,6 +133,15 @@ namespace WowPacketParser.Loading
                     // Update statistics
                     _stats.AddByStatus(packet.Status);
 
+                    // get packet header if necessary
+                    if (Settings.LogPacketErrors)
+                    {
+                        if (packet.Status == ParsedStatus.WithErrors)
+                            _withErrorHeaders.AddLast(packet.GetHeader());
+                        else if (packet.Status == ParsedStatus.NotParsed)
+                            _skippedHeaders.AddLast(packet.GetHeader());
+                    }
+
                     // Write to file
                     writer.WriteLine(packet.Writer);
                     writer.Flush();
@@ -203,6 +215,32 @@ namespace WowPacketParser.Loading
 
             Builder.DumpSQL(string.Format("{0}: Dumping sql", _logPrefix), sqlFileName, _sqlOutput);
             Storage.ClearContainers();
+        }
+
+        private void WritePacketErrors()
+        {
+            if (_withErrorHeaders.Count == 0 && _skippedHeaders.Count == 0)
+                return;
+
+            var fileName = Path.GetFileNameWithoutExtension(_fileName) + "_errors.txt";
+
+            using (var file = new StreamWriter(fileName))
+            {
+                if (_withErrorHeaders.Count != 0)
+                {
+                    file.WriteLine("- Packets with errors:");
+                    foreach (var header in _withErrorHeaders)
+                        file.WriteLine(header);
+                    file.WriteLine();
+                }
+
+                if (_skippedHeaders.Count != 0)
+                {
+                    file.WriteLine("- Packets not parsed:");
+                    foreach (var header in _skippedHeaders)
+                        file.WriteLine(header);
+                }
+            }
         }
     }
 }
