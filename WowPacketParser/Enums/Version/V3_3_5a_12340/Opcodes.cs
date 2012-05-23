@@ -1321,7 +1321,27 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_COMMENTATOR_SKIRMISH_QUEUE_RESULT1, 0x51C},
             {Opcode.SMSG_COMMENTATOR_SKIRMISH_QUEUE_RESULT2, 0x51D},
             {Opcode.SMSG_COMPRESSED_UNKNOWN_1310, 0x51E},
-            {Opcode.NUM_MSG_TYPES, 0x51F}
+            {Opcode.SMSG_UNKNOWN_32004, 0x7D04},
+            {Opcode.SMSG_UNKNOWN_32025, 0x7D19},
+            {Opcode.SMSG_UNKNOWN_32032, 0x7D20},
+            {Opcode.SMSG_UNKNOWN_32057, 0x7D39},
+            {Opcode.SMSG_UNKNOWN_32065, 0x7D41},
+            {Opcode.SMSG_UNKNOWN_32072, 0x7D48},
+            {Opcode.SMSG_UNKNOWN_32073, 0x7D49},
+            {Opcode.SMSG_UNKNOWN_32077, 0x7D4D},
+            {Opcode.SMSG_UNKNOWN_32080, 0x7D50},
+            {Opcode.SMSG_UNKNOWN_32096, 0x7D60},
+            {Opcode.SMSG_UNKNOWN_32098, 0x7D62},
+            {Opcode.SMSG_UNKNOWN_32112, 0x7D70},
+            {Opcode.SMSG_UNKNOWN_32140, 0x7D8C},
+            {Opcode.SMSG_UNKNOWN_32164, 0x7DA4},
+            {Opcode.SMSG_UNKNOWN_32173, 0x7DAD},
+            {Opcode.SMSG_UNKNOWN_32206, 0x7DCE},
+            {Opcode.SMSG_UNKNOWN_32228, 0x7DE4},
+            {Opcode.SMSG_UNKNOWN_32249, 0x7DF9},
+            {Opcode.SMSG_UNKNOWN_62976, 0xF600},
+            {Opcode.SMSG_UNKNOWN_63040, 0xF640},
+            {Opcode.SMSG_UNKNOWN_63141, 0xF6A5},
             // ReSharper restore InconsistentNaming
         };
     }

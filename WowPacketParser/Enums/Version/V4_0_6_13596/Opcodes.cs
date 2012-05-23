@@ -1292,7 +1292,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_WHOIS, 0x0B1A4}, // 4.0.6a 13623
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x05557}, // 4.0.6a 13623
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0BD80}, // 4.0.6a 13623
-            {Opcode.NUM_MSG_TYPES, 0x102B8} // last unknown opcode + 1.
         };
     }
 }
