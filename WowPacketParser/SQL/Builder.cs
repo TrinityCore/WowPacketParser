@@ -11,7 +11,7 @@ namespace WowPacketParser.SQL
 {
     public static class Builder
     {
-        public static void DumpSQL(string prefix, string fileName, SQLOutputFlags sqlOutput)
+        public static void DumpSQL(string prefix, string fileName, string header)
         {
             var units = Storage.Objects.Where(obj => obj.Value.Item1.Type == ObjectType.Unit && obj.Key.GetHighType() != HighGuidType.Pet).ToDictionary(obj => obj.Key, obj => obj.Value.Item1 as Unit);
             var gameObjects = Storage.Objects.Where(obj => obj.Value.Item1.Type == ObjectType.GameObject).ToDictionary(obj => obj.Key, obj => obj.Value.Item1 as GameObject);
@@ -47,7 +47,7 @@ namespace WowPacketParser.SQL
                 Trace.WriteLine("21/22 - Write UnitMisc.CreatureEquip"); store.WriteData(UnitMisc.CreatureEquip(units));
                 Trace.WriteLine("22/22 - Write UnitMisc.CreatureMovement"); store.WriteData(UnitMisc.CreatureMovement(units));
 
-                Trace.WriteLine(store.WriteToFile()
+                Trace.WriteLine(store.WriteToFile(header)
                                     ? String.Format("{0}: Saved file to '{1}'", prefix, fileName)
                                     : "No SQL files created -- empty.");
             }

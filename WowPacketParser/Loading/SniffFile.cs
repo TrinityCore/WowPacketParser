@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using WowPacketParser.Enums;
@@ -70,6 +71,9 @@ namespace WowPacketParser.Loading
                     if (_sqlOutput != SQLOutputFlags.None)
                         WriteSQLs();
 
+                    if (Settings.LogPacketErrors)
+                        WritePacketErrors();
+
                     GC.Collect(); // Force a GC collect after parsing a file. It seems to help.
 
                     break;
@@ -110,6 +114,15 @@ namespace WowPacketParser.Loading
             }
         }
 
+        private string GetHeader()
+        {
+            return "# TrinityCore - WowPacketParser" + Environment.NewLine +
+                   "# File name: " + Path.GetFileName(_fileName) + Environment.NewLine +
+                   "# Detected build: " + ClientVersion.Build + Environment.NewLine +
+                   "# Parsing date: " + DateTime.Now.ToString(CultureInfo.InvariantCulture) +
+                   Environment.NewLine;
+        }
+
         private void ParsePackets()
         {
             Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Assumed version {2}",
@@ -119,6 +132,8 @@ namespace WowPacketParser.Loading
 
             using (var writer = new StreamWriter(_outFileName, true))
             {
+                writer.WriteLine(GetHeader());
+
                 var i = 1;
                 var packetCount = _packets.Count;
 
@@ -213,7 +228,7 @@ namespace WowPacketParser.Loading
             else
                 sqlFileName = Settings.SQLFileName;
 
-            Builder.DumpSQL(string.Format("{0}: Dumping sql", _logPrefix), sqlFileName, _sqlOutput);
+            Builder.DumpSQL(string.Format("{0}: Dumping sql", _logPrefix), sqlFileName, GetHeader());
             Storage.ClearContainers();
         }
 
@@ -226,6 +241,8 @@ namespace WowPacketParser.Loading
 
             using (var file = new StreamWriter(fileName))
             {
+                file.WriteLine(GetHeader());
+
                 if (_withErrorHeaders.Count != 0)
                 {
                     file.WriteLine("- Packets with errors:");
