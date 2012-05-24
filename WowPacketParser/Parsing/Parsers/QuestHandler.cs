@@ -73,6 +73,9 @@ namespace WowPacketParser.Parsing.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                     packet.ReadSingle("Honor Multiplier");
 
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_3_11685))
+                    packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
+
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell Id");
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell Cast Id");
                 packet.ReadUInt32("Title Id");
@@ -662,7 +665,7 @@ namespace WowPacketParser.Parsing.Parsers
             else
                 packet.ReadBoolean("Auto Finish", TypeCode.Int32);
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
                 packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
 
             packet.ReadUInt32("Suggested Players");
