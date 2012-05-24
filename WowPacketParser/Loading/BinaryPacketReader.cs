@@ -51,16 +51,20 @@ namespace WowPacketParser.Loading
             switch (_pktVersion)
             {
                 case PktVersion.V2_1:
-                    SetBuild(_reader.ReadUInt16());             // client build
-                    _reader.ReadBytes(40);                      // session key
+                {
+                    SetBuild(_reader.ReadUInt16()); // client build
+                    _reader.ReadBytes(40); // session key
                     break;
+                }
                 case PktVersion.V2_2:
+                {
                     _reader.ReadByte();                         // sniffer id
                     SetBuild(_reader.ReadUInt16());             // client build
                     _reader.ReadBytes(4);                       // client locale
                     _reader.ReadBytes(20);                      // packet key
                     _reader.ReadBytes(64);                      // realm name
                     break;
+                }
                 case PktVersion.V3_0:
                 {
                     var snifferId = _reader.ReadByte();         // sniffer id
@@ -81,6 +85,7 @@ namespace WowPacketParser.Loading
                     break;
                 }
                 case PktVersion.V3_1:
+                {
                     _reader.ReadByte();                         // sniffer id
                     SetBuild(_reader.ReadUInt32());             // client build
                     _reader.ReadBytes(4);                       // client locale
@@ -90,10 +95,13 @@ namespace WowPacketParser.Loading
                     additionalLength = _reader.ReadInt32();
                     _reader.ReadBytes(additionalLength);
                     break;
+                }
                 default:
+                {
                     // not supported version - let's assume the PKT bytes were a coincidence
                     _reader.BaseStream.Position = 0;
                     break;
+                }
             }
         }
 
@@ -122,6 +130,7 @@ namespace WowPacketParser.Loading
                 {
                     case PktVersion.V2_1:
                     case PktVersion.V2_2:
+                    {
                         direction = (_reader.ReadByte() == 0xff) ? Direction.ServerToClient : Direction.ClientToServer;
                         time = Utilities.GetDateTimeFromUnixTime(_reader.ReadInt32());
                         _reader.ReadInt32(); // tick count
@@ -139,8 +148,10 @@ namespace WowPacketParser.Loading
                         }
 
                         break;
+                    }
                     case PktVersion.V3_0:
                     case PktVersion.V3_1:
+                    {
                         direction = (_reader.ReadUInt32() == 0x47534d53) ? Direction.ServerToClient : Direction.ClientToServer;
 
                         if (_pktVersion == PktVersion.V3_0)
@@ -163,13 +174,16 @@ namespace WowPacketParser.Loading
                         opcode = _reader.ReadInt32();
                         data = _reader.ReadBytes(length - 4);
                         break;
+                    }
                     default:
+                    {
                         opcode = _reader.ReadUInt16();
                         length = _reader.ReadInt32();
                         direction = (Direction)_reader.ReadByte();
                         time = Utilities.GetDateTimeFromUnixTime(_reader.ReadInt64());
                         data = _reader.ReadBytes(length);
                         break;
+                    }
                 }
             }
             else // bin
@@ -181,18 +195,20 @@ namespace WowPacketParser.Loading
                 data = _reader.ReadBytes(length);
             }
 
+            // ignore opcodes that were not "decrypted" (usually because of
+            // a missing session key) (only applicable to 335 or earlier)
+            if (opcode >= 1312 && ClientVersion.Build <= ClientVersionBuild.V3_3_5a_12340)
+                return null;
+
             var packet = new Packet(data, opcode, time, direction, number, fileName);
             return packet;
         }
 
         public void Dispose()
         {
-            if (_reader != null)
-            {
-                _reader.BaseStream.Dispose();
-                _reader.Dispose();
-            }
-
+            if (_reader == null) return;
+            _reader.BaseStream.Dispose();
+            _reader.Dispose();
         }
     }
 }
