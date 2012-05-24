@@ -357,7 +357,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
             packet.ReadSingle("Elevation");
-            packet.ReadSingle("Missile speed?");
+            packet.ReadSingle("Missile speed");
             packet.ReadVector3("Current Position");
             packet.ReadVector3("Targeted Position");
 

@@ -178,7 +178,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Random Suffix");
             packet.ReadInt32("Random Property Id");
             packet.ReadUInt32("Count");
-            packet.ReadUInt32("Count Down");
+            packet.ReadUInt32("Roll time");
             packet.ReadEnum<LootVoteFlags>("Roll Vote Mask", TypeCode.Byte);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
                 packet.ReadByte("unk"); //amount of players? need verification.

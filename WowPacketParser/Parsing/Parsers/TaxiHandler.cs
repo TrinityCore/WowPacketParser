@@ -63,6 +63,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_SET_TAXI_BENCHMARK_MODE)]
         public static void HandleSetTaxiBenchmarkMode(Packet packet)
         {
+            packet.ReadBoolean("Activate");
         }
 
         [Parser(Opcode.SMSG_NEW_TAXI_PATH)]

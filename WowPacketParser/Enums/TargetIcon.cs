@@ -1,16 +1,15 @@
-﻿
-namespace WowPacketParser.Enums
+﻿namespace WowPacketParser.Enums
 {
     enum TargetIcon
     {
-        None = 0,
-        Yellow4PointStar = 1,
-        OrangeCircle = 2,
-        PurpleDiamond = 3,
-        GreenTriangle = 4,
-        WhiteCrescentMoon = 5,
-        BlueSquare = 6,
-        RedCross = 7, 
-        WhiteSkull = 8
+        None                = -1,
+        Yellow4PointStar    = 0,
+        OrangeCircle        = 1,
+        PurpleDiamond       = 2,
+        GreenTriangle       = 3,
+        WhiteCrescentMoon   = 4,
+        BlueSquare          = 5,
+        RedCross            = 6, 
+        WhiteSkull          = 7
     }
 }
