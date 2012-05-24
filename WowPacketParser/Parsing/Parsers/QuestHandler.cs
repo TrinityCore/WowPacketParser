@@ -10,7 +10,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class QuestHandler
     {
-        private static void ReadExtraQuestInfo(ref Packet packet)
+        private static void ReadExtraQuestInfo(ref Packet packet, bool readFlags = true)
         {
             var choiceCount = packet.ReadUInt32("Choice Item Count");
             var effectiveChoiceCount = ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164) ? 6 : choiceCount;
@@ -73,8 +73,8 @@ namespace WowPacketParser.Parsing.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                     packet.ReadSingle("Honor Multiplier");
 
-                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_3_11685))
-                    packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
+                if (readFlags)
+                        packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
 
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell Id");
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell Cast Id");
@@ -132,10 +132,10 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
 
             var quest = new QuestTemplate
-                        {
-                            Method = packet.ReadEnum<QuestMethod>("Method", TypeCode.Int32),
-                            Level = packet.ReadInt32("Level")
-                        };
+            {
+                Method = packet.ReadEnum<QuestMethod>("Method", TypeCode.Int32),
+                Level = packet.ReadInt32("Level")
+            };
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 quest.MinLevel = packet.ReadInt32("Min Level");
@@ -190,6 +190,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 quest.RewardArenaPoints = packet.ReadUInt32("Bonus Arena Points");
+
+            // TODO: Find when was this added/removed and what is it
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958) && (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_0_1_13164)))
+                packet.ReadInt32("Unknown Int32");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
@@ -536,19 +540,25 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("QuestTurn Portrait");
             }
 
-            var flags = QuestFlags.None;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-            {
-                packet.ReadByte("AutoAccept");
-                flags = packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
-            }
+                packet.ReadBoolean("Auto Accept");
             else
-                packet.ReadInt32("AutoAccept");
+                packet.ReadBoolean("Auto Accept", TypeCode.Int32);
+
+            var flags = QuestFlags.None;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
+                flags = packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
 
             packet.ReadUInt32("Suggested Players");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadByte("Unknown byte");
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_3a_11723))
+            {
+                packet.ReadByte("Unk");
+                packet.ReadByte("Unk");
+            }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
@@ -566,7 +576,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Hidden XP");
             }
 
-            ReadExtraQuestInfo(ref packet);
+            ReadExtraQuestInfo(ref packet, false);
 
             var emoteCount = packet.ReadUInt32("Quest Emote Count");
             for (var i = 0; i < emoteCount; i++)
@@ -615,7 +625,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Emote");
             packet.ReadUInt32("Close Window on Cancel");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
                 packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
 
             packet.ReadUInt32("Suggested Players");
