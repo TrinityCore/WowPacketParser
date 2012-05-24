@@ -186,6 +186,7 @@
     <Compile Include="Enums\HighGuidType.cs" />
     <Compile Include="Enums\Holiday.cs" />
     <Compile Include="Enums\InhabitType.cs" />
+    <Compile Include="Enums\TargetIcon.cs" />
     <Compile Include="Enums\InstanceResetWarningType.cs" />
     <Compile Include="Enums\InstanceStatus.cs" />
     <Compile Include="Enums\InventoryResult.cs" />

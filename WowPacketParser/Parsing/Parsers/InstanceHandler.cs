@@ -93,8 +93,17 @@ namespace WowPacketParser.Parsing.Parsers
             if (type == 0)
             {
                 packet.ReadGuid("Who GUID");
-                packet.ReadByte("Icon Id");
+                packet.ReadEnum<TargetIcon>("Icon", TypeCode.Byte);
                 packet.ReadGuid("Target GUID");
+            }
+
+            if (type == 1)
+            {
+                for (int i = 0; packet.CanRead(); ++i)
+                {
+                    packet.ReadEnum<TargetIcon>("Icon Id", TypeCode.Byte, i);
+                    packet.ReadGuid("Guid", i);
+                }
             }
         }
 
