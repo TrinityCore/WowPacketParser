@@ -287,23 +287,26 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
             packet.ReadByte("Min Level");
             packet.ReadByte("Max Level");
-            packet.ReadBoolean("Has Win");
-            packet.ReadInt32("Winner Honor Reward");
-            packet.ReadInt32("Winner Arena Reward");
-            packet.ReadInt32("Loser Honor Reward");
 
-            var random = packet.ReadBoolean("Is random");
-            if (random)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685)) // verify if it wasn't earlier or later
             {
-                packet.ReadByte("Random Has Win");
-                packet.ReadInt32("Random Winner Honor Reward");
-                packet.ReadInt32("Random Winner Arena Reward");
-                packet.ReadInt32("Random Loser Honor Reward");
+                packet.ReadBoolean("Has Win");
+                packet.ReadInt32("Winner Honor Reward");
+                packet.ReadInt32("Winner Arena Reward");
+                packet.ReadInt32("Loser Honor Reward");
+
+                if (packet.ReadBoolean("Is random"))
+                {
+                    packet.ReadByte("Random Has Win");
+                    packet.ReadInt32("Random Winner Honor Reward");
+                    packet.ReadInt32("Random Winner Arena Reward");
+                    packet.ReadInt32("Random Loser Honor Reward");
+                }
             }
 
             var count = packet.ReadUInt32("BG Instance count");
             for (var i = 0; i < count; i++)
-                packet.ReadUInt32("[" + i + "] Instance ID");
+                packet.ReadUInt32("Instance ID", i);
         }
 
         [Parser(Opcode.CMSG_BATTLEGROUND_PORT_AND_LEAVE, ClientVersionBuild.V4_0_6a_13623)]
