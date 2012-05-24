@@ -725,7 +725,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_TOTEM_DESTROYED)]
         public static void HandleTotemDestroyed(Packet packet)
         {
-            packet.ReadByte("Index");
+            packet.ReadByte("Slot");
         }
 
         [Parser(Opcode.SMSG_TOTEM_CREATED)]

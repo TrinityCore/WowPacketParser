@@ -24,6 +24,8 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_CHANNEL_LIST)]
+        [Parser(Opcode.CMSG_CHANNEL_DISPLAY_LIST)]
+        [Parser(Opcode.CMSG_SET_CHANNEL_WATCH)]
         public static void HandleChannelList(Packet packet)
         {
             packet.ReadCString("Channel Name");

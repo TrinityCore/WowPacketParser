@@ -502,5 +502,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
             packet.ReadBoolean("Promote"); // False = demote
         }
+
+        [Parser(Opcode.MSG_PARTY_ASSIGNMENT)]
+        public static void HandlePartyAssigment(Packet packet)
+        {
+            //if (packet.Direction == Direction.ClientToServer)
+            packet.ReadByte("Assigment");
+            packet.ReadBoolean("Apply");
+            packet.ReadGuid("Guid");
+        }
     }
 }
