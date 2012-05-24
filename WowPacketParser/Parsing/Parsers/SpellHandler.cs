@@ -42,11 +42,31 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_CONVERT_RUNE)]
+        public static void HandleConvertRune(Packet packet)
+        {
+            packet.ReadByte("Index");
+            packet.ReadByte("New Rune Type");
+        }
+
+        [Parser(Opcode.SMSG_ADD_RUNE_POWER)]
+        public static void HandleAddRunePower(Packet packet)
+        {
+            packet.ReadUInt32("Mask?"); // TC: 1 << index
+        }
+
         [Parser(Opcode.SMSG_COOLDOWN_EVENT)]
         public static void HandleCooldownEvent(Packet packet)
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
             packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.SMSG_NOTIFY_DEST_LOC_SPELL_CAST)]
+        public static void HandleNotifyDestLocSpellCast(Packet packet)
+        {
+            packet.ReadCString("Unk CString");
+            // TODO: Verify and/or finish this
         }
 
         [Parser(Opcode.SMSG_SEND_UNLEARN_SPELLS)]
@@ -702,12 +722,19 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Dispelled Spell ID", i);
         }
 
+        [Parser(Opcode.CMSG_TOTEM_DESTROYED)]
+        public static void HandleTotemDestroyed(Packet packet)
+        {
+            packet.ReadByte("Index");
+        }
+
         [Parser(Opcode.SMSG_TOTEM_CREATED)]
         public static void HandleTotemCreated(Packet packet)
         {
-            packet.ReadByte("Unk Byte");
-            packet.ReadGuid("GUID1");
-            packet.ReadGuid("GUID2");
+            packet.ReadByte("Slot");
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32("Duration");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id");
         }
 
         [Parser(Opcode.CMSG_CANCEL_CAST)]
