@@ -99,7 +99,13 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadCString("Guild MOTD");
             var size = packet.ReadUInt32("Members size");
-            packet.ReadBits("Unk bits", (int)size);
+
+            var chars = new char[size];
+            for (var i = 0; i < size; ++i)
+                chars[i] = packet.ReadBit() ? '1' : '0';
+            var bits = new string(chars);
+
+            packet.WriteLine("Unk bits: {0}", bits);
 
             for (var i = 0; i < size; ++i)
                 packet.ReadCString("Public Note", i);
@@ -131,19 +137,19 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("Member GUID", i);
 
             for (var i = 0; i < size; ++i)
-                packet.ReadEnum<Class>("Member Class", TypeCode.Byte);
+                packet.ReadEnum<Class>("Member Class", TypeCode.Byte, i);
 
             for (var i = 0; i < size; ++i)
                 packet.ReadCString("Member Name", i);
 
             for (var i = 0; i < size; ++i)
-                packet.ReadUInt32("Unk", i);
+                packet.ReadInt32("Unk", i);
 
             for (var i = 0; i < size; ++i)
                 packet.ReadUInt32("Member Rank", i);
 
             for (var i = 0; i < size; ++i)
-                packet.ReadUInt32("Unk 2", i);
+                packet.ReadInt32("Unk 2", i);
 
             for (var i = 0; i < size; ++i)
                 packet.ReadByte("Member Level", i);

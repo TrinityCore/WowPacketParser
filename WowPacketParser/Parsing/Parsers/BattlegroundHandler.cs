@@ -813,7 +813,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_ARENA_TEAM_QUERY)]
         public static void HandleArenaTeamQuery(Packet packet)
         {
-            packet.ReadUInt32("Team ID");
+            packet.ReadUInt32("Team Id");
         }
 
         [Parser(Opcode.CMSG_ARENA_TEAM_CREATE)]
@@ -832,12 +832,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_ARENA_TEAM_REMOVE)]
         [Parser(Opcode.CMSG_ARENA_TEAM_LEADER)]
         public static void HandleArenaTeamInvite(Packet packet)
-        {
-            packet.ReadUInt32("Team Id");
-            packet.ReadCString("Name");
-        }
-
-        public static void HandleArenaTeamRemove(Packet packet)
         {
             packet.ReadUInt32("Team Id");
             packet.ReadCString("Name");
