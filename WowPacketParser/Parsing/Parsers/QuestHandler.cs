@@ -165,14 +165,14 @@ namespace WowPacketParser.Parsing.Parsers
 
             quest.RewardSpell = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Reward Spell");
 
-            quest.RewardSpellCast = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Reward Spell Cast");
+            quest.RewardSpellCast = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Reward Spell Cast");
 
-            quest.RewardHonor = packet.ReadUInt32("Reward Honor");
+            quest.RewardHonor = packet.ReadInt32("Reward Honor");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 quest.RewardHonorMultiplier = packet.ReadSingle("Reward Honor Multiplier");
 
-            quest.SourceItemId = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Source Item ID");
+            quest.SourceItemId = (uint) packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Source Item ID");
 
             quest.Flags = packet.ReadEnum<QuestFlags>("Flags", TypeCode.Int32);
 
