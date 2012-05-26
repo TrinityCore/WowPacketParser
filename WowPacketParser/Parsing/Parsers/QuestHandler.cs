@@ -293,7 +293,7 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var i = 0; i < reqItemFieldCount; i++)
                 {
                     quest.RequiredItemId[i] = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Required Item ID", i);
-                    quest.RequiredItemId[i] = packet.ReadUInt32("Required Item Count", i);
+                    quest.RequiredItemCount[i] = packet.ReadUInt32("Required Item Count", i);
                 }
             }
 
