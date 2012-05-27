@@ -13,13 +13,10 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.QuestTemplates.IsEmpty())
                 return String.Empty;
 
-            if (Storage.QuestTemplates.IsEmpty())
-                return string.Empty;
-
             var entries = Storage.QuestTemplates.Keys();
             var templatesDb = SQLDatabase.GetDict<uint, QuestTemplate>(entries, "Id");
 
-            return SQLUtil.CompareDicts(Storage.QuestTemplates, templatesDb, StoreNameType.Quest);
+            return SQLUtil.CompareDicts(Storage.QuestTemplates, templatesDb, StoreNameType.Quest, "Id");
         }
 
         public static string Npc()

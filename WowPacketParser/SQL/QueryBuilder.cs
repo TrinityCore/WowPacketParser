@@ -379,15 +379,14 @@ namespace WowPacketParser.SQL
 
                 row.Append("(");
 
-                var counter = 0;
-                foreach (var value in _values)
+                for (var i = 0; i < _values.Count; ++i)
                 {
-                    counter++;
-                    row.Append(value);
+                    row.Append(_values[i]);
 
                     // Append parenthesis if end of values
-                    row.Append(_values.Count != counter ? SQLUtil.CommaSeparator : "),");
+                    row.Append(_values.Count - 1 != i ? SQLUtil.CommaSeparator : "),");
                 }
+
                 if (!String.IsNullOrWhiteSpace(Comment))
                     row.Append(" -- " + Comment);
                 row.Append(Environment.NewLine);

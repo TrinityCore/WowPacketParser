@@ -219,7 +219,7 @@ namespace WowPacketParser.SQL
                 }
             }
 
-            var result = new QueryBuilder.SQLInsert(tableName, rowsIns).Build() +
+            var result = new QueryBuilder.SQLInsert(tableName, rowsIns, deleteDuplicates: false).Build() +
                          new QueryBuilder.SQLUpdate(rowsUpd).Build();
 
             return result;
