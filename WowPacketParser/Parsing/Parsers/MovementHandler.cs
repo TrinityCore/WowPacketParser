@@ -1109,19 +1109,17 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandlePhaseShift(Packet packet)
         {
-            var phaseMask = packet.ReadInt32();
-            packet.WriteLine("Phase Mask: 0x" + phaseMask.ToString("X8"));
-            CurrentPhaseMask = phaseMask;
+            CurrentPhaseMask = packet.ReadInt32("Phase Mask");
 
-            packet.AddSniffData(StoreNameType.Phase, phaseMask, "PHASEMASK");
+            packet.AddSniffData(StoreNameType.Phase, CurrentPhaseMask, "PHASEMASK");
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_0_6a_13623)]
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_1_0_13914)]
         public static void HandlePhaseShift406(Packet packet)
         {
             packet.ReadGuid("GUID");
             var i = 0;
-            int count = packet.ReadInt32();
+            int count = packet.ReadInt32("Count");
             for (var j = 0; j < count / 2; ++j)
                 packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Unk", i, j);
 
@@ -1147,7 +1145,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddSniffData(StoreNameType.Phase, phaseMask, "PHASEMASK 406");
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandlePhaseShift422(Packet packet)
         {
             var bits = new bool[8];
@@ -1194,8 +1192,11 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
             packet.WriteLine("GUID: {0}", guid);
 
-            //CurrentPhaseMask = phaseMask;
-            packet.AddSniffData(StoreNameType.Phase, phaseMask, "PHASEMASK 422");
+            if (phaseMask != 0)
+            {
+                CurrentPhaseMask = phaseMask;
+                packet.AddSniffData(StoreNameType.Phase, phaseMask, "PHASEMASK 422");
+            }
         }
 
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
