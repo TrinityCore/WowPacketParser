@@ -21,6 +21,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_PET_CAST_SPELL, 0x6337},
             {Opcode.CMSG_PING, 0x444D},
             {Opcode.CMSG_PLAYER_LOGIN, 0x05B1},
+            {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x2413},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x2B16},
             {Opcode.CMSG_REALM_SPLIT, 0x2906},
             {Opcode.CMSG_REDIRECTION_AUTH_PROOF, 0x044D},
@@ -28,6 +29,8 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x4469},
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x4736},
             {Opcode.CMSG_WARDEN_DATA, 0x25A2},
+            {Opcode.MSG_MOVE_START_FORWARD, 0x6207},
+            {Opcode.MSG_MOVE_JUMP, 0x4707},
             {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x4925},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x4B05},
             {Opcode.SMSG_ADDON_INFO, 0x2C14},
@@ -76,6 +79,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x0B35},
             {Opcode.SMSG_UPDATE_OBJECT, 0x4715},
             {Opcode.SMSG_UPDATE_WORLD_STATE, 0x4816},
+            {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x38B1}
         };
     }
 }
