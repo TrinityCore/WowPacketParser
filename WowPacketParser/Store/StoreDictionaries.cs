@@ -197,9 +197,6 @@ namespace WowPacketParser.Store
             if (!Enabled)
                 return;
 
-            if (_dictionary.ContainsKey(key))
-                return;
-
             _dictionary.Add(key, new Tuple<TK, TimeSpan?>(value, time));
         }
 
