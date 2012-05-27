@@ -50,7 +50,7 @@ namespace WowPacketParser.Loading
                             ClientVersion.SetVersion(packet.Time);
                     }
 
-                    if (++packetNum < Settings.FilterPacketNumLow)
+                    if (packetNum++ < Settings.FilterPacketNumLow)
                         continue;
 
                     // check for filters
