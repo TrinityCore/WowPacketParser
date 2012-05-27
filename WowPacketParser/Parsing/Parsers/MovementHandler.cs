@@ -1167,7 +1167,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (bits[2]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
 
-            var phaseMask = 0;
+            var phaseMask = -1;
             count = packet.ReadInt32();
             for (var j = 0; j < count / 2; ++j)
                 phaseMask = packet.ReadUInt16("Current Mask", i, j);
@@ -1192,7 +1192,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
             packet.WriteLine("GUID: {0}", guid);
 
-            if (phaseMask != 0)
+            if (phaseMask != -1)
             {
                 CurrentPhaseMask = phaseMask;
                 packet.AddSniffData(StoreNameType.Phase, phaseMask, "PHASEMASK 422");
