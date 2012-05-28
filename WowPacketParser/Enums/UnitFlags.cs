@@ -38,5 +38,7 @@ namespace WowPacketParser.Enums
         PreventEmotes = 0x20000000,
         Sheath = 0x40000000,
         Unk31 = 0x80000000,
+
+        IsInCombat = PetIsAttackingTarget | AffectingCombat
     }
 }

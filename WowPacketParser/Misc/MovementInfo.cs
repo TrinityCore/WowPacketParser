@@ -22,5 +22,7 @@ namespace WowPacketParser.Misc
         public float RunSpeed;
 
         public UInt32 VehicleId; // Not exactly related to movement but it is read in ReadMovementUpdateBlock
+
+        public bool HasWpsOrRandMov; // waypoints or random movement
     }
 }

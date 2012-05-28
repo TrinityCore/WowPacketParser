@@ -140,18 +140,11 @@ namespace WowPacketParser.SQL
                     var i = 1;
                     foreach (var field in fields)
                     {
+#if _MonoCS_ // Mono does not support __makeref (only added in the upcoming 2.12 version)
                         if (values[i] is DBNull && field.Item1.FieldType == typeof(string))
-                            #if __MonoCS__ // pre 2.12
                             field.Item1.SetValue(instance, string.Empty);
-                            #else
-                            field.Item1.SetValueDirect(__makeref(instance), string.Empty);
-                            #endif
                         else if (field.Item1.FieldType.BaseType == typeof(Enum))
-                            #if __MonoCS__ // pre 2.12
                             field.Item1.SetValue(instance, Enum.Parse(field.Item1.FieldType, values[i].ToString()));
-                            #else
-                            field.Item1.SetValueDirect(__makeref(instance), Enum.Parse(field.Item1.FieldType, values[i].ToString()));
-                            #endif
                         else if (field.Item1.FieldType.BaseType == typeof(Array))
                         {
                             var arr = Array.CreateInstance(field.Item1.FieldType.GetElementType(), field.Item2.Count);
@@ -163,29 +156,37 @@ namespace WowPacketParser.SQL
 
                                 arr.SetValue(val, j);
                             }
-
-                            #if __MonoCS__ // pre 2.12
                             field.Item1.SetValue(instance, arr);
-                            #else
-                            field.Item1.SetValueDirect(__makeref(instance), arr);
-                            #endif
                         }
                         else if (field.Item1.FieldType == typeof(bool))
-                            #if __MonoCS__ // pre 2.12
                             field.Item1.SetValue(instance, Convert.ToBoolean(values[i]));
-                            #else
-                            field.Item1.SetValueDirect(__makeref(instance), Convert.ToBoolean(values[i]));
-                            #endif
                         else
-                            #if __MonoCS__ // pre 2.12
                             field.Item1.SetValue(instance, values[i]);
-                            #else
-                            field.Item1.SetValueDirect(__makeref(instance), values[i]);
-                            #endif
+#else
+                        if (values[i] is DBNull && field.Item1.FieldType == typeof(string))
+                            field.Item1.SetValueDirect(__makeref(instance), string.Empty);
+                        else if (field.Item1.FieldType.BaseType == typeof(Enum))
+                            field.Item1.SetValueDirect(__makeref(instance), Enum.Parse(field.Item1.FieldType, values[i].ToString()));
+                        else if (field.Item1.FieldType.BaseType == typeof(Array))
+                        {
+                            var arr = Array.CreateInstance(field.Item1.FieldType.GetElementType(), field.Item2.Count);
 
+                            for (var j = 0; j < arr.Length; j++)
+                            {
+                                var elemType = arr.GetType().GetElementType();
+                                var val = Convert.ChangeType(values[i + j], elemType);
+
+                                arr.SetValue(val, j);
+                            }
+                            field.Item1.SetValueDirect(__makeref(instance), arr);
+                        }
+                        else if (field.Item1.FieldType == typeof(bool))
+                            field.Item1.SetValueDirect(__makeref(instance), Convert.ToBoolean(values[i]));
+                        else
+                            field.Item1.SetValueDirect(__makeref(instance), values[i]);
+#endif
                         i += field.Item2.Count;
                     }
-
                     dict.Add((T)values[0], instance);
                 }
             }

@@ -64,6 +64,9 @@ namespace WowPacketParser.SQL.Builders
                 else
                     ++count;
 
+                if (creature.Movement.HasWpsOrRandMov)
+                    row.Comment += " (possible waypoints or random movement)";
+
                 rows.Add(row);
             }
 
