@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.SQL
 {
@@ -13,7 +14,8 @@ namespace WowPacketParser.SQL
 
         public SQLFile(string file)
         {
-            File.Delete(file);
+            if (string.IsNullOrWhiteSpace(Settings.SQLFileName)) // only delete file if no global
+                File.Delete(file);                               // file name was specified
             _file = new StreamWriter(file, true);
         }
 
