@@ -168,8 +168,17 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MONSTER_MOVE_TRANSPORT)]
         public static void HandleMonsterMove(Packet packet)
         {
-            packet.ReadPackedGuid("GUID");
+            var guid = packet.ReadPackedGuid("GUID");
 
+            if (Storage.Objects.ContainsKey(guid))
+            {
+                var obj = Storage.Objects[guid].Item1;
+                UpdateField uf;
+                if (obj.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_FLAGS), out uf))
+                    if ((uf.UInt32Value & (uint)UnitFlags.IsInCombat) == 0) // movement could be because of aggro so ignore that
+                        obj.Movement.HasWpsOrRandMov = true;
+            }
+                    
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MONSTER_MOVE_TRANSPORT))
             {
                 packet.ReadPackedGuid("Transport GUID");
