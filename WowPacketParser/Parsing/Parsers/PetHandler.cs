@@ -23,16 +23,17 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                 packet.ReadEnum<CreatureFamily>("Pet Family", TypeCode.UInt16); // vehicles -> 0
 
-            packet.ReadUInt32("Unknown 1");
+            packet.ReadUInt32("Expiration Time");
 
             var isPet = guid.GetHighType() == HighGuidType.Pet;
             var isVehicle = guid.GetHighType() == HighGuidType.Vehicle;
             var isMinion = guid.GetHighType() == HighGuidType.Unit;
 
             // Following int8,int8,int16 is sent like int32
-            /*var reactState = */ packet.ReadByte("React state"); // 1
-            /*var commandState = */ packet.ReadByte("Command state"); // 1
-            packet.ReadUInt16("Unknown 2"); // pets -> 0, vehicles -> 0x800 (2048)
+            //packet.ReadEnum<PetModeFlags>("Pet Mode Flags", TypeCode.UInt32);
+            packet.ReadByte("React state");
+            packet.ReadByte("Command state");
+            packet.ReadUInt16("Unknown 2");
 
             if (isPet)
                 packet.WriteLine("PET");
@@ -74,7 +75,7 @@ namespace WowPacketParser.Parsing.Parsers
             var spellCount = packet.ReadByte("Spell Count"); // vehicles -> 0, pets -> != 0. Could this be auras?
             for (var i = 0; i < spellCount; i++)
             {
-                packet.ReadEntryWithName<Int16>(StoreNameType.Spell, "Spell", i);
+                packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Spell", i);
                 packet.ReadInt16("Active", i);
             }
 
@@ -82,9 +83,9 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < cdCount; i++)
             {
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
-                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell", i);
+                    packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell", i);
                 else
-                    packet.ReadEntryWithName<Int16>(StoreNameType.Spell, "Spell", i);
+                    packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Spell", i);
 
                 packet.ReadUInt16("Category", i);
                 packet.ReadUInt32("Cooldown", i);

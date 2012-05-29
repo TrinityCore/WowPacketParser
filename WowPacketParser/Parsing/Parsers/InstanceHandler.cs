@@ -94,12 +94,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             var test = packet.ReadBoolean("List target"); // false == Set Target
             if (!test)
-                packet.ReadGuid("Target GUID");
+                packet.ReadGuid("Owner GUID");
 
             for (int i = 0; packet.CanRead(); ++i)
             {
                 packet.ReadEnum<TargetIcon>("Icon Id", TypeCode.Byte, i);
-                packet.ReadGuid("Guid", i);
+                packet.ReadGuid("Target Guid", i);
             }
         }
 
@@ -112,8 +112,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Reset time");
             if (type == RaidInstanceResetWarning.Welcome)
             {
-                packet.ReadBoolean("Unk bool");
-                packet.ReadBoolean("Is Extended");
+                packet.ReadBoolean("Locked");
+                packet.ReadBoolean("Extended");
             }
         }
 
