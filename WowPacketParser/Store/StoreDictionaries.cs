@@ -19,7 +19,9 @@ namespace WowPacketParser.Store
             {
                 case "Objects":
                     return flags.HasAnyFlag(SQLOutputFlags.CreatureSpawns) ||
-                           flags.HasAnyFlag(SQLOutputFlags.GameObjectSpawns);
+                           flags.HasAnyFlag(SQLOutputFlags.GameObjectSpawns) ||
+                           flags.HasAnyFlag(SQLOutputFlags.CreatureMovement) ||
+                           flags.HasAnyFlag(SQLOutputFlags.CreatureEquip);
                 case "GameObjectTemplates":
                     return flags.HasAnyFlag(SQLOutputFlags.GameObjectTemplate);
                 case "ItemTemplates":
