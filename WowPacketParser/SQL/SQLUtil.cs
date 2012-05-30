@@ -54,7 +54,7 @@ namespace WowPacketParser.SQL
         /// <param name="oldChar"></param>
         /// <param name="newChar"></param>
         /// <returns></returns>
-        public static StringBuilder ReplaceLast(this StringBuilder str, char oldChar, char newChar)
+        public static void ReplaceLast(this StringBuilder str, char oldChar, char newChar)
         {
             for (int i = str.Length - 1; i > 0; i--)
                 if (str[i] == oldChar)
@@ -62,7 +62,6 @@ namespace WowPacketParser.SQL
                     str[i] = newChar;
                     break;
                 }
-            return str;
         }
 
         /// <summary>

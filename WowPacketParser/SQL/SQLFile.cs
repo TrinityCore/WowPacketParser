@@ -29,6 +29,9 @@ namespace WowPacketParser.SQL
             if (_file == null)
                 return;
 
+            if (string.IsNullOrWhiteSpace(sql))
+                return;
+
             _sqls.Add(sql);
         }
 
