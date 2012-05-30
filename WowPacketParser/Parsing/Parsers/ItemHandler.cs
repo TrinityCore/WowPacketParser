@@ -104,7 +104,7 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
 
             packet.ReadSingle("Elevation");
-            packet.ReadSingle("Missile speed?");
+            packet.ReadSingle("Missile speed");
 
             // Boolean if it will send MSG_MOVE_STOP
             if (!packet.ReadBoolean())
