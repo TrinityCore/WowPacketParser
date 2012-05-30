@@ -140,7 +140,7 @@ namespace WowPacketParser.SQL
                     var i = 1;
                     foreach (var field in fields)
                     {
-#if _MonoCS_ // Mono does not support __makeref (only added in the upcoming 2.12 version)
+#if __MonoCS__ // Mono does not support __makeref (only added in the upcoming 2.12 version)
                         if (values[i] is DBNull && field.Item1.FieldType == typeof(string))
                             field.Item1.SetValue(instance, string.Empty);
                         else if (field.Item1.FieldType.BaseType == typeof(Enum))
