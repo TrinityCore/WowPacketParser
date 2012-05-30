@@ -13,6 +13,7 @@ namespace WowPacketParser.Parsing
             Opcode = Opcodes.GetOpcode(opcode);
         }
 
+        // [addedInVersion, +inf[
         public ParserAttribute(Opcode opcode, ClientVersionBuild addedInVersion)
         {
             if (ClientVersion.AddedInVersion(addedInVersion))
@@ -21,6 +22,7 @@ namespace WowPacketParser.Parsing
                 Opcode = 0;
         }
 
+        // [addedInVersion, removedInVersion[
         public ParserAttribute(Opcode opcode, ClientVersionBuild addedInVersion, ClientVersionBuild removedInVersion)
         {
             if (ClientVersion.AddedInVersion(addedInVersion) && ClientVersion.RemovedInVersion(removedInVersion))

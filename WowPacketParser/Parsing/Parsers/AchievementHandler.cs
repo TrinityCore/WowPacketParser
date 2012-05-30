@@ -87,7 +87,7 @@ namespace WowPacketParser.Parsing.Parsers
             ReadAllAchievementData(ref packet);
         }
 
-        [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_0_6a_13623)]
+        [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_1_0_13914)]
         public static void HandleAllAchievementData406(Packet packet)
         {
             var achievements = packet.ReadUInt32("Achievement count");
