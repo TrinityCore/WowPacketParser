@@ -425,7 +425,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_QUEST_CONFIRM_ACCEPT)]
         [Parser(Opcode.SMSG_QUESTUPDATE_FAILED)]
         [Parser(Opcode.SMSG_QUESTUPDATE_FAILEDTIMER)]
-        [Parser(Opcode.SMSG_QUESTUPDATE_COMPLETE)]
+        [Parser(Opcode.SMSG_QUESTUPDATE_COMPLETE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleQuestForceRemoved(Packet packet)
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
@@ -586,32 +586,22 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_QUESTGIVER_REQUEST_REWARD)]
         [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST)]
-        public static void HandleQuestcompleteQuest(Packet packet)
+        public static void HandleQuestCompleteQuest(Packet packet)
         {
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
+                packet.ReadByte("Unk byte");
         }
 
-        [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, ClientVersionBuild.V4_0_6a_13623)]
-        public static void HandleQuestcompleteQuest422(Packet packet)
+        [Parser(Opcode.CMSG_QUESTGIVER_REQUEST_REWARD)]
+        public static void HandleQuestRequestReward(Packet packet)
         {
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
-            packet.ReadByte("Unk UInt32 1");
-        }
-
-        [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, ClientVersionBuild.V4_3_0_15005)]
-        [Parser(Opcode.CMSG_QUESTGIVER_REQUEST_REWARD, ClientVersionBuild.V4_3_0_15005)]
-        public static void HandleQuestcompleteQuest43(Packet packet)
-        {
-            packet.ReadGuid("GUID");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_QUESTGIVER_REQUEST_REWARD))
-                packet.ReadUInt32("Unk UInt32 1");
-            else
-                packet.ReadByte("Unk UInt32 1");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                packet.ReadUInt32("Unk UInt32");
         }
 
         [Parser(Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS)]

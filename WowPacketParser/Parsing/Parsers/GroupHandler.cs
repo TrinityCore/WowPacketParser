@@ -324,7 +324,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Name");
         }
 
-        [Parser(Opcode.CMSG_GROUP_INVITE)]
+        [Parser(Opcode.CMSG_GROUP_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleGroupInvite(Packet packet)
         {
             packet.ReadCString("Name");

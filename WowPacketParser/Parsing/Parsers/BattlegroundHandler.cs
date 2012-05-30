@@ -409,7 +409,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("As group");
         }
 
-        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_ARENA)]
+        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_ARENA, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleBattlemasterJoinArena(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -584,7 +584,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
         }
 
-        [Parser(Opcode.MSG_PVP_LOG_DATA)]
+        [Parser(Opcode.MSG_PVP_LOG_DATA, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandlePvPLogData(Packet packet)
         {
             if (packet.Direction == Direction.ClientToServer)
@@ -696,7 +696,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("BG Guid");
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGE)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleBattlefieldMgrStateChanged(Packet packet)
         {
             packet.ReadEnum<BattlegroundStatus>("Old status", TypeCode.UInt32);
@@ -742,7 +742,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("BG Guid");
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERED)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERED, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleBattlefieldMgrEntered(Packet packet)
         {
             packet.ReadInt32("Battle Id");
@@ -843,7 +843,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Name");
         }
 
-        [Parser(Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT)]
+        [Parser(Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleArenaTeamCommandResult(Packet packet)
         {
             packet.ReadUInt32("Action"); // FIXME: Use enum

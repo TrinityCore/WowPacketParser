@@ -22,7 +22,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Icon Name");
         }
 
-        [Parser(Opcode.CMSG_TRAINER_BUY_SPELL)]
+        [Parser(Opcode.CMSG_TRAINER_BUY_SPELL, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         [Parser(Opcode.SMSG_TRAINER_BUY_FAILED)]
         [Parser(Opcode.SMSG_TRAINER_BUY_RESULT)]
         public static void HandleServerTrainerBuy(Packet packet)

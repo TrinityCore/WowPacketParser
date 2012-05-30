@@ -699,7 +699,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
         }
 
-        [Parser(Opcode.SMSG_ITEM_REFUND_RESULT)]
+        [Parser(Opcode.SMSG_ITEM_REFUND_RESULT, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleItemRefundResult(Packet packet)
         {
             packet.ReadGuid("Item Guid");

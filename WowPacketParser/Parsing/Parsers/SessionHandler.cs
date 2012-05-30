@@ -14,7 +14,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static Player LoggedInCharacter;
 
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
+        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleServerAuthChallenge(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
@@ -42,7 +42,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk8");
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION)]
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleAuthSession(Packet packet)
         {
             // Do not overwrite version after Handler was initialized
@@ -409,7 +409,7 @@ namespace WowPacketParser.Parsing.Parsers
             LoggedInCharacter = null;
         }
 
-        [Parser(Opcode.SMSG_REDIRECT_CLIENT)]
+        [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleRedirectClient(Packet packet)
         {
             var ip = packet.ReadIPAddress();
@@ -437,7 +437,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Token: " + token);
         }
 
-        [Parser(Opcode.CMSG_REDIRECTION_AUTH_PROOF)]
+        [Parser(Opcode.CMSG_REDIRECTION_AUTH_PROOF, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleRedirectionAuthProof(Packet packet)
         {
             var name = packet.ReadCString();
