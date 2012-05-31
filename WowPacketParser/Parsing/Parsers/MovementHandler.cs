@@ -170,7 +170,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.ReadPackedGuid("GUID");
 
-            if (Storage.Objects.ContainsKey(guid))
+            if (Storage.Objects != null && Storage.Objects.ContainsKey(guid))
             {
                 var obj = Storage.Objects[guid].Item1;
                 UpdateField uf;
