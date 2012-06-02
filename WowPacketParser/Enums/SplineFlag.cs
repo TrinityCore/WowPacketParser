@@ -30,7 +30,7 @@ namespace WowPacketParser.Enums
         AnimationTier = 0x00200000,
         Frozen = 0x00400000,
         Transport = 0x00800000,
-        TrasportExit = 0x01000000,
+        TransportExit = 0x01000000,
         Unknown7 = 0x02000000,
         Unknown8 = 0x04000000,
         OrientationInverted = 0x08000000,
