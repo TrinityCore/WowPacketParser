@@ -1203,7 +1203,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_BATTLEGROUND_INFO_THROTTLED, 0x4A6},
             {Opcode.SMSG_PLAYER_VEHICLE_DATA, 0x4A7},
             {Opcode.CMSG_PLAYER_VEHICLE_ENTER, 0x4A8},
-            {Opcode.CMSG_CONTROLLER_EJECT_PASSENGER, 0x4A9},
+            {Opcode.CMSG_EJECT_PASSENGER, 0x4A9},
             {Opcode.SMSG_PET_GUIDS, 0x4AA},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x4AB},
             {Opcode.CMSG_CHANGE_GDF_ARENA_RATING, 0x4AC},
