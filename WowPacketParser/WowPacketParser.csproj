@@ -413,6 +413,7 @@
     <Compile Include="Store\Objects\ObjectName.cs" />
     <Compile Include="Store\Objects\PageText.cs" />
     <Compile Include="Store\Objects\Player.cs" />
+    <Compile Include="Store\Objects\QuestMisc.cs" />
     <Compile Include="Store\Objects\QuestPOI.cs" />
     <Compile Include="Store\Objects\QuestPOIPoint.cs" />
     <Compile Include="Store\Objects\QuestTemplate.cs" />

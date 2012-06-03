@@ -3,11 +3,34 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.SQL.Builders
 {
     public static class QuestMisc
     {
+        public static string QuestOffer()
+        {
+            if (Storage.QuestOffers.IsEmpty())
+                return String.Empty;
+
+            var entries = Storage.QuestOffers.Keys();
+            var offerDb = SQLDatabase.GetDict<uint, QuestOffer>(entries, "Id");
+
+            return SQLUtil.CompareDicts(Storage.QuestOffers, offerDb, StoreNameType.Quest, "Id");
+        }
+
+        public static string QuestReward()
+        {
+            if (Storage.QuestRewards.IsEmpty())
+                return String.Empty;
+
+            var entries = Storage.QuestRewards.Keys();
+            var rewardDb = SQLDatabase.GetDict<uint, QuestReward>(entries, "Id");
+
+            return SQLUtil.CompareDicts(Storage.QuestRewards, rewardDb, StoreNameType.Quest, "Id");
+        }
+
         public static string QuestPOI()
         {
             if (Storage.QuestPOIs.IsEmpty())

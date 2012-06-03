@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Wintellect.PowerCollections;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 
@@ -12,11 +11,11 @@ namespace WowPacketParser.Saving
     public static class SplitBinaryPacketWriter
     {
         private const string Folder = "split"; // might want to move to config later
-        private static Encoding Encoding;
+        private static Encoding _encoding;
 
         public static void Write(IEnumerable<Packet> packets, Encoding encoding)
         {
-            Encoding = encoding;
+            _encoding = encoding;
             Directory.CreateDirectory(Folder); // not doing anything if it exists already
 
             // split packets by opcode (group is a set of packets all with the same opcode)
@@ -31,7 +30,7 @@ namespace WowPacketParser.Saving
             var fileName = Folder + "/" + Opcodes.GetOpcodeName(group.Key) + ".pkt";
 
             using (var fileStream = new FileStream(fileName, FileMode.Append, FileAccess.Write))
-                using (var writer = new BinaryWriter(fileStream, Encoding))
+                using (var writer = new BinaryWriter(fileStream, _encoding))
                     foreach (var packet in group)
                     {
                         writer.Write((ushort)packet.Opcode);

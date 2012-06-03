@@ -27,6 +27,8 @@ namespace WowPacketParser.Store
                 case "ItemTemplates":
                     return false; //return flags.HasAnyFlag(SQLOutputFlags.ItemTemplate;
                 case "QuestTemplates":
+                case "QuestOffers":
+                case "QuestRewards":
                     return flags.HasAnyFlag(SQLOutputFlags.QuestTemplate);
                 case "Gossips":
                     return flags.HasAnyFlag(SQLOutputFlags.Gossip);

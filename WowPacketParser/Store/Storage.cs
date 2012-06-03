@@ -32,6 +32,10 @@ namespace WowPacketParser.Store
         public static readonly StoreDictionary<uint, PageText> PageTexts = new StoreDictionary<uint, PageText>("PageTexts");
         public static readonly StoreDictionary<uint, NpcText> NpcTexts = new StoreDictionary<uint, NpcText>("NpcTexts");
 
+        // More quest related
+        public static readonly StoreDictionary<uint, QuestOffer> QuestOffers = new StoreDictionary<uint, QuestOffer>("QuestOffers");
+        public static readonly StoreDictionary<uint, QuestReward> QuestRewards = new StoreDictionary<uint, QuestReward>("QuestRewards");
+
         // `creature_text`
         public static readonly StoreMulti<uint, CreatureText> CreatureTexts = new StoreMulti<uint, CreatureText>("CreatureTexts");
 

@@ -6,8 +6,6 @@ namespace WowPacketParser.Misc
 {
     public static class ClientVersion
     {
-        private static ClientType _expansion;
-
         // Kept in sync with http://www.wowwiki.com/Public_client_builds
         private static readonly KeyValuePair<ClientVersionBuild, DateTime>[] _clientBuilds = new []
         {
@@ -68,6 +66,8 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V4_3_3_15354, new DateTime(2012, 2, 28)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V4_3_4_15595, new DateTime(2012, 4, 17))
         };
+
+        private static ClientType _expansion;
 
         public static ClientVersionBuild Build { get; private set; }
 

@@ -608,12 +608,14 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleQuestRequestItems(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
+            var entry = packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
             packet.ReadCString("Title");
-            packet.ReadCString("Text");
+            var text = packet.ReadCString("Text");
             packet.ReadUInt32("Unk UInt32 1");
             packet.ReadUInt32("Emote");
             packet.ReadUInt32("Close Window on Cancel");
+
+            Storage.QuestRewards.Add((uint) entry, new QuestReward {RequestItemsText = text}, null);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
                 packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
@@ -646,9 +648,11 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleQuestOfferReward(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
+            var entry = packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
             packet.ReadCString("Title");
-            packet.ReadCString("Text");
+            var text = packet.ReadCString("Text");
+
+            Storage.QuestOffers.Add((uint) entry, new QuestOffer {OfferRewardText = text}, null);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
