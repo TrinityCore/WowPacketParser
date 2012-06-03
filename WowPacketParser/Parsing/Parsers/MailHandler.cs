@@ -87,7 +87,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_0_10958))
                     packet.ReadUInt32("Item Text Id", i);
 
-                packet.ReadUInt32("Unk uint32", i);
+                packet.ReadUInt32("Unk uint32", i); // package.dbc?
                 packet.ReadUInt32("Stationery", i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                     packet.ReadUInt64("Money", i);

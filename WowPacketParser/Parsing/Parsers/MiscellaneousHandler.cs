@@ -425,8 +425,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Current Value");
             packet.ReadUInt32("Max Value");
             packet.ReadInt32("Regen");
-            packet.ReadByte("Unk Byte");
+            packet.ReadBoolean("Paused");
             packet.ReadUInt32("Spell Id");
+        }
+
+        [Parser(Opcode.SMSG_PAUSE_MIRROR_TIMER)]
+        public static void HandlePauseMirrorTimer(Packet packet)
+        {
+            packet.ReadEnum<MirrorTimerType>("Timer Type", TypeCode.UInt32);
+            packet.ReadBoolean("Paused");
         }
 
         [Parser(Opcode.SMSG_STOP_MIRROR_TIMER)]
@@ -517,7 +524,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
             packet.ReadInt32("Unk int32 1");
             packet.ReadInt32("Unk int32 2");
-            packet.ReadInt32("Unk int32 3");
+            packet.ReadUInt32("Unk int32 3");
             packet.ReadInt32("Unk int32 4");
         }
 

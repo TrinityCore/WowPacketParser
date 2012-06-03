@@ -213,8 +213,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleAuthResponse(Packet packet)
         {
-            var code = (ResponseCode)packet.ReadByte();
-            packet.WriteLine("Auth Code: " + code);
+            var code = packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
 
             switch (code)
             {
@@ -284,11 +283,8 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void ReadQueuePositionInfo(ref Packet packet)
         {
-            var position = packet.ReadInt32();
-            packet.WriteLine("Queue Position: " + position);
-
-            var unkByte = packet.ReadByte();
-            packet.WriteLine("Unk Byte: " + unkByte);
+            packet.ReadInt32("Queue Position");
+            packet.ReadBoolean("Realm Has Free Character Migration");
         }
 
         [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]

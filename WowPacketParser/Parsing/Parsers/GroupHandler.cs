@@ -443,7 +443,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleRealGroupUpdate(Packet packet)
         {
             packet.ReadByte("Unk Byte");
-            packet.ReadUInt32("Unk UInt32");
+            packet.ReadUInt32("Member Count");
             packet.ReadGuid("GUID");
         }
 
