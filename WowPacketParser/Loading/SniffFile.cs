@@ -125,17 +125,24 @@ namespace WowPacketParser.Loading
 
         private void ParsePackets()
         {
-            Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Assumed version {2}",
-                _logPrefix, _packets.Count, ClientVersion.VersionString));
+            var packetCount = _packets.Count;
 
             File.Delete(_outFileName);
 
+            if (packetCount == 0)
+            {
+                Trace.WriteLine(string.Format("{0}: Skipped output, packet count is 0.", _logPrefix));
+                return;
+            }
+
+            Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Assumed version {2}",
+                    _logPrefix, packetCount, ClientVersion.VersionString));
+
             using (var writer = new StreamWriter(_outFileName, true))
             {
-                writer.WriteLine(GetHeader());
-
                 var i = 1;
-                var packetCount = _packets.Count;
+
+                writer.WriteLine(GetHeader());
 
                 _stats.SetStartTime(DateTime.Now);
                 foreach (var packet in _packets)
@@ -166,8 +173,8 @@ namespace WowPacketParser.Loading
                 }
                 _stats.SetEndTime(DateTime.Now);
             }
-            _packets.Clear();
 
+            _packets.Clear();
             Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", _logPrefix, _outFileName));
             Trace.WriteLine(string.Format("{0}: {1}", _logPrefix, _stats));
         }
