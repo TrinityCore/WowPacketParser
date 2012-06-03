@@ -12,6 +12,14 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class PetHandler
     {
+        public static void ReadPetFlags(ref Packet packet)
+        {
+            var petModeFlag = packet.ReadUInt32();
+            packet.WriteLine("React state: " + (ReactState)((petModeFlag >> 8) & 0xFF));
+            packet.WriteLine("Command state: " + (CommandState)((petModeFlag >> 16) & 0xFF));
+            packet.WriteLine("Flag: " + (PetModeFlags)(petModeFlag & 0xFFFF0000));
+        }
+
         [Parser(Opcode.SMSG_PET_SPELLS)]
         public static void HandlePetSpells(Packet packet)
         {
@@ -25,23 +33,11 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadUInt32("Expiration Time");
 
+            ReadPetFlags(ref packet);
+
             var isPet = guid.GetHighType() == HighGuidType.Pet;
             var isVehicle = guid.GetHighType() == HighGuidType.Vehicle;
             var isMinion = guid.GetHighType() == HighGuidType.Unit;
-
-            // Following int8,int8,int16 is sent like int32
-            //packet.ReadEnum<PetModeFlags>("Pet Mode Flags", TypeCode.UInt32);
-            packet.ReadByte("React state");
-            packet.ReadByte("Command state");
-            packet.ReadUInt16("Unknown 2");
-
-            if (isPet)
-                packet.WriteLine("PET");
-            if (isMinion)
-                packet.WriteLine("MINION");
-            if (isVehicle)
-                packet.WriteLine("VEHICLE");
-
             var spells = new List<uint>(10);
             for (var i = 0; i < 10; i++) // Read pet/vehicle spell ids
             {
@@ -51,7 +47,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var slot = packet.ReadByte();
 
                 var s = new StringBuilder("[");
-                s.Append(i).Append("] ").Append(" Spell/Action: ");
+                s.Append(i).Append("] ").Append("Spell/Action: ");
                 if (spellId <= 4)
                     s.Append(spellId);
                 else
@@ -139,7 +135,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePetMode(Packet packet)
         {
             packet.ReadGuid("Guid");
-            packet.ReadEnum<PetModeFlags>("Pet Mode Flags", TypeCode.UInt32);
+            ReadPetFlags(ref packet);
         }
 
         [Parser(Opcode.SMSG_PET_ACTION_SOUND)]

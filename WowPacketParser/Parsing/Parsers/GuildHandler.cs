@@ -321,7 +321,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_INVITE)]
         [Parser(Opcode.CMSG_GUILD_PROMOTE)]
         [Parser(Opcode.CMSG_GUILD_DEMOTE)]
-        [Parser(Opcode.CMSG_GUILD_REMOVE)]
+        [Parser(Opcode.CMSG_GUILD_REMOVE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
         [Parser(Opcode.CMSG_GUILD_LEADER)]
         [Parser(Opcode.CMSG_GUILD_ADD_RANK, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
         public static void HandleGuildCreate(Packet packet)
