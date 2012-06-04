@@ -38,8 +38,9 @@ namespace WowPacketParser.Parsing.Parsers
             var isPet = guid.GetHighType() == HighGuidType.Pet;
             var isVehicle = guid.GetHighType() == HighGuidType.Vehicle;
             var isMinion = guid.GetHighType() == HighGuidType.Unit;
-            var spells = new List<uint>(10);
-            for (var i = 0; i < 10; i++) // Read pet/vehicle spell ids
+            const int maxCreatureSpells = 10;
+            var spells = new List<uint>(maxCreatureSpells);
+            for (var i = 0; i < maxCreatureSpells; i++) // Read pet/vehicle spell ids
             {
                 var spell16 = packet.ReadUInt16();
                 var spell8 = packet.ReadByte();

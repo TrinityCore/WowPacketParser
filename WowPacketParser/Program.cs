@@ -34,7 +34,6 @@ namespace WowPacketParser
             }
 
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            ClientVersion.SetVersion(Settings.ClientBuild);
 
             if (Settings.FilterPacketNumLow < 0)
                 throw new ConstraintException("FilterPacketNumLow must be positive");
@@ -59,7 +58,11 @@ namespace WowPacketParser
 
             var count = 0;
             foreach (var file in files)
-                new SniffFile(file, Settings.DumpFormat, Settings.SplitOutput, Tuple.Create(++count, files.Count), Settings.SQLOutput).ProcessFile();
+            {
+                ClientVersion.SetVersion(Settings.ClientBuild);
+                new SniffFile(file, Settings.DumpFormat, Settings.SplitOutput, Tuple.Create(++count, files.Count),
+                              Settings.SQLOutput).ProcessFile();
+            }
 
             SQLConnector.Disconnect();
             SSHTunnel.Disconnect();

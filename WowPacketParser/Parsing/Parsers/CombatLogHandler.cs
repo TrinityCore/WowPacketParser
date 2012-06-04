@@ -12,11 +12,13 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleCombatLogMultiple(Packet packet)
         {
             var count = packet.ReadInt32("Count");
-            packet.ReadInt32("Unk1");
+            var unk1 = packet.ReadInt32();
 
             for (var i = 0; i < count; i++)
             {
-                packet.ReadInt32("Unk2", i);
+                var unk2 = packet.ReadInt32();
+                packet.WriteLine("["+ i+ "] Unknown: {0}", unk1 - unk2);
+
                 var opcode = Opcodes.GetOpcode(packet.ReadInt32());
                 packet.WriteLine("Opcode: " + opcode);
                 switch (opcode)
