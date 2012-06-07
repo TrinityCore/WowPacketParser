@@ -9,7 +9,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Method")]
         public QuestMethod Method;
 
-        [DBFieldName("Level")]
+        [DBFieldName("MaxLevel")]
         public int Level;
 
         [DBFieldName("MinLevel")]
@@ -24,40 +24,40 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("SuggestedPlayers")]
         public uint SuggestedPlayers;
 
-        [DBFieldName("RequiredFactionId", Count = 2)]
+        [DBFieldName("RepObjectiveFaction", Count = 2)]
         public uint[] RequiredFactionId;
 
-        [DBFieldName("RequiredFactionValue", Count = 2)]
+        [DBFieldName("RepObjectiveValue", Count = 2)]
         public int[] RequiredFactionValue;
 
-        [DBFieldName("NextQuestIdChain")]
+        [DBFieldName("NextQuestInChain")]
         public uint NextQuestIdChain;
 
-        [DBFieldName("RewardXPId")]
+        [DBFieldName("RewXPId")]
         public uint RewardXPId;
 
-        [DBFieldName("RewardOrRequiredMoney")]
+        [DBFieldName("RewOrReqMoney")]
         public int RewardOrRequiredMoney;
 
-        [DBFieldName("RewardMoneyMaxLevel")]
+        [DBFieldName("RewMoneyMaxLevel")]
         public uint RewardMoneyMaxLevel;
 
-        [DBFieldName("RewardSpell")]
+        [DBFieldName("RewSpell")]
         public uint RewardSpell;
 
-        [DBFieldName("RewardSpellCast")]
+        [DBFieldName("RewSpellCast")]
         public int RewardSpellCast;
 
-        [DBFieldName("RewardHonor")]
+        [DBFieldName("RewHonorAddition")]
         public int RewardHonor;
 
-        [DBFieldName("RewardHonorMultiplier")]
+        [DBFieldName("RewHonorMultiplier")]
         public float RewardHonorMultiplier;
 
-        [DBFieldName("SourceItemId")]
+        //[DBFieldName("SourceItemId")]
         public uint SourceItemId;
 
-        [DBFieldName("Flags")]
+        [DBFieldName("CharTitleId")]
         public QuestFlags Flags;
 
         //[DBFieldName("MinimapTargetMark")] 4.x
@@ -66,49 +66,49 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RewardTitleId")]
         public uint RewardTitleId;
 
-        [DBFieldName("RequiredPlayerKills")]
+        [DBFieldName("PlayersSlain")]
         public uint RequiredPlayerKills;
 
-        [DBFieldName("RewardTalents")]
+        [DBFieldName("BonusTalents")]
         public uint RewardTalents;
 
         [DBFieldName("RewardArenaPoints")]
         public uint RewardArenaPoints;
 
-        //[DBFieldName("RewardSkillId")] 4.x
+        [DBFieldName("RewSkillLineId")] // 4.x
         public uint RewardSkillId;
 
-        //[DBFieldName("RewardSkillPoints")] 4.x
+        [DBFieldName("RewSkillPoints")] // 4.x
         public uint RewardSkillPoints;
 
         //[DBFieldName("RewardReputationMask")] 4.x
         public uint RewardReputationMask;
 
-        //[DBFieldName("QuestGiverPortrait")] 4.x
+        [DBFieldName("QuestGiverPortraitText")] // 4.x
         public uint QuestGiverPortrait;
 
-        //[DBFieldName("QuestTurnInPortrait")] 4.x
+        [DBFieldName("QuestTurnInPortraitText")] // 4.x
         public uint QuestTurnInPortrait;
 
-        [DBFieldName("RewardItemId", Count = 4)]
+        [DBFieldName("RewItemId", Count = 4)]
         public uint[] RewardItemId;
 
-        [DBFieldName("RewardItemCount", Count = 4)]
+        [DBFieldName("RewItemCount", Count = 4)]
         public uint[] RewardItemCount;
 
-        [DBFieldName("RewardChoiceItemId", Count = 6)]
+        [DBFieldName("RewChoiceItemId", Count = 6)]
         public uint[] RewardChoiceItemId;
 
-        [DBFieldName("RewardChoiceItemCount", Count = 6)]
+        [DBFieldName("RewChoiceItemCount", Count = 6)]
         public uint[] RewardChoiceItemCount;
 
-        [DBFieldName("RewardFactionId", Count = 5)]
+        [DBFieldName("RewRepFaction", Count = 5)]
         public uint[] RewardFactionId;
 
-        [DBFieldName("RewardFactionValueId", Count = 5)]
+        [DBFieldName("RewRepValueId", Count = 5)]
         public int[] RewardFactionValueId;
 
-        [DBFieldName("RewardFactionValueIdOverride", Count = 5)]
+        [DBFieldName("RewRepValue", Count = 5)]
         public uint[] RewardFactionValueIdOverride;
 
         [DBFieldName("PointMapId")]
@@ -120,7 +120,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("PointY")]
         public float PointY;
 
-        [DBFieldName("PointOption")]
+        [DBFieldName("PointOpt")]
         public uint PointOption;
 
         [DBFieldName("Title")]
@@ -135,25 +135,25 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("EndText")]
         public string EndText;
 
-        //[DBFieldName("CompletedText")] 4.x
+        [DBFieldName("CompletedText")] // 4.x
         public string CompletedText;
 
-        [DBFieldName("RequiredNpcOrGo", Count = 4)]
+        [DBFieldName("ReqCreatureOrGOId", Count = 4)]
         public int[] RequiredNpcOrGo;
 
-        [DBFieldName("RequiredNpcOrGoCount", Count = 4)]
+        [DBFieldName("ReqCreatureOrGOCount", Count = 4)]
         public uint[] RequiredNpcOrGoCount;
 
-        [DBFieldName("RequiredSourceItemId", Count = 4)]
+        [DBFieldName("ReqSourceId", Count = 4)]
         public uint[] RequiredSourceItemId;
 
-        [DBFieldName("RequiredSourceItemCount", Count = 4)]
+        [DBFieldName("ReqSourceCount", Count = 4)]
         public uint[] RequiredSourceItemCount;
 
-        [DBFieldName("RequiredItemId", Count = 6)]
+        [DBFieldName("ReqItemId", Count = 6)]
         public uint[] RequiredItemId;
 
-        [DBFieldName("RequiredItemCount", Count = 6)]
+        [DBFieldName("ReqItemCount", Count = 6)]
         public uint[] RequiredItemCount;
 
         //[DBFieldName("RequiredSpell")] 4.x
@@ -162,16 +162,16 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ObjectiveText", Count = 4)]
         public string[] ObjectiveText;
 
-        //[DBFieldName("RewardCurrencyId", Count = 4)] 4.x
+        [DBFieldName("RewCurrencyId", Count = 4)] // 4.x
         public uint[] RewardCurrencyId;
 
-        //[DBFieldName("RewardCurrencyCount", Count = 4)] 4.x
+        [DBFieldName("RewCurrencyCount", Count = 4)] // 4.x
         public uint[] RewardCurrencyCount;
 
-        //[DBFieldName("RequiredCurrencyId", Count = 4)] 4.x
+        [DBFieldName("ReqCurrencyId", Count = 4)] // 4.x
         public uint[] RequiredCurrencyId;
 
-        //[DBFieldName("RequiredCurrencyCount", Count = 4)] 4.x
+        [DBFieldName("ReqCurrencyCount", Count = 4)] // 4.x
         public uint[] RequiredCurrencyCount;
 
         //[DBFieldName("QuestGiverTextWindow")] 4.x
@@ -186,10 +186,10 @@ namespace WowPacketParser.Store.Objects
         //[DBFieldName("QuestTurnTargetName")] 4.x
         public string QuestTurnTargetName;
 
-        //[DBFieldName("SoundAccept")] 4.x
+        [DBFieldName("SoundAccept")] // 4.x
         public uint SoundAccept;
 
-        //[DBFieldName("SoundTurnIn")] 4.x
+        [DBFieldName("SoundTurnIn")] // 4.x
         public uint SoundTurnIn;
     }
 }
