@@ -57,7 +57,7 @@ namespace WowPacketParser.Store.Objects
         //[DBFieldName("SourceItemId")]
         public uint SourceItemId;
 
-        [DBFieldName("CharTitleId")]
+        [DBFieldName("QuestFlags")]
         public QuestFlags Flags;
 
         //[DBFieldName("MinimapTargetMark")] 4.x
