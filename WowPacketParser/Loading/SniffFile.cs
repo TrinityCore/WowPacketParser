@@ -89,12 +89,14 @@ namespace WowPacketParser.Loading
                         if (Settings.ClientBuild == ClientVersionBuild.Zero)
                         {
                             // check if version info given
-                            if (reader.GetBuild() == ClientVersionBuild.Zero)
-                                ClientVersion.SetVersion(packet.Time);
+                            if (reader.GetBuild() != ClientVersionBuild.Zero)
+                                ClientVersion.SetVersion(reader.GetBuild());
                             // or set version by timestamp
                             else
                                 ClientVersion.SetVersion(packet.Time);
                         }
+                        if (ClientVersion.Build == ClientVersionBuild.Zero)
+                            throw new Exception("Selected packet file type does not contain version info, you need to provide version in config!");
                         Trace.WriteLine(string.Format("{0}: Assumed version: {1}", LogPrefix, ClientVersion.VersionString));
                     }
 

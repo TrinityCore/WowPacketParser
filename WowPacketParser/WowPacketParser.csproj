@@ -324,6 +324,7 @@
     <Compile Include="Enums\WeatherState.cs" />
     <Compile Include="Loading\BinaryPacketReader.cs" />
     <Compile Include="Loading\IPacketReader.cs" />
+    <Compile Include="Loading\IzidorPacketReader.cs" />
     <Compile Include="Loading\KSnifferZackReader.cs" />
     <Compile Include="Loading\KSnifferZorReader.cs" />
     <Compile Include="Loading\NewZorReader.cs" />

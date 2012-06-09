@@ -22,6 +22,9 @@ namespace WowPacketParser.Loading
                 case "pkt":
                     reader = new BinaryPacketReader(fileName);
                     break;
+                case "izi":
+                    reader = new IzidorPacketReader(fileName);
+                    break;
                 case "kszor":
                     reader = new KSnifferZorReader(fileName);
                     break;
@@ -53,6 +56,9 @@ namespace WowPacketParser.Loading
                             break;
                         case ".sqlite":
                             reader = new SQLitePacketReader(fileName);
+                            break;
+                        case ".izi":
+                            reader = new IzidorPacketReader(fileName);
                             break;
                         default:
                             reader = new KSnifferZorReader(fileName);
