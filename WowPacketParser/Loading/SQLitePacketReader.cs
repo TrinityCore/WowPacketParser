@@ -91,5 +91,10 @@ namespace WowPacketParser.Loading
             if (_connection != null)
                 _connection.Close();
         }
+
+        public DateTime? PeekDateTime()
+        {
+            return null;
+        }
     }
 }

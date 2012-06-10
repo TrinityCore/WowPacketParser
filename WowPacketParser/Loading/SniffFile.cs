@@ -46,12 +46,37 @@ namespace WowPacketParser.Loading
                    Environment.NewLine;
         }
 
+        public ClientVersionBuild GetClientVersion(IPacketReader reader)
+        {
+            // default selection, when version not provided in config
+            if (Settings.ClientBuild == ClientVersionBuild.Zero)
+            {
+                // check if version info given
+                if (reader.GetBuild() != ClientVersionBuild.Zero)
+                    return reader.GetBuild();
+                if (reader.CanRead())
+                {
+                    DateTime? date = reader.PeekDateTime();
+                    if (date != null)
+                        ClientVersion.GetVersion((DateTime)date);
+                }
+                // no datetime info in file - try last file modification date
+                DateTime lastWriteTimeUtc = File.GetLastWriteTimeUtc(FileName);
+                return ClientVersion.GetVersion(lastWriteTimeUtc);
+            }
+            return Settings.ClientBuild;
+        }
+
         public void Process()
         {
             _stats.SetStartTime(DateTime.Now);
-            
+
             var reader = Reader.GetReader(FileName);
             Trace.WriteLine(string.Format("{0}: Processing packets (type {1})...", LogPrefix, reader.ToString()));
+            ClientVersion.SetVersion(GetClientVersion(reader));
+            if (ClientVersion.Build == ClientVersionBuild.Zero)
+                throw new Exception("Selected packet file type does not contain version info, you need to provide version in config!");
+            Trace.WriteLine(string.Format("{0}: Assumed version: {1}", LogPrefix, ClientVersion.VersionString));
 
             try
             {
@@ -82,23 +107,6 @@ namespace WowPacketParser.Loading
                     // read error
                     if (packet == null)
                         continue;
-
-                    if (packetNum == 0)
-                    {
-                        // determine build version of currently read file
-                        if (Settings.ClientBuild == ClientVersionBuild.Zero)
-                        {
-                            // check if version info given
-                            if (reader.GetBuild() != ClientVersionBuild.Zero)
-                                ClientVersion.SetVersion(reader.GetBuild());
-                            // or set version by timestamp
-                            else
-                                ClientVersion.SetVersion(packet.Time);
-                        }
-                        if (ClientVersion.Build == ClientVersionBuild.Zero)
-                            throw new Exception("Selected packet file type does not contain version info, you need to provide version in config!");
-                        Trace.WriteLine(string.Format("{0}: Assumed version: {1}", LogPrefix, ClientVersion.VersionString));
-                    }
 
                     ++packetNum;
 

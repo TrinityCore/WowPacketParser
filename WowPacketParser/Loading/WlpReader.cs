@@ -54,6 +54,14 @@ namespace WowPacketParser.Loading
         {
             return ClientVersionBuild.Zero;
         }
+
+        public DateTime? PeekDateTime()
+        {
+            var oldPos = _reader.BaseStream.Position;
+            var p = Read(0, "");
+            _reader.BaseStream.Position = oldPos;
+            return p.Time;
+        }
     }
 }
 

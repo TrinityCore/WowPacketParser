@@ -13,9 +13,11 @@ namespace WowPacketParser.Loading
     public class IzidorPacketReader : IPacketReader
     {
         public TextReader _tr;
+        public DateTime _baseDate;
         public IzidorPacketReader(string fileName)
         {
             _tr = new StreamReader(fileName);
+            _baseDate = File.GetLastWriteTimeUtc(fileName);
         }
 
         public bool CanRead()
@@ -32,23 +34,23 @@ namespace WowPacketParser.Loading
             //24/04/2010 18:03:47
             string pattern = "dd/MM/yyyy HH:mm:ss";
             if (!DateTime.TryParseExact(data[2], pattern, null, DateTimeStyles.None, out time))
-                time = Utilities.GetDateTimeFromUnixTime(UInt32.Parse(data[2])); //data[2] is not a real unit timestamp, it's a tickcount or something
+            {
+                //data[2] is not a real unit timestamp, it's a tickcount or something
+                time = _baseDate.AddMilliseconds(UInt32.Parse(data[2]));
+            }
             byte direction = (byte)(data[4] == "StoC" ? 1 : 0);
             ushort opcode;
-            // a hack - need to create a different way for getting versions
-            if (ClientVersion.Build == ClientVersionBuild.Zero)
-                ClientVersion.SetVersion(time);
             if (!UInt16.TryParse(data[6], out opcode))
             {
                 Opcode opc;
                 // sometimes opcode name is written directly..
                 if (!Enum.TryParse<Opcode>(data[6], out opc))
                 {
-                    Trace.WriteLine("IzidorPacketReader: Opcode name {0} not found", data[6]);
+                    Trace.WriteLine(String.Format("IzidorPacketReader: Opcode name {0} not found", data[6]));
                     // name not found in our storage - return
                     return null;
                 }
-                opcode = (ushort)Opcodes.GetOpcode(opc); 
+                opcode = (ushort)Opcodes.GetOpcode(opc);
             }
             string directdata = data[8];
             byte[] byteData = ParseHex(directdata);
@@ -99,6 +101,11 @@ namespace WowPacketParser.Loading
         public void Dispose()
         {
             _tr.Dispose();
+        }
+
+        public DateTime? PeekDateTime()
+        {
+            return null;
         }
     }
 }

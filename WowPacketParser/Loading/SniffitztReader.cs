@@ -48,5 +48,15 @@ namespace WowPacketParser.Loading
         {
             return ClientVersionBuild.Zero;
         }
+
+        public DateTime? PeekDateTime()
+        {
+            var old = _element.Current;
+            var p = Read(0, "");
+            _element.Reset();
+            while(old != _element.Current)
+                _canRead = _element.MoveNext();
+            return p.Time;
+        }
     }
 }

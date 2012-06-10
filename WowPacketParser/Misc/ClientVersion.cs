@@ -93,7 +93,7 @@ namespace WowPacketParser.Misc
             return ClientType.WorldOfWarcraft;
         }
 
-        private static ClientVersionBuild GetVersion(DateTime time)
+        public static ClientVersionBuild GetVersion(DateTime time)
         {
             if (time < _clientBuilds[0].Value)
                 return ClientVersionBuild.Zero;

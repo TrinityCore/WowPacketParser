@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using System;
 
 namespace WowPacketParser.Loading
 {
@@ -46,6 +47,14 @@ namespace WowPacketParser.Loading
         public ClientVersionBuild GetBuild()
         {
             return ClientVersionBuild.Zero;
+        }
+
+        public DateTime? PeekDateTime()
+        {
+            var oldPos = _reader.BaseStream.Position;
+            var p = Read(0, "");
+            _reader.BaseStream.Position = oldPos;
+            return p.Time;
         }
     }
 }
