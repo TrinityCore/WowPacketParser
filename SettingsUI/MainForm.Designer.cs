@@ -49,11 +49,12 @@
             this.CloseButton = new System.Windows.Forms.Button();
             this.connectionControl = new System.Windows.Forms.TabControl();
             this.dbTabPage = new System.Windows.Forms.TabPage();
+            this.databaseWTextBox = new System.Windows.Forms.TextBox();
             this.charSetComboBox = new System.Windows.Forms.ComboBox();
             this.databaseTextBox = new System.Windows.Forms.TextBox();
             this.passwordTextBox = new System.Windows.Forms.TextBox();
             this.usernameTextBox = new System.Windows.Forms.TextBox();
-            this.portNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.portNumericUpDown = new System.Windows.Forms.TextBox();
             this.serverTextBox = new System.Windows.Forms.TextBox();
             this.characterSetLabel = new System.Windows.Forms.Label();
             this.databaseLabel = new System.Windows.Forms.Label();
@@ -72,11 +73,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.sshServerLabel = new System.Windows.Forms.Label();
-            this.threadsReadLabel = new System.Windows.Forms.Label();
-            this.threadsReadNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.threadsPanel = new System.Windows.Forms.Panel();
-            this.threadsParseNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.threadsParseLabel = new System.Windows.Forms.Label();
             this.dumpFormatComboBox = new System.Windows.Forms.ComboBox();
             this.dumpFormatLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -115,7 +111,6 @@
             this.parsingLogCheckBox = new System.Windows.Forms.CheckBox();
             this.statsComboBox = new System.Windows.Forms.ComboBox();
             this.statsLabel = new System.Windows.Forms.Label();
-            this.databaseWTextBox = new System.Windows.Forms.TextBox();
             filtersGroupBox = new System.Windows.Forms.GroupBox();
             filtersGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.packetNumUpDown)).BeginInit();
@@ -123,13 +118,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.minPacketNumUpDown)).BeginInit();
             this.connectionControl.SuspendLayout();
             this.dbTabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.portNumericUpDown)).BeginInit();
             this.sshTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sshLocalPortNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sshPortNumericUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.threadsReadNumericUpDown)).BeginInit();
-            this.threadsPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.threadsParseNumericUpDown)).BeginInit();
             this.panel1.SuspendLayout();
             this.clientBuildPanel.SuspendLayout();
             this.sqlOutputGroupBox.SuspendLayout();
@@ -346,6 +337,13 @@
             this.dbTabPage.Text = "MySQL";
             this.dbTabPage.UseVisualStyleBackColor = true;
             //
+            // databaseWTextBox
+            //
+            this.databaseWTextBox.Location = new System.Drawing.Point(130, 112);
+            this.databaseWTextBox.Name = "databaseWTextBox";
+            this.databaseWTextBox.Size = new System.Drawing.Size(58, 20);
+            this.databaseWTextBox.TabIndex = 6;
+            //
             // charSetComboBox
             //
             this.charSetComboBox.Items.AddRange(new object[] {
@@ -382,13 +380,8 @@
             // portNumericUpDown
             //
             this.portNumericUpDown.Location = new System.Drawing.Point(67, 33);
-            this.portNumericUpDown.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
             this.portNumericUpDown.Name = "portNumericUpDown";
-            this.portNumericUpDown.Size = new System.Drawing.Size(120, 20);
+            this.portNumericUpDown.Size = new System.Drawing.Size(100, 20);
             this.portNumericUpDown.TabIndex = 1;
             //
             // serverTextBox
@@ -563,59 +556,6 @@
             this.sshServerLabel.Size = new System.Drawing.Size(41, 13);
             this.sshServerLabel.TabIndex = 0;
             this.sshServerLabel.Text = "Server:";
-            //
-            // threadsReadLabel
-            //
-            this.threadsReadLabel.AutoSize = true;
-            this.threadsReadLabel.Location = new System.Drawing.Point(3, 5);
-            this.threadsReadLabel.Name = "threadsReadLabel";
-            this.threadsReadLabel.Size = new System.Drawing.Size(78, 13);
-            this.threadsReadLabel.TabIndex = 4;
-            this.threadsReadLabel.Text = "Threads.Read:";
-            //
-            // threadsReadNumericUpDown
-            //
-            this.threadsReadNumericUpDown.Location = new System.Drawing.Point(85, 3);
-            this.threadsReadNumericUpDown.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.threadsReadNumericUpDown.Name = "threadsReadNumericUpDown";
-            this.threadsReadNumericUpDown.Size = new System.Drawing.Size(48, 20);
-            this.threadsReadNumericUpDown.TabIndex = 5;
-            //
-            // threadsPanel
-            //
-            this.threadsPanel.Controls.Add(this.threadsParseNumericUpDown);
-            this.threadsPanel.Controls.Add(this.threadsParseLabel);
-            this.threadsPanel.Controls.Add(this.threadsReadLabel);
-            this.threadsPanel.Controls.Add(this.threadsReadNumericUpDown);
-            this.threadsPanel.Location = new System.Drawing.Point(12, 12);
-            this.threadsPanel.Name = "threadsPanel";
-            this.threadsPanel.Size = new System.Drawing.Size(227, 28);
-            this.threadsPanel.TabIndex = 6;
-            //
-            // threadsParseNumericUpDown
-            //
-            this.threadsParseNumericUpDown.Location = new System.Drawing.Point(175, 3);
-            this.threadsParseNumericUpDown.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.threadsParseNumericUpDown.Name = "threadsParseNumericUpDown";
-            this.threadsParseNumericUpDown.Size = new System.Drawing.Size(48, 20);
-            this.threadsParseNumericUpDown.TabIndex = 7;
-            //
-            // threadsParseLabel
-            //
-            this.threadsParseLabel.AutoSize = true;
-            this.threadsParseLabel.Location = new System.Drawing.Point(138, 5);
-            this.threadsParseLabel.Name = "threadsParseLabel";
-            this.threadsParseLabel.Size = new System.Drawing.Size(37, 13);
-            this.threadsParseLabel.TabIndex = 6;
-            this.threadsParseLabel.Text = "Parse:";
             //
             // dumpFormatComboBox
             //
@@ -1103,13 +1043,6 @@
             this.statsLabel.TabIndex = 22;
             this.statsLabel.Text = "Stats:";
             //
-            // databaseWTextBox
-            //
-            this.databaseWTextBox.Location = new System.Drawing.Point(130, 112);
-            this.databaseWTextBox.Name = "databaseWTextBox";
-            this.databaseWTextBox.Size = new System.Drawing.Size(58, 20);
-            this.databaseWTextBox.TabIndex = 6;
-            //
             // MainForm
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1128,7 +1061,6 @@
             this.Controls.Add(this.showPromptCheckBox);
             this.Controls.Add(this.clientBuildPanel);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.threadsPanel);
             this.Controls.Add(this.connectionControl);
             this.Controls.Add(this.CloseButton);
             this.Controls.Add(this.SaveButton);
@@ -1145,15 +1077,10 @@
             this.connectionControl.ResumeLayout(false);
             this.dbTabPage.ResumeLayout(false);
             this.dbTabPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.portNumericUpDown)).EndInit();
             this.sshTabPage.ResumeLayout(false);
             this.sshTabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sshLocalPortNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sshPortNumericUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.threadsReadNumericUpDown)).EndInit();
-            this.threadsPanel.ResumeLayout(false);
-            this.threadsPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.threadsParseNumericUpDown)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.clientBuildPanel.ResumeLayout(false);
@@ -1180,7 +1107,7 @@
         private System.Windows.Forms.Label usernameLabel;
         private System.Windows.Forms.Label portLabel;
         private System.Windows.Forms.Label serverLabel;
-        private System.Windows.Forms.NumericUpDown portNumericUpDown;
+        private System.Windows.Forms.TextBox portNumericUpDown;
         private System.Windows.Forms.TextBox serverTextBox;
         private System.Windows.Forms.TextBox passwordTextBox;
         private System.Windows.Forms.TextBox usernameTextBox;
@@ -1196,9 +1123,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label sshServerLabel;
-        private System.Windows.Forms.Label threadsReadLabel;
-        private System.Windows.Forms.NumericUpDown threadsReadNumericUpDown;
-        private System.Windows.Forms.Panel threadsPanel;
         private System.Windows.Forms.ComboBox dumpFormatComboBox;
         private System.Windows.Forms.Label dumpFormatLabel;
         private System.Windows.Forms.Panel panel1;
@@ -1236,8 +1160,6 @@
         private System.Windows.Forms.Label minPacketNumLabel;
         private System.Windows.Forms.Label numPacketLabel;
         private System.Windows.Forms.Label areasLabel;
-        private System.Windows.Forms.NumericUpDown threadsParseNumericUpDown;
-        private System.Windows.Forms.Label threadsParseLabel;
         private System.Windows.Forms.CheckBox ceCheckBox;
         private System.Windows.Forms.CheckBox onCheckBox;
         private System.Windows.Forms.CheckBox logErrorCheckBox;

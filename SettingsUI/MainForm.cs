@@ -87,9 +87,7 @@ namespace SettingsUI
                 {packetNumUpDown, new Tuple<string, dynamic>("FilterPacketsNum", 0)},
                 {minPacketNumUpDown, new Tuple<string, dynamic>("FilterPacketNumLow", 0)},
                 {maxPacketNumUpDown, new Tuple<string, dynamic>("FilterPacketNumHigh", 0)},
-                {clientBuildComboBox, new Tuple<string, dynamic>("ClientBuild", 0)},
-                {threadsReadNumericUpDown, new Tuple<string, dynamic>("Threads.Read", 0)},
-                {threadsParseNumericUpDown, new Tuple<string, dynamic>("Threads.Parse", 0)},
+                {clientBuildComboBox, new Tuple<string, dynamic>("ClientBuild", string.Empty)},
                 {sqlOutputMaskLabel, new Tuple<string, dynamic>("SQLOutput", 0)},
                 {showPromptCheckBox, new Tuple<string, dynamic>("ShowEndPrompt", true)},
                 {logErrorCheckBox, new Tuple<string, dynamic>("LogErrors", false)},
@@ -106,7 +104,7 @@ namespace SettingsUI
                 {sshLocalPortNumericUpDown, new Tuple<string, dynamic>("SSHLocalPort", 3307)},
                 {dbEnabledCheckBox, new Tuple<string, dynamic>("DBEnabled", false)},
                 {serverTextBox, new Tuple<string, dynamic>("Server", "localhost")},
-                {portNumericUpDown, new Tuple<string, dynamic>("Port", 3306)},
+                {portNumericUpDown, new Tuple<string, dynamic>("Port", "3306")},
                 {usernameTextBox, new Tuple<string, dynamic>("Username", "root")},
                 {passwordTextBox, new Tuple<string, dynamic>("Password", string.Empty)},
                 {databaseTextBox, new Tuple<string, dynamic>("WPPDatabase", "WPP")},
@@ -134,12 +132,20 @@ namespace SettingsUI
         {
             foreach (var element in _defaultSettings)
             {
-                var val = _configuration.GetSetting(element.Value.Item1, element.Value.Item2);
+                try
+                {
 
-                if (element.Key is CheckBox) // special case for checkboxes, changing "Text" is not correct
-                    ((CheckBox) element.Key).Checked = Convert.ToBoolean(val);
-                else
-                    element.Key.Text = val.ToString();
+                    var val = _configuration.GetSetting(element.Value.Item1, element.Value.Item2);
+
+                    if (element.Key is CheckBox) // special case for checkboxes, changing "Text" is not correct
+                        ((CheckBox)element.Key).Checked = Convert.ToBoolean(val);
+                    else
+                        element.Key.Text = val.ToString();
+                }
+                catch
+                {
+                    MessageBox.Show(string.Format("Setting: {0}, default: {1}", element.Value.Item1, element.Value.Item2), "Failed to get setting", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
