@@ -73,7 +73,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         //[Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_2_0_14333)]
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleAuthSession422(Packet packet)
         {
             packet.ReadByte("Byte");
@@ -118,7 +118,7 @@ namespace WowPacketParser.Parsing.Parsers
             AddonHandler.ReadClientAddonsList(ref packet);
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_3_0_15005)]
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_2_15211)]
         public static void HandleAuthSession430(Packet packet)
         {
             packet.ReadInt32("Int32");

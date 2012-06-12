@@ -497,6 +497,7 @@ namespace WowPacketParser.Parsing.Parsers
                     if (transportGuid[6] != 0) transportGuid[6] ^= packet.ReadByte();
                     if (transportGuid[2] != 0) transportGuid[2] ^= packet.ReadByte();
                     if (transportGuid[4] != 0) transportGuid[4] ^= packet.ReadByte();
+                    packet.WriteLine("[{0}] Transport GUID {1}", index, new Guid(BitConverter.ToUInt64(transportGuid, 0)));
                     packet.WriteLine("[{0}] Transport Position: {1}", index, transPos);
                 }
 
@@ -566,8 +567,8 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasGOTransportTime2)
                     packet.ReadUInt32("GO Transport Time 2", index);
 
-                packet.WriteLine("[{0}] GO Transport Position: {1}", index, tPos);
                 packet.WriteLine("[{0}] GO Transport GUID {1}", index, new Guid(BitConverter.ToUInt64(goTransportGuid, 0)));
+                packet.WriteLine("[{0}] GO Transport Position: {1}", index, tPos);
             }
 
             if (hasGameObjectRotation)
