@@ -32,6 +32,12 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x4469},
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x4736},
             {Opcode.CMSG_WARDEN_DATA, 0x25A2},
+            {Opcode.CMSG_GUILD_QUERY, 0x4426},
+            {Opcode.CMSG_TIME_SYNC_RESP, 0x3B0C},
+            {Opcode.CMSG_CHAR_CREATE, 0x4A36},
+            {Opcode.CMSG_CHAR_DELETE, 0x6425},
+            {Opcode.CMSG_CHAR_ENUM, 0x0502},
+            {Opcode.CMSG_LOG_DISCONNECT, 0x446D},
             {Opcode.MSG_MOVE_START_FORWARD, 0x6207},
             {Opcode.MSG_MOVE_JUMP, 0x4707},
             {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x4925},
@@ -82,7 +88,22 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x0B35},
             {Opcode.SMSG_UPDATE_OBJECT, 0x4715},
             {Opcode.SMSG_UPDATE_WORLD_STATE, 0x4816},
-            {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x38B1}
+            {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x38B1},
+            {Opcode.SMSG_REALM_SPLIT, 0x2714},
+            {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x0E06},
+            {Opcode.SMSG_WARDEN_DATA, 0x31A0},
+            {Opcode.SMSG_BINDPOINTUPDATE, 0x0527},
+            {Opcode.SMSG_TIME_SYNC_REQ, 0x3CA4},
+            {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x2834},
+            {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x0224},
+            {Opcode.SMSG_TALENTS_INFO, 0x6F26},
+            {Opcode.SMSG_INITIAL_SPELLS, 0x0104},
+            {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x4E25},
+            {Opcode.SMSG_ACTION_BUTTONS, 0x38B5},
+            {Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0x0D34},
+            {Opcode.SMSG_INIT_WORLD_STATES, 0x4C15},
+            {Opcode.SMSG_CHAR_CREATE, 0x2D05},
+            {Opcode.SMSG_CHAR_DELETE, 0x0304}
         };
     }
 }
