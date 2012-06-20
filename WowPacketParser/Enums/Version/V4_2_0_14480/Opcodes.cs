@@ -178,7 +178,6 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.CMSG_GUILD_BANK_BUY_TAB, 0x36B3},
             {Opcode.CMSG_GUILD_BANK_DEPOSIT_MONEY, 0x2A2F},
             {Opcode.CMSG_GUILD_BANKER_ACTIVATE, 0x26B2},
-            {Opcode.CMSG_GUILD_BANK_NOTE, 0x6E26},
             {Opcode.CMSG_GUILD_BANK_QUERY_TAB, 0xA623},
             {Opcode.CMSG_GUILD_BANK_SWAP_ITEMS, 0xFAF2},
             {Opcode.CMSG_GUILD_BANK_UPDATE_TAB, 0x727B},

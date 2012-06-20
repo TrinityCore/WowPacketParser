@@ -373,7 +373,11 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var count2 = packet.ReadUInt32("Number of NPC", i);
                 for (var j = 0; j < count2; ++j)
-                    packet.ReadEntryWithName<Int32>(StoreNameType.Unit, "NPC ID", i, j);
+                {
+                    var entry = packet.ReadEntry();
+                    packet.WriteLine("[{0}] [{1}] {2}: {3}", i, j, entry.Value ? "Creature" : "GameObject",
+                        StoreGetters.GetName(entry.Value ? StoreNameType.GameObject : StoreNameType.Unit, entry.Key));
+                }
             }
 
             for (var i = 0; i < count; ++i)

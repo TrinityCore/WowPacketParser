@@ -8,6 +8,13 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class GroupHandler
     {
+        [Parser(Opcode.CMSG_GROUP_SET_ROLES)]
+        public static void HandleGroupSetRoles(Packet packet)
+        {
+            packet.ReadUInt32("Role");
+            packet.ReadGuid("GUID");
+        }
+
         [Parser(Opcode.SMSG_GROUP_LIST)]
         public static void HandleGroupList(Packet packet)
         {

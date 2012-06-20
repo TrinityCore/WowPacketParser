@@ -718,7 +718,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_UI_TIME)]
         public static void HandleUITime(Packet packet)
         {
-            packet.ReadUInt32("Time");
+            packet.ReadTime("Time");
         }
 
         [Parser(Opcode.SMSG_MINIGAME_STATE)]
@@ -784,6 +784,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_RETURN_TO_GRAVEYARD)]
         [Parser(Opcode.CMSG_BATTLEFIELD_REQUEST_SCORE_DATA)]
         [Parser(Opcode.CMSG_WORLD_PORT_RESPONSE)]
+        [Parser(Opcode.CMSG_UI_TIME_REQUEST)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

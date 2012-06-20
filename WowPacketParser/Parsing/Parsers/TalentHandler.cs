@@ -39,7 +39,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_INSPECT_RESULTS_UPDATE)]
         public static void HandleInspectTalent(Packet packet)
         {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                 packet.ReadGuid("GUID");
             else
                 packet.ReadPackedGuid("GUID");
@@ -77,6 +77,14 @@ namespace WowPacketParser.Parsing.Parsers
                 }
                 ++slot;
                 slotMask >>= 1;
+            }
+
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_INSPECT_TALENT))
+            {
+                packet.ReadGuid("Guild GUID");
+                packet.ReadUInt32("Guild Level");
+                packet.ReadUInt64("Guild Xp");
+                packet.ReadUInt32("Guild Members");
             }
         }
 

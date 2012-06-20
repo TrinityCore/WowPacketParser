@@ -17,7 +17,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
-        [Parser(Opcode.CMSG_GUILD_ACCEPT)]
+        [Parser(Opcode.CMSG_GUILD_ACCEPT, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
         [Parser(Opcode.CMSG_GUILD_DECLINE)]
         [Parser(Opcode.CMSG_GUILD_INFO)]
         [Parser(Opcode.CMSG_GUILD_LEAVE)]
@@ -26,6 +26,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GUILD_CANCEL)] // Fires GUILD_INVITE_CANCEL
         public static void HandleGuildEmpty(Packet packet)
         {
+        }
+
+        [Parser(Opcode.CMSG_GUILD_ACCEPT, ClientVersionBuild.V4_0_6_13596)]
+        public static void HandleGuildInviteAccept406(Packet packet)
+        {
+            packet.ReadGuid("Player GUID");
         }
 
         [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_2_2_14545)]
@@ -193,6 +199,15 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("Guild GUID");
             packet.ReadGuid("Player GUID");
+        }
+
+        [Parser(Opcode.SMSG_GUILD_UPDATE_PARTY_STATE)]
+        public static void HandleGuildUpdatePartyStateResponse(Packet packet)
+        {
+            packet.ReadByte("Unk byte");
+            packet.ReadUInt32("Unk UInt32 1");
+            packet.ReadUInt32("Unk UInt32 2");
+            packet.ReadUInt32("Unk UInt32 3");
         }
 
         [Parser(Opcode.CMSG_GUILD_QUERY)]
