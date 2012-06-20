@@ -500,7 +500,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGuildBankQueryTab(Packet packet)
         {
             packet.ReadGuid("GUID");
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545)
+                || ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
                 packet.ReadByte("Tab Id");
             packet.ReadBoolean("Full Slot List"); // false = only slots updated in last operation are shown. True = all slots updated
         }
