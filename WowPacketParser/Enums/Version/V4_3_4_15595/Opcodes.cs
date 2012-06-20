@@ -295,6 +295,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_PONG, 0x4D42},
             {Opcode.SMSG_POWER_UPDATE, 0x4A07},
             {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x2124},
+            {Opcode.SMSG_QUERY_QUESTS_COMPLETED_RESPONSE, 0x6314},
             {Opcode.SMSG_QUESTGIVER_OFFER_REWARD, 0x2427},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x2425},
             {Opcode.SMSG_QUESTGIVER_STATUS, 0x2115},
