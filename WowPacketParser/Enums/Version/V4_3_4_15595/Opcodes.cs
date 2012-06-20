@@ -92,6 +92,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_GROUP_CHANGE_SUB_GROUP, 0x4124},
             {Opcode.CMSG_GROUP_RAID_CONVERT, 0x6E27},
             {Opcode.CMSG_GROUP_SWAP_SUB_GROUP, 0x0034},
+            {Opcode.CMSG_GUILD_MOTD, 0x1035},
             {Opcode.CMSG_GUILD_BANK_SWAP_ITEMS, 0x2315},
             {Opcode.CMSG_GUILD_BANKER_ACTIVATE, 0x2E37},
             {Opcode.CMSG_GUILD_QUERY, 0x4426},

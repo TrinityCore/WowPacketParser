@@ -395,12 +395,18 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("MOTD");
         }
 
-        [Parser(Opcode.CMSG_GUILD_MOTD, ClientVersionBuild.V4_0_6_13596)]
+        [Parser(Opcode.CMSG_GUILD_MOTD, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildMOTD406(Packet packet)
         {
             packet.ReadGuid("Guild GUID");
             packet.ReadGuid("Player GUID");
             packet.ReadCString("MOTD");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_MOTD, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildMOTD434(Packet packet)
+        {
+            packet.ReadWoWString("MOTD", (int)packet.ReadBits(11));
         }
 
         [Parser(Opcode.SMSG_GUILD_EVENT)]
