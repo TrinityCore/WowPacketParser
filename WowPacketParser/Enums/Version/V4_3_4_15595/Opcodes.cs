@@ -16,6 +16,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_ADD_FRIEND, 0x6C29},
             {Opcode.CMSG_ADD_VOICE_IGNORE, 0x0F06},
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x0954},
+            {Opcode.CMSG_ALTER_APPEARANCE, 0x0914},
             {Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY, 0x4907},
             {Opcode.CMSG_AREATRIGGER, 0x0937},
             {Opcode.CMSG_ARENA_TEAM_DISBAND, 0x6504},
@@ -150,7 +151,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_QUERY_TIME, 0x0A36},
             {Opcode.CMSG_QUEST_POI_QUERY, 0x4037},
             {Opcode.CMSG_QUEST_QUERY, 0x0D06},
-            {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x7302},
+            {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x2534},
             {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY, 0x6305},
             {Opcode.CMSG_QUESTGIVER_STATUS_QUERY, 0x4407},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x2413},
@@ -216,6 +217,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x4925},
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x6926},
             {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57},
+            {Opcode.SMSG_ACHIEVEMENT_EARNED, 0x4405},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x4B05},
             {Opcode.SMSG_ACTION_BUTTONS, 0x38B5},
             {Opcode.SMSG_ADDON_INFO, 0x2C14},
@@ -229,6 +231,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_AURA_UPDATE_ALL, 0x4114},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x4542},
             {Opcode.SMSG_AUTH_RESPONSE, 0x5DB6},
+            {Opcode.SMSG_BARBER_SHOP_RESULT, 0x6125},
             {Opcode.SMSG_BATTLEFIELD_STATUS, 0x07202},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x0527},
             {Opcode.SMSG_BUY_ITEM, 0x0F26},
@@ -258,6 +261,8 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_GM_MESSAGECHAT, 0x6434},
             {Opcode.SMSG_GOSSIP_COMPLETE, 0x0806},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x2035},
+            {Opcode.SMSG_GOSSIP_POI, 0x4316},
+            {Opcode.SMSG_GUILD_XP, 0x3DB0},
             {Opcode.SMSG_GROUP_LIST, 0x4C24},
             {Opcode.SMSG_GROUP_SET_LEADER, 0x0526},
             {Opcode.SMSG_GROUP_SET_ROLE, 0x39A6},
@@ -272,7 +277,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_INITIAL_SPELLS, 0x0104},
             {Opcode.SMSG_INIT_CURRENCY, 0x15A5},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x4C15},
-            {Opcode.SMSG_INSPECT_RESULTS_UPDATE, 0x0C14},
+            {Opcode.SMSG_INSPECT_RESULTS_UPDATE, 0x4014},
             {Opcode.SMSG_INVALIDATE_PLAYER, 0x6325},
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x0F27},
             {Opcode.SMSG_LEARNED_DANCE_MOVES, 0x0E05},
@@ -306,6 +311,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_POWER_UPDATE, 0x4A07},
             {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x2124},
             {Opcode.SMSG_QUERY_QUESTS_COMPLETED_RESPONSE, 0x6314},
+            {Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, 0x55A4},
             {Opcode.SMSG_QUESTGIVER_OFFER_REWARD, 0x2427},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x2425},
             {Opcode.SMSG_QUESTGIVER_STATUS, 0x2115},
@@ -355,6 +361,9 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_WARDEN_DATA, 0x31A0},
             {Opcode.SMSG_WHO, 0x6907},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x4A14}
+
+            // 0x2915 Contains Criteria achievement - Received after SMSG_ACHIEVEMENT_EARNED
+            // 0x6236 SMSG_QUESTUPDATE_COMPLETE?
         };
     }
 }
