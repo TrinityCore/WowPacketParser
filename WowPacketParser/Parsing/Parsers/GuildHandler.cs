@@ -605,6 +605,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Tab Icon");
         }
 
+        [Parser(Opcode.CMSG_GUILD_RANKS)]
         [Parser(Opcode.CMSG_QUERY_GUILD_XP)]
         public static void HandleGuildRequestNews(Packet packet)
         {

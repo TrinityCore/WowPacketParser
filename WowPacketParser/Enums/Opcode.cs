@@ -338,6 +338,7 @@ namespace WowPacketParser.Enums
         CMSG_GUILD_QUERY,
         CMSG_GUILD_QUERY_XP,
         CMSG_GUILD_RANK,
+        CMSG_GUILD_RANKS,
         CMSG_GUILD_REMOVE,
         CMSG_GUILD_REPLACE_GUILD_MASTER,
         CMSG_GUILD_ROSTER,
