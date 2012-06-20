@@ -8,6 +8,12 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class MiscellaneousParsers
     {
+		[Parser(Opcode.CMSG_VIOLENCE_LEVEL)]
+		public static void HandleSetViolenceLevel(Packet packet)
+		{
+			packet.ReadByte("Level");
+		}
+
         [Parser(Opcode.SMSG_HOTFIX_NOTIFY)]
         public static void HandleHotfixNotify(Packet packet)
         {
