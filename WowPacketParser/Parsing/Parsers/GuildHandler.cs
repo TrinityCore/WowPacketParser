@@ -409,6 +409,26 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("MOTD", (int)packet.ReadBits(11));
         }
 
+        [Parser(Opcode.CMSG_GUILD_INFO_TEXT, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
+        public static void HandleSetGuildInfo(Packet packet)
+        {
+            packet.ReadCString("Text");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_INFO_TEXT, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildInfo406(Packet packet)
+        {
+            packet.ReadGuid("Player GUID");
+            packet.ReadGuid("Guild GUID");
+            packet.ReadCString("Text");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_INFO_TEXT, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildInfo434(Packet packet)
+        {
+            packet.ReadWoWString("Text", (int)packet.ReadBits(12));
+        }
+
         [Parser(Opcode.SMSG_GUILD_EVENT)]
         public static void HandleGuildEvent(Packet packet)
         {
@@ -467,17 +487,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Issuer GUID");
             packet.ReadGuid("Guild GUID");
             packet.ReadCString("Note");
-        }
-
-        [Parser(Opcode.CMSG_GUILD_INFO_TEXT)]
-        public static void HandleGuildInfoText(Packet packet)
-        {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
-            {
-                packet.ReadGuid("Player GUID");
-                packet.ReadGuid("Guild GUID");
-            }
-            packet.ReadCString("Text");
         }
 
         [Parser(Opcode.CMSG_GUILD_BANKER_ACTIVATE)]
