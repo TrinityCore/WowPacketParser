@@ -210,6 +210,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.MSG_PETITION_RENAME, 0x4005},
             {Opcode.MSG_QUERY_NEXT_MAIL_TIME, 0x0F04},
             {Opcode.MSG_RANDOM_ROLL, 0x0905},
+            {Opcode.MSG_RAID_TARGET_UPDATE, 0x2C36},
             {Opcode.MSG_SAVE_GUILD_EMBLEM, 0x2404},
             {Opcode.MSG_SET_RAID_DIFFICULTY, 0x0614},
             {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x4925},
