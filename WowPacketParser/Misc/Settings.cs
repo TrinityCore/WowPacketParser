@@ -110,7 +110,16 @@ namespace WowPacketParser.Misc
         private static string[] GetStringList(string key, string[] defValue)
         {
             var s = SettingsCollection[key];
-            return (s == null || s.Value == null) ? defValue : s.Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (s == null || s.Value == null)
+                return defValue;
+
+            var arr = s.Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+            for (var i = 0; i < arr.Length; i++)
+                arr[i] = arr[i].Trim();
+
+            return arr;
         }
 
         private static bool GetBoolean(string key, bool defValue)

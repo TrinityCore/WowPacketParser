@@ -48,6 +48,16 @@ namespace WowPacketParser.Tests.Misc
 
             Assert.IsTrue("bar".MatchesFilters(list));
             Assert.IsFalse("baz".MatchesFilters(list));
+
+            var list2 = new List<string> { " Foo", " Bar ", "FooBar " };
+            for (var i = 0; i < list2.Count; i++)
+                list2[i] = list2[i].Trim();
+
+
+            Assert.IsTrue("bar".MatchesFilters(list2));
+            Assert.IsTrue("Foo".MatchesFilters(list2));
+            Assert.IsTrue("FooBaz".MatchesFilters(list2)); // matches Foo
+            Assert.IsFalse("baz".MatchesFilters(list2));
         }
 
         [Test]
