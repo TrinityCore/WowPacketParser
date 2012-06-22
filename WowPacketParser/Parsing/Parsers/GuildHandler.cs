@@ -308,7 +308,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GUILD_RANK, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_GUILD_RANK, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRankServer422(Packet packet)
         {
             const int guildBankMaxTabs = 8;
@@ -329,6 +329,30 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadInt32("Rights Order", i);
                 packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.Int32, i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_GUILD_RANK, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildRankServer434(Packet packet)
+        {
+            const int guildBankMaxTabs = 8;
+            var count = packet.ReadBits("Count", 18);
+            var length = new int[count];
+            for (var i = 0; i < count; ++i)
+                length[i] = (int)packet.ReadBits(7);
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Creation Order", i);
+                for (var j = 0; j < guildBankMaxTabs; ++j)
+                {
+                    packet.ReadInt32("Tab Slots", i, j);
+                    packet.ReadEnum<GuildBankRightsFlag>("Tab Rights", TypeCode.Int32, i, j);
+                }
+                packet.ReadInt32("Gold Per Day", i);
+                packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.Int32, i);
+                packet.ReadWoWString("Name", length[i], i);
+                packet.ReadInt32("Rights Order", i);
             }
         }
 
