@@ -626,8 +626,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleCharEnum434(Packet packet)
         {
-            packet.ReadBit("Unk Bit");
-            var unkCounter = packet.ReadBits("Unk Counter", 23);
+            packet.ReadBits("Unk Counter", 24);
             var count = packet.ReadBits("Char count", 17);
 
             var charGuids = new byte[count][];
@@ -756,9 +755,6 @@ namespace WowPacketParser.Parsing.Parsers
                     Storage.Objects.Add(playerGuid, playerInfo, packet.TimeSpan);
                 StoreGetters.AddName(playerGuid, name);
             }
-
-            for (var c = 0; c < unkCounter; c++)
-                packet.WriteLine("Unk Loop: {0}, {1}", packet.ReadUInt32(), packet.ReadByte());
         }
 
         [Parser(Opcode.SMSG_COMPRESSED_CHAR_ENUM)]
