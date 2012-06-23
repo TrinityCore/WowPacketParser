@@ -824,16 +824,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_INIT_CURRENCY, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleInitCurrency434(Packet packet)
         {
-            // FIXME - Guessed struct
             var count = packet.ReadBits("Count", 23);
             if (count == 0)
                 return;
 
-            var bits = new bool[count, 3];
+            var bits = new bool[count, 7];
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadBits(4);
-                for (var j = 0; j < 3; ++j)
+                for (var j = 0; j < 7; ++j)
                     bits[i, j] = packet.ReadBit();
             }
 
@@ -841,14 +839,15 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var total = packet.ReadInt32();
                 string extra = "";
-                if (bits[i, 1])
+                if (bits[i, 0])
+                    extra = String.Format(" - Weekly Count: {0,4}", packet.ReadInt32());
+
+                if (bits[i, 5])
                     extra = String.Format(" - Weekly Cap: {0,4}", packet.ReadInt32());
 
-                if (bits[i, 2])
+                if (bits[i, 6])
                     extra += String.Format(" - Season Total Earned?: {0,4}", packet.ReadInt32());
 
-                //if (bits[i, 0])
-                //    packet.ReadUInt32("Week Count", i);
 
                 var id = packet.ReadInt32();
                 packet.WriteLine("[{0,2}] Currency Id: {1,3} - Count: {2,4}{3}", i, id, total, extra);
