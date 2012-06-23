@@ -843,7 +843,7 @@ namespace WowPacketParser.Parsing.Parsers
                     extra = String.Format(" - Weekly Count: {0,4}", packet.ReadInt32());
 
                 if (bits[i, 5])
-                    extra = String.Format(" - Weekly Cap: {0,4}", packet.ReadInt32());
+                    extra += String.Format(" - Weekly Cap: {0,4}", packet.ReadInt32());
 
                 if (bits[i, 6])
                     extra += String.Format(" - Season Total Earned?: {0,4}", packet.ReadInt32());
