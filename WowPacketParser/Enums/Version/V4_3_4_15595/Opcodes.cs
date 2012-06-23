@@ -170,7 +170,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_REQUEST_PET_INFO, 0x4924},
             {Opcode.CMSG_REQUEST_RAID_INFO, 0x2F26},
             {Opcode.CMSG_REQUEST_RATED_BG_INFO, 0x34A1},
-            {Opcode.CMSG_REQUEST_CEMETERY_LIST, 0x0720A},
+            {Opcode.CMSG_REQUEST_CEMETERY_LIST, 0x720A},
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x4469},
             {Opcode.CMSG_RESET_INSTANCES, 0x6E14},
             {Opcode.CMSG_RESURRECT_RESPONSE, 0x6827},
