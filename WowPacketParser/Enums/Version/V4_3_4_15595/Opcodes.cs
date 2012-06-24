@@ -258,6 +258,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_AUTH_CHALLENGE, 0x4542},
             {Opcode.SMSG_AUTH_RESPONSE, 0x5DB6},
             {Opcode.SMSG_BARBER_SHOP_RESULT, 0x6125},
+            {Opcode.SMSG_BATTLEFIELD_LIST, 0x71B5},
             {Opcode.SMSG_BATTLEFIELD_STATUS, 0x7202},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x0527},
             {Opcode.SMSG_BUY_ITEM, 0x0F26},
