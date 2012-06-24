@@ -235,6 +235,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.MSG_MOVE_STOP_PITCH, 0x7312},
             {Opcode.MSG_MOVE_STOP_SWIM, 0x3802},
             {Opcode.MSG_MOVE_TOGGLE_COLLISION_CHEAT, 0x7B04},
+            {Opcode.MSG_MOVE_UPDATE_MOUSE, 0x7914},
             {Opcode.MSG_PETITION_DECLINE, 0x31E0},
             {Opcode.MSG_PETITION_RENAME, 0x4005},
             {Opcode.MSG_PVP_LOG_DATA, 0x5CB2},
