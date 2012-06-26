@@ -9,10 +9,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_INITIALIZE_FACTIONS)]
         public static void HandleInitializeFactions(Packet packet)
         {
-            var flags = packet.ReadInt32();
-            packet.WriteLine("Flags: 0x" + flags.ToString("X8"));
-
-            for (var i = 0; i < 128; i++)
+            var count = packet.ReadInt32("Count");
+            for (var i = 0; i < count; i++)
             {
                 packet.ReadEnum<FactionFlag>("Faction Flags", TypeCode.Byte, i);
                 packet.ReadInt32("Faction Standing", i);
