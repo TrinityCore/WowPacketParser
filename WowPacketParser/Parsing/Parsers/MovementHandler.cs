@@ -1469,7 +1469,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("AllowMove");
         }
 
-        [Parser(Opcode.SMSG_MOVE_KNOCK_BACK)]
+        [Parser(Opcode.SMSG_MOVE_KNOCK_BACK, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleMoveKnockBack(Packet packet)
         {
             packet.ReadPackedGuid("GUID");
