@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
@@ -49,13 +48,7 @@ namespace WowPacketParser.Parsing.Parsers
             var decompCount = packet.ReadInt32();
             packet = packet.Inflate(decompCount);
 
-            var data = packet.ReadBytes(decompCount);
-            packet.WriteLine("Account Data: ");
-
-            foreach (var b in data)
-                packet.Write(b.ToString(CultureInfo.InvariantCulture));
-
-            packet.WriteLine();
+            packet.ReadWoWString("Account Data", decompCount);
         }
 
         [Parser(Opcode.CMSG_UPDATE_ACCOUNT_DATA)]
