@@ -405,6 +405,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_TAXINODE_STATUS, 0x2936},
             {Opcode.SMSG_TEXT_EMOTE, 0x0B05},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x3CA4},
+            {Opcode.SMSG_THREAT_UPDATE, 0x4104},
             {Opcode.SMSG_TRADE_STATUS, 0x5CA3},
             {Opcode.SMSG_TRAINER_BUY_SUCCEEDED, 0x6A05},
             {Opcode.SMSG_TRAINER_LIST, 0x4414},
