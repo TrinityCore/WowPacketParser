@@ -331,6 +331,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_INVALIDATE_PLAYER, 0x6325},
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x0F27},
             {Opcode.SMSG_LEARNED_DANCE_MOVES, 0x0E05},
+            {Opcode.SMSG_LEARNED_SPELL, 0x58A2},
             {Opcode.SMSG_LFG_PLAYER_INFO, 0x4B36},
             {Opcode.SMSG_LIST_INVENTORY, 0x7CB0},
             {Opcode.SMSG_LOAD_CUF_PROFILES, 0x50B1},
