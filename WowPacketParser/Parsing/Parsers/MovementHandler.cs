@@ -178,7 +178,7 @@ namespace WowPacketParser.Parsing.Parsers
                     if ((uf.UInt32Value & (uint)UnitFlags.IsInCombat) == 0) // movement could be because of aggro so ignore that
                         obj.Movement.HasWpsOrRandMov = true;
             }
-                    
+
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MONSTER_MOVE_TRANSPORT))
             {
                 packet.ReadPackedGuid("Transport GUID");
