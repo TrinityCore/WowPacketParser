@@ -268,6 +268,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_AI_REACTION, 0x0637},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x58B1},
             {Opcode.SMSG_ALL_GUILD_ACHIEVEMENTS, 0x54B7},
+            {Opcode.SMSG_ARENA_TEAM_ROSTER, 0x2717},
             {Opcode.SMSG_ATTACKERSTATEUPDATE, 0x0B25},
             {Opcode.SMSG_ATTACKSTART, 0x2D15},
             {Opcode.SMSG_ATTACKSTOP, 0x0934},
@@ -279,7 +280,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_AUTH_RESPONSE, 0x5DB6},
             {Opcode.SMSG_BARBER_SHOP_RESULT, 0x6125},
             {Opcode.SMSG_BATTLEFIELD_LIST, 0x71B5},
-            {Opcode.SMSG_BATTLEFIELD_STATUS, 0x7202},
+            //{Opcode.SMSG_BATTLEFIELD_STATUS, 0x7202}, <--- 0x7202 ClientToServer
             {Opcode.SMSG_BINDPOINTUPDATE, 0x0527},
             {Opcode.SMSG_BUY_ITEM, 0x0F26},
             {Opcode.SMSG_CALENDAR_COMMAND_RESULT, 0x6F36},
