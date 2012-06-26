@@ -410,7 +410,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                packet.ReadInt16("Unk Int16");
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                    packet.ReadInt32("Unk Int32");
+                else
+                    packet.ReadInt16("Unk Int16");
+            }
         }
 
         [Parser(Opcode.CMSG_UPDATE_PROJECTILE_POSITION)]
