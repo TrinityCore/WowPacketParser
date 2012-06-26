@@ -8,11 +8,11 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class MiscellaneousParsers
     {
-		[Parser(Opcode.CMSG_VIOLENCE_LEVEL)]
-		public static void HandleSetViolenceLevel(Packet packet)
-		{
-			packet.ReadByte("Level");
-		}
+        [Parser(Opcode.CMSG_VIOLENCE_LEVEL)]
+        public static void HandleSetViolenceLevel(Packet packet)
+        {
+            packet.ReadByte("Level");
+        }
 
         [Parser(Opcode.SMSG_HOTFIX_NOTIFY)]
         public static void HandleHotfixNotify(Packet packet)
@@ -25,8 +25,13 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_HOTFIX_INFO)]
         public static void HandleHotfixInfo(Packet packet)
         {
-            var count = packet.ReadInt32("Count");
-            for (var i = 0; i < count; i++)
+            var count = 0u;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))  // Might have been earlier
+                count = packet.ReadBits("Count", 22);
+            else
+                count = packet.ReadUInt32("Count");
+
+            for (var i = 0u; i < count; i++)
             {
                 packet.ReadInt32("Hotfix type"); // Also time?
                 packet.ReadTime("Hotfix date");
