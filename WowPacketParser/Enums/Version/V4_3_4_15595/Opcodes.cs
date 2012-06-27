@@ -390,6 +390,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x2834},
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x70A0},
             {Opcode.SMSG_SET_PROFICIENCY, 0x6207},
+            {Opcode.SMSG_SETUP_RESEARCH_HISTORY, 0x10B6},
             {Opcode.SMSG_SPELL_COOLDOWN, 0x4B16},
             {Opcode.SMSG_SPELL_GO, 0x6E16},
             {Opcode.SMSG_SPELL_START, 0x6415},
