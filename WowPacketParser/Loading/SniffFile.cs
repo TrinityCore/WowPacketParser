@@ -51,18 +51,8 @@ namespace WowPacketParser.Loading
             // default selection, when version not provided in config
             if (Settings.ClientBuild == ClientVersionBuild.Zero)
             {
-                // check if version info given
-                if (reader.GetBuild() != ClientVersionBuild.Zero)
-                    return reader.GetBuild();
-                if (reader.CanRead())
-                {
-                    DateTime? date = reader.PeekDateTime();
-                    if (date != null)
-                        ClientVersion.GetVersion((DateTime)date);
-                }
-                // no datetime info in file - try last file modification date
-                DateTime lastWriteTimeUtc = File.GetLastWriteTimeUtc(FileName);
-                return ClientVersion.GetVersion(lastWriteTimeUtc);
+                // use version info from file
+                return reader.GetBuild();
             }
             return Settings.ClientBuild;
         }

@@ -203,13 +203,5 @@ namespace WowPacketParser.Loading
             _reader.BaseStream.Dispose();
             _reader.Dispose();
         }
-
-        public DateTime? PeekDateTime()
-        {
-            var oldPos = _reader.BaseStream.Position;
-            var p = Read(0, "");
-            _reader.BaseStream.Position = oldPos;
-            return p.Time;
-        }
     }
 }

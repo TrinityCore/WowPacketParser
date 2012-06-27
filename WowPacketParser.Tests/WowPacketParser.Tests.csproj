@@ -51,6 +51,7 @@
     <Compile Include="Misc\QuaternionTest.cs" />
     <Compile Include="Misc\UpdateFieldTest.cs" />
     <Compile Include="Misc\Vector4Test.cs" />
+    <Compile Include="Properties\Program.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
@@ -58,9 +59,7 @@
       <Name>WowPacketParser</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

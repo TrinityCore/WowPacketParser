@@ -42,10 +42,10 @@ namespace WowPacketParser.Loading
 
         public ClientVersionBuild GetBuild()
         {
-            return ClientVersionBuild.Zero;
+            return ClientVersion.GetVersion(PeekDateTime());
         }
 
-        public DateTime? PeekDateTime()
+        public DateTime PeekDateTime()
         {
             var oldPos = _reader.BaseStream.Position;
             var p = Read(0, "");

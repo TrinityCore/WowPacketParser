@@ -14,10 +14,15 @@ namespace WowPacketParser.Loading
     {
         public TextReader _tr;
         public DateTime _baseDate;
+        private ClientVersionBuild _build;
+
         public IzidorPacketReader(string fileName)
         {
             _tr = new StreamReader(fileName);
             _baseDate = File.GetLastWriteTimeUtc(fileName);
+
+            DateTime lastWriteTimeUtc = File.GetLastWriteTimeUtc(fileName);
+            _build = ClientVersion.GetVersion(lastWriteTimeUtc);
         }
 
         public bool CanRead()
@@ -95,17 +100,12 @@ namespace WowPacketParser.Loading
 
         public ClientVersionBuild GetBuild()
         {
-            return ClientVersionBuild.Zero;
+            return _build;
         }
 
         public void Dispose()
         {
             _tr.Dispose();
-        }
-
-        public DateTime? PeekDateTime()
-        {
-            return null;
         }
     }
 }
