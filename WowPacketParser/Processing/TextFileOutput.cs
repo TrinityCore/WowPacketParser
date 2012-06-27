@@ -15,9 +15,11 @@ namespace WowPacketParser.Processing
     public class TextFileOutput : IPacketProcessor
     {
         StreamWriter writer = null;
+        StreamWriter errorWriter = null;
         bool WriteToFile = true;
         string _outFileName;
         string _logPrefix;
+
         public bool Init(SniffFile file)
         {
             _logPrefix = file.LogPrefix;
@@ -31,6 +33,21 @@ namespace WowPacketParser.Processing
             }
             File.Delete(_outFileName);
             writer = new StreamWriter(_outFileName, true);
+            writer.WriteLine(file.GetHeader());
+
+            if (Settings.LogPacketErrors)
+            {
+                var errorFileName = Path.GetFileNameWithoutExtension(file.FileName) + "_errors.txt";
+                if (Utilities.FileIsInUse(errorFileName))
+                {
+                    Trace.WriteLine(string.Format("Parse error output file {0} is in use, output will not be saved.", errorFileName));
+                }
+                else
+                {
+                    errorWriter = new StreamWriter(errorFileName, true);
+                }
+            }
+
             return true;
         }
 
@@ -56,7 +73,10 @@ namespace WowPacketParser.Processing
                 return;
             }
             // Write to file
-            writer.WriteLine(TextBuilder.Build(packet));
+            if (errorWriter != null && packet.Status == ParsedStatus.WithErrors)
+                errorWriter.WriteLine(TextBuilder.Build(packet));
+            else
+                writer.WriteLine(TextBuilder.Build(packet));
             writer.Flush();
         }
         public void Finish()
@@ -65,7 +85,6 @@ namespace WowPacketParser.Processing
                 writer.Close();
 
             Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", _logPrefix, _outFileName));
-            
         }
     }
 }

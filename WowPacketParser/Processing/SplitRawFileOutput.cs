@@ -7,11 +7,15 @@ using Guid = WowPacketParser.Misc.Guid;
 using WowPacketParser.Misc;
 using WowPacketParser.Loading;
 using System.Diagnostics;
+using WowPacketParser.Enums.Version;
+
 namespace WowPacketParser.Processing
 {
     public class SplitRawFileOutput : IPacketProcessor
     {
         IBinaryPacketWriter packetWriter = null;
+        private const string Folder = "split"; // might want to move to config later
+
         public bool Init(SniffFile file)
         {
             if (Settings.RawOutputType == "" || !Settings.SplitRawOutput)
@@ -20,7 +24,7 @@ namespace WowPacketParser.Processing
             Trace.WriteLine(string.Format("{0}: Splitting packets to multiple raw format({2}) files...", file.LogPrefix, Settings.RawOutputType));
             try
             {
-                Directory.CreateDirectory(SplitRawOutput.Folder); // not doing anything if it exists already
+                Directory.CreateDirectory(Folder); // not doing anything if it exists already
                 packetWriter = BinaryPacketWriter.Get();
             }
             catch (Exception ex)
@@ -32,29 +36,35 @@ namespace WowPacketParser.Processing
             }
             return true;
         }
+        Dictionary<int, BinaryWriter> files = new Dictionary<int,  BinaryWriter>();
+
         public void ProcessPacket(Packet packet)
         {
-            var fileName = SplitRawOutput.Folder + "/" + Enums.Version.Opcodes.GetOpcodeName(packet.Opcode) + "." + Settings.RawOutputType.ToString().ToLower();
-            try
+            BinaryWriter a;
+            if (files.TryGetValue(packet.Opcode, out a))
             {
-                using (SplitRawOutput.Locks.Lock(fileName))
-                {
-                    bool existed = !File.Exists(fileName);
-                    var fileStream = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None);
-                    using (var writer = new BinaryWriter(fileStream, Encoding.ASCII))
-                    {
-                        if (!existed)
-                            packetWriter.WriteHeader(writer);
-                        packetWriter.WritePacket(packet, writer);
-                    }
-                }
+                packetWriter.WritePacket(packet, a);
             }
-            catch (TimeoutException)
+            else
             {
-                Trace.WriteLine(string.Format("Timeout trying to write Opcode to {0} ignoring packet", fileName));
+                var fileName = Folder + "/" + Opcodes.GetOpcodeName(packet.Opcode) + "." + Settings.RawOutputType.ToString().ToLower();
+                bool existed = !File.Exists(fileName);
+                var fileStream = new FileStream(fileName, FileMode.Append, FileAccess.Write);
+                var writer = new BinaryWriter(fileStream, Encoding.ASCII);
+                if (!existed)
+                    packetWriter.WriteHeader(writer);
+                packetWriter.WritePacket(packet, writer);
+                files.Add(packet.Opcode, writer);
             }
         }
-        public void Finish() {}
+
+        public void Finish() 
+        {
+            foreach (var pair in files)
+            {
+                pair.Value.Close();
+            }
+        }
         public void ProcessData(string name, Object obj, Type t) {}
     }
 }

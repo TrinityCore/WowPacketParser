@@ -388,13 +388,14 @@
     <Compile Include="Misc\UpdateField.cs" />
     <Compile Include="Processing\IPacketProcessor.cs" />
     <Compile Include="Processing\RawFileOutput.cs" />
-    <Compile Include="Processing\SplitRawFileOutput.cs" />
+    <Compile Include="Processing\SplitRawFileOutput.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Processing\TextBuilder.cs" />
     <Compile Include="Processing\SQLFileOutput.cs" />
     <Compile Include="Processing\TextFileOutput.cs" />
     <Compile Include="Processing\RawFileWriters\IBinaryPacketWriter.cs" />
     <Compile Include="Processing\RawFileWriters\KSZorBinaryPacketWriter.cs" />
-    <Compile Include="Processing\RawFileWriters\SplitRawOutput.cs" />
     <Compile Include="Misc\Utilities.cs" />
     <Compile Include="Misc\Vector2.cs" />
     <Compile Include="Misc\Vector3.cs" />

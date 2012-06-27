@@ -47,7 +47,11 @@ namespace WowPacketParser.Processing
         {
             packetWriter.WritePacket(packet, writer);
         }
-        public void Finish() {}
+        public void Finish() 
+        {
+            if (writer != null)
+                writer.Close();
+        }
         public void ProcessData(string name, Object obj, Type t) {}
     }
 }

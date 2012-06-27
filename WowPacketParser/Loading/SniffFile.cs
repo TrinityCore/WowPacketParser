@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using WowPacketParser.Enums;
@@ -21,7 +22,7 @@ namespace WowPacketParser.Loading
         public readonly string FileName;
         private readonly Statistics _stats;
         public readonly string LogPrefix;
-        public LinkedList<IPacketProcessor> processors = new LinkedList<IPacketProcessor>();
+        public LinkedList<IPacketProcessor> _processors = new LinkedList<IPacketProcessor>();
 
         public SniffFile(string fileName, Tuple<int, int> number = null)
         {
@@ -35,15 +36,6 @@ namespace WowPacketParser.Loading
                 LogPrefix = string.Format("[{0}]", Path.GetFileName(fileName));
             else
                 LogPrefix = string.Format("[{0}/{1} {2}]", number.Item1, number.Item2, Path.GetFileName(fileName));
-        }
-        
-        public string GetHeader()
-        {
-            return "# TrinityCore - WowPacketParser" + Environment.NewLine +
-                   "# File name: " + Path.GetFileName(FileName) + Environment.NewLine +
-                   "# Detected build: " + ClientVersion.Build + Environment.NewLine +
-                   "# Parsing date: " + DateTime.Now.ToString() +
-                   Environment.NewLine;
         }
 
         public ClientVersionBuild GetClientVersion(IPacketReader reader)
@@ -76,16 +68,16 @@ namespace WowPacketParser.Loading
                 // initialize processors
                 IPacketProcessor proc = new TextFileOutput();
                 if (proc.Init(this))
-                    processors.AddLast(proc);
+                    _processors.AddLast(proc);
                 proc = new SQLFileOutput();
                 if (proc.Init(this))
-                    processors.AddLast(proc);
+                    _processors.AddLast(proc);
                 proc = new RawFileOutput();
                 if (proc.Init(this))
-                    processors.AddLast(proc);
+                    _processors.AddLast(proc);
                 proc = new SplitRawFileOutput();
                 if (proc.Init(this))
-                    processors.AddLast(proc);
+                    _processors.AddLast(proc);
 
                 Storage.ClearContainers();
 
@@ -113,7 +105,7 @@ namespace WowPacketParser.Loading
                         continue;
 
                     ProcessPacket(packet);
-                
+
                     ++packetCount;
 
                     // finish if read packet count reached max
@@ -121,7 +113,7 @@ namespace WowPacketParser.Loading
                         break;
                 }
                 // finalize processors
-                foreach (var procs in processors)
+                foreach (var procs in _processors)
                 {
                     procs.Finish();
                 }
@@ -141,6 +133,15 @@ namespace WowPacketParser.Loading
                 reader.Dispose();
                 Trace.WriteLine(string.Format("{0}: {1}", LogPrefix, _stats));
             }
+        }
+
+        public string GetHeader()
+        {
+            return "# TrinityCore - WowPacketParser" + Environment.NewLine +
+                   "# File name: " + Path.GetFileName(FileName) + Environment.NewLine +
+                   "# Detected build: " + ClientVersion.Build + Environment.NewLine +
+                   "# Parsing date: " + DateTime.Now.ToString(CultureInfo.InvariantCulture) +
+                   Environment.NewLine;
         }
 
         private bool CheckReadFilters(int opc)
@@ -167,7 +168,7 @@ namespace WowPacketParser.Loading
 
             ProcessElem(packet, "Packet");
 
-            foreach (var proc in processors)
+            foreach (var proc in _processors)
             {
                 proc.ProcessPacket(packet);
             }
@@ -179,7 +180,7 @@ namespace WowPacketParser.Loading
         public void ProcessElem(Object data, string name)
         {
             var t = data.GetType();
-            foreach (var proc in processors)
+            foreach (var proc in _processors)
             {
                 proc.ProcessData(name, data, t);
             }
