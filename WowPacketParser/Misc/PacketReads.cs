@@ -5,15 +5,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Parsing;
-using System.Collections.Specialized;
 
 namespace WowPacketParser.Misc
 {
-    //using NameDict = Dictionary<string, Object>;
-    //1using IndexDict = Dictionary<int, Dictionary<string, Object>>;
-    using NameDict = OrderedDictionary;
-    using IndexDict = Dictionary<int, OrderedDictionary>;
-
     public sealed partial class Packet
     {
         public Guid ReadGuid()
@@ -539,13 +533,13 @@ namespace WowPacketParser.Misc
             return ToGuid(name, stream, values);
         }
 
-        private NameDict StoreData;
-        private NameDict StoreDataCache;
+        private NamedTreeNode StoreData;
+        private NamedTreeNode StoreDataCache;
         private int[] LastIndex = new int[0];
-        private LinkedList<Tuple<NameDict, IndexDict>> StoreIndexedLists;
-        private Stack<Tuple<NameDict, LinkedList<Tuple<NameDict, IndexDict>>>> StoreObjects;
+        private LinkedList<Tuple<NamedTreeNode, IndexedTreeNode>> StoreIndexedLists;
+        private Stack<Tuple<NamedTreeNode, LinkedList<Tuple<NamedTreeNode, IndexedTreeNode>>>> StoreObjects;
 
-        public NameDict StoreGetDataByIndexes(params int[] values)
+        public NamedTreeNode StoreGetDataByIndexes(params int[] values)
         {
             // use cached data entry if available
             if (LastIndex != null && values.Equals(LastIndex))
@@ -562,13 +556,13 @@ namespace WowPacketParser.Misc
             {
                 throw new Exception(String.Format("Received not enough list indexes, there're {0} lists, but {1} indexes", listsCount, values.Length));
             }
-            NameDict data;
+            NamedTreeNode data;
             if (listsCount > 0)
             {
                 var itr = StoreIndexedLists.First;
                 for (var i = 0; i < listsCount - 1; ++i)
                 {
-                    NameDict next;
+                    NamedTreeNode next;
                     if (!itr.Value.Item2.TryGetValue(values[i], out next) || next != itr.Next.Value.Item1)
                     {
                         throw new Exception("Incorrect sub index number!");
@@ -577,7 +571,7 @@ namespace WowPacketParser.Misc
                 }
                 if (!itr.Value.Item2.TryGetValue(values[values.Length - 1], out data))
                 {
-                    data = new NameDict();
+                    data = new NamedTreeNode();
                     itr.Value.Item2.Add(values[values.Length - 1], data);
                 }
             }
@@ -592,7 +586,7 @@ namespace WowPacketParser.Misc
             return data;
         }
 
-        public void StoreContinueList(Tuple<NameDict, IndexDict> list, params int[] values)
+        public void StoreContinueList(Tuple<NamedTreeNode, IndexedTreeNode> list, params int[] values)
         {
             // caching disable - make sure errors are checked properly
             LastIndex = null;
@@ -604,15 +598,15 @@ namespace WowPacketParser.Misc
         }
 
         // begins reading data list arranged by index number
-        public Tuple<NameDict, IndexDict> StoreBeginList(string listName, params int[] values)
+        public Tuple<NamedTreeNode, IndexedTreeNode> StoreBeginList(string listName, params int[] values)
         {
             // caching disable - make sure errors are checked properly
             LastIndex = null;
 
             var dat = StoreGetDataByIndexes(values);
-            var newList = new IndexDict();
+            var newList = new IndexedTreeNode();
             Store(listName, newList, values);
-            var l = new Tuple<NameDict, IndexDict>(dat, newList);
+            var l = new Tuple<NamedTreeNode, IndexedTreeNode>(dat, newList);
             StoreIndexedLists.AddLast(l);
             return l;
         }
@@ -630,11 +624,11 @@ namespace WowPacketParser.Misc
         // begins code in which all data stored composes an object
         public void StoreBeginObj(string name, params int[] values)
         {
-            var newObj = new NameDict();
+            var newObj = new NamedTreeNode();
             Store(name, newObj, values);
-            StoreObjects.Push(new Tuple<NameDict, LinkedList<Tuple<NameDict, IndexDict>>>(StoreData, StoreIndexedLists));
+            StoreObjects.Push(new Tuple<NamedTreeNode, LinkedList<Tuple<NamedTreeNode, IndexedTreeNode>>>(StoreData, StoreIndexedLists));
             StoreData = newObj;
-            StoreIndexedLists = new LinkedList<Tuple<NameDict, IndexDict>>();
+            StoreIndexedLists = new LinkedList<Tuple<NamedTreeNode, IndexedTreeNode>>();
 
             // caching
             StoreDataCache = newObj;

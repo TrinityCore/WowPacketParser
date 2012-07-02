@@ -15,8 +15,6 @@ using WowPacketParser.Processing;
 
 namespace WowPacketParser.Loading
 {
-    using NameDict = OrderedDictionary;
-    using IndexDict = Dictionary<int, OrderedDictionary>;
     public class SniffFile
     {
         public readonly string FileName;
@@ -166,42 +164,38 @@ namespace WowPacketParser.Loading
             // Update statistics
             _stats.AddByStatus(packet.Status);
 
-            ProcessElem(packet, "Packet");
-
-            foreach (var proc in _processors)
-            {
-                proc.ProcessPacket(packet);
-            }
+            ProcessData(packet);
 
             // Close Writer, Stream - Dispose
             packet.ClosePacket();
         }
 
-        public void ProcessElem(Object data, string name)
+        public void ProcessData(Packet data)
         {
-            var t = data.GetType();
-            foreach (var proc in _processors)
+            var itr = data.GetTreeEnumerator();
+            while (itr.MoveNext())
             {
-                proc.ProcessData(name, data, t);
-            }
-            if (t == typeof(Packet))
-            {
-                Packet packet = (Packet)data;
-                ProcessElem(packet.GetData(), "PacketData");
-            }
-            else if (t == typeof(NameDict))
-            {
-                var itr = ((NameDict)data).GetEnumerator();
-                while (itr.MoveNext())
+                foreach (var proc in _processors)
                 {
-                    ProcessElem(itr.Value, (string)itr.Key);
+                   foreach (var i in itr.CurrentClosedNodes)
+                   {
+                       if (i.type == typeof(Packet))
+                           proc.ProcessedPacket(i.obj as Packet);
+                   }
+                   if (itr.Type == typeof(Packet))
+                   {
+                       Packet packet = (Packet)itr.Current;
+                       proc.ProcessPacket(packet);
+                   }
+                   proc.ProcessData(itr.Name, itr.Index, itr.Current, itr.Type);
                 }
             }
-            else if (t == typeof(IndexDict))
+            foreach (var proc in _processors)
             {
-                foreach (var itr in ((IndexDict)data))
+                foreach (var i in itr.CurrentClosedNodes)
                 {
-                    ProcessElem(itr.Value, name);
+                    if (i.type == typeof(Packet))
+                        proc.ProcessedPacket(i.obj as Packet);
                 }
             }
         }

@@ -10,136 +10,312 @@ using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Processing
 {
-    //using NameDict = Dictionary<string, Object>;
-    //1using IndexDict = Dictionary<int, Dictionary<string, Object>>;
-    using NameDict = OrderedDictionary;
-    using IndexDict = Dictionary<int, OrderedDictionary>;
-
     public static class TextBuilder
     {
         static Packet lastPacket;
         static string cache;
 
-        public static string Build(Packet packet)
+        public static string Build(Packet packet, bool withSubPackets = false)
         {
             if (packet == lastPacket)
                 return cache;
 
-            StringBuilder output = new StringBuilder();
-            DumpDataAsText(packet, output, "");
+            StringBuilder output = DumpDataAsText(packet, withSubPackets);
             cache = output.ToString();
             lastPacket = packet;
             return cache;
         }
 
-        public static void DumpDataAsText(Object data, StringBuilder output, string prefix)
+        public static StringBuilder DumpDataAsText(Packet mainPacket, bool withSubPackets)
         {
-            var t = data.GetType();
-            switch (Type.GetTypeCode(t))
+            StringBuilder output = new StringBuilder();
+            var iter = mainPacket.GetTreeEnumerator();
+            bool moveOn = iter.MoveNext();
+            StringBuilder align = new StringBuilder(10);
+            while (moveOn)
             {
-                case TypeCode.Single:
-                    if (Settings.DebugReads)
+                foreach (var val in iter.CurrentClosedNodes)
+                {
+                    if (val.type == typeof(Packet))
                     {
-                        byte[] bytes = BitConverter.GetBytes((Single)data);
-                        output.AppendFormat("{0} (0x{1})\n", data, BitConverter.ToString(bytes));
-                    }
-                    else
-                        output.AppendLine(data.ToString());
-                    break;
-                case TypeCode.Double:
-                    if (Settings.DebugReads)
-                    {
-                        byte[] bytes = BitConverter.GetBytes((Double)data);
-                        output.AppendFormat("{0} (0x{1})\n", data, BitConverter.ToString(bytes));
-                    }
-                    else
-                        output.AppendLine(data.ToString());
-                    break;
-                case TypeCode.Byte:
-                    output.AppendFormat("{0}{1}\n", data, (Settings.DebugReads ? " (0x" + ((Byte)data).ToString("X2") + ")" : String.Empty));
-                    break;
-                case TypeCode.SByte:
-                    output.AppendFormat("{0}{1}\n", data, (Settings.DebugReads ? " (0x" + ((SByte)data).ToString("X2") + ")" : String.Empty));
-                    break;
-                case TypeCode.Int16:
-                    output.AppendFormat("{0}{1}\n", data, (Settings.DebugReads ? " (0x" + ((Int16)data).ToString("X4") + ")" : String.Empty));
-                    break;
-                case TypeCode.UInt16:
-                    output.AppendFormat("{0}{1}\n", data, (Settings.DebugReads ? " (0x" + ((UInt16)data).ToString("X4") + ")" : String.Empty));
-                    break;
-                case TypeCode.UInt32:
-                    output.AppendFormat("{0}{1}\n", data, (Settings.DebugReads ? " (0x" + ((UInt32)data).ToString("X8") + ")" : String.Empty));
-                    break;
-                case TypeCode.Int32:
-                    output.AppendFormat("{0}{1}\n", data, (Settings.DebugReads ? " (0x" + ((Int32)data).ToString("X8") + ")" : String.Empty));
-                    break;
-                case TypeCode.UInt64:
-                    output.AppendFormat("{0}{1}\n", data, (Settings.DebugReads ? " (0x" + ((UInt64)data).ToString("X16") + ")" : String.Empty));
-                    break;
-                case TypeCode.Int64:
-                    output.AppendFormat("{0}{1}\n", data, (Settings.DebugReads ? " (0x" + ((Int64)data).ToString("X16") + ")" : String.Empty));
-                    break;
-                case TypeCode.DateTime:
-                    output.AppendFormat("{0}{1}\n", (DateTime)data, (Settings.DebugReads ? " (0x" + ((DateTime)data).ToString("X4") + ")" : String.Empty));
-                    break;
-                default:
-                    //else if (data.GetType() == typeof(enum))
-                    //{
-                    //     Writer.WriteLine("{0}{1}: {2} ({3}){4}", GetIndexString(values), name, data.Value, data.Key, (Settings.DebugReads ? " (0x" + data.Key.ToString("X4") + ")" : String.Empty));
-                    //}
-                    if (t == typeof(Packet))
-                    {
-                        Packet packet = (Packet)data;
-                        output.Append(String.Format("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}{6}",
-                            packet.Direction, Opcodes.GetOpcodeName(packet.Opcode), packet.Opcode.ToString("X4"),
-                            packet.Length, packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
-                            packet.Number, (packet.SubPacket) ? String.Format(" (subpacket of packet: opcode {0} (0x{1}) )", Opcodes.GetOpcodeName(packet.ParentOpcode), packet.ParentOpcode) : String.Empty));
-
-                        DumpDataAsText(packet.GetData(), output, prefix);
-
+                        var pac = val.obj as Packet;
                         // errors
-                        switch (packet.Status)
+                        switch (pac.Status)
                         {
                             case ParsedStatus.Success:
                                 break;
                             case ParsedStatus.WithErrors:
-                                output.AppendLine(packet.ErrorMessage);
+                                output.Append(align);
+                                output.AppendLine(pac.ErrorMessage);
                                 break;
                             case ParsedStatus.NotParsed:
+                                output.Append(align);
                                 output.AppendLine("Opcode not parsed");
-                                output.AppendLine(packet.ToHex());
+                                output.Append(align);
+                                output.AppendLine(pac.ToHex());
                                 break;
                         }
                     }
-                    else if (t == typeof(NameDict))
+                    else if (val.type == typeof(NamedTreeNode))
                     {
-                        output.AppendLine();
-                        var itr = ((NameDict)data).GetEnumerator();
-                        string offset = prefix + ((t == typeof(IndexDict)) ? "\t" : String.Empty);
-                        while (itr.MoveNext())
+                        align.Remove(align.Length - 1, 1);
+                    }
+                }
+                var t = iter.Type;
+                var data = iter.Current;
+
+                switch (Type.GetTypeCode(t))
+                {
+                    case TypeCode.Single:
+                        output.Append(align);
+                        output.Append(iter.Name);
+                        output.Append(": ");
+                        output.Append(data);
+                        if (Settings.DebugReads)
                         {
-                            output.AppendFormat("{0}{1}: ", prefix, itr.Key);
-                            DumpDataAsText(itr.Value, output, offset);
+                            byte[] bytes = BitConverter.GetBytes((Single)data);
+                            output.Append(" (0x");
+                            output.Append(BitConverter.ToString(bytes));
+                            output.AppendLine(")");
                         }
-                        //output.AppendLine();
-                    }
-                    else if (t == typeof(IndexDict))
-                    {
-                        string offset = prefix + "\t";
-                        output.AppendLine();
-                        foreach (var itr in ((IndexDict)data))
+                        else
                         {
-                            output.AppendFormat("{0}[{1}]: ", prefix, itr.Key);
-                            DumpDataAsText(itr.Value, output, offset);
+                            output.AppendLine();
                         }
-                        //output.AppendLine();
-                    }
-                    else
-                    {
-                        output.AppendLine(data.ToString());
-                    }
-                    break;
+                        break;
+                    case TypeCode.Double:
+                        output.Append(align);
+                        output.Append(iter.Name);
+                        output.Append(": ");
+                        output.Append(data);
+                        if (Settings.DebugReads)
+                        {
+                            byte[] bytes = BitConverter.GetBytes((Double)data);
+                            output.Append(" (0x");
+                            output.Append(BitConverter.ToString(bytes));
+                            output.AppendLine(")");
+                        }
+                        else
+                        {
+                            output.AppendLine();
+                        }
+                        break;
+                    case TypeCode.Byte:
+                        output.Append(align);
+                        output.Append(iter.Name);
+                        output.Append(": ");
+                        output.Append(data);
+                        if (Settings.DebugReads)
+                        {
+                            output.Append(" (0x");
+                            output.Append(((Byte)data).ToString("X2"));
+                            output.AppendLine(")");
+                        }
+                        else
+                        {
+                            output.AppendLine();
+                        }
+                        break;
+                    case TypeCode.SByte:
+                        output.Append(align);
+                        output.Append(iter.Name);
+                        output.Append(": ");
+                        output.Append(data);
+                        if (Settings.DebugReads)
+                        {
+                            output.Append(" (0x");
+                            output.Append(((SByte)data).ToString("X2"));
+                            output.AppendLine(")");
+                        }
+                        else
+                        {
+                            output.AppendLine();
+                        }
+                        break;
+                    case TypeCode.Int16:
+                        output.Append(align);
+                        output.Append(iter.Name);
+                        output.Append(": ");
+                        output.Append(data);
+                        if (Settings.DebugReads)
+                        {
+                            output.Append(" (0x");
+                            output.Append(((Int16)data).ToString("X4"));
+                            output.AppendLine(")");
+                        }
+                        else
+                        {
+                            output.AppendLine();
+                        }
+                        break;
+                    case TypeCode.UInt16:
+                        output.Append(align);
+                        output.Append(iter.Name);
+                        output.Append(": ");
+                        output.Append(data);
+                        if (Settings.DebugReads)
+                        {
+                            output.Append(" (0x");
+                            output.Append(((UInt16)data).ToString("X4"));
+                            output.AppendLine(")");
+                        }
+                        else
+                        {
+                            output.AppendLine();
+                        }
+                        break;
+                    case TypeCode.UInt32:
+                        output.Append(align);
+                        output.Append(iter.Name);
+                        output.Append(": ");
+                        output.Append(data);
+                        if (Settings.DebugReads)
+                        {
+                            output.Append(" (0x");
+                            output.Append(((UInt32)data).ToString("X8"));
+                            output.AppendLine(")");
+                        }
+                        else
+                        {
+                            output.AppendLine();
+                        }
+                        break;
+                    case TypeCode.Int32:
+                        output.Append(align);
+                        output.Append(iter.Name);
+                        output.Append(": ");
+                        output.Append(data);
+                        if (Settings.DebugReads)
+                        {
+                            output.Append(" (0x");
+                            output.Append(((Int32)data).ToString("X8"));
+                            output.AppendLine(")");
+                        }
+                        else
+                        {
+                            output.AppendLine();
+                        }
+                        break;
+                    case TypeCode.UInt64:
+                        output.Append(align);
+                        output.Append(iter.Name);
+                        output.Append(": ");
+                        output.Append(data);
+                        if (Settings.DebugReads)
+                        {
+                            output.Append(" (0x");
+                            output.Append(((UInt64)data).ToString("X16"));
+                            output.AppendLine(")");
+                        }
+                        else
+                        {
+                            output.AppendLine();
+                        }
+                        break;
+                    case TypeCode.Int64:
+                        output.Append(align);
+                        output.Append(iter.Name);
+                        output.Append(": ");
+                        output.Append(data);
+                        if (Settings.DebugReads)
+                        {
+                            output.Append(" (0x");
+                            output.Append(((Int64)data).ToString("X16"));
+                            output.AppendLine(")");
+                        }
+                        else
+                        {
+                            output.AppendLine();
+                        }
+                        break;
+                    case TypeCode.DateTime:
+                        output.Append(align);
+                        output.Append(iter.Name);
+                        output.Append(": ");
+                        output.Append(data);
+                        if (Settings.DebugReads)
+                        {
+                            output.Append(" (0x");
+                            output.Append(((DateTime)data).ToString("X4"));
+                            output.AppendLine(")");
+                        }
+                        else
+                        {
+                            output.AppendLine();
+                        }
+                        break;
+                    default:
+                        //else if (data.GetType() == typeof(enum))
+                        //{
+                        //     Writer.WriteLine("{0}{1}: {2} ({3}){4}", GetIndexString(values), name, data.Value, data.Key, (Settings.DebugReads ? " (0x" + data.Key.ToString("X4") + ")" : String.Empty));
+                        //}
+                        if (t == typeof(Packet))
+                        {
+                            Packet packet = data as Packet;
+                            if (packet.SubPacket && !withSubPackets)
+                            {
+                                moveOn = iter.MoveOver();
+                                continue;
+                            }
+
+                            output.Append(align);
+                            output.Append(packet.Direction);
+                            output.Append(": ");
+                            output.Append(Opcodes.GetOpcodeName(packet.Opcode));
+                            output.Append(" (0x");
+                            output.Append(packet.Opcode.ToString("X4"));
+                            output.Append(") Length: ");
+                            output.Append(packet.Length);
+                            output.Append(" Time: ");
+                            output.Append(packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"));
+                            output.Append(" Number: ");
+                            output.Append(packet.Number);
+                            if (packet.SubPacket)
+                            {
+                                output.Append(" (subpacket of packet: opcode ");
+                                output.Append(Opcodes.GetOpcodeName(packet.ParentOpcode));
+                                output.Append(" (0x");
+                                output.Append(packet.ParentOpcode.ToString("X4"));
+                                output.Append(") )");
+                            }
+                            output.AppendLine();
+                        }
+                        else if (t == typeof(NamedTreeNode))
+                        {
+                            if (iter.Index != null)
+                            {
+                                output.Append(align);
+                                output.Append("[");
+                                output.Append(iter.Index);
+                                output.AppendLine("]:");
+                            }
+                            else
+                            {
+                                output.Append(align);
+                                output.Append(iter.Name);
+                                output.AppendLine(":");
+                            }
+                            align.Append("\t");
+                        }
+                        else if (t == typeof(IndexedTreeNode))
+                        {
+                            output.Append(align);
+                            output.Append(iter.Name);
+                            output.AppendLine(":");
+                        }
+                        else
+                        {
+                            output.Append(align);
+                            output.Append(iter.Name);
+                            output.Append(": ");
+                            output.Append(data);
+                            output.AppendLine();
+                        }
+                        break;
+                }
+                moveOn = iter.MoveNext();
             }
+            return output;
         }
     }
 }

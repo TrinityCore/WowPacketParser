@@ -25,6 +25,9 @@ namespace WowPacketParser.Processing
         public void ProcessPacket(Packet packet)
         {
         }
+        public void ProcessedPacket(Packet packet)
+        {
+        }
         public void Finish() 
         {
             string sqlFileName;
@@ -36,6 +39,6 @@ namespace WowPacketParser.Processing
 
             Builder.DumpSQL(string.Format("{0}: Dumping sql", LogPrefix), sqlFileName, Header);
         }
-        public void ProcessData(string name, Object obj, Type t) { }
+        public void ProcessData(string name, int? index, Object obj, Type t) { }
     }
 }

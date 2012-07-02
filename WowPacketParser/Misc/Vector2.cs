@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 
 namespace WowPacketParser.Misc
 {
@@ -16,7 +17,12 @@ namespace WowPacketParser.Misc
 
         public override string ToString()
         {
-            return "X: " + X + " Y: " + Y;
+            StringBuilder builder = new StringBuilder(35);
+            builder.Append("X: ");
+            builder.Append(X);
+            builder.Append(" Y: ");
+            builder.Append(Y);
+            return builder.ToString();
         }
 
         public override bool Equals(object obj)

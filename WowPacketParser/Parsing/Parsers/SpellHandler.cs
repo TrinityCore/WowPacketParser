@@ -1069,7 +1069,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleTotemDestroyed(Packet packet)
         {
             packet.ReadByte("Slot");
-
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005)) // guessing, present on 4.3.4
                 packet.ReadGuid("Unk");
         }

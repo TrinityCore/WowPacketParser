@@ -36,10 +36,12 @@ namespace WowPacketParser.Processing
             }
             return true;
         }
-        Dictionary<int, BinaryWriter> files = new Dictionary<int,  BinaryWriter>();
+        Dictionary<int, BinaryWriter> files = new Dictionary<int, BinaryWriter>();
 
         public void ProcessPacket(Packet packet)
         {
+            if (packet.SubPacket)
+                return;
             BinaryWriter a;
             if (files.TryGetValue(packet.Opcode, out a))
             {
@@ -55,16 +57,18 @@ namespace WowPacketParser.Processing
                     packetWriter.WriteHeader(writer);
                 packetWriter.WritePacket(packet, writer);
                 files.Add(packet.Opcode, writer);
+
             }
         }
 
-        public void Finish() 
+        public void Finish()
         {
             foreach (var pair in files)
             {
                 pair.Value.Close();
             }
         }
-        public void ProcessData(string name, Object obj, Type t) {}
+        public void ProcessedPacket(Packet packet) { }
+        public void ProcessData(string name, int? index, Object obj, Type t) { }
     }
 }

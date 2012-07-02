@@ -7,16 +7,10 @@ using ICSharpCode.SharpZipLib.Zip.Compression;
 using WowPacketParser.Enums;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using System.Collections.Specialized;
 
 namespace WowPacketParser.Misc
 {
-    //using NameDict = Dictionary<string, Object>;
-    //1using IndexDict = Dictionary<int, Dictionary<string, Object>>;
-    using NameDict = OrderedDictionary;
-    using IndexDict = Dictionary<int, OrderedDictionary>;
-
-    public sealed partial class Packet : BinaryReader
+    public sealed partial class Packet : BinaryReader, ITreeNode
     {
         private static readonly bool SniffData = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffData);
         private static readonly bool SniffDataOpcodes = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffDataOpcodes);
@@ -31,10 +25,10 @@ namespace WowPacketParser.Misc
             Time = time;
             Direction = direction;
             Number = number;
-            StoreData = new NameDict();
+            StoreData = new NamedTreeNode();
             StoreDataCache = StoreData;
-            StoreIndexedLists = new LinkedList<Tuple<NameDict, IndexDict>>();
-            StoreObjects = new Stack<Tuple<NameDict, LinkedList<Tuple<NameDict, IndexDict>>>>();
+            StoreIndexedLists = new LinkedList<Tuple<NamedTreeNode, IndexedTreeNode>>();
+            StoreObjects = new Stack<Tuple<NamedTreeNode, LinkedList<Tuple<NamedTreeNode, IndexedTreeNode>>>>();
             FileName = fileName;
             Status = ParsedStatus.None;
             SubPacket = false;
@@ -55,10 +49,10 @@ namespace WowPacketParser.Misc
             Time = parent.Time;
             Direction = parent.Direction;
             Number = parent.Number;
-            StoreData = new NameDict();
+            StoreData = new NamedTreeNode();
             StoreDataCache = StoreData;
-            StoreIndexedLists = new LinkedList<Tuple<NameDict, IndexDict>>();
-            StoreObjects = new Stack<Tuple<NameDict, LinkedList<Tuple<NameDict, IndexDict>>>>();
+            StoreIndexedLists = new LinkedList<Tuple<NamedTreeNode, IndexedTreeNode>>();
+            StoreObjects = new Stack<Tuple<NamedTreeNode, LinkedList<Tuple<NamedTreeNode, IndexedTreeNode>>>>();
             FileName = parent.FileName;
             Status = ParsedStatus.None;
             SubPacket = true;
@@ -77,7 +71,7 @@ namespace WowPacketParser.Misc
         public bool SubPacket;
         public int ParentOpcode;
 
-        public NameDict GetData()
+        public NamedTreeNode GetData()
         {
             return StoreData;
         }
@@ -147,14 +141,6 @@ namespace WowPacketParser.Misc
             return buffer;
         }
 
-        public string GetHeader(bool isMultiple = false)
-        {
-            return string.Format("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}{6}",
-                Direction, Enums.Version.Opcodes.GetOpcodeName(Opcode), Opcode.ToString("X4"),
-                Length, Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
-                Number, isMultiple ? " (part of another packet)" : "");
-        }
-
         public long Position
         {
             get { return BaseStream.Position; }
@@ -181,6 +167,31 @@ namespace WowPacketParser.Misc
                 BaseStream.Close();
 
             Dispose(true);
+        }
+        public NodeType GetNode<NodeType>(string[] address)
+        {
+            NodeType ret;
+            if (TryGetNode<NodeType>(address, out ret))
+                return ret;
+            throw new Exception(String.Format("Could not receive object of type {0} from address{1}", typeof(NodeType), address));
+        }
+        public bool TryGetNode<NodeType>(string[] address, out NodeType ret, int addrIndex = 0)
+        {
+            if (address.Length == addrIndex - 1)
+            {
+                if (this is NodeType)
+                {
+                    ret = (NodeType)((Object)this);
+                    return true;
+                }
+                ret = default(NodeType);
+                return false;
+            }
+            return StoreData.TryGetNode<NodeType>(address, out ret, addrIndex);
+        }
+        public TreeNodeEnumerator GetTreeEnumerator()
+        {
+            return new TreeNodeEnumerator(this);
         }
     }
 }

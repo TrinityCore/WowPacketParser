@@ -51,7 +51,7 @@ namespace WowPacketParser.Processing
             return true;
         }
 
-        public void ProcessData(string name, Object obj, Type t)
+        public void ProcessData(string name, int? index, Object obj, Type t)
         {
             if (!WriteToFile)
                 return;
@@ -66,19 +66,22 @@ namespace WowPacketParser.Processing
 
         public void ProcessPacket(Packet packet)
         {
-            if (!WriteToFile)
-            {
-                // set next packets to be written
-                WriteToFile = true;
+            if (packet.SubPacket)
                 return;
-            }
+            WriteToFile = true;
+        }
+        public void ProcessedPacket(Packet packet)
+        {
+            if (packet.SubPacket || !WriteToFile)
+                return;
             // Write to file
             if (errorWriter != null && packet.Status == ParsedStatus.WithErrors)
-                errorWriter.WriteLine(TextBuilder.Build(packet));
+                errorWriter.WriteLine(TextBuilder.Build(packet, true));
             else
-                writer.WriteLine(TextBuilder.Build(packet));
+                writer.WriteLine(TextBuilder.Build(packet, true));
             writer.Flush();
         }
+
         public void Finish()
         {
             if (writer != null)

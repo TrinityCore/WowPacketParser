@@ -80,6 +80,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -142,6 +143,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependencies\System.Data.SQLite.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -370,6 +372,9 @@
     <Compile Include="Misc\Bit.cs" />
     <Compile Include="Loading\WlpReader.cs" />
     <Compile Include="Loading\ZorReader.cs" />
+    <Compile Include="Misc\IndexedTreeNode.cs" />
+    <Compile Include="Misc\ITreeNode.cs" />
+    <Compile Include="Misc\NamedTreeNode.cs" />
     <Compile Include="Misc\StoreEntry.cs" />
     <Compile Include="Misc\ClientVersion.cs" />
     <Compile Include="Misc\Extensions.cs" />
@@ -385,6 +390,7 @@
     <Compile Include="Misc\Quaternion.cs" />
     <Compile Include="Misc\Settings.cs" />
     <Compile Include="Misc\StoreGetters.cs" />
+    <Compile Include="Misc\TreeNodeEnumerator.cs" />
     <Compile Include="Misc\UpdateField.cs" />
     <Compile Include="Processing\IPacketProcessor.cs" />
     <Compile Include="Processing\RawFileOutput.cs" />
@@ -499,6 +505,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

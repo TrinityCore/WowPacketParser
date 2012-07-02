@@ -12,7 +12,7 @@ namespace WowPacketParser.Processing
 {
     public class RawFileOutput : IPacketProcessor
     {
-        BinaryWriter  writer = null;
+        BinaryWriter writer = null;
         IBinaryPacketWriter packetWriter = null;
         string _logPrefix;
         public bool Init(SniffFile file)
@@ -45,13 +45,16 @@ namespace WowPacketParser.Processing
         }
         public void ProcessPacket(Packet packet)
         {
+            if (packet.SubPacket)
+                return;
             packetWriter.WritePacket(packet, writer);
         }
-        public void Finish() 
+        public void ProcessedPacket(Packet packet) { }
+        public void ProcessData(string name, int? index, Object obj, Type t) { }
+        public void Finish()
         {
             if (writer != null)
                 writer.Close();
         }
-        public void ProcessData(string name, Object obj, Type t) {}
     }
 }

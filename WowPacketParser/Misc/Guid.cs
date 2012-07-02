@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc
@@ -123,39 +124,72 @@ namespace WowPacketParser.Misc
             if (Full == 0)
                 return "0x0";
 
+            StringBuilder builder = new StringBuilder(80);
             // If our guid has an entry and it is an unit or a GO, print its
             // name next to the entry (from a database, if enabled)
             if (HasEntry())
             {
                 var type = Utilities.ObjectTypeToStore(GetObjectType());
 
-                return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()
-                    + " Entry: " + StoreGetters.GetName(type, (int)GetEntry()) + " Low: " + GetLow();
+                builder.Append("Full 0x");
+                builder.Append(Full.ToString("X8"));
+                builder.Append(" Type: ");
+                builder.Append(GetHighType());
+                builder.Append(" Entry: ");
+                builder.Append(StoreGetters.GetName(type, (int)GetEntry()));
+                builder.Append(" Low: ");
+                builder.Append(GetLow());
+                return builder.ToString();
             }
-
-            var name = StoreGetters.GetName(this);
 
             switch (GetHighType())
             {
                 case HighGuidType.BattleGround1:
                 {
                     var bgType = Full & 0x00000000000000FF;
-                    return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()
-                        + " BgType: " + StoreGetters.GetName(StoreNameType.Battleground, (int)bgType);
+                    builder.Append("Full 0x");
+                    builder.Append(Full.ToString("X8"));
+                    builder.Append(" Type: ");
+                    builder.Append(GetHighType());
+                    builder.Append(" BgType: ");
+                    builder.Append(StoreGetters.GetName(StoreNameType.Battleground, (int)bgType));
+                    return builder.ToString();
                 }
                 case HighGuidType.BattleGround2:
                 {
                     var bgType    = (Full & 0x00FF0000) >> 16;
                     var unkId     = (Full & 0x0000FF00) >> 8;
                     var arenaType = (Full & 0x000000FF) >> 0;
-                    return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()
-                        + " BgType: " + StoreGetters.GetName(StoreNameType.Battleground, (int)bgType)
-                        + " Unk: " + unkId + (arenaType > 0 ? (" ArenaType: " + arenaType) : String.Empty);
+                    builder.Append("Full 0x");
+                    builder.Append(Full.ToString("X8"));
+                    builder.Append(" Type: ");
+                    builder.Append(GetHighType());
+                    builder.Append(" BgType: ");
+                    builder.Append(StoreGetters.GetName(StoreNameType.Battleground, (int)bgType));
+                    builder.Append(" Unk: ");
+                    builder.Append(unkId);
+                    if (arenaType > 0)
+                    {
+                        builder.Append(" ArenaType: ");
+                        builder.Append(arenaType);
+                    }
+                    return builder.ToString();
                 }
             }
 
-            return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()
-                + " Low: " + GetLow() + (String.IsNullOrEmpty(name) ? String.Empty : (" Name: " + name));
+            var name = StoreGetters.GetName(this);
+            builder.Append("Full 0x");
+            builder.Append(Full.ToString("X8"));
+            builder.Append(" Type: ");
+            builder.Append(GetHighType());
+            builder.Append(" Low: ");
+            builder.Append(GetLow());
+            if (!String.IsNullOrEmpty(name))
+            {
+                builder.Append(" Name: ");
+                builder.Append(name);
+            }
+            return builder.ToString();
         }
     }
 }
