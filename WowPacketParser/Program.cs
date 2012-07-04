@@ -14,7 +14,8 @@ namespace WowPacketParser
     public static class Program
     {
         private static void Main(string[] args)
-        {   
+        {
+            
             SetUpConsole();
 
             var files = args.ToList();

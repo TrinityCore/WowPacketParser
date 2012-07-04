@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{8C846C92-DEBC-47A7-BDF9-E86D8A5374DA}</ProjectGuid>
+    <ProjectGuid>{2A05F427-D187-4577-B2EB-F356188D9CE0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WowPacketParser.Tests</RootNamespace>
-    <AssemblyName>WowPacketParser.Tests</AssemblyName>
+    <RootNamespace>PacketParser</RootNamespace>
+    <AssemblyName>PacketParser</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,35 +31,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.6.0.12051, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dependencies\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Misc\BiDictionaryTest.cs" />
-    <Compile Include="Misc\ClientVersionTest.cs" />
-    <Compile Include="Misc\StatisticsTest.cs" />
-    <Compile Include="Misc\UtilitiesTest.cs" />
-    <Compile Include="Misc\Vector2Test.cs" />
-    <Compile Include="Misc\Vector3Test.cs" />
-    <Compile Include="Misc\LfgEntryTest.cs" />
-    <Compile Include="Misc\ExtensionsTest.cs" />
-    <Compile Include="Misc\GuidTest.cs" />
-    <Compile Include="Misc\QuaternionTest.cs" />
-    <Compile Include="Misc\UpdateFieldTest.cs" />
-    <Compile Include="Misc\Vector4Test.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
-      <Project>{0BF6F270-0B6F-4705-8E1A-F57DB76DB407}</Project>
-      <Name>WowPacketParser</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

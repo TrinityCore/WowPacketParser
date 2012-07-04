@@ -1,0 +1,1107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7F90586C-27D4-44B1-95F6-DE3B12D95E0C}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PacketDumper</RootNamespace>
+    <AssemblyName>PacketDumper</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\Dependencies\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data">
+      <HintPath>..\Dependencies\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="PowerCollections">
+      <HintPath>..\Dependencies\PowerCollections.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpSSH">
+      <HintPath>..\Dependencies\SharpSSH.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.81.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\WowPacketParser\Loading\SniffFile.cs">
+      <Link>Loading\SniffFile.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\IndexedTreeNode.cs">
+      <Link>Misc\IndexedTreeNode.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\ITreeNode.cs">
+      <Link>Misc\ITreeNode.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\NamedTreeNode.cs">
+      <Link>Misc\NamedTreeNode.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\Settings.cs">
+      <Link>Misc\Settings.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\Statistics.cs">
+      <Link>Misc\Statistics.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\TreeNodeEnumerator.cs">
+      <Link>Misc\TreeNodeEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Processing\IPacketProcessor.cs">
+      <Link>Processing\IPacketProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Processing\RawFileOutput.cs">
+      <Link>Processing\RawFileOutput.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Processing\RawFileWriters\IBinaryPacketWriter.cs">
+      <Link>Processing\RawFileDump\IBinaryPacketWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Processing\RawFileWriters\KSZorBinaryPacketWriter.cs">
+      <Link>Processing\RawFileDump\KSZorBinaryPacketWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Processing\SniffDataTableOutput.cs">
+      <Link>Processing\SniffDataTableOutput.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Processing\SplitRawFileOutput.cs">
+      <Link>Processing\SplitRawFileOutput.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Processing\SQLFileOutput.cs">
+      <Link>Processing\SQLFileOutput.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Processing\TextBuilder.cs">
+      <Link>Processing\TextBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Processing\TextFileOutput.cs">
+      <Link>Processing\TextFileOutput.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Program.cs">
+      <Link>Program.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\SQL\Builder.cs">
+      <Link>SQL\Builder.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\SQL\Builders\Miscellaneous.cs">
+      <Link>SQL\Builders\Miscellaneous.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\SQL\Builders\QuestMisc.cs">
+      <Link>SQL\Builders\QuestMisc.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\SQL\Builders\Spawns.cs">
+      <Link>SQL\Builders\Spawns.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\SQL\Builders\UnitMisc.cs">
+      <Link>SQL\Builders\UnitMisc.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\SQL\Builders\WDBTemplates.cs">
+      <Link>SQL\Builders\WDBTemplates.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\SQL\DBAttributes.cs">
+      <Link>SQL\DBAttributes.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\SQL\ISQLQuery.cs">
+      <Link>SQL\ISQLQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\SQL\QueryBuilder.cs">
+      <Link>SQL\QueryBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\SQL\SQLConnector.cs">
+      <Link>SQL\SQLConnector.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\SQL\SQLDatabase.cs">
+      <Link>SQL\SQLDatabase.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\SQL\SQLFile.cs">
+      <Link>SQL\SQLFile.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\SQL\SQLUtil.cs">
+      <Link>SQL\SQLUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\SQL\SSHTunnel.cs">
+      <Link>SQL\SSHTunnel.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\Aura.cs">
+      <Link>Store\Objects\Aura.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\CreatureText.cs">
+      <Link>Store\Objects\CreatureText.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\GameObject.cs">
+      <Link>Store\Objects\GameObject.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\GameObjectTemplate.cs">
+      <Link>Store\Objects\GameObjectTemplate.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\Gossip.cs">
+      <Link>Store\Objects\Gossip.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\Item.cs">
+      <Link>Store\Objects\Item.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\ItemTemplate.cs">
+      <Link>Store\Objects\ItemTemplate.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\Loot.cs">
+      <Link>Store\Objects\Loot.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\LootItem.cs">
+      <Link>Store\Objects\LootItem.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\NpcText.cs">
+      <Link>Store\Objects\NpcText.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\NpcTrainer.cs">
+      <Link>Store\Objects\NpcTrainer.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\NpcVendor.cs">
+      <Link>Store\Objects\NpcVendor.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\ObjectName.cs">
+      <Link>Store\Objects\ObjectName.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\PageText.cs">
+      <Link>Store\Objects\PageText.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\Player.cs">
+      <Link>Store\Objects\Player.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\QuestMisc.cs">
+      <Link>Store\Objects\QuestMisc.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\QuestPOI.cs">
+      <Link>Store\Objects\QuestPOI.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\QuestPOIPoint.cs">
+      <Link>Store\Objects\QuestPOIPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\QuestTemplate.cs">
+      <Link>Store\Objects\QuestTemplate.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\SniffData.cs">
+      <Link>Store\Objects\SniffData.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\SpellsX.cs">
+      <Link>Store\Objects\SpellsX.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\StartAction.cs">
+      <Link>Store\Objects\StartAction.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\StartItem.cs">
+      <Link>Store\Objects\StartItem.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\StartPosition.cs">
+      <Link>Store\Objects\StartPosition.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\StartSpell.cs">
+      <Link>Store\Objects\StartSpell.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\TrainerSpell.cs">
+      <Link>Store\Objects\TrainerSpell.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\Unit.cs">
+      <Link>Store\Objects\Unit.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\UnitGossip.cs">
+      <Link>Store\Objects\UnitGossip.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\UnitTemplate.cs">
+      <Link>Store\Objects\UnitTemplate.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\VendorItem.cs">
+      <Link>Store\Objects\VendorItem.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\WorldObject.cs">
+      <Link>Store\Objects\WorldObject.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Objects\WoWObject.cs">
+      <Link>Store\Objects\WoWObject.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\Storage.cs">
+      <Link>Store\Storage.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Store\StoreDictionaries.cs">
+      <Link>Store\StoreDictionaries.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\WowPacketParser\Enums\AccountDataType.cs">
+      <Link>Enums\AccountDataType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ActionButtonType.cs">
+      <Link>Enums\ActionButtonType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\AIReaction.cs">
+      <Link>Enums\AIReaction.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\AmmoType.cs">
+      <Link>Enums\AmmoType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ArenaCommandResult.cs">
+      <Link>Enums\ArenaCommandResult.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ArenaEvent.cs">
+      <Link>Enums\ArenaEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\AttackerStateFlags.cs">
+      <Link>Enums\AttackerStateFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\AuctionHouseAction.cs">
+      <Link>Enums\AuctionHouseAction.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\AuctionHouseError.cs">
+      <Link>Enums\AuctionHouseError.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\AuraFlag.cs">
+      <Link>Enums\AuraFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\AuraType.cs">
+      <Link>Enums\AuraType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\BagFamilyMask.cs">
+      <Link>Enums\BagFamilyMask.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\BankSlotResult.cs">
+      <Link>Enums\BankSlotResult.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\BarberShopResult.cs">
+      <Link>Enums\BarberShopResult.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\BattlegroundError.cs">
+      <Link>Enums\BattlegroundError.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\BattlegroundListFlags.cs">
+      <Link>Enums\BattlegroundListFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\BattlegroundStatus.cs">
+      <Link>Enums\BattlegroundStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\BattlegroundUpdateFlags.cs">
+      <Link>Enums\BattlegroundUpdateFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\BillingFlag.cs">
+      <Link>Enums\BillingFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\CalendarError.cs">
+      <Link>Enums\CalendarError.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\CalendarEventStatus.cs">
+      <Link>Enums\CalendarEventStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\CalendarEventType.cs">
+      <Link>Enums\CalendarEventType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\CalendarFlag.cs">
+      <Link>Enums\CalendarFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\CalendarModerationRank.cs">
+      <Link>Enums\CalendarModerationRank.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\CalendarRepeatType.cs">
+      <Link>Enums\CalendarRepeatType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\CalendarSendEventType.cs">
+      <Link>Enums\CalendarSendEventType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\CastFlag.cs">
+      <Link>Enums\CastFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ChannelFlag.cs">
+      <Link>Enums\ChannelFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ChannelMemberFlag.cs">
+      <Link>Enums\ChannelMemberFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\CharacterFlag.cs">
+      <Link>Enums\CharacterFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ChatMessageType.cs">
+      <Link>Enums\ChatMessageType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ChatNotificationType.cs">
+      <Link>Enums\ChatNotificationType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ChatRestrictionType.cs">
+      <Link>Enums\ChatRestrictionType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ChatTag.cs">
+      <Link>Enums\ChatTag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Class.cs">
+      <Link>Enums\Class.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ClassMask.cs">
+      <Link>Enums\ClassMask.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ClientType.cs">
+      <Link>Enums\ClientType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ClientVersionBuild.cs">
+      <Link>Enums\ClientVersionBuild.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ContactEntryFlag.cs">
+      <Link>Enums\ContactEntryFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ContactListFlag.cs">
+      <Link>Enums\ContactListFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ContactResult.cs">
+      <Link>Enums\ContactResult.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ContactStatus.cs">
+      <Link>Enums\ContactStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\CreatureFamily.cs">
+      <Link>Enums\CreatureFamily.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\CreatureRank.cs">
+      <Link>Enums\CreatureRank.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\CreatureType.cs">
+      <Link>Enums\CreatureType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\CreatureTypeFlag.cs">
+      <Link>Enums\CreatureTypeFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\CustomizationFlag.cs">
+      <Link>Enums\CustomizationFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\DamageType.cs">
+      <Link>Enums\DamageType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\DifficultyChangeType.cs">
+      <Link>Enums\DifficultyChangeType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Direction.cs">
+      <Link>Enums\Direction.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\DrunkenState.cs">
+      <Link>Enums\DrunkenState.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\EmoteType.cs">
+      <Link>Enums\EmoteType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\EncounterFrame.cs">
+      <Link>Enums\EncounterFrame.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\EnvironmentDamage.cs">
+      <Link>Enums\EnvironmentDamage.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\EquipmentSetState.cs">
+      <Link>Enums\EquipmentSetState.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\EquipmentSlotType.cs">
+      <Link>Enums\EquipmentSlotType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\FactionFlag.cs">
+      <Link>Enums\FactionFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\GameObjectDynamicFlag.cs">
+      <Link>Enums\GameObjectDynamicFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\GameObjectFlag.cs">
+      <Link>Enums\GameObjectFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\GameObjectType.cs">
+      <Link>Enums\GameObjectType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Gender.cs">
+      <Link>Enums\Gender.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\GossipOptionIcon.cs">
+      <Link>Enums\GossipOptionIcon.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\GossipPoiIcon.cs">
+      <Link>Enums\GossipPoiIcon.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\GroupMemberStatusFlag.cs">
+      <Link>Enums\GroupMemberStatusFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\GroupTypeFlag.cs">
+      <Link>Enums\GroupTypeFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\GroupUpdateFlag.cs">
+      <Link>Enums\GroupUpdateFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\GuildBankEventLogType.cs">
+      <Link>Enums\GuildBankEventLogType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\GuildBankRightsFlag.cs">
+      <Link>Enums\GuildBankRightsFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\GuildCommandError.cs">
+      <Link>Enums\GuildCommandError.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\GuildCommandType.cs">
+      <Link>Enums\GuildCommandType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\GuildEmblemError.cs">
+      <Link>Enums\GuildEmblemError.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\GuildEventLogType.cs">
+      <Link>Enums\GuildEventLogType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\GuildEventType.cs">
+      <Link>Enums\GuildEventType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\GuildFinder.cs">
+      <Link>Enums\GuildFinder.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\GuildMemberFlag.cs">
+      <Link>Enums\GuildMemberFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\GuildRankRightsFlag.cs">
+      <Link>Enums\GuildRankRightsFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\HighGuidMask.cs">
+      <Link>Enums\HighGuidMask.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\HighGuidType.cs">
+      <Link>Enums\HighGuidType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Holiday.cs">
+      <Link>Enums\Holiday.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\InhabitType.cs">
+      <Link>Enums\InhabitType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\InstanceResetWarningType.cs">
+      <Link>Enums\InstanceResetWarningType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\InstanceStatus.cs">
+      <Link>Enums\InstanceStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\InventoryResult.cs">
+      <Link>Enums\InventoryResult.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\InventoryType.cs">
+      <Link>Enums\InventoryType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ItemBonding.cs">
+      <Link>Enums\ItemBonding.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ItemClass.cs">
+      <Link>Enums\ItemClass.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ItemFlag.cs">
+      <Link>Enums\ItemFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ItemFlagExtra.cs">
+      <Link>Enums\ItemFlagExtra.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ItemModType.cs">
+      <Link>Enums\ItemModType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ItemQuality.cs">
+      <Link>Enums\ItemQuality.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ItemSocketColor.cs">
+      <Link>Enums\ItemSocketColor.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ItemSpellTriggerType.cs">
+      <Link>Enums\ItemSpellTriggerType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\KickReason.cs">
+      <Link>Enums\KickReason.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Language.cs">
+      <Link>Enums\Language.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\LfgEntryCheckResult.cs">
+      <Link>Enums\LfgEntryCheckResult.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\LfgError.cs">
+      <Link>Enums\LfgError.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\LfgJoinResult.cs">
+      <Link>Enums\LfgJoinResult.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\LfgProposalState.cs">
+      <Link>Enums\LfgProposalState.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\LfgRoleCheckStatus.cs">
+      <Link>Enums\LfgRoleCheckStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\LfgRoleFlag.cs">
+      <Link>Enums\LfgRoleFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\LfgType.cs">
+      <Link>Enums\LfgType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\LfgUpdateFlag.cs">
+      <Link>Enums\LfgUpdateFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\LfgUpdateType.cs">
+      <Link>Enums\LfgUpdateType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\LootMethod.cs">
+      <Link>Enums\LootMethod.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\LootRoolType.cs">
+      <Link>Enums\LootRoolType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\LootSlotType.cs">
+      <Link>Enums\LootSlotType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\LootType.cs">
+      <Link>Enums\LootType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\LootVoteFlags.cs">
+      <Link>Enums\LootVoteFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\MailActionType.cs">
+      <Link>Enums\MailActionType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\MailErrorType.cs">
+      <Link>Enums\MailErrorType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\MailType.cs">
+      <Link>Enums\MailType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\MapDifficulty.cs">
+      <Link>Enums\MapDifficulty.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Material.cs">
+      <Link>Enums\Material.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\MirrorTimerType.cs">
+      <Link>Enums\MirrorTimerType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\MovementAnimationState.cs">
+      <Link>Enums\MovementAnimationState.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\MovementFlag.cs">
+      <Link>Enums\MovementFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\MovementFlagExtra.cs">
+      <Link>Enums\MovementFlagExtra.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\NPCFlags.cs">
+      <Link>Enums\NPCFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ObjectType.cs">
+      <Link>Enums\ObjectType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Opcode.cs">
+      <Link>Enums\Opcode.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\PageMaterial.cs">
+      <Link>Enums\PageMaterial.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ParsedStatus.cs">
+      <Link>Enums\ParsedStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\PartyCommand.cs">
+      <Link>Enums\PartyCommand.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\PartyResult.cs">
+      <Link>Enums\PartyResult.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\PetFeedback.cs">
+      <Link>Enums\PetFeedback.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\PetitionResultType.cs">
+      <Link>Enums\PetitionResultType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\PetModeFlags.cs">
+      <Link>Enums\PetModeFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\PetTameFailureReason.cs">
+      <Link>Enums\PetTameFailureReason.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\PlayerFieldBytesMiscFlags.cs">
+      <Link>Enums\PlayerFieldBytesMiscFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\PlayerFlags.cs">
+      <Link>Enums\PlayerFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\PowerType.cs">
+      <Link>Enums\PowerType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\QuestFlags.cs">
+      <Link>Enums\QuestFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\QuestGiverStatus.cs">
+      <Link>Enums\QuestGiverStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\QuestMethod.cs">
+      <Link>Enums\QuestMethod.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\QuestPartyResult.cs">
+      <Link>Enums\QuestPartyResult.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\QuestReasonType.cs">
+      <Link>Enums\QuestReasonType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\QuestSort.cs">
+      <Link>Enums\QuestSort.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\QuestType.cs">
+      <Link>Enums\QuestType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Race.cs">
+      <Link>Enums\Race.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\RaceMask.cs">
+      <Link>Enums\RaceMask.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\RaidInstanceResetWarning.cs">
+      <Link>Enums\RaidInstanceResetWarning.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\RealmSplitState.cs">
+      <Link>Enums\RealmSplitState.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ReputationRank.cs">
+      <Link>Enums\ReputationRank.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\ResponseCode.cs">
+      <Link>Enums\ResponseCode.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\SellResult.cs">
+      <Link>Enums\SellResult.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\SheathState.cs">
+      <Link>Enums\SheathState.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\SheathType.cs">
+      <Link>Enums\SheathType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\SpeedType.cs">
+      <Link>Enums\SpeedType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\SpellCastFailureReason.cs">
+      <Link>Enums\SpellCastFailureReason.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\SpellEffect.cs">
+      <Link>Enums\SpellEffect.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\SpellHitInfo.cs">
+      <Link>Enums\SpellHitInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\SpellHitType.cs">
+      <Link>Enums\SpellHitType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\SpellMechanic.cs">
+      <Link>Enums\SpellMechanic.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\SpellMissType.cs">
+      <Link>Enums\SpellMissType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\SpellModOp.cs">
+      <Link>Enums\SpellModOp.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\SplineFlag.cs">
+      <Link>Enums\SplineFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\SplineFlag422.cs">
+      <Link>Enums\SplineFlag422.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\SplineMode.cs">
+      <Link>Enums\SplineMode.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\SplineType.cs">
+      <Link>Enums\SplineType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\SQLOutputFlags.cs">
+      <Link>Enums\SQLOutputFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\StatType.cs">
+      <Link>Enums\StatType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\StoreNameType.cs">
+      <Link>Enums\StoreNameType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\TargetFlag.cs">
+      <Link>Enums\TargetFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\TargetIcon.cs">
+      <Link>Enums\TargetIcon.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\TaxiError.cs">
+      <Link>Enums\TaxiError.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\TeamType.cs">
+      <Link>Enums\TeamType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\TotemCategory.cs">
+      <Link>Enums\TotemCategory.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\TradeStatus.cs">
+      <Link>Enums\TradeStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\TrainerSpellState.cs">
+      <Link>Enums\TrainerSpellState.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\TrainerType.cs">
+      <Link>Enums\TrainerType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\TransferAbortReason.cs">
+      <Link>Enums\TransferAbortReason.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\TypeMask.cs">
+      <Link>Enums\TypeMask.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\UnitDynamicFlags.cs">
+      <Link>Enums\UnitDynamicFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\UnitFlags.cs">
+      <Link>Enums\UnitFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\UnitFlags2.cs">
+      <Link>Enums\UnitFlags2.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\UnknownFlags.cs">
+      <Link>Enums\UnknownFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\UpdateField.cs">
+      <Link>Enums\UpdateField.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\UpdateFlag.cs">
+      <Link>Enums\UpdateFlag.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\UpdateType.cs">
+      <Link>Enums\UpdateType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\VehicleFlags.cs">
+      <Link>Enums\VehicleFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\Opcodes.cs">
+      <Link>Enums\Version\Opcodes.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\UpdateFields.cs">
+      <Link>Enums\Version\UpdateFields.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V3_3_0_10958\UpdateField.cs">
+      <Link>Enums\Version\V3_3_0_10958\UpdateField.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V3_3_5a_12340\Opcodes.cs">
+      <Link>Enums\Version\V3_3_5a_12340\Opcodes.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V3_3_5a_12340\UpdateField.cs">
+      <Link>Enums\Version\V3_3_5a_12340\UpdateField.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V4_0_3_13329\Opcodes.cs">
+      <Link>Enums\Version\V4_0_3_13329\Opcodes.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V4_0_6_13596\Opcodes.cs">
+      <Link>Enums\Version\V4_0_6_13596\Opcodes.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V4_0_6_13596\UpdateField.cs">
+      <Link>Enums\Version\V4_0_6_13596\UpdateField.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V4_1_0_13914\Opcodes.cs">
+      <Link>Enums\Version\V4_1_0_13914\Opcodes.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V4_2_0_14480\Opcodes.cs">
+      <Link>Enums\Version\V4_2_0_14480\Opcodes.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V4_2_0_14480\UpdateField.cs">
+      <Link>Enums\Version\V4_2_0_14480\UpdateField.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V4_2_2_14545\Opcodes.cs">
+      <Link>Enums\Version\V4_2_2_14545\Opcodes.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V4_2_2_14545\UpdateField.cs">
+      <Link>Enums\Version\V4_2_2_14545\UpdateField.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V4_3_0_15005\Opcodes.cs">
+      <Link>Enums\Version\V4_3_0_15005\Opcodes.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V4_3_0_15005\UpdateField.cs">
+      <Link>Enums\Version\V4_3_0_15005\UpdateField.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V4_3_2_15211\Opcodes.cs">
+      <Link>Enums\Version\V4_3_2_15211\Opcodes.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V4_3_2_15211\UpdateField.cs">
+      <Link>Enums\Version\V4_3_2_15211\UpdateField.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V4_3_3_15354\Opcodes.cs">
+      <Link>Enums\Version\V4_3_3_15354\Opcodes.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V4_3_3_15354\UpdateFields.cs">
+      <Link>Enums\Version\V4_3_3_15354\UpdateFields.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V4_3_4_15595\Opcodes.cs">
+      <Link>Enums\Version\V4_3_4_15595\Opcodes.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\Version\V4_3_4_15595\UpdateFields.cs">
+      <Link>Enums\Version\V4_3_4_15595\UpdateFields.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\VictimStates.cs">
+      <Link>Enums\VictimStates.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\WardenCheckType.cs">
+      <Link>Enums\WardenCheckType.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\WardenOpcode.cs">
+      <Link>Enums\WardenOpcode.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Enums\WeatherState.cs">
+      <Link>Enums\WeatherState.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Loading\BinaryPacketReader.cs">
+      <Link>Loading\BinaryPacketReader.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Loading\IPacketReader.cs">
+      <Link>Loading\IPacketReader.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Loading\IzidorPacketReader.cs">
+      <Link>Loading\IzidorPacketReader.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Loading\KSnifferZackReader.cs">
+      <Link>Loading\KSnifferZackReader.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Loading\KSnifferZorReader.cs">
+      <Link>Loading\KSnifferZorReader.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Loading\NewZorReader.cs">
+      <Link>Loading\NewZorReader.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Loading\Reader.cs">
+      <Link>Loading\Reader.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Loading\SniffitztReader.cs">
+      <Link>Loading\SniffitztReader.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Loading\SQLitePacketReader.cs">
+      <Link>Loading\SQLitePacketReader.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Loading\WlpReader.cs">
+      <Link>Loading\WlpReader.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Loading\ZorReader.cs">
+      <Link>Loading\ZorReader.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\BiDictionary.cs">
+      <Link>Misc\BiDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\Bit.cs">
+      <Link>Misc\Bit.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\ClientVersion.cs">
+      <Link>Misc\ClientVersion.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\Extensions.cs">
+      <Link>Misc\Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\Filters.cs">
+      <Link>Misc\Filters.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\Guid.cs">
+      <Link>Misc\Guid.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\LfgEntry.cs">
+      <Link>Misc\LfgEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\Logger.cs">
+      <Link>Misc\Logger.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\MovementInfo.cs">
+      <Link>Misc\MovementInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\Packet.cs">
+      <Link>Misc\Packet.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\PacketReads.cs">
+      <Link>Misc\PacketReads.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\Quaternion.cs">
+      <Link>Misc\Quaternion.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\StoreEntry.cs">
+      <Link>Misc\StoreEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\StoreGetters.cs">
+      <Link>Misc\StoreGetters.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\UpdateField.cs">
+      <Link>Misc\UpdateField.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\Utilities.cs">
+      <Link>Misc\Utilities.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\Vector2.cs">
+      <Link>Misc\Vector2.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\Vector3.cs">
+      <Link>Misc\Vector3.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Misc\Vector4.cs">
+      <Link>Misc\Vector4.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Handler.cs">
+      <Link>Parsing\Handler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\ParserAttribute.cs">
+      <Link>Parsing\SharpParser\ParserAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\AccountDataHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\AccountDataHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\AchievementHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\AchievementHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\ActionBarHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\ActionBarHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\AddonHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\AddonHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\AuctionHouseHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\AuctionHouseHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\BattlegroundHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\BattlegroundHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\CalendarHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\CalendarHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\ChannelHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\ChannelHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\CharacterHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\CharacterHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\ChatHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\ChatHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\CombatHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\CombatHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\CombatLogHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\CombatLogHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\ContactHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\ContactHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\CorpseHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\CorpseHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\EquipmentSetHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\EquipmentSetHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\GameObjectHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\GameObjectHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\GroupHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\GroupHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\GuildHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\GuildHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\InstanceHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\InstanceHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\ItemHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\ItemHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\LfgHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\LfgHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\LootHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\LootHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\MailHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\MailHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\MiscellaneousHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\MiscellaneousHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\MovementHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\MovementHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\NpcHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\NpcHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\PetHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\PetHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\QueryHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\QueryHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\QuestHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\QuestHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\ReputationHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\ReputationHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\SessionHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\SessionHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\SpellHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\SpellHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\TalentHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\TalentHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\TaxiHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\TaxiHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\TestHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\TestHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\TicketHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\TicketHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\TradeHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\TradeHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\UpdateHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\UpdateHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\VoiceChatHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\VoiceChatHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\WardenHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\WardenHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\WowPacketParser\Parsing\Parsers\WorldStateHandler.cs">
+      <Link>Parsing\SharpParser\Parsers\WorldStateHandler.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\WowPacketParser\App.config">
+      <Link>App.config</Link>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
