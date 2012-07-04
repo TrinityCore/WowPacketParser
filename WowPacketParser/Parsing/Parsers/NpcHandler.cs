@@ -350,8 +350,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.StoreEndList();
             Storage.Gossips.Add(Tuple.Create(menuId, textId), gossip, packet.TimeSpan);
 
-            packet.AddSniffData(StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
-
             var questgossips = packet.ReadUInt32("Amount of Quest gossips");
             packet.StoreBeginList("Quest Gossips");
             for (var i = 0; i < questgossips; i++)

@@ -57,8 +57,6 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596))
                 gameObject.UnknownInt = packet.ReadInt32("Unknown UInt32");
 
-            packet.AddSniffData(StoreNameType.GameObject, entry.Key, "QUERY_RESPONSE");
-
             Storage.GameObjectTemplates.Add((uint) entry.Key, gameObject, packet.TimeSpan);
 
             var objectName = new ObjectName

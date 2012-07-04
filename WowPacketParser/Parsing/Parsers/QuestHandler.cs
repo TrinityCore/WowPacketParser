@@ -360,8 +360,6 @@ namespace WowPacketParser.Parsing.Parsers
                 quest.SoundTurnIn = packet.ReadUInt32("Sound TurnIn");
             }
 
-            packet.AddSniffData(StoreNameType.Quest, id.Key, "QUERY_RESPONSE");
-
             Storage.QuestTemplates.Add((uint) id.Key, quest, packet.TimeSpan);
         }
 

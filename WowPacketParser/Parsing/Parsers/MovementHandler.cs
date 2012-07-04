@@ -391,14 +391,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
         public static void HandleEnterWorld(Packet packet)
         {
-            CurrentMapId = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
+            CurrentMapId = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
             packet.ReadVector4("Position");
 
             WoWObject character;
             if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
                 SessionHandler.LoggedInCharacter = (Player) character;
-
-            packet.AddSniffData(StoreNameType.Map, (int) CurrentMapId, "NEW_WORLD");
         }
 
         [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
@@ -411,8 +409,6 @@ namespace WowPacketParser.Parsing.Parsers
             WoWObject character;
             if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
                 SessionHandler.LoggedInCharacter = (Player) character;
-
-            packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
         }
 
         [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V4_3_4_15595)]
@@ -427,8 +423,6 @@ namespace WowPacketParser.Parsing.Parsers
             WoWObject character;
             if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
                 SessionHandler.LoggedInCharacter = (Player)character;
-
-            packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
         }
 
         [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]
@@ -3930,8 +3924,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePhaseShift(Packet packet)
         {
             CurrentPhaseMask = packet.ReadInt32("Phase Mask");
-
-            packet.AddSniffData(StoreNameType.Phase, CurrentPhaseMask, "PHASEMASK");
         }
 
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_1_0_13914)]
@@ -3965,9 +3957,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.StoreEndList();
 
             packet.ReadUInt32("Flag"); // can be 0, 4 or 8, 8 = normal world, others are unknown
-
-            //CurrentPhaseMask = phaseMask;
-            packet.AddSniffData(StoreNameType.Phase, phaseMask, "PHASEMASK 406");
         }
 
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
@@ -4030,7 +4019,6 @@ namespace WowPacketParser.Parsing.Parsers
             if (phaseMask != -1)
             {
                 CurrentPhaseMask = phaseMask;
-                packet.AddSniffData(StoreNameType.Phase, phaseMask, "PHASEMASK 422");
             }
         }
 

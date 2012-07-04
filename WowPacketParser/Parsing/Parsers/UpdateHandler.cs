@@ -111,9 +111,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
             else
                 Storage.Objects.Add(guid, obj, packet.TimeSpan);
-
-            if (guid.HasEntry() && (objType == ObjectType.Unit || objType == ObjectType.GameObject))
-                packet.AddSniffData(Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");
         }
 
         private static void ProcessExistingObject(ref WoWObject obj, WoWObject newObj, Guid guid)

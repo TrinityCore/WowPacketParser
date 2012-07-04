@@ -9,6 +9,10 @@ namespace WowPacketParser.Store.Objects
 
         public StoreNameType ObjectType { get; set; }
 
+        public double TimeStamp;
+
+        public int Number;
+
         public int Id { get; set; }
 
         public String Data { get; set; }

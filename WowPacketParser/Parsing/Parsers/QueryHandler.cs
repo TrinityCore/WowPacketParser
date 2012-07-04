@@ -159,8 +159,6 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 creature.Expansion = packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);
 
-            packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
-
             Storage.UnitTemplates.Add((uint)entry.Key, creature, packet.TimeSpan);
 
             var objectName = new ObjectName
@@ -184,11 +182,9 @@ namespace WowPacketParser.Parsing.Parsers
 
             var entry = packet.ReadUInt32("Entry");
 
-            pageText.Text = packet.ReadCString("Page Tex");
+            pageText.Text = packet.ReadCString("Page Text");
 
             pageText.NextPageId = packet.ReadUInt32("Next Page");
-
-            packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
 
             Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
         }
@@ -236,8 +232,6 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.StoreEndList();
             }
             packet.StoreEndList();
-
-            packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
 
             Storage.NpcTexts.Add((uint)entry.Key, npcText, packet.TimeSpan);
         }

@@ -74,7 +74,12 @@ namespace WowPacketParser.Parsing
 
             return handlers;
         }
-        private static readonly Dictionary<int, Action<Packet>> Handlers = LoadHandlers();
+        private static Dictionary<int, Action<Packet>> Handlers;
+
+        public static void InitForClientVersion()
+        {
+            Handlers = LoadHandlers();
+        }
 
         public static void Parse(Packet packet, bool checkLength = true)
         {
@@ -111,9 +116,6 @@ namespace WowPacketParser.Parsing
             {
                 packet.Status = ParsedStatus.NotParsed;
             }
-
-            var data = packet.Status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode) : packet.Status.ToString();
-            packet.AddSniffData(StoreNameType.Opcode, packet.Opcode, data);
         }
     }
 }

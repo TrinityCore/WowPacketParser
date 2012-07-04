@@ -394,6 +394,7 @@
     <Compile Include="Misc\UpdateField.cs" />
     <Compile Include="Processing\IPacketProcessor.cs" />
     <Compile Include="Processing\RawFileOutput.cs" />
+    <Compile Include="Processing\SniffDataTableOutput.cs" />
     <Compile Include="Processing\SplitRawFileOutput.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -505,10 +506,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

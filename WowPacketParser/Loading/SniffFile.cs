@@ -67,6 +67,9 @@ namespace WowPacketParser.Loading
                 IPacketProcessor proc = new TextFileOutput();
                 if (proc.Init(this))
                     _processors.AddLast(proc);
+                proc = new SniffDataTableOutput();
+                if (proc.Init(this))
+                    _processors.AddLast(proc);
                 proc = new SQLFileOutput();
                 if (proc.Init(this))
                     _processors.AddLast(proc);

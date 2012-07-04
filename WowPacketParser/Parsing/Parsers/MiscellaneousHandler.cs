@@ -640,9 +640,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBit("Loading"); // Not sure on the meaning
             var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
             MovementHandler.CurrentMapId = (uint) mapId;
-
-            if (mapId >= 0 && mapId < 1000) // Getting some weird results in a couple of packets
-                packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
         }
 
         [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V4_3_4_15595)]
@@ -651,9 +648,6 @@ namespace WowPacketParser.Parsing.Parsers
             var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
             packet.ReadBit("Loading");
             MovementHandler.CurrentMapId = (uint)mapId;
-
-            if (mapId >= 0 && mapId < 1000) // Getting some weird results in a couple of packets
-                packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
         }
 
         [Parser(Opcode.MSG_VERIFY_CONNECTIVITY)]

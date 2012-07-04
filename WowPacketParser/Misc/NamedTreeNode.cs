@@ -13,16 +13,20 @@ namespace WowPacketParser.Misc
         {
             return new TreeNodeEnumerator(this);
         }
-        public NodeType GetNode<NodeType>(string[] address)
+        public NodeType GetNode<NodeType>(params string[] address)
         {
             NodeType ret;
-            if (TryGetNode<NodeType>(address, out ret))
+            if (TryGetNode<NodeType>(out ret, address))
                 return ret;
             throw new Exception(String.Format("Could not receive object of type {0} from address{1}", typeof(NodeType), address));
         }
-        public bool TryGetNode<NodeType>(string[] address, out NodeType ret, int addrIndex = 0)
+        public bool TryGetNode<NodeType>(out NodeType ret, params string[] address)
         {
-            if (address.Length == addrIndex - 1)
+            return TryGetNode<NodeType>(out ret, address, 0);
+        }
+        public bool TryGetNode<NodeType>(out NodeType ret, string[] address, int addrIndex)
+        {
+            if (address.Length - 1 == addrIndex)
             {
                 if (this is NodeType)
                 {
@@ -48,7 +52,7 @@ namespace WowPacketParser.Misc
                 var nodeObj = node as ITreeNode;
                 if (nodeObj != null)
                 {
-                    return nodeObj.TryGetNode<NodeType>(address, out ret, addrIndex + 1);
+                    return nodeObj.TryGetNode<NodeType>(out ret, address, addrIndex + 1);
                 }
             }
             ret = default(NodeType);

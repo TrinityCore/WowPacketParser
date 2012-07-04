@@ -7,8 +7,9 @@ namespace WowPacketParser.Misc
 {
     public interface ITreeNode
     {
-        NodeType GetNode<NodeType>(string[] address);
-        bool TryGetNode<NodeType>(string[] address, out NodeType ret, int addrIndex = 0);
+        NodeType GetNode<NodeType>(params string[] address);
+        bool TryGetNode<NodeType>(out NodeType ret, params string[] address);
+        bool TryGetNode<NodeType>(out NodeType ret, string[] address, int addIndex=0);
         TreeNodeEnumerator GetTreeEnumerator();
     }
 }

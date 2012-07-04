@@ -273,7 +273,6 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Effect 2 Value");
             }
 
-            packet.AddSniffData(StoreNameType.Spell, (int)aura.SpellId, "AURA_UPDATE");
             packet.StoreEndObj();
             return aura;
         }
@@ -638,9 +637,6 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                 }
             }
-
-            if (isSpellGo)
-                packet.AddSniffData(StoreNameType.Spell, spellId, "SPELL_GO");
         }
 
         [Parser(Opcode.SMSG_LEARNED_SPELL)]

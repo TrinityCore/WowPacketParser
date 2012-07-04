@@ -606,8 +606,6 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                 item.HolidayId = packet.ReadEnum<Holiday>("Holiday", TypeCode.Int32);
 
-            packet.AddSniffData(StoreNameType.Item, entry.Key, "QUERY_RESPONSE");
-
             Storage.ItemTemplates.Add((uint) entry.Key, item, packet.TimeSpan);
         }
 
@@ -811,8 +809,6 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
                 packet.ReadUInt32("Received Type");
-
-            packet.AddSniffData(StoreNameType.Item, itemId, "DB_REPLY");
         }
 
         [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.V4_3_4_15595)]
@@ -954,8 +950,6 @@ namespace WowPacketParser.Parsing.Parsers
                     break;
                 }
             }
-
-            packet.AddSniffData(StoreNameType.Item, itemId, "DB_REPLY");
         }
 
         [Parser(Opcode.SMSG_UPDATE_ITEM_ENCHANTMENTS)]
