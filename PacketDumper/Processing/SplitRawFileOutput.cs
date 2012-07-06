@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.IO;
-using Guid = WowPacketParser.Misc.Guid;
-using WowPacketParser.Misc;
-using WowPacketParser.Loading;
 using System.Diagnostics;
-using WowPacketParser.Enums.Version;
+using PacketParser.Enums.Version;
+using PacketParser.Processing;
+using PacketDumper.Processing.RawData;
+using PacketDumper.Misc;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Processing
+namespace PacketDumper.Processing
 {
     public class SplitRawFileOutput : IPacketProcessor
     {
         IBinaryPacketWriter packetWriter = null;
         private const string Folder = "split"; // might want to move to config later
 
-        public bool Init(SniffFile file)
+        public bool Init(PacketFileProcessor file)
         {
             if (Settings.RawOutputType == "" || !Settings.SplitRawOutput)
                 return false;

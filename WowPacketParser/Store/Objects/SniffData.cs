@@ -1,17 +1,13 @@
 ﻿using System;
-using WowPacketParser.Enums;
+using PacketParser.Enums;
 
-namespace WowPacketParser.Store.Objects
+namespace PacketDumper.DataStructures
 {
     public sealed class SniffData
     {
         public string FileName { get; set; }
 
         public StoreNameType ObjectType { get; set; }
-
-        public double TimeStamp;
-
-        public int Number;
 
         public int Id { get; set; }
 

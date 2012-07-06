@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Xml.Linq;
-using System.Xml.XPath;
-using WowPacketParser.Misc;
-using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
+using PacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Enums.Version;
 using System.Diagnostics;
 using System.Globalization;
-namespace WowPacketParser.Loading
+using PacketParser.DataStructures;
+
+namespace PacketParser.Loading
 {
     public class IzidorPacketReader : IPacketReader
     {

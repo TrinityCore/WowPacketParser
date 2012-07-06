@@ -1,9 +1,10 @@
 using System;
 using System.Data.SQLite;
-using WowPacketParser.Misc;
-using WowPacketParser.Enums;
+using PacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Loading
+namespace PacketParser.Loading
 {
     public sealed class SQLitePacketReader : IPacketReader
     {

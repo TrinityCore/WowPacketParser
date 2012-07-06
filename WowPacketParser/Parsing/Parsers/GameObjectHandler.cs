@@ -1,10 +1,10 @@
 using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using PacketParser.Processing;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class GameObjectHandler
     {
@@ -18,7 +18,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGameObjectQueryResponse(Packet packet)
         {
             var gameObject = new GameObjectTemplate();
-
             var entry = packet.ReadEntry("Entry");
 
             if (entry.Value) // entry is masked
@@ -57,14 +56,9 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596))
                 gameObject.UnknownInt = packet.ReadInt32("Unknown UInt32");
 
-            Storage.GameObjectTemplates.Add((uint) entry.Key, gameObject, packet.TimeSpan);
+            packet.Store("GameObjectTemplateObject", gameObject);
 
-            var objectName = new ObjectName
-            {
-                ObjectType = ObjectType.GameObject,
-                Name = gameObject.Name,
-            };
-            Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
+            PacketFileProcessor.Current.GetProcessor<NameStore>().AddName(StoreNameType.GameObject, entry.Key, gameObject.Name, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_DESTRUCTIBLE_BUILDING_DAMAGE)]

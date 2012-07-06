@@ -1,6 +1,8 @@
-using WowPacketParser.Enums;
+using PacketParser.Enums;
 using System.Text;
-namespace WowPacketParser.Misc
+using PacketParser.Processing;
+
+namespace PacketParser.DataStructures
 {
     public struct LfgEntry
     {
@@ -29,7 +31,7 @@ namespace WowPacketParser.Misc
             builder.Append(" Type: ");
             builder.Append(LfgType);
             builder.Append(" Instance: ");
-            builder.Append(StoreGetters.GetName(StoreNameType.LFGDungeon, InstanceId));
+            builder.Append(PacketFileProcessor.Current.GetProcessor<NameStore>().GetName(StoreNameType.LFGDungeon, InstanceId));
             return builder.ToString();
         }
 

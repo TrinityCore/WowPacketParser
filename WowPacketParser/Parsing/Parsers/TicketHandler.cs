@@ -1,9 +1,9 @@
 using System;
+using PacketParser.DataStructures;
+using PacketParser.Misc;
+using PacketParser.Enums;
 
-using WowPacketParser.Misc;
-using WowPacketParser.Enums;
-
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class TicketHandler
     {

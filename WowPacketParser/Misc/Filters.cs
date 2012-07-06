@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using WowPacketParser.Enums;
+using PacketParser.Enums;
+using Guid = PacketParser.DataStructures.Guid;
+using PacketParser.Misc;
 
-namespace WowPacketParser.Misc
+namespace PacketDumper.Misc
 {
     public static class Filters
     {

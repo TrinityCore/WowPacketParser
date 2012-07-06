@@ -1,14 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
-using WowPacketParser.Misc;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
-using Guid=WowPacketParser.Misc.Guid;
+using PacketParser.Enums;
+using PacketParser.Enums.Version;
+using PacketParser.Misc;
+using Guid = PacketParser.DataStructures.Guid;
+using PacketParser.Processing;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class UpdateHandler
     {
@@ -23,7 +23,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadBoolean("Has Transport");
-
+            var ObjectStore = PacketFileProcessor.Current.GetProcessor<ObjectStore>();
             packet.StoreBeginList("Updates");
             for (var i = 0; i < count; i++)
             {
@@ -41,10 +41,10 @@ namespace WowPacketParser.Parsing.Parsers
                     {
                         var guid = packet.ReadPackedGuid("GUID", i);
 
-                        WoWObject obj;
+                        WoWObject obj = ObjectStore.GetObjectIfFound(guid);
                         var updates = ReadValuesUpdateBlock(ref packet, guid.GetObjectType(), i);
 
-                        if (Storage.Objects.TryGetValue(guid, out obj))
+                        if (obj != null)
                         {
                             if (obj.ChangedUpdateFieldsList == null)
                                 obj.ChangedUpdateFieldsList = new List<Dictionary<int, UpdateField>>();
@@ -104,13 +104,11 @@ namespace WowPacketParser.Parsing.Parsers
 
             // If this is the second time we see the same object (same guid,
             // same position) update its phasemask
-            if (Storage.Objects.ContainsKey(guid))
-            {
-                var existObj = Storage.Objects[guid].Item1;
+            var existObj = PacketFileProcessor.Current.GetProcessor<ObjectStore>().GetObjectIfFound(guid);
+            if (existObj != null)
                 ProcessExistingObject(ref existObj, obj, guid); // can't do "ref Storage.Objects[guid].Item1 directly
-            }
             else
-                Storage.Objects.Add(guid, obj, packet.TimeSpan);
+                PacketFileProcessor.Current.GetProcessor<ObjectStore>().AddObject(guid, obj, packet.TimeSpan);
         }
 
         private static void ProcessExistingObject(ref WoWObject obj, WoWObject newObj, Guid guid)
@@ -262,7 +260,7 @@ namespace WowPacketParser.Parsing.Parsers
                     {
                         /*var splineMode =*/ packet.ReadEnum<SplineMode>("Spline Mode", 2, index);
                         hasSplineStartTime = packet.ReadBit();
-                        splineCount = packet.ReadBits("Spline Waypoints", 22, index);
+                        splineCount = packet.ReadBits("Spline Waypoints Count", 22, index);
                         var bits57 = packet.ReadBits(2);
                         switch (bits57)
                         {
@@ -1853,9 +1851,9 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 if (flags.HasAnyFlag(UpdateFlag.AnimKits))
                 {
-                    packet.ReadInt16("Unk Int16", index);
-                    packet.ReadInt16("Unk Int16", index);
-                    packet.ReadInt16("Unk Int16", index);
+                    packet.ReadInt16("Unk Int16 1", index);
+                    packet.ReadInt16("Unk Int16 2", index);
+                    packet.ReadInt16("Unk Int16 3", index);
                 }
             }
 
@@ -1869,7 +1867,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var count = packet.ReadByte("Count", index);
                     packet.StoreBeginList("Transport unks", index);
                     for (var i = 0; i < count; i++)
-                        packet.ReadInt32("Unk Int32", index, count);
+                        packet.ReadInt32("Unk Int32", index, i);
                     packet.StoreEndList();
                 }
             }

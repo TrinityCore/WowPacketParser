@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using WowPacketParser.Misc;
 using System.IO;
+using PacketParser.DataStructures;
+using PacketDumper.Misc;
 
-namespace WowPacketParser.Processing
+namespace PacketDumper.Processing.RawData
 {
     public interface IBinaryPacketWriter
     {

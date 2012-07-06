@@ -1,10 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Loading
+namespace PacketParser.Loading
 {
     public sealed class WlpReader : IPacketReader
     {

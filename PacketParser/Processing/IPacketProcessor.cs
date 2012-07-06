@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using WowPacketParser.Loading;
-using WowPacketParser.Misc;
-namespace WowPacketParser.Processing
+using PacketParser.DataStructures;
+
+namespace PacketParser.Processing
 {
     public interface IPacketProcessor
     {
-        bool Init(SniffFile file);
+        bool Init(PacketFileProcessor file);
         void ProcessPacket(Packet packet);
         void ProcessedPacket(Packet packet);
         void Finish();

@@ -1,9 +1,10 @@
 using System;
-using WowPacketParser.Misc;
-using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
+using PacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Enums.Version;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class TalentHandler
     {
@@ -71,7 +72,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
             packet.StoreEndList();
         }
-
         [Parser(Opcode.SMSG_TALENTS_INVOLUNTARILY_RESET)]
         public static void HandleTalentsInvoluntarilyReset(Packet packet)
         {

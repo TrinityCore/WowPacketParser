@@ -6,9 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security;
-using WowPacketParser.Enums;
+using PacketParser.Enums;
 
-namespace WowPacketParser.Misc
+namespace PacketParser.Misc
 {
     public static class Utilities
     {
@@ -239,6 +239,11 @@ namespace WowPacketParser.Misc
         public static string FormattedDateTimeForFiles()
         {
             return DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
+        }
+
+        public static List<Type> GetClasses(Type baseType)
+        {
+            return Assembly.GetCallingAssembly().GetTypes().Where(type => baseType.IsAssignableFrom(type)).ToList();
         }
     }
 }

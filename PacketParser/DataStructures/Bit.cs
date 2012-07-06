@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace WowPacketParser.Misc
+namespace PacketParser.DataStructures
 {
     public struct Bit
     {

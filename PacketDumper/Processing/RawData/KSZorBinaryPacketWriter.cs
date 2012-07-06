@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using WowPacketParser.Misc;
+using PacketParser.Misc;
+using PacketParser.DataStructures;
 using System.IO;
 
-namespace WowPacketParser.Processing
+namespace PacketDumper.Processing.RawData
 {
     public class KSZorBinaryPacketWriter : IBinaryPacketWriter
     {

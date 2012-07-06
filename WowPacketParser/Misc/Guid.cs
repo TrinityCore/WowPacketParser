@@ -1,8 +1,10 @@
 using System;
 using System.Text;
-using WowPacketParser.Enums;
+using PacketParser.Enums;
+using PacketParser.Processing;
+using PacketParser.Misc;
 
-namespace WowPacketParser.Misc
+namespace PacketParser.DataStructures
 {
     public struct Guid
     {
@@ -136,7 +138,7 @@ namespace WowPacketParser.Misc
                 builder.Append(" Type: ");
                 builder.Append(GetHighType());
                 builder.Append(" Entry: ");
-                builder.Append(StoreGetters.GetName(type, (int)GetEntry()));
+                builder.Append(PacketFileProcessor.Current.GetProcessor<NameStore>().GetName(type, (int)GetEntry()));
                 builder.Append(" Low: ");
                 builder.Append(GetLow());
                 return builder.ToString();
@@ -152,7 +154,7 @@ namespace WowPacketParser.Misc
                     builder.Append(" Type: ");
                     builder.Append(GetHighType());
                     builder.Append(" BgType: ");
-                    builder.Append(StoreGetters.GetName(StoreNameType.Battleground, (int)bgType));
+                    builder.Append(PacketFileProcessor.Current.GetProcessor<NameStore>().GetName(StoreNameType.Battleground, (int)bgType));
                     return builder.ToString();
                 }
                 case HighGuidType.BattleGround2:
@@ -165,7 +167,7 @@ namespace WowPacketParser.Misc
                     builder.Append(" Type: ");
                     builder.Append(GetHighType());
                     builder.Append(" BgType: ");
-                    builder.Append(StoreGetters.GetName(StoreNameType.Battleground, (int)bgType));
+                    builder.Append(PacketFileProcessor.Current.GetProcessor<NameStore>().GetName(StoreNameType.Battleground, (int)bgType));
                     builder.Append(" Unk: ");
                     builder.Append(unkId);
                     if (arenaType > 0)
@@ -177,7 +179,7 @@ namespace WowPacketParser.Misc
                 }
             }
 
-            var name = StoreGetters.GetName(this);
+            var name = PacketFileProcessor.Current.GetProcessor<NameStore>().GetPlayerName(this);
             builder.Append("Full 0x");
             builder.Append(Full.ToString("X8"));
             builder.Append(" Type: ");

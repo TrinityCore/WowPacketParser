@@ -1,9 +1,11 @@
 using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
-using Guid = WowPacketParser.Misc.Guid;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using PacketParser.Processing;
+using PacketParser.DataStructures;
+using Guid = PacketParser.DataStructures.Guid;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class GuildHandler
     {
@@ -153,13 +155,14 @@ namespace WowPacketParser.Parsing.Parsers
             }
             packet.StoreEndList();
 
+            var names = PacketFileProcessor.Current.GetProcessor<NameStore>();
             packet.StoreBeginList("Members");
             for (var i = 0; i < size; i++)
             {
                 var guid = packet.ReadGuid("GUID", i);
                 var online = packet.ReadBoolean("Online", i);
                 var name = packet.ReadCString("Name", i);
-                StoreGetters.AddName(guid, name);
+                names.AddPlayerName(guid, name);
                 packet.ReadUInt32("Rank Id", i);
                 packet.ReadByte("Level", i);
                 packet.ReadByte("Class", i);
@@ -236,12 +239,16 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Member Level", i);
 
             for (var i = 0; i < size; ++i)
+            {
+                packet.StoreBeginList("Professions", i);
                 for (var j = 0; j < 2; ++j)
                 {
                     var rank = packet.ReadUInt32("Profession Id", i, j);
                     var value = packet.ReadUInt32("Value", i, j);
                     var id = packet.ReadUInt32("Rank", i, j);
                 }
+                packet.StoreEndList();
+            }
 
             for (var i = 0; i < size; ++i)
                 packet.ReadUInt32("Remaining guild Rep", i);
@@ -285,6 +292,7 @@ namespace WowPacketParser.Parsing.Parsers
                 guid[i][7] = packet.ReadBit();
             }
             var infoLength = packet.ReadBits(12);
+            var names = PacketFileProcessor.Current.GetProcessor<NameStore>();
 
             for (var i = 0; i < size; ++i)
             {
@@ -335,7 +343,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 var name = packet.ReadWoWString("Name", nameLength[i], i);
                 packet.StoreBitstreamGuid("Guid", guid[i], i);
-                StoreGetters.AddName(new Guid(BitConverter.ToUInt64(guid[i], 0)), name);
+                names.AddPlayerName(new Guid(BitConverter.ToUInt64(guid[i], 0)), name);
             }
 
             packet.ReadWoWString("Guild Info", infoLength);
@@ -624,19 +632,23 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; ++i)
                 length[i] = (int)packet.ReadBits(7);
 
+            packet.StoreBeginList("GuildRanks");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadInt32("Creation Order", i);
+                packet.StoreBeginList("Tabs", i);
                 for (var j = 0; j < guildBankMaxTabs; ++j)
                 {
                     packet.ReadInt32("Tab Slots", i, j);
                     packet.ReadEnum<GuildBankRightsFlag>("Tab Rights", TypeCode.Int32, i, j);
                 }
+                packet.StoreEndList();
                 packet.ReadInt32("Gold Per Day", i);
                 packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.Int32, i);
                 packet.ReadWoWString("Name", length[i], i);
                 packet.ReadInt32("Rights Order", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_GUILD_CREATE)]

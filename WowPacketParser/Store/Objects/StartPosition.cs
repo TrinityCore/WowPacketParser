@@ -1,6 +1,6 @@
-﻿using WowPacketParser.Misc;
+﻿using PacketParser.DataStructures;
 
-namespace WowPacketParser.Store.Objects
+namespace PacketDumper.DataStructures
 {
     public class StartPosition
     {

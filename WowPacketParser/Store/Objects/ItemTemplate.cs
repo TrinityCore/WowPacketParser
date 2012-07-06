@@ -1,8 +1,9 @@
-﻿using WowPacketParser.Enums;
+﻿using PacketParser.Enums;
+using PacketParser.Misc;
 
-namespace WowPacketParser.Store.Objects
+namespace PacketParser.DataStructures
 {
-    public sealed class ItemTemplate
+    public sealed class ItemTemplate : ITextOutputDisabled
     {
         // <= 335 only
 

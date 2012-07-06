@@ -1,12 +1,12 @@
 using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
-using WowPacketParser.Misc;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
+using PacketParser.Enums;
+using PacketParser.Enums.Version;
+using PacketParser.Misc;
+using Guid = PacketParser.DataStructures.Guid;
+using PacketParser.Processing;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class QueryHandler
     {
@@ -49,7 +49,7 @@ namespace WowPacketParser.Parsing.Parsers
                 guid = packet.ReadGuid("GUID");
 
             var name = packet.ReadCString("Name");
-            StoreGetters.AddName(guid, name);
+            PacketFileProcessor.Current.GetProcessor<NameStore>().AddPlayerName(guid, name);
             packet.ReadCString("Realm Name");
 
             TypeCode typeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767) ? TypeCode.Byte : TypeCode.Int32;
@@ -64,13 +64,6 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 5; i++)
                 packet.ReadCString("Declined Name", i);
             packet.StoreEndList();
-
-            var objectName = new ObjectName
-            {
-                ObjectType = ObjectType.Player,
-                Name = name,
-            };
-            Storage.ObjectNames.Add((uint)guid.GetLow(), objectName, packet.TimeSpan);
         }
 
         public static void ReadQueryHeader(ref Packet packet)
@@ -159,14 +152,10 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 creature.Expansion = packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);
 
-            Storage.UnitTemplates.Add((uint)entry.Key, creature, packet.TimeSpan);
 
-            var objectName = new ObjectName
-            {
-                ObjectType = ObjectType.Unit,
-                Name = creature.Name,
-            };
-            Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
+            packet.Store("UnitTemplateObject", creature);
+
+            PacketFileProcessor.Current.GetProcessor<NameStore>().AddName(StoreNameType.Unit, entry.Key, creature.Name, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_PAGE_TEXT_QUERY)]
@@ -186,7 +175,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             pageText.NextPageId = packet.ReadUInt32("Next Page");
 
-            Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
+            packet.Store("PageTextObject", pageText);
         }
 
         [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
@@ -233,7 +222,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
             packet.StoreEndList();
 
-            Storage.NpcTexts.Add((uint)entry.Key, npcText, packet.TimeSpan);
+            packet.Store("NpcTextObject", npcText);
         }
     }
 }

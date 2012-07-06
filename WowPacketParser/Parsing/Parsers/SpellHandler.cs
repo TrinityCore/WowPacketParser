@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
-using WowPacketParser.Misc;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
+using PacketParser.Enums;
+using PacketParser.Enums.Version;
+using PacketParser.Misc;
+using Guid = PacketParser.DataStructures.Guid;
+using PacketParser.Processing;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class SpellHandler
     {
@@ -179,7 +178,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Talent Spec");
 
             var count = packet.ReadInt16("Spell Count");
-            var spells = new List<uint>(count);
             packet.StoreBeginList("InitialSpells");
             for (var i = 0; i < count; i++)
             {
@@ -190,16 +188,8 @@ namespace WowPacketParser.Parsing.Parsers
                     spellId = (uint) packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Spell ID", i);
 
                 packet.ReadInt16("Unk Int16", i);
-
-                spells.Add(spellId);
             }
             packet.StoreEndList();
-
-            var startSpell = new StartSpell();
-            startSpell.Spells = spells;
-
-            if (SessionHandler.LoggedInCharacter != null && SessionHandler.LoggedInCharacter.FirstLogin)
-                Storage.StartSpells.Add(new Tuple<Race, Class>(SessionHandler.LoggedInCharacter.Race, SessionHandler.LoggedInCharacter.Class), startSpell, packet.TimeSpan);
 
             var cooldownCount = packet.ReadInt16("Cooldown Count");
             packet.StoreBeginList("Cooldowns");
@@ -294,9 +284,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.StoreEndList();
 
             // This only works if the parser saw UPDATE_OBJECT before this packet
-            if (Storage.Objects.ContainsKey(guid))
+            var obj = PacketFileProcessor.Current.GetProcessor<ObjectStore>().GetObjectIfFound(guid);
+            if (obj != null)
             {
-                var unit = Storage.Objects[guid].Item1 as Unit;
+                var unit = obj as Unit;
                 if (unit != null)
                 {
                     // If this is the first packet that sends auras
@@ -1013,11 +1004,15 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadByte("Unk mask");
+            int i = 0;
+            packet.StoreBeginList("Cooldowns");
             while (packet.CanRead())
             {
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
-                packet.ReadInt32("Time");
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID",i);
+                packet.ReadInt32("Time", i);
+                ++i;
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
@@ -1096,8 +1091,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (packet.ReadBoolean("Unknown bool"))
             {
-                packet.ReadUInt32("Unk");
-                packet.ReadUInt32("Unk");
+                packet.ReadUInt32("Unk 1");
+                packet.ReadUInt32("Unk 2");
             }
         }
 

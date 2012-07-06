@@ -1,12 +1,12 @@
 using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
-using WowPacketParser.Misc;
-using WowPacketParser.Store.Objects;
-using WowPacketParser.Store;
-using Guid=WowPacketParser.Misc.Guid;
+using PacketParser.Enums;
+using PacketParser.Enums.Version;
+using PacketParser.Misc;
+using PacketParser.Processing;
+using PacketParser.DataStructures;
+using Guid = PacketParser.DataStructures.Guid;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class CharacterHandler
     {
@@ -58,7 +58,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guid = packet.ReadGuid("GUID");
             var name = packet.ReadCString("Name");
-            StoreGetters.AddName(guid, name);
+            PacketFileProcessor.Current.GetProcessor<NameStore>().AddPlayerName(guid, name);
         }
 
         [Parser(Opcode.SMSG_CHAR_CREATE)]
@@ -106,7 +106,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadGuid("GUID");
             var name = packet.ReadCString("Name");
 
-            StoreGetters.AddName(guid, name);
+            PacketFileProcessor.Current.GetProcessor<NameStore>().AddPlayerName(guid, name);
 
             packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
             packet.ReadByte("Skin");
@@ -126,9 +126,9 @@ namespace WowPacketParser.Parsing.Parsers
                 var guid = packet.ReadGuid("GUID", i);
                 var name = packet.ReadCString("Name", i);
                 var race = packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
+                PacketFileProcessor.Current.GetProcessor<NameStore>().AddPlayerName(guid, name);
                 var clss = packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
                 packet.ReadEnum<Gender>("Gender", TypeCode.Byte, i);
-                StoreGetters.AddName(guid, name);
 
                 packet.ReadByte("Skin", i);
                 packet.ReadByte("Face", i);
@@ -174,19 +174,11 @@ namespace WowPacketParser.Parsing.Parsers
                 }
                 packet.StoreEndList();
 
-                if (firstLogin)
-                {
-                    var startPos = new StartPosition {Map = mapId, Position = pos, Zone = zone};
-                    Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
-                }
-
                 var playerInfo = new Player {Race = race, Class = clss, Name = name, FirstLogin = firstLogin, Level = level};
 
-                if (Storage.Objects.ContainsKey(guid))
-                    Storage.Objects[guid] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
-                else
-                    Storage.Objects.Add(guid, playerInfo, packet.TimeSpan);
-                StoreGetters.AddName(guid, name);
+                PacketFileProcessor.Current.GetProcessor<ObjectStore>().Objects[guid] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
+
+                PacketFileProcessor.Current.GetProcessor<NameStore>().AddPlayerName(guid, name);
             }
             packet.StoreEndList();
         }
@@ -233,7 +225,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guildGuid[c], 5);
 
                 packet.ReadByte("Face", c);
-                var mapId = packet.ReadInt32("Map", c);
+                var mapId = packet.ReadInt32("Map Id", c);
 
                 packet.ReadXORByte(playerGuid[c], 1);
                 packet.ReadXORByte(playerGuid[c], 4);
@@ -310,19 +302,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.StoreBitstreamGuid("Guild GUID", guildGuid[c], c);
 
 
-                if (firstLogin[c])
-                {
-                    var startPos = new StartPosition {Map = mapId, Position = pos, Zone = zone};
-
-                    Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
-                }
+                packet.Store("First Login", firstLogin, c);
 
                 var playerInfo = new Player { Race = race, Class = clss, Name = name, FirstLogin = firstLogin[c], Level = level };
-                if (Storage.Objects.ContainsKey(guidPlayer))
-                    Storage.Objects[guidPlayer] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
-                else
-                    Storage.Objects.Add(guidPlayer, playerInfo, packet.TimeSpan);
-                StoreGetters.AddName(guidPlayer, name);
+                PacketFileProcessor.Current.GetProcessor<ObjectStore>().Objects[guidPlayer] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
+
+                PacketFileProcessor.Current.GetProcessor<NameStore>().AddPlayerName(guidPlayer, name);
             }
             packet.StoreEndList();
         }
@@ -410,7 +395,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(charGuids[c], 7);
 
                 var z = packet.ReadSingle("Position Z", c);
-                var mapId = packet.ReadInt32("Map", c);
+                var mapId = packet.ReadInt32("Map Id", c);
                 packet.ReadXORByte(guildGuids[c], 4);
 
                 packet.ReadByte("Hair Color", c);
@@ -438,19 +423,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.StoreBitstreamGuid("Character GUID", charGuids[c], c);
                 packet.StoreBitstreamGuid("Guild GUID", guildGuids[c], c);
 
-                if (firstLogins[c])
-                {
-                    var startPos = new StartPosition { Map = mapId, Position = new Vector3(x, y, z), Zone = zone };
-
-                    Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
-                }
+                packet.Store("First Login", firstLogins[c], c);
+                packet.Store("Position", new Vector3(x, y, z), c);
 
                 var playerInfo = new Player{Race = race, Class = clss, Name = name, FirstLogin = firstLogins[c], Level = level};
-                if (Storage.Objects.ContainsKey(playerGuid))
-                    Storage.Objects[playerGuid] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
-                else
-                    Storage.Objects.Add(playerGuid, playerInfo, packet.TimeSpan);
-                StoreGetters.AddName(playerGuid, name);
+                PacketFileProcessor.Current.GetProcessor<ObjectStore>().Objects[playerGuid] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
+                PacketFileProcessor.Current.GetProcessor<NameStore>().AddPlayerName(playerGuid, name);
             }
 
             for (var c = 0; c < unkCounter; c++)
@@ -592,28 +570,18 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Skin", c);
                 packet.ReadByte("Hair Color", c);
                 packet.ReadByte("Face", c);
-                var mapId = packet.ReadInt32("Map", c);
+                var mapId = packet.ReadInt32("Map Id", c);
                 var name = packet.ReadWoWString("Name", (int)nameLenghts[c], c);
 
                 var playerGuid = packet.StoreBitstreamGuid("Character GUID", charGuids[c], c);
                 packet.StoreBitstreamGuid("Guild GUID", guildGuids[c], c);
 
-                if (firstLogins[c])
-                {
-                    var startPos = new StartPosition();
-                    startPos.Map = mapId;
-                    startPos.Position = new Vector3(x, y, z);
-                    startPos.Zone = zone;
-
-                    Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
-                }
+                packet.Store("First Login", firstLogins[c], c);
+                packet.Store("Position", new Vector3(x, y, z), c);
 
                 var playerInfo = new Player { Race = race, Class = clss, Name = name, FirstLogin = firstLogins[c], Level = level };
-                if (Storage.Objects.ContainsKey(playerGuid))
-                    Storage.Objects[playerGuid] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
-                else
-                    Storage.Objects.Add(playerGuid, playerInfo, packet.TimeSpan);
-                StoreGetters.AddName(playerGuid, name);
+                PacketFileProcessor.Current.GetProcessor<ObjectStore>().Objects[playerGuid] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
+                PacketFileProcessor.Current.GetProcessor<NameStore>().AddPlayerName(playerGuid, name);
             }
             packet.StoreEndList();
 
@@ -662,6 +630,7 @@ namespace WowPacketParser.Parsing.Parsers
                 guildGuids[c][0] = packet.ReadBit();
             }
 
+            packet.StoreBeginList("Characters");
             for (int c = 0; c < count; ++c)
             {
                 var clss = packet.ReadEnum<Class>("Class", TypeCode.Byte, c);
@@ -691,10 +660,9 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Pet Display ID", c);
                 packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
                 packet.ReadByte("Hair Color", c);
-
+                
                 packet.ReadXORByte(charGuids[c], 4);
-
-                var mapId = packet.ReadInt32("Map", c);
+                var mapId = packet.ReadInt32("Map Id", c);
                 packet.ReadXORByte(guildGuids[c], 5);
 
                 var z = packet.ReadSingle("Position Z", c);
@@ -739,29 +707,20 @@ namespace WowPacketParser.Parsing.Parsers
 
                 var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
 
-                var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
+                var playerGuid = packet.StoreBitstreamGuid("Character GUID", charGuids[c], c);
 
                 packet.StoreBitstreamGuid("Character GUID", charGuids[c], c);
                 packet.StoreBitstreamGuid("Guild GUID", guildGuids[c], c);
 
-                if (firstLogins[c])
-                {
-                    var startPos = new StartPosition();
-                    startPos.Map = mapId;
-                    startPos.Position = new Vector3(x, y, z);
-                    startPos.Zone = zone;
-
-                    Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
-                }
+                packet.Store("First Login", firstLogins[c], c);
+                packet.Store("Position", new Vector3(x, y, z), c);
 
                 var playerInfo = new Player { Race = race, Class = clss, Name = name, FirstLogin = firstLogins[c], Level = level };
-                if (Storage.Objects.ContainsKey(playerGuid))
-                    Storage.Objects[playerGuid] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
-                else
-                    Storage.Objects.Add(playerGuid, playerInfo, packet.TimeSpan);
-                StoreGetters.AddName(playerGuid, name);
+                PacketFileProcessor.Current.GetProcessor<ObjectStore>().Objects[playerGuid] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
+                PacketFileProcessor.Current.GetProcessor<NameStore>().AddPlayerName(playerGuid, name);
             }
-
+            packet.StoreEndList();
+            packet.StoreBeginList("UnkList");
             for (var i = 0; i < unkCounter; ++i)
             {
                 packet.ReadByte("Unk byte", i);
@@ -1056,8 +1015,9 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Value", i);
             }
 
-            if (SessionHandler.LoggedInCharacter != null)
-                SessionHandler.LoggedInCharacter.Level = level;
+            Player character = PacketFileProcessor.Current.GetProcessor<SessionStore>().LoggedInCharacter;
+            if (character != null)
+                character.Level = level;
         }
 
         [Parser(Opcode.SMSG_HEALTH_UPDATE)]

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using WowPacketParser.Enums;
+using PacketParser.Enums;
 
-namespace WowPacketParser.Store.Objects
+namespace PacketDumper.DataStructures
 {
     public class StartAction
     {

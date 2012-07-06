@@ -1,8 +1,10 @@
 using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using PacketParser.DataStructures;
+using PacketParser.Processing;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class BattlegroundHandler
     {
@@ -1318,6 +1320,7 @@ namespace WowPacketParser.Parsing.Parsers
             var unk = packet.ReadByte("Unk Byte");
             var count = packet.ReadUInt32("Member count");
             packet.ReadUInt32("Type");
+            var names = PacketFileProcessor.Current.GetProcessor<NameStore>();
 
             packet.StoreBeginList("TeamMembers");
             for (var i = 0; i < count; i++)
@@ -1325,7 +1328,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var guid = packet.ReadGuid("GUID", i);
                 packet.ReadBoolean("Online", i);
                 var name = packet.ReadCString("Name", i);
-                StoreGetters.AddName(guid, name);
+                names.AddPlayerName(guid, name);
                 packet.ReadUInt32("Captain", i);
                 packet.ReadByte("Level", i);
                 packet.ReadEnum<Class>("Class", TypeCode.Byte, i);

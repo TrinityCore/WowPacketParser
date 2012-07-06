@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
-using WowPacketParser.Parsing;
+using PacketParser.Enums;
+using PacketParser.Enums.Version;
+using PacketParser.Parsing;
 
-namespace WowPacketParser.Misc
+namespace PacketParser.Misc
 {
     public static class ClientVersion
     {

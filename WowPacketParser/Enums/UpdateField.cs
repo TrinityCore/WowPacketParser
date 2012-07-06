@@ -1,4 +1,4 @@
-namespace WowPacketParser.Enums
+namespace PacketParser.Enums
 {
     // ReSharper disable InconsistentNaming, UnusedMember.Global
     public enum ObjectField

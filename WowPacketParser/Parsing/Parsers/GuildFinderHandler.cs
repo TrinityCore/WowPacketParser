@@ -1,12 +1,12 @@
 ﻿using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class GuildFinderHandler
     {
-
         [Parser(Opcode.CMSG_LF_GUILD_BROWSE)]
         public static void HandleGuildFinderBrowse(Packet packet)
         {

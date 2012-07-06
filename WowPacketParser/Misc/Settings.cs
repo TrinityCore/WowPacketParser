@@ -2,12 +2,32 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
-using WowPacketParser.Enums;
+using PacketParser.Enums;
+using PacketDumper.Enums;
+using PacketParser.Misc;
 
-namespace WowPacketParser.Misc
+namespace PacketDumper.Misc
 {
     public static class Settings
     {
+        static Settings()
+        {
+            ParserSettings.SSHTunnel.Enabled = GetBoolean("SSHEnabled", false);
+            ParserSettings.SSHTunnel.Host = GetString("SSHHost", "localhost");
+            ParserSettings.SSHTunnel.Username = GetString("SSHUsername", string.Empty);
+            ParserSettings.SSHTunnel.Password = GetString("SSHPassword", string.Empty);
+            ParserSettings.SSHTunnel.Port = GetInt32("SSHPort", 22);
+            ParserSettings.SSHTunnel.LocalPort = GetInt32("SSHLocalPort", 3307);
+
+            ParserSettings.MySQL.Enabled = GetBoolean("DBEnabled", false);
+            ParserSettings.MySQL.Server = GetString("Server", "localhost");
+            ParserSettings.MySQL.Port = GetString("Port", "3306");
+            ParserSettings.MySQL.Username = GetString("Username", "root");
+            ParserSettings.MySQL.Password = GetString("Password", string.Empty);
+            ParserSettings.MySQL.PacketParserDB = GetString("PacketParserDB", "WPP");
+            ParserSettings.MySQL.TDBDB = GetString("TDBDatabase", "world");
+            ParserSettings.MySQL.CharacterSet = GetString("CharacterSet", "utf8");
+        }
         private static readonly KeyValueConfigurationCollection SettingsCollection = GetConfiguration();
 
         public static readonly string[] ReaderFilterOpcode = GetStringList("ReaderFilterOpcode", new string[0]);
@@ -31,22 +51,6 @@ namespace WowPacketParser.Misc
         public static readonly bool LogPacketErrors = GetBoolean("LogPacketErrors", false);
         public static readonly bool DebugReads = GetBoolean("DebugReads", false);
         public static readonly bool ParsingLog = GetBoolean("ParsingLog", false);
-
-        public static readonly bool SSHEnabled = GetBoolean("SSHEnabled", false);
-        public static readonly string SSHHost = GetString("SSHHost", "localhost");
-        public static readonly string SSHUsername = GetString("SSHUsername", string.Empty);
-        public static readonly string SSHPassword = GetString("SSHPassword", string.Empty);
-        public static readonly int SSHPort = GetInt32("SSHPort", 22);
-        public static readonly int SSHLocalPort = GetInt32("SSHLocalPort", 3307);
-
-        public static readonly bool DBEnabled = GetBoolean("DBEnabled", false);
-        public static readonly string Server = GetString("Server", "localhost");
-        public static readonly string Port = GetString("Port", "3306");
-        public static readonly string Username = GetString("Username", "root");
-        public static readonly string Password = GetString("Password", string.Empty);
-        public static readonly string WPPDatabase = GetString("WPPDatabase", "WPP");
-        public static readonly string TDBDatabase = GetString("TDBDatabase", "world");
-        public static readonly string CharacterSet = GetString("CharacterSet", "utf8");
 
         private static KeyValueConfigurationCollection GetConfiguration()
         {

@@ -1,13 +1,13 @@
 using System;
 using System.IO;
-using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
-using WowPacketParser.Misc;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
+using PacketParser.Enums;
+using PacketParser.Enums.Version;
+using PacketParser.Misc;
+using Guid = PacketParser.DataStructures.Guid;
+using PacketParser.Processing;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class MovementHandler
     {
@@ -170,9 +170,9 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.ReadPackedGuid("GUID");
 
-            if (Storage.Objects != null && Storage.Objects.ContainsKey(guid))
+            WoWObject obj = PacketFileProcessor.Current.GetProcessor<ObjectStore>().GetObjectIfFound(guid);
+            if (obj != null)
             {
-                var obj = Storage.Objects[guid].Item1;
                 UpdateField uf;
                 if (obj.UpdateFields != null && obj.UpdateFields.TryGetValue((int)Enums.Version.UpdateFields.GetUpdateFieldOffset(UnitField.UNIT_FIELD_FLAGS), out uf))
                     if ((uf.UInt32Value & (uint)UnitFlags.IsInCombat) == 0) // movement could be because of aggro so ignore that
@@ -393,10 +393,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
             CurrentMapId = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
             packet.ReadVector4("Position");
-
-            WoWObject character;
-            if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
-                SessionHandler.LoggedInCharacter = (Player) character;
         }
 
         [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
@@ -405,10 +401,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadVector3("Position");
             CurrentMapId = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
             packet.ReadSingle("Orientation");
-
-            WoWObject character;
-            if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
-                SessionHandler.LoggedInCharacter = (Player) character;
         }
 
         [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V4_3_4_15595)]
@@ -419,10 +411,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Z");
             CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
             packet.ReadSingle("Y"); // seriously...
-
-            WoWObject character;
-            if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
-                SessionHandler.LoggedInCharacter = (Player)character;
         }
 
         [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]

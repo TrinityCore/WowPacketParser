@@ -4,10 +4,10 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using WowPacketParser.Enums;
-using WowPacketParser.Loading;
-using WowPacketParser.Misc;
-using WowPacketParser.SQL;
+using PacketDumper.Processing;
+using PacketDumper.Misc;
+using PacketParser.Misc;
+using PacketParser.SQL;
 
 namespace WowPacketParser
 {
@@ -15,7 +15,9 @@ namespace WowPacketParser
     {
         private static void Main(string[] args)
         {
-            
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
             SetUpConsole();
 
             var files = args.ToList();
@@ -32,8 +34,6 @@ namespace WowPacketParser
                 EndPrompt();
                 return;
             }
-
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             if (Settings.ReaderFilterPacketNumLow < 0)
                 throw new ConstraintException("FilterPacketNumLow must be positive");
@@ -58,7 +58,7 @@ namespace WowPacketParser
 
             var count = 0;
             foreach (var file in files)
-                new SniffFile(file, Tuple.Create(++count, files.Count)).Process();
+                new PacketFileDumper(file, Tuple.Create(++count, files.Count)).Process();
 
             SQLConnector.Disconnect();
             SSHTunnel.Disconnect();

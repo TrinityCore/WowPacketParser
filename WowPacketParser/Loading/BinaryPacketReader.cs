@@ -1,10 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Loading
+namespace PacketParser.Loading
 {
     public sealed class BinaryPacketReader : IPacketReader
     {
@@ -39,7 +40,9 @@ namespace WowPacketParser.Loading
             var headerStart = _reader.ReadBytes(3);             // PKT
             if (Encoding.ASCII.GetString(headerStart) != "PKT")
             {
-                throw new Exception("not a pkt file!");
+                // pkt does not have a header
+                _reader.BaseStream.Position = 0;
+                return;
             }
 
             _pktVersion = (PktVersion)_reader.ReadUInt16();      // sniff version
@@ -110,7 +113,17 @@ namespace WowPacketParser.Loading
 
         public ClientVersionBuild GetBuild()
         {
+            if (_pktVersion == PktVersion.NoHeader)
+                return ClientVersion.GetVersion(PeekDateTime());
             return _build;
+        }
+
+        public DateTime PeekDateTime()
+        {
+            var oldPos = _reader.BaseStream.Position;
+            var p = Read(0, "");
+            _reader.BaseStream.Position = oldPos;
+            return p.Time;
         }
 
         public bool CanRead()
@@ -190,7 +203,7 @@ namespace WowPacketParser.Loading
 
             // ignore opcodes that were not "decrypted" (usually because of
             // a missing session key) (only applicable to 335 or earlier)
-            if (opcode >= 1312 && ClientVersion.Build <= ClientVersionBuild.V3_3_5a_12340)
+            if (opcode >= 1312 && ClientVersion.Build <= ClientVersionBuild.V3_3_5a_12340 && ClientVersion.Build > ClientVersionBuild.Zero)
                 return null;
 
             var packet = new Packet(data, opcode, time, direction, number, fileName);

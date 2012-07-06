@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using WowPacketParser.Misc;
 
-namespace WowPacketParser.SQL
+namespace PacketParser.SQL
 {
     public class SQLFile : IDisposable
     {
@@ -12,11 +11,9 @@ namespace WowPacketParser.SQL
 
         private readonly List<string> _sqls = new List<string>();
 
-        public SQLFile(string file)
+        public SQLFile(string file, bool overwrite)
         {
-            if (string.IsNullOrWhiteSpace(Settings.SQLFileName)) // only delete file if no global
-                File.Delete(file);                               // file name was specified
-            _file = new StreamWriter(file, true);
+            _file = new StreamWriter(file, !overwrite);
         }
 
         ~SQLFile()

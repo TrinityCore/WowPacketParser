@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
-using WowPacketParser.Misc;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
+using PacketParser.Enums;
+using PacketParser.Enums.Version;
+using PacketParser.Misc;
+using PacketParser.DataStructures;
+using PacketParser.Processing;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class QuestHandler
     {
@@ -69,8 +69,8 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadUInt32("Title Id");
                 packet.ReadUInt32("Unknown UInt32 1");
-                packet.ReadSingle("Unknown float");
-                packet.ReadUInt32("Bonus Talents");
+                packet.ReadSingle("Unknown float 2");
+                packet.ReadUInt32("Bonus Talents 3");
                 packet.ReadUInt32("Unknown UInt32 2");
                 packet.ReadUInt32("Reward Reputation Mask");
             }
@@ -360,7 +360,7 @@ namespace WowPacketParser.Parsing.Parsers
                 quest.SoundTurnIn = packet.ReadUInt32("Sound TurnIn");
             }
 
-            Storage.QuestTemplates.Add((uint) id.Key, quest, packet.TimeSpan);
+            packet.Store("QuestTemplateObject", quest);
         }
 
         [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
@@ -397,7 +397,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleQuestNpcQueryResponse(Packet packet)
         {
             var count = packet.ReadUInt32("Count");
-
+            var names = PacketFileProcessor.Current.GetProcessor<NameStore>();
             packet.StoreBeginList("Quests");
             for (var i = 0; i < count; ++i)
             {
@@ -407,9 +407,9 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     var entry = packet.ReadEntry();
                     if (entry.Value)
-                        packet.Store("GameObject", StoreGetters.GetName(StoreNameType.GameObject, entry.Key), i, j);
+                        packet.Store("GameObject", names.GetName(StoreNameType.GameObject, entry.Key), i, j);
                     else
-                        packet.Store("Creature", StoreGetters.GetName(StoreNameType.Unit, entry.Key), i, j);
+                        packet.Store("Creature", names.GetName(StoreNameType.Unit, entry.Key), i, j);
                 }
                 packet.StoreEndList();
             }
@@ -459,7 +459,7 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                     packet.StoreEndList();
 
-                    Storage.QuestPOIs.Add(new Tuple<uint, uint>((uint) questId, (uint) idx), questPoi, packet.TimeSpan);
+                    packet.Store("QuestPOIObject", questPoi, i, j);
                 }
                 packet.StoreEndList();
             }
@@ -666,8 +666,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk UInt32 1");
             packet.ReadUInt32("Close Window on Cancel");
 
-            Storage.QuestRewards.Add((uint) entry, new QuestReward {RequestItemsText = text}, null);
-
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
                 packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
 
@@ -708,8 +706,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Emote");  // not confirmed
             packet.ReadUInt32("Close Window on Cancel");
 
-            Storage.QuestRewards.Add((uint)entry, new QuestReward { RequestItemsText = text }, null);
-
             packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
 
             packet.ReadUInt32("Suggested Players");
@@ -745,8 +741,6 @@ namespace WowPacketParser.Parsing.Parsers
             var entry = packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
             packet.ReadCString("Title");
             var text = packet.ReadCString("Text");
-
-            Storage.QuestOffers.Add((uint) entry, new QuestOffer {OfferRewardText = text}, null);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
-using WowPacketParser.Enums;
-using WowPacketParser.Parsing;
+using PacketParser.Enums;
+using PacketParser.Parsing;
+using PacketParser.Misc;
 
-namespace WowPacketParser.Misc
+namespace PacketParser.DataStructures
 {
     public sealed partial class Packet
     {
@@ -382,7 +383,15 @@ namespace WowPacketParser.Misc
             return rawValue;
         }
 
-        private KeyValuePair<long, T> ReadEnum<T>(TypeCode code)
+        public int ReadEntryWithName<T>(StoreNameType type, string name, params int[] values)
+        {
+            var val = (int)ReadValue(Type.GetTypeCode(typeof(T)));
+            var stEntry = new StoreEntry(type, val);
+            Store(name, stEntry, values);
+            return val;
+        }
+
+        private StoreEnum<T> ReadEnum<T>(TypeCode code)
         {
             long rawValue = ReadValue(code);
             object value = Enum.ToObject(typeof (T), rawValue);
@@ -390,21 +399,32 @@ namespace WowPacketParser.Misc
             if (rawValue > 0)
                 Logger.CheckForMissingValues<T>(rawValue);
 
-            return new KeyValuePair<long, T>(rawValue, (T) value);
+            return new StoreEnum<T>(rawValue);
         }
 
         public T ReadEnum<T>(string name, TypeCode code, params int[] values)
         {
-            KeyValuePair<long, T> val = ReadEnum<T>(code);
+            var val = ReadEnum<T>(code);
             Store(name, val, values);
-            return val.Value;
+            return val.val;
         }
 
-        public int ReadEntryWithName<T>(StoreNameType type, string name, params int[] values)
+        private StoreEnum<T> ReadEnum<T>(int bits)
         {
-            var val = (int) ReadValue(Type.GetTypeCode(typeof (T)));
+            var type = typeof(T);
+            long rawVal = ReadBits(bits);
+
+            if (rawVal > 0)
+                Logger.CheckForMissingValues<T>(rawVal);
+
+            return new StoreEnum<T>(rawVal);
+        }
+
+        public T ReadEnum<T>(string name, int bits, params int[] values)
+        {
+            var val = ReadEnum<T>(bits);
             Store(name, val, values);
-            return val;
+            return val.val;
         }
 
         /// <summary>
@@ -455,21 +475,6 @@ namespace WowPacketParser.Misc
                     value |= (uint)(1 << i);
 
             return value;
-        }
-
-        private KeyValuePair<long, T> ReadEnum<T>(int bits)
-        {
-            var type = typeof(T);
-            long rawVal = ReadBits(bits);
-            var value = Enum.ToObject(type, rawVal);
-            return new KeyValuePair<long, T>(rawVal, (T)value);
-        }
-
-        public T ReadEnum<T>(string name, int bits, params int[] values)
-        {
-            var val = ReadEnum<T>(bits);
-            Store(name, val, values);
-            return val.Value;
         }
 
         public byte[] StartBitStream(params int[] values)
@@ -550,11 +555,11 @@ namespace WowPacketParser.Misc
 
             if (values.Length > listsCount)
             {
-                throw new Exception(String.Format("Received to many list indexes, there're {0} lists, but {1} indexes", listsCount, values.Length));
+                throw new Exception(String.Format("TreeStore: Received to many list indexes, there're {0} lists, but {1} indexes", listsCount, values.Length));
             }
             else if (values.Length < listsCount)
             {
-                throw new Exception(String.Format("Received not enough list indexes, there're {0} lists, but {1} indexes", listsCount, values.Length));
+                throw new Exception(String.Format("TreeStore: Received not enough list indexes, there're {0} lists, but {1} indexes", listsCount, values.Length));
             }
             NamedTreeNode data;
             if (listsCount > 0)
@@ -565,7 +570,7 @@ namespace WowPacketParser.Misc
                     NamedTreeNode next;
                     if (!itr.Value.Item2.TryGetValue(values[i], out next) || next != itr.Next.Value.Item1)
                     {
-                        throw new Exception("Incorrect sub index number!");
+                        throw new Exception("TreeStore: Incorrect sub index number!");
                     }
                     itr = itr.Next;
                 }
@@ -593,7 +598,7 @@ namespace WowPacketParser.Misc
 
             var dat = StoreGetDataByIndexes(values);
             if (dat != list.Item1)
-                throw new Exception("Cannot continue reading into indexed list, incorrect scope");
+                throw new Exception("TreeStore: Cannot continue reading into indexed list, incorrect scope");
             StoreIndexedLists.AddLast(list);
         }
 
@@ -617,7 +622,7 @@ namespace WowPacketParser.Misc
             LastIndex = null;
 
             if (StoreIndexedLists.Count == 0)
-                throw new Exception("Cannot end indexed list, no list found in this scope");
+                throw new Exception("TreeStore: Cannot end indexed list, no list found in this scope");
             StoreIndexedLists.RemoveLast();
         }
 
@@ -639,9 +644,9 @@ namespace WowPacketParser.Misc
         public void StoreEndObj()
         {
             if (StoreObjects.Count == 0)
-                throw new Exception("Cannot end object, no object found in this scope");
+                throw new Exception("TreeStore: Cannot end object, no object found in this scope");
             if (StoreIndexedLists.Count != 0)
-                throw new Exception("Cannot end object, there are unfinished indexed lists in object");
+                throw new Exception("TreeStore: Cannot end object, there are unfinished indexed lists in object");
             var state = StoreObjects.Pop();
             StoreData = state.Item1;
             StoreIndexedLists = state.Item2;
@@ -655,7 +660,7 @@ namespace WowPacketParser.Misc
             var dat = StoreGetDataByIndexes(values);
 
             if (dat.Contains(name))
-                throw new Exception(String.Format("Data with name {0} already stored in this scope, names must not repeat!", name));
+                throw new Exception(String.Format("TreeStore: Data with name {0} already stored in this scope, names must not repeat!", name));
             dat.Add(name, data);
         }
 

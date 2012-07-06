@@ -1,16 +1,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
-using WowPacketParser.Misc;
-using System.Text;
-using System.Collections.Specialized;
+using PacketParser.Enums;
+using PacketParser.Enums.Version;
+using PacketParser.Misc;
 using System;
-using Guid = WowPacketParser.Misc.Guid;
+using PacketParser.DataStructures;
 using System.IO;
 
-namespace WowPacketParser.Parsing
+namespace PacketParser.Parsing
 {
     public static class Handler
     {
@@ -22,7 +20,7 @@ namespace WowPacketParser.Parsing
             var types = asm.GetTypes();
             foreach (var type in types)
             {
-                //if (type.Namespace != "WowPacketParser.Parsing.Parsers")
+                //if (type.Namespace != "PacketParser.Parsing.Parsers")
                 //    continue;
 
                 if (!type.IsAbstract)

@@ -4,17 +4,12 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using ICSharpCode.SharpZipLib.Zip.Compression;
-using WowPacketParser.Enums;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
+using PacketParser.Enums;
 
-namespace WowPacketParser.Misc
+namespace PacketParser.DataStructures
 {
     public sealed partial class Packet : BinaryReader, ITreeNode
     {
-        private static readonly bool SniffData = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffData);
-        private static readonly bool SniffDataOpcodes = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffDataOpcodes);
-
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, string fileName)
             : base(new MemoryStream(input.Length), Encoding.UTF8)
@@ -156,15 +151,18 @@ namespace WowPacketParser.Misc
         }
         public bool TryGetNode<NodeType>(out NodeType ret, string[] address, int addrIndex)
         {
-            if (address.Length - 1 == addrIndex)
+            if (address.Length == addrIndex)
             {
-                if (this is NodeType)
+                try
                 {
                     ret = (NodeType)((Object)this);
                     return true;
                 }
-                ret = default(NodeType);
-                return false;
+                catch
+                {
+                    ret = default(NodeType);
+                    return false;
+                }
             }
             return StoreData.TryGetNode<NodeType>(out ret, address, addrIndex);
         }

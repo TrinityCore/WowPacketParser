@@ -1,21 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-
 using System.IO;
-using Guid = WowPacketParser.Misc.Guid;
-using WowPacketParser.Misc;
-using WowPacketParser.Loading;
 using System.Diagnostics;
-namespace WowPacketParser.Processing
+using PacketDumper.Processing.RawData;
+using PacketParser.Processing;
+using PacketDumper.Misc;
+using PacketParser.DataStructures;
+
+namespace PacketDumper.Processing
 {
     public class RawFileOutput : IPacketProcessor
     {
         BinaryWriter writer = null;
         IBinaryPacketWriter packetWriter = null;
         string _logPrefix;
-        public bool Init(SniffFile file)
+        public bool Init(PacketFileProcessor file)
         {
             _logPrefix = file.LogPrefix;
             var fileName = file.LogPrefix;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Wintellect.PowerCollections;
 
-namespace WowPacketParser.Misc
+namespace PacketParser.DataStructures
 {
     public class IndexedTreeNode : Dictionary<int, NamedTreeNode>, ITreeNode
     {
@@ -25,15 +25,18 @@ namespace WowPacketParser.Misc
         }
         public bool TryGetNode<NodeType>(out NodeType ret, string[] address, int addrIndex)
         {
-            if (address.Length - 1 == addrIndex)
+            if (address.Length == addrIndex)
             {
-                if (this is NodeType)
+                try
                 {
                     ret = (NodeType)((Object)this);
                     return true;
                 }
-                ret = default(NodeType);
-                return false;
+                catch
+                {
+                    ret = default(NodeType);
+                    return false;
+                }
             }
             NamedTreeNode node;
             if (this.TryGetValue(Int32.Parse(address[addrIndex]), out node))

@@ -1,6 +1,6 @@
 using System;
 
-namespace WowPacketParser.Misc
+namespace PacketParser.DataStructures
 {
     public struct UpdateField
     {

@@ -1,6 +1,6 @@
 using System;
 using System.Text;
-namespace WowPacketParser.Misc
+namespace PacketParser.DataStructures
 {
     public struct Quaternion
     {

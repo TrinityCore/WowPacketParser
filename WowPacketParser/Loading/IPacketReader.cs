@@ -1,7 +1,8 @@
 ﻿using System;
-using WowPacketParser.Misc;
-using WowPacketParser.Enums;
-namespace WowPacketParser.Loading
+using PacketParser.Enums;
+using PacketParser.DataStructures;
+
+namespace PacketParser.Loading
 {
     public interface IPacketReader : IDisposable
     {

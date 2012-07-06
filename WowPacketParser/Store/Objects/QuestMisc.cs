@@ -1,6 +1,6 @@
-﻿using WowPacketParser.SQL;
+﻿using PacketParser.SQL;
 
-namespace WowPacketParser.Store.Objects
+namespace PacketDumper.DataStructures
 {
     [DBTableName("quest_template")]
     public class QuestOffer

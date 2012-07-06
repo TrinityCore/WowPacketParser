@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.Diagnostics;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
-using WowPacketParser.Parsing;
-using Guid = WowPacketParser.Misc.Guid;
-using WowPacketParser.Loading;
+using PacketParser.Enums;
+using Guid = PacketParser.DataStructures.Guid;
+using PacketParser.Processing;
+using PacketParser.Misc;
+using PacketDumper.Misc;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Processing
+namespace PacketDumper.Processing
 {
     public class TextFileOutput : IPacketProcessor
     {
@@ -20,8 +18,10 @@ namespace WowPacketParser.Processing
         string _outFileName;
         string _logPrefix;
 
-        public bool Init(SniffFile file)
+        public bool Init(PacketFileProcessor file)
         {
+            if (!Settings.TextOutput)
+                return false;
             _logPrefix = file.LogPrefix;
             _outFileName = Path.ChangeExtension(file.FileName, null) + "_parsed.txt";
             if (Utilities.FileIsInUse(_outFileName))
@@ -32,7 +32,7 @@ namespace WowPacketParser.Processing
                 return false;
             }
             File.Delete(_outFileName);
-            writer = new StreamWriter(_outFileName, true);
+            writer = new StreamWriter(_outFileName, false);
             writer.WriteLine(file.GetHeader());
 
             if (Settings.LogPacketErrors)
@@ -44,7 +44,7 @@ namespace WowPacketParser.Processing
                 }
                 else
                 {
-                    errorWriter = new StreamWriter(errorFileName, true);
+                    errorWriter = new StreamWriter(errorFileName, false);
                 }
             }
 
@@ -76,9 +76,9 @@ namespace WowPacketParser.Processing
                 return;
             // Write to file
             if (errorWriter != null && packet.Status == ParsedStatus.WithErrors)
-                errorWriter.WriteLine(TextBuilder.Build(packet, true));
+                errorWriter.WriteLine(TextBuilder.Build(packet, true, Settings.DebugReads));
             else
-                writer.WriteLine(TextBuilder.Build(packet, true));
+                writer.WriteLine(TextBuilder.Build(packet, true, Settings.DebugReads));
             writer.Flush();
         }
 

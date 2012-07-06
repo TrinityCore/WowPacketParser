@@ -1,23 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Text;
-using System.Reflection;
-using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
-using WowPacketParser.Misc;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Loading
+namespace PacketParser.Loading
 {
     public static class Reader
     {
-        [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "reader is disposed in the finally block.")]
-        public static IPacketReader GetReader(string fileName)
+        public static IPacketReader GetReader(string fileName, string fileType)
         {
             IPacketReader reader = null;
-            switch (Settings.PacketFileType)
+            switch (fileType)
             {
                 case "pkt":
                     reader = new BinaryPacketReader(fileName);

@@ -1,10 +1,25 @@
 WowPacketTools
 ========
 
-Info
+Projects
 --------------------------------------------------
-This project is focused on creating a consistent and easy to use set of tools to do research about world of warcraft client-server communication protocol.
-This project is a fork of https://github.com/TrinityCore/WowPacketParser
-Some code and inspiration is also taken from https://github.com/SkyFire/toms_tools
-Many thanks to the contributors of the original projects.
-Author and maintainer of this repo: QAston
+
+* PacketParser - library containing the core parsing functionality (packet file loading and parsing)
+* PacketDumper - console app to dump data from parsed packet
+* PacketViewer - gui app to view packet data without the need to dump it first
+* HandlerQuery
+
+
+Thanks
+--------------------------------------------------
+
+- Kaelima
+- Kiper
+- Machiavelli
+- Nay
+- Rat
+- Shauren
+- Spp
+- Subv
+- stfx
+- QAston

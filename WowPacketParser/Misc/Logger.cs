@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using WowPacketParser.Enums;
+using PacketParser.Enums;
+using PacketParser.Misc;
 
-namespace WowPacketParser.Misc
+namespace PacketParser.Misc
 {
     public static class Logger
     {
@@ -13,10 +14,10 @@ namespace WowPacketParser.Misc
 
         public static void CheckForMissingValues<T>(long rawValue)
         {
-            if (!Settings.LogErrors || !typeof(T).IsEnum || !Attribute.IsDefined(typeof(T), typeof(FlagsAttribute)))
+            if (!ParserSettings.LogErrors || !typeof(T).IsEnum || !Attribute.IsDefined(typeof(T), typeof(FlagsAttribute)))
                 return;
 
-            var key = typeof(T).ToString().Replace("WowPacketParser.Enums.", "");
+            var key = typeof(T).ToString().Replace("PacketParser.Enums.", "");
 
             // Remove all know values
             foreach (T value in Enum.GetValues(typeof(T)))
@@ -49,7 +50,7 @@ namespace WowPacketParser.Misc
 
         public static void WriteErrors()
         {
-            if (!Settings.LogErrors)
+            if (!ParserSettings.LogErrors)
                 return;
 
             Trace.WriteLine(Environment.NewLine);

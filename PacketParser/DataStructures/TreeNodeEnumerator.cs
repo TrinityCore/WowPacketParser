@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 
-namespace WowPacketParser.Misc
+namespace PacketParser.DataStructures
 {
     public class TreeNodeEnumerator : IEnumerator
     {

@@ -1,14 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using PacketParser.Processing;
+using Guid = PacketParser.DataStructures.Guid;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class PetHandler
     {
@@ -35,14 +32,9 @@ namespace WowPacketParser.Parsing.Parsers
 
             ReadPetFlags(ref packet);
 
-            var isPet = guid.GetHighType() == HighGuidType.Pet;
-            var isVehicle = guid.GetHighType() == HighGuidType.Vehicle;
-            var isMinion = guid.GetHighType() == HighGuidType.Unit;
-            const int maxCreatureSpells = 10;
-            var spells = new List<uint>(maxCreatureSpells);
 
             packet.StoreBeginList("Spells/Actions");
-            for (var i = 0; i < maxCreatureSpells; i++) // Read pet/vehicle spell ids
+            for (var i = 0; i < 10; i++) // Read pet/vehicle spell ids
             {
                 var spell16 = packet.ReadUInt16();
                 var spell8 = packet.ReadByte();
@@ -53,20 +45,8 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.Store("Action", spellId, i);
                 else
                     packet.Store("Spell", new StoreEntry(StoreNameType.Spell, spellId), i);
-
-                // Spells for pets are on DBCs; also no entry in guid
-                // We don't need the actions sent for minions (slots lower than 8)
-                if (!isPet && (isVehicle || (isMinion && slot >= 8)))
-                    spells.Add((uint)spellId);
             }
             packet.StoreEndList();
-
-            if (spells.Count != 0)
-            {
-                SpellsX spellsCr;
-                spellsCr.Spells = spells.ToArray();
-                Storage.SpellsX.Add(guid.GetEntry(), spellsCr, packet.TimeSpan);
-            }
 
             var spellCount = packet.ReadByte("Spell Count"); // vehicles -> 0, pets -> != 0. Could this be auras?
             packet.StoreBeginList("Spells/auras?");
@@ -102,17 +82,17 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_PET_NAME_QUERY)]
         public static void HandlePetNameQuery(Packet packet)
         {
-            var number = packet.ReadInt32("Pet number").ToString(CultureInfo.InvariantCulture);
+            var number = packet.ReadUInt32("Pet number");
             var guid = packet.ReadGuid("Guid");
 
-            // Store temporary name (will be replaced in SMSG_PET_NAME_QUERY_RESPONSE)
-            StoreGetters.AddName(guid, number);
+            // TimeSpanContainer temporary name (will be replaced in SMSG_PET_NAME_QUERY_RESPONSE)
+            PacketFileProcessor.Current.GetProcessor<SessionStore>().PetGuids[number] = guid;
         }
 
         [Parser(Opcode.SMSG_PET_NAME_QUERY_RESPONSE)]
         public static void HandlePetNameQueryResponse(Packet packet)
         {
-            var number = packet.ReadInt32("Pet number").ToString(CultureInfo.InvariantCulture);
+            var number = packet.ReadUInt32("Pet number");
 
             var petName = packet.ReadCString("Pet name");
             if (petName.Length == 0)
@@ -121,9 +101,9 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
             }
 
-            var guidArray = (from pair in StoreGetters.NameDict where Equals(pair.Value, number) select pair.Key).ToList();
-            foreach (var guid in guidArray)
-                StoreGetters.NameDict[guid] = petName;
+            Guid petGuid;
+            if (PacketFileProcessor.Current.GetProcessor<SessionStore>().PetGuids.TryGetValue(number, out petGuid))
+                PacketFileProcessor.Current.GetProcessor<NameStore>().AddPlayerName(petGuid, petName);
 
             packet.ReadTime("Time");
             var declined = packet.ReadBoolean("Declined");
@@ -183,7 +163,7 @@ namespace WowPacketParser.Parsing.Parsers
             var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
             packet.Store("Action", action);
             packet.ReadEnum<ActionButtonType>("Type", TypeCode.Byte);
-            packet.ReadGuid("GUID");
+            packet.ReadGuid("GUID2");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596))
                 packet.ReadVector3("Position");
         }
@@ -242,7 +222,9 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadInt32("Count");
             packet.StoreBeginList("Pet Guids");
             for (var i = 0; i < count; ++i)
+            {
                 packet.ReadGuid("Guid", i);
+            }
             packet.StoreEndList();
         }
 

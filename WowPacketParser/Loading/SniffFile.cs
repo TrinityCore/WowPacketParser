@@ -15,14 +15,14 @@ using WowPacketParser.Processing;
 
 namespace WowPacketParser.Loading
 {
-    public class SniffFile
+    public class PacketFileProcessor
     {
         public readonly string FileName;
         private readonly Statistics _stats;
         public readonly string LogPrefix;
         public LinkedList<IPacketProcessor> _processors = new LinkedList<IPacketProcessor>();
 
-        public SniffFile(string fileName, Tuple<int, int> number = null)
+        public PacketFileProcessor(string fileName, Tuple<int, int> number = null)
         {
             if (string.IsNullOrWhiteSpace(fileName))
                 throw new ArgumentException("fileName cannot be null, empty or whitespace.", "fileName");

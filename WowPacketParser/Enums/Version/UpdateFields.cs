@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Reflection;
-using WowPacketParser.Misc;
-using Guid = WowPacketParser.Misc.Guid;
+using PacketParser.Misc;
 
-namespace WowPacketParser.Enums.Version
+namespace PacketParser.Enums.Version
 {
     public static class UpdateFields
     {
@@ -23,7 +21,7 @@ namespace WowPacketParser.Enums.Version
 
             foreach (var enumType in enumTypes)
             {
-                var vTypeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionaryBuildName(ClientVersion.Build), enumType.Name);
+                var vTypeString = string.Format("PacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionaryBuildName(ClientVersion.Build), enumType.Name);
                 var vEnumType = Assembly.GetExecutingAssembly().GetType(vTypeString);
                 if (vEnumType == null)
                     continue;   // versions prior to 4.3.0 do not have AreaTriggerField

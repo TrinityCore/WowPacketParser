@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Loading
+namespace PacketParser.Loading
 {
     public sealed class SniffitztReader : IPacketReader
     {

@@ -1,8 +1,11 @@
 using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using Guid = PacketParser.DataStructures.Guid;
+using PacketParser.Processing;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class AchievementHandler
     {
@@ -18,7 +21,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var name = packet.ReadCString("Player Name");
             var guid = packet.ReadGuid("Player GUID");
-            StoreGetters.AddName(guid, name);
+            PacketFileProcessor.Current.GetProcessor<NameStore>().AddPlayerName(guid, name);
             packet.ReadInt32("Achievement");
             packet.ReadInt32("Linked Name");
         }
@@ -361,6 +364,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.Store("Criteria counter", BitConverter.ToUInt64(counter[i], 0));
                 packet.StoreBitstreamGuid("Criteria GUID", guid[i], i);
             }
+            packet.StoreEndList();
 
             for (var i = 0; i < achievements; ++i)
             {

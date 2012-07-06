@@ -1,9 +1,10 @@
 using System;
 using System.Text;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.DataStructures;
+using PacketParser.Misc;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class WardenHandler
     {
@@ -44,12 +45,16 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadByte();
 
                     byte length;
+                    int i = 0;
+                    packet.StoreBeginList("Strings");
                     while ((length = packet.ReadByte()) != 0)
                     {
                         var strBytes = packet.ReadBytes(length);
                         var str = Encoding.ASCII.GetString(strBytes);
-                        packet.Store("String", str);
+                        packet.Store("String", str, i);
+                        ++i;
                     }
+                    packet.StoreEndList();
 
                     // var rest = (int)(packet.GetLength() - packet.GetPosition());
                     break;

@@ -4,8 +4,9 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Misc
+namespace PacketParser.Misc
 {
     public static class Extensions
     {

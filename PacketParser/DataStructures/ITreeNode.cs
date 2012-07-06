@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WowPacketParser.Misc
+namespace PacketParser.DataStructures
 {
     public interface ITreeNode
     {

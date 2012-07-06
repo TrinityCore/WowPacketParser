@@ -1,8 +1,10 @@
 using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using Guid=PacketParser.DataStructures.Guid;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class MailHandler
     {
@@ -132,6 +134,7 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadUInt32("Item Enchantment Duration", i, j, k);
                         packet.ReadUInt32("Item Enchantment Charges", i, j, k);
                     }
+                    packet.StoreEndList();
 
                     packet.ReadInt32("Item Random Property Id", i, j);
                     packet.ReadUInt32("Item Suffix Factor", i, j);

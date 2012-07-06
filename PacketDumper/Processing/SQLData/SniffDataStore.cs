@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using WowPacketParser.Misc;
-using WowPacketParser.Enums;
-using WowPacketParser.Loading;
-using WowPacketParser.Store;
-using WowPacketParser.Enums.Version;
+using PacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Enums.Version;
+using PacketParser.Processing;
+using PacketDumper.Enums;
+using Guid = PacketParser.DataStructures.Guid;
+using PacketDumper.Misc;
+using PacketDumper.DataStructures;
+using PacketParser.DataStructures;
+using PacketParser.SQL;
 
-namespace WowPacketParser.Processing
+namespace PacketDumper.Processing
 {
-    public class SniffDataTableOutput : IPacketProcessor
+    public class SniffDataStore : IPacketProcessor
     {
         private static readonly bool SniffData = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffData);
         private static readonly bool SniffDataOpcodes = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffDataOpcodes);
-
-        public bool Init(SniffFile file)
+        public static readonly TimeSpanBag<SniffData> SniffDatas = new TimeSpanBag<SniffData>();
+        public bool Init(PacketFileProcessor file)
         {
             return SniffData;
         }
@@ -54,7 +57,7 @@ namespace WowPacketParser.Processing
                                 typeObj = update.Value.GetNode<UpdateType>("UpdateType");
                             if (typeObj.ToString().Contains("Create"))
                             {
-                                var guid = update.Value.GetNode<Misc.Guid>("GUID");
+                                var guid = update.Value.GetNode<Guid>("GUID");
                                 var objType = update.Value.GetNode<ObjectType>("Object Type");
                                 if (guid.HasEntry() && (objType == ObjectType.Unit || objType == ObjectType.GameObject))
                                     AddSniffData(packet, Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");
@@ -71,7 +74,7 @@ namespace WowPacketParser.Processing
                 case Opcode.SMSG_GOSSIP_MESSAGE:
                     {
                     var menuId = packet.GetData().GetNode<UInt32>("Menu Id");
-                    var guid = packet.GetData().GetNode<Misc.Guid>("GUID");
+                    var guid = packet.GetData().GetNode<Guid>("GUID");
                     AddSniffData(packet, StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString());
                     }
                     break;
@@ -162,17 +165,39 @@ namespace WowPacketParser.Processing
             if (id == 0 && type != StoreNameType.Map)
                 return; // Only maps can have id 0
 
-            var item = new Store.Objects.SniffData
+            var item = new DataStructures.SniffData
             {
                 FileName = packet.FileName,
-                TimeStamp = Utilities.GetUnixTimeFromDateTime(packet.Time),
                 ObjectType = type,
                 Id = id,
                 Data = data,
-                Number = packet.Number,
             };
 
-            Storage.SniffData.Add(item, packet.TimeSpan);
+            SniffDatas.Add(item, packet.TimeSpan);
+        }
+
+        public string Build()
+        {
+            if (SniffDatas.IsEmpty())
+                return String.Empty;
+
+            const string tableName = "SniffData";
+
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var data in SniffDatas)
+            {
+                var row = new QueryBuilder.SQLInsertRow();
+
+                row.AddValue("Build", ClientVersion.Build);
+                row.AddValue("SniffName", data.Item1.FileName);
+                row.AddValue("ObjectType", data.Item1.ObjectType.ToString());
+                row.AddValue("Id", data.Item1.Id);
+                row.AddValue("Data", data.Item1.Data);
+
+                rows.Add(row);
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows, ignore: true, withDelete: false, deleteDuplicates: true).Build();
         }
     }
 }

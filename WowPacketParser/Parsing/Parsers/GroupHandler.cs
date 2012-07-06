@@ -1,9 +1,11 @@
 using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Enums.Version;
+using PacketParser.Misc;
+using PacketParser.Processing;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class GroupHandler
     {
@@ -52,13 +54,13 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Counter");
 
             var numFields = packet.ReadInt32("Member Count");
-
+            var names = PacketFileProcessor.Current.GetProcessor<NameStore>();
             packet.StoreBeginList("Members");
             for (var i = 0; i < numFields; i++)
             {
                 var name = packet.ReadCString("Name", i);
                 var guid = packet.ReadGuid("GUID", i);
-                StoreGetters.AddName(guid, name);
+                names.AddPlayerName(guid, name);
                 packet.ReadEnum<GroupMemberStatusFlag>("Status", TypeCode.Byte, i);
                 packet.ReadByte("Sub Group", i);
                 packet.ReadEnum<GroupUpdateFlag>("Update Flags", TypeCode.Byte, i);
@@ -145,7 +147,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.Auras))
             {
-                packet.ReadByte("Unk byte");
+                packet.ReadByte("Unk byte 1");
                 var mask = packet.ReadUInt64("Aura mask");
                 var cnt = packet.ReadUInt32("Aura count");
                 packet.StoreBeginList("Auras");
@@ -193,10 +195,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.PetAuras))
             {
-                packet.ReadByte("Unk byte");
+                packet.ReadByte("Unk byte 2");
                 var mask = packet.ReadUInt64("Pet Aura mask");
                 var cnt = packet.ReadUInt32("Pet Aura count");
-                packet.StoreBeginList("Auras");
+                packet.StoreBeginList("Pet Auras");
                 for (var i = 0; i < cnt; ++i)
                 {
                     if ((mask & (1ul << i)) == 0)
@@ -220,7 +222,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.Unk200000))
             {
-                packet.ReadInt32("Unk int32");
+                packet.ReadInt32("Unk int32 1");
                 var length = packet.ReadInt32("Unk int32");
                 if (length > 0)
                     packet.ReadWoWString("Unk String", length * 2);

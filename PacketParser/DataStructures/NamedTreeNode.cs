@@ -5,7 +5,7 @@ using System.Text;
 using System.Collections.Specialized;
 using Wintellect.PowerCollections;
 
-namespace WowPacketParser.Misc
+namespace PacketParser.DataStructures
 {
     public class NamedTreeNode : OrderedDictionary, ITreeNode
     {
@@ -26,28 +26,35 @@ namespace WowPacketParser.Misc
         }
         public bool TryGetNode<NodeType>(out NodeType ret, string[] address, int addrIndex)
         {
-            if (address.Length - 1 == addrIndex)
+            if (address.Length == addrIndex)
             {
-                if (this is NodeType)
+                try
                 {
                     ret = (NodeType)((Object)this);
                     return true;
                 }
-                ret = default(NodeType);
-                return false;
+                catch
+                {
+                    ret = default(NodeType);
+                    return false;
+                }
             }
             if (this.Contains(address[addrIndex]))
             {
                 var node = this[address[addrIndex]];
-                if (address.Length == addrIndex)
+                if (address.Length == addrIndex + 1)
                 {
-                    if (node is NodeType)
+                    try
                     {
-                        ret = (NodeType)node;
+                        dynamic n = node;
+                        ret = (NodeType)(n);
                         return true;
                     }
-                    ret = default(NodeType);
-                    return false;
+                    catch
+                    {
+                        ret = default(NodeType);
+                        return false;
+                    }
                 }
                 var nodeObj = node as ITreeNode;
                 if (nodeObj != null)

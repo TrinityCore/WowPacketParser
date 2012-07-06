@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
-using WowPacketParser.SQL;
+using PacketParser.Misc;
+using PacketParser.SQL;
 
-namespace WowPacketParser.Store.Objects
+namespace PacketParser.DataStructures
 {
     [DBTableName("quest_poi")]
-    public class QuestPOI
+    public class QuestPOI : ITextOutputDisabled
     {
         [DBFieldName("objIndex")]
         public int ObjectiveIndex;

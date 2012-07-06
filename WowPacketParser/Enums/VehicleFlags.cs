@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WowPacketParser.Enums
+namespace PacketParser.Enums
 {
     [Flags]
     enum VehicleFlags // 4.x
