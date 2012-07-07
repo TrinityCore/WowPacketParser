@@ -348,7 +348,6 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_ADDON_INFO, 0x2C14},
             {Opcode.SMSG_AI_REACTION, 0x0637},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x58B1},
-            {Opcode.SMSG_ALL_GUILD_ACHIEVEMENTS, 0x54B7},
             {Opcode.SMSG_ARENA_ERROR, 0x2D17},
             {Opcode.SMSG_ARENA_OPPONENT_UPDATE, 0x2637},
             {Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT, 0x39B3},
