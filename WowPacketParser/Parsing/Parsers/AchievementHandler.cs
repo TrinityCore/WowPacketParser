@@ -139,7 +139,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_DATA)]
         public static void HandleGuildAchievementData(Packet packet)
         {
-            var cnt = packet.ReadUInt32("Count");
+            var cnt = 0u;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
+                cnt = packet.ReadBits("Count", 23);
+            else
+                cnt = packet.ReadUInt32("Count");
+
             for (var i = 0; i < cnt; ++i)
                 packet.ReadPackedTime("Date", i);
 
