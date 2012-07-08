@@ -679,9 +679,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleComplainResult(Packet packet)
         {
             packet.ReadByte("Unknown1"); // value 1 resets CGChat::m_complaintsSystemStatus in client. (unused?)
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // guessing
-                packet.ReadByte("Unknown2"); // value 0xC generates a "CalendarError" in client.
+            packet.ReadByte("Unknown2"); // value 0xC generates a "CalendarError" in client. (found in 3.3.3a and 4.2.2a at least)
         }
 
         [Parser(Opcode.CMSG_MINIGAME_MOVE)]

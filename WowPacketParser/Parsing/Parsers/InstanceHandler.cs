@@ -85,7 +85,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             if (packet.Direction == Direction.ClientToServer)
             {
-                var icon = packet.ReadEnum<TargetIcon>("Icon Id", TypeCode.Byte);
+                var icon = packet.ReadEnum<TargetIcon>("Icon Id", TypeCode.SByte);
                 if (icon != TargetIcon.None)
                     packet.ReadGuid("Target GUID");
 

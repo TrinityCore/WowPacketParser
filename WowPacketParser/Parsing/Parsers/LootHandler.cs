@@ -172,7 +172,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_5a_12340))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685)) // probably earlier
                 packet.ReadUInt32("Slot");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
             packet.ReadInt32("Random Suffix");

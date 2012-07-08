@@ -568,7 +568,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
             packet.ReadBoolean("Unk bool");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685) && ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_5_12213)) // blizzard retardness, client doesn't even read this
+            if (ClientVersion.Build == ClientVersionBuild.V3_3_5a_12340) // blizzard retardness, client doesn't even read this
             {
                 packet.ReadSingle("Unk");
                 packet.ReadSingle("Unk");
