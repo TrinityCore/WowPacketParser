@@ -277,5 +277,72 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadPackedTime("Achievement Date", i);
             }
         }
+
+        [Parser(Opcode.SMSG_GUILD_CRITERIA_DATA, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildCriteriaData434(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 21);
+            var counter = new byte[count][];
+            var guid = new byte[count][];
+
+            for (var i = 0; i < count; ++i)
+            {
+                counter[i] = new byte[8];
+                guid[i] = new byte[8];
+
+                counter[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
+                counter[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
+                guid[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
+                counter[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
+                guid[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
+                counter[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
+                counter[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
+                guid[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
+                counter[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
+                guid[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
+                guid[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
+                guid[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
+                counter[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
+                guid[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
+                counter[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
+                guid[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
+            }
+
+            for (var i = 0; i < count; ++i)
+            {
+                if (guid[i][5] != 0) guid[i][5] ^= packet.ReadByte();
+
+                packet.ReadUInt32("UInt32 1", i);
+
+                if (counter[i][3] != 0) counter[i][3] ^= packet.ReadByte();
+                if (counter[i][7] != 0) counter[i][7] ^= packet.ReadByte();
+
+                packet.ReadUInt32("UInt32 2", i);
+
+                if (counter[i][6] != 0) counter[i][6] ^= packet.ReadByte();
+                if (guid[i][4] != 0) guid[i][4] ^= packet.ReadByte();
+                if (guid[i][1] != 0) guid[i][1] ^= packet.ReadByte();
+                if (counter[i][4] != 0) counter[i][4] ^= packet.ReadByte();
+                if (guid[i][3] != 0) guid[i][3] ^= packet.ReadByte();
+                if (counter[i][0] != 0) counter[i][0] ^= packet.ReadByte();
+                if (guid[i][2] != 0) guid[i][2] ^= packet.ReadByte();
+                if (counter[i][1] != 0) counter[i][1] ^= packet.ReadByte();
+                if (guid[i][6] != 0) guid[i][6] ^= packet.ReadByte();
+
+                packet.ReadUInt32("UInt32 3", i);
+                packet.ReadUInt32("Criteria id", i);
+
+                if (counter[i][5] != 0) counter[i][5] ^= packet.ReadByte();
+
+                packet.ReadUInt32("UInt32 5", i);
+
+                if (guid[i][7] != 0) guid[i][7] ^= packet.ReadByte();
+                if (counter[i][2] != 0) counter[i][2] ^= packet.ReadByte();
+                if (guid[i][0] != 0) guid[i][0] ^= packet.ReadByte();
+
+                packet.WriteLine("[{0}] Criteria GUID: {1}", i, new Guid(BitConverter.ToUInt64(guid[i], 0)));
+                packet.WriteLine("[{0}] Criteria counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
+            }
+        }
     }
 }
