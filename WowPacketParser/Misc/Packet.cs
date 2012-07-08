@@ -54,7 +54,7 @@ namespace WowPacketParser.Misc
             TimeSpan = Time - _firstPacketTime;
         }
 
-        public int Opcode { get; private set; }
+        public int Opcode { get; set; } // setter can't be private because it's used in multiple_packets
         public DateTime Time { get; private set; }
         public TimeSpan TimeSpan { get; private set; }
         public Direction Direction { get; private set; }

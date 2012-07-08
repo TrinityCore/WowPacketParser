@@ -559,8 +559,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
         }
 
-        [Parser(Opcode.SMSG_PROCRESIST)]
         [Parser(Opcode.SMSG_SPELLORDAMAGE_IMMUNE)]
+        [Parser(Opcode.SMSG_PROCRESIST)]
         public static void HandleSpellProcResist(Packet packet)
         {
             packet.ReadGuid("Caster GUID");
@@ -568,11 +568,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
             packet.ReadBoolean("Unk bool");
 
-            if (ClientVersion.Build == ClientVersionBuild.V3_3_5a_12340) // blizzard retardness, client doesn't even read this
-            {
-                packet.ReadSingle("Unk");
-                packet.ReadSingle("Unk");
-            }
+            // not found in 3.3.5a sniff nor 3.3.3a
+            //if (ClientVersion.Build == ClientVersionBuild.V3_3_5a_12340) // blizzard retardness, client doesn't even read this
+            //{
+            //    packet.ReadSingle("Unk");
+            //    packet.ReadSingle("Unk");
+            //}
         }
 
         [Parser(Opcode.MSG_CHANNEL_UPDATE)]

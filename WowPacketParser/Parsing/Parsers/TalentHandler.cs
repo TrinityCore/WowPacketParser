@@ -79,7 +79,8 @@ namespace WowPacketParser.Parsing.Parsers
                 slotMask >>= 1;
             }
 
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_INSPECT_TALENT))
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_INSPECT_TALENT)
+                && packet.CanRead()) // otherwise it would fail for players without a guild
             {
                 packet.ReadGuid("Guild GUID");
                 packet.ReadUInt32("Guild Level");

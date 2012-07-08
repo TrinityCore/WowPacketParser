@@ -115,20 +115,20 @@ namespace WowPacketParser.Parsing.Parsers
             // This opcode heavily relies on ALL of its contained packets
             // to be parsed successfully
 
-            //packet.WriteLine("{");
-            //var i = 0;
-            //while (packet.CanRead())
-            //{
-            //    packet.Opcode = packet.ReadUInt16();
+            packet.WriteLine("{");
+            var i = 0;
+            while (packet.CanRead())
+            {
+                packet.Opcode = packet.ReadUInt16();
 
-            //    if (i > 0)
-            //        packet.WriteLine();
+                if (i > 0)
+                    packet.WriteLine();
 
-            //    packet.Write("[{0}] ", i++);
+                packet.Write("[{0}] ", i++);
 
-            //    Handler.Parse(packet, isMultiple: true);
-            //}
-            //packet.WriteLine("}");
+                Handler.Parse(packet, isMultiple: true);
+            }
+            packet.WriteLine("}");
         }
 
         [Parser(Opcode.SMSG_STOP_DANCE)]
