@@ -737,6 +737,7 @@ namespace WowPacketParser.Enums
         MSG_CORPSE_QUERY,
         MSG_DELAY_GHOST_TELEPORT,
         MSG_DEV_SHOWLABEL,
+        MSG_GET_CALENDAR, // Cata Only
         MSG_GM_ACCOUNT_ONLINE,
         MSG_GM_BIND_OTHER,
         MSG_GM_CHANGE_ARENA_RATING,
@@ -1340,6 +1341,7 @@ namespace WowPacketParser.Enums
         SMSG_PETITION_SIGN_RESULTS,
         SMSG_PET_ACTION_FEEDBACK,
         SMSG_PET_ACTION_SOUND,
+        SMSG_PET_ADDED,
         SMSG_PET_BROKEN,
         SMSG_PET_CAST_FAILED,
         SMSG_PET_DISMISS_SOUND,
@@ -1435,6 +1437,7 @@ namespace WowPacketParser.Enums
         SMSG_RESURRECT_REQUEST,
         SMSG_RESYNC_RUNES,
         SMSG_RWHOIS,
+        SMSG_SAVE_CUF_PROFILES,
         SMSG_SCRIPT_MESSAGE,
         SMSG_SELL_ITEM,
         SMSG_SEND_MAIL_RESULT,
