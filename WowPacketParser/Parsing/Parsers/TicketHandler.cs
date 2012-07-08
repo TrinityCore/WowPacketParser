@@ -88,5 +88,17 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleTicketZeroLengthPackets(Packet packet)
         {
         }
+
+        [Parser(Opcode.CMSG_COMPLAIN)]
+        public static void HandleComplain(Packet packet)
+        {
+            packet.ReadBoolean("Unk bool");
+            packet.ReadGuid("Guid");
+            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32");
+            packet.ReadCString("Complain");
+        }
     }
 }
