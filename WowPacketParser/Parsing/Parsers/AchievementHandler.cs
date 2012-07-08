@@ -312,12 +312,12 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 if (guid[i][5] != 0) guid[i][5] ^= packet.ReadByte();
 
-                packet.ReadUInt32("UInt32 1", i);
+                packet.ReadTime("Unk time 1", i);
 
                 if (counter[i][3] != 0) counter[i][3] ^= packet.ReadByte();
                 if (counter[i][7] != 0) counter[i][7] ^= packet.ReadByte();
 
-                packet.ReadUInt32("UInt32 2", i);
+                packet.ReadTime("Unk time 2", i);
 
                 if (counter[i][6] != 0) counter[i][6] ^= packet.ReadByte();
                 if (guid[i][4] != 0) guid[i][4] ^= packet.ReadByte();
@@ -329,12 +329,12 @@ namespace WowPacketParser.Parsing.Parsers
                 if (counter[i][1] != 0) counter[i][1] ^= packet.ReadByte();
                 if (guid[i][6] != 0) guid[i][6] ^= packet.ReadByte();
 
-                packet.ReadUInt32("UInt32 3", i);
+                packet.ReadTime("Criteria Date", i);
                 packet.ReadUInt32("Criteria id", i);
 
                 if (counter[i][5] != 0) counter[i][5] ^= packet.ReadByte();
 
-                packet.ReadUInt32("UInt32 5", i);
+                packet.ReadUInt32("Unk", i);
 
                 if (guid[i][7] != 0) guid[i][7] ^= packet.ReadByte();
                 if (counter[i][2] != 0) counter[i][2] ^= packet.ReadByte();
