@@ -550,8 +550,10 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadUInt32("Type");
             var itemId = packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                 packet.ReadUInt32("Received Type");
+
             var size = packet.ReadUInt32("Size");
             if (size == 0)
             {
