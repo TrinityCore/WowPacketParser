@@ -640,24 +640,24 @@ namespace WowPacketParser.Parsing.Parsers
                 charGuids[c] = new byte[8];
                 guildGuids[c] = new byte[8];
 
-                charGuids[c][7] = (byte)(packet.ReadBit() ? 1 : 0);
-                guildGuids[c][0] = (byte)(packet.ReadBit() ? 1 : 0);
+                charGuids[c][3] = (byte)(packet.ReadBit() ? 1 : 0);
                 guildGuids[c][1] = (byte)(packet.ReadBit() ? 1 : 0);
+                guildGuids[c][7] = (byte)(packet.ReadBit() ? 1 : 0);
                 guildGuids[c][2] = (byte)(packet.ReadBit() ? 1 : 0);
                 nameLenghts[c] = packet.ReadBits(7);
                 charGuids[c][4] = (byte)(packet.ReadBit() ? 1 : 0);
-                charGuids[c][3] = (byte)(packet.ReadBit() ? 1 : 0);
+                charGuids[c][7] = (byte)(packet.ReadBit() ? 1 : 0);
                 guildGuids[c][3] = (byte)(packet.ReadBit() ? 1 : 0);
                 charGuids[c][5] = (byte)(packet.ReadBit() ? 1 : 0);
                 guildGuids[c][6] = (byte)(packet.ReadBit() ? 1 : 0);
                 charGuids[c][1] = (byte)(packet.ReadBit() ? 1 : 0);
-                guildGuids[c][4] = (byte)(packet.ReadBit() ? 1 : 0);
                 guildGuids[c][5] = (byte)(packet.ReadBit() ? 1 : 0);
+                guildGuids[c][4] = (byte)(packet.ReadBit() ? 1 : 0);
                 firstLogins[c] = packet.ReadBit();
                 charGuids[c][0] = (byte)(packet.ReadBit() ? 1 : 0);
                 charGuids[c][2] = (byte)(packet.ReadBit() ? 1 : 0);
                 charGuids[c][6] = (byte)(packet.ReadBit() ? 1 : 0);
-                guildGuids[c][7] = (byte)(packet.ReadBit() ? 1 : 0);
+                guildGuids[c][0] = (byte)(packet.ReadBit() ? 1 : 0);
             }
 
             for (int c = 0; c < count; ++c)
@@ -683,18 +683,26 @@ namespace WowPacketParser.Parsing.Parsers
                 if (guildGuids[c][2] != 0)
                     guildGuids[c][2] ^= packet.ReadByte();
 
+                packet.ReadByte("List Order", c);
+                packet.ReadByte("Hair Style", c);
                 if (guildGuids[c][3] != 0)
                     guildGuids[c][3] ^= packet.ReadByte();
 
-                packet.ReadByte("List Order", c);
-                packet.ReadByte("Hair Style", c);
                 packet.ReadInt32("Pet Display ID", c);
                 packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
                 packet.ReadByte("Hair Color", c);
+
+                if (charGuids[c][4] != 0)
+                    charGuids[c][4] ^= packet.ReadByte();
+
                 var mapId = packet.ReadInt32("Map", c);
+                if (guildGuids[c][5] != 0)
+                    guildGuids[c][5] ^= packet.ReadByte();
+
                 var z = packet.ReadSingle("Position Z", c);
                 if (guildGuids[c][6] != 0)
                     guildGuids[c][6] ^= packet.ReadByte();
+
                 packet.ReadInt32("Pet Level", c);
 
                 if (charGuids[c][3] != 0)
@@ -728,10 +736,21 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Skin", c);
                 var race = packet.ReadEnum<Race>("Race", TypeCode.Byte, c);
                 var level = packet.ReadByte("Level", c);
+                if (charGuids[c][6] != 0)
+                    charGuids[c][6] ^= packet.ReadByte();
+
+                if (guildGuids[c][4] != 0)
+                    guildGuids[c][4] ^= packet.ReadByte();
+
                 if (guildGuids[c][0] != 0)
                     guildGuids[c][0] ^= packet.ReadByte();
+
+                if (charGuids[c][5] != 0)
+                    charGuids[c][5] ^= packet.ReadByte();
+
                 if (charGuids[c][1] != 0)
                     charGuids[c][1] ^= packet.ReadByte();
+
                 var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
 
                 var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
