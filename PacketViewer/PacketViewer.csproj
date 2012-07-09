@@ -95,10 +95,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="XPTable, Version=1.2.0.29808, Culture=neutral, PublicKeyToken=24950705800d2198, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\XPTable.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataStructures\PacketEntry.cs" />
@@ -151,6 +147,10 @@
     <ProjectReference Include="..\PacketParser\PacketParser.csproj">
       <Project>{2A05F427-D187-4577-B2EB-F356188D9CE0}</Project>
       <Name>PacketParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XPTable\XPTable.csproj">
+      <Project>{1ADD2ECB-2B24-4162-8965-3EFAA9BB041E}</Project>
+      <Name>XPTable</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
