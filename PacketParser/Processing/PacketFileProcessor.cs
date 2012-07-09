@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using PacketParser.Processing;
 using PacketParser.Misc;
+using PacketParser.DataStructures;
 
 namespace PacketParser.Processing
 {
     public class PacketFileProcessor
     {
-        public readonly string FileName;
+        [ThreadStatic]
         public static PacketFileProcessor Current;
+
+        public readonly string FileName;
         public readonly string LogPrefix;
         public Dictionary<Type, IPacketProcessor> Processors = new Dictionary<Type, IPacketProcessor>();
 
@@ -53,6 +56,38 @@ namespace PacketParser.Processing
                 IPacketProcessor instance = (IPacketProcessor)Activator.CreateInstance(p);
                 if (instance.Init(this))
                     Processors[p] = instance;
+            }
+        }
+
+        public void ProcessData(Packet data)
+        {
+            var itr = data.GetTreeEnumerator();
+            bool moveNext = itr.MoveNext();
+            bool cont = moveNext;
+            while (cont)
+            {
+                foreach (var p in Processors)
+                {
+                    var proc = p.Value;
+                    foreach (var i in itr.CurrentClosedNodes)
+                    {
+                        if (i.type == typeof(Packet))
+                            proc.ProcessedPacket(i.obj as Packet);
+                    }
+                }
+                if (!moveNext)
+                    break;
+                foreach (var p in Processors)
+                {
+                    var proc = p.Value;
+                    if (itr.Type == typeof(Packet))
+                    {
+                        Packet packet = (Packet)itr.Current;
+                        proc.ProcessPacket(packet);
+                    }
+                    proc.ProcessData(itr.Name, itr.Index, itr.Current, itr.Type);
+                }
+                moveNext = itr.MoveNext();
             }
         }
     }

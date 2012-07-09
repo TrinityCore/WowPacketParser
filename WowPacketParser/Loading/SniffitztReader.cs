@@ -13,13 +13,18 @@ namespace PacketParser.Loading
     {
         private readonly IEnumerator<XElement> _element;
         private bool _canRead;
+        private uint _count;
+        private uint _num;
         public SniffitztReader(string file)
         {
             string uri = new Uri(Path.GetFullPath(file)).ToString();
             XDocument xdoc =  new XDocument(uri);
-            var elements =  xdoc.XPathSelectElements("*/packet");
+            IEnumerable<XElement> elements =  xdoc.XPathSelectElements("*/packet");
             _element = elements.GetEnumerator();
             _canRead = _element.MoveNext();
+            var a = (ICollection<XElement>)elements;
+            _count = (uint)a.Count;
+            _num = 0;
         }
 
         public bool CanRead()
@@ -36,7 +41,7 @@ namespace PacketParser.Loading
             var data = Utilities.HexStringToBinary(element.Value);
 
             _canRead = _element.MoveNext();
-
+            _num = (uint)number;
             return new Packet(data, opcode, DateTime.Now, direction, number, fileName);
         }
 
@@ -58,6 +63,13 @@ namespace PacketParser.Loading
             while(old != _element.Current)
                 _canRead = _element.MoveNext();
             return p.Time;
+        }
+
+        public uint GetProgress()
+        {
+            if (_count != 0)
+                return (uint)(_num * 100 / _count);
+            return 100;
         }
     }
 }

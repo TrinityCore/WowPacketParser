@@ -9,5 +9,6 @@ namespace PacketParser.Loading
         bool CanRead();
         Packet Read(int number, string fileName);
         ClientVersionBuild GetBuild();
+        uint GetProgress();
     }
 }

@@ -126,6 +126,13 @@ namespace PacketParser.Loading
             return p.Time;
         }
 
+        public uint GetProgress()
+        {
+            if (_reader.BaseStream.Length != 0)
+                return (uint)(_reader.BaseStream.Position*100 / _reader.BaseStream.Length);
+            return 100;
+        }
+
         public bool CanRead()
         {
             return _reader.BaseStream.Position != _reader.BaseStream.Length;

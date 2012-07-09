@@ -7,6 +7,7 @@ using PacketParser.Misc;
 using Guid = PacketParser.DataStructures.Guid;
 using PacketParser.Processing;
 using PacketParser.DataStructures;
+using System.Text;
 
 namespace PacketParser.Parsing.Parsers
 {
@@ -156,18 +157,23 @@ namespace PacketParser.Parsing.Parsers
                     continue;
 
                 var blockVal = packet.ReadUpdateField();
-                string value = blockVal.UInt32Value + "/" + blockVal.SingleValue;
-                string key;
+                StringBuilder keyBuilder = new StringBuilder(30);
 
                 var enumType = UpdateFields.GetUpdateFieldEnumByOffset(i, type);
                 var name = UpdateFields.GetUpdateFieldName(i, enumType);
                 if (name == null)
                 {
-                    key = "Update field " + i;
+                    keyBuilder.Append("Update field ");
+                    keyBuilder.Append(i);
                 }
                 else
-                    key = name + " (" + i + ")";
-                packet.Store(key, value, index, i);
+                {
+                    keyBuilder.Append(name);
+                    keyBuilder.Append(" (");
+                    keyBuilder.Append(i);
+                    keyBuilder.Append(")");
+                }
+                packet.Store(keyBuilder.ToString(), blockVal, index, i);
                 dict.Add(i, blockVal);
             }
             packet.StoreEndList();

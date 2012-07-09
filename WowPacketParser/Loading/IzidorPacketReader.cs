@@ -11,7 +11,7 @@ namespace PacketParser.Loading
 {
     public class IzidorPacketReader : IPacketReader
     {
-        public TextReader _tr;
+        public StreamReader _tr;
         public DateTime _baseDate;
         private ClientVersionBuild _build;
 
@@ -105,6 +105,13 @@ namespace PacketParser.Loading
         public void Dispose()
         {
             _tr.Dispose();
+        }
+
+        public uint GetProgress()
+        {
+            if (_tr.BaseStream.Length != 0)
+                return (uint)(_tr.BaseStream.Position*100 / _tr.BaseStream.Length);
+            return 100;
         }
     }
 }

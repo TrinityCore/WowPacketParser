@@ -51,6 +51,8 @@ namespace PacketDumper.Processing
                 var packetNum = 0;
                 var packetCount = 0;
 
+                uint oldPct = 0;
+                ShowPercentProgressMessage("Processing...", oldPct);
                 // initialize processors
                 InitProcessors();
                 
@@ -80,10 +82,20 @@ namespace PacketDumper.Processing
 
                     ++packetCount;
 
+                    var newPct = reader.GetProgress();
+                    if (newPct != oldPct)
+                    {
+                        ShowPercentProgressMessage("Processing...", newPct);
+                        oldPct = newPct;
+                    }
+
                     // finish if read packet count reached max
                     if (Settings.ReaderFilterPacketsNum > 0 && packetCount == Settings.ReaderFilterPacketsNum)
                         break;
                 }
+                if (oldPct != 100)
+                    ShowPercentProgressMessage("Processing...", 100);
+
                 // finalize processors
                 foreach (var procs in Processors)
                 {
@@ -106,6 +118,13 @@ namespace PacketDumper.Processing
                 Trace.WriteLine(string.Format("{0}: {1}", LogPrefix, _stats));
                 Current = null;
             }
+        }
+
+        private static void ShowPercentProgressMessage(string message, uint percent)
+        {
+            Console.Write("\r{0} {1}% complete", message, percent);
+            if (percent == 100)
+                Console.WriteLine();
         }
 
         public override void InitProcessors()
@@ -148,37 +167,6 @@ namespace PacketDumper.Processing
 
             // Close Writer, Stream - Dispose
             packet.ClosePacket();
-        }
-
-        public void ProcessData(Packet data)
-        {
-            var itr = data.GetTreeEnumerator();
-            while (itr.MoveNext())
-            {
-                foreach (var p in Processors)
-                {
-                    var proc = p.Value;
-                    foreach (var i in itr.CurrentClosedNodes)
-                    {
-                        if (i.type == typeof(Packet))
-                            proc.ProcessedPacket(i.obj as Packet);
-                    }
-                    if (itr.Type == typeof(Packet))
-                    {
-                        Packet packet = (Packet)itr.Current;
-                        proc.ProcessPacket(packet);
-                    }
-                    proc.ProcessData(itr.Name, itr.Index, itr.Current, itr.Type);
-                }
-            }
-            foreach (var proc in Processors)
-            {
-                foreach (var i in itr.CurrentClosedNodes)
-                {
-                    if (i.type == typeof(Packet))
-                        proc.Value.ProcessedPacket(i.obj as Packet);
-                }
-            }
         }
     }
 }

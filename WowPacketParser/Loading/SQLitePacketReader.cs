@@ -3,6 +3,7 @@ using System.Data.SQLite;
 using PacketParser.Misc;
 using PacketParser.Enums;
 using PacketParser.DataStructures;
+using System.IO;
 
 namespace PacketParser.Loading
 {
@@ -11,12 +12,17 @@ namespace PacketParser.Loading
         readonly SQLiteConnection _connection;
         SQLiteDataReader _reader;
         ClientVersionBuild _build = ClientVersionBuild.Zero;
+        uint _num;
+        uint _count;
 
         public SQLitePacketReader(string fileName)
         {
             _connection = new SQLiteConnection("Data Source=" + fileName);
             _connection.Open();
 
+            // sniff may not contain build
+            DateTime lastWriteTimeUtc = File.GetLastWriteTimeUtc(fileName);
+            _build = ClientVersion.GetVersion(lastWriteTimeUtc);
             // tiawps
             // header table (`key` string primary key, value string)
             // packets table (id integer primary key autoincrement, timestamp datetime, direction integer, opcode integer, data blob)
@@ -24,9 +30,16 @@ namespace PacketParser.Loading
 
             using (SQLiteCommand command = _connection.CreateCommand())
             {
+                command.CommandText = "SELECT count(*) FROM packets;";
+                _count = Convert.ToUInt32(command.ExecuteScalar());
+            }
+
+            using (SQLiteCommand command = _connection.CreateCommand())
+            {
                 command.CommandText = "SELECT opcode, timestamp, direction, data FROM packets;";
                 _reader = command.ExecuteReader();
             }
+            _num = 0;
         }
 
         void ReadHeader()
@@ -70,6 +83,7 @@ namespace PacketParser.Loading
 
         public Packet Read(int number, string fileName)
         {
+            _num = (uint)number;
             var opcode = _reader.GetInt32(0);
             var time = _reader.GetDateTime(1);
             var direction = (Direction)_reader.GetInt32(2);
@@ -91,6 +105,13 @@ namespace PacketParser.Loading
 
             if (_connection != null)
                 _connection.Close();
+        }
+
+        public uint GetProgress()
+        {
+            if (_count != 0)
+                return (uint)(_num * 100 / _count);
+            return 100;
         }
     }
 }
