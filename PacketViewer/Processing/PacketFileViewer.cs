@@ -19,7 +19,7 @@ using System.Threading;
 
 namespace PacketViewer.Processing
 {
-    public class PacketFileViewer : PacketFileProcessor
+    public class PacketFileViewer : PacketFileProcessor, IDisposable
     {
         public PacketFileTab Tab;
 
@@ -89,6 +89,7 @@ namespace PacketViewer.Processing
             }
             reader.Dispose();
             worker.ReportProgress(100);
+            GC.Collect();
         }
 
         delegate void AddPacketCallback(List<PacketEntry> packets);
@@ -141,6 +142,11 @@ namespace PacketViewer.Processing
 
             // Close Writer, Stream - Dispose
             packet.ClosePacket();
+        }
+
+        public void Dispose()
+        {
+            Tab = null;
         }
     }
 }

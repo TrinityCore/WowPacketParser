@@ -150,11 +150,11 @@ namespace XPTable.Models
                     skip--;
                 else if ((skip == 0) && (!this[i].ExpandSubRows))
                 {
-                    skip = this[i].SubRows.Count;
+                    skip = (this[i].SubRows != null) ? this[i].SubRows.Count : 0;
                     result += skip;
                 }
                 else
-                    skip = this[i].SubRows.Count;
+                    skip = (this[i].SubRows != null) ? this[i].SubRows.Count : 0;
             }
 
             return result;
@@ -178,7 +178,7 @@ namespace XPTable.Models
             int i = 0;
             while (i < this.Count)
             {
-                if (this[i].SubRows.Count > 0)
+                if (this[i].SubRows.Count != null && this[i].SubRows.Count > 0)
                     this[i].ExpandSubRows = false;
                 i++;
             }
@@ -195,7 +195,7 @@ namespace XPTable.Models
                 if (this[i].Parent == null)
                 {
                     this[i].ExpandSubRows = true;
-                    i += this[i].SubRows.Count;
+                    i += (this[i].SubRows != null) ? this[i].SubRows.Count : 0;
                 }
             }
         }
@@ -205,9 +205,9 @@ namespace XPTable.Models
             if (e.EventType == RowEventType.ExpandSubRowsChanged)
             {
                 if (!e.Row.ExpandSubRows)
-                    _totalHiddenSubRows += e.Row.SubRows.Count;
+                    _totalHiddenSubRows += (e.Row.SubRows != null ) ? e.Row.SubRows.Count : 0;
                 else
-                    _totalHiddenSubRows -= e.Row.SubRows.Count;
+                    _totalHiddenSubRows -= (e.Row.SubRows != null) ? e.Row.SubRows.Count : 0;
 
             }
 		}

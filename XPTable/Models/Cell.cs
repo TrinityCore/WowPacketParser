@@ -60,16 +60,37 @@ namespace XPTable.Models
 		private static readonly int STATE_EDITABLE = 1;
 		private static readonly int STATE_ENABLED = 2;
 		private static readonly int STATE_SELECTED = 4;
+        private static readonly int STATE_DISPOSED = 8;
+        private static readonly int STATE_WIDTH_SET = 16;
+        private static readonly int STATE_IS_TEXT_TRIMMED = 32;
 
 		/// <summary>
 		/// The text displayed in the Cell
 		/// </summary>
-		private string text;
+        protected virtual string text
+        {
+            get
+            {
+                return null;
+            }
+            set
+            {
+            }
+        }
 
 		/// <summary>
 		/// An object that contains data to be displayed in the Cell
 		/// </summary>
-		private object data;
+        protected virtual object data
+        {
+            get
+            {
+                return null;
+            }
+            set
+            {
+            }
+        }
 
 		/// <summary>
 		/// An object that contains data about the Cell
@@ -87,45 +108,122 @@ namespace XPTable.Models
 		/// </summary>
 		private Row row;
 
+        private sbyte _index;
+
 		/// <summary>
 		/// The index of the Cell
 		/// </summary>
-		private int index;
+		private int index
+        {
+            get { return _index; }
+            set { _index = (sbyte)value; }
+        }
+
+        private byte _state = 0;
 
 		/// <summary>
 		/// Contains the current state of the the Cell
 		/// </summary>
-		private byte state;
+        private byte state
+        {
+            get
+            {
+                return (byte)((int)_state & 7);
+            }
+            set
+            {
+                _state = (byte)(((int)_state & ~7) | ((int)value) & 7);
+            }
+        }
 		
 		/// <summary>
 		/// The Cells CellStyle settings
 		/// </summary>
-		private CellStyle cellStyle;
+        private CellStyle cellStyle
+        {
+            get
+            {
+                return null;
+            }
+            set
+            {
+            }
+        }
 
 		/// <summary>
 		/// The Cells CellCheckStyle settings
 		/// </summary>
-		private CellCheckStyle checkStyle;
+        private CellCheckStyle checkStyle
+        {
+            get
+            {
+                return null;
+            }
+            set
+            {
+            }
+        }
 
 		/// <summary>
 		/// The Cells CellImageStyle settings
 		/// </summary>
-		private CellImageStyle imageStyle;
+		private CellImageStyle imageStyle
+        {
+            get 
+            {
+                return null;
+            }
+            set
+            {
+            }
+        }
 
 		/// <summary>
 		/// The text displayed in the Cells tooltip
 		/// </summary>
-		private string tooltipText;
+		private string tooltipText
+        {
+            get
+            {
+                return null;
+            }
+            set
+            {
+            }
+        }
+
 
 		/// <summary>
 		/// Specifies whether the Cell has been disposed
 		/// </summary>
-		private bool disposed = false;
+        private bool disposed
+        {
+            get
+            {
+                return (_state & STATE_DISPOSED)!=0;
+            }
+            set
+            {
+                if (value)
+                    _state |= (byte)STATE_DISPOSED;
+                else
+                    _state &= (byte)~STATE_DISPOSED;
+            }
+        }
 
         /// <summary>
         /// Specifies how many columns this cell occupies.
         /// </summary>
-        private int colspan;
+        private int colspan
+        {
+            get
+            {
+                return 1;
+            }
+            set
+            {
+            }
+        }
 
 		#endregion
 
@@ -1180,7 +1278,20 @@ namespace XPTable.Models
         /// <summary>
         /// Indicates whether the text has all been shown when rendered.
         /// </summary>
-        private bool _isTextTrimmed = false;
+        private bool _isTextTrimmed
+        {
+            get
+            {
+                return (_state & STATE_IS_TEXT_TRIMMED) != 0;
+            }
+            set
+            {
+                if (value)
+                    _state |= (byte)STATE_IS_TEXT_TRIMMED;
+                else
+                    _state &= (byte)~STATE_IS_TEXT_TRIMMED;
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value that indicates whether the text has all been shown when rendered.
@@ -1200,7 +1311,13 @@ namespace XPTable.Models
             get { return _isTextTrimmed; }
         }
 
-        private int _width;
+        private short _Width;
+
+        private int _width
+        {
+            get { return _Width; }
+            set { _Width = (short)value; }
+        }
 
         /// <summary>
         /// Gets or sets the minimum width required to display this cell.
@@ -1216,7 +1333,20 @@ namespace XPTable.Models
             }
         }
 
-        private bool _widthSet = false;
+        private bool _widthSet
+        {
+            get
+            {
+                return (_state & STATE_WIDTH_SET) != 0;
+            }
+            set
+            {
+                if (value)
+                    _state |= (byte)STATE_WIDTH_SET;
+                else
+                    _state &= (byte)~STATE_WIDTH_SET;
+            }
+        }
 
         /// <summary>
         /// Returns true if the cells width property has been assigned.

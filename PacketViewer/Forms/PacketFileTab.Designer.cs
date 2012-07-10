@@ -26,6 +26,21 @@ namespace PacketViewer.Forms
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
+            if (PacketProcessor != null)
+            {
+                PacketProcessor.Dispose();
+                PacketProcessor = null;
+            }
+            if (tablePackets != null)
+            {
+                tablePackets.Dispose();
+                tablePackets = null;
+            }
+            if (backgroundWorkerProcessPackets != null)
+            {
+                backgroundWorkerProcessPackets.Dispose();
+                backgroundWorkerProcessPackets = null;
+            }
             if (disposing && (components != null))
             {
                 components.Dispose();

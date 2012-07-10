@@ -6706,7 +6706,7 @@ namespace XPTable.Models
                         Cell cell = this.TableModel.Rows[this.FocusedCell.Row].Cells[this.FocusedCell.Column];
 
                         // If the cell is in a sub-row, determine its starting column including ColSpan.
-                        if (cell.Row.SubRows.Count == 0)
+                        if (cell.Row.SubRows == null || cell.Row.SubRows.Count == 0)
                         {
                             // This is a sub-row. Get the actual cell start index (in case it spans multiple columns).
                             int originatingColumn = cell.Row.GetRenderedCellIndex(this.FocusedCell.Column);
@@ -7083,7 +7083,7 @@ namespace XPTable.Models
                             else
                             {
                                 // this is not a child, so if it is a parent, select all children
-                                if (r.SubRows.Count == 0)
+                                if (r.SubRows == null || r.SubRows.Count == 0)
                                 {
                                     this.TableModel.Selections.SelectCell(row, column);
                                 }
@@ -7962,7 +7962,7 @@ namespace XPTable.Models
                         {
                             if (this.ColumnModel.Columns[i].Visible)
                             {
-                                List<bool> flags = this.TableModel.Rows[irow].InternalGridLineFlags;
+                                BitArray flags = this.TableModel.Rows[irow].InternalGridLineFlags;
 
                                 right += this.ColumnModel.Columns[i].Width;
 
@@ -8118,7 +8118,7 @@ namespace XPTable.Models
                 for (int irow = topRow; irow < bottomRow; irow++)
                 {
                     Row row = this.TableModel.Rows[irow];
-                    List<bool> flags = row.InternalGridLineFlags;
+                    BitArray flags = row.InternalGridLineFlags;
 
                     Rectangle rect = RowRect(irow);
                     if (flags[column])
@@ -8153,7 +8153,7 @@ namespace XPTable.Models
             for (int irow = topRow; irow < bottomRow; irow++)
             {
                 Row row = this.TableModel.Rows[irow];
-                List<bool> flags = row.InternalGridLineFlags;
+                BitArray flags = row.InternalGridLineFlags;
 
                 for (int col = 0; col < columns; col++)
                 {
@@ -8400,11 +8400,11 @@ namespace XPTable.Models
 
 			int colsToIgnore = 0;       // Used to skip cells that are ignored because of a colspan
 
-            List<bool> gridLineFlags = new List<bool>();
+            BitArray gridLineFlags = new BitArray(this.ColumnModel.Columns.Count);
 
             for (int i = 0; i < this.ColumnModel.Columns.Count; i++)
 			{
-                gridLineFlags.Add(false);
+                gridLineFlags[i] = false;
 
 				if (this.ColumnModel.Columns[i].Visible)
 				{

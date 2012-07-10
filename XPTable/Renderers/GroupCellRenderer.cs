@@ -389,7 +389,7 @@ namespace XPTable.Renderers
             if (!this.IsSubRow(e.Cell))
             {
                 // Draw nothing if this row has no child rows
-                if (e.Cell.Row.SubRows.Count > 0)
+                if (e.Cell.Row.SubRows!= null && e.Cell.Row.SubRows.Count > 0)
                 {
                     // This is a parent row - draw a + or - in a box
                     GroupRendererData data = this.GetGroupRendererData(e.Cell);

@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
+using System.Collections;
 
 using XPTable.Events;
 using XPTable.Models.Design;
@@ -77,6 +78,9 @@ namespace XPTable.Models
 		// Row state flags
 		private static readonly int STATE_EDITABLE = 1;
 		private static readonly int STATE_ENABLED = 2;
+        private static readonly int STATE_DISPOSED = 4;
+        private static readonly int STATE_HAS_WORD_WRAP_CELL = 8;
+        private static readonly int STATE_EXPAND_SUBROWS = 16;
 
 		/// <summary>
 		/// The collection of Cells's contained in the Row
@@ -91,17 +95,41 @@ namespace XPTable.Models
         /// <summary>
         /// The row that is the parent to this one (if this is a sub row)
         /// </summary>
-        private Row parentrow;
+        private Row parentrow
+        {
+            get
+            {
+                return null;
+            }
+            set
+            {
+            }
+        }
 
         /// <summary>
         /// The index that gives the order this row was added in
         /// </summary>
-        private int childindex;
+        private int childindex
+        {
+            get
+            {
+                return 0;
+            }
+            set
+            {
+            }
+        }
+
+        private short _height;
 
         /// <summary>
         /// The actual rendered height of this row. If negative then it has not been rendered and height is unknown.
         /// </summary>
-        private int height;
+        private int height
+        {
+            get { return _height; }
+            set { _height = (short)value; }
+        }
 
 		/// <summary>
 		/// An object that contains data about the Row
@@ -118,40 +146,112 @@ namespace XPTable.Models
 		/// </summary>
 		private int index;
 
+        private byte _state = (byte)STATE_EXPAND_SUBROWS;
+
 		/// <summary>
 		/// the current state of the Row
 		/// </summary>
-		private byte state;
+		private byte state
+        {
+            get
+            {
+                return (byte)((int)_state & 3);
+            }
+            set
+            {
+                _state = (byte)(((int)_state & ~3) | ((int)value) & 3);
+            }
+        }
 		
 		/// <summary>
 		/// The Row's RowStyle
 		/// </summary>
-		private RowStyle rowStyle;
+		private RowStyle rowStyle
+        {
+            get
+            {
+                return null;
+            }
+            set
+            {
+            }
+        }
+
+        private sbyte _selectedCellCount;
 
 		/// <summary>
 		/// The number of Cells in the Row that are selected
 		/// </summary>
-		private int selectedCellCount;
+		private int selectedCellCount
+        {
+            get { return _selectedCellCount; }
+            set { _selectedCellCount = (sbyte)value; }
+        }
 
 		/// <summary>
 		/// Specifies whether the Row has been disposed
 		/// </summary>
-		private bool disposed = false;
+		private bool disposed
+        {
+            get
+            {
+                return (_state & STATE_DISPOSED) != 0;
+            }
+            set
+            {
+                if (value)
+                    _state |= (byte)STATE_DISPOSED;
+                else
+                    _state &= (byte)~STATE_DISPOSED;
+            }
+        }
 
-        private bool hasWordWrapCell;
+        private bool hasWordWrapCell
+        {
+            get
+            {
+                return (_state & STATE_HAS_WORD_WRAP_CELL) != 0;
+            }
+            set
+            {
+                if (value)
+                    _state |= (byte)STATE_HAS_WORD_WRAP_CELL;
+                else
+                    _state &= (byte)~STATE_HAS_WORD_WRAP_CELL;
+            }
+        }
 
-        private int wordWrapIndex;
+        private sbyte _wordWrapIndex;
+
+        private int wordWrapIndex
+        {
+            get { return _wordWrapIndex; }
+            set { _wordWrapIndex = (sbyte)value; }
+        }
 
 		/// <summary>
 		/// Indicates whether this row's sub-rows are shown or hidden.
 		/// </summary>
-		private bool expandSubRows = true;
+		private bool expandSubRows
+        {
+            get
+            {
+                return (_state & STATE_EXPAND_SUBROWS) != 0;
+            }
+            set
+            {
+                if (value)
+                    _state |= (byte)STATE_EXPAND_SUBROWS;
+                else
+                    _state &= (byte)~STATE_EXPAND_SUBROWS;
+            }
+        }
 
         /// <summary>
         /// Holds flags indicating whether the RHS vertical grid line should be drawn for the cell at the position
         /// given by the index.
         /// </summary>
-        List<bool> _internalGridLineFlags;
+        BitArray _internalGridLineFlags;
 
 		#endregion
 
@@ -299,6 +399,7 @@ namespace XPTable.Models
 			this.index = -1;
 			this.rowStyle = null;
 			this.selectedCellCount = 0;
+            this.subrows = null;
             this.hasWordWrapCell = false;
             this.wordWrapIndex = 0;
             this.height = -1;
@@ -348,6 +449,12 @@ namespace XPTable.Models
 				this.disposed = true;
 			}
 		}
+
+        internal void InitSuRows()
+        {
+            if (subrows == null)
+                this.subrows = new RowCollection(this);
+        }
 
 		/// <summary>
 		/// Returns the state represented by the specified state flag
@@ -479,9 +586,6 @@ namespace XPTable.Models
         {
             get
             {
-                if (this.subrows == null)
-                    this.subrows = new RowCollection(this);
-
                 return this.subrows;
             }
         }
@@ -1011,7 +1115,7 @@ namespace XPTable.Models
         /// Holds flags indicating whether the RHS vertical grid line should be drawn for the cell at the position
         /// given by the index.
         /// </summary>
-        internal List<bool> InternalGridLineFlags
+        internal BitArray InternalGridLineFlags
         {
             get { return _internalGridLineFlags; }
             set { _internalGridLineFlags = value; }

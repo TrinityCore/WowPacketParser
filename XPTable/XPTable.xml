@@ -3947,16 +3947,6 @@
             Represents a Cell that is displayed in a Table
             </summary>
         </member>
-        <member name="F:XPTable.Models.Cell.text">
-            <summary>
-            The text displayed in the Cell
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Cell.data">
-            <summary>
-            An object that contains data to be displayed in the Cell
-            </summary>
-        </member>
         <member name="F:XPTable.Models.Cell.tag">
             <summary>
             An object that contains data about the Cell
@@ -3971,46 +3961,6 @@
         <member name="F:XPTable.Models.Cell.row">
             <summary>
             The Row that the Cell belongs to
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Cell.index">
-            <summary>
-            The index of the Cell
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Cell.state">
-            <summary>
-            Contains the current state of the the Cell
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Cell.cellStyle">
-            <summary>
-            The Cells CellStyle settings
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Cell.checkStyle">
-            <summary>
-            The Cells CellCheckStyle settings
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Cell.imageStyle">
-            <summary>
-            The Cells CellImageStyle settings
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Cell.tooltipText">
-            <summary>
-            The text displayed in the Cells tooltip
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Cell.disposed">
-            <summary>
-            Specifies whether the Cell has been disposed
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Cell.colspan">
-            <summary>
-            Specifies how many columns this cell occupies.
             </summary>
         </member>
         <member name="M:XPTable.Models.Cell.#ctor">
@@ -4234,11 +4184,6 @@
             <returns>true if the Enabled property should be serialized, 
             false otherwise</returns>
         </member>
-        <member name="F:XPTable.Models.Cell._isTextTrimmed">
-            <summary>
-            Indicates whether the text has all been shown when rendered.
-            </summary>
-        </member>
         <member name="M:XPTable.Models.Cell.OnPropertyChanged(XPTable.Events.CellEventArgs)">
             <summary>
             Raises the PropertyChanged event
@@ -4248,6 +4193,56 @@
         <member name="E:XPTable.Models.Cell.PropertyChanged">
             <summary>
             Occurs when the value of a Cells property changes
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.text">
+            <summary>
+            The text displayed in the Cell
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.data">
+            <summary>
+            An object that contains data to be displayed in the Cell
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.index">
+            <summary>
+            The index of the Cell
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.state">
+            <summary>
+            Contains the current state of the the Cell
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.cellStyle">
+            <summary>
+            The Cells CellStyle settings
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.checkStyle">
+            <summary>
+            The Cells CellCheckStyle settings
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.imageStyle">
+            <summary>
+            The Cells CellImageStyle settings
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.tooltipText">
+            <summary>
+            The text displayed in the Cells tooltip
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.disposed">
+            <summary>
+            Specifies whether the Cell has been disposed
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.colspan">
+            <summary>
+            Specifies how many columns this cell occupies.
             </summary>
         </member>
         <member name="P:XPTable.Models.Cell.Text">
@@ -4341,6 +4336,11 @@
         <member name="P:XPTable.Models.Cell.ToolTipText">
             <summary>
             Gets or sets the text displayed in the Cells tooltip
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell._isTextTrimmed">
+            <summary>
+            Indicates whether the text has all been shown when rendered.
             </summary>
         </member>
         <member name="P:XPTable.Models.Cell.InternalIsTextTrimmed">
@@ -11844,21 +11844,6 @@
             The collection of subrows contained in this Row
             </summary>
         </member>
-        <member name="F:XPTable.Models.Row.parentrow">
-            <summary>
-            The row that is the parent to this one (if this is a sub row)
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Row.childindex">
-            <summary>
-            The index that gives the order this row was added in
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Row.height">
-            <summary>
-            The actual rendered height of this row. If negative then it has not been rendered and height is unknown.
-            </summary>
-        </member>
         <member name="F:XPTable.Models.Row.tag">
             <summary>
             An object that contains data about the Row
@@ -11872,31 +11857,6 @@
         <member name="F:XPTable.Models.Row.index">
             <summary>
             The index of the Row
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Row.state">
-            <summary>
-            the current state of the Row
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Row.rowStyle">
-            <summary>
-            The Row's RowStyle
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Row.selectedCellCount">
-            <summary>
-            The number of Cells in the Row that are selected
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Row.disposed">
-            <summary>
-            Specifies whether the Row has been disposed
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Row.expandSubRows">
-            <summary>
-            Indicates whether this row's sub-rows are shown or hidden.
             </summary>
         </member>
         <member name="F:XPTable.Models.Row._internalGridLineFlags">
@@ -12102,6 +12062,46 @@
         <member name="E:XPTable.Models.Row.PropertyChanged">
             <summary>
             Occurs when the value of a Row's property changes
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.parentrow">
+            <summary>
+            The row that is the parent to this one (if this is a sub row)
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.childindex">
+            <summary>
+            The index that gives the order this row was added in
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.height">
+            <summary>
+            The actual rendered height of this row. If negative then it has not been rendered and height is unknown.
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.state">
+            <summary>
+            the current state of the Row
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.rowStyle">
+            <summary>
+            The Row's RowStyle
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.selectedCellCount">
+            <summary>
+            The number of Cells in the Row that are selected
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.disposed">
+            <summary>
+            Specifies whether the Row has been disposed
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.expandSubRows">
+            <summary>
+            Indicates whether this row's sub-rows are shown or hidden.
             </summary>
         </member>
         <member name="P:XPTable.Models.Row.Cells">

@@ -39,13 +39,14 @@ namespace PacketViewer.Forms
 
         private void closeToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            tabControlFiles.TabPages.RemoveAt(tabControlFiles.SelectedIndex);
+            tabControlFiles.SelectedTab.Dispose();
             GC.Collect();
         }
 
         private void closeAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            tabControlFiles.TabPages.Clear();
+            while(tabControlFiles.TabCount > 0)
+                tabControlFiles.TabPages[0].Dispose();
             GC.Collect();
         }
 
@@ -54,7 +55,7 @@ namespace PacketViewer.Forms
             for (int i = 0; i < tabControlFiles.TabCount;)
             {
                 if (i != tabControlFiles.SelectedIndex)
-                    tabControlFiles.TabPages.RemoveAt(i);
+                    tabControlFiles.TabPages[i].Dispose();
                 else
                     ++i;
             }
@@ -69,9 +70,9 @@ namespace PacketViewer.Forms
         {
             for (int i = 0; i < tabControlFiles.TabCount; ++i)
             {
-                if (((TabPageFile)e.TabPage).FileTab.Selected)
+                if (((TabPageFile)tabControlFiles.TabPages[i]).FileTab.Selected)
                 {
-                    ((TabPageFile)e.TabPage).FileTab.BecameUnSelected();
+                    ((TabPageFile)tabControlFiles.TabPages[i]).FileTab.BecameUnSelected();
                     break;
                 }
             }

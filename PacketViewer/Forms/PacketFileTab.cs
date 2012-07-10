@@ -88,11 +88,11 @@ namespace PacketViewer.Forms
             foreach (var entry in packets)
             {
                 Row row = new Row();
-                row.Cells.Add(new Cell(entry.Number));
-                row.Cells.Add(new Cell(entry.OpcodeString));
-                row.Cells.Add(new Cell(entry.Time));
-                row.Cells.Add(new Cell(entry.Sec));
-                row.Cells.Add(new Cell(entry.Length));
+                row.Cells.Add(new CellData(entry.Number));
+                row.Cells.Add(new CellText(entry.OpcodeString));
+                row.Cells.Add(new CellData(entry.Time));
+                row.Cells.Add(new CellData(entry.Sec));
+                row.Cells.Add(new CellData(entry.Length));
                 this.tablePackets.TableModel.Rows.Add(row);
             }
 

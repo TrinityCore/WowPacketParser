@@ -16,5 +16,11 @@ namespace PacketViewer.Forms
             FileTab.Dock = DockStyle.Fill;
             Controls.Add(fileTab);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            FileTab.Dispose();
+            base.Dispose(disposing);
+        }
     }
 }
