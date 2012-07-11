@@ -493,7 +493,6 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_MOTD, 0x0A35},
             {Opcode.SMSG_MULTIPLE_PACKETS, 0x6736},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x6E04},
-            {Opcode.SMSG_NEW_WORLD, 0x31A2},
             {Opcode.SMSG_NOTIFICATION, 0x14A0},
             {Opcode.SMSG_NOTIFY_DANCE, 0x4904},
             {Opcode.SMSG_OFFER_PETITION_ERROR, 0x2716},
