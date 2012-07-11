@@ -432,7 +432,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CHARACTER_LOGIN_FAILED)]
         public static void HandleLoginFailed(Packet packet)
         {
-            packet.ReadByte("Unk Byte");
+            packet.ReadEnum<ResponseCode>("Fail reason", TypeCode.Byte);
         }
 
         [Parser(Opcode.SMSG_LOGOUT_RESPONSE)]

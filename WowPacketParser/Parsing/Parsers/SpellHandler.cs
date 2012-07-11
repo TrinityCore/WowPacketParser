@@ -126,17 +126,14 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Cooldown Spell ID", i);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                    packet.ReadInt32("Cooldown Cast Item ID");
+                    packet.ReadInt32("Cooldown Cast Item ID", i);
                 else
-                    packet.ReadInt16("Cooldown Cast Item ID");
+                    packet.ReadInt16("Cooldown Cast Item ID", i);
 
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
-                    packet.ReadInt32("Cooldown Spell Category", i);
-                else
-                    packet.ReadInt16("Cooldown Spell Category", i);
-
+                packet.ReadInt16("Cooldown Spell Category", i);
                 packet.ReadInt32("Cooldown Time", i);
-                packet.ReadInt32("Cooldown Category Time", i);
+                var catCd = packet.ReadUInt32();
+                packet.WriteLine("[{0}] Cooldown Category Time: {1}", i, ((catCd >> 31) != 0 ? "Infinite" : (catCd & 0x7FFFFFFF).ToString()));
             }
         }
 

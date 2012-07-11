@@ -250,7 +250,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Accept");
         }
 
-        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleFeatureSystemStatus(Packet packet)
         {
             packet.ReadByte("Unk byte");
@@ -262,6 +262,36 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadByte("Complain System Status");
                 packet.ReadInt32("Unknown Mail Url Related Value");
+            }
+        }
+
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleFeatureSystemStatus434(Packet packet)
+        {
+            packet.ReadByte("Unk byte");
+            packet.ReadInt32("Unk1");
+            packet.ReadInt32("Unk2");
+            packet.ReadInt32("Unk3");
+            packet.ReadInt32("Unk4");
+            packet.ReadBit("Unkbit1");
+            packet.ReadBit("Unkbit2");
+            packet.ReadBit("Unkbit3");
+            var v10 = packet.ReadBit("Unkbit4");
+            var v9 = packet.ReadBit("Unkbit5");
+            packet.ReadBit("Unkbit6");
+            if (v10)
+            {
+                packet.ReadInt32("Unk5");
+                packet.ReadInt32("Unk6");
+                packet.ReadInt32("Unk7");
+                packet.ReadInt32("Unk8");
+            }
+
+            if (v9)
+            {
+                packet.ReadInt32("Unk9");
+                packet.ReadInt32("Unk10");
+                packet.ReadInt32("Unk11");
             }
         }
 
@@ -635,12 +665,23 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Life Time Kills");
         }
 
-        [Parser(Opcode.CMSG_LOAD_SCREEN)] // Also named CMSG_LOADING_SCREEN_NOTIFY
+        [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)] // Also named CMSG_LOADING_SCREEN_NOTIFY
         public static void HandleClientEnterWorld(Packet packet)
         {
             packet.WriteLine("Loading: " + (packet.ReadBit() ? "true" : "false")); // Not sure on the meaning
             var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
             MovementHandler.CurrentMapId = (uint) mapId;
+
+            if (mapId >= 0 && mapId < 1000) // Getting some weird results in a couple of packets
+                packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
+        }
+
+        [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleClientEnterWorld434(Packet packet)
+        {
+            var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
+            packet.ReadBit("Loading");
+            MovementHandler.CurrentMapId = (uint)mapId;
 
             if (mapId >= 0 && mapId < 1000) // Getting some weird results in a couple of packets
                 packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");

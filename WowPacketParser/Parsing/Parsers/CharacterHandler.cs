@@ -854,29 +854,31 @@ namespace WowPacketParser.Parsing.Parsers
             if (count == 0)
                 return;
 
-            var bits = new bool[count, 7];
+            var hasWeekCount = new bool[count];
+            var hasWeekCap = new bool[count];
+            var hasSeasonTotal = new bool[count];
+            var flags = new uint[count];
             for (var i = 0; i < count; ++i)
             {
-                for (var j = 0; j < 7; ++j)
-                    bits[i, j] = packet.ReadBit();
+                hasWeekCount[i] = packet.ReadBit();
+                flags[i] = packet.ReadBits(4);
+                hasWeekCap[i] = packet.ReadBit();
+                hasSeasonTotal[i] = packet.ReadBit();
             }
 
             for (var i = 0; i < count; ++i)
             {
-                var total = packet.ReadInt32();
-                string extra = "";
-                if (bits[i, 0])
-                    extra = String.Format(" - Weekly Count: {0,4}", packet.ReadInt32());
+                packet.WriteLine("[{0}] Flags {1}", i, flags[i]);
+                packet.ReadUInt32("Currency count", i);
+                if (hasWeekCap[i])
+                    packet.ReadUInt32("Weekly cap", i);
 
-                if (bits[i, 5])
-                    extra += String.Format(" - Weekly Cap: {0,4}", packet.ReadInt32());
+                if (hasSeasonTotal[i])
+                    packet.ReadUInt32("Season total earned", i);
 
-                if (bits[i, 6])
-                    extra += String.Format(" - Season Total Earned?: {0,4}", packet.ReadInt32());
-
-
-                var id = packet.ReadInt32();
-                packet.WriteLine("[{0,2}] Currency Id: {1,3} - Count: {2,4}{3}", i, id, total, extra);
+                packet.ReadUInt32("Currency id", i);
+                if (hasWeekCount[i])
+                    packet.ReadUInt32("Weekly count", i);
             }
         }
 
