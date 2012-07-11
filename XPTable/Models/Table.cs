@@ -403,6 +403,8 @@ namespace XPTable.Models
         /// </summary>
         bool painted = false;
 
+        internal LinkedList<ControlRendererData> RenderedCotrols = new LinkedList<ControlRendererData>();
+
 		#region Border
 
 		/// <summary>
@@ -765,6 +767,47 @@ namespace XPTable.Models
 		private bool enableWordWrap;
 		#endregion
 
+        #region Subrows
+
+        private int _totalHiddenSubRows;
+        
+        /// <summary>
+        /// Gets the total number of subrows that are currently not expanded.
+        /// </summary>
+        public int HiddenSubRows
+        {
+            get { return _totalHiddenSubRows; }
+            set { _totalHiddenSubRows = value; }
+        }
+
+        /// <summary>
+        /// Count the number of hidden rows before the supplied row.
+        /// </summary>
+        /// <param name="row">The row to count up to.</param>
+        /// <returns>The number of hidden rows.</returns>
+        internal int HiddenRowCountBefore(int row)
+        {
+            int result = 0;
+
+            int skip = 0;
+            for (int i = 0; i < row; i++)
+            {
+                if (skip > 0)
+                    skip--;
+                else if ((skip == 0) && (!this.TableModel.Rows[i].ExpandSubRows))
+                {
+                    skip = (this.TableModel.Rows[i].SubRows != null) ? this.TableModel.Rows[i].SubRows.Count : 0;
+                    result += skip;
+                }
+                else
+                    skip = (this.TableModel.Rows[i].SubRows != null) ? this.TableModel.Rows[i].SubRows.Count : 0;
+            }
+
+            return result;
+        }
+
+        #endregion
+
         /// <summary>
         /// Helper class that provides all drag drop functionality.
         /// </summary>
@@ -913,13 +956,7 @@ namespace XPTable.Models
         /// <returns></returns>
         private int VScrollOffset()
         {
-            int yOffset;
-            // This adds on the total height we can't see
-            if (this.EnableWordWrap)
-                yOffset = this.RowY(this.TopIndex);
-            else
-                yOffset = this.TopIndex * this.RowHeight;
-            return yOffset;
+            return this.RowY(this.TopIndex);
         }
 
 		#region ClientToDisplayRect
@@ -1036,7 +1073,7 @@ namespace XPTable.Models
 		/// null if it does not exist</returns>
 		public Cell CellAt(int x, int y)
 		{
-			int row = this.RowIndexAt(x, y);
+			int row = this.RowIndexAtClient(x, y);
 			int column = this.ColumnIndexAt(x, y);
 
 			// return null if the row or column don't exist
@@ -1206,8 +1243,8 @@ namespace XPTable.Models
 				return CellPos.Empty;
 			}
 
-			int startRow = start.Row != -1 ? start.Row : 0;
-			int startCol = start.Column != -1 ? start.Column : 0;
+			int startRow = (start.Row != -1) ? start.Row : 0;
+			int startCol = (start.Column != -1) ? start.Column : 0;
 
 			bool first = true;
 
@@ -1215,7 +1252,7 @@ namespace XPTable.Models
 			{
 				for (int i = startRow; i < this.RowCount; i++)
 				{
-					int j = (first || !checkOtherCellsInRow ? startCol : 0);
+					int j = ((first || !checkOtherCellsInRow) ? startCol : 0);
 
 					for (; j < this.TableModel.Rows[i].Cells.Count; j++)
 					{
@@ -1267,7 +1304,7 @@ namespace XPTable.Models
 			{
 				for (int i = startRow; i >= 0; i--)
 				{
-					int j = (first || !checkOtherCellsInRow ? startCol : this.TableModel.Rows[i].Cells.Count);
+					int j = ((first || !checkOtherCellsInRow) ? startCol : this.TableModel.Rows[i].Cells.Count);
 
 					for (; j >= 0; j--)
 					{
@@ -1698,6 +1735,7 @@ namespace XPTable.Models
 		#endregion
 
 		#region Rows
+
 		/// <summary>
 		/// Returns the index of the Row at the specified client coordinates
 		/// </summary>
@@ -1705,7 +1743,7 @@ namespace XPTable.Models
 		/// <param name="y">The client y coordinate of the Row</param>
 		/// <returns>The index of the Row at the specified client coordinates, or
 		/// -1 if it does not exist</returns>
-		public int RowIndexAt(int x, int y)
+		public int RowIndexAtClient(int x, int y)
 		{
 			if (this.TableModel == null)
 				return -1;
@@ -1718,11 +1756,47 @@ namespace XPTable.Models
 			if (y < 0)
 				return -1;
 
-			if (this.VScroll)
-                y += this.VScrollOffset();
+            int height = 0;
+            for (int i = this.TopIndex; i < this.TableModel.Rows.Count; i++)
+            {
+                Row row = this.TableModel.Rows[i];
+                if (row == null)
+                    continue;
+                if (row.Parent == null || row.Parent.ExpandSubRows)
+                {
+                    height += row.Height;
+                    if (y < height)
+                        return i;
+                }
+            }
 
-			return this.TableModel.RowIndexAt(y);
+            return - 1;
 		}
+
+        /// <summary>
+        /// Returns the index of the Row that lies on the specified position.
+        /// Found by iterating through all rows (i.e. copes with variable height rows).
+        /// </summary>
+        /// <param name="yPosition"></param>
+        /// <returns>The index of the Row at the specified position or -1 if 
+        /// no Row is found</returns>
+        private int RowIndexAtExact(int yPosition)
+        {
+            int height = 0;
+            for (int i = 0; i < TableModel.Rows.Count; i++)
+            {
+                Row row = TableModel.Rows[i];
+                if (row.Parent == null || row.Parent.ExpandSubRows)
+                {
+                    height += row.Height;
+                    if (yPosition < height)
+                        return i;
+                }
+            }
+
+            // If we've got this far then its the last row
+            return -1;
+        }
 
 		/// <summary>
 		/// Returns the index of the Row at the specified client point
@@ -1732,7 +1806,7 @@ namespace XPTable.Models
 		/// -1 if it does not exist</returns>
 		public int RowIndexAt(Point p)
 		{
-			return this.RowIndexAt(p.X, p.Y);
+			return this.RowIndexAtClient(p.X, p.Y);
 		}
 
 
@@ -1752,16 +1826,8 @@ namespace XPTable.Models
 
 			rect.X = this.DisplayRectangle.X;
 
-			if (this.EnableWordWrap)
-			{
-				rect.Y = this.BorderWidth + this.RowYDifference(this.TopIndex, row);
-				rect.Height = this.TableModel.Rows[row].Height;
-			}
-			else
-			{
-				rect.Y = this.BorderWidth + ((row - this.TopIndex) * this.RowHeight);
-				rect.Height = this.RowHeight;
-			}
+			rect.Y = this.BorderWidth + this.RowYDifference(this.TopIndex, row);
+			rect.Height = this.TableModel.Rows[row].Height;
 
 			rect.Width = this.ColumnModel.VisibleColumnsWidth;
 
@@ -1852,12 +1918,9 @@ namespace XPTable.Models
 			int ydiff = 0;
 			RowCollection rows = this.TableModel.Rows;
 			int visibleHeight = this.CellDataRect.Height;
-			int bottomMostRow = 0;
             int count = 0;
 			for (int i = this.TopIndex; i < rows.Count; i++)
 			{
-				bottomMostRow = i;
-
 				// Don't count this row if it is currently a hidden subrow
 				Row row = rows[i];
 				if (row != null && (row.Parent == null || row.Parent.ExpandSubRows))
@@ -1866,6 +1929,8 @@ namespace XPTable.Models
 
                     if (ydiff < visibleHeight)
                         count++;
+                    else
+                        break;
                 }
             }
 
@@ -2460,8 +2525,8 @@ namespace XPTable.Models
                 {
                     if (autoCalculateRowHeights)
                         this.CalculateAllRowHeights();
-                    this.UpdateScrollBars();   // without this the scolling will have been set up assuming all rows have the default height
                 }
+                this.UpdateScrollBars();   // without this the scolling will have been set up assuming all rows have the default height
 
                 this.Invalidate(true);
             }
@@ -2591,7 +2656,7 @@ namespace XPTable.Models
                 // When at the very bottom,     LargeChange + Value = Maximum + 1
 
 				// This is the total number of rows in the table that are not hidden
-                int rowcount = this.RowCount - this.TableModel.Rows.HiddenSubRows;
+                int rowcount = this.RowCount - this.HiddenSubRows;
 
                 vScrollBar.Maximum = rowcount;
 				// as otherwise resizing could lead to a crash - 12/01/06
@@ -2770,7 +2835,7 @@ namespace XPTable.Models
 				}
 				else
 				{
-                    int hidden = tableModel.Rows.HiddenRowCountBefore(row);
+                    int hidden = HiddenRowCountBefore(row);
 
 					if (row < vscrollVal)
 					{
@@ -4113,10 +4178,7 @@ namespace XPTable.Models
 				// v1.1.1 fix (jover) - used to error if no rows were added
 				if (this.TableModel == null || this.TableModel.Rows.Count == 0)
 					return 0;
-				else if (this.EnableWordWrap)
-                    return this.RowYDifference(0, this.TableModel.Rows.Count);
-				else
-					return this.TableModel.Rows.Count * this.RowHeight;
+                return this.RowYDifference(0, this.TableModel.Rows.Count);
 			}
 		}
 
@@ -4155,12 +4217,7 @@ namespace XPTable.Models
 		[Browsable(false)]
         public int GetVisibleRowCount()
 		{
-			int count ;
-			if (this.EnableWordWrap)
-				count = this.VisibleRowCountExact();
-			else
-				count = this.CellDataRect.Height / this.RowHeight;
-            return count;
+            return this.VisibleRowCountExact();
         }
 
 		/// <summary>
@@ -6868,7 +6925,7 @@ namespace XPTable.Models
             this.CalcTableState(e.X, e.Y);
             TableRegion region = this.HitTest(e.X, e.Y);
 
-            int row = this.RowIndexAt(e.X, e.Y);
+            int row = this.RowIndexAtClient(e.X, e.Y);
             int column = this.ColumnIndexAt(e.X, e.Y);
 
             if (this.IsEditing)
@@ -7347,7 +7404,7 @@ namespace XPTable.Models
 			if (hitTest == TableRegion.Cells)
 			{
 				// find the cell the mouse is over
-				CellPos cellPos = new CellPos(this.RowIndexAt(e.X, e.Y), this.ColumnIndexAt(e.X, e.Y));
+				CellPos cellPos = new CellPos(this.RowIndexAtClient(e.X, e.Y), this.ColumnIndexAt(e.X, e.Y));
 
                 cellPos = ResolveColspan(cellPos);
 
@@ -7575,6 +7632,11 @@ namespace XPTable.Models
 		/// <param name="e">A PaintEventArgs that contains the event data</param>
 		protected override void OnPaint(PaintEventArgs e)
 		{
+            foreach (var c in RenderedCotrols)
+            {
+                c.Control.SuspendLayout();
+                c.visible = false;
+            }
 			// we'll do our own painting thanks
 			//base.OnPaint(e);
 
@@ -7616,6 +7678,12 @@ namespace XPTable.Models
             {
                 OnAfterFirstPaint(EventArgs.Empty);
                 painted = true;
+            }
+
+            foreach (var c in RenderedCotrols)
+            {
+                c.Control.Visible = c.visible;
+                c.Control.ResumeLayout();
             }
 		}
 
@@ -7770,7 +7838,7 @@ namespace XPTable.Models
                 pcea.Graphics.SetClip(Rectangle.Intersect(e.ClipRectangle, realRect));
             }
 
-			if (column < this.TableModel.Rows[row].Cells.Count)
+            if (column < this.TableModel.Rows[row].Cells.Count)
 			{
 				// is the cell selected
 				bool selected = false;
@@ -7998,7 +8066,7 @@ namespace XPTable.Models
 
         int GetGridlineXMax(PaintEventArgs e)
         {
-            int bottomRow = RowIndexAt(0, this.CellDataRect.Bottom);
+            int bottomRow = RowIndexAtClient(0, this.CellDataRect.Bottom);
             Rectangle rect = RowRect(bottomRow);
             int bottom = e.ClipRectangle.Bottom;
             if (this.GridLinesContrainedToData && (e.ClipRectangle.Bottom > rect.Bottom))
@@ -8110,7 +8178,7 @@ namespace XPTable.Models
             if (x >= e.ClipRectangle.Left && x <= e.ClipRectangle.Right)
             {
                 int topRow = TopIndex;
-                int bottomRow = RowIndexAt(0, this.CellDataRect.Bottom) + 1;
+                int bottomRow = RowIndexAtClient(0, this.CellDataRect.Bottom) + 1;
 
                 // Go through each row, and see if it has any colspans that mean we can't draw 
                 // the vertical gridline as one long line
@@ -8146,7 +8214,7 @@ namespace XPTable.Models
             List<bool> wholeLineFlags = CreateNewBoolList(columns);
 
             int topRow = TopIndex;
-            int bottomRow = RowIndexAt(0, this.CellDataRect.Bottom);
+            int bottomRow = RowIndexAtClient(0, this.CellDataRect.Bottom);
 
             // Go through each row, and see if it has any colspans that mean we can't draw 
             // the vertical gridline as one long line
@@ -8341,13 +8409,11 @@ namespace XPTable.Models
 				Row row = this.TableModel.Rows[i];
 				if (row != null && (row.Parent == null || row.Parent.ExpandSubRows))
 				{
-					rowRect.Height = row.Height;
-
                     if (wordWrapOn)
 					{
-                        rowRect.Height = GetRenderedRowHeight(e.Graphics, row);
-                        row.InternalHeight = rowRect.Height;
+                        row.InternalHeight = GetRenderedRowHeight(e.Graphics, row);
 					}
+                    rowRect.Height = row.Height;
 
 					if (rowRect.IntersectsWith(e.ClipRectangle))
 					{
@@ -8692,8 +8758,7 @@ namespace XPTable.Models
 
             this.Invalidate();
 
-			if (this.EnableWordWrap)
-				UpdateScrollBars();
+		    UpdateScrollBars();
 
             lastVScrollValue = vScrollBar.Value;
 		}

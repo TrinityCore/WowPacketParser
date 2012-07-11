@@ -108,9 +108,10 @@ namespace XPTable.Renderers
                     if (control != null)
                     {
                         cell.Row.TableModel.Table.Controls.Add(control);
-                        control.BringToFront();
+
 
                         ControlRendererData data = new ControlRendererData(control);
+                        cell.Row.TableModel.Table.RenderedCotrols.AddFirst(data);
                         this.SetRendererData(cell, data);
                         rendererData = data;
                     }
@@ -125,11 +126,11 @@ namespace XPTable.Renderers
                     Control newControl = this.ControlFactory.UpdateControl(cell, data.Control);
                     if (newControl != null)
                     {
+                        newControl.SuspendLayout();
                         // We need to take off the old control and wire up the new one
                         cell.Row.TableModel.Table.Controls.Remove(oldControl);
                         cell.Row.TableModel.Table.Controls.Add(newControl);
                         data.Control = newControl;
-                        newControl.BringToFront();
                     }
                 }
             }
@@ -209,10 +210,12 @@ namespace XPTable.Renderers
 			{
 				controlData.Control.Size = controlRect.Size;
 				controlData.Control.Location = controlRect.Location;
-				controlData.Control.BringToFront();
-
+				//controlData.Control.BringToFront();
+                
                 if (e.Cell.WidthNotSet)
                     e.Cell.ContentWidth = controlRect.Size.Width;
+
+                controlData.visible = true;
 			}
 		}
 

@@ -214,7 +214,7 @@ namespace XPTable.Models
         /// <summary>
         /// Specifies how many columns this cell occupies.
         /// </summary>
-        private int colspan
+        protected virtual int colspan
         {
             get
             {

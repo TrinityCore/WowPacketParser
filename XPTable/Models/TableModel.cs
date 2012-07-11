@@ -174,50 +174,6 @@ namespace XPTable.Models
 			base.Dispose(disposing);
 		}
 
-
-		/// <summary>
-		/// Returns the index of the Row that lies on the specified position
-		/// </summary>
-		/// <param name="yPosition">The y-coordinate to check</param>
-		/// <returns>The index of the Row at the specified position or -1 if 
-		/// no Row is found</returns>
-		public int RowIndexAt(int yPosition)
-		{
-            int row = 0;
-            if (this.Table.EnableWordWrap)
-                row = this.RowIndexAtExact(yPosition);
-            else
-                row = yPosition / this.RowHeight;
-
-			if (row < 0 || row > this.Rows.Count - 1)
-				return -1;
-
-			return row;
-		}
-
-        /// <summary>
-        /// Returns the index of the Row that lies on the specified position.
-        /// Found by iterating through all rows (i.e. copes with variable height rows).
-        /// </summary>
-        /// <param name="yPosition"></param>
-        /// <returns></returns>
-        private int RowIndexAtExact(int yPosition)
-        {
-            int height = 0;
-            for (int i = 0; i < this.Rows.Count; i++)
-            {
-				Row row = this.Rows[i];
-				if (row.Parent == null || row.Parent.ExpandSubRows)
-				{
-					height += row.Height;
-					if (yPosition < height)
-						return i;
-				}
-            }
-
-            // If we've got this far then its the last row
-            return this.Rows.Count - 1;
-        }
 		#endregion
 
 
@@ -1281,34 +1237,22 @@ namespace XPTable.Models
 				if (this.owner.Table != null && this.owner.Table.ColumnModel != null)
 					bounds.Width = this.owner.Table.ColumnModel.VisibleColumnsWidth;
 
-                if (this.owner.Table.EnableWordWrap)
+				// v1.1.1 fix - this Y value used to include the border + header height
+
+                bounds.Y = this.owner.Table.RowYDifference(0, start);
+
+                if (start == end)
                 {
-					// v1.1.1 fix - this Y value used to include the border + header height
-
-                    bounds.Y = this.owner.Table.RowYDifference(0, start);
-
-                    if (start == end)
-                    {
-                        // no object when using subrows here
-                        // fix by CINAMON
-                        if (this.owner.rows[start] != null)
-                            bounds.Height = this.owner.Rows[start].Height;
-                        else
-                            bounds.Height = this.owner.RowHeight;
-                    }
+                    // no object when using subrows here
+                    // fix by CINAMON
+                    if (this.owner.rows[start] != null)
+                        bounds.Height = this.owner.Rows[start].Height;
                     else
-                    {
-                        bounds.Height = this.owner.Table.RowYDifference(start, end) + this.owner.Rows[end].Height;
-                    }
+                        bounds.Height = this.owner.RowHeight;
                 }
                 else
                 {
-                    bounds.Y = start * this.owner.RowHeight;
-
-                    if (start == end)
-                        bounds.Height = this.owner.RowHeight;
-                    else
-                        bounds.Height = ((end + 1) * this.owner.RowHeight) - bounds.Y;
+                    bounds.Height = this.owner.Table.RowYDifference(start, end) + this.owner.Rows[end].Height;
                 }
 
 				return bounds;

@@ -3045,6 +3045,463 @@
             Specifies a line consisting of a repeating pattern of dash-dot-dot
             </summary>
         </member>
+        <member name="T:XPTable.Models.Cell">
+            <summary>
+            Represents a Cell that is displayed in a Table
+            </summary>
+        </member>
+        <member name="F:XPTable.Models.Cell.tag">
+            <summary>
+            An object that contains data about the Cell
+            </summary>
+        </member>
+        <member name="F:XPTable.Models.Cell.rendererData">
+            <summary>
+            Stores information used by CellRenderers to record the current 
+            state of the Cell
+            </summary>
+        </member>
+        <member name="F:XPTable.Models.Cell.row">
+            <summary>
+            The Row that the Cell belongs to
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.Cell.#ctor">
+            <summary>
+            Initializes a new instance of the Cell class with default settings
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.Cell.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the Cell class with the specified text
+            </summary>
+            <param name="text">The text displayed in the Cell</param>
+        </member>
+        <member name="M:XPTable.Models.Cell.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of the Cell class with the specified object
+            </summary>
+            <param name="value">The object displayed in the Cell</param>
+        </member>
+        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Object)">
+            <summary>
+            Initializes a new instance of the Cell class with the specified text 
+            and object
+            </summary>
+            <param name="text">The text displayed in the Cell</param>
+            <param name="value">The object displayed in the Cell</param>
+        </member>
+        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Boolean)">
+            <summary>
+            Initializes a new instance of the Cell class with the specified text 
+            and check value
+            </summary>
+            <param name="text">The text displayed in the Cell</param>
+            <param name="check">Specifies whether the Cell is Checked</param>
+        </member>
+        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Drawing.Image)">
+            <summary>
+            Initializes a new instance of the Cell class with the specified text 
+            and Image value
+            </summary>
+            <param name="text">The text displayed in the Cell</param>
+            <param name="image">The Image displayed in the Cell</param>
+        </member>
+        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Drawing.Color,System.Drawing.Color,System.Drawing.Font)">
+            <summary>
+            Initializes a new instance of the Cell class with the specified text, 
+            fore Color, back Color and Font
+            </summary>
+            <param name="text">The text displayed in the Cell</param>
+            <param name="foreColor">The foreground Color of the Cell</param>
+            <param name="backColor">The background Color of the Cell</param>
+            <param name="font">The Font used to draw the text in the Cell</param>
+        </member>
+        <member name="M:XPTable.Models.Cell.#ctor(System.String,XPTable.Models.CellStyle)">
+            <summary>
+            Initializes a new instance of the Cell class with the specified text 
+            and CellStyle
+            </summary>
+            <param name="text">The text displayed in the Cell</param>
+            <param name="cellStyle">A CellStyle that specifies the visual appearance 
+            of the Cell</param>
+        </member>
+        <member name="M:XPTable.Models.Cell.#ctor(System.Object,System.Drawing.Color,System.Drawing.Color,System.Drawing.Font)">
+            <summary>
+            Initializes a new instance of the Cell class with the specified object, 
+            fore Color, back Color and Font
+            </summary>
+            <param name="value">The object displayed in the Cell</param>
+            <param name="foreColor">The foreground Color of the Cell</param>
+            <param name="backColor">The background Color of the Cell</param>
+            <param name="font">The Font used to draw the text in the Cell</param>
+        </member>
+        <member name="M:XPTable.Models.Cell.#ctor(System.Object,XPTable.Models.CellStyle)">
+            <summary>
+            Initializes a new instance of the Cell class with the specified text 
+            and CellStyle
+            </summary>
+            <param name="value">The object displayed in the Cell</param>
+            <param name="cellStyle">A CellStyle that specifies the visual appearance 
+            of the Cell</param>
+        </member>
+        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Object,System.Drawing.Color,System.Drawing.Color,System.Drawing.Font)">
+            <summary>
+            Initializes a new instance of the Cell class with the specified text, 
+            object, fore Color, back Color and Font
+            </summary>
+            <param name="text">The text displayed in the Cell</param>
+            <param name="value">The object displayed in the Cell</param>
+            <param name="foreColor">The foreground Color of the Cell</param>
+            <param name="backColor">The background Color of the Cell</param>
+            <param name="font">The Font used to draw the text in the Cell</param>
+        </member>
+        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Object,XPTable.Models.CellStyle)">
+            <summary>
+            Initializes a new instance of the Cell class with the specified text, 
+            object and CellStyle
+            </summary>
+            <param name="text">The text displayed in the Cell</param>
+            <param name="value">The object displayed in the Cell</param>
+            <param name="cellStyle">A CellStyle that specifies the visual appearance 
+            of the Cell</param>
+        </member>
+        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Boolean,System.Drawing.Color,System.Drawing.Color,System.Drawing.Font)">
+            <summary>
+            Initializes a new instance of the Cell class with the specified text, 
+            check value, fore Color, back Color and Font
+            </summary>
+            <param name="text">The text displayed in the Cell</param>
+            <param name="check">Specifies whether the Cell is Checked</param>
+            <param name="foreColor">The foreground Color of the Cell</param>
+            <param name="backColor">The background Color of the Cell</param>
+            <param name="font">The Font used to draw the text in the Cell</param>
+        </member>
+        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Boolean,XPTable.Models.CellStyle)">
+            <summary>
+            Initializes a new instance of the Cell class with the specified text, 
+            check value and CellStyle
+            </summary>
+            <param name="text">The text displayed in the Cell</param>
+            <param name="check">Specifies whether the Cell is Checked</param>
+            <param name="cellStyle">A CellStyle that specifies the visual appearance 
+            of the Cell</param>
+        </member>
+        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Drawing.Image,System.Drawing.Color,System.Drawing.Color,System.Drawing.Font)">
+            <summary>
+            Initializes a new instance of the Cell class with the specified text, 
+            Image, fore Color, back Color and Font
+            </summary>
+            <param name="text">The text displayed in the Cell</param>
+            <param name="image">The Image displayed in the Cell</param>
+            <param name="foreColor">The foreground Color of the Cell</param>
+            <param name="backColor">The background Color of the Cell</param>
+            <param name="font">The Font used to draw the text in the Cell</param>
+        </member>
+        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Drawing.Image,XPTable.Models.CellStyle)">
+            <summary>
+            Initializes a new instance of the Cell class with the specified text, 
+            Image and CellStyle
+            </summary>
+            <param name="text">The text displayed in the Cell</param>
+            <param name="image">The Image displayed in the Cell</param>
+            <param name="cellStyle">A CellStyle that specifies the visual appearance 
+            of the Cell</param>
+        </member>
+        <member name="M:XPTable.Models.Cell.Init">
+            <summary>
+            Initialise default values
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.Cell.Dispose">
+            <summary>
+            Releases all resources used by the Cell
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.Cell.GetState(System.Int32)">
+            <summary>
+            Returns the state represented by the specified state flag
+            </summary>
+            <param name="flag">A flag that represents the state to return</param>
+            <returns>The state represented by the specified state flag</returns>
+        </member>
+        <member name="M:XPTable.Models.Cell.SetState(System.Int32,System.Boolean)">
+            <summary>
+            Sets the state represented by the specified state flag to the specified value
+            </summary>
+            <param name="flag">A flag that represents the state to be set</param>
+            <param name="value">The new value of the state</param>
+        </member>
+        <member name="M:XPTable.Models.Cell.SetSelected(System.Boolean)">
+            <summary>
+            Sets whether the Cell is selected
+            </summary>
+            <param name="selected">A boolean value that specifies whether the 
+            cell is selected</param>
+        </member>
+        <member name="M:XPTable.Models.Cell.ShouldSerializeBackColor">
+            <summary>
+            Specifies whether the BackColor property should be serialized at 
+            design time
+            </summary>
+            <returns>true if the BackColor property should be serialized, 
+            false otherwise</returns>
+        </member>
+        <member name="M:XPTable.Models.Cell.ShouldSerializeForeColor">
+            <summary>
+            Specifies whether the ForeColor property should be serialized at 
+            design time
+            </summary>
+            <returns>true if the ForeColor property should be serialized, 
+            false otherwise</returns>
+        </member>
+        <member name="M:XPTable.Models.Cell.ShouldSerializeFont">
+            <summary>
+            Specifies whether the Font property should be serialized at 
+            design time
+            </summary>
+            <returns>true if the Font property should be serialized, 
+            false otherwise</returns>
+        </member>
+        <member name="M:XPTable.Models.Cell.ShouldSerializePadding">
+            <summary>
+            Specifies whether the Padding property should be serialized at 
+            design time
+            </summary>
+            <returns>true if the Padding property should be serialized, 
+            false otherwise</returns>
+        </member>
+        <member name="M:XPTable.Models.Cell.ShouldSerializeEditable">
+            <summary>
+            Specifies whether the Editable property should be serialized at 
+            design time
+            </summary>
+            <returns>true if the Editable property should be serialized, 
+            false otherwise</returns>
+        </member>
+        <member name="M:XPTable.Models.Cell.ShouldSerializeEnabled">
+            <summary>
+            Specifies whether the Enabled property should be serialized at 
+            design time
+            </summary>
+            <returns>true if the Enabled property should be serialized, 
+            false otherwise</returns>
+        </member>
+        <member name="M:XPTable.Models.Cell.OnPropertyChanged(XPTable.Events.CellEventArgs)">
+            <summary>
+            Raises the PropertyChanged event
+            </summary>
+            <param name="e">A CellEventArgs that contains the event data</param>
+        </member>
+        <member name="E:XPTable.Models.Cell.PropertyChanged">
+            <summary>
+            Occurs when the value of a Cells property changes
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.text">
+            <summary>
+            The text displayed in the Cell
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.data">
+            <summary>
+            An object that contains data to be displayed in the Cell
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.index">
+            <summary>
+            The index of the Cell
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.state">
+            <summary>
+            Contains the current state of the the Cell
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.cellStyle">
+            <summary>
+            The Cells CellStyle settings
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.checkStyle">
+            <summary>
+            The Cells CellCheckStyle settings
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.imageStyle">
+            <summary>
+            The Cells CellImageStyle settings
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.tooltipText">
+            <summary>
+            The text displayed in the Cells tooltip
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.disposed">
+            <summary>
+            Specifies whether the Cell has been disposed
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.colspan">
+            <summary>
+            Specifies how many columns this cell occupies.
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.Text">
+            <summary>
+            Gets or sets the text displayed by the Cell
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.Data">
+            <summary>
+            Gets or sets the Cells non-text data
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.Tag">
+            <summary>
+            Gets or sets the object that contains data about the Cell
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.CellStyle">
+            <summary>
+            Gets or sets the CellStyle used by the Cell
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.Selected">
+            <summary>
+            Gets or sets whether the Cell is selected
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.WordWrap">
+            <summary>
+            Gets of sets whether text can wrap in this cell (and force the cell's height to increase)
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.BackColor">
+            <summary>
+            Gets or sets the background Color for the Cell
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.ForeColor">
+            <summary>
+            Gets or sets the foreground Color for the Cell
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.Font">
+            <summary>
+            Gets or sets the Font used by the Cell
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.Padding">
+            <summary>
+            Gets or sets the amount of space between the Cells Border and its contents
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.Checked">
+            <summary>
+            Gets or sets whether the Cell is in the checked state
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.CheckState">
+            <summary>
+            Gets or sets the state of the Cells check box
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.ThreeState">
+            <summary>
+            Gets or sets a value indicating whether the Cells check box 
+            will allow three check states rather than two
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.Image">
+            <summary>
+            Gets or sets the image that is displayed in the Cell
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.ImageSizeMode">
+            <summary>
+            Gets or sets how the Cells image is sized within the Cell
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.Editable">
+            <summary>
+            Gets or sets a value indicating whether the Cells contents are able 
+            to be edited
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.Enabled">
+            <summary>
+            Gets or sets a value indicating whether the Cell 
+            can respond to user interaction
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.ToolTipText">
+            <summary>
+            Gets or sets the text displayed in the Cells tooltip
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell._isTextTrimmed">
+            <summary>
+            Indicates whether the text has all been shown when rendered.
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.InternalIsTextTrimmed">
+            <summary>
+            Gets or sets a value that indicates whether the text has all been shown when rendered.
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.IsTextTrimmed">
+            <summary>
+            Gets a value that indicates whether the text has all been shown when rendered.
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.ContentWidth">
+            <summary>
+            Gets or sets the minimum width required to display this cell.
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.WidthNotSet">
+            <summary>
+            Returns true if the cells width property has been assigned.
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.ColSpan">
+            <summary>
+            Gets or sets how many columns this cell occupies
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.RendererData">
+            <summary>
+            Gets or sets the information used by CellRenderers to record the current 
+            state of the Cell
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.Row">
+            <summary>
+            Gets the Row that the Cell belongs to
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.InternalRow">
+            <summary>
+            Gets or sets the Row that the Cell belongs to
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.Index">
+            <summary>
+            Gets the index of the Cell within its Row
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.InternalIndex">
+            <summary>
+            Gets or sets the index of the Cell within its Row
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.CanRaiseEvents">
+            <summary>
+            Gets whether the Cell is able to raise events
+            </summary>
+        </member>
         <member name="T:XPTable.Models.ColorColumn">
             <summary>
             Represents a Column whose Cells are displayed as a Color
@@ -3942,463 +4399,6 @@
             <param name="val"></param>
             <returns></returns>
         </member>
-        <member name="T:XPTable.Models.Cell">
-            <summary>
-            Represents a Cell that is displayed in a Table
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Cell.tag">
-            <summary>
-            An object that contains data about the Cell
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Cell.rendererData">
-            <summary>
-            Stores information used by CellRenderers to record the current 
-            state of the Cell
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Cell.row">
-            <summary>
-            The Row that the Cell belongs to
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.Cell.#ctor">
-            <summary>
-            Initializes a new instance of the Cell class with default settings
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.Cell.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the Cell class with the specified text
-            </summary>
-            <param name="text">The text displayed in the Cell</param>
-        </member>
-        <member name="M:XPTable.Models.Cell.#ctor(System.Object)">
-            <summary>
-            Initializes a new instance of the Cell class with the specified object
-            </summary>
-            <param name="value">The object displayed in the Cell</param>
-        </member>
-        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Object)">
-            <summary>
-            Initializes a new instance of the Cell class with the specified text 
-            and object
-            </summary>
-            <param name="text">The text displayed in the Cell</param>
-            <param name="value">The object displayed in the Cell</param>
-        </member>
-        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Boolean)">
-            <summary>
-            Initializes a new instance of the Cell class with the specified text 
-            and check value
-            </summary>
-            <param name="text">The text displayed in the Cell</param>
-            <param name="check">Specifies whether the Cell is Checked</param>
-        </member>
-        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Drawing.Image)">
-            <summary>
-            Initializes a new instance of the Cell class with the specified text 
-            and Image value
-            </summary>
-            <param name="text">The text displayed in the Cell</param>
-            <param name="image">The Image displayed in the Cell</param>
-        </member>
-        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Drawing.Color,System.Drawing.Color,System.Drawing.Font)">
-            <summary>
-            Initializes a new instance of the Cell class with the specified text, 
-            fore Color, back Color and Font
-            </summary>
-            <param name="text">The text displayed in the Cell</param>
-            <param name="foreColor">The foreground Color of the Cell</param>
-            <param name="backColor">The background Color of the Cell</param>
-            <param name="font">The Font used to draw the text in the Cell</param>
-        </member>
-        <member name="M:XPTable.Models.Cell.#ctor(System.String,XPTable.Models.CellStyle)">
-            <summary>
-            Initializes a new instance of the Cell class with the specified text 
-            and CellStyle
-            </summary>
-            <param name="text">The text displayed in the Cell</param>
-            <param name="cellStyle">A CellStyle that specifies the visual appearance 
-            of the Cell</param>
-        </member>
-        <member name="M:XPTable.Models.Cell.#ctor(System.Object,System.Drawing.Color,System.Drawing.Color,System.Drawing.Font)">
-            <summary>
-            Initializes a new instance of the Cell class with the specified object, 
-            fore Color, back Color and Font
-            </summary>
-            <param name="value">The object displayed in the Cell</param>
-            <param name="foreColor">The foreground Color of the Cell</param>
-            <param name="backColor">The background Color of the Cell</param>
-            <param name="font">The Font used to draw the text in the Cell</param>
-        </member>
-        <member name="M:XPTable.Models.Cell.#ctor(System.Object,XPTable.Models.CellStyle)">
-            <summary>
-            Initializes a new instance of the Cell class with the specified text 
-            and CellStyle
-            </summary>
-            <param name="value">The object displayed in the Cell</param>
-            <param name="cellStyle">A CellStyle that specifies the visual appearance 
-            of the Cell</param>
-        </member>
-        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Object,System.Drawing.Color,System.Drawing.Color,System.Drawing.Font)">
-            <summary>
-            Initializes a new instance of the Cell class with the specified text, 
-            object, fore Color, back Color and Font
-            </summary>
-            <param name="text">The text displayed in the Cell</param>
-            <param name="value">The object displayed in the Cell</param>
-            <param name="foreColor">The foreground Color of the Cell</param>
-            <param name="backColor">The background Color of the Cell</param>
-            <param name="font">The Font used to draw the text in the Cell</param>
-        </member>
-        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Object,XPTable.Models.CellStyle)">
-            <summary>
-            Initializes a new instance of the Cell class with the specified text, 
-            object and CellStyle
-            </summary>
-            <param name="text">The text displayed in the Cell</param>
-            <param name="value">The object displayed in the Cell</param>
-            <param name="cellStyle">A CellStyle that specifies the visual appearance 
-            of the Cell</param>
-        </member>
-        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Boolean,System.Drawing.Color,System.Drawing.Color,System.Drawing.Font)">
-            <summary>
-            Initializes a new instance of the Cell class with the specified text, 
-            check value, fore Color, back Color and Font
-            </summary>
-            <param name="text">The text displayed in the Cell</param>
-            <param name="check">Specifies whether the Cell is Checked</param>
-            <param name="foreColor">The foreground Color of the Cell</param>
-            <param name="backColor">The background Color of the Cell</param>
-            <param name="font">The Font used to draw the text in the Cell</param>
-        </member>
-        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Boolean,XPTable.Models.CellStyle)">
-            <summary>
-            Initializes a new instance of the Cell class with the specified text, 
-            check value and CellStyle
-            </summary>
-            <param name="text">The text displayed in the Cell</param>
-            <param name="check">Specifies whether the Cell is Checked</param>
-            <param name="cellStyle">A CellStyle that specifies the visual appearance 
-            of the Cell</param>
-        </member>
-        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Drawing.Image,System.Drawing.Color,System.Drawing.Color,System.Drawing.Font)">
-            <summary>
-            Initializes a new instance of the Cell class with the specified text, 
-            Image, fore Color, back Color and Font
-            </summary>
-            <param name="text">The text displayed in the Cell</param>
-            <param name="image">The Image displayed in the Cell</param>
-            <param name="foreColor">The foreground Color of the Cell</param>
-            <param name="backColor">The background Color of the Cell</param>
-            <param name="font">The Font used to draw the text in the Cell</param>
-        </member>
-        <member name="M:XPTable.Models.Cell.#ctor(System.String,System.Drawing.Image,XPTable.Models.CellStyle)">
-            <summary>
-            Initializes a new instance of the Cell class with the specified text, 
-            Image and CellStyle
-            </summary>
-            <param name="text">The text displayed in the Cell</param>
-            <param name="image">The Image displayed in the Cell</param>
-            <param name="cellStyle">A CellStyle that specifies the visual appearance 
-            of the Cell</param>
-        </member>
-        <member name="M:XPTable.Models.Cell.Init">
-            <summary>
-            Initialise default values
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.Cell.Dispose">
-            <summary>
-            Releases all resources used by the Cell
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.Cell.GetState(System.Int32)">
-            <summary>
-            Returns the state represented by the specified state flag
-            </summary>
-            <param name="flag">A flag that represents the state to return</param>
-            <returns>The state represented by the specified state flag</returns>
-        </member>
-        <member name="M:XPTable.Models.Cell.SetState(System.Int32,System.Boolean)">
-            <summary>
-            Sets the state represented by the specified state flag to the specified value
-            </summary>
-            <param name="flag">A flag that represents the state to be set</param>
-            <param name="value">The new value of the state</param>
-        </member>
-        <member name="M:XPTable.Models.Cell.SetSelected(System.Boolean)">
-            <summary>
-            Sets whether the Cell is selected
-            </summary>
-            <param name="selected">A boolean value that specifies whether the 
-            cell is selected</param>
-        </member>
-        <member name="M:XPTable.Models.Cell.ShouldSerializeBackColor">
-            <summary>
-            Specifies whether the BackColor property should be serialized at 
-            design time
-            </summary>
-            <returns>true if the BackColor property should be serialized, 
-            false otherwise</returns>
-        </member>
-        <member name="M:XPTable.Models.Cell.ShouldSerializeForeColor">
-            <summary>
-            Specifies whether the ForeColor property should be serialized at 
-            design time
-            </summary>
-            <returns>true if the ForeColor property should be serialized, 
-            false otherwise</returns>
-        </member>
-        <member name="M:XPTable.Models.Cell.ShouldSerializeFont">
-            <summary>
-            Specifies whether the Font property should be serialized at 
-            design time
-            </summary>
-            <returns>true if the Font property should be serialized, 
-            false otherwise</returns>
-        </member>
-        <member name="M:XPTable.Models.Cell.ShouldSerializePadding">
-            <summary>
-            Specifies whether the Padding property should be serialized at 
-            design time
-            </summary>
-            <returns>true if the Padding property should be serialized, 
-            false otherwise</returns>
-        </member>
-        <member name="M:XPTable.Models.Cell.ShouldSerializeEditable">
-            <summary>
-            Specifies whether the Editable property should be serialized at 
-            design time
-            </summary>
-            <returns>true if the Editable property should be serialized, 
-            false otherwise</returns>
-        </member>
-        <member name="M:XPTable.Models.Cell.ShouldSerializeEnabled">
-            <summary>
-            Specifies whether the Enabled property should be serialized at 
-            design time
-            </summary>
-            <returns>true if the Enabled property should be serialized, 
-            false otherwise</returns>
-        </member>
-        <member name="M:XPTable.Models.Cell.OnPropertyChanged(XPTable.Events.CellEventArgs)">
-            <summary>
-            Raises the PropertyChanged event
-            </summary>
-            <param name="e">A CellEventArgs that contains the event data</param>
-        </member>
-        <member name="E:XPTable.Models.Cell.PropertyChanged">
-            <summary>
-            Occurs when the value of a Cells property changes
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.text">
-            <summary>
-            The text displayed in the Cell
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.data">
-            <summary>
-            An object that contains data to be displayed in the Cell
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.index">
-            <summary>
-            The index of the Cell
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.state">
-            <summary>
-            Contains the current state of the the Cell
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.cellStyle">
-            <summary>
-            The Cells CellStyle settings
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.checkStyle">
-            <summary>
-            The Cells CellCheckStyle settings
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.imageStyle">
-            <summary>
-            The Cells CellImageStyle settings
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.tooltipText">
-            <summary>
-            The text displayed in the Cells tooltip
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.disposed">
-            <summary>
-            Specifies whether the Cell has been disposed
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.colspan">
-            <summary>
-            Specifies how many columns this cell occupies.
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.Text">
-            <summary>
-            Gets or sets the text displayed by the Cell
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.Data">
-            <summary>
-            Gets or sets the Cells non-text data
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.Tag">
-            <summary>
-            Gets or sets the object that contains data about the Cell
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.CellStyle">
-            <summary>
-            Gets or sets the CellStyle used by the Cell
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.Selected">
-            <summary>
-            Gets or sets whether the Cell is selected
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.WordWrap">
-            <summary>
-            Gets of sets whether text can wrap in this cell (and force the cell's height to increase)
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.BackColor">
-            <summary>
-            Gets or sets the background Color for the Cell
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.ForeColor">
-            <summary>
-            Gets or sets the foreground Color for the Cell
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.Font">
-            <summary>
-            Gets or sets the Font used by the Cell
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.Padding">
-            <summary>
-            Gets or sets the amount of space between the Cells Border and its contents
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.Checked">
-            <summary>
-            Gets or sets whether the Cell is in the checked state
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.CheckState">
-            <summary>
-            Gets or sets the state of the Cells check box
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.ThreeState">
-            <summary>
-            Gets or sets a value indicating whether the Cells check box 
-            will allow three check states rather than two
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.Image">
-            <summary>
-            Gets or sets the image that is displayed in the Cell
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.ImageSizeMode">
-            <summary>
-            Gets or sets how the Cells image is sized within the Cell
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.Editable">
-            <summary>
-            Gets or sets a value indicating whether the Cells contents are able 
-            to be edited
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.Enabled">
-            <summary>
-            Gets or sets a value indicating whether the Cell 
-            can respond to user interaction
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.ToolTipText">
-            <summary>
-            Gets or sets the text displayed in the Cells tooltip
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell._isTextTrimmed">
-            <summary>
-            Indicates whether the text has all been shown when rendered.
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.InternalIsTextTrimmed">
-            <summary>
-            Gets or sets a value that indicates whether the text has all been shown when rendered.
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.IsTextTrimmed">
-            <summary>
-            Gets a value that indicates whether the text has all been shown when rendered.
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.ContentWidth">
-            <summary>
-            Gets or sets the minimum width required to display this cell.
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.WidthNotSet">
-            <summary>
-            Returns true if the cells width property has been assigned.
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.ColSpan">
-            <summary>
-            Gets or sets how many columns this cell occupies
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.RendererData">
-            <summary>
-            Gets or sets the information used by CellRenderers to record the current 
-            state of the Cell
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.Row">
-            <summary>
-            Gets the Row that the Cell belongs to
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.InternalRow">
-            <summary>
-            Gets or sets the Row that the Cell belongs to
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.Index">
-            <summary>
-            Gets the index of the Cell within its Row
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.InternalIndex">
-            <summary>
-            Gets or sets the index of the Cell within its Row
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Cell.CanRaiseEvents">
-            <summary>
-            Gets whether the Cell is able to raise events
-            </summary>
-        </member>
         <member name="T:XPTable.Renderers.ImageCellRenderer">
             <summary>
             A CellRenderer that draws Cell contents as Images
@@ -4490,6 +4490,427 @@
         <member name="F:XPTable.Models.TableState.Selecting">
             <summary>
             The Table is selecting Cells
+            </summary>
+        </member>
+        <member name="T:XPTable.Models.Row">
+            <summary>
+            SRepresents a row of Cells displayed in a Table
+            </summary>
+        </member>
+        <member name="F:XPTable.Models.Row.cells">
+            <summary>
+            The collection of Cells's contained in the Row
+            </summary>
+        </member>
+        <member name="F:XPTable.Models.Row.tag">
+            <summary>
+            An object that contains data about the Row
+            </summary>
+        </member>
+        <member name="F:XPTable.Models.Row.tableModel">
+            <summary>
+            The TableModel that the Row belongs to
+            </summary>
+        </member>
+        <member name="F:XPTable.Models.Row.index">
+            <summary>
+            The index of the Row
+            </summary>
+        </member>
+        <member name="F:XPTable.Models.Row._internalGridLineFlags">
+            <summary>
+            Holds flags indicating whether the RHS vertical grid line should be drawn for the cell at the position
+            given by the index.
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.Row.#ctor">
+            <summary>
+            Initializes a new instance of the Row class with default settings
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.Row.#ctor(XPTable.Models.Row)">
+            <summary>
+            Initializes a new instance of the Row class with default settings and a parent row. The new row
+            is a sub row
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.Row.#ctor(System.String[])">
+            <summary>
+            Initializes a new instance of the Row class with an array of strings 
+            representing Cells
+            </summary>
+            <param name="items">An array of strings that represent the Cells of 
+            the Row</param>
+        </member>
+        <member name="M:XPTable.Models.Row.#ctor(XPTable.Models.Cell[])">
+            <summary>
+            Initializes a new instance of the Row class with an array of Cell objects 
+            </summary>
+            <param name="cells">An array of Cell objects that represent the Cells of the Row</param>
+        </member>
+        <member name="M:XPTable.Models.Row.#ctor(System.String[],System.Drawing.Color,System.Drawing.Color,System.Drawing.Font)">
+            <summary>
+            Initializes a new instance of the Row class with an array of strings 
+            representing Cells and the foreground color, background color, and font 
+            of the Row
+            </summary>
+            <param name="items">An array of strings that represent the Cells of the Row</param>
+            <param name="foreColor">The foreground Color of the Row</param>
+            <param name="backColor">The background Color of the Row</param>
+            <param name="font">The Font used to draw the text in the Row's Cells</param>
+        </member>
+        <member name="M:XPTable.Models.Row.#ctor(XPTable.Models.Cell[],System.Drawing.Color,System.Drawing.Color,System.Drawing.Font)">
+            <summary>
+            Initializes a new instance of the Row class with an array of Cell objects and 
+            the foreground color, background color, and font of the Row
+            </summary>
+            <param name="cells">An array of Cell objects that represent the Cells of the Row</param>
+            <param name="foreColor">The foreground Color of the Row</param>
+            <param name="backColor">The background Color of the Row</param>
+            <param name="font">The Font used to draw the text in the Row's Cells</param>
+        </member>
+        <member name="M:XPTable.Models.Row.Init">
+            <summary>
+            Initialise default values
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.Row.Dispose">
+            <summary>
+            Releases all resources used by the Row
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.Row.GetState(System.Int32)">
+            <summary>
+            Returns the state represented by the specified state flag
+            </summary>
+            <param name="flag">A flag that represents the state to return</param>
+            <returns>The state represented by the specified state flag</returns>
+        </member>
+        <member name="M:XPTable.Models.Row.SetState(System.Int32,System.Boolean)">
+            <summary>
+            Sets the state represented by the specified state flag to the specified value
+            </summary>
+            <param name="flag">A flag that represents the state to be set</param>
+            <param name="value">The new value of the state</param>
+        </member>
+        <member name="M:XPTable.Models.Row.GetRenderedCellIndex(System.Int32)">
+            <summary>
+            Returns the column that contains the cell that renders over the given column.
+            This is only different if there is a colspan cell on this row, to the left of the given position.
+            </summary>
+            <param name="columnIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XPTable.Models.Row.IsCellSelected(System.Int32)">
+            <summary>
+            Returns whether the Cell at the specified index is selected
+            </summary>
+            <param name="index">The index of the Cell in the Row's Row.CellCollection</param>
+            <returns>True if the Cell at the specified index is selected, 
+            otherwise false</returns>
+        </member>
+        <member name="M:XPTable.Models.Row.ClearSelection">
+            <summary>
+            Removes the selected state from all the Cells within the Row
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.Row.UpdateCellIndicies(System.Int32)">
+            <summary>
+            Updates the Cell's Index property so that it matches the Cells 
+            position in the CellCollection
+            </summary>
+            <param name="start">The index to start updating from</param>
+        </member>
+        <member name="M:XPTable.Models.Row.ShouldSerializeBackColor">
+            <summary>
+            Specifies whether the BackColor property should be serialized at 
+            design time
+            </summary>
+            <returns>true if the BackColor property should be serialized, 
+            false otherwise</returns>
+        </member>
+        <member name="M:XPTable.Models.Row.ShouldSerializeForeColor">
+            <summary>
+            Specifies whether the ForeColor property should be serialized at 
+            design time
+            </summary>
+            <returns>true if the ForeColor property should be serialized, 
+            false otherwise</returns>
+        </member>
+        <member name="M:XPTable.Models.Row.ShouldSerializeFont">
+            <summary>
+            Specifies whether the Font property should be serialized at 
+            design time
+            </summary>
+            <returns>true if the Font property should be serialized, 
+            false otherwise</returns>
+        </member>
+        <member name="M:XPTable.Models.Row.ShouldSerializeEditable">
+            <summary>
+            Specifies whether the Editable property should be serialized at 
+            design time
+            </summary>
+            <returns>true if the Editable property should be serialized, 
+            false otherwise</returns>
+        </member>
+        <member name="M:XPTable.Models.Row.ShouldSerializeEnabled">
+            <summary>
+            Specifies whether the Enabled property should be serialized at 
+            design time
+            </summary>
+            <returns>true if the Enabled property should be serialized, 
+            false otherwise</returns>
+        </member>
+        <member name="M:XPTable.Models.Row.OnPropertyChanged(XPTable.Events.RowEventArgs)">
+            <summary>
+            Raises the PropertyChanged event
+            </summary>
+            <param name="e">A RowEventArgs that contains the event data</param>
+        </member>
+        <member name="M:XPTable.Models.Row.OnCellAdded(XPTable.Events.RowEventArgs)">
+            <summary>
+            Raises the CellAdded event
+            </summary>
+            <param name="e">A RowEventArgs that contains the event data</param>
+        </member>
+        <member name="M:XPTable.Models.Row.OnCellRemoved(XPTable.Events.RowEventArgs)">
+            <summary>
+            Raises the CellRemoved event
+            </summary>
+            <param name="e">A RowEventArgs that contains the event data</param>
+        </member>
+        <member name="M:XPTable.Models.Row.OnSubRowAdded(XPTable.Events.RowEventArgs)">
+            <summary>
+            Raises the SubRowAdded event
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:XPTable.Models.Row.OnSubRowRemoved(XPTable.Events.RowEventArgs)">
+            <summary>
+            Raises the SubRowRemoved event
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:XPTable.Models.Row.OnCellPropertyChanged(XPTable.Events.CellEventArgs)">
+            <summary>
+            Raises the CellPropertyChanged event
+            </summary>
+            <param name="e">A CellEventArgs that contains the event data</param>
+        </member>
+        <member name="E:XPTable.Models.Row.CellAdded">
+            <summary>
+            Occurs when a Cell is added to the Row
+            </summary>
+        </member>
+        <member name="E:XPTable.Models.Row.CellRemoved">
+            <summary>
+            Occurs when a Cell is removed from the Row
+            </summary>
+        </member>
+        <member name="E:XPTable.Models.Row.SubRowAdded">
+            <summary>
+            Occurs when a SubRow is added to the Row
+            </summary>
+        </member>
+        <member name="E:XPTable.Models.Row.SubRowRemoved">
+            <summary>
+            Occurs when a SubRow is removed from the Row
+            </summary>
+        </member>
+        <member name="E:XPTable.Models.Row.PropertyChanged">
+            <summary>
+            Occurs when the value of a Row's property changes
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.subrows">
+            <summary>
+            The collection of subrows contained in this Row
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.parentrow">
+            <summary>
+            The row that is the parent to this one (if this is a sub row)
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.childindex">
+            <summary>
+            The index that gives the order this row was added in
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.height">
+            <summary>
+            The actual rendered height of this row. If negative then it has not been rendered and height is unknown.
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.state">
+            <summary>
+            the current state of the Row
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.rowStyle">
+            <summary>
+            The Row's RowStyle
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.selectedCellCount">
+            <summary>
+            The number of Cells in the Row that are selected
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.disposed">
+            <summary>
+            Specifies whether the Row has been disposed
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.expandSubRows">
+            <summary>
+            Indicates whether this row's sub-rows are shown or hidden.
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.Cells">
+            <summary>
+            A CellCollection representing the collection of 
+            Cells contained within the Row
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.SubRows">
+            <summary>
+            A RowCollection representing the collection of 
+            SubRows contained within the Row
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.Parent">
+            <summary>
+            The Row that is the parent (if this row is a sub-row).
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.ExpandSubRows">
+            <summary>
+            Gets or sets whether this row's sub-rows are shown or hidden. Is True by default.
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.ChildIndex">
+            <summary>
+            If this is a sub-row (i.e. it has a Parent), this gets the index of the Row within its Parent.
+            Used when sorting.
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.Tag">
+            <summary>
+            Gets or sets the object that contains data about the Row
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.RowStyle">
+            <summary>
+            Gets or sets the RowStyle used by the Row
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.BackColor">
+            <summary>
+            Gets or sets the background color for the Row
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.ForeColor">
+            <summary>
+            Gets or sets the foreground Color for the Row
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.Alignment">
+            <summary>
+            Gets or sets the vertical alignment of the objects displayed in the Row
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.Font">
+            <summary>
+            Gets or sets the Font used by the Row
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.Editable">
+            <summary>
+            Gets or sets a value indicating whether the Row's Cells are able 
+            to be edited
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.Enabled">
+            <summary>
+            Gets or sets a value indicating whether the Row's Cells can respond to 
+            user interaction
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.TableModel">
+            <summary>
+            Gets the TableModel the Row belongs to
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.InternalTableModel">
+            <summary>
+            Gets or sets the TableModel the Row belongs to
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.Index">
+            <summary>
+            Gets the index of the Row within its TableModel
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.InternalIndex">
+            <summary>
+            Gets or sets the index of the Row within its TableModel
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.InternalHeight">
+            <summary>
+            Gets or sets the height of the Row. If this row has not been rendered 
+            (and the so exact height has not been calculated) -1 is returned.
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.Height">
+            <summary>
+            Gets the height of the Row. If this row has not been rendered 
+            (and the so exact height has not been calculated) the table default
+            row height is returned.
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.CanRaiseEvents">
+            <summary>
+            Gets whether the Row is able to raise events
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.SelectedCellCount">
+            <summary>
+            Gets the number of Cells that are selected within the Row
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.InternalSelectedCellCount">
+            <summary>
+            Gets or sets the number of Cells that are selected within the Row
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.WordWrapCellIndex">
+            <summary>
+            Gets the index of the word wrap cell (if any).
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.AnyCellsSelected">
+            <summary>
+            Gets whether any Cells within the Row are selected
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.SelectedItems">
+            <summary>
+            Returns an array of Cells that contains all the selected Cells 
+            within the Row
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.SelectedIndicies">
+            <summary>
+            Returns an array that contains the indexes of all the selected Cells 
+            within the Row
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.InternalGridLineFlags">
+            <summary>
+            Holds flags indicating whether the RHS vertical grid line should be drawn for the cell at the position
+            given by the index.
             </summary>
         </member>
         <member name="T:XPTable.Models.ButtonColumn">
@@ -5187,6 +5608,13 @@
             Specifies whether any cells are allowed to word-wrap.
             </summary>
         </member>
+        <member name="M:XPTable.Models.Table.HiddenRowCountBefore(System.Int32)">
+            <summary>
+            Count the number of hidden rows before the supplied row.
+            </summary>
+            <param name="row">The row to count up to.</param>
+            <returns>The number of hidden rows.</returns>
+        </member>
         <member name="F:XPTable.Models.Table._dragDropHelper">
             <summary>
             Helper class that provides all drag drop functionality.
@@ -5461,7 +5889,7 @@
             <param name="maxwidth"></param>
             <returns></returns>
         </member>
-        <member name="M:XPTable.Models.Table.RowIndexAt(System.Int32,System.Int32)">
+        <member name="M:XPTable.Models.Table.RowIndexAtClient(System.Int32,System.Int32)">
             <summary>
             Returns the index of the Row at the specified client coordinates
             </summary>
@@ -5469,6 +5897,15 @@
             <param name="y">The client y coordinate of the Row</param>
             <returns>The index of the Row at the specified client coordinates, or
             -1 if it does not exist</returns>
+        </member>
+        <member name="M:XPTable.Models.Table.RowIndexAtExact(System.Int32)">
+            <summary>
+            Returns the index of the Row that lies on the specified position.
+            Found by iterating through all rows (i.e. copes with variable height rows).
+            </summary>
+            <param name="yPosition"></param>
+            <returns>The index of the Row at the specified position or -1 if 
+            no Row is found</returns>
         </member>
         <member name="M:XPTable.Models.Table.RowIndexAt(System.Drawing.Point)">
             <summary>
@@ -6928,6 +7365,11 @@
             Occurs following an internally handled row move operation during DragDrop.
             It supplies the source and destination indexes of the moved row.
             NOTE this is not trigger if DragDropExternalTypeEvent is triggered.
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Table.HiddenSubRows">
+            <summary>
+            Gets the total number of subrows that are currently not expanded.
             </summary>
         </member>
         <member name="P:XPTable.Models.Table.Initializing">
@@ -8868,22 +9310,6 @@
             Releases the unmanaged resources used by the TableModel and optionally 
             releases the managed resources
             </summary>
-        </member>
-        <member name="M:XPTable.Models.TableModel.RowIndexAt(System.Int32)">
-            <summary>
-            Returns the index of the Row that lies on the specified position
-            </summary>
-            <param name="yPosition">The y-coordinate to check</param>
-            <returns>The index of the Row at the specified position or -1 if 
-            no Row is found</returns>
-        </member>
-        <member name="M:XPTable.Models.TableModel.RowIndexAtExact(System.Int32)">
-            <summary>
-            Returns the index of the Row that lies on the specified position.
-            Found by iterating through all rows (i.e. copes with variable height rows).
-            </summary>
-            <param name="yPosition"></param>
-            <returns></returns>
         </member>
         <member name="M:XPTable.Models.TableModel.ShouldSerializeRowHeight">
             <summary>
@@ -11829,427 +12255,6 @@
             The click occured outside ot the Table
             </summary>
         </member>
-        <member name="T:XPTable.Models.Row">
-            <summary>
-            SRepresents a row of Cells displayed in a Table
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Row.cells">
-            <summary>
-            The collection of Cells's contained in the Row
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Row.subrows">
-            <summary>
-            The collection of subrows contained in this Row
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Row.tag">
-            <summary>
-            An object that contains data about the Row
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Row.tableModel">
-            <summary>
-            The TableModel that the Row belongs to
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Row.index">
-            <summary>
-            The index of the Row
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.Row._internalGridLineFlags">
-            <summary>
-            Holds flags indicating whether the RHS vertical grid line should be drawn for the cell at the position
-            given by the index.
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.Row.#ctor">
-            <summary>
-            Initializes a new instance of the Row class with default settings
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.Row.#ctor(XPTable.Models.Row)">
-            <summary>
-            Initializes a new instance of the Row class with default settings and a parent row. The new row
-            is a sub row
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.Row.#ctor(System.String[])">
-            <summary>
-            Initializes a new instance of the Row class with an array of strings 
-            representing Cells
-            </summary>
-            <param name="items">An array of strings that represent the Cells of 
-            the Row</param>
-        </member>
-        <member name="M:XPTable.Models.Row.#ctor(XPTable.Models.Cell[])">
-            <summary>
-            Initializes a new instance of the Row class with an array of Cell objects 
-            </summary>
-            <param name="cells">An array of Cell objects that represent the Cells of the Row</param>
-        </member>
-        <member name="M:XPTable.Models.Row.#ctor(System.String[],System.Drawing.Color,System.Drawing.Color,System.Drawing.Font)">
-            <summary>
-            Initializes a new instance of the Row class with an array of strings 
-            representing Cells and the foreground color, background color, and font 
-            of the Row
-            </summary>
-            <param name="items">An array of strings that represent the Cells of the Row</param>
-            <param name="foreColor">The foreground Color of the Row</param>
-            <param name="backColor">The background Color of the Row</param>
-            <param name="font">The Font used to draw the text in the Row's Cells</param>
-        </member>
-        <member name="M:XPTable.Models.Row.#ctor(XPTable.Models.Cell[],System.Drawing.Color,System.Drawing.Color,System.Drawing.Font)">
-            <summary>
-            Initializes a new instance of the Row class with an array of Cell objects and 
-            the foreground color, background color, and font of the Row
-            </summary>
-            <param name="cells">An array of Cell objects that represent the Cells of the Row</param>
-            <param name="foreColor">The foreground Color of the Row</param>
-            <param name="backColor">The background Color of the Row</param>
-            <param name="font">The Font used to draw the text in the Row's Cells</param>
-        </member>
-        <member name="M:XPTable.Models.Row.Init">
-            <summary>
-            Initialise default values
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.Row.Dispose">
-            <summary>
-            Releases all resources used by the Row
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.Row.GetState(System.Int32)">
-            <summary>
-            Returns the state represented by the specified state flag
-            </summary>
-            <param name="flag">A flag that represents the state to return</param>
-            <returns>The state represented by the specified state flag</returns>
-        </member>
-        <member name="M:XPTable.Models.Row.SetState(System.Int32,System.Boolean)">
-            <summary>
-            Sets the state represented by the specified state flag to the specified value
-            </summary>
-            <param name="flag">A flag that represents the state to be set</param>
-            <param name="value">The new value of the state</param>
-        </member>
-        <member name="M:XPTable.Models.Row.GetRenderedCellIndex(System.Int32)">
-            <summary>
-            Returns the column that contains the cell that renders over the given column.
-            This is only different if there is a colspan cell on this row, to the left of the given position.
-            </summary>
-            <param name="columnIndex"></param>
-            <returns></returns>
-        </member>
-        <member name="M:XPTable.Models.Row.IsCellSelected(System.Int32)">
-            <summary>
-            Returns whether the Cell at the specified index is selected
-            </summary>
-            <param name="index">The index of the Cell in the Row's Row.CellCollection</param>
-            <returns>True if the Cell at the specified index is selected, 
-            otherwise false</returns>
-        </member>
-        <member name="M:XPTable.Models.Row.ClearSelection">
-            <summary>
-            Removes the selected state from all the Cells within the Row
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.Row.UpdateCellIndicies(System.Int32)">
-            <summary>
-            Updates the Cell's Index property so that it matches the Cells 
-            position in the CellCollection
-            </summary>
-            <param name="start">The index to start updating from</param>
-        </member>
-        <member name="M:XPTable.Models.Row.ShouldSerializeBackColor">
-            <summary>
-            Specifies whether the BackColor property should be serialized at 
-            design time
-            </summary>
-            <returns>true if the BackColor property should be serialized, 
-            false otherwise</returns>
-        </member>
-        <member name="M:XPTable.Models.Row.ShouldSerializeForeColor">
-            <summary>
-            Specifies whether the ForeColor property should be serialized at 
-            design time
-            </summary>
-            <returns>true if the ForeColor property should be serialized, 
-            false otherwise</returns>
-        </member>
-        <member name="M:XPTable.Models.Row.ShouldSerializeFont">
-            <summary>
-            Specifies whether the Font property should be serialized at 
-            design time
-            </summary>
-            <returns>true if the Font property should be serialized, 
-            false otherwise</returns>
-        </member>
-        <member name="M:XPTable.Models.Row.ShouldSerializeEditable">
-            <summary>
-            Specifies whether the Editable property should be serialized at 
-            design time
-            </summary>
-            <returns>true if the Editable property should be serialized, 
-            false otherwise</returns>
-        </member>
-        <member name="M:XPTable.Models.Row.ShouldSerializeEnabled">
-            <summary>
-            Specifies whether the Enabled property should be serialized at 
-            design time
-            </summary>
-            <returns>true if the Enabled property should be serialized, 
-            false otherwise</returns>
-        </member>
-        <member name="M:XPTable.Models.Row.OnPropertyChanged(XPTable.Events.RowEventArgs)">
-            <summary>
-            Raises the PropertyChanged event
-            </summary>
-            <param name="e">A RowEventArgs that contains the event data</param>
-        </member>
-        <member name="M:XPTable.Models.Row.OnCellAdded(XPTable.Events.RowEventArgs)">
-            <summary>
-            Raises the CellAdded event
-            </summary>
-            <param name="e">A RowEventArgs that contains the event data</param>
-        </member>
-        <member name="M:XPTable.Models.Row.OnCellRemoved(XPTable.Events.RowEventArgs)">
-            <summary>
-            Raises the CellRemoved event
-            </summary>
-            <param name="e">A RowEventArgs that contains the event data</param>
-        </member>
-        <member name="M:XPTable.Models.Row.OnSubRowAdded(XPTable.Events.RowEventArgs)">
-            <summary>
-            Raises the SubRowAdded event
-            </summary>
-            <param name="e"></param>
-        </member>
-        <member name="M:XPTable.Models.Row.OnSubRowRemoved(XPTable.Events.RowEventArgs)">
-            <summary>
-            Raises the SubRowRemoved event
-            </summary>
-            <param name="e"></param>
-        </member>
-        <member name="M:XPTable.Models.Row.OnCellPropertyChanged(XPTable.Events.CellEventArgs)">
-            <summary>
-            Raises the CellPropertyChanged event
-            </summary>
-            <param name="e">A CellEventArgs that contains the event data</param>
-        </member>
-        <member name="E:XPTable.Models.Row.CellAdded">
-            <summary>
-            Occurs when a Cell is added to the Row
-            </summary>
-        </member>
-        <member name="E:XPTable.Models.Row.CellRemoved">
-            <summary>
-            Occurs when a Cell is removed from the Row
-            </summary>
-        </member>
-        <member name="E:XPTable.Models.Row.SubRowAdded">
-            <summary>
-            Occurs when a SubRow is added to the Row
-            </summary>
-        </member>
-        <member name="E:XPTable.Models.Row.SubRowRemoved">
-            <summary>
-            Occurs when a SubRow is removed from the Row
-            </summary>
-        </member>
-        <member name="E:XPTable.Models.Row.PropertyChanged">
-            <summary>
-            Occurs when the value of a Row's property changes
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.parentrow">
-            <summary>
-            The row that is the parent to this one (if this is a sub row)
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.childindex">
-            <summary>
-            The index that gives the order this row was added in
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.height">
-            <summary>
-            The actual rendered height of this row. If negative then it has not been rendered and height is unknown.
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.state">
-            <summary>
-            the current state of the Row
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.rowStyle">
-            <summary>
-            The Row's RowStyle
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.selectedCellCount">
-            <summary>
-            The number of Cells in the Row that are selected
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.disposed">
-            <summary>
-            Specifies whether the Row has been disposed
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.expandSubRows">
-            <summary>
-            Indicates whether this row's sub-rows are shown or hidden.
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.Cells">
-            <summary>
-            A CellCollection representing the collection of 
-            Cells contained within the Row
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.SubRows">
-            <summary>
-            A RowCollection representing the collection of 
-            SubRows contained within the Row
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.Parent">
-            <summary>
-            The Row that is the parent (if this row is a sub-row).
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.ExpandSubRows">
-            <summary>
-            Gets or sets whether this row's sub-rows are shown or hidden. Is True by default.
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.ChildIndex">
-            <summary>
-            If this is a sub-row (i.e. it has a Parent), this gets the index of the Row within its Parent.
-            Used when sorting.
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.Tag">
-            <summary>
-            Gets or sets the object that contains data about the Row
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.RowStyle">
-            <summary>
-            Gets or sets the RowStyle used by the Row
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.BackColor">
-            <summary>
-            Gets or sets the background color for the Row
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.ForeColor">
-            <summary>
-            Gets or sets the foreground Color for the Row
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.Alignment">
-            <summary>
-            Gets or sets the vertical alignment of the objects displayed in the Row
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.Font">
-            <summary>
-            Gets or sets the Font used by the Row
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.Editable">
-            <summary>
-            Gets or sets a value indicating whether the Row's Cells are able 
-            to be edited
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.Enabled">
-            <summary>
-            Gets or sets a value indicating whether the Row's Cells can respond to 
-            user interaction
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.TableModel">
-            <summary>
-            Gets the TableModel the Row belongs to
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.InternalTableModel">
-            <summary>
-            Gets or sets the TableModel the Row belongs to
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.Index">
-            <summary>
-            Gets the index of the Row within its TableModel
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.InternalIndex">
-            <summary>
-            Gets or sets the index of the Row within its TableModel
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.InternalHeight">
-            <summary>
-            Gets or sets the height of the Row. If this row has not been rendered 
-            (and the so exact height has not been calculated) -1 is returned.
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.Height">
-            <summary>
-            Gets the height of the Row. If this row has not been rendered 
-            (and the so exact height has not been calculated) the table default
-            row height is returned.
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.CanRaiseEvents">
-            <summary>
-            Gets whether the Row is able to raise events
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.SelectedCellCount">
-            <summary>
-            Gets the number of Cells that are selected within the Row
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.InternalSelectedCellCount">
-            <summary>
-            Gets or sets the number of Cells that are selected within the Row
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.WordWrapCellIndex">
-            <summary>
-            Gets the index of the word wrap cell (if any).
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.AnyCellsSelected">
-            <summary>
-            Gets whether any Cells within the Row are selected
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.SelectedItems">
-            <summary>
-            Returns an array of Cells that contains all the selected Cells 
-            within the Row
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.SelectedIndicies">
-            <summary>
-            Returns an array that contains the indexes of all the selected Cells 
-            within the Row
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Row.InternalGridLineFlags">
-            <summary>
-            Holds flags indicating whether the RHS vertical grid line should be drawn for the cell at the position
-            given by the index.
-            </summary>
-        </member>
         <member name="T:XPTable.Models.GridLines">
             <summary>
             Specifies how a Table draws grid lines between its rows and columns
@@ -13603,20 +13608,6 @@
             </summary>
             <param name="row">The Row to add</param>
         </member>
-        <member name="M:XPTable.Models.RowCollection.HiddenRowCountBefore(System.Int32)">
-            <summary>
-            Count the number of hidden rows before the supplied row.
-            </summary>
-            <param name="row">The row to count up to.</param>
-            <returns>The number of hidden rows.</returns>
-        </member>
-        <member name="M:XPTable.Models.RowCollection.HiddenRowCountBefore(XPTable.Models.Row)">
-            <summary>
-            Count the number of hidden rows before the supplied row.
-            </summary>
-            <param name="row">The row to count up to.</param>
-            <returns>The number of hidden rows.</returns>
-        </member>
         <member name="M:XPTable.Models.RowCollection.CollapseAllSubRows">
             <summary>
             Collapses all sub rows.
@@ -13713,11 +13704,6 @@
             Raises the RowRemoved event
             </summary>
             <param name="e">A TableModelEventArgs that contains the event data</param>
-        </member>
-        <member name="P:XPTable.Models.RowCollection.HiddenSubRows">
-            <summary>
-            Gets the total number of subrows that are currently not expanded.
-            </summary>
         </member>
         <member name="P:XPTable.Models.RowCollection.Item(System.Int32)">
             <summary>

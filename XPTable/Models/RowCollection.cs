@@ -50,7 +50,6 @@ namespace XPTable.Models
         /// </summary>
         private Row rowowner;
 
-        private RowEventHandler propertyChangedEventHandler;
 		#endregion
 
 
@@ -70,8 +69,6 @@ namespace XPTable.Models
 			}
 				
 			this.owner = owner;
-
-            propertyChangedEventHandler = new RowEventHandler(row_PropertyChanged);
 		}
 
         /// <summary>
@@ -119,56 +116,8 @@ namespace XPTable.Models
                 this.OnRowAdded(new RowEventArgs(row, RowEventType.SubRowAdded, rowowner));
             }
 
-            row.PropertyChanged += propertyChangedEventHandler;
-
 			return index;
 		}
-
-		private int _totalHiddenSubRows = 0;
-
-        /// <summary>
-        /// Gets the total number of subrows that are currently not expanded.
-        /// </summary>
-        public int HiddenSubRows
-        {
-            get { return _totalHiddenSubRows; }
-        }
-        
-        /// <summary>
-        /// Count the number of hidden rows before the supplied row.
-        /// </summary>
-        /// <param name="row">The row to count up to.</param>
-        /// <returns>The number of hidden rows.</returns>
-        internal int HiddenRowCountBefore(int row)
-        {
-            int result = 0;
-
-            int skip = 0;
-            for (int i = 0; i < row; i++)
-            {
-                if (skip > 0)
-                    skip--;
-                else if ((skip == 0) && (!this[i].ExpandSubRows))
-                {
-                    skip = (this[i].SubRows != null) ? this[i].SubRows.Count : 0;
-                    result += skip;
-                }
-                else
-                    skip = (this[i].SubRows != null) ? this[i].SubRows.Count : 0;
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Count the number of hidden rows before the supplied row.
-        /// </summary>
-        /// <param name="row">The row to count up to.</param>
-        /// <returns>The number of hidden rows.</returns>
-        internal int HiddenRowCountBefore(Row row)
-        {
-            return HiddenRowCountBefore(IndexOf(row));
-        }
 
         /// <summary>
         /// Collapses all sub rows.
@@ -199,19 +148,6 @@ namespace XPTable.Models
                 }
             }
         }
-
-        private void row_PropertyChanged(object sender, RowEventArgs e)
-        {
-            if (e.EventType == RowEventType.ExpandSubRowsChanged)
-            {
-                if (!e.Row.ExpandSubRows)
-                    _totalHiddenSubRows += (e.Row.SubRows != null ) ? e.Row.SubRows.Count : 0;
-                else
-                    _totalHiddenSubRows -= (e.Row.SubRows != null) ? e.Row.SubRows.Count : 0;
-
-            }
-		}
-
 
 		/// <summary>
 		/// Adds an array of Row objects to the collection
@@ -284,8 +220,6 @@ namespace XPTable.Models
 
                 else if (rowowner != null)
                     this.OnRowRemoved(new RowEventArgs(row, RowEventType.SubRowRemoved, rowowner));
-
-                row.PropertyChanged -= propertyChangedEventHandler;
             }
 		}
 

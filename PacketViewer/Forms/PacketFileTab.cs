@@ -59,6 +59,10 @@ namespace PacketViewer.Forms
             table.AllowDrop = false;
             table.AllowRMBSelection = false;
 
+            var col0 = new ControlColumn("", 60);
+            col0.Editable = false;
+            col0.ControlFactory = new DetailsFactory();
+            col0.ControlSize = new Size(50, 6);
             var col1 = new NumberColumn("Num", 200);
             col1.Editable = false;
             var col2 = new TextColumn("Opcode", 200);
@@ -67,18 +71,24 @@ namespace PacketViewer.Forms
             col3.Editable = false;
             col3.DateTimeFormat = DateTimePickerFormat.Custom;
             col3.CustomDateTimeFormat = "d/m/yyyy hh:mm";
+            col3.ShowDropDownButton = false;
             var col4 = new NumberColumn("Sec", 200);
             col4.Editable = false;
             var col5 = new NumberColumn("Length", 200);
             col5.Editable = false;
-            table.ColumnModel = new ColumnModel(new Column[] { col1, col2, col3, col4, col5 });
+            table.ColumnModel = new ColumnModel(new Column[] {col0, col1, col2, col3, col4, col5 });
             TableModel model = new TableModel();
-
+            table.CellDoubleClick += new CellMouseEventHandler(ClickedCell);
+            table.FamilyRowSelect = false;
+            table.FullRowSelect = true;
             this.tablePackets.TableModel = model;
 
-            model.Table.FullRowSelect = true;
-
             this.tablePackets.EndUpdate();
+        }
+
+        private void ClickedCell(object sender, CellMouseEventArgs e)
+        {
+            e.Cell.Row.ExpandSubRows = !e.Cell.Row.ExpandSubRows;
         }
 
         public void AddPackets(List<PacketEntry> packets)
@@ -87,38 +97,29 @@ namespace PacketViewer.Forms
 
             foreach (var entry in packets)
             {
-                Row row = new Row();
-                row.Cells.Add(new CellData(entry.Number));
-                row.Cells.Add(new CellText(entry.OpcodeString));
-                row.Cells.Add(new CellData(entry.Time));
-                row.Cells.Add(new CellData(entry.Sec));
-                row.Cells.Add(new CellData(entry.Length));
+                RowWithSubrows row = new RowWithSubrows();
+                row.Height = 50;
+                row.Cells.Add(new CellWithDataSpan(entry.Number.ToString()));
+                
+                row.Cells.Add(new CellWithData(entry.Number));
+                row.Cells.Add(new CellWithText(entry.OpcodeString));
+                row.Cells.Add(new CellWithData(entry.Time));
+                row.Cells.Add(new CellWithData(entry.Sec));
+                row.Cells.Add(new CellWithData(entry.Length));
+
                 this.tablePackets.TableModel.Rows.Add(row);
+
+                RowWithParent detailsRow = new RowWithParent();
+                var cell = new CellWithDataSpan(null);
+                cell.ColSpan = row.Cells.Count;
+                detailsRow.Cells.Add(cell);
+                detailsRow.Height = 20;
+                row.SubRows.Add(detailsRow);
+
+                row.ExpandSubRows = false;
             }
 
             this.tablePackets.EndUpdate();
-
-            // Add a sub-row that shows just the email subject in grey (single line only)
-            //Row subrow = new Row();
-            //subrow.Cells.Add(new Cell());
-            //Cell cell = new Cell(subject);
-            //cell.ForeColor = Color.Gray;
-            //cell.ColSpan = 2;
-            //subrow.Cells.Add(cell);
-            //row.SubRows.Add(subrow);
-
-            //// Add a sub-row that shows just a preview of the email body in blue, and wraps too
-            //subrow = new Row();
-            //subrow.Cells.Add(new Cell(new Button()));
-            //subrow.Cells.Add(new Cell(new Button()));
-            //subrow.Cells.Add(new Cell(new Button()));
-            //subrow.Cells.Add(new Cell(new Button()));
-            //cell = new Cell(preview);
-            //cell.ForeColor = Color.Blue;
-            //cell.ColSpan = 2;
-            // cell.WordWrap = true;
-            //subrow.Cells.Add(cell);
-            //row.SubRows.Add(subrow);
         }
 
         private void PacketFileTab2_Load(object sender, EventArgs e)

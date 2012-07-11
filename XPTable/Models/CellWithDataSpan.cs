@@ -5,22 +5,24 @@ using System.Text;
 
 namespace XPTable.Models
 {
-    public class CellData : Cell
+    public class CellWithDataSpan : CellWithData
     {
-        object _data;
-        public CellData(object data)
+        public CellWithDataSpan(object data)
             : base(data)
         {
         }
-        protected override object data
+
+        private short _colspan;
+
+        protected override int colspan
         {
             get
             {
-                return _data;
+                return (int)_colspan;
             }
             set
             {
-                _data = value;
+                _colspan = (short)value;
             }
         }
     }

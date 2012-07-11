@@ -286,7 +286,7 @@
     <Compile Include="Models\CellStyle.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\CellText.cs" />
+    <Compile Include="Models\CellWithText.cs" />
     <Compile Include="Models\CheckBoxColumn.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -321,7 +321,9 @@
     <Compile Include="Models\ControlFactory.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\CellData.cs" />
+    <Compile Include="Models\CellWithData.cs" />
+    <Compile Include="Models\CellWithDataSpan.cs" />
+    <Compile Include="Models\RowWithSurows.cs" />
     <Compile Include="Models\DataSourceColumnBinder.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -386,6 +388,7 @@
     <Compile Include="Models\RowCollection.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\RowWithParent.cs" />
     <Compile Include="Models\RowStyle.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -484,9 +487,7 @@
     <Compile Include="Renderers\Renderer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Renderers\TextCellRenderer.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Renderers\TextCellRenderer.cs" />
     <Compile Include="Renderers\XPHeaderRenderer.cs">
       <SubType>Code</SubType>
     </Compile>

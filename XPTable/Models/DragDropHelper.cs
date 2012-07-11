@@ -298,7 +298,7 @@ namespace XPTable.Models
             // Drag & Drop Code Added - by tankun
             if (_table.UseBuiltInDragDrop && (this._isStartDrag == false) && (this._isMouseDown == true))
             {
-                int row = _table.RowIndexAt(e.X, e.Y);
+                int row = _table.RowIndexAtClient(e.X, e.Y);
                 _table.DoDragDrop(GetDataForDragDrop(row), DragDropEffects.All);
             }
         }

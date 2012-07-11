@@ -14,6 +14,8 @@ namespace XPTable.Renderers
     {
         #region Class Data
         private Control control;
+
+        public bool visible = false;
         #endregion
 
         #region Contstructor

@@ -90,12 +90,21 @@ namespace XPTable.Models
         /// <summary>
         /// The collection of subrows contained in this Row
         /// </summary>
-        private RowCollection subrows;
+        protected virtual RowCollection subrows
+        {
+            get
+            {
+                return null;
+            }
+            set
+            {
+            }
+        }
 
         /// <summary>
         /// The row that is the parent to this one (if this is a sub row)
         /// </summary>
-        private Row parentrow
+        protected virtual Row parentrow
         {
             get
             {
@@ -109,7 +118,7 @@ namespace XPTable.Models
         /// <summary>
         /// The index that gives the order this row was added in
         /// </summary>
-        private int childindex
+        protected virtual int childindex
         {
             get
             {
@@ -450,7 +459,7 @@ namespace XPTable.Models
 			}
 		}
 
-        internal void InitSuRows()
+        internal void InitSubRows()
         {
             if (subrows == null)
                 this.subrows = new RowCollection(this);
@@ -617,6 +626,10 @@ namespace XPTable.Models
                 {
                     expandSubRows = value;
                     this.OnPropertyChanged(new RowEventArgs(this, RowEventType.ExpandSubRowsChanged));
+                    if (this.TableModel != null && SubRows != null)
+                    {
+                        this.TableModel.Table.HiddenSubRows += value ? -SubRows.Count : +SubRows.Count;
+                    }
                 }
             }
 		}
@@ -1266,6 +1279,9 @@ namespace XPTable.Models
 
             this.TableModel.Rows.Insert(e.ParentRow.Index + childIndex, e.Row);
 
+            if (!e.Row.Parent.ExpandSubRows)
+                this.TableModel.Table.HiddenSubRows += 1;
+
             if (SubRowAdded != null)
             {
                 SubRowAdded(this, e);
@@ -1279,6 +1295,9 @@ namespace XPTable.Models
         protected internal virtual void OnSubRowRemoved(RowEventArgs e)
         {
             this.TableModel.Rows.Remove(e.Row);
+
+            if (!e.Row.Parent.ExpandSubRows)
+                this.TableModel.Table.HiddenSubRows -= 1;
 
             if (SubRowRemoved != null)
             {

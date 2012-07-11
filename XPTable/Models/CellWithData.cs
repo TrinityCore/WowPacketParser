@@ -5,22 +5,22 @@ using System.Text;
 
 namespace XPTable.Models
 {
-    public class CellText : Cell
+    public class CellWithData : Cell
     {
-        string _text;
-        public CellText(string text)
-            : base(text)
+        object _data;
+        public CellWithData(object data)
+            : base(data)
         {
         }
-        protected override string text
+        protected override object data
         {
             get
             {
-                return _text;
+                return _data;
             }
             set
             {
-                _text = value;
+                _data = value;
             }
         }
     }
