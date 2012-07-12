@@ -90,5 +90,8 @@ namespace XPTable.Events
         /// Occurs when a sub row is removed
         /// </summary>
         SubRowRemoved = 10
+            ,
+
+        DataRequest = 11,
 	}
 }

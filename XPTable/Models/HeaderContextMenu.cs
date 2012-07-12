@@ -79,7 +79,7 @@ namespace XPTable.Models
 			this.model = null;
 			this.enabled = true;
 
-			this.moreMenuItem = new MenuItem("More...", new EventHandler(moreMenuItem_Click));
+			//this.moreMenuItem = new MenuItem("More...", new EventHandler(moreMenuItem_Click));
 			this.separator = new MenuItem("-");
 		}
 
@@ -189,7 +189,7 @@ namespace XPTable.Models
 		}
 
 
-		/// <summary>
+		/*/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="sender"></param>
@@ -199,7 +199,7 @@ namespace XPTable.Models
 			ShowColumnsDialog scd = new ShowColumnsDialog();
 			scd.AddColumns(this.model);
 			scd.ShowDialog(this.SourceControl);
-		}
+		}*/
 
 		#endregion
 
@@ -363,7 +363,7 @@ namespace XPTable.Models
 				this.okButton.Name = "okButton";
 				this.okButton.TabIndex = 10;
 				this.okButton.Text = "OK";
-				this.okButton.Click += new EventHandler(okButton_Click);
+				//this.okButton.Click += new EventHandler(okButton_Click);
 				// 
 				// cancelButton
 				// 
@@ -425,7 +425,7 @@ namespace XPTable.Models
 			}
 
 
-			/// <summary>
+			/*/// <summary>
 			/// 
 			/// </summary>
 			/// <param name="model"></param>
@@ -471,7 +471,7 @@ namespace XPTable.Models
 				}
 
 				this.columnTable.EndUpdate();
-			}
+			}*/
 
 			#endregion
 
@@ -536,7 +536,7 @@ namespace XPTable.Models
 			}
 
 
-			/// <summary>
+			/*/// <summary>
 			/// 
 			/// </summary>
 			/// <param name="sender"></param>
@@ -573,10 +573,10 @@ namespace XPTable.Models
 				}
 
 				this.Close();
-			}
+			}*/
 
 
-			/// <summary>
+			/*/// <summary>
 			/// 
 			/// </summary>
 			/// <param name="sender"></param>
@@ -618,7 +618,7 @@ namespace XPTable.Models
 
 					this.widthTextBox.Text = "0";
 				}
-			}
+			}*/
 
 			
 			/// <summary>

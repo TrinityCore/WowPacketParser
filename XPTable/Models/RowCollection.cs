@@ -370,7 +370,7 @@ namespace XPTable.Models
 					return null;
 				}
 					
-				return this.List[index] as Row;
+				return this.InnerList[index] as Row;
 			}
 		}
 

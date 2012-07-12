@@ -56,10 +56,11 @@ namespace PacketViewer.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            XPTable.Models.DataSourceColumnBinder dataSourceColumnBinder3 = new XPTable.Models.DataSourceColumnBinder();
-            XPTable.Renderers.DragDropRenderer dragDropRenderer3 = new XPTable.Renderers.DragDropRenderer();
+            XPTable.Models.DataSourceColumnBinder dataSourceColumnBinder1 = new XPTable.Models.DataSourceColumnBinder();
+            XPTable.Renderers.DragDropRenderer dragDropRenderer1 = new XPTable.Renderers.DragDropRenderer();
             this.tablePackets = new XPTable.Models.Table();
             this.backgroundWorkerProcessPackets = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorkerTableVirtualData = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.tablePackets)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,11 +68,12 @@ namespace PacketViewer.Forms
             // 
             this.tablePackets.BorderColor = System.Drawing.Color.Black;
             this.tablePackets.DataMember = null;
-            this.tablePackets.DataSourceColumnBinder = dataSourceColumnBinder3;
+            this.tablePackets.DataSourceColumnBinder = dataSourceColumnBinder1;
             this.tablePackets.Dock = System.Windows.Forms.DockStyle.Fill;
-            dragDropRenderer3.ForeColor = System.Drawing.Color.Red;
-            this.tablePackets.DragDropRenderer = dragDropRenderer3;
+            dragDropRenderer1.ForeColor = System.Drawing.Color.Red;
+            this.tablePackets.DragDropRenderer = dragDropRenderer1;
             this.tablePackets.GridLinesContrainedToData = false;
+            this.tablePackets.HiddenSubRows = 0;
             this.tablePackets.Location = new System.Drawing.Point(0, 0);
             this.tablePackets.Name = "tablePackets";
             this.tablePackets.Size = new System.Drawing.Size(583, 364);
@@ -83,6 +85,10 @@ namespace PacketViewer.Forms
             // 
             this.backgroundWorkerProcessPackets.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerProcessPackets_DoWork);
             this.backgroundWorkerProcessPackets.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorkerProcessPackets_ProgressChanged);
+            // 
+            // backgroundWorkerTableVirtualData
+            // 
+            this.backgroundWorkerTableVirtualData.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerTableVirtualData_DoWork);
             // 
             // PacketFileTab
             // 
@@ -102,5 +108,6 @@ namespace PacketViewer.Forms
 
         private XPTable.Models.Table tablePackets;
         private BackgroundWorker backgroundWorkerProcessPackets;
+        private BackgroundWorker backgroundWorkerTableVirtualData;
     }
 }

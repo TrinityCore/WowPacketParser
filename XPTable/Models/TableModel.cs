@@ -399,17 +399,16 @@ namespace XPTable.Models
 		{
 			e.Row.InternalTableModel = this;
 			e.Row.InternalIndex = e.RowFromIndex;
-			e.Row.ClearSelection();
 
 			this.UpdateRowIndicies(e.RowFromIndex);
-			
+
+            if (this.Table != null)
+            {
+                this.Table.OnRowAdded(e);
+            }
+
 			if (this.CanRaiseEvents)
 			{
-				if (this.Table != null)
-				{
-					this.Table.OnRowAdded(e);
-				}
-
 				if (RowAdded != null)
 				{
 					RowAdded(this, e);

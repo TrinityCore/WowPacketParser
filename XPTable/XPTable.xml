@@ -3050,11 +3050,6 @@
             Represents a Cell that is displayed in a Table
             </summary>
         </member>
-        <member name="F:XPTable.Models.Cell.tag">
-            <summary>
-            An object that contains data about the Cell
-            </summary>
-        </member>
         <member name="F:XPTable.Models.Cell.rendererData">
             <summary>
             Stores information used by CellRenderers to record the current 
@@ -3306,6 +3301,11 @@
         <member name="P:XPTable.Models.Cell.data">
             <summary>
             An object that contains data to be displayed in the Cell
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Cell.tag">
+            <summary>
+            An object that contains data about the Cell
             </summary>
         </member>
         <member name="P:XPTable.Models.Cell.index">
@@ -4762,6 +4762,11 @@
             Specifies whether the Row has been disposed
             </summary>
         </member>
+        <member name="P:XPTable.Models.Row.DataCached">
+            <summary>
+            Specifies whether the Row has been disposed
+            </summary>
+        </member>
         <member name="P:XPTable.Models.Row.expandSubRows">
             <summary>
             Indicates whether this row's sub-rows are shown or hidden.
@@ -5842,15 +5847,6 @@
             <returns>The bounding rectangle of the column at the 
             specified index</returns>
         </member>
-        <member name="M:XPTable.Models.Table.ColumnRect(XPTable.Models.Column)">
-            <summary>
-            Returns the bounding rectangle of the specified column 
-            in client coordinates
-            </summary>
-            <param name="column">The column</param>
-            <returns>The bounding rectangle of the specified 
-            column</returns>
-        </member>
         <member name="M:XPTable.Models.Table.GetColumnWidth(System.Int32,XPTable.Models.Cell)">
             <summary>
             Returns the actual width that this cell can render over (taking colspan into account).
@@ -5898,15 +5894,6 @@
             <returns>The index of the Row at the specified client coordinates, or
             -1 if it does not exist</returns>
         </member>
-        <member name="M:XPTable.Models.Table.RowIndexAtExact(System.Int32)">
-            <summary>
-            Returns the index of the Row that lies on the specified position.
-            Found by iterating through all rows (i.e. copes with variable height rows).
-            </summary>
-            <param name="yPosition"></param>
-            <returns>The index of the Row at the specified position or -1 if 
-            no Row is found</returns>
-        </member>
         <member name="M:XPTable.Models.Table.RowIndexAt(System.Drawing.Point)">
             <summary>
             Returns the index of the Row at the specified client point
@@ -5923,23 +5910,6 @@
             <param name="row">The index of the row</param>
             <returns>The bounding rectangle of the row at the 
             specified index</returns>
-        </member>
-        <member name="M:XPTable.Models.Table.RowRect(XPTable.Models.Row)">
-            <summary>
-            Returns the bounding rectangle of the specified row 
-            in client coordinates
-            </summary>
-            <param name="row">The row</param>
-            <returns>The bounding rectangle of the specified 
-            row</returns>
-        </member>
-        <member name="M:XPTable.Models.Table.RowY(System.Int32)">
-            <summary>
-            Returns the Y-coord of the top of the row at the 
-            specified index in client coordinates
-            </summary>
-            <param name="row"></param>
-            <returns></returns>
         </member>
         <member name="M:XPTable.Models.Table.RowYDifference(System.Int32,System.Int32)">
             <summary>
@@ -10148,13 +10118,6 @@
             <param name="sender"></param>
             <param name="e"></param>
         </member>
-        <member name="M:XPTable.Models.HeaderContextMenu.moreMenuItem_Click(System.Object,System.EventArgs)">
-            <summary>
-            
-            </summary>
-            <param name="sender"></param>
-            <param name="e"></param>
-        </member>
         <member name="P:XPTable.Models.HeaderContextMenu.Enabled">
             <summary>
             
@@ -10180,13 +10143,6 @@
             Clean up any resources being used.
             </summary>
         </member>
-        <member name="M:XPTable.Models.HeaderContextMenu.ShowColumnsDialog.AddColumns(XPTable.Models.ColumnModel)">
-            <summary>
-            
-            </summary>
-            <param name="model"></param>
-            <returns></returns>
-        </member>
         <member name="M:XPTable.Models.HeaderContextMenu.ShowColumnsDialog.showButton_Click(System.Object,System.EventArgs)">
             <summary>
             
@@ -10195,20 +10151,6 @@
             <param name="e"></param>
         </member>
         <member name="M:XPTable.Models.HeaderContextMenu.ShowColumnsDialog.hideButton_Click(System.Object,System.EventArgs)">
-            <summary>
-            
-            </summary>
-            <param name="sender"></param>
-            <param name="e"></param>
-        </member>
-        <member name="M:XPTable.Models.HeaderContextMenu.ShowColumnsDialog.okButton_Click(System.Object,System.EventArgs)">
-            <summary>
-            
-            </summary>
-            <param name="sender"></param>
-            <param name="e"></param>
-        </member>
-        <member name="M:XPTable.Models.HeaderContextMenu.ShowColumnsDialog.columnTable_SelectionChanged(System.Object,XPTable.Events.SelectionEventArgs)">
             <summary>
             
             </summary>

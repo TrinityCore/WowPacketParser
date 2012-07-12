@@ -108,8 +108,6 @@ namespace XPTable.Renderers
                     if (control != null)
                     {
                         cell.Row.TableModel.Table.Controls.Add(control);
-
-
                         ControlRendererData data = new ControlRendererData(control);
                         cell.Row.TableModel.Table.RenderedCotrols.AddFirst(data);
                         this.SetRendererData(cell, data);

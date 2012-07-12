@@ -192,15 +192,18 @@ namespace XPTable.Models
 
 		private void RemoveControlIfRequired(int index)
 		{
-			for (int i = 0; i < this.owner.Table.RowCount; i++)
-			{
-				Cell cell = this.owner.Table.TableModel.Rows[i].Cells[index];
-				if (cell.RendererData is XPTable.Renderers.ControlRendererData)
-				{
-					if ((cell.RendererData as XPTable.Renderers.ControlRendererData).Control != null)
-						cell.Row.TableModel.Table.Controls.Remove((cell.RendererData as XPTable.Renderers.ControlRendererData).Control);
-				}
-			}
+            var column = this[index];
+            if (column is ControlColumn)
+            {
+                for (int i = 0; i < this.owner.Table.RowCount; i++)
+                {
+                    Cell cell = this.owner.Table.TableModel.Rows[i].Cells[index];
+
+                    var data = cell.RendererData as XPTable.Renderers.ControlRendererData;
+                    if (data != null && data.Control != null)
+                        cell.Row.TableModel.Table.Controls.Remove(data.Control);
+                }
+            }
 		}
 
 		/// <summary>

@@ -31,6 +31,9 @@ namespace PacketViewer.Forms
             BecameSelected();
 
             backgroundWorkerProcessPackets.RunWorkerAsync();
+
+            backgroundWorkerProcessPackets.WorkerSupportsCancellation = true;
+            backgroundWorkerTableVirtualData.RunWorkerAsync();
         }
 
         public string filename;
@@ -49,6 +52,8 @@ namespace PacketViewer.Forms
             Selected = false;
         }
 
+        public VirtualDataManager dataManager = new VirtualDataManager();
+
         private void InitTable()
         {
             Table table = this.tablePackets;
@@ -59,10 +64,9 @@ namespace PacketViewer.Forms
             table.AllowDrop = false;
             table.AllowRMBSelection = false;
 
-            var col0 = new ControlColumn("", 60);
-            col0.Editable = false;
+            var col0 = new ControlColumn("", 1);
             col0.ControlFactory = new DetailsFactory();
-            col0.ControlSize = new Size(50, 6);
+            col0.ControlSize = new Size(70, 150);
             var col1 = new NumberColumn("Num", 200);
             col1.Editable = false;
             var col2 = new TextColumn("Opcode", 200);
@@ -81,42 +85,27 @@ namespace PacketViewer.Forms
             table.CellDoubleClick += new CellMouseEventHandler(ClickedCell);
             table.FamilyRowSelect = false;
             table.FullRowSelect = true;
+            table.MultiSelect = true;
             this.tablePackets.TableModel = model;
 
             this.tablePackets.EndUpdate();
+
+            dataManager.Init(table);
         }
 
         private void ClickedCell(object sender, CellMouseEventArgs e)
         {
-            e.Cell.Row.ExpandSubRows = !e.Cell.Row.ExpandSubRows;
         }
 
         public void AddPackets(List<PacketEntry> packets)
         {
             this.tablePackets.BeginUpdate();
-
+            var rows = this.tablePackets.TableModel.Rows;
             foreach (var entry in packets)
             {
-                RowWithSubrows row = new RowWithSubrows();
-                row.Height = 50;
-                row.Cells.Add(new CellWithDataSpan(entry.Number.ToString()));
-                
-                row.Cells.Add(new CellWithData(entry.Number));
-                row.Cells.Add(new CellWithText(entry.OpcodeString));
-                row.Cells.Add(new CellWithData(entry.Time));
-                row.Cells.Add(new CellWithData(entry.Sec));
-                row.Cells.Add(new CellWithData(entry.Length));
-
+                dataManager.Add(entry, (int)entry.Number);
+                Row row = new Row();
                 this.tablePackets.TableModel.Rows.Add(row);
-
-                RowWithParent detailsRow = new RowWithParent();
-                var cell = new CellWithDataSpan(null);
-                cell.ColSpan = row.Cells.Count;
-                detailsRow.Cells.Add(cell);
-                detailsRow.Height = 20;
-                row.SubRows.Add(detailsRow);
-
-                row.ExpandSubRows = false;
             }
 
             this.tablePackets.EndUpdate();
@@ -139,7 +128,173 @@ namespace PacketViewer.Forms
 
         private void backgroundWorkerProcessPackets_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            ((FormMain)this.ParentForm).toolStripStatusLabel.Text = "Loading file..." + e.ProgressPercentage.ToString() + "%";
+            if ((FormMain)this.ParentForm != null)
+                ((FormMain)this.ParentForm).toolStripStatusLabel.Text = "Loading file..." + e.ProgressPercentage.ToString() + "%";
+        }
+
+        private void backgroundWorkerTableVirtualData_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            while (true)
+            {
+                if (worker.CancellationPending == true)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+                if (this.tablePackets != null && this.tablePackets.TableModel != null)
+                    dataManager.MakeUnusedIndexesVirtual(this.tablePackets.TableModel.Rows);
+            }
+        }
+    }
+
+    public class VirtualDataPackage
+    {
+        public PacketEntry[] data = new PacketEntry[VirtualDataManager.virtualBlockSize];
+    }
+
+    public class VirtualDataManager
+    {
+        public List<VirtualDataPackage> virtualData = new List<VirtualDataPackage>();
+        public List<byte> cachedBlockUpdatesLeft = new List<byte>();
+        public const int virtualBlockSize = 50;
+        public const int virtualBlocksNearIndex = 3;
+
+        public const int cachedBlockUpdateInterval = 1000;
+        public const byte cachedBlockUpdatesBeforeRemove = 3;
+
+        private Table table;
+
+        public void Init(Table _table)
+        {
+            table = _table;
+            table.TabIndexChanged += new EventHandler(TabIndexChanged);
+            table.RowAddedAnytime += new TableModelEventHandler(RowAdded);
+            table.RowDataRequestAnytime += new RowEventHandler(RowDataRequested);
+            TabIndexChanged(null, null);
+        }
+
+        private void TabIndexChanged(object sender, EventArgs args)
+        {
+            CacheRowBlock(table.TabIndex, table.TableModel.Rows, virtualBlocksNearIndex);
+        }
+
+        private void RowAdded(object sender, TableModelEventArgs args)
+        {
+            var index = args.Row.Index;
+            var rows = args.Row.TableModel.Rows;
+            int blockId = index / virtualBlockSize;
+            if (cachedBlockUpdatesLeft[blockId] != 0)
+                CacheRow(index, rows, index - blockId * virtualBlockSize, virtualData[blockId]);
+        }
+
+        private void RowDataRequested(object caller, RowEventArgs args)
+        {
+            int index = args.Row.Index;
+            int blockId = index / virtualBlockSize;
+            if (cachedBlockUpdatesLeft[blockId] != 0)
+            {
+                cachedBlockUpdatesLeft[blockId] = cachedBlockUpdatesBeforeRemove;
+                return;
+            }
+            CacheRowBlock(index, args.Row.TableModel.Rows);
+        }
+
+        public void Add(PacketEntry entry, int index)
+        {
+            int blockId = index / virtualBlockSize;
+            while (virtualData.Count <= blockId)
+                virtualData.Add(new VirtualDataPackage());
+            while (cachedBlockUpdatesLeft.Count <= blockId)
+                cachedBlockUpdatesLeft.Add(0);
+            virtualData[blockId].data[index - blockId * virtualBlockSize] = entry;
+        }
+
+        public PacketEntry[] Get(int index, out int firstBlockIndex)
+        {
+            int blockId = index / virtualBlockSize;
+            firstBlockIndex = blockId * virtualBlockSize;
+            return virtualData[blockId].data;
+        }
+
+        public void MakeUnusedIndexesVirtual(RowCollection rows)
+        {
+            if (table == null)
+                return;
+            var topIndex = table.TopIndex;
+            var topIndexBlock = topIndex / virtualBlockSize;
+            var count = virtualData.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                if (Math.Abs(i - topIndexBlock) <= virtualBlocksNearIndex)
+                    continue;
+                if (cachedBlockUpdatesLeft[i] == 0)
+                    continue;
+
+                if (cachedBlockUpdatesLeft[i] == 1)
+                {
+                    cachedBlockUpdatesLeft[i] = 0;
+                    var firstRowIndex = i * virtualBlockSize;
+                    for (int j = 0; j < virtualBlockSize; ++j)
+                    {
+                        var rowIndex = firstRowIndex + j;
+                        if (rows[rowIndex] != null && rows[rowIndex].cells != null)
+                        {
+                            rows[rowIndex].cells = null;
+                        }
+                    }
+                }
+                else
+                {
+                    cachedBlockUpdatesLeft[i]--;
+                }
+            }
+            Thread.Sleep(cachedBlockUpdateInterval);
+        }
+
+        public void CacheRowBlock(int rownum, RowCollection rows, int nearbyBlocks = 0)
+        {
+            var rowBlock = rownum / virtualBlockSize;
+            var startBlock = Math.Max(rowBlock - nearbyBlocks, 0);
+            var endBlock = rowBlock + nearbyBlocks+1;
+            while (cachedBlockUpdatesLeft.Count < endBlock)
+                cachedBlockUpdatesLeft.Add(0);
+            var dataBlocks = virtualData.Count;
+            for (int blockIndex = startBlock; blockIndex < endBlock; ++blockIndex)
+            {
+                if (cachedBlockUpdatesLeft[blockIndex] != 0)
+                {
+                    cachedBlockUpdatesLeft[blockIndex] = cachedBlockUpdatesBeforeRemove;
+                    continue;
+                }
+                cachedBlockUpdatesLeft[blockIndex] = cachedBlockUpdatesBeforeRemove;
+                if (blockIndex >= dataBlocks)
+                    continue;
+
+                int firstRowIndex = blockIndex * virtualBlockSize;
+                var dataBlock = virtualData[blockIndex];
+                for (int i = 0; i < virtualBlockSize; ++i)
+                {
+                    var rowIndex = firstRowIndex + i;
+                    if (rowIndex >= rows.Count)
+                        break;
+                    CacheRow(rowIndex, rows, i, dataBlock);
+                }
+            }
+        }
+
+        private void CacheRow(int rownum, RowCollection rows, int dataBlockIndex, VirtualDataPackage dataBlock)
+        {
+            if (dataBlock.data[dataBlockIndex] == null)
+                return;
+            var row = rows[rownum];
+            //if (row.cells != null)
+                //throw new Exception("cells should be unloaded at this point");
+            var entry = dataBlock.data[dataBlockIndex];
+            row.cells = new CellCollection(row);
+            row.cells.AddRange(new Cell[] {new CellWithData(null), new CellWithData(entry.Number), new CellWithText(entry.OpcodeString),
+            new CellWithData(entry.Time), new CellWithData(entry.Sec), new CellWithData(entry.Length)});
         }
     }
 }

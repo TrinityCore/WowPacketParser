@@ -81,11 +81,12 @@ namespace XPTable.Models
         private static readonly int STATE_DISPOSED = 4;
         private static readonly int STATE_HAS_WORD_WRAP_CELL = 8;
         private static readonly int STATE_EXPAND_SUBROWS = 16;
+        private static readonly int STATE_DATA_CACHED = 32;
 
 		/// <summary>
 		/// The collection of Cells's contained in the Row
 		/// </summary>
-		private CellCollection cells;
+		public CellCollection cells;
 
         /// <summary>
         /// The collection of subrows contained in this Row
@@ -212,6 +213,24 @@ namespace XPTable.Models
                     _state |= (byte)STATE_DISPOSED;
                 else
                     _state &= (byte)~STATE_DISPOSED;
+            }
+        }
+
+        /// <summary>
+        /// Specifies whether the Row has been disposed
+        /// </summary>
+        public bool DataCached
+        {
+            get
+            {
+                return (_state & STATE_DATA_CACHED) != 0;
+            }
+            set
+            {
+                if (value)
+                    _state |= (byte)STATE_DATA_CACHED;
+                else
+                    _state &= (byte)~STATE_DATA_CACHED;
             }
         }
 
@@ -574,8 +593,17 @@ namespace XPTable.Models
 		Editor(typeof(CellCollectionEditor), typeof(UITypeEditor))]
 		public CellCollection Cells
 		{
+            set
+            {
+                this.cells = value;
+            }
 			get
 			{
+                // oznacz kiedy request
+                var t = this.TableModel.Table;
+                if (t != null)
+                    t.OnRowDataRequest(new RowEventArgs(this, RowEventType.DataRequest));
+
 				if (this.cells == null)
 					this.cells = new CellCollection(this);
 				

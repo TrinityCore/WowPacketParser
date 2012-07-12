@@ -95,7 +95,16 @@ namespace XPTable.Models
 		/// <summary>
 		/// An object that contains data about the Cell
 		/// </summary>
-		private object tag;
+		protected virtual object tag
+        {
+            get
+            {
+                return null;
+            }
+            set
+            {
+            }
+        }
 
 		/// <summary>
 		/// Stores information used by CellRenderers to record the current 
@@ -139,7 +148,7 @@ namespace XPTable.Models
 		/// <summary>
 		/// The Cells CellStyle settings
 		/// </summary>
-        private CellStyle cellStyle
+        protected virtual CellStyle cellStyle
         {
             get
             {
