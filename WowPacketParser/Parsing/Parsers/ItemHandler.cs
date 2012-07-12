@@ -685,7 +685,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var itemId = packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
             var type = packet.ReadUInt32("Type");
-            packet.ReadUInt32("Hotfix date");
+            packet.ReadTime("Hotfix date");
             var size = packet.ReadUInt32("Size");
             if (size == 0)
                 return;
