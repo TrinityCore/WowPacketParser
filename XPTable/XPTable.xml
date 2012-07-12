@@ -5630,12 +5630,6 @@
             Initializes a new instance of the Table class with default settings
             </summary>
         </member>
-        <member name="M:XPTable.Models.Table.VScrollOffset">
-            <summary>
-            Computes the height of the rows that are not visible (i.e. above the top row currently displayed).
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:XPTable.Models.Table.ClientToDisplayRect(System.Int32,System.Int32)">
             <summary>
             Computes the location of the specified client point into coordinates 
@@ -7554,23 +7548,6 @@
         <member name="P:XPTable.Models.Table.RowHeight">
             <summary>
             Gets or sets the height of each row
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Table.TotalRowHeight">
-            <summary>
-            Gets the combined height of all the rows in the Table
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Table.TotalRowAndHeaderHeight">
-            <summary>
-            Gets the combined height of all the rows in the Table 
-            plus the height of the column headers
-            </summary>
-        </member>
-        <member name="P:XPTable.Models.Table.TotalHeight">
-            <summary>
-            Gets the combined height of all the rows in the Table 
-            plus the height of the column headers and the borders (if there are any).
             </summary>
         </member>
         <member name="P:XPTable.Models.Table.RowCount">

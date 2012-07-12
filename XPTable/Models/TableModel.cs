@@ -1238,7 +1238,9 @@ namespace XPTable.Models
 
 				// v1.1.1 fix - this Y value used to include the border + header height
 
-                bounds.Y = this.owner.Table.RowYDifference(0, start);
+                //HACK?
+                //bounds.Y = this.owner.Table.RowYDifference(0, start);
+                bounds.Y = this.owner.Table.RowYDifference(this.owner.Table.TopIndex, start);
 
                 if (start == end)
                 {

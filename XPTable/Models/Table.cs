@@ -786,7 +786,6 @@ namespace XPTable.Models
         }
 
         private int HiddenSubRowsAboveTop = 0;
-        private int VScrollOffsetCache = 0;
 
         /// <summary>
         /// Count the number of hidden rows before the supplied row.
@@ -831,6 +830,8 @@ namespace XPTable.Models
 
         internal void UpdateHeightAboveTopRowDependantValues()
         {
+            //HACK
+            return;
             int hiddenRowsAboveTopRow = 0;
             int heightAboveTopRow = 0;
 
@@ -847,7 +848,6 @@ namespace XPTable.Models
             }
 
             HiddenSubRowsAboveTop = hiddenRowsAboveTopRow;
-            VScrollOffsetCache = heightAboveTopRow;
         }
 
         #endregion
@@ -994,14 +994,14 @@ namespace XPTable.Models
 
 		#region Coordinate Translation
 
-        /// <summary>
+        /*/// <summary>
         /// Computes the height of the rows that are not visible (i.e. above the top row currently displayed).
         /// </summary>
         /// <returns></returns>
         private int VScrollOffset()
         {
             return VScrollOffsetCache;
-        }
+        }*/
 
 		#region ClientToDisplayRect
 		/// <summary>
@@ -1021,8 +1021,9 @@ namespace XPTable.Models
 
 			int yPos = y - this.BorderWidth;
 
-			if (this.VScroll)
-                yPos += this.VScrollOffset();
+            //HACK? - not used anyways
+			//if (this.VScroll)
+                //yPos += this.VScrollOffset();
 
 			return new Point(xPos, yPos);
 		}
@@ -1073,8 +1074,9 @@ namespace XPTable.Models
 
 			int yPos = y + this.BorderWidth;
 
-			if (this.VScroll)
-                yPos -= this.VScrollOffset();
+            //HACK?
+			//if (this.VScroll)
+                //yPos -= this.VScrollOffset();
 
 			return new Point(xPos, yPos);
 		}
@@ -1858,15 +1860,7 @@ namespace XPTable.Models
 			if (r2 > this.TableModel.Rows.Count)
 				r2 = this.TableModel.Rows.Count;
 
-            bool pos = r1 == row1;
-
 			int ydiff = 0;
-
-            if (r1 == 0 && r2 >= TopIndex)
-            {
-                r1 = TopIndex;
-                ydiff += VScrollOffsetCache;
-            }
 
 			RowCollection rows = this.TableModel.Rows;
 			for (int i = r1; i < r2; i++)
@@ -1877,7 +1871,7 @@ namespace XPTable.Models
                     ydiff += row.Height;
 			}
 
-            if (pos)
+            if (r1 == row1)
 			{
 				// Row2 > Row1 so return a +ve
 				return ydiff;
@@ -2685,7 +2679,7 @@ namespace XPTable.Models
 			int visibleRows = this.vScrollBar.LargeChange - 1;
             bool down = (howMany > 0);
 
-            // HACK
+            //HACK
             return previousTopRowIndex + howMany;
 
             int max = Math.Abs(howMany);
@@ -3742,6 +3736,7 @@ namespace XPTable.Models
 				else
 					displayRect.Width = this.ColumnModel.VisibleColumnsWidth;
 
+                //HACK?
 				//if (!this.RowsCanReachHeight(this.CellDataRect.Height))
 					displayRect.Height = this.CellDataRect.Height;
 				//else
@@ -4170,7 +4165,7 @@ namespace XPTable.Models
 			get { return this.TableModel == null ? 0 : this.TableModel.RowHeight; }
 		}
 
-		/// <summary>
+		/*/// <summary>
 		/// Gets the combined height of all the rows in the Table
 		/// </summary>
 		[Browsable(false)]
@@ -4203,7 +4198,7 @@ namespace XPTable.Models
         public int TotalHeight
         {
             get { return this.TotalRowHeight + this.HeaderHeight + (2 * this.BorderWidth);  }
-        }
+        }*/
 
 		/// <summary>
 		/// Returns the number of Rows in the Table
