@@ -137,6 +137,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Rank");
         }
 
+        [Parser(Opcode.SMSG_TALENTS_ERROR)]
+        public static void HandleTalentError(Packet packet)
+        {
+            packet.ReadEnum<TalentError>("Talent Error", TypeCode.Int32);
+        }
+
         //[Parser(Opcode.CMSG_UNLEARN_TALENTS)]
 
         //[Parser(Opcode.CMSG_PET_LEARN_TALENT)]
