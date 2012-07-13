@@ -7,6 +7,7 @@ namespace PacketParser.Enums.Version
 {
     public static class UpdateFields
     {
+        [ThreadStatic]
         private static Dictionary<Type, BiDictionary<string, int>> UpdateFieldDictionaries = null;
 
         private static Dictionary<Type, BiDictionary<string, int>> LoadUFDictionaries()

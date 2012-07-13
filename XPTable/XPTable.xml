@@ -2187,7 +2187,7 @@
             </summary>
             <param name="cell">The Cell to add</param>
         </member>
-        <member name="M:XPTable.Models.CellCollection.AddRange(XPTable.Models.Cell[])">
+        <member name="M:XPTable.Models.CellCollection.AddRange(XPTable.Models.Cell[],System.Boolean)">
             <summary>
             Adds an array of Cell objects to the collection
             </summary>

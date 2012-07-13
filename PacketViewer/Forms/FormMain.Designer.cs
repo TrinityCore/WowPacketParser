@@ -40,8 +40,8 @@
             this.closeAllButThisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStripInfo = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.openFileDialogNewPacketFile = new System.Windows.Forms.OpenFileDialog();
+            this.toolStripStatusLabelFileInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStripMain.SuspendLayout();
             this.contextMenuStripTabs.SuspendLayout();
             this.statusStripInfo.SuspendLayout();
@@ -126,7 +126,7 @@
             // 
             this.statusStripInfo.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel,
-            this.toolStripProgressBar});
+            this.toolStripStatusLabelFileInfo});
             this.statusStripInfo.Location = new System.Drawing.Point(0, 376);
             this.statusStripInfo.Name = "statusStripInfo";
             this.statusStripInfo.Size = new System.Drawing.Size(1023, 22);
@@ -139,15 +139,16 @@
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
             this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
             // 
-            // toolStripProgressBar
-            // 
-            this.toolStripProgressBar.Name = "toolStripProgressBar";
-            this.toolStripProgressBar.Size = new System.Drawing.Size(100, 16);
-            this.toolStripProgressBar.Visible = false;
-            // 
             // openFileDialogNewPacketFile
             // 
             this.openFileDialogNewPacketFile.FileName = "openFileDialog1";
+            // 
+            // toolStripStatusLabelFileInfo
+            // 
+            this.toolStripStatusLabelFileInfo.Margin = new System.Windows.Forms.Padding(150, 3, 0, 2);
+            this.toolStripStatusLabelFileInfo.Name = "toolStripStatusLabelFileInfo";
+            this.toolStripStatusLabelFileInfo.Size = new System.Drawing.Size(0, 17);
+            this.toolStripStatusLabelFileInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // FormMain
             // 
@@ -187,7 +188,7 @@
         private System.Windows.Forms.ToolStripMenuItem closeAllButThisToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialogNewPacketFile;
         public System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
-        public System.Windows.Forms.ToolStripProgressBar toolStripProgressBar;
+        public System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelFileInfo;
     }
 }
 

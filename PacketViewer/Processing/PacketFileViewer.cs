@@ -23,10 +23,20 @@ namespace PacketViewer.Processing
     {
         public PacketFileTab Tab;
 
+        private IPacketReader reader;
+        private string readerType = "";
+
         public PacketFileViewer(string fileName, Tuple<int, int> number = null, PacketFileTab tab = null)
             : base(fileName, number)
         {
             Tab = tab;
+            readerType = Reader.GetReaderTypeByFileName(fileName);
+            reader = Reader.GetReader(readerType, fileName);
+        }
+
+        public string GetFileInfoString()
+        {
+            return "File Info: " + FileName + "  Version: " + reader.GetBuild().ToString() +" Expansion: " + ClientVersion.GetExpansion(reader.GetBuild()).ToString() + " ReaderType: " + readerType;
         }
 
         public void Process(object sender, DoWorkEventArgs e)
@@ -34,9 +44,6 @@ namespace PacketViewer.Processing
             BackgroundWorker worker = sender as BackgroundWorker;
 
             Current = this;
-
-            var reader = Reader.GetReader(FileName, "pkt");
-
             ClientVersion.SetVersion(reader.GetBuild());
             var packetNum = 0;
             // initialize processors

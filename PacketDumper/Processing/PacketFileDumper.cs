@@ -39,7 +39,10 @@ namespace PacketDumper.Processing
 
             _stats.SetStartTime(DateTime.Now);
 
-            var reader = Reader.GetReader(FileName, Settings.PacketFileType);
+            var type = Settings.PacketFileType;
+            if (String.IsNullOrEmpty(type))
+                type = Reader.GetReaderTypeByFileName(FileName);
+            var reader = Reader.GetReader(type, FileName);
             Trace.WriteLine(string.Format("{0}: Processing packets (type {1})...", LogPrefix, reader.ToString()));
             ClientVersion.SetVersion(GetClientVersion(reader));
             if (ClientVersion.Build == ClientVersionBuild.Zero)

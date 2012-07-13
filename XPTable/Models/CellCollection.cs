@@ -100,7 +100,7 @@ namespace XPTable.Models
 		/// </summary>
 		/// <param name="cells">An array of Cell objects to add 
 		/// to the collection</param>
-		public void AddRange(Cell[] cells)
+		public void AddRange(Cell[] cells, bool events = true)
 		{
 			if (cells == null) 
 			{
@@ -109,7 +109,7 @@ namespace XPTable.Models
 
 			for (int i=0; i<cells.Length; i++)
 			{
-				this.Add(cells[i]);
+                this.Add(cells[i]);
 			}
 		}
 

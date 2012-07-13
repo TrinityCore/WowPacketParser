@@ -10,11 +10,13 @@ using PacketParser.Enums.Version.V4_3_2_15211;
 using PacketParser.Enums.Version.V4_3_3_15354;
 using PacketParser.Enums.Version.V4_3_4_15595;
 using PacketParser.Misc;
+using System;
 
 namespace PacketParser.Enums.Version
 {
     public static class Opcodes
     {
+        [ThreadStatic]
         private static BiDictionary<Opcode, int> Dict = null;
 
         private static BiDictionary<Opcode, int> GetOpcodeDictionary(ClientVersionBuild build)

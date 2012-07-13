@@ -69,9 +69,23 @@ namespace PacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V4_3_4_15595, new DateTime(2012, 4, 17))
         };
 
+        [ThreadStatic]
         private static ClientType _expansion;
 
-        public static ClientVersionBuild Build { get; private set; }
+        [ThreadStatic]
+        private static ClientVersionBuild _build;
+
+        public static ClientVersionBuild Build 
+        {
+            get
+            {
+                return _build;
+            }
+            private set
+            {
+                _build = value;
+            }
+        }
 
         public static int BuildInt
         {
@@ -83,7 +97,12 @@ namespace PacketParser.Misc
             get { return Build.ToString(); }
         }
 
-        private static ClientType GetExpansion(ClientVersionBuild build)
+        public static ClientType GetExpansion()
+        {
+            return GetExpansion(Build);
+        }
+
+        public static ClientType GetExpansion(ClientVersionBuild build)
         {
             if (build >= ClientVersionBuild.V4_0_3_13329)
                 return ClientType.Cataclysm;

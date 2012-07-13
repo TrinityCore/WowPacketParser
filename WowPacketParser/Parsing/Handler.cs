@@ -72,7 +72,8 @@ namespace PacketParser.Parsing
 
             return handlers;
         }
-        private static Dictionary<int, Action<Packet>> Handlers;
+        [ThreadStatic]
+        private static Dictionary<int, Action<Packet>> Handlers = null;
 
         public static void InitForClientVersion()
         {

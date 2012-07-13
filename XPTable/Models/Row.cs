@@ -1043,7 +1043,7 @@ namespace XPTable.Models
 		/// <summary>
 		/// Gets whether the Row is able to raise events
 		/// </summary>
-		protected internal bool CanRaiseEvents
+		public bool CanRaiseEvents
 		{
 			get
 			{

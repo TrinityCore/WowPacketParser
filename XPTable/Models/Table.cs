@@ -819,14 +819,9 @@ namespace XPTable.Models
             for (int i = start; i < row; i++)
             {
                 var rowc = rows[i];
-                bool hasSubRows = rowc.SubRows != null;
-                if (hasSubRows && !rowc.ExpandSubRows)
+                if (rowc == null || (rowc.Parent != null && !rowc.Parent.ExpandSubRows))
                 {
-                    result += rowc.SubRows.Count;
-                }
-                else if (hasSubRows)
-                {
-                    i += rowc.SubRows.Count;
+                    result += 1;
                 }
             }
 
@@ -1890,13 +1885,19 @@ namespace XPTable.Models
 		/// Copes with word-wrapped rows.
 		/// </summary>
 		/// <returns></returns>
-		private int VisibleRowCountExact()
+        private int VisibleRowCountExact()
+        {
+            int a;
+            return VisibleRowCountExact(out a);
+        }
+		private int VisibleRowCountExact(out int currentPageRowCount)
 		{
 			int ydiff = 0;
 			RowCollection rows = this.TableModel.Rows;
 			int visibleHeight = this.CellDataRect.Height;
             int count = 0;
-			for (int i = this.TopIndex; i < rows.Count; i++)
+            int i;
+			for (i = this.TopIndex; i < rows.Count; i++)
 			{
 				// Don't count this row if it is currently a hidden subrow
 				Row row = rows[i];
@@ -1910,9 +1911,18 @@ namespace XPTable.Models
                         break;
                 }
             }
+            currentPageRowCount = Math.Max(i - TopIndex, 0);
 
             return count;
 		}
+
+        private int CurrentPageRowCount()
+        {
+            int count;
+            VisibleRowCountExact(out count);
+
+            return count;
+        }
 
         /// <summary>
         /// For all rows that have a wordwrap cell, calculate the rendered height.
@@ -2505,7 +2515,7 @@ namespace XPTable.Models
                 }
                 this.UpdateScrollBars();   // without this the scolling will have been set up assuming all rows have the default height
 
-                this.Invalidate(true);
+                this.Invalidate(false);
             }
 		}
 
@@ -2663,7 +2673,7 @@ namespace XPTable.Models
             bool down = (howMany > 0);
 
             //HACK
-            return previousTopRowIndex + howMany;
+            //return previousTopRowIndex + howMany;
 
             int max = Math.Abs(howMany);
 
@@ -2817,13 +2827,15 @@ namespace XPTable.Models
 				{
                     int hidden = HiddenRowCountBefore(row);
 
-					if (row < vscrollVal)
+                    int rowScrollIndex = row - hidden;
+
+                    if (rowScrollIndex < vscrollVal)
 					{
-						vscrollVal = row;
+                        vscrollVal = rowScrollIndex;
 					}
-                    else if (row - hidden > vscrollVal + this.vScrollBar.LargeChange)
+                    else if (rowScrollIndex > vscrollVal + this.vScrollBar.LargeChange)
 					{
-						vscrollVal += row - (vscrollVal + this.vScrollBar.LargeChange);
+                        vscrollVal += rowScrollIndex - (vscrollVal + this.vScrollBar.LargeChange);
 					}
 				}
 
@@ -3323,7 +3335,7 @@ namespace XPTable.Models
 				{
 					this.borderStyle = value;
 
-					this.Invalidate(true);
+					this.Invalidate(false);
 				}
 			}
 		}
@@ -3342,7 +3354,7 @@ namespace XPTable.Models
 				{
 					this.borderColor = value;
 
-					this.Invalidate(true);
+					this.Invalidate(false);
 				}
 			}
 		}
@@ -3362,7 +3374,7 @@ namespace XPTable.Models
 					this.unfocusedBorderColor = value;
 
 					if (!this.Focused)
-						this.Invalidate(true);
+						this.Invalidate(false);
 				}
 			}
 		}
@@ -4962,13 +4974,13 @@ namespace XPTable.Models
 			}
 		}
 
-
+        public bool EventsDisabled = false;
 		/// <summary>
 		/// Gets whether the Table is able to raise events
 		/// </summary>
-        protected override bool CanRaiseEvents
+        protected internal bool CanRaiseEvents
         {
-            get { return (this.IsHandleCreated && this.beginUpdateCount == 0); }
+            get { return !EventsDisabled && (this.IsHandleCreated && this.beginUpdateCount == 0); }
         }
 
         /// <summary>
@@ -6498,6 +6510,8 @@ namespace XPTable.Models
 						else if (key == Keys.Down)
 						{
                             nextCell = this.FindNextVisibleCell(this.FocusedCell, this.FocusedCell.Row < this.RowCount - 1, true, false, false, true);
+                            if (nextCell.Row < this.FocusedCell.Row)
+                                nextCell.Row = this.FocusedCell.Row;
 						}
 						else if (key == Keys.Left)
 						{
@@ -6506,6 +6520,8 @@ namespace XPTable.Models
 						else
 						{
                             nextCell = this.FindNextVisibleCell(this.FocusedCell, false, true, false, true, true);
+                            if (nextCell.Row < this.FocusedCell.Row)
+                                nextCell.Row = this.FocusedCell.Row;
 						}
 
 						if (nextCell != CellPos.Empty)
@@ -6529,8 +6545,8 @@ namespace XPTable.Models
 						#region Page Up
 						if (this.RowCount > 0)
 						{
-							int i = GetNewIndexFromPageUp();;
-							CellPos temp = new CellPos(i, this.FocusedCell.Column);;
+							int i = GetNewIndexFromPageUp();
+							CellPos temp = new CellPos(i, this.FocusedCell.Column);
                             CellPos nextCell = this.FindNextVisibleCell(temp, true, false, true, false, true);
 
 							if (nextCell != CellPos.Empty)
@@ -6546,10 +6562,12 @@ namespace XPTable.Models
 						#region Page Down
                         if (this.RowCount > 0)
                         {
-							int i = GetNewIndexFromPageDown();;
+							int i = GetNewIndexFromPageDown();
 							CellPos temp = new CellPos(i, this.FocusedCell.Column);
                             CellPos nextCell = this.FindNextVisibleCell(temp, true, false, true, false, true);
 
+                            if (nextCell.Row > this.RowCount - 1)
+                                nextCell.Row = this.RowCount - 1;
                             if (nextCell != CellPos.Empty)
 							{
 								this.FocusedCell = nextCell;
@@ -6653,7 +6671,7 @@ namespace XPTable.Models
 			else
 			{
 				int x = topIndex;
-				int y = this.vScrollBar.Value - (this.vScrollBar.LargeChange - 1);
+				//int y = this.vScrollBar.Value - (this.vScrollBar.LargeChange - 1);
 
 				if (this.FocusedCell.Row > topIndex && this.TableModel[topIndex, this.FocusedCell.Column].Enabled)
 				{
@@ -6663,7 +6681,7 @@ namespace XPTable.Models
 				else
 				{
 					// We are already on the topmost visible row, so scroll up by a page
-					i = Math.Max(-1, this.vScrollBar.Value - (this.vScrollBar.LargeChange - 1));
+					i = Math.Max(0, this.topIndex - (this.CurrentPageRowCount() - 1));
 				}
 			}
 			return i;
@@ -6679,15 +6697,16 @@ namespace XPTable.Models
 			}
 			else
 			{
+                var rowCount = this.CurrentPageRowCount();
 				int currentRow = this.FocusedCell.Row;
-				int bottomRow = topIndex + vScrollBar.LargeChange - 2;
+                int bottomRow = topIndex + rowCount;
 				if (currentRow < bottomRow)
 				{
 					i = bottomRow;
 				}
 				else
 				{
-					i = Math.Min(this.RowCount - 1, currentRow - 2 + this.vScrollBar.LargeChange);
+                    i = Math.Min(this.RowCount - 1, currentRow + rowCount);
 				}
 			}
 			return i;
@@ -6839,7 +6858,7 @@ namespace XPTable.Models
 					this.resizingColumnWidth = -1;
 
 					this.UpdateScrollBars();
-					this.Invalidate(this.PseudoClientRect, true);
+					this.Invalidate(this.PseudoClientRect, false);
                 }
                 #endregion
 
@@ -8786,11 +8805,13 @@ namespace XPTable.Models
 		{
             int newtopIndex = GetNewTopRowIndex(topIndex, vScrollBar.Value - lastVScrollValue);
 
+            HiddenSubRowsAboveTop = HiddenRowCountBefore(newtopIndex);
+
             topIndex = newtopIndex;
 
 		    UpdateScrollBars();
 
-            this.Invalidate(true);
+            this.Invalidate(false);
 
             lastVScrollValue = vScrollBar.Value;
 		}
