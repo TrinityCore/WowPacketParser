@@ -185,6 +185,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD, 0x2125},
             {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x7302},
             {Opcode.CMSG_QUESTGIVER_HELLO, 0x0D17},
+            {Opcode.CMSG_QUESTGIVER_QUERY_QUEST, 0x2F14},
             {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY, 0x6305},
             {Opcode.CMSG_QUESTGIVER_STATUS_QUERY, 0x4407},
             {Opcode.CMSG_QUEST_POI_QUERY, 0x4037},
@@ -203,6 +204,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_REQUEST_PET_INFO, 0x4924},
             {Opcode.CMSG_REQUEST_RAID_INFO, 0x2F26},
             {Opcode.CMSG_REQUEST_RATED_BG_INFO, 0x34A1},
+            {Opcode.CMSG_REQUEST_VEHICLE_PREV_SEAT, 0x4434},
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x4469},
             {Opcode.CMSG_RESET_INSTANCES, 0x6E14},
             {Opcode.CMSG_RESURRECT_RESPONSE, 0x6827},
@@ -215,6 +217,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_SET_ACTIVE_VOICE_CHANNEL, 0x4305},
             {Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID1, 0x4435},
             {Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID2, 0x0536},
+            {Opcode.CMSG_SET_CHANNEL_WATCH, 0x4517},
             {Opcode.CMSG_SET_PRIMARY_TALENT_TREE, 0x4524},
             {Opcode.CMSG_SET_SAVED_INSTANCE_EXTEND, 0x6706},
             {Opcode.CMSG_SET_SELECTION, 0x0506},
@@ -236,6 +239,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_TEXT_EMOTE, 0x2E24},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x3B0C},
             {Opcode.CMSG_TOGGLE_PVP, 0x6815},
+            {Opcode.CMSG_TOTEM_DESTROYED, 0x4207},
             {Opcode.CMSG_TRAINER_BUY_SPELL, 0x4415},
             {Opcode.CMSG_TRAINER_LIST, 0x2336},
             {Opcode.CMSG_UNACCEPT_TRADE, 0x391A},
@@ -413,6 +417,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_DAMAGE_CALC_LOG, 0x2436},
             {Opcode.SMSG_DANCE_QUERY_RESPONSE, 0x2F06},
             {Opcode.SMSG_DB_REPLY, 0x38A4},
+            {Opcode.SMSG_DEATH_RELEASE_LOC, 0x2F07},
             {Opcode.SMSG_DEFENSE_MESSAGE, 0x0314},
             {Opcode.SMSG_DESTROY_OBJECT, 0x4724},
             {Opcode.SMSG_DISMOUNT, 0x2135},
@@ -455,6 +460,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_GUILD_DECLINE, 0x2C07},
             {Opcode.SMSG_GUILD_EVENT, 0x0705},
             {Opcode.SMSG_GUILD_INVITE, 0x14A2},
+            {Opcode.SMSG_GUILD_INVITE_CANCEL, 0x0606},
             {Opcode.SMSG_GUILD_KNOWN_RECIPES, 0x10B3},
             {Opcode.SMSG_GUILD_MAX_DAILY_XP, 0x79B5},
             {Opcode.SMSG_GUILD_MEMBER_DAILY_RESET, 0x10A5},
@@ -638,6 +644,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_WHOIS, 0x6917},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x4A14},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0A06},
+
 
             // 0x2915 Contains Criteria achievement - Received after SMSG_ACHIEVEMENT_EARNED
             // 0x6236 SMSG_QUESTUPDATE_COMPLETE?
