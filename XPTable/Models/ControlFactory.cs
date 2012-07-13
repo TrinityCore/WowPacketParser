@@ -37,7 +37,7 @@ namespace XPTable.Models
         /// <returns></returns>
         public virtual Control UpdateControl(Cell cell, Control control)
         {
-            return null;
+            return control;
         }
         
         #endregion

@@ -27,6 +27,8 @@ namespace XPTable.Renderers
 		/// </summary>
 		private Size controlSize;
 
+        private Point controlOffset;
+
 		#endregion
 		
 		#region Constructor
@@ -86,6 +88,8 @@ namespace XPTable.Renderers
                 controlRect.X = this.ClientRectangle.Right - controlRect.Width;
             }
 
+            controlRect.Offset(this.controlOffset);
+
 			return controlRect;
 		}
 
@@ -122,13 +126,20 @@ namespace XPTable.Renderers
                     // This next call allows the properties of the control to be updated, or to provide
                     // an entirely new control
                     Control newControl = this.ControlFactory.UpdateControl(cell, data.Control);
-                    if (newControl != null)
+                    if (newControl == null)
                     {
-                        newControl.SuspendLayout();
+                        // we need to remove old control
+                        cell.Row.TableModel.Table.Controls.Remove(oldControl);
+                        cell.Row.TableModel.Table.RenderedCotrols.Remove(data);
+                        cell.RendererData = null;
+                    }
+                    else if (newControl != oldControl)
+                    {
                         // We need to take off the old control and wire up the new one
                         cell.Row.TableModel.Table.Controls.Remove(oldControl);
                         cell.Row.TableModel.Table.Controls.Add(newControl);
                         data.Control = newControl;
+                        newControl.SuspendLayout();
                     }
                 }
             }
@@ -174,8 +185,9 @@ namespace XPTable.Renderers
 			{
 				ControlColumn column = (ControlColumn) e.Table.ColumnModel.Columns[e.Column];
 
-				this.controlSize = column.ControlSize;
+				
                 this.controlFactory = column.ControlFactory;
+                this.controlOffset = column.ControlOffset;
 			}
 			else
 			{
@@ -199,14 +211,14 @@ namespace XPTable.Renderers
 			{
 				return;
 			}
-
-			Rectangle controlRect = this.CalcControlRect(this.LineAlignment, this.Alignment);
-
-			ControlRendererData controlData = this.GetControlRendererData(e.Cell);
+            ControlRendererData controlData = this.GetControlRendererData(e.Cell);
 
 			if (controlData != null && controlData.Control != null)
 			{
-				controlData.Control.Size = controlRect.Size;
+                this.controlSize = controlData.Control.Size;
+                Rectangle controlRect = this.CalcControlRect(this.LineAlignment, this.Alignment);
+
+				//controlData.Control.Size = controlRect.Size;
 				controlData.Control.Location = controlRect.Location;
 				//controlData.Control.BringToFront();
                 

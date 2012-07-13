@@ -13,5 +13,6 @@ namespace PacketViewer.DataStructures
         public DateTime Time;
         public uint Sec;
         public ushort Length;
+        public string ParsedPacket;
     }
 }

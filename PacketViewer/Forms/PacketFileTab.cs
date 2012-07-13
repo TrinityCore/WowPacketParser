@@ -45,6 +45,7 @@ namespace PacketViewer.Forms
         public void BecameSelected()
         {
             Selected = true;
+            UpdateStatus();
         }
 
         public void BecameUnSelected()
@@ -65,8 +66,8 @@ namespace PacketViewer.Forms
             table.AllowRMBSelection = false;
 
             var col0 = new ControlColumn("", 1);
-            col0.ControlFactory = new DetailsFactory();
-            col0.ControlSize = new Size(70, 150);
+            col0.ControlFactory = new DetailsFactory(this);
+            col0.ControlOffset = new Point(0, 0);
             var col1 = new NumberColumn("Num", 200);
             col1.Editable = false;
             var col2 = new TextColumn("Opcode", 200);
@@ -95,6 +96,7 @@ namespace PacketViewer.Forms
 
         private void ClickedCell(object sender, CellMouseEventArgs e)
         {
+            this.tablePackets.TableModel.Rows[e.Row].ExpandSubRows = !this.tablePackets.TableModel.Rows[e.Row].ExpandSubRows;
         }
 
         public void AddPackets(List<PacketEntry> packets)
@@ -103,9 +105,14 @@ namespace PacketViewer.Forms
             var rows = this.tablePackets.TableModel.Rows;
             foreach (var entry in packets)
             {
-                dataManager.Add(entry, (int)entry.Number);
-                Row row = new Row();
+                dataManager.Add(entry, (int)entry.Number*2);
+                RowWithSubrows row = new RowWithSubrows();
+                row.ExpandSubRows = false;
+
                 this.tablePackets.TableModel.Rows.Add(row);
+                RowWithParent detailsRow = new RowWithParent();
+                detailsRow.Height = 150;
+                row.SubRows.Add(detailsRow);
             }
 
             this.tablePackets.EndUpdate();
@@ -121,6 +128,19 @@ namespace PacketViewer.Forms
 
         }
 
+        private string _status = "";
+        private void SetStatus(string status)
+        {
+            _status = status;
+            UpdateStatus();
+        }
+
+        private void UpdateStatus()
+        {
+            if (Selected && (FormMain)this.ParentForm != null)
+                ((FormMain)this.ParentForm).toolStripStatusLabel.Text = _status;
+        }
+
         private void backgroundWorkerProcessPackets_DoWork(object sender, DoWorkEventArgs e)
         {
             PacketProcessor.Process(sender, e);
@@ -128,8 +148,7 @@ namespace PacketViewer.Forms
 
         private void backgroundWorkerProcessPackets_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            if ((FormMain)this.ParentForm != null)
-                ((FormMain)this.ParentForm).toolStripStatusLabel.Text = "Loading file..." + e.ProgressPercentage.ToString() + "%";
+            SetStatus("Loading file..." + e.ProgressPercentage.ToString() + "%");
         }
 
         private void backgroundWorkerTableVirtualData_DoWork(object sender, DoWorkEventArgs e)
@@ -147,18 +166,24 @@ namespace PacketViewer.Forms
                     dataManager.MakeUnusedIndexesVirtual(this.tablePackets.TableModel.Rows);
             }
         }
+
+        private void backgroundWorkerProcessPackets_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            SetStatus("Done.");
+        }
     }
 
     public class VirtualDataPackage
     {
-        public PacketEntry[] data = new PacketEntry[VirtualDataManager.virtualBlockSize];
+        public PacketEntry[] data = new PacketEntry[VirtualDataManager.virtualBlockDataSize];
     }
 
     public class VirtualDataManager
     {
         public List<VirtualDataPackage> virtualData = new List<VirtualDataPackage>();
         public List<byte> cachedBlockUpdatesLeft = new List<byte>();
-        public const int virtualBlockSize = 50;
+        public const int virtualBlockSize = 100;
+        public const int virtualBlockDataSize = virtualBlockSize / 2;
         public const int virtualBlocksNearIndex = 3;
 
         public const int cachedBlockUpdateInterval = 1000;
@@ -186,7 +211,7 @@ namespace PacketViewer.Forms
             var rows = args.Row.TableModel.Rows;
             int blockId = index / virtualBlockSize;
             if (cachedBlockUpdatesLeft[blockId] != 0)
-                CacheRow(index, rows, index - blockId * virtualBlockSize, virtualData[blockId]);
+                CacheRow(index, rows, (index - blockId * virtualBlockSize)/2, virtualData[blockId]);
         }
 
         private void RowDataRequested(object caller, RowEventArgs args)
@@ -208,14 +233,13 @@ namespace PacketViewer.Forms
                 virtualData.Add(new VirtualDataPackage());
             while (cachedBlockUpdatesLeft.Count <= blockId)
                 cachedBlockUpdatesLeft.Add(0);
-            virtualData[blockId].data[index - blockId * virtualBlockSize] = entry;
+            virtualData[blockId].data[(index - blockId * virtualBlockSize)/2] = entry;
         }
 
-        public PacketEntry[] Get(int index, out int firstBlockIndex)
+        public PacketEntry Get(int index)
         {
             int blockId = index / virtualBlockSize;
-            firstBlockIndex = blockId * virtualBlockSize;
-            return virtualData[blockId].data;
+            return virtualData[blockId].data[(index - blockId * virtualBlockSize) / 2];
         }
 
         public void MakeUnusedIndexesVirtual(RowCollection rows)
@@ -239,10 +263,8 @@ namespace PacketViewer.Forms
                     for (int j = 0; j < virtualBlockSize; ++j)
                     {
                         var rowIndex = firstRowIndex + j;
-                        if (rows[rowIndex] != null && rows[rowIndex].cells != null)
-                        {
-                            rows[rowIndex].cells = null;
-                        }
+                        if (rows[rowIndex] != null)
+                            rows.RemoveCacheAt(rowIndex);
                     }
                 }
                 else
@@ -279,7 +301,7 @@ namespace PacketViewer.Forms
                     var rowIndex = firstRowIndex + i;
                     if (rowIndex >= rows.Count)
                         break;
-                    CacheRow(rowIndex, rows, i, dataBlock);
+                    CacheRow(rowIndex, rows, i/2, dataBlock);
                 }
             }
         }
@@ -293,8 +315,17 @@ namespace PacketViewer.Forms
                 //throw new Exception("cells should be unloaded at this point");
             var entry = dataBlock.data[dataBlockIndex];
             row.cells = new CellCollection(row);
-            row.cells.AddRange(new Cell[] {new CellWithData(null), new CellWithData(entry.Number), new CellWithText(entry.OpcodeString),
-            new CellWithData(entry.Time), new CellWithData(entry.Sec), new CellWithData(entry.Length)});
+            if ((rownum % 2) == 0)
+            {
+                row.cells.AddRange(new Cell[] {new CellWithData(null), new CellWithData(entry.Number+1), new CellWithText(entry.OpcodeString),
+                    new CellWithData(entry.Time), new CellWithData(entry.Sec), new CellWithData(entry.Length)});
+            }
+            else
+            {
+                var cell = new CellWithSpan();
+                cell.ColSpan = 6;
+                row.cells.Add(cell);
+            }
         }
     }
 }

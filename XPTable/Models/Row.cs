@@ -657,6 +657,8 @@ namespace XPTable.Models
                     if (this.TableModel != null && SubRows != null)
                     {
                         this.TableModel.Table.HiddenSubRows += value ? -SubRows.Count : +SubRows.Count;
+                        if (Index < this.TableModel.Table.TopIndex)
+                            this.TableModel.Table.HiddenSubRowsAboveTop += value ? -SubRows.Count : +SubRows.Count;
                     }
                 }
             }
@@ -1308,7 +1310,11 @@ namespace XPTable.Models
             this.TableModel.Rows.Insert(e.ParentRow.Index + childIndex, e.Row);
 
             if (!e.Row.Parent.ExpandSubRows)
+            {
                 this.TableModel.Table.HiddenSubRows += 1;
+                if (childIndex < this.TableModel.Table.TopIndex)
+                    this.TableModel.Table.HiddenSubRowsAboveTop += 1;
+            }
 
             if (SubRowAdded != null)
             {
@@ -1325,7 +1331,11 @@ namespace XPTable.Models
             this.TableModel.Rows.Remove(e.Row);
 
             if (!e.Row.Parent.ExpandSubRows)
+            {
                 this.TableModel.Table.HiddenSubRows -= 1;
+                if (e.Index < this.TableModel.Table.TopIndex)
+                    this.TableModel.Table.HiddenSubRowsAboveTop -= 1;
+            }
 
             if (SubRowRemoved != null)
             {

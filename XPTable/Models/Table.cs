@@ -775,6 +775,7 @@ namespace XPTable.Models
         #region Subrows
 
         private int _totalHiddenSubRows;
+        private int _hiddenSubRowsAboveTop;
         
         /// <summary>
         /// Gets the total number of subrows that are currently not expanded.
@@ -785,7 +786,11 @@ namespace XPTable.Models
             set { _totalHiddenSubRows = value; }
         }
 
-        private int HiddenSubRowsAboveTop = 0;
+        public int HiddenSubRowsAboveTop
+        {
+            get { return _hiddenSubRowsAboveTop; }
+            set { _hiddenSubRowsAboveTop = value; }
+        }
 
         /// <summary>
         /// Count the number of hidden rows before the supplied row.
@@ -826,28 +831,6 @@ namespace XPTable.Models
             }
 
             return Math.Abs(result);
-        }
-
-        internal void UpdateHeightAboveTopRowDependantValues()
-        {
-            //HACK
-            return;
-            int hiddenRowsAboveTopRow = 0;
-            int heightAboveTopRow = 0;
-
-            int topIndex = this.TopIndex;
-            var rows = TableModel.Rows;
-
-            for (int i = 0; i < topIndex; i++)
-            {
-                Row row = rows[i];
-                if (row.Parent == null || row.Parent.ExpandSubRows)
-                    heightAboveTopRow += row.Height;
-                else
-                    ++hiddenRowsAboveTopRow;
-            }
-
-            HiddenSubRowsAboveTop = hiddenRowsAboveTopRow;
         }
 
         #endregion
@@ -7703,6 +7686,8 @@ namespace XPTable.Models
             {
                 c.Control.Visible = c.visible;
                 c.Control.ResumeLayout();
+                if (c.visible)
+                    c.Control.Refresh();
             }
 
             /* for some reason doesn't work
@@ -8803,10 +8788,9 @@ namespace XPTable.Models
 
             topIndex = newtopIndex;
 
-            this.Invalidate();
-
 		    UpdateScrollBars();
-            UpdateHeightAboveTopRowDependantValues();
+
+            this.Invalidate(true);
 
             lastVScrollValue = vScrollBar.Value;
 		}

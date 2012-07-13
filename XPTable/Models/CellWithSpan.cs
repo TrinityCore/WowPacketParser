@@ -5,10 +5,10 @@ using System.Text;
 
 namespace XPTable.Models
 {
-    public class CellWithDataSpan : CellWithData
+    public class CellWithSpan : Cell
     {
-        public CellWithDataSpan(object data)
-            : base(data)
+        public CellWithSpan()
+            : base()
         {
         }
 

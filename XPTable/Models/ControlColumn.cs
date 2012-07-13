@@ -31,6 +31,8 @@ namespace XPTable.Models
 		/// </summary>
 		private Size controlSize;
 
+        private Point controlOffset = new Point(0,0);
+
 		#endregion
 		
         
@@ -161,6 +163,29 @@ namespace XPTable.Models
 				}
 			}
 		}
+
+        /// <summary>
+        /// Gets or sets the size of the controls
+        /// </summary>
+        [Category("Appearance"),
+        Description("Specifies the offset of the controls")]
+        public Point ControlOffset
+        {
+            get
+            {
+                return this.controlOffset;
+            }
+
+            set
+            {
+                if (this.controlOffset != value)
+                {
+                    this.controlOffset = value;
+
+                    this.OnPropertyChanged(new ColumnEventArgs(this, ColumnEventType.RendererChanged, null));
+                }
+            }
+        }
 
 
 		/// <summary>

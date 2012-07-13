@@ -135,7 +135,8 @@ namespace PacketViewer.Processing
                 Sec = (uint)packet.TimeSpan.TotalSeconds,
                 Time = packet.Time,
                 Opcode = (ushort)packet.Opcode,
-                OpcodeString = Opcodes.GetOpcodeName(packet.Opcode)
+                OpcodeString = Opcodes.GetOpcodeName(packet.Opcode),
+                ParsedPacket = TextBuilder.Build(packet, false, false, false)
             };
 
             packets.Add(packetEntry);

@@ -74,6 +74,7 @@ namespace PacketViewer.Forms
             this.tablePackets.DragDropRenderer = dragDropRenderer1;
             this.tablePackets.GridLinesContrainedToData = false;
             this.tablePackets.HiddenSubRows = 0;
+            this.tablePackets.HiddenSubRowsAboveTop = 0;
             this.tablePackets.Location = new System.Drawing.Point(0, 0);
             this.tablePackets.Name = "tablePackets";
             this.tablePackets.Size = new System.Drawing.Size(583, 364);
@@ -85,6 +86,7 @@ namespace PacketViewer.Forms
             // 
             this.backgroundWorkerProcessPackets.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerProcessPackets_DoWork);
             this.backgroundWorkerProcessPackets.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorkerProcessPackets_ProgressChanged);
+            this.backgroundWorkerProcessPackets.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerProcessPackets_RunWorkerCompleted);
             // 
             // backgroundWorkerTableVirtualData
             // 

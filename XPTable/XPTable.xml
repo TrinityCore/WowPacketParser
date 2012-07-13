@@ -15641,6 +15641,11 @@
             Gets or sets the size of the controls
             </summary>
         </member>
+        <member name="P:XPTable.Models.ControlColumn.ControlOffset">
+            <summary>
+            Gets or sets the size of the controls
+            </summary>
+        </member>
         <member name="P:XPTable.Models.ControlColumn.DefaultComparerType">
             <summary>
             Gets the Type of the Comparer used to compare the Column's Cells when 

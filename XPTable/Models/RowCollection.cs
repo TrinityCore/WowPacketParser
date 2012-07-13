@@ -223,6 +223,16 @@ namespace XPTable.Models
             }
 		}
 
+        public void RemoveCacheAt(int index)
+        {
+            if (index >= 0 && index < this.Count)
+            {
+                Row row = this[index];
+                RemoveControlIfRequired(index);
+                row.cells = null;
+            }
+        }
+
         private void RemoveControlIfRequired(int index)
         {
             for (int i = 0; i < this[index].Cells.Count; i++)
@@ -231,7 +241,10 @@ namespace XPTable.Models
                 if (cell.RendererData is XPTable.Renderers.ControlRendererData)
                 {
                     if ((cell.RendererData as XPTable.Renderers.ControlRendererData).Control != null)
+                    {
                         cell.Row.TableModel.Table.Controls.Remove((cell.RendererData as XPTable.Renderers.ControlRendererData).Control);
+                        cell.Row.TableModel.Table.RenderedCotrols.Remove((cell.RendererData as XPTable.Renderers.ControlRendererData));
+                    }
                 }
             }
         }

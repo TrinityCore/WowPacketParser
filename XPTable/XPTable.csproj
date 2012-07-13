@@ -322,7 +322,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\CellWithData.cs" />
-    <Compile Include="Models\CellWithDataSpan.cs" />
+    <Compile Include="Models\CellWithSpan.cs" />
     <Compile Include="Models\RowWithSurows.cs" />
     <Compile Include="Models\DataSourceColumnBinder.cs">
       <SubType>Code</SubType>
