@@ -166,7 +166,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Random Property Id");
             packet.ReadInt32("Random Suffix");
             packet.ReadGuid("Player GUID");
-            packet.ReadByte("Roll Number");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                packet.ReadInt32("Roll Number");
+            else
+                packet.ReadByte("Roll Number");
             packet.ReadEnum<LootRollType>("Roll Type", TypeCode.Byte);
         }
 
