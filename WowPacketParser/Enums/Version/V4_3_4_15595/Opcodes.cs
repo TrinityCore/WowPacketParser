@@ -588,6 +588,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_TEXT_EMOTE, 0x0B05},
             {Opcode.SMSG_THREAT_CLEAR, 0x6437},
             {Opcode.SMSG_THREAT_REMOVE, 0x2E05},
+            {Opcode.SMSG_THREAT_UPDATE, 0x4735},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x3CA4},
             {Opcode.SMSG_TITLE_EARNED, 0x2426},
             {Opcode.SMSG_TRADE_STATUS, 0x5CA3},
