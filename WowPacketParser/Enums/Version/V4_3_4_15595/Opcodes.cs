@@ -430,6 +430,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_FRIEND_STATUS, 0x0717},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x0915},
             {Opcode.SMSG_GAMETIME_UPDATE, 0x0014},
+            {Opcode.SMSG_GMRESPONSE_DB_ERROR, 0x0006},
             {Opcode.SMSG_GMRESPONSE_RECEIVED, 0x2E34},
             {Opcode.SMSG_GMTICKET_GETTICKET, 0x2C15},
             {Opcode.SMSG_GM_MESSAGECHAT, 0x6434},
