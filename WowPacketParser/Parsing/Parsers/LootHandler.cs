@@ -149,7 +149,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
             packet.ReadInt32("Random Property Id");
             packet.ReadInt32("Random Suffix");
-            packet.ReadByte("Roll Number");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                packet.ReadInt32("Roll Number");
+            else
+                packet.ReadByte("Roll Number");
             packet.ReadEnum<LootRollType>("Roll Type", TypeCode.Byte);
             packet.ReadBoolean("Auto Pass");
         }
