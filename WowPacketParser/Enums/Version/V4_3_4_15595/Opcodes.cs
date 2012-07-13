@@ -419,6 +419,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_COOLDOWN_EVENT, 0x4F26},
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0x0D34},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x6024},
+            {Opcode.SMSG_CRITERIA_DELETED, 0x2915},
             {Opcode.SMSG_CRITERIA_UPDATE, 0x6E37},
             {Opcode.SMSG_CROSSED_INEBRIATION_THRESHOLD, 0x2036},
             {Opcode.SMSG_DAMAGE_CALC_LOG, 0x2436},
@@ -570,6 +571,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x2425},
             {Opcode.SMSG_QUESTGIVER_QUEST_FAILED, 0x4236},
             {Opcode.SMSG_QUESTGIVER_QUEST_LIST, 0x0134},
+            {Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS, 0x6236},
             {Opcode.SMSG_QUESTGIVER_STATUS, 0x2115},
             {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, 0x4F25},
             {Opcode.SMSG_QUESTLOG_FULL, 0x0E36},
@@ -661,10 +663,6 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x09B1},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x4A14},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0A06},
-
-
-            // 0x2915 Contains Criteria achievement - Received after SMSG_ACHIEVEMENT_EARNED
-            // 0x6236 SMSG_QUESTUPDATE_COMPLETE?
         };
     }
 }
