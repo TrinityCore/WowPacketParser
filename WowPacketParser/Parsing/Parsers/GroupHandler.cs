@@ -520,14 +520,5 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Apply");
             packet.ReadGuid("Guid");
         }
-
-        [Parser(Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE)]
-        public static void HandleGuildPartyStateResponse(Packet packet)
-        {
-            packet.ReadBit("Is guild group");
-            packet.ReadSingle("Guild XP multiplier");
-            packet.ReadUInt32("Current guild members");
-            packet.ReadUInt32("Needed guild members");
-        }
     }
 }

@@ -194,20 +194,54 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_GUILD_UPDATE_PARTY_STATE)]
+        [Parser(Opcode.CMSG_REQUEST_GUILD_PARTY_STATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildUpdatePartyState(Packet packet)
         {
             packet.ReadGuid("Guild GUID");
             packet.ReadGuid("Player GUID");
         }
 
-        [Parser(Opcode.SMSG_GUILD_UPDATE_PARTY_STATE)]
+        [Parser(Opcode.CMSG_REQUEST_GUILD_PARTY_STATE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildUpdatePartyState434(Packet packet)
+        {
+            var guid = new byte[8];
+            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+
+            packet.WriteLine("Guild Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+        }
+
+        [Parser(Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildUpdatePartyStateResponse(Packet packet)
         {
             packet.ReadByte("Unk byte");
             packet.ReadUInt32("Unk UInt32 1");
             packet.ReadUInt32("Unk UInt32 2");
             packet.ReadUInt32("Unk UInt32 3");
+        }
+
+        [Parser(Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildPartyStateResponse434(Packet packet)
+        {
+            packet.ReadBit("Is guild group");
+            packet.ReadSingle("Guild XP multiplier");
+            packet.ReadUInt32("Current guild members");
+            packet.ReadUInt32("Needed guild members");
         }
 
         [Parser(Opcode.CMSG_GUILD_QUERY)]

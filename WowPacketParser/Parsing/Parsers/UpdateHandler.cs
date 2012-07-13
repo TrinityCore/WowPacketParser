@@ -221,7 +221,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasGameObjectRotation = packet.ReadBit("Has GameObject Rotation", index);
             var hasAnimKits = packet.ReadBit("Has AnimKits", index);
             var hasAttackingTarget = packet.ReadBit("Has Attacking Target", index);
-            /*var bit0 =*/ packet.ReadBit();
+            packet.ReadBit("Self", index);
             var hasVehicleData = packet.ReadBit("Has Vehicle Data", index);
             var living = packet.ReadBit("Living", index);
             var unkLoopCounter = packet.ReadBits(24);
@@ -230,7 +230,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasStationaryPosition = packet.ReadBit("Has Stationary Position", index);
             var bit456 = packet.ReadBit();
             /*var bit2 =*/ packet.ReadBit();
-            var bit408 = packet.ReadBit();
+            var transport = packet.ReadBit("Transport", index);
             var hasOrientation = false;
             var guid2 = new byte[8];
             var dword28 = false;
@@ -610,8 +610,8 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt16("Anim Kit 3", index);
             }
 
-            if (bit408)
-                packet.ReadUInt32();
+            if (transport)
+                packet.ReadUInt32("Transport path timer", index);
 
             return moveInfo;
         }

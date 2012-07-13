@@ -11,6 +11,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
+            //{Opcode.SMSG_BUY_BANK_SLOT_RESULT, 0x00000}, // 4.0.6a 13623
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0x0B5CC}, // 4.0.6a 13623
             {Opcode.CMSG_ACCEPT_TRADE, 0x00891}, // 4.0.6a 13623
             {Opcode.CMSG_ACTIVATETAXI, 0x039A4}, // 4.0.6a 13623
@@ -276,7 +277,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_GUILD_ROSTER, 0x0250D}, // 4.0.6a 13623
             {Opcode.CMSG_GUILD_SET_NOTE, 0x0232D}, // 4.0.6a 13623
             {Opcode.CMSG_GUILD_SWITCH_RANK, 0x100A6}, // Unknown opcode ID
-            {Opcode.CMSG_GUILD_UPDATE_PARTY_STATE, 0x02219}, // 4.0.6a 13623
             {Opcode.CMSG_HEARTH_AND_RESURRECT, 0x0B6C4}, // 4.0.6a 13623
             {Opcode.CMSG_IGNORE_DIMINISHING_RETURNS_CHEAT, 0x1019D}, // Unknown opcode ID
             {Opcode.CMSG_IGNORE_KNOCKBACK_CHEAT, 0x10126}, // Unknown opcode ID
@@ -446,6 +446,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_REPOP_REQUEST, 0x0A9E4}, // 4.0.6a 13623
             {Opcode.CMSG_REPORT_PVP_AFK, 0x0E3AC}, // 4.0.6a 13623
             {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x0EEAC}, // 4.0.6a 13623
+            {Opcode.CMSG_REQUEST_GUILD_PARTY_STATE, 0x02219}, // 4.0.6a 13623
             {Opcode.CMSG_REQUEST_HOTFIX, 0x08589}, // 4.0.6a 13623 (the client sends this after we send SMSG_HOTFIX_NOTIFY[_BLOP], only sent for the items that the player has in his inventory, that are flagged to be hotfixed)
             {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x070C8}, // 4.0.6a 13623
             {Opcode.CMSG_REQUEST_PET_INFO, 0x0EAE4}, // 4.0.6a 13623
@@ -738,7 +739,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_BINDPOINTUPDATE, 0x0A9A0}, // 4.0.6a 13623
             {Opcode.SMSG_BINDZONEREPLY, 0x0ACAC}, // 4.0.6a 13623
             {Opcode.SMSG_BREAK_TARGET, 0x02488}, // 4.0.6a 13623
-            //{Opcode.SMSG_BUY_BANK_SLOT_RESULT, 0x00000}, // 4.0.6a 13623
             {Opcode.SMSG_BUY_FAILED, 0x06CE8}, // 4.0.6a 13623
             {Opcode.SMSG_BUY_ITEM, 0x069CC}, // 4.0.6a 13623
             {Opcode.SMSG_CALENDAR_ACTION_PENDING, 0x07E8C}, // 4.0.6a 13623 (might be 0x0265E)
@@ -914,13 +914,13 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_GUILD_INVITE, 0x0010C}, // 4.0.6a 13623 (might be 0x0B78C)
             {Opcode.SMSG_GUILD_MAX_DAILY_XP, 0x0441C}, // 4.0.6a 13623
             {Opcode.SMSG_GUILD_NEWS_UPDATE, 0x0485E}, // 4.0.6a 13623
+            {Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, 0x0450C}, // 4.0.6a 13623
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x03F80}, // 4.0.6a 13623
             {Opcode.SMSG_GUILD_RANK, 0x0411E}, // 4.0.6a 13623
             {Opcode.SMSG_GUILD_RANKS_UPDATE, 0x0004C}, // 4.0.6a 13623
             {Opcode.SMSG_GUILD_REWARDS_LIST, 0x00C4C}, // 4.0.6a 13623
             {Opcode.SMSG_GUILD_ROSTER, 0x04D5C}, // 4.0.6a 13623 (might be 0x038B0)
             {Opcode.SMSG_GUILD_TRADESKILL_UPDATE, 0x0454E}, // 4.0.6a 13623
-            {Opcode.SMSG_GUILD_UPDATE_PARTY_STATE, 0x0450C}, // 4.0.6a 13623
             {Opcode.SMSG_GUILD_UPDATE_ROSTER, 0x0085E}, // 4.0.6a 13623
             {Opcode.SMSG_GUILD_XP, 0x0440E}, // 4.0.6a 13623
             {Opcode.SMSG_GUILD_XP_LIMIT, 0x0441C}, // 4.0.6a 13623
@@ -964,7 +964,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_LFG_JOIN_RESULT, 0x0338C}, // 4.0.6a 13623
             {Opcode.SMSG_LFG_LFR_LIST, 0x0768C}, // 4.0.6a 13623
             {Opcode.SMSG_LFG_OFFER_CONTINUE, 0x063EC}, // 4.0.6a 13623
-            {Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER, 0x071EC}, // 4.0.6a 13623
             {Opcode.SMSG_LFG_PARTY_INFO, 0x060A0}, // 4.0.6a 13623
             {Opcode.SMSG_LFG_PLAYER_INFO, 0x0E088}, // 4.0.6a 13623
             {Opcode.SMSG_LFG_PLAYER_REWARD, 0x02C88}, // 4.0.6a 13623
@@ -1043,6 +1042,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_OFFER_PETITION_ERROR, 0x07DC0}, // 4.0.6a 13623
             {Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA, 0x03380}, // 4.0.6a 13623
             {Opcode.SMSG_OPEN_CONTAINER, 0x03FC4}, // 4.0.6a 13623
+            {Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER, 0x071EC}, // 4.0.6a 13623
             {Opcode.SMSG_OVERRIDE_LIGHT, 0x00756}, // 4.0.3a 13329
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x0B084}, // 4.0.6a 13623
             {Opcode.SMSG_PARTYKILLLOG, 0x0AB84}, // 4.0.6a 13623
