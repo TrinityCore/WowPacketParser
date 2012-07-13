@@ -1478,6 +1478,54 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandlePhaseShift434(Packet packet)
+        {
+            var guid = new byte[8];
+            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+
+            var count = packet.ReadUInt32("Count1") / 2;
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt16("First array", i);
+
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+
+            packet.ReadUInt32("UInt32");
+
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+
+            count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Terrain swap count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Terrain swap", i);
+
+            count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Phases count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt16("Phase id", i); // Phase.dbc
+
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+
+            count = packet.ReadUInt32("Count4") / 2;
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt16("Fourth array", i);
+
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            packet.WriteLine("GUID {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+        }
+
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
         public static void HandleTransferPending(Packet packet)
         {
