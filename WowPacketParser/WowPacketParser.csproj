@@ -309,6 +309,7 @@
     <Compile Include="Enums\Version\V4_3_3_15354\Opcodes.cs" />
     <Compile Include="Enums\Version\V4_3_3_15354\UpdateFields.cs" />
     <Compile Include="Enums\Version\V4_3_4_15595\Opcodes.cs" />
+    <Compile Include="Enums\Version\V4_3_4_15595\SplineFlag434.cs" />
     <Compile Include="Enums\Version\V4_3_4_15595\UpdateFields.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\WardenCheckType.cs" />

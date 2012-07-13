@@ -217,6 +217,13 @@ namespace WowPacketParser.Parsing.Parsers
                     return;
             }
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
+            {
+                // Not the best way
+                ReadSplineMovement434(ref packet, pos);
+                return;
+            }
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
             {
                 // Not the best way
@@ -264,6 +271,64 @@ namespace WowPacketParser.Parsing.Parsers
                     vec.Z += mid.Z;
 
                     packet.WriteLine("[" + i + "]" + " Waypoint: " + vec);
+                }
+            }
+        }
+
+        private static void ReadSplineMovement434(ref Packet packet, Vector3 pos)
+        {
+            var flags = packet.ReadEnum<SplineFlag434>("Spline Flags", TypeCode.Int32);
+
+            if (flags.HasAnyFlag(SplineFlag434.Animation))
+            {
+                packet.ReadEnum<MovementAnimationState>("Animation State", TypeCode.Byte);
+                packet.ReadInt32("Asynctime in ms"); // Async-time in ms
+            }
+
+            packet.ReadInt32("Move Time");
+
+            if (flags.HasAnyFlag(SplineFlag434.Parabolic))
+            {
+                packet.ReadSingle("Vertical Speed");
+                packet.ReadInt32("Async-time in ms");
+            }
+
+            var waypoints = packet.ReadInt32("Waypoints");
+
+            if (flags.HasAnyFlag(SplineFlag434.UncompressedPath))
+            {
+                for (var i = 0; i < waypoints; i++)
+                    packet.ReadVector3("Waypoint", i);
+            }
+            else
+            {
+                var newpos = packet.ReadVector3("Waypoint Endpoint");
+
+                var mid = new Vector3();
+                mid.X = (pos.X + newpos.X) * 0.5f;
+                mid.Y = (pos.Y + newpos.Y) * 0.5f;
+                mid.Z = (pos.Z + newpos.Z) * 0.5f;
+
+                if (waypoints != 1)
+                {
+                    var vec = packet.ReadPackedVector3();
+                    vec.X += mid.X;
+                    vec.Y += mid.Y;
+                    vec.Z += mid.Z;
+                    packet.WriteLine("[0] Waypoint: " + vec);
+
+                    if (waypoints > 1)
+                    {
+                        for (var i = 1; i < waypoints - 1; ++i)
+                        {
+                            vec = packet.ReadPackedVector3();
+                            vec.X += mid.X;
+                            vec.Y += mid.Y;
+                            vec.Z += mid.Z;
+
+                            packet.WriteLine("[" + i + "]" + " Waypoint: " + vec);
+                        }
+                    }
                 }
             }
         }
