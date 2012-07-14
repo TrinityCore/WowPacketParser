@@ -2,7 +2,7 @@ namespace WowPacketParser.Enums
 {
     public enum WardenCheckType
     {
-        Memoty = 0,
+        Memory = 0,
         PageA = 1,
         PageB = 2,
         Mpq = 3,
