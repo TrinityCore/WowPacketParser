@@ -500,7 +500,6 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_GUILD_MAX_DAILY_XP, 0x79B5},
             {Opcode.SMSG_GUILD_MEMBER_DAILY_RESET, 0x10A5},
             {Opcode.SMSG_GUILD_NEWS_UPDATE, 0x35A7}, // not confirmed
-            {Opcode.SMSG_GUILD_PARTY_STATE, 0x50A6},
             {Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, 0x50A6},
             {Opcode.SMSG_GUILD_PERMISSIONS_QUERY_RESULTS, 0x34A3},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x0E06},
