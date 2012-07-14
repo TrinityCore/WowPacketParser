@@ -48,14 +48,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Timer");
         }
 
-        [Parser(Opcode.SMSG_COMBAT_EVENT_FAILED)]
-        public static void HandleCombatEventFailed(Packet packet)
-        {
-            packet.ReadPackedGuid("GUID");
-            packet.ReadPackedGuid("Target GUID");
-            packet.ReadUInt32("Unk UInt32");
-        }
-
         [Parser(Opcode.SMSG_RESET_RANGED_COMBAT_TIMER)]
         public static void HandleResetRangedCombatTimer(Packet packet)
         {
@@ -129,6 +121,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_ATTACKSTOP)]
+        [Parser(Opcode.SMSG_COMBAT_EVENT_FAILED)]
         public static void HandleAttackStartStop(Packet packet)
         {
             packet.ReadPackedGuid("GUID");
