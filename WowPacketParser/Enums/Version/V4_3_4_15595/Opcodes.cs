@@ -700,6 +700,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x09B1},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x4A14},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0A06},
+            {Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM, 0x6735},
         };
     }
 }
