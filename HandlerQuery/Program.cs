@@ -22,7 +22,8 @@ namespace HandlerQuery
                 "| 7 - packedguid \n" +
                 "| 8 - ip \n" +
                 "| 9 - string \n" +
-                "| = - exact search \n");
+                "| = - exact search \n" +
+                "| + - subset search \n");
             Console.WriteLine("Codes separated by spaces, type q to exit.");
 
             while (true)
@@ -42,7 +43,8 @@ namespace HandlerQuery
                     continue;
                 }
 
-                var exactlyEqual = false;
+                var equal = false;
+                var subset = false;
 
                 var failed = false;
                 var codeArr = new List<ReadMethods>(codeArrStr.Length);
@@ -50,7 +52,12 @@ namespace HandlerQuery
                 {
                     if (s == "=")
                     {
-                        exactlyEqual = true;
+                        equal = true;
+                        continue;
+                    }
+                    else if (s == "+")
+                    {
+                        subset = true;
                         continue;
                     }
 
@@ -74,7 +81,7 @@ namespace HandlerQuery
                     if (pair.Value.Count < codeArr.Count)
                         continue;
 
-                    if (exactlyEqual)
+                    if (equal) // exactly equal
                     {
                         if (pair.Value.SequenceEqual(codeArr))
                         {
@@ -82,7 +89,15 @@ namespace HandlerQuery
                             Console.WriteLine("[{0}] {1}", i, pair.Key);
                         }
                     }
-                    else
+                    else if (subset) // subset
+                    {
+                        if (!codeArr.Except(pair.Value).Any())
+                        {
+                            i++;
+                            Console.WriteLine("[{0}] {1}", i, pair.Key);
+                        }
+                    }
+                    else // starts with
                     {
                         if (pair.Value.GetRange(0, codeArr.Count).SequenceEqual(codeArr))
                         {
