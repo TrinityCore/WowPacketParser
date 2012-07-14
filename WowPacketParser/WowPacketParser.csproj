@@ -186,6 +186,7 @@
     <Compile Include="Enums\HighGuidType.cs" />
     <Compile Include="Enums\Holiday.cs" />
     <Compile Include="Enums\InhabitType.cs" />
+    <Compile Include="Enums\TalentErrors.cs" />
     <Compile Include="Enums\TargetIcon.cs" />
     <Compile Include="Enums\InstanceResetWarningType.cs" />
     <Compile Include="Enums\InstanceStatus.cs" />
@@ -357,6 +358,7 @@
     <Compile Include="Parsing\Parsers\EquipmentSetHandler.cs" />
     <Compile Include="Parsing\Parsers\GameObjectHandler.cs" />
     <Compile Include="Parsing\Parsers\GroupHandler.cs" />
+    <Compile Include="Parsing\Parsers\GuildFinderHandler.cs" />
     <Compile Include="Parsing\Parsers\GuildHandler.cs" />
     <Compile Include="Parsing\Parsers\InstanceHandler.cs" />
     <Compile Include="Parsing\Parsers\ItemHandler.cs" />

@@ -393,8 +393,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddSniffData(StoreNameType.Map, (int) CurrentMapId, "NEW_WORLD");
         }
 
-        [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleNewWorld(Packet packet)
+        [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleNewWorld422(Packet packet)
         {
             packet.ReadVector3("Position");
             CurrentMapId = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
@@ -403,6 +403,22 @@ namespace WowPacketParser.Parsing.Parsers
             WoWObject character;
             if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
                 SessionHandler.LoggedInCharacter = (Player) character;
+
+            packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
+        }
+
+        [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleNewWorld434(Packet packet)
+        {
+            packet.ReadSingle("X");
+            packet.ReadSingle("Orientation");
+            packet.ReadSingle("Z");
+            CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
+            packet.ReadSingle("Y"); // seriously...
+
+            WoWObject character;
+            if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
+                SessionHandler.LoggedInCharacter = (Player)character;
 
             packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
         }
