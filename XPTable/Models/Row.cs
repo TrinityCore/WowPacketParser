@@ -81,7 +81,7 @@ namespace XPTable.Models
         private static readonly int STATE_DISPOSED = 4;
         private static readonly int STATE_HAS_WORD_WRAP_CELL = 8;
         private static readonly int STATE_EXPAND_SUBROWS = 16;
-        private static readonly int STATE_DATA_CACHED = 32;
+        private static readonly int STATE_MARKED_VISIBLE = 32;
 
 		/// <summary>
 		/// The collection of Cells's contained in the Row
@@ -219,18 +219,18 @@ namespace XPTable.Models
         /// <summary>
         /// Specifies whether the Row has been disposed
         /// </summary>
-        public bool DataCached
+        public bool MarkedVisible
         {
             get
             {
-                return (_state & STATE_DATA_CACHED) != 0;
+                return (_state & STATE_MARKED_VISIBLE) != 0;
             }
             set
             {
                 if (value)
-                    _state |= (byte)STATE_DATA_CACHED;
+                    _state |= (byte)STATE_MARKED_VISIBLE;
                 else
-                    _state &= (byte)~STATE_DATA_CACHED;
+                    _state &= (byte)~STATE_MARKED_VISIBLE;
             }
         }
 
@@ -1312,7 +1312,7 @@ namespace XPTable.Models
             if (!e.Row.Parent.ExpandSubRows)
             {
                 this.TableModel.Table.HiddenSubRows += 1;
-                if (childIndex < this.TableModel.Table.TopIndex)
+                if (e.Row.Index < this.TableModel.Table.TopIndex)
                     this.TableModel.Table.HiddenSubRowsAboveTop += 1;
             }
 
@@ -1333,7 +1333,7 @@ namespace XPTable.Models
             if (!e.Row.Parent.ExpandSubRows)
             {
                 this.TableModel.Table.HiddenSubRows -= 1;
-                if (e.Index < this.TableModel.Table.TopIndex)
+                if (e.Row.Index < this.TableModel.Table.TopIndex)
                     this.TableModel.Table.HiddenSubRowsAboveTop -= 1;
             }
 
@@ -1360,6 +1360,33 @@ namespace XPTable.Models
                 }
 			}
 		}
+
+        internal void OnRowBecameVisible()
+        {
+            MarkedVisible = true;
+            var columns = this.TableModel.Table.ColumnModel.Columns;
+            var columnModel = this.TableModel.Table.ColumnModel;
+            for (int i = 0; i < columns.Count; ++i)
+            {
+                var renderer = columnModel.GetCellRenderer(i);
+                if (renderer != null)
+                    renderer.OnRowBecameVisible(Cells[i]);
+            }
+
+        }
+
+        internal void OnRowBecameInvisible()
+        {
+            MarkedVisible = false;
+            var columns = this.TableModel.Table.ColumnModel.Columns;
+            var columnModel = this.TableModel.Table.ColumnModel;
+            for (int i = 0; i < columns.Count; ++i)
+            {
+                var renderer = columnModel.GetCellRenderer(i);
+                if (renderer != null)
+                    renderer.OnRowBecameInvisible(Cells[i]);
+            }
+        }
 
 		#endregion
 	}

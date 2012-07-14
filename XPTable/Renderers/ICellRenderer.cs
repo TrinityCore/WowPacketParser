@@ -123,6 +123,11 @@ namespace XPTable.Renderers
 		void OnDoubleClick(CellMouseEventArgs e);
 
 
+        void OnRowBecameVisible(Cell cell);
+
+        void OnRowBecameInvisible(Cell cell);
+
+
         /// <summary>
         /// Returns the height that is required to render this cell. If zero is returned then the default row height is used.
         /// </summary>

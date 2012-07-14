@@ -4762,7 +4762,7 @@
             Specifies whether the Row has been disposed
             </summary>
         </member>
-        <member name="P:XPTable.Models.Row.DataCached">
+        <member name="P:XPTable.Models.Row.MarkedVisible">
             <summary>
             Specifies whether the Row has been disposed
             </summary>

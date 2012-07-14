@@ -845,6 +845,10 @@ namespace XPTable.Models
 		/// </summary>
 		public Table()
 		{
+            this.SetStyle(
+            ControlStyles.UserPaint |
+            ControlStyles.AllPaintingInWmPaint |
+            ControlStyles.OptimizedDoubleBuffer, true);
 			// starting setup
 			this.init = true;
 
@@ -1741,6 +1745,43 @@ namespace XPTable.Models
 		#endregion
 
 		#region Rows
+
+        private int _oldFirstVisibleRow = 0;
+        private int _oldLastVisibleRow = 0;
+
+        public void UpdateRowsVisibilityData()
+        {
+            if (this.TopIndex == -1)
+                return;
+            var rows = this.TableModel.Rows;
+            int lastVisible = CurrentPageRowCount() + topIndex;
+            var min = Math.Min(_oldFirstVisibleRow, this.TopIndex);
+            var max = Math.Max(_oldLastVisibleRow, lastVisible);
+
+            for (int i = min; i <= max; ++i)
+            {
+                if (rows[i] == null)
+                    continue;
+                if (rows[i].MarkedVisible)
+                {
+                    if (i < this.TopIndex || i > lastVisible || (rows[i].Parent != null && !rows[i].Parent.ExpandSubRows))
+                    {
+                        rows[i].OnRowBecameInvisible();
+                    }
+                }
+                // is invisible atm
+                else
+                {
+                    if (i >= this.TopIndex && i <= lastVisible && (rows[i].Parent == null || rows[i].Parent.ExpandSubRows))
+                    {
+                        rows[i].OnRowBecameVisible();
+                    }
+                }
+            }
+
+            _oldFirstVisibleRow = topIndex;
+            _oldLastVisibleRow = lastVisible;
+        }
 
 		/// <summary>
 		/// Returns the index of the Row at the specified client coordinates
@@ -2656,6 +2697,8 @@ namespace XPTable.Models
 				this.vScrollBar.Visible = false;
 				this.vScrollBar.Value = 0;
 			}
+
+            UpdateRowsVisibilityData();
         }
 
 		/// <summary>
@@ -7626,38 +7669,12 @@ namespace XPTable.Models
 			base.OnPaintBackground(e);
 		}
 
-        internal LinkedList<ControlRendererData> RenderedCotrols = new LinkedList<ControlRendererData>();
-
 		/// <summary>
 		/// Raises the Paint event
 		/// </summary>
 		/// <param name="e">A PaintEventArgs that contains the event data</param>
 		protected override void OnPaint(PaintEventArgs e)
 		{
-            foreach (var c in RenderedCotrols)
-            {
-                c.Control.SuspendLayout();
-                c.visible = false;
-            }
-            /* for some reason doesn't work
-            for (int index = 0; index < this.ColumnModel.Columns.Count; ++index)
-            {
-                var column =  this.ColumnModel.Columns[index];
-                if (column is ControlColumn)
-                {
-                    for (int i = 0; i < this.RowCount; i++)
-                    {
-                        Cell cell = this.TableModel.Rows[i].Cells[index];
-
-                        var data = cell.RendererData as XPTable.Renderers.ControlRendererData;
-                        if (data != null && data.Control != null)
-                        {
-                            data.Control.SuspendLayout();
-                            data.visible = false;
-                        }
-                    }
-                }
-            }*/
 			// we'll do our own painting thanks
 			//base.OnPaint(e);
 
@@ -7700,34 +7717,6 @@ namespace XPTable.Models
                 OnAfterFirstPaint(EventArgs.Empty);
                 painted = true;
             }
-
-            foreach (var c in RenderedCotrols)
-            {
-                c.Control.Visible = c.visible;
-                c.Control.ResumeLayout();
-                if (c.visible)
-                    c.Control.Refresh();
-            }
-
-            /* for some reason doesn't work
-            for (int index = 0; index < this.ColumnModel.Columns.Count; ++index)
-            {
-                var column =  this.ColumnModel.Columns[index];
-                if (column is ControlColumn)
-                {
-                    for (int i = 0; i < this.RowCount; i++)
-                    {
-                        Cell cell = this.TableModel.Rows[i].Cells[index];
-
-                        var data = cell.RendererData as XPTable.Renderers.ControlRendererData;
-                        if (data != null && data.Control != null)
-                        {
-                            data.Control.Visible = data.visible;
-                            data.Control.ResumeLayout();
-                        }
-                    }
-                }
-            }*/
 		}
 
 		/// <summary>

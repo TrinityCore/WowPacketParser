@@ -77,15 +77,17 @@ namespace PacketViewer.Processing
                 {
                     worker.ReportProgress((int)newPct);
                     oldPct = newPct;
-
-                    AddPackets(packets);
-                    if (first)
+                    if (Tab != null)
                     {
-                        first = false;
-                        packets = new List<PacketEntry>(packets.Count * 3);
+                        AddPackets(packets);
+                        if (first)
+                        {
+                            first = false;
+                            packets = new List<PacketEntry>(packets.Count * 3);
+                        }
+                        else
+                            packets.Clear();
                     }
-                    else
-                        packets.Clear();
                 }
             }
             AddPackets(packets);

@@ -695,6 +695,14 @@ namespace XPTable.Renderers
 			e.Graphics.DrawLine(pen, e.CellRect.Right, e.CellRect.Top, e.CellRect.Right, e.CellRect.Bottom);
 		}
 
+        public virtual void OnRowBecameVisible(Cell cell)
+        {
+        }
+
+        public virtual void OnRowBecameInvisible(Cell cell)
+        {
+        }
+
 		#endregion
 
 		#endregion

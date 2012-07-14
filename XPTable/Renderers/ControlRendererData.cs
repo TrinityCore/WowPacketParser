@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 
 using XPTable.Themes;
+using XPTable.Models;
 
 namespace XPTable.Renderers
 {
@@ -14,8 +15,7 @@ namespace XPTable.Renderers
     {
         #region Class Data
         private Control control;
-
-        public bool visible = false;
+        private bool hasVisual = false;
         #endregion
 
         #region Contstructor
@@ -38,6 +38,41 @@ namespace XPTable.Renderers
             get { return this.control; }
             set { this.control = value; }
         }
+
+        public void RemoveVisual(Cell cell)
+        {
+            if (Control != null && hasVisual)
+            {
+                hasVisual = false;
+                Control.Visible = false;
+                cell.Row.TableModel.Table.Controls.Remove(Control);
+            }
+        }
+
+        public void AddVisual(Cell cell)
+        {
+            if (Control != null && !hasVisual)
+            {
+                hasVisual = true;
+                cell.Row.TableModel.Table.Controls.Add(Control);
+                Control.Visible = true;
+            }
+        }
+
+        public void ChangeControl(Cell cell, Control control)
+        {
+            if (hasVisual)
+            {
+                RemoveVisual(cell);
+                this.Control = control;
+                AddVisual(cell);
+            }
+            else
+            {
+                this.Control = control;
+            }
+        }
+
         #endregion
     }
 }

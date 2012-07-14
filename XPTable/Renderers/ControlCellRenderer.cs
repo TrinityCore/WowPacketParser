@@ -111,9 +111,8 @@ namespace XPTable.Renderers
                     Control control = this.ControlFactory.GetControl(cell);
                     if (control != null)
                     {
-                        cell.Row.TableModel.Table.Controls.Add(control);
+                        //cell.Row.TableModel.Table.Controls.Add(control);
                         ControlRendererData data = new ControlRendererData(control);
-                        cell.Row.TableModel.Table.RenderedCotrols.AddFirst(data);
                         this.SetRendererData(cell, data);
                         rendererData = data;
                     }
@@ -129,17 +128,13 @@ namespace XPTable.Renderers
                     if (newControl == null)
                     {
                         // we need to remove old control
-                        cell.Row.TableModel.Table.Controls.Remove(oldControl);
-                        cell.Row.TableModel.Table.RenderedCotrols.Remove(data);
+                        data.RemoveVisual(cell);
                         cell.RendererData = null;
+                        return null;
                     }
-                    else if (newControl != oldControl)
+                    if (newControl != oldControl)
                     {
-                        // We need to take off the old control and wire up the new one
-                        cell.Row.TableModel.Table.Controls.Remove(oldControl);
-                        cell.Row.TableModel.Table.Controls.Add(newControl);
-                        data.Control = newControl;
-                        newControl.SuspendLayout();
+                        data.ChangeControl(cell, newControl);
                     }
                 }
             }
@@ -224,8 +219,7 @@ namespace XPTable.Renderers
                 
                 if (e.Cell.WidthNotSet)
                     e.Cell.ContentWidth = controlRect.Size.Width;
-
-                controlData.visible = true;
+                //controlData.Control.Refresh();
 			}
 		}
 
@@ -235,6 +229,27 @@ namespace XPTable.Renderers
         /// <param name="e"></param>
         protected override void OnPaintBackground(PaintCellEventArgs e)
         {
+        }
+
+        public override void OnRowBecameVisible(Cell cell)
+        {
+            ControlRendererData controlData = this.GetControlRendererData(cell);
+            if (controlData != null)
+            {
+                Rectangle controlRect = this.CalcControlRect(this.LineAlignment, this.Alignment);
+                if (controlData.Control != null)
+                    controlData.Control.Location = controlRect.Location;
+                controlData.AddVisual(cell);
+            }
+        }
+
+        public override void OnRowBecameInvisible(Cell cell)
+        {
+            ControlRendererData controlData = this.GetControlRendererData(cell);
+            if (controlData != null)
+            {
+                controlData.RemoveVisual(cell);
+            }
         }
 		#endregion
 	}

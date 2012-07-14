@@ -203,7 +203,7 @@ namespace XPTable.Models
                     if (data != null && data.Control != null)
                     {
                         cell.Row.TableModel.Table.Controls.Remove(data.Control);
-                        cell.Row.TableModel.Table.RenderedCotrols.Remove((cell.RendererData as XPTable.Renderers.ControlRendererData));
+                        //cell.Row.TableModel.Table.RenderedCotrols.Remove((cell.RendererData as XPTable.Renderers.ControlRendererData));
                     }
                 }
             }
