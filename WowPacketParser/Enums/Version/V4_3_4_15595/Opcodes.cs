@@ -477,6 +477,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_GUILD_ACHIEVEMENT_DELETED, 0x35A0},
             {Opcode.SMSG_GUILD_ACHIEVEMENT_EARNED, 0x50B5},
             {Opcode.SMSG_GUILD_BANK_LIST, 0x78A5},
+            {Opcode.SMSG_GUILD_CHALLENGE_UPDATED, 0x18B1},
             {Opcode.SMSG_GUILD_COMMAND_RESULT, 0x7DB3},
             {Opcode.SMSG_GUILD_CRITERIA_DATA, 0x14B4},
             {Opcode.SMSG_GUILD_CRITERIA_DELETED, 0x55B1},
@@ -487,12 +488,14 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_GUILD_KNOWN_RECIPES, 0x10B3},
             {Opcode.SMSG_GUILD_MAX_DAILY_XP, 0x79B5},
             {Opcode.SMSG_GUILD_MEMBER_DAILY_RESET, 0x10A5},
+            {Opcode.SMSG_GUILD_NEWS_UPDATE, 0x35A7}, // not confirmed
             {Opcode.SMSG_GUILD_PARTY_STATE, 0x50A6},
             {Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, 0x50A6},
             {Opcode.SMSG_GUILD_PERMISSIONS_QUERY_RESULTS, 0x34A3},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x0E06},
             {Opcode.SMSG_GUILD_RANK, 0x30B4},
             {Opcode.SMSG_GUILD_REPUTATION_WEEKLY_CAP, 0x30B7},
+            {Opcode.SMSG_GUILD_REWARDS_LIST, 0x1DB0}, // not confirmed
             {Opcode.SMSG_GUILD_ROSTER, 0x3DA3},
             {Opcode.SMSG_GUILD_UPDATE_ROSTER, 0x18B0},
             {Opcode.SMSG_GUILD_XP, 0x3DB0},

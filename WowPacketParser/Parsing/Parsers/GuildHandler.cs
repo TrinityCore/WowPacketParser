@@ -1107,5 +1107,23 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_GUILD_CHALLENGE_UPDATED)]
+        public static void HandleGuildChallengeUpdated(Packet packet)
+        {
+            for (int i = 0; i < 4; ++i)
+                packet.ReadInt32("Guild Experience Reward", i);
+
+            for (int i = 0; i < 4; ++i)
+                packet.ReadInt32("Gold Reward", i);
+
+            for (int i = 0; i < 4; ++i)
+                packet.ReadInt32("Total Count", i);
+
+            for (int i = 0; i < 4; ++i)
+                packet.ReadInt32("Gold Reward", i); // requires perk Cash Flow?
+
+            for (int i = 0; i < 4; ++i)
+                packet.ReadInt32("Current Count", i);
+        }
     }
 }
