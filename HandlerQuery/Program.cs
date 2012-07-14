@@ -21,7 +21,8 @@ namespace HandlerQuery
                 "| 6 - guid \n" +
                 "| 7 - packedguid \n" +
                 "| 8 - ip \n" +
-                "| 9 - string \n");
+                "| 9 - string \n" +
+                "| = - exact search \n");
             Console.WriteLine("Codes separated by spaces, type q to exit.");
 
             while (true)
@@ -41,10 +42,18 @@ namespace HandlerQuery
                     continue;
                 }
 
+                var exactlyEqual = false;
+
                 var failed = false;
                 var codeArr = new List<ReadMethods>(codeArrStr.Length);
                 foreach (var s in codeArrStr)
                 {
+                    if (s == "=")
+                    {
+                        exactlyEqual = true;
+                        continue;
+                    }
+
                     ReadMethods result;
                     if (Enum.TryParse(s, true, out result))
                         codeArr.Add(result);
@@ -65,10 +74,21 @@ namespace HandlerQuery
                     if (pair.Value.Count < codeArr.Count)
                         continue;
 
-                    if (pair.Value.GetRange(0, codeArr.Count).SequenceEqual(codeArr))
+                    if (exactlyEqual)
                     {
-                        i++;
-                        Console.WriteLine("[{0}] {1}", i, pair.Key);
+                        if (pair.Value.SequenceEqual(codeArr))
+                        {
+                            i++;
+                            Console.WriteLine("[{0}] {1}", i, pair.Key);
+                        }
+                    }
+                    else
+                    {
+                        if (pair.Value.GetRange(0, codeArr.Count).SequenceEqual(codeArr))
+                        {
+                            i++;
+                            Console.WriteLine("[{0}] {1}", i, pair.Key);
+                        }
                     }
                 }
 
