@@ -190,8 +190,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_QUERY_TIME, 0x0A36},
             {Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST, 0x6B37},
             {Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD, 0x2125},
-            {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x0114}, // FIXME
-            {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x7302}, // FIXME
+            {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x0114},
             {Opcode.CMSG_QUESTGIVER_HELLO, 0x0D17},
             {Opcode.CMSG_QUESTGIVER_QUERY_QUEST, 0x2F14},
             {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY, 0x6305},
@@ -209,6 +208,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_REQUEST_CEMETERY_LIST, 0x720A},
             {Opcode.CMSG_REQUEST_GUILD_PARTY_STATE, 0x3900},
             {Opcode.CMSG_REQUEST_HOTFIX, 0x2401},
+            {Opcode.CMSG_REQUEST_INSPECT_RATED_BG_STATS, 0x3010},
             {Opcode.CMSG_REQUEST_PET_INFO, 0x4924},
             {Opcode.CMSG_REQUEST_RAID_INFO, 0x2F26},
             {Opcode.CMSG_REQUEST_RATED_BG_INFO, 0x34A1},
@@ -523,6 +523,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_INIT_CURRENCY, 0x15A5},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x4C15},
             {Opcode.SMSG_INSPECT, 0x0C14},
+            {Opcode.SMSG_INSPECT_HONOR_STATS, 0x79A5},
             {Opcode.SMSG_INSPECT_TALENT, 0x4014},
             {Opcode.SMSG_INSTANCE_RESET, 0x6F05},
             {Opcode.SMSG_INSTANCE_RESET_FAILED, 0x4725},
@@ -716,9 +717,6 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x09B1},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x4A14},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0A06},
-            {Opcode.CMSG_REQUEST_INSPECT_RATED_BG_STATS, 0x3010},
-            {Opcode.SMSG_INSPECT_HONOR_STATS, 0x79A5}
-
             // {Opcode.SMSG_ATTACKSTOP | Opcode.SMSG_COMBAT_EVENT_FAILED, 0x2B07},
             // {Opcode.MSG_INSPECT_ARENA_TEAMS | Opcode.MSG_INSPECT_HONOR_STATS, 0x19A5}, (low chance)
         };
