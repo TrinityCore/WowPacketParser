@@ -175,6 +175,7 @@ namespace WowPacketParser.Loading
             }
 
             _packets.Clear();
+            _packets = null;
             Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", _logPrefix, _outFileName));
             Trace.WriteLine(string.Format("{0}: {1}", _logPrefix, _stats));
         }

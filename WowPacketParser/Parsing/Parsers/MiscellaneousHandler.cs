@@ -112,8 +112,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MULTIPLE_PACKETS_2)]
         public static void HandleMultiplePackets2(Packet packet)
         {
-            // This opcode heavily relies on ALL of its contained packets
-            // to be parsed successfully
+
+            if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
+            {
+                packet.ReadToEnd();
+                throw new NotImplementedException("This opcode heavily relies on ALL" +
+                                                  "of its contained packets to be parsed successfully");
+                // Some sort of infinite loop happens here...
+            }
 
             packet.WriteLine("{");
             var i = 0;
