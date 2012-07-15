@@ -664,6 +664,24 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Yesterday");
             packet.ReadUInt32("Life Time Kills");
         }
+        
+        [Parser(Opcode.SMSG_INSPECT_HONOR_STATS)]
+        public static void HandleInspectHonorStats434(Packet packet)
+        {
+            var guid = packet.StartBitStream(4, 3, 6, 2, 5, 0, 7, 1);
+
+            packet.ReadByte("Max Rank");
+            packet.ReadInt16("Yesterday"); // Today?
+            packet.ReadInt16("Today"); // Yesterday?
+
+            packet.ParseBitStream(guid, 2, 0, 6, 3, 4, 1, 5);
+
+            packet.ReadInt32("Life Time Kills");
+
+            packet.ParseBitStream(guid, 7);
+
+            packet.ToGuid("Guid", guid);
+        }
 
         [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)] // Also named CMSG_LOADING_SCREEN_NOTIFY
         public static void HandleClientEnterWorld(Packet packet)

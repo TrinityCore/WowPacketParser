@@ -146,31 +146,5 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ToGuid("Unk Guid?", guid);
         }
-
-        [Parser(Opcode.TEST_434_12304, ClientVersionBuild.V4_3_4_15595)]
-        public static void Test12304(Packet packet)
-        {
-            var guid = packet.StartBitStream(1, 4, 6, 5, 0, 2, 7, 3);
-            packet.ParseBitStream(guid, 4, 7, 2, 5, 6, 3, 0, 1);
-            packet.ToGuid("Unk Guid", guid);
-        }
-
-        [Parser(Opcode.TEST_434_31141, ClientVersionBuild.V4_3_4_15595)]
-        public static void Test31141(Packet packet)
-        {
-            var guid = packet.StartBitStream(4, 3, 6, 2, 5, 0, 7, 1);
-
-            packet.ReadByte("Unk Byte");
-            packet.ReadInt16("Unk Int16");
-            packet.ReadInt16("Unk Int16");
-
-            packet.ParseBitStream(guid, 2, 0, 6, 3, 4, 1, 5);
-
-            packet.ReadInt32("Unk Int32");
-
-            packet.ParseBitStream(guid, 7);
-
-            packet.ToGuid("Unk Guid", guid);
-        }
     }
 }

@@ -927,6 +927,14 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleNullBattleground(Packet packet)
         {
         }
+        
+        [Parser(Opcode.CMSG_REQUEST_INSPECT_RATED_BG_STATS, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleRequestInspectRBGStats(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 4, 6, 5, 0, 2, 7, 3);
+            packet.ParseBitStream(guid, 4, 7, 2, 5, 6, 3, 0, 1);
+            packet.ToGuid("Guid", guid);
+        }
 
         [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_POSITIONS)]
         public static void HandleBattlegroundPlayerPositions(Packet packet)

@@ -716,8 +716,9 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x09B1},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x4A14},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0A06},
-            {Opcode.TEST_434_12304, 12304}, // honor update related
-            {Opcode.TEST_434_31141, 31141} // honor update related
+            {Opcode.CMSG_REQUEST_INSPECT_RATED_BG_STATS, 0x3010},
+            {Opcode.SMSG_INSPECT_HONOR_STATS, 0x79A5}
+
             // {Opcode.SMSG_ATTACKSTOP | Opcode.SMSG_COMBAT_EVENT_FAILED, 0x2B07},
             // {Opcode.MSG_INSPECT_ARENA_TEAMS | Opcode.MSG_INSPECT_HONOR_STATS, 0x19A5}, (low chance)
         };

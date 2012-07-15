@@ -554,6 +554,7 @@ namespace WowPacketParser.Enums
         CMSG_REQUEST_CEMETERY_LIST, // Cata only
         CMSG_REQUEST_GUILD_PARTY_STATE,
         CMSG_REQUEST_HOTFIX,
+        CMSG_REQUEST_INSPECT_RATED_BG_STATS,
         CMSG_REQUEST_PARTY_MEMBER_STATS,
         CMSG_REQUEST_PET_INFO,
         CMSG_REQUEST_PLAYER_VEHICLE_EXIT,
@@ -1678,8 +1679,6 @@ namespace WowPacketParser.Enums
         TEST_422_265C,
         TEST_422_9838,
         TEST_422_13022,
-        TEST_434_12304,
-        TEST_434_31141
 
         // ReSharper restore InconsistentNaming
     }
