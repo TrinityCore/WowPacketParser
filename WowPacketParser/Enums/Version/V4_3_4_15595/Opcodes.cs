@@ -190,7 +190,8 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_QUERY_TIME, 0x0A36},
             {Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST, 0x6B37},
             {Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD, 0x2125},
-            {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x7302},
+            {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x0114}, // FIXME
+            {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x7302}, // FIXME
             {Opcode.CMSG_QUESTGIVER_HELLO, 0x0D17},
             {Opcode.CMSG_QUESTGIVER_QUERY_QUEST, 0x2F14},
             {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY, 0x6305},
@@ -252,6 +253,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_UNACCEPT_TRADE, 0x391A},
             {Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES, 0x3D54},
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x4736},
+            {Opcode.CMSG_USE_ITEM, 0x2C06},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x7816},
             {Opcode.CMSG_VOICE_SESSION_ENABLE, 0x2314},
             {Opcode.CMSG_WARDEN_DATA, 0x25A2},
@@ -527,6 +529,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_INSTANCE_SAVE_CREATED, 0x0124},
             {Opcode.SMSG_INVALIDATE_DANCE, 0x0E27},
             {Opcode.SMSG_INVALIDATE_PLAYER, 0x6325},
+            {Opcode.SMSG_INVENTORY_CHANGE_FAILURE, 0x2236},
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x0F27},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x0E15},
             {Opcode.SMSG_ITEM_REFUND_INFO_RESPONSE, 0x15A3},
@@ -568,6 +571,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_NOTIFY_DANCE, 0x4904},
             {Opcode.SMSG_OFFER_PETITION_ERROR, 0x2716},
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x4436},
+            {Opcode.SMSG_PARTYKILLLOG, 0x4937},
             {Opcode.SMSG_PARTY_COMMAND_RESULT, 0x0A07},
             {Opcode.SMSG_PARTY_MEMBER_STATS, 0x2104},
             {Opcode.SMSG_PARTY_MEMBER_STATS_FULL, 0x0215},
@@ -577,6 +581,8 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_PET_ACTION_FEEDBACK, 0x0807},
             {Opcode.SMSG_PET_ACTION_SOUND, 0x4324},
             {Opcode.SMSG_PET_ADDED, 0x3CA5},
+            {Opcode.SMSG_PET_CAST_FAILED, 0x2B15},
+            {Opcode.SMSG_PET_DISMISS_SOUND, 0x2B05},
             {Opcode.SMSG_PET_GUIDS, 0x2D26},
             {Opcode.SMSG_PET_LEARNED_SPELL, 0x0507},
             {Opcode.SMSG_PET_MODE, 0x2235},
@@ -659,6 +665,8 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_SPELLORDAMAGE_IMMUNE, 0x4507},
             {Opcode.SMSG_SPELL_COOLDOWN, 0x4B16},
             {Opcode.SMSG_SPELL_DELAYED, 0x0715},
+            {Opcode.SMSG_SPELL_FAILED_OTHER, 0x0C34}, // or 0x4535
+            {Opcode.SMSG_SPELL_FAILURE, 0x4535}, // or 0x0C34
             {Opcode.SMSG_SPELL_GO, 0x6E16},
             {Opcode.SMSG_SPELL_START, 0x6415},
             {Opcode.SMSG_STABLE_RESULT, 0x2204},
@@ -708,7 +716,10 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x09B1},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x4A14},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0A06},
+            {Opcode.TEST_434_12304, 12304}, // honor update related
+            {Opcode.TEST_434_31141, 31141} // honor update related
             // {Opcode.SMSG_ATTACKSTOP | Opcode.SMSG_COMBAT_EVENT_FAILED, 0x2B07},
+            // {Opcode.MSG_INSPECT_ARENA_TEAMS | Opcode.MSG_INSPECT_HONOR_STATS, 0x19A5}, (low chance)
         };
     }
 }

@@ -438,6 +438,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Spell ID");
         }
 
+        [Parser(Opcode.CMSG_CANCEL_AURA)]
         [Parser(Opcode.SMSG_REMOVED_SPELL, ClientVersionBuild.V3_1_0_9767)]
         [Parser(Opcode.CMSG_CANCEL_CHANNELLING)]
         public static void HandleRemovedSpell2(Packet packet)
@@ -771,12 +772,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("Caster GUID");
             packet.ReadInt32("Delay Time");
-        }
-
-        [Parser(Opcode.CMSG_CANCEL_AURA)]
-        public static void HandleCancelAura(Packet packet)
-        {
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
         }
 
         [Parser(Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS)]

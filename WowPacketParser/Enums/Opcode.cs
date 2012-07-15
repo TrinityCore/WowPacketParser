@@ -1678,6 +1678,8 @@ namespace WowPacketParser.Enums
         TEST_422_265C,
         TEST_422_9838,
         TEST_422_13022,
+        TEST_434_12304,
+        TEST_434_31141
 
         // ReSharper restore InconsistentNaming
     }
