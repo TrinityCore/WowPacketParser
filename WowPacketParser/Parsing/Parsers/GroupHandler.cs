@@ -373,7 +373,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
         }
 
-        [Parser(Opcode.SMSG_GROUP_INVITE)]
+        [Parser(Opcode.SMSG_GROUP_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGroupInviteResponse(Packet packet)
         {
             packet.ReadBoolean("invited/already in group flag?");
@@ -385,6 +385,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadInt32("Unk Int32 2");
         }
+
+        //[Parser(Opcode.SMSG_GROUP_INVITE, ClientVersionBuild.V4_3_4_15595)]
+        //public static void HandleGroupInvite434(Packet packet)
+        //{
+        //    // sub_6DAF30
+        //}
 
         [Parser(Opcode.CMSG_GROUP_UNINVITE_GUID)]
         public static void HandleGroupUninviteGuid(Packet packet)

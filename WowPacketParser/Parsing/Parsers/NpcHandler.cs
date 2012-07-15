@@ -148,7 +148,7 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.NpcVendors.Add(guid.GetEntry(), npcVendor, packet.TimeSpan);
         }
 
-        [Parser(Opcode.SMSG_LIST_INVENTORY, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_LIST_INVENTORY, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleVendorInventoryList422(Packet packet)
         {
             var npcVendor = new NpcVendor();
