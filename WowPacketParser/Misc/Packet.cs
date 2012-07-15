@@ -193,7 +193,10 @@ namespace WowPacketParser.Misc
         public void ClosePacket()
         {
             if (Writer != null)
+            {
                 Writer.Clear();
+                Writer = null;
+            }
 
             if (BaseStream != null)
                 BaseStream.Close();
