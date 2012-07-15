@@ -547,6 +547,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_LEARNED_SPELL, 0x58A2},
             {Opcode.SMSG_LEVELUP_INFO, 0x0435},
             {Opcode.SMSG_LFG_DISABLED, 0x0815},
+            {Opcode.SMSG_LFG_PARTY_INFO, 0x2325},
             {Opcode.SMSG_LFG_PLAYER_INFO, 0x4B36},
             {Opcode.SMSG_LFG_ROLE_CHECK_UPDATE, 0x0336},
             {Opcode.SMSG_LIST_INVENTORY, 0x7CB0},
@@ -725,7 +726,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_WHOIS, 0x6917},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x09B1},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x4A14},
-            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0A06},            
+            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0A06},
             {Opcode.TEST_434_31006, 31006}
             // {Opcode.SMSG_ATTACKSTOP | Opcode.SMSG_COMBAT_EVENT_FAILED, 0x2B07},
             // {Opcode.MSG_INSPECT_ARENA_TEAMS | Opcode.MSG_INSPECT_HONOR_STATS, 0x19A5}, (low chance)
