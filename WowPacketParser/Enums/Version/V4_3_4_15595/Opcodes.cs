@@ -275,6 +275,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_ZONEUPDATE, 0x4F37},
             {Opcode.MSG_AUCTION_HELLO, 0x2307},
             {Opcode.MSG_CHANNEL_START, 0x0A15},
+            {Opcode.MSG_CHANNEL_UPDATE, 0x2417},
             {Opcode.MSG_GET_CALENDAR, 0x2814},
             {Opcode.MSG_GUILD_BANK_REM_MONEY_WITHDRAW_QUERY, 0x1225},
             {Opcode.MSG_GUILD_PERMISSIONS, 0x3022},
