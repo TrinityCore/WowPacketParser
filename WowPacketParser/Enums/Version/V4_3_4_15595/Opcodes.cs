@@ -128,8 +128,6 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_GUILD_INFO_TEXT, 0x3227},
             {Opcode.CMSG_GUILD_MOTD, 0x1035},
             {Opcode.CMSG_GUILD_QUERY, 0x4426},
-            {Opcode.CMSG_GUILD_RANK, 0x1026},
-            {Opcode.CMSG_GUILD_ROSTER, 0x1226},
             {Opcode.CMSG_GUILD_SET_ACHIEVEMENT_TRACKING, 0x1027},
             {Opcode.CMSG_HEARTH_AND_RESURRECT, 0x4B34},
             {Opcode.CMSG_IGNORE_TRADE, 0x7112},
