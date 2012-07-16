@@ -1111,7 +1111,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_QUESTUPDATE_FAILED, 0x0E588}, // 4.0.6a 13623
             {Opcode.SMSG_QUESTUPDATE_FAILEDTIMER, 0x0F7CC}, // 4.0.6a 13623
             {Opcode.SMSG_QUEST_CONFIRM_ACCEPT, 0x07C8C}, // 4.0.6a 13623
-            {Opcode.SMSG_QUEST_FORCE_REMOVED, 0x034E8}, // 4.0.6a 13623
+            {Opcode.SMSG_QUEST_FORCE_REMOVE, 0x034E8}, // 4.0.6a 13623
             {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 0x0401C}, // 4.0.6a 13623
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x06AEC}, // 4.0.6a 13623
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x07BA0}, // 4.0.6a 13623

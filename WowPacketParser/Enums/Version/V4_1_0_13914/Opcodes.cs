@@ -193,7 +193,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x0DF2E}, // 4.1.0 13914
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0xF87C}, // 4.1.0 13914
             {Opcode.SMSG_QUEST_CONFIRM_ACCEPT, 0x03E3E}, // 4.1.0 13914
-            {Opcode.SMSG_QUEST_FORCE_REMOVED, 0x06F2E}, // 4.1.0 13914
+            {Opcode.SMSG_QUEST_FORCE_REMOVE, 0x06F2E}, // 4.1.0 13914
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x07F3D}, // 4.1.0 13914
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x04D7E}, // 4.1.0 13914
             {Opcode.SMSG_RAID_INSTANCE_MESSAGE, 0x0EA7C}, // 4.1.0 13914

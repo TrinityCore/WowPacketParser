@@ -762,7 +762,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.SMSG_QUERY_QUESTS_COMPLETED_RESPONSE, 0x7AFE},
             {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x3AF3},
             {Opcode.SMSG_QUEST_CONFIRM_ACCEPT, 0x22AF},
-            {Opcode.SMSG_QUEST_FORCE_REMOVED, 0x2A7A},
+            {Opcode.SMSG_QUEST_FORCE_REMOVE, 0x2A7A},
             {Opcode.SMSG_QUESTGIVER_OFFER_REWARD, 0xE6A3},
             {Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, 0x1303},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0xF266},
