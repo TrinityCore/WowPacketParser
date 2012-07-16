@@ -343,7 +343,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.MSG_MOVE_START_TURN_RIGHT, 0x7000},
             {Opcode.MSG_MOVE_STOP, 0x320A},
             {Opcode.MSG_MOVE_STOP_ASCEND, 0x7B00},
-            {Opcode.MSG_MOVE_STOP_PITCH, 0x7312},
+            {Opcode.MSG_MOVE_STOP_PITCH, 0x7216},
             {Opcode.MSG_MOVE_STOP_STRAFE, 0x3002},
             {Opcode.MSG_MOVE_STOP_SWIM, 0x3802},
             {Opcode.MSG_MOVE_STOP_TURN, 0x331E},
