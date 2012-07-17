@@ -16,6 +16,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_ACTIVATETAXI, 0x6E06},
             {Opcode.CMSG_ACTIVATETAXIEXPRESS, 0x0515},
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x0954},
+            {Opcode.CMSG_ADD_FRIEND, 0x6527},
             {Opcode.CMSG_ADD_FRIEND, 0x6C29},
             {Opcode.CMSG_ADD_IGNORE, 0x4726},
             {Opcode.CMSG_ADD_VOICE_IGNORE, 0x0F06},
@@ -112,10 +113,14 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_GAMEOBJ_USE, 0x4E17},
             {Opcode.CMSG_GET_MAIL_LIST, 0x4D37},
             {Opcode.CMSG_GET_MIRRORIMAGE_DATA, 0x0C25},
+            {Opcode.CMSG_GMRESPONSE_RESOLVE, 0x6506},
+            {Opcode.CMSG_GMSURVEY_SUBMIT, 0x2724},
             {Opcode.CMSG_GMTICKET_CREATE, 0x0137},
             {Opcode.CMSG_GMTICKET_DELETETICKET, 0x6B14},
             {Opcode.CMSG_GMTICKET_GETTICKET, 0x0326},
+            {Opcode.CMSG_GMTICKET_SYSTEMSTATUS, 0x4205},
             {Opcode.CMSG_GMTICKET_UPDATETEXT, 0x0636},
+            {Opcode.CMSG_GM_REPORT_LAG, 0x6726},
             {Opcode.CMSG_GOSSIP_HELLO, 0x4525},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x0216},
             {Opcode.CMSG_GROUP_ASSISTANT_LEADER, 0x6025},
@@ -441,6 +446,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_CHAT_NOT_IN_PARTY, 0x6A14},
             {Opcode.SMSG_CHAT_PLAYER_AMBIGUOUS, 0x2F34},
             {Opcode.SMSG_CHAT_PLAYER_NOT_FOUND, 0x2526},
+            {Opcode.SMSG_CHAT_RESTRICTED, 0x6536},
             {Opcode.SMSG_CHAT_WRONG_FACTION, 0x6724},
             {Opcode.SMSG_CLEAR_FAR_SIGHT_IMMEDIATE, 0x2A04},
             {Opcode.SMSG_CLEAR_TARGET, 0x4B26},
@@ -832,7 +838,6 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0A06},
             
             // {Opcode.SMSG_ATTACKSTOP | Opcode.SMSG_COMBAT_EVENT_FAILED, 0x2B07},
-            // {Opcode.(S)MSG_QUEST_PUSH_RESULT, 5513A0},
             // {Opcode.CMSG_GROUP_INVITE, 0x0513},
         };
     }
