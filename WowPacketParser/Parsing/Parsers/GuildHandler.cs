@@ -41,7 +41,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Player GUID");
         }
 
-        [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRoster(Packet packet)
         {
             var bits = new bool[8];
@@ -664,11 +664,36 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Tab Icon");
         }
 
-        [Parser(Opcode.CMSG_GUILD_RANKS)]
+        [Parser(Opcode.CMSG_GUILD_RANKS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_QUERY_GUILD_XP)]
         public static void HandleGuildRequestNews(Packet packet)
         {
             packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_RANKS, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildRanks434(Packet packet)
+        {
+            var bytes = new byte[8];
+            bytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
+
+
+            if (bytes[3] != 0) bytes[3] ^= packet.ReadByte();
+            if (bytes[4] != 0) bytes[4] ^= packet.ReadByte();
+            if (bytes[5] != 0) bytes[5] ^= packet.ReadByte();
+            if (bytes[7] != 0) bytes[7] ^= packet.ReadByte();
+            if (bytes[1] != 0) bytes[1] ^= packet.ReadByte();
+            if (bytes[0] != 0) bytes[0] ^= packet.ReadByte();
+            if (bytes[6] != 0) bytes[6] ^= packet.ReadByte();
+            if (bytes[2] != 0) bytes[2] ^= packet.ReadByte();
+            packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(bytes, 0)));
         }
 
         [Parser(Opcode.SMSG_GUILD_XP)]
