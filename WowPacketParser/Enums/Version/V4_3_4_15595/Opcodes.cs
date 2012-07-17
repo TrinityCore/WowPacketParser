@@ -622,7 +622,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_MOVE_SET_ACTIVE_MOVER, 0x11B3},
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x720E},
             {Opcode.SMSG_MOVE_SET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY, 0x3014},
-            {Opcode.SMSG_MOVE_SET_COLLISION_HEIGHT, 0x59A3},
+            {Opcode.SMSG_MOVE_SET_COLLISION_HEIGHT, 0x11B0},
             {Opcode.SMSG_MOVE_SET_COMPOUND_STATE, 0x75A0},
             {Opcode.SMSG_MOVE_SET_FLIGHT_BACK_SPEED, 0x30A2},
             {Opcode.SMSG_MOVE_SET_FLIGHT_SPEED, 0x71A6},

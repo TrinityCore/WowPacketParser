@@ -2018,5 +2018,33 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
             packet.WriteLine("Position: {0}", pos);
         }
+
+        [Parser(Opcode.SMSG_MOVE_SET_COLLISION_HEIGHT, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleSetCollisionHeight434(Packet packet)
+        {
+            var unk = packet.ReadBits("Unknown bits", 2);
+            var guid = new byte[8];
+
+            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            packet.ReadUInt32("Time");
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            packet.ReadSingle("Collision height");
+            packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+        }
     }
 }

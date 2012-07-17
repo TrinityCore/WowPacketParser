@@ -286,11 +286,11 @@ namespace WowPacketParser.Parsing.Parsers
             var flags = packet.ReadEnum<CastFlag>("Cast Flags", flagsTypeCode);
 
             packet.ReadUInt32("Time");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                packet.ReadUInt32("Time2");
 
             if (isSpellGo)
             {
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
-                    packet.ReadInt32("unk");
                 var hitCount = packet.ReadByte("Hit Count");
                 for (var i = 0; i < hitCount; i++)
                     packet.ReadGuid("Hit GUID", i);
@@ -308,9 +308,6 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadEnum<SpellMissType>("Miss Reflect", TypeCode.Byte, i);
                 }
             }
-            else
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
-                    packet.ReadInt32("unk");
 
             var targetFlags = ReadSpellCastTargets(ref packet);
 
@@ -336,7 +333,7 @@ namespace WowPacketParser.Parsing.Parsers
                                 continue;
                         }
 
-                        packet.ReadSByte("Rune Cooldown Passed", i);
+                        packet.ReadByte("Rune Cooldown Passed", i);
                     }
                 }
 
