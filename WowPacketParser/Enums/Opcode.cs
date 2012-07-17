@@ -563,6 +563,7 @@ namespace WowPacketParser.Enums
         CMSG_REQUEST_CATEGORY_COOLDOWNS, // Cata only
         CMSG_REQUEST_CEMETERY_LIST, // Cata only
         CMSG_REQUEST_GUILD_PARTY_STATE,
+        CMSG_REQUEST_HONOR_STATS,
         CMSG_REQUEST_HOTFIX,
         CMSG_REQUEST_INSPECT_RATED_BG_STATS,
         CMSG_REQUEST_PARTY_MEMBER_STATS,
@@ -1177,6 +1178,7 @@ namespace WowPacketParser.Enums
         SMSG_INIT_WORLD_STATES,
         SMSG_INSPECT,
         SMSG_INSPECT_HONOR_STATS,
+        SMSG_INSPECT_RATED_BG_STATS,
         SMSG_INSPECT_RESULTS_UPDATE,
         SMSG_INSPECT_TALENT,
         SMSG_INSTANCE_DIFFICULTY,
@@ -1672,7 +1674,6 @@ namespace WowPacketParser.Enums
         TEST_422_265C,
         TEST_422_9838,
         TEST_422_13022,
-        TEST_434_31006,
 
         // ReSharper restore InconsistentNaming
     }
