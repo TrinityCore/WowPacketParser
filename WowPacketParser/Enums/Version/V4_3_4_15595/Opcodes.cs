@@ -17,6 +17,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_ACTIVATETAXIEXPRESS, 0x0515},
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x0954},
             {Opcode.CMSG_ADD_FRIEND, 0x6C29},
+            {Opcode.CMSG_ADD_IGNORE, 0x4726},
             {Opcode.CMSG_ADD_VOICE_IGNORE, 0x0F06},
             {Opcode.CMSG_ALTER_APPEARANCE, 0x0914},
             {Opcode.CMSG_AREATRIGGER, 0x0937},
@@ -205,6 +206,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_PET_ACTION, 0x0226},
             {Opcode.CMSG_PET_CAST_SPELL, 0x6337},
             {Opcode.CMSG_PET_NAME_CACHE, 0x06F24},
+            {Opcode.CMSG_PET_STOP_ATTACK, 0x6C14},
             {Opcode.CMSG_PING, 0x444D},
             {Opcode.CMSG_PLAYED_TIME, 0x0804},
             {Opcode.CMSG_PLAYER_LOGIN, 0x05B1},
@@ -280,6 +282,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_TOTEM_DESTROYED, 0x4207},
             {Opcode.CMSG_TRAINER_BUY_SPELL, 0x4415},
             {Opcode.CMSG_TRAINER_LIST, 0x2336},
+            {Opcode.CMSG_TUTORIAL_FLAG, 0x6C26},
             {Opcode.CMSG_UNACCEPT_TRADE, 0x391A},
             {Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES, 0x3D54},
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x4736},
@@ -455,6 +458,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_ECHO_PARTY_SQUELCH, 0x0814},
             {Opcode.SMSG_EMOTE, 0x0A34},
             {Opcode.SMSG_ENCHANTMENTLOG, 0x6035},
+            {Opcode.SMSG_ENVIRONMENTALDAMAGELOG, 0x6C05},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x2E04},
             {Opcode.SMSG_EXPECTED_SPAM_RECORDS, 0x4D36},
             {Opcode.SMSG_EXPLORATION_EXPERIENCE, 0x6716},
@@ -778,7 +782,6 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x09B1},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x4A14},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0A06},
-
             {Opcode.TEST_434_31006, 31006}
             // {Opcode.SMSG_ATTACKSTOP | Opcode.SMSG_COMBAT_EVENT_FAILED, 0x2B07},
             // {Opcode.MSG_INSPECT_ARENA_TEAMS | Opcode.MSG_INSPECT_HONOR_STATS, 0x19A5}, (low chance)
