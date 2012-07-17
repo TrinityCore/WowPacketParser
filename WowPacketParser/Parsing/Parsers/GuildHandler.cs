@@ -587,7 +587,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var entry = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item Entry", i);
                 if (entry > 0)
                 {
-                    packet.ReadEnum<ItemFlag>("Item Flags?", TypeCode.UInt32, i);
+                    packet.ReadEnum<UnknownFlags>("Unk mask", TypeCode.UInt32, i);
                     var ramdonEnchant = packet.ReadInt32("Random Item Property Id", i);
                     if (ramdonEnchant != 0)
                         packet.ReadUInt32("Item Suffix Factor", i);

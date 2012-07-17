@@ -87,15 +87,15 @@ namespace WowPacketParser.Parsing.Parsers
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_0_10958))
                     packet.ReadUInt32("Item Text Id", i);
 
-                packet.ReadUInt32("Unk uint32", i); // package.dbc?
-                packet.ReadUInt32("Stationery", i);
+                packet.ReadUInt32("Package", i); // Package.dbc ID
+                packet.ReadUInt32("Stationery", i); // Stationary.dbc ID
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                     packet.ReadUInt64("Money", i);
                 else
                     packet.ReadUInt32("Money", i);
                 packet.ReadUInt32("Flags", i);
-                packet.ReadSingle("Time?", i);
-                packet.ReadUInt32("Template Id", i);
+                packet.ReadSingle("Time", i);
+                packet.ReadUInt32("Template Id", i); // MailTemplate.dbc ID
                 packet.ReadCString("Subject", i);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))

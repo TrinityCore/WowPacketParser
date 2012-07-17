@@ -6,13 +6,6 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class ChannelHandler
     {
-        [Parser(Opcode.CMSG_CHANNEL_VOICE_ON)]
-        [Parser(Opcode.CMSG_CHANNEL_VOICE_OFF)]
-        public static void HandleChannelSetVoice(Packet packet)
-        {
-            packet.ReadCString("Channel Name");
-        }
-
         [Parser(Opcode.CMSG_CHANNEL_SILENCE_VOICE)]
         [Parser(Opcode.CMSG_CHANNEL_UNSILENCE_VOICE)]
         [Parser(Opcode.CMSG_CHANNEL_SILENCE_ALL)]
@@ -24,9 +17,14 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_CHANNEL_LIST)]
-        [Parser(Opcode.CMSG_CHANNEL_DISPLAY_LIST)]
+        [Parser(Opcode.CMSG_CHANNEL_OWNER)]
+        [Parser(Opcode.CMSG_CHANNEL_ANNOUNCEMENTS)]
+        [Parser(Opcode.CMSG_CHANNEL_VOICE_ON)]
+        [Parser(Opcode.CMSG_CHANNEL_VOICE_OFF)]
         [Parser(Opcode.CMSG_SET_CHANNEL_WATCH)]
-        public static void HandleChannelList(Packet packet)
+        [Parser(Opcode.CMSG_DECLINE_CHANNEL_INVITE)]
+        [Parser(Opcode.CMSG_CHANNEL_DISPLAY_LIST)]
+        public static void HandleChannelMisc(Packet packet)
         {
             packet.ReadCString("Channel Name");
         }
@@ -154,7 +152,6 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("Channel Name");
                 packet.ReadCString("Channel Pass");
             }
-
         }
 
         [Parser(Opcode.CMSG_LEAVE_CHANNEL)]
@@ -183,13 +180,5 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Counter");
             packet.ReadCString("Channel Name");
         }
-
-        /*
-        [Parser(Opcode.CMSG_LEAVE_CHANNEL)]
-        public static void HandleChannelLeave(Packet packet)
-        {
-
-        }
-         */
     }
 }
