@@ -233,11 +233,11 @@ namespace WowPacketParser.Parsing.Parsers
             var transport = packet.ReadBit("Transport", index);
             var hasOrientation = false;
             var guid2 = new byte[8];
-            var dword28 = false;
+            var hasPitch = false;
             var hasFallData = false;
-            var hasUnkFloat2 = false;
+            var hasSplineElevation = false;
             var hasTransportData = false;
-            var unkUInt = false;
+            var hasTimestamp = false;
             var transportGuid = new byte[8];
             var hasTransportTime2 = false;
             var hasTransportTime3 = false;
@@ -267,13 +267,13 @@ namespace WowPacketParser.Parsing.Parsers
                     moveInfo.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
 
                 packet.ReadBit();
-                dword28 = !packet.ReadBit();
+                hasPitch = !packet.ReadBit();
                 moveInfo.HasSplineData = packet.ReadBit("Has Spline Data", index);
                 hasFallData = packet.ReadBit("Has Fall Data", index);
-                hasUnkFloat2 = !packet.ReadBit();
+                hasSplineElevation = !packet.ReadBit();
                 guid2[5] = (byte)(packet.ReadBit() ? 1 : 0);
                 hasTransportData = packet.ReadBit("Has transport data", index);
-                unkUInt = !packet.ReadBit();
+                hasTimestamp = !packet.ReadBit();
                 if (hasTransportData)
                 {
                     transportGuid[1] = (byte)(packet.ReadBit() ? 1 : 0);
@@ -400,8 +400,8 @@ namespace WowPacketParser.Parsing.Parsers
                 }
 
                 packet.ReadSingle("SwimBack Speed", index);
-                if (hasUnkFloat2)
-                    packet.ReadSingle();
+                if (hasSplineElevation)
+                    packet.ReadSingle("Spline Elevation", index);
 
                 if (moveInfo.HasSplineData)
                 {
@@ -492,7 +492,7 @@ namespace WowPacketParser.Parsing.Parsers
                     if (hasTransportTime3)
                         packet.ReadUInt32("Transport time 3", index);
 
-                    packet.ReadByte("Transport seat", index);
+                    packet.ReadSByte("Transport seat", index);
                     if (transportGuid[1] != 0) transportGuid[1] ^= packet.ReadByte();
                     if (transportGuid[6] != 0) transportGuid[6] ^= packet.ReadByte();
                     if (transportGuid[2] != 0) transportGuid[2] ^= packet.ReadByte();
@@ -513,8 +513,8 @@ namespace WowPacketParser.Parsing.Parsers
                 if (guid2[2] != 0) guid2[2] ^= packet.ReadByte();
 
                 moveInfo.WalkSpeed = packet.ReadSingle("Walk Speed", index) / 2.5f;
-                if (unkUInt)
-                    packet.ReadUInt32();
+                if (hasTimestamp)
+                    packet.ReadUInt32("Time", index);
 
                 packet.ReadSingle("FlyBack Speed", index);
                 if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
@@ -524,8 +524,8 @@ namespace WowPacketParser.Parsing.Parsers
                     moveInfo.Orientation = packet.ReadSingle();
 
                 moveInfo.RunSpeed = packet.ReadSingle("Run Speed", index) / 7.0f;
-                if (dword28)
-                    packet.ReadSingle();
+                if (hasPitch)
+                    packet.ReadSingle("Pitch", index);
 
                 packet.ReadSingle("Fly Speed", index);
 

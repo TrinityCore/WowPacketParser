@@ -1822,7 +1822,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasFallDirection = false;
             Vector4 pos = new Vector4();
 
-            var hasFallData = packet.ReadBit("");
+            var hasFallData = packet.ReadBit();
             guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
             guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
             var hasMovementFlagsExtra = !packet.ReadBit();
@@ -1844,7 +1844,7 @@ namespace WowPacketParser.Parsing.Parsers
                 hasFallDirection = packet.ReadBit();
 
             guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            var hasTransport = packet.ReadBit("");
+            var hasTransport = packet.ReadBit();
             if (hasMovementFlags)
                 packet.ReadEnum<MovementFlag>("Movement flags", 30);
 
