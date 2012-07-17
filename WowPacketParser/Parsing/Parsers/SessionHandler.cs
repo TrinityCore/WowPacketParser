@@ -438,8 +438,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LOGOUT_RESPONSE)]
         public static void HandlePlayerLogoutResponse(Packet packet)
         {
-            packet.ReadInt32("Unk Int32");
-            packet.ReadByte("Reason");
+            packet.ReadInt32("Reason");
+            packet.ReadBoolean("Instant");
             // From TC:
             // Reason 1: IsInCombat
             // Reason 2: InDuel or frozen by GM
