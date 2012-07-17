@@ -176,10 +176,106 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSingle("Last online", i);
         }
 
-        [Parser(Opcode.SMSG_GUILD_ROSTER, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_GUILD_ROSTER, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRoster422(Packet packet)
         {
             packet.AsHex(); // FIXME
+        }
+
+        [Parser(Opcode.SMSG_GUILD_ROSTER, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildRoster434(Packet packet)
+        {
+            var motdLen = (int)packet.ReadBits(11);
+            var size = packet.ReadBits(18);
+
+            var bytes = new byte[size][];
+            var nameLen = new int[size];
+            var publicLen = new int[size];
+            var officerLen = new int[size];
+
+            for (var i = 0; i < size; ++i)
+            {
+                bytes[i] = new byte[8];
+                bytes[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
+                bytes[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
+                packet.ReadBit(); // unk
+                packet.ReadBit(); // unk
+                publicLen[i] = (int)packet.ReadBits(8);
+                officerLen[i] = (int)packet.ReadBits(8);
+                bytes[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
+                nameLen[i] = (int)packet.ReadBits(7);
+                bytes[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
+                bytes[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
+                bytes[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
+                bytes[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
+                bytes[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
+            }
+            var infoLen = (int)packet.ReadBits(12);
+
+            for (var i = 0; i < size; ++i)
+            {
+                packet.ReadEnum<Class>("Member Class", TypeCode.Byte, i);
+                packet.ReadInt32("Unk", i);
+
+                if (bytes[i][0] != 0)
+                    bytes[i][0] ^= packet.ReadByte();
+
+                packet.ReadUInt64("Week activity", i);
+                packet.ReadUInt32("Member Rank", i);
+                packet.ReadUInt32("Member Achievement Points", i);
+                for (var j = 0; j < 2; ++j)
+                {
+                    var rank = packet.ReadUInt32();
+                    var value = packet.ReadUInt32();
+                    var id = packet.ReadUInt32();
+                    packet.WriteLine("[{0}][{1}] Profession: Id {2} - Value {3} - Rank {4}", i, j, id, value, rank);
+                }
+
+                if (bytes[i][2] != 0)
+                    bytes[i][2] ^= packet.ReadByte();
+
+                packet.ReadEnum<GuildMemberFlag>("Member Flags", TypeCode.Byte, i);
+                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", i);
+                packet.ReadUInt64("Total activity", i);
+
+                if (bytes[i][7] != 0)
+                    bytes[i][7] ^= packet.ReadByte();
+
+                packet.ReadUInt32("Remaining guild week Rep", i); 
+                packet.ReadWoWString("Public note", publicLen[i], i);
+
+                if (bytes[i][3] != 0)
+                    bytes[i][3] ^= packet.ReadByte();
+
+                packet.ReadByte("Member Level", i);
+                packet.ReadInt32("Unk 2", i);
+
+                if (bytes[i][5] != 0)
+                    bytes[i][5] ^= packet.ReadByte();
+                if (bytes[i][4] != 0)
+                    bytes[i][4] ^= packet.ReadByte();
+
+                packet.ReadByte("Unk Byte", i);
+
+                if (bytes[i][1] != 0)
+                    bytes[i][1] ^= packet.ReadByte();
+
+                packet.ReadSingle("Last online", i);
+                packet.ReadWoWString("Officer note", officerLen[i], i);
+
+                if (bytes[i][6] != 0)
+                    bytes[i][6] ^= packet.ReadByte();
+
+                packet.ReadWoWString("Name", nameLen[i], i);
+
+                packet.WriteLine("[{0}] Guid: {1}", i, new Guid(BitConverter.ToUInt64(bytes[i], 0)));
+            }
+            packet.ReadWoWString("Guild Info", infoLen);
+            packet.ReadWoWString("MOTD", motdLen);
+            packet.ReadUInt32("Unk Uint32 1");
+            packet.ReadUInt32("Unk Uint32 2");
+            packet.ReadUInt32("Unk Uint32 3");
+            packet.ReadUInt32("Unk Uint32 4");
         }
 
         [Parser(Opcode.SMSG_COMPRESSED_GUILD_ROSTER)]
