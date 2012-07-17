@@ -283,7 +283,9 @@ namespace WowPacketParser.Parsing.Parsers
         {
             using (var packet2 = packet.Inflate(packet.ReadInt32()))
             {
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
+                    HandleGuildRoster434(packet2);
+                else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                     HandleGuildRoster422(packet2);
                 else
                     HandleGuildRoster406(packet2);
@@ -914,6 +916,21 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_GUILD_PERMISSIONS_QUERY_RESULTS)]
+        public static void HandleGuildPermissionsQueryResult(Packet packet)
+        {
+            packet.ReadUInt32("Rank Id");
+            packet.ReadInt32("Tab size");
+            packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.UInt32);
+            packet.ReadInt32("Remaining Money");
+            // FIXME sub_6DDB70
+            for (var i = 0; i < 8; i++)
+            {
+                packet.ReadEnum<GuildBankRightsFlag>("Tab Rights", TypeCode.Int32, i);
+                packet.ReadInt32("Tab Slots", i);
+            }
+        }
+
         [Parser(Opcode.MSG_GUILD_BANK_MONEY_WITHDRAWN)]
         public static void HandleGuildBankMoneyWithdrawn(Packet packet)
         {
@@ -925,6 +942,13 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Remaining Money");
             }
         }
+
+        [Parser(Opcode.SMSG_GUILD_BANK_REM_MONEY_WITHDRAW_QUERY)]
+        public static void HandleGuildBankMoneyWithdrawnResponse(Packet packet)
+        {
+            packet.ReadInt64("Remaining Money");
+        }
+        
 
         [Parser(Opcode.MSG_GUILD_EVENT_LOG_QUERY)]
         public static void HandleGuildEventLogQuery(Packet packet)
@@ -984,10 +1008,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Reason");
             packet.ReadBoolean("Auto decline");
         }
-        // Missing Opcodes
-        //[Parser(Opcode.CMSG_MAELSTROM_RENAME_GUILD)]
-        //[Parser(Opcode.UMSG_UPDATE_GUILD)]
-        //[Parser(Opcode.UMSG_DELETE_GUILD_CHARTER)]
 
         [Parser(Opcode.SMSG_PETITION_SHOWLIST)]
         public static void HandlePetitionShowList(Packet packet)
@@ -1158,5 +1178,26 @@ namespace WowPacketParser.Parsing.Parsers
             for (int i = 0; i < 4; ++i)
                 packet.ReadInt32("Current Count", i);
         }
+
+        [Parser(Opcode.SMSG_GUILD_REPUTATION_WEEKLY_CAP)]
+        public static void HandleGuildReputationWeeklyCap(Packet packet)
+        {
+            packet.ReadUInt32("Cap");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_SET_ACHIEVEMENT_TRACKING)]
+        public static void HandleGuildSetAchievementTracking(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 24);
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt32("Criteria Id", i);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_REM_MONEY_WITHDRAW_QUERY)]
+        public static void HandleGuildNull(Packet packet)
+        {
+            // Just to have guild opcodes together
+        }
+        
     }
 }
