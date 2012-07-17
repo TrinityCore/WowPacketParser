@@ -602,6 +602,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_GUILD_COMMAND_RESULT)]
+        [Parser(Opcode.SMSG_GUILD_COMMAND_RESULT_2, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildCommandResult(Packet packet)
         {
             packet.ReadEnum<GuildCommandType>("Command Type", TypeCode.UInt32);
