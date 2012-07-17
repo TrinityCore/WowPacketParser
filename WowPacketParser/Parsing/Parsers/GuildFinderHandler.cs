@@ -7,7 +7,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class GuildFinderHandler
     {
-        [Parser(Opcode.CMSG_GUILDFINDER_JOIN)]
+        [Parser(Opcode.CMSG_LF_GUILD_JOIN)]
         public static void HandleGuildFinderJoin(Packet packet)
         {
             packet.ReadBit("Join");
@@ -18,7 +18,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Comment");
         }
 
-        [Parser(Opcode.SMSG_GUILDFINDER_POST_UPDATED)]
+        [Parser(Opcode.SMSG_LF_GUILD_POST_UPDATED)]
         public static void HandleGuildFinderPostUpdated(Packet packet)
         {
             var b = packet.ReadByte("Unk byte");
@@ -34,13 +34,13 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        //[Parser(Opcode.SMSG_GUILDFINDER_RECRUITS_UPDATED)]
+        //[Parser(Opcode.SMSG_LF_GUILD_RECRUIT_LIST_UPDATED)]
         //public static void HandleGuildFinderRecruitsUpdated(Packet packet)
         //{
         //    import_sub_6ECE50(); // bitshiffing
         //}
 
-        [Parser(Opcode.SMSG_GUILDFINDER_SEARCH_RESULT)]
+        [Parser(Opcode.SMSG_LF_GUILD_SEARCH_RESULT)]
         public static void HandleGuildFinderSearchResult(Packet packet)
         {
             var count = packet.ReadInt32("Count");
