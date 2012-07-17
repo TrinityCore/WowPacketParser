@@ -736,8 +736,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CAMERA_SHAKE)]
         public static void HandleCameraShake(Packet packet)
         {
-            packet.ReadInt32("SpellEffectCameraShakes"); // index from dbc
-            packet.ReadInt32("Unknown"); // Sound related
+            packet.ReadInt32("SpellEffectCameraShakes ID");
+            packet.ReadInt32("Sound ID");
         }
 
         [Parser(Opcode.SMSG_COMPLAIN_RESULT)]
@@ -772,8 +772,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSummonRequest(Packet packet)
         {
             packet.ReadGuid("Summoner GUID");
-            packet.ReadInt32("Unk int 1");
-            packet.ReadInt32("Unk int 2");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area ID");
+            packet.ReadTime("Summon Confirm Time");
         }
 
         [Parser(Opcode.CMSG_SUMMON_RESPONSE)]
