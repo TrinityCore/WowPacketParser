@@ -257,12 +257,23 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("Prefix", length2);
         }
 
-        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_WHISPER)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_WHISPER, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleClientChatMessageAddonWhisper(Packet packet)
         {
             packet.ReadCString("Prefix");
             packet.ReadCString("Target Name");
             packet.ReadCString("Message");
+        }
+
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_WHISPER, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleClientChatMessageAddonWhisper434(Packet packet)
+        {
+            var msgLen = (int)packet.ReadBits(9);
+            var prefixLen = (int)packet.ReadBits(5);
+            var targetLen = (int)packet.ReadBits(10);
+            packet.ReadWoWString("Message", msgLen);
+            packet.ReadWoWString("Prefix", prefixLen);
+            packet.ReadWoWString("Target Name", targetLen);
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT_EMOTE)]
