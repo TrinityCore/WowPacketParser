@@ -670,7 +670,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Yesterday");
             packet.ReadUInt32("Life Time Kills");
         }
-        
+
         [Parser(Opcode.SMSG_INSPECT_HONOR_STATS)]
         public static void HandleInspectHonorStats434(Packet packet)
         {
@@ -857,7 +857,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_MEETINGSTONE_INFO)]
         [Parser(Opcode.CMSG_RETURN_TO_GRAVEYARD)]
         [Parser(Opcode.CMSG_BATTLEFIELD_REQUEST_SCORE_DATA)]
-        [Parser(Opcode.CMSG_WORLD_PORT_RESPONSE)]
         [Parser(Opcode.CMSG_UI_TIME_REQUEST)]
         public static void HandleZeroLengthPackets(Packet packet)
         {

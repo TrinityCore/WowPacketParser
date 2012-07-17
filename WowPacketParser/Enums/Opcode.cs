@@ -730,7 +730,6 @@ namespace WowPacketParser.Enums
         CMSG_WEATHER_SPEED_CHEAT,
         CMSG_WHO,
         CMSG_WHOIS,
-        CMSG_WORLD_PORT_RESPONSE,
         CMSG_WORLD_STATE_UI_TIMER_UPDATE,
         CMSG_WORLD_TELEPORT,
         CMSG_WRAP_ITEM,
