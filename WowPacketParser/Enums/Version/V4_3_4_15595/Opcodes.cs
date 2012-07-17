@@ -120,8 +120,6 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x0216},
             {Opcode.CMSG_GROUP_ASSISTANT_LEADER, 0x6025},
             {Opcode.CMSG_GROUP_CHANGE_SUB_GROUP, 0x4124},
-            {Opcode.CMSG_GROUP_DISBAND, 0x2804},
-            {Opcode.CMSG_GROUP_INVITE, 0x0513},
             {Opcode.CMSG_GROUP_RAID_CONVERT, 0x6E27},
             {Opcode.CMSG_GROUP_SET_LEADER , 0x4C17},
             {Opcode.CMSG_GROUP_SWAP_SUB_GROUP, 0x0034},
@@ -835,6 +833,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             
             // {Opcode.SMSG_ATTACKSTOP | Opcode.SMSG_COMBAT_EVENT_FAILED, 0x2B07},
             // {Opcode.(S)MSG_QUEST_PUSH_RESULT, 5513A0},
+            // {Opcode.CMSG_GROUP_INVITE, 0x0513},
         };
     }
 }
