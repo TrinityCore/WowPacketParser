@@ -148,47 +148,5 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ToGuid("Unk Guid?", guid);
         }
-
-        [Parser(4646)] // 4.3.4 (CMSG_GUILD_ROSTER?)
-        public static void HandleGuildRoster434(Packet packet)
-        {
-            var bytes1 = new byte[8];
-            var bytes2 = new byte[8];
-            bytes2[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes2[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes1[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes1[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes2[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes1[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes2[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes2[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes1[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes2[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes1[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes1[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes2[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes1[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes2[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes1[7] = (byte)(packet.ReadBit() ? 1 : 0);
-
-            if (bytes1[3] != 0) bytes1[3] ^= packet.ReadByte();
-            if (bytes2[4] != 0) bytes2[4] ^= packet.ReadByte();
-            if (bytes1[7] != 0) bytes1[7] ^= packet.ReadByte();
-            if (bytes1[2] != 0) bytes1[2] ^= packet.ReadByte();
-            if (bytes1[4] != 0) bytes1[4] ^= packet.ReadByte();
-            if (bytes1[0] != 0) bytes1[0] ^= packet.ReadByte();
-            if (bytes2[5] != 0) bytes2[5] ^= packet.ReadByte();
-            if (bytes1[1] != 0) bytes1[1] ^= packet.ReadByte();
-            if (bytes2[0] != 0) bytes2[0] ^= packet.ReadByte();
-            if (bytes2[6] != 0) bytes2[6] ^= packet.ReadByte();
-            if (bytes1[5] != 0) bytes1[5] ^= packet.ReadByte();
-            if (bytes2[7] != 0) bytes2[7] ^= packet.ReadByte();
-            if (bytes2[2] != 0) bytes2[2] ^= packet.ReadByte();
-            if (bytes2[3] != 0) bytes2[3] ^= packet.ReadByte();
-            if (bytes2[1] != 0) bytes2[1] ^= packet.ReadByte();
-            if (bytes1[6] != 0) bytes1[6] ^= packet.ReadByte();
-            packet.WriteLine("GUID1: {0}", new Guid(BitConverter.ToUInt64(bytes1, 0))); // Doesnt seem to be guid
-            packet.WriteLine("GUID2: {0}", new Guid(BitConverter.ToUInt64(bytes2, 0))); // Doesnt seem to be guid
-        }
     }
 }

@@ -6,6 +6,12 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class ReputationHandler
     {
+        [Parser(Opcode.CMSG_RESET_FACTION_CHEAT)]
+        public static void HandleResetFactionCheat(Packet packet)
+        {
+            packet.ReadUInt32("Unk");
+        }
+
         [Parser(Opcode.SMSG_INITIALIZE_FACTIONS)]
         public static void HandleInitializeFactions(Packet packet)
         {

@@ -96,31 +96,31 @@ namespace WowPacketParser.Parsing.Parsers
             var criterias = packet.ReadUInt32("Criterias count");
 
             for (var i = 0; i < achievements; ++i)
-                packet.ReadUInt32("Achievement Id", 1, i);
+                packet.ReadUInt32("Achievement Id", i);
 
             for (var i = 0; i < achievements; ++i)
-                packet.ReadPackedTime("Achievement Time", 1, i);
+                packet.ReadPackedTime("Achievement Time", i);
 
             for (var i = 0; i < criterias; ++i)
-                packet.ReadUInt64("Counter", 0, i);
+                packet.ReadUInt64("Counter", i);
 
             for (var i = 0; i < criterias; ++i)
-                packet.ReadUInt32("Criteria Timer 1", 0, i);
+                packet.ReadUInt32("Criteria Timer 1", i);
 
             for (var i = 0; i < criterias; ++i)
-                packet.ReadPackedTime("Criteria Time", 0, i);
+                packet.ReadPackedTime("Criteria Time", i);
 
             for (var i = 0; i < criterias; ++i)
-                packet.ReadGuid("Player GUID", 0, i);
+                packet.ReadGuid("Player GUID", i);
 
             for (var i = 0; i < criterias; ++i)
-                packet.ReadUInt32("Criteria Timer 2", 0, i);
+                packet.ReadUInt32("Criteria Timer 2", i);
 
             for (var i = 0; i < criterias; ++i)
-                packet.ReadBits("Flag", 2, 0, i);
+                packet.ReadBits("Flag", 2, i);
 
             for (var i = 0; i < criterias; ++i)
-                packet.ReadUInt32("Criteria Id", 0, i);
+                packet.ReadUInt32("Criteria Id", i);
         }
 
         [Parser(Opcode.CMSG_QUERY_INSPECT_ACHIEVEMENTS)]

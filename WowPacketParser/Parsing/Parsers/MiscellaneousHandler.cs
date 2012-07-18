@@ -8,6 +8,12 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class MiscellaneousParsers
     {
+        [Parser(Opcode.CMSG_LOG_DISCONNECT)]
+        public static void HandleLogDisconnect(Packet packet)
+        {
+            packet.ReadUInt32("Unk");
+        }
+
         [Parser(Opcode.CMSG_VIOLENCE_LEVEL)]
         public static void HandleSetViolenceLevel(Packet packet)
         {
@@ -858,6 +864,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_RETURN_TO_GRAVEYARD)]
         [Parser(Opcode.CMSG_BATTLEFIELD_REQUEST_SCORE_DATA)]
         [Parser(Opcode.CMSG_UI_TIME_REQUEST)]
+        [Parser(Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES)]
+        [Parser(Opcode.CMSG_QUERY_BATTLEFIELD_STATE)]
+        [Parser(Opcode.CMSG_REQUEST_CATEGORY_COOLDOWNS)]
+        [Parser(Opcode.CMSG_REQUEST_CEMETERY_LIST)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

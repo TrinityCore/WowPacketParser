@@ -60,6 +60,49 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(bytes, 0)));
         }
 
+        [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildRosterRequest434(Packet packet)
+        {
+            // Seems to have some previous formula, processed GUIDS does not fit any know guid
+            var bytes1 = new byte[8];
+            var bytes2 = new byte[8];
+            bytes2[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes2[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes1[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes1[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes2[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes1[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes2[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes2[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes1[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes2[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes1[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes1[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes2[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes1[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes2[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes1[7] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            if (bytes1[3] != 0) bytes1[3] ^= packet.ReadByte();
+            if (bytes2[4] != 0) bytes2[4] ^= packet.ReadByte();
+            if (bytes1[7] != 0) bytes1[7] ^= packet.ReadByte();
+            if (bytes1[2] != 0) bytes1[2] ^= packet.ReadByte();
+            if (bytes1[4] != 0) bytes1[4] ^= packet.ReadByte();
+            if (bytes1[0] != 0) bytes1[0] ^= packet.ReadByte();
+            if (bytes2[5] != 0) bytes2[5] ^= packet.ReadByte();
+            if (bytes1[1] != 0) bytes1[1] ^= packet.ReadByte();
+            if (bytes2[0] != 0) bytes2[0] ^= packet.ReadByte();
+            if (bytes2[6] != 0) bytes2[6] ^= packet.ReadByte();
+            if (bytes1[5] != 0) bytes1[5] ^= packet.ReadByte();
+            if (bytes2[7] != 0) bytes2[7] ^= packet.ReadByte();
+            if (bytes2[2] != 0) bytes2[2] ^= packet.ReadByte();
+            if (bytes2[3] != 0) bytes2[3] ^= packet.ReadByte();
+            if (bytes2[1] != 0) bytes2[1] ^= packet.ReadByte();
+            if (bytes1[6] != 0) bytes1[6] ^= packet.ReadByte();
+            packet.WriteLine("GUID1: {0}", new Guid(BitConverter.ToUInt64(bytes1, 0)));
+            packet.WriteLine("GUID2: {0}", new Guid(BitConverter.ToUInt64(bytes2, 0)));
+        }
+
         [Parser(Opcode.SMSG_GUILD_ROSTER, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
         public static void HandleGuildRosterResponse(Packet packet)
         {
@@ -764,6 +807,8 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_GUILD_RANKS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_QUERY_NEWS)]
+        [Parser(Opcode.CMSG_QUERY_GUILD_MAX_XP)]
         [Parser(Opcode.CMSG_QUERY_GUILD_XP)]
         public static void HandleGuildRequestNews(Packet packet)
         {
@@ -806,6 +851,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_GUILD_MAX_DAILY_XP)]
+        [Parser(Opcode.SMSG_LOG_GUILD_XPGAIN)]
         public static void HandleGuildMaxDailyXP(Packet packet)
         {
             packet.ReadUInt64("XP");
@@ -1195,10 +1241,10 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_GUILD_BANK_REM_MONEY_WITHDRAW_QUERY)]
+        [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
         public static void HandleGuildNull(Packet packet)
         {
             // Just to have guild opcodes together
         }
-        
     }
 }

@@ -2022,7 +2022,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MOVE_SET_COLLISION_HEIGHT, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleSetCollisionHeight434(Packet packet)
         {
-            var unk = packet.ReadBits("Unknown bits", 2);
+            packet.ReadBits("Unknown bits", 2);
             var guid = new byte[8];
 
             guid[6] = (byte)(packet.ReadBit() ? 1 : 0);

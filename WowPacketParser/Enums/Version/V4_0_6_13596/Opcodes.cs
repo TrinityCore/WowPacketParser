@@ -11,7 +11,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
-            //{Opcode.SMSG_BUY_BANK_SLOT_RESULT, 0x00000}, // 4.0.6a 13623
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0x0B5CC}, // 4.0.6a 13623
             {Opcode.CMSG_ACCEPT_TRADE, 0x00891}, // 4.0.6a 13623
             {Opcode.CMSG_ACTIVATETAXI, 0x039A4}, // 4.0.6a 13623
@@ -271,9 +270,11 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_GUILD_MOTD, 0x0272D}, // 4.0.6a 13623
             {Opcode.CMSG_GUILD_PROMOTE, 0x02109}, // 4.0.6a 13623
             {Opcode.CMSG_GUILD_QUERY, 0x0AFC4}, // 4.0.6a 13623
-            {Opcode.CMSG_GUILD_QUERY_XP, 0x0350D}, // 4.0.6a 13623
+            {Opcode.CMSG_GUILD_QUERY_NEWS, 0x3529}, // 4.0.6a 13623
+            {Opcode.CMSG_GUILD_QUERY_TRADESKILL, 0x02329}, // 4.0.6a 13623
             {Opcode.CMSG_GUILD_RANK, 0x02709}, // 4.0.6a 13623
             {Opcode.CMSG_GUILD_REMOVE, 0x0312D}, // 4.0.6a 13623
+            {Opcode.CMSG_GUILD_RANKS, 0x3129}, // 4.0.6a 13623
             {Opcode.CMSG_GUILD_ROSTER, 0x0250D}, // 4.0.6a 13623
             {Opcode.CMSG_GUILD_SET_NOTE, 0x0232D}, // 4.0.6a 13623
             {Opcode.CMSG_GUILD_SWITCH_RANK, 0x100A6}, // Unknown opcode ID
@@ -317,6 +318,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_LOAD_SCREEN, 0x08508}, // 4.0.6a 13623
             {Opcode.CMSG_LOGOUT_CANCEL, 0x039E8}, // 4.0.6a 13623
             {Opcode.CMSG_LOGOUT_REQUEST, 0x0A7A8}, // 4.0.6a 13623
+            {Opcode.CMSG_LOG_DISCONNECT, 0x0064C}, // 4.0.6a 13623
             {Opcode.CMSG_LOOT, 0x0FCEC}, // 4.0.6a 13623
             {Opcode.CMSG_LOOT_MASTER_GIVE, 0x03BA4}, // 4.0.6a 13623
             {Opcode.CMSG_LOOT_METHOD, 0x0FCCC}, // 4.0.6a 13623
@@ -411,6 +413,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_PLAY_DANCE, 0x02288}, // 4.0.6a 13623
             {Opcode.CMSG_PUSHQUESTTOPARTY, 0x029E8}, // 4.0.6a 13623
             {Opcode.CMSG_QUERY_GUILD_REWARDS, 0x02210}, // 4.0.6a 13623
+            {Opcode.CMSG_QUERY_GUILD_MAX_XP, 0x0350D}, // 4.0.6a 13623
             {Opcode.CMSG_QUERY_GUILD_XP, 0x03509}, // 4.0.6a 13623
             {Opcode.CMSG_QUERY_INSPECT_ACHIEVEMENTS, 0x069A0}, // 4.0.6a 13623 (might be 0x028EC)
             {Opcode.CMSG_QUERY_QUESTS_COMPLETED, 0x0FE84}, // 4.0.6a 13623
@@ -923,7 +926,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_GUILD_TRADESKILL_UPDATE, 0x0454E}, // 4.0.6a 13623
             {Opcode.SMSG_GUILD_UPDATE_ROSTER, 0x0085E}, // 4.0.6a 13623
             {Opcode.SMSG_GUILD_XP, 0x0440E}, // 4.0.6a 13623
-            {Opcode.SMSG_GUILD_XP_LIMIT, 0x0441C}, // 4.0.6a 13623
             {Opcode.SMSG_HEALTH_UPDATE, 0x02AA8}, // 4.0.6a 13623
             {Opcode.SMSG_HIGHEST_THREAT_UPDATE, 0x03F7E}, // 4.0.3a 13329
             {Opcode.SMSG_HOTFIX_INFO, 0x04C1E}, // 4.0.6a 13623 (sent after SMSG_AUTH_RESPONSE)

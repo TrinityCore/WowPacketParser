@@ -15,6 +15,7 @@
         Founder        = 14,
         ChangeRank     = 16,
         EditPublicNote = 19,
+        Unk20          = 20,
         ViewTab        = 21,
         MoveItem       = 22,
         Repair         = 25

@@ -790,9 +790,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                packet.ReadGuid("GUID", i);
+                var guid = packet.ReadGuid("GUID", i);
                 packet.ReadBoolean("Online", i);
-                packet.ReadCString("Name", i);
+                var name = packet.ReadCString("Name", i);
+                StoreGetters.AddName(guid, name);
                 packet.ReadUInt32("Captain", i);
                 packet.ReadByte("Level", i);
                 packet.ReadEnum<Class>("Class", TypeCode.Byte, i);

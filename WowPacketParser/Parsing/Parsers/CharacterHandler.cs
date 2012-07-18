@@ -923,5 +923,20 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Total Count", i);
             }
         }
+
+        [Parser(Opcode.SMSG_UPDATE_CURRENCY)]
+        public static void HandleUpdateCurrency(Packet packet)
+        {
+            packet.ReadUInt32("Currency ID");
+            packet.ReadUInt32("Week Count");
+            packet.ReadUInt32("Total Count");
+        }
+
+        [Parser(Opcode.SMSG_UPDATE_CURRENCY_WEEK_LIMIT)]
+        public static void HandleUpdateCurrencyWeekLimit(Packet packet)
+        {
+            packet.ReadUInt32("Week Cap");
+            packet.ReadUInt32("Currency ID");
+        }
     }
 }
