@@ -365,6 +365,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<CalendarEventType>("Type", TypeCode.Int32);
             packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
             packet.ReadInt64("Invite ID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
+            {
+                packet.ReadInt64("Unk Int64");
+            }
             packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte);
             packet.ReadEnum<CalendarModerationRank>("Moderation Rank", TypeCode.Byte);
             packet.ReadPackedGuid("Creator GUID");
