@@ -3,6 +3,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -171,7 +172,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Item GUID");
         }
 
-        [Parser(Opcode.SMSG_ITEM_REFUND_INFO_RESPONSE)]
+        [Parser(Opcode.SMSG_ITEM_REFUND_INFO_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleItemRefundInfoResponse(Packet packet)
         {
             packet.ReadGuid("Item GUID");
@@ -185,6 +186,45 @@ namespace WowPacketParser.Parsing.Parsers
             }
             packet.ReadUInt32("Unk UInt32 1");
             packet.ReadUInt32("Time Left");
+        }
+
+        [Parser(Opcode.SMSG_ITEM_REFUND_INFO_RESPONSE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleItemRefundInfoResponse434(Packet packet)
+        {
+            var guid = new byte[8];
+            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            packet.ReadUInt32("Time Left");
+            for (var i = 0; i < 5; ++i)
+            {
+                packet.ReadUInt32("Item Count", i);
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Cost Entry", i);
+            }
+
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            for (var i = 0; i < 5; ++i)
+            {
+                packet.ReadUInt32("Currency Count", i);
+                packet.ReadUInt32("Currency Entry", i);
+            }
+
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            packet.ReadUInt32("Unk UInt32 1");
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            packet.ReadUInt32("Money Cost");
+            packet.WriteLine("Item GUID: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
         }
 
         [Parser(Opcode.CMSG_REPAIR_ITEM)]
