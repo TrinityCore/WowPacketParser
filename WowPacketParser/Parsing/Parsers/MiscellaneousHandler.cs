@@ -801,6 +801,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadTime("Time");
         }
 
+        [Parser(Opcode.SMSG_START_TIMER)]
+        public static void HandleStartTimer(Packet packet)
+        {
+            // Unk use, related to EVENT_START_TIMER
+            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32");
+        }
+
         [Parser(Opcode.SMSG_MINIGAME_STATE)]
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
