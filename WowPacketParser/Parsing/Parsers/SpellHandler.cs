@@ -65,8 +65,21 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_NOTIFY_DEST_LOC_SPELL_CAST)]
         public static void HandleNotifyDestLocSpellCast(Packet packet)
         {
-            packet.ReadCString("Unk CString");
             // TODO: Verify and/or finish this
+            // Everything is guessed
+            packet.ReadGuid("Caster GUID");
+            packet.ReadGuid("Target GUID");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadVector3("Position");
+            packet.ReadVector3("Target Position");
+            packet.ReadSingle("Evelation");
+            packet.ReadSingle("Speed");
+            packet.ReadUInt32("Duration");
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_5a_12340))
+                packet.ReadInt32("Unk");
+
+            packet.ReadSingle("Unk");
         }
 
         [Parser(Opcode.SMSG_SEND_UNLEARN_SPELLS)]
@@ -443,12 +456,41 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
         }
 
-        [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL)]
+        [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.SMSG_PLAY_SPELL_IMPACT)]
         public static void HandleCastVisual(Packet packet)
         {
             packet.ReadGuid("Caster GUID");
             packet.ReadUInt32("SpellVisualKit ID");
+        }
+
+        [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleCastVisual434(Packet packet)
+        {
+            packet.ReadUInt32("Unk");
+            packet.ReadUInt32("SpellVisualKit ID");
+            packet.ReadUInt32("Unk");
+
+            var guid = new byte[8];
+            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+
+            packet.WriteLine("Caster GUID {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
         }
 
         [Parser(Opcode.SMSG_PET_CAST_FAILED)]
