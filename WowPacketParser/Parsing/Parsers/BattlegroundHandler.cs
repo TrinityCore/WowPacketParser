@@ -634,13 +634,16 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_PVP_LOG_DATA, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandlePvPLogData406(Packet packet)
         {
-            var Flags = packet.ReadEnum<BattlegroundUpdateFlags>("Flags", TypeCode.Byte);
+            if (packet.Direction == Direction.ClientToServer)
+                return;
 
-            if (Flags.HasAnyFlag(BattlegroundUpdateFlags.ArenaNames))
+            var flags = packet.ReadEnum<BattlegroundUpdateFlags>("Flags", TypeCode.Byte);
+
+            if (flags.HasAnyFlag(BattlegroundUpdateFlags.ArenaNames))
                 for (var i = 0; i < 2; ++i)
                     packet.ReadCString("Name", i);
 
-            if (Flags.HasAnyFlag(BattlegroundUpdateFlags.ArenaScores))
+            if (flags.HasAnyFlag(BattlegroundUpdateFlags.ArenaScores))
                 for (var i = 0; i < 2; ++i)
                 {
                     packet.ReadUInt32("Points Lost", i);
@@ -650,7 +653,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var count = packet.ReadUInt32("Score count");
 
-            if (Flags.HasAnyFlag(BattlegroundUpdateFlags.Finished))
+            if (flags.HasAnyFlag(BattlegroundUpdateFlags.Finished))
                 packet.ReadByte("Team Winner");
 
             var tempCount = (int)count;
