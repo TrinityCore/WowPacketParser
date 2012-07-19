@@ -924,12 +924,29 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_UPDATE_CURRENCY)]
+        [Parser(Opcode.SMSG_UPDATE_CURRENCY, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleUpdateCurrency(Packet packet)
         {
             packet.ReadUInt32("Currency ID");
             packet.ReadUInt32("Week Count");
             packet.ReadUInt32("Total Count");
+        }
+
+        [Parser(Opcode.SMSG_UPDATE_CURRENCY, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleUpdateCurrency434(Packet packet)
+        {
+            var bits = new bool[3];
+            for (var i = 0; i < 3; ++i)
+                bits[i] = packet.ReadBit();
+
+            if (bits[1])
+                packet.ReadInt32("Total Count");
+
+            packet.ReadInt32("Week Count");
+            packet.ReadInt32("Currency ID");
+
+            if (bits[0])
+                packet.ReadInt32("unk Count");
         }
 
         [Parser(Opcode.SMSG_UPDATE_CURRENCY_WEEK_LIMIT)]
