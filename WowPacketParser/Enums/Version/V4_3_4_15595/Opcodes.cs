@@ -460,6 +460,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_BATTLEGROUND_PLAYER_LEFT, 0x59A6},
             {Opcode.SMSG_BINDER_CONFIRM, 0x2835},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x0527},
+            {Opcode.SMSG_BREAK_TARGET, 0x0105},
             {Opcode.SMSG_BUY_FAILED, 0x6435},
             {Opcode.SMSG_BUY_ITEM, 0x0F26},
             {Opcode.SMSG_CALENDAR_ARENA_TEAM, 0x0615},//may be reversed with SMSG_CALENDAR_FILTER_GUILD
