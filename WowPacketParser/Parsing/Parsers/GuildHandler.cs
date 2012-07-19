@@ -930,7 +930,9 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Money");
         }
 
-        [Parser(Opcode.MSG_QUERY_GUILD_BANK_TEXT)]
+        [Parser(Opcode.MSG_QUERY_GUILD_BANK_TEXT, ClientVersionBuild.Zero,ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_BANK_QUERY_TEXT, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_GUILD_BANK_QUERY_TEXT_RESULTS, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildQueryBankText(Packet packet)
         {
             packet.ReadByte("Tab Id");
@@ -1016,7 +1018,9 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.MSG_GUILD_BANK_LOG_QUERY)]
+        [Parser(Opcode.MSG_GUILD_BANK_LOG_QUERY, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_BANK_LOG_QUERY, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_GUILD_BANK_LOG_QUERY_RESULTS, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildBankLogQuery(Packet packet)
         {
             packet.ReadByte("Tab Id");
