@@ -762,6 +762,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_PLAYER_SKINNED, 0x0116},
             {Opcode.SMSG_PLAYER_VEHICLE_DATA, 0x4115},
             {Opcode.SMSG_PLAY_DANCE, 0x4704},
+            {Opcode.SMSG_PLAY_MUSIC, 0x4B06},
             {Opcode.SMSG_PLAY_OBJECT_SOUND, 0x2635},
             {Opcode.SMSG_PLAY_SOUND, 0x2134},
             {Opcode.SMSG_PLAY_SPELL_VISUAL, 0x55A5},
