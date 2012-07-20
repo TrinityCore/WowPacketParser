@@ -937,7 +937,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var hasWeekCap = packet.ReadBit();
             var hasSeasonCount = packet.ReadBit();
-            packet.WriteLine("Print in log: " + packet.ReadBit().ToString());
+            packet.ReadBit("Print in log");
 
             if (hasSeasonCount)
                 packet.ReadInt32("Season Total Earned");

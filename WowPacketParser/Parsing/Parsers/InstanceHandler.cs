@@ -141,10 +141,10 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadInt32("Time");
             packet.ReadInt32("Encounters Completed Mask");
-            packet.ReadByte("Extending");
+            packet.ReadBoolean("Extending");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // guessing
-                packet.ReadByte("Unk2"); // events it throws: 1 : INSTANCE_LOCK_WARNING  0 : INSTANCE_LOCK_STOP / INSTANCE_LOCK_START
+                packet.ReadBoolean("Locked warning"); // Displays a window asking if the player choose to join an instance which is saved.
         }
 
         [Parser(Opcode.SMSG_RAID_INSTANCE_INFO)]

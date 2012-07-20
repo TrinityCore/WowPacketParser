@@ -754,6 +754,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_INSPECT_RATED_BG_STATS, 0x19A5},
             {Opcode.SMSG_INSPECT_RESULTS_UPDATE, 0x0C14},
             {Opcode.SMSG_INSPECT_TALENT, 0x4014},
+            {Opcode.SMSG_INSTANCE_LOCK_WARNING_QUERY, 0x4F17},
             {Opcode.SMSG_INSTANCE_RESET, 0x6F05},
             {Opcode.SMSG_INSTANCE_RESET_FAILED, 0x4725},
             {Opcode.SMSG_INSTANCE_SAVE_CREATED, 0x0124},
