@@ -877,6 +877,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, 0x55A4},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x2425},
             {Opcode.SMSG_QUESTGIVER_QUEST_FAILED, 0x4236},
+            {Opcode.SMSG_QUESTGIVER_QUEST_INVALID, 0x4016},
             {Opcode.SMSG_QUESTGIVER_QUEST_LIST, 0x0134},
             {Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS, 0x6236},
             {Opcode.SMSG_QUESTGIVER_STATUS, 0x2115},
@@ -1042,7 +1043,6 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_XP_GAIN_ABORTED, 0x50B4},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0A06},
 
-            // {Opcode.SMSG_ATTACKSTOP | Opcode.SMSG_COMBAT_EVENT_FAILED, 0x2B07},
         };
     }
 }
