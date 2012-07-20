@@ -935,18 +935,18 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_UPDATE_CURRENCY, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleUpdateCurrency434(Packet packet)
         {
-            var bits = new bool[3];
-            for (var i = 0; i < 3; ++i)
-                bits[i] = packet.ReadBit();
+            var hasWeekCap = packet.ReadBit();
+            var hasSeasonCount = packet.ReadBit();
+            packet.WriteLine("Print in log: " + packet.ReadBit().ToString());
 
-            if (bits[1])
-                packet.ReadInt32("Total Count");
+            if (hasSeasonCount)
+                packet.ReadInt32("Season Total Earned");
 
-            packet.ReadInt32("Week Count");
+            packet.ReadInt32("Total Count");
             packet.ReadInt32("Currency ID");
 
-            if (bits[0])
-                packet.ReadInt32("unk Count");
+            if (hasWeekCap)
+                packet.ReadInt32("Week Count");
         }
 
         [Parser(Opcode.SMSG_UPDATE_CURRENCY_WEEK_LIMIT)]
