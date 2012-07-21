@@ -832,6 +832,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32");
         }
 
+        [Parser(Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE)] // 4.3.4
+        public static void HandleRequestCemeteryListResponse(Packet packet)
+        {
+            packet.ReadBit("Unk Bit");
+            var count = packet.ReadBits("Count", 24);
+            for (int i = 0; i < count; ++i)
+                packet.ReadInt32("Cemetery Id", i); // not confirmed
+        }
+
         [Parser(Opcode.SMSG_MINIGAME_STATE)]
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
@@ -899,6 +908,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_QUERY_BATTLEFIELD_STATE)]
         [Parser(Opcode.CMSG_REQUEST_CATEGORY_COOLDOWNS)]
         [Parser(Opcode.CMSG_REQUEST_CEMETERY_LIST)]
+        [Parser(Opcode.CMSG_REQUEST_RESEARCH_HISTORY)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }
