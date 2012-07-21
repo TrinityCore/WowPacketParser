@@ -345,7 +345,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_PET_CANCEL_AURA, 0x4B25},
             {Opcode.CMSG_PET_CAST_SPELL, 0x6337},
             {Opcode.CMSG_PET_LEARN_TALENT, 0x6725},
-            {Opcode.CMSG_PET_NAME_CACHE, 0x6F24},
+            {Opcode.CMSG_PET_NAME_QUERY, 0x6F24},
             {Opcode.CMSG_PET_RENAME, 0x6406},
             {Opcode.CMSG_PET_SET_ACTION, 0x6904},
             {Opcode.CMSG_PET_SPELL_AUTOCAST, 0x2514},

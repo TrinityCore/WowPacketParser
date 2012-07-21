@@ -528,7 +528,6 @@ namespace WowPacketParser.Enums
         CMSG_PET_CAST_SPELL,
         CMSG_PET_LEARN_TALENT,
         CMSG_PET_LEVEL_CHEAT,
-        CMSG_PET_NAME_CACHE,
         CMSG_PET_NAME_QUERY,
         CMSG_PET_RENAME,
         CMSG_PET_SET_ACTION,
