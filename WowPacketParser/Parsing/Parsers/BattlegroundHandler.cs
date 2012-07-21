@@ -150,7 +150,52 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Unk Byte (BattlefieldList)");
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.V4_3_0_15005)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleBattlefieldListServer434(Packet packet)
+        {
+            packet.ReadInt32("Unk Int32"); // Winner Conquest Reward or Random Winner Conquest Reward
+            packet.ReadInt32("Unk Int32"); // Winner Conquest Reward or Random Winner Conquest Reward
+            packet.ReadInt32("Unk Int32"); // Loser Honor Reward or Random Loser Honor Reward
+            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BG type");
+            packet.ReadInt32("Unk Int32"); // Loser Honor Reward or Random Loser Honor Reward
+            packet.ReadInt32("Unk Int32"); // Winner Honor Reward or Random Winner Honor Reward
+            packet.ReadInt32("Unk Int32"); // Winner Honor Reward or Random Winner Honor Reward
+            packet.ReadByte("Max level");
+            packet.ReadByte("Min level");
+
+            var guidBytes = new byte[8];
+
+            guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            packet.ReadBit("Unk Bit");
+            packet.ReadBit("Unk Bit");
+            var count = packet.ReadBits("BG Instance count", 24);
+            guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            packet.ReadBit("Unk Bit");
+            guidBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            packet.ReadBit("Unk Bit");
+
+            if (guidBytes[6] != 0) guidBytes[6] ^= packet.ReadByte();
+            if (guidBytes[1] != 0) guidBytes[1] ^= packet.ReadByte();
+            if (guidBytes[7] != 0) guidBytes[7] ^= packet.ReadByte();
+            if (guidBytes[5] != 0) guidBytes[5] ^= packet.ReadByte();
+
+            for (var i = 0; i < count; i++)
+                packet.ReadUInt32("Instance ID", i);
+
+            if (guidBytes[0] != 0) guidBytes[0] ^= packet.ReadByte();
+            if (guidBytes[2] != 0) guidBytes[2] ^= packet.ReadByte();
+            if (guidBytes[4] != 0) guidBytes[4] ^= packet.ReadByte();
+            if (guidBytes[3] != 0) guidBytes[3] ^= packet.ReadByte();
+
+            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_2_15211)]
         public static void HandleBattlefieldListServer430(Packet packet)
         {
             var guidBytes = new byte[8];
