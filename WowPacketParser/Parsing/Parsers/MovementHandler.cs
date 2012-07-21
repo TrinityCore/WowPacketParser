@@ -3972,5 +3972,30 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
             packet.WriteLine("Position: {0}", pos);
         }
+
+        [Parser(Opcode.SMSG_SET_PLAY_HOVER_ANIM)]
+        public static void HandlePlayHoverAnim(Packet packet)
+        {
+            var bytes = new byte[8];
+            bytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            packet.ReadBit("unk");
+            bytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            if (bytes[3] != 0) bytes[3] ^= packet.ReadByte();
+            if (bytes[2] != 0) bytes[2] ^= packet.ReadByte();
+            if (bytes[1] != 0) bytes[1] ^= packet.ReadByte();
+            if (bytes[7] != 0) bytes[7] ^= packet.ReadByte();
+            if (bytes[0] != 0) bytes[0] ^= packet.ReadByte();
+            if (bytes[5] != 0) bytes[5] ^= packet.ReadByte();
+            if (bytes[4] != 0) bytes[4] ^= packet.ReadByte();
+            if (bytes[6] != 0) bytes[6] ^= packet.ReadByte();
+            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(bytes, 0)));
+        }
     }
 }

@@ -969,10 +969,10 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGuildPermissionsQueryResult(Packet packet)
         {
             packet.ReadUInt32("Rank Id");
-            packet.ReadInt32("Tab size");
+            packet.ReadInt32("Purchased Tab size");
             packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.UInt32);
             packet.ReadInt32("Remaining Money");
-            // FIXME sub_6DDB70
+            packet.ReadBits("Tab size", 23);
             for (var i = 0; i < 8; i++)
             {
                 packet.ReadEnum<GuildBankRightsFlag>("Tab Rights", TypeCode.Int32, i);

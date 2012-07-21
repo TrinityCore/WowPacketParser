@@ -7,6 +7,14 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class TestHandler
     {
+        [Parser(17205)]
+        public static void Handle17205(Packet packet)
+        {
+            Guid guid = packet.ReadPackedGuid();
+            var unk = packet.ReadInt32();
+            packet.WriteLine("GUID: {0} Unk: {1}", guid.ToString(), unk);
+        }
+
         [Parser(62540)]
         public static void Handle62540(Packet packet)
         {
