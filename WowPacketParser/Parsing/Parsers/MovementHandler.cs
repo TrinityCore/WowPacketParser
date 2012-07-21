@@ -2985,11 +2985,19 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Collision Height");
         }
 
-        [Parser(Opcode.CMSG_SET_ACTIVE_MOVER)]
+        [Parser(Opcode.CMSG_SET_ACTIVE_MOVER, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.SMSG_MOUNTSPECIAL_ANIM)]
         public static void HandleSetActiveMover(Packet packet)
         {
             packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_SET_ACTIVE_MOVER, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleSetActiveMover434(Packet packet)
+        {
+            var guid = packet.StartBitStream(7, 2, 1, 0, 4, 5, 6, 3);
+            packet.ParseBitStream(guid, 3, 2, 4, 0, 5, 1, 6, 7);
+            packet.ToGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_FORCE_MOVE_ROOT)]

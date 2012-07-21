@@ -857,5 +857,17 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<UnknownFlags>("ProcFlags", TypeCode.UInt32);
             packet.ReadEnum<UnknownFlags>("Flags2", TypeCode.UInt32);
         }
+
+        [Parser(Opcode.SMSG_SPELL_CATEGORY_COOLDOWN)]
+        public static void HandleSpellCategoryCooldown(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 23);
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Unk Int32");
+                packet.ReadInt32("Unk Int32");
+            }
+        }
     }
 }
