@@ -554,6 +554,25 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.ItemTemplates.Add((uint) entry.Key, item, packet.TimeSpan);
         }
 
+        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleItemRequestHotfix434(Packet packet)
+        {
+            packet.ReadUInt32("Type");
+            var count = packet.ReadBits("Count", 23);
+            var guidBytes = new byte[count][];
+            for (var i = 0; i < count; ++i)
+                guidBytes[i] = packet.StartBitStream(0, 4, 7, 2, 5, 3, 6, 1);
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ParseBitStream(guidBytes[i], 5, 6, 7, 0, 1, 3, 4);
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
+                packet.ParseBitStream(guidBytes[i], 2);
+
+                packet.ToGuid("GUID", guidBytes[i], i);
+            }
+        }
+
         [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleItemRequestHotfix422(Packet packet)
         {
@@ -565,7 +584,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadUInt32("Entry", i);
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
                 guidBytes[i] = packet.ParseBitStream(guidBytes[i], 2, 6, 3, 0, 5, 7, 1, 4);
                 packet.ToGuid("GUID", guidBytes[i], i);
             }
