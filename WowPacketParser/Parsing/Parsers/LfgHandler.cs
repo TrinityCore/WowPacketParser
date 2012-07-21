@@ -77,6 +77,10 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Unk 6");
                 packet.ReadInt32("Unk 7");
                 packet.ReadInt32("Unk 8");
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595)) // perhaps earlier, confirmed for 434
+                    packet.ReadInt32("Unk 8.1");
+
                 packet.ReadByte("Unk 9");
 
                 // LFG_SLOT_INFO_LOOT related
