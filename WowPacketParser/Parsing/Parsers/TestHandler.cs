@@ -19,13 +19,14 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLoadCUFProfiles(Packet packet)
         {
             var count = packet.ReadBits("Count", 20);
-            //packet.ResetBitReader(); unsure if needed or not
+
+            var strlen = new uint[count];
 
             for (int i = 0; i < count; ++i)
             {
                 // this is wrong
                 packet.ReadBits("Unk 19 Bits", 19, i);
-                packet.ReadBits("Unk 8 Bits", 8, i);
+                strlen[i] = packet.ReadBits("String length", 8, i);
                 packet.ReadBits("Unk 6 Bits", 6, i);
             }
 
@@ -41,7 +42,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Unk Byte", i);
                 packet.ReadInt16("Unk Int16", i);
                 packet.ReadByte("Unk Byte", i);
-                packet.ReadCString("Unk String", i);
+                packet.ReadWoWString("Name", (int)strlen[i], i);
             }
         }
 
