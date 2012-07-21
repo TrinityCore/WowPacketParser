@@ -422,5 +422,11 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Encounters Mask", i);
             }
         }
+
+        [Parser(Opcode.CMSG_DUNGEON_FINDER_GET_SYSTEM_INFO)]
+        public static void HandleDungeonFinderGetSystemInfo(Packet packet)
+        {
+            packet.ReadBit("Unk boolean");
+        }
     }
 }

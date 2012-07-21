@@ -311,7 +311,24 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var count = packet.ReadBits("Count", 24);
             for (int i = 0; i < count; ++i)
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest", i); // unconfirmed
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest", i);
+        }
+
+        [Parser(Opcode.SMSG_COMPLETION_NPC_RESPONSE)] // 4.3.4
+        public static void HandleCompletionNPCResponse(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 23);
+            var counts = new uint[count];
+
+            for (int i = 0; i < count; ++i)
+                counts[i] = packet.ReadBits("Count", 24, i);
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest", i);
+                for (int j = 0; j < counts[i]; ++j)
+                    packet.ReadEntryWithName<UInt32>(StoreNameType.Unit, "Unit", i, j);
+            }
         }
     }
 }
