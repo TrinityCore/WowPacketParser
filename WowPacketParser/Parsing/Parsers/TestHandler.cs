@@ -15,37 +15,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("GUID: {0} Unk: {1}", guid.ToString(), unk);
         }
 
-        [Parser(Opcode.SMSG_LOAD_CUF_PROFILES)] // WIP, 4.3.4
-        public static void HandleLoadCUFProfiles(Packet packet)
-        {
-            var count = packet.ReadBits("Count", 20);
-
-            var strlen = new uint[count];
-
-            for (int i = 0; i < count; ++i)
-            {
-                // this is wrong
-                packet.ReadBits("Unk 19 Bits", 19, i);
-                strlen[i] = packet.ReadBits("String length", 8, i);
-                packet.ReadBits("Unk 6 Bits", 6, i);
-            }
-
-            for (int i = 0; i < count; ++i)
-            {
-                packet.ReadInt16("Unk Int16", i);
-                packet.ReadInt16("Unk Int16", i);
-                packet.ReadInt16("Unk Int16", i);
-                packet.ReadByte("Unk Byte", i);
-                packet.ReadInt16("Unk Int16", i);
-                packet.ReadByte("Unk Byte", i);
-                packet.ReadByte("Unk Byte", i);
-                packet.ReadByte("Unk Byte", i);
-                packet.ReadInt16("Unk Int16", i);
-                packet.ReadByte("Unk Byte", i);
-                packet.ReadWoWString("Name", (int)strlen[i], i);
-            }
-        }
-
         [Parser(62540)]
         public static void Handle62540(Packet packet)
         {
