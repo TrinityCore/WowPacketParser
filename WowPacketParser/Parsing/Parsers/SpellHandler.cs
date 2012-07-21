@@ -865,8 +865,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (int i = 0; i < count; ++i)
             {
-                packet.ReadInt32("Unk Int32");
-                packet.ReadInt32("Unk Int32");
+                packet.ReadInt32("Category Cooldown");
+                packet.ReadInt32("Cooldown");
             }
         }
     }
