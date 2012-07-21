@@ -167,6 +167,58 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_SAVE_CUF_PROFILES)] // 4.3.4
+        public static void HandleSaveCufProfiles(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 20);
+
+            var strlen = new uint[count];
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadBit("Talent spec 2", i);
+                packet.ReadBit("10 player group", i);
+                packet.ReadBit("Unk 157", i);
+                packet.ReadBit("Incoming heals", i);
+                packet.ReadBit("Talent spec 1", i);
+                packet.ReadBit("PvP", i);
+                packet.ReadBit("Power bars", i);
+                packet.ReadBit("15 player group", i);
+                packet.ReadBit("40 player group", i);
+                packet.ReadBit("Pets", i);
+                packet.ReadBit("5 player group", i);
+                packet.ReadBit("Dispellable debuffs", i);
+                packet.ReadBit("2 player group", i);
+                packet.ReadBit("Unk 156", i);
+                packet.ReadBit("Debuffs", i);
+                packet.ReadBit("Main tank and assist", i);
+                packet.ReadBit("Aggro highlight", i);
+                packet.ReadBit("3 player group", i);
+                packet.ReadBit("Border", i);
+                packet.ReadBit("Class colors", i);
+                packet.ReadBit("Unk 145", i);
+                strlen[i] = packet.ReadBits("String length", 8, i);
+                packet.ReadBit("PvE", i);
+                packet.ReadBit("Horizontal Groups", i);
+                packet.ReadBit("25 player group", i);
+                packet.ReadBit("Keep groups together", i);
+            }
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadByte("Unk 146", i);
+                packet.ReadWoWString("Name", (int)strlen[i], i);
+                packet.ReadInt16("Unk 152", i);
+                packet.ReadInt16("Frame height", i);
+                packet.ReadInt16("Frame width", i);
+                packet.ReadInt16("Unk 150", i);
+                packet.ReadByte("Health text", i);
+                packet.ReadByte("Unk 147", i);
+                packet.ReadByte("Sort by", i);
+                packet.ReadInt16("Unk 154", i);
+                packet.ReadByte("Unk 148", i);
+            }
+        }
 
         [Parser(Opcode.SMSG_LOAD_CUF_PROFILES)] // 4.3.4
         public static void HandleLoadCUFProfiles(Packet packet)
@@ -177,7 +229,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (int i = 0; i < count; ++i)
             {
-                packet.ReadBit("Unk ", i);
+                packet.ReadBit("Unk 157", i);
                 packet.ReadBit("10 player group", i);
                 packet.ReadBit("5 player group", i);
                 packet.ReadBit("25 player group", i);
@@ -191,7 +243,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadBit("2 player group", i);
                 packet.ReadBit("Debuffs", i);
                 packet.ReadBit("Main tank and assist", i);
-                packet.ReadBit("Unk", i);
+                packet.ReadBit("Unk 156", i);
                 packet.ReadBit("Talent spec 2", i);
                 packet.ReadBit("Class colors", i);
                 packet.ReadBit("Display power bars", i);
@@ -199,7 +251,7 @@ namespace WowPacketParser.Parsing.Parsers
                 strlen[i] = packet.ReadBits("String length", 8, i);
                 packet.ReadBit("Dispellable debuffs", i);
                 packet.ReadBit("Keep groups together", i);
-                packet.ReadBit("Unk", i);
+                packet.ReadBit("Unk 145", i);
                 packet.ReadBit("15 player group", i);
                 packet.ReadBit("Pets", i);
                 packet.ReadBit("PvP", i);
@@ -207,16 +259,16 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (int i = 0; i < count; ++i)
             {
-                packet.ReadInt16("Unk Int16", i);
+                packet.ReadInt16("Unk 154", i);
                 packet.ReadInt16("Frame height", i);
-                packet.ReadInt16("Unk Int16", i);
-                packet.ReadByte("Unk Byte", i);
-                packet.ReadInt16("Unk Int16", i);
-                packet.ReadByte("Unk Byte", i);
+                packet.ReadInt16("Unk 152", i);
+                packet.ReadByte("Unk 147", i);
+                packet.ReadInt16("Unk 150", i);
+                packet.ReadByte("Unk 146", i);
                 packet.ReadByte("Health text", i); // 0 - none, 1 - remaining, 2 - lost, 3 - percentage
                 packet.ReadByte("Sort by", i); // 0 - role, 1 - group, 2 - alphabetical
                 packet.ReadInt16("Frame width", i);
-                packet.ReadByte("Unk Byte", i);
+                packet.ReadByte("Unk 148", i);
                 packet.ReadWoWString("Name", (int)strlen[i], i);
             }
         }
