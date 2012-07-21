@@ -82,6 +82,18 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Unk");
         }
 
+        [Parser(Opcode.SMSG_WEEKLY_SPELL_USAGE)]
+        public static void HandleWeeklySpellUsage(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 23);
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Unk Int32");
+                packet.ReadByte("Unk Int8");
+            }
+        }
+
         [Parser(Opcode.SMSG_SEND_UNLEARN_SPELLS)]
         public static void HandleSendUnlearnSpells(Packet packet)
         {
