@@ -7,12 +7,42 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class TestHandler
     {
-        [Parser(17205)]
+        [Parser(17205)] // 4.3.4
         public static void Handle17205(Packet packet)
         {
             Guid guid = packet.ReadPackedGuid();
             var unk = packet.ReadInt32();
             packet.WriteLine("GUID: {0} Unk: {1}", guid.ToString(), unk);
+        }
+
+        [Parser(Opcode.SMSG_LOAD_CUF_PROFILES)] // WIP, 4.3.4
+        public static void HandleLoadCUFProfiles(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 20);
+            //packet.ResetBitReader(); unsure if needed or not
+
+            for (int i = 0; i < count; ++i)
+            {
+                // this is wrong
+                packet.ReadBits("Unk 19 Bits", 19, i);
+                packet.ReadBits("Unk 8 Bits", 8, i);
+                packet.ReadBits("Unk 6 Bits", 6, i);
+            }
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadInt16("Unk Int16", i);
+                packet.ReadInt16("Unk Int16", i);
+                packet.ReadInt16("Unk Int16", i);
+                packet.ReadByte("Unk Byte", i);
+                packet.ReadInt16("Unk Int16", i);
+                packet.ReadByte("Unk Byte", i);
+                packet.ReadByte("Unk Byte", i);
+                packet.ReadByte("Unk Byte", i);
+                packet.ReadInt16("Unk Int16", i);
+                packet.ReadByte("Unk Byte", i);
+                packet.ReadCString("Unk String", i);
+            }
         }
 
         [Parser(62540)]
