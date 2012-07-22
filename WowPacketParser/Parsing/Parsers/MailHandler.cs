@@ -74,8 +74,11 @@ namespace WowPacketParser.Parsing.Parsers
                     case MailType.Item:
                         packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Entry", i);
                         break;
-                    default:
+                    case (MailType)1:
+                    case MailType.Auction:
                         packet.ReadInt32("Entry", i);
+                        break;
+                    default:
                         break;
                 }
 
@@ -113,6 +116,9 @@ namespace WowPacketParser.Parsing.Parsers
                         enchantmentCount = 7;
                     if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
                         enchantmentCount = 9;
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                        enchantmentCount = 10;
+
                     for (var k = 0; k < enchantmentCount; ++k)
                     {
                         packet.ReadUInt32("Item Enchantment Id", i, j, k);
@@ -150,16 +156,9 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadUInt32("Count");
             for (var i = 0; i < count; ++i)
             {
-                var data = packet.ReadUInt64();
-                if (data == 0 || ((data & 0xFFFFFFFF00000000) >> 32) == 0)
-                    packet.WriteLine("Entry: " + ((data & 0x00000000FFFFFFFF) >> 32));
-                else
-                {
-                    var guid = new Guid(data);
-                    packet.WriteLine("[" + i + "] GUID: " + guid);
-                }
-                packet.ReadUInt32("COD", i);
-                packet.ReadUInt32("Unk uint32", i);
+                packet.ReadUInt64("GUID", i);
+                packet.ReadUInt32("Sender Id", i);
+                packet.ReadUInt32("Message type", i);
                 packet.ReadUInt32("Stationery", i);
                 packet.ReadSingle("Time?", i);
             }
