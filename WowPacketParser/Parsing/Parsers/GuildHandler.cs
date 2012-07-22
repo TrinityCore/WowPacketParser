@@ -881,7 +881,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt64("XP");
         }
 
-        [Parser(Opcode.SMSG_GUILD_NEWS_UPDATE)]
+        [Parser(Opcode.SMSG_GUILD_NEWS_UPDATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildNewsUpdate(Packet packet)
         {
             var size = packet.ReadUInt32("Size");
@@ -902,13 +902,92 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             for (var i = 0; i < size; ++i)
-                packet.ReadUInt32("News Type", i);
+                packet.ReadEnum<GuildNewsType>("News Type", TypeCode.Int32, i);
 
             for (var i = 0; i < size; ++i)
                 packet.ReadUInt32("News Flags", i);
 
             for (var i = 0; i < size; ++i)
                 packet.ReadUInt32("Unk UInt32 4", i);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_NEWS_UPDATE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildNewsUpdate434(Packet packet)
+        {
+            var size = packet.ReadBits("Size", 21);
+
+            var guidOut = new byte[size][];
+            var guidIn = new byte[size][][];
+            var count = new uint[size];
+
+            for (int i = 0; i < size; ++i)
+            {
+                count[i] = packet.ReadBits(26);
+                if (count[i] != 0)
+                    packet.WriteLine("[{0]] Count: {0}", i, count[i]);
+
+                guidOut[i] = new byte[8];
+                guidOut[i][7] = (byte)(packet.ReadBit() ? 1 : 0); // 55
+
+                guidIn[i] = new byte[count[i]][];
+                for (int j = 0; j < count[i]; ++j)
+                {
+                    guidIn[i][j] = new byte[8];
+                    guidIn[i][j][7] = (byte)(packet.ReadBit() ? 1 : 0);
+                    guidIn[i][j][1] = (byte)(packet.ReadBit() ? 1 : 0);
+                    guidIn[i][j][5] = (byte)(packet.ReadBit() ? 1 : 0);
+                    guidIn[i][j][3] = (byte)(packet.ReadBit() ? 1 : 0);
+                    guidIn[i][j][4] = (byte)(packet.ReadBit() ? 1 : 0);
+                    guidIn[i][j][6] = (byte)(packet.ReadBit() ? 1 : 0);
+                    guidIn[i][j][0] = (byte)(packet.ReadBit() ? 1 : 0);
+                    guidIn[i][j][2] = (byte)(packet.ReadBit() ? 1 : 0);
+                }
+
+                guidOut[i][0] = (byte)(packet.ReadBit() ? 1 : 0); // 48
+                guidOut[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
+                guidOut[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
+                guidOut[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
+                guidOut[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
+                guidOut[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
+                guidOut[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
+            }
+
+            for (int i = 0; i < size; ++i)
+            {
+                for (int j = 0; i < count[i]; ++j)
+                {
+                    if (guidIn[i][j][0] != 0) guidIn[i][j][0] ^= packet.ReadByte();
+                    if (guidIn[i][j][1] != 0) guidIn[i][j][1] ^= packet.ReadByte();
+                    if (guidIn[i][j][4] != 0) guidIn[i][j][4] ^= packet.ReadByte();
+                    if (guidIn[i][j][7] != 0) guidIn[i][j][7] ^= packet.ReadByte();
+                    if (guidIn[i][j][5] != 0) guidIn[i][j][5] ^= packet.ReadByte();
+                    if (guidIn[i][j][6] != 0) guidIn[i][j][6] ^= packet.ReadByte();
+                    if (guidIn[i][j][3] != 0) guidIn[i][j][3] ^= packet.ReadByte();
+                    if (guidIn[i][j][2] != 0) guidIn[i][j][2] ^= packet.ReadByte();
+
+                    packet.WriteLine("[{0}][{1}] GUID: {2}", i, j, new Guid(BitConverter.ToUInt64(guidIn[i][j], 0)));
+                }
+
+                if (guidOut[i][5] != 0) guidOut[i][5] ^= packet.ReadByte();
+
+                packet.ReadInt32("Unk Int32 1", i); // not 0 for playerachievements and raidencounters
+                packet.ReadInt32("Entry (item/achiev/encounter)", i);
+                packet.ReadInt32("Unk Int32 2", i); // always 0
+
+                if (guidOut[i][7] != 0) guidOut[i][7] ^= packet.ReadByte();
+                if (guidOut[i][6] != 0) guidOut[i][6] ^= packet.ReadByte();
+                if (guidOut[i][2] != 0) guidOut[i][2] ^= packet.ReadByte();
+                if (guidOut[i][3] != 0) guidOut[i][3] ^= packet.ReadByte();
+                if (guidOut[i][0] != 0) guidOut[i][0] ^= packet.ReadByte();
+                if (guidOut[i][4] != 0) guidOut[i][4] ^= packet.ReadByte();
+                if (guidOut[i][1] != 0) guidOut[i][1] ^= packet.ReadByte();
+
+                packet.ReadInt32("News Id", i);
+                packet.ReadEnum<GuildNewsType>("News Type", TypeCode.Int32, i);
+                packet.ReadPackedTime("Time", i);
+
+                packet.WriteLine("[{0}] GUID: {1}", i, new Guid(BitConverter.ToUInt64(guidOut[i], 0)));
+            }
         }
 
         [Parser(Opcode.CMSG_QUERY_GUILD_REWARDS)]
@@ -947,7 +1026,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GUILD_REWARDS_LIST, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRewardsList434(Packet packet)
         {
-            
             var size = packet.ReadBits("Size", 21);
 
             for (var i = 0; i < size; ++i)
