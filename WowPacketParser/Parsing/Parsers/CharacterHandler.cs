@@ -998,5 +998,11 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ToGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_FAILED_PLAYER_CONDITION)]
+        public static void HandleFailedPlayerCondition(Packet packet)
+        {
+            packet.ReadInt32("Id"); // quest id? PlayerCondition.dbc id?
+        }
     }
 }

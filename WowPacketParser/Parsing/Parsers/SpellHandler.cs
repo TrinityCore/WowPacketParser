@@ -479,6 +479,61 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleCastVisual434(Packet packet)
         {
+            packet.ReadSingle("Z");
+            packet.ReadInt32("SpellVisualKit ID"); // not confirmed
+            packet.ReadInt16("Unk Int16 1"); // usually 0
+            packet.ReadSingle("O");
+            packet.ReadSingle("X");
+            packet.ReadInt16("Unk Int16 2"); // usually 0
+            packet.ReadSingle("Y");
+
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            guid2[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid1[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid1[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid2[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid2[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid1[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid1[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid2[6] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            guid2[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            packet.ReadBit("Unk Bit"); // usually 1
+            guid1[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid2[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid1[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid1[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid1[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid2[3] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            guid2[4] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            if (guid1[7] != 0) guid1[7] ^= packet.ReadByte();
+            if (guid1[4] != 0) guid1[4] ^= packet.ReadByte();
+            if (guid2[7] != 0) guid2[7] ^= packet.ReadByte();
+            if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
+            if (guid1[3] != 0) guid1[3] ^= packet.ReadByte();
+            if (guid1[0] != 0) guid1[0] ^= packet.ReadByte();
+            if (guid1[6] != 0) guid1[6] ^= packet.ReadByte();
+            if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
+            if (guid2[4] != 0) guid2[4] ^= packet.ReadByte();
+            if (guid1[5] != 0) guid1[5] ^= packet.ReadByte();
+            if (guid2[1] != 0) guid2[1] ^= packet.ReadByte();
+            if (guid2[5] != 0) guid2[5] ^= packet.ReadByte();
+            if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
+            if (guid2[2] != 0) guid2[2] ^= packet.ReadByte();
+            if (guid1[2] != 0) guid1[2] ^= packet.ReadByte();
+            if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
+
+            packet.WriteLine("Caster GUID1 {0}", new Guid(BitConverter.ToUInt64(guid1, 0))); // not confirmed
+            packet.WriteLine("Unk GUID2 {0}", new Guid(BitConverter.ToUInt64(guid2, 0))); // usually 0
+        }
+
+        [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL_KIT)] // 4.3.4
+        public static void HandleCastVisualKit(Packet packet)
+        {
             packet.ReadUInt32("Unk");
             packet.ReadUInt32("SpellVisualKit ID");
             packet.ReadUInt32("Unk");
