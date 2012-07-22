@@ -117,5 +117,10 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_LF_GUILD_POST_REQUEST)]
+        public static void HandlerLFGuildZeroLength(Packet packet)
+        {
+        }
+
     }
 }
