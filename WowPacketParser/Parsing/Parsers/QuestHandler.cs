@@ -604,7 +604,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005) && ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_4_15595)) // remove confirmed for 434
                 packet.ReadUInt32("Unk UInt32");
         }
 

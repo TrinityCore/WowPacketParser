@@ -874,13 +874,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt64("Today XP");
         }
 
-        [Parser(Opcode.SMSG_GUILD_MAX_DAILY_XP)]
-        [Parser(Opcode.SMSG_LOG_GUILD_XPGAIN)]
-        public static void HandleGuildMaxDailyXP(Packet packet)
-        {
-            packet.ReadUInt64("XP");
-        }
-
         [Parser(Opcode.SMSG_GUILD_NEWS_UPDATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildNewsUpdate(Packet packet)
         {
@@ -1387,8 +1380,9 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_GUILD_MAX_DAILY_XP)]
         [Parser(Opcode.SMSG_GUILD_XP_GAIN)]
-        public static void HandleGuildXPGain(Packet packet)
+        public static void HandleGuildXPResponse(Packet packet)
         {
             packet.ReadInt64("XP");
         }

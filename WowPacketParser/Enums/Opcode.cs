@@ -1325,7 +1325,6 @@ namespace WowPacketParser.Enums
         SMSG_LOGOUT_CANCEL_ACK,
         SMSG_LOGOUT_COMPLETE,
         SMSG_LOGOUT_RESPONSE,
-        SMSG_LOG_GUILD_XPGAIN,
         SMSG_LOG_XPGAIN,
         SMSG_LOOT_ALL_PASSED,
         SMSG_LOOT_CLEAR_MONEY,
