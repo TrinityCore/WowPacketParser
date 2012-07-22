@@ -1381,9 +1381,9 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (int i = 0; i < count; ++i)
             {
-                packet.ReadInt32("Skill Id", i);
-                for (int j = 0; j < 300; ++j)
-                    packet.ReadByte("Unk Byte", i, j);
+                packet.ReadInt32("Skill Id", i);         // iterate all SkillLineAbility.dbc rows:
+                for (int j = 0; j < 300; ++j)            // if (entry->skillId != "Skill Id") continue;
+                    packet.ReadByte("Bit Index", i, j);  // if (mask[entry->col13 / 8] & (entry->col13 & 0x7)) recipe_spell_id: entry->spellId
             }
         }
 

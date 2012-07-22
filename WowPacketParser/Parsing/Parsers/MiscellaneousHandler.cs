@@ -852,6 +852,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ToGuid("Player GUID", guid);
         }
 
+        [Parser(Opcode.SMSG_MEETINGSTONE_IN_PROGRESS)]
+        public static void HandleMeetingstoneInProgress(Packet packet)
+        {
+            packet.ReadInt32("Unk Int32");
+        }
+
         [Parser(Opcode.SMSG_MINIGAME_STATE)]
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
