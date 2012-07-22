@@ -809,7 +809,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_RANKS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_GUILD_QUERY_NEWS)]
         [Parser(Opcode.CMSG_GUILD_REQUEST_MAX_DAILY_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
-        [Parser(Opcode.CMSG_QUERY_GUILD_XP)]
+        [Parser(Opcode.CMSG_QUERY_GUILD_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRequestNews(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -820,7 +820,15 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(0, 3, 5, 1, 4, 6, 7, 2);
             packet.ParseBitStream(guid, 7, 4, 3, 5, 1, 2, 6, 0);
-            packet.ToGuid("Guid", guid);
+            packet.ToGuid("GUID", guid);
+        }
+
+        [Parser(Opcode.CMSG_QUERY_GUILD_XP, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildQueryGuildXP(Packet packet)
+        {
+            var guid = packet.StartBitStream(2, 1, 0, 5, 4, 7, 6, 3);
+            packet.ParseBitStream(guid, 7, 2, 3, 6, 1, 5, 0, 4);
+            packet.ToGuid("GUID", guid);
         }
 
         [Parser(Opcode.CMSG_GUILD_RANKS, ClientVersionBuild.V4_3_4_15595)]
