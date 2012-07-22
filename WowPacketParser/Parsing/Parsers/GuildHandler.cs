@@ -938,7 +938,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Achievement Id", i);
 
             for (var i = 0; i < size; ++i)
-                packet.ReadUInt32("Faction Standing", i);
+                packet.ReadEnum<ReputationRank>("Faction Standing", TypeCode.UInt32, i);
 
             for (var i = 0; i < size; ++i)
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Id", i);
@@ -952,7 +952,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < size; ++i)
             {
-                packet.ReadUInt32("Faction Standing", i);
+                packet.ReadEnum<ReputationRank>("Faction Standing", TypeCode.UInt32, i);
                 packet.ReadInt32("Unk Int32", i);
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Id", i);
                 packet.ReadUInt64("Price", i);

@@ -19,7 +19,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
             {
                 packet.ReadEnum<FactionFlag>("Faction Flags", TypeCode.Byte, i);
-                packet.ReadInt32("Faction Standing", i);
+                packet.ReadEnum<ReputationRank>("Faction Standing", TypeCode.UInt32, i);
             }
         }
 
