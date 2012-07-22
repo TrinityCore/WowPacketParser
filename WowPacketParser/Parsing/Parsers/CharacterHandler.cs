@@ -788,14 +788,23 @@ namespace WowPacketParser.Parsing.Parsers
         {
             using (var packet2 = packet.Inflate(packet.ReadInt32()))
             {
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
-                    HandleCharEnum434(packet2);
-                else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_3_15354))
-                    HandleCharEnum433(packet2);
-                else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
-                    HandleCharEnum430(packet2);
-                else
-                    HandleCharEnum422(packet2);
+                switch (ClientVersion.Build)
+                {
+                    case ClientVersionBuild.V4_3_4_15595:
+                        HandleCharEnum434(packet2);
+                        break;
+                    case ClientVersionBuild.V4_3_3_15354:
+                        HandleCharEnum433(packet2);
+                        break;
+                    case ClientVersionBuild.V4_3_0_15005:
+                        HandleCharEnum430(packet2);
+                        break;
+                    case ClientVersionBuild.V4_2_2_14545:
+                        HandleCharEnum422(packet2);
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
             }
         }
 
@@ -954,6 +963,40 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadUInt32("Week Cap");
             packet.ReadUInt32("Currency ID");
+        }
+
+        [Parser(Opcode.SMSG_XP_GAIN_ABORTED)] // 4.3.4, related to EVENT_TRIAL_CAP_REACHED_LEVEL
+        public static void HandleXPGainAborted(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
+
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+
+            packet.ReadInt32("Unk Int32 1");
+
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+
+            packet.ReadInt32("Unk Int32 2");
+
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+
+            packet.ReadInt32("Unk Int32 3");
+
+            packet.ToGuid("Guid", guid);
         }
     }
 }
