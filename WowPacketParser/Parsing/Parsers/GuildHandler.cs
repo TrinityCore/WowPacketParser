@@ -1366,6 +1366,14 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Criteria Id", i);
         }
 
+        [Parser(Opcode.CMSG_QUERY_GUILD_RECIPES)] // 4.3.4
+        public static void HandleQueryGuildRecipes(Packet packet)
+        {
+            var guid = packet.StartBitStream(5, 6, 1, 4, 2, 7, 0, 3);
+            packet.ParseBitStream(guid, 3, 1, 0, 5, 4, 2, 6, 7);
+            packet.ToGuid("Guild Guid", guid);
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REM_MONEY_WITHDRAW_QUERY)]
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
         [Parser(Opcode.CMSG_GUILD_REQUEST_CHALLENGE_UPDATE)]

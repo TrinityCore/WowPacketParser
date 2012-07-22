@@ -185,6 +185,5 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadTime("Unk Time");
         }
-
     }
 }
