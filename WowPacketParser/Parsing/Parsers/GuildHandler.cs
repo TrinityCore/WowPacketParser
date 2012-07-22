@@ -1374,6 +1374,19 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ToGuid("Guild Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_GUILD_RECIPES)] // 4.3.4
+        public static void HandleGuildRecipes(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 16);
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Skill Id", i);
+                for (int j = 0; j < 300; ++j)
+                    packet.ReadByte("Unk Byte", i, j);
+            }
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REM_MONEY_WITHDRAW_QUERY)]
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
         [Parser(Opcode.CMSG_GUILD_REQUEST_CHALLENGE_UPDATE)]
