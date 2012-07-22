@@ -919,7 +919,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("Player GUID");
         }
 
-        [Parser(Opcode.SMSG_GUILD_REWARDS_LIST)]
+        [Parser(Opcode.SMSG_GUILD_REWARDS_LIST, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRewardsList(Packet packet)
         {
             packet.ReadUInt32("Guild Id");
@@ -942,6 +942,25 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < size; ++i)
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Id", i);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_REWARDS_LIST, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildRewardsList434(Packet packet)
+        {
+            
+            var size = packet.ReadBits("Size", 21);
+
+            for (var i = 0; i < size; ++i)
+            {
+                packet.ReadUInt32("Faction Standing", i);
+                packet.ReadInt32("Unk Int32", i);
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Id", i);
+                packet.ReadUInt64("Price", i);
+                packet.ReadUInt32("Unk UInt32", i);
+                packet.ReadUInt32("Achievement Id", i);
+            }
+
+            packet.ReadTime("Time");
         }
 
         [Parser(Opcode.CMSG_GUILD_BANK_DEPOSIT_MONEY)]
