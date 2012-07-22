@@ -841,6 +841,17 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Cemetery Id", i); // not confirmed
         }
 
+        [Parser(Opcode.SMSG_FORCE_SET_VEHICLE_REC_ID)] // 4.3.4
+        public static void HandleForceSetVehicleRecId(Packet packet)
+        {
+            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32");
+
+            var guid = packet.StartBitStream(3, 0, 1, 7, 2, 6, 5, 4);
+            packet.ParseBitStream(guid, 5, 7, 4, 3, 2, 6, 1, 0);
+            packet.ToGuid("Player GUID", guid);
+        }
+
         [Parser(Opcode.SMSG_MINIGAME_STATE)]
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]

@@ -36,7 +36,6 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_INSPECT_TALENT)]
-        [Parser(Opcode.SMSG_INSPECT_RESULTS_UPDATE)]
         public static void HandleInspectTalent(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
@@ -44,8 +43,7 @@ namespace WowPacketParser.Parsing.Parsers
             else
                 packet.ReadPackedGuid("GUID");
 
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_INSPECT_TALENT))
-                ReadTalentInfo(ref packet);
+            ReadTalentInfo(ref packet);
 
             var slotMask = packet.ReadUInt32("Slot Mask");
             var slot = 0;
@@ -79,13 +77,55 @@ namespace WowPacketParser.Parsing.Parsers
                 slotMask >>= 1;
             }
 
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_INSPECT_TALENT)
-                && packet.CanRead()) // otherwise it would fail for players without a guild
+            if (packet.CanRead()) // otherwise it would fail for players without a guild
             {
                 packet.ReadGuid("Guild GUID");
                 packet.ReadUInt32("Guild Level");
                 packet.ReadUInt64("Guild Xp");
                 packet.ReadUInt32("Guild Members");
+            }
+        }
+
+        [Parser(Opcode.SMSG_INSPECT_RESULTS_UPDATE)]
+        public static void HandleInspectResultsUpdate(Packet packet)
+        {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595)) // confirmed for 4.3.4
+                packet.ReadPackedGuid("GUID");
+            else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
+                packet.ReadGuid("GUID");
+            else
+                packet.ReadPackedGuid("GUID");
+
+            var slotMask = packet.ReadUInt32("Slot Mask");
+            var slot = 0;
+            while (slotMask > 0)
+            {
+                if ((slotMask & 0x1) > 0)
+                {
+                    var name = "[" + (EquipmentSlotType)slot + "] ";
+                    packet.ReadEntryWithName<UInt32>(StoreNameType.Item, name + "Item Entry");
+                    var enchantMask = packet.ReadUInt16();
+                    if (enchantMask > 0)
+                    {
+                        var enchantName = name + "Item Enchantments: ";
+                        while (enchantMask > 0)
+                        {
+                            if ((enchantMask & 0x1) > 0)
+                            {
+                                enchantName += packet.ReadUInt16();
+                                if (enchantMask > 1)
+                                    enchantName += ", ";
+                            }
+                            enchantMask >>= 1;
+                        }
+                        packet.WriteLine(enchantName);
+                    }
+                    packet.ReadUInt16(name + "Unk Uint16");
+                    packet.ReadPackedGuid(name + "Creator GUID");
+                    packet.ReadUInt32(name + "Unk Uint32");
+                }
+                ++slot;
+                slotMask >>= 1;
             }
         }
 
