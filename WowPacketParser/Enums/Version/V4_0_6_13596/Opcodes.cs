@@ -413,7 +413,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_PLAY_DANCE, 0x02288}, // 4.0.6a 13623
             {Opcode.CMSG_PUSHQUESTTOPARTY, 0x029E8}, // 4.0.6a 13623
             {Opcode.CMSG_QUERY_GUILD_REWARDS, 0x02210}, // 4.0.6a 13623
-            {Opcode.CMSG_QUERY_GUILD_MAX_XP, 0x0350D}, // 4.0.6a 13623
+            {Opcode.CMSG_GUILD_REQUEST_MAX_DAILY_XP, 0x0350D}, // 4.0.6a 13623
             {Opcode.CMSG_QUERY_GUILD_XP, 0x03509}, // 4.0.6a 13623
             {Opcode.CMSG_QUERY_INSPECT_ACHIEVEMENTS, 0x069A0}, // 4.0.6a 13623 (might be 0x028EC)
             {Opcode.CMSG_QUERY_QUESTS_COMPLETED, 0x0FE84}, // 4.0.6a 13623
