@@ -21,15 +21,33 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Known");
         }
 
-        [Parser(Opcode.SMSG_SHOWTAXINODES)]
+        [Parser(Opcode.SMSG_SHOWTAXINODES, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleShowTaxiNodes(Packet packet)
         {
-            packet.ReadUInt32("Unk UInt32 1");
-            packet.ReadGuid("GUID");
-            packet.ReadUInt32("Node ID");
+            var u = packet.ReadUInt32("Unk UInt32 1");
+            if (u != 0)
+            {
+                packet.ReadGuid("GUID");
+                packet.ReadUInt32("Node ID");
+            }
             var i = 0;
             while (packet.CanRead())
-                packet.ReadUInt32("NodeMask", i++);
+                packet.ReadUInt64("NodeMask", i++);
+        }
+
+        [Parser(Opcode.SMSG_SHOWTAXINODES, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleShowTaxiNodes434(Packet packet)
+        {
+            var u = packet.ReadUInt32("Unk UInt32 1");
+            if (u != 0)
+            {
+                packet.ReadGuid("GUID");
+                packet.ReadUInt32("Node ID");
+            }
+
+            var count = packet.ReadInt32("Count");
+            for (int i = 0; i < count; ++i)
+                packet.ReadByte("Unk Byte", i);
         }
 
         [Parser(Opcode.CMSG_ACTIVATETAXI)]
