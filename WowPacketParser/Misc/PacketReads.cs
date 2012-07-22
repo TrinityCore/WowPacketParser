@@ -295,6 +295,13 @@ namespace WowPacketParser.Misc
             return val;
         }
 
+        public string ReadWoWString(string name, uint len, params int[] values)
+        {
+            string val = ReadWoWString((int)len);
+            WriteLine("{0}{1}: {2}", GetIndexString(values), name, val);
+            return val;
+        }
+
         public string ReadCString(string name, params int[] values)
         {
             string val = ReadCString();
