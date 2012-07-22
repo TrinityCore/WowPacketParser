@@ -890,8 +890,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_QUERY_GUILD_REWARDS)]
         public static void HandleGuildQueryRewards(Packet packet)
         {
-            packet.ReadUInt32("Unk UInt32");
-            packet.ReadGuid("Player GUID");
+            packet.ReadTime("Unk Time");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_4_15595))
+                packet.ReadGuid("Player GUID");
         }
 
         [Parser(Opcode.SMSG_GUILD_REWARDS_LIST)]

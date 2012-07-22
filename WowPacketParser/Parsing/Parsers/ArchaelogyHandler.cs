@@ -6,7 +6,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class ArchaelogyHandler
     {
-        [Parser(Opcode.SMSG_RESEARCH_SETUP_HISTORY)]
+        [Parser(Opcode.SMSG_RESEARCH_SETUP_HISTORY)] // 4.3.4
         public static void HandleResearchSetupHistory(Packet packet)
         {
             var count = packet.ReadBits("Count", 22);
