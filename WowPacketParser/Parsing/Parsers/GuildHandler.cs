@@ -284,7 +284,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (bytes[i][7] != 0)
                     bytes[i][7] ^= packet.ReadByte();
 
-                packet.ReadUInt32("Remaining guild week Rep", i); 
+                packet.ReadUInt32("Remaining guild week Rep", i);
                 packet.ReadWoWString("Public note", publicLen[i], i);
 
                 if (bytes[i][3] != 0)
@@ -1119,7 +1119,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadInt64("Remaining Money");
         }
-        
+
 
         [Parser(Opcode.MSG_GUILD_EVENT_LOG_QUERY)]
         public static void HandleGuildEventLogQuery(Packet packet)
