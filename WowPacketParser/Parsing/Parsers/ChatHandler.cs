@@ -243,13 +243,11 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleClientChatMessageWhisper434(Packet packet)
         {
             packet.ReadEnum<ChatMessageType>("Type", TypeCode.UInt32);
-            packet.ReadBit();
-            var lengths = new int[2];
-            for (var i = 0; i < 2; ++i)
-                lengths[i] = (int)packet.ReadBits(9);
+            var recvName = packet.ReadBits(10);
+            var msgLen = packet.ReadBits(9);
 
-            packet.ReadWoWString("Receivers Name", lengths[0]);
-            packet.ReadWoWString("Message", lengths[1]);
+            packet.ReadWoWString("Receivers Name", recvName);
+            packet.ReadWoWString("Message", msgLen);
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_PARTY, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -326,7 +324,6 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadWoWString("Message", packet.ReadBits(9));
             else
                 packet.ReadCString("Message");
-
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT_AFK, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -369,13 +366,11 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleClientChatMessageChannel434(Packet packet)
         {
             packet.ReadEnum<Language>("Language", TypeCode.Int32);
-            packet.ReadBit();
-            var lengths = new uint[2];
-            for (var i = 0; i < 2; ++i)
-                lengths[i] = packet.ReadBits(9);
+            var channelNameLen = packet.ReadBits(10);
+            var msgLen = packet.ReadBits(9);
 
-            packet.ReadWoWString("Message", lengths[1]);
-            packet.ReadWoWString("Channel Name", lengths[0]);
+            packet.ReadWoWString("Message", msgLen);
+            packet.ReadWoWString("Channel Name", channelNameLen);
         }
 
         [Parser(Opcode.SMSG_GM_MESSAGECHAT)] // Similar to SMSG_MESSAGECHAT
