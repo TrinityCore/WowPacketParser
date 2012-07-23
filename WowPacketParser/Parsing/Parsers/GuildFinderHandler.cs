@@ -34,12 +34,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        //[Parser(Opcode.SMSG_LF_GUILD_RECRUIT_LIST_UPDATED)]
-        //public static void HandleGuildFinderRecruitsUpdated(Packet packet)
-        //{
-        //    import_sub_6ECE50(); // bitshiffing
-        //}
-
         [Parser(Opcode.SMSG_LF_GUILD_SEARCH_RESULT)]
         public static void HandleGuildFinderSearchResult(Packet packet)
         {
@@ -115,11 +109,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_LF_GUILD_POST_REQUEST)]
-        public static void HandlerLFGuildZeroLength(Packet packet)
-        {
-        }
-
         [Parser(Opcode.CMSG_LF_GUILD_GET_RECRUITS)]
         public static void HandlerLFGuildGetRecruits(Packet packet)
         {
@@ -167,16 +156,16 @@ namespace WowPacketParser.Parsing.Parsers
                 if (guids[i][2] != 0) guids[i][2] ^= packet.ReadByte();
                 if (guids[i][7] != 0) guids[i][7] ^= packet.ReadByte();
 
-                packet.ReadInt32("Unk Int32 2", i);
+                packet.ReadInt32("Time Since", i); // Time (in seconds) since the application was submitted.
                 packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32, i);
                 packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32, i);
                 packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32, i);
-                packet.ReadInt32("Unk Int32 3", i);
+                packet.ReadInt32("Time Left", i); // Time (in seconds) until the application will expire.
 
-                packet.ReadWoWString("Character name", strlen[i][1], i);
-                packet.ReadWoWString("Description", strlen[i][0], i);
+                packet.ReadWoWString("Character Name", strlen[i][1], i);
+                packet.ReadWoWString("Comment", strlen[i][0], i);
 
-                packet.ReadInt32("Unk Int32 4", i);
+                packet.ReadEnum<Class>("Class", TypeCode.UInt32, i);
 
                 if (guids[i][5] != 0) guids[i][5] ^= packet.ReadByte();
 
@@ -184,6 +173,11 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             packet.ReadTime("Unk Time");
+        }
+
+        [Parser(Opcode.SMSG_LF_GUILD_POST_REQUEST)]
+        public static void HandlerLFGuildZeroLength(Packet packet)
+        {
         }
     }
 }
