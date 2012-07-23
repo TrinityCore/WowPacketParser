@@ -912,5 +912,24 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 2, 4, 7, 3, 6, 0);
             packet.ToGuid("Item Guid", guid);
         }
+
+        [Parser(Opcode.CMSG_REFORGE_ITEM, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleItemSendReforge(Packet packet)
+        {
+            packet.ReadInt32("Reforge Entry");
+            packet.ReadInt32("Slot");
+            packet.ReadInt32("Bag");
+
+            var guid = packet.StartBitStream(2,6,3,4,1,0,7,5);
+            packet.ParseBitStream(guid,2,3,6,4,1,0,7,5);
+            packet.ToGuid("Reforger Guid", guid);
+            
+        }
+
+        [Parser(Opcode.SMSG_REFORGE_RESULT, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleItemReforgeResult(Packet packet)
+        {
+            packet.ReadBit("Successful");
+        }
     }
 }
