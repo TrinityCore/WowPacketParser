@@ -1016,8 +1016,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_INSPECT_RATED_BG_STATS)]
         public static void HandleInspectRatedBGStats(Packet packet)
         {
-            packet.AsHex();
-
             var guid = new byte[8];
             guid[6] = packet.ReadBit().ToByte();
             guid[4] = packet.ReadBit().ToByte();
