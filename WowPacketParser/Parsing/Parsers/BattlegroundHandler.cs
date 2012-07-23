@@ -1011,7 +1011,40 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("GUID", i);
                 packet.ReadVector2("Position", i);
             }
+        }
 
+        [Parser(Opcode.SMSG_INSPECT_RATED_BG_STATS)]
+        public static void HandleInspectRatedBGStats(Packet packet)
+        {
+            packet.AsHex();
+
+            var guid = new byte[8];
+            guid[6] = packet.ReadBit().ToByte();
+            guid[4] = packet.ReadBit().ToByte();
+            guid[5] = packet.ReadBit().ToByte();
+            guid[1] = packet.ReadBit().ToByte();
+            guid[2] = packet.ReadBit().ToByte();
+            guid[7] = packet.ReadBit().ToByte();
+            guid[0] = packet.ReadBit().ToByte();
+            guid[3] = packet.ReadBit().ToByte();
+
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+
+            packet.ReadInt32("Rating");
+
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+
+            packet.ReadInt32("Won");
+            packet.ReadInt32("Played");
+
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+
+            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
         }
 
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE)]
