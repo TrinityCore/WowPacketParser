@@ -228,6 +228,8 @@ namespace XPTable.Models
             if (index >= 0 && index < this.Count)
             {
                 Row row = this[index];
+                if (row.cells == null)
+                    return;
                 RemoveControlIfRequired(index);
                 row.cells = null;
             }

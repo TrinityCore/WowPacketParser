@@ -18,7 +18,7 @@ namespace PacketViewer.Forms
                 return null;
             DetailsView cont = new DetailsView();
 
-            var entry = Tab.dataManager.Get(cell.Row.Index - 1);
+            var entry = Tab.dataManager.GetDataForTableRow(cell.Row.Index - 1);
             cont.textBox1.Text = entry.ParsedPacket;
             cont.Height = cell.Row.Height;
             return cont;

@@ -12,16 +12,17 @@ namespace XPTable.Models
             : base()
         {
         }
-        private int _childindex;
+        //private sbyte _childindex;
         protected override int childindex
         {
             get
             {
-                return _childindex;
+                //HACK
+                return 1;//_childindex;
             }
             set
             {
-                _childindex = value;
+                //_childindex = value;
             }
         }
 

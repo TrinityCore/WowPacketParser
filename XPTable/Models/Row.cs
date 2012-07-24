@@ -144,7 +144,16 @@ namespace XPTable.Models
 		/// <summary>
 		/// An object that contains data about the Row
 		/// </summary>
-		private object tag;
+		private object tag
+        {
+            get
+            {
+                return null;
+            }
+            set
+            {
+            }
+        }
 
 		/// <summary>
 		/// The TableModel that the Row belongs to
@@ -249,7 +258,16 @@ namespace XPTable.Models
             }
         }
 
-        private sbyte _wordWrapIndex;
+        private sbyte _wordWrapIndex
+        {
+            get
+            {
+                return 0;
+            }
+            set
+            {
+            }
+        }
 
         private int wordWrapIndex
         {

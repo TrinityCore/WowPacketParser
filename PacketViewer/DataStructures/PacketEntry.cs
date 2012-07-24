@@ -5,6 +5,7 @@ using System.Text;
 
 namespace PacketViewer.DataStructures
 {
+    [Serializable]
     public class PacketEntry
     {
         public uint Number;

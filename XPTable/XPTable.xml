@@ -4502,11 +4502,6 @@
             The collection of Cells's contained in the Row
             </summary>
         </member>
-        <member name="F:XPTable.Models.Row.tag">
-            <summary>
-            An object that contains data about the Row
-            </summary>
-        </member>
         <member name="F:XPTable.Models.Row.tableModel">
             <summary>
             The TableModel that the Row belongs to
@@ -4740,6 +4735,11 @@
         <member name="P:XPTable.Models.Row.height">
             <summary>
             The actual rendered height of this row. If negative then it has not been rendered and height is unknown.
+            </summary>
+        </member>
+        <member name="P:XPTable.Models.Row.tag">
+            <summary>
+            An object that contains data about the Row
             </summary>
         </member>
         <member name="P:XPTable.Models.Row.state">

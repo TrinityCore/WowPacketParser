@@ -2556,7 +2556,7 @@ namespace XPTable.Models
                 }
                 this.UpdateScrollBars();   // without this the scolling will have been set up assuming all rows have the default height
 
-                this.Invalidate(false);
+                this.Invalidate(true);
             }
 		}
 
@@ -3378,7 +3378,7 @@ namespace XPTable.Models
 				{
 					this.borderStyle = value;
 
-					this.Invalidate(false);
+					this.Invalidate(true);
 				}
 			}
 		}
@@ -3397,7 +3397,7 @@ namespace XPTable.Models
 				{
 					this.borderColor = value;
 
-					this.Invalidate(false);
+					this.Invalidate(true);
 				}
 			}
 		}
@@ -3417,7 +3417,7 @@ namespace XPTable.Models
 					this.unfocusedBorderColor = value;
 
 					if (!this.Focused)
-						this.Invalidate(false);
+						this.Invalidate(true);
 				}
 			}
 		}
@@ -3875,7 +3875,7 @@ namespace XPTable.Models
 				if (this.gridLines != value)
 				{
 					this.gridLines = value;
-					this.Invalidate(this.PseudoClientRect, false);
+					this.Invalidate(this.PseudoClientRect, true);
 				}
 			}
 		}
@@ -8800,7 +8800,7 @@ namespace XPTable.Models
 
 		    UpdateScrollBars();
 
-            this.Invalidate(false);
+            this.Invalidate(true);
 
             lastVScrollValue = vScrollBar.Value;
 		}
