@@ -675,12 +675,11 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             var x = packet.ReadUInt32("Number of Required Currencies");
-            if (x != 0)
-                for (var i = 0; i < x; i++)
-                {
-                    packet.ReadUInt32("Required Currency Id");
-                    packet.ReadUInt32("Required Currency Count");
-                }
+            for (var i = 0; i < x; i++)
+            {
+                packet.ReadUInt32("Required Currency Id", i);
+                packet.ReadUInt32("Required Currency Count", i);
+            }
 
             // flags
             packet.ReadUInt32("Unk flags 1");

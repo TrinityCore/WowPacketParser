@@ -820,33 +820,56 @@ namespace WowPacketParser.Parsing.Parsers
             bytes[6] = packet.ReadBit().ToByte();
             var relocated = packet.ReadBit().ToByte();
             bytes[7] = packet.ReadBit().ToByte();
-            bytes[4] = packet.ReadByte();
+            bytes[4] = packet.ReadBit().ToByte();
 
-            var battlestatus = packet.ReadByte();
+            packet.ReadByte("Battle Status");
 
             if (bytes[1] != 0) bytes[1] ^= packet.ReadByte();
             if (bytes[7] != 0) bytes[7] ^= packet.ReadByte();
             if (bytes[4] != 0) bytes[4] ^= packet.ReadByte();
             if (bytes[2] != 0) bytes[2] ^= packet.ReadByte();
             if (bytes[3] != 0) bytes[3] ^= packet.ReadByte();
-            var reason = packet.ReadByte();
+            packet.ReadByte("Reason");
             if (bytes[6] != 0) bytes[6] ^= packet.ReadByte();
             if (bytes[0] != 0) bytes[0] ^= packet.ReadByte();
             if (bytes[5] != 0) bytes[5] ^= packet.ReadByte();
 
             packet.ToGuid("Guid", bytes);
-            packet.WriteLine("Reason: {0}", reason);
-            packet.WriteLine("Battle Status: {0}", battlestatus);
             packet.WriteLine("Relocated: {0}", relocated != 0);
 
 
         }
 
-        [Parser(Opcode.CMSG_BATTLEFIELD_MGR_ENTRY_INVITE_RESPONSE)]
+        [Parser(Opcode.CMSG_BATTLEFIELD_MGR_ENTRY_INVITE_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldMgrEntryInviteResponse(Packet packet)
         {
             packet.ReadInt32("Battle Id");
             packet.ReadBoolean("Accepted");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEFIELD_MGR_ENTRY_INVITE_RESPONSE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleBattlefieldMgrEntryInviteResponse434(Packet packet)
+        {
+            var guid = new byte[8];
+            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            packet.ReadBit("Accepted");            
+            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[4] = 1;
+
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            packet.ToGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_MGR_EXIT_REQUEST)]
