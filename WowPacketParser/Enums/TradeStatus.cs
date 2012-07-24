@@ -27,4 +27,36 @@ namespace WowPacketParser.Enums
         OnlyConjured  = 22,
         NotEligible   = 23
     }
+
+    public enum TradeStatus434
+    {
+        Busy          = 18,  // or 21
+        BeginTrade    = 12, 
+        OpenWindow    = 0, // not confirmed 
+        Canceled      = 23,
+        Accept        = 6,
+        Busy2         = 21, // or 19
+        NoTarget      = 17,
+        BackToTrade   = 25,
+        Tradecomplete = 9,
+        Unk9          = 22,
+        TargetToFar   = 16,
+        WrongFaction  = 20,
+        CloseWindow   = 31,
+        //Unk13         = ?,
+        IgnoringYou   = 4,
+        YouStunned    = 27,
+        TargetStunned = 29,
+        YouDead       = 13,
+        TargetDead    = 5,
+        YouLogout     = 3,
+        TargetLogout  = 7,
+        TrialAccount  = 10,
+        OnlyConjured  = 26,
+        NotEligible   = 2,
+
+        CurrencyNotTradable = 9,
+        TradeCurrency = 24,
+        UnkTrade = 19,
+    }
 }

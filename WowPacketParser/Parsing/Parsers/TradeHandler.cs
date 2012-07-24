@@ -47,7 +47,31 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Gold");
         }
 
-        [Parser(Opcode.SMSG_TRADE_STATUS, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_TRADE_STATUS, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleTradeStatus(Packet packet)
+        {
+            var status = packet.ReadEnum<TradeStatus>("Status", TypeCode.UInt32);
+            switch (status)
+            {
+                case TradeStatus.BeginTrade:
+                    packet.ReadGuid("GUID");
+                    break;
+                case TradeStatus.OpenWindow:
+                    packet.ReadUInt32("Trade Id");
+                    break;
+                case TradeStatus.CloseWindow:
+                    packet.ReadUInt32("Unk UInt32 1");
+                    packet.ReadByte("Unk Byte");
+                    packet.ReadUInt32("Unk UInt32 2");
+                    break;
+                case TradeStatus.OnlyConjured:
+                case TradeStatus.NotEligible:
+                    packet.ReadByte("Unk Byte");
+                    break;
+            }
+        }
+        
+        [Parser(Opcode.SMSG_TRADE_STATUS, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleTradeStatus422(Packet packet)
         {
             var guid = new byte[8];
@@ -90,27 +114,112 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
         }
 
-        [Parser(Opcode.SMSG_TRADE_STATUS, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleTradeStatus(Packet packet)
+        [Parser(Opcode.SMSG_TRADE_STATUS, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleTradeStatus434(Packet packet)
         {
-            var status = packet.ReadEnum<TradeStatus>("Status", TypeCode.UInt32);
+            packet.ReadBit("Unk Bit");
+            var status = packet.ReadEnum<TradeStatus434>("Status", 5);
+
             switch (status)
             {
-                case TradeStatus.BeginTrade:
-                    packet.ReadGuid("GUID");
+                case TradeStatus434.BeginTrade:
+                    var guid = packet.StartBitStream(2, 4, 6, 0, 1, 3, 7, 5);
+                    packet.ParseBitStream(guid, 4, 1, 2, 3, 0, 7, 6, 5);
+                    packet.ToGuid("GUID", guid);
                     break;
-                case TradeStatus.OpenWindow:
-                    packet.ReadUInt32("Trade Id");
+                case TradeStatus434.CloseWindow:
+                    packet.ReadBit("Unk Bit");
+                    packet.ReadInt32("Unk Int32");
+                    packet.ReadInt32("Unk Int32");
                     break;
-                case TradeStatus.CloseWindow:
-                    packet.ReadUInt32("Unk UInt32 1");
+                case TradeStatus434.TradeCurrency:
+                case TradeStatus434.UnkTrade:
+                    packet.ReadInt32("Unk Int32 1");
+                    packet.ReadInt32("Unk Int32 2");
+                    break;
+                case TradeStatus434.NotEligible:
+                case TradeStatus434.OnlyConjured:
                     packet.ReadByte("Unk Byte");
-                    packet.ReadUInt32("Unk UInt32 2");
                     break;
-                case TradeStatus.OnlyConjured:
-                case TradeStatus.NotEligible:
-                    packet.ReadByte("Unk Byte");
+                case TradeStatus434.OpenWindow:
+                    packet.ReadInt32("Trade Id");
                     break;
+            }
+        }
+
+        [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
+        public static void HandleTradeStatusExtended(Packet packet)
+        {
+            packet.ReadByte("Trader");
+            packet.ReadUInt32("Trade Id");
+            packet.ReadUInt32("Unk Slot 1");
+            packet.ReadUInt32("Unk Slot 2");
+            packet.ReadUInt32("Gold");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+
+            while (packet.CanRead())
+            {
+                var slot = packet.ReadByte("Slot Index");
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", slot);
+                packet.ReadUInt32("Item Display ID", slot);
+                packet.ReadUInt32("Item Count", slot);
+                packet.ReadUInt32("Item Wrapped", slot);
+                packet.ReadGuid("Item Gift Creator GUID", slot);
+                packet.ReadUInt32("Item Perm Enchantment Id", slot);
+                for (var i = 0; i < 3; ++i)
+                    packet.ReadUInt32("Item Enchantment Id", slot, i);
+                packet.ReadGuid("Item Creator GUID", slot);
+                packet.ReadInt32("Item Spell Charges", slot);
+                packet.ReadInt32("Item Suffix Factor", slot);
+                packet.ReadInt32("Item Random Property ID", slot);
+                packet.ReadUInt32("Item Lock ID", slot);
+                packet.ReadUInt32("Item Max Durability", slot);
+                packet.ReadUInt32("Item Durability", slot);
+            }
+        }
+
+        [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleTradeStatusExtended406(Packet packet)
+        {
+            packet.ReadUInt32("Unk 1");
+            packet.ReadUInt32("Unk 2");
+            packet.ReadBoolean("Unk (Has slots?)");
+            packet.ReadUInt32("Unk 3");
+            packet.ReadUInt32("Unk 4");
+            packet.ReadUInt32("Trade Id?");
+            var slots = packet.ReadUInt32("Trade Slots");
+            packet.ReadUInt64("Gold");
+            packet.ReadUInt32("Unk 6");
+
+            for (var i = 0; i < slots; ++i)
+            {
+                packet.ReadUInt32("Unk1", i);
+                packet.ReadGuid("Item Creator GUID", i);
+                packet.ReadUInt32("Item Perm Enchantment Id", i);
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
+                packet.ReadUInt32("Item Enchantment Id", i, 0);
+                packet.ReadUInt32("Item Durability", i);
+                packet.ReadUInt32("Unk2", i);
+                packet.ReadByte("Unk Byte", i);
+                packet.ReadGuid("Unk Guid: (Item Gift Creator GUID?)", i);
+                packet.ReadUInt32("Unk3", i);
+                packet.ReadByte("Slot Index", i);
+                packet.ReadUInt32("Item Max Durability", i);
+                packet.ReadUInt32("Item Count", i);
+                packet.ReadUInt32("Unk4", i);
+                packet.ReadUInt32("Item Temporal Enchantment", i);
+                packet.ReadUInt32("Item Enchantment Id", i, 1);
+                packet.ReadUInt32("Item Enchantment Id", i, 2);
+                packet.ReadUInt32("Unk5", i);
+
+                // Probably the unks are one of these (+ that "item Temporal Enchantment")
+                //packet.ReadUInt32("Item Display ID", slot);
+
+                //packet.ReadUInt32("Item Wrapped", slot);
+                //packet.ReadInt32("Item Spell Charges", slot);
+                //packet.ReadInt32("Item Suffix Factor", slot);
+                //packet.ReadInt32("Item Random Property ID", slot);
+                //packet.ReadUInt32("Item Lock ID", slot);
             }
         }
 
@@ -239,82 +348,6 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteLine("Item Gift Creator Guid: {0}", new Guid(BitConverter.ToUInt64(guids2[i], 0)));
             }
 
-        }
-
-        [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
-        public static void HandleTradeStatusExtended(Packet packet)
-        {
-            packet.ReadByte("Trader");
-            packet.ReadUInt32("Trade Id");
-            packet.ReadUInt32("Unk Slot 1");
-            packet.ReadUInt32("Unk Slot 2");
-            packet.ReadUInt32("Gold");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
-
-            while (packet.CanRead())
-            {
-                var slot = packet.ReadByte("Slot Index");
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", slot);
-                packet.ReadUInt32("Item Display ID", slot);
-                packet.ReadUInt32("Item Count", slot);
-                packet.ReadUInt32("Item Wrapped", slot);
-                packet.ReadGuid("Item Gift Creator GUID", slot);
-                packet.ReadUInt32("Item Perm Enchantment Id", slot);
-                for (var i = 0; i < 3; ++i)
-                    packet.ReadUInt32("Item Enchantment Id", slot, i);
-                packet.ReadGuid("Item Creator GUID", slot);
-                packet.ReadInt32("Item Spell Charges", slot);
-                packet.ReadInt32("Item Suffix Factor", slot);
-                packet.ReadInt32("Item Random Property ID", slot);
-                packet.ReadUInt32("Item Lock ID", slot);
-                packet.ReadUInt32("Item Max Durability", slot);
-                packet.ReadUInt32("Item Durability", slot);
-            }
-        }
-
-        [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleTradeStatusExtended406(Packet packet)
-        {
-            packet.ReadUInt32("Unk 1");
-            packet.ReadUInt32("Unk 2");
-            packet.ReadBoolean("Unk (Has slots?)");
-            packet.ReadUInt32("Unk 3");
-            packet.ReadUInt32("Unk 4");
-            packet.ReadUInt32("Trade Id?");
-            var slots = packet.ReadUInt32("Trade Slots");
-            packet.ReadUInt64("Gold");
-            packet.ReadUInt32("Unk 6");
-
-            for (var i = 0; i < slots; ++i)
-            {
-                packet.ReadUInt32("Unk1", i);
-                packet.ReadGuid("Item Creator GUID", i);
-                packet.ReadUInt32("Item Perm Enchantment Id", i);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
-                packet.ReadUInt32("Item Enchantment Id", i, 0);
-                packet.ReadUInt32("Item Durability", i);
-                packet.ReadUInt32("Unk2", i);
-                packet.ReadByte("Unk Byte", i);
-                packet.ReadGuid("Unk Guid: (Item Gift Creator GUID?)", i);
-                packet.ReadUInt32("Unk3", i);
-                packet.ReadByte("Slot Index", i);
-                packet.ReadUInt32("Item Max Durability", i);
-                packet.ReadUInt32("Item Count", i);
-                packet.ReadUInt32("Unk4", i);
-                packet.ReadUInt32("Item Temporal Enchantment", i);
-                packet.ReadUInt32("Item Enchantment Id", i, 1);
-                packet.ReadUInt32("Item Enchantment Id", i, 2);
-                packet.ReadUInt32("Unk5", i);
-
-                // Probably the unks are one of these (+ that "item Temporal Enchantment")
-                //packet.ReadUInt32("Item Display ID", slot);
-
-                //packet.ReadUInt32("Item Wrapped", slot);
-                //packet.ReadInt32("Item Spell Charges", slot);
-                //packet.ReadInt32("Item Suffix Factor", slot);
-                //packet.ReadInt32("Item Random Property ID", slot);
-                //packet.ReadUInt32("Item Lock ID", slot);
-            }
         }
 
         [Parser(Opcode.CMSG_ACCEPT_TRADE)]
