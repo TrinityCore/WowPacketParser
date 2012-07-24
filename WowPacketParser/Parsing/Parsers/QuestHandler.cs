@@ -608,15 +608,15 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk UInt32");
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS)]
+        [Parser(Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestRequestItems(Packet packet)
         {
             packet.ReadGuid("GUID");
             var entry = packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
             packet.ReadCString("Title");
             var text = packet.ReadCString("Text");
-            packet.ReadUInt32("Unk UInt32 1");
             packet.ReadUInt32("Emote");
+            packet.ReadUInt32("Unk UInt32 1");
             packet.ReadUInt32("Close Window on Cancel");
 
             Storage.QuestRewards.Add((uint) entry, new QuestReward {RequestItemsText = text}, null);
@@ -627,7 +627,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Suggested Players");
             packet.ReadUInt32("Money");
 
-            var count = packet.ReadUInt32("Required Item Count");
+            var count = packet.ReadUInt32("Number of Required Items");
             for (var i = 0; i < count; i++)
             {
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Required Item Id", i);
@@ -646,6 +646,48 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk flags 5");
                 packet.ReadUInt32("Unk flags 6");
             }
+        }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS,ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleQuestRequestItems434(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            var entry = packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
+            packet.ReadCString("Title");
+            var text = packet.ReadCString("Text");
+            packet.ReadUInt32("Emote");
+            packet.ReadUInt32("Unk UInt32 1");
+            packet.ReadUInt32("Close Window on Cancel");
+
+            Storage.QuestRewards.Add((uint)entry, new QuestReward { RequestItemsText = text }, null);
+
+            packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
+
+            packet.ReadUInt32("Suggested Players");
+            packet.ReadUInt32("Money");
+
+            var count = packet.ReadUInt32("Number of Required Items");
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Required Item Id", i);
+                packet.ReadUInt32("Required Item Count", i);
+                packet.ReadUInt32("Required Item Display Id", i);
+            }
+
+            var x = packet.ReadUInt32("Number of Required Currencies");
+            if (x != 0)
+                for (var i = 0; i < x; i++)
+                {
+                    packet.ReadUInt32("Required Currency Id");
+                    packet.ReadUInt32("Required Currency Count");
+                }
+
+            // flags
+            packet.ReadUInt32("Unk flags 1");
+            packet.ReadUInt32("Unk flags 2");
+            packet.ReadUInt32("Unk flags 3");
+            packet.ReadUInt32("Unk flags 4");
+            packet.ReadUInt32("Unk flags 5");
         }
 
         [Parser(Opcode.SMSG_QUESTGIVER_OFFER_REWARD)]
