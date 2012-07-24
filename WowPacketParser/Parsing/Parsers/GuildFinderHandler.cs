@@ -34,6 +34,13 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_LF_GUILD_COMMAND_RESULT)]
+        public static void HandleGuildFinderCommandResult(Packet packet)
+        {
+            packet.ReadByte("Unk Byte");
+            packet.ReadInt32("Unk Int32");
+        }
+
         [Parser(Opcode.SMSG_LF_GUILD_SEARCH_RESULT)]
         public static void HandleGuildFinderSearchResult(Packet packet)
         {
@@ -173,6 +180,131 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             packet.ReadTime("Unk Time");
+        }
+
+        // NOT TESTED
+        [Parser(Opcode.SMSG_LF_GUILD_MEMBERSHIP_LIST_UPDATED)]
+        public static void HandlerLFGuildMembershipListUpdated(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 20);
+
+            var guids = new byte[count][];
+            var strlen = new uint[count][];
+
+            for (int i = 0; i < count; ++i)
+            {
+                guids[i] = new byte[8];
+                strlen[i] = new uint[2];
+
+                guids[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
+                strlen[i][0] = packet.ReadBits(11);
+                guids[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
+                strlen[i][1] = packet.ReadBits(8);
+            }
+
+            for (int i = 0; i < count; ++i)
+            {
+                if (guids[i][2] != 0) guids[i][2] ^= packet.ReadByte();
+
+                packet.ReadWoWString("Unk string", strlen[i][0], i);
+
+                if (guids[i][5] != 0) guids[i][5] ^= packet.ReadByte();
+
+                packet.ReadWoWString("Unk string", strlen[i][1], i);
+                packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32, i);
+                packet.ReadInt32("Time Left", i);
+
+                if (guids[i][0] != 0) guids[i][0] ^= packet.ReadByte();
+                if (guids[i][6] != 0) guids[i][6] ^= packet.ReadByte();
+                if (guids[i][3] != 0) guids[i][3] ^= packet.ReadByte();
+                if (guids[i][7] != 0) guids[i][7] ^= packet.ReadByte();
+
+                packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32, i);
+
+                if (guids[i][4] != 0) guids[i][4] ^= packet.ReadByte();
+                if (guids[i][1] != 0) guids[i][1] ^= packet.ReadByte();
+
+                packet.ReadInt32("Time Since", i);
+                packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32, i);
+
+                packet.WriteLine("[{0}] GUID: {1}", i, new Guid(BitConverter.ToUInt64(guids[i], 0)));
+            }
+
+            packet.ReadInt32("Unk int");
+        }
+
+        [Parser(Opcode.SMSG_LF_GUILD_BROWSE_UPDATED)]
+        public static void HandlerLFGuildBrowseUpdated(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 19);
+
+            var guids = new byte[count][];
+            var strlen = new uint[count][];
+
+            for (int i = 0; i < count; ++i)
+            {
+                guids[i] = new byte[8];
+                strlen[i] = new uint[2];
+
+                guids[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
+                strlen[i][1] = packet.ReadBits(8);
+                guids[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
+                strlen[i][0] = packet.ReadBits(11);
+                guids[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
+            }
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Tabard Emblem Color", i);
+                packet.ReadInt32("Unk Int 1", i); // + 140
+                packet.ReadInt32("Tabard Icon", i);
+                packet.ReadWoWString("Comment", strlen[i][0], i);
+                packet.ReadBoolean("Cached", i);
+
+                if (guids[i][5] != 0) guids[i][5] ^= packet.ReadByte();
+
+                packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32, i);
+
+                if (guids[i][6] != 0) guids[i][6] ^= packet.ReadByte();
+                if (guids[i][4] != 0) guids[i][4] ^= packet.ReadByte();
+
+                packet.ReadInt32("Level", i);
+                packet.ReadWoWString("Name", strlen[i][1], i);
+                packet.ReadInt32("Achievement Points", i);
+
+                if (guids[i][7] != 0) guids[i][7] ^= packet.ReadByte();
+
+                packet.ReadBoolean("Request Pending", i);
+
+                if (guids[i][2] != 0) guids[i][2] ^= packet.ReadByte();
+                if (guids[i][0] != 0) guids[i][0] ^= packet.ReadByte();
+
+                packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32, i);
+
+                if (guids[i][1] != 0) guids[i][1] ^= packet.ReadByte();
+
+                packet.ReadInt32("Tabard Background Color", i);
+                packet.ReadInt32("Unk Int 2", i); // + 128
+                packet.ReadInt32("Tabard Border Color", i);
+                packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32, i);
+
+                if (guids[i][3] != 0) guids[i][3] ^= packet.ReadByte();
+
+                packet.ReadInt32("Number of Members", i);
+
+                packet.WriteLine("[{0}] Guild GUID: {1}", i, new Guid(BitConverter.ToUInt64(guids[i], 0)));
+            }
         }
 
         [Parser(Opcode.SMSG_LF_GUILD_POST_REQUEST)]
