@@ -464,7 +464,7 @@ namespace WowPacketParser.Parsing.Parsers
                 Handler.Parse(newpacket, true);
         }
 
-        [Parser(Opcode.MSG_MOVE_TELEPORT_ACK)]
+        [Parser(Opcode.MSG_MOVE_TELEPORT_ACK, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleTeleportAck(Packet packet)
         {
             var guid = packet.ReadPackedGuid("Guid");
@@ -479,6 +479,16 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<MovementFlag>("Move Flags", TypeCode.Int32);
                 packet.ReadInt32("Time");
             }
+        }
+
+        [Parser(Opcode.MSG_MOVE_TELEPORT_ACK, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleMoveTeleportAck434(Packet packet)
+        {
+            packet.ReadInt32("Unk Int32 1");
+            packet.ReadInt32("Unk Int32 2");
+            var guid = packet.StartBitStream(5, 0, 1, 6, 3, 7, 2, 4);
+            packet.ParseBitStream(guid, 4, 2, 7, 6, 5, 1, 3, 0);
+            packet.ToGuid("Guid", guid);
         }
 
         [Parser(Opcode.MSG_MOVE_HEARTBEAT, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
@@ -2783,12 +2793,23 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Position: {0}", pos);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_SET_RUN_SPEED, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_SPLINE_SET_RUN_SPEED, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleSplineMovementSetRunSpeed422(Packet packet)
         {
             var guid = packet.StartBitStream(7, 2, 1, 3, 5, 6, 4, 0);
             packet.ParseBitStream(guid, 6, 7, 4, 3, 2, 5, 0, 1);
             packet.ReadSingle("Speed");
+            packet.ToGuid("Guid", guid);
+        }
+
+
+        [Parser(Opcode.SMSG_SPLINE_SET_RUN_SPEED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleSplineSetRunSpeed434(Packet packet)
+        {
+            var guid = packet.StartBitStream(4, 0, 5, 7, 6, 3, 1, 2);
+            packet.ParseBitStream(guid, 0, 7, 6, 5, 3, 4);
+            packet.ReadSingle("Speed");
+            packet.ParseBitStream(guid, 2, 1);
             packet.ToGuid("Guid", guid);
         }
 
@@ -4245,6 +4266,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Time");
         }
 
+        [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleMoveTimeSkipped434(Packet packet)
+        {
+            packet.ReadUInt32("Time");
+            var guid = packet.StartBitStream(5, 1, 3, 7, 6, 0, 4, 2);
+            packet.ParseBitStream(guid, 7, 1, 2, 4, 3, 6, 0, 5);
+            packet.ToGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_SPLINE_MOVE_ROOT)]
         [Parser(Opcode.SMSG_SPLINE_MOVE_UNROOT)]
         [Parser(Opcode.SMSG_SPLINE_MOVE_GRAVITY_ENABLE)]
@@ -4268,9 +4298,9 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.SMSG_SPLINE_SET_WALK_SPEED)]
         [Parser(Opcode.SMSG_SPLINE_SET_RUN_SPEED, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
-        [Parser(Opcode.SMSG_SPLINE_SET_SWIM_SPEED)]
-        [Parser(Opcode.SMSG_SPLINE_SET_FLIGHT_SPEED)]
-        [Parser(Opcode.SMSG_SPLINE_SET_RUN_BACK_SPEED)]
+        [Parser(Opcode.SMSG_SPLINE_SET_SWIM_SPEED, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_SPLINE_SET_FLIGHT_SPEED, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_SPLINE_SET_RUN_BACK_SPEED, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.SMSG_SPLINE_SET_SWIM_BACK_SPEED)]
         [Parser(Opcode.SMSG_SPLINE_SET_FLIGHT_BACK_SPEED)]
         [Parser(Opcode.SMSG_SPLINE_SET_TURN_RATE)]
@@ -4279,6 +4309,45 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("GUID");
             packet.ReadSingle("Amount");
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_SET_FLIGHT_SPEED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleSplineSetFlightSpeed434(Packet packet)
+        {
+            var guid = packet.StartBitStream(7, 4, 0, 1, 3, 6, 5, 2);
+            packet.ParseBitStream(guid, 0, 5, 4, 7, 3, 2, 1, 6);
+            packet.ReadSingle("Speed");
+            packet.ToGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_SET_SWIM_SPEED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleSplineSetSwimSpeed434(Packet packet)
+        {
+            var guid = packet.StartBitStream(4, 2, 5, 0, 7, 6, 3, 1);
+            packet.ParseBitStream(guid, 5, 6, 1, 0, 2, 4);
+            packet.ReadSingle("Speed");
+            packet.ParseBitStream(guid, 7, 3);
+            packet.ToGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_SET_WALK_BACK_SPEED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleSplineSetWalkBackSpeed434(Packet packet)
+        {
+            var guid = packet.StartBitStream(0, 6, 7, 3, 5, 1, 2, 4);
+            packet.ParseBitStream(guid, 0, 4, 7, 1, 5, 3);
+            packet.ReadSingle("Speed");
+            packet.ParseBitStream(guid, 6, 2);
+            packet.ToGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_SET_RUN_BACK_SPEED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleSplineSetRunBackSpeed434(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 2, 6, 0, 3, 7, 5, 4);
+            packet.ParseBitStream(guid, 1);
+            packet.ReadSingle("Speed");
+            packet.ParseBitStream(guid, 2, 4, 0, 3, 6, 5, 7);
+            packet.ToGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_COMPRESSED_MOVES)]
