@@ -1,4 +1,5 @@
 ﻿using System;
+using PacketParser.Misc;
 
 namespace PacketParser.DataStructures
 {
@@ -6,19 +7,20 @@ namespace PacketParser.DataStructures
     {
         public long rawVal;
     }
-    public class StoreEnum<T> : StoreEnum
+    public class StoreEnum<T> : StoreEnum where T : struct, IConvertible
     {
+        public static Type type = typeof(T);
         public T val;
+
         public StoreEnum(long _rawVal)
         {
-            var type = typeof(T);
             rawVal = _rawVal;
             var value = Enum.ToObject(type, rawVal);
             val = (T)value;
         }
         public override string ToString()
         {
-            return val.ToString();
+            return Enum<T>.ToString(rawVal);
         }
         public static implicit operator T(StoreEnum<T> e)
         {

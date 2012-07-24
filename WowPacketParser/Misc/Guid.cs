@@ -73,6 +73,44 @@ namespace PacketParser.DataStructures
             return highGUID == 0 ? HighGuidType.Player : highGUID;
         }
 
+        public string GetHighTypeString()
+        {
+            //return GetHighType().ToString();
+            switch (GetHighType())
+            {
+                case HighGuidType.Player:
+                    return "Player";
+                case HighGuidType.DynObject:
+                    return "DynObject";
+                case HighGuidType.Item:
+                    return "Item";
+                case HighGuidType.GameObject:
+                    return "GameObject";
+                case HighGuidType.Transport:
+                    return "Transport";
+                case HighGuidType.MOTransport:
+                    return "MOTransport";
+                case HighGuidType.Vehicle:
+                    return "Vehicle";
+                case HighGuidType.Unit:
+                    return "Unit";
+                case HighGuidType.Pet:
+                    return "Pet";
+                case HighGuidType.BattleGround1:
+                    return "BattleGround1";
+                case HighGuidType.BattleGround2:
+                    return "BattleGround2";
+                case HighGuidType.InstanceSave:
+                    return "InstanceSave";
+                case HighGuidType.Group:
+                    return "Group";
+                case HighGuidType.Guild:
+                    return "Guild";
+                default:
+                    return "Unknown (" + ((uint)GetHighType()).ToString();
+            }
+        }
+
         public ObjectType GetObjectType()
         {
             switch (GetHighType())
@@ -136,7 +174,7 @@ namespace PacketParser.DataStructures
                 builder.Append("Full 0x");
                 builder.Append(Full.ToString("X8"));
                 builder.Append(" Type: ");
-                builder.Append(GetHighType());
+                builder.Append(GetHighTypeString());
                 builder.Append(" Entry: ");
                 builder.Append(PacketFileProcessor.Current.GetProcessor<NameStore>().GetName(type, (int)GetEntry()));
                 builder.Append(" Low: ");
@@ -152,7 +190,7 @@ namespace PacketParser.DataStructures
                     builder.Append("Full 0x");
                     builder.Append(Full.ToString("X8"));
                     builder.Append(" Type: ");
-                    builder.Append(GetHighType());
+                    builder.Append(GetHighTypeString());
                     builder.Append(" BgType: ");
                     builder.Append(PacketFileProcessor.Current.GetProcessor<NameStore>().GetName(StoreNameType.Battleground, (int)bgType));
                     return builder.ToString();
@@ -165,7 +203,7 @@ namespace PacketParser.DataStructures
                     builder.Append("Full 0x");
                     builder.Append(Full.ToString("X8"));
                     builder.Append(" Type: ");
-                    builder.Append(GetHighType());
+                    builder.Append(GetHighTypeString());
                     builder.Append(" BgType: ");
                     builder.Append(PacketFileProcessor.Current.GetProcessor<NameStore>().GetName(StoreNameType.Battleground, (int)bgType));
                     builder.Append(" Unk: ");
@@ -183,7 +221,7 @@ namespace PacketParser.DataStructures
             builder.Append("Full 0x");
             builder.Append(Full.ToString("X8"));
             builder.Append(" Type: ");
-            builder.Append(GetHighType());
+            builder.Append(GetHighTypeString());
             builder.Append(" Low: ");
             builder.Append(GetLow());
             if (!String.IsNullOrEmpty(name))

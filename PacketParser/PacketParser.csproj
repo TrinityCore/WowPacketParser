@@ -1031,6 +1031,7 @@
     <Compile Include="DataStructures\StoreEnum.cs" />
     <Compile Include="DataStructures\TreeNodeEnumerator.cs" />
     <Compile Include="Misc\CacheFileManager.cs" />
+    <Compile Include="Misc\Enum.cs" />
     <Compile Include="Processing\ITextOutputDisabled.cs" />
     <Compile Include="Misc\TimeSpanContainers.cs" />
     <Compile Include="Processing\IPacketProcessor.cs" />

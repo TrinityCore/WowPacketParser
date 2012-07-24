@@ -391,7 +391,7 @@ namespace PacketParser.DataStructures
             return val;
         }
 
-        private StoreEnum<T> ReadEnum<T>(TypeCode code)
+        private StoreEnum<T> ReadEnum<T>(TypeCode code) where T : struct, IConvertible
         {
             long rawValue = ReadValue(code);
             object value = Enum.ToObject(typeof (T), rawValue);
@@ -402,14 +402,14 @@ namespace PacketParser.DataStructures
             return new StoreEnum<T>(rawValue);
         }
 
-        public T ReadEnum<T>(string name, TypeCode code, params int[] values)
+        public T ReadEnum<T>(string name, TypeCode code, params int[] values) where T : struct, IConvertible
         {
             var val = ReadEnum<T>(code);
             Store(name, val, values);
             return val.val;
         }
 
-        private StoreEnum<T> ReadEnum<T>(int bits)
+        private StoreEnum<T> ReadEnum<T>(int bits) where T : struct, IConvertible
         {
             var type = typeof(T);
             long rawVal = ReadBits(bits);
@@ -420,7 +420,7 @@ namespace PacketParser.DataStructures
             return new StoreEnum<T>(rawVal);
         }
 
-        public T ReadEnum<T>(string name, int bits, params int[] values)
+        public T ReadEnum<T>(string name, int bits, params int[] values) where T : struct, IConvertible
         {
             var val = ReadEnum<T>(bits);
             Store(name, val, values);
