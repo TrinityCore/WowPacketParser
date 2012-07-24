@@ -341,7 +341,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Version");
         }
 
-        [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED)]
+        [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleMoveTimeSkipped(Packet packet)
         {
             packet.ReadPackedGuid("GUID");
