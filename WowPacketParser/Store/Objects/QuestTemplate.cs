@@ -135,7 +135,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("EndText")]
         public string EndText;
 
-        //[DBFieldName("CompletedText")] 4.x
+        [DBFieldName("CompletedText")]
         public string CompletedText;
 
         [DBFieldName("RequiredNpcOrGo", Count = 4)]

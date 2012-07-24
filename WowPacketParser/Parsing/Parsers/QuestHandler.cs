@@ -253,7 +253,7 @@ namespace WowPacketParser.Parsing.Parsers
             quest.EndText = packet.ReadCString("End Text");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                quest.CompletedText = packet.ReadCString("Return Text");
+                quest.CompletedText = packet.ReadCString("Completed Text");
 
             var reqId = new KeyValuePair<int, bool>[4];
             quest.RequiredNpcOrGo = new int[4];
