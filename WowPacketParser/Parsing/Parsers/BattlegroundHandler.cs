@@ -783,7 +783,38 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Warmup");
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERED, ClientVersionBuild.V4_0_6a_13623)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleBattlefieldMgrEntered434(Packet packet)
+        {
+            var bytes = new byte[8];
+            packet.ReadBit("Unk Bit1").ToByte();
+            packet.ReadBit("Unk Bit2").ToByte();
+            bytes[1] = packet.ReadBit().ToByte();
+            bytes[4] = packet.ReadBit().ToByte();
+            bytes[5] = packet.ReadBit().ToByte();
+            bytes[0] = packet.ReadBit().ToByte();
+            bytes[3] = packet.ReadBit().ToByte();
+            packet.ReadBit("Unk Bit 3");
+
+            var tmpbit = packet.ReadByte();
+
+            bytes[6] = (byte)(tmpbit >> 7);
+            bytes[2] = (byte)((2 * (2 * tmpbit)) >> 7);
+            bytes[7] = (byte)((2*tmpbit) >> 7);
+
+            if (bytes[5] != 0) bytes[5] ^= packet.ReadByte();
+            if (bytes[3] != 0) bytes[3] ^= packet.ReadByte();
+            if (bytes[0] != 0) bytes[0] ^= packet.ReadByte();
+            if (bytes[4] != 0) bytes[4] ^= packet.ReadByte();
+            if (bytes[1] != 0) bytes[1] ^= packet.ReadByte();
+            if (bytes[7] != 0) bytes[7] ^= packet.ReadByte();
+            if (bytes[2] != 0) bytes[2] ^= packet.ReadByte();
+            if (bytes[6] != 0) bytes[6] ^= packet.ReadByte();
+
+            packet.ToGuid("Guid", bytes);
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERED, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldMgrEntered406(Packet packet)
         {
             packet.ReadByte("Unk");
@@ -1032,13 +1063,19 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ToGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_REQUEST_RATED_BG_INFO)]
+        [Parser(Opcode.CMSG_REQUEST_RATED_BG_INFO, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_REQUEST_PVP_OPTIONS_ENABLED)]
         [Parser(Opcode.CMSG_BATTLEGROUND_PLAYER_POSITIONS)]
         [Parser(Opcode.SMSG_BATTLEGROUND_INFO_THROTTLED)]
         [Parser(Opcode.SMSG_BATTLEFIELD_PORT_DENIED)]
         public static void HandleNullBattleground(Packet packet)
         {
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_RATED_BG_INFO, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleRequestRatedBGInfo434(Packet packet)
+        {
+            packet.ReadByte("Unk Byte");
         }
         
         [Parser(Opcode.CMSG_REQUEST_INSPECT_RATED_BG_STATS, ClientVersionBuild.V4_3_4_15595)]

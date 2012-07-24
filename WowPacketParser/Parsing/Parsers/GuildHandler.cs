@@ -1387,6 +1387,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt64("XP");
         }
 
+        [Parser(Opcode.CMSG_GUILD_ACHIEVEMENT_PROGRESS_QUERY)]
+        public static void HandleGuildAchievementProgressQuery(Packet packet)
+        {
+            packet.ReadUInt32("Guild Achievement Id");
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REM_MONEY_WITHDRAW_QUERY)]
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
         [Parser(Opcode.CMSG_GUILD_REQUEST_CHALLENGE_UPDATE)]

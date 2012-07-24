@@ -738,6 +738,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleClearTarget(Packet packet)
         {
             packet.ReadGuid("GUID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
+                packet.ReadUInt32("Unk Uint32");
         }
 
         [Parser(Opcode.SMSG_MIRRORIMAGE_DATA)]

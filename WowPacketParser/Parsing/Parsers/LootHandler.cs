@@ -48,7 +48,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_OPT_OUT_OF_LOOT)]
         public static void HandleOptOutOfLoot(Packet packet)
         {
-            packet.ReadUInt32("Always Pass");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
+                packet.ReadBoolean("Always Pass");
+            else
+                packet.ReadUInt32("Always Pass");
         }
 
         [Parser(Opcode.SMSG_LOOT_ALL_PASSED)]
