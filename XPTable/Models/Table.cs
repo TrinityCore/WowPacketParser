@@ -1685,7 +1685,7 @@ namespace XPTable.Models
         /// <returns></returns>
         private int GetAutoColumnWidth(int column)
         {
-            RowCollection rows = this.TableModel.Rows;
+            RowCollectionForTable rows = this.TableModel.Rows;
             int maxwidth = 0;
             Column c = this.ColumnModel.Columns[column];
 
@@ -1881,7 +1881,7 @@ namespace XPTable.Models
 
 			int ydiff = 0;
 
-			RowCollection rows = this.TableModel.Rows;
+			RowCollectionForTable rows = this.TableModel.Rows;
 			for (int i = r1; i < r2; i++)
 			{
 				// Don't count this row if it is currently a hidden subrow
@@ -1904,7 +1904,7 @@ namespace XPTable.Models
 
         private bool RowsCanReachHeight(int height)
         {
-            RowCollection rows = this.TableModel.Rows;
+            RowCollectionForTable rows = this.TableModel.Rows;
             int r2 = rows.Count;
             int ydiff = 0;
             for (int i = 0; i < r2; i++)
@@ -1934,7 +1934,7 @@ namespace XPTable.Models
 		private int VisibleRowCountExact(out int currentPageRowCount)
 		{
 			int ydiff = 0;
-			RowCollection rows = this.TableModel.Rows;
+			RowCollectionForTable rows = this.TableModel.Rows;
 			int visibleHeight = this.CellDataRect.Height;
             int count = 0;
             int i;
@@ -2712,13 +2712,47 @@ namespace XPTable.Models
 		/// <returns>The index of the row that should be used to set the .Value property of the scrollbar.</returns>
 		protected int GetNewTopRowIndex(int previousTopRowIndex, int howMany)
 		{
+            if (howMany == 0)
+                return previousTopRowIndex;
 			int visibleRows = this.vScrollBar.LargeChange - 1;
             bool down = (howMany > 0);
 
-            //HACK
-            //return previousTopRowIndex + howMany;
-
             int max = Math.Abs(howMany);
+            var rows = this.TableModel.Rows;
+            var rowsCount = rows.Count;
+            if (down)
+            {
+                int newTopRowIndex = previousTopRowIndex;
+                while (newTopRowIndex < rowsCount)
+                {
+                    var row = rows[newTopRowIndex];
+                    if (row.Parent == null || row.Parent.ExpandSubRows)
+                    {
+                        --max;
+                        if (max == -1)
+                            break;
+                    }
+                    ++newTopRowIndex;
+                }
+                return newTopRowIndex;
+            }
+            else
+            {
+                int newTopRowIndex = previousTopRowIndex;
+                while (newTopRowIndex >= 0)
+                {
+                    var row = rows[newTopRowIndex];
+                    if (row.Parent == null || row.Parent.ExpandSubRows)
+                    {
+                        --max;
+                        if (max == -1)
+                            break;
+                    }
+                    --newTopRowIndex;
+                }
+                return newTopRowIndex;
+            }
+            /*int max = Math.Abs(howMany);
 
 			int column = this.ColumnModel.NextVisibleColumn(-1);
             CellPos newCell = new CellPos(previousTopRowIndex, column);  // The row currently at the top
@@ -2730,7 +2764,7 @@ namespace XPTable.Models
                 newCell = this.FindNextVisibleCell(newCell, true, down, false, false, true);
             }
 
-            return newCell.Row;
+            return newCell.Row;*/
 		}
 
         /// <summary>
@@ -8971,9 +9005,9 @@ namespace XPTable.Models
 				// Fix (Colby Dillion)
 				if (e.Row != null && e.Row.SubRows != null)
 				{
-					foreach (Row row in e.Row.SubRows)
-					{
-						e.TableModel.Rows.Remove(row);
+					for(int i = 0; i < e.Row.SubRows.Count; ++i)
+                    {
+                        e.TableModel.Rows.Remove(e.Row.SubRows[i]);
 					}
 				}
 

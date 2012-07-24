@@ -188,7 +188,7 @@ namespace PacketViewer.Forms
     {
         private CacheFileManager<PacketEntry[]> _data = null;
         public List<byte> cachedBlockUpdatesLeft = new List<byte>();
-        public const int virtualBlocksNearIndex = 7;
+        public const int virtualBlocksNearIndex = 5;
 
         public const int cachedBlockUpdateInterval = 1000;
         public const byte cachedBlockUpdatesBeforeRemove = 3;
@@ -288,7 +288,7 @@ namespace PacketViewer.Forms
             return null;
         }
 
-        public void MakeUnusedIndexesVirtual(RowCollection rows)
+        public void MakeUnusedIndexesVirtual(RowCollectionForTable rows)
         {
             if (_table == null)
                 return;
@@ -321,9 +321,9 @@ namespace PacketViewer.Forms
             Thread.Sleep(cachedBlockUpdateInterval);
         }
 
-        public delegate void UnCacheRowCallback(int blockId, RowCollection rows);
+        public delegate void UnCacheRowCallback(int blockId, RowCollectionForTable rows);
 
-        public void CacheRowsInBlock(int blockIndex, RowCollection rows)
+        public void CacheRowsInBlock(int blockIndex, RowCollectionForTable rows)
         {
             // already cached
             if (cachedBlockUpdatesLeft[blockIndex] != 0)
@@ -338,7 +338,7 @@ namespace PacketViewer.Forms
                 CacheTableRow(tableRowIndex, rows, GetBlockDataIndexForTableRow(tableRowIndex), dataBlock);
         }
 
-        public void UnCacheRowsInBlock(int blockIndex, RowCollection rows)
+        public void UnCacheRowsInBlock(int blockIndex, RowCollectionForTable rows)
         {
             if (cachedBlockUpdatesLeft[blockIndex] == 0)
                 return;
@@ -349,7 +349,7 @@ namespace PacketViewer.Forms
             _data.UnCacheBlock(blockIndex);
         }
 
-        public void CacheTableRowBlock(int rownum, RowCollection rows, int nearbyBlocks = 0)
+        public void CacheTableRowBlock(int rownum, RowCollectionForTable rows, int nearbyBlocks = 0)
         {
             var rowBlock = GetBlockIndexForTableRow(rownum);
             var startBlock = Math.Max(rowBlock - nearbyBlocks, 0);
@@ -365,7 +365,7 @@ namespace PacketViewer.Forms
                 CacheRowsInBlock(blockIndex, rows);
         }
 
-        private void CacheTableRow(int tableRowIndex, RowCollection rows, int dataBlockIndex, PacketEntry[] dataBlock)
+        private void CacheTableRow(int tableRowIndex, RowCollectionForTable rows, int dataBlockIndex, PacketEntry[] dataBlock)
         {
             if (dataBlock[dataBlockIndex] == null)
                 return;
@@ -389,7 +389,7 @@ namespace PacketViewer.Forms
             _table.EventsDisabled = false;
         }
 
-        private void UnCacheTableRow(int tableRowIndex, RowCollection rows)
+        private void UnCacheTableRow(int tableRowIndex, RowCollectionForTable rows)
         {
             if (rows[tableRowIndex] != null)
                 rows.RemoveCacheAt(tableRowIndex);

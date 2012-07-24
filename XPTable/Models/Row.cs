@@ -91,7 +91,7 @@ namespace XPTable.Models
         /// <summary>
         /// The collection of subrows contained in this Row
         /// </summary>
-        protected virtual RowCollection subrows
+        protected virtual RowCollectionForParentRow subrows
         {
             get
             {
@@ -499,7 +499,7 @@ namespace XPTable.Models
         internal void InitSubRows()
         {
             if (subrows == null)
-                this.subrows = new RowCollection(this);
+                this.subrows = new RowCollectionForParentRow(this);
         }
 
 		/// <summary>
@@ -637,7 +637,7 @@ namespace XPTable.Models
         Description("SubRow Collection"),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden),
         Editor(typeof(RowCollectionEditor), typeof(UITypeEditor))]
-        public RowCollection SubRows
+        public RowCollectionForParentRow SubRows
         {
             get
             {

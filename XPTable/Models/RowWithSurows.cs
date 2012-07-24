@@ -12,8 +12,8 @@ namespace XPTable.Models
         {
             InitSubRows();
         }
-        private RowCollection _subrows;
-        protected override RowCollection subrows
+        private RowCollectionForParentRow _subrows;
+        protected override RowCollectionForParentRow subrows
         {
             get
             {

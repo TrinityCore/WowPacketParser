@@ -66,7 +66,7 @@ namespace XPTable.Sorting
 			int i;
 			int j;
 			Row b;
-            RowCollection rows = this.TableModel.Rows;
+            RowCollectionForTable rows = this.TableModel.Rows;
 
             for (i = 1; i < rows.Count; i++)
 			{

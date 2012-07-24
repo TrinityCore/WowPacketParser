@@ -91,7 +91,7 @@ namespace XPTable.Models
 		/// <summary>
 		/// The collection of Rows's contained in the TableModel
 		/// </summary>
-		private RowCollection rows;
+		private RowCollectionForTable rows;
 
 		/// <summary>
 		/// The Table that the TableModel belongs to
@@ -216,13 +216,13 @@ namespace XPTable.Models
 		Description("Row Collection"),
 		DesignerSerializationVisibility(DesignerSerializationVisibility.Content),
 		Editor(typeof(RowCollectionEditor), typeof(UITypeEditor))]
-		public RowCollection Rows
+		public RowCollectionForTable Rows
 		{
 			get
 			{
 				if (this.rows == null)
 				{
-					this.rows = new RowCollection(this);
+					this.rows = new RowCollectionForTable(this);
 				}
 				
 				return this.rows;
