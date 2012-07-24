@@ -7,10 +7,18 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class TradeHandler
     {
-        [Parser(Opcode.CMSG_INITIATE_TRADE)]
+        [Parser(Opcode.CMSG_INITIATE_TRADE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleInitiateTrade(Packet packet)
         {
             packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_INITIATE_TRADE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleInitiateTrade434(Packet packet)
+        {
+            var guid = packet.StartBitStream(0, 3, 5, 1, 4, 6, 7, 2);
+            packet.ParseBitStream(guid, 7, 4, 3, 5, 1, 2, 6, 0);
+            packet.ToGuid(guid);
         }
 
         [Parser(Opcode.CMSG_SET_TRADE_ITEM)]
