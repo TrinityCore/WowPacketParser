@@ -924,5 +924,22 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Cooldown");
             }
         }
+
+        [Parser(Opcode.SMSG_AURA_POINTS_DEPLETED)]
+        public static void HandleAuraPointsDepleted(Packet packet)
+        {
+            var guid = new byte[8];
+            guid = packet.StartBitStream(2, 4, 1, 7, 5, 0, 3, 6);
+
+            packet.ParseBitStream(guid, 5, 0);
+            var points = packet.ReadByte();
+            packet.ParseBitStream(guid, 3, 7, 4, 2);
+            var slot = packet.ReadByte();
+            packet.ParseBitStream(guid, 6, 1);
+            packet.ToGuid("Guid", guid);
+            packet.WriteLine("Slot ID?: {0}", slot);
+            packet.WriteLine("Points?: {0}", points);
+
+        }
     }
 }

@@ -983,6 +983,21 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32");
         }
 
+        [Parser(Opcode.SMSG_UNIT_HEALTH_FREQUENT)]
+        public static void HandleUnitHealthFrequent(Packet packet)
+        {
+            packet.ReadPackedGuid("Guid");
+            packet.ReadInt32("New Health Value");
+        }
+
+        [Parser(Opcode.SMSG_STREAMING_MOVIE)]
+        public static void HandleStreamingMovie(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 25);
+            for (int i = 0; i < count; ++i)
+                packet.ReadInt16("File Data ID");
+        }
+
         [Parser(Opcode.SMSG_MINIGAME_STATE)]
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]

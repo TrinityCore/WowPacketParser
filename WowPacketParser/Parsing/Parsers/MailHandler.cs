@@ -21,14 +21,22 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_MAIL_TAKE_MONEY)]
-        [Parser(Opcode.CMSG_MAIL_MARK_AS_READ)]
-        [Parser(Opcode.CMSG_MAIL_CREATE_TEXT_ITEM)]
+        [Parser(Opcode.CMSG_MAIL_MARK_AS_READ, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_MAIL_CREATE_TEXT_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleTakeMoney(Packet packet)
         {
             packet.ReadGuid("Mailbox GUID");
             packet.ReadUInt32("Mail Id");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596)) // need correct version
                 packet.ReadUInt64("Money");
+        }
+
+        [Parser(Opcode.CMSG_MAIL_MARK_AS_READ, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_MAIL_CREATE_TEXT_ITEM, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleMarkMail(Packet packet)
+        {
+            packet.ReadGuid("Mailbox GUID");
+            packet.ReadUInt32("Mail Id");
         }
 
         [Parser(Opcode.CMSG_MAIL_DELETE)]
