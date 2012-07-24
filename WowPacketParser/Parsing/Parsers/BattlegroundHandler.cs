@@ -818,7 +818,7 @@ namespace WowPacketParser.Parsing.Parsers
             bytes[0] = packet.ReadBit().ToByte();
             bytes[3] = packet.ReadBit().ToByte();
             bytes[6] = packet.ReadBit().ToByte();
-            var relocated = packet.ReadBit().ToByte();
+            packet.ReadBit("Relocated");
             bytes[7] = packet.ReadBit().ToByte();
             bytes[4] = packet.ReadBit().ToByte();
 
@@ -835,7 +835,6 @@ namespace WowPacketParser.Parsing.Parsers
             if (bytes[5] != 0) bytes[5] ^= packet.ReadByte();
 
             packet.ToGuid("Guid", bytes);
-            packet.WriteLine("Relocated: {0}", relocated != 0);
 
 
         }
@@ -1019,10 +1018,18 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Rank");
         }
 
-        [Parser(Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_REQUEST)]
+        [Parser(Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_REQUEST, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattelfieldMgrQueueRequest(Packet packet)
         {
             packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_REQUEST, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleBattelfieldMgrQueueRequest434(Packet packet)
+        {
+            var guid = packet.StartBitStream(0, 3, 7, 4, 6, 2, 1, 5);
+            packet.ParseBitStream(guid, 6, 3, 2, 4, 7, 1, 5, 0);
+            packet.ToGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_REQUEST_RATED_BG_INFO)]
