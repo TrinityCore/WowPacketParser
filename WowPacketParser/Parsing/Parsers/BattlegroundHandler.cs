@@ -799,13 +799,47 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Clear AFK");
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECTED)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECTED, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldMgrEjected(Packet packet)
         {
             packet.ReadInt32("Battle Id");
             packet.ReadByte("Reason");
             packet.ReadByte("Battle Status");
             packet.ReadByte("Relocated");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECTED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleBattlefieldMgrEjected434(Packet packet)
+        {
+            var bytes = new byte[8];
+            bytes[2] = packet.ReadBit().ToByte();
+            bytes[5] = packet.ReadBit().ToByte();
+            bytes[1] = packet.ReadBit().ToByte();
+            bytes[0] = packet.ReadBit().ToByte();
+            bytes[3] = packet.ReadBit().ToByte();
+            bytes[6] = packet.ReadBit().ToByte();
+            var relocated = packet.ReadBit().ToByte();
+            bytes[7] = packet.ReadBit().ToByte();
+            bytes[4] = packet.ReadByte();
+
+            var battlestatus = packet.ReadByte();
+
+            if (bytes[1] != 0) bytes[1] ^= packet.ReadByte();
+            if (bytes[7] != 0) bytes[7] ^= packet.ReadByte();
+            if (bytes[4] != 0) bytes[4] ^= packet.ReadByte();
+            if (bytes[2] != 0) bytes[2] ^= packet.ReadByte();
+            if (bytes[3] != 0) bytes[3] ^= packet.ReadByte();
+            var reason = packet.ReadByte();
+            if (bytes[6] != 0) bytes[6] ^= packet.ReadByte();
+            if (bytes[0] != 0) bytes[0] ^= packet.ReadByte();
+            if (bytes[5] != 0) bytes[5] ^= packet.ReadByte();
+
+            packet.ToGuid("Guid", bytes);
+            packet.WriteLine("Reason: {0}", reason);
+            packet.WriteLine("Battle Status: {0}", battlestatus);
+            packet.WriteLine("Relocated: {0}", relocated != 0);
+
+
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_MGR_ENTRY_INVITE_RESPONSE)]
