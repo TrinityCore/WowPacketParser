@@ -104,7 +104,6 @@ namespace PacketParser.DataStructures
         }
         private bool MoveNext(bool dontGoDeeper)
         {
-            CurrentClosedNodes.Clear();
             // handle beginning of iteration
             if (!_started)
             {
@@ -114,6 +113,7 @@ namespace PacketParser.DataStructures
                 _started = true;
                 return true;
             }
+            CurrentClosedNodes.Clear();
             if (!dontGoDeeper)
             {
                 // maybe we need to go deeper
@@ -124,8 +124,6 @@ namespace PacketParser.DataStructures
                     if (itr.MoveNext())
                     {
                         CurrentNodes.Push(new EnumeratedNamedNode(Type, Current, Name, itr));
-                        //Current = itr.Current.Value;
-                        //Name = itr.Current.Key;
                         Current = itr.Entry.Value;
                         Name = (string)itr.Entry.Key;
                         Index = null;
@@ -156,7 +154,6 @@ namespace PacketParser.DataStructures
                         CurrentNodes.Push(new EnumeratedIndexedNode(Type, Current, Name, itr));
                         Current = itr.Current.Value;
                         Index = itr.Current.Key;
-                        //Name=Name;
                         return true;
                     }
                     // fall threw, we had empty list and couldn't get inside, let's go to the next el of parent iterator
@@ -169,7 +166,6 @@ namespace PacketParser.DataStructures
                 // we don't need to go deeper, let's go nearby then
                 if (top.type == typeof(NamedTreeNode) || top.type == typeof(Packet))
                 {
-                    //var itr = (IEnumerator<KeyValuePair<string, Object>>)top.iter;
                     var itr = ((EnumeratedNamedNode)top).iter;
                     if (itr.MoveNext())
                     {

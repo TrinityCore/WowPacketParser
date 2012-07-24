@@ -111,7 +111,7 @@ namespace PacketParser.Enums.Version
         public static string GetOpcodeName(int opcodeId)
         {
             var opc = GetOpcode(opcodeId);
-            return opc == 0 ? opcodeId.ToString(CultureInfo.InvariantCulture) : opc.ToString();
+            return opc == 0 ? opcodeId.ToString(CultureInfo.InvariantCulture) : Enum<Opcode>.ToString(opcodeId);
         }
     }
 }

@@ -26,6 +26,8 @@ namespace PacketViewer.Processing
         private IPacketReader reader;
         private string readerType = "";
 
+        private const int minPacketsForProgressUpdate = 600;
+
         public PacketFileViewer(string fileName, Tuple<int, int> number = null, PacketFileTab tab = null)
             : base(fileName, number)
         {
@@ -53,9 +55,11 @@ namespace PacketViewer.Processing
             bool first = true;
 
             uint oldPct = 0;
+            uint progressCheckPackets = 0;
             worker.ReportProgress((int)oldPct);
             while (reader.CanRead())
             {
+                ++progressCheckPackets;
                 var packet = reader.Read(packetNum, FileName);
 
                 // read error
@@ -72,22 +76,26 @@ namespace PacketViewer.Processing
 
                 ProcessPacket(packet, packets);
 
-                var newPct = reader.GetProgress();
-                if (newPct != oldPct)
+                if (progressCheckPackets >= minPacketsForProgressUpdate)
                 {
-                    worker.ReportProgress((int)newPct);
-                    oldPct = newPct;
-                    if (Tab != null)
+                    var newPct = reader.GetProgress();
+                    if (newPct != oldPct)
                     {
-                        AddPackets(packets);
-                        if (first)
+                        worker.ReportProgress((int)newPct);
+                        oldPct = newPct;
+                        if (Tab != null)
                         {
-                            first = false;
-                            packets = new List<PacketEntry>(packets.Count * 3);
+                            AddPackets(packets);
+                            if (first)
+                            {
+                                first = false;
+                                packets = new List<PacketEntry>(packets.Count * 3);
+                            }
+                            else
+                                packets.Clear();
                         }
-                        else
-                            packets.Clear();
                     }
+                    progressCheckPackets = 0;
                 }
             }
             AddPackets(packets);

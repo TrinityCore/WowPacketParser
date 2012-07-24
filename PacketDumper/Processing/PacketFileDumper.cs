@@ -17,6 +17,8 @@ namespace PacketDumper.Processing
     {
         private readonly Statistics _stats;
 
+        private const int minPacketsForProgressUpdate = 600;
+
         public PacketFileDumper(string fileName, Tuple<int, int> number = null) : base(fileName, number)
         {
             _stats = new Statistics();
@@ -58,9 +60,11 @@ namespace PacketDumper.Processing
                 ShowPercentProgressMessage("Processing...", oldPct);
                 // initialize processors
                 InitProcessors();
-                
+
+                uint progressCheckPackets = 0;
                 while (reader.CanRead())
                 {
+                    ++progressCheckPackets;
                     var packet = reader.Read(packetNum, FileName);
 
                     // read error
@@ -85,11 +89,15 @@ namespace PacketDumper.Processing
 
                     ++packetCount;
 
-                    var newPct = reader.GetProgress();
-                    if (newPct != oldPct)
+                    if (progressCheckPackets >= minPacketsForProgressUpdate)
                     {
-                        ShowPercentProgressMessage("Processing...", newPct);
-                        oldPct = newPct;
+                        var newPct = reader.GetProgress();
+                        if (newPct != oldPct)
+                        {
+                            ShowPercentProgressMessage("Processing...", newPct);
+                            oldPct = newPct;
+                        }
+                        progressCheckPackets = 0;
                     }
 
                     // finish if read packet count reached max

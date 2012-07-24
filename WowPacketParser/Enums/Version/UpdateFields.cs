@@ -47,12 +47,12 @@ namespace PacketParser.Enums.Version
         }
 
         // returns update field offset by generic - crossversion enum
-        public static int? GetUpdateFieldOffset<T>(T field)
+        public static int? GetUpdateFieldOffset<T>(T field) where T: struct, IConvertible
         {
             if (UpdateFieldDictionaries.ContainsKey(typeof(T)))
             {
                 int offset;
-                if (UpdateFieldDictionaries[typeof(T)].TryGetByFirst(field.ToString(), out offset))
+                if (UpdateFieldDictionaries[typeof(T)].TryGetByFirst(Enum<T>.ToString(field), out offset))
                     return offset;
             }
 
