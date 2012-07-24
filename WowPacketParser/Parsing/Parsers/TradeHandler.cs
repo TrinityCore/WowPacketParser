@@ -318,7 +318,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BEGIN_TRADE)]
         public static void HandleBeginTrade(Packet packet)
         {
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
+            if (ClientVersion.Build != ClientVersionBuild.V4_2_2_14545)
                 return;
 
             var guid = new byte[8];
