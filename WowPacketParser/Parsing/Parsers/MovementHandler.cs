@@ -4404,14 +4404,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SPLINE_MOVE_NORMAL_FALL, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_HOVER, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.SMSG_SPLINE_MOVE_UNSET_HOVER, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
-        [Parser(Opcode.SMSG_SPLINE_MOVE_WATER_WALK)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_WATER_WALK, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.SMSG_SPLINE_MOVE_LAND_WALK)]
-        [Parser(Opcode.SMSG_SPLINE_MOVE_START_SWIM)]
-        [Parser(Opcode.SMSG_SPLINE_MOVE_STOP_SWIM)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_START_SWIM, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_STOP_SWIM, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_MODE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_MODE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLYING)]
-        [Parser(Opcode.SMSG_SPLINE_MOVE_UNSET_FLYING)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLYING, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_UNSET_FLYING, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleSplineMovementMessages(Packet packet)
         {
             packet.ReadPackedGuid("GUID");
@@ -6296,7 +6296,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_MODE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleSplineSetRunMode434(Packet packet)
         {
-            var guid = packet.StartBitStream(5, 6, 3, 2, 0, 7, 4, 1);
+            var guid = packet.StartBitStream(5, 6, 3, 7, 2, 0, 4, 1);
             packet.ParseBitStream(guid, 7, 0, 4, 6, 5, 1, 2, 3);
             packet.ToGuid("Guid", guid);
         }
@@ -6320,9 +6320,50 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SPLINE_MOVE_UNSET_HOVER, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleSplineUnsetHover434(Packet packet)
         {
-            var guid = packet.StartBitStream(6, 7, 0, 3, 1, 4, 5, 2);
+            var guid = packet.StartBitStream(6, 7, 4, 0, 3, 1, 5, 2);
             packet.ParseBitStream(guid, 4, 5, 3, 0, 2, 7, 6, 1);
             packet.ToGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_WATER_WALK, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleSplineMoveWaterWalk434(Packet packet)
+        {
+            var guid = packet.StartBitStream(6, 1, 4, 2, 3, 7, 5, 0);
+            packet.ParseBitStream(guid, 0, 6, 3, 7, 4, 2, 5, 1);
+            packet.ToGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_START_SWIM, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleSplineMoveStartSwim434(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 6, 0, 7, 3, 5, 2, 4);
+            packet.ParseBitStream(guid, 3, 7, 2, 5, 6, 4, 1, 0);
+            packet.ToGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_STOP_SWIM, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleSplineMoveStopSwim434(Packet packet)
+        {
+            var guid = packet.StartBitStream(4, 1, 5, 3, 0, 7, 2, 6);
+            packet.ParseBitStream(guid, 6, 0, 7, 2, 3, 1, 5, 4);
+            packet.ToGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLYING, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleSplineMoveSetFlying434(Packet packet)
+        {
+            var guid = packet.StartBitStream(0, 4, 1, 6, 7, 2, 3, 5);
+            packet.ParseBitStream(guid, 7, 0, 5, 6, 4, 1, 3, 2);
+            packet.ToGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_UNSET_FLYING, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleSplineMoveUnsetFlying434(Packet packet)
+        {
+            var guid = packet.StartBitStream(5, 0, 4, 7, 2, 3, 1, 6);
+            packet.ParseBitStream(guid, 7, 2, 3, 4, 5, 1, 6, 0);
+            packet.ToGuid("Guid", guid);
+        }
+
     }
 }
