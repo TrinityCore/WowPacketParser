@@ -366,17 +366,17 @@ namespace WowPacketParser.Parsing.Parsers
             var guids1 = new byte[count][];
             var guids2 = new byte[count][];
 
-            var has2ndGuid = new bool[count];
+            var isNotWrapped = new bool[count];
 
             for (int i = 0; i < count; ++i)
             {
                 guids1[i] = new byte[8];
                 guids1[i][7] = packet.ReadBit().ToByte();
                 guids1[i][1] = packet.ReadBit().ToByte();
-                has2ndGuid[i] = packet.ReadBit("Unk Bit 1", i);
+                isNotWrapped[i] = packet.ReadBit("Is Not Wrapped", i);
                 guids1[i][3] = packet.ReadBit().ToByte();
 
-                if (has2ndGuid[i])
+                if (isNotWrapped[i])
                 {
                     guids2[i] = new byte[8];
                     guids2[i][7] = packet.ReadBit().ToByte();
@@ -386,7 +386,7 @@ namespace WowPacketParser.Parsing.Parsers
                     guids2[i][2] = packet.ReadBit().ToByte();
                     guids2[i][3] = packet.ReadBit().ToByte();
                     guids2[i][5] = packet.ReadBit().ToByte();
-                    packet.ReadBit("Unk Bit 2", i);
+                    packet.ReadBit("Is Locked", i);
                     guids2[i][0] = packet.ReadBit().ToByte();
                 }
 
@@ -399,11 +399,11 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (int i = 0; i < count; ++i)
             {
-                if (has2ndGuid[i])
+                if (isNotWrapped[i])
                 {
                     if (guids2[i][1] != 0) guids2[i][1] ^= packet.ReadByte();
 
-                    packet.ReadInt32("Unk Int32 1", i);
+                    packet.ReadInt32("Item Perm Enchantment Id", i);
 
                     for (int j = 0; j < 3; ++j)
                         packet.ReadInt32("Item Enchantment Id", i, j);
