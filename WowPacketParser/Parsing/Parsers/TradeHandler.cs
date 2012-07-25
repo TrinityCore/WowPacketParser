@@ -223,7 +223,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleTradeStatusExtended422(Packet packet)
         {
             packet.AsHex();
@@ -347,7 +347,106 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteLine("Item Creator Guid: {0}", new Guid(BitConverter.ToUInt64(guids1[i], 0)));
                 packet.WriteLine("Item Gift Creator Guid: {0}", new Guid(BitConverter.ToUInt64(guids2[i], 0)));
             }
+        }
 
+        [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleTradeStatusExtended434(Packet packet)
+        {
+            packet.ReadInt32("Trade Id");
+            packet.ReadInt32("Unk Int32 2");
+            packet.ReadInt64("Gold");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32("Unk Slot 1");
+            packet.ReadInt32("Unk Int32 5");
+            packet.ReadBoolean("Trader");
+            packet.ReadInt32("Unk Slot 2");
+
+            var count = packet.ReadBits("Count", 22);
+
+            var guids1 = new byte[count][];
+            var guids2 = new byte[count][];
+
+            var has2ndGuid = new bool[count];
+
+            for (int i = 0; i < count; ++i)
+            {
+                guids1[i] = new byte[8];
+                guids1[i][7] = packet.ReadBit().ToByte();
+                guids1[i][1] = packet.ReadBit().ToByte();
+                has2ndGuid[i] = packet.ReadBit("Unk Bit 1", i);
+                guids1[i][3] = packet.ReadBit().ToByte();
+
+                if (has2ndGuid[i])
+                {
+                    guids2[i] = new byte[8];
+                    guids2[i][7] = packet.ReadBit().ToByte();
+                    guids2[i][1] = packet.ReadBit().ToByte();
+                    guids2[i][4] = packet.ReadBit().ToByte();
+                    guids2[i][6] = packet.ReadBit().ToByte();
+                    guids2[i][2] = packet.ReadBit().ToByte();
+                    guids2[i][3] = packet.ReadBit().ToByte();
+                    guids2[i][5] = packet.ReadBit().ToByte();
+                    packet.ReadBit("Unk Bit 2", i);
+                    guids2[i][0] = packet.ReadBit().ToByte();
+                }
+
+                guids1[i][6] = packet.ReadBit().ToByte();
+                guids1[i][4] = packet.ReadBit().ToByte();
+                guids1[i][2] = packet.ReadBit().ToByte();
+                guids1[i][0] = packet.ReadBit().ToByte();
+                guids1[i][5] = packet.ReadBit().ToByte();
+            }
+
+            for (int i = 0; i < count; ++i)
+            {
+                if (has2ndGuid[i])
+                {
+                    if (guids2[i][1] != 0) guids2[i][1] ^= packet.ReadByte();
+
+                    packet.ReadInt32("Unk Int32 1", i);
+
+                    for (int j = 0; j < 3; ++j)
+                        packet.ReadInt32("Item Enchantment Id", i, j);
+
+                    packet.ReadInt32("Unk Int32 3", i);
+
+                    if (guids2[i][6] != 0) guids2[i][6] ^= packet.ReadByte();
+                    if (guids2[i][2] != 0) guids2[i][2] ^= packet.ReadByte();
+                    if (guids2[i][7] != 0) guids2[i][7] ^= packet.ReadByte();
+                    if (guids2[i][4] != 0) guids2[i][4] ^= packet.ReadByte();
+
+                    packet.ReadInt32("Unk Int32 4", i);
+                    packet.ReadInt32("Unk Int32 5", i);
+                    packet.ReadInt32("Unk Int32 6", i);
+
+                    if (guids2[i][3] != 0) guids2[i][3] ^= packet.ReadByte();
+
+                    packet.ReadInt32("Unk Int32 7", i);
+
+                    if (guids2[i][0] != 0) guids2[i][0] ^= packet.ReadByte();
+
+                    packet.ReadInt32("Item Spell Charges", i);
+                    packet.ReadInt32("Item Suffix Factor", i);
+
+                    if (guids2[i][5] != 0) guids2[i][5] ^= packet.ReadByte();
+
+                    packet.ToGuid("Guid 2", guids2[i], i);
+                }
+
+                if (guids1[i][6] != 0) guids1[i][6] ^= packet.ReadByte();
+                if (guids1[i][1] != 0) guids1[i][1] ^= packet.ReadByte();
+                if (guids1[i][7] != 0) guids1[i][7] ^= packet.ReadByte();
+                if (guids1[i][4] != 0) guids1[i][4] ^= packet.ReadByte();
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
+                if (guids1[i][0] != 0) guids1[i][0] ^= packet.ReadByte();
+                packet.ReadUInt32("Item Count", i);
+                if (guids1[i][5] != 0) guids1[i][5] ^= packet.ReadByte();
+                packet.ReadByte("Unk Byte 2", i);
+                if (guids1[i][2] != 0) guids1[i][2] ^= packet.ReadByte();
+                if (guids1[i][3] != 0) guids1[i][3] ^= packet.ReadByte();
+
+                packet.ToGuid("Guid 1", guids1[i], i);
+            }
         }
 
         [Parser(Opcode.CMSG_ACCEPT_TRADE)]
