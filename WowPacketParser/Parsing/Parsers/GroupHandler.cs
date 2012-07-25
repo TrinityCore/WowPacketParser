@@ -569,7 +569,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (bytes2[7] != 0) bytes2[7] ^= packet.ReadByte();
             if (bytes[1] != 0) bytes[1] ^= packet.ReadByte();
 
-            packet.ReadUInt32("Old Roles");
+            packet.ReadEnum<LfgRoleFlag>("Old Roles", TypeCode.Int32);
             packet.ToGuid("Assigner Guid", bytes);
             packet.ToGuid("Target Guid", bytes2);
         }

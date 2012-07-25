@@ -1210,7 +1210,16 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk UInt32 5");
             packet.ReadUInt32("Unk UInt32 6");
             packet.ReadUInt32("Unk UInt32 7");
+        }
 
+        [Parser(Opcode.SMSG_PVP_OPTIONS_ENABLED)]
+        public static void HandlePVPOptoinsEnabled(Packet packet)
+        {
+            packet.ReadBit("Unk Boolean 1").ToByte();
+            packet.ReadBit("Unk Boolean 2").ToByte();
+            packet.ReadBit("Unk Boolean 3").ToByte();
+            packet.ReadBit("Unk Boolean 4").ToByte();
+            packet.ReadBit("Unk Boolean 5").ToByte();
         }
 
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE)]
