@@ -133,7 +133,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Unk Int32");
                     break;
                 case TradeStatus434.TradeCurrency:
-                case TradeStatus434.UnkTrade:
+                case TradeStatus434.CurrencyNotTradable:
                     packet.ReadInt32("Unk Int32 1");
                     packet.ReadInt32("Unk Int32 2");
                     break;
@@ -461,41 +461,9 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.Build != ClientVersionBuild.V4_2_2_14545)
                 return;
 
-            var guid = new byte[8];
-            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
-
-            if (guid[5] != 0)
-                guid[5] ^= packet.ReadByte();
-
-            if (guid[2] != 0)
-                guid[2] ^= packet.ReadByte();
-
-            if (guid[3] != 0)
-                guid[3] ^= packet.ReadByte();
-
-            if (guid[4] != 0)
-                guid[4] ^= packet.ReadByte();
-
-            if (guid[1] != 0)
-                guid[1] ^= packet.ReadByte();
-
-            if (guid[0] != 0)
-                guid[0] ^= packet.ReadByte();
-
-            if (guid[6] != 0)
-                guid[6] ^= packet.ReadByte();
-
-            if (guid[7] != 0)
-                guid[7] ^= packet.ReadByte();
-
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            var guid = packet.StartBitStream(5, 6, 4, 0, 2, 3, 7, 1);
+            packet.ParseBitStream(guid, 5, 2, 3, 4, 1, 0, 6, 7);
+            packet.ToGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_IGNORE_TRADE)]

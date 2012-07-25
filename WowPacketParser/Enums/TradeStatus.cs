@@ -55,8 +55,7 @@ namespace WowPacketParser.Enums
         OnlyConjured  = 26,
         NotEligible   = 2,
 
-        CurrencyNotTradable = 9,
         TradeCurrency = 24,
-        UnkTrade = 19,
+        CurrencyNotTradable = 19,
     }
 }
