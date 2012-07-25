@@ -408,16 +408,16 @@ namespace WowPacketParser.Parsing.Parsers
                     for (int j = 0; j < 3; ++j)
                         packet.ReadInt32("Item Enchantment Id", i, j);
 
-                    packet.ReadInt32("Unk Int32 3", i);
+                    packet.ReadInt32("Item Max Durability", i);
 
                     if (guids2[i][6] != 0) guids2[i][6] ^= packet.ReadByte();
                     if (guids2[i][2] != 0) guids2[i][2] ^= packet.ReadByte();
                     if (guids2[i][7] != 0) guids2[i][7] ^= packet.ReadByte();
                     if (guids2[i][4] != 0) guids2[i][4] ^= packet.ReadByte();
 
-                    packet.ReadInt32("Unk Int32 4", i);
-                    packet.ReadInt32("Unk Int32 5", i);
-                    packet.ReadInt32("Unk Int32 6", i);
+                    packet.ReadInt32("Item Reforge Id", i);
+                    packet.ReadInt32("Item Durability", i);
+                    packet.ReadInt32("Item Random Property ID", i);
 
                     if (guids2[i][3] != 0) guids2[i][3] ^= packet.ReadByte();
 
@@ -430,7 +430,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                     if (guids2[i][5] != 0) guids2[i][5] ^= packet.ReadByte();
 
-                    packet.ToGuid("Guid 2", guids2[i], i);
+                    packet.ToGuid("Creator Guid", guids2[i], i);
                 }
 
                 if (guids1[i][6] != 0) guids1[i][6] ^= packet.ReadByte();
@@ -441,11 +441,11 @@ namespace WowPacketParser.Parsing.Parsers
                 if (guids1[i][0] != 0) guids1[i][0] ^= packet.ReadByte();
                 packet.ReadUInt32("Item Count", i);
                 if (guids1[i][5] != 0) guids1[i][5] ^= packet.ReadByte();
-                packet.ReadByte("Unk Byte 2", i);
+                packet.ReadByte("Trade Slot", i);
                 if (guids1[i][2] != 0) guids1[i][2] ^= packet.ReadByte();
                 if (guids1[i][3] != 0) guids1[i][3] ^= packet.ReadByte();
 
-                packet.ToGuid("Guid 1", guids1[i], i);
+                packet.ToGuid("Gift Creator Guid", guids1[i], i);
             }
         }
 
