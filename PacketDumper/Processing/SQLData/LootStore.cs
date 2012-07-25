@@ -22,7 +22,7 @@ namespace PacketDumper.Processing.SQLData
             return Settings.SQLOutput.HasFlag(SQLOutputFlags.Loot);
         }
 
-        public void ProcessData(string name, int? index, Object obj, Type t)
+        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter)
         {
         }
 

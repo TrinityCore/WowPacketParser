@@ -11,7 +11,7 @@ namespace PacketParser.Processing
 
         public bool Init(PacketFileProcessor p) { return true; }
         public void ProcessPacket(Packet packet) { }
-        public void ProcessData(string name, int? index, Object obj, Type t) { }
+        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter) { }
         public void ProcessedPacket(Packet packet) { }
         public void Finish() { }
 

@@ -153,7 +153,7 @@ namespace PacketViewer.Processing
                 Time = packet.Time,
                 Opcode = (ushort)packet.Opcode,
                 OpcodeString = Opcodes.GetOpcodeName(packet.Opcode),
-                ParsedPacket = TextBuilder.Build(packet, false, false, false)
+                ParsedPacket = GetProcessor<TextBuilder>().LastPacket
             };
 
             packets.Add(packetEntry);

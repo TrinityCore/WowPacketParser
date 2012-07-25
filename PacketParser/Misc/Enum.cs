@@ -21,8 +21,78 @@ namespace PacketParser.Misc
     {
         private static readonly EnumConverter Converter;
 
-        #region Nested types
+        private static readonly FlagChecker Checker;
 
+        abstract class FlagChecker
+        {
+            public abstract bool HasFlag(dynamic val, dynamic flag);
+        }
+
+        class FlagCheckerUInt64 : FlagChecker
+        {
+            public override bool HasFlag(dynamic val, dynamic flag)
+            {
+                return ((UInt64)val & (UInt64)flag) != 0;
+            }
+        }
+
+        class FlagCheckerInt64 : FlagChecker
+        {
+            public override bool HasFlag(dynamic val, dynamic flag)
+            {
+                return ((Int64)val & (Int64)flag) != 0;
+            }
+        }
+
+        class FlagCheckerUInt32 : FlagChecker
+        {
+            public override bool HasFlag(dynamic val, dynamic flag)
+            {
+                return ((UInt32)val & (UInt32)flag) != 0;
+            }
+        }
+
+        class FlagCheckerInt32 : FlagChecker
+        {
+            public override bool HasFlag(dynamic val, dynamic flag)
+            {
+                return ((Int32)val & (Int32)flag) != 0;
+            }
+        }
+
+        class FlagCheckerUInt16 : FlagChecker
+        {
+            public override bool HasFlag(dynamic val, dynamic flag)
+            {
+                return ((UInt16)val & (UInt16)flag) != 0;
+            }
+        }
+
+        class FlagCheckerInt16 : FlagChecker
+        {
+            public override bool HasFlag(dynamic val, dynamic flag)
+            {
+                return ((Int16)val & (Int16)flag) != 0;
+            }
+        }
+
+        class FlagCheckerByte : FlagChecker
+        {
+            public override bool HasFlag(dynamic val, dynamic flag)
+            {
+                return ((Byte)val & (Byte)flag) != 0;
+            }
+        }
+
+        class FlagCheckerSByte : FlagChecker
+        {
+            public override bool HasFlag(dynamic val, dynamic flag)
+            {
+                return ((SByte)val & (SByte)flag) != 0;
+            }
+        }
+
+        #region Nested types
         abstract class EnumConverter
         {
             public abstract string ToStringInternal(long value);
@@ -240,6 +310,41 @@ namespace PacketParser.Misc
                 if (Converter == null)
                     Converter = new ArrayEnumConverter(names);
             }
+
+            switch (Type.GetTypeCode(Enum.GetUnderlyingType(type)))
+            {
+                case TypeCode.UInt64:
+                    Checker = new FlagCheckerUInt64();
+                    break;
+                case TypeCode.Int64:
+                    Checker = new FlagCheckerInt64();
+                    break;
+                case TypeCode.UInt32:
+                    Checker = new FlagCheckerUInt32();
+                    break;
+                case TypeCode.Int32:
+                    Checker = new FlagCheckerInt32();
+                    break;
+                case TypeCode.UInt16:
+                    Checker = new FlagCheckerUInt16();
+                    break;
+                case TypeCode.Int16:
+                    Checker = new FlagCheckerInt16();
+                    break;
+                case TypeCode.Byte:
+                    Checker = new FlagCheckerByte();
+                    break;
+                case TypeCode.SByte:
+                    Checker = new FlagCheckerSByte();
+                    break;
+                default:
+                    throw new Exception("Unknown underlying type!");
+            }
+        }
+
+        public static bool HasFlag(T val, T flag)
+        {
+            return Checker.HasFlag(val, flag);
         }
 
         /// <summary>

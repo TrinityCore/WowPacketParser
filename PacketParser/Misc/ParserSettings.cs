@@ -29,6 +29,7 @@ namespace PacketParser.Misc
             public static int LocalPort;
         }
 
-        public static bool LogErrors = false;
+        public static bool LogEnumErrors = false;
+        public static bool ReadDebugValues = false;
     }
 }

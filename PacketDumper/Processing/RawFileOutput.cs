@@ -49,7 +49,7 @@ namespace PacketDumper.Processing
             packetWriter.WritePacket(packet, writer);
         }
         public void ProcessedPacket(Packet packet) { }
-        public void ProcessData(string name, int? index, Object obj, Type t) { }
+        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter) { }
         public void Finish()
         {
             if (writer != null)

@@ -85,7 +85,7 @@ namespace PacketParser.Processing
                         Packet packet = (Packet)itr.Current;
                         proc.ProcessPacket(packet);
                     }
-                    proc.ProcessData(itr.Name, itr.Index, itr.Current, itr.Type);
+                    proc.ProcessData(itr.Name, itr.Index, itr.Current, itr.Type, itr);
                 }
                 moveNext = itr.MoveNext();
             }

@@ -29,14 +29,14 @@ namespace PacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
             {
                 var type = packet.ReadByte();
-                Object typeObj;
+                string typeObj;
                 if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
-                    typeObj = ((UpdateTypeCataclysm)type);
+                    typeObj = Enum<UpdateTypeCataclysm>.ToString(type);
                 else
-                    typeObj = ((UpdateType)type);
+                    typeObj = Enum<UpdateType>.ToString(type);
 
                 packet.Store("UpdateType", typeObj, i);
-                switch (typeObj.ToString())
+                switch (typeObj)
                 {
                     case "Values":
                     {

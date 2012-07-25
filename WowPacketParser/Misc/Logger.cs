@@ -14,7 +14,7 @@ namespace PacketParser.Misc
 
         public static void CheckForMissingValues<T>(long rawValue)
         {
-            if (!ParserSettings.LogErrors || !typeof(T).IsEnum || !Attribute.IsDefined(typeof(T), typeof(FlagsAttribute)))
+            if (!ParserSettings.LogEnumErrors || !typeof(T).IsEnum || !Attribute.IsDefined(typeof(T), typeof(FlagsAttribute)))
                 return;
 
             var key = typeof(T).ToString().Replace("PacketParser.Enums.", "");
@@ -50,7 +50,7 @@ namespace PacketParser.Misc
 
         public static void WriteErrors()
         {
-            if (!ParserSettings.LogErrors)
+            if (!ParserSettings.LogEnumErrors)
                 return;
 
             Trace.WriteLine(Environment.NewLine);

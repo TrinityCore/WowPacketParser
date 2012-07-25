@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Diagnostics;
 using PacketParser.Enums;
 using Guid = PacketParser.DataStructures.Guid;
@@ -17,6 +18,7 @@ namespace PacketDumper.Processing
         bool WriteToFile = true;
         string _outFileName;
         string _logPrefix;
+        StringBuilder subPackets;
 
         public bool Init(PacketFileProcessor file)
         {
@@ -51,7 +53,7 @@ namespace PacketDumper.Processing
             return true;
         }
 
-        public void ProcessData(string name, int? index, Object obj, Type t)
+        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter)
         {
             if (!WriteToFile)
                 return;
@@ -68,18 +70,24 @@ namespace PacketDumper.Processing
         {
             if (packet.SubPacket)
                 return;
+            subPackets = new StringBuilder();
             WriteToFile = true;
         }
         public void ProcessedPacket(Packet packet)
         {
-            if (packet.SubPacket || !WriteToFile)
+            if (!WriteToFile)
                 return;
-            // Write to file
-            if (errorWriter != null && packet.Status == ParsedStatus.WithErrors)
-                errorWriter.WriteLine(TextBuilder.Build(packet, true, Settings.DebugReads));
-            else
-                writer.WriteLine(TextBuilder.Build(packet, true, Settings.DebugReads));
-            writer.Flush();
+            if (packet.SubPacket)
+            {
+                subPackets.Append(packet.GetHeader());
+                subPackets.AppendLine(PacketFileProcessor.Current.GetProcessor<TextBuilder>().LastPacket);
+                return;
+            }
+            StreamWriter w = (errorWriter != null && packet.Status == ParsedStatus.WithErrors) ? errorWriter : writer;
+            w.Write(packet.GetHeader());
+            w.WriteLine(PacketFileProcessor.Current.GetProcessor<TextBuilder>().LastPacket);
+            w.Write(subPackets);
+            w.Flush();
         }
 
         public void Finish()

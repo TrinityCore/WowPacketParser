@@ -17,7 +17,7 @@ namespace PacketDumper.Processing.SQLData
             return false;//return Settings.SQLOutput.HasFlag(SQLOutputFlags.ItemTemplate);
         }
 
-        public void ProcessData(string name, int? index, Object obj, Type t)
+        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter)
         {
         }
 

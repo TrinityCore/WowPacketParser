@@ -26,12 +26,9 @@ namespace PacketParser.Misc
         /// <param name="value">An enum, int, ...</param>
         /// <param name="flag">An enum, int, ...</param>
         /// <returns>A boolean</returns>
-        public static bool HasAnyFlag(this IConvertible value, IConvertible flag)
+        public static bool HasAnyFlag<T>(this T value, T flag)where T: struct, IConvertible
         {
-            var uFlag = flag.ToUInt64(null);
-            var uThis = value.ToUInt64(null);
-
-            return (uThis & uFlag) != 0;
+            return Enum<T>.HasFlag(value, flag);
         }
 
         /// <summary>

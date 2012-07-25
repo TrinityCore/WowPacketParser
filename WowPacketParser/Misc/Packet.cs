@@ -5,6 +5,8 @@ using System.Text;
 using System.Collections.Generic;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using PacketParser.Enums;
+using PacketParser.Enums.Version;
+using PacketParser.Misc;
 
 namespace PacketParser.DataStructures
 {
@@ -69,6 +71,32 @@ namespace PacketParser.DataStructures
         public NamedTreeNode GetData()
         {
             return StoreData;
+        }
+
+        public string GetHeader()
+        {
+            StringBuilder output = new StringBuilder(100);
+            output.Append(Enum<Direction>.ToString(Direction));
+            output.Append(": ");
+            output.Append(Opcodes.GetOpcodeName(Opcode));
+            output.Append(" (0x");
+            output.Append(Opcode.ToString("X4"));
+            output.Append(") Length: ");
+            output.Append(Length);
+            output.Append(" Time: ");
+            output.Append(Time.ToString("MM/dd/yyyy HH:mm:ss.fff"));
+            output.Append(" Number: ");
+            output.Append(Number);
+            if (SubPacket)
+            {
+                output.Append(" (subpacket of packet: opcode ");
+                output.Append(Opcodes.GetOpcodeName(ParentOpcode));
+                output.Append(" (0x");
+                output.Append(ParentOpcode.ToString("X4"));
+                output.Append(") )");
+            }
+            output.AppendLine();
+            return output.ToString();
         }
 
         public void Inflate(int inflatedSize, int bytesToInflate)

@@ -9,6 +9,6 @@ namespace PacketParser.Processing
         void ProcessPacket(Packet packet);
         void ProcessedPacket(Packet packet);
         void Finish();
-        void ProcessData(string name, int? index, Object obj, Type t);
+        void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter);
     }
 }

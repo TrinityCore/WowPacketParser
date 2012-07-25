@@ -23,7 +23,7 @@ namespace PacketDumper.Processing
             return SniffData;
         }
 
-        public void ProcessData(string name, int? index, Object obj, Type t) 
+        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter) 
         {
         }
 
