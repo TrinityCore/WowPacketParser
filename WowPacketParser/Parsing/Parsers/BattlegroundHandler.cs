@@ -840,8 +840,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldMgrEntered434(Packet packet)
         {
             var bytes = new byte[8];
-            packet.ReadBit("Unk Bit1").ToByte();
-            packet.ReadBit("Clear AFK").ToByte();
+            packet.ReadBit("Unk Bit1");
+            packet.ReadBit("Clear AFK");
             bytes[1] = packet.ReadBit().ToByte();
             bytes[4] = packet.ReadBit().ToByte();
             bytes[5] = packet.ReadBit().ToByte();
@@ -1215,11 +1215,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PVP_OPTIONS_ENABLED)]
         public static void HandlePVPOptoinsEnabled(Packet packet)
         {
-            packet.ReadBit("Unk Boolean 1").ToByte();
-            packet.ReadBit("Unk Boolean 2").ToByte();
-            packet.ReadBit("Unk Boolean 3").ToByte();
-            packet.ReadBit("Unk Boolean 4").ToByte();
-            packet.ReadBit("Unk Boolean 5").ToByte();
+            packet.ReadBit("Unk Boolean 1");
+            packet.ReadBit("Unk Boolean 2");
+            packet.ReadBit("Unk Boolean 3");
+            packet.ReadBit("Unk Boolean 4");
+            packet.ReadBit("Unk Boolean 5");
         }
 
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE)]

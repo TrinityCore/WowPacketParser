@@ -30,12 +30,12 @@ namespace WowPacketParser.Enums
 
     public enum TradeStatus434
     {
-        Busy          = 18,  // or 21
+        Busy          = 21,
         BeginTrade    = 12, 
-        OpenWindow    = 0, // not confirmed 
+        OpenWindow    = 0,
         Canceled      = 23,
         Accept        = 6,
-        Busy2         = 21, // or 19
+        Busy2         = 18,
         NoTarget      = 17,
         BackToTrade   = 25,
         Tradecomplete = 9,

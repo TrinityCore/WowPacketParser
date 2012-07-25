@@ -530,48 +530,48 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GROUP_SET_ROLE)]
         public static void HandleGroupSetRole(Packet packet)
         {
-            var bytes = new byte[8];
-            var bytes2 = new byte[8];
-            bytes[1] = packet.ReadBit().ToByte();
-            bytes2[0] = packet.ReadBit().ToByte();
-            bytes2[2] = packet.ReadBit().ToByte();
-            bytes2[4] = packet.ReadBit().ToByte();
-            bytes2[7] = packet.ReadBit().ToByte();
-            bytes2[3] = packet.ReadBit().ToByte();
-            bytes[7] = packet.ReadBit().ToByte();
-            bytes2[5] = packet.ReadBit().ToByte();
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+            guid1[1] = packet.ReadBit().ToByte();
+            guid2[0] = packet.ReadBit().ToByte();
+            guid2[2] = packet.ReadBit().ToByte();
+            guid2[4] = packet.ReadBit().ToByte();
+            guid2[7] = packet.ReadBit().ToByte();
+            guid2[3] = packet.ReadBit().ToByte();
+            guid1[7] = packet.ReadBit().ToByte();
+            guid2[5] = packet.ReadBit().ToByte();
 
-            bytes[5] = packet.ReadBit().ToByte();
-            bytes[4] = packet.ReadBit().ToByte();
-            bytes[3] = packet.ReadBit().ToByte();
-            bytes2[6] = packet.ReadBit().ToByte();
-            bytes[2] = packet.ReadBit().ToByte();
-            bytes[6] = packet.ReadBit().ToByte();
-            bytes2[1] = packet.ReadBit().ToByte();
-            bytes[0] = packet.ReadBit().ToByte();
+            guid1[5] = packet.ReadBit().ToByte();
+            guid1[4] = packet.ReadBit().ToByte();
+            guid1[3] = packet.ReadBit().ToByte();
+            guid2[6] = packet.ReadBit().ToByte();
+            guid1[2] = packet.ReadBit().ToByte();
+            guid1[6] = packet.ReadBit().ToByte();
+            guid2[1] = packet.ReadBit().ToByte();
+            guid1[0] = packet.ReadBit().ToByte();
 
-            if (bytes[7] != 0) bytes[7] ^= packet.ReadByte();
-            if (bytes2[3] != 0) bytes2[3] ^= packet.ReadByte();
-            if (bytes[6] != 0) bytes[6] ^= packet.ReadByte();
-            if (bytes2[4] != 0) bytes2[4] ^= packet.ReadByte();
-            if (bytes2[0] != 0) bytes2[0] ^= packet.ReadByte();
+            if (guid1[7] != 0) guid1[7] ^= packet.ReadByte();
+            if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
+            if (guid1[6] != 0) guid1[6] ^= packet.ReadByte();
+            if (guid2[4] != 0) guid2[4] ^= packet.ReadByte();
+            if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
             packet.ReadEnum<LfgRoleFlag>("New Roles", TypeCode.Int32);
-            if (bytes2[6] != 0) bytes2[6] ^= packet.ReadByte();
-            if (bytes2[2] != 0) bytes2[2] ^= packet.ReadByte();
-            if (bytes[0] != 0) bytes[0] ^= packet.ReadByte();
+            if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
+            if (guid2[2] != 0) guid2[2] ^= packet.ReadByte();
+            if (guid1[0] != 0) guid1[0] ^= packet.ReadByte();
 
-            if (bytes[4] != 0) bytes[4] ^= packet.ReadByte();
-            if (bytes2[1] != 0) bytes2[1] ^= packet.ReadByte();
-            if (bytes[3] != 0) bytes[3] ^= packet.ReadByte();
-            if (bytes[5] != 0) bytes[5] ^= packet.ReadByte();
-            if (bytes[2] != 0) bytes[2] ^= packet.ReadByte();
-            if (bytes2[5] != 0) bytes2[5] ^= packet.ReadByte();
-            if (bytes2[7] != 0) bytes2[7] ^= packet.ReadByte();
-            if (bytes[1] != 0) bytes[1] ^= packet.ReadByte();
+            if (guid1[4] != 0) guid1[4] ^= packet.ReadByte();
+            if (guid2[1] != 0) guid2[1] ^= packet.ReadByte();
+            if (guid1[3] != 0) guid1[3] ^= packet.ReadByte();
+            if (guid1[5] != 0) guid1[5] ^= packet.ReadByte();
+            if (guid1[2] != 0) guid1[2] ^= packet.ReadByte();
+            if (guid2[5] != 0) guid2[5] ^= packet.ReadByte();
+            if (guid2[7] != 0) guid2[7] ^= packet.ReadByte();
+            if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
 
             packet.ReadEnum<LfgRoleFlag>("Old Roles", TypeCode.Int32);
-            packet.ToGuid("Assigner Guid", bytes);
-            packet.ToGuid("Target Guid", bytes2);
+            packet.ToGuid("Assigner Guid", guid1);
+            packet.ToGuid("Target Guid", guid2);
         }
     }
 }
