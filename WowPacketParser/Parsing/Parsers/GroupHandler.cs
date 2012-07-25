@@ -555,7 +555,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (bytes[6] != 0) bytes[6] ^= packet.ReadByte();
             if (bytes2[4] != 0) bytes2[4] ^= packet.ReadByte();
             if (bytes2[0] != 0) bytes2[0] ^= packet.ReadByte();
-            packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
+            packet.ReadEnum<LfgRoleFlag>("New Roles", TypeCode.Int32);
             if (bytes2[6] != 0) bytes2[6] ^= packet.ReadByte();
             if (bytes2[2] != 0) bytes2[2] ^= packet.ReadByte();
             if (bytes[0] != 0) bytes[0] ^= packet.ReadByte();
@@ -566,12 +566,12 @@ namespace WowPacketParser.Parsing.Parsers
             if (bytes[5] != 0) bytes[5] ^= packet.ReadByte();
             if (bytes[2] != 0) bytes[2] ^= packet.ReadByte();
             if (bytes2[5] != 0) bytes2[5] ^= packet.ReadByte();
-            if (bytes2[7] != 0) bytes2[2] ^= packet.ReadByte();
+            if (bytes2[7] != 0) bytes2[7] ^= packet.ReadByte();
             if (bytes[1] != 0) bytes[1] ^= packet.ReadByte();
 
-            packet.ReadUInt32("Unk Uint32");
-            packet.ToGuid("Guid 1", bytes);
-            packet.ToGuid("Guid 2", bytes2);
+            packet.ReadUInt32("Old Roles");
+            packet.ToGuid("Assigner Guid", bytes);
+            packet.ToGuid("Target Guid", bytes2);
         }
     }
 }
