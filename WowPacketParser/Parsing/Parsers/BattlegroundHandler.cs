@@ -737,7 +737,33 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGE, ClientVersionBuild.V4_0_6a_13623)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleBattlefieldMgrStateChanged434(Packet packet)
+        {
+            var bytes = new byte[8];
+            bytes[5] = packet.ReadBit().ToByte();
+            bytes[3] = packet.ReadBit().ToByte();
+            bytes[7] = packet.ReadBit().ToByte();
+            bytes[2] = packet.ReadBit().ToByte();
+            bytes[1] = packet.ReadBit().ToByte();
+            bytes[6] = packet.ReadBit().ToByte();
+            bytes[0] = packet.ReadBit().ToByte();
+            bytes[4] = packet.ReadBit().ToByte();
+
+
+            if (bytes[1] != 0) bytes[1] ^= packet.ReadByte();
+            if (bytes[2] != 0) bytes[2] ^= packet.ReadByte();
+            if (bytes[5] != 0) bytes[5] ^= packet.ReadByte();
+            packet.ReadEnum<BattlegroundStatus>("status", TypeCode.UInt32);
+            if (bytes[4] != 0) bytes[4] ^= packet.ReadByte();
+            if (bytes[7] != 0) bytes[7] ^= packet.ReadByte();
+            if (bytes[0] != 0) bytes[0] ^= packet.ReadByte();
+            if (bytes[3] != 0) bytes[3] ^= packet.ReadByte();
+            if (bytes[6] != 0) bytes[6] ^= packet.ReadByte();
+            packet.ToGuid("Guid", bytes);
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGE, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldMgrStateChanged406(Packet packet)
         {
             packet.ReadEnum<BattlegroundStatus>("status", TypeCode.UInt32);
@@ -772,6 +798,7 @@ namespace WowPacketParser.Parsing.Parsers
             bytes[1] = packet.ReadBit().ToByte();
             bytes[0] = packet.ReadBit().ToByte();
             
+
             if (bytes[6] != 0) bytes[6] ^= packet.ReadByte();
             packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
             if (bytes[1] != 0) bytes[1] ^= packet.ReadByte();
@@ -1170,6 +1197,20 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid[0] != 0) guid[0] ^= packet.ReadByte();
 
             packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_RATED_INFO)]
+        public static void HandleBattlefieldRatedInfo(Packet packet)
+        {
+            packet.ReadUInt32("Unk UInt32 1");
+            packet.ReadByte("Unk Byte");
+            packet.ReadUInt32("Unk UInt32 2");
+            packet.ReadUInt32("Unk UInt32 3");
+            packet.ReadUInt32("Unk UInt32 4");
+            packet.ReadUInt32("Unk UInt32 5");
+            packet.ReadUInt32("Unk UInt32 6");
+            packet.ReadUInt32("Unk UInt32 7");
+
         }
 
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE)]

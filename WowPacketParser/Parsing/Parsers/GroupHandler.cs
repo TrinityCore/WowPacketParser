@@ -526,5 +526,52 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Apply");
             packet.ReadGuid("Guid");
         }
+
+        [Parser(Opcode.SMSG_GROUP_SET_ROLE)]
+        public static void HandleGroupSetRole(Packet packet)
+        {
+            var bytes = new byte[8];
+            var bytes2 = new byte[8];
+            bytes[1] = packet.ReadBit().ToByte();
+            bytes2[0] = packet.ReadBit().ToByte();
+            bytes2[2] = packet.ReadBit().ToByte();
+            bytes2[4] = packet.ReadBit().ToByte();
+            bytes2[7] = packet.ReadBit().ToByte();
+            bytes2[3] = packet.ReadBit().ToByte();
+            bytes[7] = packet.ReadBit().ToByte();
+            bytes2[5] = packet.ReadBit().ToByte();
+
+            bytes[5] = packet.ReadBit().ToByte();
+            bytes[4] = packet.ReadBit().ToByte();
+            bytes[3] = packet.ReadBit().ToByte();
+            bytes2[6] = packet.ReadBit().ToByte();
+            bytes[2] = packet.ReadBit().ToByte();
+            bytes[6] = packet.ReadBit().ToByte();
+            bytes2[1] = packet.ReadBit().ToByte();
+            bytes[0] = packet.ReadBit().ToByte();
+
+            if (bytes[7] != 0) bytes[7] ^= packet.ReadByte();
+            if (bytes2[3] != 0) bytes2[3] ^= packet.ReadByte();
+            if (bytes[6] != 0) bytes[6] ^= packet.ReadByte();
+            if (bytes2[4] != 0) bytes2[4] ^= packet.ReadByte();
+            if (bytes2[0] != 0) bytes2[0] ^= packet.ReadByte();
+            packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
+            if (bytes2[6] != 0) bytes2[6] ^= packet.ReadByte();
+            if (bytes2[2] != 0) bytes2[2] ^= packet.ReadByte();
+            if (bytes[0] != 0) bytes[0] ^= packet.ReadByte();
+
+            if (bytes[4] != 0) bytes[4] ^= packet.ReadByte();
+            if (bytes2[1] != 0) bytes2[1] ^= packet.ReadByte();
+            if (bytes[3] != 0) bytes[3] ^= packet.ReadByte();
+            if (bytes[5] != 0) bytes[5] ^= packet.ReadByte();
+            if (bytes[2] != 0) bytes[2] ^= packet.ReadByte();
+            if (bytes2[5] != 0) bytes2[5] ^= packet.ReadByte();
+            if (bytes2[7] != 0) bytes2[2] ^= packet.ReadByte();
+            if (bytes[1] != 0) bytes[1] ^= packet.ReadByte();
+
+            packet.ReadUInt32("Unk Uint32");
+            packet.ToGuid("Guid 1", bytes);
+            packet.ToGuid("Guid 2", bytes2);
+        }
     }
 }
