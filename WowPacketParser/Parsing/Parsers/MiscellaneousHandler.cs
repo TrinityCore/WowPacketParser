@@ -998,6 +998,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt16("File Data ID");
         }
 
+        [Parser(Opcode.SMSG_WEEKLY_LAST_RESET)]
+        public static void HandleWeeklyLastReset(Packet packet)
+        {
+            packet.ReadTime("Date");
+        }
+
         [Parser(Opcode.SMSG_MINIGAME_STATE)]
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]

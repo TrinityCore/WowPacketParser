@@ -878,6 +878,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_UPDATE_ITEM_ENCHANTMENTS)]
         public static void HandleUpdateItemEnchantments(Packet packet)
         {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
+                packet.ReadGuid("Item Guid");
+
             for (var i = 0; i < 4; i++)
                 packet.ReadInt32("Aura ID", i);
         }
