@@ -955,10 +955,18 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ToGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_BATTLEFIELD_MGR_EXIT_REQUEST)]
+        [Parser(Opcode.CMSG_BATTLEFIELD_MGR_EXIT_REQUEST, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldMgrExitRequest(Packet packet)
         {
             packet.ReadInt32("Battle Id");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEFIELD_MGR_EXIT_REQUEST, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleBattlefieldMgrExitRequest434(Packet packet)
+        {
+            var guid = packet.StartBitStream(2, 0, 3, 7, 4, 5, 6, 1);
+            packet.ParseBitStream(guid, 5, 2, 0, 1, 4, 4, 7, 6);
+            packet.ToGuid(guid);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING)]
