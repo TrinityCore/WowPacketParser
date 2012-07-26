@@ -32,11 +32,41 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Agree");
         }
 
-        [Parser(Opcode.CMSG_LFG_PROPOSAL_RESULT)]
+        [Parser(Opcode.CMSG_LFG_PROPOSAL_RESULT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleLfgProposalResult(Packet packet)
         {
             packet.ReadInt32("Group ID");
             packet.ReadBoolean("Accept");
+        }
+
+        [Parser(Opcode.CMSG_LFG_PROPOSAL_RESULT, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleLfgProposalResult434(Packet packet)
+        {
+            packet.ReadUInt32("Unk Uint32");
+            packet.ReadTime("Time");
+            packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
+            packet.ReadUInt32("Unk Uint32");
+            var guid2 = new byte[8];
+            guid2 = packet.StartBitStream(4, 5, 0, 6, 2, 7, 1, 3);
+
+            packet.ParseBitStream(guid2, 7, 4, 3, 2, 6, 0, 1, 5);
+
+            packet.ToGuid("Guid", guid2);
+
+            var guid = new byte[8];
+            guid[7] = packet.ReadBit().ToByte();
+            packet.ReadBit("Accept");
+            guid[1] = packet.ReadBit().ToByte();
+            guid[3] = packet.ReadBit().ToByte();
+            guid[0] = packet.ReadBit().ToByte();
+            guid[5] = packet.ReadBit().ToByte();
+            guid[4] = packet.ReadBit().ToByte();
+            guid[6] = packet.ReadBit().ToByte();
+            guid[2] = packet.ReadBit().ToByte();
+
+            packet.ParseBitStream(guid, 7, 1, 5, 6, 3, 4, 0, 2);
+            packet.ToGuid("Guid 2", guid);
+
         }
 
         [Parser(Opcode.SMSG_LFG_BOOT_PROPOSAL_UPDATE)]
