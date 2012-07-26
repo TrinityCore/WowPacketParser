@@ -430,12 +430,13 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUESTUPDATE_FAILED)]
         [Parser(Opcode.SMSG_QUESTUPDATE_FAILEDTIMER)]
         [Parser(Opcode.SMSG_QUESTUPDATE_COMPLETE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_QUESTUPDATE_COMPLETE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestForceRemoved(Packet packet)
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
         }
 
-        [Parser(Opcode.SMSG_QUESTUPDATE_COMPLETE, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_QUESTUPDATE_COMPLETE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestUpdateComplete422(Packet packet)
         {
             packet.ReadGuid("Guid");

@@ -1066,6 +1066,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REQUEST_CATEGORY_COOLDOWNS)]
         [Parser(Opcode.CMSG_REQUEST_CEMETERY_LIST)]
         [Parser(Opcode.CMSG_REQUEST_RESEARCH_HISTORY)]
+        [Parser(Opcode.CMSG_GROUP_REQUEST_JOIN_UPDATES)]
+        [Parser(Opcode.CMSG_REQUEST_RATED_BG_STATS)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

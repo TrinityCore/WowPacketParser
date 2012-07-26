@@ -1210,24 +1210,39 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_RATED_INFO)]
         public static void HandleBattlefieldRatedInfo(Packet packet)
         {
-            packet.ReadUInt32("Unk UInt32 1");
+            packet.ReadUInt32("Rating");
             packet.ReadByte("Unk Byte");
             packet.ReadUInt32("Unk UInt32 2");
             packet.ReadUInt32("Unk UInt32 3");
-            packet.ReadUInt32("Unk UInt32 4");
+            packet.ReadUInt32("Conquest Points Weekly Cap");
             packet.ReadUInt32("Unk UInt32 5");
             packet.ReadUInt32("Unk UInt32 6");
-            packet.ReadUInt32("Unk UInt32 7");
+            packet.ReadUInt32("Current Conquest Points");
+        }
+
+        [Parser(Opcode.SMSG_RATED_BG_STATS)]
+        public static void HandleRatedBGStats(Packet packet)
+        {
+            for (var i = 0; i < 18; i++)
+                packet.ReadUInt32("Unk UInt32", i);
         }
 
         [Parser(Opcode.SMSG_PVP_OPTIONS_ENABLED)]
         public static void HandlePVPOptoinsEnabled(Packet packet)
         {
-            packet.ReadBit("Unk Boolean 1");
-            packet.ReadBit("Unk Boolean 2");
-            packet.ReadBit("Unk Boolean 3");
-            packet.ReadBit("Unk Boolean 4");
-            packet.ReadBit("Unk Boolean 5");
+            for (var i = 0; i < 5; i++)
+                packet.ReadBit("Unk Boolean", i);
+        }
+
+        [Parser(Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE)]
+        public static void HandlePVPRewardsResponse(Packet packet)
+        {
+            packet.ReadUInt32("Conquest Weekly Cap");
+            packet.ReadUInt32("Unk Uint32");
+            packet.ReadUInt32("Arena Conquest Cap");
+            packet.ReadUInt32("Unk Uint32");
+            packet.ReadUInt32("Unk Uint32");
+            packet.ReadUInt32("Current Conquest Points");
         }
 
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE)]

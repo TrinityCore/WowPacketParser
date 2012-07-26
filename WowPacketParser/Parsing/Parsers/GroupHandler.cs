@@ -8,11 +8,21 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class GroupHandler
     {
-        [Parser(Opcode.CMSG_GROUP_SET_ROLES)]
+        [Parser(Opcode.CMSG_GROUP_SET_ROLES, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGroupSetRoles(Packet packet)
         {
             packet.ReadUInt32("Role");
             packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_GROUP_SET_ROLES, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGroupSetRoles434(Packet packet)
+        {
+            packet.ReadEnum<LfgRoleFlag>("Role", TypeCode.Int32);
+            var guid = packet.StartBitStream(2, 6, 3, 7, 5, 1, 0, 4);
+            packet.ParseBitStream(guid, 6, 4, 1, 3, 0, 5, 2, 7);
+            packet.ToGuid("Guid", guid);
+            
         }
 
         [Parser(Opcode.SMSG_GROUP_LIST)]
@@ -572,6 +582,19 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<LfgRoleFlag>("Old Roles", TypeCode.Int32);
             packet.ToGuid("Assigner Guid", guid1);
             packet.ToGuid("Target Guid", guid2);
+        }
+
+        [Parser(Opcode.SMSG_RAID_MARKERS_CHANGED)]
+        public static void HandleRaidMarkersChanged(Packet packet)
+        {
+            packet.ReadUInt32("Unk Uint32");
+        }
+
+        [Parser(Opcode.CMSG_GROUP_INVITE_RESPONSE)]
+        public static void HandleGroupInviteResponse434(Packet packet)
+        {
+            var bit1 = packet.ReadBit("Accepted");
+            if (bit1) packet.ReadUInt32("Unk Uint32");
         }
     }
 }
