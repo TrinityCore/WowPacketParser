@@ -965,7 +965,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldMgrExitRequest434(Packet packet)
         {
             var guid = packet.StartBitStream(2, 0, 3, 7, 4, 5, 6, 1);
-            packet.ParseBitStream(guid, 5, 2, 0, 1, 4, 4, 7, 6);
+            packet.ParseBitStream(guid, 5, 2, 0, 1, 4, 3, 7, 6);
             packet.ToGuid(guid);
         }
 
