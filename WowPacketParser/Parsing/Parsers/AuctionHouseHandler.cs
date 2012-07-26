@@ -23,19 +23,29 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadBoolean("Enabled");
         }
 
-        [Parser(Opcode.CMSG_AUCTION_SELL_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_AUCTION_SELL_ITEM)]
         public static void HandleAuctionSellItem(Packet packet)
         {
             packet.ReadGuid("Auctioneer GUID");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_2a_10505))
-                packet.ReadUInt32("Unk UInt32");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_2_2a_10505))
+            {
+                packet.ReadGuid("Item Guid");
+                packet.ReadUInt32("Item Count");
+            }
+            else
+            {
+                if (!packet.CanRead()) // dword_F4955C <= (unsigned int)dword_F49578[v13]
+                    return;
 
-            packet.ReadGuid("Item GUID");
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_2a_10505))
-                packet.ReadUInt32("Count");
-
+                var count = packet.ReadUInt32("Count");
+                for (int i = 0; i < count; ++i)
+                {
+                    packet.ReadGuid("Item Guid", i);
+                    packet.ReadInt32("", i);
+                }
+            }
+                
             if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
             {
                 packet.ReadUInt64("Bid");
@@ -47,26 +57,6 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Buyout");
             }
 
-            packet.ReadUInt32("Expire Time");
-        }
-
-        [Parser(Opcode.CMSG_AUCTION_SELL_ITEM, ClientVersionBuild.V4_3_4_15595)] // probably changed earlier or this might 
-        public static void HandleAuctionSellItem434(Packet packet)               // be the correct 335 struct (without the gold 64s)
-        {
-            packet.ReadGuid("Auctioneer GUID");
-
-            if (!packet.CanRead()) // dword_F4955C <= (unsigned int)dword_F49578[v13]
-                return;
-
-            var count = packet.ReadUInt32("Count");
-            for (int i = 0; i < count; ++i)
-            {
-                packet.ReadGuid("Item Guid", i);
-                packet.ReadInt32("item Count", i);
-            }
-
-            packet.ReadUInt64("Bid");
-            packet.ReadUInt64("Buyout");
             packet.ReadUInt32("Expire Time");
         }
 
