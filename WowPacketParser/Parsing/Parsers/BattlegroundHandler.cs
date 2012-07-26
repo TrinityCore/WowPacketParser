@@ -940,7 +940,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
             guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
             guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[4] = 1;
+            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
 
             if (guid[0] != 0) guid[0] ^= packet.ReadByte();
             if (guid[3] != 0) guid[3] ^= packet.ReadByte();
