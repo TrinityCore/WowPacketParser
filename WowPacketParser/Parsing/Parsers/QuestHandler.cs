@@ -571,16 +571,6 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Required Spell");
             }
 
-            if (flags.HasAnyFlag(QuestFlags.HiddenRewards))
-            {
-                packet.ReadUInt32("Hidden Chosen Items");
-                packet.ReadUInt32("Hidden Items");
-                packet.ReadUInt32("Hidden Money");
-
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_2_10482))
-                    packet.ReadUInt32("Hidden XP");
-            }
-
             ReadExtraQuestInfo(ref packet, false);
 
             var emoteCount = packet.ReadUInt32("Quest Emote Count");

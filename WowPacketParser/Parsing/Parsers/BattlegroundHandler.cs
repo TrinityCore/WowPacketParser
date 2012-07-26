@@ -849,11 +849,9 @@ namespace WowPacketParser.Parsing.Parsers
             bytes[3] = packet.ReadBit().ToByte();
             packet.ReadBit("Unk Bit 3");
 
-            var tmpbit = packet.ReadByte();
-
-            bytes[6] = (byte)(tmpbit >> 7);
-            bytes[2] = (byte)((2 * (2 * tmpbit)) >> 7);
-            bytes[7] = (byte)((2*tmpbit) >> 7);
+            bytes[6] = packet.ReadBit().ToByte();
+            bytes[7] = packet.ReadBit().ToByte();
+            bytes[2] = packet.ReadBit().ToByte();
 
             if (bytes[5] != 0) bytes[5] ^= packet.ReadByte();
             if (bytes[3] != 0) bytes[3] ^= packet.ReadByte();

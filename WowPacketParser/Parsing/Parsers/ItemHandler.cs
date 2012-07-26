@@ -941,5 +941,11 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("Item Text");
             }
         }
+
+        [Parser(Opcode.CMSG_ITEM_TEXT_QUERY, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleItemTextQuery(Packet packet)
+        {
+            packet.ReadGuid("Item Guid");
+        }
     }
 }
