@@ -806,7 +806,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_SPELL_GO, 30342},
             {Opcode.SMSG_SPELL_START, 8324},
             {Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS, 10880},
-            {Opcode.SMSG_SPLINE_SET_RUN_SPEED, 25656},
+            {Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED, 25656},
             {Opcode.SMSG_STABLE_RESULT, 21152},
             {Opcode.SMSG_STANDSTATE_UPDATE, 1152},
             {Opcode.SMSG_START_MIRROR_TIMER, 5284},

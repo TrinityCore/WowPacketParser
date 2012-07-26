@@ -739,7 +739,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_SPELL_START, 0xCE43},
             {Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS, 0x98EE},
             {Opcode.SMSG_SPIRIT_HEALER_CONFIRM, 0x0A4A},
-            {Opcode.SMSG_SPLINE_SET_RUN_SPEED, 0xB2CE},
+            {Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED, 0xB2CE},
             {Opcode.SMSG_STABLE_RESULT, 0xA5B},
             {Opcode.SMSG_STANDSTATE_UPDATE, 0x4E52},
             {Opcode.SMSG_START_MIRROR_TIMER, 0xDA66},

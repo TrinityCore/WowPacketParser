@@ -735,12 +735,12 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_COMPRESSED_MOVES, 0x621C}, // (0x0A54)(0x02FB) //
             {Opcode.CMSG_GUILD_INFO_TEXT, 0x02FC}, // NF()(0x02FC) //
             {Opcode.SMSG_CHAT_RESTRICTED, 0x3674}, // (0x23BC)(0x02FD) //
-            {Opcode.SMSG_SPLINE_SET_RUN_SPEED, 0x055E}, // (0xEAF0)(0x02FE) //
-            {Opcode.SMSG_SPLINE_SET_RUN_BACK_SPEED, 0x245D}, // (0xEB71)(0x02FF) //
-            {Opcode.SMSG_SPLINE_SET_SWIM_SPEED, 0x865E}, // (0x4BD8)(0x0300) //
-            {Opcode.SMSG_SPLINE_SET_WALK_SPEED, 0x3F77}, // (0xA315)(0x0301) //
-            {Opcode.SMSG_SPLINE_SET_SWIM_BACK_SPEED, 0x0D75}, // (0xCA34)(0x0302) //
-            {Opcode.SMSG_SPLINE_SET_TURN_RATE, 0xCD7E}, // (0x2B1C)(0x0303) //
+            {Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED, 0x055E}, // (0xEAF0)(0x02FE) //
+            {Opcode.SMSG_SPLINE_MOVE_SET_RUN_BACK_SPEED, 0x245D}, // (0xEB71)(0x02FF) //
+            {Opcode.SMSG_SPLINE_MOVE_SET_SWIM_SPEED, 0x865E}, // (0x4BD8)(0x0300) //
+            {Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED, 0x3F77}, // (0xA315)(0x0301) //
+            {Opcode.SMSG_SPLINE_MOVE_SET_SWIM_BACK_SPEED, 0x0D75}, // (0xCA34)(0x0302) //
+            {Opcode.SMSG_SPLINE_MOVE_SET_TURN_RATE, 0xCD7E}, // (0x2B1C)(0x0303) //
             {Opcode.SMSG_SPLINE_MOVE_UNROOT, 0x0304}, // NF()(0x0304) //
             {Opcode.SMSG_SPLINE_MOVE_FEATHER_FALL, 0x0305}, // NF()(0x0305) //
             {Opcode.SMSG_SPLINE_MOVE_NORMAL_FALL, 0x0306}, // NF()(0x0306) //
@@ -870,8 +870,8 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_FORCE_FLIGHT_SPEED_CHANGE_ACK, 0x0382}, // NF()(0x0382) //
             {Opcode.SMSG_FORCE_FLIGHT_BACK_SPEED_CHANGE, 0x0383}, // NF()(0x0383) //
             {Opcode.CMSG_FORCE_FLIGHT_BACK_SPEED_CHANGE_ACK, 0x0384}, // NF()(0x0384) //
-            {Opcode.SMSG_SPLINE_SET_FLIGHT_SPEED, 0xDD5C}, // (0x0A15)(0x0385) //
-            {Opcode.SMSG_SPLINE_SET_FLIGHT_BACK_SPEED, 0x4F76}, // (0xAA9D)(0x0386) //
+            {Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_SPEED, 0xDD5C}, // (0x0A15)(0x0385) //
+            {Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_BACK_SPEED, 0x4F76}, // (0xAA9D)(0x0386) //
             {Opcode.CMSG_MAELSTROM_INVALIDATE_CACHE, 0x0387}, // NF()(0x0387) //
             {Opcode.SMSG_FLIGHT_SPLINE_SYNC, 0xB47F}, // (0xE2DC)(0x0388) //
             {Opcode.CMSG_SET_TAXI_BENCHMARK_MODE, 0x0389}, // NF()(0x0389) //
@@ -1087,7 +1087,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.MSG_MOVE_SET_PITCH_RATE, 0xED76}, // (0x8274)(0x045B) //
             {Opcode.SMSG_FORCE_PITCH_RATE_CHANGE, 0x045C}, // NF()(0x045C) //
             {Opcode.CMSG_FORCE_PITCH_RATE_CHANGE_ACK, 0x045D}, // NF()(0x045D) //
-            {Opcode.SMSG_SPLINE_SET_PITCH_RATE, 0x8774}, // (0x62F5)(0x045E) //
+            {Opcode.SMSG_SPLINE_MOVE_SET_PITCH_RATE, 0x8774}, // (0x62F5)(0x045E) //
             {Opcode.SMSG_MOVE_ABANDON_TRANSPORT, 0x045F}, // NF()(0x045F) //
             {Opcode.SMSG_CALENDAR_UPDATE_INVITE_LIST, 0xB77E}, // (0x421D)(0x0460) //
             {Opcode.SMSG_CALENDAR_UPDATE_INVITE_LIST2, 0xDE7E}, // (0x6AB4)(0x0461) //
