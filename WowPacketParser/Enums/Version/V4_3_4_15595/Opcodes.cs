@@ -152,7 +152,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_DEL_FRIEND, 0x6A15},
             {Opcode.CMSG_DEL_IGNORE, 0x4727},
             {Opcode.CMSG_DEL_VOICE_IGNORE, 0x0024},
-            {Opcode.CMSG_DESTROY_ITEMS, 0x4A27},
+            {Opcode.CMSG_DESTROY_ITEM, 0x4A27},
             {Opcode.CMSG_DISMISS_CONTROLLED_VEHICLE, 0x3218},
             {Opcode.CMSG_DISMISS_CRITTER, 0x4227},
             {Opcode.CMSG_DUEL_ACCEPTED, 0x2136},
