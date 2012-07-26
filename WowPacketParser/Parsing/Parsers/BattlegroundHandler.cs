@@ -1247,6 +1247,20 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Current Conquest Points");
         }
 
+        [Parser(Opcode.CMSG_BATTLEFIELD_PORT)]
+        public static void HandleBattlefieldPort434(Packet packet)
+        {
+            packet.ReadTime("Time");
+            packet.ReadUInt32("Unk Uint32");
+            packet.ReadUInt32("Unk Uint32"); //seems to be always 1
+
+            var guid = packet.StartBitStream(0, 1, 5, 6, 7, 4, 3, 2);
+            packet.ReadBit("Join");
+
+            packet.ParseBitStream(guid, 1, 3, 5, 7, 0, 2, 6, 4);
+            packet.ToGuid("Guid", guid);
+        }
+
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE)]
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_SET_NEXT_TRANSITION_TIME)]
         //[Parser(Opcode.CMSG_START_BATTLEFIELD_CHEAT)]
