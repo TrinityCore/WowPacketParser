@@ -1070,6 +1070,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REQUEST_RATED_BG_STATS)]
         [Parser(Opcode.CMSG_COMPLETE_MOVIE)]
         [Parser(Opcode.CMSG_GUILD_EVENT_LOG_QUERY)]
+        [Parser(Opcode.SMSG_WEEKLY_RESET_CURRENCY)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

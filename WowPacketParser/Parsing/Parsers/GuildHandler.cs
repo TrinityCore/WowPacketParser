@@ -1452,7 +1452,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadInt32("unk Int32", i); // + 36
                 packet.ReadInt32("unk Int32", i); // + 32
-                packet.ReadSingle("unk Float", i); // + 48
+                packet.ReadSingle("Average Item Level", i); // + 48
                 packet.ReadInt64("Week activity", i); // + 8
                 packet.ReadByte("Level", i); // + 357
                 packet.ReadEnum<Class>("Class", TypeCode.Byte, i); // + 358

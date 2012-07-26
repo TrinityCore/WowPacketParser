@@ -4417,7 +4417,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("GUID");
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_SWIM_SPEED, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_SPEED, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -4452,7 +4452,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleSplineSetWalkBackSpeed434(Packet packet)
+        public static void HandleSplineSetWalkSpeed434(Packet packet)
         {
             var guid = packet.StartBitStream(0, 6, 7, 3, 5, 1, 2, 4);
             packet.ParseBitStream(guid, 0, 4, 7, 1, 5, 3);
