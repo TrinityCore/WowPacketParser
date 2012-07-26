@@ -1393,6 +1393,81 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Guild Achievement Id");
         }
 
+        [Parser(Opcode.SMSG_GUILD_UPDATE_ROSTER)]
+        public static void HandleGuildUpdateRoster(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 18);
+            var guids = new byte[count][];
+            var strlen = new uint[count][];
+
+            for (int i = 0; i < count; ++i)
+            {
+                guids[i] = new byte[8];
+                strlen[i] = new uint[3];
+
+                strlen[i][2] = packet.ReadBits(7); // + 52
+                guids[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
+                strlen[i][0] = packet.ReadBits(8); // + 100
+                guids[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
+                packet.ReadBit("Can NOT has +361");
+                guids[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
+                packet.ReadBit("Can NOT has +360");
+                strlen[i][1] = packet.ReadBits(8); // + 228
+            }
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadByte("unk Byte", i); // + 359
+                packet.ReadInt32("Zone", i); // + 40
+
+                if (guids[i][1] != 0) guids[i][1] ^= packet.ReadByte();
+
+                packet.ReadInt64("Total activity", i); // + 16
+
+                if (guids[i][2] != 0) guids[i][2] ^= packet.ReadByte();
+
+                for (int j = 0; j < 2; ++j)
+                {
+                    var rank = packet.ReadUInt32();
+                    var value = packet.ReadUInt32();
+                    var id = packet.ReadUInt32();
+                    packet.WriteLine("[{0}][{1}] Profession: Id {2} - Value {3} - Rank {4}", i, j, id, value, rank);
+                }
+
+                if (guids[i][0] != 0) guids[i][0] ^= packet.ReadByte();
+                if (guids[i][6] != 0) guids[i][6] ^= packet.ReadByte();
+                if (guids[i][7] != 0) guids[i][7] ^= packet.ReadByte();
+
+                packet.ReadInt32("unk Int32", i); // + 24
+                packet.ReadWoWString("Public Comment", strlen[i][0], i);
+                packet.ReadWoWString("Officers Comment", strlen[i][1], i);
+
+                if (guids[i][4] != 0) guids[i][4] ^= packet.ReadByte();
+                if (guids[i][5] != 0) guids[i][5] ^= packet.ReadByte();
+
+                packet.ReadInt32("unk Int32", i); // + 36
+                packet.ReadInt32("unk Int32", i); // + 32
+                packet.ReadSingle("unk Float", i); // + 48
+                packet.ReadInt64("Week activity", i); // + 8
+                packet.ReadByte("Level", i); // + 357
+                packet.ReadEnum<Class>("Class", TypeCode.Byte, i); // + 358
+
+                if (guids[i][3] != 0) guids[i][3] ^= packet.ReadByte();
+
+                packet.ReadByte("unk Byte", i); // + 356
+                packet.ReadInt32("Member Achievement Points", i); // + 28
+                packet.ReadWoWString("Character Name", strlen[i][2], i);
+                packet.ReadInt32("unk Int32", i); // + 44
+
+                packet.WriteLine("[{0}] Player GUID: {1}", i, new Guid(BitConverter.ToUInt64(guids[i], 0)));
+            }
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REM_MONEY_WITHDRAW_QUERY)]
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
         [Parser(Opcode.CMSG_GUILD_REQUEST_CHALLENGE_UPDATE)]
