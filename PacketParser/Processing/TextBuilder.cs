@@ -10,6 +10,13 @@ namespace PacketParser.Processing
 {
     public class TextBuilder : IPacketProcessor
     {
+        public bool LoadOnDepend { get { return true; } }
+        public Type[] DependsOn { get { return null; } }
+
+        public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return ProcessPacket; } }
+        public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return ProcessedPacket; } }
+        public ProcessDataEventHandler ProcessAnyDataHandler { get { return ProcessData; } }
+
         private StringBuilder output;
         private StringBuilder align;
         private Stack<Tuple<StringBuilder, StringBuilder>> packets;

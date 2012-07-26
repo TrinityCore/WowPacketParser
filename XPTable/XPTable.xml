@@ -7795,6 +7795,196 @@
             Gets or sets the member to use in the data source.
             </summary>
         </member>
+        <member name="T:XPTable.Models.RowCollectionForParentRow">
+            <summary>
+            Represents a collection of Row objects
+            </summary>
+        </member>
+        <member name="T:XPTable.Models.RowCollection">
+            <summary>
+            Represents a collection of Row objects
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.RowCollection.Add(XPTable.Models.Row)">
+            <summary>
+            Adds the specified Row to the end of the collection
+            </summary>
+            <param name="row">The Row to add</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollection.CollapseAllSubRows">
+            <summary>
+            Collapses all sub rows.
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.RowCollection.ExpandAllSubRows">
+            <summary>
+            Expands all sub rows.
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.RowCollection.AddRange(XPTable.Models.Row[])">
+            <summary>
+            Adds an array of Row objects to the collection
+            </summary>
+            <param name="rows">An array of Row objects to add 
+            to the collection</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollection.Remove(XPTable.Models.Row)">
+            <summary>
+            Removes the specified Row from the model
+            </summary>
+            <param name="row">The Row to remove</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollection.RemoveRange(XPTable.Models.Row[])">
+            <summary>
+            Removes an array of Row objects from the collection
+            </summary>
+            <param name="rows">An array of Row objects to remove 
+            from the collection</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollection.RemoveAt(System.Int32)">
+            <summary>
+            Removes the Row at the specified index from the collection
+            </summary>
+            <param name="index">The index of the Row to remove</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollection.Clear">
+            <summary>
+            Removes all Rows from the collection
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.RowCollection.Insert(System.Int32,XPTable.Models.Row)">
+            <summary>
+            Inserts a Row into the collection at the specified index
+            </summary>
+            <param name="index">The zero-based index at which the Row 
+            should be inserted</param>
+            <param name="row">The Row to insert</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollection.InsertRange(System.Int32,XPTable.Models.Row[])">
+            <summary>
+            Inserts an array of Rows into the collection at the specified 
+            index
+            </summary>
+            <param name="index">The zero-based index at which the rows 
+            should be inserted</param>
+            <param name="rows">The array of Rows to be inserted into 
+            the collection</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollection.IndexOf(XPTable.Models.Row)">
+            <summary>
+            Returns the index of the specified Row in the model
+            </summary>
+            <param name="row">The Row to look for</param>
+            <returns>The index of the specified Row in the model</returns>
+        </member>
+        <member name="F:XPTable.Models.RowCollectionForParentRow.rowowner">
+            <summary>
+            A Row that owns this row
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForParentRow.#ctor(XPTable.Models.Row)">
+            <summary>
+            Initializes a new instance of the RowCollection class 
+            that belongs to the specified Row
+            </summary>
+            <param name="owner"></param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForParentRow.Add(XPTable.Models.Row)">
+            <summary>
+            Adds the specified Row to the end of the collection
+            </summary>
+            <param name="row">The Row to add</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForParentRow.CollapseAllSubRows">
+            <summary>
+            Collapses all sub rows.
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForParentRow.ExpandAllSubRows">
+            <summary>
+            Expands all sub rows.
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForParentRow.AddRange(XPTable.Models.Row[])">
+            <summary>
+            Adds an array of Row objects to the collection
+            </summary>
+            <param name="rows">An array of Row objects to add 
+            to the collection</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForParentRow.Remove(XPTable.Models.Row)">
+            <summary>
+            Removes the specified Row from the model
+            </summary>
+            <param name="row">The Row to remove</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForParentRow.RemoveRange(XPTable.Models.Row[])">
+            <summary>
+            Removes an array of Row objects from the collection
+            </summary>
+            <param name="rows">An array of Row objects to remove 
+            from the collection</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForParentRow.RemoveAt(System.Int32)">
+            <summary>
+            Removes the Row at the specified index from the collection
+            </summary>
+            <param name="index">The index of the Row to remove</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForParentRow.Clear">
+            <summary>
+            Removes all Rows from the collection
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForParentRow.Insert(System.Int32,XPTable.Models.Row)">
+            <summary>
+            Inserts a Row into the collection at the specified index
+            </summary>
+            <param name="index">The zero-based index at which the Row 
+            should be inserted</param>
+            <param name="row">The Row to insert</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForParentRow.InsertRange(System.Int32,XPTable.Models.Row[])">
+            <summary>
+            Inserts an array of Rows into the collection at the specified 
+            index
+            </summary>
+            <param name="index">The zero-based index at which the rows 
+            should be inserted</param>
+            <param name="rows">The array of Rows to be inserted into 
+            the collection</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForParentRow.IndexOf(XPTable.Models.Row)">
+            <summary>
+            Returns the index of the specified Row in the model
+            </summary>
+            <param name="row">The Row to look for</param>
+            <returns>The index of the specified Row in the model</returns>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForParentRow.SetRow(System.Int32,XPTable.Models.Row)">
+            <summary>
+            Replaces the Row at the specified index to the specified Row
+            </summary>
+            <param name="index">The index of the Row to be replaced</param>
+            <param name="row">The Row to be placed at the specified index</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForParentRow.OnRowAdded(XPTable.Events.RowEventArgs)">
+            <summary>
+            Raises the RowAdded event
+            </summary>
+            <param name="e">A TableModelEventArgs that contains the event data</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForParentRow.OnRowRemoved(XPTable.Events.RowEventArgs)">
+            <summary>
+            Raises the RowRemoved event
+            </summary>
+            <param name="e">A TableModelEventArgs that contains the event data</param>
+        </member>
+        <member name="P:XPTable.Models.RowCollectionForParentRow.Item(System.Int32)">
+            <summary>
+            Gets the Row at the specified index
+            </summary>
+        </member>
         <member name="T:XPTable.Events.RowEventHandler">
             <summary>
             Represents the methods that will handle the PropertyChanged, CellAdded and 
@@ -12382,6 +12572,120 @@
             the Column is sorting
             </summary>
         </member>
+        <member name="T:XPTable.Models.RowCollectionForTable">
+            <summary>
+            Represents a collection of Row objects
+            </summary>
+        </member>
+        <member name="F:XPTable.Models.RowCollectionForTable.owner">
+            <summary>
+            The TableModel that owns the RowCollection
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForTable.#ctor(XPTable.Models.TableModel)">
+            <summary>
+            Initializes a new instance of the RowCollection class 
+            that belongs to the specified TableModel
+            </summary>
+            <param name="owner">A TableModel representing the tableModel that owns 
+            the RowCollection</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForTable.Add(XPTable.Models.Row)">
+            <summary>
+            Adds the specified Row to the end of the collection
+            </summary>
+            <param name="row">The Row to add</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForTable.CollapseAllSubRows">
+            <summary>
+            Collapses all sub rows.
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForTable.ExpandAllSubRows">
+            <summary>
+            Expands all sub rows.
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForTable.AddRange(XPTable.Models.Row[])">
+            <summary>
+            Adds an array of Row objects to the collection
+            </summary>
+            <param name="rows">An array of Row objects to add 
+            to the collection</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForTable.Remove(XPTable.Models.Row)">
+            <summary>
+            Removes the specified Row from the model
+            </summary>
+            <param name="row">The Row to remove</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForTable.RemoveRange(XPTable.Models.Row[])">
+            <summary>
+            Removes an array of Row objects from the collection
+            </summary>
+            <param name="rows">An array of Row objects to remove 
+            from the collection</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForTable.RemoveAt(System.Int32)">
+            <summary>
+            Removes the Row at the specified index from the collection
+            </summary>
+            <param name="index">The index of the Row to remove</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForTable.Clear">
+            <summary>
+            Removes all Rows from the collection
+            </summary>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForTable.Insert(System.Int32,XPTable.Models.Row)">
+            <summary>
+            Inserts a Row into the collection at the specified index
+            </summary>
+            <param name="index">The zero-based index at which the Row 
+            should be inserted</param>
+            <param name="row">The Row to insert</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForTable.InsertRange(System.Int32,XPTable.Models.Row[])">
+            <summary>
+            Inserts an array of Rows into the collection at the specified 
+            index
+            </summary>
+            <param name="index">The zero-based index at which the rows 
+            should be inserted</param>
+            <param name="rows">The array of Rows to be inserted into 
+            the collection</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForTable.IndexOf(XPTable.Models.Row)">
+            <summary>
+            Returns the index of the specified Row in the model
+            </summary>
+            <param name="row">The Row to look for</param>
+            <returns>The index of the specified Row in the model</returns>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForTable.SetRow(System.Int32,XPTable.Models.Row)">
+            <summary>
+            Replaces the Row at the specified index to the specified Row
+            </summary>
+            <param name="index">The index of the Row to be replaced</param>
+            <param name="row">The Row to be placed at the specified index</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForTable.OnRowAdded(XPTable.Events.TableModelEventArgs)">
+            <summary>
+            Raises the RowAdded event
+            </summary>
+            <param name="e">A TableModelEventArgs that contains the event data</param>
+        </member>
+        <member name="M:XPTable.Models.RowCollectionForTable.OnRowRemoved(XPTable.Events.TableModelEventArgs)">
+            <summary>
+            Raises the RowRemoved event
+            </summary>
+            <param name="e">A TableModelEventArgs that contains the event data</param>
+        </member>
+        <member name="P:XPTable.Models.RowCollectionForTable.Item(System.Int32)">
+            <summary>
+            Gets the Row at the specified index
+            </summary>
+        </member>
         <member name="T:XPTable.Events.HeaderMouseEventHandler">
             <summary>
             Represents the method that will handle the HeaderMouseEnter, HeaderMouseLeave, 
@@ -13490,83 +13794,6 @@
             <summary>
             Returns true if the Alignment property has been set.
             </summary>
-        </member>
-        <member name="T:XPTable.Models.RowCollection">
-            <summary>
-            Represents a collection of Row objects
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.RowCollection.Add(XPTable.Models.Row)">
-            <summary>
-            Adds the specified Row to the end of the collection
-            </summary>
-            <param name="row">The Row to add</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollection.CollapseAllSubRows">
-            <summary>
-            Collapses all sub rows.
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.RowCollection.ExpandAllSubRows">
-            <summary>
-            Expands all sub rows.
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.RowCollection.AddRange(XPTable.Models.Row[])">
-            <summary>
-            Adds an array of Row objects to the collection
-            </summary>
-            <param name="rows">An array of Row objects to add 
-            to the collection</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollection.Remove(XPTable.Models.Row)">
-            <summary>
-            Removes the specified Row from the model
-            </summary>
-            <param name="row">The Row to remove</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollection.RemoveRange(XPTable.Models.Row[])">
-            <summary>
-            Removes an array of Row objects from the collection
-            </summary>
-            <param name="rows">An array of Row objects to remove 
-            from the collection</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollection.RemoveAt(System.Int32)">
-            <summary>
-            Removes the Row at the specified index from the collection
-            </summary>
-            <param name="index">The index of the Row to remove</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollection.Clear">
-            <summary>
-            Removes all Rows from the collection
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.RowCollection.Insert(System.Int32,XPTable.Models.Row)">
-            <summary>
-            Inserts a Row into the collection at the specified index
-            </summary>
-            <param name="index">The zero-based index at which the Row 
-            should be inserted</param>
-            <param name="row">The Row to insert</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollection.InsertRange(System.Int32,XPTable.Models.Row[])">
-            <summary>
-            Inserts an array of Rows into the collection at the specified 
-            index
-            </summary>
-            <param name="index">The zero-based index at which the rows 
-            should be inserted</param>
-            <param name="rows">The array of Rows to be inserted into 
-            the collection</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollection.IndexOf(XPTable.Models.Row)">
-            <summary>
-            Returns the index of the specified Row in the model
-            </summary>
-            <param name="row">The Row to look for</param>
-            <returns>The index of the specified Row in the model</returns>
         </member>
         <member name="T:XPTable.Models.Design.RowComparer">
             <summary>
@@ -15855,233 +16082,6 @@
         <member name="F:XPTable.Models.CheckBoxColumnStyle.RadioButton">
             <summary>
             Indicates that CheckBoxes will look like RadioButtons
-            </summary>
-        </member>
-        <member name="T:XPTable.Models.RowCollectionForTable">
-            <summary>
-            Represents a collection of Row objects
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.RowCollectionForTable.owner">
-            <summary>
-            The TableModel that owns the RowCollection
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForTable.#ctor(XPTable.Models.TableModel)">
-            <summary>
-            Initializes a new instance of the RowCollection class 
-            that belongs to the specified TableModel
-            </summary>
-            <param name="owner">A TableModel representing the tableModel that owns 
-            the RowCollection</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForTable.Add(XPTable.Models.Row)">
-            <summary>
-            Adds the specified Row to the end of the collection
-            </summary>
-            <param name="row">The Row to add</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForTable.CollapseAllSubRows">
-            <summary>
-            Collapses all sub rows.
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForTable.ExpandAllSubRows">
-            <summary>
-            Expands all sub rows.
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForTable.AddRange(XPTable.Models.Row[])">
-            <summary>
-            Adds an array of Row objects to the collection
-            </summary>
-            <param name="rows">An array of Row objects to add 
-            to the collection</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForTable.Remove(XPTable.Models.Row)">
-            <summary>
-            Removes the specified Row from the model
-            </summary>
-            <param name="row">The Row to remove</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForTable.RemoveRange(XPTable.Models.Row[])">
-            <summary>
-            Removes an array of Row objects from the collection
-            </summary>
-            <param name="rows">An array of Row objects to remove 
-            from the collection</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForTable.RemoveAt(System.Int32)">
-            <summary>
-            Removes the Row at the specified index from the collection
-            </summary>
-            <param name="index">The index of the Row to remove</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForTable.Clear">
-            <summary>
-            Removes all Rows from the collection
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForTable.Insert(System.Int32,XPTable.Models.Row)">
-            <summary>
-            Inserts a Row into the collection at the specified index
-            </summary>
-            <param name="index">The zero-based index at which the Row 
-            should be inserted</param>
-            <param name="row">The Row to insert</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForTable.InsertRange(System.Int32,XPTable.Models.Row[])">
-            <summary>
-            Inserts an array of Rows into the collection at the specified 
-            index
-            </summary>
-            <param name="index">The zero-based index at which the rows 
-            should be inserted</param>
-            <param name="rows">The array of Rows to be inserted into 
-            the collection</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForTable.IndexOf(XPTable.Models.Row)">
-            <summary>
-            Returns the index of the specified Row in the model
-            </summary>
-            <param name="row">The Row to look for</param>
-            <returns>The index of the specified Row in the model</returns>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForTable.SetRow(System.Int32,XPTable.Models.Row)">
-            <summary>
-            Replaces the Row at the specified index to the specified Row
-            </summary>
-            <param name="index">The index of the Row to be replaced</param>
-            <param name="row">The Row to be placed at the specified index</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForTable.OnRowAdded(XPTable.Events.TableModelEventArgs)">
-            <summary>
-            Raises the RowAdded event
-            </summary>
-            <param name="e">A TableModelEventArgs that contains the event data</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForTable.OnRowRemoved(XPTable.Events.TableModelEventArgs)">
-            <summary>
-            Raises the RowRemoved event
-            </summary>
-            <param name="e">A TableModelEventArgs that contains the event data</param>
-        </member>
-        <member name="P:XPTable.Models.RowCollectionForTable.Item(System.Int32)">
-            <summary>
-            Gets the Row at the specified index
-            </summary>
-        </member>
-        <member name="T:XPTable.Models.RowCollectionForParentRow">
-            <summary>
-            Represents a collection of Row objects
-            </summary>
-        </member>
-        <member name="F:XPTable.Models.RowCollectionForParentRow.rowowner">
-            <summary>
-            A Row that owns this row
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForParentRow.#ctor(XPTable.Models.Row)">
-            <summary>
-            Initializes a new instance of the RowCollection class 
-            that belongs to the specified Row
-            </summary>
-            <param name="owner"></param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForParentRow.Add(XPTable.Models.Row)">
-            <summary>
-            Adds the specified Row to the end of the collection
-            </summary>
-            <param name="row">The Row to add</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForParentRow.CollapseAllSubRows">
-            <summary>
-            Collapses all sub rows.
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForParentRow.ExpandAllSubRows">
-            <summary>
-            Expands all sub rows.
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForParentRow.AddRange(XPTable.Models.Row[])">
-            <summary>
-            Adds an array of Row objects to the collection
-            </summary>
-            <param name="rows">An array of Row objects to add 
-            to the collection</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForParentRow.Remove(XPTable.Models.Row)">
-            <summary>
-            Removes the specified Row from the model
-            </summary>
-            <param name="row">The Row to remove</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForParentRow.RemoveRange(XPTable.Models.Row[])">
-            <summary>
-            Removes an array of Row objects from the collection
-            </summary>
-            <param name="rows">An array of Row objects to remove 
-            from the collection</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForParentRow.RemoveAt(System.Int32)">
-            <summary>
-            Removes the Row at the specified index from the collection
-            </summary>
-            <param name="index">The index of the Row to remove</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForParentRow.Clear">
-            <summary>
-            Removes all Rows from the collection
-            </summary>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForParentRow.Insert(System.Int32,XPTable.Models.Row)">
-            <summary>
-            Inserts a Row into the collection at the specified index
-            </summary>
-            <param name="index">The zero-based index at which the Row 
-            should be inserted</param>
-            <param name="row">The Row to insert</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForParentRow.InsertRange(System.Int32,XPTable.Models.Row[])">
-            <summary>
-            Inserts an array of Rows into the collection at the specified 
-            index
-            </summary>
-            <param name="index">The zero-based index at which the rows 
-            should be inserted</param>
-            <param name="rows">The array of Rows to be inserted into 
-            the collection</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForParentRow.IndexOf(XPTable.Models.Row)">
-            <summary>
-            Returns the index of the specified Row in the model
-            </summary>
-            <param name="row">The Row to look for</param>
-            <returns>The index of the specified Row in the model</returns>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForParentRow.SetRow(System.Int32,XPTable.Models.Row)">
-            <summary>
-            Replaces the Row at the specified index to the specified Row
-            </summary>
-            <param name="index">The index of the Row to be replaced</param>
-            <param name="row">The Row to be placed at the specified index</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForParentRow.OnRowAdded(XPTable.Events.RowEventArgs)">
-            <summary>
-            Raises the RowAdded event
-            </summary>
-            <param name="e">A TableModelEventArgs that contains the event data</param>
-        </member>
-        <member name="M:XPTable.Models.RowCollectionForParentRow.OnRowRemoved(XPTable.Events.RowEventArgs)">
-            <summary>
-            Raises the RowRemoved event
-            </summary>
-            <param name="e">A TableModelEventArgs that contains the event data</param>
-        </member>
-        <member name="P:XPTable.Models.RowCollectionForParentRow.Item(System.Int32)">
-            <summary>
-            Gets the Row at the specified index
             </summary>
         </member>
     </members>

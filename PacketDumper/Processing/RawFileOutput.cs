@@ -11,6 +11,13 @@ namespace PacketDumper.Processing
 {
     public class RawFileOutput : IPacketProcessor
     {
+        public bool LoadOnDepend { get { return false; } }
+        public Type[] DependsOn { get { return null; } }
+
+        public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return ProcessPacket; } }
+        public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return null; } }
+        public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+
         BinaryWriter writer = null;
         IBinaryPacketWriter packetWriter = null;
         string _logPrefix;
@@ -48,8 +55,6 @@ namespace PacketDumper.Processing
                 return;
             packetWriter.WritePacket(packet, writer);
         }
-        public void ProcessedPacket(Packet packet) { }
-        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter) { }
         public void Finish()
         {
             if (writer != null)

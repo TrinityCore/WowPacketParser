@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 using PacketParser.Enums;
 using PacketParser.Enums.Version;
 using PacketParser.Processing;
@@ -107,12 +109,6 @@ namespace PacketDumper.Processing
                 if (oldPct != 100)
                     ShowPercentProgressMessage("Processing...", 100);
 
-                // finalize processors
-                foreach (var procs in Processors)
-                {
-                    procs.Value.Finish();
-                }
-
                 _stats.SetEndTime(DateTime.Now);
             }
             catch (Exception ex)
@@ -136,20 +132,6 @@ namespace PacketDumper.Processing
             Console.Write("\r{0} {1}% complete", message, percent);
             if (percent == 100)
                 Console.WriteLine();
-        }
-
-        public override void InitProcessors()
-        {
-            base.InitProcessors();
-            var procss = Utilities.GetClasses(typeof(IPacketProcessor));
-            foreach (var p in procss)
-            {
-                if (p.IsAbstract || p.IsInterface)
-                    continue;
-                IPacketProcessor instance = (IPacketProcessor)Activator.CreateInstance(p);
-                if (instance.Init(this))
-                    Processors[p] = instance;
-            }
         }
 
         private bool CheckReadFilters(int opc)

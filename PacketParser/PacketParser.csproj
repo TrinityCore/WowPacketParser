@@ -961,16 +961,16 @@
       <Link>DataStructures\Aura.cs</Link>
     </Compile>
     <Compile Include="..\WowPacketParser\Store\Objects\CreatureText.cs">
-      <Link>Processing\SQLDataStore\Objects\CreatureText.cs</Link>
+      <Link>DataStructures\CreatureText.cs</Link>
     </Compile>
     <Compile Include="..\wowpacketparser\store\objects\GameObject.cs">
       <Link>DataStructures\GameObject.cs</Link>
     </Compile>
     <Compile Include="..\WowPacketParser\Store\Objects\GameObjectTemplate.cs">
-      <Link>Processing\SQLDataStore\Objects\GameObjectTemplate.cs</Link>
+      <Link>DataStructures\GameObjectTemplate.cs</Link>
     </Compile>
     <Compile Include="..\WowPacketParser\Store\Objects\Gossip.cs">
-      <Link>Processing\SQLDataStore\Objects\Gossip.cs</Link>
+      <Link>DataStructures\Gossip.cs</Link>
     </Compile>
     <Compile Include="..\wowpacketparser\store\objects\Item.cs">
       <Link>DataStructures\Item.cs</Link>

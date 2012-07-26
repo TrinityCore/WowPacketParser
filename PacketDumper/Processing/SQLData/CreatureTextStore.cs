@@ -14,15 +14,18 @@ namespace PacketDumper.Processing.SQLData
 {
     public class CreatureTextStore : IPacketProcessor
     {
+        public bool LoadOnDepend { get { return false; } }
+        public Type[] DependsOn { get { return null; } }
+
+        public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return ProcessPacket; } }
+        public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return null; } }
+        public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+
         // `creature_text`
         public readonly TimeSpanMultiDictionary<uint, CreatureText> CreatureTexts = new TimeSpanMultiDictionary<uint, CreatureText>();
         public bool Init(PacketFileProcessor file)
         {
             return Settings.SQLOutput.HasFlag(SQLOutputFlags.CreatureTemplate);
-        }
-
-        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter)
-        {
         }
 
         public void ProcessPacket(Packet packet)
@@ -35,10 +38,6 @@ namespace PacketDumper.Processing.SQLData
 
                 CreatureTexts.Add(guid.GetEntry(), packet.GetData().GetNode<CreatureText>("CreatureTextObject"), packet.TimeSpan);
             }
-        }
-        public void ProcessedPacket(Packet packet)
-        {
-
         }
 
         public void Finish()

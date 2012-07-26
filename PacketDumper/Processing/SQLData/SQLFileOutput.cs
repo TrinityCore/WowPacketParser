@@ -22,6 +22,13 @@ namespace PacketDumper.Processing.SQLData
 
     public class SQLFileOutput : IPacketProcessor
     {
+        public bool LoadOnDepend { get { return false; } }
+        public Type[] DependsOn { get { return null; } }
+
+        public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return null; } }
+        public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return null; } }
+        public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+
         string FileName;
         string LogPrefix;
         string Header;
@@ -32,13 +39,7 @@ namespace PacketDumper.Processing.SQLData
             Header = file.GetHeader();
             return Settings.SQLOutput != SQLOutputFlags.None;
         }
-        public void ProcessPacket(Packet packet)
-        {
-        }
-        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter) { }
-        public void ProcessedPacket(Packet packet)
-        {
-        }
+
         public void Finish() 
         {
             string sqlFileName;

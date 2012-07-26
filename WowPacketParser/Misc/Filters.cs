@@ -11,6 +11,11 @@ namespace PacketDumper.Misc
         private static readonly Dictionary<StoreNameType, List<int>> NameStores =
             new Dictionary<StoreNameType, List<int>>();
 
+        public static bool Enabled
+        {
+            get { return NameStores.Count != 0; }
+        }
+
         public static void Initialize()
         {
             foreach (var filter in Settings.TextOutputFilterIgnoreEntry)

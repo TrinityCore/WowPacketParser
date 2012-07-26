@@ -14,14 +14,17 @@ namespace PacketDumper.Processing.SQLData
 {
     public class NpcTrainerStore : IPacketProcessor
     {
+        public bool LoadOnDepend { get { return false; } }
+        public Type[] DependsOn { get { return null; } }
+
+        public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return ProcessPacket; } }
+        public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return null; } }
+        public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+
         public readonly TimeSpanDictionary<uint, NpcTrainer> NpcTrainers = new TimeSpanDictionary<uint, NpcTrainer>();
         public bool Init(PacketFileProcessor file)
         {
             return Settings.SQLOutput.HasFlag(SQLOutputFlags.NpcTrainer);
-        }
-
-        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter)
-        {
         }
 
         public void ProcessPacket(Packet packet)
@@ -32,10 +35,6 @@ namespace PacketDumper.Processing.SQLData
 
                 NpcTrainers.Add((uint)guid.GetEntry(), packet.GetNode<NpcTrainer>("NpcTrainerObject"), packet.TimeSpan);
             }
-        }
-        public void ProcessedPacket(Packet packet)
-        {
-
         }
 
         public void Finish()

@@ -9,11 +9,13 @@ namespace PacketParser.DataStructures
     public struct Guid
     {
         public readonly ulong Full;
+        private readonly HighGuidType HighType;
 
         public Guid(ulong id)
             : this()
         {
             Full = id;
+            HighType = _GetHighType();
         }
 
         public bool HasEntry()
@@ -64,6 +66,11 @@ namespace PacketParser.DataStructures
         }
 
         public HighGuidType GetHighType()
+        {
+            return HighType;
+        }
+
+        private HighGuidType _GetHighType()
         {
             if (Full == 0)
                 return HighGuidType.None;

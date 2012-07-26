@@ -15,15 +15,18 @@ namespace PacketDumper.Processing.SQLData
 {
     public class LootStore : IPacketProcessor
     {
+        public bool LoadOnDepend { get { return false; } }
+        public Type[] DependsOn { get { return null; } }
+
+        public ProcessPacketEventHandler ProcessAnyPacketHandler {get {return ProcessPacket;} }
+        public ProcessedPacketEventHandler ProcessedAnyPacketHandler  {get {return null;} }
+        public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+
         // Loot (ItemId, LootType)
         public readonly TimeSpanDictionary<Tuple<uint, ObjectType>, Loot> Loots = new TimeSpanDictionary<Tuple<uint, ObjectType>, Loot>();
         public bool Init(PacketFileProcessor file)
         {
             return Settings.SQLOutput.HasFlag(SQLOutputFlags.Loot);
-        }
-
-        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter)
-        {
         }
 
         public void ProcessPacket(Packet packet)
@@ -47,10 +50,6 @@ namespace PacketDumper.Processing.SQLData
 
                 Loots.Add(new Tuple<uint, ObjectType>(guid.GetEntry(), guid.GetObjectType()), loot, packet.TimeSpan);
             }
-        }
-        public void ProcessedPacket(Packet packet)
-        {
-
         }
 
         public void Finish()

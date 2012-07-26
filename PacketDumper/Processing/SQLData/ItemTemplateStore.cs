@@ -11,14 +11,17 @@ namespace PacketDumper.Processing.SQLData
 {
     public class ItemTemplateStore : IPacketProcessor
     {
+        public bool LoadOnDepend { get { return false; } }
+        public Type[] DependsOn { get { return null; } }
+
+        public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return ProcessPacket; } }
+        public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return null; } }
+        public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+
         public readonly TimeSpanDictionary<uint, ItemTemplate> ItemTemplates = new TimeSpanDictionary<uint, ItemTemplate>();
         public bool Init(PacketFileProcessor file)
         {
-            return false;//return Settings.SQLOutput.HasFlag(SQLOutputFlags.ItemTemplate);
-        }
-
-        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter)
-        {
+            return false;
         }
 
         public void ProcessPacket(Packet packet)
@@ -32,10 +35,6 @@ namespace PacketDumper.Processing.SQLData
 
                 ItemTemplates.Add((uint)entry.Key, packet.GetNode<ItemTemplate>("ItemTemplateObject"), packet.TimeSpan);
             }
-        }
-        public void ProcessedPacket(Packet packet)
-        {
-
         }
 
         public void Finish()

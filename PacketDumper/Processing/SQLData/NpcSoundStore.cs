@@ -11,15 +11,17 @@ namespace PacketDumper.Processing.SQLData
 {
     public class NpcSoundStore : IPacketProcessor
     {
+        public bool LoadOnDepend { get { return false; } }
+        public Type[] DependsOn { get { return null; } }
+
+        public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return ProcessPacket; } }
+        public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return null; } }
+        public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+
         public readonly TimeSpanBag<uint> Sounds = new TimeSpanBag<uint>();
         public bool Init(PacketFileProcessor file)
         {
             return Settings.SQLOutput.HasFlag(SQLOutputFlags.CreatureTemplate);
-        }
-
-        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter)
-        {
-
         }
 
         public void ProcessPacket(Packet packet)
@@ -32,10 +34,6 @@ namespace PacketDumper.Processing.SQLData
                     Sounds.Add(packet.GetData().GetNode<UInt32>("Sound Id"), packet.TimeSpan);
                     break;
             }
-        }
-        public void ProcessedPacket(Packet packet)
-        {
-
         }
 
         public void Finish()

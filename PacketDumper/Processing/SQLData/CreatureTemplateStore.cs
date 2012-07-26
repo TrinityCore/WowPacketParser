@@ -13,14 +13,17 @@ namespace PacketDumper.Processing.SQLData
 {
     public class CreatureTemplateStore : IPacketProcessor
     {
+        public bool LoadOnDepend { get { return false; } }
+        public Type[] DependsOn { get { return null; } }
+
+        public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return ProcessPacket; } }
+        public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return null; } }
+        public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+
         public readonly TimeSpanDictionary<uint, UnitTemplate> UnitTemplates = new TimeSpanDictionary<uint, UnitTemplate>();
         public bool Init(PacketFileProcessor file)
         {
             return Settings.SQLOutput.HasFlag(SQLOutputFlags.CreatureTemplate);
-        }
-
-        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter)
-        {
         }
 
         public void ProcessPacket(Packet packet)
@@ -34,10 +37,6 @@ namespace PacketDumper.Processing.SQLData
 
                 UnitTemplates.Add((uint)entry.Key, packet.GetNode<UnitTemplate>("UnitTemplateObject"), packet.TimeSpan);
             }
-        }
-        public void ProcessedPacket(Packet packet)
-        {
-
         }
 
         public void Finish()

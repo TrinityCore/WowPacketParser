@@ -13,6 +13,13 @@ namespace PacketDumper.Processing
 {
     public class TextFileOutput : IPacketProcessor
     {
+        public bool LoadOnDepend { get { return false; } }
+        public Type[] DependsOn { get { return new Type[] {typeof(TextBuilder)}; } }
+
+        public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return ProcessPacket; } }
+        public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return ProcessedPacket; } }
+        public ProcessDataEventHandler ProcessAnyDataHandler { get { if (Filters.Enabled) return ProcessData; return Stub; } }
+
         StreamWriter writer = null;
         StreamWriter errorWriter = null;
         bool WriteToFile = true;
@@ -51,6 +58,10 @@ namespace PacketDumper.Processing
             }
 
             return true;
+        }
+
+        public void Stub(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter)
+        {
         }
 
         public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter)

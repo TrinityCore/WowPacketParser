@@ -13,6 +13,13 @@ namespace PacketDumper.Processing
 {
     public class SplitRawFileOutput : IPacketProcessor
     {
+        public bool LoadOnDepend { get { return false; } }
+        public Type[] DependsOn { get { return null; } }
+
+        public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return ProcessPacket; } }
+        public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return null; } }
+        public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+
         IBinaryPacketWriter packetWriter = null;
         private const string Folder = "split"; // might want to move to config later
 
@@ -68,7 +75,5 @@ namespace PacketDumper.Processing
                 pair.Value.Close();
             }
         }
-        public void ProcessedPacket(Packet packet) { }
-        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter) { }
     }
 }

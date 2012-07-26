@@ -22,18 +22,16 @@ namespace PacketParser.DataStructures
         {
             byte mask = ReadByte();
 
-            if (mask == 0)
-                return new Guid(0);
-
             ulong res = 0;
 
             int i = 0;
-            while (i < 8)
+            while (mask != 0)
             {
-                if ((mask & 1 << i) != 0)
-                    res += (ulong) ReadByte() << (i*8);
+                if ((mask & 1) != 0)
+                    res += (ulong) ReadByte() << i;
 
-                i++;
+                i+=8;
+                mask >>= 1;
             }
 
             var guid = new Guid(res);

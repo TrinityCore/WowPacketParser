@@ -146,14 +146,16 @@ namespace PacketParser.Parsing.Parsers
                 updateMask[i] = packet.ReadInt32();
 
             var mask = new BitArray(updateMask);
+            bool[] m = new bool[mask.Count];
+            mask.CopyTo(m, 0);
             var dict = new Dictionary<int, UpdateField>();
 
             int objectEnd = (int)UpdateFields.GetUpdateFieldOffset(ObjectField.OBJECT_END);
 
             packet.StoreBeginList("UpdateFields", index);
-            for (var i = 0; i < mask.Count; i++)
+            for (var i = 0; i < m.Length; i++)
             {
-                if (!mask[i])
+                if (!m[i])
                     continue;
 
                 var blockVal = packet.ReadUpdateField();

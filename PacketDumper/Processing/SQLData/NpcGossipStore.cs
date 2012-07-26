@@ -16,16 +16,19 @@ namespace PacketDumper.Processing.SQLData
 {
     public class NpcGossipStore : IPacketProcessor
     {
+        public bool LoadOnDepend { get { return false; } }
+        public Type[] DependsOn { get { return null; } }
+
+        public ProcessPacketEventHandler ProcessAnyPacketHandler {get {return ProcessPacket;} }
+        public ProcessedPacketEventHandler ProcessedAnyPacketHandler  {get {return null;} }
+        public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+
         // Gossips (MenuId, TextId)
         public static readonly TimeSpanDictionary<Tuple<uint, uint>, Gossip> Gossips = new TimeSpanDictionary<Tuple<uint, uint>, Gossip>();
 
         public bool Init(PacketFileProcessor file)
         {
             return Settings.SQLOutput.HasFlag(SQLOutputFlags.Gossip);
-        }
-
-        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter)
-        {
         }
 
         public void ProcessPacket(Packet packet)
@@ -37,10 +40,6 @@ namespace PacketDumper.Processing.SQLData
 
                 Gossips.Add(Tuple.Create(menuId, textId), packet.GetNode<Gossip>("GossipObject"), packet.TimeSpan);
             }
-        }
-        public void ProcessedPacket(Packet packet)
-        {
-
         }
 
         public void Finish()

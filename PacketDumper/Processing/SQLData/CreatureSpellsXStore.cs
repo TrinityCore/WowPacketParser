@@ -15,14 +15,17 @@ namespace PacketDumper.Processing.SQLData
 {
     public class CreatureSpellsXStore : IPacketProcessor
     {
+        public bool LoadOnDepend { get { return false; } }
+        public Type[] DependsOn { get { return null; } }
+
+        public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return ProcessPacket; } }
+        public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return null; } }
+        public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+
         public readonly TimeSpanDictionary<uint, SpellsX> Spells = new TimeSpanDictionary<uint, SpellsX>(); // `creature_template`.`spellsX`
         public bool Init(PacketFileProcessor file)
         {
             return Settings.SQLOutput.HasFlag(SQLOutputFlags.CreatureTemplate);
-        }
-
-        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter)
-        {
         }
 
         public void ProcessPacket(Packet packet)
@@ -50,10 +53,6 @@ namespace PacketDumper.Processing.SQLData
                 spellsCr.Spells = store.ToArray();
                 Spells.Add(guid.GetEntry(), spellsCr, packet.TimeSpan);
             }
-        }
-        public void ProcessedPacket(Packet packet)
-        {
-
         }
 
         public void Finish()

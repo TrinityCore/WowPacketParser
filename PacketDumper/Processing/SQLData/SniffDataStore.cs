@@ -15,16 +15,19 @@ namespace PacketDumper.Processing
 {
     public class SniffDataStore : IPacketProcessor
     {
+        public bool LoadOnDepend { get { return false; } }
+        public Type[] DependsOn { get { return null; } }
+
+        public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return ProcessPacket; } }
+        public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return null; } }
+        public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+
         private static readonly bool SniffData = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffData);
         private static readonly bool SniffDataOpcodes = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffDataOpcodes);
         public static readonly TimeSpanBag<SniffData> SniffDatas = new TimeSpanBag<SniffData>();
         public bool Init(PacketFileProcessor file)
         {
             return SniffData;
-        }
-
-        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter) 
-        {
         }
 
         public void ProcessPacket(Packet packet)
@@ -149,10 +152,6 @@ namespace PacketDumper.Processing
                 var data = packet.Status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode) : packet.Status.ToString();
                 AddSniffData(packet, StoreNameType.Opcode, packet.Opcode, data);
             }
-        }
-        public void ProcessedPacket(Packet packet)
-        {
-
         }
 
         public void Finish()

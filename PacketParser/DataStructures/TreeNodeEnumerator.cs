@@ -124,8 +124,9 @@ namespace PacketParser.DataStructures
                     if (itr.MoveNext())
                     {
                         CurrentNodes.Push(new EnumeratedNamedNode(Type, Current, Name, itr));
-                        Current = itr.Entry.Value;
-                        Name = (string)itr.Entry.Key;
+                        var entry = itr.Entry;
+                        Current = entry.Value;
+                        Name = (string)entry.Key;
                         Index = null;
                         return true;
                     }
@@ -138,8 +139,9 @@ namespace PacketParser.DataStructures
                     if (itr.MoveNext())
                     {
                         CurrentNodes.Push(new EnumeratedNamedNode(Type, Current, Name, itr));
-                        Current = itr.Entry.Value;
-                        Name = (string)itr.Entry.Key;
+                        var entry = itr.Entry;
+                        Current = entry.Value;
+                        Name = (string)entry.Key;
                         Index = null;
                         return true;
                     }
@@ -169,8 +171,9 @@ namespace PacketParser.DataStructures
                     var itr = ((EnumeratedNamedNode)top).iter;
                     if (itr.MoveNext())
                     {
-                        Current = itr.Entry.Value;
-                        Name = (string)itr.Entry.Key;
+                        var entry = itr.Entry;
+                        Current = entry.Value;
+                        Name = (string)entry.Key;
                         Index = null;
                         return true;
                     }

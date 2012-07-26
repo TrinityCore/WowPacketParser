@@ -4,17 +4,28 @@ using System.IO;
 using PacketParser.Processing;
 using PacketParser.Misc;
 using PacketParser.DataStructures;
+using PacketParser.Enums;
+using System.Linq;
 
 namespace PacketParser.Processing
 {
-    public class PacketFileProcessor
+    public abstract class PacketFileProcessor
     {
         [ThreadStatic]
         public static PacketFileProcessor Current;
 
         public readonly string FileName;
         public readonly string LogPrefix;
-        public Dictionary<Type, IPacketProcessor> Processors = new Dictionary<Type, IPacketProcessor>();
+        protected Dictionary<Type, IPacketProcessor> Processors = new Dictionary<Type, IPacketProcessor>();
+
+        protected Dictionary<Opcode, ProcessPacketEventHandler> ProcessPacketHandlers = new Dictionary<Opcode, ProcessPacketEventHandler>();
+        protected ProcessPacketEventHandler ProcessAnyPacketHandler;
+
+        protected Dictionary<Opcode, ProcessedPacketEventHandler> ProcessedPacketHandlers = new Dictionary<Opcode, ProcessedPacketEventHandler>();
+        protected ProcessedPacketEventHandler ProcessedAnyPacketHandler;
+
+        protected Dictionary<Opcode, ProcessDataEventHandler> ProcessDataHandlers = new Dictionary<Opcode, ProcessDataEventHandler>();
+        protected ProcessDataEventHandler ProcessAnyDataHandler;
 
         public PacketFileProcessor(string fileName, Tuple<int, int> number = null)
         {
@@ -29,14 +40,6 @@ namespace PacketParser.Processing
                 LogPrefix = string.Format("[{0}/{1} {2}]", number.Item1, number.Item2, Path.GetFileName(fileName));
         }
 
-        public T GetProcessor<T>() where T:IPacketProcessor
-        {
-            var type = typeof(T);
-            if (Processors.ContainsKey(type))
-                return (T)Processors[type];
-            return default(T);
-        }
-
         public string GetHeader()
         {
             return "# TrinityCore - Packet Parser" + Environment.NewLine +
@@ -46,16 +49,143 @@ namespace PacketParser.Processing
                    Environment.NewLine;
         }
 
-        public virtual void InitProcessors()
+        protected List<Type> GetAvailableProcessors()
         {
-            var procss = Utilities.GetClasses(typeof(IPacketProcessor));
+            return Utilities.GetClasses(typeof(IPacketProcessor));
+        }
+
+        protected void InitProcessors()
+        {
+            var procss = GetAvailableProcessors();
+
+            var processorObjects = new List<Tuple<Type, IPacketProcessor>>();
+            var processorsDependingOn = new Dictionary<Type, List<Type>>();
+            var processorsToInit = new LinkedList<Tuple<Type, IPacketProcessor>>();
             foreach (var p in procss)
             {
                 if (p.IsAbstract || p.IsInterface)
                     continue;
                 IPacketProcessor instance = (IPacketProcessor)Activator.CreateInstance(p);
-                if (instance.Init(this))
-                    Processors[p] = instance;
+                var deps = instance.DependsOn;
+                if (deps != null)
+                {
+                    foreach (var dep in deps)
+                    {
+                        if (!processorsDependingOn.ContainsKey(dep))
+                            processorsDependingOn[dep] = new List<Type>();
+                        processorsDependingOn[dep].Add(p);
+                    }
+                }
+                processorObjects.Add(new Tuple<Type, IPacketProcessor>(p, instance));
+                //Console.WriteLine(p);
+            }
+            int counter = processorObjects.Count;
+            while (counter > 0)
+            {
+                for(int j = 0; j < processorObjects.Count; ++j)
+                {
+                    var p = processorObjects[j];
+                    if (p == null)
+                        continue;
+                    var t = p.Item1;
+                    var i = p.Item2;
+                    // noone wants to load this processor, skip
+                    if (i.LoadOnDepend && !processorsDependingOn.ContainsKey(t))
+                    {
+                        processorObjects[j] = null;
+                        --counter;
+                        continue;
+                    }
+                    var deps = i.DependsOn;
+
+                    /*if (deps == null)
+                    {
+                        processorsToInit.AddFirst(new Tuple<Type, IPacketProcessor>(t, i));
+                        processorObjects[j] = null;
+                        --counter;
+                        continue;
+                    }*/
+                    bool valid = true;
+                    // make sure all processors which are needed by this processor are already added
+                    if (deps != null)
+                    {
+                        for(int k = 0; k < deps.Length; ++k)
+                        {
+                            bool found = false;
+                            foreach (var l in processorsToInit)
+                            {
+                                if (l.Item1 == deps[k])
+                                {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (!found)
+                            {
+                                valid = false;
+                                break;
+                            }
+                        }
+                        if (!valid)
+                            continue;
+                    }
+                    // make sure none of the processors which are depending on this one are not added
+                    if (processorsDependingOn.ContainsKey(t))
+                    {
+                        var depending = processorsDependingOn[t];
+                        for(int k = 0; k < depending.Count; ++k)
+                        {
+                            bool found = false;
+                            foreach (var l in processorsToInit)
+                            {
+                                if (l.Item1 == depending[k])
+                                {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (found)
+                            {
+                                valid = false;
+                                break;
+                            }
+                        }
+                        if (!valid)
+                            continue;
+                    }
+                    processorsToInit.AddLast(new Tuple<Type, IPacketProcessor>(t, i));
+                    processorObjects[j] = null;
+                    --counter;
+                }
+            }
+            foreach (var p in processorsToInit)
+            {
+                var t = p.Item1;
+                var i = p.Item2;
+                if (i.Init(this))
+                {
+                    Processors[t] = i;
+                    ProcessAnyPacketHandler += i.ProcessAnyPacketHandler;
+                    ProcessAnyDataHandler += i.ProcessAnyDataHandler;
+                    ProcessedAnyPacketHandler += i.ProcessedAnyPacketHandler;
+                }
+            }
+        }
+
+        public T GetProcessor<T>() where T : IPacketProcessor
+        {
+            var type = typeof(T);
+            if (Processors.ContainsKey(type))
+                return (T)Processors[type];
+            return default(T);
+        }
+
+        protected void FinishProcessors()
+        {
+            // finalize processors
+            foreach (var procs in Processors)
+            {
+                procs.Value.Finish();
             }
         }
 
@@ -66,27 +196,21 @@ namespace PacketParser.Processing
             bool cont = moveNext;
             while (cont)
             {
-                foreach (var p in Processors)
+                foreach (var i in itr.CurrentClosedNodes)
                 {
-                    var proc = p.Value;
-                    foreach (var i in itr.CurrentClosedNodes)
-                    {
-                        if (i.type == typeof(Packet))
-                            proc.ProcessedPacket(i.obj as Packet);
-                    }
+                    if (i.type == typeof(Packet))
+                        ProcessedAnyPacketHandler((Packet)i.obj);
                 }
                 if (!moveNext)
                     break;
-                foreach (var p in Processors)
+                
+                if (itr.Type == typeof(Packet))
                 {
-                    var proc = p.Value;
-                    if (itr.Type == typeof(Packet))
-                    {
-                        Packet packet = (Packet)itr.Current;
-                        proc.ProcessPacket(packet);
-                    }
-                    proc.ProcessData(itr.Name, itr.Index, itr.Current, itr.Type, itr);
+                    Packet packet = (Packet)itr.Current;
+                    ProcessAnyPacketHandler(packet);
                 }
+
+                ProcessAnyDataHandler(itr.Name, itr.Index, itr.Current, itr.Type, itr);
                 moveNext = itr.MoveNext();
             }
         }

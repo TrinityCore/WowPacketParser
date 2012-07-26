@@ -243,7 +243,14 @@ namespace PacketParser.Misc
 
         public static List<Type> GetClasses(Type baseType)
         {
-            return Assembly.GetCallingAssembly().GetTypes().Where(type => baseType.IsAssignableFrom(type)).ToList();
+            //var instances = from assembly in  from t in assembly.GetTypes() where t.GetInterfaces().Contains(typeof(ISomething)) && t.GetConstructor(Type.EmptyTypes) != null select Activator.CreateInstance(t) as ISomething;
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var list = new List<Type>();
+            foreach (var a in assemblies)
+            {
+                list.AddRange(a.GetTypes().Where(type => baseType.IsAssignableFrom(type)).ToList());
+            }
+            return list;
         }
     }
 }

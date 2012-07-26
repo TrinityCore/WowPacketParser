@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using PacketParser.Enums;
 using PacketParser.Enums.Version;
 using PacketParser.Processing;
@@ -99,11 +100,9 @@ namespace PacketViewer.Processing
                 }
             }
             AddPackets(packets);
-            // finalize processors
-            foreach (var procs in Processors)
-            {
-                procs.Value.Finish();
-            }
+
+            FinishProcessors();
+
             reader.Dispose();
             worker.ReportProgress(100);
             GC.Collect();
@@ -121,20 +120,6 @@ namespace PacketViewer.Processing
             else
             {
                 Tab.AddPackets(packets);
-            }
-        }
-
-        public override void InitProcessors()
-        {
-            base.InitProcessors();
-            var procss = Utilities.GetClasses(typeof(IPacketProcessor));
-            foreach (var p in procss)
-            {
-                if (p.IsAbstract || p.IsInterface)
-                    continue;
-                IPacketProcessor instance = (IPacketProcessor)Activator.CreateInstance(p);
-                if (instance.Init(this))
-                    Processors[p] = instance;
             }
         }
 
