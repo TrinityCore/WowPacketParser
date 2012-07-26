@@ -913,7 +913,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid[5] != 0) guid[5] ^= packet.ReadByte();
             if (guid[3] != 0) guid[3] ^= packet.ReadByte();
             if (guid[7] != 0) guid[7] ^= packet.ReadByte();
-            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
             if (guid[6] != 0) guid[6] ^= packet.ReadByte();
             if (guid[4] != 0) guid[4] ^= packet.ReadByte();
             if (guid[1] != 0) guid[1] ^= packet.ReadByte();
