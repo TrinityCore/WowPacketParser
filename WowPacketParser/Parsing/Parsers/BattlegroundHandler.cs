@@ -445,13 +445,32 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
-        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN)]
+        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlemasterJoin(Packet packet)
         {
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
             packet.ReadUInt32("Instance Id");
             packet.ReadBoolean("As group");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleBattlemasterJoin434(Packet packet)
+        {
+            packet.ReadUInt32("Instance Id");
+            var guid = new byte[8];
+            guid[2] = packet.ReadBit().ToByte();
+            guid[0] = packet.ReadBit().ToByte();
+            guid[3] = packet.ReadBit().ToByte();
+            guid[1] = packet.ReadBit().ToByte();
+            guid[5] = packet.ReadBit().ToByte();
+            packet.ReadBit("As Group");
+            guid[4] = packet.ReadBit().ToByte();
+            guid[6] = packet.ReadBit().ToByte();
+            guid[7] = packet.ReadBit().ToByte();
+
+            packet.ParseBitStream(guid, 2, 6, 4, 3, 7, 0, 5, 1);
+            packet.ToGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_ARENA, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
@@ -1252,7 +1271,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadTime("Time");
             packet.ReadUInt32("Unk Uint32");
-            packet.ReadUInt32("Unk Uint32"); //seems to be always 1
+            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
 
             var guid = packet.StartBitStream(0, 1, 5, 6, 7, 4, 3, 2);
             packet.ReadBit("Join");
