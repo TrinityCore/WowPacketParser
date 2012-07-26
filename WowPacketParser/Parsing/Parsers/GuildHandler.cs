@@ -44,63 +44,69 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRoster(Packet packet)
         {
-            var bits = new bool[8];
-            for (int c = 7; c >= 0; c--)
-                bits[c] = packet.ReadBit();
+            var guid = new byte[8];
 
-            var bytes = new byte[8];
-            if (bits[0]) bytes[7] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[5]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[4]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[7]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[3]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[2]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[1]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[6]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
-            packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(bytes, 0)));
+            guid[7] = packet.ReadBit().ToByte();
+            guid[3] = packet.ReadBit().ToByte();
+            guid[2] = packet.ReadBit().ToByte();
+            guid[6] = packet.ReadBit().ToByte();
+            guid[5] = packet.ReadBit().ToByte();
+            guid[4] = packet.ReadBit().ToByte();
+            guid[1] = packet.ReadBit().ToByte();
+            guid[0] = packet.ReadBit().ToByte();
+
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
         }
 
         [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRosterRequest434(Packet packet)
         {
             // Seems to have some previous formula, processed GUIDS does not fit any know guid
-            var bytes1 = new byte[8];
-            var bytes2 = new byte[8];
-            bytes2[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes2[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes1[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes1[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes2[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes1[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes2[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes2[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes1[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes2[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes1[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes1[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes2[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes1[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes2[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes1[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+            guid2[2] = packet.ReadBit().ToByte();
+            guid2[3] = packet.ReadBit().ToByte();
+            guid1[6] = packet.ReadBit().ToByte();
+            guid1[0] = packet.ReadBit().ToByte();
+            guid2[7] = packet.ReadBit().ToByte();
+            guid1[2] = packet.ReadBit().ToByte();
+            guid2[6] = packet.ReadBit().ToByte();
+            guid2[4] = packet.ReadBit().ToByte();
+            guid1[1] = packet.ReadBit().ToByte();
+            guid2[5] = packet.ReadBit().ToByte();
+            guid1[4] = packet.ReadBit().ToByte();
+            guid1[3] = packet.ReadBit().ToByte();
+            guid2[0] = packet.ReadBit().ToByte();
+            guid1[5] = packet.ReadBit().ToByte();
+            guid2[1] = packet.ReadBit().ToByte();
+            guid1[7] = packet.ReadBit().ToByte();
 
-            if (bytes1[3] != 0) bytes1[3] ^= packet.ReadByte();
-            if (bytes2[4] != 0) bytes2[4] ^= packet.ReadByte();
-            if (bytes1[7] != 0) bytes1[7] ^= packet.ReadByte();
-            if (bytes1[2] != 0) bytes1[2] ^= packet.ReadByte();
-            if (bytes1[4] != 0) bytes1[4] ^= packet.ReadByte();
-            if (bytes1[0] != 0) bytes1[0] ^= packet.ReadByte();
-            if (bytes2[5] != 0) bytes2[5] ^= packet.ReadByte();
-            if (bytes1[1] != 0) bytes1[1] ^= packet.ReadByte();
-            if (bytes2[0] != 0) bytes2[0] ^= packet.ReadByte();
-            if (bytes2[6] != 0) bytes2[6] ^= packet.ReadByte();
-            if (bytes1[5] != 0) bytes1[5] ^= packet.ReadByte();
-            if (bytes2[7] != 0) bytes2[7] ^= packet.ReadByte();
-            if (bytes2[2] != 0) bytes2[2] ^= packet.ReadByte();
-            if (bytes2[3] != 0) bytes2[3] ^= packet.ReadByte();
-            if (bytes2[1] != 0) bytes2[1] ^= packet.ReadByte();
-            if (bytes1[6] != 0) bytes1[6] ^= packet.ReadByte();
-            packet.WriteLine("GUID1: {0}", new Guid(BitConverter.ToUInt64(bytes1, 0)));
-            packet.WriteLine("GUID2: {0}", new Guid(BitConverter.ToUInt64(bytes2, 0)));
+            if (guid1[3] != 0) guid1[3] ^= packet.ReadByte();
+            if (guid2[4] != 0) guid2[4] ^= packet.ReadByte();
+            if (guid1[7] != 0) guid1[7] ^= packet.ReadByte();
+            if (guid1[2] != 0) guid1[2] ^= packet.ReadByte();
+            if (guid1[4] != 0) guid1[4] ^= packet.ReadByte();
+            if (guid1[0] != 0) guid1[0] ^= packet.ReadByte();
+            if (guid2[5] != 0) guid2[5] ^= packet.ReadByte();
+            if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
+            if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
+            if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
+            if (guid1[5] != 0) guid1[5] ^= packet.ReadByte();
+            if (guid2[7] != 0) guid2[7] ^= packet.ReadByte();
+            if (guid2[2] != 0) guid2[2] ^= packet.ReadByte();
+            if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
+            if (guid2[1] != 0) guid2[1] ^= packet.ReadByte();
+            if (guid1[6] != 0) guid1[6] ^= packet.ReadByte();
+            packet.WriteLine("GUID1: {0}", new Guid(BitConverter.ToUInt64(guid1, 0)));
+            packet.WriteLine("GUID2: {0}", new Guid(BitConverter.ToUInt64(guid2, 0)));
         }
 
         [Parser(Opcode.SMSG_GUILD_ROSTER, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
@@ -228,40 +234,39 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GUILD_ROSTER, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRoster434(Packet packet)
         {
-            var motdLen = (int)packet.ReadBits(11);
+            var motdLength = packet.ReadBits(11);
             var size = packet.ReadBits(18);
 
-            var bytes = new byte[size][];
-            var nameLen = new int[size];
-            var publicLen = new int[size];
-            var officerLen = new int[size];
+            var guid = new byte[size][];
+            var nameLength = new uint[size];
+            var publicLength = new uint[size];
+            var officerLength = new uint[size];
 
             for (var i = 0; i < size; ++i)
             {
-                bytes[i] = new byte[8];
-                bytes[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
-                bytes[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
-                packet.ReadBit(); // unk
-                packet.ReadBit(); // unk
-                publicLen[i] = (int)packet.ReadBits(8);
-                officerLen[i] = (int)packet.ReadBits(8);
-                bytes[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
-                nameLen[i] = (int)packet.ReadBits(7);
-                bytes[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
-                bytes[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
-                bytes[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
-                bytes[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
-                bytes[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
+                guid[i] = new byte[8];
+                guid[i][3] = packet.ReadBit().ToByte();
+                guid[i][4] = packet.ReadBit().ToByte();
+                packet.ReadBit("Unk 360", i);
+                packet.ReadBit("Unk 361", i);
+                publicLength[i] = packet.ReadBits(8);
+                officerLength[i] = packet.ReadBits(8);
+                guid[i][0] = packet.ReadBit().ToByte();
+                nameLength[i] = packet.ReadBits(7);
+                guid[i][1] = packet.ReadBit().ToByte();
+                guid[i][2] = packet.ReadBit().ToByte();
+                guid[i][6] = packet.ReadBit().ToByte();
+                guid[i][5] = packet.ReadBit().ToByte();
+                guid[i][7] = packet.ReadBit().ToByte();
             }
-            var infoLen = (int)packet.ReadBits(12);
+            var infoLength = packet.ReadBits(12);
 
             for (var i = 0; i < size; ++i)
             {
                 packet.ReadEnum<Class>("Member Class", TypeCode.Byte, i);
                 packet.ReadInt32("Unk", i);
 
-                if (bytes[i][0] != 0)
-                    bytes[i][0] ^= packet.ReadByte();
+                if (guid[i][0] != 0) guid[i][0] ^= packet.ReadByte();
 
                 packet.ReadUInt64("Week activity", i);
                 packet.ReadUInt32("Member Rank", i);
@@ -274,47 +279,42 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.WriteLine("[{0}][{1}] Profession: Id {2} - Value {3} - Rank {4}", i, j, id, value, rank);
                 }
 
-                if (bytes[i][2] != 0)
-                    bytes[i][2] ^= packet.ReadByte();
+                if (guid[i][2] != 0) guid[i][2] ^= packet.ReadByte();
 
                 packet.ReadEnum<GuildMemberFlag>("Member Flags", TypeCode.Byte, i);
                 packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", i);
                 packet.ReadUInt64("Total activity", i);
 
-                if (bytes[i][7] != 0)
-                    bytes[i][7] ^= packet.ReadByte();
+                if (guid[i][7] != 0) guid[i][7] ^= packet.ReadByte();
 
                 packet.ReadUInt32("Remaining guild week Rep", i);
-                packet.ReadWoWString("Public note", publicLen[i], i);
+                packet.ReadWoWString("Public note", publicLength[i], i);
 
-                if (bytes[i][3] != 0)
-                    bytes[i][3] ^= packet.ReadByte();
+                if (guid[i][3] != 0)
+                    guid[i][3] ^= packet.ReadByte();
 
                 packet.ReadByte("Member Level", i);
                 packet.ReadInt32("Unk 2", i);
 
-                if (bytes[i][5] != 0)
-                    bytes[i][5] ^= packet.ReadByte();
-                if (bytes[i][4] != 0)
-                    bytes[i][4] ^= packet.ReadByte();
+                if (guid[i][5] != 0) guid[i][5] ^= packet.ReadByte();
+                if (guid[i][4] != 0) guid[i][4] ^= packet.ReadByte();
 
                 packet.ReadByte("Unk Byte", i);
 
-                if (bytes[i][1] != 0)
-                    bytes[i][1] ^= packet.ReadByte();
+                if (guid[i][1] != 0) guid[i][1] ^= packet.ReadByte();
 
                 packet.ReadSingle("Last online", i);
-                packet.ReadWoWString("Officer note", officerLen[i], i);
+                packet.ReadWoWString("Officer note", officerLength[i], i);
 
-                if (bytes[i][6] != 0)
-                    bytes[i][6] ^= packet.ReadByte();
+                if (guid[i][6] != 0)
+                    guid[i][6] ^= packet.ReadByte();
 
-                packet.ReadWoWString("Name", nameLen[i], i);
+                packet.ReadWoWString("Name", nameLength[i], i);
 
-                packet.WriteLine("[{0}] Guid: {1}", i, new Guid(BitConverter.ToUInt64(bytes[i], 0)));
+                packet.WriteLine("[{0}] Guid: {1}", i, new Guid(BitConverter.ToUInt64(guid[i], 0)));
             }
-            packet.ReadWoWString("Guild Info", infoLen);
-            packet.ReadWoWString("MOTD", motdLen);
+            packet.ReadWoWString("Guild Info", infoLength);
+            packet.ReadWoWString("MOTD", motdLength);
             packet.ReadUInt32("Unk Uint32 1");
             packet.ReadUInt32("Unk Uint32 2");
             packet.ReadUInt32("Unk Uint32 3");
@@ -346,14 +346,14 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGuildUpdatePartyState434(Packet packet)
         {
             var guid = new byte[8];
-            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[0] = packet.ReadBit().ToByte();
+            guid[6] = packet.ReadBit().ToByte();
+            guid[7] = packet.ReadBit().ToByte();
+            guid[3] = packet.ReadBit().ToByte();
+            guid[5] = packet.ReadBit().ToByte();
+            guid[1] = packet.ReadBit().ToByte();
+            guid[2] = packet.ReadBit().ToByte();
+            guid[4] = packet.ReadBit().ToByte();
 
             if (guid[6] != 0) guid[6] ^= packet.ReadByte();
             if (guid[3] != 0) guid[3] ^= packet.ReadByte();
@@ -842,26 +842,26 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_RANKS, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRanks434(Packet packet)
         {
-            var bytes = new byte[8];
-            bytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            var guid = new byte[8];
+            guid[2] = packet.ReadBit().ToByte();
+            guid[3] = packet.ReadBit().ToByte();
+            guid[0] = packet.ReadBit().ToByte();
+            guid[6] = packet.ReadBit().ToByte();
+            guid[4] = packet.ReadBit().ToByte();
+            guid[7] = packet.ReadBit().ToByte();
+            guid[5] = packet.ReadBit().ToByte();
+            guid[1] = packet.ReadBit().ToByte();
 
 
-            if (bytes[3] != 0) bytes[3] ^= packet.ReadByte();
-            if (bytes[4] != 0) bytes[4] ^= packet.ReadByte();
-            if (bytes[5] != 0) bytes[5] ^= packet.ReadByte();
-            if (bytes[7] != 0) bytes[7] ^= packet.ReadByte();
-            if (bytes[1] != 0) bytes[1] ^= packet.ReadByte();
-            if (bytes[0] != 0) bytes[0] ^= packet.ReadByte();
-            if (bytes[6] != 0) bytes[6] ^= packet.ReadByte();
-            if (bytes[2] != 0) bytes[2] ^= packet.ReadByte();
-            packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(bytes, 0)));
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
         }
 
         [Parser(Opcode.SMSG_GUILD_XP)]
@@ -920,29 +920,29 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.WriteLine("[{0]] Count: {0}", i, count[i]);
 
                 guidOut[i] = new byte[8];
-                guidOut[i][7] = (byte)(packet.ReadBit() ? 1 : 0); // 55
+                guidOut[i][7] = packet.ReadBit().ToByte(); // 55
 
                 guidIn[i] = new byte[count[i]][];
                 for (int j = 0; j < count[i]; ++j)
                 {
                     guidIn[i][j] = new byte[8];
-                    guidIn[i][j][7] = (byte)(packet.ReadBit() ? 1 : 0);
-                    guidIn[i][j][1] = (byte)(packet.ReadBit() ? 1 : 0);
-                    guidIn[i][j][5] = (byte)(packet.ReadBit() ? 1 : 0);
-                    guidIn[i][j][3] = (byte)(packet.ReadBit() ? 1 : 0);
-                    guidIn[i][j][4] = (byte)(packet.ReadBit() ? 1 : 0);
-                    guidIn[i][j][6] = (byte)(packet.ReadBit() ? 1 : 0);
-                    guidIn[i][j][0] = (byte)(packet.ReadBit() ? 1 : 0);
-                    guidIn[i][j][2] = (byte)(packet.ReadBit() ? 1 : 0);
+                    guidIn[i][j][7] = packet.ReadBit().ToByte();
+                    guidIn[i][j][1] = packet.ReadBit().ToByte();
+                    guidIn[i][j][5] = packet.ReadBit().ToByte();
+                    guidIn[i][j][3] = packet.ReadBit().ToByte();
+                    guidIn[i][j][4] = packet.ReadBit().ToByte();
+                    guidIn[i][j][6] = packet.ReadBit().ToByte();
+                    guidIn[i][j][0] = packet.ReadBit().ToByte();
+                    guidIn[i][j][2] = packet.ReadBit().ToByte();
                 }
 
-                guidOut[i][0] = (byte)(packet.ReadBit() ? 1 : 0); // 48
-                guidOut[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
-                guidOut[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
-                guidOut[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
-                guidOut[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
-                guidOut[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
-                guidOut[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
+                guidOut[i][0] = packet.ReadBit().ToByte(); // 48
+                guidOut[i][6] = packet.ReadBit().ToByte();
+                guidOut[i][5] = packet.ReadBit().ToByte();
+                guidOut[i][4] = packet.ReadBit().ToByte();
+                guidOut[i][3] = packet.ReadBit().ToByte();
+                guidOut[i][1] = packet.ReadBit().ToByte();
+                guidOut[i][2] = packet.ReadBit().ToByte();
             }
 
             for (int i = 0; i < size; ++i)
