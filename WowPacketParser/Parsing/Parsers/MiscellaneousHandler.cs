@@ -1029,7 +1029,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS)]
         [Parser(Opcode.SMSG_GOSSIP_COMPLETE)]
         [Parser(Opcode.SMSG_CALENDAR_CLEAR_PENDING_ACTION)]
-        [Parser(Opcode.CMSG_LFG_LEAVE)]
+        [Parser(Opcode.CMSG_LFG_LEAVE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_GROUP_DISBAND)]
         [Parser(Opcode.SMSG_CANCEL_COMBAT)]
         [Parser(Opcode.CMSG_ATTACKSTOP)]

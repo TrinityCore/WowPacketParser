@@ -20,6 +20,19 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Comment");
         }
 
+        [Parser(Opcode.CMSG_LFG_LEAVE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleLfgLeave(Packet packet)
+        {
+            packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
+            packet.ReadTime("Time");
+            packet.ReadUInt32("Reason?");
+            packet.ReadUInt32("Instance Id");
+
+            var guid = packet.StartBitStream(4, 5, 0, 6, 2, 7, 1, 3);
+            packet.ParseBitStream(guid, 7, 4, 3, 2, 6, 0, 1, 5);
+            packet.ToGuid("Guid", guid);
+        }
+
         [Parser(Opcode.CMSG_LFG_SET_COMMENT)]
         public static void HandleLfgComment(Packet packet)
         {
