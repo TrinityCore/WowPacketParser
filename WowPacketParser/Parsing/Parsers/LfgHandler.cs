@@ -33,10 +33,17 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ToGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_LFG_SET_COMMENT)]
+        [Parser(Opcode.CMSG_LFG_SET_COMMENT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleLfgComment(Packet packet)
         {
             packet.ReadCString("Comment");
+        }
+
+        [Parser(Opcode.CMSG_LFG_SET_COMMENT, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleLfgComment434(Packet packet)
+        {
+            var length = packet.ReadBits("String Length", 9);
+            packet.ReadWoWString("Comment", length);
         }
 
         [Parser(Opcode.CMSG_LFG_SET_BOOT_VOTE)]
@@ -343,7 +350,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LFG_SET_ROLES)]
         public static void HandleLfgSetRoles(Packet packet)
         {
-            packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Byte);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
+                packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
+            else
+                packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Byte);
         }
 
         [Parser(Opcode.CMSG_LFG_TELEPORT)]
