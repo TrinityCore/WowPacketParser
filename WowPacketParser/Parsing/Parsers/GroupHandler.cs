@@ -383,6 +383,30 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
         }
 
+        [Parser(Opcode.CMSG_GROUP_INVITE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGroupInvite434(Packet packet)
+        {
+            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32");
+            var strLen = packet.ReadBits(9);
+            var guid = new byte[8];
+            guid[2] = packet.ReadBit().ToByte();
+            guid[7] = packet.ReadBit().ToByte();
+            guid[3] = packet.ReadBit().ToByte();
+            var nameLen = packet.ReadBits(10);
+            guid[5] = packet.ReadBit().ToByte();
+            guid[4] = packet.ReadBit().ToByte();
+            guid[6] = packet.ReadBit().ToByte();
+            guid[0] = packet.ReadBit().ToByte();
+            guid[1] = packet.ReadBit().ToByte();
+
+            packet.ParseBitStream(guid, 4, 7, 6);
+            packet.ReadWoWString("Name", nameLen);
+            packet.ReadWoWString("Realm Name", strLen);
+            packet.ParseBitStream(guid, 1, 0, 5, 3, 2);
+            packet.ToGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_GROUP_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGroupInviteResponse(Packet packet)
         {

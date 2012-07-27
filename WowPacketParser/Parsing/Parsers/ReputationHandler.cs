@@ -57,5 +57,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Standing");
             }
         }
+
+        [Parser(Opcode.CMSG_SET_FACTION_INACTIVE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleSetFactionInactive(Packet packet)
+        {
+            packet.ReadUInt32("Faction Id");
+            packet.ReadBoolean("Inactive");
+        }
     }
 }
