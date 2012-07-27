@@ -438,11 +438,19 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY)]
         [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUEUE)]
         [Parser(Opcode.CMSG_REPORT_PVP_AFK)]
-        [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_LEFT)]
+        [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_LEFT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED)]
         public static void HandleBattlemasterHello(Packet packet)
         {
             packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_LEFT, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleBattleGroundPlayerLeft434(Packet packet)
+        {
+            var guid = packet.StartBitStream(7, 6, 2, 4, 5, 1, 3, 0);
+            packet.ParseBitStream(guid, 4, 2, 5, 7, 0, 6, 1, 3);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_BATTLEMASTER_JOIN, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -1279,6 +1287,82 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ParseBitStream(guid, 1, 3, 5, 7, 0, 2, 6, 4);
             packet.WriteGuid("Guid", guid);
+        }
+
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_FAILED)]
+        public static void HandleBattlefieldStatusFailed(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+            var guid3 = new byte[8];
+            guid1[3] = packet.ReadBit().ToByte();//19
+            guid3[3] = packet.ReadBit().ToByte();//43
+            guid2[3] = packet.ReadBit().ToByte();//35
+            guid3[0] = packet.ReadBit().ToByte();//40
+            guid1[6] = packet.ReadBit().ToByte();//22
+            guid2[5] = packet.ReadBit().ToByte();//37
+            guid2[6] = packet.ReadBit().ToByte();//38
+            guid2[4] = packet.ReadBit().ToByte();//36
+
+            guid2[2] = packet.ReadBit().ToByte();//34
+            guid3[1] = packet.ReadBit().ToByte();//41
+            guid1[1] = packet.ReadBit().ToByte();//17
+            guid3[5] = packet.ReadBit().ToByte();//45
+            guid3[6] = packet.ReadBit().ToByte();//46
+            guid2[1] = packet.ReadBit().ToByte();//33
+            guid1[7] = packet.ReadBit().ToByte();//23
+            guid3[4] = packet.ReadBit().ToByte();//44
+
+            guid1[2] = packet.ReadBit().ToByte();//18
+            guid1[5] = packet.ReadBit().ToByte();//21
+            guid3[7] = packet.ReadBit().ToByte();//47
+            guid1[4] = packet.ReadBit().ToByte();//20
+            guid1[0] = packet.ReadBit().ToByte();//16
+            guid2[0] = packet.ReadBit().ToByte();//32
+            guid3[2] = packet.ReadBit().ToByte();//42
+            guid2[7] = packet.ReadBit().ToByte();//39
+
+            if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
+
+            var status = packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
+            packet.ReadInt32("Unk Int32");
+
+            if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
+            if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
+            if (guid2[7] != 0) guid2[7] ^= packet.ReadByte();
+            if (guid2[4] != 0) guid2[4] ^= packet.ReadByte();
+            if (guid1[0] != 0) guid1[0] ^= packet.ReadByte();
+            if (guid2[5] != 0) guid2[5] ^= packet.ReadByte();
+            if (guid1[7] != 0) guid1[7] ^= packet.ReadByte();
+            if (guid1[6] != 0) guid1[6] ^= packet.ReadByte();
+            if (guid1[2] != 0) guid1[2] ^= packet.ReadByte();
+            if (guid3[6] != 0) guid3[6] ^= packet.ReadByte();
+            if (guid3[3] != 0) guid3[3] ^= packet.ReadByte();
+            if (guid2[1] != 0) guid2[1] ^= packet.ReadByte();
+            if (guid1[3] != 0) guid1[3] ^= packet.ReadByte();
+            if (guid3[0] != 0) guid3[0] ^= packet.ReadByte();
+            if (guid3[1] != 0) guid3[1] ^= packet.ReadByte();
+            if (guid3[4] != 0) guid3[4] ^= packet.ReadByte();
+            if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
+            if (guid1[5] != 0) guid1[5] ^= packet.ReadByte();
+            if (guid3[7] != 0) guid3[7] ^= packet.ReadByte();
+            if (guid1[4] != 0) guid1[4] ^= packet.ReadByte();
+            if (guid2[2] != 0) guid2[2] ^= packet.ReadByte();
+
+            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
+
+            if (guid3[2] != 0) guid3[2] ^= packet.ReadByte();
+
+            packet.ReadTime("Time");
+
+            if (guid3[5] != 0) guid3[5] ^= packet.ReadByte();
+
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("Guid2", guid2);
+            packet.WriteGuid("Guid3", guid3);
+
+            
         }
 
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE)]
