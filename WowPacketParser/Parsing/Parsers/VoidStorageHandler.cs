@@ -28,7 +28,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (unkBit1) // ? - *((_QWORD *)v4 + 2) != 0i64;
             {
                 packet.ParseBitStream(guid2, 4, 6, 5, 2, 3, 1, 7, 0);
-                packet.ToGuid("Unk Guid 2", guid2);
+                packet.WriteGuid("Unk Guid 2", guid2);
             }
 
             var unkBit5 = !packet.ReadBit("Unk Bit 5 (Inv)");
@@ -36,7 +36,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (unkBit2) // ? - *((_QWORD *)v4 + 3) != 0i64;
             {
                 packet.ParseBitStream(guid1, 6, 3, 5, 0, 1, 2, 4, 7);
-                packet.ToGuid("Unk Guid 1", guid1);
+                packet.WriteGuid("Unk Guid 1", guid1);
             }
 
             if (unkBit4)
@@ -108,7 +108,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (id[i][7] != 0) id[i][7] ^= packet.ReadByte();
 
                 packet.WriteLine("[{1}] Item Id: {0}", BitConverter.ToUInt64(id[i], 0), i); // not confirmed
-                packet.ToGuid("Item Player Creator Guid", guid[i], i);
+                packet.WriteGuid("Item Player Creator Guid", guid[i], i);
             }
         }
 
@@ -183,7 +183,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Unk Int32 3", i);
 
                 packet.WriteLine("[{1}] Item Id 1: {0}", BitConverter.ToUInt64(id1[i], 0), i); // not confirmed
-                packet.ToGuid("Item Player Creator Guid", guid[i], i);
+                packet.WriteGuid("Item Player Creator Guid", guid[i], i);
             }
         }
 
@@ -225,7 +225,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (int i = 0; i < count1; ++i)
             {
                 packet.ParseBitStream(itemsGuid[i], 6, 1, 0, 2, 4, 5, 3, 7);
-                packet.ToGuid("Item Guid", itemsGuid[i], i);
+                packet.WriteGuid("Item Guid", itemsGuid[i], i);
             }
 
             if (npcGuid[5] != 0) npcGuid[5] ^= packet.ReadByte();
@@ -244,7 +244,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (npcGuid[2] != 0) npcGuid[2] ^= packet.ReadByte();
             if (npcGuid[0] != 0) npcGuid[0] ^= packet.ReadByte();
 
-            packet.ToGuid("NPC Guid", npcGuid);
+            packet.WriteGuid("NPC Guid", npcGuid);
         }
 
         [Parser(Opcode.CMSG_VOID_SWAP_ITEM)] // 4.3.4, not tested
@@ -293,7 +293,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(4, 0, 5, 7, 6, 3, 1, 2);
             packet.ParseBitStream(guid, 5, 6, 3, 7, 1, 0, 4, 2);
-            packet.ToGuid("NPC Guid", guid);
+            packet.WriteGuid("NPC Guid", guid);
         }
 
         [Parser(Opcode.SMSG_VOID_STORAGE_FAILED)]
@@ -307,7 +307,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(4, 5, 3, 0, 2, 1, 7, 6);
             packet.ParseBitStream(guid, 7, 1, 2, 3, 5, 0, 6, 4);
-            packet.ToGuid("Unk Guid", guid); // probably vaultkeeper guid
+            packet.WriteGuid("Unk Guid", guid); // probably vaultkeeper guid
         }
     }
 }
