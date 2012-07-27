@@ -1080,6 +1080,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_WEEKLY_RESET_CURRENCY)]
         [Parser(Opcode.CMSG_PVP_LOG_DATA)]
         [Parser(Opcode.CMSG_REQUEST_PVP_REWARDS)]
+        [Parser(Opcode.CMSG_USED_FOLLOW)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

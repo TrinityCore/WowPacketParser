@@ -7,7 +7,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class LfgHandler
     {
-        [Parser(Opcode.CMSG_LFG_JOIN)]
+        [Parser(Opcode.CMSG_LFG_JOIN, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleLfgJoin(Packet packet)
         {
             packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
@@ -18,6 +18,19 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadUInt32(); // always 0 (for 1..3) 0
             packet.ReadCString("Comment");
+        }
+
+        [Parser(Opcode.CMSG_LFG_JOIN, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleLfgJoin434(Packet packet)
+        {
+            packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
+            for (var i = 0; i < 3; i++)
+                packet.ReadInt32("Unk Int32", i);
+            var length = packet.ReadBits("Comment Length", 9);
+            var x = packet.ReadBits("Join Dungeon Count", 24);
+            packet.ReadWoWString("Comment", length);
+            for (var i = 0; i < x; i++)
+                packet.ReadLfgEntry("Dungeon Entry", i);
         }
 
         [Parser(Opcode.CMSG_LFG_LEAVE, ClientVersionBuild.V4_3_4_15595)]
