@@ -384,7 +384,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                     packet.ParseBitStream(transportGuid, 7);
 
-                    packet.ToGuid("Transport Guid", transportGuid);
+                    packet.WriteGuid("Transport Guid", transportGuid);
                     packet.WriteLine("Transport Position: {0}", tpos);
                 }
 
@@ -412,7 +412,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasPitch)
                     packet.ReadSingle("Pitch");
 
-                packet.ToGuid("Guid", guid);
+                packet.WriteGuid("Guid", guid);
                 packet.WriteLine("Position: {0}", pos);
             }
         }
@@ -1065,7 +1065,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 3, 7, 4, 2);
             var slot = packet.ReadByte();
             packet.ParseBitStream(guid, 6, 1);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Slot ID?: {0}", slot);
             packet.WriteLine("Points?: {0}", points);
 

@@ -10,9 +10,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(17205)] // 4.3.4
         public static void Handle17205(Packet packet)
         {
-            Guid guid = packet.ReadPackedGuid();
-            var unk = packet.ReadInt32();
-            packet.WriteLine("GUID: {0} Unk: {1}", guid.ToString(), unk);
+            Guid guid = packet.ReadPackedGuid("Guid");
+            var unk = packet.ReadInt32("Unk");
         }
 
         [Parser(62540)]
@@ -119,7 +118,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ParseBitStream(guid, 0, 3, 7, 6);
 
-            packet.ToGuid("Unk Guid?", guid);
+            packet.WriteGuid("Unk Guid?", guid);
         }
     }
 }

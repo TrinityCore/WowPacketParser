@@ -21,7 +21,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<LfgRoleFlag>("Role", TypeCode.Int32);
             var guid = packet.StartBitStream(2, 6, 3, 7, 5, 1, 0, 4);
             packet.ParseBitStream(guid, 6, 4, 1, 3, 0, 5, 2, 7);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
             
         }
 
@@ -380,7 +380,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guidBytes[3] != 0) guidBytes[3] ^= packet.ReadByte();
 
             // Non-zero in cross realm parties
-            packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
+            packet.WriteGuid("Guid", guidBytes);
         }
 
         [Parser(Opcode.CMSG_GROUP_INVITE, ClientVersionBuild.V4_3_4_15595)]
@@ -404,7 +404,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("Name", nameLen);
             packet.ReadWoWString("Realm Name", strLen);
             packet.ParseBitStream(guid, 1, 0, 5, 3, 2);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_GROUP_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -604,8 +604,8 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
 
             packet.ReadEnum<LfgRoleFlag>("Old Roles", TypeCode.Int32);
-            packet.ToGuid("Assigner Guid", guid1);
-            packet.ToGuid("Target Guid", guid2);
+            packet.WriteGuid("Assigner Guid", guid1);
+            packet.WriteGuid("Target Guid", guid2);
         }
 
         [Parser(Opcode.SMSG_RAID_MARKERS_CHANGED)]

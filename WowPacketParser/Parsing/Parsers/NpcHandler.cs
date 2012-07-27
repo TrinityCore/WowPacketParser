@@ -180,7 +180,8 @@ namespace WowPacketParser.Parsing.Parsers
             if (guidBytes[6] != 0) guidBytes[6] ^= packet.ReadByte();
 
             var guid = new Guid(BitConverter.ToUInt64(guidBytes, 0));
-            packet.WriteLine("GUID: {0}", guid);
+
+            packet.WriteGuid("Guid", guidBytes);
 
             npcVendor.VendorItems = new List<VendorItem>((int)itemCount);
             for (var i = 0; i < itemCount; i++)
@@ -267,7 +268,7 @@ namespace WowPacketParser.Parsing.Parsers
 
 
             var guid = new Guid(BitConverter.ToUInt64(guidBytes, 0));
-            packet.WriteLine("GUID: {0}", guid);
+            packet.WriteGuid("Guid", guidBytes);
 
             Storage.NpcVendors.Add(guid.GetEntry(), npcVendor, packet.TimeSpan);
         }

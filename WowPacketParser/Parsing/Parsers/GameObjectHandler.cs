@@ -67,7 +67,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleDestructibleBuildingDamage(Packet packet)
         {
             packet.ReadPackedGuid("GO GUID");
-            packet.ReadPackedGuid("Vehicle GUID:");
+            packet.ReadPackedGuid("Vehicle GUID");
             packet.ReadPackedGuid("Player GUID");
             packet.ReadInt32("Damage");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");

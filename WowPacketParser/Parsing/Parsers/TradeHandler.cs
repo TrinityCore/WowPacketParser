@@ -18,7 +18,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(0, 3, 5, 1, 4, 6, 7, 2);
             packet.ParseBitStream(guid, 7, 4, 3, 5, 1, 2, 6, 0);
-            packet.ToGuid(guid);
+            packet.WriteGuid(guid);
         }
 
         [Parser(Opcode.CMSG_SET_TRADE_ITEM)]
@@ -111,7 +111,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadUInt32("Unk 8");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_TRADE_STATUS, ClientVersionBuild.V4_3_4_15595)]
@@ -125,7 +125,7 @@ namespace WowPacketParser.Parsing.Parsers
                 case TradeStatus434.BeginTrade:
                     var guid = packet.StartBitStream(2, 4, 6, 0, 1, 3, 7, 5);
                     packet.ParseBitStream(guid, 4, 1, 2, 3, 0, 7, 6, 5);
-                    packet.ToGuid("GUID", guid);
+                    packet.WriteGuid("GUID", guid);
                     break;
                 case TradeStatus434.CloseWindow:
                     packet.ReadBit("Unk Bit");
@@ -344,8 +344,8 @@ namespace WowPacketParser.Parsing.Parsers
                 if (guids1[i][3] != 0)
                     guids1[i][3] ^= packet.ReadByte();
 
-                packet.WriteLine("Item Creator Guid: {0}", new Guid(BitConverter.ToUInt64(guids1[i], 0)));
-                packet.WriteLine("Item Gift Creator Guid: {0}", new Guid(BitConverter.ToUInt64(guids2[i], 0)));
+                packet.WriteGuid("Item Creator Guid", guids1[i], i);
+                packet.WriteGuid("Item Gift Creator Guid", guids2[i], i);
             }
         }
 
@@ -430,7 +430,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                     if (guids2[i][5] != 0) guids2[i][5] ^= packet.ReadByte();
 
-                    packet.ToGuid("Creator Guid", guids2[i], i);
+                    packet.WriteGuid("Creator Guid", guids2[i], i);
                 }
 
                 if (guids1[i][6] != 0) guids1[i][6] ^= packet.ReadByte();
@@ -445,7 +445,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (guids1[i][2] != 0) guids1[i][2] ^= packet.ReadByte();
                 if (guids1[i][3] != 0) guids1[i][3] ^= packet.ReadByte();
 
-                packet.ToGuid("Gift Creator Guid", guids1[i], i);
+                packet.WriteGuid("Gift Creator Guid", guids1[i], i);
             }
         }
 
@@ -463,7 +463,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guid = packet.StartBitStream(5, 6, 4, 0, 2, 3, 7, 1);
             packet.ParseBitStream(guid, 5, 2, 3, 4, 1, 0, 6, 7);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_IGNORE_TRADE)]

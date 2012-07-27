@@ -359,7 +359,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (bits[3]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
 
             var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
-            packet.WriteLine("GUID: {0}", guid);
+            packet.WriteGuid("Guid", bytes);
             LoginGuid = guid;
         }
 
@@ -381,7 +381,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (bits[0]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
 
             var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
-            packet.WriteLine("GUID: {0}", guid);
+            packet.WriteGuid("Guid", bytes);
             LoginGuid = guid;
         }
 
@@ -403,7 +403,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (bits[3]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
 
             var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
-            packet.WriteLine("GUID: {0}", guid);
+            packet.WriteGuid("Guid", bytes);
             LoginGuid = guid;
         }
 
@@ -425,7 +425,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (bits[4]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
 
             var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
-            packet.WriteLine("GUID: {0}", guid);
+            packet.WriteGuid("Guid", bytes);
             LoginGuid = guid;
         }
 

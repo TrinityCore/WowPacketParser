@@ -268,7 +268,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.WriteLine("[{0}] Criteria Flags: {1}", i, flags[i]);
                 packet.WriteLine("[{0}] Criteria Counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
-                packet.WriteLine("[{0}] Criteria GUID: {1}", i, new Guid(BitConverter.ToUInt64(guid[i], 0)));
+                packet.WriteGuid("Criteria GUID", guid[i], i);
             }
 
             for (var i = 0; i < achievements; ++i)
@@ -367,7 +367,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (counter[i][2] != 0) counter[i][2] ^= packet.ReadByte();
                 if (guid[i][0] != 0) guid[i][0] ^= packet.ReadByte();
 
-                packet.WriteLine("[{0}] Criteria GUID: {1}", i, new Guid(BitConverter.ToUInt64(guid[i], 0)));
+                packet.WriteGuid("Criteria GUID", guid[i], i);
                 packet.WriteLine("[{0}] Criteria counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
             }
         }

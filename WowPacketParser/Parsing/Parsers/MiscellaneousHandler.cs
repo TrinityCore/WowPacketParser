@@ -715,7 +715,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ParseBitStream(guid, 7);
 
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)] // Also named CMSG_LOADING_SCREEN_NOTIFY
@@ -851,7 +851,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guid = packet.StartBitStream(3, 0, 1, 7, 2, 6, 5, 4);
             packet.ParseBitStream(guid, 5, 7, 4, 3, 2, 6, 1, 0);
-            packet.ToGuid("Player GUID", guid);
+            packet.WriteGuid("Player GUID", guid);
         }
 
         [Parser(Opcode.CMSG_SET_VEHICLE_REC_ID_ACK)] //  4.3.4
@@ -961,7 +961,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (transportGuid[6] != 0) transportGuid[6] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -974,7 +974,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasPitch)
                 packet.ReadSingle("Pitch");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 

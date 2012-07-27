@@ -43,7 +43,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guid = packet.StartBitStream(4, 5, 0, 6, 2, 7, 1, 3);
             packet.ParseBitStream(guid, 7, 4, 3, 2, 6, 0, 1, 5);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_LFG_SET_COMMENT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -82,7 +82,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guid2 = packet.StartBitStream(4, 5, 0, 6, 2, 7, 1, 3);
             packet.ParseBitStream(guid2, 7, 4, 3, 2, 6, 0, 1, 5);
-            packet.ToGuid("Player Guid", guid2);
+            packet.WriteGuid("Player Guid", guid2);
 
             var guid = new byte[8];
             guid[7] = packet.ReadBit().ToByte();
@@ -96,7 +96,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid[2] = packet.ReadBit().ToByte();
 
             packet.ParseBitStream(guid, 7, 1, 5, 6, 3, 4, 0, 2);
-            packet.ToGuid("Instance Guid", guid);
+            packet.WriteGuid("Instance Guid", guid);
 
         }
 

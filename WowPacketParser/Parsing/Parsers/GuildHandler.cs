@@ -63,7 +63,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid[2] != 0) guid[2] ^= packet.ReadByte();
             if (guid[6] != 0) guid[6] ^= packet.ReadByte();
             if (guid[3] != 0) guid[3] ^= packet.ReadByte();
-            packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_3_4_15595)]
@@ -311,7 +311,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadWoWString("Name", nameLength[i], i);
 
-                packet.WriteLine("[{0}] Guid: {1}", i, new Guid(BitConverter.ToUInt64(guid[i], 0)));
+                packet.WriteGuid("Guid", guid[i], i);
             }
             packet.ReadWoWString("Guild Info", infoLength);
             packet.ReadWoWString("MOTD", motdLength);
@@ -364,7 +364,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid[7] != 0) guid[7] ^= packet.ReadByte();
             if (guid[4] != 0) guid[4] ^= packet.ReadByte();
 
-            packet.WriteLine("Guild Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guild Guid", guid);
         }
 
         [Parser(Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -829,7 +829,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(0, 3, 5, 1, 4, 6, 7, 2);
             packet.ParseBitStream(guid, 7, 4, 3, 5, 1, 2, 6, 0);
-            packet.ToGuid("GUID", guid);
+            packet.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.CMSG_QUERY_GUILD_XP, ClientVersionBuild.V4_3_4_15595)]
@@ -837,7 +837,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(2, 1, 0, 5, 4, 7, 6, 3);
             packet.ParseBitStream(guid, 7, 2, 3, 6, 1, 5, 0, 4);
-            packet.ToGuid("GUID", guid);
+            packet.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.CMSG_GUILD_QUERY_NEWS, ClientVersionBuild.V4_3_4_15595)]
@@ -845,7 +845,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(4, 2, 6, 3, 5, 0, 1, 7);
             packet.ParseBitStream(guid, 4, 1, 5, 6, 0, 3, 7, 2);
-            packet.ToGuid("GUID", guid);
+            packet.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.CMSG_GUILD_RANKS, ClientVersionBuild.V4_3_4_15595)]
@@ -870,7 +870,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid[0] != 0) guid[0] ^= packet.ReadByte();
             if (guid[6] != 0) guid[6] ^= packet.ReadByte();
             if (guid[2] != 0) guid[2] ^= packet.ReadByte();
-            packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_GUILD_XP)]
@@ -1004,7 +1004,7 @@ namespace WowPacketParser.Parsing.Parsers
                     if (guidIn[i][j][3] != 0) guidIn[i][j][3] ^= packet.ReadByte();
                     if (guidIn[i][j][2] != 0) guidIn[i][j][2] ^= packet.ReadByte();
 
-                    packet.WriteLine("[{0}][{1}] GUID: {2}", i, j, new Guid(BitConverter.ToUInt64(guidIn[i][j], 0)));
+                    packet.WriteGuid("Guid", guidIn[i][j], i);
                 }
 
                 if (guidOut[i][5] != 0) guidOut[i][5] ^= packet.ReadByte();
@@ -1025,7 +1025,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<GuildNewsType>("News Type", TypeCode.Int32, i);
                 packet.ReadPackedTime("Time", i);
 
-                packet.WriteLine("[{0}] GUID: {1}", i, new Guid(BitConverter.ToUInt64(guidOut[i], 0)));
+                packet.WriteGuid("Guid", guidOut[i], i);
             }
         }
 
@@ -1473,7 +1473,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(5, 6, 1, 4, 2, 7, 0, 3);
             packet.ParseBitStream(guid, 3, 1, 0, 5, 4, 2, 6, 7);
-            packet.ToGuid("Guild Guid", guid);
+            packet.WriteGuid("Guild Guid", guid);
         }
 
         [Parser(Opcode.SMSG_GUILD_RECIPES)] // 4.3.4
@@ -1573,7 +1573,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadWoWString("Character Name", strlen[i][2], i);
                 packet.ReadInt32("unk Int32 44", i);
 
-                packet.WriteLine("[{0}] Player GUID: {1}", i, new Guid(BitConverter.ToUInt64(guids[i], 0)));
+                packet.WriteGuid("Player Guid", guids[i], i);
             }
         }
 

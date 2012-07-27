@@ -112,7 +112,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (guids[i][1] != 0) // 9
                     guids[i][1] ^= packet.ReadByte();
 
-                packet.WriteLine("[{0}] Guild Guid: {1}", i, new Guid(BitConverter.ToUInt64(guids[i], 0)));
+                packet.WriteGuid("Guild GUID", guids[i], i);
             }
         }
 
@@ -176,7 +176,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (guids[i][5] != 0) guids[i][5] ^= packet.ReadByte();
 
-                packet.WriteLine("[{0}] GUID: {1}", i, new Guid(BitConverter.ToUInt64(guids[i], 0)));
+                packet.WriteGuid("Guid", guids[i], i);
             }
 
             packet.ReadTime("Unk Time");
@@ -233,7 +233,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Time Since", i);
                 packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32, i);
 
-                packet.WriteLine("[{0}] GUID: {1}", i, new Guid(BitConverter.ToUInt64(guids[i], 0)));
+                packet.WriteGuid("Guid", guids[i], i);
             }
 
             packet.ReadInt32("Unk int");
@@ -303,7 +303,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadInt32("Number of Members", i);
 
-                packet.WriteLine("[{0}] Guild GUID: {1}", i, new Guid(BitConverter.ToUInt64(guids[i], 0)));
+                packet.WriteGuid("Guild Guid", guids[i], i);
             }
         }
 

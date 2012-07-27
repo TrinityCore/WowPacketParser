@@ -224,7 +224,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk UInt32 1");
             if (guid[0] != 0) guid[0] ^= packet.ReadByte();
             packet.ReadUInt32("Money Cost");
-            packet.WriteLine("Item GUID: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Item Guid", guid);
         }
 
         [Parser(Opcode.CMSG_REPAIR_ITEM)]
@@ -569,7 +569,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
                 packet.ParseBitStream(guidBytes[i], 2);
 
-                packet.ToGuid("GUID", guidBytes[i], i);
+                packet.WriteGuid("GUID", guidBytes[i], i);
             }
         }
 
@@ -586,7 +586,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
                 guidBytes[i] = packet.ParseBitStream(guidBytes[i], 2, 6, 3, 0, 5, 7, 1, 4);
-                packet.ToGuid("GUID", guidBytes[i], i);
+                packet.WriteGuid("GUID", guidBytes[i], i);
             }
         }
 
@@ -913,7 +913,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 1, 5);
             packet.ReadInt32("Error ID");
             packet.ParseBitStream(guid, 2, 4, 7, 3, 6, 0);
-            packet.ToGuid("Item Guid", guid);
+            packet.WriteGuid("Item Guid", guid);
         }
 
         [Parser(Opcode.CMSG_REFORGE_ITEM, ClientVersionBuild.V4_3_4_15595)]
@@ -925,7 +925,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guid = packet.StartBitStream(2,6,3,4,1,0,7,5);
             packet.ParseBitStream(guid,2,3,6,4,1,0,7,5);
-            packet.ToGuid("Reforger Guid", guid);
+            packet.WriteGuid("Reforger Guid", guid);
             
         }
 

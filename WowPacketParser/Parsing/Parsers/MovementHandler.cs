@@ -488,7 +488,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32 2");
             var guid = packet.StartBitStream(5, 0, 1, 6, 3, 7, 2, 4);
             packet.ParseBitStream(guid, 4, 2, 7, 6, 5, 1, 3, 0);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.MSG_MOVE_HEARTBEAT, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
@@ -596,7 +596,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportBytes[4] != 0)
                     transportBytes[4] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport GUID: {0}", new Guid(BitConverter.ToUInt64(transportBytes, 0)));
+                packet.WriteGuid("Transport Guid", transportBytes);
             }
 
             if (swimming)
@@ -621,7 +621,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guidBytes[0] != 0)
                 guidBytes[0] ^= packet.ReadByte();
 
-            packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
+            packet.WriteGuid("Guid", guidBytes);
         }
 
         [Parser(Opcode.MSG_MOVE_HEARTBEAT, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]
@@ -729,7 +729,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportBytes[4] != 0)
                     transportBytes[4] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport GUID: {0}", new Guid(BitConverter.ToUInt64(transportBytes, 0)));
+                packet.WriteGuid("Transport Guid", transportBytes);
             }
 
             if (swimming)
@@ -754,7 +754,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guidBytes[0] != 0)
                 guidBytes[0] ^= packet.ReadByte();
 
-            packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
+            packet.WriteGuid("Guid", guidBytes);
         }
         
         [Parser(Opcode.MSG_MOVE_HEARTBEAT, ClientVersionBuild.V4_3_4_15595)]
@@ -846,7 +846,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[0] != 0) transportGuid[0] ^= packet.ReadByte();
                 if (transportGuid[6] != 0) transportGuid[6] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -872,7 +872,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasTime)
                 packet.ReadUInt32("Timestamp");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -955,7 +955,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportBytes[0] != 0) transportBytes[0] ^= packet.ReadByte();
                 if (transportBytes[4] != 0) transportBytes[4] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport GUID: {0}", new Guid(BitConverter.ToUInt64(transportBytes, 0)));
+                packet.WriteGuid("Transport Guid", transportBytes);
             }
 
             if (swimming)
@@ -982,7 +982,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guidBytes[7] != 0) guidBytes[7] ^= packet.ReadByte();
             if (guidBytes[2] != 0) guidBytes[2] ^= packet.ReadByte();
 
-            packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guidBytes, 0)));
+            packet.WriteGuid("Guid", guidBytes);
         }
         
         [Parser(Opcode.MSG_MOVE_SET_PITCH, ClientVersionBuild.V4_3_4_15595)]
@@ -1076,7 +1076,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[7] != 0) transportGuid[7] ^= packet.ReadByte();
                 tpos.X = packet.ReadSingle();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -1102,7 +1102,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasO)
                 pos.O = packet.ReadSingle();
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -1203,8 +1203,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ParseBitStream(guidBytes, 3);
 
-            packet.ToGuid("Guid", guidBytes);
-            packet.ToGuid("Transport Guid", transportGuidBytes);
+            packet.WriteGuid("Guid", guidBytes);
+            packet.WriteGuid("Transport Guid", transportGuidBytes);
         }
         
         [Parser(Opcode.MSG_MOVE_SET_FACING, ClientVersionBuild.V4_3_4_15595)]
@@ -1297,7 +1297,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Transport time");
                 if (transportGuid[7] != 0) transportGuid[7] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -1323,7 +1323,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasPitch)
                 packet.ReadSingle("Pitch");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -1355,7 +1355,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Unk 2");
 
             packet.ReadSingle("Arrive Orientation");
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.MSG_MOVE_TELEPORT, ClientVersionBuild.V4_3_4_15595)]
@@ -1403,7 +1403,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transGuid[2] != 0) transGuid[2] ^= packet.ReadByte();
                 if (transGuid[4] != 0) transGuid[4] ^= packet.ReadByte();
                 if (transGuid[3] != 0) transGuid[3] ^= packet.ReadByte();
-                packet.WriteLine("Transport GUID: {0}", new Guid(BitConverter.ToUInt64(transGuid, 0)));
+                packet.WriteGuid("Transport Guid", transGuid);
             }
 
             packet.ReadUInt32("Time");
@@ -1424,7 +1424,7 @@ namespace WowPacketParser.Parsing.Parsers
             pos.Y = packet.ReadSingle();
 
             packet.WriteLine("Destination: {0}", pos);
-            packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.MSG_MOVE_STOP, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
@@ -1525,8 +1525,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ParseBitStream(guidBytes, 6, 4);
 
-            packet.ToGuid("Guid", guidBytes);
-            packet.ToGuid("Transport Guid", transportGuidBytes);
+            packet.WriteGuid("Guid", guidBytes);
+            packet.WriteGuid("Transport Guid", transportGuidBytes);
         }
         
         [Parser(Opcode.MSG_MOVE_STOP, ClientVersionBuild.V4_3_4_15595)]
@@ -1619,7 +1619,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[5] != 0) transportGuid[5] ^= packet.ReadByte();
                 if (transportGuid[6] != 0) transportGuid[6] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -1645,7 +1645,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Fall time");
             }
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -1743,8 +1743,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Fall Time");
             }
 
-            packet.ToGuid("Guid", guidBytes);
-            packet.ToGuid("Transport Guid", transportGuidBytes);
+            packet.WriteGuid("Guid", guidBytes);
+            packet.WriteGuid("Transport Guid", transportGuidBytes);
         }
 
         [Parser(Opcode.SMSG_PLAYER_MOVE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
@@ -1904,7 +1904,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasTransTime2)
                     packet.ReadUInt32("Transport time 2");
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -1931,7 +1931,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasTime)
                 packet.ReadUInt32("Timestamp");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -2034,7 +2034,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[1] != 0) transportGuid[1] ^= packet.ReadByte();
                 tpos.X = packet.ReadSingle();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -2060,7 +2060,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasSplineElev)
                 packet.ReadSingle("Spline elevation");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -2158,7 +2158,7 @@ namespace WowPacketParser.Parsing.Parsers
                 tpos.O = packet.ReadSingle();
                 if (transportGuid[0] != 0) transportGuid[0] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -2183,7 +2183,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasSplineElev)
                 packet.ReadSingle("Spline elevation");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -2277,7 +2277,7 @@ namespace WowPacketParser.Parsing.Parsers
                 tpos.X = packet.ReadSingle();
                 tpos.Z = packet.ReadSingle();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -2303,7 +2303,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasO)
                 pos.O = packet.ReadSingle();
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -2397,7 +2397,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[7] != 0) transportGuid[7] ^= packet.ReadByte();
                 tpos.O = packet.ReadSingle();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -2423,7 +2423,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasTime)
                 packet.ReadUInt32("Timestamp");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -2518,7 +2518,7 @@ namespace WowPacketParser.Parsing.Parsers
                 tpos.Y = packet.ReadSingle();
                 if (transportGuid[4] != 0) transportGuid[4] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -2545,7 +2545,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasTime)
                 packet.ReadUInt32("Timestamp");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -2657,7 +2657,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSByte("Transport seat");
                 if (transportGuid[7] != 0) transportGuid[7] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -2668,7 +2668,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasPitch)
                 packet.ReadSingle("Pitch");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -2765,7 +2765,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[0] != 0) transportGuid[0] ^= packet.ReadByte();
                 packet.ReadSByte("Transport seat");
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -2789,7 +2789,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasSplineElev)
                 packet.ReadSingle("Spline elevation");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -2883,7 +2883,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[0] != 0) transportGuid[0] ^= packet.ReadByte();
                 tpos.O = packet.ReadSingle();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -2910,7 +2910,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasSplineElev)
                 packet.ReadSingle("Spline elevation");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -2920,7 +2920,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(7, 2, 1, 3, 5, 6, 4, 0);
             packet.ParseBitStream(guid, 6, 7, 4, 3, 2, 5, 0, 1);
             packet.ReadSingle("Speed");
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
 
@@ -2931,7 +2931,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 0, 7, 6, 5, 3, 4);
             packet.ReadSingle("Speed");
             packet.ParseBitStream(guid, 2, 1);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.MSG_MOVE_FALL_LAND, ClientVersionBuild.V4_3_4_15595)]
@@ -3024,7 +3024,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[6] != 0) transportGuid[6] ^= packet.ReadByte();
                 if (transportGuid[2] != 0) transportGuid[2] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -3050,7 +3050,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasO)
                 pos.O = packet.ReadSingle();
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -3145,7 +3145,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[2] != 0) transportGuid[2] ^= packet.ReadByte();
                 if (transportGuid[5] != 0) transportGuid[5] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -3172,7 +3172,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasO)
                 pos.O = packet.ReadSingle();
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -3279,7 +3279,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[4] != 0) transportGuid[4] ^= packet.ReadByte();
                 tpos.X = packet.ReadSingle();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -3292,7 +3292,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasSplineElev)
                 packet.ReadSingle("Spline elevation");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -3386,7 +3386,7 @@ namespace WowPacketParser.Parsing.Parsers
                 tpos.Z = packet.ReadSingle();
                 if (transportGuid[3] != 0) transportGuid[3] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -3413,7 +3413,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasSplineElev)
                 packet.ReadSingle("Spline elevation");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -3507,7 +3507,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (transportGuid[7] != 0) transportGuid[7] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -3533,7 +3533,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasTime)
                 packet.ReadUInt32("Timestamp");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
         
@@ -3627,7 +3627,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[6] != 0) transportGuid[6] ^= packet.ReadByte();
                 if (transportGuid[3] != 0) transportGuid[3] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -3654,7 +3654,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasSplineElev)
                 packet.ReadSingle("Spline elevation");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
         
@@ -3760,7 +3760,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[5] != 0) transportGuid[5] ^= packet.ReadByte();
                 if (transportGuid[7] != 0) transportGuid[7] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -3773,7 +3773,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasSplineElev)
                 packet.ReadSingle("Spline elevation");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -3866,7 +3866,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasTransTime2)
                     packet.ReadUInt32("Transport time 2");
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -3892,7 +3892,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasTime)
                 packet.ReadUInt32("Timestamp");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -3904,7 +3904,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Speed");
             packet.ParseBitStream(guid, 6, 2, 3, 7, 4, 0, 5);
             packet.ReadUInt32("Move Event");
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
         
         [Parser(Opcode.MSG_MOVE_STOP_TURN, ClientVersionBuild.V4_3_4_15595)]
@@ -4000,7 +4000,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Transport time");
                 if (transportGuid[6] != 0) transportGuid[6] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -4024,7 +4024,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasO)
                 pos.O = packet.ReadSingle();
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -4110,7 +4110,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(7, 2, 1, 0, 4, 5, 6, 3);
             packet.ParseBitStream(guid, 3, 2, 4, 0, 5, 1, 6, 7);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_FORCE_MOVE_ROOT)]
@@ -4238,8 +4238,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (bits[7]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
             if (bits[1]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
 
-            var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
-            packet.WriteLine("GUID: {0}", guid);
+            packet.WriteGuid("Guid", bytes);
 
             if (phaseMask != -1)
             {
@@ -4393,7 +4392,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Time");
             var guid = packet.StartBitStream(5, 1, 3, 7, 6, 0, 4, 2);
             packet.ParseBitStream(guid, 7, 1, 2, 4, 3, 6, 0, 5);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_ROOT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -4438,7 +4437,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(7, 4, 0, 1, 3, 6, 5, 2);
             packet.ParseBitStream(guid, 0, 5, 4, 7, 3, 2, 1, 6);
             packet.ReadSingle("Speed");
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_SWIM_SPEED, ClientVersionBuild.V4_3_4_15595)]
@@ -4448,7 +4447,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 5, 6, 1, 0, 2, 4);
             packet.ReadSingle("Speed");
             packet.ParseBitStream(guid, 7, 3);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED, ClientVersionBuild.V4_3_4_15595)]
@@ -4458,7 +4457,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 0, 4, 7, 1, 5, 3);
             packet.ReadSingle("Speed");
             packet.ParseBitStream(guid, 6, 2);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_BACK_SPEED, ClientVersionBuild.V4_3_4_15595)]
@@ -4468,7 +4467,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 1);
             packet.ReadSingle("Speed");
             packet.ParseBitStream(guid, 2, 4, 0, 3, 6, 5, 7);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_COMPRESSED_MOVES)]
@@ -4512,7 +4511,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ParseBitStream(guid, 3, 1, 2, 4, 7, 5);
 
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.MSG_MOVE_START_FORWARD, ClientVersionBuild.V4_3_4_15595)]
@@ -4615,7 +4614,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasTransTime2)
                     packet.ReadUInt32("Transport time 2");
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -4628,7 +4627,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasTime)
                 packet.ReadUInt32("Timestamp");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -4727,7 +4726,7 @@ namespace WowPacketParser.Parsing.Parsers
                 tpos.Y = packet.ReadSingle();
                 packet.ReadUInt32("Transport time");
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -4747,7 +4746,7 @@ namespace WowPacketParser.Parsing.Parsers
                 pos.O = packet.ReadSingle();
 
             if (guid[1] != 0) guid[1] ^= packet.ReadByte();
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -4776,7 +4775,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid[2] != 0) guid[2] ^= packet.ReadByte();
             if (guid[7] != 0) guid[7] ^= packet.ReadByte();
             packet.ReadSingle("Collision height");
-            packet.WriteLine("GUID: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
         }
         
         [Parser(Opcode.MSG_MOVE_SET_RUN_MODE, ClientVersionBuild.V4_3_4_15595)]
@@ -4872,7 +4871,7 @@ namespace WowPacketParser.Parsing.Parsers
                 tpos.Y = packet.ReadSingle();
                 if (transportGuid[6] != 0) transportGuid[6] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -4896,7 +4895,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasO)
                 pos.O = packet.ReadSingle();
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -4991,7 +4990,7 @@ namespace WowPacketParser.Parsing.Parsers
                 tpos.Y = packet.ReadSingle();
                 if (transportGuid[1] != 0) transportGuid[1] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -5017,7 +5016,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasO)
                 pos.O = packet.ReadSingle();
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -5111,7 +5110,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasTransTime3)
                     packet.ReadUInt32("Transport time 3");
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -5138,7 +5137,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasO)
                 pos.O = packet.ReadSingle();
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
         
@@ -5235,7 +5234,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[5] != 0) transportGuid[5] ^= packet.ReadByte();
                 if (transportGuid[2] != 0) transportGuid[2] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -5260,7 +5259,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasPitch)
                 packet.ReadSingle("Pitch");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -5286,7 +5285,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (bytes[5] != 0) bytes[5] ^= packet.ReadByte();
             if (bytes[4] != 0) bytes[4] ^= packet.ReadByte();
             if (bytes[6] != 0) bytes[6] ^= packet.ReadByte();
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(bytes, 0)));
+            packet.WriteGuid("Guid", bytes);
         }
 
         [Parser(Opcode.CMSG_MOVE_SPLINE_DONE, ClientVersionBuild.V4_3_4_15595)]
@@ -5401,7 +5400,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[6] != 0) transportGuid[6] ^= packet.ReadByte();
                 if (transportGuid[4] != 0) transportGuid[4] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -5410,7 +5409,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasSplineElev)
                 packet.ReadSingle("Spline elevation");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -5519,7 +5518,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasTransTime3)
                     packet.ReadUInt32("Transport time 3");
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -5532,7 +5531,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasSplineElev)
                 packet.ReadSingle("Spline elevation");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -5617,7 +5616,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[3] != 0) transportGuid[3] ^= packet.ReadByte();
                 if (transportGuid[5] != 0) transportGuid[5] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -5663,7 +5662,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasPitch)
                 packet.ReadSingle("Pitch");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -5754,7 +5753,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 tpos.Z = packet.ReadSingle();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -5795,7 +5794,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid[1] != 0) guid[1] ^= packet.ReadByte();
 
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -5893,7 +5892,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSByte("Transport seat");
                 tpos.X = packet.ReadSingle();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -5925,7 +5924,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (guid[3] != 0) guid[3] ^= packet.ReadByte();
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -6015,7 +6014,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[1] != 0) transportGuid[1] ^= packet.ReadByte();
                 packet.ReadSByte("Transport seat");
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -6055,7 +6054,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid[2] != 0) guid[2] ^= packet.ReadByte();
             if (guid[1] != 0) guid[1] ^= packet.ReadByte();
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -6145,7 +6144,7 @@ namespace WowPacketParser.Parsing.Parsers
                 tpos.Y = packet.ReadSingle();
                 tpos.X = packet.ReadSingle();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -6186,7 +6185,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (guid[0] != 0) guid[0] ^= packet.ReadByte();
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -6197,7 +6196,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 5, 3, 1, 0, 7, 6);
             packet.ReadSingle("Speed");
             packet.ParseBitStream(guid, 4, 2);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_BACK_SPEED, ClientVersionBuild.V4_3_4_15595)]
@@ -6207,7 +6206,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 5);
             packet.ReadSingle("Speed");
             packet.ParseBitStream(guid, 6, 1, 0, 2, 3, 7, 4);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_TURN_RATE, ClientVersionBuild.V4_3_4_15595)]
@@ -6216,7 +6215,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(2, 4, 6, 1, 3, 5, 7, 0);
             packet.ReadSingle("Rate");
             packet.ParseBitStream(guid, 1, 5, 3, 2, 7, 4, 6, 0);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_PITCH_RATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -6226,7 +6225,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 1, 5, 7, 0, 6, 3, 2);
             packet.ReadSingle("Rate");
             packet.ParseBitStream(guid, 4);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_ROOT, ClientVersionBuild.V4_3_4_15595)]
@@ -6234,7 +6233,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(5, 4, 6, 1, 3, 7, 2, 0);
             packet.ParseBitStream(guid, 2, 1, 7, 3, 5, 0, 6, 4);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_UNROOT, ClientVersionBuild.V4_3_4_15595)]
@@ -6242,7 +6241,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(0, 1, 6, 5, 3, 2, 7, 4);
             packet.ParseBitStream(guid, 6, 3, 1, 5, 2, 0, 7, 4);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_GRAVITY_ENABLE, ClientVersionBuild.V4_3_4_15595)]
@@ -6250,7 +6249,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(5, 4, 7, 1, 3, 6, 2, 0);
             packet.ParseBitStream(guid, 7, 3, 4, 2, 1, 6, 0, 5);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_GRAVITY_DISABLE, ClientVersionBuild.V4_3_4_15595)]
@@ -6258,7 +6257,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(7, 3, 4, 2, 5, 1, 0, 6);
             packet.ParseBitStream(guid, 7, 1, 3, 4, 6, 2, 5, 0);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_COLLISION_ENABLE, ClientVersionBuild.V4_3_4_15595)]
@@ -6266,7 +6265,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(3, 4, 7, 6, 1, 0, 2, 5);
             packet.ParseBitStream(guid, 1, 3, 7, 2, 0, 6, 4, 5);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_COLLISION_DISABLE, ClientVersionBuild.V4_3_4_15595)]
@@ -6274,7 +6273,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(3, 7, 1, 0, 4, 2, 6, 5);
             packet.ParseBitStream(guid, 3, 5, 6, 7, 2, 1, 0, 4);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_FEATHER_FALL, ClientVersionBuild.V4_3_4_15595)]
@@ -6282,7 +6281,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(3, 2, 7, 5, 4, 6, 1, 0);
             packet.ParseBitStream(guid, 1, 4, 7, 6, 2, 0, 5, 3);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_NORMAL_FALL, ClientVersionBuild.V4_3_4_15595)]
@@ -6290,7 +6289,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(3, 5, 1, 0, 7, 6, 2, 4);
             packet.ParseBitStream(guid, 7, 6, 2, 0, 5, 4, 3, 1);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_MODE, ClientVersionBuild.V4_3_4_15595)]
@@ -6298,7 +6297,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(5, 6, 3, 7, 2, 0, 4, 1);
             packet.ParseBitStream(guid, 7, 0, 4, 6, 5, 1, 2, 3);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_MODE, ClientVersionBuild.V4_3_4_15595)]
@@ -6306,7 +6305,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(7, 6, 5, 1, 3, 4, 2, 0);
             packet.ParseBitStream(guid, 4, 2, 1, 6, 5, 0, 7, 3);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_HOVER, ClientVersionBuild.V4_3_4_15595)]
@@ -6314,7 +6313,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(3, 7, 0, 1, 4, 6, 2, 5);
             packet.ParseBitStream(guid, 2, 4, 3, 1, 7, 0, 5, 6);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_UNSET_HOVER, ClientVersionBuild.V4_3_4_15595)]
@@ -6322,7 +6321,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(6, 7, 4, 0, 3, 1, 5, 2);
             packet.ParseBitStream(guid, 4, 5, 3, 0, 2, 7, 6, 1);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_WATER_WALK, ClientVersionBuild.V4_3_4_15595)]
@@ -6330,7 +6329,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(6, 1, 4, 2, 3, 7, 5, 0);
             packet.ParseBitStream(guid, 0, 6, 3, 7, 4, 2, 5, 1);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_START_SWIM, ClientVersionBuild.V4_3_4_15595)]
@@ -6338,7 +6337,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(1, 6, 0, 7, 3, 5, 2, 4);
             packet.ParseBitStream(guid, 3, 7, 2, 5, 6, 4, 1, 0);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_STOP_SWIM, ClientVersionBuild.V4_3_4_15595)]
@@ -6346,7 +6345,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(4, 1, 5, 3, 0, 7, 2, 6);
             packet.ParseBitStream(guid, 6, 0, 7, 2, 3, 1, 5, 4);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLYING, ClientVersionBuild.V4_3_4_15595)]
@@ -6354,7 +6353,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(0, 4, 1, 6, 7, 2, 3, 5);
             packet.ParseBitStream(guid, 7, 0, 5, 6, 4, 1, 3, 2);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_UNSET_FLYING, ClientVersionBuild.V4_3_4_15595)]
@@ -6362,7 +6361,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(5, 0, 4, 7, 2, 3, 1, 6);
             packet.ParseBitStream(guid, 7, 2, 3, 4, 5, 1, 6, 0);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_MOVE_SET_RUN_SPEED, ClientVersionBuild.V4_3_4_15595)]
@@ -6373,7 +6372,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32");
             packet.ReadSingle("Speed");
             packet.ParseBitStream(guid, 6, 0, 7, 2);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_MOVE_ROOT, ClientVersionBuild.V4_3_4_15595)]
@@ -6383,7 +6382,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 1, 0, 2, 5);
             packet.ReadInt32("Unk Int32");
             packet.ParseBitStream(guid, 3, 4, 7, 6);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_MOVE_UNROOT, ClientVersionBuild.V4_3_4_15595)]
@@ -6393,7 +6392,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 3, 6, 1);
             packet.ReadInt32("Unk Int32");
             packet.ParseBitStream(guid, 2, 0, 7, 4, 5);
-            packet.ToGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_MOVE_FORCE_RUN_SPEED_CHANGE_ACK, ClientVersionBuild.V4_3_4_15595)]
@@ -6489,7 +6488,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSByte("Transport seat");
                 if (transportGuid[4] != 0) transportGuid[4] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -6516,7 +6515,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasO)
                 pos.O = packet.ReadSingle();
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -6614,7 +6613,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 tpos.Z = packet.ReadSingle();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -6640,7 +6639,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasPitch)
                 packet.ReadSingle("Pitch");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -6737,7 +6736,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Transport time");
                 tpos.Y = packet.ReadSingle();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -6764,7 +6763,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasO)
                 pos.O = packet.ReadSingle();
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -6859,7 +6858,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[0] != 0) transportGuid[0] ^= packet.ReadByte();
                 if (transportGuid[4] != 0) transportGuid[4] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -6886,7 +6885,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasSplineElev)
                 packet.ReadSingle("Spline elevation");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -6982,7 +6981,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[1] != 0) transportGuid[1] ^= packet.ReadByte();
                 if (transportGuid[4] != 0) transportGuid[4] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -7009,7 +7008,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasTime)
                 packet.ReadUInt32("Timestamp");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -7119,7 +7118,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasTransTime2)
                     packet.ReadUInt32("Transport time 2");
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -7132,7 +7131,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasPitch)
                 packet.ReadSingle("Pitch");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -7243,7 +7242,7 @@ namespace WowPacketParser.Parsing.Parsers
                 tpos.Z = packet.ReadSingle();
                 if (transportGuid[7] != 0) transportGuid[7] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -7256,7 +7255,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasPitch)
                 packet.ReadSingle("Pitch");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -7342,7 +7341,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid[1] != 0) transportGuid[1] ^= packet.ReadByte();
                 tpos.O = packet.ReadSingle();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -7388,7 +7387,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid[6] != 0) guid[6] ^= packet.ReadByte();
             pos.Z = packet.ReadSingle();
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
 
@@ -7476,7 +7475,7 @@ namespace WowPacketParser.Parsing.Parsers
                 tpos.Y = packet.ReadSingle();
                 if (transportGuid[3] != 0) transportGuid[3] ^= packet.ReadByte();
 
-                packet.WriteLine("Transport Guid: {0}", new Guid(BitConverter.ToUInt64(transportGuid, 0)));
+                packet.WriteGuid("Transport Guid", transportGuid);
                 packet.WriteLine("Transport Position: {0}", tpos);
             }
 
@@ -7517,7 +7516,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid[5] != 0) guid[5] ^= packet.ReadByte();
             packet.ReadSingle("Speed");
 
-            packet.WriteLine("Guid: {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
     }
