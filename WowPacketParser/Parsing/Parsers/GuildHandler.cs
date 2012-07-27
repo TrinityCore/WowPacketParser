@@ -186,7 +186,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt64("Total activity", i);
 
             for (var i = 0; i < size; ++i)
-                packet.ReadByte("Unk Byte", i);
+                packet.ReadByte("Unk Byte", i); // Related to class (spec?)
 
             for (var i = 0; i < size; ++i)
                 packet.ReadGuid("Member GUID", i);
@@ -204,7 +204,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Member Rank", i);
 
             for (var i = 0; i < size; ++i)
-                packet.ReadInt32("Unk 2", i);
+                packet.ReadInt32("Guild reputation", i);
 
             for (var i = 0; i < size; ++i)
                 packet.ReadByte("Member Level", i);
@@ -458,6 +458,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Money Per Day");
             packet.ReadGuid("Player GUID");
             packet.ReadCString("Rank Name");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_SWITCH_RANK, ClientVersionBuild.V4_0_6a_13623)]
+        public static void HandleGuildSwitchRank(Packet packet)
+        {
+            packet.ReadBit("Direction");
+            packet.ReadGuid("Player GUID");
+            packet.ReadUInt32("Rank Id");
         }
 
         [Parser(Opcode.SMSG_GUILD_RANK, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
@@ -810,6 +818,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_QUERY_NEWS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_GUILD_REQUEST_MAX_DAILY_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_QUERY_GUILD_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_QUERY_TRADESKILL)]
         public static void HandleGuildRequestMulti(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -867,41 +876,78 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GUILD_XP)]
         public static void HandleGuildXP(Packet packet)
         {
-            packet.ReadUInt64("Max Daily XP");
-            packet.ReadUInt64("Next Level XP");
-            packet.ReadUInt64("Weekly XP");
-            packet.ReadUInt64("Current XP");
-            packet.ReadUInt64("Today XP");
+            packet.ReadUInt64("Member Today XP");
+            packet.ReadUInt64("Remaining XP for next Level");
+            packet.ReadUInt64("Remaining Member Weekly XP");
+            packet.ReadUInt64("Current Guild XP");
+            packet.ReadUInt64("Today Guild XP");
         }
 
-        [Parser(Opcode.SMSG_GUILD_NEWS_UPDATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_GUILD_NEWS_UPDATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleGuildNewsUpdate(Packet packet)
         {
             var size = packet.ReadUInt32("Size");
 
             for (var i = 0; i < size; ++i)
-                packet.ReadUInt32("Unk UInt32 1", i);
+            {
+                var unk1 = packet.ReadUInt32("Unk count", i);
+                for (var j = 0; j < unk1; ++j)
+                    packet.ReadUInt64("Unk uint64", i, j);
+            }
 
             for (var i = 0; i < size; ++i)
-                packet.ReadUInt32("Time ago", i);
+                packet.ReadPackedTime("Time", i);
 
             for (var i = 0; i < size; ++i)
                 packet.ReadGuid("Player GUID", i);
 
             for (var i = 0; i < size; ++i)
             {
-                packet.ReadUInt32("Unk UInt32 2", i);
-                packet.ReadUInt32("Unk UInt32 3", i);
+                packet.ReadUInt32("Item/Achievement", i);
+                packet.ReadUInt32("Unk", i);
             }
 
             for (var i = 0; i < size; ++i)
                 packet.ReadEnum<GuildNewsType>("News Type", TypeCode.Int32, i);
 
             for (var i = 0; i < size; ++i)
-                packet.ReadUInt32("News Flags", i);
+                packet.ReadUInt32("Guild/Player news", i);
 
             for (var i = 0; i < size; ++i)
                 packet.ReadUInt32("Unk UInt32 4", i);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_NEWS_UPDATE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildNewsUpdate422(Packet packet)
+        {
+            var size = packet.ReadUInt32("Size");
+            for (var i = 0; i < size; ++i)
+                packet.ReadUInt32("Guild/Player news", i);
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadGuid("Player GUID", i);
+
+            for (var i = 0; i < size; ++i)
+            {
+                var unk1 = packet.ReadUInt32("Unk count", i);
+                for (var j = 0; j < unk1; ++j)
+                    packet.ReadUInt64("Unk uint64", i, j);
+            }
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadEnum<GuildNewsType>("News Type", TypeCode.Int32, i);
+
+            for (var i = 0; i < size; ++i)
+            {
+                packet.ReadUInt32("Item/Achievement", i);
+                packet.ReadUInt32("Unk", i);
+            }
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadUInt32("Unk UInt32 4", i);
+
+            for (var i = 0; i < size; ++i)
+                packet.ReadPackedTime("Time", i);
         }
 
         [Parser(Opcode.SMSG_GUILD_NEWS_UPDATE, ClientVersionBuild.V4_3_4_15595)]
@@ -1112,7 +1158,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadInt64("Remaining Money");
         }
-
 
         [Parser(Opcode.MSG_GUILD_EVENT_LOG_QUERY)]
         public static void HandleGuildEventLogQuery(Packet packet)

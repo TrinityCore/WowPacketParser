@@ -813,6 +813,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_SPELLCLICK)]
+        [Parser(Opcode.CMSG_INSPECT_HONOR_STATS)]
         public static void HandleSpellClick(Packet packet)
         {
             packet.ReadGuid("GUID");

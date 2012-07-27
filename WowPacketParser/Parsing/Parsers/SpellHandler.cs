@@ -328,7 +328,6 @@ namespace WowPacketParser.Parsing.Parsers
                 var hasTrans = packet.ReadBit("Has transport");
                 guid[2] = bytes2[5] = packet.ReadBit().ToByte(); //2
                 var hasMovementFlags = !packet.ReadBit();
-                var bytes3 = new byte[8];
                 guid[1] = packet.ReadBit().ToByte();
                 guid[0] = packet.ReadBit().ToByte();
                 if (hasTrans)

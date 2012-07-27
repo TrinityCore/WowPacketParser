@@ -41,41 +41,6 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt64("Unk");
         }
 
-        [Parser(41694)]
-        public static void Handle41694(Packet packet)
-        {
-            var count = packet.ReadInt32("Count");
-
-            for (var i = 0; i < count; i++)
-                packet.ReadInt32("Unk");
-
-            for (var i = 0; i < count; i++)
-                packet.ReadGuid("Unk");
-
-            for (var i = 0; i < count; i++)
-            {
-                var count2 = packet.ReadInt32("Unk");
-
-                for (var j = 0; j < count2; j++)
-                    packet.ReadInt64("Unk");
-            }
-
-            for (var i = 0; i < count; i++)
-                packet.ReadInt32("Unk");
-
-            for (var i = 0; i < count; i++)
-            {
-                packet.ReadInt32("Unk");
-                packet.ReadInt32("Unk");
-            }
-
-            for (var i = 0; i < count; i++)
-                packet.ReadInt32("Unk");
-
-            for (var i = 0; i < count; i++)
-                packet.ReadPackedTime("Time");
-        }
-
         [Parser(30332)]
         public static void Handle30332(Packet packet)
         {

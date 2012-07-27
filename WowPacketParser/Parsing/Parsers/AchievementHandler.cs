@@ -278,6 +278,33 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_GUILD_CRITERIA_DATA, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildCriteriaData(Packet packet)
+        {
+            var criterias = packet.ReadUInt32("Criterias");
+
+            for (var i = 0; i < criterias; ++i)
+                packet.ReadGuid("Player GUID", i);
+
+            for (var i = 0; i < criterias; ++i)
+                packet.ReadUInt32("Criteria Timer 1", i);
+
+            for (var i = 0; i < criterias; ++i)
+                packet.ReadUInt32("Criteria Timer 2", i);
+
+            for (var i = 0; i < criterias; ++i)
+                packet.ReadUInt64("Counter", i);
+            
+            for (var i = 0; i < criterias; ++i)
+                packet.ReadPackedTime("Criteria Time", i);                
+
+            for (var i = 0; i < criterias; ++i)
+                packet.ReadUInt32("Criteria Id", i);
+
+            for (var i = 0; i < criterias; ++i)
+                packet.ReadUInt32("Flag", i);
+        }
+
         [Parser(Opcode.SMSG_GUILD_CRITERIA_DATA, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildCriteriaData434(Packet packet)
         {

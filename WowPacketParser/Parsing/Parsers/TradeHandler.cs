@@ -70,7 +70,7 @@ namespace WowPacketParser.Parsing.Parsers
                     break;
             }
         }
-        
+
         [Parser(Opcode.SMSG_TRADE_STATUS, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleTradeStatus422(Packet packet)
         {

@@ -1249,7 +1249,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_PVP_OPTIONS_ENABLED)]
-        public static void HandlePVPOptoinsEnabled(Packet packet)
+        public static void HandlePVPOptionsEnabled(Packet packet)
         {
             for (var i = 0; i < 5; i++)
                 packet.ReadBit("Unk Boolean", i);
