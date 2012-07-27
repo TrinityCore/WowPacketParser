@@ -1178,6 +1178,70 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_GUILD_EVENT_LOG_QUERY)]
+        public static void HandleGuildEventLogQuery434(Packet packet)
+        {
+            var count = packet.ReadBits(23);
+            var guid1 = new byte[count][];
+            var guid2 = new byte[count][];
+
+            for (var i = 0; i < count; ++i)
+            {
+                guid1[i] = new byte[8];
+                guid2[i] = new byte[8];
+
+                guid1[i][2] = packet.ReadBit().ToByte();
+                guid1[i][4] = packet.ReadBit().ToByte();
+                guid2[i][7] = packet.ReadBit().ToByte();
+                guid2[i][6] = packet.ReadBit().ToByte();
+                guid1[i][3] = packet.ReadBit().ToByte();
+                guid2[i][3] = packet.ReadBit().ToByte();
+                guid2[i][5] = packet.ReadBit().ToByte();
+                guid1[i][7] = packet.ReadBit().ToByte();
+                guid1[i][5] = packet.ReadBit().ToByte();
+                guid1[i][0] = packet.ReadBit().ToByte();
+                guid2[i][4] = packet.ReadBit().ToByte();
+                guid2[i][2] = packet.ReadBit().ToByte();
+                guid2[i][0] = packet.ReadBit().ToByte();
+                guid2[i][1] = packet.ReadBit().ToByte();
+                guid1[i][1] = packet.ReadBit().ToByte();
+                guid1[i][6] = packet.ReadBit().ToByte();
+            }
+        
+            for (var i = 0; i < count; ++i)
+            {
+                if (guid2[i][3] != 0) guid2[i][3] ^= packet.ReadByte();
+                if (guid2[i][2] != 0) guid2[i][2] ^= packet.ReadByte();
+                if (guid2[i][5] != 0) guid2[i][5] ^= packet.ReadByte();
+
+                packet.ReadByte("Rank", i);
+
+                if (guid2[i][4] != 0) guid2[i][4] ^= packet.ReadByte();
+                if (guid1[i][0] != 0) guid1[i][0] ^= packet.ReadByte();
+                if (guid1[i][4] != 0) guid1[i][4] ^= packet.ReadByte();
+
+                packet.ReadUInt32("Time ago", i);
+
+                if (guid1[i][7] != 0) guid1[i][7] ^= packet.ReadByte();
+                if (guid1[i][3] != 0) guid1[i][3] ^= packet.ReadByte();
+                if (guid2[i][0] != 0) guid2[i][0] ^= packet.ReadByte();
+                if (guid2[i][6] != 0) guid2[i][6] ^= packet.ReadByte();
+                if (guid2[i][7] != 0) guid2[i][7] ^= packet.ReadByte();
+                if (guid1[i][5] != 0) guid1[i][5] ^= packet.ReadByte();
+
+                packet.ReadEnum<GuildEventLogType>("Type", TypeCode.Byte, i);
+
+                if (guid2[i][1] != 0) guid2[i][1] ^= packet.ReadByte();
+                if (guid1[i][2] != 0) guid1[i][2] ^= packet.ReadByte();
+                if (guid1[i][6] != 0) guid1[i][6] ^= packet.ReadByte();
+                if (guid1[i][1] != 0) guid1[i][1] ^= packet.ReadByte();
+
+                packet.WriteLine("[{0}] GUID1: {1}", i, new Guid(BitConverter.ToUInt64(guid1[i], 0)));
+                packet.WriteLine("[{0}] GUID2: {1}", i, new Guid(BitConverter.ToUInt64(guid2[i], 0)));
+            }
+        }
+
+
         [Parser(Opcode.MSG_GUILD_BANK_LOG_QUERY, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_GUILD_BANK_LOG_QUERY, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.SMSG_GUILD_BANK_LOG_QUERY_RESULTS, ClientVersionBuild.V4_3_4_15595)]
@@ -1459,9 +1523,9 @@ namespace WowPacketParser.Parsing.Parsers
                 guids[i][3] = packet.ReadBit().ToByte();
                 strlen[i][0] = packet.ReadBits(8);
                 guids[i][6] = packet.ReadBit().ToByte();
-                packet.ReadBit("Can NOT has +361", i);
+                packet.ReadBit("Bit 361", i);
                 guids[i][2] = packet.ReadBit().ToByte();
-                packet.ReadBit("Can NOT has +360", i);
+                packet.ReadBit("Bit 360", i);
                 strlen[i][1] = packet.ReadBits(8);
             }
 
