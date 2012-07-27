@@ -264,12 +264,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
             packet.ReadByte("Cast Count");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
-            var CastFlags = packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
+            var castFlags = packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
             SpellHandler.ReadSpellCastTargets(ref packet);
-            if (CastFlags.HasAnyFlag(CastFlag.Unknown1))
-            {
+            if (castFlags.HasAnyFlag(CastFlag.Unknown1))
                 SpellHandler.HandleSpellMissileAndMove(ref packet);
-            }
         }
     }
 }

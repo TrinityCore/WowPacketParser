@@ -253,12 +253,10 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
                 packet.ReadInt32("Glyph Index");
 
-            var CastFlags = packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
+            var castFlags = packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
             ReadSpellCastTargets(ref packet);
-            if (CastFlags.HasAnyFlag(CastFlag.Unknown1))
-            {
+            if (castFlags.HasAnyFlag(CastFlag.Unknown1))
                 SpellHandler.HandleSpellMissileAndMove(ref packet);
-            }
         }
 
         public static TargetFlag ReadSpellCastTargets(ref Packet packet)
@@ -294,7 +292,7 @@ namespace WowPacketParser.Parsing.Parsers
             return targetFlags;
         }
 
-        public static void HandleSpellMissileAndMove(ref Packet packet)
+        public static void HandleSpellMissileAndMove(ref Packet packet) // 4.3.4
         {
             packet.ReadSingle("Elevation");
             packet.ReadSingle("Missile speed");
@@ -308,9 +306,9 @@ namespace WowPacketParser.Parsing.Parsers
                 var hasFallDirection = false;
                 Vector4 pos = new Vector4();
 
-                pos.X = packet.ReadSingle();
-                pos.Y = packet.ReadSingle();
                 pos.Z = packet.ReadSingle();
+                pos.Y = packet.ReadSingle();
+                pos.X = packet.ReadSingle();
 
                 var bytes = new byte[8];
                 var hasFallData = packet.ReadBit("Has fall data");
