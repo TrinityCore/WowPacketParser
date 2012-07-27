@@ -1450,37 +1450,37 @@ namespace WowPacketParser.Parsing.Parsers
                 guids[i] = new byte[8];
                 strlen[i] = new uint[3];
 
-                strlen[i][2] = packet.ReadBits(7); // + 52
-                guids[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
-                strlen[i][0] = packet.ReadBits(8); // + 100
-                guids[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
-                packet.ReadBit("Can NOT has +361");
-                guids[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
-                packet.ReadBit("Can NOT has +360");
-                strlen[i][1] = packet.ReadBits(8); // + 228
+                strlen[i][2] = packet.ReadBits(7);
+                guids[i][5] = packet.ReadBit().ToByte();
+                guids[i][4] = packet.ReadBit().ToByte();
+                guids[i][0] = packet.ReadBit().ToByte();
+                guids[i][7] = packet.ReadBit().ToByte();
+                guids[i][1] = packet.ReadBit().ToByte();
+                guids[i][3] = packet.ReadBit().ToByte();
+                strlen[i][0] = packet.ReadBits(8);
+                guids[i][6] = packet.ReadBit().ToByte();
+                packet.ReadBit("Can NOT has +361", i);
+                guids[i][2] = packet.ReadBit().ToByte();
+                packet.ReadBit("Can NOT has +360", i);
+                strlen[i][1] = packet.ReadBits(8);
             }
 
             for (int i = 0; i < count; ++i)
             {
-                packet.ReadByte("unk Byte", i); // + 359
-                packet.ReadInt32("Zone", i); // + 40
+                packet.ReadByte("unk Byte 359", i); // 0 or 1
+                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", i);
 
                 if (guids[i][1] != 0) guids[i][1] ^= packet.ReadByte();
 
-                packet.ReadInt64("Total activity", i); // + 16
+                packet.ReadInt64("Total activity", i);
 
                 if (guids[i][2] != 0) guids[i][2] ^= packet.ReadByte();
 
                 for (int j = 0; j < 2; ++j)
                 {
                     var rank = packet.ReadUInt32();
-                    var value = packet.ReadUInt32();
                     var id = packet.ReadUInt32();
+                    var value = packet.ReadUInt32();
                     packet.WriteLine("[{0}][{1}] Profession: Id {2} - Value {3} - Rank {4}", i, j, id, value, rank);
                 }
 
@@ -1488,26 +1488,26 @@ namespace WowPacketParser.Parsing.Parsers
                 if (guids[i][6] != 0) guids[i][6] ^= packet.ReadByte();
                 if (guids[i][7] != 0) guids[i][7] ^= packet.ReadByte();
 
-                packet.ReadInt32("unk Int32", i); // + 24
+                packet.ReadInt32("Rank", i);
                 packet.ReadWoWString("Public Comment", strlen[i][0], i);
                 packet.ReadWoWString("Officers Comment", strlen[i][1], i);
 
                 if (guids[i][4] != 0) guids[i][4] ^= packet.ReadByte();
                 if (guids[i][5] != 0) guids[i][5] ^= packet.ReadByte();
 
-                packet.ReadInt32("unk Int32", i); // + 36
-                packet.ReadInt32("unk Int32", i); // + 32
-                packet.ReadSingle("Average Item Level", i); // + 48
-                packet.ReadInt64("Week activity", i); // + 8
-                packet.ReadByte("Level", i); // + 357
-                packet.ReadEnum<Class>("Class", TypeCode.Byte, i); // + 358
+                packet.ReadInt32("unk Int32 36", i);
+                packet.ReadInt32("unk Int32 32", i);
+                packet.ReadSingle("Average Item Level", i);
+                packet.ReadInt64("Week activity", i);
+                packet.ReadByte("Level", i);
+                packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
 
                 if (guids[i][3] != 0) guids[i][3] ^= packet.ReadByte();
 
-                packet.ReadByte("unk Byte", i); // + 356
-                packet.ReadInt32("Member Achievement Points", i); // + 28
+                packet.ReadByte("unk Byte 356", i); // 0
+                packet.ReadInt32("Member Achievement Points", i);
                 packet.ReadWoWString("Character Name", strlen[i][2], i);
-                packet.ReadInt32("unk Int32", i); // + 44
+                packet.ReadInt32("unk Int32 44", i);
 
                 packet.WriteLine("[{0}] Player GUID: {1}", i, new Guid(BitConverter.ToUInt64(guids[i], 0)));
             }
