@@ -667,16 +667,16 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Suggested Players");
             packet.ReadUInt32("Money");
 
-            var count = packet.ReadUInt32("Number of Required Items");
-            for (var i = 0; i < count; i++)
+            var countItems = packet.ReadUInt32("Number of Required Items");
+            for (var i = 0; i < countItems; i++)
             {
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Required Item Id", i);
                 packet.ReadUInt32("Required Item Count", i);
                 packet.ReadUInt32("Required Item Display Id", i);
             }
 
-            var x = packet.ReadUInt32("Number of Required Currencies");
-            for (var i = 0; i < x; i++)
+            var countCurrencies = packet.ReadUInt32("Number of Required Currencies");
+            for (var i = 0; i < countCurrencies; i++)
             {
                 packet.ReadUInt32("Required Currency Id", i);
                 packet.ReadUInt32("Required Currency Count", i);

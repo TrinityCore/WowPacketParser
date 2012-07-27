@@ -1,7 +1,6 @@
 ﻿using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -17,7 +16,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (unkBit2)
                 guid1 = packet.StartBitStream(5, 2, 1, 4, 0, 6, 7, 3);
 
-            var unkBit3 = !packet.ReadBit("Unk Bit 3 (Inv)");
+            packet.ReadBit("Unk Bit 3 (Inv)");
 
             byte[] guid2 = null;
             if (unkBit1) // ? - *((_QWORD *)v4 + 2) != 0i64;

@@ -1,7 +1,6 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using Guid=WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -85,8 +84,6 @@ namespace WowPacketParser.Parsing.Parsers
                     case (MailType)1:
                     case MailType.Auction:
                         packet.ReadInt32("Entry", i);
-                        break;
-                    default:
                         break;
                 }
 

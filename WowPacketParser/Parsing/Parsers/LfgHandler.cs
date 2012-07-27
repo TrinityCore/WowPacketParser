@@ -24,12 +24,16 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLfgJoin434(Packet packet)
         {
             packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
+
             for (var i = 0; i < 3; i++)
                 packet.ReadInt32("Unk Int32", i);
+
             var length = packet.ReadBits("Comment Length", 9);
-            var x = packet.ReadBits("Join Dungeon Count", 24);
+            var count = packet.ReadBits("Join Dungeon Count", 24);
+
             packet.ReadWoWString("Comment", length);
-            for (var i = 0; i < x; i++)
+
+            for (var i = 0; i < count; i++)
                 packet.ReadLfgEntry("Dungeon Entry", i);
         }
 
@@ -363,10 +367,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LFG_SET_ROLES)]
         public static void HandleLfgSetRoles(Packet packet)
         {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
-                packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
-            else
-                packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Byte);
+            packet.ReadEnum<LfgRoleFlag>("Roles",
+                                         ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595)
+                                             ? TypeCode.Int32
+                                             : TypeCode.Byte);
         }
 
         [Parser(Opcode.CMSG_LFG_TELEPORT)]

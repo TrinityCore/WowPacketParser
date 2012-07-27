@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -158,7 +159,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt16("Cooldown Spell Category", i);
                 packet.ReadInt32("Cooldown Time", i);
                 var catCd = packet.ReadUInt32();
-                packet.WriteLine("[{0}] Cooldown Category Time: {1}", i, ((catCd >> 31) != 0 ? "Infinite" : (catCd & 0x7FFFFFFF).ToString()));
+                packet.WriteLine("[{0}] Cooldown Category Time: {1}", i, ((catCd >> 31) != 0 ? "Infinite" : (catCd & 0x7FFFFFFF).ToString(CultureInfo.InvariantCulture)));
             }
         }
 
@@ -256,7 +257,7 @@ namespace WowPacketParser.Parsing.Parsers
             var castFlags = packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
             ReadSpellCastTargets(ref packet);
             if (castFlags.HasAnyFlag(CastFlag.Unknown1))
-                SpellHandler.HandleSpellMissileAndMove(ref packet);
+                HandleSpellMissileAndMove(ref packet);
         }
 
         public static TargetFlag ReadSpellCastTargets(ref Packet packet)
@@ -304,7 +305,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var hasTransTime2 = false;
                 var hasTransTime3 = false;
                 var hasFallDirection = false;
-                Vector4 pos = new Vector4();
+                var pos = new Vector4();
 
                 pos.Z = packet.ReadSingle();
                 pos.Y = packet.ReadSingle();
@@ -357,7 +358,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (hasTrans)
                 {
-                    Vector4 tpos = new Vector4();
+                    var tpos = new Vector4();
                     packet.ReadSByte("Transport seat");
                     tpos.O = packet.ReadSingle();
                     packet.ReadUInt32("Transport time");
@@ -1057,8 +1058,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_AURA_POINTS_DEPLETED)]
         public static void HandleAuraPointsDepleted(Packet packet)
         {
-            var guid = new byte[8];
-            guid = packet.StartBitStream(2, 4, 1, 7, 5, 0, 3, 6);
+            var guid = packet.StartBitStream(2, 4, 1, 7, 5, 0, 3, 6);
 
             packet.ParseBitStream(guid, 5, 0);
             var points = packet.ReadByte();

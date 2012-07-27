@@ -1,7 +1,6 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -1296,36 +1295,36 @@ namespace WowPacketParser.Parsing.Parsers
             var guid1 = new byte[8];
             var guid2 = new byte[8];
             var guid3 = new byte[8];
-            guid1[3] = packet.ReadBit().ToByte();//19
-            guid3[3] = packet.ReadBit().ToByte();//43
-            guid2[3] = packet.ReadBit().ToByte();//35
-            guid3[0] = packet.ReadBit().ToByte();//40
-            guid1[6] = packet.ReadBit().ToByte();//22
-            guid2[5] = packet.ReadBit().ToByte();//37
-            guid2[6] = packet.ReadBit().ToByte();//38
-            guid2[4] = packet.ReadBit().ToByte();//36
+            guid1[3] = packet.ReadBit().ToByte();
+            guid3[3] = packet.ReadBit().ToByte();
+            guid2[3] = packet.ReadBit().ToByte();
+            guid3[0] = packet.ReadBit().ToByte();
+            guid1[6] = packet.ReadBit().ToByte();
+            guid2[5] = packet.ReadBit().ToByte();
+            guid2[6] = packet.ReadBit().ToByte();
+            guid2[4] = packet.ReadBit().ToByte();
 
-            guid2[2] = packet.ReadBit().ToByte();//34
-            guid3[1] = packet.ReadBit().ToByte();//41
-            guid1[1] = packet.ReadBit().ToByte();//17
-            guid3[5] = packet.ReadBit().ToByte();//45
-            guid3[6] = packet.ReadBit().ToByte();//46
-            guid2[1] = packet.ReadBit().ToByte();//33
-            guid1[7] = packet.ReadBit().ToByte();//23
-            guid3[4] = packet.ReadBit().ToByte();//44
+            guid2[2] = packet.ReadBit().ToByte();
+            guid3[1] = packet.ReadBit().ToByte();
+            guid1[1] = packet.ReadBit().ToByte();
+            guid3[5] = packet.ReadBit().ToByte();
+            guid3[6] = packet.ReadBit().ToByte();
+            guid2[1] = packet.ReadBit().ToByte();
+            guid1[7] = packet.ReadBit().ToByte();
+            guid3[4] = packet.ReadBit().ToByte();
 
-            guid1[2] = packet.ReadBit().ToByte();//18
-            guid1[5] = packet.ReadBit().ToByte();//21
-            guid3[7] = packet.ReadBit().ToByte();//47
-            guid1[4] = packet.ReadBit().ToByte();//20
-            guid1[0] = packet.ReadBit().ToByte();//16
-            guid2[0] = packet.ReadBit().ToByte();//32
-            guid3[2] = packet.ReadBit().ToByte();//42
-            guid2[7] = packet.ReadBit().ToByte();//39
+            guid1[2] = packet.ReadBit().ToByte();
+            guid1[5] = packet.ReadBit().ToByte();
+            guid3[7] = packet.ReadBit().ToByte();
+            guid1[4] = packet.ReadBit().ToByte();
+            guid1[0] = packet.ReadBit().ToByte();
+            guid2[0] = packet.ReadBit().ToByte();
+            guid3[2] = packet.ReadBit().ToByte();
+            guid2[7] = packet.ReadBit().ToByte();
 
             if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
 
-            var status = packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
+            packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
             packet.ReadInt32("Unk Int32");
 
             if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
@@ -1361,8 +1360,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid1", guid1);
             packet.WriteGuid("Guid2", guid2);
             packet.WriteGuid("Guid3", guid3);
-
-            
         }
 
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE)]

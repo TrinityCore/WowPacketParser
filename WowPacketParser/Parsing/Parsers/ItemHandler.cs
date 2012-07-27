@@ -3,7 +3,6 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -868,8 +867,6 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Unk UInt32 2");
                     break;
                 }
-                default:
-                    break;
             }
 
             packet.AddSniffData(StoreNameType.Item, itemId, "DB_REPLY");

@@ -765,7 +765,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Z = packet.ReadSingle();
             pos.X = packet.ReadSingle();
@@ -823,7 +823,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
                 tpos.Z = packet.ReadSingle();
                 packet.ReadSByte("Transport seat");
                 tpos.O = packet.ReadSingle();
@@ -993,7 +993,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.X = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
@@ -1051,7 +1051,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 if (transportGuid[4] != 0) transportGuid[4] ^= packet.ReadByte();
                 if (transportGuid[3] != 0) transportGuid[3] ^= packet.ReadByte();
@@ -1215,7 +1215,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.X = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
@@ -1273,7 +1273,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
                 if (transportGuid[0] != 0) transportGuid[0] ^= packet.ReadByte();
                 tpos.X = packet.ReadSingle();
                 if (transportGuid[1] != 0) transportGuid[1] ^= packet.ReadByte();
@@ -1537,7 +1537,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.X = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
@@ -1595,7 +1595,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
                 if (transportGuid[4] != 0) transportGuid[2] ^= packet.ReadByte();
                 if (transportGuid[7] != 0) transportGuid[3] ^= packet.ReadByte();
                 packet.ReadUInt32("Transport time");
@@ -1822,7 +1822,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Y = packet.ReadSingle();
             pos.X = packet.ReadSingle();
@@ -1880,7 +1880,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 tpos.Y = packet.ReadSingle();
                 packet.ReadSByte("Transport seat");
@@ -1951,7 +1951,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.X = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
@@ -2009,7 +2009,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 if (transportGuid[3] != 0) transportGuid[3] ^= packet.ReadByte();
                 if (transportGuid[5] != 0) transportGuid[5] ^= packet.ReadByte();
@@ -2072,7 +2072,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Y = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
@@ -2133,7 +2133,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 tpos.Z = packet.ReadSingle();
                 packet.ReadSByte("Transport seat");
@@ -2195,7 +2195,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Z = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
@@ -2253,7 +2253,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 if (transportGuid[5] != 0) transportGuid[5] ^= packet.ReadByte();
                 tpos.Y = packet.ReadSingle();
@@ -2315,7 +2315,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.X = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
@@ -2373,7 +2373,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 if (hasTransTime3)
                     packet.ReadUInt32("Transport time 3");
@@ -2435,7 +2435,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Z = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
@@ -2493,7 +2493,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 tpos.X = packet.ReadSingle();
                 if (transportGuid[1] != 0) transportGuid[1] ^= packet.ReadByte();
@@ -2557,7 +2557,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Y = packet.ReadSingle();
             pos.X = packet.ReadSingle();
@@ -2631,7 +2631,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 if (transportGuid[5] != 0) transportGuid[5] ^= packet.ReadByte();
                 if (transportGuid[2] != 0) transportGuid[2] ^= packet.ReadByte();
@@ -2680,7 +2680,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Z = packet.ReadSingle();
             pos.X = packet.ReadSingle();
@@ -2741,7 +2741,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 if (hasTransTime2)
                     packet.ReadUInt32("Transport time 2");
@@ -2801,7 +2801,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.X = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
@@ -2859,7 +2859,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 if (hasTransTime3)
                     packet.ReadUInt32("Transport time 3");
@@ -2942,7 +2942,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.X = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
@@ -3000,7 +3000,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
                 packet.ReadUInt32("Transport time");
                 tpos.Z = packet.ReadSingle();
                 tpos.Y = packet.ReadSingle();
@@ -3062,7 +3062,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Y = packet.ReadSingle();
             pos.X = packet.ReadSingle();
@@ -3120,7 +3120,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
                 if (transportGuid[1] != 0) transportGuid[1] ^= packet.ReadByte();
                 if (transportGuid[7] != 0) transportGuid[7] ^= packet.ReadByte();
                 tpos.X = packet.ReadSingle();
@@ -3184,7 +3184,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Z = packet.ReadSingle();
             pos.X = packet.ReadSingle();
@@ -3255,7 +3255,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
                 packet.ReadSByte("Transport seat");
                 if (transportGuid[2] != 0) transportGuid[2] ^= packet.ReadByte();
 
@@ -3304,7 +3304,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Y = packet.ReadSingle();
             pos.X = packet.ReadSingle();
@@ -3362,7 +3362,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
                 if (transportGuid[5] != 0) transportGuid[5] ^= packet.ReadByte();
                 if (transportGuid[1] != 0) transportGuid[1] ^= packet.ReadByte();
                 if (transportGuid[6] != 0) transportGuid[6] ^= packet.ReadByte();
@@ -3425,7 +3425,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Y = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
@@ -3483,7 +3483,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
                 packet.ReadSByte("Transport seat");
                 if (transportGuid[6] != 0) transportGuid[6] ^= packet.ReadByte();
                 tpos.Z = packet.ReadSingle();
@@ -3545,7 +3545,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.X = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
@@ -3603,7 +3603,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
                 tpos.Z = packet.ReadSingle();
                 if (transportGuid[2] != 0) transportGuid[2] ^= packet.ReadByte();
 
@@ -3666,7 +3666,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Y = packet.ReadSingle();
             pos.X = packet.ReadSingle();
@@ -3737,7 +3737,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
                 if (transportGuid[0] != 0) transportGuid[0] ^= packet.ReadByte();
                 tpos.X = packet.ReadSingle();
                 packet.ReadUInt32("Transport time");
@@ -3785,7 +3785,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.X = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
@@ -3843,7 +3843,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
                 tpos.Y = packet.ReadSingle();
                 if (transportGuid[0] != 0) transportGuid[0] ^= packet.ReadByte();
                 if (transportGuid[4] != 0) transportGuid[4] ^= packet.ReadByte();
@@ -3915,7 +3915,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.X = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
@@ -3976,7 +3976,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
                 tpos.X = packet.ReadSingle();
                 if (transportGuid[5] != 0) transportGuid[5] ^= packet.ReadByte();
                 packet.ReadSByte("Transport seat");
@@ -4522,7 +4522,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Y = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
@@ -4593,7 +4593,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
                 if (transportGuid[3] != 0) transportGuid[3] ^= packet.ReadByte();
                 tpos.Y = packet.ReadSingle();
                 tpos.Z = packet.ReadSingle();
@@ -4637,7 +4637,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = new byte[8];
             var transportGuid = new byte[8];
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             var hasFallData = packet.ReadBit();
             guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
@@ -4786,7 +4786,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Y = packet.ReadSingle();
             pos.X = packet.ReadSingle();
@@ -4847,7 +4847,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 if (hasTransTime2)
                     packet.ReadUInt32("Transport time 2");
@@ -4907,7 +4907,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Y = packet.ReadSingle();
             pos.X = packet.ReadSingle();
@@ -4965,7 +4965,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 if (transportGuid[2] != 0) transportGuid[2] ^= packet.ReadByte();
                 if (transportGuid[5] != 0) transportGuid[5] ^= packet.ReadByte();
@@ -5028,7 +5028,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Z = packet.ReadSingle();
             pos.X = packet.ReadSingle();
@@ -5086,7 +5086,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 tpos.Z = packet.ReadSingle(); 
                 if (transportGuid[3] != 0) transportGuid[3] ^= packet.ReadByte();
@@ -5149,7 +5149,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Y = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
@@ -5210,7 +5210,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 if (hasTransTime3)
                     packet.ReadUInt32("Transport time 3");
@@ -5296,7 +5296,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             packet.ReadInt32("Unk Int32 1"); // ##
             pos.Y = packet.ReadSingle();
@@ -5374,7 +5374,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 if (transportGuid[1] != 0) transportGuid[1] ^= packet.ReadByte();
 
@@ -5421,7 +5421,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Z = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
@@ -5494,7 +5494,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 tpos.Y = packet.ReadSingle();
                 tpos.Z = packet.ReadSingle();
@@ -5541,7 +5541,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = new byte[8];
             var transportGuid = new byte[8];
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             var hasMovementFlags = !packet.ReadBit();
             guid[2] = packet.ReadBit().ToByte();
@@ -5672,7 +5672,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = new byte[8];
             var transportGuid = new byte[8];
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Z = packet.ReadSingle();
             pos.X = packet.ReadSingle();
@@ -5804,7 +5804,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = new byte[8];
             var transportGuid = new byte[8];
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Y = packet.ReadSingle();
             packet.ReadSingle("Speed");
@@ -5934,7 +5934,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = new byte[8];
             var transportGuid = new byte[8];
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Z = packet.ReadSingle();
             packet.ReadInt32("Unk Int32 1");
@@ -6064,7 +6064,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = new byte[8];
             var transportGuid = new byte[8];
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Z = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
@@ -6403,7 +6403,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             packet.ReadInt32("Unk Int32 1"); // ##
             pos.X = packet.ReadSingle();
@@ -6463,7 +6463,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 tpos.Z = packet.ReadSingle();
                 if (transportGuid[6] != 0) transportGuid[6] ^= packet.ReadByte();
@@ -6527,7 +6527,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             packet.ReadSingle("Collision height");
             pos.X = packet.ReadSingle();
@@ -6588,7 +6588,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 tpos.X = packet.ReadSingle();
                 if (transportGuid[4] != 0) transportGuid[4] ^= packet.ReadByte();
@@ -6651,7 +6651,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             packet.ReadInt32("Unk Int32 1"); // ##
             pos.Z = packet.ReadSingle();
@@ -6711,7 +6711,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 if (transportGuid[6] != 0) transportGuid[6] ^= packet.ReadByte();
                 if (transportGuid[0] != 0) transportGuid[0] ^= packet.ReadByte();
@@ -6775,7 +6775,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Y = packet.ReadSingle();
             packet.ReadInt32("Unk Int32 1"); // ##
@@ -6834,7 +6834,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 if (hasTransTime2)
                     packet.ReadUInt32("Transport time 2");
@@ -6897,7 +6897,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.X = packet.ReadSingle();
             packet.ReadInt32("Unk Int32 1"); // ##
@@ -6957,7 +6957,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 if (transportGuid[0] != 0) transportGuid[0] ^= packet.ReadByte();
 
@@ -7020,7 +7020,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Z = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
@@ -7094,7 +7094,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 tpos.Z = packet.ReadSingle();
                 if (transportGuid[7] != 0) transportGuid[7] ^= packet.ReadByte();
@@ -7143,7 +7143,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             packet.ReadSingle("Speed");
             packet.ReadInt32("Unk Int32 1"); // ##
@@ -7217,7 +7217,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 if (transportGuid[5] != 0) transportGuid[5] ^= packet.ReadByte();
                 packet.ReadSByte("Transport seat");
@@ -7265,7 +7265,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = new byte[8];
             var transportGuid = new byte[8];
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             guid[1] = packet.ReadBit().ToByte();
             guid[2] = packet.ReadBit().ToByte();
@@ -7397,7 +7397,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = new byte[8];
             var transportGuid = new byte[8];
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             var hasPitch = !packet.ReadBit();
             var hasO = !packet.ReadBit();

@@ -3,7 +3,6 @@ using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -32,17 +31,13 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_HOTFIX_INFO)]
         public static void HandleHotfixInfo(Packet packet)
         {
-            var count = 0u;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))  // Might have been earlier
-                count = packet.ReadBits("Count", 22);
-            else
-                count = packet.ReadUInt32("Count");
+            var count = ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) ? packet.ReadBits("Count", 22) : packet.ReadUInt32("Count");
 
-            for (var i = 0u; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
-                packet.ReadInt32("Hotfix type"); // Also time?
-                packet.ReadTime("Hotfix date");
-                packet.ReadInt32("Hotfixed entry");
+                packet.ReadInt32("Hotfix type", i); // Also time?
+                packet.ReadTime("Hotfix date", i);
+                packet.ReadInt32("Hotfixed entry", i);
             }
         }
 
@@ -862,7 +857,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasTransTime2 = false;
             var hasTransTime3 = false;
             var hasFallDirection = false;
-            Vector4 pos = new Vector4();
+            var pos = new Vector4();
 
             pos.Z = packet.ReadSingle();
             packet.ReadUInt32("Unk Int32 1"); // ##
@@ -935,7 +930,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTrans)
             {
-                Vector4 tpos = new Vector4();
+                var tpos = new Vector4();
 
                 if (transportGuid[4] != 0) transportGuid[4] ^= packet.ReadByte();
                 if (transportGuid[5] != 0) transportGuid[5] ^= packet.ReadByte();
