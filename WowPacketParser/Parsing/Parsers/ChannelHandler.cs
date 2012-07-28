@@ -139,8 +139,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleChannelJoin(Packet packet)
         {
             packet.ReadInt32("Channel Id");
-            packet.ReadByte("Unk1");
-            packet.ReadByte("Unk2");
+            packet.ReadBoolean("Has Voice");
+            packet.ReadBoolean("Joined by zone update");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
@@ -158,8 +158,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleChannelJoin434(Packet packet)
         {
             packet.ReadInt32("Channel Id");
-            packet.ReadBit("Unk1");
-            packet.ReadBit("Unk2");
+            packet.ReadBit("Has Voice");
+            packet.ReadBit("Joined by zone update");
             var channelLength = packet.ReadBits(8);
             var passwordLength = packet.ReadBits(8);
             packet.ReadWoWString("Channel Name", channelLength);
