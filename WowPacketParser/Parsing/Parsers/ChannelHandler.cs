@@ -135,7 +135,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_JOIN_CHANNEL)]
+        [Parser(Opcode.CMSG_JOIN_CHANNEL, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleChannelJoin(Packet packet)
         {
             packet.ReadInt32("Channel Id");
@@ -152,6 +152,18 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("Channel Name");
                 packet.ReadCString("Channel Pass");
             }
+        }
+
+        [Parser(Opcode.CMSG_JOIN_CHANNEL, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleChannelJoin434(Packet packet)
+        {
+            packet.ReadInt32("Channel Id");
+            packet.ReadBit("Unk1");
+            packet.ReadBit("Unk2");
+            var channelLength = packet.ReadBits(8);
+            var passwordLength = packet.ReadBits(8);
+            packet.ReadWoWString("Channel Name", channelLength);
+            packet.ReadWoWString("Channel Pass", passwordLength);
         }
 
         [Parser(Opcode.CMSG_LEAVE_CHANNEL)]
