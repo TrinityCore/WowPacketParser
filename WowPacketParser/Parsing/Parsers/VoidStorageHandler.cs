@@ -6,15 +6,15 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class VoidStorageHandler
     {
-        [Parser(Opcode.SMSG_VOID_ITEM_SWAP_RESPONSE)] // 4.3.4, not tested
+        [Parser(Opcode.SMSG_VOID_ITEM_SWAP_RESPONSE)] // 4.3.4
         public static void HandleVoidItemSwapResponse(Packet packet)
         {
             var unkBit1 = !packet.ReadBit("Unk Bit 1 (Inv)");
             var unkBit2 = !packet.ReadBit("Unk Bit 2 (Inv)");
 
-            byte[] guid1 = null;
+            byte[] itemId = null;
             if (unkBit2)
-                guid1 = packet.StartBitStream(5, 2, 1, 4, 0, 6, 7, 3);
+                itemId = packet.StartBitStream(5, 2, 1, 4, 0, 6, 7, 3);
 
             packet.ReadBit("Unk Bit 3 (Inv)");
 
@@ -30,19 +30,19 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteGuid("Unk Guid 2", guid2);
             }
 
-            var unkBit5 = !packet.ReadBit("Unk Bit 5 (Inv)");
+            var unkBit5 = packet.ReadBit("Unk Bit 5");
 
             if (unkBit2) // ? - *((_QWORD *)v4 + 3) != 0i64;
             {
-                packet.ParseBitStream(guid1, 6, 3, 5, 0, 1, 2, 4, 7);
-                packet.WriteGuid("Unk Guid 1", guid1);
+                packet.ParseBitStream(itemId, 6, 3, 5, 0, 1, 2, 4, 7);
+                packet.WriteLine("Item Id: {0}", BitConverter.ToUInt64(itemId, 0));
             }
 
             if (unkBit4)
                 packet.ReadInt32("Unk Int32");
 
             if (unkBit5)
-                packet.ReadInt32("Unk Int32");
+                packet.ReadInt32("Slot");
         }
 
         [Parser(Opcode.SMSG_VOID_STORAGE_CONTENTS)] // 4.3.4
@@ -106,7 +106,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (id[i][7] != 0) id[i][7] ^= packet.ReadByte();
 
-                packet.WriteLine("[{1}] Item Id: {0}", BitConverter.ToUInt64(id[i], 0), i); // not confirmed
+                packet.WriteLine("[{1}] Item Id: {0}", BitConverter.ToUInt64(id[i], 0), i);
                 packet.WriteGuid("Item Player Creator Guid", guid[i], i);
             }
         }
@@ -149,7 +149,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (int i = 0; i < count2; ++i)
             {
                 packet.ParseBitStream(id2[i], 3, 1, 0, 2, 7, 5, 6, 4);
-                packet.WriteLine("[{1}] Item Id 2: {0}", BitConverter.ToUInt64(id2[i], 0), i); // not confirmed
+                packet.WriteLine("[{1}] Item Id 2: {0}", BitConverter.ToUInt64(id2[i], 0), i);
             }
 
             for (int i = 0; i < count1; ++i)
@@ -181,7 +181,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadInt32("Unk Int32 3", i);
 
-                packet.WriteLine("[{1}] Item Id 1: {0}", BitConverter.ToUInt64(id1[i], 0), i); // not confirmed
+                packet.WriteLine("[{1}] Item Id 1: {0}", BitConverter.ToUInt64(id1[i], 0), i);
                 packet.WriteGuid("Item Player Creator Guid", guid[i], i);
             }
         }
@@ -246,45 +246,50 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("NPC Guid", npcGuid);
         }
 
-        [Parser(Opcode.CMSG_VOID_SWAP_ITEM)] // 4.3.4, not tested
+        [Parser(Opcode.CMSG_VOID_SWAP_ITEM)] // 4.3.4
         public static void HandleVoidSwapItem(Packet packet)
         {
-            var guid1 = new byte[8];
-            var guid2 = new byte[8];
+            packet.ReadInt32("Unk Int32");
 
-            guid1[2] = packet.ReadBit();
-            guid1[4] = packet.ReadBit();
-            guid1[0] = packet.ReadBit();
-            guid2[2] = packet.ReadBit();
-            guid2[6] = packet.ReadBit();
-            guid2[5] = packet.ReadBit();
-            guid1[1] = packet.ReadBit();
-            guid1[7] = packet.ReadBit();
-            guid2[3] = packet.ReadBit();
-            guid2[7] = packet.ReadBit();
-            guid2[0] = packet.ReadBit();
-            guid1[6] = packet.ReadBit();
-            guid1[5] = packet.ReadBit();
-            guid1[3] = packet.ReadBit();
-            guid2[1] = packet.ReadBit();
-            guid2[4] = packet.ReadBit();
+            var guid = new byte[8];
+            var itemId = new byte[8];
 
-            if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
-            if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
-            if (guid2[2] != 0) guid2[2] ^= packet.ReadByte();
-            if (guid2[4] != 0) guid2[4] ^= packet.ReadByte();
-            if (guid1[3] != 0) guid1[3] ^= packet.ReadByte();
-            if (guid1[0] != 0) guid1[0] ^= packet.ReadByte();
-            if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
-            if (guid2[1] != 0) guid2[1] ^= packet.ReadByte();
-            if (guid1[5] != 0) guid1[5] ^= packet.ReadByte();
-            if (guid2[5] != 0) guid2[5] ^= packet.ReadByte();
-            if (guid1[6] != 0) guid1[6] ^= packet.ReadByte();
-            if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
-            if (guid1[2] != 0) guid1[2] ^= packet.ReadByte();
-            if (guid1[7] != 0) guid1[7] ^= packet.ReadByte();
-            if (guid1[4] != 0) guid1[4] ^= packet.ReadByte();
-            if (guid2[7] != 0) guid2[7] ^= packet.ReadByte();
+            guid[2] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            itemId[2] = packet.ReadBit();
+            itemId[6] = packet.ReadBit();
+            itemId[5] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            itemId[3] = packet.ReadBit();
+            itemId[7] = packet.ReadBit();
+            itemId[0] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            itemId[1] = packet.ReadBit();
+            itemId[4] = packet.ReadBit();
+
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (itemId[3] != 0) itemId[3] ^= packet.ReadByte();
+            if (itemId[2] != 0) itemId[2] ^= packet.ReadByte();
+            if (itemId[4] != 0) itemId[4] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            if (itemId[6] != 0) itemId[6] ^= packet.ReadByte();
+            if (itemId[1] != 0) itemId[1] ^= packet.ReadByte();
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            if (itemId[5] != 0) itemId[5] ^= packet.ReadByte();
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            if (itemId[0] != 0) itemId[0] ^= packet.ReadByte();
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            if (itemId[7] != 0) itemId[7] ^= packet.ReadByte();
+
+            packet.WriteGuid("NPC Guid", guid);
+            packet.WriteLine("Item Id: {0}", BitConverter.ToUInt64(itemId, 0));
         }
 
         [Parser(Opcode.CMSG_VOID_STORAGE_QUERY)] // 4.3.4
