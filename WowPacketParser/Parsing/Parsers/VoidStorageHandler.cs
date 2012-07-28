@@ -306,12 +306,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Unk Byte");
         }
 
-        [Parser(Opcode.CMSG_VOID_STORAGE_UNLOCK)] // 4.3.4, not tested
+        [Parser(Opcode.CMSG_VOID_STORAGE_UNLOCK)] // 4.3.4
         public static void HandleVoidStorageUnlock(Packet packet)
         {
             var guid = packet.StartBitStream(4, 5, 3, 0, 2, 1, 7, 6);
             packet.ParseBitStream(guid, 7, 1, 2, 3, 5, 0, 6, 4);
-            packet.WriteGuid("Unk Guid", guid); // probably vaultkeeper guid
+            packet.WriteGuid("NPC Guid", guid);
         }
     }
 }
