@@ -74,15 +74,15 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleTradeStatus422(Packet packet)
         {
             var guid = new byte[8];
-            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[2] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
             packet.ReadBit("Unk Bit");
-            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[6] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
 
             if (guid[5] != 0) guid[5] ^= packet.ReadByte();
             if (guid[2] != 0) guid[2] ^= packet.ReadByte();
@@ -246,26 +246,26 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                guids1[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids1[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids1[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids1[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids1[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids1[i][0] = packet.ReadBit();
+                guids1[i][5] = packet.ReadBit();
+                guids1[i][7] = packet.ReadBit();
+                guids1[i][1] = packet.ReadBit();
+                guids1[i][6] = packet.ReadBit();
 
-                guids2[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids2[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids2[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids2[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids2[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids2[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids2[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids2[i][5] = packet.ReadBit();
+                guids2[i][3] = packet.ReadBit();
+                guids2[i][0] = packet.ReadBit();
+                guids2[i][6] = packet.ReadBit();
+                guids2[i][2] = packet.ReadBit();
+                guids2[i][4] = packet.ReadBit();
+                guids2[i][1] = packet.ReadBit();
 
-                guids1[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids1[i][3] = packet.ReadBit();
 
-                guids2[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids2[i][7] = packet.ReadBit();
 
-                guids1[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids1[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids1[i][2] = packet.ReadBit();
+                guids1[i][4] = packet.ReadBit();
             }
 
             for (var i = 0; i < count; ++i)
@@ -370,30 +370,30 @@ namespace WowPacketParser.Parsing.Parsers
             for (int i = 0; i < count; ++i)
             {
                 guids1[i] = new byte[8];
-                guids1[i][7] = packet.ReadBit().ToByte();
-                guids1[i][1] = packet.ReadBit().ToByte();
+                guids1[i][7] = packet.ReadBit();
+                guids1[i][1] = packet.ReadBit();
                 isNotWrapped[i] = packet.ReadBit("Is Not Wrapped", i);
-                guids1[i][3] = packet.ReadBit().ToByte();
+                guids1[i][3] = packet.ReadBit();
 
                 if (isNotWrapped[i])
                 {
                     guids2[i] = new byte[8];
-                    guids2[i][7] = packet.ReadBit().ToByte();
-                    guids2[i][1] = packet.ReadBit().ToByte();
-                    guids2[i][4] = packet.ReadBit().ToByte();
-                    guids2[i][6] = packet.ReadBit().ToByte();
-                    guids2[i][2] = packet.ReadBit().ToByte();
-                    guids2[i][3] = packet.ReadBit().ToByte();
-                    guids2[i][5] = packet.ReadBit().ToByte();
+                    guids2[i][7] = packet.ReadBit();
+                    guids2[i][1] = packet.ReadBit();
+                    guids2[i][4] = packet.ReadBit();
+                    guids2[i][6] = packet.ReadBit();
+                    guids2[i][2] = packet.ReadBit();
+                    guids2[i][3] = packet.ReadBit();
+                    guids2[i][5] = packet.ReadBit();
                     packet.ReadBit("Is Locked", i);
-                    guids2[i][0] = packet.ReadBit().ToByte();
+                    guids2[i][0] = packet.ReadBit();
                 }
 
-                guids1[i][6] = packet.ReadBit().ToByte();
-                guids1[i][4] = packet.ReadBit().ToByte();
-                guids1[i][2] = packet.ReadBit().ToByte();
-                guids1[i][0] = packet.ReadBit().ToByte();
-                guids1[i][5] = packet.ReadBit().ToByte();
+                guids1[i][6] = packet.ReadBit();
+                guids1[i][4] = packet.ReadBit();
+                guids1[i][2] = packet.ReadBit();
+                guids1[i][0] = packet.ReadBit();
+                guids1[i][5] = packet.ReadBit();
             }
 
             for (int i = 0; i < count; ++i)

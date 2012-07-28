@@ -321,6 +321,7 @@
     <Compile Include="Loading\IPacketReader.cs" />
     <Compile Include="Loading\Reader.cs" />
     <Compile Include="Misc\BiDictionary.cs" />
+    <Compile Include="Misc\Bit.cs" />
     <Compile Include="Misc\ClientVersion.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Misc\Filters.cs" />

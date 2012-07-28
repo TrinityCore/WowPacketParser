@@ -92,15 +92,15 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var bytes = new byte[8];
 
-            bytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[0] = packet.ReadBit();
+            bytes[4] = packet.ReadBit();
             //uint somebyte = guidBytes[4]; // unsure which one it goes with, but it is used around here.
-            bytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            bytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            bytes[1] = packet.ReadBit();
+            bytes[6] = packet.ReadBit();
+            bytes[7] = packet.ReadBit();
+            bytes[5] = packet.ReadBit();
+            bytes[2] = packet.ReadBit();
+            bytes[3] = packet.ReadBit();
 
             packet.ReadUInt32("Unknown uint32");
 
@@ -164,18 +164,18 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guidBytes = new byte[8];
 
-            guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[0] = packet.ReadBit();
+            guidBytes[1] = packet.ReadBit();
+            guidBytes[7] = packet.ReadBit();
             packet.ReadBit("Unk Bit");
             packet.ReadBit("Unk Bit");
             var count = packet.ReadBits("BG Instance count", 24);
-            guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[6] = packet.ReadBit();
+            guidBytes[4] = packet.ReadBit();
+            guidBytes[2] = packet.ReadBit();
+            guidBytes[3] = packet.ReadBit();
             packet.ReadBit("Unk Bit");
-            guidBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[5] = packet.ReadBit();
             packet.ReadBit("Unk Bit");
 
             if (guidBytes[6] != 0) guidBytes[6] ^= packet.ReadByte();
@@ -199,19 +199,19 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guidBytes = new byte[8];
 
-            guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[2] = packet.ReadBit();
+            guidBytes[7] = packet.ReadBit();
             packet.ReadBit("UnkBit1");
             var count = packet.ReadBits("BG Instance count", 21);
-            guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[0] = packet.ReadBit();
             packet.ReadBit("UnkBit2");
-            guidBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[3] = packet.ReadBit();
+            guidBytes[1] = packet.ReadBit();
             packet.ReadBit("UnkBit3");
-            guidBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[5] = packet.ReadBit();
+            guidBytes[4] = packet.ReadBit();
             packet.ReadBit("Random Has Win");
-            guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[6] = packet.ReadBit();
 
             if (guidBytes[4] != 0) guidBytes[4] ^= packet.ReadByte();
 
@@ -253,18 +253,18 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guidBytes = new byte[8];
 
-            guidBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[5] = packet.ReadBit();
+            guidBytes[0] = packet.ReadBit();
+            guidBytes[4] = packet.ReadBit();
+            guidBytes[1] = packet.ReadBit();
+            guidBytes[3] = packet.ReadBit();
+            guidBytes[6] = packet.ReadBit();
             packet.ReadBit("UnkBit1");
             packet.ReadBit("UnkBit2");
-            guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[2] = packet.ReadBit();
             packet.ReadBit("UnkBit3");
             packet.ReadBit("UnkBit4");
-            guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[7] = packet.ReadBit();
 
             packet.ReadInt32("Winner Honor Reward");
 
@@ -466,15 +466,15 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadUInt32("Instance Id");
             var guid = new byte[8];
-            guid[2] = packet.ReadBit().ToByte();
-            guid[0] = packet.ReadBit().ToByte();
-            guid[3] = packet.ReadBit().ToByte();
-            guid[1] = packet.ReadBit().ToByte();
-            guid[5] = packet.ReadBit().ToByte();
+            guid[2] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
             packet.ReadBit("As Group");
-            guid[4] = packet.ReadBit().ToByte();
-            guid[6] = packet.ReadBit().ToByte();
-            guid[7] = packet.ReadBit().ToByte();
+            guid[4] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
 
             packet.ParseBitStream(guid, 2, 6, 4, 3, 7, 0, 5, 1);
             packet.WriteGuid("Guid", guid);
@@ -530,30 +530,30 @@ namespace WowPacketParser.Parsing.Parsers
             var field38 = new byte[4];
             var field3C = new byte[4];
 
-            guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            field38[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            field10[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            field14[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            field14[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            field10[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            field14[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            field3C[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            field3C[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            field3C[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            field38[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            field3C[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            field38[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            field10[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            field14[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            field38[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            field10[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[1] = packet.ReadBit();
+            guidBytes[2] = packet.ReadBit();
+            field38[2] = packet.ReadBit();
+            field10[2] = packet.ReadBit();
+            field14[0] = packet.ReadBit();
+            field14[1] = packet.ReadBit();
+            guidBytes[6] = packet.ReadBit();
+            field10[3] = packet.ReadBit();
+            field14[2] = packet.ReadBit();
+            field3C[0] = packet.ReadBit();
+            field3C[2] = packet.ReadBit();
+            guidBytes[4] = packet.ReadBit();
+            field3C[3] = packet.ReadBit();
+            field38[3] = packet.ReadBit();
+            guidBytes[0] = packet.ReadBit();
+            guidBytes[3] = packet.ReadBit();
+            field3C[1] = packet.ReadBit();
+            guidBytes[7] = packet.ReadBit();
+            field38[0] = packet.ReadBit();
+            guidBytes[5] = packet.ReadBit();
+            field10[1] = packet.ReadBit();
+            field14[3] = packet.ReadBit();
+            field38[1] = packet.ReadBit();
+            field10[0] = packet.ReadBit();
 
             if (guidBytes[4] != 0) guidBytes[4] ^= packet.ReadByte();
 
@@ -634,14 +634,14 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guidBytes = new byte[8];
 
-            guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[0] = packet.ReadBit();
+            guidBytes[1] = packet.ReadBit();
+            guidBytes[4] = packet.ReadBit();
+            guidBytes[3] = packet.ReadBit();
+            guidBytes[6] = packet.ReadBit();
+            guidBytes[2] = packet.ReadBit();
+            guidBytes[7] = packet.ReadBit();
+            guidBytes[5] = packet.ReadBit();
 
             if (guidBytes[2] != 0) guidBytes[2] ^= packet.ReadByte();
             if (guidBytes[6] != 0) guidBytes[6] ^= packet.ReadByte();
@@ -767,14 +767,14 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldMgrStateChanged434(Packet packet)
         {
             var bytes = new byte[8];
-            bytes[5] = packet.ReadBit().ToByte();
-            bytes[3] = packet.ReadBit().ToByte();
-            bytes[7] = packet.ReadBit().ToByte();
-            bytes[2] = packet.ReadBit().ToByte();
-            bytes[1] = packet.ReadBit().ToByte();
-            bytes[6] = packet.ReadBit().ToByte();
-            bytes[0] = packet.ReadBit().ToByte();
-            bytes[4] = packet.ReadBit().ToByte();
+            bytes[5] = packet.ReadBit();
+            bytes[3] = packet.ReadBit();
+            bytes[7] = packet.ReadBit();
+            bytes[2] = packet.ReadBit();
+            bytes[1] = packet.ReadBit();
+            bytes[6] = packet.ReadBit();
+            bytes[0] = packet.ReadBit();
+            bytes[4] = packet.ReadBit();
 
 
             if (bytes[1] != 0) bytes[1] ^= packet.ReadByte();
@@ -815,14 +815,14 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldMgrInviteSend434(Packet packet)
         {
             var bytes = new byte[8];
-            bytes[5] = packet.ReadBit().ToByte();
-            bytes[3] = packet.ReadBit().ToByte();
-            bytes[7] = packet.ReadBit().ToByte();
-            bytes[2] = packet.ReadBit().ToByte();
-            bytes[6] = packet.ReadBit().ToByte();
-            bytes[4] = packet.ReadBit().ToByte();
-            bytes[1] = packet.ReadBit().ToByte();
-            bytes[0] = packet.ReadBit().ToByte();
+            bytes[5] = packet.ReadBit();
+            bytes[3] = packet.ReadBit();
+            bytes[7] = packet.ReadBit();
+            bytes[2] = packet.ReadBit();
+            bytes[6] = packet.ReadBit();
+            bytes[4] = packet.ReadBit();
+            bytes[1] = packet.ReadBit();
+            bytes[0] = packet.ReadBit();
             
 
             if (bytes[6] != 0) bytes[6] ^= packet.ReadByte();
@@ -856,15 +856,15 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldMgrQueueInviteResponse434(Packet packet)
         {
             var guid = new byte[8];
-            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[2] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
             packet.ReadBit("Accepted");
-            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[1] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
 
             packet.ParseBitStream(guid, 1, 3, 2, 4, 6, 7, 0, 5);
             packet.WriteGuid("Guid", guid);
@@ -886,16 +886,16 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = new byte[8];
             packet.ReadBit("Unk Bit1");
             packet.ReadBit("Clear AFK");
-            guid[1] = packet.ReadBit().ToByte();
-            guid[4] = packet.ReadBit().ToByte();
-            guid[5] = packet.ReadBit().ToByte();
-            guid[0] = packet.ReadBit().ToByte();
-            guid[3] = packet.ReadBit().ToByte();
+            guid[1] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
             packet.ReadBit("Unk Bit 3");
 
-            guid[6] = packet.ReadBit().ToByte();
-            guid[7] = packet.ReadBit().ToByte();
-            guid[2] = packet.ReadBit().ToByte();
+            guid[6] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
 
             packet.ParseBitStream(guid, 5, 3, 0, 4, 1, 7, 2, 6);
             packet.WriteGuid("Guid", guid);
@@ -930,15 +930,15 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldMgrEjected434(Packet packet)
         {
             var bytes = new byte[8];
-            bytes[2] = packet.ReadBit().ToByte();
-            bytes[5] = packet.ReadBit().ToByte();
-            bytes[1] = packet.ReadBit().ToByte();
-            bytes[0] = packet.ReadBit().ToByte();
-            bytes[3] = packet.ReadBit().ToByte();
-            bytes[6] = packet.ReadBit().ToByte();
+            bytes[2] = packet.ReadBit();
+            bytes[5] = packet.ReadBit();
+            bytes[1] = packet.ReadBit();
+            bytes[0] = packet.ReadBit();
+            bytes[3] = packet.ReadBit();
+            bytes[6] = packet.ReadBit();
             packet.ReadBit("Relocated");
-            bytes[7] = packet.ReadBit().ToByte();
-            bytes[4] = packet.ReadBit().ToByte();
+            bytes[7] = packet.ReadBit();
+            bytes[4] = packet.ReadBit();
 
             packet.ReadByte("Battle Status");
 
@@ -968,15 +968,15 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldMgrEntryInviteResponse434(Packet packet)
         {
             var guid = new byte[8];
-            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[6] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
             packet.ReadBit("Accepted");            
-            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[5] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
 
 
             packet.ParseBitStream(guid, 0, 3, 4, 2, 1, 6, 7, 5);
@@ -1207,14 +1207,14 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleInspectRatedBGStats(Packet packet)
         {
             var guid = new byte[8];
-            guid[6] = packet.ReadBit().ToByte();
-            guid[4] = packet.ReadBit().ToByte();
-            guid[5] = packet.ReadBit().ToByte();
-            guid[1] = packet.ReadBit().ToByte();
-            guid[2] = packet.ReadBit().ToByte();
-            guid[7] = packet.ReadBit().ToByte();
-            guid[0] = packet.ReadBit().ToByte();
-            guid[3] = packet.ReadBit().ToByte();
+            guid[6] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
 
             if (guid[4] != 0) guid[4] ^= packet.ReadByte();
 
@@ -1295,32 +1295,32 @@ namespace WowPacketParser.Parsing.Parsers
             var guid1 = new byte[8];
             var guid2 = new byte[8];
             var guid3 = new byte[8];
-            guid1[3] = packet.ReadBit().ToByte();
-            guid3[3] = packet.ReadBit().ToByte();
-            guid2[3] = packet.ReadBit().ToByte();
-            guid3[0] = packet.ReadBit().ToByte();
-            guid1[6] = packet.ReadBit().ToByte();
-            guid2[5] = packet.ReadBit().ToByte();
-            guid2[6] = packet.ReadBit().ToByte();
-            guid2[4] = packet.ReadBit().ToByte();
+            guid1[3] = packet.ReadBit();
+            guid3[3] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid3[0] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
 
-            guid2[2] = packet.ReadBit().ToByte();
-            guid3[1] = packet.ReadBit().ToByte();
-            guid1[1] = packet.ReadBit().ToByte();
-            guid3[5] = packet.ReadBit().ToByte();
-            guid3[6] = packet.ReadBit().ToByte();
-            guid2[1] = packet.ReadBit().ToByte();
-            guid1[7] = packet.ReadBit().ToByte();
-            guid3[4] = packet.ReadBit().ToByte();
+            guid2[2] = packet.ReadBit();
+            guid3[1] = packet.ReadBit();
+            guid1[1] = packet.ReadBit();
+            guid3[5] = packet.ReadBit();
+            guid3[6] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+            guid3[4] = packet.ReadBit();
 
-            guid1[2] = packet.ReadBit().ToByte();
-            guid1[5] = packet.ReadBit().ToByte();
-            guid3[7] = packet.ReadBit().ToByte();
-            guid1[4] = packet.ReadBit().ToByte();
-            guid1[0] = packet.ReadBit().ToByte();
-            guid2[0] = packet.ReadBit().ToByte();
-            guid3[2] = packet.ReadBit().ToByte();
-            guid2[7] = packet.ReadBit().ToByte();
+            guid1[2] = packet.ReadBit();
+            guid1[5] = packet.ReadBit();
+            guid3[7] = packet.ReadBit();
+            guid1[4] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid3[2] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
 
             if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
 

@@ -446,14 +446,14 @@ namespace WowPacketParser.Misc
         private byte _bitpos = 8;
         private byte _curbitval;
 
-        public bool ReadBit(string name, params int[] values)
+        public Bit ReadBit(string name, params int[] values)
         {
             var bit = ReadBit();
             WriteLine("{0}{1}: {2}", GetIndexString(values), name, bit ? "1" : "0");
             return bit;
         }
 
-        public bool ReadBit()
+        public Bit ReadBit()
         {
             ++_bitpos;
 

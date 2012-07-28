@@ -155,14 +155,14 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guidBytes = new byte[8];
 
-            guidBytes[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            guidBytes[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guidBytes[5] = packet.ReadBit();
+            guidBytes[6] = packet.ReadBit();
+            guidBytes[1] = packet.ReadBit();
+            guidBytes[2] = packet.ReadBit();
+            guidBytes[3] = packet.ReadBit();
+            guidBytes[0] = packet.ReadBit();
+            guidBytes[7] = packet.ReadBit();
+            guidBytes[4] = packet.ReadBit();
 
             if (guidBytes[2] != 0) guidBytes[2] ^= packet.ReadByte();
             if (guidBytes[3] != 0) guidBytes[3] ^= packet.ReadByte();
@@ -180,8 +180,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guidBytes[6] != 0) guidBytes[6] ^= packet.ReadByte();
 
             var guid = new Guid(BitConverter.ToUInt64(guidBytes, 0));
-
-            packet.WriteGuid("Guid", guidBytes);
+            packet.WriteLine("GUID: {0}", guid);
 
             npcVendor.VendorItems = new List<VendorItem>((int)itemCount);
             for (var i = 0; i < itemCount; i++)
@@ -212,16 +211,16 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guidBytes = new byte[8];
 
-            guidBytes[1] = packet.ReadBit().ToByte();
-            guidBytes[0] = packet.ReadBit().ToByte();
+            guidBytes[1] = packet.ReadBit();
+            guidBytes[0] = packet.ReadBit();
 
             var itemCount = packet.ReadBits("Item Count", 21);
 
-            guidBytes[3] = packet.ReadBit().ToByte();
-            guidBytes[6] = packet.ReadBit().ToByte();
-            guidBytes[5] = packet.ReadBit().ToByte();
-            guidBytes[2] = packet.ReadBit().ToByte();
-            guidBytes[7] = packet.ReadBit().ToByte();
+            guidBytes[3] = packet.ReadBit();
+            guidBytes[6] = packet.ReadBit();
+            guidBytes[5] = packet.ReadBit();
+            guidBytes[2] = packet.ReadBit();
+            guidBytes[7] = packet.ReadBit();
 
             var hasExtendedCost = new bool[itemCount];
             var enabler2 = new bool[itemCount];
@@ -231,7 +230,7 @@ namespace WowPacketParser.Parsing.Parsers
                 enabler2[i] = !packet.ReadBit();
             }
 
-            guidBytes[4] = packet.ReadBit().ToByte();
+            guidBytes[4] = packet.ReadBit();
 
             npcVendor.VendorItems = new List<VendorItem>((int)itemCount);
             for (int i = 0; i < itemCount; ++i)
@@ -268,7 +267,7 @@ namespace WowPacketParser.Parsing.Parsers
 
 
             var guid = new Guid(BitConverter.ToUInt64(guidBytes, 0));
-            packet.WriteGuid("Guid", guidBytes);
+            packet.WriteLine("GUID: {0}", guid);
 
             Storage.NpcVendors.Add(guid.GetEntry(), npcVendor, packet.TimeSpan);
         }

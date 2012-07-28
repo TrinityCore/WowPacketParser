@@ -317,32 +317,32 @@ namespace WowPacketParser.Parsing.Parsers
                 var hasO = !packet.ReadBit("Has O");
                 packet.ReadBit("Has Spline");
                 packet.ReadBit();
-                guid[6] = bytes[4] = packet.ReadBit().ToByte(); //6
-                guid[4] = bytes[5] = packet.ReadBit().ToByte(); //4
+                guid[6] = bytes[4] = packet.ReadBit(); //6
+                guid[4] = bytes[5] = packet.ReadBit(); //4
                 var hasMovementFlags2 = !packet.ReadBit();
                 var bytes2 = new byte[8];
-                guid[3] = bytes2[0] = packet.ReadBit().ToByte(); //3
-                guid[5] = bytes2[1] = packet.ReadBit().ToByte(); //5
+                guid[3] = bytes2[0] = packet.ReadBit(); //3
+                guid[5] = bytes2[1] = packet.ReadBit(); //5
                 var hasSplineElev = !packet.ReadBit("Has Spline Elevation");
                 var hasPitch = !packet.ReadBit("Has Pitch");
-                guid[7] = bytes2[6] = packet.ReadBit().ToByte(); //7
+                guid[7] = bytes2[6] = packet.ReadBit(); //7
                 var hasTrans = packet.ReadBit("Has transport");
-                guid[2] = bytes2[5] = packet.ReadBit().ToByte(); //2
+                guid[2] = bytes2[5] = packet.ReadBit(); //2
                 var hasMovementFlags = !packet.ReadBit();
-                guid[1] = packet.ReadBit().ToByte();
-                guid[0] = packet.ReadBit().ToByte();
+                guid[1] = packet.ReadBit();
+                guid[0] = packet.ReadBit();
                 if (hasTrans)
                 {
-                    transportGuid[6] = packet.ReadBit().ToByte();//54
-                    transportGuid[2] = packet.ReadBit().ToByte();//50
-                    transportGuid[5] = packet.ReadBit().ToByte();//53
+                    transportGuid[6] = packet.ReadBit();//54
+                    transportGuid[2] = packet.ReadBit();//50
+                    transportGuid[5] = packet.ReadBit();//53
                     hasTransTime2 = packet.ReadBit();
-                    transportGuid[7] = packet.ReadBit().ToByte();//55
-                    transportGuid[4] = packet.ReadBit().ToByte();//52
+                    transportGuid[7] = packet.ReadBit();//55
+                    transportGuid[4] = packet.ReadBit();//52
                     hasTransTime3 = packet.ReadBit();
-                    transportGuid[0] = packet.ReadBit().ToByte();//48
-                    transportGuid[1] = packet.ReadBit().ToByte();//49
-                    transportGuid[3] = packet.ReadBit().ToByte();//51
+                    transportGuid[0] = packet.ReadBit();//48
+                    transportGuid[1] = packet.ReadBit();//49
+                    transportGuid[3] = packet.ReadBit();//51
                 }
 
                 if (hasMovementFlags2)
@@ -618,25 +618,25 @@ namespace WowPacketParser.Parsing.Parsers
             var guid1 = new byte[8];
             var guid2 = new byte[8];
 
-            guid2[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid1[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid1[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid2[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid2[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid1[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid1[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid2[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid2[1] = packet.ReadBit();
+            guid1[3] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
+            guid1[4] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
 
-            guid2[0] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid2[0] = packet.ReadBit();
             packet.ReadBit("Unk Bit"); // usually 1
-            guid1[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid2[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid1[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid1[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid1[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid2[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid1[6] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid1[5] = packet.ReadBit();
+            guid1[1] = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
 
-            guid2[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid2[4] = packet.ReadBit();
 
             if (guid1[7] != 0) guid1[7] ^= packet.ReadByte();
             if (guid1[4] != 0) guid1[4] ^= packet.ReadByte();
@@ -667,14 +667,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk");
 
             var guid = new byte[8];
-            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[4] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
 
             if (guid[0] != 0) guid[0] ^= packet.ReadByte();
             if (guid[4] != 0) guid[4] ^= packet.ReadByte();

@@ -89,15 +89,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Player Guid", guid2);
 
             var guid = new byte[8];
-            guid[7] = packet.ReadBit().ToByte();
+            guid[7] = packet.ReadBit();
             packet.ReadBit("Accept");
-            guid[1] = packet.ReadBit().ToByte();
-            guid[3] = packet.ReadBit().ToByte();
-            guid[0] = packet.ReadBit().ToByte();
-            guid[5] = packet.ReadBit().ToByte();
-            guid[4] = packet.ReadBit().ToByte();
-            guid[6] = packet.ReadBit().ToByte();
-            guid[2] = packet.ReadBit().ToByte();
+            guid[1] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
 
             packet.ParseBitStream(guid, 7, 1, 5, 6, 3, 4, 0, 2);
             packet.WriteGuid("Instance Guid", guid);

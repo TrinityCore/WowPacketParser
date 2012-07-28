@@ -864,9 +864,9 @@ namespace WowPacketParser.Parsing.Parsers
             pos.X = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
             packet.ReadUInt32("Vehicle ID");
-            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[7] = packet.ReadBit();
             var hasMovementFlags2 = !packet.ReadBit();
-            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[2] = packet.ReadBit();
             var hasFallData = packet.ReadBit("Has fall data");
             var hasO = !packet.ReadBit();
             packet.ReadBit("Has Spline");
@@ -876,23 +876,23 @@ namespace WowPacketParser.Parsing.Parsers
             var hasPitch = !packet.ReadBit("Has pitch");
             var hasSplineElev = !packet.ReadBit("Has Spline Elevation");
             var hasTime = !packet.ReadBit("Has timestamp");
-            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[6] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
 
             if (hasTrans)
             {
-                transportGuid[7] = (byte)(packet.ReadBit() ? 1 : 0);
-                transportGuid[6] = (byte)(packet.ReadBit() ? 1 : 0);
-                transportGuid[0] = (byte)(packet.ReadBit() ? 1 : 0);
-                transportGuid[4] = (byte)(packet.ReadBit() ? 1 : 0);
-                transportGuid[3] = (byte)(packet.ReadBit() ? 1 : 0);
-                transportGuid[2] = (byte)(packet.ReadBit() ? 1 : 0);
-                transportGuid[5] = (byte)(packet.ReadBit() ? 1 : 0);
-                transportGuid[1] = (byte)(packet.ReadBit() ? 1 : 0);
+                transportGuid[7] = packet.ReadBit();
+                transportGuid[6] = packet.ReadBit();
+                transportGuid[0] = packet.ReadBit();
+                transportGuid[4] = packet.ReadBit();
+                transportGuid[3] = packet.ReadBit();
+                transportGuid[2] = packet.ReadBit();
+                transportGuid[5] = packet.ReadBit();
+                transportGuid[1] = packet.ReadBit();
                 hasTransTime3 = packet.ReadBit();
                 hasTransTime2 = packet.ReadBit();
             }

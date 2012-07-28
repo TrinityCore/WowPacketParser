@@ -51,14 +51,14 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; ++i)
             {
                 guids[i] = new byte[8];
-                guids[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][7] = packet.ReadBit();
+                guids[i][4] = packet.ReadBit();
+                guids[i][5] = packet.ReadBit();
+                guids[i][0] = packet.ReadBit();
+                guids[i][2] = packet.ReadBit();
+                guids[i][6] = packet.ReadBit();
+                guids[i][1] = packet.ReadBit();
+                guids[i][3] = packet.ReadBit();
             }
 
             for (var i = 0; i < count; ++i)
@@ -135,15 +135,15 @@ namespace WowPacketParser.Parsing.Parsers
                 strlen[i] = new uint[2];
 
                 strlen[i][0] = packet.ReadBits(11);
-                guids[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][2] = packet.ReadBit();
+                guids[i][4] = packet.ReadBit();
+                guids[i][3] = packet.ReadBit();
+                guids[i][7] = packet.ReadBit();
+                guids[i][0] = packet.ReadBit();
                 strlen[i][1] = packet.ReadBits(7);
-                guids[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][5] = packet.ReadBit();
+                guids[i][1] = packet.ReadBit();
+                guids[i][6] = packet.ReadBit();
             }
 
             for (int i = 0; i < count; ++i)
@@ -195,15 +195,15 @@ namespace WowPacketParser.Parsing.Parsers
                 guids[i] = new byte[8];
                 strlen[i] = new uint[2];
 
-                guids[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][1] = packet.ReadBit();
+                guids[i][0] = packet.ReadBit();
+                guids[i][5] = packet.ReadBit();
                 strlen[i][0] = packet.ReadBits(11);
-                guids[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][3] = packet.ReadBit();
+                guids[i][7] = packet.ReadBit();
+                guids[i][4] = packet.ReadBit();
+                guids[i][6] = packet.ReadBit();
+                guids[i][2] = packet.ReadBit();
                 strlen[i][1] = packet.ReadBits(8);
             }
 
@@ -251,16 +251,16 @@ namespace WowPacketParser.Parsing.Parsers
                 guids[i] = new byte[8];
                 strlen[i] = new uint[2];
 
-                guids[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][7] = packet.ReadBit();
+                guids[i][5] = packet.ReadBit();
                 strlen[i][1] = packet.ReadBits(8);
-                guids[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][0] = packet.ReadBit();
                 strlen[i][0] = packet.ReadBits(11);
-                guids[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
-                guids[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
+                guids[i][4] = packet.ReadBit();
+                guids[i][1] = packet.ReadBit();
+                guids[i][2] = packet.ReadBit();
+                guids[i][6] = packet.ReadBit();
+                guids[i][3] = packet.ReadBit();
             }
 
             for (int i = 0; i < count; ++i)

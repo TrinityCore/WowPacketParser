@@ -333,24 +333,24 @@ namespace WowPacketParser.Parsing.Parsers
                 charGuids[c] = new byte[8];
                 guildGuids[c] = new byte[8];
 
-                guildGuids[c][2] = (byte)(packet.ReadBit() ? 1 : 0);
-                charGuids[c][2] = (byte)(packet.ReadBit() ? 1 : 0);
-                charGuids[c][6] = (byte)(packet.ReadBit() ? 1 : 0);
-                charGuids[c][5] = (byte)(packet.ReadBit() ? 1 : 0);
-                charGuids[c][4] = (byte)(packet.ReadBit() ? 1 : 0);
-                guildGuids[c][4] = (byte)(packet.ReadBit() ? 1 : 0);
-                guildGuids[c][3] = (byte)(packet.ReadBit() ? 1 : 0);
-                guildGuids[c][7] = (byte)(packet.ReadBit() ? 1 : 0);
+                guildGuids[c][2] = packet.ReadBit();
+                charGuids[c][2] = packet.ReadBit();
+                charGuids[c][6] = packet.ReadBit();
+                charGuids[c][5] = packet.ReadBit();
+                charGuids[c][4] = packet.ReadBit();
+                guildGuids[c][4] = packet.ReadBit();
+                guildGuids[c][3] = packet.ReadBit();
+                guildGuids[c][7] = packet.ReadBit();
                 nameLenghts[c] = packet.ReadBits(7);
-                guildGuids[c][0] = (byte)(packet.ReadBit() ? 1 : 0);
-                charGuids[c][0] = (byte)(packet.ReadBit() ? 1 : 0);
-                charGuids[c][3] = (byte)(packet.ReadBit() ? 1 : 0);
-                charGuids[c][1] = (byte)(packet.ReadBit() ? 1 : 0);
+                guildGuids[c][0] = packet.ReadBit();
+                charGuids[c][0] = packet.ReadBit();
+                charGuids[c][3] = packet.ReadBit();
+                charGuids[c][1] = packet.ReadBit();
                 firstLogins[c] = packet.ReadBit();
-                guildGuids[c][5] = (byte)(packet.ReadBit() ? 1 : 0);
-                charGuids[c][7] = (byte)(packet.ReadBit() ? 1 : 0);
-                guildGuids[c][6] = (byte)(packet.ReadBit() ? 1 : 0);
-                guildGuids[c][1] = (byte)(packet.ReadBit() ? 1 : 0);
+                guildGuids[c][5] = packet.ReadBit();
+                charGuids[c][7] = packet.ReadBit();
+                guildGuids[c][6] = packet.ReadBit();
+                guildGuids[c][1] = packet.ReadBit();
             }
 
             var unkCounter = packet.ReadBits("Unk Counter", 23);
@@ -478,27 +478,27 @@ namespace WowPacketParser.Parsing.Parsers
                 //%50   flag
                 //20    nothing
 
-                charGuids[c][0] = (byte)(packet.ReadBit() ? 1 : 0); //100%
-                guildGuids[c][0] = (byte)(packet.ReadBit() ? 1 : 0);//50%
-                charGuids[c][2] = (byte)(packet.ReadBit() ? 1 : 0); //100%
-                guildGuids[c][2] = (byte)(packet.ReadBit() ? 1 : 0);//50%
+                charGuids[c][0] = packet.ReadBit(); //100%
+                guildGuids[c][0] = packet.ReadBit();//50%
+                charGuids[c][2] = packet.ReadBit(); //100%
+                guildGuids[c][2] = packet.ReadBit();//50%
                 firstLogins[c] = packet.ReadBit();                  //100%
-                charGuids[c][3] = (byte)(packet.ReadBit() ? 1 : 0); //100%
-                charGuids[c][6] = (byte)(packet.ReadBit() ? 1 : 0); //100%
-                guildGuids[c][2] = (byte)(packet.ReadBit() ? 1 : 0);//20%
+                charGuids[c][3] = packet.ReadBit(); //100%
+                charGuids[c][6] = packet.ReadBit(); //100%
+                guildGuids[c][2] = packet.ReadBit();//20%
 
-                charGuids[c][4] = (byte)(packet.ReadBit() ? 1 : 0); //20%
-                charGuids[c][5] = (byte)(packet.ReadBit() ? 1 : 0); //20%
+                charGuids[c][4] = packet.ReadBit(); //20%
+                charGuids[c][5] = packet.ReadBit(); //20%
                 nameLenghts[c] = packet.ReadBits(4);                //100%
-                guildGuids[c][3] = (byte)(packet.ReadBit() ? 1 : 0);//20%
-                guildGuids[c][4] = (byte)(packet.ReadBit() ? 1 : 0);//50%
+                guildGuids[c][3] = packet.ReadBit();//20%
+                guildGuids[c][4] = packet.ReadBit();//50%
 
-                guildGuids[c][5] = (byte)(packet.ReadBit() ? 1 : 0);//20%
-                charGuids[c][1] = (byte)(packet.ReadBit() ? 1 : 0); //100%
+                guildGuids[c][5] = packet.ReadBit();//20%
+                charGuids[c][1] = packet.ReadBit(); //100%
                 packet.ReadBit();                                   //20%
-                guildGuids[c][6] = (byte)(packet.ReadBit() ? 1 : 0);//20%
-                charGuids[c][7] = (byte)(packet.ReadBit() ? 1 : 0); //100%
-                guildGuids[c][7] = (byte)(packet.ReadBit() ? 1 : 0);//50%
+                guildGuids[c][6] = packet.ReadBit();//20%
+                charGuids[c][7] = packet.ReadBit(); //100%
+                guildGuids[c][7] = packet.ReadBit();//50%
                 packet.ReadBit();                                   //20%
                 packet.ReadBit();                                   //20%
             }
@@ -641,24 +641,24 @@ namespace WowPacketParser.Parsing.Parsers
                 charGuids[c] = new byte[8];
                 guildGuids[c] = new byte[8];
 
-                charGuids[c][3] = (byte)(packet.ReadBit() ? 1 : 0);
-                guildGuids[c][1] = (byte)(packet.ReadBit() ? 1 : 0);
-                guildGuids[c][7] = (byte)(packet.ReadBit() ? 1 : 0);
-                guildGuids[c][2] = (byte)(packet.ReadBit() ? 1 : 0);
+                charGuids[c][3] = packet.ReadBit();
+                guildGuids[c][1] = packet.ReadBit();
+                guildGuids[c][7] = packet.ReadBit();
+                guildGuids[c][2] = packet.ReadBit();
                 nameLenghts[c] = packet.ReadBits(7);
-                charGuids[c][4] = (byte)(packet.ReadBit() ? 1 : 0);
-                charGuids[c][7] = (byte)(packet.ReadBit() ? 1 : 0);
-                guildGuids[c][3] = (byte)(packet.ReadBit() ? 1 : 0);
-                charGuids[c][5] = (byte)(packet.ReadBit() ? 1 : 0);
-                guildGuids[c][6] = (byte)(packet.ReadBit() ? 1 : 0);
-                charGuids[c][1] = (byte)(packet.ReadBit() ? 1 : 0);
-                guildGuids[c][5] = (byte)(packet.ReadBit() ? 1 : 0);
-                guildGuids[c][4] = (byte)(packet.ReadBit() ? 1 : 0);
+                charGuids[c][4] = packet.ReadBit();
+                charGuids[c][7] = packet.ReadBit();
+                guildGuids[c][3] = packet.ReadBit();
+                charGuids[c][5] = packet.ReadBit();
+                guildGuids[c][6] = packet.ReadBit();
+                charGuids[c][1] = packet.ReadBit();
+                guildGuids[c][5] = packet.ReadBit();
+                guildGuids[c][4] = packet.ReadBit();
                 firstLogins[c] = packet.ReadBit();
-                charGuids[c][0] = (byte)(packet.ReadBit() ? 1 : 0);
-                charGuids[c][2] = (byte)(packet.ReadBit() ? 1 : 0);
-                charGuids[c][6] = (byte)(packet.ReadBit() ? 1 : 0);
-                guildGuids[c][0] = (byte)(packet.ReadBit() ? 1 : 0);
+                charGuids[c][0] = packet.ReadBit();
+                charGuids[c][2] = packet.ReadBit();
+                charGuids[c][6] = packet.ReadBit();
+                guildGuids[c][0] = packet.ReadBit();
             }
 
             for (int c = 0; c < count; ++c)
@@ -971,14 +971,14 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = new byte[8];
 
-            guid[4] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[0] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[1] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[2] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[6] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[7] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[5] = (byte)(packet.ReadBit() ? 1 : 0);
-            guid[3] = (byte)(packet.ReadBit() ? 1 : 0);
+            guid[4] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
 
             if (guid[7] != 0) guid[7] ^= packet.ReadByte();
             if (guid[1] != 0) guid[1] ^= packet.ReadByte();

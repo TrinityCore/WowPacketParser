@@ -216,23 +216,23 @@ namespace WowPacketParser.Parsing.Parsers
                 counter[i] = new byte[8];
                 guid[i] = new byte[8];
 
-                guid[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
-                counter[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
-                guid[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
-                counter[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
-                counter[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
-                guid[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
-                guid[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
-                counter[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
-                guid[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
-                counter[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
-                guid[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
+                guid[i][4] = packet.ReadBit();
+                counter[i][3] = packet.ReadBit();
+                guid[i][5] = packet.ReadBit();
+                counter[i][0] = packet.ReadBit();
+                counter[i][6] = packet.ReadBit();
+                guid[i][3] = packet.ReadBit();
+                guid[i][0] = packet.ReadBit();
+                counter[i][4] = packet.ReadBit();
+                guid[i][2] = packet.ReadBit();
+                counter[i][7] = packet.ReadBit();
+                guid[i][7] = packet.ReadBit();
                 flags[i] = (byte)(packet.ReadBits(2) & 0xFFu);
-                guid[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
-                counter[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
-                counter[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
-                counter[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
-                guid[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
+                guid[i][6] = packet.ReadBit();
+                counter[i][2] = packet.ReadBit();
+                counter[i][1] = packet.ReadBit();
+                counter[i][5] = packet.ReadBit();
+                guid[i][1] = packet.ReadBit();
             }
 
             var achievements = packet.ReadBits("Achievement count", 23);
@@ -316,22 +316,22 @@ namespace WowPacketParser.Parsing.Parsers
                 counter[i] = new byte[8];
                 guid[i] = new byte[8];
 
-                counter[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
-                counter[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
-                guid[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
-                counter[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
-                guid[i][1] = (byte)(packet.ReadBit() ? 1 : 0);
-                counter[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
-                counter[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
-                guid[i][3] = (byte)(packet.ReadBit() ? 1 : 0);
-                counter[i][2] = (byte)(packet.ReadBit() ? 1 : 0);
-                guid[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
-                guid[i][5] = (byte)(packet.ReadBit() ? 1 : 0);
-                guid[i][0] = (byte)(packet.ReadBit() ? 1 : 0);
-                counter[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
-                guid[i][6] = (byte)(packet.ReadBit() ? 1 : 0);
-                counter[i][7] = (byte)(packet.ReadBit() ? 1 : 0);
-                guid[i][4] = (byte)(packet.ReadBit() ? 1 : 0);
+                counter[i][4] = packet.ReadBit();
+                counter[i][1] = packet.ReadBit();
+                guid[i][2] = packet.ReadBit();
+                counter[i][3] = packet.ReadBit();
+                guid[i][1] = packet.ReadBit();
+                counter[i][5] = packet.ReadBit();
+                counter[i][0] = packet.ReadBit();
+                guid[i][3] = packet.ReadBit();
+                counter[i][2] = packet.ReadBit();
+                guid[i][7] = packet.ReadBit();
+                guid[i][5] = packet.ReadBit();
+                guid[i][0] = packet.ReadBit();
+                counter[i][6] = packet.ReadBit();
+                guid[i][6] = packet.ReadBit();
+                counter[i][7] = packet.ReadBit();
+                guid[i][4] = packet.ReadBit();
             }
 
             for (var i = 0; i < count; ++i)
