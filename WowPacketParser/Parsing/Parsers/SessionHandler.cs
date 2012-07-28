@@ -303,9 +303,9 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasAccountInfo)
             {
                 packet.ReadInt32("Billing Time Remaining");
-                packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
-                packet.ReadInt32("Unknown UInt32");
                 packet.ReadEnum<ClientType>("Player Expansion", TypeCode.Byte);
+                packet.ReadInt32("Unknown UInt32");
+                packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
                 packet.ReadInt32("Billing Time Rested");
                 packet.ReadEnum<BillingFlag>("Billing Flags", TypeCode.Byte);
             }
