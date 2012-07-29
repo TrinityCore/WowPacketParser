@@ -394,9 +394,6 @@ namespace PacketParser.DataStructures
             long rawValue = ReadValue(code);
             object value = Enum.ToObject(typeof (T), rawValue);
 
-            if (rawValue > 0)
-                Logger.CheckForMissingValues<T>(rawValue);
-
             return new StoreEnum<T>(rawValue);
         }
 
@@ -411,9 +408,6 @@ namespace PacketParser.DataStructures
         {
             var type = typeof(T);
             long rawVal = ReadBits(bits);
-
-            if (rawVal > 0)
-                Logger.CheckForMissingValues<T>(rawVal);
 
             return new StoreEnum<T>(rawVal);
         }

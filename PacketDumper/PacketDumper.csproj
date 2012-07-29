@@ -86,6 +86,9 @@
     <Compile Include="..\wowpacketparser\misc\Filters.cs">
       <Link>Misc\Filters.cs</Link>
     </Compile>
+    <Compile Include="..\WowPacketParser\Misc\Logger.cs">
+      <Link>Processing\Logger.cs</Link>
+    </Compile>
     <Compile Include="..\WowPacketParser\Misc\Settings.cs">
       <Link>Misc\Settings.cs</Link>
     </Compile>
@@ -150,6 +153,7 @@
   <ItemGroup>
     <None Include="..\WowPacketParser\App.config">
       <Link>App.config</Link>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>

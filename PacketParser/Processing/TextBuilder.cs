@@ -273,7 +273,7 @@ namespace PacketParser.Processing
                         }
                         break;
                     default:
-                        if (data.GetType() == typeof(StoreEnum))
+                        /*if (data.GetType() == typeof(StoreEnum))
                         {
                             output.Append(align);
                             output.Append(name);
@@ -288,8 +288,8 @@ namespace PacketParser.Processing
                                 output.Append(")");
                             }
                             output.AppendLine(")");
-                        }
-                        else if (t == typeof(Packet))
+                        }*/
+                        if (t == typeof(Packet))
                         {
                         }
                         else if (t == typeof(NamedTreeNode))

@@ -6,6 +6,7 @@ namespace PacketParser.DataStructures
     public abstract class StoreEnum
     {
         public long rawVal;
+        public abstract Type GetEnumType();
     }
     public class StoreEnum<T> : StoreEnum where T : struct, IConvertible
     {
@@ -17,6 +18,10 @@ namespace PacketParser.DataStructures
             rawVal = _rawVal;
             var value = Enum.ToObject(type, rawVal);
             val = (T)value;
+        }
+        public override Type GetEnumType()
+        {
+            return type;
         }
         public override string ToString()
         {

@@ -28,7 +28,6 @@ namespace PacketDumper.Misc
             ParserSettings.MySQL.TDBDB = GetString("TDBDatabase", "world");
             ParserSettings.MySQL.CharacterSet = GetString("CharacterSet", "utf8");
 
-            ParserSettings.LogEnumErrors = GetBoolean("LogEnumErrors", false);
             ParserSettings.ReadDebugValues = GetBoolean("DebugReads", false);
         }
         private static readonly KeyValueConfigurationCollection SettingsCollection = GetConfiguration();
@@ -51,6 +50,7 @@ namespace PacketDumper.Misc
         public static readonly string SQLFileName = GetString("SQLFileName", string.Empty);
         public static readonly bool ShowEndPrompt = GetBoolean("ShowEndPrompt", false);
         public static readonly bool LogPacketErrors = GetBoolean("LogPacketErrors", false);
+        public static readonly bool LogEnumErrors = GetBoolean("LogEnumErrors", false);
         public static readonly bool ParsingLog = GetBoolean("ParsingLog", false);
 
         private static KeyValueConfigurationCollection GetConfiguration()

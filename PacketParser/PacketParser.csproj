@@ -765,9 +765,6 @@
     <Compile Include="..\wowpacketparser\misc\LfgEntry.cs">
       <Link>DataStructures\LfgEntry.cs</Link>
     </Compile>
-    <Compile Include="..\wowpacketparser\misc\Logger.cs">
-      <Link>Misc\Logger.cs</Link>
-    </Compile>
     <Compile Include="..\wowpacketparser\misc\MovementInfo.cs">
       <Link>DataStructures\MovementInfo.cs</Link>
     </Compile>
