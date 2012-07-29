@@ -589,6 +589,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasAttackingTarget)
             {
+                if (attackingTargetGuid[4] != 0) attackingTargetGuid[4] ^= packet.ReadByte();
                 if (attackingTargetGuid[0] != 0) attackingTargetGuid[0] ^= packet.ReadByte();
                 if (attackingTargetGuid[3] != 0) attackingTargetGuid[3] ^= packet.ReadByte();
                 if (attackingTargetGuid[5] != 0) attackingTargetGuid[5] ^= packet.ReadByte();
@@ -596,7 +597,6 @@ namespace WowPacketParser.Parsing.Parsers
                 if (attackingTargetGuid[6] != 0) attackingTargetGuid[6] ^= packet.ReadByte();
                 if (attackingTargetGuid[2] != 0) attackingTargetGuid[2] ^= packet.ReadByte();
                 if (attackingTargetGuid[1] != 0) attackingTargetGuid[1] ^= packet.ReadByte();
-                if (attackingTargetGuid[4] != 0) attackingTargetGuid[4] ^= packet.ReadByte();
                 packet.WriteLine("[{0}] Attacking Target GUID {1}", index, new Guid(BitConverter.ToUInt64(attackingTargetGuid, 0)));
             }
 
