@@ -31,6 +31,9 @@ namespace PacketDumper.Processing.SQLData
 
         public void ProcessPacket(Packet packet)
         {
+            if (packet.Status != ParsedStatus.Success)
+                return;
+
             if (Opcode.SMSG_LOOT_RESPONSE == Opcodes.GetOpcode(packet.Opcode) && packet.GetNode<LootType>("Loot Type") != LootType.Unk0)
             {
                 var guid = packet.GetData().GetNode<Guid>("GUID");

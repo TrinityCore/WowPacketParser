@@ -26,6 +26,9 @@ namespace PacketDumper.Processing.SQLData
 
         public void ProcessPacket(Packet packet)
         {
+            if (packet.Status != ParsedStatus.Success)
+                return;
+
             switch(Opcodes.GetOpcode(packet.Opcode))
             {
                 case Opcode.SMSG_PLAY_SOUND:

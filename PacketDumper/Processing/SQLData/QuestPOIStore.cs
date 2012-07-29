@@ -30,6 +30,9 @@ namespace PacketDumper.Processing.SQLData
 
         public void ProcessPacket(Packet packet)
         {
+            if (packet.Status != ParsedStatus.Success)
+                return;
+
             if (Opcode.SMSG_QUEST_POI_QUERY_RESPONSE == Opcodes.GetOpcode(packet.Opcode))
             {
                 var quests = packet.GetData().GetNode<IndexedTreeNode>("Quests");

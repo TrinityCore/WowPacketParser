@@ -26,6 +26,9 @@ namespace PacketDumper.Processing.SQLData
 
         public void ProcessPacket(Packet packet)
         {
+            if (packet.Status != ParsedStatus.Success)
+                return;
+
             if (Opcode.SMSG_ITEM_QUERY_SINGLE_RESPONSE == Opcodes.GetOpcode(packet.Opcode))
             {
                 var entry = packet.GetData().GetNode<KeyValuePair<int, bool>>("Entry");

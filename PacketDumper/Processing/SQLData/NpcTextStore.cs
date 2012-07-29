@@ -28,6 +28,9 @@ namespace PacketDumper.Processing.SQLData
 
         public void ProcessPacket(Packet packet)
         {
+            if (packet.Status != ParsedStatus.Success)
+                return;
+
             if (Opcode.SMSG_NPC_TEXT_UPDATE == Opcodes.GetOpcode(packet.Opcode))
             {
                 var entry = packet.GetData().GetNode<KeyValuePair<int, bool>>("Entry");

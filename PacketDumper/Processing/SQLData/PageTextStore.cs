@@ -27,6 +27,9 @@ namespace PacketDumper.Processing.SQLData
 
         public void ProcessPacket(Packet packet)
         {
+            if (packet.Status != ParsedStatus.Success)
+                return;
+
             if (Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE == Opcodes.GetOpcode(packet.Opcode))
             {
                 var entry = packet.GetData().GetNode<UInt32>("Entry");

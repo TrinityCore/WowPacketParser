@@ -33,6 +33,9 @@ namespace PacketDumper.Processing.SQLData
 
         public void ProcessPacket(Packet packet)
         {
+            if (packet.Status != ParsedStatus.Success)
+                return;
+
             if (Opcode.SMSG_GOSSIP_MESSAGE == Opcodes.GetOpcode(packet.Opcode))
             {
                 var menuId = packet.GetData().GetNode< UInt32 >("Menu Id");
