@@ -825,22 +825,19 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_0_6a_13623))
                 return;
 
-            var unkbool = packet.ReadBoolean("Has castflag Immunity"); // has castflag Immunity
-
-            if (unkbool)
+            if (packet.ReadBoolean("Has castflag Immunity"))
             {
                 packet.ReadUInt32("CastSchoolImmunities");
                 packet.ReadUInt32("CastImmunities");
             }
 
-            var unkbool2 = packet.ReadBoolean("Has castflag HealPrediction");   // has castflag HealPrediction
-
-            if (unkbool2)
+            if (packet.ReadBoolean("Has castflag HealPrediction"))
             {
                 packet.ReadPackedGuid("Target GUID");
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
-                var unkbyte = packet.ReadByte("Unk");
-                if (unkbyte == 2)
+                packet.ReadInt32("Heal Amount");
+
+                var type = packet.ReadByte("Type");
+                if (type == 2)
                     packet.ReadPackedGuid("Unk GUID");
             }
         }
