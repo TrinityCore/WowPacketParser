@@ -1550,6 +1550,62 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("BG Guid", guid2);
         }
 
+        [Parser(Opcode.SMSG_BATTLEFIELD_PLAYER_POSITIONS)]
+        public static void HandleBattlefieldPlayerPositions(Packet packet)
+        {
+            var count1 = packet.ReadBits("Count 1", 22);
+
+            var guids1 = new byte[count1][];
+
+            for (int i = 0; i < count1; ++i)
+                guids1[i] = packet.StartBitStream(3, 5, 1, 6, 7, 0, 2, 4);
+
+            var count2 = packet.ReadBits("Count 2", 22);
+
+            var guids2 = new byte[count2][];
+
+            for (int i = 0; i < count2; ++i)
+                guids2[i] = packet.StartBitStream(6, 5, 4, 7, 2, 1, 0, 3);
+
+            for (int i = 0; i < count2; ++i)
+            {
+                if (guids2[i][2] != 0) guids2[i][2] ^= packet.ReadByte();
+                if (guids2[i][1] != 0) guids2[i][1] ^= packet.ReadByte();
+
+                packet.ReadSingle("Y", i);
+
+                if (guids2[i][5] != 0) guids2[i][5] ^= packet.ReadByte();
+                if (guids2[i][4] != 0) guids2[i][4] ^= packet.ReadByte();
+                if (guids2[i][7] != 0) guids2[i][7] ^= packet.ReadByte();
+                if (guids2[i][0] != 0) guids2[i][0] ^= packet.ReadByte();
+                if (guids2[i][6] != 0) guids2[i][6] ^= packet.ReadByte();
+                if (guids2[i][3] != 0) guids2[i][3] ^= packet.ReadByte();
+
+                packet.ReadSingle("X", i);
+
+                packet.WriteGuid("Guid 2", guids2[i], i);
+            }
+
+            for (int i = 0; i < count1; ++i)
+            {
+                if (guids1[i][6] != 0) guids1[i][6] ^= packet.ReadByte();
+
+                packet.ReadSingle("X", i);
+
+                if (guids1[i][5] != 0) guids1[i][5] ^= packet.ReadByte();
+                if (guids1[i][3] != 0) guids1[i][3] ^= packet.ReadByte();
+
+                packet.ReadSingle("Y", i);
+
+                if (guids1[i][1] != 0) guids1[i][1] ^= packet.ReadByte();
+                if (guids1[i][7] != 0) guids1[i][7] ^= packet.ReadByte();
+                if (guids1[i][0] != 0) guids1[i][0] ^= packet.ReadByte();
+                if (guids1[i][2] != 0) guids1[i][2] ^= packet.ReadByte();
+                if (guids1[i][4] != 0) guids1[i][4] ^= packet.ReadByte();
+
+                packet.WriteGuid("Guid 1", guids1[i], i);
+            }
+        }
 
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE)]
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_SET_NEXT_TRANSITION_TIME)]

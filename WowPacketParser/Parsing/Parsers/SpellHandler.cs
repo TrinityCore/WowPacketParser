@@ -916,7 +916,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
-        [Parser(Opcode.SMSG_CLEAR_COOLDOWNS)]
+        [Parser(Opcode.SMSG_CLEAR_COOLDOWNS)] // 4.3.4
         public static void HandleClearCooldowns(Packet packet)
         {
             var guid = new byte[8];
@@ -1103,7 +1103,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         }
 
-        [Parser(Opcode.SMSG_DISENCHANT_CREDIT)]
+        [Parser(Opcode.SMSG_DISENCHANT_CREDIT)] // 4.3.4
         public static void HandleDisenchantCredit(Packet packet)
         {
             var guid = packet.StartBitStream(0, 6, 3, 1, 7, 5, 2, 4);

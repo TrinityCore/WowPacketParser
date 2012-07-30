@@ -249,7 +249,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_VOID_SWAP_ITEM)] // 4.3.4
         public static void HandleVoidSwapItem(Packet packet)
         {
-            packet.ReadInt32("Old Slot");
+            packet.ReadInt32("New Slot");
 
             var guid = new byte[8];
             var itemId = new byte[8];

@@ -90,7 +90,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Anim");
         }
 
-        [Parser(Opcode.SMSG_GAME_OBJECT_ACTIVATE_ANIM_KIT)]
+        [Parser(Opcode.SMSG_GAME_OBJECT_ACTIVATE_ANIM_KIT)] // 4.3.4
         public static void HandleGOActivateAnimKit(Packet packet)
         {
             var guid = packet.StartBitStream(5, 1, 0, 4, 7, 2, 3, 6);
