@@ -1503,16 +1503,26 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Guild Experience Reward", i);
 
             for (int i = 0; i < 4; ++i)
-                packet.ReadInt32("Gold Reward", i);
+                packet.ReadInt32("Gold Reward Unk 1", i);
 
             for (int i = 0; i < 4; ++i)
                 packet.ReadInt32("Total Count", i);
 
             for (int i = 0; i < 4; ++i)
-                packet.ReadInt32("Gold Reward", i); // requires perk Cash Flow?
+                packet.ReadInt32("Gold Reward Unk 2", i); // requires perk Cash Flow?
 
             for (int i = 0; i < 4; ++i)
                 packet.ReadInt32("Current Count", i);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_CHALLENGE_COMPLETED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildChallengeCompleted(Packet packet)
+        {
+            packet.ReadInt32("Index"); // not confirmed
+            packet.ReadInt32("Gold Reward");
+            packet.ReadInt32("Current Count");
+            packet.ReadInt32("Guild Experience Reward");
+            packet.ReadInt32("Total Count");
         }
 
         [Parser(Opcode.SMSG_GUILD_REPUTATION_WEEKLY_CAP)]
@@ -1645,24 +1655,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("Name", count);
         }
 
-        [Parser(Opcode.SMSG_GUILD_CHALLENGE_COMPLETED, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGuildChallengeCompleted(Packet packet)
-        {
-                packet.ReadInt32("Guild Experience Reward");
-                packet.ReadInt32("Gold Reward");
-                packet.ReadInt32("Current Count");
-                packet.ReadInt32("Gold Reward"); // requires perk Cash Flow?
-                packet.ReadInt32("Total Count");
         }
-
         [Parser(Opcode.SMSG_GUILD_REPUTATION_REACTION_CHANGED, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildReputationReactionChanged(Packet packet)
         {
             var guid = packet.StartBitStream(1, 6, 2, 4, 0, 3, 7, 5);
             packet.ParseBitStream(guid, 4, 6, 5, 7, 2, 0, 3, 1);
             packet.WriteGuid("Guid", guid);
-        }
-
         [Parser(Opcode.CMSG_GUILD_BANK_REM_MONEY_WITHDRAW_QUERY)]
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
         [Parser(Opcode.CMSG_GUILD_REQUEST_CHALLENGE_UPDATE)]
