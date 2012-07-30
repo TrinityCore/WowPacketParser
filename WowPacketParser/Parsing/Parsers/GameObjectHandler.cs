@@ -89,5 +89,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
             packet.ReadInt32("Anim");
         }
+
+        [Parser(Opcode.SMSG_GAME_OBJECT_ACTIVATE_ANIM_KIT)]
+        public static void HandleGOActivateAnimKit(Packet packet)
+        {
+            var guid = packet.StartBitStream(5, 1, 0, 4, 7, 2, 3, 6);
+            packet.ParseBitStream(guid, 5, 1, 0, 3, 4, 6, 2, 7);
+            packet.WriteGuid("Guid", guid);
+            packet.ReadInt32("Anim");
+        }
     }
 }
