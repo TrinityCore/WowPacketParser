@@ -1550,7 +1550,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("BG Guid", guid2);
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_PLAYER_POSITIONS)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_PLAYER_POSITIONS)] // 4.3.4
         public static void HandleBattlefieldPlayerPositions(Packet packet)
         {
             var count1 = packet.ReadBits("Count 1", 22);

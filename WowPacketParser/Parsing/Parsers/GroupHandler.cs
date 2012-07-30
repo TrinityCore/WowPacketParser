@@ -602,7 +602,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Guid");
         }
 
-        [Parser(Opcode.SMSG_GROUP_SET_ROLE)]
+        [Parser(Opcode.SMSG_GROUP_SET_ROLE)] // 4.3.4
         public static void HandleGroupSetRole(Packet packet)
         {
             var guid1 = new byte[8];
@@ -658,8 +658,37 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GROUP_INVITE_RESPONSE)]
         public static void HandleGroupInviteResponse434(Packet packet)
         {
-            var bit1 = packet.ReadBit("Accepted");
-            if (bit1) packet.ReadUInt32("Unk Uint32");
+            if (packet.ReadBit("Accepted"))
+                packet.ReadUInt32("Unk Uint32");
+        }
+
+        [Parser(Opcode.SMSG_RAID_SUMMON_FAILED)] // 4.3.4
+        public static void HandleRaidSummonFailed(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 23);
+
+            var guids = new byte[count][];
+
+            for (int i = 0; i < count; ++i)
+                guids[i] = packet.StartBitStream(5, 3, 1, 7, 2, 0, 6, 4);
+
+            for (int i = 0; i < count; ++i)
+            {
+                if (guids[i][4] != 0) guids[i][4] ^= packet.ReadByte();
+                if (guids[i][2] != 0) guids[i][2] ^= packet.ReadByte();
+                if (guids[i][0] != 0) guids[i][0] ^= packet.ReadByte();
+                if (guids[i][6] != 0) guids[i][6] ^= packet.ReadByte();
+                if (guids[i][5] != 0) guids[i][5] ^= packet.ReadByte();
+
+                packet.ReadEnum<RaidSummonFail>("Error", TypeCode.Int32, i);
+
+                if (guids[i][7] != 0) guids[i][7] ^= packet.ReadByte();
+                if (guids[i][3] != 0) guids[i][3] ^= packet.ReadByte();
+                if (guids[i][1] != 0) guids[i][1] ^= packet.ReadByte();
+
+                packet.WriteGuid("Guid", guids[i], i);
+            }
+                
         }
     }
 }
