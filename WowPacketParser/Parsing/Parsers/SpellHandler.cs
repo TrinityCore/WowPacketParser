@@ -857,7 +857,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Result"); // FIXME Enum?
         }
 
-        [Parser(Opcode.SMSG_CLEAR_TARGET)]
+        [Parser(Opcode.SMSG_CLEAR_TARGET, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_GET_MIRRORIMAGE_DATA)]
         [Parser(Opcode.SMSG_SPIRIT_HEALER_CONFIRM)]
         public static void HandleClearTarget(Packet packet)
@@ -865,6 +865,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
                 packet.ReadUInt32("Unk Uint32");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_TARGET, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleClearTarget434(Packet packet)
+        {
+            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.SMSG_MIRRORIMAGE_DATA)]
@@ -908,6 +914,35 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
             packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_COOLDOWNS)]
+        public static void HandleClearCooldowns(Packet packet)
+        {
+            var guid = new byte[8];
+            guid[1] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            var count = packet.ReadBits("Spell Count", 24);
+            guid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            for (var i = 0; i < count; i++)
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", i);
+
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPELL_COOLDOWN)]
@@ -1066,6 +1101,29 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Slot ID?: {0}", slot);
             packet.WriteLine("Points?: {0}", points);
 
+        }
+
+        [Parser(Opcode.SMSG_DISENCHANT_CREDIT)]
+        public static void HandleDisenchantCredit(Packet packet)
+        {
+            var guid = packet.StartBitStream(0, 6, 3, 1, 7, 5, 2, 4);
+
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry");
+
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+
+            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32");
+
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+
+            packet.WriteGuid("Guid", guid);
         }
     }
 }
