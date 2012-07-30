@@ -714,7 +714,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Full Slot List"); // false = only slots updated in last operation are shown. True = all slots updated
         }
 
-        [Parser(Opcode.SMSG_GUILD_BANK_LIST)]
+        [Parser(Opcode.SMSG_GUILD_BANK_LIST, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildBankList(Packet packet)
         {
             packet.ReadUInt64("Money");
@@ -758,6 +758,57 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                 }
             }
+        }
+
+        [Parser(Opcode.SMSG_GUILD_BANK_LIST, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildBankList434(Packet packet)
+        {
+            packet.ReadBit("Unk");
+            var count = packet.ReadBits("Item count", 20);
+            var count2 = packet.ReadBits("Tab count", 22);
+
+            var icons = new uint[count2];
+            var texts = new uint[count2];
+            var enchants = new uint[count];
+
+            for (var i = 0; i < count; ++i)
+                enchants[i] = packet.ReadBits(24); // Number of Enchantments ?
+
+            for (var i = 0; i < count2; ++i)
+            {
+                icons[i] = packet.ReadBits(9);
+                texts[i] = packet.ReadBits(7);
+            }
+
+            for (var i = 0; i < count2; ++i)
+            {
+                packet.ReadWoWString("Icon", icons[i], i);
+                packet.ReadUInt32("Index", i);
+                packet.ReadWoWString("Text", texts[i], i);
+            }
+
+            packet.ReadUInt64("Money");
+
+            for (var i = 0; i < count; ++i)
+            {
+                for (var j = 0; j < enchants[i]; ++j)
+                {
+                    packet.ReadUInt32("Enchantment Slot Id?", i, j);
+                    packet.ReadUInt32("Enchantment Id?", i, j);
+                }
+                packet.ReadUInt32("Unk UInt32 1", i); // Only seen 0
+                packet.ReadUInt32("Unk UInt32 2", i); // Only seen 0
+                packet.ReadUInt32("Unk UInt32 3", i); // Only seen 0
+                packet.ReadUInt32("Stack Count", i);
+                packet.ReadUInt32("Slot Id", i);
+                packet.ReadEnum<UnknownFlags>("Unk mask", TypeCode.UInt32, i);
+                packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item Entry", i);
+                packet.ReadInt32("Random Item Property Id", i);
+                packet.ReadUInt32("Unk UInt32 9", i); // Only seen 0 or 1
+                packet.ReadUInt32("Item Suffix Factor", i);
+            }
+            packet.ReadUInt32("Tab");
+            packet.ReadInt32("Remaining Withdraw");
         }
 
         [Parser(Opcode.CMSG_GUILD_BANK_SWAP_ITEMS)]
