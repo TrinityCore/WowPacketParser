@@ -24,13 +24,13 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadBit("Unk Bit 4 (Inv)");
 
+            // flushbits
+
             if (usedDestSlot)
             {
                 packet.ParseBitStream(itemId2, 4, 6, 5, 2, 3, 1, 7, 0);
                 packet.WriteLine("Item Id 2: {0}", BitConverter.ToUInt64(itemId2, 0));
             }
-
-            packet.ReadBit("Unk Bit 5");
 
             if (usedSrcSlot)
             {
