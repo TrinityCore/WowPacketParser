@@ -438,10 +438,18 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUEUE)]
         [Parser(Opcode.CMSG_REPORT_PVP_AFK)]
         [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_LEFT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
-        [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED)]
+        [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlemasterHello(Packet packet)
         {
             packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleBattlegroundPlayerJoined434(Packet packet)
+        {
+            var guid = packet.StartBitStream(0, 4, 3, 5, 7, 6, 2, 1);
+            packet.ParseBitStream(guid, 1, 5, 3, 2, 0, 7, 4, 6);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_LEFT, ClientVersionBuild.V4_3_4_15595)]
@@ -1423,8 +1431,8 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
             if (guid1[7] != 0) guid1[7] ^= packet.ReadByte();
 
-            packet.WriteGuid("Guid1", guid1);
-            packet.WriteGuid("Guid2", guid2);
+            packet.WriteGuid("Player Guid", guid1);
+            packet.WriteGuid("BG Guid", guid2);
 
         }
 
@@ -1478,9 +1486,9 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid1[6] != 0) guid1[6] ^= packet.ReadByte();
             if (guid1[2] != 0) guid1[2] ^= packet.ReadByte();
             if (guid1[3] != 0) guid1[3] ^= packet.ReadByte();
-           
-            packet.WriteGuid("Guid1", guid1);
-            packet.WriteGuid("Guid2", guid2);
+
+            packet.WriteGuid("Player Guid", guid1);
+            packet.WriteGuid("BG Guid", guid2);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_WAITFORGROUPS)]
@@ -1538,8 +1546,8 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid1[7] != 0) guid1[7] ^= packet.ReadByte();
             if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
 
-            packet.WriteGuid("Guid1", guid1);
-            packet.WriteGuid("Guid2", guid2);
+            packet.WriteGuid("Player Guid", guid1);
+            packet.WriteGuid("BG Guid", guid2);
         }
 
 
