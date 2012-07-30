@@ -804,7 +804,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<UnknownFlags>("Unk mask", TypeCode.UInt32, i);
                 packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item Entry", i);
                 packet.ReadInt32("Random Item Property Id", i);
-                packet.ReadUInt32("Unk UInt32 9", i); // Only seen 0 or 1
+                packet.ReadUInt32("Spell Charges", i);
                 packet.ReadUInt32("Item Suffix Factor", i);
             }
             packet.ReadUInt32("Tab");
