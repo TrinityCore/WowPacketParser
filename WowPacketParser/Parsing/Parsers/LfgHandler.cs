@@ -182,13 +182,31 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_LFG_PLAYER_REWARD)]
+        [Parser(Opcode.SMSG_LFG_PLAYER_REWARD, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleLfgCompletionReward(Packet packet)
         {
             packet.ReadLfgEntry("Random LFG Entry");
             packet.ReadLfgEntry("Actual LFG Entry");
 
             ReadLfgRewardBlock(ref packet);
+        }
+
+        [Parser(Opcode.SMSG_LFG_PLAYER_REWARD, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleLfgCompletionReward434(Packet packet)
+        {
+            packet.ReadLfgEntry("Random LFG Entry");
+            packet.ReadLfgEntry("Actual LFG Entry");
+            packet.ReadUInt32("Base Money");
+            packet.ReadUInt32("Base XP");
+
+            var numFields = packet.ReadByte("Reward Item Count");
+            for (var i = 0; i < numFields; i++)
+            {
+                packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Item Or Currency Id", i);
+                packet.ReadInt32("Reward Item Display ID", i);
+                packet.ReadInt32("Reward Item Stack Count", i);
+                packet.ReadBoolean("Is Currency", i);
+            }
         }
 
         [Parser(Opcode.SMSG_LFG_UPDATE_PLAYER)]
@@ -353,11 +371,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LFG_JOIN_RESULT, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleLfgJoinResult434(Packet packet)
         {
-            packet.ReadEnum<LfgRoleCheckStatus>("Reason", TypeCode.Int32);
+            packet.ReadUInt32("Flags?"); // 0 or 3... Probably "Valid Date" and "Valid GUID"
             packet.ReadEnum<LfgJoinResult>("Join Result", TypeCode.Byte);
-            packet.ReadUInt32("Group Id?");
-            packet.ReadByte("Unk8 2"); // seen 6 when Join Result = 27 (Not in enum)
-            packet.ReadTime("Unk Date");
+            packet.ReadUInt32("Queue id?");
+            packet.ReadEnum<LfgRoleCheckStatus>("Status", TypeCode.Byte);
+            packet.ReadTime("Join Date");
 
             var guid = new byte[8];
 
@@ -415,7 +433,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid[2] != 0) guid[2] ^= packet.ReadByte();
             if (guid[6] != 0) guid[6] ^= packet.ReadByte();
 
-            packet.WriteGuid("Unk Guid", guid);
+            packet.WriteGuid("Join GUID", guid);
         }
 
         [Parser(Opcode.SMSG_LFG_ROLE_CHOSEN)]
