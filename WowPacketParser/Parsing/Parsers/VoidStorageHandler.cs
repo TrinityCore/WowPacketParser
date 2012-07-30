@@ -79,18 +79,18 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 if (guid[i][3] != 0) guid[i][3] ^= packet.ReadByte();
 
-                packet.ReadInt32("Unk Int32 1", i);
+                packet.ReadInt32("Item Suffix Factor", i);
 
                 if (guid[i][4] != 0) guid[i][4] ^= packet.ReadByte();
 
-                packet.ReadInt32("Item Slot", i); // not confirmed
+                packet.ReadInt32("Item Slot", i);
 
                 if (id[i][0] != 0) id[i][0] ^= packet.ReadByte();
                 if (id[i][6] != 0) id[i][6] ^= packet.ReadByte();
                 if (guid[i][0] != 0) guid[i][0] ^= packet.ReadByte();
                 if (guid[i][1] != 0) guid[i][1] ^= packet.ReadByte();
 
-                packet.ReadInt32("Unk Int32 3", i);
+                packet.ReadInt32("Item Random Property ID", i);
 
                 if (id[i][4] != 0) id[i][4] ^= packet.ReadByte();
                 if (id[i][5] != 0) id[i][5] ^= packet.ReadByte();
@@ -154,7 +154,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (int i = 0; i < count1; ++i)
             {
-                packet.ReadInt32("Unk Int32 1", i);
+                packet.ReadInt32("Item Suffix Factor", i);
 
                 if (id1[i][6] != 0) id1[i][6] ^= packet.ReadByte();
                 if (id1[i][4] != 0) id1[i][4] ^= packet.ReadByte();
@@ -174,12 +174,12 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (id1[i][1] != 0) id1[i][1] ^= packet.ReadByte();
 
-                packet.ReadInt32("Item Slot", i); // not confirmed
+                packet.ReadInt32("Item Slot", i);
 
                 if (guid[i][2] != 0) guid[i][2] ^= packet.ReadByte();
                 if (id1[i][7] != 0) id1[i][7] ^= packet.ReadByte();
 
-                packet.ReadInt32("Unk Int32 3", i);
+                packet.ReadInt32("Item Random Property ID", i);
 
                 packet.WriteLine("[{1}] Item Id 1: {0}", BitConverter.ToUInt64(id1[i], 0), i);
                 packet.WriteGuid("Item Player Creator Guid", guid[i], i);
@@ -249,7 +249,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_VOID_SWAP_ITEM)] // 4.3.4
         public static void HandleVoidSwapItem(Packet packet)
         {
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Old Slot");
 
             var guid = new byte[8];
             var itemId = new byte[8];
