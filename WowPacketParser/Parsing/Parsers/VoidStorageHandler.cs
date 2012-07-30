@@ -9,40 +9,40 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_VOID_ITEM_SWAP_RESPONSE)] // 4.3.4
         public static void HandleVoidItemSwapResponse(Packet packet)
         {
-            var unkBit1 = !packet.ReadBit("Unk Bit 1 (Inv)");
-            var unkBit2 = !packet.ReadBit("Unk Bit 2 (Inv)");
+            var usedDestSlot = !packet.ReadBit("Used Dest Slot (Inv)");
+            var usedSrcSlot = !packet.ReadBit("Used Src Slot (Inv)"); // always set?
 
-            byte[] itemId = null;
-            if (unkBit2)
-                itemId = packet.StartBitStream(5, 2, 1, 4, 0, 6, 7, 3);
+            byte[] itemId1 = null;
+            if (usedSrcSlot)
+                itemId1 = packet.StartBitStream(5, 2, 1, 4, 0, 6, 7, 3);
 
             packet.ReadBit("Unk Bit 3 (Inv)");
 
-            byte[] guid2 = null;
-            if (unkBit1) // ? - *((_QWORD *)v4 + 2) != 0i64;
-                guid2 = packet.StartBitStream(7, 3, 4, 0, 5, 1, 2, 6);
+            byte[] itemId2 = null;
+            if (usedDestSlot)
+                itemId2 = packet.StartBitStream(7, 3, 4, 0, 5, 1, 2, 6);
 
-            var unkBit4 = !packet.ReadBit("Unk Bit 4 (Inv)");
+            packet.ReadBit("Unk Bit 4 (Inv)");
 
-            if (unkBit1) // ? - *((_QWORD *)v4 + 2) != 0i64;
+            if (usedDestSlot)
             {
-                packet.ParseBitStream(guid2, 4, 6, 5, 2, 3, 1, 7, 0);
-                packet.WriteGuid("Unk Guid 2", guid2);
+                packet.ParseBitStream(itemId2, 4, 6, 5, 2, 3, 1, 7, 0);
+                packet.WriteLine("Item Id 2: {0}", BitConverter.ToUInt64(itemId2, 0));
             }
 
-            var unkBit5 = packet.ReadBit("Unk Bit 5");
+            packet.ReadBit("Unk Bit 5");
 
-            if (unkBit2) // ? - *((_QWORD *)v4 + 3) != 0i64;
+            if (usedSrcSlot)
             {
-                packet.ParseBitStream(itemId, 6, 3, 5, 0, 1, 2, 4, 7);
-                packet.WriteLine("Item Id: {0}", BitConverter.ToUInt64(itemId, 0));
+                packet.ParseBitStream(itemId1, 6, 3, 5, 0, 1, 2, 4, 7);
+                packet.WriteLine("Item Id 1: {0}", BitConverter.ToUInt64(itemId1, 0));
             }
 
-            if (unkBit4)
-                packet.ReadInt32("Unk Int32");
+            if (usedSrcSlot)
+                packet.ReadInt32("New Slot for Src Item");
 
-            if (unkBit5)
-                packet.ReadInt32("Slot");
+            if (usedDestSlot)
+                packet.ReadInt32("New Slot for Dest Item");
         }
 
         [Parser(Opcode.SMSG_VOID_STORAGE_CONTENTS)] // 4.3.4
