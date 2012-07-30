@@ -1653,7 +1653,14 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Current Count");
                 packet.ReadInt32("Gold Reward"); // requires perk Cash Flow?
                 packet.ReadInt32("Total Count");
+        }
 
+        [Parser(Opcode.SMSG_GUILD_REPUTATION_REACTION_CHANGED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildReputationReactionChanged(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 6, 2, 4, 0, 3, 7, 5);
+            packet.ParseBitStream(guid, 4, 6, 5, 7, 2, 0, 3, 1);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_GUILD_BANK_REM_MONEY_WITHDRAW_QUERY)]
