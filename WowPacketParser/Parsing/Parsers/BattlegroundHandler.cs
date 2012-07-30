@@ -1325,7 +1325,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
 
             packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
-            packet.ReadInt32("Unk Int32");
+            packet.ReadUInt32("Queue slot");
 
             if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
             if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
@@ -1361,6 +1361,187 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid2", guid2);
             packet.WriteGuid("Guid3", guid3);
         }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_ACTIVE)]
+        public static void HandleBattlefieldStatusActive(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+            guid1[2] = packet.ReadBit();//26
+            guid1[7] = packet.ReadBit();//31
+            guid2[7] = packet.ReadBit();//55
+            guid2[1] = packet.ReadBit();//49
+            guid1[5] = packet.ReadBit();//29
+            packet.ReadBit("Unk Bit");//76
+            guid2[0] = packet.ReadBit();//48
+            guid1[1] = packet.ReadBit();//25
+
+            guid2[3] = packet.ReadBit();//51
+            guid1[6] = packet.ReadBit();//30
+            guid2[5] = packet.ReadBit();//53
+            packet.ReadBit("Unk Bit");//64
+            guid1[4] = packet.ReadBit();//28
+            guid2[6] = packet.ReadBit();//54
+            guid2[4] = packet.ReadBit();//52
+            guid2[2] = packet.ReadBit();//50
+
+            guid1[3] = packet.ReadBit();//27
+            guid1[0] = packet.ReadBit();//24
+
+            if (guid2[4] != 0) guid2[4] ^= packet.ReadByte();
+            if (guid2[5] != 0) guid2[5] ^= packet.ReadByte();
+            if (guid1[5] != 0) guid1[5] ^= packet.ReadByte();
+            if (guid2[1] != 0) guid2[1] ^= packet.ReadByte();
+            if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
+            if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
+            if (guid2[7] != 0) guid2[7] ^= packet.ReadByte();
+            if (guid1[6] != 0) guid1[6] ^= packet.ReadByte();
+
+            packet.ReadTime("Time");
+            packet.ReadByte("Teamsize");
+
+            if (guid1[4] != 0) guid1[4] ^= packet.ReadByte();
+            if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
+
+            packet.ReadUInt32("Queue slot");
+            packet.ReadByte("Max Level");
+            packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadByte("Min Level");
+            packet.ReadUInt32("Time until closed");
+
+            if (guid1[2] != 0) guid1[2] ^= packet.ReadByte();
+
+            packet.ReadUInt32("Time since started");
+
+            if (guid1[0] != 0) guid1[0] ^= packet.ReadByte();
+            if (guid1[3] != 0) guid1[3] ^= packet.ReadByte();
+            if (guid2[2] != 0) guid2[2] ^= packet.ReadByte();
+
+            packet.ReadUInt32("Client Instance ID");
+
+            if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
+            if (guid1[7] != 0) guid1[7] ^= packet.ReadByte();
+
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("Guid2", guid2);
+
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_NEEDCONFIRMATION)]
+        public static void HandleBattlefieldStatusNeedConfirmation(Packet packet)
+        {
+
+            packet.ReadUInt32("Client Instance ID");
+            packet.ReadUInt32("Time until closed");
+            packet.ReadByte("Unk Byte");
+            packet.ReadUInt32("Queue slot");
+            packet.ReadTime("Time");
+            packet.ReadByte("Min Level");
+            packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadByte("Unk Byte");
+
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+            guid1[5] = packet.ReadBit();//29
+            guid1[2] = packet.ReadBit();//26
+            guid1[1] = packet.ReadBit();//25
+            guid2[2] = packet.ReadBit();//50
+            guid1[4] = packet.ReadBit();//28
+            guid2[6] = packet.ReadBit();//54
+            guid2[3] = packet.ReadBit();//51
+            packet.ReadBit("IsRated");
+            guid1[7] = packet.ReadBit();//31
+            guid1[3] = packet.ReadBit();//27
+            guid2[7] = packet.ReadBit();//55
+            guid2[0] = packet.ReadBit();//48
+            guid2[4] = packet.ReadBit();//52
+            guid1[6] = packet.ReadBit();//30
+            guid2[1] = packet.ReadBit();//49
+            guid2[5] = packet.ReadBit();//53
+            guid1[0] = packet.ReadBit();//24
+
+            if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
+            if (guid2[5] != 0) guid2[5] ^= packet.ReadByte();
+            if (guid2[7] != 0) guid2[7] ^= packet.ReadByte();
+            if (guid2[2] != 0) guid2[2] ^= packet.ReadByte();
+            if (guid1[0] != 0) guid1[0] ^= packet.ReadByte();
+            if (guid1[7] != 0) guid1[7] ^= packet.ReadByte();
+            if (guid2[4] != 0) guid2[4] ^= packet.ReadByte();
+            if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
+            if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
+            if (guid1[4] != 0) guid1[4] ^= packet.ReadByte();
+            if (guid2[1] != 0) guid2[1] ^= packet.ReadByte();
+            if (guid1[5] != 0) guid1[5] ^= packet.ReadByte();
+            if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
+            if (guid1[6] != 0) guid1[6] ^= packet.ReadByte();
+            if (guid1[2] != 0) guid1[2] ^= packet.ReadByte();
+            if (guid1[3] != 0) guid1[3] ^= packet.ReadByte();
+           
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("Guid2", guid2);
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_WAITFORGROUPS)]
+        public static void HandleBattlefieldStatusWaitForGroups(Packet packet)
+        {
+            packet.ReadByte("Unk Byte");
+            packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
+            packet.ReadUInt32("Queue slot");
+            packet.ReadUInt32("Time until closed");
+            packet.ReadUInt32("Unk Int32");
+            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Min Level");
+            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Unk Byte");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadTime("Time");
+            packet.ReadByte("Unk Byte");
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            guid2[0] = packet.ReadBit();//40
+            guid2[1] = packet.ReadBit();//41
+            guid2[7] = packet.ReadBit();//47
+            guid1[7] = packet.ReadBit();//23
+            guid1[0] = packet.ReadBit();//16
+            guid2[4] = packet.ReadBit();//44
+            guid1[6] = packet.ReadBit();//22
+            guid1[2] = packet.ReadBit();//18
+
+            guid1[3] = packet.ReadBit();//19
+            guid2[3] = packet.ReadBit();//43
+            guid1[4] = packet.ReadBit();//20
+            guid2[5] = packet.ReadBit();//45
+            guid1[5] = packet.ReadBit();//21
+            guid2[2] = packet.ReadBit();//42
+            packet.ReadBit("IsRated");//56
+            guid1[1] = packet.ReadBit();//17
+            guid2[6] = packet.ReadBit();//46
+
+            if (guid1[0] != 0) guid1[0] ^= packet.ReadByte();
+            if (guid2[4] != 0) guid2[4] ^= packet.ReadByte();
+            if (guid1[3] != 0) guid1[3] ^= packet.ReadByte();
+            if (guid2[1] != 0) guid2[1] ^= packet.ReadByte();
+            if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
+            if (guid2[2] != 0) guid2[2] ^= packet.ReadByte();
+            if (guid1[2] != 0) guid1[2] ^= packet.ReadByte();
+            if (guid2[7] != 0) guid2[7] ^= packet.ReadByte();
+            if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
+            if (guid1[6] != 0) guid1[6] ^= packet.ReadByte();
+            if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
+            if (guid2[5] != 0) guid2[5] ^= packet.ReadByte();
+            if (guid1[5] != 0) guid1[5] ^= packet.ReadByte();
+            if (guid1[4] != 0) guid1[4] ^= packet.ReadByte();
+            if (guid1[7] != 0) guid1[7] ^= packet.ReadByte();
+            if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
+
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("Guid2", guid2);
+        }
+
 
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE)]
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_SET_NEXT_TRANSITION_TIME)]
