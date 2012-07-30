@@ -11,6 +11,7 @@ namespace WowPacketParser.Enums
         Healer = 0x04,
         Damage = 0x08,
         Unk10  = 0x10,
+        Unk20  = 0x20,
         Unk40  = 0x40
     }
 }

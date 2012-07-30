@@ -292,7 +292,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_LFG_PROPOSAL_UPDATE)]
+        [Parser(Opcode.SMSG_LFG_PROPOSAL_UPDATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleLfgProposalUpdate(Packet packet)
         {
             packet.ReadLfgEntry("LFG Entry");
@@ -311,6 +311,73 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadBoolean("Answer", i);
                 packet.ReadBoolean("Accept", i);
             }
+        }
+
+        [Parser(Opcode.SMSG_LFG_PROPOSAL_UPDATE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleLfgProposalUpdate434(Packet packet)
+        {
+            packet.ReadTime("Date");
+            packet.ReadInt32("Bosses Killed Mask");
+            packet.ReadInt32("Unk UInt32 1");
+            packet.ReadUInt32("Unk UInt32 2");
+            packet.ReadLfgEntry("LFG Entry");
+            packet.ReadUInt32("Unk UInt32 3");
+            packet.ReadEnum<LfgProposalState>("State", TypeCode.Byte);
+
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            guid2[4] = packet.ReadBit();
+            guid1[3] = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            packet.ReadBit("Silent");
+            guid1[4] = packet.ReadBit();
+            guid1[5] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+
+            var count = packet.ReadBits("Response Count", 23);
+
+            guid2[7] = packet.ReadBit();
+
+            for (var i = 0; i < count; ++i)
+            {
+                var bits = new Bit[5];
+                for (var j = 0; j < 5; ++j)
+                    bits[j] = packet.ReadBit();
+                packet.WriteLine("[{0}] Bits: In Dungeon?: {1}, Same Group?: {2}, Accept: {3}, Answer: {4}, Self: {5}",
+                    i, bits[0], bits[1], bits[2], bits[3], bits[4]); // 0 and 1 could be swapped
+            }
+
+            guid2[5] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
+            guid1[1] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+
+            if (guid1[5] != 0) guid1[5] ^= packet.ReadByte();
+            if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
+            if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
+            if (guid1[6] != 0) guid1[6] ^= packet.ReadByte();
+            if (guid1[0] != 0) guid1[0] ^= packet.ReadByte();
+            if (guid2[5] != 0) guid2[5] ^= packet.ReadByte();
+            if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32, i);
+
+            if (guid2[7] != 0) guid2[7] ^= packet.ReadByte();
+            if (guid1[4] != 0) guid1[4] ^= packet.ReadByte();
+            if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
+            if (guid2[1] != 0) guid2[1] ^= packet.ReadByte();
+            if (guid1[2] != 0) guid1[2] ^= packet.ReadByte();
+            if (guid1[7] != 0) guid1[7] ^= packet.ReadByte();
+            if (guid2[2] != 0) guid2[2] ^= packet.ReadByte();
+            if (guid1[3] != 0) guid1[3] ^= packet.ReadByte();
+            if (guid2[4] != 0) guid2[4] ^= packet.ReadByte();
         }
 
         [Parser(Opcode.SMSG_LFG_QUEUE_STATUS)]
@@ -371,9 +438,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LFG_JOIN_RESULT, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleLfgJoinResult434(Packet packet)
         {
-            packet.ReadUInt32("Flags?"); // 0 or 3... Probably "Valid Date" and "Valid GUID"
+            packet.ReadUInt32("Unk UInt32 1");
             packet.ReadEnum<LfgJoinResult>("Join Result", TypeCode.Byte);
-            packet.ReadUInt32("Queue id?");
+            packet.ReadUInt32("Unk UInt32 2");
             packet.ReadEnum<LfgRoleCheckStatus>("Status", TypeCode.Byte);
             packet.ReadTime("Join Date");
 
