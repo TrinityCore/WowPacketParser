@@ -380,7 +380,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid2[4] != 0) guid2[4] ^= packet.ReadByte();
         }
 
-        [Parser(Opcode.SMSG_LFG_QUEUE_STATUS)]
+        [Parser(Opcode.SMSG_LFG_QUEUE_STATUS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleLfgQueueStatusUpdate(Packet packet)
         {
             packet.ReadLfgEntry("LFG Entry");
@@ -394,6 +394,52 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Number of Damage Dealers Needed");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
                 packet.ReadInt32("Queued Time");
+        }
+
+        [Parser(Opcode.SMSG_LFG_QUEUE_STATUS, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleLfgQueueStatusUpdate434(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[3] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+    
+            //for (var i = 0; i < 3; ++i) byte uint32
+            packet.ReadByte("Tank Unk");
+            packet.ReadInt32("Tank Unk2");
+            packet.ReadByte("Healer Unk");
+            packet.ReadInt32("Healer Unk2");
+            packet.ReadByte("Damage Unk");
+            packet.ReadInt32("Damage Unk2");
+
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+    
+            packet.ReadInt32("Unk UInt32 1");
+            packet.ReadInt32("Unk UInt32 2");
+            packet.ReadInt32("Unk UInt32 3");
+            packet.ReadInt32("Queued Time");
+
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+
+            packet.ReadInt32("Unk UInt32 5"); // Same value than "Unk UInt32 2" in SMSG_LFG_JOIN_RESULT
+
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+
+            packet.ReadInt32("Wait Time"); // Matches "Role Unk2"
+            packet.ReadInt32("Unk UInt32 7"); // Same value than "Unk UInt32 1" in SMSG_LFG_JOIN_RESULT
+            packet.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.SMSG_LFG_ROLE_CHECK_UPDATE)]
