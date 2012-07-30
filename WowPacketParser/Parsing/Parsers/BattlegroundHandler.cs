@@ -540,7 +540,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid2[3] = packet.ReadBit();//59
             guid1[2] = packet.ReadBit();//34
             packet.ReadBit("Unk Bit");//21
-            packet.ReadBit("Unk Bit");//20
+            packet.ReadBit("Join Failed");//20
             guid2[2] = packet.ReadBit();//58
             guid1[1] = packet.ReadBit();//33
 
@@ -586,7 +586,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadTime("Time");
             packet.ReadInt32("Unk Int32");
-            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Min Level");
             packet.ReadInt32("Unk Int32");
 
             if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
