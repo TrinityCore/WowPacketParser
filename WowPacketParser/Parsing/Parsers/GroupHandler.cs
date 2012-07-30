@@ -427,7 +427,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid[0] = packet.ReadBit();
             guid[3] = packet.ReadBit();
             guid[2] = packet.ReadBit();
-            packet.ReadBit("Invited");
+            packet.ReadBit("Not Already In Group");
             guid[6] = packet.ReadBit();
             guid[5] = packet.ReadBit();
             var count = packet.ReadBits(9);
@@ -441,7 +441,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid[1] != 0) guid[1] ^= packet.ReadByte();
             if (guid[4] != 0) guid[4] ^= packet.ReadByte();
 
-            packet.ReadInt32("Unk Int 32");
+            packet.ReadInt32("Timestamp?");
             packet.ReadInt32("Unk Int 32");
             packet.ReadInt32("Unk Int 32");
 
@@ -455,11 +455,11 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (guid[5] != 0) guid[5] ^= packet.ReadByte();
 
-            packet.ReadWoWString("Name", count);
+            packet.ReadWoWString("Inviter", count);
 
             if (guid[7] != 0) guid[7] ^= packet.ReadByte();
 
-            packet.ReadWoWString("Name", count2);
+            packet.ReadWoWString("Invited", count2);
 
             packet.ReadInt32("Unk Int 32");
 
