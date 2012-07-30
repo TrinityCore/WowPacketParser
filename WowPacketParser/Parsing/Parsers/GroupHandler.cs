@@ -419,11 +419,53 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32 2");
         }
 
-        //[Parser(Opcode.SMSG_GROUP_INVITE, ClientVersionBuild.V4_3_4_15595)]
-        //public static void HandleGroupInvite434(Packet packet)
-        //{
-        //    // sub_6DAF30
-        //}
+        [Parser(Opcode.SMSG_GROUP_INVITE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGroupInviteSmsg434(Packet packet)
+        {
+            var guid = new byte[8];
+            packet.ReadBit("Replied");
+            guid[0] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            packet.ReadBit("Invited");
+            guid[6] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            var count = packet.ReadBits(9);
+            guid[4] = packet.ReadBit();
+            var count2 = packet.ReadBits(7);
+            var count3 = packet.ReadBits("int32 count", 24);
+            packet.ReadBit("Print Something?");
+            guid[1] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+
+            packet.ReadInt32("Unk Int 32");
+            packet.ReadInt32("Unk Int 32");
+            packet.ReadInt32("Unk Int 32");
+
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+
+            for (var i = 0; i < count3; i++)
+                packet.ReadInt32("Unk Int 32", i);
+
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+
+            packet.ReadWoWString("Name", count);
+
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+
+            packet.ReadWoWString("Name", count2);
+
+            packet.ReadInt32("Unk Int 32");
+
+            packet.WriteGuid("Guid", guid);
+            
+        }
 
         [Parser(Opcode.CMSG_GROUP_UNINVITE_GUID)]
         public static void HandleGroupUninviteGuid(Packet packet)
