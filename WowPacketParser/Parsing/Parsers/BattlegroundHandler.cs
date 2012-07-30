@@ -529,6 +529,77 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteLine("Result: Joined (BGType: " + StoreGetters.GetName(StoreNameType.Battleground, val) + ")");
         }
 
+        [Parser(Opcode.SMSG_GROUP_JOINED_BATTLEGROUND, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleRGroupJoinedBattleground434(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            guid1[3] = packet.ReadBit();//35
+            guid1[0] = packet.ReadBit();//32
+            guid2[3] = packet.ReadBit();//59
+            guid1[2] = packet.ReadBit();//34
+            packet.ReadBit("Unk Bit");//21
+            packet.ReadBit("Unk Bit");//20
+            guid2[2] = packet.ReadBit();//58
+            guid1[1] = packet.ReadBit();//33
+
+            guid2[0] = packet.ReadBit();//56
+            guid2[6] = packet.ReadBit();//62
+            guid2[4] = packet.ReadBit();//60
+            guid1[6] = packet.ReadBit();//38
+            guid1[7] = packet.ReadBit();//39
+            guid2[7] = packet.ReadBit();//63
+            guid2[5] = packet.ReadBit();//61
+            guid1[4] = packet.ReadBit();//36
+
+            guid1[5] = packet.ReadBit();//37
+            packet.ReadBit("Unk Bit");//72
+            packet.ReadBit("Unk Bit");//28
+            guid2[1] = packet.ReadBit();//57
+
+            if (guid1[0] != 0) guid1[0] ^= packet.ReadByte();
+
+            packet.ReadInt32("Unk Int32");
+
+            if (guid2[5] != 0) guid2[5] ^= packet.ReadByte();
+            if (guid1[3] != 0) guid1[3] ^= packet.ReadByte();
+
+            packet.ReadInt32("Unk Int32");
+
+            if (guid2[7] != 0) guid2[7] ^= packet.ReadByte();
+            if (guid2[1] != 0) guid2[1] ^= packet.ReadByte();
+            if (guid2[2] != 0) guid2[2] ^= packet.ReadByte();
+
+            packet.ReadByte("Unk Byte");
+
+            if (guid2[4] != 0) guid2[4] ^= packet.ReadByte();
+            if (guid1[2] != 0) guid1[2] ^= packet.ReadByte();
+
+            packet.ReadByte("Unk Byte");
+
+            if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
+            if (guid1[7] != 0) guid1[7] ^= packet.ReadByte();
+            if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
+            if (guid1[6] != 0) guid1[6] ^= packet.ReadByte();
+            if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
+
+            packet.ReadTime("Time");
+            packet.ReadInt32("Unk Int32");
+            packet.ReadByte("Unk Byte");
+            packet.ReadInt32("Unk Int32");
+
+            if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
+            if (guid1[5] != 0) guid1[5] ^= packet.ReadByte();
+
+            packet.ReadInt32("Unk Int32");
+
+            if (guid1[4] != 0) guid1[4] ^= packet.ReadByte();
+
+            packet.WriteGuid("Player Guid", guid1);
+            packet.WriteGuid("BG Guid", guid2);
+        }
+
         [Parser(Opcode.SMSG_JOINED_BATTLEGROUND_QUEUE, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleJoinedBattlegroundQueue422(Packet packet)
         {
