@@ -1645,6 +1645,17 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("Name", count);
         }
 
+        [Parser(Opcode.SMSG_GUILD_CHALLENGE_COMPLETED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildChallengeCompleted(Packet packet)
+        {
+                packet.ReadInt32("Guild Experience Reward");
+                packet.ReadInt32("Gold Reward");
+                packet.ReadInt32("Total Count");
+                packet.ReadInt32("Gold Reward"); // requires perk Cash Flow?
+                packet.ReadInt32("Current Count");
+
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REM_MONEY_WITHDRAW_QUERY)]
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
         [Parser(Opcode.CMSG_GUILD_REQUEST_CHALLENGE_UPDATE)]
