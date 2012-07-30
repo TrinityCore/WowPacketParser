@@ -20,12 +20,20 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid(guid);
         }
 
-        [Parser(Opcode.CMSG_SET_TRADE_ITEM)]
+        [Parser(Opcode.CMSG_SET_TRADE_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleTradeItem(Packet packet)
         {
             packet.ReadByte("Trade Slot");
             packet.ReadSByte("Bag");
-            packet.ReadByte("Slot");
+            packet.ReadByte("Bag Slot");
+        }
+
+        [Parser(Opcode.CMSG_SET_TRADE_ITEM, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleTradeItem434(Packet packet)
+        {
+            packet.ReadByte("Bag Slot");
+            packet.ReadByte("Trade Slot");
+            packet.ReadSByte("Bag");
         }
 
         [Parser(Opcode.CMSG_CLEAR_TRADE_ITEM)]
