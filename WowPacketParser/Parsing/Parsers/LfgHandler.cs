@@ -28,7 +28,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 3; i++)
                 packet.ReadInt32("Unk Int32", i);
 
-            var length = packet.ReadBits("Comment Length", 9);
+            var length = packet.ReadBits(9);
             var count = packet.ReadBits("Join Dungeon Count", 24);
 
             packet.ReadWoWString("Comment", length);
@@ -59,7 +59,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LFG_SET_COMMENT, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleLfgComment434(Packet packet)
         {
-            var length = packet.ReadBits("String Length", 9);
+            var length = packet.ReadBits(9);
             packet.ReadWoWString("Comment", length);
         }
 
@@ -111,7 +111,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Did Vote");
             packet.ReadBoolean("Vote");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                packet.ReadByte("Unk");
+                packet.ReadByte("Offline/afk");
             packet.ReadGuid("Victim GUID");
             packet.ReadInt32("Total Votes");
             packet.ReadInt32("Agree Count");
@@ -331,7 +331,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_LFG_JOIN_RESULT)]
+        [Parser(Opcode.SMSG_LFG_JOIN_RESULT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleLfgJoinResult(Packet packet)
         {
             var result = packet.ReadEnum<LfgJoinResult>("Join Result", TypeCode.Int32);
@@ -348,6 +348,74 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var j = 0; j < cnt2; j++)
                     ReadDungeonJoinResults(ref packet, i, j);
             }
+        }
+
+        [Parser(Opcode.SMSG_LFG_JOIN_RESULT, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleLfgJoinResult434(Packet packet)
+        {
+            packet.ReadEnum<LfgRoleCheckStatus>("Reason", TypeCode.Int32);
+            packet.ReadEnum<LfgJoinResult>("Join Result", TypeCode.Byte);
+            packet.ReadUInt32("Group Id?");
+            packet.ReadByte("Unk8 2"); // seen 6 when Join Result = 27 (Not in enum)
+            packet.ReadTime("Unk Date");
+
+            var guid = new byte[8];
+
+            guid[2] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+
+            var count = packet.ReadBits("Count", 24);
+            var guids = new byte[count][];
+            var counts = new uint[count];
+
+            for (var i = 0; i < count; ++i)
+            {
+                guids[i] = new byte[8];
+                guids[i][7] = packet.ReadBit();
+                guids[i][5] = packet.ReadBit();
+                guids[i][3] = packet.ReadBit();
+                guids[i][6] = packet.ReadBit();
+                guids[i][0] = packet.ReadBit();
+                guids[i][2] = packet.ReadBit();
+                guids[i][4] = packet.ReadBit();
+                guids[i][1] = packet.ReadBit();
+                counts[i] = packet.ReadBits("Dungeon Count", 22, i);
+            }
+
+            guid[4] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+
+            for (var i = 0; i < count; ++i)
+            {
+                for (var j = 0; j < counts[i]; j++)
+                    ReadDungeonJoinResults(ref packet, i, j);
+
+                if (guids[i][2] != 0) guids[i][2] ^= packet.ReadByte();
+                if (guids[i][5] != 0) guids[i][5] ^= packet.ReadByte();
+                if (guids[i][1] != 0) guids[i][1] ^= packet.ReadByte();
+                if (guids[i][0] != 0) guids[i][0] ^= packet.ReadByte();
+                if (guids[i][4] != 0) guids[i][4] ^= packet.ReadByte();
+                if (guids[i][3] != 0) guids[i][3] ^= packet.ReadByte();
+                if (guids[i][6] != 0) guids[i][6] ^= packet.ReadByte();
+                if (guids[i][7] != 0) guids[i][7] ^= packet.ReadByte();
+        
+                packet.WriteGuid("Guid", guids[i], i);
+            }
+        
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+
+            packet.WriteGuid("Unk Guid", guid);
         }
 
         [Parser(Opcode.SMSG_LFG_ROLE_CHOSEN)]
