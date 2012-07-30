@@ -1650,9 +1650,9 @@ namespace WowPacketParser.Parsing.Parsers
         {
                 packet.ReadInt32("Guild Experience Reward");
                 packet.ReadInt32("Gold Reward");
-                packet.ReadInt32("Total Count");
-                packet.ReadInt32("Gold Reward"); // requires perk Cash Flow?
                 packet.ReadInt32("Current Count");
+                packet.ReadInt32("Gold Reward"); // requires perk Cash Flow?
+                packet.ReadInt32("Total Count");
 
         }
 
