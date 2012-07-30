@@ -1000,6 +1000,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadTime("Date");
         }
 
+        [Parser(Opcode.SMSG_MAP_OBJ_EVENTS)]
+        public static void HandleMapObjEvents(Packet packet)
+        {
+            packet.ReadInt32("unk int32");
+            var count = packet.ReadInt32("Data Count");
+            for (var i = 0; i < count; i++)
+                packet.ReadByte("Unk Byte", i);
+        }
+
         [Parser(Opcode.SMSG_MINIGAME_STATE)]
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]

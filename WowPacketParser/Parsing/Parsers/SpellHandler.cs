@@ -1125,5 +1125,33 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_MISSILE_CANCEL)] // 4.3.4
+        public static void HandleMissileCancel(Packet packet)
+        {
+            var guid = new byte[8];
+            guid[7] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            packet.ReadBit("Cancel");
+            guid[1] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+
+            packet.WriteGuid("Guid", guid);
+
+        }
     }
 }
