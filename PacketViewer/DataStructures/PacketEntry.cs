@@ -9,11 +9,13 @@ namespace PacketViewer.DataStructures
     public class PacketEntry
     {
         public uint Number;
+        public byte SubPacketNumber;
+        public string Dir;
         public ushort Opcode;
         public string OpcodeString;
         public DateTime Time;
         public uint Sec;
         public ushort Length;
-        public string ParsedPacket;
+        public string Status;
     }
 }

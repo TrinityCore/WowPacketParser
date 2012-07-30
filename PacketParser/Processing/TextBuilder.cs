@@ -16,6 +16,7 @@ namespace PacketParser.Processing
         public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return ProcessPacket; } }
         public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return ProcessedPacket; } }
         public ProcessDataEventHandler ProcessAnyDataHandler { get { return ProcessData; } }
+        public ProcessedDataNodeEventHandler ProcessedAnyDataNodeHandler { get { return ProcessedDataNode; } }
 
         private StringBuilder output;
         private StringBuilder align;
@@ -60,36 +61,37 @@ namespace PacketParser.Processing
             LastPacket = null;
         }
 
-        public void ProcessData(string name, int? index, Object data, Type t, TreeNodeEnumerator constIter) 
+        public void ProcessedDataNode(string name, Object data, Type t)
         {
-            foreach (var val in constIter.CurrentClosedNodes)
+            if (t == typeof(Packet))
             {
-                if (val.type == typeof(Packet))
+                var pac = data as Packet;
+                // errors
+                switch (pac.Status)
                 {
-                    var pac = val.obj as Packet;
-                    // errors
-                    switch (pac.Status)
-                    {
-                        case ParsedStatus.Success:
-                            break;
-                        case ParsedStatus.WithErrors:
-                            output.Append(align);
-                            output.AppendLine(pac.ErrorMessage);
-                            break;
-                        case ParsedStatus.NotParsed:
-                            output.Append(align);
-                            output.AppendLine("Opcode not parsed");
-                            output.Append(align);
-                            output.AppendLine(pac.ToHex());
-                            break;
-                    }
-                }
-                else if (val.type == typeof(NamedTreeNode))
-                {
-                    align.Remove(align.Length - 1, 1);
+                    case ParsedStatus.Success:
+                        break;
+                    case ParsedStatus.WithErrors:
+                        output.Append(align);
+                        output.AppendLine(pac.ErrorMessage);
+                        break;
+                    case ParsedStatus.NotParsed:
+                        output.Append(align);
+                        output.AppendLine("Opcode not parsed");
+                        output.Append(align);
+                        output.AppendLine(pac.ToHex());
+                        break;
                 }
             }
+            else if (t == typeof(NamedTreeNode))
+            {
+                if (align.Length > 0)
+                    align.Remove(align.Length - 1, 1);
+            }
+        }
 
+        public void ProcessData(string name, int? index, Object data, Type t) 
+        {
             if (!(data is ITextOutputDisabled))
             {
                 switch (Type.GetTypeCode(t))

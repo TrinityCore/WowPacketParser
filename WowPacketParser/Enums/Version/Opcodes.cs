@@ -17,7 +17,7 @@ namespace PacketParser.Enums.Version
     public static class Opcodes
     {
         [ThreadStatic]
-        private static BiDictionary<Opcode, int> Dict = null;
+        private static BiDictionary<Opcode, int> Dict;
 
         private static BiDictionary<Opcode, int> GetOpcodeDictionary(ClientVersionBuild build)
         {
@@ -111,7 +111,7 @@ namespace PacketParser.Enums.Version
         public static string GetOpcodeName(int opcodeId)
         {
             var opc = GetOpcode(opcodeId);
-            return opc == 0 ? opcodeId.ToString(CultureInfo.InvariantCulture) : Enum<Opcode>.ToString(opcodeId);
+            return opc == 0 ? opcodeId.ToString() : Enum<Opcode>.ToString(opc);
         }
     }
 }

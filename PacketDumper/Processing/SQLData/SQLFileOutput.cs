@@ -28,6 +28,7 @@ namespace PacketDumper.Processing.SQLData
         public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return null; } }
         public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return null; } }
         public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+        public ProcessedDataNodeEventHandler ProcessedAnyDataNodeHandler { get { return null; } }
 
         string FileName;
         string LogPrefix;

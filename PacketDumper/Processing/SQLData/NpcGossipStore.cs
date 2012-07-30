@@ -22,6 +22,7 @@ namespace PacketDumper.Processing.SQLData
         public ProcessPacketEventHandler ProcessAnyPacketHandler {get {return ProcessPacket;} }
         public ProcessedPacketEventHandler ProcessedAnyPacketHandler  {get {return null;} }
         public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+        public ProcessedDataNodeEventHandler ProcessedAnyDataNodeHandler { get { return null; } }
 
         // Gossips (MenuId, TextId)
         public static readonly TimeSpanDictionary<Tuple<uint, uint>, Gossip> Gossips = new TimeSpanDictionary<Tuple<uint, uint>, Gossip>();

@@ -64,12 +64,29 @@ namespace XPTable.Renderers
             if (hasVisual)
             {
                 RemoveVisual(cell);
+                var oldControl = this.Control;
                 this.Control = control;
+                if (oldControl != null)
+                    oldControl.Dispose();
                 AddVisual(cell);
             }
             else
             {
+                var oldControl = this.Control;
                 this.Control = control;
+                if (oldControl != null)
+                    oldControl.Dispose();
+            }
+        }
+
+        public void RemoveControl(Cell cell)
+        {
+            if (this.Control != null)
+            {
+                RemoveVisual(cell);
+                var oldControl = this.Control;
+                oldControl.Dispose();
+                this.Control = null;
             }
         }
 

@@ -19,6 +19,7 @@ namespace PacketDumper.Processing
         public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return ProcessPacket; } }
         public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return ProcessedPacket; } }
         public ProcessDataEventHandler ProcessAnyDataHandler { get { if (Filters.Enabled) return ProcessData; return Stub; } }
+        public ProcessedDataNodeEventHandler ProcessedAnyDataNodeHandler { get { return null; } }
 
         StreamWriter writer = null;
         StreamWriter errorWriter = null;
@@ -60,11 +61,11 @@ namespace PacketDumper.Processing
             return true;
         }
 
-        public void Stub(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter)
+        public void Stub(string name, int? index, Object obj, Type t)
         {
         }
 
-        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter)
+        public void ProcessData(string name, int? index, Object obj, Type t)
         {
             if (!WriteToFile)
                 return;
@@ -84,6 +85,7 @@ namespace PacketDumper.Processing
             subPackets = new StringBuilder();
             WriteToFile = true;
         }
+
         public void ProcessedPacket(Packet packet)
         {
             if (!WriteToFile)

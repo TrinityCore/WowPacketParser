@@ -17,6 +17,7 @@ namespace PacketDumper.Processing.SQLData
         public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return ProcessPacket; } }
         public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return null; } }
         public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+        public ProcessedDataNodeEventHandler ProcessedAnyDataNodeHandler { get { return null; } }
 
         public readonly TimeSpanDictionary<uint, ItemTemplate> ItemTemplates = new TimeSpanDictionary<uint, ItemTemplate>();
         public bool Init(PacketFileProcessor file)

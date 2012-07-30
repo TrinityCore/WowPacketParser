@@ -20,11 +20,15 @@ namespace PacketParser.Processing
         ProcessPacketEventHandler ProcessAnyPacketHandler {get;}
         ProcessedPacketEventHandler ProcessedAnyPacketHandler{get;}
         ProcessDataEventHandler ProcessAnyDataHandler{get;}
+        ProcessedDataNodeEventHandler ProcessedAnyDataNodeHandler { get; }
     }
 
     public delegate void ProcessPacketEventHandler(Packet packet);
 
     public delegate void ProcessedPacketEventHandler(Packet packet);
 
-    public delegate void ProcessDataEventHandler(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter);
+    public delegate void ProcessDataEventHandler(string name, int? index, Object obj, Type t);
+
+    public delegate void ProcessedDataNodeEventHandler(string name, Object obj, Type t);
+
 }

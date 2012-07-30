@@ -12,16 +12,15 @@ namespace PacketViewer.Forms
             Tab = tab;
         }
 
-        public override System.Windows.Forms.Control GetControl(Cell cell)
+        public override System.Windows.Forms.Control CreateControl(Cell cell)
         {
             if (cell.Row.Index % 2 == 0)
                 return null;
-            DetailsView cont = new DetailsView();
-
-            var entry = Tab.dataManager.GetDataForTableRow(cell.Row.Index - 1);
-            cont.textBox1.Text = entry.ParsedPacket;
+            DetailsView cont = new DetailsView(cell.Row);
             cont.Height = cell.Row.Height;
             return cont;
         }
+
+        public override bool RemoveControlWhenInvisible { get { return true; } }
     }
 }

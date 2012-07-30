@@ -20,6 +20,7 @@ namespace PacketDumper.Processing.SQLData
         public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return ProcessPacket; } }
         public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return null; } }
         public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+        public ProcessedDataNodeEventHandler ProcessedAnyDataNodeHandler { get { return null; } }
 
         // `creature_text`
         public readonly TimeSpanMultiDictionary<uint, CreatureText> CreatureTexts = new TimeSpanMultiDictionary<uint, CreatureText>();

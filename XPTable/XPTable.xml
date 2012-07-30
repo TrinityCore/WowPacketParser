@@ -598,7 +598,7 @@
             Creates a ControlFactory with default values.
             </summary>
         </member>
-        <member name="M:XPTable.Models.ControlFactory.GetControl(XPTable.Models.Cell)">
+        <member name="M:XPTable.Models.ControlFactory.CreateControl(XPTable.Models.Cell)">
             <summary>
             Creates the control to show for the given cell.
             Use Cell.Data to store any state object for the cell.
@@ -606,14 +606,10 @@
             <param name="cell">The cell that the control will be added to.</param>
             <returns></returns>
         </member>
-        <member name="M:XPTable.Models.ControlFactory.UpdateControl(XPTable.Models.Cell,System.Windows.Forms.Control)">
+        <member name="P:XPTable.Models.ControlFactory.RemoveControlWhenInvisible">
             <summary>
-            Allows an existing control to be modified or swapped for another control.
-            Return null if the same control is left in place, or return a control if that is to replace the current one.
+            Changes the behaviour when row becomes invisible - remove control when true, hide control when false
             </summary>
-            <param name="cell">The cell that contains the control.</param>
-            <param name="control">The current control in that cell.</param>
-            <returns></returns>
         </member>
         <member name="T:XPTable.Models.CheckBoxColumn">
             <summary>

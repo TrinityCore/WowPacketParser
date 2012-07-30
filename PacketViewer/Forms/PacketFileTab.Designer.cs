@@ -41,6 +41,11 @@ namespace PacketViewer.Forms
                 backgroundWorkerProcessPackets.Dispose();
                 backgroundWorkerProcessPackets = null;
             }
+            if (dataManager != null)
+            {
+                dataManager.Dispose();
+                dataManager = null;
+            }
             if (disposing && (components != null))
             {
                 components.Dispose();

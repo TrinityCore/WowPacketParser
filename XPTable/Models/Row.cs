@@ -671,6 +671,7 @@ namespace XPTable.Models
                 if (expandSubRows != value)
                 {
                     expandSubRows = value;
+                    
                     this.OnPropertyChanged(new RowEventArgs(this, RowEventType.ExpandSubRowsChanged));
                     if (this.TableModel != null && SubRows != null)
                     {
@@ -1055,7 +1056,15 @@ namespace XPTable.Models
                 else
                     return this.height;
             }
-            set { this.height = value; }
+            set 
+            {
+                if (CanRaiseEvents)
+                {
+                    if (this.TableModel != null)
+                        this.TableModel.Table.Invalidate();
+                }
+                this.height = value; 
+            }
         }
 
 		/// <summary>

@@ -18,14 +18,16 @@ namespace PacketParser.Processing
         public readonly string LogPrefix;
         protected Dictionary<Type, IPacketProcessor> Processors = new Dictionary<Type, IPacketProcessor>();
 
-        protected Dictionary<Opcode, ProcessPacketEventHandler> ProcessPacketHandlers = new Dictionary<Opcode, ProcessPacketEventHandler>();
+        //protected Dictionary<Opcode, ProcessPacketEventHandler> ProcessPacketHandlers = new Dictionary<Opcode, ProcessPacketEventHandler>();
         protected ProcessPacketEventHandler ProcessAnyPacketHandler;
 
-        protected Dictionary<Opcode, ProcessedPacketEventHandler> ProcessedPacketHandlers = new Dictionary<Opcode, ProcessedPacketEventHandler>();
+        //protected Dictionary<Opcode, ProcessedPacketEventHandler> ProcessedPacketHandlers = new Dictionary<Opcode, ProcessedPacketEventHandler>();
         protected ProcessedPacketEventHandler ProcessedAnyPacketHandler;
 
-        protected Dictionary<Opcode, ProcessDataEventHandler> ProcessDataHandlers = new Dictionary<Opcode, ProcessDataEventHandler>();
+        //protected Dictionary<Opcode, ProcessDataEventHandler> ProcessDataHandlers = new Dictionary<Opcode, ProcessDataEventHandler>();
         protected ProcessDataEventHandler ProcessAnyDataHandler;
+
+        protected ProcessedDataNodeEventHandler ProcessedAnyDataNodeHandler;
 
         public PacketFileProcessor(string fileName, Tuple<int, int> number = null)
         {
@@ -168,9 +170,26 @@ namespace PacketParser.Processing
                     ProcessAnyPacketHandler += i.ProcessAnyPacketHandler;
                     ProcessAnyDataHandler += i.ProcessAnyDataHandler;
                     ProcessedAnyPacketHandler += i.ProcessedAnyPacketHandler;
+                    ProcessedAnyDataNodeHandler += i.ProcessedAnyDataNodeHandler;
                 }
             }
+            if (ProcessAnyPacketHandler == null)
+                ProcessAnyPacketHandler += Stub1;
+            if (ProcessedAnyPacketHandler == null)
+                ProcessedAnyPacketHandler += Stub2;
+            if (ProcessAnyDataHandler == null)
+                ProcessAnyDataHandler += Stub3;
+            if (ProcessedAnyDataNodeHandler == null)
+                ProcessedAnyDataNodeHandler += Stub4;
         }
+
+        public void Stub1(Packet packet){}
+
+        public void Stub2(Packet packet){}
+
+        public void Stub3(string name, int? index, Object obj, Type t){}
+
+        public void Stub4(string name, Object obj, Type t){}
 
         public T GetProcessor<T>() where T : IPacketProcessor
         {
@@ -198,6 +217,7 @@ namespace PacketParser.Processing
             {
                 foreach (var i in itr.CurrentClosedNodes)
                 {
+                    ProcessedAnyDataNodeHandler(i.name, i.obj, i.type);
                     if (i.type == typeof(Packet))
                         ProcessedAnyPacketHandler((Packet)i.obj);
                 }
@@ -210,7 +230,7 @@ namespace PacketParser.Processing
                     ProcessAnyPacketHandler(packet);
                 }
 
-                ProcessAnyDataHandler(itr.Name, itr.Index, itr.Current, itr.Type, itr);
+                ProcessAnyDataHandler(itr.Name, itr.Index, itr.Current, itr.Type);
                 moveNext = itr.MoveNext();
             }
         }

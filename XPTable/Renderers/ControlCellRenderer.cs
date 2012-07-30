@@ -103,43 +103,36 @@ namespace XPTable.Renderers
 		{
 			object rendererData = this.GetRendererData(cell);
 
+            if (rendererData == null)
+            {
+                rendererData = new ControlRendererData(null);
+                this.SetRendererData(cell, rendererData);
+            }
+            if (rendererData == null)
+                throw new Exception("asd");
+            return rendererData as ControlRendererData;
+        }
+
+        protected void InitControl(Cell cell)
+        {
+            var renderData = GetControlRendererData(cell);
+            if (renderData.Control != null)
+                return;
             if (this.ControlFactory != null)
             {
-                if (rendererData == null || !(rendererData is ControlRendererData))
-                {
-                    // Never shown a control, so ask what we should do
-                    Control control = this.ControlFactory.GetControl(cell);
-                    if (control != null)
-                    {
-                        //cell.Row.TableModel.Table.Controls.Add(control);
-                        ControlRendererData data = new ControlRendererData(control);
-                        this.SetRendererData(cell, data);
-                        rendererData = data;
-                    }
-                }
-                else
-                {
-                    // Already got a control, but should we swap it for another
-                    ControlRendererData data = (ControlRendererData)rendererData;
-                    Control oldControl = data.Control;
-                    // This next call allows the properties of the control to be updated, or to provide
-                    // an entirely new control
-                    Control newControl = this.ControlFactory.UpdateControl(cell, data.Control);
-                    if (newControl == null)
-                    {
-                        // we need to remove old control
-                        data.RemoveVisual(cell);
-                        cell.RendererData = null;
-                        return null;
-                    }
-                    if (newControl != oldControl)
-                    {
-                        data.ChangeControl(cell, newControl);
-                    }
-                }
+                // Never shown a control, so ask what we should do
+                Control control = this.ControlFactory.CreateControl(cell);
+                renderData.ChangeControl(cell, control);
             }
+        }
 
-            return (ControlRendererData)rendererData;
+        internal static void RemoveControlRenderData(Cell cell)
+        {
+            if (cell.RendererData == null)
+                return;
+            var controlData = ((ControlRendererData)cell.RendererData);
+            controlData.RemoveControl(cell);
+            cell.RendererData = null;
         }
 
 		#endregion
@@ -206,20 +199,17 @@ namespace XPTable.Renderers
 			{
 				return;
 			}
-            ControlRendererData controlData = this.GetControlRendererData(e.Cell);
+            ControlRendererData controlData = GetControlRendererData(e.Cell);
 
-			if (controlData != null && controlData.Control != null)
+			if (controlData.Control != null)
 			{
                 this.controlSize = controlData.Control.Size;
                 Rectangle controlRect = this.CalcControlRect(this.LineAlignment, this.Alignment);
 
-				//controlData.Control.Size = controlRect.Size;
 				controlData.Control.Location = controlRect.Location;
-				//controlData.Control.BringToFront();
                 
                 if (e.Cell.WidthNotSet)
                     e.Cell.ContentWidth = controlRect.Size.Width;
-                //controlData.Control.Refresh();
 			}
 		}
 
@@ -233,22 +223,25 @@ namespace XPTable.Renderers
 
         public override void OnRowBecameVisible(Cell cell)
         {
-            ControlRendererData controlData = this.GetControlRendererData(cell);
-            if (controlData != null)
+            ControlRendererData controlData = GetControlRendererData(cell);
+            InitControl(cell);
+            if (controlData.Control != null)
             {
                 Rectangle controlRect = this.CalcControlRect(this.LineAlignment, this.Alignment);
-                if (controlData.Control != null)
-                    controlData.Control.Location = controlRect.Location;
+                controlData.Control.Location = controlRect.Location;
                 controlData.AddVisual(cell);
             }
         }
 
         public override void OnRowBecameInvisible(Cell cell)
         {
-            ControlRendererData controlData = this.GetControlRendererData(cell);
-            if (controlData != null)
+            ControlRendererData controlData = GetControlRendererData(cell);
+            if (controlData.Control != null)
             {
-                controlData.RemoveVisual(cell);
+                if (ControlFactory != null && ControlFactory.RemoveControlWhenInvisible == true)
+                    controlData.RemoveControl(cell);
+                else
+                    controlData.RemoveVisual(cell);
             }
         }
 		#endregion

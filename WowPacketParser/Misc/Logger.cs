@@ -20,6 +20,7 @@ namespace PacketDumper.Processing
         public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return null; } }
         public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return null; } }
         public ProcessDataEventHandler ProcessAnyDataHandler { get { return ProcessData; } }
+        public ProcessedDataNodeEventHandler ProcessedAnyDataNodeHandler { get { return null; } }
 
         public bool Init(PacketFileProcessor proc)
         {
@@ -31,7 +32,7 @@ namespace PacketDumper.Processing
             WriteErrors();
         }
 
-        public void ProcessData(string name, int? index, Object obj, Type t, TreeNodeEnumerator constIter)
+        public void ProcessData(string name, int? index, Object obj, Type t)
         {
             if (obj is StoreEnum)
             {

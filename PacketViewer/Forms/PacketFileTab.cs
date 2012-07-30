@@ -52,10 +52,11 @@ namespace PacketViewer.Forms
             Selected = false;
         }
 
-        public VirtualDataManager dataManager = new VirtualDataManager();
+        public VirtualDataManager dataManager = null;
 
         private void InitTable()
         {
+            dataManager = new VirtualDataManager();
             Table table = this.tablePackets;
             table.BeginUpdate();
             table.SelectionStyle = SelectionStyle.ListView; // The Table control on a form - already initialised
@@ -67,20 +68,28 @@ namespace PacketViewer.Forms
             var col0 = new ControlColumn("", 1);
             col0.ControlFactory = new DetailsFactory(this);
             col0.ControlOffset = new Point(0, 0);
-            var col1 = new NumberColumn("Num", 200);
+            var col1 = new NumberColumn("Num", 50);
             col1.Editable = false;
-            var col2 = new TextColumn("Opcode", 200);
+            var col12 = new NumberColumn("SubPacketNum", 50);
+            col12.Editable = false;
+            var col13 = new NumberColumn("OpcodeID", 50);
+            col13.Editable = false;
+            var col2 = new TextColumn("OpcodeName", 250);
             col2.Editable = false;
-            var col3 = new DateTimeColumn("Time", 200);
+            var col21 = new TextColumn("Dir", 40);
+            col21.Editable = false;
+            var col3 = new DateTimeColumn("Time", 100);
             col3.Editable = false;
             col3.DateTimeFormat = DateTimePickerFormat.Custom;
             col3.CustomDateTimeFormat = "d/m/yyyy hh:mm";
             col3.ShowDropDownButton = false;
-            var col4 = new NumberColumn("Sec", 200);
+            var col4 = new NumberColumn("Sec", 50);
             col4.Editable = false;
-            var col5 = new NumberColumn("Length", 200);
+            var col41 = new TextColumn("Status", 50);
+            col41.Editable = false;
+            var col5 = new NumberColumn("Length", 50);
             col5.Editable = false;
-            table.ColumnModel = new ColumnModel(new Column[] {col0, col1, col2, col3, col4, col5 });
+            table.ColumnModel = new ColumnModel(new Column[] { col0, col1, col12, col13, col2, col21, col3, col4, col41, col5 });
             TableModel model = new TableModel();
             table.CellDoubleClick += new CellMouseEventHandler(ClickedCell);
             table.FamilyRowSelect = false;
@@ -103,18 +112,20 @@ namespace PacketViewer.Forms
             if (packets.Count == 0)
                 return;
             this.tablePackets.BeginUpdate();
-            dataManager.BeginUpdate((int)(packets[0].Number * 2));
+            var id = this.tablePackets.TableModel.Rows.Count;
+            dataManager.BeginUpdate((int)(id));
             var rows = this.tablePackets.TableModel.Rows;
             foreach (var entry in packets)
             {
-                dataManager.AddDataForTableRow(entry, (int)entry.Number*2);
+                dataManager.AddDataForTableRow(entry, (int)id);
                 RowWithSubrows row = new RowWithSubrows();
                 row.ExpandSubRows = false;
 
                 this.tablePackets.TableModel.Rows.Add(row);
                 RowWithParent detailsRow = new RowWithParent();
-                detailsRow.Height = 150;
+                detailsRow.Height = 2;
                 row.SubRows.Add(detailsRow);
+                id += 2;
             }
             dataManager.EndUpdate();
             this.tablePackets.EndUpdate();
@@ -184,7 +195,7 @@ namespace PacketViewer.Forms
         }
     }
 
-    public class VirtualDataManager
+    public class VirtualDataManager : IDisposable
     {
         private CacheFileManager<PacketEntry[]> _data = null;
         public List<byte> cachedBlockUpdatesLeft = new List<byte>();
@@ -377,13 +388,13 @@ namespace PacketViewer.Forms
             _table.EventsDisabled = true;
             if ((tableRowIndex % 2) == 0)
             {
-                row.cells.AddRange(new Cell[] {new CellWithData(null), new CellWithData(entry.Number+1), new CellWithText(entry.OpcodeString),
-                    new CellWithData(entry.Time), new CellWithData(entry.Sec), new CellWithData(entry.Length)});
+                row.cells.AddRange(new Cell[] {new CellWithData(null), new CellWithData(entry.Number+1), new CellWithData((int)entry.SubPacketNumber), new CellWithData(entry.Opcode), new CellWithText(entry.OpcodeString),
+                    new CellWithText(entry.Dir), new CellWithData(entry.Time), new CellWithData(entry.Sec), new CellWithText(entry.Status), new CellWithData(entry.Length)});
             }
             else
             {
                 var cell = new CellWithSpan();
-                cell.ColSpan = 6;
+                cell.ColSpan = 10;
                 row.cells.Add(cell);
             }
             _table.EventsDisabled = false;
@@ -393,6 +404,11 @@ namespace PacketViewer.Forms
         {
             if (rows[tableRowIndex] != null)
                 rows.RemoveCacheAt(tableRowIndex);
+        }
+
+        public void Dispose()
+        {
+            _data.Dispose();
         }
     }
 }

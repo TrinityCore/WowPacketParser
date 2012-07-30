@@ -26,19 +26,12 @@ namespace XPTable.Models
         /// </summary>
         /// <param name="cell">The cell that the control will be added to.</param>
         /// <returns></returns>
-        public abstract Control GetControl(Cell cell);
+        public abstract Control CreateControl(Cell cell);
 
         /// <summary>
-        /// Allows an existing control to be modified or swapped for another control.
-        /// Return null if the same control is left in place, or return a control if that is to replace the current one.
+        /// Changes the behaviour when row becomes invisible - remove control when true, hide control when false
         /// </summary>
-        /// <param name="cell">The cell that contains the control.</param>
-        /// <param name="control">The current control in that cell.</param>
-        /// <returns></returns>
-        public virtual Control UpdateControl(Cell cell, Control control)
-        {
-            return control;
-        }
+        public virtual bool RemoveControlWhenInvisible { get { return false; } }
         
         #endregion
     }

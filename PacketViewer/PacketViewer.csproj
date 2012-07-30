@@ -120,7 +120,10 @@
     <Compile Include="Forms\TabPageFile.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Processing\BinOutput.cs" />
     <Compile Include="Processing\PacketFileViewer.cs" />
+    <Compile Include="Processing\TableOutput.cs" />
+    <Compile Include="Processing\TextOutput.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\DetailsView.resx">

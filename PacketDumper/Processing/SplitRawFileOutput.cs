@@ -19,6 +19,7 @@ namespace PacketDumper.Processing
         public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return ProcessPacket; } }
         public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return null; } }
         public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+        public ProcessedDataNodeEventHandler ProcessedAnyDataNodeHandler { get { return null; } }
 
         IBinaryPacketWriter packetWriter = null;
         private const string Folder = "split"; // might want to move to config later

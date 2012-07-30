@@ -13,6 +13,7 @@ namespace PacketParser.Processing
         public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return null; } }
         public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return null; } }
         public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+        public ProcessedDataNodeEventHandler ProcessedAnyDataNodeHandler { get { return null; } }
 
         public readonly TimeSpanDictionary<Guid, WoWObject> Objects = new TimeSpanDictionary<Guid, WoWObject>();
 

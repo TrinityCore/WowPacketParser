@@ -16,6 +16,7 @@ namespace PacketParser.Processing
         public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return null; } }
         public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return null; } }
         public ProcessDataEventHandler ProcessAnyDataHandler { get { return null; } }
+        public ProcessedDataNodeEventHandler ProcessedAnyDataNodeHandler { get { return null; } }
 
         public readonly Dictionary<Guid, string> PlayerNames = new Dictionary<Guid, string>();
         public readonly TimeSpanDictionary<Tuple<uint, StoreNameType>, string> EntryNames = new TimeSpanDictionary<Tuple<uint, StoreNameType>, string>();

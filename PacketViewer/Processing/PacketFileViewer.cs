@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using PacketParser.Enums;
-using PacketParser.Enums.Version;
 using PacketParser.Processing;
 using PacketParser.Misc;
 using PacketParser.Loading;
@@ -14,9 +7,7 @@ using PacketParser.Parsing;
 
 using System.ComponentModel;
 
-using PacketViewer.DataStructures;
 using PacketViewer.Forms;
-using System.Threading;
 
 namespace PacketViewer.Processing
 {
@@ -52,9 +43,6 @@ namespace PacketViewer.Processing
             // initialize processors
             InitProcessors();
 
-            var packets = new List<PacketEntry>();
-            bool first = true;
-
             uint oldPct = 0;
             uint progressCheckPackets = 0;
             worker.ReportProgress((int)oldPct);
@@ -75,7 +63,7 @@ namespace PacketViewer.Processing
                     return;
                 }
 
-                ProcessPacket(packet, packets);
+                ProcessPacket(packet);
 
                 if (progressCheckPackets >= minPacketsForProgressUpdate)
                 {
@@ -84,22 +72,10 @@ namespace PacketViewer.Processing
                     {
                         worker.ReportProgress((int)newPct);
                         oldPct = newPct;
-                        if (Tab != null)
-                        {
-                            AddPackets(packets);
-                            if (first)
-                            {
-                                first = false;
-                                packets = new List<PacketEntry>(packets.Count * 3);
-                            }
-                            else
-                                packets.Clear();
-                        }
                     }
                     progressCheckPackets = 0;
                 }
             }
-            AddPackets(packets);
 
             FinishProcessors();
 
@@ -108,40 +84,12 @@ namespace PacketViewer.Processing
             GC.Collect();
         }
 
-        delegate void AddPacketCallback(List<PacketEntry> packets);
-
-        public void AddPackets(List<PacketEntry> packets)
-        {
-            if (Tab.InvokeRequired)
-            {
-                AddPacketCallback d = new AddPacketCallback(Tab.AddPackets);
-                Tab.Invoke(d, new object[] { packets });
-            }
-            else
-            {
-                Tab.AddPackets(packets);
-            }
-        }
-
-        private void ProcessPacket(Packet packet, List<PacketEntry> packets)
+        private void ProcessPacket(Packet packet)
         {
             // Parse the packet, read the data into StoreData tree
             Handler.Parse(packet);
 
             ProcessData(packet);
-
-            var packetEntry = new PacketEntry
-            {
-                Number = (uint)packet.Number,
-                Length = (ushort)packet.Length,
-                Sec = (uint)packet.TimeSpan.TotalSeconds,
-                Time = packet.Time,
-                Opcode = (ushort)packet.Opcode,
-                OpcodeString = Opcodes.GetOpcodeName(packet.Opcode),
-                ParsedPacket = GetProcessor<TextBuilder>().LastPacket
-            };
-
-            packets.Add(packetEntry);
 
             // Close Writer, Stream - Dispose
             packet.ClosePacket();

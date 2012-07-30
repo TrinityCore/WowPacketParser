@@ -8,7 +8,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace PacketParser.Misc
 {
     // this class stores packet data in a file, provides read/write access for blocks of data
-    public class CacheFileManager<BlockType> where BlockType : class 
+    public class CacheFileManager<BlockType> : IDisposable where BlockType : class 
     {
         protected List<long> _dataBlocksFileOffset = new List<long>();
         protected List<BlockType> _dataBlocks = new List<BlockType>();
@@ -17,6 +17,7 @@ namespace PacketParser.Misc
         protected FileStream _file;
         protected static int _lastCacheFile = 0;
         protected BinaryFormatter bFormatter = new BinaryFormatter();
+        protected string _fileName;
 
         protected int _dataUpdateFirstBlockIndex = -1;
         protected long _dataBlockUpdateFirstBlockOffset = 0;
@@ -24,7 +25,8 @@ namespace PacketParser.Misc
         public CacheFileManager()
         {
             _lastCacheFile++;
-            _file = new FileStream("cachefile_" + _lastCacheFile, FileMode.OpenOrCreate);
+            _fileName = "cachefile_" + _lastCacheFile;
+            _file = new FileStream(_fileName, FileMode.OpenOrCreate);
         }
 
         public bool BlockExists(int blockIndex)
@@ -148,6 +150,13 @@ namespace PacketParser.Misc
             var count = GetBlocksCount();
             for (int i = 0; i < count; ++i)
                 UnCacheBlock(i);
+        }
+
+        public void Dispose()
+        {
+            _file.Close();
+            _file.Dispose();
+            File.Delete(_fileName);
         }
     }
 }

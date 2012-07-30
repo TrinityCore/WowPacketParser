@@ -29,6 +29,7 @@ using System;
 using System.Collections;
 
 using XPTable.Events;
+using XPTable.Renderers;
 
 
 namespace XPTable.Models
@@ -199,12 +200,7 @@ namespace XPTable.Models
                 {
                     Cell cell = this.owner.Table.TableModel.Rows[i].Cells[index];
 
-                    var data = cell.RendererData as XPTable.Renderers.ControlRendererData;
-                    if (data != null && data.Control != null)
-                    {
-                        cell.Row.TableModel.Table.Controls.Remove(data.Control);
-                        //cell.Row.TableModel.Table.RenderedCotrols.Remove((cell.RendererData as XPTable.Renderers.ControlRendererData));
-                    }
+                    ControlCellRenderer.RemoveControlRenderData(cell);
                 }
             }
 		}
