@@ -757,7 +757,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (finished)
                 packet.ReadByte("Winner");
 
-            var count = packet.ReadUInt32("Score count");
+            var count = packet.ReadUInt32("Score Count");
             for (var i = 0; i < count; i++)
             {
                 packet.ReadGuid("Player GUID", i);
@@ -842,6 +842,133 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_PVP_LOG_DATA)] // 4.3.4
+        public static void HandlePvPLogData434(Packet packet)
+        {
+            // FIXME, lots of unks
+            var arenaStrings = packet.ReadBit("Has Arena Strings");
+            var arena = packet.ReadBit("Arena");
+            var strlen1 = 0u;
+            var strlen2 = 0u;
+
+            if (arenaStrings)
+            {
+                strlen1 = packet.ReadBits(8);
+                strlen2 = packet.ReadBits(8);
+            }
+
+            var count = packet.ReadBits("Score Count", 21);
+
+            var guids = new byte[count][];
+            var valuesCount = new uint[count];
+            var unkBits2 = new bool[count];
+            var unkBits3 = new bool[count];
+            var unkBits4 = new bool[count];
+            var unkBits5 = new bool[count];
+            var unkBits6 = new bool[count];
+
+            for (int i = 0; i < count; ++i)
+            {
+                guids[i] = new byte[8];
+
+                packet.ReadBit("Unk Bit 1", i); // 13
+                unkBits2[i] = packet.ReadBit("Unk Bit 2", i); // 40
+
+                guids[i][2] = packet.ReadBit();
+
+                unkBits3[i] = packet.ReadBit("Unk Bit 3", i); // 16
+                unkBits4[i] = packet.ReadBit("Unk Bit 4", i); // 56
+                unkBits5[i] = packet.ReadBit("Unk Bit 5", i); // 48
+                unkBits6[i] = packet.ReadBit("Unk Bit 6", i); // 64
+
+                guids[i][3] = packet.ReadBit();
+                guids[i][0] = packet.ReadBit();
+                guids[i][5] = packet.ReadBit();
+                guids[i][1] = packet.ReadBit();
+                guids[i][6] = packet.ReadBit();
+
+                packet.ReadBit("Unk Bit 7", i); // 12
+
+                guids[i][7] = packet.ReadBit();
+
+                valuesCount[i] = packet.ReadBits("Value Count", 24, i);
+
+                guids[i][4] = packet.ReadBit();
+            }
+
+            var finished = packet.ReadBit("Finished");
+
+            if (arena)
+            {
+                packet.ReadInt32("Unk Int32 1"); // 62, [1] Points Lost
+                packet.ReadInt32("Unk Int32 2"); // 58, [1] Points Gained
+                packet.ReadInt32("Unk Int32 3"); // 60, [1] Matchmaker Rating         (wrong order)
+                packet.ReadInt32("Unk Int32 4"); // 63, [0] Points Lost
+                packet.ReadInt32("Unk Int32 5"); // 59, [0] Points Gained
+                packet.ReadInt32("Unk Int32 6"); // 61, [0] Matchmaker Rating
+            }
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Healing done", i);
+                packet.ReadInt32("Damage done", i);
+
+                if (unkBits3[i])
+                {
+                    packet.ReadInt32("Bonus Honor", i);
+                    packet.ReadInt32("Deaths", i);
+                    packet.ReadInt32("Honorable Kills", i);
+                }
+
+                if (guids[i][4] != 0) guids[i][4] ^= packet.ReadByte();
+
+                packet.ReadInt32("Unk Int32 12");
+
+                if (unkBits5[i])
+                    packet.ReadInt32("Unk Int32 13", i);
+
+                if (guids[i][5] != 0) guids[i][5] ^= packet.ReadByte();
+
+                if (unkBits6[i])
+                    packet.ReadInt32("Unk Int32 14", i);
+
+                if (unkBits2[i])
+                    packet.ReadInt32("Unk Int32 15", i);
+
+                if (guids[i][1] != 0) guids[i][1] ^= packet.ReadByte();
+                if (guids[i][0] != 0) guids[i][0] ^= packet.ReadByte();
+
+                packet.ReadInt32("Unk Int32 16", i);
+
+                for (int j = 0; j < valuesCount[i]; ++j)
+                    packet.ReadUInt32("Value", i, j);
+
+                if (guids[i][6] != 0) guids[i][6] ^= packet.ReadByte();
+                if (guids[i][3] != 0) guids[i][3] ^= packet.ReadByte();
+
+                if (unkBits4[i])
+                    packet.ReadInt32("Unk Int32 17", i);
+
+                if (guids[i][7] != 0) guids[i][7] ^= packet.ReadByte();
+                if (guids[i][2] != 0) guids[i][2] ^= packet.ReadByte();
+
+                packet.WriteGuid("Player GUID", guids[i], i);
+            }
+
+            if (arenaStrings)
+            {
+                packet.ReadWoWString("Unk String 1", strlen1);
+                packet.ReadWoWString("Unk String 2", strlen2);
+            }
+
+            packet.ReadByte("Unk Byte 1");
+
+            if (finished)
+                packet.ReadByte("Winner");
+
+            packet.ReadByte("Unk Byte 2");
+        }
+
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldMgrStateChanged434(Packet packet)
         {
@@ -859,7 +986,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (bytes[1] != 0) bytes[1] ^= packet.ReadByte();
             if (bytes[2] != 0) bytes[2] ^= packet.ReadByte();
             if (bytes[5] != 0) bytes[5] ^= packet.ReadByte();
-            packet.ReadEnum<BattlegroundStatus>("status", TypeCode.UInt32);
+            packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
             if (bytes[4] != 0) bytes[4] ^= packet.ReadByte();
             if (bytes[7] != 0) bytes[7] ^= packet.ReadByte();
             if (bytes[0] != 0) bytes[0] ^= packet.ReadByte();
