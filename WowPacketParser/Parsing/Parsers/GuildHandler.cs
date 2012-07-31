@@ -1320,7 +1320,6 @@ namespace WowPacketParser.Parsing.Parsers
 
 
         [Parser(Opcode.MSG_GUILD_BANK_LOG_QUERY, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
-        [Parser(Opcode.SMSG_GUILD_BANK_LOG_QUERY_RESULTS, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildBankLogQueryResult(Packet packet)
         {
             packet.ReadByte("Tab Id");
@@ -1351,6 +1350,65 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Time", i);
                 }
             }
+        }
+
+        [Parser(Opcode.SMSG_GUILD_BANK_LOG_QUERY_RESULTS, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildBankLogQueryResult434(Packet packet)
+        {
+            var unk1 = packet.ReadBit("Unk bool");
+            var size = packet.ReadBits("Size", 23);
+            var hasMoney = new byte[size];
+            var unk = new byte[size];
+            var itemMoved = new byte[size];
+            var hasItem = new byte[size];
+            var guid = new byte[size][];
+            for (var i = 0; i < size; i++)
+            {
+                guid[i] = new byte[8];
+                hasMoney[i] = packet.ReadBit();
+                guid[i][4] = packet.ReadBit();
+                guid[i][1] = packet.ReadBit();
+                hasItem[i] = packet.ReadBit();
+                itemMoved[i] = packet.ReadBit();
+                guid[i][2] = packet.ReadBit();
+                guid[i][5] = packet.ReadBit();
+                guid[i][3] = packet.ReadBit();
+                guid[i][6] = packet.ReadBit();
+                guid[i][0] = packet.ReadBit();
+                unk[i] = packet.ReadBit(); //unk
+                guid[i][7] = packet.ReadBit();
+            }
+            for (var i = 0; i < size; i++)
+            {
+                if (guid[i][6] != 0) guid[i][4] ^= packet.ReadByte();
+                if (guid[i][1] != 0) guid[i][1] ^= packet.ReadByte();
+                if (guid[i][5] != 0) guid[i][5] ^= packet.ReadByte();
+                if (itemMoved[i] != 0)
+                    packet.ReadUInt32("Tab Id", i);
+                packet.ReadEnum<GuildBankEventLogType>("Bank Log Event Type", TypeCode.Byte, i);
+                if (guid[i][2] != 0) guid[i][2] ^= packet.ReadByte();
+                if (guid[i][4] != 0) guid[i][4] ^= packet.ReadByte();
+                if (guid[i][0] != 0) guid[i][0] ^= packet.ReadByte();
+                if (guid[i][7] != 0) guid[i][7] ^= packet.ReadByte();
+                if (guid[i][3] != 0) guid[i][3] ^= packet.ReadByte();
+
+                if (hasItem[i] != 0)
+                    packet.ReadUInt32("Item Entry", i);
+
+                packet.ReadInt32("Time", i);
+
+                if (hasMoney[i] != 0)
+                    packet.ReadInt64("Money", i);
+
+                if (unk[i] != 0)
+                    packet.ReadByte("Unk byte", i);
+
+                packet.WriteGuid("Guid", guid[i], i);
+            }
+            packet.ReadUInt32("Tab Id");
+
+            if (unk1)
+                packet.ReadInt64("Unk Int64");
         }
 
         [Parser(Opcode.CMSG_GUILD_BANK_LOG_QUERY, ClientVersionBuild.V4_3_4_15595)]
