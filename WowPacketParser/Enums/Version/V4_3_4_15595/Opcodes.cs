@@ -789,11 +789,13 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_GROUPACTION_THROTTLED, 0x6524},
             {Opcode.SMSG_GROUP_CANCEL, 0x4D25},
             {Opcode.SMSG_GROUP_DECLINE, 0x6835},
+            {Opcode.SMSG_GROUP_DESTROYED, 0x2207},
             {Opcode.SMSG_GROUP_INVITE, 0x31B2},
             {Opcode.SMSG_GROUP_JOINED_BATTLEGROUND, 0x35A1}, // maybe 0x71A7
             {Opcode.SMSG_GROUP_LIST, 0x4C24},
             {Opcode.SMSG_GROUP_SET_LEADER, 0x0526},
             {Opcode.SMSG_GROUP_SET_ROLE, 0x39A6},
+            {Opcode.SMSG_GROUP_UNINVITE, 0x0A07},
             {Opcode.SMSG_GUILD_ACHIEVEMENT_DATA, 0x54B7},
             {Opcode.SMSG_GUILD_ACHIEVEMENT_DELETED, 0x35A0},
             {Opcode.SMSG_GUILD_ACHIEVEMENT_EARNED, 0x50B5},
