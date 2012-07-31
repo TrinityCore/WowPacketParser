@@ -848,13 +848,13 @@ namespace WowPacketParser.Parsing.Parsers
             // FIXME, lots of unks
             var arenaStrings = packet.ReadBit("Has Arena Strings");
             var arena = packet.ReadBit("Arena");
-            var strlen1 = 0u;
-            var strlen2 = 0u;
+            var name1Length = 0u;
+            var name2Length = 0u;
 
             if (arenaStrings)
             {
-                strlen1 = packet.ReadBits(8);
-                strlen2 = packet.ReadBits(8);
+                name1Length = packet.ReadBits(8);
+                name2Length = packet.ReadBits(8);
             }
 
             var count = packet.ReadBits("Score Count", 21);
@@ -922,7 +922,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (guids[i][4] != 0) guids[i][4] ^= packet.ReadByte();
 
-                packet.ReadInt32("Unk Int32 12");
+                packet.ReadInt32("Killing Blows", i);
 
                 if (unkBits5[i])
                     packet.ReadInt32("Unk Int32 13", i);
@@ -957,8 +957,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (arenaStrings)
             {
-                packet.ReadWoWString("Unk String 1", strlen1);
-                packet.ReadWoWString("Unk String 2", strlen2);
+                packet.ReadWoWString("Unk Name 1", name1Length);
+                packet.ReadWoWString("Unk Name 2", name2Length);
             }
 
             packet.ReadByte("Unk Byte 1");
