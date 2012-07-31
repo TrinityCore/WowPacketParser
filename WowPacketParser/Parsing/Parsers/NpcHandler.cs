@@ -43,7 +43,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+            if (ClientVersion.Build == ClientVersionBuild.V4_2_2_14545)
                 packet.ReadInt32("Trainer Service"); // <TS>
 
             /* Comments about TS:

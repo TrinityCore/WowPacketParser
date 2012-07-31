@@ -1005,5 +1005,18 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadInt32("Id"); // quest id? PlayerCondition.dbc id?
         }
+
+        [Parser(Opcode.CMSG_SHOWING_CLOAK, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_SHOWING_HELM, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleShowingCloakAndHelm434(Packet packet)
+        {
+            packet.ReadBoolean("Showing");
+        }
+
+        [Parser(Opcode.CMSG_AUTO_DECLINE_GUILD_INVITES, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleAutoDeclineGuildInvites434(Packet packet)
+        {
+            packet.ReadBoolean("Auto decline");
+        }
     }
 }

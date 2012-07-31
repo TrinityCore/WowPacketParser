@@ -857,20 +857,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Result"); // FIXME Enum?
         }
 
-        [Parser(Opcode.SMSG_CLEAR_TARGET, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_GET_MIRRORIMAGE_DATA)]
-        [Parser(Opcode.SMSG_SPIRIT_HEALER_CONFIRM)]
-        public static void HandleClearTarget(Packet packet)
+        public static void HandleGetMirrorImageData(Packet packet)
         {
             packet.ReadGuid("GUID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
                 packet.ReadUInt32("Unk Uint32");
-        }
-
-        [Parser(Opcode.SMSG_CLEAR_TARGET, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleClearTarget434(Packet packet)
-        {
-            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.SMSG_MIRRORIMAGE_DATA)]
@@ -1151,7 +1143,14 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid[3] != 0) guid[3] ^= packet.ReadByte();
 
             packet.WriteGuid("Guid", guid);
-
         }
+        
+        [Parser(Opcode.SMSG_SPIRIT_HEALER_CONFIRM)]
+        [Parser(Opcode.SMSG_CLEAR_TARGET)]
+        public static void HandleMiscGuid(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+        }
+
     }
 }
