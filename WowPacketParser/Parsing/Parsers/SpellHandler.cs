@@ -12,6 +12,53 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class SpellHandler
     {
+
+        [Parser(Opcode.SMSG_SPELLINTERRUPTLOG)]
+        public static void HandleSpellInterruptLog(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            guid2[4] = packet.ReadBit();
+            guid1[5] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+            guid1[1] = packet.ReadBit();
+            guid1[3] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid1[4] = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+
+            if (guid1[7] != 0) guid1[7] ^= packet.ReadByte();
+            if (guid1[6] != 0) guid1[6] ^= packet.ReadByte();
+            if (guid1[3] != 0) guid1[3] ^= packet.ReadByte();
+            if (guid1[2] != 0) guid1[2] ^= packet.ReadByte();
+            if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
+            if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
+            if (guid2[2] != 0) guid2[2] ^= packet.ReadByte();
+            if (guid2[4] != 0) guid2[4] ^= packet.ReadByte();
+            if (guid2[7] != 0) guid2[7] ^= packet.ReadByte();
+            if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
+            if (guid1[4] != 0) guid1[4] ^= packet.ReadByte();
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Interrumpt Spell ID");
+            if (guid2[1] != 0) guid2[1] ^= packet.ReadByte();
+            if (guid1[0] != 0) guid1[0] ^= packet.ReadByte();
+            if (guid1[5] != 0) guid1[5] ^= packet.ReadByte();
+            if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Interrumpted Spell ID");
+            if (guid2[5] != 0) guid2[5] ^= packet.ReadByte();
+
+            packet.WriteGuid("GUID 1", guid1);
+            packet.WriteGuid("GUID 2", guid1);
+        }
+
         [Parser(Opcode.SMSG_PLAYERBOUND)]
         public static void HandlePlayerBound(Packet packet)
         {
