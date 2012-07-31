@@ -184,7 +184,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_SEND_MAIL)]
+        [Parser(Opcode.CMSG_SEND_MAIL, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleSendMail(Packet packet)
         {
             packet.ReadGuid("Mailbox GUID");
@@ -204,6 +204,66 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt64("Unk Uint64");
             packet.ReadByte("Unk Byte");
 
+        }
+
+        [Parser(Opcode.CMSG_SEND_MAIL, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleSendMail434(Packet packet)
+        {
+            var guid = new byte[8];
+            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Stationery?");
+            packet.ReadInt64("COD");
+            packet.ReadInt64("Money");
+            var len2 = packet.ReadBits(12);
+            var len1 = packet.ReadBits(9);
+            var count = packet.ReadBits("Item Count", 5);
+            guid[0] = packet.ReadBit();
+            var guid2 = new byte[count][];
+            for (var i = 0; i < count; i++)
+            {
+                guid2[i] = packet.StartBitStream(2, 6, 3, 7, 1, 0, 4, 5);
+            }
+            guid[3] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            var len3 = packet.ReadBits(7);
+            guid[2] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+
+            for (var i = 0; i < count; i++)
+            {
+                if (guid2[i][6] != 0) guid2[i][6] = packet.ReadByte();
+                if (guid2[i][1] != 0) guid2[i][1] = packet.ReadByte();
+                if (guid2[i][7] != 0) guid2[i][7] = packet.ReadByte();
+                if (guid2[i][2] != 0) guid2[i][2] = packet.ReadByte();
+                packet.ReadByte("Slot", i);
+                if (guid2[i][3] != 0) guid2[i][3] = packet.ReadByte();
+                if (guid2[i][0] != 0) guid2[i][0] = packet.ReadByte();
+                if (guid2[i][4] != 0) guid2[i][4] = packet.ReadByte();
+                if (guid2[i][5] != 0) guid2[i][5] = packet.ReadByte();
+                packet.WriteGuid("Item Guid", guid2[i], i);
+            }
+
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+
+            packet.ReadWoWString("Subject", len1);
+            packet.ReadWoWString("Receiver", len3);
+
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+
+            packet.ReadWoWString("Body", len2);
+
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+
+            packet.WriteGuid("Mailbox Guid", guid);
         }
 
         [Parser(Opcode.CMSG_MAIL_TAKE_ITEM)]
