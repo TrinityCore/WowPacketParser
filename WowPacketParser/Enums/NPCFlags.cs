@@ -33,6 +33,8 @@ namespace WowPacketParser.Enums
         SpellClick = 0x01000000,
         PlayerVehicle = 0x02000000,
         MailObject = 0x04000000,
-        ForgeMaster = 0x08000000
+        ForgeMaster = 0x08000000,
+        Transmogrifier = 0x10000000,
+        Vaultkeeper = 0x20000000,
     }
 }
