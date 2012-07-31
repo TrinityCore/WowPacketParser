@@ -942,10 +942,39 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_ITEM_TEXT_QUERY, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_ITEM_TEXT_QUERY)]
         public static void HandleItemTextQuery(Packet packet)
         {
             packet.ReadGuid("Item Guid");
+        }
+
+        [Parser(Opcode.CMSG_TRANSMOGRIFY_ITEMS, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleTransmogrifyITems(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 22);
+
+            var guids = new byte[count][];
+
+            for (int i = 0; i < count; ++i)
+                guids[i] = packet.StartBitStream(0, 5, 6, 2, 3, 7, 4, 1);
+
+            var guid = packet.StartBitStream(7, 3, 5, 6, 1, 4, 0, 2);
+
+            // flush bits
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("New Id", i);
+
+                packet.ParseBitStream(guids[i], 1, 5, 0, 4, 6, 7, 3, 2);
+                
+                packet.ReadInt32("Slot", i); // not confirmed
+
+                packet.WriteGuid("Guid", guids[i], i);
+            }
+
+            packet.ParseBitStream(guid, 7, 2, 5, 4, 3, 1, 6, 0);
+            packet.WriteGuid("NPC Guid", guid);
         }
     }
 }
