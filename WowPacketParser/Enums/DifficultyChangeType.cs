@@ -13,4 +13,20 @@ namespace WowPacketParser.Enums
         MapDifficulty = 8,
         PlayerDifficulty2 = 9,
     }
+
+    public enum DifficultyChangeType434
+    {
+        Cooldown                        = 0, // ERR_DIFFICULTY_CHANGE_COOLDOWN_S
+        WorldState                      = 1,
+        Encounter                       = 2,
+        Combat                          = 3,
+        PlayerBusy                      = 4,
+        Time                            = 5,
+        AlreadyStarted                  = 6,
+        Unk7                            = 7,
+        Unk8                            = 8, // ERR_DIFFICULTY_CHANGE_OTHER_HEROIC_S
+        HeroicInstanceAlreadyRunning    = 9,
+        DisabledInLFG                   = 10,
+        DifficultyChanged               = 11
+    }
 }

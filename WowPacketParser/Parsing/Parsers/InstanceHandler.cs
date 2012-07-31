@@ -98,6 +98,37 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_CHANGEPLAYER_DIFFICULTY)]
+        public static void HandleChangePlayerDifficulty434(Packet packet)
+        {
+            packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
+        }
+
+        [Parser(Opcode.SMSG_PLAYER_DIFFICULTY_CHANGE)]
+        public static void HandlePlayerDifficultyChange434(Packet packet)
+        {
+            var type = packet.ReadEnum<DifficultyChangeType434>("Change Type", TypeCode.Int32);
+            switch (type)
+            {
+                case DifficultyChangeType434.Cooldown:
+                    packet.ReadInt32("Cooldown");
+                    break;
+                case DifficultyChangeType434.Time:
+                    packet.ReadInt32("Time");
+                    break;
+                case DifficultyChangeType434.Unk7:
+                    packet.ReadInt32("Unk Int32");
+                    break;
+                case DifficultyChangeType434.Unk8:
+                    packet.ReadPackedGuid("Guid");
+                    break;
+                case DifficultyChangeType434.DifficultyChanged:
+                    packet.ReadInt32("Map");
+                    packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
+                    break;
+            }
+        }
+
         [Parser(Opcode.SMSG_UPDATE_LAST_INSTANCE)]
         [Parser(Opcode.SMSG_RESET_FAILED_NOTIFY)]
         public static void HandleResetFailedNotify(Packet packet)
