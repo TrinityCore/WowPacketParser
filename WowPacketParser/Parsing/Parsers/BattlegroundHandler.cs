@@ -1082,7 +1082,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_REQUEST_RESPONSE)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_REQUEST_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldMgrQueueRequestResponse(Packet packet)
         {
             packet.ReadInt32("Battle Id");
@@ -1090,6 +1090,54 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Accepted");
             packet.ReadByte("Logging In");
             packet.ReadByte("Warmup");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_REQUEST_RESPONSE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleBattlefieldMgrQueueRequestResponse434(Packet packet)
+        {
+            var guid = new byte[8];
+            var guid2 = new byte[8];
+
+            guid[1] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            packet.ReadBit("Logging In");
+            guid[0] = packet.ReadBit();
+            var hasSecondGuid = !packet.ReadBit("Has Second Guid");
+            guid[4] = packet.ReadBit();
+
+            if (hasSecondGuid)
+            {
+                guid2 = packet.StartBitStream(7, 3, 0, 4, 2, 6, 1, 5);
+            }
+
+            guid[3] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+
+            if (hasSecondGuid)
+            {
+                packet.ParseBitStream(guid2, 2, 5, 3, 0, 4, 6, 1, 7);
+            }
+
+            packet.ReadBoolean("Accepted");
+
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+
+            packet.ReadBoolean("Warmup");
+
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+
+            packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone ID");
+
+            packet.WriteGuid("BG Guid", guid);
+            packet.WriteGuid("guid2", guid2);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERED, ClientVersionBuild.V4_3_4_15595)]
