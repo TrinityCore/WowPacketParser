@@ -787,58 +787,64 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Direction == Direction.ClientToServer)
                 return;
 
-            var flags = packet.ReadEnum<BattlegroundUpdateFlags>("Flags", TypeCode.Byte);
-
-            if (flags.HasAnyFlag(BattlegroundUpdateFlags.ArenaNames))
+            var arenaScores = packet.ReadBit("Has Arena Scores");
+            var arenaStrings = packet.ReadBit("Has Arena Strings");
+            var finished = packet.ReadBit("Is Finished");
+            
+            if (arenaStrings)
                 for (var i = 0; i < 2; ++i)
                     packet.ReadCString("Name", i);
-
-            if (flags.HasAnyFlag(BattlegroundUpdateFlags.ArenaScores))
+            
+            if (arenaScores)
+            {
                 for (var i = 0; i < 2; ++i)
                 {
                     packet.ReadUInt32("Points Lost", i);
                     packet.ReadUInt32("Points Gained", i);
                     packet.ReadUInt32("Matchmaker Rating", i);
                 }
-
-            var count = packet.ReadUInt32("Score count");
-
-            if (flags.HasAnyFlag(BattlegroundUpdateFlags.Finished))
-                packet.ReadByte("Team Winner");
-
-            var tempCount = (int)count;
-            do
-            {
-                packet.ReadByte("Player Update Flags", tempCount);
-                tempCount -= 2;
             }
-            while (tempCount > 0);
-
-            for (var i = 0; i < count; i++)
+            
+            var scoreCount = packet.ReadInt32("Score Count");
+            
+            if (finished)
+                packet.ReadByte("Team Winner");
+            
+            var bits = new Bit[scoreCount, 4];
+            
+            for (var i = 0; i < scoreCount; ++i)
             {
-                packet.ReadUInt32("Damage done", i);
-
-                //if (updateFlags & 128)
-                    packet.ReadUInt32("Unk", i);
-
-                var count2 = packet.ReadUInt32("Extra values counter", i);
-
-                //if (???) Depends on read Update Flags
+                bits[i, 0] = packet.ReadBit("Unk Bit 1", i); //  sets *(v23 + v18 + 40)
+                bits[i, 1] = packet.ReadBit("Is Battleground", i); //  sets *(v27 + v18 + 48)
+                bits[i, 2] = packet.ReadBit("Unk Bit 3", i); // sets *(v2->dword1C + v18 + 4)
+                bits[i, 3] = packet.ReadBit("Unk Bit 4", i); // sets *(v32 + v18 + 68)
+            }
+            
+            for (var i = 0; i < scoreCount; ++i)
+            {
+                packet.ReadInt32("Damage Done", i);
+                
+                if (bits[i, 0])
+                    packet.ReadInt32("Unk Int32 1", i);
+                    
+                var count = packet.ReadInt32("Extra values counter", i);
+                
+                if (bits[i, 1])
                 {
                     packet.ReadUInt32("Honorable Kills", i);
                     packet.ReadUInt32("Deaths", i);
                     packet.ReadUInt32("Bonus Honor", i);
                 }
-
+                
                 packet.ReadGuid("Player GUID", i);
-                packet.ReadUInt32("Killing Blows", i);
-                for (var j = 0; j < count2; j++)
-                    packet.ReadUInt32("Value", i, j);
-
-                //if (UpdateFlags & 1)
-                    packet.ReadUInt32("Unk", i);
-
-                packet.ReadUInt32("Healing done", i);
+                packet.ReadInt32("Killing Blows");
+                for (var j = 0; j < count; ++j)
+                    packet.ReadInt32("Extra Value", i, j);
+                    
+                if (bits[i, 3])
+                    packet.ReadInt32("Unk Int32 2", i);
+                
+                packet.ReadInt32("Healing Done", i);
             }
         }
 
