@@ -23,7 +23,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_TRAINER_BUY_SPELL, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
-        [Parser(Opcode.SMSG_TRAINER_BUY_FAILED)]
+        [Parser(Opcode.SMSG_TRAINER_BUY_FAILED, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.SMSG_TRAINER_BUY_RESULT)]
         public static void HandleServerTrainerBuy(Packet packet)
         {
@@ -34,6 +34,14 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_TRAINER_BUY_FAILED)
                 || packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_TRAINER_BUY_RESULT))
                 packet.ReadUInt32("Reason");
+        }
+
+        [Parser(Opcode.SMSG_TRAINER_BUY_FAILED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleTrainerBuyFailed434(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadUInt32("Reason");
         }
 
         // Might be a completely different opcode on 4.2.2 (trainer related)
