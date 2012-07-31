@@ -976,5 +976,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(npcGuid, 7, 2, 5, 4, 3, 1, 6, 0);
             packet.WriteGuid("NPC Guid", npcGuid);
         }
+
+        [Parser(Opcode.SMSG_ITEM_EXPIRE_PURCHASE_REFUND)]
+        public static void HandleItemExpirePurchaseRefund(Packet packet)
+        {
+            var guid = packet.StartBitStream(3, 0, 5, 4, 6, 2, 1, 7);
+            packet.ParseBitStream(guid, 1, 0, 3, 4, 7, 6, 5, 2);
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
