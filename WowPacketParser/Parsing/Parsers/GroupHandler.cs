@@ -200,8 +200,11 @@ namespace WowPacketParser.Parsing.Parsers
             if (updateFlags.HasFlag(GroupUpdateFlag422.Unk200000))
             {
                 packet.ReadInt32("Unk int32");
-                packet.ReadInt32("Unk int32");
-                packet.ReadCString("Unk string");
+                var length = packet.ReadInt32("Unk int32");
+                if (length > 0)
+                    packet.ReadWoWString("Unk String", length * 2);
+                else
+                    packet.ReadCString("Unk string");
             }
         }
 
