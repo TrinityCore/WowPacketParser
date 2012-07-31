@@ -13,7 +13,7 @@ namespace WowPacketParser.Parsing.Parsers
     public static class SpellHandler
     {
 
-        [Parser(Opcode.SMSG_SPELLINTERRUPTLOG)]
+        [Parser(Opcode.SMSG_SPELLINTERRUPTLOG)] // 4.3.4
         public static void HandleSpellInterruptLog(Packet packet)
         {
             var guid1 = new byte[8];
@@ -47,12 +47,12 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid2[7] != 0) guid2[7] ^= packet.ReadByte();
             if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
             if (guid1[4] != 0) guid1[4] ^= packet.ReadByte();
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Interrumpt Spell ID");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Interrupt Spell ID");
             if (guid2[1] != 0) guid2[1] ^= packet.ReadByte();
             if (guid1[0] != 0) guid1[0] ^= packet.ReadByte();
             if (guid1[5] != 0) guid1[5] ^= packet.ReadByte();
             if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Interrumpted Spell ID");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Interrupted Spell ID");
             if (guid2[5] != 0) guid2[5] ^= packet.ReadByte();
 
             packet.WriteGuid("GUID 1", guid1);
