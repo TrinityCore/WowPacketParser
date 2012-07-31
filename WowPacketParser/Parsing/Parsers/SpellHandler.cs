@@ -120,11 +120,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
             packet.ReadVector3("Position");
             packet.ReadVector3("Target Position");
-            packet.ReadSingle("Evelation");
+            packet.ReadSingle("Elevation");
             packet.ReadSingle("Speed");
             packet.ReadUInt32("Duration");
 
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_5a_12340))
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_5a_12340) || ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
                 packet.ReadInt32("Unk");
 
             packet.ReadSingle("Unk");
@@ -541,7 +541,7 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     if (flags.HasAnyFlag(CastFlag.AdjustMissile))
                     {
-                        packet.ReadSingle("Evelation");
+                        packet.ReadSingle("Elevation");
                         packet.ReadInt32("Delay time");
                     }
                 }
