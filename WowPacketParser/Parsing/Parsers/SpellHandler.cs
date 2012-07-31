@@ -1199,5 +1199,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
+        [Parser(Opcode.SMSG_MODIFY_COOLDOWN)]
+        public static void HandleModifyCooldown(Packet packet)
+        {
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadGuid("GUID");
+            packet.ReadInt32("Cooldown Mod");
+        }
     }
 }
