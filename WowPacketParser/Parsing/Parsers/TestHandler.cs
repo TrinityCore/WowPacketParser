@@ -5,6 +5,14 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class TestHandler
     {
+        [Parser(17958)] // 4.3.4
+        [Parser(18997)] // 4.3.4
+        public static void Handle18997(Packet packet)
+        {
+            packet.ReadPackedGuid("Guid");
+            packet.ReadInt16("Unk");
+        }
+
         [Parser(17205)] // 4.3.4
         public static void Handle17205(Packet packet)
         {
