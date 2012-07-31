@@ -386,20 +386,20 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = new byte[8];
 
             guid[1] = packet.ReadBit();
-            packet.ReadBit("Bit 65");
-            var count = packet.ReadBits("Count", 24);
+            packet.ReadBit("Unk Bit 65");
+            var count = packet.ReadBits("Dungeon Count", 24);
             guid[6] = packet.ReadBit();
-            packet.ReadBit("Bit 18");
+            packet.ReadBit("Joined");
             var length = packet.ReadBits(9);
             guid[4] = packet.ReadBit();
             guid[7] = packet.ReadBit();
             guid[2] = packet.ReadBit();
-            packet.ReadBit("Bit 17");
+            packet.ReadBit("LFGJoined");
             guid[0] = packet.ReadBit();
             guid[3] = packet.ReadBit();
             guid[5] = packet.ReadBit();
-            packet.ReadBit("Bit 16");
-            packet.ReadByte("Byte");
+            packet.ReadBit("Queued");
+            packet.ReadByte("Unk Byte 64");
             packet.ReadWoWString("String", length);
             packet.ReadUInt32("Queue Id");
             packet.ReadTime("Join Date");
@@ -407,7 +407,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid[6] != 0) guid[6] ^= packet.ReadByte();
         
             for (var i = 0; i < 3; ++i)
-                packet.ReadByte("Byte", i); // always 0
+                packet.ReadByte("Unk Byte", i); // always 0
         
             if (guid[1] != 0) guid[1] ^= packet.ReadByte();
             if (guid[2] != 0) guid[2] ^= packet.ReadByte();
@@ -415,13 +415,13 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid[3] != 0) guid[3] ^= packet.ReadByte();
             if (guid[5] != 0) guid[5] ^= packet.ReadByte();
             if (guid[0] != 0) guid[0] ^= packet.ReadByte();
-        
-            packet.ReadUInt32("Unk32 3");
+
+            packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
         
             if (guid[7] != 0) guid[7] ^= packet.ReadByte();
         
             for (var i = 0; i < count; ++i)
-                packet.ReadUInt32("Unk32", i);
+                packet.ReadLfgEntry("Dungeon Entry", i); 
 
             packet.WriteGuid("GUID", guid);
         }
