@@ -6,7 +6,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class InstanceHandler
     {
-        [Parser(Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT)]
+        [Parser(Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleUpdateInstanceEncounterUnit(Packet packet)
         {
             // Note: Enum values changed after 3.3.5a
@@ -25,6 +25,32 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadByte("Param 1");
                     break;
                 case EncounterFrame.UpdateObjective:
+                    packet.ReadByte("Param 1");
+                    packet.ReadByte("Param 2");
+                    break;
+            }
+        }
+
+        [Parser(Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleUpdateInstanceEncounterUnit434(Packet packet)
+        {
+            // Note: Enum values changed after 3.3.5a
+            var type = packet.ReadEnum<EncounterFrame434>("Type", TypeCode.UInt32);
+            switch (type)
+            {
+                case EncounterFrame434.Engage:
+                case EncounterFrame434.Disengage:
+                case EncounterFrame434.UpdatePriority:
+                    packet.ReadPackedGuid("GUID");
+                    packet.ReadByte("Param 1");
+                    break;
+                case EncounterFrame434.Unk0:
+                case EncounterFrame434.AddTimer:
+                case EncounterFrame434.EnableObjective:
+                case EncounterFrame434.DisableObjective:
+                    packet.ReadByte("Param 1");
+                    break;
+                case EncounterFrame434.UpdateObjective:
                     packet.ReadByte("Param 1");
                     packet.ReadByte("Param 2");
                     break;

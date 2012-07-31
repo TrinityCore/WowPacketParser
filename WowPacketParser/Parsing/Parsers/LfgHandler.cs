@@ -745,5 +745,13 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadBit("Unk boolean");
         }
+
+        [Parser(Opcode.SMSG_ROLE_POLL_BEGIN)]
+        public static void HandleRollPollBegin(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 5, 7, 3, 2, 4, 0, 6);
+            packet.ParseBitStream(guid, 4, 7, 0, 5, 1, 6, 2, 3);
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

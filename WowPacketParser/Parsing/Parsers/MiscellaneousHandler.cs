@@ -1086,6 +1086,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REQUEST_PVP_REWARDS)]
         [Parser(Opcode.CMSG_USED_FOLLOW)]
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
+        [Parser(Opcode.SMSG_UPDATE_DUNGEON_ENCOUNTER_FOR_LOOT)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }
