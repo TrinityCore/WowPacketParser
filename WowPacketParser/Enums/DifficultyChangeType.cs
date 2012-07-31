@@ -23,7 +23,7 @@ namespace WowPacketParser.Enums
         PlayerBusy                      = 4,
         Time                            = 5,
         AlreadyStarted                  = 6,
-        Unk7                            = 7,
+        MapDifficultyRequirement        = 7,
         Unk8                            = 8, // ERR_DIFFICULTY_CHANGE_OTHER_HEROIC_S
         HeroicInstanceAlreadyRunning    = 9,
         DisabledInLFG                   = 10,

@@ -116,8 +116,8 @@ namespace WowPacketParser.Parsing.Parsers
                 case DifficultyChangeType434.Time:
                     packet.ReadInt32("Time");
                     break;
-                case DifficultyChangeType434.Unk7:
-                    packet.ReadInt32("Unk Int32");
+                case DifficultyChangeType434.MapDifficultyRequirement:
+                    packet.ReadInt32("Map Difficulty Id");
                     break;
                 case DifficultyChangeType434.Unk8:
                     packet.ReadPackedGuid("Guid");
