@@ -88,12 +88,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadBoolean("Add arena opponent");
 
             packet.ReadPackedGuid("GUID");
-            var updateFlags = packet.ReadEnum<GroupUpdateFlag>("Update Flags", TypeCode.Int32);
+            var updateFlags = packet.ReadEnum<GroupUpdateFlag422>("Update Flags", TypeCode.Int32);
 
-            if (updateFlags.HasFlag(GroupUpdateFlag.Status))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.Status))
                 packet.ReadEnum<GroupMemberStatusFlag>("Status", TypeCode.Int16);
 
-            if (updateFlags.HasFlag(GroupUpdateFlag.CurrentHealth))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.CurrentHealth))
             {
                 if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
                     packet.ReadInt32("Current Health");
@@ -101,7 +101,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt16("Current Health");
             }
 
-            if (updateFlags.HasFlag(GroupUpdateFlag.MaxHealth))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.MaxHealth))
             {
                 if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
                     packet.ReadInt32("Max Health");
@@ -109,32 +109,32 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt16("Max Health");
             }
 
-            if (updateFlags.HasFlag(GroupUpdateFlag.PowerType))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.PowerType))
                 packet.ReadEnum<PowerType>("Power type", TypeCode.Byte);
 
-            if (updateFlags.HasFlag(GroupUpdateFlag.CurrentPower))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.CurrentPower))
                 packet.ReadInt16("Current Power");
 
-            if (updateFlags.HasFlag(GroupUpdateFlag.MaxPower))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.MaxPower))
                 packet.ReadInt16("Max Power");
 
-            if (updateFlags.HasFlag(GroupUpdateFlag.Level))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.Level))
                 packet.ReadInt16("Level");
 
-            if (updateFlags.HasFlag(GroupUpdateFlag.Zone))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.Zone))
                 packet.ReadEntryWithName<Int16>(StoreNameType.Zone, "Zone Id");
 
-            if (updateFlags.HasFlag(GroupUpdateFlag.Position))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.Unk100))
                 packet.ReadInt16("Unk");
 
-            if (updateFlags.HasFlag((GroupUpdateFlag)0x200))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.Position))
             {
                 packet.ReadInt16("X");
                 packet.ReadInt16("Y");
                 packet.ReadInt16("Z");
             }
 
-            if (updateFlags.HasFlag((GroupUpdateFlag)0x400))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.Auras))
             {
                 packet.ReadByte("Unk byte");
                 var mask = packet.ReadUInt64("Aura mask");
@@ -152,31 +152,31 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            if (updateFlags.HasFlag((GroupUpdateFlag)0x800))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.PetGuid))
                 packet.ReadUInt64("Pet GUID");
 
-            if (updateFlags.HasFlag((GroupUpdateFlag)0x1000))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.PetName))
                 packet.ReadCString("Pet Name");
 
-            if (updateFlags.HasFlag((GroupUpdateFlag)0x2000))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.PetModelId))
                 packet.ReadUInt16("Pet Model Id");
 
-            if (updateFlags.HasFlag((GroupUpdateFlag)0x4000))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.PetCurrentHealth))
                 packet.ReadUInt32("Pet Current Health");
 
-            if (updateFlags.HasFlag((GroupUpdateFlag)0x8000))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.PetMaxHealth))
                 packet.ReadUInt32("Pet Max Health");
 
-            if (updateFlags.HasFlag((GroupUpdateFlag)0x10000))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.PetPowerType))
                 packet.ReadEnum<PowerType>("Pet Power type", TypeCode.Byte);
 
-            if (updateFlags.HasFlag((GroupUpdateFlag)0x20000))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.PetCurrentPower))
                 packet.ReadInt16("Pet Current Power");
 
-            if (updateFlags.HasFlag((GroupUpdateFlag)0x40000))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.PetMaxPower))
                 packet.ReadInt16("Pet Max Power");
 
-            if (updateFlags.HasFlag((GroupUpdateFlag)0x80000))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.PetAuras))
             {
                 packet.ReadByte("Unk byte");
                 var mask = packet.ReadUInt64("Pet Aura mask");
@@ -194,10 +194,10 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            if (updateFlags.HasFlag((GroupUpdateFlag)0x100000))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.VehicleSeat))
                 packet.ReadInt32("Vehicle Seat?");
 
-            if (updateFlags.HasFlag(GroupUpdateFlag.Unk200000))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.Unk200000))
             {
                 packet.ReadInt32("Unk int32");
                 packet.ReadInt32("Unk int32");
