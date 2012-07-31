@@ -953,28 +953,28 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var count = packet.ReadBits("Count", 22);
 
-            var guids = new byte[count][];
+            var itemGuids = new byte[count][];
 
             for (int i = 0; i < count; ++i)
-                guids[i] = packet.StartBitStream(0, 5, 6, 2, 3, 7, 4, 1);
+                itemGuids[i] = packet.StartBitStream(0, 5, 6, 2, 3, 7, 4, 1);
 
-            var guid = packet.StartBitStream(7, 3, 5, 6, 1, 4, 0, 2);
+            var npcGuid = packet.StartBitStream(7, 3, 5, 6, 1, 4, 0, 2);
 
             // flush bits
 
             for (int i = 0; i < count; ++i)
             {
-                packet.ReadInt32("New Id", i);
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "New Entry", i);
 
-                packet.ParseBitStream(guids[i], 1, 5, 0, 4, 6, 7, 3, 2);
-                
-                packet.ReadInt32("Slot", i); // not confirmed
+                packet.ParseBitStream(itemGuids[i], 1, 5, 0, 4, 6, 7, 3, 2);
 
-                packet.WriteGuid("Guid", guids[i], i);
+                packet.ReadEnum<EquipmentSlotType>("Slot", TypeCode.UInt32, i);
+
+                packet.WriteGuid("ITem Guid", itemGuids[i], i);
             }
 
-            packet.ParseBitStream(guid, 7, 2, 5, 4, 3, 1, 6, 0);
-            packet.WriteGuid("NPC Guid", guid);
+            packet.ParseBitStream(npcGuid, 7, 2, 5, 4, 3, 1, 6, 0);
+            packet.WriteGuid("NPC Guid", npcGuid);
         }
     }
 }

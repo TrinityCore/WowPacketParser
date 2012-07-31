@@ -34,7 +34,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleUpdateInstanceEncounterUnit434(Packet packet)
         {
-            // Note: Enum values changed after 3.3.5a
             var type = packet.ReadEnum<EncounterFrame434>("Type", TypeCode.UInt32);
             switch (type)
             {
