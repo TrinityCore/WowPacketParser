@@ -14,8 +14,8 @@ namespace WowPacketParser.Enums
 
     public enum EncounterFrame434
     {
-        Unk0                = 0, // set byte_F43B50 = param1
-        Unk1                = 1, //reset byte_F43B51
+        SetCombatResLimit   = 0,
+        ResetCombatResLimit = 1,
         Engage              = 2,
         Disengage           = 3,
         UpdatePriority      = 4,
@@ -24,6 +24,6 @@ namespace WowPacketParser.Enums
         UpdateObjective     = 7,
         DisableObjective    = 8,
         SortEncounterList   = 9,
-        Unk10               = 10 // increment byte_F43B51
+        AddCombatResLimit   = 10
     }
 }

@@ -43,7 +43,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadPackedGuid("GUID");
                     packet.ReadByte("Param 1");
                     break;
-                case EncounterFrame434.Unk0:
+                case EncounterFrame434.SetCombatResLimit:
                 case EncounterFrame434.AddTimer:
                 case EncounterFrame434.EnableObjective:
                 case EncounterFrame434.DisableObjective:
