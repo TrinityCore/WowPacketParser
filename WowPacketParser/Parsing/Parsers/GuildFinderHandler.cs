@@ -311,6 +311,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.CMSG_LF_GUILD_POST_REQUEST)]
         [Parser(Opcode.CMSG_LF_GUILD_GET_APPLICATIONS)]
+        [Parser(Opcode.SMSG_LF_GUILD_APPLICANT_LIST_UPDATED)]
         public static void HandlerLFGuildZeroLength(Packet packet)
         {
         }
