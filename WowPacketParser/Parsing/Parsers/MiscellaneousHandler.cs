@@ -276,26 +276,26 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleFeatureSystemStatus434(Packet packet)
         {
-            packet.ReadByte("Unk byte");
-            packet.ReadInt32("Unk1");
-            packet.ReadInt32("Unk2");
-            packet.ReadInt32("Unk3");
-            packet.ReadInt32("Unk4");
-            packet.ReadBit("Unkbit1");
-            packet.ReadBit("Unkbit2");
-            packet.ReadBit("Unkbit3");
-            var v10 = packet.ReadBit("Unkbit4");
-            var v9 = packet.ReadBit("Unkbit5");
-            packet.ReadBit("Unkbit6");
-            if (v10)
+            packet.ReadByte("Complain System Status");
+            packet.ReadInt32("NumSoRRemaining");
+            packet.ReadInt32("Unk Int32 (SoR)");
+            packet.ReadInt32("Unk Int32 2"); // unused
+            packet.ReadInt32("Unk Int32 3"); // unused
+            packet.ReadBit("HasTravelPass"); // order of these 3 bits can be wrong
+            packet.ReadBit("GMItemRestorationButtonEnabled");
+            packet.ReadBit("CanSendSoRByText");
+            var sessionTimeAlert = packet.ReadBit("Session Time Alert");
+            var quickTicket = packet.ReadBit("GMQuickTicketSystemEnabled");
+            packet.ReadBit("IsVoiceChatAllowedByServer");
+            if (sessionTimeAlert)
             {
                 packet.ReadInt32("Unk5");
-                packet.ReadInt32("Unk6");
+                packet.ReadInt32("Play Time"); // unconfirmed
                 packet.ReadInt32("Unk7");
                 packet.ReadInt32("Unk8");
             }
 
-            if (v9)
+            if (quickTicket)
             {
                 packet.ReadInt32("Unk9");
                 packet.ReadInt32("Unk10");
