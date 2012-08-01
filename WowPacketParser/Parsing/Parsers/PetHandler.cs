@@ -269,5 +269,11 @@ namespace WowPacketParser.Parsing.Parsers
             if (castFlags.HasAnyFlag(CastFlag.Unknown1))
                 SpellHandler.HandleSpellMissileAndMove(ref packet);
         }
+
+        [Parser(Opcode.CMSG_REQUEST_PET_INFO)]
+        public static void HandlePetNull(Packet packet)
+        {
+        }
+
     }
 }

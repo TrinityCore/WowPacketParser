@@ -1793,6 +1793,15 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_BATTLEFIELD_REQUEST_SCORE_DATA)]
+        [Parser(Opcode.CMSG_QUERY_BATTLEFIELD_STATE)]
+        [Parser(Opcode.CMSG_REQUEST_RATED_BG_STATS)]
+        [Parser(Opcode.CMSG_PVP_LOG_DATA)]
+        [Parser(Opcode.CMSG_REQUEST_PVP_REWARDS)]
+        public static void HandleBattlegroundNull(Packet packet)
+        {
+        }
+
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE)]
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_SET_NEXT_TRANSITION_TIME)]
         //[Parser(Opcode.CMSG_START_BATTLEFIELD_CHEAT)]

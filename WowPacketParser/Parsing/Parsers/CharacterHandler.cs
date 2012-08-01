@@ -1001,5 +1001,59 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteGuid("Character Guid", guids[i], i);
             }
         }
+
+        [Parser(Opcode.SMSG_LEVELUP_INFO)]
+        public static void HandleLevelUp(Packet packet)
+        {
+            var level = packet.ReadInt32("Level");
+            packet.ReadInt32("Health");
+
+            var powerCount = 5;
+            if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
+                powerCount = 7;
+            if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
+                powerCount = 5;
+
+            // TODO: Exclude happiness on Cata
+            for (var i = 0; i < powerCount; i++)
+                packet.WriteLine("Power " + (PowerType)i + ": " + packet.ReadInt32());
+
+            for (var i = 0; i < 5; i++)
+                packet.WriteLine("Stat " + (StatType)i + ": " + packet.ReadInt32());
+
+            if (SessionHandler.LoggedInCharacter != null)
+                SessionHandler.LoggedInCharacter.Level = level;
+        }
+
+        [Parser(Opcode.SMSG_HEALTH_UPDATE)]
+        public static void HandleHealthUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid("GUID");
+            packet.ReadUInt32("Value");
+        }
+
+        [Parser(Opcode.SMSG_POWER_UPDATE)]
+        public static void HandlePowerUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid("GUID");
+
+            var count = 1;
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
+                count = packet.ReadInt32("Count");
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadEnum<PowerType>("Power type", TypeCode.Byte); // Actually powertype for class
+                packet.ReadInt32("Value");
+            }
+        }
+
+        [Parser(Opcode.CMSG_CHAR_ENUM)]
+        [Parser(Opcode.CMSG_HEARTH_AND_RESURRECT)]
+        [Parser(Opcode.CMSG_SELF_RES)]
+        public static void HandleCharacterNull(Packet packet)
+        {
+        }
     }
 }

@@ -445,16 +445,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LFG_QUEUE_STATUS, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleLfgQueueStatusUpdate434(Packet packet)
         {
-            var guid = new byte[8];
-
-            guid[3] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
+            var guid = packet.StartBitStream(3, 2, 0, 6, 5, 7, 1, 4);
 
             packet.ReadXORByte(guid, 0);
     
@@ -549,15 +540,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                guids[i] = new byte[8];
-                guids[i][7] = packet.ReadBit();
-                guids[i][5] = packet.ReadBit();
-                guids[i][3] = packet.ReadBit();
-                guids[i][6] = packet.ReadBit();
-                guids[i][0] = packet.ReadBit();
-                guids[i][2] = packet.ReadBit();
-                guids[i][4] = packet.ReadBit();
-                guids[i][1] = packet.ReadBit();
+                guids[i] = packet.StartBitStream(7, 5, 3, 6, 0, 2, 4, 1);
                 counts[i] = packet.ReadBits("Dungeon Count", 22, i);
             }
 
@@ -571,27 +554,11 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var j = 0; j < counts[i]; j++)
                     ReadDungeonJoinResults(ref packet, i, j);
 
-                packet.ReadXORByte(guids[i], 2);
-                packet.ReadXORByte(guids[i], 5);
-                packet.ReadXORByte(guids[i], 1);
-                packet.ReadXORByte(guids[i], 0);
-                packet.ReadXORByte(guids[i], 4);
-                packet.ReadXORByte(guids[i], 3);
-                packet.ReadXORByte(guids[i], 6);
-                packet.ReadXORByte(guids[i], 7);
-        
+                packet.ParseBitStream(guids[i], 2, 5, 1, 0, 4, 3, 6, 7);        
                 packet.WriteGuid("Guid", guids[i], i);
             }
-        
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 6);
 
+            packet.ParseBitStream(guid, 1, 4, 3, 5, 0, 7, 2, 6);
             packet.WriteGuid("Join GUID", guid);
         }
 
@@ -752,6 +719,15 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(1, 5, 7, 3, 2, 4, 0, 6);
             packet.ParseBitStream(guid, 4, 7, 0, 5, 1, 6, 2, 3);
             packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_LFG_PLAYER_LOCK_INFO_REQUEST)]
+        [Parser(Opcode.CMSG_LFG_PARTY_LOCK_INFO_REQUEST)]
+        [Parser(Opcode.CMSG_LFG_GET_STATUS)]
+        [Parser(Opcode.SMSG_LFG_DISABLED)]
+        [Parser(Opcode.CMSG_LFG_LEAVE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleLFGNull(Packet packet)
+        {
         }
     }
 }

@@ -692,5 +692,16 @@ namespace WowPacketParser.Parsing.Parsers
             }
                 
         }
+
+        [Parser(Opcode.CMSG_GROUP_DISBAND)]
+        [Parser(Opcode.SMSG_GROUP_DESTROYED)]
+        [Parser(Opcode.SMSG_GROUP_UNINVITE)]
+        [Parser(Opcode.CMSG_GROUP_DECLINE)]
+        [Parser(Opcode.MSG_RAID_READY_CHECK_FINISHED)]
+        [Parser(Opcode.CMSG_REQUEST_RAID_INFO)]
+        [Parser(Opcode.CMSG_GROUP_REQUEST_JOIN_UPDATES)]
+        public static void HandleGroupNull(Packet packet)
+        {
+        }
     }
 }

@@ -433,5 +433,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt64("Event ID");
             packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte);
         }
+
+        [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
+        [Parser(Opcode.CMSG_CALENDAR_GET_NUM_PENDING)]
+        [Parser(Opcode.SMSG_CALENDAR_CLEAR_PENDING_ACTION)]
+        public static void HandleCalenderNull(Packet packet)
+        {
+        }
     }
 }

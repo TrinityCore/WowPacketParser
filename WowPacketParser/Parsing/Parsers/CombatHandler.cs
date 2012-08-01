@@ -241,5 +241,16 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Unk Attacker State 3 14");
             }
         }
+
+        [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
+        [Parser(Opcode.SMSG_CANCEL_COMBAT)]
+        [Parser(Opcode.CMSG_ATTACKSTOP)]
+        [Parser(Opcode.SMSG_ATTACKSWING_NOTINRANGE)]
+        [Parser(Opcode.SMSG_ATTACKSWING_BADFACING)]
+        [Parser(Opcode.SMSG_ATTACKSWING_DEADTARGET)]
+        [Parser(Opcode.SMSG_ATTACKSWING_CANT_ATTACK)]
+        public static void HandleCombatNull(Packet packet)
+        {
+        }
     }
 }

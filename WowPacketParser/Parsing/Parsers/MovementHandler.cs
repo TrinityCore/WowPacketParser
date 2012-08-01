@@ -4380,9 +4380,16 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.MSG_MOVE_TIME_SKIPPED)]
-        public static void HandleMoveTimeSkipped(Packet packet)
+        public static void HandleMoveTimeSkippedMsg(Packet packet)
         {
             packet.ReadPackedGuid("Guid");
+            packet.ReadInt32("Time");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleMoveTimeSkipped(Packet packet)
+        {
+            packet.ReadPackedGuid("GUID");
             packet.ReadInt32("Time");
         }
 
@@ -9024,6 +9031,11 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
+        }
+
+        [Parser(Opcode.CMSG_MOUNTSPECIAL_ANIM)]
+        public static void HandleMovementNull(Packet packet)
+        {
         }
     }
 }

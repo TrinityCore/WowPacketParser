@@ -190,16 +190,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ITEM_REFUND_INFO_RESPONSE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleItemRefundInfoResponse434(Packet packet)
         {
-            var guid = new byte[8];
-            guid[3] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-
+            var guid = packet.StartBitStream(3, 5, 7, 6, 2, 4, 0, 1);
+            
             packet.ReadXORByte(guid, 7);
             packet.ReadUInt32("Time Left");
             for (var i = 0; i < 5; ++i)
@@ -564,9 +556,17 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ParseBitStream(guidBytes[i], 5, 6, 7, 0, 1, 3, 4);
+                packet.ReadXORByte(guidBytes[i], 5);
+                packet.ReadXORByte(guidBytes[i], 6);
+                packet.ReadXORByte(guidBytes[i], 7);
+                packet.ReadXORByte(guidBytes[i], 0);
+                packet.ReadXORByte(guidBytes[i], 1);
+                packet.ReadXORByte(guidBytes[i], 3);
+                packet.ReadXORByte(guidBytes[i], 4);
+
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
-                packet.ParseBitStream(guidBytes[i], 2);
+
+                packet.ReadXORByte(guidBytes[i], 2);
 
                 packet.WriteGuid("GUID", guidBytes[i], i);
             }
@@ -907,9 +907,15 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleItemRefundResult422(Packet packet)
         {
             var guid = packet.StartBitStream(5, 0, 3, 7, 4, 1, 6, 2);
-            packet.ParseBitStream(guid, 1, 5);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 5);
             packet.ReadInt32("Error ID");
-            packet.ParseBitStream(guid, 2, 4, 7, 3, 6, 0);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 0);
             packet.WriteGuid("Item Guid", guid);
         }
 

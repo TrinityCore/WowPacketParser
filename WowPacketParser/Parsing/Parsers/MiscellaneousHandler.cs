@@ -336,13 +336,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Version");
         }
 
-        [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleMoveTimeSkipped(Packet packet)
-        {
-            packet.ReadPackedGuid("GUID");
-            packet.ReadInt32("Time");
-        }
-
         [Parser(Opcode.SMSG_TIME_SYNC_REQ)]
         public static void HandleTimeSyncReq(Packet packet)
         {
@@ -385,29 +378,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
             packet.ReadSingle("Grade");
             packet.ReadByte("Unk Byte"); // Type
-        }
-
-        [Parser(Opcode.SMSG_LEVELUP_INFO)]
-        public static void HandleLevelUp(Packet packet)
-        {
-            var level = packet.ReadInt32("Level");
-            packet.ReadInt32("Health");
-
-            var powerCount = 5;
-            if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                powerCount = 7;
-            if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
-                powerCount = 5;
-
-            // TODO: Exclude happiness on Cata
-            for (var i = 0; i < powerCount; i++)
-                packet.WriteLine("Power " + (PowerType)i + ": " + packet.ReadInt32());
-
-            for (var i = 0; i < 5; i++)
-                packet.WriteLine("Stat " + (StatType)i + ": " + packet.ReadInt32());
-
-            if (SessionHandler.LoggedInCharacter != null)
-                SessionHandler.LoggedInCharacter.Level = level;
         }
 
         [Parser(Opcode.CMSG_TUTORIAL_FLAG)]
@@ -503,36 +473,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleZoneUpdate(Packet packet)
         {
             packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id");
-        }
-
-        [Parser(Opcode.SMSG_HEALTH_UPDATE)]
-        public static void HandleHealthUpdate(Packet packet)
-        {
-            packet.ReadPackedGuid("GUID");
-            packet.ReadUInt32("Value");
-        }
-
-        [Parser(Opcode.SMSG_POWER_UPDATE)]
-        public static void HandlePowerUpdate(Packet packet)
-        {
-            packet.ReadPackedGuid("GUID");
-
-            var count = 1;
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
-                count = packet.ReadInt32("Count");
-
-            for (var i = 0; i < count; i++)
-            {
-                packet.ReadEnum<PowerType>("Power type", TypeCode.Byte); // Actually powertype for class
-                packet.ReadInt32("Value");
-            }
-        }
-
-        [Parser(Opcode.CMSG_SET_ACTIONBAR_TOGGLES)]
-        public static void HandleSetActionBarToggles(Packet packet)
-        {
-            packet.ReadByte("Action Bar");
         }
 
         [Parser(Opcode.CMSG_PLAY_DANCE)]
@@ -1016,28 +956,12 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_MINIGAME_STATE)]
-        [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
-        [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES)]
-        [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
-        [Parser(Opcode.CMSG_CALENDAR_GET_NUM_PENDING)]
-        [Parser(Opcode.CMSG_CHAR_ENUM)]
         [Parser(Opcode.CMSG_KEEP_ALIVE)]
         [Parser(Opcode.CMSG_TUTORIAL_RESET)]
         [Parser(Opcode.CMSG_TUTORIAL_CLEAR)]
         [Parser(Opcode.MSG_MOVE_WORLDPORT_ACK)]
-        [Parser(Opcode.CMSG_MOUNTSPECIAL_ANIM)]
         [Parser(Opcode.CMSG_QUERY_TIME)]
-        [Parser(Opcode.CMSG_PLAYER_LOGOUT)]
-        [Parser(Opcode.CMSG_LOGOUT_REQUEST)]
-        [Parser(Opcode.CMSG_LOGOUT_CANCEL)]
-        [Parser(Opcode.SMSG_LOGOUT_CANCEL_ACK)]
         [Parser(Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE)]
-        [Parser(Opcode.CMSG_HEARTH_AND_RESURRECT)]
-        [Parser(Opcode.CMSG_LFG_PLAYER_LOCK_INFO_REQUEST)]
-        [Parser(Opcode.CMSG_LFG_PARTY_LOCK_INFO_REQUEST)]
-        [Parser(Opcode.CMSG_REQUEST_RAID_INFO)]
-        [Parser(Opcode.CMSG_LFG_GET_STATUS)]
-        [Parser(Opcode.SMSG_LFG_DISABLED)]
         [Parser(Opcode.SMSG_COMSAT_CONNECT_FAIL)]
         [Parser(Opcode.SMSG_COMSAT_RECONNECT_TRY)]
         [Parser(Opcode.SMSG_COMSAT_DISCONNECT)]
@@ -1045,54 +969,23 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_DEBUG_SERVER_GEO)] // Was unknown
         [Parser(Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS)]
         [Parser(Opcode.SMSG_GOSSIP_COMPLETE)]
-        [Parser(Opcode.SMSG_CALENDAR_CLEAR_PENDING_ACTION)]
-        [Parser(Opcode.CMSG_LFG_LEAVE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
-        [Parser(Opcode.CMSG_GROUP_DISBAND)]
-        [Parser(Opcode.SMSG_CANCEL_COMBAT)]
-        [Parser(Opcode.CMSG_ATTACKSTOP)]
-        [Parser(Opcode.SMSG_ATTACKSWING_NOTINRANGE)]
-        [Parser(Opcode.SMSG_ATTACKSWING_BADFACING)]
-        [Parser(Opcode.SMSG_ATTACKSWING_DEADTARGET)]
         [Parser(Opcode.SMSG_INVALID_PROMOTION_CODE)]
-        [Parser(Opcode.SMSG_GROUP_DESTROYED)]
-        [Parser(Opcode.SMSG_GROUP_UNINVITE)]
-        [Parser(Opcode.CMSG_GROUP_DECLINE)]
-        [Parser(Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA)]
-        [Parser(Opcode.CMSG_CANCEL_AUTO_REPEAT_SPELL)]
-        [Parser(Opcode.CMSG_CANCEL_GROWTH_AURA)]
-        [Parser(Opcode.CMSG_CANCEL_MOUNT_AURA)]
         [Parser(Opcode.CMSG_COMPLETE_CINEMATIC)]
         [Parser(Opcode.CMSG_NEXT_CINEMATIC_CAMERA)]
-        [Parser(Opcode.CMSG_REQUEST_PET_INFO)]
         [Parser(Opcode.CMSG_REQUEST_VEHICLE_EXIT)]
-        [Parser(Opcode.CMSG_RESET_INSTANCES)]
-        [Parser(Opcode.CMSG_SELF_RES)]
-        [Parser(Opcode.MSG_RAID_READY_CHECK_FINISHED)]
-        [Parser(Opcode.SMSG_ATTACKSWING_CANT_ATTACK)]
-        [Parser(Opcode.SMSG_CORPSE_NOT_IN_INSTANCE)]
         [Parser(Opcode.SMSG_ENABLE_BARBER_SHOP)]
         [Parser(Opcode.SMSG_FISH_NOT_HOOKED)]
         [Parser(Opcode.SMSG_FISH_ESCAPED)]
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]
         [Parser(Opcode.CMSG_MEETINGSTONE_INFO)]
         [Parser(Opcode.CMSG_RETURN_TO_GRAVEYARD)]
-        [Parser(Opcode.CMSG_BATTLEFIELD_REQUEST_SCORE_DATA)]
         [Parser(Opcode.CMSG_UI_TIME_REQUEST)]
-        [Parser(Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES)]
-        [Parser(Opcode.CMSG_QUERY_BATTLEFIELD_STATE)]
-        [Parser(Opcode.CMSG_REQUEST_CATEGORY_COOLDOWNS)]
         [Parser(Opcode.CMSG_REQUEST_CEMETERY_LIST)]
         [Parser(Opcode.CMSG_REQUEST_RESEARCH_HISTORY)]
-        [Parser(Opcode.CMSG_GROUP_REQUEST_JOIN_UPDATES)]
-        [Parser(Opcode.CMSG_REQUEST_RATED_BG_STATS)]
         [Parser(Opcode.CMSG_COMPLETE_MOVIE)]
-        [Parser(Opcode.CMSG_GUILD_EVENT_LOG_QUERY)]
         [Parser(Opcode.SMSG_WEEKLY_RESET_CURRENCY)]
-        [Parser(Opcode.CMSG_PVP_LOG_DATA)]
-        [Parser(Opcode.CMSG_REQUEST_PVP_REWARDS)]
         [Parser(Opcode.CMSG_USED_FOLLOW)]
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
-        [Parser(Opcode.SMSG_UPDATE_DUNGEON_ENCOUNTER_FOR_LOOT)]
         [Parser(Opcode.SMSG_NEW_WORLD_ABORT)]
         public static void HandleZeroLengthPackets(Packet packet)
         {

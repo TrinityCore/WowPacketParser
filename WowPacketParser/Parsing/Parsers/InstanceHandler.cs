@@ -329,5 +329,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadWoWString("Name", (int)strlen[i], i);
             }
         }
+
+        [Parser(Opcode.CMSG_RESET_INSTANCES)]
+        [Parser(Opcode.SMSG_UPDATE_DUNGEON_ENCOUNTER_FOR_LOOT)]
+        public static void HandleInstanceNull(Packet packet)
+        {
+        }
+
     }
 }
