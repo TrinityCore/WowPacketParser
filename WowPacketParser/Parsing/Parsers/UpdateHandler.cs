@@ -383,7 +383,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (living)
             {
-                if (guid2[4] != 0) guid2[4] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 4);
 
                 packet.ReadSingle("RunBack Speed", index);
                 if (hasFallData)
@@ -414,14 +414,14 @@ namespace WowPacketParser.Parsing.Parsers
                             packet.ReadSingle("Facing Angle", index);
                         else if (splineType == SplineType.FacingTarget)
                         {
-                            if (facingTargetGuid[5] != 0) facingTargetGuid[5] ^= packet.ReadByte();
-                            if (facingTargetGuid[3] != 0) facingTargetGuid[3] ^= packet.ReadByte();
-                            if (facingTargetGuid[7] != 0) facingTargetGuid[7] ^= packet.ReadByte();
-                            if (facingTargetGuid[1] != 0) facingTargetGuid[1] ^= packet.ReadByte();
-                            if (facingTargetGuid[6] != 0) facingTargetGuid[6] ^= packet.ReadByte();
-                            if (facingTargetGuid[4] != 0) facingTargetGuid[4] ^= packet.ReadByte();
-                            if (facingTargetGuid[2] != 0) facingTargetGuid[2] ^= packet.ReadByte();
-                            if (facingTargetGuid[0] != 0) facingTargetGuid[0] ^= packet.ReadByte();
+                            packet.ReadXORByte(facingTargetGuid, 5);
+                            packet.ReadXORByte(facingTargetGuid, 3);
+                            packet.ReadXORByte(facingTargetGuid, 7);
+                            packet.ReadXORByte(facingTargetGuid, 1);
+                            packet.ReadXORByte(facingTargetGuid, 6);
+                            packet.ReadXORByte(facingTargetGuid, 4);
+                            packet.ReadXORByte(facingTargetGuid, 2);
+                            packet.ReadXORByte(facingTargetGuid, 0);
                             packet.WriteLine("[{0}] Facing Target GUID {1}", index, new Guid(BitConverter.ToUInt64(facingTargetGuid, 0)));
                         }
 
@@ -469,12 +469,12 @@ namespace WowPacketParser.Parsing.Parsers
                 }
 
                 moveInfo.Position.Z = packet.ReadSingle();
-                if (guid2[5] != 0) guid2[5] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 5);
 
                 if (hasTransportData)
                 {
-                    if (transportGuid[5] != 0) transportGuid[5] ^= packet.ReadByte();
-                    if (transportGuid[7] != 0) transportGuid[7] ^= packet.ReadByte();
+                    packet.ReadXORByte(transportGuid, 5);
+                    packet.ReadXORByte(transportGuid, 7);
 
                     packet.ReadUInt32("Transport time", index);
                     var transPos = new Vector4();
@@ -484,40 +484,40 @@ namespace WowPacketParser.Parsing.Parsers
 
                     transPos.Y = packet.ReadSingle();
                     transPos.X = packet.ReadSingle();
-                    if (transportGuid[3] != 0) transportGuid[3] ^= packet.ReadByte();
+                    packet.ReadXORByte(transportGuid, 3);
 
                     transPos.Z = packet.ReadSingle();
-                    if (transportGuid[0] != 0) transportGuid[0] ^= packet.ReadByte();
+                    packet.ReadXORByte(transportGuid, 0);
 
                     if (hasTransportTime3)
                         packet.ReadUInt32("Transport time 3", index);
 
                     packet.ReadSByte("Transport seat", index);
-                    if (transportGuid[1] != 0) transportGuid[1] ^= packet.ReadByte();
-                    if (transportGuid[6] != 0) transportGuid[6] ^= packet.ReadByte();
-                    if (transportGuid[2] != 0) transportGuid[2] ^= packet.ReadByte();
-                    if (transportGuid[4] != 0) transportGuid[4] ^= packet.ReadByte();
+                    packet.ReadXORByte(transportGuid, 1);
+                    packet.ReadXORByte(transportGuid, 6);
+                    packet.ReadXORByte(transportGuid, 2);
+                    packet.ReadXORByte(transportGuid, 4);
                     packet.WriteLine("[{0}] Transport GUID {1}", index, new Guid(BitConverter.ToUInt64(transportGuid, 0)));
                     packet.WriteLine("[{0}] Transport Position: {1}", index, transPos);
                 }
 
                 moveInfo.Position.X = packet.ReadSingle();
                 packet.ReadSingle("Pitch Speed", index);
-                if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
-                if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 3);
+                packet.ReadXORByte(guid2, 0);
 
                 packet.ReadSingle("Swim Speed", index);
                 moveInfo.Position.Y = packet.ReadSingle();
-                if (guid2[7] != 0) guid2[7] ^= packet.ReadByte();
-                if (guid2[1] != 0) guid2[1] ^= packet.ReadByte();
-                if (guid2[2] != 0) guid2[2] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 7);
+                packet.ReadXORByte(guid2, 1);
+                packet.ReadXORByte(guid2, 2);
 
                 moveInfo.WalkSpeed = packet.ReadSingle("Walk Speed", index) / 2.5f;
                 if (hasTimestamp)
                     packet.ReadUInt32("Time", index);
 
                 packet.ReadSingle("FlyBack Speed", index);
-                if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 6);
 
                 packet.ReadSingle("Turn Speed", index);
                 if (hasOrientation)
@@ -544,22 +544,22 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var tPos = new Vector4();
 
-                if (goTransportGuid[0] != 0) goTransportGuid[0] ^= packet.ReadByte();
-                if (goTransportGuid[5] != 0) goTransportGuid[5] ^= packet.ReadByte();
+                packet.ReadXORByte(goTransportGuid, 0);
+                packet.ReadXORByte(goTransportGuid, 5);
                 if (hasGOTransportTime3)
                     packet.ReadUInt32("GO Transport Time 3", index);
 
-                if (goTransportGuid[3] != 0) goTransportGuid[3] ^= packet.ReadByte();
+                packet.ReadXORByte(goTransportGuid, 3);
 
                 tPos.X = packet.ReadSingle();
-                if (goTransportGuid[4] != 0) goTransportGuid[4] ^= packet.ReadByte();
-                if (goTransportGuid[6] != 0) goTransportGuid[6] ^= packet.ReadByte();
-                if (goTransportGuid[1] != 0) goTransportGuid[1] ^= packet.ReadByte();
+                packet.ReadXORByte(goTransportGuid, 4);
+                packet.ReadXORByte(goTransportGuid, 6);
+                packet.ReadXORByte(goTransportGuid, 1);
 
                 packet.ReadSingle("GO Transport Time", index);
                 tPos.Y = packet.ReadSingle();
-                if (goTransportGuid[2] != 0) goTransportGuid[2] ^= packet.ReadByte();
-                if (goTransportGuid[7] != 0) goTransportGuid[7] ^= packet.ReadByte();
+                packet.ReadXORByte(goTransportGuid, 2);
+                packet.ReadXORByte(goTransportGuid, 7);
 
                 tPos.Z = packet.ReadSingle();
                 packet.ReadByte("GO Transport Seat", index);
@@ -589,14 +589,14 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasAttackingTarget)
             {
-                if (attackingTargetGuid[4] != 0) attackingTargetGuid[4] ^= packet.ReadByte();
-                if (attackingTargetGuid[0] != 0) attackingTargetGuid[0] ^= packet.ReadByte();
-                if (attackingTargetGuid[3] != 0) attackingTargetGuid[3] ^= packet.ReadByte();
-                if (attackingTargetGuid[5] != 0) attackingTargetGuid[5] ^= packet.ReadByte();
-                if (attackingTargetGuid[7] != 0) attackingTargetGuid[7] ^= packet.ReadByte();
-                if (attackingTargetGuid[6] != 0) attackingTargetGuid[6] ^= packet.ReadByte();
-                if (attackingTargetGuid[2] != 0) attackingTargetGuid[2] ^= packet.ReadByte();
-                if (attackingTargetGuid[1] != 0) attackingTargetGuid[1] ^= packet.ReadByte();
+                packet.ReadXORByte(attackingTargetGuid, 4);
+                packet.ReadXORByte(attackingTargetGuid, 0);
+                packet.ReadXORByte(attackingTargetGuid, 3);
+                packet.ReadXORByte(attackingTargetGuid, 5);
+                packet.ReadXORByte(attackingTargetGuid, 7);
+                packet.ReadXORByte(attackingTargetGuid, 6);
+                packet.ReadXORByte(attackingTargetGuid, 2);
+                packet.ReadXORByte(attackingTargetGuid, 1);
                 packet.WriteLine("[{0}] Attacking Target GUID {1}", index, new Guid(BitConverter.ToUInt64(attackingTargetGuid, 0)));
             }
 
@@ -807,14 +807,14 @@ namespace WowPacketParser.Parsing.Parsers
 
                         if (splineType == SplineType.FacingTarget)
                         {
-                            if (facingTarget[0] != 0) facingTarget[0] ^= packet.ReadByte();
-                            if (facingTarget[6] != 0) facingTarget[6] ^= packet.ReadByte();
-                            if (facingTarget[5] != 0) facingTarget[5] ^= packet.ReadByte();
-                            if (facingTarget[4] != 0) facingTarget[4] ^= packet.ReadByte();
-                            if (facingTarget[1] != 0) facingTarget[1] ^= packet.ReadByte();
-                            if (facingTarget[3] != 0) facingTarget[3] ^= packet.ReadByte();
-                            if (facingTarget[7] != 0) facingTarget[7] ^= packet.ReadByte();
-                            if (facingTarget[2] != 0) facingTarget[2] ^= packet.ReadByte();
+                            packet.ReadXORByte(facingTarget, 0);
+                            packet.ReadXORByte(facingTarget, 6);
+                            packet.ReadXORByte(facingTarget, 5);
+                            packet.ReadXORByte(facingTarget, 4);
+                            packet.ReadXORByte(facingTarget, 1);
+                            packet.ReadXORByte(facingTarget, 3);
+                            packet.ReadXORByte(facingTarget, 7);
+                            packet.ReadXORByte(facingTarget, 2);
                             packet.WriteLine("[{0}] Facing Target GUID {1}", index, new Guid(BitConverter.ToUInt64(facingTarget, 0)));
                         }
                         else if (splineType == SplineType.FacingSpot)
@@ -859,15 +859,15 @@ namespace WowPacketParser.Parsing.Parsers
                     if (hasTransportTime2)
                         packet.ReadInt32("Transport Time 2", index);
 
-                    if (transportGuid[4] != 0) transportGuid[4] ^= packet.ReadByte();
-                    if (transportGuid[6] != 0) transportGuid[6] ^= packet.ReadByte();
-                    if (transportGuid[5] != 0) transportGuid[5] ^= packet.ReadByte();
+                    packet.ReadXORByte(transportGuid, 4);
+                    packet.ReadXORByte(transportGuid, 6);
+                    packet.ReadXORByte(transportGuid, 5);
 
                     if (hasTransportTime3)
                         packet.ReadInt32("Transport Time 3", index);
 
-                    if (transportGuid[7] != 0) transportGuid[7] ^= packet.ReadByte();
-                    if (transportGuid[3] != 0) transportGuid[3] ^= packet.ReadByte();
+                    packet.ReadXORByte(transportGuid, 7);
+                    packet.ReadXORByte(transportGuid, 3);
 
                     var tPos = new Vector4
                     {
@@ -876,9 +876,9 @@ namespace WowPacketParser.Parsing.Parsers
                         O = packet.ReadSingle(),
                     };
 
-                    if (transportGuid[2] != 0) transportGuid[2] ^= packet.ReadByte();
-                    if (transportGuid[1] != 0) transportGuid[1] ^= packet.ReadByte();
-                    if (transportGuid[0] != 0) transportGuid[0] ^= packet.ReadByte();
+                    packet.ReadXORByte(transportGuid, 2);
+                    packet.ReadXORByte(transportGuid, 1);
+                    packet.ReadXORByte(transportGuid, 0);
 
                     tPos.Y = packet.ReadSingle();
                     packet.WriteLine("[{0}] Transport Position: {1}", index, tPos);
@@ -891,13 +891,13 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadSingle("FlyBack Speed", index);
                 packet.ReadSingle("Turn Speed", index);
-                if (guid2[5] != 0) guid2[5] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 5);
 
                 moveInfo.RunSpeed = packet.ReadSingle("Run Speed", index) / 7.0f;
                 if (unkFloat2)
                     packet.ReadSingle("float +36", index);
 
-                if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 0);
 
                 packet.ReadSingle("Pitch Speed", index);
                 if (hasFallData)
@@ -916,17 +916,17 @@ namespace WowPacketParser.Parsing.Parsers
                 moveInfo.Position = new Vector3();
                 moveInfo.Position.X = packet.ReadSingle();
                 packet.ReadSingle("SwimBack Speed", index);
-                if (guid2[7] != 0) guid2[7] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 7);
 
                 moveInfo.Position.Z = packet.ReadSingle();
-                if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
-                if (guid2[2] != 0) guid2[2] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 3);
+                packet.ReadXORByte(guid2, 2);
 
                 packet.ReadSingle("Fly Speed", index);
                 packet.ReadSingle("Swim Speed", index);
-                if (guid2[1] != 0) guid2[1] ^= packet.ReadByte();
-                if (guid2[4] != 0) guid2[4] ^= packet.ReadByte();
-                if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 1);
+                packet.ReadXORByte(guid2, 4);
+                packet.ReadXORByte(guid2, 6);
 
                 packet.WriteLine("[{0}] GUID 2 {1}", index, new Guid(BitConverter.ToUInt64(guid2, 0)));
                 moveInfo.Position.Y = packet.ReadSingle();
@@ -955,12 +955,12 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var tPos = new Vector4();
 
-                if (goTransportGuid[6] != 0) goTransportGuid[6] ^= packet.ReadByte();
-                if (goTransportGuid[5] != 0) goTransportGuid[5] ^= packet.ReadByte();
+                packet.ReadXORByte(goTransportGuid, 6);
+                packet.ReadXORByte(goTransportGuid, 5);
 
                 tPos.Y = packet.ReadSingle();
-                if (goTransportGuid[4] != 0) goTransportGuid[4] ^= packet.ReadByte();
-                if (goTransportGuid[2] != 0) goTransportGuid[2] ^= packet.ReadByte();
+                packet.ReadXORByte(goTransportGuid, 4);
+                packet.ReadXORByte(goTransportGuid, 2);
                 if (hasGOTransportTime3)
                     packet.ReadUInt32("GO Transport Time 3", index);
 
@@ -970,10 +970,10 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("GO Transport Time 2", index);
 
                 packet.ReadByte("GO Transport Seat", index);
-                if (goTransportGuid[7] != 0) goTransportGuid[7] ^= packet.ReadByte();
-                if (goTransportGuid[1] != 0) goTransportGuid[1] ^= packet.ReadByte();
-                if (goTransportGuid[0] != 0) goTransportGuid[0] ^= packet.ReadByte();
-                if (goTransportGuid[3] != 0) goTransportGuid[3] ^= packet.ReadByte();
+                packet.ReadXORByte(goTransportGuid, 7);
+                packet.ReadXORByte(goTransportGuid, 1);
+                packet.ReadXORByte(goTransportGuid, 0);
+                packet.ReadXORByte(goTransportGuid, 3);
 
                 tPos.X = packet.ReadSingle();
                 packet.ReadSingle("GO Transport Time", index);
@@ -983,14 +983,14 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasAttackingTarget)
             {
-                if (attackingTarget[2] != 0) attackingTarget[2] ^= packet.ReadByte();
-                if (attackingTarget[4] != 0) attackingTarget[4] ^= packet.ReadByte();
-                if (attackingTarget[7] != 0) attackingTarget[7] ^= packet.ReadByte();
-                if (attackingTarget[3] != 0) attackingTarget[3] ^= packet.ReadByte();
-                if (attackingTarget[0] != 0) attackingTarget[0] ^= packet.ReadByte();
-                if (attackingTarget[1] != 0) attackingTarget[1] ^= packet.ReadByte();
-                if (attackingTarget[5] != 0) attackingTarget[5] ^= packet.ReadByte();
-                if (attackingTarget[6] != 0) attackingTarget[6] ^= packet.ReadByte();
+                packet.ReadXORByte(attackingTarget, 2);
+                packet.ReadXORByte(attackingTarget, 4);
+                packet.ReadXORByte(attackingTarget, 7);
+                packet.ReadXORByte(attackingTarget, 3);
+                packet.ReadXORByte(attackingTarget, 0);
+                packet.ReadXORByte(attackingTarget, 1);
+                packet.ReadXORByte(attackingTarget, 5);
+                packet.ReadXORByte(attackingTarget, 6);
                 packet.WriteLine("[{0}] Attacking Target GUID {1}", index, new Guid(BitConverter.ToUInt64(attackingTarget, 0)));
             }
 
@@ -1214,28 +1214,28 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasGOTransportTime3)
                     packet.ReadInt32("GO Transport Time 3", index);
 
-                if (goTransportGuid[7] != 0) goTransportGuid[7] ^= packet.ReadByte();
+                packet.ReadXORByte(goTransportGuid, 7);
 
                 tPos.Y = packet.ReadSingle();
                 packet.ReadByte("GO Transport Seat", index);
                 tPos.O = packet.ReadSingle();
                 tPos.Z = packet.ReadSingle();
 
-                if (goTransportGuid[4] != 0) goTransportGuid[4] ^= packet.ReadByte();
-                if (goTransportGuid[5] != 0) goTransportGuid[5] ^= packet.ReadByte();
-                if (goTransportGuid[6] != 0) goTransportGuid[6] ^= packet.ReadByte();
+                packet.ReadXORByte(goTransportGuid, 4);
+                packet.ReadXORByte(goTransportGuid, 5);
+                packet.ReadXORByte(goTransportGuid, 6);
 
                 tPos.X = packet.ReadSingle();
                 packet.ReadInt32("GO Transport Time", index);
 
-                if (goTransportGuid[1] != 0) goTransportGuid[1] ^= packet.ReadByte();
+                packet.ReadXORByte(goTransportGuid, 1);
 
                 if (hasGOTransportTime2)
                     packet.ReadInt32("GO Transport Time 2", index);
 
-                if (goTransportGuid[0] != 0) goTransportGuid[0] ^= packet.ReadByte();
-                if (goTransportGuid[2] != 0) goTransportGuid[2] ^= packet.ReadByte();
-                if (goTransportGuid[3] != 0) goTransportGuid[3] ^= packet.ReadByte();
+                packet.ReadXORByte(goTransportGuid, 0);
+                packet.ReadXORByte(goTransportGuid, 2);
+                packet.ReadXORByte(goTransportGuid, 3);
 
                 packet.WriteLine("[{0}] GO Transport Position: {1}", index, tPos);
                 packet.WriteLine("[{0}] GO Transport GUID {1}", index, new Guid(BitConverter.ToUInt64(goTransportGuid, 0)));
@@ -1262,14 +1262,14 @@ namespace WowPacketParser.Parsing.Parsers
 
                         if (splineType == SplineType.FacingTarget)
                         {
-                            if (facingTarget[2] != 0) facingTarget[2] ^= packet.ReadByte();
-                            if (facingTarget[1] != 0) facingTarget[1] ^= packet.ReadByte();
-                            if (facingTarget[3] != 0) facingTarget[3] ^= packet.ReadByte();
-                            if (facingTarget[7] != 0) facingTarget[7] ^= packet.ReadByte();
-                            if (facingTarget[0] != 0) facingTarget[0] ^= packet.ReadByte();
-                            if (facingTarget[5] != 0) facingTarget[5] ^= packet.ReadByte();
-                            if (facingTarget[4] != 0) facingTarget[4] ^= packet.ReadByte();
-                            if (facingTarget[6] != 0) facingTarget[6] ^= packet.ReadByte();
+                            packet.ReadXORByte(facingTarget, 2);
+                            packet.ReadXORByte(facingTarget, 1);
+                            packet.ReadXORByte(facingTarget, 3);
+                            packet.ReadXORByte(facingTarget, 7);
+                            packet.ReadXORByte(facingTarget, 0);
+                            packet.ReadXORByte(facingTarget, 5);
+                            packet.ReadXORByte(facingTarget, 4);
+                            packet.ReadXORByte(facingTarget, 6);
                             packet.WriteLine("[{0}] Facing Target GUID {1}", index, new Guid(BitConverter.ToUInt64(facingTarget, 0)));
                         }
                         else if (splineType == SplineType.FacingSpot)
@@ -1313,26 +1313,26 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     var tPos = new Vector4();
 
-                    if (transportGuid[6] != 0) transportGuid[6] ^= packet.ReadByte();
+                    packet.ReadXORByte(transportGuid, 6);
                     if (hasTransportTime2)
                         packet.ReadInt32("Transport Time 2", index);
 
                     packet.ReadByte("Transport Seat", index);
                     tPos.O = packet.ReadSingle();
-                    if (transportGuid[7] != 0) transportGuid[7] ^= packet.ReadByte();
+                    packet.ReadXORByte(transportGuid, 7);
                     tPos.Y = packet.ReadSingle();
-                    if (transportGuid[3] != 0) transportGuid[3] ^= packet.ReadByte();
+                    packet.ReadXORByte(transportGuid, 3);
                     if (hasTransportTime3)
                         packet.ReadInt32("Transport Time 3", index);
 
                     packet.ReadInt32("Transport Time", index);
-                    if (transportGuid[0] != 0) transportGuid[0] ^= packet.ReadByte();
-                    if (transportGuid[1] != 0) transportGuid[1] ^= packet.ReadByte();
+                    packet.ReadXORByte(transportGuid, 0);
+                    packet.ReadXORByte(transportGuid, 1);
                     tPos.X = packet.ReadSingle();
-                    if (transportGuid[4] != 0) transportGuid[4] ^= packet.ReadByte();
+                    packet.ReadXORByte(transportGuid, 4);
                     tPos.Z = packet.ReadSingle();
-                    if (transportGuid[5] != 0) transportGuid[5] ^= packet.ReadByte();
-                    if (transportGuid[2] != 0) transportGuid[2] ^= packet.ReadByte();
+                    packet.ReadXORByte(transportGuid, 5);
+                    packet.ReadXORByte(transportGuid, 2);
 
                     packet.WriteLine("[{0}] Transport Position: {1}", index, tPos);
                 }
@@ -1341,8 +1341,8 @@ namespace WowPacketParser.Parsing.Parsers
                 moveInfo.Position.Z = packet.ReadSingle();
                 packet.ReadSingle("FlyBack Speed", index);
                 moveInfo.Position.Y = packet.ReadSingle();
-                if (guid2[4] != 0) guid2[4] ^= packet.ReadByte();
-                if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 4);
+                packet.ReadXORByte(guid2, 0);
                 moveInfo.Position.X = packet.ReadSingle();
                 if (hasFallData)
                 {
@@ -1363,22 +1363,22 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSingle("Swim Speed", index);
                 moveInfo.RunSpeed = packet.ReadSingle("Run Speed", index) / 7.0f;
                 packet.ReadSingle("Fly Speed", index);
-                if (guid2[2] != 0) guid2[2] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 2);
                 if (unkFloat2)
                     packet.ReadSingle("Unk float +36", index);
 
                 if (unkFloat1)
                     packet.ReadSingle("Unk float +28", index);
 
-                if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 3);
                 packet.ReadSingle("RunBack Speed", index);
-                if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 6);
                 packet.ReadSingle("Pitch Speed", index);
-                if (guid2[7] != 0) guid2[7] ^= packet.ReadByte();
-                if (guid2[5] != 0) guid2[5] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 7);
+                packet.ReadXORByte(guid2, 5);
                 packet.ReadSingle("Turn Speed", index);
                 packet.ReadSingle("SwimBack Speed", index);
-                if (guid2[1] != 0) guid2[1] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 1);
                 packet.WriteLine("[{0}] GUID 2 {1}", index, new Guid(BitConverter.ToUInt64(guid2, 0)));
                 if (hasUnkUInt)
                     packet.ReadInt32();
@@ -1388,14 +1388,14 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasAttackingTarget)
             {
-                if (attackingTarget[6] != 0) attackingTarget[6] ^= packet.ReadByte();
-                if (attackingTarget[5] != 0) attackingTarget[5] ^= packet.ReadByte();
-                if (attackingTarget[3] != 0) attackingTarget[3] ^= packet.ReadByte();
-                if (attackingTarget[2] != 0) attackingTarget[2] ^= packet.ReadByte();
-                if (attackingTarget[0] != 0) attackingTarget[0] ^= packet.ReadByte();
-                if (attackingTarget[1] != 0) attackingTarget[1] ^= packet.ReadByte();
-                if (attackingTarget[7] != 0) attackingTarget[7] ^= packet.ReadByte();
-                if (attackingTarget[4] != 0) attackingTarget[4] ^= packet.ReadByte();
+                packet.ReadXORByte(attackingTarget, 6);
+                packet.ReadXORByte(attackingTarget, 5);
+                packet.ReadXORByte(attackingTarget, 3);
+                packet.ReadXORByte(attackingTarget, 2);
+                packet.ReadXORByte(attackingTarget, 0);
+                packet.ReadXORByte(attackingTarget, 1);
+                packet.ReadXORByte(attackingTarget, 7);
+                packet.ReadXORByte(attackingTarget, 4);
                 packet.WriteLine("[{0}] Attacking Target GUID {1}", index, new Guid(BitConverter.ToUInt64(attackingTarget, 0)));
             }
 
@@ -1636,26 +1636,26 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasGameObjectPosition)
             {
                 var tPos = new Vector4();
-                if (goTransportGuid[1] != 0) goTransportGuid[1] ^= packet.ReadByte();
-                if (goTransportGuid[4] != 0) goTransportGuid[4] ^= packet.ReadByte();
+                packet.ReadXORByte(goTransportGuid, 1);
+                packet.ReadXORByte(goTransportGuid, 4);
                 tPos.Z = packet.ReadSingle();
                 if (hasGOTransportTime3)
                     packet.ReadInt32("GO Transport Time 3", index);
 
                 packet.ReadInt32("GO Transport Time", index);
-                if (goTransportGuid[5] != 0) goTransportGuid[5] ^= packet.ReadByte();
-                if (goTransportGuid[6] != 0) goTransportGuid[6] ^= packet.ReadByte();
+                packet.ReadXORByte(goTransportGuid, 5);
+                packet.ReadXORByte(goTransportGuid, 6);
                 tPos.X = packet.ReadSingle();
-                if (goTransportGuid[2] != 0) goTransportGuid[2] ^= packet.ReadByte();
+                packet.ReadXORByte(goTransportGuid, 2);
                 if (hasGOTransportTime2)
                     packet.ReadInt32("GO Transport Time 2", index);
 
                 packet.ReadByte("GO Transport Seat", index);
-                if (goTransportGuid[3] != 0) goTransportGuid[3] ^= packet.ReadByte();
+                packet.ReadXORByte(goTransportGuid, 3);
                 tPos.Y = packet.ReadSingle();
                 tPos.O = packet.ReadSingle();
-                if (goTransportGuid[7] != 0) goTransportGuid[7] ^= packet.ReadByte();
-                if (goTransportGuid[0] != 0) goTransportGuid[0] ^= packet.ReadByte();
+                packet.ReadXORByte(goTransportGuid, 7);
+                packet.ReadXORByte(goTransportGuid, 0);
 
                 packet.WriteLine("[{0}] GO Transport Position: {1}", index, tPos);
                 packet.WriteLine("[{0}] GO Transport GUID {1}", index, new Guid(BitConverter.ToUInt64(goTransportGuid, 0)));
@@ -1685,14 +1685,14 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadSingle("Unknown Spline Float 2", index);
                         if (splineType == SplineType.FacingTarget)
                         {
-                            if (facingTarget[3] != 0) facingTarget[3] ^= packet.ReadByte();
-                            if (facingTarget[4] != 0) facingTarget[4] ^= packet.ReadByte();
-                            if (facingTarget[5] != 0) facingTarget[5] ^= packet.ReadByte();
-                            if (facingTarget[7] != 0) facingTarget[7] ^= packet.ReadByte();
-                            if (facingTarget[2] != 0) facingTarget[2] ^= packet.ReadByte();
-                            if (facingTarget[0] != 0) facingTarget[0] ^= packet.ReadByte();
-                            if (facingTarget[6] != 0) facingTarget[6] ^= packet.ReadByte();
-                            if (facingTarget[1] != 0) facingTarget[1] ^= packet.ReadByte();
+                            packet.ReadXORByte(facingTarget, 3);
+                            packet.ReadXORByte(facingTarget, 4);
+                            packet.ReadXORByte(facingTarget, 5);
+                            packet.ReadXORByte(facingTarget, 7);
+                            packet.ReadXORByte(facingTarget, 2);
+                            packet.ReadXORByte(facingTarget, 0);
+                            packet.ReadXORByte(facingTarget, 6);
+                            packet.ReadXORByte(facingTarget, 1);
                             packet.WriteLine("[{0}] Facing Target GUID {1}", index, new Guid(BitConverter.ToUInt64(facingTarget, 0)));
                         }
 
@@ -1733,14 +1733,14 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasTransportData)
                 {
                     var tPos = new Vector4();
-                    if (transportGuid[4] != 0) transportGuid[4] ^= packet.ReadByte();
+                    packet.ReadXORByte(transportGuid, 4);
                     tPos.Z = packet.ReadSingle();
-                    if (transportGuid[7] != 0) transportGuid[7] ^= packet.ReadByte();
-                    if (transportGuid[5] != 0) transportGuid[5] ^= packet.ReadByte();
-                    if (transportGuid[1] != 0) transportGuid[1] ^= packet.ReadByte();
+                    packet.ReadXORByte(transportGuid, 7);
+                    packet.ReadXORByte(transportGuid, 5);
+                    packet.ReadXORByte(transportGuid, 1);
                     tPos.X = packet.ReadSingle();
-                    if (transportGuid[3] != 0) transportGuid[3] ^= packet.ReadByte();
-                    if (transportGuid[6] != 0) transportGuid[6] ^= packet.ReadByte();
+                    packet.ReadXORByte(transportGuid, 3);
+                    packet.ReadXORByte(transportGuid, 6);
                     if (hasTransportTime3)
                         packet.ReadInt32("Transport Time 3", index);
 
@@ -1750,9 +1750,9 @@ namespace WowPacketParser.Parsing.Parsers
                     if (hasTransportTime2)
                         packet.ReadInt32("Transport Time 2", index);
 
-                    if (transportGuid[2] != 0) transportGuid[2] ^= packet.ReadByte();
+                    packet.ReadXORByte(transportGuid, 2);
                     packet.ReadInt32("Transport Time", index);
-                    if (transportGuid[0] != 0) transportGuid[0] ^= packet.ReadByte();
+                    packet.ReadXORByte(transportGuid, 0);
 
                     packet.WriteLine("[{0}] Transport Position: {1}", index, tPos);
                 }
@@ -1775,24 +1775,24 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadSingle("Fall Start Velocity", index);
                 }
 
-                if (guid2[7] != 0) guid2[7] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 7);
                 packet.ReadSingle("SwimBack Speed", index);
-                if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
-                if (guid2[5] != 0) guid2[5] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 0);
+                packet.ReadXORByte(guid2, 5);
                 if (hasUnkUInt)
                     packet.ReadUInt32();
 
                 moveInfo.Position.Z = packet.ReadSingle();
                 packet.ReadSingle("Fly Speed", index);
-                if (guid2[1] != 0) guid2[1] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 1);
                 packet.ReadSingle("RunBack Speed", index);
                 packet.ReadSingle("Turn Speed", index);
                 packet.ReadSingle("Swim Speed", index);
                 moveInfo.WalkSpeed = packet.ReadSingle("Walk Speed", index) / 2.5f;
-                if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
-                if (guid2[4] != 0) guid2[4] ^= packet.ReadByte();
-                if (guid2[2] != 0) guid2[2] ^= packet.ReadByte();
-                if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
+                packet.ReadXORByte(guid2, 3);
+                packet.ReadXORByte(guid2, 4);
+                packet.ReadXORByte(guid2, 2);
+                packet.ReadXORByte(guid2, 6);
                 packet.WriteLine("[{0}] GUID 2 {1}", index, new Guid(BitConverter.ToUInt64(guid2, 0)));
                 if (unkFloat2)
                     packet.ReadSingle("Unk float +36", index);
@@ -1831,14 +1831,14 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasAttackingTarget)
             {
-                if (attackingTarget[3] != 0) attackingTarget[3] ^= packet.ReadByte();
-                if (attackingTarget[5] != 0) attackingTarget[5] ^= packet.ReadByte();
-                if (attackingTarget[0] != 0) attackingTarget[0] ^= packet.ReadByte();
-                if (attackingTarget[7] != 0) attackingTarget[7] ^= packet.ReadByte();
-                if (attackingTarget[2] != 0) attackingTarget[2] ^= packet.ReadByte();
-                if (attackingTarget[4] != 0) attackingTarget[4] ^= packet.ReadByte();
-                if (attackingTarget[6] != 0) attackingTarget[6] ^= packet.ReadByte();
-                if (attackingTarget[1] != 0) attackingTarget[1] ^= packet.ReadByte();
+                packet.ReadXORByte(attackingTarget, 3);
+                packet.ReadXORByte(attackingTarget, 5);
+                packet.ReadXORByte(attackingTarget, 0);
+                packet.ReadXORByte(attackingTarget, 7);
+                packet.ReadXORByte(attackingTarget, 2);
+                packet.ReadXORByte(attackingTarget, 4);
+                packet.ReadXORByte(attackingTarget, 6);
+                packet.ReadXORByte(attackingTarget, 1);
                 packet.WriteLine("[{0}] Attacking Target GUID {1}", index, new Guid(BitConverter.ToUInt64(attackingTarget, 0)));
             }
 

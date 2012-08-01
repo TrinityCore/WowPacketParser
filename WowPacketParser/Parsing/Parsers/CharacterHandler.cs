@@ -980,20 +980,20 @@ namespace WowPacketParser.Parsing.Parsers
             guid[5] = packet.ReadBit();
             guid[3] = packet.ReadBit();
 
-            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
-            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
-            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
-            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
-            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 2);
 
             packet.ReadInt32("Unk Int32 1");
 
-            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 6);
 
             packet.ReadInt32("Unk Int32 2");
 
-            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
-            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 5);
 
             packet.ReadInt32("Unk Int32 3");
 
@@ -1031,15 +1031,15 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (int i = 0; i < count; ++i)
             {
-                if (guids[i][6] != 0) guids[i][6] ^= packet.ReadByte();
-                if (guids[i][5] != 0) guids[i][5] ^= packet.ReadByte();
-                if (guids[i][1] != 0) guids[i][1] ^= packet.ReadByte();
-                if (guids[i][4] != 0) guids[i][4] ^= packet.ReadByte();
-                if (guids[i][0] != 0) guids[i][0] ^= packet.ReadByte();
-                if (guids[i][3] != 0) guids[i][3] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 6);
+                packet.ReadXORByte(guids[i], 5);
+                packet.ReadXORByte(guids[i], 1);
+                packet.ReadXORByte(guids[i], 4);
+                packet.ReadXORByte(guids[i], 0);
+                packet.ReadXORByte(guids[i], 3);
                 packet.ReadByte("Slot", i);
-                if (guids[i][2] != 0) guids[i][2] ^= packet.ReadByte();
-                if (guids[i][7] != 0) guids[i][7] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 2);
+                packet.ReadXORByte(guids[i], 7);
 
                 packet.WriteGuid("Character Guid", guids[i], i);
             }

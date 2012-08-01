@@ -538,10 +538,10 @@ namespace WowPacketParser.Misc
             return tempBytes;
         }
 
-        public byte ParseBitStream(byte[] stream, string name, byte value)
+        public byte ReadXORByte(byte[] stream, byte value)
         {
             if (stream[value] != 0)
-                return stream[value] ^= ReadByte(name);
+                return stream[value] ^= ReadByte();
 
             return 0;
         }

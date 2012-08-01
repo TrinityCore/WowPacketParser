@@ -200,7 +200,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid[0] = packet.ReadBit();
             guid[1] = packet.ReadBit();
 
-            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 7);
             packet.ReadUInt32("Time Left");
             for (var i = 0; i < 5; ++i)
             {
@@ -208,20 +208,20 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Cost Entry", i);
             }
 
-            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
-            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
-            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
-            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 2);
             for (var i = 0; i < 5; ++i)
             {
                 packet.ReadUInt32("Currency Count", i);
                 packet.ReadUInt32("Currency Entry", i);
             }
 
-            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
-            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 5);
             packet.ReadUInt32("Unk UInt32 1");
-            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 0);
             packet.ReadUInt32("Money Cost");
             packet.WriteGuid("Item Guid", guid);
         }

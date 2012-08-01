@@ -232,7 +232,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid[7] = packet.ReadBit();
             guid[5] = packet.ReadBit();
 
-            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 4);
 
             for (var i = 0; i < count; i++)
             {
@@ -248,20 +248,20 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteGuid("Item Guid", guid2[i], i);
             }
 
-            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
-            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
-            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
-            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 5);
 
             packet.ReadWoWString("Subject", len1);
             packet.ReadWoWString("Receiver", len3);
 
-            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
-            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 0);
 
             packet.ReadWoWString("Body", len2);
 
-            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 1);
 
             packet.WriteGuid("Mailbox Guid", guid);
         }

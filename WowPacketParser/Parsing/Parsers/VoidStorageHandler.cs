@@ -77,34 +77,34 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (int i = 0; i < count; ++i)
             {
-                if (guid[i][3] != 0) guid[i][3] ^= packet.ReadByte();
+                packet.ReadXORByte(guid[i], 3);
 
                 packet.ReadInt32("Item Suffix Factor", i);
 
-                if (guid[i][4] != 0) guid[i][4] ^= packet.ReadByte();
+                packet.ReadXORByte(guid[i], 4);
 
                 packet.ReadInt32("Item Slot", i);
 
-                if (id[i][0] != 0) id[i][0] ^= packet.ReadByte();
-                if (id[i][6] != 0) id[i][6] ^= packet.ReadByte();
-                if (guid[i][0] != 0) guid[i][0] ^= packet.ReadByte();
-                if (guid[i][1] != 0) guid[i][1] ^= packet.ReadByte();
+                packet.ReadXORByte(id[i], 0);
+                packet.ReadXORByte(id[i], 6);
+                packet.ReadXORByte(guid[i], 0);
+                packet.ReadXORByte(guid[i], 1);
 
                 packet.ReadInt32("Item Random Property ID", i);
 
-                if (id[i][4] != 0) id[i][4] ^= packet.ReadByte();
-                if (id[i][5] != 0) id[i][5] ^= packet.ReadByte();
-                if (id[i][2] != 0) id[i][2] ^= packet.ReadByte();
-                if (guid[i][2] != 0) guid[i][2] ^= packet.ReadByte();
-                if (guid[i][6] != 0) guid[i][6] ^= packet.ReadByte();
-                if (id[i][1] != 0) id[i][1] ^= packet.ReadByte();
-                if (id[i][3] != 0) id[i][3] ^= packet.ReadByte();
-                if (guid[i][5] != 0) guid[i][5] ^= packet.ReadByte();
-                if (guid[i][7] != 0) guid[i][7] ^= packet.ReadByte();
+                packet.ReadXORByte(id[i], 4);
+                packet.ReadXORByte(id[i], 5);
+                packet.ReadXORByte(id[i], 2);
+                packet.ReadXORByte(guid[i], 2);
+                packet.ReadXORByte(guid[i], 6);
+                packet.ReadXORByte(id[i], 1);
+                packet.ReadXORByte(id[i], 3);
+                packet.ReadXORByte(guid[i], 5);
+                packet.ReadXORByte(guid[i], 7);
 
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
 
-                if (id[i][7] != 0) id[i][7] ^= packet.ReadByte();
+                packet.ReadXORByte(id[i], 7);
 
                 packet.WriteLine("[{1}] Item Id: {0}", BitConverter.ToUInt64(id[i], 0), i);
                 packet.WriteGuid("Item Player Creator Guid", guid[i], i);
@@ -156,28 +156,28 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadInt32("Item Suffix Factor", i);
 
-                if (id1[i][6] != 0) id1[i][6] ^= packet.ReadByte();
-                if (id1[i][4] != 0) id1[i][4] ^= packet.ReadByte();
-                if (guid[i][4] != 0) guid[i][4] ^= packet.ReadByte();
-                if (id1[i][2] != 0) id1[i][2] ^= packet.ReadByte();
-                if (guid[i][1] != 0) guid[i][1] ^= packet.ReadByte();
-                if (guid[i][3] != 0) guid[i][3] ^= packet.ReadByte();
-                if (id1[i][3] != 0) id1[i][3] ^= packet.ReadByte();
-                if (guid[i][0] != 0) guid[i][0] ^= packet.ReadByte();
-                if (id1[i][0] != 0) id1[i][0] ^= packet.ReadByte();
-                if (guid[i][6] != 0) guid[i][6] ^= packet.ReadByte();
-                if (id1[i][5] != 0) id1[i][5] ^= packet.ReadByte();
-                if (guid[i][5] != 0) guid[i][5] ^= packet.ReadByte();
-                if (guid[i][7] != 0) guid[i][7] ^= packet.ReadByte();
+                packet.ReadXORByte(id1[i], 6);
+                packet.ReadXORByte(id1[i], 4);
+                packet.ReadXORByte(guid[i], 4);
+                packet.ReadXORByte(id1[i], 2);
+                packet.ReadXORByte(guid[i], 1);
+                packet.ReadXORByte(guid[i], 3);
+                packet.ReadXORByte(id1[i], 3);
+                packet.ReadXORByte(guid[i], 0);
+                packet.ReadXORByte(id1[i], 0);
+                packet.ReadXORByte(guid[i], 6);
+                packet.ReadXORByte(id1[i], 5);
+                packet.ReadXORByte(guid[i], 5);
+                packet.ReadXORByte(guid[i], 7);
 
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
 
-                if (id1[i][1] != 0) id1[i][1] ^= packet.ReadByte();
+                packet.ReadXORByte(id1[i], 1);
 
                 packet.ReadInt32("Item Slot", i);
 
-                if (guid[i][2] != 0) guid[i][2] ^= packet.ReadByte();
-                if (id1[i][7] != 0) id1[i][7] ^= packet.ReadByte();
+                packet.ReadXORByte(guid[i], 2);
+                packet.ReadXORByte(id1[i], 7);
 
                 packet.ReadInt32("Item Random Property ID", i);
 
@@ -227,8 +227,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteGuid("Item Guid", itemsGuid[i], i);
             }
 
-            if (npcGuid[5] != 0) npcGuid[5] ^= packet.ReadByte();
-            if (npcGuid[6] != 0) npcGuid[6] ^= packet.ReadByte();
+            packet.ReadXORByte(npcGuid, 5);
+            packet.ReadXORByte(npcGuid, 6);
 
             for (int i = 0; i < count2; ++i)
             {
@@ -236,12 +236,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteLine("[{1}] Item Id: {0}", BitConverter.ToUInt64(itemsId[i], 0), i);
             }
 
-            if (npcGuid[1] != 0) npcGuid[1] ^= packet.ReadByte();
-            if (npcGuid[4] != 0) npcGuid[4] ^= packet.ReadByte();
-            if (npcGuid[7] != 0) npcGuid[7] ^= packet.ReadByte();
-            if (npcGuid[3] != 0) npcGuid[3] ^= packet.ReadByte();
-            if (npcGuid[2] != 0) npcGuid[2] ^= packet.ReadByte();
-            if (npcGuid[0] != 0) npcGuid[0] ^= packet.ReadByte();
+            packet.ReadXORByte(npcGuid, 1);
+            packet.ReadXORByte(npcGuid, 4);
+            packet.ReadXORByte(npcGuid, 7);
+            packet.ReadXORByte(npcGuid, 3);
+            packet.ReadXORByte(npcGuid, 2);
+            packet.ReadXORByte(npcGuid, 0);
 
             packet.WriteGuid("NPC Guid", npcGuid);
         }
@@ -271,22 +271,22 @@ namespace WowPacketParser.Parsing.Parsers
             itemId[1] = packet.ReadBit();
             itemId[4] = packet.ReadBit();
 
-            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
-            if (itemId[3] != 0) itemId[3] ^= packet.ReadByte();
-            if (itemId[2] != 0) itemId[2] ^= packet.ReadByte();
-            if (itemId[4] != 0) itemId[4] ^= packet.ReadByte();
-            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
-            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
-            if (itemId[6] != 0) itemId[6] ^= packet.ReadByte();
-            if (itemId[1] != 0) itemId[1] ^= packet.ReadByte();
-            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
-            if (itemId[5] != 0) itemId[5] ^= packet.ReadByte();
-            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
-            if (itemId[0] != 0) itemId[0] ^= packet.ReadByte();
-            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
-            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
-            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
-            if (itemId[7] != 0) itemId[7] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(itemId, 3);
+            packet.ReadXORByte(itemId, 2);
+            packet.ReadXORByte(itemId, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(itemId, 6);
+            packet.ReadXORByte(itemId, 1);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(itemId, 5);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(itemId, 0);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(itemId, 7);
 
             packet.WriteGuid("NPC Guid", guid);
             packet.WriteLine("Item Id: {0}", BitConverter.ToUInt64(itemId, 0));

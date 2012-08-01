@@ -358,26 +358,26 @@ namespace WowPacketParser.Parsing.Parsers
             guid1[1] = packet.ReadBit();
             guid2[0] = packet.ReadBit();
 
-            if (guid1[5] != 0) guid1[5] ^= packet.ReadByte();
-            if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
-            if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
-            if (guid1[6] != 0) guid1[6] ^= packet.ReadByte();
-            if (guid1[0] != 0) guid1[0] ^= packet.ReadByte();
-            if (guid2[5] != 0) guid2[5] ^= packet.ReadByte();
-            if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid1, 1);
 
             for (var i = 0; i < count; ++i)
                 packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32, i);
 
-            if (guid2[7] != 0) guid2[7] ^= packet.ReadByte();
-            if (guid1[4] != 0) guid1[4] ^= packet.ReadByte();
-            if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
-            if (guid2[1] != 0) guid2[1] ^= packet.ReadByte();
-            if (guid1[2] != 0) guid1[2] ^= packet.ReadByte();
-            if (guid1[7] != 0) guid1[7] ^= packet.ReadByte();
-            if (guid2[2] != 0) guid2[2] ^= packet.ReadByte();
-            if (guid1[3] != 0) guid1[3] ^= packet.ReadByte();
-            if (guid2[4] != 0) guid2[4] ^= packet.ReadByte();
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid2, 4);
         }
 
         [Parser(Opcode.SMSG_LFG_UPDATE_STATUS, ClientVersionBuild.V4_3_4_15595)]
@@ -404,21 +404,21 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Queue Id");
             packet.ReadTime("Join Date");
 
-            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 6);
         
             for (var i = 0; i < 3; ++i)
                 packet.ReadByte("Unk Byte", i); // always 0
         
-            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
-            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
-            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
-            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
-            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
-            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 0);
 
             packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
         
-            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 7);
         
             for (var i = 0; i < count; ++i)
                 packet.ReadLfgEntry("Dungeon Entry", i); 
@@ -456,7 +456,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid[1] = packet.ReadBit();
             guid[4] = packet.ReadBit();
 
-            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 0);
     
             //for (var i = 0; i < 3; ++i) byte uint32
             packet.ReadByte("Tank Unk");
@@ -466,22 +466,22 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Damage Unk");
             packet.ReadInt32("Damage Time");
 
-            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
-            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 6);
     
             packet.ReadInt32("Average Wait Time");
             packet.ReadTime("Join Time");
             packet.ReadInt32("Unk UInt32 3"); // Same value than "Unk32" (last for) in SMSG_LFG_UPDATE_STATUS
             packet.ReadInt32("Queued Time");
 
-            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
-            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
-            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 3);
 
             packet.ReadInt32("Queue Id");
 
-            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
-            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 2);
 
             packet.ReadInt32("Wait Time"); // Matches "Role Unk2"
             packet.ReadInt32("Unk UInt32 7"); // Same value than "Unk UInt32 1" in SMSG_LFG_JOIN_RESULT - Only seen 3
@@ -571,26 +571,26 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var j = 0; j < counts[i]; j++)
                     ReadDungeonJoinResults(ref packet, i, j);
 
-                if (guids[i][2] != 0) guids[i][2] ^= packet.ReadByte();
-                if (guids[i][5] != 0) guids[i][5] ^= packet.ReadByte();
-                if (guids[i][1] != 0) guids[i][1] ^= packet.ReadByte();
-                if (guids[i][0] != 0) guids[i][0] ^= packet.ReadByte();
-                if (guids[i][4] != 0) guids[i][4] ^= packet.ReadByte();
-                if (guids[i][3] != 0) guids[i][3] ^= packet.ReadByte();
-                if (guids[i][6] != 0) guids[i][6] ^= packet.ReadByte();
-                if (guids[i][7] != 0) guids[i][7] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 2);
+                packet.ReadXORByte(guids[i], 5);
+                packet.ReadXORByte(guids[i], 1);
+                packet.ReadXORByte(guids[i], 0);
+                packet.ReadXORByte(guids[i], 4);
+                packet.ReadXORByte(guids[i], 3);
+                packet.ReadXORByte(guids[i], 6);
+                packet.ReadXORByte(guids[i], 7);
         
                 packet.WriteGuid("Guid", guids[i], i);
             }
         
-            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
-            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
-            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
-            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
-            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
-            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
-            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
-            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 6);
 
             packet.WriteGuid("Join GUID", guid);
         }

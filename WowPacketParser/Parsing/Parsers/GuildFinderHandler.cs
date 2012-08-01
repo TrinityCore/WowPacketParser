@@ -169,19 +169,19 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (int i = 0; i < count; ++i)
             {
-                if (guids[i][4] != 0) guids[i][4] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 4);
 
                 packet.ReadInt32("Unk Int32 1", i);
 
-                if (guids[i][3] != 0) guids[i][3] ^= packet.ReadByte();
-                if (guids[i][0] != 0) guids[i][0] ^= packet.ReadByte();
-                if (guids[i][1] != 0) guids[i][1] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 3);
+                packet.ReadXORByte(guids[i], 0);
+                packet.ReadXORByte(guids[i], 1);
 
                 packet.ReadInt32("Player level", i);
 
-                if (guids[i][6] != 0) guids[i][6] ^= packet.ReadByte();
-                if (guids[i][2] != 0) guids[i][2] ^= packet.ReadByte();
-                if (guids[i][7] != 0) guids[i][7] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 6);
+                packet.ReadXORByte(guids[i], 2);
+                packet.ReadXORByte(guids[i], 7);
 
                 packet.ReadInt32("Time Since", i); // Time (in seconds) since the application was submitted.
                 packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32, i);
@@ -194,7 +194,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadEnum<Class>("Class", TypeCode.UInt32, i);
 
-                if (guids[i][5] != 0) guids[i][5] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 5);
 
                 packet.WriteGuid("Guid", guids[i], i);
             }
@@ -230,25 +230,25 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (int i = 0; i < count; ++i)
             {
-                if (guids[i][2] != 0) guids[i][2] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 2);
 
                 packet.ReadWoWString("Unk string", strlen[i][0], i);
 
-                if (guids[i][5] != 0) guids[i][5] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 5);
 
                 packet.ReadWoWString("Unk string", strlen[i][1], i);
                 packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32, i);
                 packet.ReadInt32("Time Left", i);
 
-                if (guids[i][0] != 0) guids[i][0] ^= packet.ReadByte();
-                if (guids[i][6] != 0) guids[i][6] ^= packet.ReadByte();
-                if (guids[i][3] != 0) guids[i][3] ^= packet.ReadByte();
-                if (guids[i][7] != 0) guids[i][7] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 0);
+                packet.ReadXORByte(guids[i], 6);
+                packet.ReadXORByte(guids[i], 3);
+                packet.ReadXORByte(guids[i], 7);
 
                 packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32, i);
 
-                if (guids[i][4] != 0) guids[i][4] ^= packet.ReadByte();
-                if (guids[i][1] != 0) guids[i][1] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 4);
+                packet.ReadXORByte(guids[i], 1);
 
                 packet.ReadInt32("Time Since", i);
                 packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32, i);
@@ -292,34 +292,34 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadWoWString("Comment", strlen[i][0], i);
                 packet.ReadBoolean("Cached", i);
 
-                if (guids[i][5] != 0) guids[i][5] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 5);
 
                 packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32, i);
 
-                if (guids[i][6] != 0) guids[i][6] ^= packet.ReadByte();
-                if (guids[i][4] != 0) guids[i][4] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 6);
+                packet.ReadXORByte(guids[i], 4);
 
                 packet.ReadInt32("Level", i);
                 packet.ReadWoWString("Name", strlen[i][1], i);
                 packet.ReadInt32("Achievement Points", i);
 
-                if (guids[i][7] != 0) guids[i][7] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 7);
 
                 packet.ReadBoolean("Request Pending", i);
 
-                if (guids[i][2] != 0) guids[i][2] ^= packet.ReadByte();
-                if (guids[i][0] != 0) guids[i][0] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 2);
+                packet.ReadXORByte(guids[i], 0);
 
                 packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32, i);
 
-                if (guids[i][1] != 0) guids[i][1] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 1);
 
                 packet.ReadInt32("Tabard Background Color", i);
                 packet.ReadInt32("Unk Int 2", i); // + 128
                 packet.ReadInt32("Tabard Border Color", i);
                 packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32, i);
 
-                if (guids[i][3] != 0) guids[i][3] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 3);
 
                 packet.ReadInt32("Number of Members", i);
 

@@ -172,20 +172,20 @@ namespace WowPacketParser.Parsing.Parsers
             guidBytes[7] = packet.ReadBit();
             guidBytes[4] = packet.ReadBit();
 
-            if (guidBytes[2] != 0) guidBytes[2] ^= packet.ReadByte();
-            if (guidBytes[3] != 0) guidBytes[3] ^= packet.ReadByte();
+            packet.ReadXORByte(guidBytes, 2);
+            packet.ReadXORByte(guidBytes, 3);
 
             var itemCount = packet.ReadUInt32("Item Count");
 
-            if (guidBytes[5] != 0) guidBytes[5] ^= packet.ReadByte();
-            if (guidBytes[0] != 0) guidBytes[0] ^= packet.ReadByte();
-            if (guidBytes[1] != 0) guidBytes[1] ^= packet.ReadByte();
+            packet.ReadXORByte(guidBytes, 5);
+            packet.ReadXORByte(guidBytes, 0);
+            packet.ReadXORByte(guidBytes, 1);
 
             packet.ReadByte("Unk Byte");
 
-            if (guidBytes[4] != 0) guidBytes[4] ^= packet.ReadByte();
-            if (guidBytes[7] != 0) guidBytes[7] ^= packet.ReadByte();
-            if (guidBytes[6] != 0) guidBytes[6] ^= packet.ReadByte();
+            packet.ReadXORByte(guidBytes, 4);
+            packet.ReadXORByte(guidBytes, 7);
+            packet.ReadXORByte(guidBytes, 6);
 
             var guid = new Guid(BitConverter.ToUInt64(guidBytes, 0));
             packet.WriteLine("GUID: {0}", guid);
@@ -261,17 +261,17 @@ namespace WowPacketParser.Parsing.Parsers
                 npcVendor.VendorItems.Add(vendorItem);
             }
 
-            if (guidBytes[5] != 0) guidBytes[5] ^= packet.ReadByte();
-            if (guidBytes[4] != 0) guidBytes[4] ^= packet.ReadByte();
-            if (guidBytes[1] != 0) guidBytes[1] ^= packet.ReadByte();
-            if (guidBytes[0] != 0) guidBytes[0] ^= packet.ReadByte();
-            if (guidBytes[6] != 0) guidBytes[6] ^= packet.ReadByte();
+            packet.ReadXORByte(guidBytes, 5);
+            packet.ReadXORByte(guidBytes, 4);
+            packet.ReadXORByte(guidBytes, 1);
+            packet.ReadXORByte(guidBytes, 0);
+            packet.ReadXORByte(guidBytes, 6);
 
             packet.ReadByte("Unk Byte");
 
-            if (guidBytes[2] != 0) guidBytes[2] ^= packet.ReadByte();
-            if (guidBytes[3] != 0) guidBytes[3] ^= packet.ReadByte();
-            if (guidBytes[7] != 0) guidBytes[7] ^= packet.ReadByte();
+            packet.ReadXORByte(guidBytes, 2);
+            packet.ReadXORByte(guidBytes, 3);
+            packet.ReadXORByte(guidBytes, 7);
 
 
             var guid = new Guid(BitConverter.ToUInt64(guidBytes, 0));
