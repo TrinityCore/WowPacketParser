@@ -315,16 +315,7 @@ namespace WowPacketParser.Parsing.Parsers
                         }
 
                         if (splineType == SplineType.FacingTarget)
-                        {
-                            facingTargetGuid[4] = packet.ReadBit();
-                            facingTargetGuid[3] = packet.ReadBit();
-                            facingTargetGuid[7] = packet.ReadBit();
-                            facingTargetGuid[2] = packet.ReadBit();
-                            facingTargetGuid[6] = packet.ReadBit();
-                            facingTargetGuid[1] = packet.ReadBit();
-                            facingTargetGuid[0] = packet.ReadBit();
-                            facingTargetGuid[5] = packet.ReadBit();
-                        }
+                            facingTargetGuid = packet.StartBitStream(4, 3, 7, 2, 6, 1, 0, 5);
 
                         hasSplineVerticalAcceleration = packet.ReadBit();
                         /*splineFlags =*/ packet.ReadEnum<SplineFlag422>("Spline flags", 25, index);
@@ -357,16 +348,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (hasAttackingTarget)
-            {
-                attackingTargetGuid[2] = packet.ReadBit();
-                attackingTargetGuid[7] = packet.ReadBit();
-                attackingTargetGuid[0] = packet.ReadBit();
-                attackingTargetGuid[4] = packet.ReadBit();
-                attackingTargetGuid[5] = packet.ReadBit();
-                attackingTargetGuid[6] = packet.ReadBit();
-                attackingTargetGuid[1] = packet.ReadBit();
-                attackingTargetGuid[3] = packet.ReadBit();
-            }
+                attackingTargetGuid = packet.StartBitStream(2, 7, 0, 4, 5, 6, 1, 3);
 
             if (hasAnimKits)
             {
@@ -414,15 +396,8 @@ namespace WowPacketParser.Parsing.Parsers
                             packet.ReadSingle("Facing Angle", index);
                         else if (splineType == SplineType.FacingTarget)
                         {
-                            packet.ReadXORByte(facingTargetGuid, 5);
-                            packet.ReadXORByte(facingTargetGuid, 3);
-                            packet.ReadXORByte(facingTargetGuid, 7);
-                            packet.ReadXORByte(facingTargetGuid, 1);
-                            packet.ReadXORByte(facingTargetGuid, 6);
-                            packet.ReadXORByte(facingTargetGuid, 4);
-                            packet.ReadXORByte(facingTargetGuid, 2);
-                            packet.ReadXORByte(facingTargetGuid, 0);
-                            packet.WriteLine("[{0}] Facing Target GUID {1}", index, new Guid(BitConverter.ToUInt64(facingTargetGuid, 0)));
+                            packet.ParseBitStream(facingTargetGuid, 5, 3, 7, 1, 6, 4, 2, 0);
+                            packet.WriteGuid("Facing Target GUID", facingTargetGuid, index);
                         }
 
                         for (var i = 0u; i < splineCount; ++i)
@@ -589,15 +564,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasAttackingTarget)
             {
-                packet.ReadXORByte(attackingTargetGuid, 4);
-                packet.ReadXORByte(attackingTargetGuid, 0);
-                packet.ReadXORByte(attackingTargetGuid, 3);
-                packet.ReadXORByte(attackingTargetGuid, 5);
-                packet.ReadXORByte(attackingTargetGuid, 7);
-                packet.ReadXORByte(attackingTargetGuid, 6);
-                packet.ReadXORByte(attackingTargetGuid, 2);
-                packet.ReadXORByte(attackingTargetGuid, 1);
-                packet.WriteLine("[{0}] Attacking Target GUID {1}", index, new Guid(BitConverter.ToUInt64(attackingTargetGuid, 0)));
+                packet.ParseBitStream(attackingTargetGuid, 4, 0, 3, 5, 7, 6, 2, 1);
+                packet.WriteGuid("Attacking Target GUID", attackingTargetGuid, index);
             }
 
             if (hasAnimKits)
@@ -697,16 +665,7 @@ namespace WowPacketParser.Parsing.Parsers
                         }
 
                         if (splineType == SplineType.FacingTarget)
-                        {
-                            facingTarget[0] = packet.ReadBit();
-                            facingTarget[2] = packet.ReadBit();
-                            facingTarget[7] = packet.ReadBit();
-                            facingTarget[1] = packet.ReadBit();
-                            facingTarget[6] = packet.ReadBit();
-                            facingTarget[3] = packet.ReadBit();
-                            facingTarget[4] = packet.ReadBit();
-                            facingTarget[5] = packet.ReadBit();
-                        }
+                            facingTarget = packet.StartBitStream(0, 2, 7, 1, 6, 3, 4, 5);
 
                         /*splineFlags =*/ packet.ReadEnum<SplineFlag422>("Spline flags", 25, index);
                         splineCount = packet.ReadBits(22);
@@ -719,14 +678,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasTransportData)
                 {
                     hasTransportTime2 = packet.ReadBit();
-                    transportGuid[0] = packet.ReadBit();
-                    transportGuid[7] = packet.ReadBit();
-                    transportGuid[2] = packet.ReadBit();
-                    transportGuid[6] = packet.ReadBit();
-                    transportGuid[5] = packet.ReadBit();
-                    transportGuid[4] = packet.ReadBit();
-                    transportGuid[1] = packet.ReadBit();
-                    transportGuid[3] = packet.ReadBit();
+                    transportGuid = packet.StartBitStream(0, 7, 2, 6, 5, 4, 1, 3);
                     hasTransportTime3 = packet.ReadBit();
                 }
 
@@ -750,16 +702,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (hasAttackingTarget)
-            {
-                attackingTarget[2] = packet.ReadBit();
-                attackingTarget[4] = packet.ReadBit();
-                attackingTarget[0] = packet.ReadBit();
-                attackingTarget[1] = packet.ReadBit();
-                attackingTarget[3] = packet.ReadBit();
-                attackingTarget[7] = packet.ReadBit();
-                attackingTarget[5] = packet.ReadBit();
-                attackingTarget[6] = packet.ReadBit();
-            }
+                attackingTarget = packet.StartBitStream(2, 4, 0, 1, 3, 7, 5, 6);
 
             if (hasGameObjectPosition)
             {
@@ -807,15 +750,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                         if (splineType == SplineType.FacingTarget)
                         {
-                            packet.ReadXORByte(facingTarget, 0);
-                            packet.ReadXORByte(facingTarget, 6);
-                            packet.ReadXORByte(facingTarget, 5);
-                            packet.ReadXORByte(facingTarget, 4);
-                            packet.ReadXORByte(facingTarget, 1);
-                            packet.ReadXORByte(facingTarget, 3);
-                            packet.ReadXORByte(facingTarget, 7);
-                            packet.ReadXORByte(facingTarget, 2);
-                            packet.WriteLine("[{0}] Facing Target GUID {1}", index, new Guid(BitConverter.ToUInt64(facingTarget, 0)));
+                            packet.ParseBitStream(facingTarget, 0, 6, 5, 4, 1, 3, 7, 2);
+                            packet.WriteGuid("Facing Target GUID", facingTarget, index);
                         }
                         else if (splineType == SplineType.FacingSpot)
                         {
@@ -983,15 +919,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasAttackingTarget)
             {
-                packet.ReadXORByte(attackingTarget, 2);
-                packet.ReadXORByte(attackingTarget, 4);
-                packet.ReadXORByte(attackingTarget, 7);
-                packet.ReadXORByte(attackingTarget, 3);
-                packet.ReadXORByte(attackingTarget, 0);
-                packet.ReadXORByte(attackingTarget, 1);
-                packet.ReadXORByte(attackingTarget, 5);
-                packet.ReadXORByte(attackingTarget, 6);
-                packet.WriteLine("[{0}] Attacking Target GUID {1}", index, new Guid(BitConverter.ToUInt64(attackingTarget, 0)));
+                packet.ParseBitStream(attackingTarget, 2, 4, 7, 3, 0, 1, 5, 6);
+                packet.WriteGuid("Attacking Target GUID", attackingTarget, index);
             }
 
             if (hasGORotation)
@@ -1144,16 +1073,7 @@ namespace WowPacketParser.Parsing.Parsers
                         }
 
                         if (splineType == SplineType.FacingTarget)
-                        {
-                            facingTarget[4] = packet.ReadBit();
-                            facingTarget[3] = packet.ReadBit();
-                            facingTarget[2] = packet.ReadBit();
-                            facingTarget[5] = packet.ReadBit();
-                            facingTarget[7] = packet.ReadBit();
-                            facingTarget[1] = packet.ReadBit();
-                            facingTarget[0] = packet.ReadBit();
-                            facingTarget[6] = packet.ReadBit();
-                        }
+                            facingTarget = packet.StartBitStream(4, 3, 2, 5, 7, 1, 0, 6);
 
                         packet.ReadEnum<SplineFlag422>("Spline flags", 25, index);
                         /*splineMode =*/packet.ReadBits(2);
@@ -1191,16 +1111,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (hasAttackingTarget)
-            {
-                attackingTarget[4] = packet.ReadBit();
-                attackingTarget[3] = packet.ReadBit();
-                attackingTarget[2] = packet.ReadBit();
-                attackingTarget[5] = packet.ReadBit();
-                attackingTarget[0] = packet.ReadBit();
-                attackingTarget[6] = packet.ReadBit();
-                attackingTarget[1] = packet.ReadBit();
-                attackingTarget[7] = packet.ReadBit();
-            }
+                attackingTarget = packet.StartBitStream(4, 3, 2, 5, 0, 6, 1, 7);
 
             for (var i = 0; i < unkLoopCounter; ++i)
             {
@@ -1262,15 +1173,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                         if (splineType == SplineType.FacingTarget)
                         {
-                            packet.ReadXORByte(facingTarget, 2);
-                            packet.ReadXORByte(facingTarget, 1);
-                            packet.ReadXORByte(facingTarget, 3);
-                            packet.ReadXORByte(facingTarget, 7);
-                            packet.ReadXORByte(facingTarget, 0);
-                            packet.ReadXORByte(facingTarget, 5);
-                            packet.ReadXORByte(facingTarget, 4);
-                            packet.ReadXORByte(facingTarget, 6);
-                            packet.WriteLine("[{0}] Facing Target GUID {1}", index, new Guid(BitConverter.ToUInt64(facingTarget, 0)));
+                            packet.ParseBitStream(facingTarget, 2, 1, 3, 7, 0, 5, 4, 6);
+                            packet.WriteGuid("Facing Target GUID", facingTarget, index);
                         }
                         else if (splineType == SplineType.FacingSpot)
                         {
@@ -1388,15 +1292,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasAttackingTarget)
             {
-                packet.ReadXORByte(attackingTarget, 6);
-                packet.ReadXORByte(attackingTarget, 5);
-                packet.ReadXORByte(attackingTarget, 3);
-                packet.ReadXORByte(attackingTarget, 2);
-                packet.ReadXORByte(attackingTarget, 0);
-                packet.ReadXORByte(attackingTarget, 1);
-                packet.ReadXORByte(attackingTarget, 7);
-                packet.ReadXORByte(attackingTarget, 4);
-                packet.WriteLine("[{0}] Attacking Target GUID {1}", index, new Guid(BitConverter.ToUInt64(attackingTarget, 0)));
+                packet.ParseBitStream(attackingTarget, 6, 5, 3, 2, 0, 1, 7, 4);
+                packet.WriteGuid("Attacking Target GUID", attackingTarget, index);
             }
 
             if (unkFloats)
@@ -1550,16 +1447,7 @@ namespace WowPacketParser.Parsing.Parsers
                         }
 
                         if (splineType == SplineType.FacingTarget)
-                        {
-                            facingTarget[7] = packet.ReadBit();
-                            facingTarget[3] = packet.ReadBit();
-                            facingTarget[4] = packet.ReadBit();
-                            facingTarget[2] = packet.ReadBit();
-                            facingTarget[1] = packet.ReadBit();
-                            facingTarget[6] = packet.ReadBit();
-                            facingTarget[0] = packet.ReadBit();
-                            facingTarget[5] = packet.ReadBit();
-                        }
+                            facingTarget = packet.StartBitStream(7, 3, 4, 2, 1, 6, 0, 5);
                     }
                 }
 
@@ -1602,16 +1490,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (hasAttackingTarget)
-            {
-                attackingTarget[3] = packet.ReadBit();
-                attackingTarget[4] = packet.ReadBit();
-                attackingTarget[6] = packet.ReadBit();
-                attackingTarget[0] = packet.ReadBit();
-                attackingTarget[1] = packet.ReadBit();
-                attackingTarget[7] = packet.ReadBit();
-                attackingTarget[5] = packet.ReadBit();
-                attackingTarget[2] = packet.ReadBit();
-            }
+                attackingTarget = packet.StartBitStream(3, 4, 6, 0, 1, 7, 5, 2);
 
             // Reading data
             for (var i = 0u; i < unkLoopCounter; ++i)
@@ -1685,15 +1564,8 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadSingle("Unknown Spline Float 2", index);
                         if (splineType == SplineType.FacingTarget)
                         {
-                            packet.ReadXORByte(facingTarget, 3);
-                            packet.ReadXORByte(facingTarget, 4);
-                            packet.ReadXORByte(facingTarget, 5);
-                            packet.ReadXORByte(facingTarget, 7);
-                            packet.ReadXORByte(facingTarget, 2);
-                            packet.ReadXORByte(facingTarget, 0);
-                            packet.ReadXORByte(facingTarget, 6);
-                            packet.ReadXORByte(facingTarget, 1);
-                            packet.WriteLine("[{0}] Facing Target GUID {1}", index, new Guid(BitConverter.ToUInt64(facingTarget, 0)));
+                            packet.ParseBitStream(facingTarget, 3, 4, 5, 7, 2, 0, 6, 1);
+                            packet.WriteGuid("Facing Target GUID", facingTarget, index);
                         }
 
                         if (bit256)
@@ -1831,15 +1703,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasAttackingTarget)
             {
-                packet.ReadXORByte(attackingTarget, 3);
-                packet.ReadXORByte(attackingTarget, 5);
-                packet.ReadXORByte(attackingTarget, 0);
-                packet.ReadXORByte(attackingTarget, 7);
-                packet.ReadXORByte(attackingTarget, 2);
-                packet.ReadXORByte(attackingTarget, 4);
-                packet.ReadXORByte(attackingTarget, 6);
-                packet.ReadXORByte(attackingTarget, 1);
-                packet.WriteLine("[{0}] Attacking Target GUID {1}", index, new Guid(BitConverter.ToUInt64(attackingTarget, 0)));
+                packet.ParseBitStream(attackingTarget, 3, 5, 0, 7, 2, 4, 6, 1);
+                packet.WriteGuid("Attacking Target GUID", attackingTarget, index);
             }
 
             packet.ResetBitReader();
