@@ -161,16 +161,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var npcVendor = new NpcVendor();
 
-            var guidBytes = new byte[8];
-
-            guidBytes[5] = packet.ReadBit();
-            guidBytes[6] = packet.ReadBit();
-            guidBytes[1] = packet.ReadBit();
-            guidBytes[2] = packet.ReadBit();
-            guidBytes[3] = packet.ReadBit();
-            guidBytes[0] = packet.ReadBit();
-            guidBytes[7] = packet.ReadBit();
-            guidBytes[4] = packet.ReadBit();
+            var guidBytes = packet.StartBitStream(5, 6, 1, 2, 3, 0, 7, 4);
 
             packet.ReadXORByte(guidBytes, 2);
             packet.ReadXORByte(guidBytes, 3);

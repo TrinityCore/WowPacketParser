@@ -344,89 +344,40 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandlePlayerLogin422(Packet packet)
         {
-            var bits = new bool[8];
-            for (var i = 0; i < 8; ++i)
-                bits[i] = packet.ReadBit();
+            var guid = packet.StartBitStream(0, 4, 7, 1, 3, 2, 5, 6);
 
-            var bytes = new byte[8];
-            if (bits[6]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[0]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[4]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[1]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[2]) bytes[7] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[5]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[7]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[3]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
+            packet.ParseBitStream(guid, 5, 0, 3, 4, 7, 2, 6, 1);
 
-            var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
-            packet.WriteGuid("Guid", bytes);
-            LoginGuid = guid;
+            packet.WriteGuid("Guid", guid);
+            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0)
         }
 
         [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_3_15354)]
         public static void HandlePlayerLogin430(Packet packet)
         {
-            var bits = new bool[8];
-            for (var i = 0; i < 8; ++i)
-                bits[i] = packet.ReadBit();
+            var guid = packet.StartBitStream(0, 5, 3, 4, 7, 6, 2, 1);
+            packet.ParseBitStream(guid, 4, 1, 7, 2, 6, 5, 3, 0);
 
-            var bytes = new byte[8];
-            if (bits[3]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[7]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[4]) bytes[7] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[6]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[5]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[1]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[2]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[0]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
-
-            var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
-            packet.WriteGuid("Guid", bytes);
-            LoginGuid = guid;
+            packet.WriteGuid("Guid", guid);
+            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0);
         }
 
         [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]
         public static void HandlePlayerLogin433(Packet packet)
         {
-            var bits = new bool[8];
-            for (var i = 0; i < 8; ++i)
-                bits[i] = packet.ReadBit();
-
-            var bytes = new byte[8];
-            if (bits[5]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[2]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[1]) bytes[7] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[7]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[6]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[0]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[4]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[3]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
-
-            var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
-            packet.WriteGuid("Guid", bytes);
-            LoginGuid = guid;
+            var guid = packet.StartBitStream(6, 7, 4, 5, 0, 1, 3, 2);
+            packet.ParseBitStream(guid, 1, 4, 7, 2, 3, 6, 0, 5);
+            packet.WriteGuid("Guid", guid);
+            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
         }
 
         [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_4_15595)]
         public static void HandlePlayerLogin434(Packet packet)
         {
-            var bits = new bool[8];
-            for (var i = 0; i < 8; ++i)
-                bits[i] = packet.ReadBit();
-
-            var bytes = new byte[8];
-            if (bits[0]) bytes[2] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[7]) bytes[7] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[2]) bytes[0] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[1]) bytes[3] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[5]) bytes[5] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[3]) bytes[6] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[6]) bytes[1] = (byte)(packet.ReadByte() ^ 1);
-            if (bits[4]) bytes[4] = (byte)(packet.ReadByte() ^ 1);
-
-            var guid = new Guid(BitConverter.ToUInt64(bytes, 0));
-            packet.WriteGuid("Guid", bytes);
-            LoginGuid = guid;
+            var guid = packet.StartBitStream(2, 3, 0, 6, 4, 5, 1, 7);
+            packet.ParseBitStream(guid, 2, 7, 0, 3, 5, 6, 1, 4);
+            packet.WriteGuid("Guid", guid);
+            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
         }
 
         [Parser(Opcode.SMSG_CHARACTER_LOGIN_FAILED)]

@@ -1346,7 +1346,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GUILD_BANK_LOG_QUERY_RESULTS, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildBankLogQueryResult434(Packet packet)
         {
-            var hasWeekCashflow = packet.ReadBit("Unk bool");
+            var hasWeekCashflow = packet.ReadBit("Has Cash flow Perk");
             var size = packet.ReadBits("Size", 23);
             var hasMoney = new byte[size];
             var unk = new byte[size];
