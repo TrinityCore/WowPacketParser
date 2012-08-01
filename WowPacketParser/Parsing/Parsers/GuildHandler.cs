@@ -1346,7 +1346,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GUILD_BANK_LOG_QUERY_RESULTS, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildBankLogQueryResult434(Packet packet)
         {
-            var unk1 = packet.ReadBit("Unk bool");
+            var hasWeekCashflow = packet.ReadBit("Unk bool");
             var size = packet.ReadBits("Size", 23);
             var hasMoney = new byte[size];
             var unk = new byte[size];
@@ -1398,8 +1398,8 @@ namespace WowPacketParser.Parsing.Parsers
             }
             packet.ReadUInt32("Tab Id");
 
-            if (unk1)
-                packet.ReadInt64("Unk Int64");
+            if (hasWeekCashflow)
+                packet.ReadInt64("Week Cash Flow Contribution");
         }
 
         [Parser(Opcode.CMSG_GUILD_BANK_LOG_QUERY, ClientVersionBuild.V4_3_4_15595)]
