@@ -8413,7 +8413,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 2);
-            packet.ParseBitStream(guid, 7, 6, 4, 0, 1, 5, 2);
             packet.WriteGuid("Guid", guid);
         }
 
