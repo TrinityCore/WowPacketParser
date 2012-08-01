@@ -354,16 +354,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGroupInvite422(Packet packet)
         {
             // note: this handler is different in 4.3.0, it got a bit fancy.
-            var guidBytes = new byte[8];
-
-            guidBytes[6] = packet.ReadBit();
-            guidBytes[5] = packet.ReadBit();
-            guidBytes[0] = packet.ReadBit();
-            guidBytes[3] = packet.ReadBit();
-            guidBytes[4] = packet.ReadBit();
-            guidBytes[7] = packet.ReadBit();
-            guidBytes[1] = packet.ReadBit();
-            guidBytes[2] = packet.ReadBit();
+            var guidBytes = packet.StartBitStream(6, 5, 0, 3, 4, 7, 1, 2);
 
             packet.ReadInt32("Unk0"); // Always 0
             packet.ReadInt32("Unk1"); // Non-zero in cross realm parties (1383)
@@ -402,10 +393,18 @@ namespace WowPacketParser.Parsing.Parsers
             guid[0] = packet.ReadBit();
             guid[1] = packet.ReadBit();
 
-            packet.ParseBitStream(guid, 4, 7, 6);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 6);
+
             packet.ReadWoWString("Name", nameLen);
             packet.ReadWoWString("Realm Name", strLen);
-            packet.ParseBitStream(guid, 1, 0, 5, 3, 2);
+
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 2);
             packet.WriteGuid("Guid", guid);
         }
 

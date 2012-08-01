@@ -16,18 +16,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Emblem Background Color");
         }
 
-        [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
-        [Parser(Opcode.CMSG_GUILD_ACCEPT, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
-        [Parser(Opcode.CMSG_GUILD_DECLINE)]
-        [Parser(Opcode.CMSG_GUILD_INFO)]
-        [Parser(Opcode.CMSG_GUILD_LEAVE)]
-        [Parser(Opcode.CMSG_GUILD_DISBAND)]
-        [Parser(Opcode.CMSG_GUILD_DEL_RANK)]
-        [Parser(Opcode.SMSG_GUILD_CANCEL)] // Fires GUILD_INVITE_CANCEL
-        public static void HandleGuildEmpty(Packet packet)
-        {
-        }
-
         [Parser(Opcode.CMSG_GUILD_ACCEPT, ClientVersionBuild.V4_0_6_13596)]
         public static void HandleGuildInviteAccept406(Packet packet)
         {
@@ -44,25 +32,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRoster(Packet packet)
         {
-            var guid = new byte[8];
-
-            guid[7] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 3);
+            var guid = packet.StartBitStream(7, 3, 2, 6, 5, 4, 1, 0);
+            packet.ParseBitStream(guid, 7, 4, 5, 0, 1, 2, 6, 3);
             packet.WriteGuid("Guid", guid);
         }
 
@@ -346,25 +317,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REQUEST_GUILD_PARTY_STATE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildUpdatePartyState434(Packet packet)
         {
-            var guid = new byte[8];
-            guid[0] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 4);
-
+            var guid = packet.StartBitStream(0, 6, 7, 3, 5, 1, 2, 4);
+            packet.ParseBitStream(guid, 6, 3, 2, 1, 5, 0, 7, 4);
             packet.WriteGuid("Guild Guid", guid);
         }
 
@@ -995,25 +949,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_RANKS, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRanks434(Packet packet)
         {
-            var guid = new byte[8];
-            guid[2] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-
-
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 2);
+            var guid = packet.StartBitStream(2, 3, 0, 6, 4, 7, 5, 1);
+            packet.ParseBitStream(guid, 3, 4, 5, 7, 1, 0, 6, 2);
             packet.WriteGuid("Guid", guid);
         }
 
@@ -1114,17 +1051,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 guidIn[i] = new byte[count[i]][];
                 for (int j = 0; j < count[i]; ++j)
-                {
-                    guidIn[i][j] = new byte[8];
-                    guidIn[i][j][7] = packet.ReadBit();
-                    guidIn[i][j][1] = packet.ReadBit();
-                    guidIn[i][j][5] = packet.ReadBit();
-                    guidIn[i][j][3] = packet.ReadBit();
-                    guidIn[i][j][4] = packet.ReadBit();
-                    guidIn[i][j][6] = packet.ReadBit();
-                    guidIn[i][j][0] = packet.ReadBit();
-                    guidIn[i][j][2] = packet.ReadBit();
-                }
+                    guidIn[i][j] = packet.StartBitStream(7, 1, 5, 3, 4, 6, 0, 2);
 
                 guidOut[i][0] = packet.ReadBit(); // 48
                 guidOut[i][6] = packet.ReadBit();
@@ -1139,15 +1066,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 for (int j = 0; i < count[i]; ++j)
                 {
-                    packet.ReadXORByte(guidIn[i][j], 0);
-                    packet.ReadXORByte(guidIn[i][j], 1);
-                    packet.ReadXORByte(guidIn[i][j], 4);
-                    packet.ReadXORByte(guidIn[i][j], 7);
-                    packet.ReadXORByte(guidIn[i][j], 5);
-                    packet.ReadXORByte(guidIn[i][j], 6);
-                    packet.ReadXORByte(guidIn[i][j], 3);
-                    packet.ReadXORByte(guidIn[i][j], 2);
-
+                    packet.ParseBitStream(guidIn[i][j], 0, 1, 4, 7, 5, 6, 3, 2);
                     packet.WriteGuid("Guid", guidIn[i][j], i);
                 }
 
@@ -1830,9 +1749,18 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBit("Public");
             guid[1] = packet.ReadBit();
 
-            packet.ParseBitStream(guid, 3, 0, 2, 5);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 5);
+            
             packet.ReadWoWString("Note", len);
-            packet.ParseBitStream(guid, 7, 6, 1, 4);
+
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 4);
+
             packet.WriteGuid("Guid", guid);
 
         }
@@ -1914,7 +1842,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteGuid("Player Guid", guid2[i], i);
             }
 
-            packet.ParseBitStream(guid, 7, 2, 4, 3, 6, 0);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 0);
 
             packet.ReadInt32("Achievement Id");
 
@@ -1950,6 +1883,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_BANK_REM_MONEY_WITHDRAW_QUERY)]
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
         [Parser(Opcode.CMSG_GUILD_REQUEST_CHALLENGE_UPDATE)]
+        [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
+        [Parser(Opcode.CMSG_GUILD_ACCEPT, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
+        [Parser(Opcode.CMSG_GUILD_DECLINE)]
+        [Parser(Opcode.CMSG_GUILD_INFO)]
+        [Parser(Opcode.CMSG_GUILD_LEAVE)]
+        [Parser(Opcode.CMSG_GUILD_DISBAND)]
+        [Parser(Opcode.CMSG_GUILD_DEL_RANK)]
+        [Parser(Opcode.SMSG_GUILD_CANCEL)] // Fires GUILD_INVITE_CANCEL
         public static void HandleGuildNull(Packet packet)
         {
             // Just to have guild opcodes together
