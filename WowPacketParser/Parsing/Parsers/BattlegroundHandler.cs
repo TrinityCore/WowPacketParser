@@ -90,49 +90,28 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BATTLEFIELD_JOIN, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleBattlefieldJoin422(Packet packet)
         {
-            var bytes = new byte[8];
+            var guid = new byte[8];
 
-            bytes[0] = packet.ReadBit();
-            bytes[4] = packet.ReadBit();
-            //uint somebyte = guidBytes[4]; // unsure which one it goes with, but it is used around here.
-            bytes[1] = packet.ReadBit();
-            bytes[6] = packet.ReadBit();
-            bytes[7] = packet.ReadBit();
-            bytes[5] = packet.ReadBit();
-            bytes[2] = packet.ReadBit();
-            bytes[3] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            packet.ReadBit("As Group");
+            guid[1] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
 
             packet.ReadUInt32("Unknown uint32");
 
-            if (bytes[5] != 0)
-                bytes[5] ^= packet.ReadByte("unk5");
-
-            if (bytes[0] != 0)
-                bytes[0] ^= packet.ReadByte("unk0");
-
-            if (bytes[2] != 0)
-                bytes[2] ^= packet.ReadByte("unk2");
-
-            if (bytes[1] != 0)
-                bytes[1] ^= packet.ReadByte("unk1");
-
-            if (bytes[4] != 0)
-                bytes[4] ^= packet.ReadByte("BattlefieldId");
-
-            if (bytes[6] != 0)
-                bytes[6] ^= packet.ReadByte("unk6");
-
-            if (bytes[3] != 0)
-                bytes[3] ^= packet.ReadByte("unk3");
-
-            if (bytes[7] != 0)
-                bytes[7] ^= packet.ReadByte("unk7");
+            packet.ParseBitStream(guid, 5, 0, 2, 1, 4, 6, 3, 7);
+            packet.WriteGuid("BG Guid", guid);
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_JOIN, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleBattlefieldJoin(Packet packet)
         {
-            packet.ReadBit("asGroup");
+            packet.ReadBit("As Group");
             packet.ReadUInt32("Unk1");
             packet.ReadGuid("GUID");
         }
@@ -711,26 +690,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.TEST_422_265C, ClientVersionBuild.V4_2_2_14545)] // SMSG
         public static void HandleRGroupJoinedBattleground422(Packet packet)
         {
-            var guidBytes = new byte[8];
-
-            guidBytes[0] = packet.ReadBit();
-            guidBytes[1] = packet.ReadBit();
-            guidBytes[4] = packet.ReadBit();
-            guidBytes[3] = packet.ReadBit();
-            guidBytes[6] = packet.ReadBit();
-            guidBytes[2] = packet.ReadBit();
-            guidBytes[7] = packet.ReadBit();
-            guidBytes[5] = packet.ReadBit();
-
-            packet.ReadXORByte(guidBytes, 2);
-            packet.ReadXORByte(guidBytes, 6);
-            packet.ReadXORByte(guidBytes, 3);
-            packet.ReadXORByte(guidBytes, 4);
-            packet.ReadXORByte(guidBytes, 5);
-            packet.ReadXORByte(guidBytes, 7);
-            packet.ReadXORByte(guidBytes, 1);
-            packet.ReadXORByte(guidBytes, 0);
-
+            var guidBytes = packet.StartBitStream(0, 1, 4, 3, 6, 2, 7, 5);
+            packet.ParseBitStream(guidBytes, 2, 6, 3, 4, 5, 7, 1, 0);
             packet.WriteGuid("Guid", guidBytes);
         }
 
@@ -978,27 +939,18 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldMgrStateChanged434(Packet packet)
         {
-            var bytes = new byte[8];
-            bytes[5] = packet.ReadBit();
-            bytes[3] = packet.ReadBit();
-            bytes[7] = packet.ReadBit();
-            bytes[2] = packet.ReadBit();
-            bytes[1] = packet.ReadBit();
-            bytes[6] = packet.ReadBit();
-            bytes[0] = packet.ReadBit();
-            bytes[4] = packet.ReadBit();
+            var guid = packet.StartBitStream(4, 3, 7, 2, 1, 6, 0, 4);
 
-
-            packet.ReadXORByte(bytes, 1);
-            packet.ReadXORByte(bytes, 2);
-            packet.ReadXORByte(bytes, 5);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 5);
             packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
-            packet.ReadXORByte(bytes, 4);
-            packet.ReadXORByte(bytes, 7);
-            packet.ReadXORByte(bytes, 0);
-            packet.ReadXORByte(bytes, 3);
-            packet.ReadXORByte(bytes, 6);
-            packet.WriteGuid("Guid", bytes);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 6);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGE, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_3_4_15595)]
@@ -1026,28 +978,19 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTRY_INVITE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldMgrInviteSend434(Packet packet)
         {
-            var bytes = new byte[8];
-            bytes[5] = packet.ReadBit();
-            bytes[3] = packet.ReadBit();
-            bytes[7] = packet.ReadBit();
-            bytes[2] = packet.ReadBit();
-            bytes[6] = packet.ReadBit();
-            bytes[4] = packet.ReadBit();
-            bytes[1] = packet.ReadBit();
-            bytes[0] = packet.ReadBit();
-            
+            var guid = packet.StartBitStream(5, 3, 7, 2, 6, 4, 1, 0);
 
-            packet.ReadXORByte(bytes, 6);
+            packet.ReadXORByte(guid, 6);
             packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
-            packet.ReadXORByte(bytes, 1);
-            packet.ReadXORByte(bytes, 3);
-            packet.ReadXORByte(bytes, 4);
-            packet.ReadXORByte(bytes, 2);
-            packet.ReadXORByte(bytes, 0);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 0);
             packet.ReadTime("Invite lasts until");
-            packet.ReadXORByte(bytes, 7);
-            packet.ReadXORByte(bytes, 5);
-            packet.WriteGuid("Guid", bytes);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 5);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_INVITE)]
@@ -1466,15 +1409,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_INSPECT_RATED_BG_STATS)]
         public static void HandleInspectRatedBGStats(Packet packet)
         {
-            var guid = new byte[8];
-            guid[6] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
+            var guid = packet.StartBitStream(6, 4, 5, 1, 2, 7, 0, 3);
 
             packet.ReadXORByte(guid, 4);
 
