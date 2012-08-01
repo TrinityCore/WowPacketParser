@@ -21,13 +21,12 @@ namespace WowPacketParser.Loading
         private LinkedList<Packet> _packets;
         private readonly DumpFormatType _dumpFormat;
         private readonly string _logPrefix;
-        private readonly bool _splitOutput;
         private readonly SQLOutputFlags _sqlOutput;
 
         private readonly LinkedList<string> _withErrorHeaders = new LinkedList<string>();
         private readonly LinkedList<string> _skippedHeaders = new LinkedList<string>();
 
-        public SniffFile(string fileName, DumpFormatType dumpFormat = DumpFormatType.Text, bool splitOutput = false, Tuple<int, int> number = null, SQLOutputFlags sqlOutput = SQLOutputFlags.None)
+        public SniffFile(string fileName, DumpFormatType dumpFormat = DumpFormatType.Text, Tuple<int, int> number = null, SQLOutputFlags sqlOutput = SQLOutputFlags.None)
         {
             if (string.IsNullOrWhiteSpace(fileName))
                 throw new ArgumentException("fileName cannot be null, empty or whitespace.", "fileName");
@@ -35,7 +34,6 @@ namespace WowPacketParser.Loading
             _stats = new Statistics();
             _packets = null;
             _fileName = fileName;
-            _splitOutput = splitOutput;
             _dumpFormat = dumpFormat;
             _sqlOutput = sqlOutput;
 
@@ -82,12 +80,15 @@ namespace WowPacketParser.Loading
                 {
                     if (!ReadPackets())
                         return;
+                    BinaryDump();
+                    break;
+                }
 
-                    if (_splitOutput)
-                        SplitBinaryDump();
-                    else
-                        BinaryDump();
-
+                case DumpFormatType.PktSplit:
+                {
+                    if (!ReadPackets())
+                        return;
+                    SplitBinaryDump();
                     break;
                 }
                 default:

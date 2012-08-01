@@ -46,7 +46,7 @@ namespace WowPacketParser
                 throw new ConstraintException("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
 
             // Disable DB when we don't need its data (dumping to a binary file)
-            if (Settings.DumpFormat == DumpFormatType.Pkt)
+            if (Settings.DumpFormat != DumpFormatType.Text)
             {
                 SQLConnector.Enabled = false;
                 SSHTunnel.Enabled = false;
@@ -60,7 +60,7 @@ namespace WowPacketParser
             foreach (var file in files)
             {
                 ClientVersion.SetVersion(Settings.ClientBuild);
-                new SniffFile(file, Settings.DumpFormat, Settings.SplitOutput, Tuple.Create(++count, files.Count),
+                new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count),
                               Settings.SQLOutput).ProcessFile();
             }
 

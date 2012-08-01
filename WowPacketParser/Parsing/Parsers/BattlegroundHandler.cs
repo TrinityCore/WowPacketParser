@@ -1493,7 +1493,6 @@ namespace WowPacketParser.Parsing.Parsers
             if (guid[0] != 0) guid[0] ^= packet.ReadByte();
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_RATED_INFO)]
