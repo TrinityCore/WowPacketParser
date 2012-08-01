@@ -135,7 +135,6 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.CMSG_DEL_IGNORE, 0x7AB6},
             {Opcode.CMSG_DEL_VOICE_IGNORE, 0x2EA3},
             {Opcode.CMSG_DESTROY_ITEM, 0x6E7A},
-            {Opcode.CMSG_DESTROY_ITEMS, 0x6E7A},
             {Opcode.CMSG_DISMISS_CRITTER, 0xBEBE},
             {Opcode.CMSG_DUEL_ACCEPTED, 0xF63B},
             {Opcode.CMSG_DUEL_CANCELLED, 0x362E},

@@ -1006,17 +1006,43 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Id"); // quest id? PlayerCondition.dbc id?
         }
 
-        [Parser(Opcode.CMSG_SHOWING_CLOAK, ClientVersionBuild.V4_3_4_15595)]
-        [Parser(Opcode.CMSG_SHOWING_HELM, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_SHOWING_CLOAK)]
+        [Parser(Opcode.CMSG_SHOWING_HELM)]
         public static void HandleShowingCloakAndHelm434(Packet packet)
         {
             packet.ReadBoolean("Showing");
         }
 
-        [Parser(Opcode.CMSG_AUTO_DECLINE_GUILD_INVITES, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_AUTO_DECLINE_GUILD_INVITES)]
         public static void HandleAutoDeclineGuildInvites434(Packet packet)
         {
             packet.ReadBoolean("Auto decline");
+        }
+
+        [Parser(Opcode.CMSG_REORDER_CHARACTERS)] // 4.3.4
+        public static void HandleReorderCharacters(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 10);
+
+            var guids = new byte[count][];
+
+            for (int i = 0; i < count; ++i)
+                guids[i] = packet.StartBitStream(1, 4, 5, 3, 0, 7, 6, 2);
+
+            for (int i = 0; i < count; ++i)
+            {
+                if (guids[i][6] != 0) guids[i][6] ^= packet.ReadByte();
+                if (guids[i][5] != 0) guids[i][5] ^= packet.ReadByte();
+                if (guids[i][1] != 0) guids[i][1] ^= packet.ReadByte();
+                if (guids[i][4] != 0) guids[i][4] ^= packet.ReadByte();
+                if (guids[i][0] != 0) guids[i][0] ^= packet.ReadByte();
+                if (guids[i][3] != 0) guids[i][3] ^= packet.ReadByte();
+                packet.ReadByte("Slot");
+                if (guids[i][2] != 0) guids[i][2] ^= packet.ReadByte();
+                if (guids[i][7] != 0) guids[i][7] ^= packet.ReadByte();
+
+                packet.WriteGuid("Character Guid", guids[i]);
+            }
         }
     }
 }
