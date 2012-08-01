@@ -1037,11 +1037,11 @@ namespace WowPacketParser.Parsing.Parsers
                 if (guids[i][4] != 0) guids[i][4] ^= packet.ReadByte();
                 if (guids[i][0] != 0) guids[i][0] ^= packet.ReadByte();
                 if (guids[i][3] != 0) guids[i][3] ^= packet.ReadByte();
-                packet.ReadByte("Slot");
+                packet.ReadByte("Slot", i);
                 if (guids[i][2] != 0) guids[i][2] ^= packet.ReadByte();
                 if (guids[i][7] != 0) guids[i][7] ^= packet.ReadByte();
 
-                packet.WriteGuid("Character Guid", guids[i]);
+                packet.WriteGuid("Character Guid", guids[i], i);
             }
         }
     }

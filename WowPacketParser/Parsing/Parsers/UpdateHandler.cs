@@ -2028,5 +2028,13 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadBoolean("Despawn Animation");
         }
+
+        [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED)] // 4.3.4
+        public static void HandleObjectUpdateFailed(Packet packet)
+        {
+            var guid = packet.StartBitStream(6, 7, 4, 0, 1, 5, 3, 2);
+            packet.ParseBitStream(guid, 6, 7, 2, 3, 1, 4, 0, 5);
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
