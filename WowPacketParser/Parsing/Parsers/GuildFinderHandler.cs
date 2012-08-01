@@ -17,6 +17,27 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Comment");
         }
 
+        [Parser(Opcode.CMSG_LF_GUILD_BROWSE)]
+        public static void HandleGuildFinderBrowse(Packet packet)
+        {
+            packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32);
+            packet.ReadUInt32("Level");
+        }
+
+        [Parser(Opcode.CMSG_LF_GUILD_SET_GUILD_POST)]
+        public static void HandleGuildFinderSetGuildPost(Packet packet)
+        {
+            packet.ReadUInt32("Unk int32 1");
+            packet.ReadUInt32("Unk int32 2");
+            packet.ReadUInt32("Unk int32 3");
+            packet.ReadUInt32("Unk int32 4");
+            var length = packet.ReadBits(11);
+            packet.ReadBit("Unk bit");
+            packet.ReadWoWString("Unk string", length);
+        }
+
         [Parser(Opcode.SMSG_LF_GUILD_POST_UPDATED)]
         public static void HandleGuildFinderPostUpdated(Packet packet)
         {
@@ -307,6 +328,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_LF_GUILD_POST_REQUEST)]
+        [Parser(Opcode.CMSG_LF_GUILD_GET_APPLICATIONS)]
         public static void HandlerLFGuildZeroLength(Packet packet)
         {
         }

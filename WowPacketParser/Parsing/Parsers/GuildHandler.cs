@@ -309,9 +309,9 @@ namespace WowPacketParser.Parsing.Parsers
                 if (guid[i][6] != 0)
                     guid[i][6] ^= packet.ReadByte();
 
-                packet.ReadWoWString("Name", nameLength[i], i);
-
+                var name = packet.ReadWoWString("Name", nameLength[i], i);
                 packet.WriteGuid("Guid", guid[i], i);
+                StoreGetters.AddName(new Guid(BitConverter.ToUInt64(guid[i], 0)), name);
             }
             packet.ReadWoWString("Guild Info", infoLength);
             packet.ReadWoWString("MOTD", motdLength);
@@ -319,6 +319,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk Uint32 2");
             packet.ReadUInt32("Unk Uint32 3");
             packet.ReadUInt32("Unk Uint32 4");
+
         }
 
         [Parser(Opcode.SMSG_COMPRESSED_GUILD_ROSTER)]
@@ -438,7 +439,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_GUILD_RANK, ClientVersionBuild.V4_0_6_13596)]
+        [Parser(Opcode.CMSG_GUILD_RANK, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRank406(Packet packet)
         {
             for (var i = 0; i < 8; ++i)
@@ -458,6 +459,71 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Money Per Day");
             packet.ReadGuid("Player GUID");
             packet.ReadCString("Rank Name");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_RANK, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildRank434(Packet packet)
+        {
+            packet.ReadUInt32("New Rank Id");
+            packet.ReadUInt32("Old Rank Id");
+            packet.ReadUInt32("Old Rank Id");
+
+            for (var i = 0; i < 8; ++i)
+            {
+                packet.ReadUInt32("Bank Slots", i);
+                packet.ReadEnum<GuildBankRightsFlag>("Tab Rights", TypeCode.UInt32, i);
+            }
+
+            packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.UInt32);
+            packet.ReadEnum<GuildRankRightsFlag>("Old Rights", TypeCode.UInt32);
+            var length = packet.ReadBits(7);
+            packet.ReadWoWString("Rank Name", length);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_RANKS_UPDATE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildRanksUpdate(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            guid1[7] = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid1[1] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            packet.ReadBit("unk");
+            guid1[5] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid1[3] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid1[4] = packet.ReadBit();
+
+            packet.ReadInt32("Rank Index");
+
+            if (guid1[3] != 0) guid1[3] ^= packet.ReadByte();
+            if (guid2[7] != 0) guid2[7] ^= packet.ReadByte();
+            if (guid1[6] != 0) guid1[6] ^= packet.ReadByte();
+            if (guid1[2] != 0) guid1[2] ^= packet.ReadByte();
+            if (guid2[5] != 0) guid2[5] ^= packet.ReadByte();
+            if (guid2[0] != 0) guid2[0] ^= packet.ReadByte();
+            if (guid1[7] != 0) guid1[7] ^= packet.ReadByte();
+            if (guid1[5] != 0) guid1[5] ^= packet.ReadByte();
+            if (guid2[2] != 0) guid2[2] ^= packet.ReadByte();
+            if (guid2[1] != 0) guid2[1] ^= packet.ReadByte();
+            if (guid1[0] != 0) guid1[0] ^= packet.ReadByte();
+            if (guid1[4] != 0) guid1[4] ^= packet.ReadByte();
+            if (guid1[1] != 0) guid1[1] ^= packet.ReadByte();
+            if (guid2[3] != 0) guid2[3] ^= packet.ReadByte();
+            if (guid2[6] != 0) guid2[6] ^= packet.ReadByte();
+            if (guid2[4] != 0) guid2[4] ^= packet.ReadByte();
+            packet.WriteGuid("Guid 1", guid1);
+            packet.WriteGuid("Guid 2", guid2);
         }
 
         [Parser(Opcode.CMSG_GUILD_SWITCH_RANK, ClientVersionBuild.V4_0_6a_13623)]
@@ -712,7 +778,13 @@ namespace WowPacketParser.Parsing.Parsers
             var len = packet.ReadBits("Note Length", 8);
             guid[2] = packet.ReadBit();
 
-            packet.ParseBitStream(guid, 4, 5, 0, 3, 1, 6, 7);
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
             packet.ReadWoWString("Note", len);
             if (guid[2] != 0) guid[2] ^= packet.ReadByte();
             packet.WriteGuid("Guid", guid);
