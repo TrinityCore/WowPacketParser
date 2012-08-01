@@ -174,7 +174,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             quest.SourceItemId = (uint) packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Source Item ID");
 
-            quest.Flags = packet.ReadEnum<QuestFlags>("Flags", TypeCode.Int32);
+            quest.Flags = packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 quest.MinimapTargetMark = packet.ReadUInt32("Minimap Target Mark"); // missing enum. 1- Skull, 16 - Unknown, but exist
