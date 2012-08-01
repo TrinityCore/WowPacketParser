@@ -1885,6 +1885,68 @@ namespace WowPacketParser.Parsing.Parsers
 
         }
 
+        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_MEMBERS, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildAchievementMembersResponse(Packet packet)
+        {
+            var guid = new byte[8];
+
+
+            guid[3] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+
+            var count = packet.ReadBits("Player Count", 26);
+            var guid2 = new byte[count][];
+            for (var i = 0; i < count; i++)
+                guid2[i] = packet.StartBitStream(3,1,4,5,7,0,6,2);
+
+            guid[2] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ParseBitStream(guid2[i], 1, 5, 7, 0, 6, 4, 3, 2);
+                packet.WriteGuid("Player Guid", guid2[i], i);
+            }
+
+            packet.ParseBitStream(guid, 7, 2, 4, 3, 6, 0);
+
+            packet.ReadInt32("Achievement Id");
+
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+
+            packet.WriteGuid("Guild Guid", guid);
+
+        }
+
+        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_EARNED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildAchievementEarned(Packet packet)
+        {
+            var guid = packet.StartBitStream(3, 1, 0, 7, 4, 6, 2, 5);
+
+            if (guid[2] != 0) guid[2] ^= packet.ReadByte();
+
+            packet.ReadPackedTime("Time");
+
+            if (guid[0] != 0) guid[0] ^= packet.ReadByte();
+            if (guid[4] != 0) guid[4] ^= packet.ReadByte();
+            if (guid[1] != 0) guid[1] ^= packet.ReadByte();
+            if (guid[3] != 0) guid[3] ^= packet.ReadByte();
+
+            packet.ReadInt32("Achievement Id");
+
+            if (guid[7] != 0) guid[7] ^= packet.ReadByte();
+            if (guid[5] != 0) guid[5] ^= packet.ReadByte();
+            if (guid[6] != 0) guid[6] ^= packet.ReadByte();
+
+            packet.WriteGuid("Guild Guid", guid);
+        }
+
         [Parser(Opcode.CMSG_GUILD_BANK_REM_MONEY_WITHDRAW_QUERY)]
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
         [Parser(Opcode.CMSG_GUILD_REQUEST_CHALLENGE_UPDATE)]
