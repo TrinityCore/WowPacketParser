@@ -979,6 +979,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32");
         }
 
+        [Parser(Opcode.SMSG_MEETINGSTONE_COMPLETE)]
+        public static void HandleMeetingstoneComplete(Packet packet)
+        {
+            packet.ReadGuid("Guid");
+        }
+
         [Parser(Opcode.SMSG_UNIT_HEALTH_FREQUENT)]
         public static void HandleUnitHealthFrequent(Packet packet)
         {

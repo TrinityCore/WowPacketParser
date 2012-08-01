@@ -64,5 +64,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Faction Id");
             packet.ReadBoolean("Inactive");
         }
+
+        [Parser(Opcode.CMSG_SET_FACTION_ATWAR, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleSetFactionAtWar(Packet packet)
+        {
+            packet.ReadUInt32("Faction Id");
+            packet.ReadBoolean("At War");
+        }
     }
 }

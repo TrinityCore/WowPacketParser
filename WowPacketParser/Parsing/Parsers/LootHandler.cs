@@ -210,7 +210,21 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var count = packet.ReadByte("Count");
             for (var i = 0; i < count; i++)
-                packet.ReadGuid("GUID");
+                packet.ReadGuid("GUID", i);
+        }
+
+        [Parser(Opcode.SMSG_LOOT_CONTENTS)] //4.3.4
+        public static void HandleLootContents(Packet packet)
+        {
+            var count1 = packet.ReadBits("Loot Items Count", 21);
+            for (var i = 0; i < count1; i++)
+            {
+                packet.ReadUInt32("Display ID", i);
+                packet.ReadInt32("Random Suffix Factor");
+                packet.ReadInt32("Item Count", i);
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
+                packet.ReadInt32("Unk Int32", i); // possibly random property id or looted count
+            }
         }
 
         [Parser(Opcode.SMSG_LOOT_CLEAR_MONEY)]
