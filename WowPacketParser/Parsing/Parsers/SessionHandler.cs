@@ -349,7 +349,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 5, 0, 3, 4, 7, 2, 6, 1);
 
             packet.WriteGuid("Guid", guid);
-            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0)
+            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
         }
 
         [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_3_15354)]
@@ -359,7 +359,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 4, 1, 7, 2, 6, 5, 3, 0);
 
             packet.WriteGuid("Guid", guid);
-            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0);
+            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
         }
 
         [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]

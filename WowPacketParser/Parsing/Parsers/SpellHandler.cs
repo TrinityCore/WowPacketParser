@@ -410,27 +410,30 @@ namespace WowPacketParser.Parsing.Parsers
                     tpos.O = packet.ReadSingle();
                     packet.ReadUInt32("Transport time");
 
-                    packet.ParseBitStream(transportGuid, 6, 5);
+                    packet.ReadXORByte(transportGuid, 6);
+                    packet.ReadXORByte(transportGuid, 5);
 
                     if (hasTransTime2)
                         packet.ReadUInt32("Transport time 2");
 
                     tpos.X = packet.ReadSingle();
 
-                    packet.ParseBitStream(transportGuid, 4);
+                    packet.ReadXORByte(transportGuid, 4);
 
                     tpos.Z = packet.ReadSingle();
 
-                    packet.ParseBitStream(transportGuid, 2, 0);
+                    packet.ReadXORByte(transportGuid, 2);
+                    packet.ReadXORByte(transportGuid, 0);
 
                     if (hasTransTime3)
                         packet.ReadUInt32("Transport time 3");
 
-                    packet.ParseBitStream(transportGuid, 1, 3);
+                    packet.ReadXORByte(transportGuid, 1);
+                    packet.ReadXORByte(transportGuid, 3);
 
                     tpos.Y = packet.ReadSingle();
 
-                    packet.ParseBitStream(transportGuid, 7);
+                    packet.ReadXORByte(transportGuid, 7);
 
                     packet.WriteGuid("Transport Guid", transportGuid);
                     packet.WriteLine("Transport Position: {0}", tpos);
@@ -702,8 +705,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid1, 2);
             packet.ReadXORByte(guid2, 3);
 
-            packet.WriteLine("Caster GUID1 {0}", new Guid(BitConverter.ToUInt64(guid1, 0))); // not confirmed
-            packet.WriteLine("Unk GUID2 {0}", new Guid(BitConverter.ToUInt64(guid2, 0))); // usually 0
+            packet.WriteGuid("Caster Guid", guid1);
+            packet.WriteGuid("Unk Guid", guid2);
         }
 
         [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL_KIT)] // 4.3.4
@@ -713,26 +716,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("SpellVisualKit ID");
             packet.ReadUInt32("Unk");
 
-            var guid = new byte[8];
-            guid[4] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 5);
-
-            packet.WriteLine("Caster GUID {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            var guid = packet.StartBitStream(4, 7, 5, 3, 1, 2, 0, 6);
+            packet.ParseBitStream(guid, 0, 4, 1, 6, 7, 2, 3, 5);
+            packet.WriteGuid("Caster Guid", guid);
         }
 
         [Parser(Opcode.SMSG_PET_CAST_FAILED)]
@@ -1131,15 +1117,17 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(2, 4, 1, 7, 5, 0, 3, 6);
 
-            packet.ParseBitStream(guid, 5, 0);
-            var points = packet.ReadByte();
-            packet.ParseBitStream(guid, 3, 7, 4, 2);
-            var slot = packet.ReadByte();
-            packet.ParseBitStream(guid, 6, 1);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 0);
+            var points = packet.ReadByte("Points?");
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 2);
+            var slot = packet.ReadByte("Slot ID?");
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 1);
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Slot ID?: {0}", slot);
-            packet.WriteLine("Points?: {0}", points);
-
         }
 
         [Parser(Opcode.SMSG_DISENCHANT_CREDIT)] // 4.3.4
