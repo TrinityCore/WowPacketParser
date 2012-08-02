@@ -103,6 +103,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Mask?"); // TC: 1 << index
         }
 
+        [Parser(Opcode.SMSG_COOLDOWN_CHEAT)]
         [Parser(Opcode.SMSG_COOLDOWN_EVENT)]
         public static void HandleCooldownEvent(Packet packet)
         {
