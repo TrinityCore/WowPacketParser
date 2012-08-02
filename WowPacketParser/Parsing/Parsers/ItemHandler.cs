@@ -218,6 +218,59 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Item Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_ITEM_REFUND_RESULT, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleItemRefundResult(Packet packet)
+        {
+            packet.ReadGuid("Item Guid");
+            packet.ReadInt32("Error ID");
+        }
+
+        [Parser(Opcode.SMSG_ITEM_REFUND_RESULT, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
+        public static void HandleItemRefundResult422(Packet packet)
+        {
+            var guid = packet.StartBitStream(5, 0, 3, 7, 4, 1, 6, 2);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadInt32("Error ID");
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 0);
+            packet.WriteGuid("Item Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_ITEM_REFUND_RESULT, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleItemRefundResult434(Packet packet)
+        {
+            var guid = packet.StartBitStream(4, 5, 1, 6, 7, 0, 3, 2);
+
+            var unkBit = packet.ReadBit("Unk Bit 1");
+            packet.ReadBit("Unk Bit 2");
+
+            if (unkBit)
+            {
+                for (int i = 0; i < 5; ++i) // Item?
+                {
+                    packet.ReadInt32("Unk Int32 1", i);  // Entry?
+                    packet.ReadInt32("Unk Int32 2", i);  // Count?
+                }
+
+                packet.ReadInt32("Unk Int32 3"); // Time Left?
+
+                for (int i = 0; i < 5; ++i) // Currency?
+                {
+                    packet.ReadInt32("Unk Int32 4", i);  // Entry?
+                    packet.ReadInt32("Unk Int32 5", i);  // Count?
+                }
+            }
+
+            packet.ParseBitStream(guid, 0, 3, 1, 6, 4, 2, 7, 5);
+            packet.ReadByte("Unk Byte"); // Error Id?
+            packet.WriteGuid("Item Guid", guid);
+        }
+
         [Parser(Opcode.CMSG_REPAIR_ITEM)]
         public static void HandleRepairItem(Packet packet)
         {
@@ -894,29 +947,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
-        }
-
-        [Parser(Opcode.SMSG_ITEM_REFUND_RESULT, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleItemRefundResult(Packet packet)
-        {
-            packet.ReadGuid("Item Guid");
-            packet.ReadInt32("Error ID");
-        }
-
-        [Parser(Opcode.SMSG_ITEM_REFUND_RESULT, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleItemRefundResult422(Packet packet)
-        {
-            var guid = packet.StartBitStream(5, 0, 3, 7, 4, 1, 6, 2);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadInt32("Error ID");
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 0);
-            packet.WriteGuid("Item Guid", guid);
         }
 
         [Parser(Opcode.CMSG_REFORGE_ITEM, ClientVersionBuild.V4_3_4_15595)]
