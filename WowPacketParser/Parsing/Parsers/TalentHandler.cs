@@ -129,12 +129,29 @@ namespace WowPacketParser.Parsing.Parsers
                 ReadTalentInfo(ref packet);
         }
 
-        [Parser(Opcode.CMSG_LEARN_PREVIEW_TALENTS)]
-        [Parser(Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET)]
+        [Parser(Opcode.CMSG_LEARN_PREVIEW_TALENTS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleTalentPreviewTalents(Packet packet)
         {
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET))
                 packet.ReadGuid("GUID");
+
+            var count = packet.ReadUInt32("Talent Count");
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadUInt32("Talent ID", i);
+                packet.ReadUInt32("Rank", i);
+            }
+        }
+
+        [Parser(Opcode.CMSG_LEARN_PREVIEW_TALENTS, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleTalentPreviewTalents434(Packet packet)
+        {
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET))
+                packet.ReadGuid("GUID");
+            else
+                packet.ReadUInt32("Unk Int32");
 
             var count = packet.ReadUInt32("Talent Count");
             for (var i = 0; i < count; ++i)

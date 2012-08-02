@@ -591,7 +591,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Guild Name");
         }
 
-        [Parser(Opcode.SMSG_GUILD_INVITE, ClientVersionBuild.V4_0_6_13596)]
+        [Parser(Opcode.SMSG_GUILD_INVITE, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildInvite406(Packet packet)
         {
             packet.ReadUInt32("Unk1");
@@ -605,6 +605,74 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk6");
             packet.ReadGuid("GUID");
             packet.ReadCString("Guild Name");
+        }
+
+        [Parser(Opcode.SMSG_GUILD_INVITE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildInvite434(Packet packet)
+        {
+            var newGuildGuid = new byte[8];
+            var oldGuildGuid = new byte[8];
+
+            packet.ReadInt32("Guild Level");
+            packet.ReadInt32("Unk Int32"); // ##
+            packet.ReadInt32("Border Color");
+            packet.ReadInt32("Emblem Texture");
+            packet.ReadInt32("Emblem Background Color");
+            packet.ReadInt32("Emblem Color");
+
+            newGuildGuid[3] = packet.ReadBit();
+            newGuildGuid[2] = packet.ReadBit();
+
+            var oldGuildNameLength = packet.ReadBits(8);
+
+            newGuildGuid[1] = packet.ReadBit();
+            oldGuildGuid[6] = packet.ReadBit();
+            oldGuildGuid[4] = packet.ReadBit();
+            oldGuildGuid[1] = packet.ReadBit();
+            oldGuildGuid[5] = packet.ReadBit();
+            oldGuildGuid[7] = packet.ReadBit();
+            oldGuildGuid[2] = packet.ReadBit();
+            newGuildGuid[7] = packet.ReadBit();
+            newGuildGuid[0] = packet.ReadBit();
+            newGuildGuid[6] = packet.ReadBit();
+
+            var newGuildNameLength = packet.ReadBits(8);
+
+            oldGuildGuid[3] = packet.ReadBit();
+            oldGuildGuid[0] = packet.ReadBit();
+            newGuildGuid[5] = packet.ReadBit();
+
+            var inviterNameLength = packet.ReadBits(7);
+
+            newGuildGuid[4] = packet.ReadBit();
+
+            packet.ReadXORByte(newGuildGuid, 1);
+            packet.ReadXORByte(oldGuildGuid, 3);
+            packet.ReadXORByte(newGuildGuid, 6);
+            packet.ReadXORByte(oldGuildGuid, 2);
+            packet.ReadXORByte(oldGuildGuid, 1);
+            packet.ReadXORByte(newGuildGuid, 0);
+
+            packet.ReadWoWString("Old Guild Name", oldGuildNameLength);
+
+            packet.ReadXORByte(newGuildGuid, 7);
+            packet.ReadXORByte(newGuildGuid, 2);
+
+            packet.ReadWoWString("Inviter Name", inviterNameLength);
+
+            packet.ReadXORByte(oldGuildGuid, 7);
+            packet.ReadXORByte(oldGuildGuid, 6);
+            packet.ReadXORByte(oldGuildGuid, 5);
+            packet.ReadXORByte(oldGuildGuid, 0);
+            packet.ReadXORByte(newGuildGuid, 4);
+
+            packet.ReadWoWString("New Guild Name", newGuildNameLength);
+
+            packet.ReadXORByte(newGuildGuid, 5);
+            packet.ReadXORByte(newGuildGuid, 3);
+
+            packet.WriteGuid("New Guild Guid", newGuildGuid);
+            packet.WriteGuid("Old Guild Guid", oldGuildGuid);
         }
 
         [Parser(Opcode.SMSG_GUILD_INFO)]
@@ -1781,7 +1849,6 @@ namespace WowPacketParser.Parsing.Parsers
             guid[5] = packet.ReadBit();
             guid[7] = packet.ReadBit();
             guid2[3] = packet.ReadBit();
-
             guid[3] = packet.ReadBit();
             guid2[2] = packet.ReadBit();
             guid[4] = packet.ReadBit();
@@ -1892,6 +1959,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_DEL_RANK)]
         [Parser(Opcode.CMSG_GUILD_EVENT_LOG_QUERY)]
         [Parser(Opcode.SMSG_GUILD_CANCEL)] // Fires GUILD_INVITE_CANCEL
+        [Parser(Opcode.SMSG_GUILD_INVITE_CANCEL)]
         public static void HandleGuildNull(Packet packet)
         {
             // Just to have guild opcodes together

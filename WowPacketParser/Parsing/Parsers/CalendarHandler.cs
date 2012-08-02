@@ -102,7 +102,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
             packet.ReadPackedTime("Event Time");
             packet.ReadPackedTime("Unk PackedTime");
-            packet.ReadInt32("Guild");
+            if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
+                packet.ReadGuid("Guild Guid");
+            else
+                packet.ReadInt32("Guild");
 
             var invCount = packet.ReadInt32("Invite Count");
 
