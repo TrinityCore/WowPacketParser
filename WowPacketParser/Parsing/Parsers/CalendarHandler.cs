@@ -318,7 +318,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_CALENDAR_COMPLAIN, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleCalendarComplain434(Packet packet)
         {
-            packet.AsHex();
             packet.ReadGuid("GUID");
             packet.ReadInt64("Event ID");
             packet.ReadInt64("Invite ID");

@@ -7,6 +7,22 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class TicketHandler
     {
+        [Parser(Opcode.CMSG_GMSURVEY_SUBMIT)]
+        public static void HandleGMSurveySubmit(Packet packet)
+        {
+            packet.AsHex();
+            /* FIXME: sub_9E64A0
+            var count = packet.ReadUInt32("Unk32 1");
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadUInt32("Unk32 2", i);
+                packet.ReadByte("Unk8 1", i);
+                packet.ReadCString("String", i);
+            }
+            packet.ReadCString("String");
+            */
+        }
+
         [Parser(Opcode.CMSG_GMTICKET_CREATE)]
         public static void HandleGMTicketCreate(Packet packet)
         {
@@ -91,6 +107,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GMTICKET_GETTICKET)]
         [Parser(Opcode.CMSG_GMTICKET_SYSTEMSTATUS)]
         [Parser(Opcode.CMSG_GMRESPONSE_RESOLVE)]
+        [Parser(Opcode.CMSG_GMTICKET_DELETETICKET)]
         public static void HandleTicketZeroLengthPackets(Packet packet)
         {
         }
