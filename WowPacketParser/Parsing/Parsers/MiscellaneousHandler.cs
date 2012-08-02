@@ -150,6 +150,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_DUEL_CANCELLED)]
         [Parser(Opcode.SMSG_REFER_A_FRIEND_EXPIRED)]
         [Parser(Opcode.CMSG_PLAYER_VEHICLE_ENTER)]
+        [Parser(Opcode.CMSG_EJECT_PASSENGER)]
         public static void HandleReadGuid(Packet packet)
         {
             packet.ReadGuid("GUID");
