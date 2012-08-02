@@ -387,10 +387,10 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadInt32("Unk Int32");
             packet.ReadInt32("Unk Int32");
-            var strLen = packet.ReadBits(9);
             var guid = new byte[8];
             guid[2] = packet.ReadBit();
             guid[7] = packet.ReadBit();
+            var strLen = packet.ReadBits(9);
             guid[3] = packet.ReadBit();
             var nameLen = packet.ReadBits(10);
             guid[5] = packet.ReadBit();
