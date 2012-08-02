@@ -112,8 +112,8 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var i = 0; i < 4; i++)
                     packet.ReadUInt32("Currency Count", i);
 
-                packet.ReadUInt32("Unknown UInt32");
-                packet.ReadUInt32("Unknown UInt32");
+                packet.ReadUInt32("Reward SkillId");
+                packet.ReadUInt32("Reward Skill Points");
             }
         }
 
@@ -528,7 +528,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID1");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
-                packet.ReadGuid("GUID2");
+                packet.ReadGuid("Sharer GUID");
 
             packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
             packet.ReadCString("Title");
