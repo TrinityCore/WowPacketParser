@@ -112,6 +112,7 @@ namespace WowPacketParser.Parsing.Parsers
                 case ChatMessageType.Restricted:
                 case ChatMessageType.Dnd:
                 case ChatMessageType.Afk:
+                case ChatMessageType.Ignored:
                 {
                     packet.ReadGuid("Sender GUID");
                     break;
@@ -158,14 +159,6 @@ namespace WowPacketParser.Parsing.Parsers
                             break;
                     }
                     break;
-                }
-                case ChatMessageType.Ignored:
-                {
-                    packet.ReadGuid("Sender GUID");
-                    packet.ReadInt32("String Length");
-                    packet.ReadCString("Unk String");
-                    packet.ReadByte("Unk Byte");
-                    return;
                 }
             }
 
