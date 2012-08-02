@@ -1200,11 +1200,38 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid(guid);
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldMgrEjectPending(Packet packet)
         {
             packet.ReadInt32("Battle Id");
             packet.ReadBoolean("Remote");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleBattlefieldMgrEjectPending434(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[6] = packet.ReadBit();
+            packet.ReadBit("Remove");
+            guid[1] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 2);
+
+            packet.WriteGuid(guid);
         }
 
         [Parser(Opcode.SMSG_ARENA_TEAM_ROSTER)]
