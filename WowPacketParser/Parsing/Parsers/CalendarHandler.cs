@@ -308,11 +308,20 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Unk Boolean");
         }
 
-        [Parser(Opcode.CMSG_CALENDAR_COMPLAIN)]
+        [Parser(Opcode.CMSG_CALENDAR_COMPLAIN, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleCalendarComplain(Packet packet)
         {
             packet.ReadInt64("Event ID");
             packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_CALENDAR_COMPLAIN, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleCalendarComplain434(Packet packet)
+        {
+            packet.AsHex();
+            packet.ReadGuid("GUID");
+            packet.ReadInt64("Event ID");
+            packet.ReadInt64("Invite ID");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_SEND_NUM_PENDING)]
