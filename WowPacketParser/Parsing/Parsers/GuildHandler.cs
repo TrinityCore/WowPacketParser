@@ -633,11 +633,12 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_QUERY_GUILD_MEMBER_RECIPES)]
-        public static void HandleGuildMembersRecipes(Packet packet)
+        public static void HandleQueryGuildMemberRecipes(Packet packet)
         {
-            packet.ReadInt32("Skill ID");
             var guildGuid = new byte[8];
             var guid = new byte[8];
+
+            packet.ReadInt32("Skill ID");
 
             guid[2] = packet.ReadBit();
             guildGuid[1] = packet.ReadBit();
@@ -675,6 +676,31 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.WriteGuid("Guild GUID", guildGuid);
             packet.WriteGuid("Player GUID", guid);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_MEMBER_RECIPES)]
+        public static void HandleGuildMemberRecipes(Packet packet)
+        {
+            var guid = packet.StartBitStream(0, 3, 7, 4, 6, 2, 1, 5);
+
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 5);
+
+            packet.ReadInt32("Skill value");
+            // skip learned recipes masks
+            packet.ReadBytes(300);
+
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 2);
+
+            packet.ReadInt32("Skill ID");
+            packet.ReadInt32("Unk Int32"); // ##
+
+            packet.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.CMSG_GUILD_REMOVE, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_3_4_15595)]
