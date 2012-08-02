@@ -1006,7 +1006,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = new byte[8];
 
             var v6 = !packet.ReadBit("Unk Bit");
-            var hasWarmup = !packet.ReadBit("Unk Bit2");
+            var hasWarmup = !packet.ReadBit("Has Warmup");
             var v10 = !packet.ReadBit("Unk Bit3");
             guid[0] = packet.ReadBit();
             var v8 = !packet.ReadBit("Unk Bit4");
