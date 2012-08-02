@@ -955,6 +955,13 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Unk Byte", i);
         }
 
+        [Parser(Opcode.SMSG_NOTIFICATION)]
+        public static void HandleNotification(Packet packet)
+        {
+            var length = packet.ReadBits(13);
+            packet.ReadWoWString("Message", length);
+        }
+
         [Parser(Opcode.SMSG_MINIGAME_STATE)]
         [Parser(Opcode.CMSG_KEEP_ALIVE)]
         [Parser(Opcode.CMSG_TUTORIAL_RESET)]
