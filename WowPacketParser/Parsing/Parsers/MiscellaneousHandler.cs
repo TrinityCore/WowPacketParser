@@ -769,6 +769,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32");
         }
 
+        [Parser(Opcode.CMSG_SET_PREFERED_CEMETERY)] // 4.3.4
+        public static void HandleSetPreferedCemetery(Packet packet)
+        {
+            packet.ReadUInt32("Cemetery Id");
+        }
+
         [Parser(Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE)] // 4.3.4
         public static void HandleRequestCemeteryListResponse(Packet packet)
         {
