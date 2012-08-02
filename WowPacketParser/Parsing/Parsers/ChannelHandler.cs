@@ -154,6 +154,15 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_CHANNEL_BAN)] // 4.3.4
+        public static void HandleChannelBan(Packet packet)
+        {
+            var channelLength = packet.ReadBits(8);
+            var passwordLength = packet.ReadBits(7);
+            packet.ReadWoWString("str1", channelLength);
+            packet.ReadWoWString("str2", passwordLength);
+        }
+
         [Parser(Opcode.CMSG_JOIN_CHANNEL, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleChannelJoin434(Packet packet)
         {
