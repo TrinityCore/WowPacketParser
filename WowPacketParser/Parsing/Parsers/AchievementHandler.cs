@@ -227,28 +227,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_DATA, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGuildAchievementData(Packet packet)
-        {
-            var cnt = packet.ReadUInt32("Count");
-            for (var i = 0; i < cnt; ++i)
-                packet.ReadPackedTime("Date", i);
-
-            for (var i = 0; i < cnt; ++i)
-                packet.ReadUInt32("Achievement Id", i);
-        }
-
-        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_DATA, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGuildAchievementData434(Packet packet)
-        {
-            var count = packet.ReadBits("Count", 23);
-            for (var i = 0; i < count; ++i)
-            {
-                packet.ReadPackedTime("Date", i);
-                packet.ReadUInt32("Achievement Id", i);
-            }
-        }
-
         [Parser(Opcode.SMSG_COMPRESSED_ACHIEVEMENT_DATA)]
         public static void HandleCompressedAllAchievementData(Packet packet)
         {
@@ -366,100 +344,6 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadUInt32("Achievement Id", i);
                 packet.ReadPackedTime("Achievement Date", i);
-            }
-        }
-
-        [Parser(Opcode.SMSG_GUILD_CRITERIA_DATA, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGuildCriteriaData(Packet packet)
-        {
-            var criterias = packet.ReadUInt32("Criterias");
-
-            for (var i = 0; i < criterias; ++i)
-                packet.ReadGuid("Player GUID", i);
-
-            for (var i = 0; i < criterias; ++i)
-                packet.ReadUInt32("Criteria Timer 1", i);
-
-            for (var i = 0; i < criterias; ++i)
-                packet.ReadUInt32("Criteria Timer 2", i);
-
-            for (var i = 0; i < criterias; ++i)
-                packet.ReadUInt64("Counter", i);
-            
-            for (var i = 0; i < criterias; ++i)
-                packet.ReadPackedTime("Criteria Time", i);                
-
-            for (var i = 0; i < criterias; ++i)
-                packet.ReadUInt32("Criteria Id", i);
-
-            for (var i = 0; i < criterias; ++i)
-                packet.ReadUInt32("Flag", i);
-        }
-
-        [Parser(Opcode.SMSG_GUILD_CRITERIA_DATA, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGuildCriteriaData434(Packet packet)
-        {
-            var count = packet.ReadBits("Count", 21);
-            var counter = new byte[count][];
-            var guid = new byte[count][];
-
-            for (var i = 0; i < count; ++i)
-            {
-                counter[i] = new byte[8];
-                guid[i] = new byte[8];
-
-                counter[i][4] = packet.ReadBit();
-                counter[i][1] = packet.ReadBit();
-                guid[i][2] = packet.ReadBit();
-                counter[i][3] = packet.ReadBit();
-                guid[i][1] = packet.ReadBit();
-                counter[i][5] = packet.ReadBit();
-                counter[i][0] = packet.ReadBit();
-                guid[i][3] = packet.ReadBit();
-                counter[i][2] = packet.ReadBit();
-                guid[i][7] = packet.ReadBit();
-                guid[i][5] = packet.ReadBit();
-                guid[i][0] = packet.ReadBit();
-                counter[i][6] = packet.ReadBit();
-                guid[i][6] = packet.ReadBit();
-                counter[i][7] = packet.ReadBit();
-                guid[i][4] = packet.ReadBit();
-            }
-
-            for (var i = 0; i < count; ++i)
-            {
-                packet.ReadXORByte(guid[i], 5);
-
-                packet.ReadTime("Unk time 1", i);
-
-                packet.ReadXORByte(counter[i], 3);
-                packet.ReadXORByte(counter[i], 7);
-
-                packet.ReadTime("Unk time 2", i);
-
-                packet.ReadXORByte(counter[i], 6);
-                packet.ReadXORByte(guid[i], 4);
-                packet.ReadXORByte(guid[i], 1);
-                packet.ReadXORByte(counter[i], 4);
-                packet.ReadXORByte(guid[i], 3);
-                packet.ReadXORByte(counter[i], 0);
-                packet.ReadXORByte(guid[i], 2);
-                packet.ReadXORByte(counter[i], 1);
-                packet.ReadXORByte(guid[i], 6);
-
-                packet.ReadTime("Criteria Date", i);
-                packet.ReadUInt32("Criteria id", i);
-
-                packet.ReadXORByte(counter[i], 5);
-
-                packet.ReadUInt32("Unk", i);
-
-                packet.ReadXORByte(guid[i], 7);
-                packet.ReadXORByte(counter[i], 2);
-                packet.ReadXORByte(guid[i], 0);
-
-                packet.WriteGuid("Criteria GUID", guid[i], i);
-                packet.WriteLine("[{0}] Criteria counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
             }
         }
     }

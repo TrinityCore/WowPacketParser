@@ -921,6 +921,12 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Unk UInt32 2");
                     break;
                 }
+                case 0x6D8A2694: // KeyChain
+                {
+                    packet.ReadUInt32("Key Chain Id");
+                    packet.ReadCString("Unk String"); //not sure what this is
+                    break;
+                }
             }
 
             packet.AddSniffData(StoreNameType.Item, itemId, "DB_REPLY");
