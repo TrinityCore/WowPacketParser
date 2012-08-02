@@ -931,6 +931,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Currency ID");
         }
 
+        [Parser(Opcode.CMSG_SET_CURRENCY_FLAGS)]
+        public static void HandleSetCurrencyFlags(Packet packet)
+        {
+            packet.ReadUInt32("Flags");
+            packet.ReadUInt32("Currency ID");
+        }
+
         [Parser(Opcode.SMSG_XP_GAIN_ABORTED)] // 4.3.4, related to EVENT_TRIAL_CAP_REACHED_LEVEL
         public static void HandleXPGainAborted(Packet packet)
         {
