@@ -237,9 +237,10 @@ namespace WowPacketParser.Parsing.Parsers
 
 
         [Parser(Opcode.CMSG_LOOT_CURRENCY)]
+        [Parser(Opcode.SMSG_CURRENCY_LOOT_REMOVED)]
         public static void HandleLootCurrency(Packet packet)
         {
-            packet.ReadByte("Slot");
+            packet.ReadByte("Unk Byte");
         }
 
         [Parser(Opcode.SMSG_LOOT_CLEAR_MONEY)]
