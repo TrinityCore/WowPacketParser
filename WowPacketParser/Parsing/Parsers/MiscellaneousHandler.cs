@@ -1022,6 +1022,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_USED_FOLLOW)]
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
         [Parser(Opcode.SMSG_NEW_WORLD_ABORT)]
+        [Parser(Opcode.CMSG_GUILD_ACCEPT)]
+        [Parser(Opcode.CMSG_ROLE_POLL_BEGIN)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

@@ -262,7 +262,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Prefix");
         }
 
-        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_PARTY, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_GUILD, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_BATTLEGROUND, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleClientChatMessageAddon434(Packet packet)
@@ -273,6 +272,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("Prefix", length2);
         }
 
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_PARTY, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_RAID, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleClientChatMessageAddonRaid434(Packet packet)
         {
