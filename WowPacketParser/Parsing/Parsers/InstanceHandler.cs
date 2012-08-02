@@ -208,7 +208,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Encounters Completed Mask");
             packet.ReadBoolean("Extending");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // guessing
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623)) // guessing
                 packet.ReadBoolean("Locked warning"); // Displays a window asking if the player choose to join an instance which is saved.
         }
 

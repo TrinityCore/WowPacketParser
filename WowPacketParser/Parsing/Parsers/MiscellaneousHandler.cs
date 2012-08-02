@@ -242,7 +242,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Resurrector Name");
             packet.ReadBoolean("Resurrection Sickness");
             packet.ReadBoolean("Use Timer");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");   // Used only for: <if (Spell ID == 83968 && Unit_HasAura(95223) return 1;>
         }
 

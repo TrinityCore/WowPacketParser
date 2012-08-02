@@ -15,11 +15,11 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadUInt32("Gold");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623) && ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_4_15595)) // remove confirmed for 434
-                packet.ReadUInt32("Guild Gold");
-
             if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing)) // no idea when this was added, doesn't exist in 2.4.1
                 packet.ReadBoolean("Solo Loot"); // true = YOU_LOOT_MONEY, false = LOOT_MONEY_SPLIT
+                
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623) && ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_4_15595)) // remove confirmed for 434
+                packet.ReadUInt32("Guild Gold");
         }
 
         [Parser(Opcode.CMSG_LOOT)]

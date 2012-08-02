@@ -741,16 +741,16 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GUILD_INVITE, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildInvite406(Packet packet)
         {
-            packet.ReadUInt32("Unk1");
-            packet.ReadUInt32("Unk2");
-            packet.ReadUInt32("Unk3");
-            packet.ReadUInt32("Unk4");
-            packet.ReadGuid("GUID");
-            packet.ReadCString("Invitee Name");
-            packet.ReadCString("Player Name");
-            packet.ReadUInt32("Unk5");
-            packet.ReadUInt32("Unk6");
-            packet.ReadGuid("GUID");
+            packet.ReadUInt32("Emblem Background Color");
+            packet.ReadUInt32("Emblem Border Style");
+            packet.ReadUInt32("Emblem Color");
+            packet.ReadUInt32("Emblem Texture File");
+            packet.ReadGuid("Old Guild GUID");
+            packet.ReadCString("Old Guild Name");
+            packet.ReadCString("Inviter Name");
+            packet.ReadUInt32("Guild Level");
+            packet.ReadUInt32("Emblem Border Color");
+            packet.ReadGuid("Guild GUID");
             packet.ReadCString("Guild Name");
         }
 
