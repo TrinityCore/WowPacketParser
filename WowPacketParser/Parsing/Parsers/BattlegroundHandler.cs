@@ -993,11 +993,68 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_INVITE)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldMgrQueueInvite(Packet packet)
         {
             packet.ReadInt32("Battle Id");
             packet.ReadByte("Warmup");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_INVITE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleBattlefieldMgrQueueInvite434(Packet packet)
+        {
+            var guid = new byte[8];
+
+            var v6 = !packet.ReadBit("Unk Bit");
+            var hasWarmup = !packet.ReadBit("Unk Bit2");
+            var v10 = !packet.ReadBit("Unk Bit3");
+            guid[0] = packet.ReadBit();
+            var v8 = !packet.ReadBit("Unk Bit4");
+            guid[2] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+
+            var v7 = !packet.ReadBit("Unk Bit5");
+            var v48 = packet.ReadBit("Unk Bit6");
+            guid[1] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            var v11 = !packet.ReadBit("Unk Bit7");
+            guid[7] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 2);
+
+            if (v10)
+                packet.ReadInt32("Unk Int 32");
+
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 6);
+
+            if (hasWarmup)
+                packet.ReadByte("Warmup");
+
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 0);
+
+            if (v6)
+                packet.ReadInt32("Unk Int 32");
+
+            if (v11)
+                packet.ReadInt32("Unk Int 32");
+
+            if (v8)
+                packet.ReadInt32("Unk Int 32");
+
+            packet.ReadXORByte(guid, 4);
+
+            if (v7)
+                packet.ReadInt32("Unk Int 32");
+
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 7);
+
+            packet.WriteGuid("Guid", guid);
+
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_INVITE_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
