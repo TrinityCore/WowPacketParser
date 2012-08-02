@@ -52,5 +52,12 @@ namespace WowPacketParser.Parsing.Parsers
             if (SessionHandler.LoggedInCharacter != null && SessionHandler.LoggedInCharacter.FirstLogin)
                 Storage.StartActions.Add(new Tuple<Race, Class>(SessionHandler.LoggedInCharacter.Race, SessionHandler.LoggedInCharacter.Class), startAction, packet.TimeSpan);
         }
+
+
+        [Parser(Opcode.CMSG_SET_ACTIONBAR_TOGGLES)]
+        public static void HandleSetActionBarToggles(Packet packet)
+        {
+            packet.ReadByte("Action Bar");
+        }
     }
 }

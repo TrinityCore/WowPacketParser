@@ -70,48 +70,33 @@ namespace WowPacketParser.Parsing.Parsers
             var guids = new byte[count][];
 
             for (var i = 0; i < count; ++i)
-            {
-                guids[i] = new byte[8];
-                guids[i][7] = packet.ReadBit();
-                guids[i][4] = packet.ReadBit();
-                guids[i][5] = packet.ReadBit();
-                guids[i][0] = packet.ReadBit();
-                guids[i][2] = packet.ReadBit();
-                guids[i][6] = packet.ReadBit();
-                guids[i][1] = packet.ReadBit();
-                guids[i][3] = packet.ReadBit();
-            }
+                guids[i] = packet.StartBitStream(7, 4, 5, 0, 2, 6, 1, 3);
 
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadInt32("Guild Emblem Border Color", i);
 
-                if (guids[i][4] != 0) // 12
-                    guids[i][4] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 4);
 
                 packet.ReadCString("Guild Description", i);
 
-                if (guids[i][6] != 0) // 14
-                    guids[i][6] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 6);
 
                 packet.ReadInt32("Guild Emblem Texture File", i);
                 packet.ReadInt32("Guild Level", i);
 
-                if (guids[i][5] != 0) // 13
-                    guids[i][5] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 5);
 
                 packet.ReadInt32("Unk 2", i);
                 packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32, i);
                 packet.ReadCString("Guild Name", i);
                 packet.ReadByte("Cached", i);
 
-                if (guids[i][3] != 0) // 11
-                    guids[i][3] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 3);
 
                 packet.ReadInt32("Achievement Points", i);
 
-                if (guids[i][0] != 0) // 8
-                    guids[i][0] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 0);
 
                 packet.ReadInt32("Guild Emblem Color", i);
                 packet.ReadInt32("Guild Emblem Background Color", i);
@@ -119,18 +104,15 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32, i);
                 packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32, i);
 
-                if (guids[i][7] != 0) // 15
-                    guids[i][7] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 7);
 
                 packet.ReadInt32("Number of members", i);
 
-                if (guids[i][2] != 0) // 10
-                    guids[i][2] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 2);
 
                 packet.ReadInt32("Unk 5", i);
 
-                if (guids[i][1] != 0) // 9
-                    guids[i][1] ^= packet.ReadByte();
+                packet.ReadXORByte(guids[i], 1);
 
                 packet.WriteGuid("Guild GUID", guids[i], i);
             }
@@ -329,6 +311,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.CMSG_LF_GUILD_POST_REQUEST)]
         [Parser(Opcode.CMSG_LF_GUILD_GET_APPLICATIONS)]
+        [Parser(Opcode.SMSG_LF_GUILD_APPLICANT_LIST_UPDATED)]
         public static void HandlerLFGuildZeroLength(Packet packet)
         {
         }

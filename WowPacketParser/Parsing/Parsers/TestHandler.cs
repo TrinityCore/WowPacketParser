@@ -7,6 +7,7 @@ namespace WowPacketParser.Parsing.Parsers
     {
         [Parser(17958)] // 4.3.4
         [Parser(18997)] // 4.3.4
+        [Parser(26389)] // 4.3.4
         public static void Handle18997(Packet packet)
         {
             packet.ReadPackedGuid("Guid");
@@ -118,11 +119,17 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(3, 7, 6, 2, 5, 4, 0, 1);
 
-            packet.ParseBitStream(guid, 4, 1, 5, 2);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 2);
 
             packet.ReadInt32("Unk Int32");
 
-            packet.ParseBitStream(guid, 0, 3, 7, 6);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 6);
 
             packet.WriteGuid("Unk Guid?", guid);
         }

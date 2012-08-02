@@ -291,10 +291,10 @@ namespace WowPacketParser.Parsing.Parsers
                 guid2[4] = packet.ReadBit();
                 if (moveInfo.HasSplineData)
                 {
-                    bit216 = packet.ReadBit();
+                    bit216 = packet.ReadBit("Has extended spline data", index);
                     if (bit216)
                     {
-                        /*var splineMode =*/ packet.ReadBits(2);
+                        /*var splineMode =*/ packet.ReadEnum<SplineMode>("Spline Mode", 2, index);
                         hasSplineStartTime = packet.ReadBit();
                         splineCount = packet.ReadBits("Spline Waypoints", 22, index);
                         var bits57 = packet.ReadBits(2);
@@ -318,7 +318,8 @@ namespace WowPacketParser.Parsing.Parsers
                             facingTargetGuid = packet.StartBitStream(4, 3, 7, 2, 6, 1, 0, 5);
 
                         hasSplineVerticalAcceleration = packet.ReadBit();
-                        /*splineFlags =*/ packet.ReadEnum<SplineFlag422>("Spline flags", 25, index);
+                        packet.WriteLine("[{0}] Spline type: {1}", index, splineType);
+                        /*splineFlags =*/ packet.ReadEnum<SplineFlag434>("Spline flags", 25, index);
                     }
                 }
 

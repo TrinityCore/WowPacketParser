@@ -400,7 +400,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid[5] = packet.ReadBit();
             packet.ReadBit("Queued");
             packet.ReadByte("Unk Byte 64");
-            packet.ReadWoWString("String", length);
+            packet.ReadWoWString("Comment", length);
             packet.ReadUInt32("Queue Id");
             packet.ReadTime("Join Date");
 
@@ -416,7 +416,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 0);
 
-            packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
+            packet.ReadInt32("Unk_UInt32_1"); // Same value than "Unk_UInt32_1" in SMSG_LFG_JOIN_RESULT - Only seen 3
         
             packet.ReadXORByte(guid, 7);
         
@@ -445,16 +445,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LFG_QUEUE_STATUS, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleLfgQueueStatusUpdate434(Packet packet)
         {
-            var guid = new byte[8];
-
-            guid[3] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
+            var guid = packet.StartBitStream(3, 2, 0, 6, 5, 7, 1, 4);
 
             packet.ReadXORByte(guid, 0);
     
@@ -471,7 +462,7 @@ namespace WowPacketParser.Parsing.Parsers
     
             packet.ReadInt32("Average Wait Time");
             packet.ReadTime("Join Time");
-            packet.ReadInt32("Unk UInt32 3"); // Same value than "Unk32" (last for) in SMSG_LFG_UPDATE_STATUS
+            packet.ReadLfgEntry("LFG Entry");
             packet.ReadInt32("Queued Time");
 
             packet.ReadXORByte(guid, 5);
@@ -484,7 +475,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 2);
 
             packet.ReadInt32("Wait Time"); // Matches "Role Unk2"
-            packet.ReadInt32("Unk UInt32 7"); // Same value than "Unk UInt32 1" in SMSG_LFG_JOIN_RESULT - Only seen 3
+            packet.ReadInt32("Unk_UInt32_1"); // Same value than "Unk_UInt32_1" in SMSG_LFG_JOIN_RESULT - Only seen 3
             packet.WriteGuid("GUID", guid);
         }
 
@@ -530,7 +521,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LFG_JOIN_RESULT, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleLfgJoinResult434(Packet packet)
         {
-            packet.ReadUInt32("Unk UInt32 1");
+            packet.ReadUInt32("Unk_UInt32_1"); // used in SMSG_LFG_UPDATE_STATUS and SMSG_LFG_QUEUE_STATUS
             packet.ReadEnum<LfgJoinResult>("Join Result", TypeCode.Byte);
             packet.ReadUInt32("Queue Id");
             packet.ReadEnum<LfgRoleCheckStatus>("Status", TypeCode.Byte);
@@ -549,15 +540,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                guids[i] = new byte[8];
-                guids[i][7] = packet.ReadBit();
-                guids[i][5] = packet.ReadBit();
-                guids[i][3] = packet.ReadBit();
-                guids[i][6] = packet.ReadBit();
-                guids[i][0] = packet.ReadBit();
-                guids[i][2] = packet.ReadBit();
-                guids[i][4] = packet.ReadBit();
-                guids[i][1] = packet.ReadBit();
+                guids[i] = packet.StartBitStream(7, 5, 3, 6, 0, 2, 4, 1);
                 counts[i] = packet.ReadBits("Dungeon Count", 22, i);
             }
 
@@ -571,27 +554,11 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var j = 0; j < counts[i]; j++)
                     ReadDungeonJoinResults(ref packet, i, j);
 
-                packet.ReadXORByte(guids[i], 2);
-                packet.ReadXORByte(guids[i], 5);
-                packet.ReadXORByte(guids[i], 1);
-                packet.ReadXORByte(guids[i], 0);
-                packet.ReadXORByte(guids[i], 4);
-                packet.ReadXORByte(guids[i], 3);
-                packet.ReadXORByte(guids[i], 6);
-                packet.ReadXORByte(guids[i], 7);
-        
+                packet.ParseBitStream(guids[i], 2, 5, 1, 0, 4, 3, 6, 7);        
                 packet.WriteGuid("Guid", guids[i], i);
             }
-        
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 6);
 
+            packet.ParseBitStream(guid, 1, 4, 3, 5, 0, 7, 2, 6);
             packet.WriteGuid("Join GUID", guid);
         }
 
@@ -752,6 +719,15 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(1, 5, 7, 3, 2, 4, 0, 6);
             packet.ParseBitStream(guid, 4, 7, 0, 5, 1, 6, 2, 3);
             packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_LFG_PLAYER_LOCK_INFO_REQUEST)]
+        [Parser(Opcode.CMSG_LFG_PARTY_LOCK_INFO_REQUEST)]
+        [Parser(Opcode.CMSG_LFG_GET_STATUS)]
+        [Parser(Opcode.SMSG_LFG_DISABLED)]
+        [Parser(Opcode.CMSG_LFG_LEAVE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleLFGNull(Packet packet)
+        {
         }
     }
 }

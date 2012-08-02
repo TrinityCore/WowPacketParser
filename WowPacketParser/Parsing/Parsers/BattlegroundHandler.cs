@@ -1200,11 +1200,38 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid(guid);
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldMgrEjectPending(Packet packet)
         {
             packet.ReadInt32("Battle Id");
             packet.ReadBoolean("Remote");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleBattlefieldMgrEjectPending434(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[6] = packet.ReadBit();
+            packet.ReadBit("Remove");
+            guid[1] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 2);
+
+            packet.WriteGuid(guid);
         }
 
         [Parser(Opcode.SMSG_ARENA_TEAM_ROSTER)]
@@ -1274,12 +1301,23 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("ErrorId"); // FIXME: Use enum
         }
 
-        [Parser(Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT, ClientVersionBuild.V4_0_6a_13623)]
+        [Parser(Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleArenaTeamCommandResult406(Packet packet)
         {
             packet.ReadEnum<ArenaCommandResult>("Result", TypeCode.UInt32);
             packet.ReadCString("Team Name");
             packet.ReadCString("Player Name");
+        }
+
+        [Parser(Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleArenaTeamCommandResult434(Packet packet)
+        {
+            var playerLength = packet.ReadBits(7);
+            var teamLength = packet.ReadBits(8);
+            packet.ReadWoWString("Player Name", playerLength);
+            packet.ReadUInt32("Unk1"); // Action or Event
+            packet.ReadUInt32("Unk2"); // Action or Event
+            packet.ReadWoWString("Team Name", teamLength);
         }
 
         [Parser(Opcode.SMSG_ARENA_TEAM_EVENT)]
@@ -1791,6 +1829,15 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.WriteGuid("Guid 1", guids1[i], i);
             }
+        }
+
+        [Parser(Opcode.CMSG_BATTLEFIELD_REQUEST_SCORE_DATA)]
+        [Parser(Opcode.CMSG_QUERY_BATTLEFIELD_STATE)]
+        [Parser(Opcode.CMSG_REQUEST_RATED_BG_STATS)]
+        [Parser(Opcode.CMSG_PVP_LOG_DATA)]
+        [Parser(Opcode.CMSG_REQUEST_PVP_REWARDS)]
+        public static void HandleBattlegroundNull(Packet packet)
+        {
         }
 
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE)]

@@ -86,6 +86,11 @@ namespace WowPacketParser.Parsing.Parsers
 
             switch (text.Type)
             {
+                case ChatMessageType.Channel:
+                {
+                    packet.ReadCString("Channel Name");
+                    goto case ChatMessageType.Say;
+                }
                 case ChatMessageType.Say:
                 case ChatMessageType.Yell:
                 case ChatMessageType.Party:
@@ -100,7 +105,6 @@ namespace WowPacketParser.Parsing.Parsers
                 case ChatMessageType.Whisper:
                 case ChatMessageType.WhisperInform:
                 case ChatMessageType.System:
-                case ChatMessageType.Channel:
                 case ChatMessageType.Battleground:
                 case ChatMessageType.BattlegroundLeader:
                 case ChatMessageType.Achievement:
@@ -108,10 +112,8 @@ namespace WowPacketParser.Parsing.Parsers
                 case ChatMessageType.Restricted:
                 case ChatMessageType.Dnd:
                 case ChatMessageType.Afk:
+                case ChatMessageType.Ignored:
                 {
-                    if (text.Type == ChatMessageType.Channel)
-                        packet.ReadCString("Channel Name");
-
                     packet.ReadGuid("Sender GUID");
                     break;
                 }

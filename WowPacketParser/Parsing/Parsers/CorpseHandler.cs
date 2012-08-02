@@ -47,5 +47,10 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("Corpse GUID");
         }
+
+        [Parser(Opcode.SMSG_CORPSE_NOT_IN_INSTANCE)]
+        public static void HandleCorpseNull(Packet packet)
+        {
+        }
     }
 }
