@@ -967,7 +967,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleDisplayGameError(Packet packet)
         {
             var hasAchieveOrSpellFailedIdOrCurrencyCount = packet.ReadBit();
-            var AchieveOrSpellFailedIdOrCurrencyCount = new UInt32();
+            UInt32 AchieveOrSpellFailedIdOrCurrencyCount = 0;
             var hasCurrencyId = packet.ReadBit();
 
             if (hasAchieveOrSpellFailedIdOrCurrencyCount)

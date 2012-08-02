@@ -8,6 +8,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(17958)] // 4.3.4
         [Parser(18997)] // 4.3.4
         [Parser(26389)] // 4.3.4
+        [Parser(3860)] // 4.3.4 
         public static void Handle18997(Packet packet)
         {
             packet.ReadPackedGuid("Guid");
