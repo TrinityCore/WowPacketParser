@@ -1274,12 +1274,23 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("ErrorId"); // FIXME: Use enum
         }
 
-        [Parser(Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT, ClientVersionBuild.V4_0_6a_13623)]
+        [Parser(Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleArenaTeamCommandResult406(Packet packet)
         {
             packet.ReadEnum<ArenaCommandResult>("Result", TypeCode.UInt32);
             packet.ReadCString("Team Name");
             packet.ReadCString("Player Name");
+        }
+
+        [Parser(Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleArenaTeamCommandResult434(Packet packet)
+        {
+            var playerLength = packet.ReadBits(7);
+            var teamLength = packet.ReadBits(8);
+            packet.ReadWoWString("Player Name", playerLength);
+            packet.ReadUInt32("Unk1"); // Action or Event
+            packet.ReadUInt32("Unk2"); // Action or Event
+            packet.ReadWoWString("Team Name", teamLength);
         }
 
         [Parser(Opcode.SMSG_ARENA_TEAM_EVENT)]

@@ -1309,9 +1309,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GUILD_BANK_QUERY_TEXT_RESULTS, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildQueryBankText434(Packet packet)
         {
-            packet.ReadBits(14); // unused by client... fits Text Length
             packet.ReadUInt32("Tab Id");
-            packet.ReadCString("Text");
+            packet.ReadWoWString("Text", packet.ReadBits(14));
         }
 
         [Parser(Opcode.CMSG_SET_GUILD_BANK_TEXT)]
