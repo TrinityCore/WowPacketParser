@@ -630,11 +630,19 @@ namespace WowPacketParser.Parsing.Parsers
             // FIXME
         }
 
-        [Parser(Opcode.CMSG_GUILD_REMOVE, ClientVersionBuild.V4_0_6_13596)]
+        [Parser(Opcode.CMSG_GUILD_REMOVE, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRemove406(Packet packet)
         {
             packet.ReadGuid("Target GUID");
             packet.ReadGuid("Removee GUID");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_REMOVE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildRemove434(Packet packet)
+        {
+            var guid = packet.StartBitStream(6, 5, 4, 0, 1, 3, 7, 2);
+            packet.ParseBitStream(guid, 2, 6, 5, 7, 1, 4, 3, 0);
+            packet.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.SMSG_GUILD_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
