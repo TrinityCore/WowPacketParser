@@ -69,12 +69,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("GUID 2", guid2);
         }
 
-        [Parser(Opcode.CMSG_GUILD_ACCEPT, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGuildInviteAccept406(Packet packet)
-        {
-            packet.ReadGuid("Player GUID");
-        }
-
         [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleGuildRequestRoster406(Packet packet)
         {
@@ -2098,8 +2092,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
         [Parser(Opcode.CMSG_GUILD_REQUEST_CHALLENGE_UPDATE)]
         [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
-        [Parser(Opcode.CMSG_GUILD_ACCEPT, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
-        [Parser(Opcode.CMSG_GUILD_ACCEPT, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_ACCEPT)]
         [Parser(Opcode.CMSG_GUILD_DECLINE)]
         [Parser(Opcode.CMSG_GUILD_INFO)]
         [Parser(Opcode.CMSG_GUILD_LEAVE)]
