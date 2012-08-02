@@ -449,7 +449,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid2[0] = packet.ReadBit();
             guid2[5] = packet.ReadBit();
             guid2[4] = packet.ReadBit();
-            packet.ReadBit("unk");
+            packet.ReadBit();
             guid1[5] = packet.ReadBit();
             guid1[0] = packet.ReadBit();
             guid2[6] = packet.ReadBit();
@@ -670,6 +670,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(newGuildGuid, 5);
             packet.ReadXORByte(newGuildGuid, 3);
+            packet.ReadXORByte(oldGuildGuid, 4);
 
             packet.WriteGuid("New Guild Guid", newGuildGuid);
             packet.WriteGuid("Old Guild Guid", oldGuildGuid);
@@ -722,6 +723,12 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGuildInfo434(Packet packet)
         {
             packet.ReadWoWString("Text", (int)packet.ReadBits(12));
+        }
+
+        [Parser(Opcode.CMSG_GUILD_CHANGE_NAME_REQUEST, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildNameChange(Packet packet)
+        {
+            packet.ReadWoWString("New Name", (int)packet.ReadBits(8));
         }
 
         [Parser(Opcode.SMSG_GUILD_EVENT)]
