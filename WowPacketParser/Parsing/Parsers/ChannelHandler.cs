@@ -56,6 +56,9 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var type = packet.ReadEnum<ChatNotificationType>("Notification Type", TypeCode.Byte);
 
+            if (type == ChatNotificationType.InvalidName) // hack, because of some silly reason this type
+                packet.ReadBytes(3);                      // has 3 null bytes before the invalid channel name
+
             packet.ReadCString("Channel Name");
 
             switch(type)
@@ -79,14 +82,14 @@ namespace WowPacketParser.Parsing.Parsers
                 case ChatNotificationType.YouJoined:
                 {
                     packet.ReadEnum<ChannelFlag>("Flags", TypeCode.Byte);
-                    packet.ReadInt32("Id");
+                    packet.ReadInt32("Channel Id");
                     packet.ReadInt32("Unk");
                     break;
                 }
                 case ChatNotificationType.YouLeft:
                 {
-                    packet.ReadInt32("Id");
-                    packet.ReadByte("Unk");
+                    packet.ReadInt32("Channel Id");
+                    packet.ReadBoolean("Unk");
                     break;
                 }
                 case ChatNotificationType.PlayerNotFound:
