@@ -102,8 +102,9 @@ namespace WowPacketParser.Parsing.Parsers
 
             var count = packet.ReadByte("Drop Count");
 
+            byte currencyCount = 0;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
-                packet.ReadByte("unk");
+                currencyCount = packet.ReadByte("Currency Count");
 
             loot.LootItems = new List<LootItem>(count);
             for (var i = 0; i < count; ++i)
@@ -117,6 +118,13 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Random Property Id", i);
                 packet.ReadEnum<LootSlotType>("Slot Type", TypeCode.Byte, i);
                 loot.LootItems.Add(lootItem);
+            }
+
+            for (int i = 0; i < currencyCount; ++i)
+            {
+                packet.ReadByte("Unk Byte", i); // only seen zero so far
+                packet.ReadInt32("Currency Id", i);
+                packet.ReadInt32("Count", i); // unconfirmed
             }
 
             // Items do not have item id in its guid, we need to query the wowobject store go
