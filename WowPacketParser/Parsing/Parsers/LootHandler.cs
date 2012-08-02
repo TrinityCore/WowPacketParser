@@ -237,7 +237,7 @@ namespace WowPacketParser.Parsing.Parsers
 
 
         [Parser(Opcode.CMSG_LOOT_CURRENCY)]
-        public static void HandleNullLoot(Packet packet)
+        public static void HandleLootCurrency(Packet packet)
         {
             packet.ReadByte("Slot");
         }
