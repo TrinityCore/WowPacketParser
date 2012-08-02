@@ -220,7 +220,10 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadCString("Unk String 1", i);
                 packet.ReadCString("Unk String 2", i);
-                packet.ReadUInt32("Unk UInt32 1", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
+                    packet.ReadUInt64("Unk UInt32 1", i);
+                else
+                    packet.ReadUInt32("Unk UInt32 1", i);
                 packet.ReadUInt32("Unk UInt32 2", i);
                 packet.ReadSingle("Unk Single", i);
             }
