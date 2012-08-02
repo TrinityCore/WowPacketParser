@@ -235,6 +235,13 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+
+        [Parser(Opcode.CMSG_LOOT_CURRENCY)]
+        public static void HandleNullLoot(Packet packet)
+        {
+            packet.ReadByte("Slot");
+        }
+
         [Parser(Opcode.SMSG_LOOT_CLEAR_MONEY)]
         [Parser(Opcode.CMSG_LOOT_MONEY)]
         public static void HandleNullLoot(Packet packet)
