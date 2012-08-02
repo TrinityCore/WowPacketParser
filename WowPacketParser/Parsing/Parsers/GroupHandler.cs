@@ -7,6 +7,12 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class GroupHandler
     {
+        [Parser(Opcode.CMSG_SET_EVERYONE_IS_ASSISTANT)]
+        public static void HandleEveryoneIsAssistant(Packet packet)
+        {
+            packet.ReadBit("Active");
+        }
+
         [Parser(Opcode.CMSG_GROUP_SET_ROLES, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGroupSetRoles(Packet packet)
         {
