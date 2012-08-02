@@ -10,17 +10,17 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GMSURVEY_SUBMIT)]
         public static void HandleGMSurveySubmit(Packet packet)
         {
-            packet.AsHex();
-            /* FIXME: sub_9E64A0
-            var count = packet.ReadUInt32("Unk32 1");
+            var count = packet.ReadUInt32("Survey Question Count");
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadUInt32("Unk32 2", i);
-                packet.ReadByte("Unk8 1", i);
-                packet.ReadCString("String", i);
+                var gmsurveyid = packet.ReadUInt32("GM Survey Id", i);
+                if (gmsurveyid == 0)
+                    break;
+                packet.ReadByte("Question Number", i);
+                packet.ReadCString("Answer", i);
             }
-            packet.ReadCString("String");
-            */
+            packet.ReadCString("Comment");
+            
         }
 
         [Parser(Opcode.CMSG_GMTICKET_CREATE)]
