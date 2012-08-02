@@ -614,7 +614,7 @@ namespace WowPacketParser.Parsing.Parsers
             var oldGuildGuid = new byte[8];
 
             packet.ReadInt32("Guild Level");
-            packet.ReadInt32("Unk Int32"); // ##
+            packet.ReadInt32("Emblem Style"); // unconfirmed
             packet.ReadInt32("Border Color");
             packet.ReadInt32("Emblem Texture");
             packet.ReadInt32("Emblem Background Color");
