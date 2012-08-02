@@ -624,10 +624,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Name");
         }
 
-        [Parser(Opcode.CMSG_GUILD_ADD_RANK, ClientVersionBuild.V4_0_6_13596)]
-        public static void HandleGuildAddRank406(Packet packet)
+        [Parser(Opcode.CMSG_QUERY_GUILD_MEMBERS_FOR_RECIPE)]
+        public static void HandleGuildMembersForRecipe(Packet packet)
         {
-            // FIXME
+            var guid = packet.StartBitStream(4, 1, 0, 3, 6, 7, 5, 2);
+            packet.ParseBitStream(guid, 1, 6, 5, 0, 3, 7, 2, 4);
+            packet.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.CMSG_GUILD_REMOVE, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_3_4_15595)]
