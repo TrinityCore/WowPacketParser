@@ -193,7 +193,6 @@ namespace WowPacketParser.Parsing.Parsers
             int count = packet.ReadInt32("Char Count");
             packet.ReadInt32("Unk Count");
             var firstLogin = new bool[count];
-            var bits = new bool[count, 17];
             var playerGuid = new byte[count][];
             var guildGuid = new byte[count][];
 

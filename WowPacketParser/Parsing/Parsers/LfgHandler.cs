@@ -400,7 +400,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid[5] = packet.ReadBit();
             packet.ReadBit("Queued");
             packet.ReadByte("Unk Byte 64");
-            packet.ReadWoWString("String", length);
+            packet.ReadWoWString("Comment", length);
             packet.ReadUInt32("Queue Id");
             packet.ReadTime("Join Date");
 
@@ -416,7 +416,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 0);
 
-            packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
+            packet.ReadInt32("Unk_UInt32_1"); // Same value than "Unk_UInt32_1" in SMSG_LFG_JOIN_RESULT - Only seen 3
         
             packet.ReadXORByte(guid, 7);
         
@@ -462,7 +462,7 @@ namespace WowPacketParser.Parsing.Parsers
     
             packet.ReadInt32("Average Wait Time");
             packet.ReadTime("Join Time");
-            packet.ReadInt32("Unk UInt32 3"); // Same value than "Unk32" (last for) in SMSG_LFG_UPDATE_STATUS
+            packet.ReadLfgEntry("LFG Entry");
             packet.ReadInt32("Queued Time");
 
             packet.ReadXORByte(guid, 5);
@@ -475,7 +475,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 2);
 
             packet.ReadInt32("Wait Time"); // Matches "Role Unk2"
-            packet.ReadInt32("Unk UInt32 7"); // Same value than "Unk UInt32 1" in SMSG_LFG_JOIN_RESULT - Only seen 3
+            packet.ReadInt32("Unk_UInt32_1"); // Same value than "Unk_UInt32_1" in SMSG_LFG_JOIN_RESULT - Only seen 3
             packet.WriteGuid("GUID", guid);
         }
 
@@ -521,7 +521,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LFG_JOIN_RESULT, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleLfgJoinResult434(Packet packet)
         {
-            packet.ReadUInt32("Unk UInt32 1");
+            packet.ReadUInt32("Unk_UInt32_1"); // used in SMSG_LFG_UPDATE_STATUS and SMSG_LFG_QUEUE_STATUS
             packet.ReadEnum<LfgJoinResult>("Join Result", TypeCode.Byte);
             packet.ReadUInt32("Queue Id");
             packet.ReadEnum<LfgRoleCheckStatus>("Status", TypeCode.Byte);

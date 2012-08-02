@@ -1120,12 +1120,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 0);
-            var points = packet.ReadByte("Points?");
+            packet.ReadByte("Points?");
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 2);
-            var slot = packet.ReadByte("Slot ID?");
+            packet.ReadByte("Slot ID?");
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 1);
             packet.WriteGuid("Guid", guid);
