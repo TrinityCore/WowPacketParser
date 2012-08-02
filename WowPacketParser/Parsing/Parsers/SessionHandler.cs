@@ -403,6 +403,13 @@ namespace WowPacketParser.Parsing.Parsers
             LoggedInCharacter = null;
         }
 
+        [Parser(Opcode.CMSG_CONNECT_TO_FAILED)]
+        public static void HandleConnectToFailed(Packet packet)
+        {
+            packet.WriteLine("IP Address: {0}", packet.ReadIPAddress());
+            packet.ReadByte("Reason?");
+        }
+
         [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleRedirectClient(Packet packet)
         {
