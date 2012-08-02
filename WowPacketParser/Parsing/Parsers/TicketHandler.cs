@@ -76,6 +76,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.SMSG_GMTICKET_CREATE)]
         [Parser(Opcode.SMSG_GMTICKET_UPDATETEXT)]
+        [Parser(Opcode.SMSG_GMTICKET_DELETETICKET)]
         public static void HandleCreateUpdateGMTicket(Packet packet)
         {
             packet.ReadInt32("Unk UInt32");
