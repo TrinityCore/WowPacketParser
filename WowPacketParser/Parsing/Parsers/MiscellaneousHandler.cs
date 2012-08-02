@@ -977,6 +977,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("Message", length);
         }
 
+        [Parser(Opcode.CMSG_TIME_SYNC_RESP_FAILED)]
+        public static void HandleTimeSyncRespFailed(Packet packet)
+        {
+            packet.ReadUInt32("Unk Uint32");
+        }
+
         [Parser(Opcode.SMSG_MINIGAME_STATE)]
         [Parser(Opcode.CMSG_KEEP_ALIVE)]
         [Parser(Opcode.CMSG_TUTORIAL_RESET)]
