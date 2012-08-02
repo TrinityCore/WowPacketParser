@@ -378,15 +378,14 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guidBytes, 3);
 
-            // Non-zero in cross realm parties
-            packet.WriteGuid("Guid", guidBytes);
+            packet.WriteGuid("Guid", guidBytes); // Non-zero in cross realm parties
         }
 
         [Parser(Opcode.CMSG_GROUP_INVITE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGroupInvite434(Packet packet)
         {
-            packet.ReadInt32("Unk Int32");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32"); // Non-zero in cross realm parties (1383)
+            packet.ReadInt32("Unk Int32"); // Always 0
             var guid = new byte[8];
             guid[2] = packet.ReadBit();
             guid[7] = packet.ReadBit();
@@ -404,14 +403,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 6);
 
             packet.ReadWoWString("Name", nameLen);
-            packet.ReadWoWString("Realm Name", strLen);
+            packet.ReadWoWString("Realm Name", strLen); // Non-empty in cross realm parties
 
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 2);
-            packet.WriteGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid); // Non-zero in cross realm parties
         }
 
         [Parser(Opcode.SMSG_GROUP_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]

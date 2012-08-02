@@ -963,11 +963,11 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
 
-        [Parser(Opcode.SMSG_DISPLAY_GAME_ERROR)]
+        [Parser(Opcode.SMSG_DISPLAY_GAME_ERROR)] // 4.3.4
         public static void HandleDisplayGameError(Packet packet)
         {
             var hasAchieveOrSpellFailedIdOrCurrencyCount = packet.ReadBit();
-            UInt32 AchieveOrSpellFailedIdOrCurrencyCount = 0;
+            var AchieveOrSpellFailedIdOrCurrencyCount = 0u;
             var hasCurrencyId = packet.ReadBit();
 
             if (hasAchieveOrSpellFailedIdOrCurrencyCount)
@@ -976,13 +976,13 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasAchieveOrSpellFailedIdOrCurrencyCount)
                 switch (err)
                 {
-                    case 48:
+                    case 48: // ERR_SPELL_FAILED_S
                         packet.WriteLine("Spell Failed Id: {0}", AchieveOrSpellFailedIdOrCurrencyCount);
                         break;
-                    case 784:
+                    case 784: // ERR_REQUIRES_ACHIEVEMENT_I
                         packet.WriteLine("Achievement Id: {0}", AchieveOrSpellFailedIdOrCurrencyCount);
                         break;
-                    case 790:
+                    case 790: // ERR_INSUFF_TRACKED_CURRENCY_IS
                         packet.WriteLine("Currency Count: {0}", AchieveOrSpellFailedIdOrCurrencyCount);
                         break;
                     default:
