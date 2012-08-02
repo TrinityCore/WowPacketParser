@@ -8495,6 +8495,23 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_MOVE_SET_FLIGHT_BACK_SPEED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleMoveSetFlightBackSpeed434(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 2, 6, 4, 7, 3, 0, 5);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadInt32("Unk Int32"); // ##
+            packet.ReadXORByte(guid, 6);
+            packet.ReadSingle("Speed");
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_MOVE_SET_RUN_BACK_SPEED, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleMoveSetRunBackSpeed434(Packet packet)
         {
@@ -8529,6 +8546,23 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_MOVE_SET_SWIM_BACK_SPEED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleMoveSetSwimBackSpeed434(Packet packet)
+        {
+            var guid = packet.StartBitStream(4, 2, 3, 6, 5, 1, 0, 7);
+            packet.ReadInt32("Unk Int32"); // ##
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadSingle("Speed");
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 2);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_MOVE_SET_WALK_SPEED, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleMoveSetWalkSpeed434(Packet packet)
         {
@@ -8543,6 +8577,40 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 3);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_SET_TURN_RATE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleMoveSetTurnRate434(Packet packet)
+        {
+            var guid = packet.StartBitStream(7, 2, 1, 0, 4, 5, 6, 3);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadSingle("Rate");
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadInt32("Unk Int32"); // ##
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 4);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_SET_PITCH_RATE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleMoveSetPitchRate434(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 2, 6, 7, 0, 3, 5, 4);
+            packet.ReadSingle("Rate");
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadInt32("Unk Int32"); // ##
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 5);
             packet.WriteGuid("Guid", guid);
         }
 
