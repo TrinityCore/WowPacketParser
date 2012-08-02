@@ -619,11 +619,30 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_QUERY_GUILD_MEMBERS_FOR_RECIPE)]
-        public static void HandleGuildMembersForRecipe(Packet packet)
+        public static void HandleQueryGuildMembersForRecipe(Packet packet)
         {
             var guid = packet.StartBitStream(4, 1, 0, 3, 6, 7, 5, 2);
             packet.ParseBitStream(guid, 1, 6, 5, 0, 3, 7, 2, 4);
             packet.WriteGuid("GUID", guid);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_MEMBERS_FOR_RECIPE)]
+        public static void HandleGuildMembersForRecipe(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 26);
+            var guid = new byte[count][];
+
+            for (int i = 0; i < count; ++i)
+                guid[i] = packet.StartBitStream(2, 3, 1, 6, 0, 7, 4, 5);
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ParseBitStream(guid[i], 1, 5, 6, 7, 2, 3, 0, 4);
+                packet.WriteGuid("GUID", guid[i], i);
+            }
+
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadUInt32("Skill ID");
         }
 
         [Parser(Opcode.CMSG_QUERY_GUILD_MEMBER_RECIPES)]
