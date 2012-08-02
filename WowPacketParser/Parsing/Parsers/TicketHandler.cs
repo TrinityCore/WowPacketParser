@@ -67,6 +67,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Update Time");
             packet.ReadBoolean("Assigned to GM");
             packet.ReadBoolean("Opened by GM");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
+            {
+                packet.ReadCString("Average wait time Text");
+                packet.ReadUInt32("Average wait time");
+            }
         }
 
         [Parser(Opcode.SMSG_GMTICKET_CREATE)]
