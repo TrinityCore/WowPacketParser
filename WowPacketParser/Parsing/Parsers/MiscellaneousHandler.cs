@@ -966,15 +966,32 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_DISPLAY_GAME_ERROR)]
         public static void HandleDisplayGameError(Packet packet)
         {
-            var bit1 = packet.ReadBit();
-            var bit2 = packet.ReadBit();
+            var hasAchieveOrSpellFailedIdOrCurrencyCount = packet.ReadBit();
+            var AchieveOrSpellFailedIdOrCurrencyCount = new UInt32();
+            var hasCurrencyId = packet.ReadBit();
 
-            if (bit1)
-                packet.ReadUInt32("Unk1");
-            packet.ReadUInt32("Unk2");
+            if (hasAchieveOrSpellFailedIdOrCurrencyCount)
+                AchieveOrSpellFailedIdOrCurrencyCount = packet.ReadUInt32();
+            var err = packet.ReadUInt32("Error Code");
+            if (hasAchieveOrSpellFailedIdOrCurrencyCount)
+                switch (err)
+                {
+                    case 48:
+                        packet.WriteLine("Spell Failed Id: {0}", AchieveOrSpellFailedIdOrCurrencyCount);
+                        break;
+                    case 784:
+                        packet.WriteLine("Achievement Id: {0}", AchieveOrSpellFailedIdOrCurrencyCount);
+                        break;
+                    case 790:
+                        packet.WriteLine("Currency Count: {0}", AchieveOrSpellFailedIdOrCurrencyCount);
+                        break;
+                    default:
+                        packet.WriteLine("Unk UInt32: {0}", AchieveOrSpellFailedIdOrCurrencyCount);
+                        break;
+                }
 
-            if (bit2)
-                packet.ReadUInt32("Unk3");
+            if (hasCurrencyId)
+                packet.ReadUInt32("CurrencyId");
         }
 
         [Parser(Opcode.SMSG_NOTIFICATION)]
