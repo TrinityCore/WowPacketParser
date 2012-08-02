@@ -16,6 +16,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Emblem Background Color");
         }
 
+        [Parser(Opcode.CMSG_GUILD_BANK_SET_TAB_TEXT)] // 4.3.4
+        public static void HandleGuildBankSetTabText(Packet packet)
+        {
+            packet.ReadUInt32("Tab Id");
+            packet.ReadWoWString("Tab Text", packet.ReadBits(14));
+        }
+
         [Parser(Opcode.CMSG_GUILD_ASSIGN_MEMBER_RANK)] // 4.3.4
         public static void HandleGuildAssignMemberRank(Packet packet)
         {
