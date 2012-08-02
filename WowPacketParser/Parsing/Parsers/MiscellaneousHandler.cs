@@ -955,6 +955,21 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Unk Byte", i);
         }
 
+
+        [Parser(Opcode.SMSG_DISPLAY_GAME_ERROR)]
+        public static void HandleDisplayGameError(Packet packet)
+        {
+            var bit1 = packet.ReadBit();
+            var bit2 = packet.ReadBit();
+
+            if (bit1)
+                packet.ReadUInt32("Unk1");
+            packet.ReadUInt32("Unk2");
+
+            if (bit2)
+                packet.ReadUInt32("Unk3");
+        }
+
         [Parser(Opcode.SMSG_NOTIFICATION)]
         public static void HandleNotification(Packet packet)
         {
