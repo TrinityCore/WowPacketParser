@@ -64,7 +64,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSingle("Unknown float");
                 packet.ReadUInt32("Bonus Talents");
                 packet.ReadUInt32("Unknown UInt32");
-                packet.ReadUInt32("Unknown UInt32");
+                packet.ReadUInt32("Reward Reputation Mask");
             }
             else
             {
