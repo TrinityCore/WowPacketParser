@@ -60,10 +60,10 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
                 packet.ReadUInt32("Title Id");
-                packet.ReadUInt32("Unknown UInt32");
+                packet.ReadUInt32("Unknown UInt32 1");
                 packet.ReadSingle("Unknown float");
                 packet.ReadUInt32("Bonus Talents");
-                packet.ReadUInt32("Unknown UInt32");
+                packet.ReadUInt32("Unknown UInt32 2");
                 packet.ReadUInt32("Reward Reputation Mask");
             }
             else
@@ -682,12 +682,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Required Currency Count", i);
             }
 
-            // flags
-            packet.ReadUInt32("Unk flags 1");
-            packet.ReadUInt32("Unk flags 2");
-            packet.ReadUInt32("Unk flags 3");
-            packet.ReadUInt32("Unk flags 4");
-            packet.ReadUInt32("Unk flags 5");
+            // flags, if any of these flags is 0 quest is not completable
+            packet.ReadUInt32("Unk flags 1"); // 2
+            packet.ReadUInt32("Unk flags 2"); // 4
+            packet.ReadUInt32("Unk flags 3"); // 8
+            packet.ReadUInt32("Unk flags 4"); // 16
+            packet.ReadUInt32("Unk flags 5"); // 64
         }
 
         [Parser(Opcode.SMSG_QUESTGIVER_OFFER_REWARD)]
@@ -757,17 +757,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
             packet.ReadInt32("Reward");
             packet.ReadInt32("Money");
-            var honor = packet.ReadInt32();
-            if (honor < 0)
-                packet.WriteLine("Honor: " + honor);
-
-            var talentpoints = packet.ReadInt32();
-            if (talentpoints < 0)
-                packet.WriteLine("Talentpoints: " + talentpoints);
-
-            var arenapoints = packet.ReadInt32();
-            if (arenapoints < 0)
-                packet.WriteLine("Arenapoints: " + arenapoints);
+            packet.ReadInt32("Honor");
+            packet.ReadInt32("Talents");
+            packet.ReadInt32("Arena Points");
         }
 
         [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
@@ -782,7 +774,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Reward XP");
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestCompleted422(Packet packet)
         {
             packet.ReadByte("Unk Byte");
@@ -792,6 +784,19 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
             packet.ReadInt32("Reward Skill Id");
             packet.ReadInt32("Unk5"); // Talent points?
+        }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleQuestCompleted434(Packet packet)
+        {
+            packet.ReadInt32("Unk Int32 1"); // Talent Points?
+            packet.ReadInt32("RewSkillPoints");
+            packet.ReadInt32("Money");
+            packet.ReadInt32("XP");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
+            packet.ReadInt32("RewSkillId");
+            packet.ReadBit("Unk Bit 1"); // if true EVENT_QUEST_FINISHED is fired, target cleared and gossip window is open
+            packet.ReadBit("Unk Bit 2");
         }
 
         [Parser(Opcode.CMSG_QUESTLOG_SWAP_QUEST)]
