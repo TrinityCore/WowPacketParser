@@ -29,7 +29,7 @@ namespace WowPacketParser.Enums
         CreateGuildEvent        = 0x00100000,
         InAuthenticatedRank     = 0x00200000,
         EditGuildBankTabInfo    = 0x00400000,
-        Unk800000               = 0x00800000,
+        RemoveGuildEvent        = 0x00800000,
         Unk1000000              = 0x01000000,
         Unk2000000              = 0x02000000,
         Unk4000000              = 0x04000000,

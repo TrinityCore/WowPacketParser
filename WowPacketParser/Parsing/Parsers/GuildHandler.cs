@@ -331,13 +331,13 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteGuid("Guid", guid[i], i);
                 StoreGetters.AddName(new Guid(BitConverter.ToUInt64(guid[i], 0)), name);
             }
+
             packet.ReadWoWString("Guild Info", infoLength);
             packet.ReadWoWString("MOTD", motdLength);
             packet.ReadUInt32("Unk Uint32 1");
             packet.ReadUInt32("Unk Uint32 2");
             packet.ReadUInt32("Unk Uint32 3");
             packet.ReadUInt32("Unk Uint32 4");
-
         }
 
         [Parser(Opcode.SMSG_COMPRESSED_GUILD_ROSTER)]
@@ -426,7 +426,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Ranks");
         }
 
-        [Parser(Opcode.CMSG_GUILD_RANK, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
+        [Parser(Opcode.CMSG_GUILD_SET_RANK_PERMISSIONS, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
         public static void HandleGuildRank(Packet packet)
         {
             packet.ReadUInt32("Rank Id");
@@ -440,7 +440,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_GUILD_RANK, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_SET_RANK_PERMISSIONS, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRank406(Packet packet)
         {
             for (var i = 0; i < 8; ++i)
@@ -462,21 +462,21 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Rank Name");
         }
 
-        [Parser(Opcode.CMSG_GUILD_RANK, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_SET_RANK_PERMISSIONS, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRank434(Packet packet)
         {
-            packet.ReadUInt32("New Rank Id");
             packet.ReadUInt32("Old Rank Id");
-            packet.ReadUInt32("Old Rank Id");
+            packet.ReadEnum<GuildRankRightsFlag>("Old Rights", TypeCode.UInt32);
+            packet.ReadEnum<GuildRankRightsFlag>("New Rights", TypeCode.UInt32);
 
             for (var i = 0; i < 8; ++i)
             {
-                packet.ReadUInt32("Bank Slots", i);
+                packet.ReadUInt32("Tab Slot", i);
                 packet.ReadEnum<GuildBankRightsFlag>("Tab Rights", TypeCode.UInt32, i);
             }
 
-            packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.UInt32);
-            packet.ReadEnum<GuildRankRightsFlag>("Old Rights", TypeCode.UInt32);
+            packet.ReadUInt32("Money Per Day");
+            packet.ReadUInt32("New Rank Id");
             var length = packet.ReadBits(7);
             packet.ReadWoWString("Rank Name", length);
         }
@@ -496,7 +496,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid2[0] = packet.ReadBit();
             guid2[5] = packet.ReadBit();
             guid2[4] = packet.ReadBit();
-            packet.ReadBit();
+            packet.ReadBit("Promote?");
             guid1[5] = packet.ReadBit();
             guid1[0] = packet.ReadBit();
             guid2[6] = packet.ReadBit();
@@ -1134,7 +1134,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Tab Icon");
         }
 
-        [Parser(Opcode.CMSG_GUILD_RANKS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_QUERY_RANKS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_GUILD_QUERY_NEWS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_GUILD_REQUEST_MAX_DAILY_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_QUERY_GUILD_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -1168,7 +1168,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.CMSG_GUILD_RANKS, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_QUERY_RANKS, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRanks434(Packet packet)
         {
             var guid = packet.StartBitStream(2, 3, 0, 6, 4, 7, 5, 1);
@@ -1959,6 +1959,14 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(1, 6, 2, 4, 0, 3, 7, 5);
             packet.ParseBitStream(guid, 4, 6, 5, 7, 2, 0, 3, 1);
             packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_ADD_RANK)]
+        public static void HandleGuildAddRank(Packet packet)
+        {
+            packet.ReadUInt32("Rank ID");
+            var count = packet.ReadBits(7);
+            packet.ReadWoWString("Name", count);
         }
 
         [Parser(Opcode.SMSG_GUILD_MEMBER_UPDATE_NOTE)]

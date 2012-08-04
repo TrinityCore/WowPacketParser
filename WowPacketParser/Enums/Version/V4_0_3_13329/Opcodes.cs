@@ -527,7 +527,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_CHARACTER_POINT_CHEAT, 0x0223}, // NF()(0x0223) //
             {Opcode.SMSG_GOSSIP_POI, 0x1002}, // (0x0BD9)(0x0224) //
             {Opcode.CMSG_CHAT_IGNORED, 0x0225}, // NF()(0x0225) //
-            {Opcode.CMSG_GUILD_RANK, 0xFFC7}, // NF(0x4A81)(0x0231) //
+            {Opcode.CMSG_GUILD_SET_RANK_PERMISSIONS, 0xFFC7}, // NF(0x4A81)(0x0231) //
             {Opcode.SMSG_GUILD_RANK, 0xFFC7}, // NF(0x4090)() //
             {Opcode.CMSG_GUILD_ADD_RANK, 0x0232}, // NF()(0x0232) //
             {Opcode.CMSG_GUILD_DEL_RANK, 0xFFC6}, // NF(0x4205)(0x0233) //

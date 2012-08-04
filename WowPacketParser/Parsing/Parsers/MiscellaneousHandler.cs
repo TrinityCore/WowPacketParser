@@ -530,7 +530,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var zones = packet.ReadUInt32("Zones count");
             for (var i = 0; i < zones; ++i)
-                packet.ReadUInt32("Zone Id", i);
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id");
 
             var patterns = packet.ReadUInt32("Pattern count");
             for (var i = 0; i < patterns; ++i)

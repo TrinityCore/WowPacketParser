@@ -274,10 +274,10 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_GUILD_QUERY, 0x0AFC4}, // 4.0.6a 13623
             {Opcode.CMSG_GUILD_QUERY_NEWS, 0x3529}, // 4.0.6a 13623
             {Opcode.CMSG_GUILD_QUERY_TRADESKILL, 0x02329}, // 4.0.6a 13623
-            {Opcode.CMSG_GUILD_RANK, 0x02709}, // 4.0.6a 13623
+            {Opcode.CMSG_GUILD_SET_RANK_PERMISSIONS, 0x02709}, // 4.0.6a 13623
             {Opcode.CMSG_GUILD_REMOVE, 0x0312D}, // 4.0.6a 13623
             {Opcode.CMSG_GUILD_REQUEST_MAX_DAILY_XP, 0x0350D}, // 4.0.6a 13623
-            {Opcode.CMSG_GUILD_RANKS, 0x3129}, // 4.0.6a 13623
+            {Opcode.CMSG_GUILD_QUERY_RANKS, 0x3129}, // 4.0.6a 13623
             {Opcode.CMSG_GUILD_ROSTER, 0x0250D}, // 4.0.6a 13623
             {Opcode.CMSG_GUILD_SET_ACHIEVEMENT_TRACKING, 0x0310D}, // 4.0.6a 13623
             {Opcode.CMSG_GUILD_SET_NOTE, 0x0232D}, // 4.0.6a 13623
