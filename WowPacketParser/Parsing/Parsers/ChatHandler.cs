@@ -274,6 +274,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_PARTY, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_RAID, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_OFFICER, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleClientChatMessageAddonRaid434(Packet packet)
         {
             var length1 = packet.ReadBits(5);

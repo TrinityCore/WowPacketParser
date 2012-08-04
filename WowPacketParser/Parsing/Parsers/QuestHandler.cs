@@ -567,7 +567,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
-                packet.ReadByte("Start Type");
+                packet.ReadBoolean("Starts at AreaTrigger");
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Required Spell");
             }
 
