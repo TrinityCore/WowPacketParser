@@ -128,7 +128,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Victim GUID");
             packet.ReadInt32("Unk int"); // Has something to do with facing?
         }
-        
+
         [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE, ClientVersionBuild.V4_0_6_13596)]
         public static void HandleAttackerStateUpdate406(Packet packet)
         {
@@ -153,7 +153,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
                     for (var i = 0; i < subDmgCount; ++i)
                         packet.ReadInt32("Damage Resisted", i);
-                    
+
             packet.ReadEnum<VictimStates>("VictimState", TypeCode.Byte);
             packet.ReadInt32("Unk Attacker State 0");
 

@@ -31,7 +31,7 @@ namespace WowPacketParser.Enums
     public enum TradeStatus434
     {
         Busy          = 21,
-        BeginTrade    = 12, 
+        BeginTrade    = 12,
         OpenWindow    = 0,
         Canceled      = 23,
         Accept        = 6,

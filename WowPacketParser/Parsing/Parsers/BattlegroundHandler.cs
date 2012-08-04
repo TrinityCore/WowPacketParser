@@ -751,11 +751,11 @@ namespace WowPacketParser.Parsing.Parsers
             var arenaScores = packet.ReadBit("Has Arena Scores");
             var arenaStrings = packet.ReadBit("Has Arena Strings");
             var finished = packet.ReadBit("Is Finished");
-            
+
             if (arenaStrings)
                 for (var i = 0; i < 2; ++i)
                     packet.ReadCString("Name", i);
-            
+
             if (arenaScores)
             {
                 for (var i = 0; i < 2; ++i)
@@ -765,14 +765,14 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Matchmaker Rating", i);
                 }
             }
-            
+
             var scoreCount = packet.ReadInt32("Score Count");
-            
+
             if (finished)
                 packet.ReadByte("Team Winner");
-            
+
             var bits = new Bit[scoreCount, 4];
-            
+
             for (var i = 0; i < scoreCount; ++i)
             {
                 bits[i, 0] = packet.ReadBit("Unk Bit 1", i); //  sets *(v23 + v18 + 40)
@@ -780,31 +780,31 @@ namespace WowPacketParser.Parsing.Parsers
                 bits[i, 2] = packet.ReadBit("Unk Bit 3", i); // sets *(v2->dword1C + v18 + 4)
                 bits[i, 3] = packet.ReadBit("Unk Bit 4", i); // sets *(v32 + v18 + 68)
             }
-            
+
             for (var i = 0; i < scoreCount; ++i)
             {
                 packet.ReadInt32("Damage Done", i);
-                
+
                 if (bits[i, 0])
                     packet.ReadInt32("Unk Int32 1", i);
-                    
+
                 var count = packet.ReadInt32("Extra values counter", i);
-                
+
                 if (bits[i, 1])
                 {
                     packet.ReadUInt32("Honorable Kills", i);
                     packet.ReadUInt32("Deaths", i);
                     packet.ReadUInt32("Bonus Honor", i);
                 }
-                
+
                 packet.ReadGuid("Player GUID", i);
                 packet.ReadInt32("Killing Blows");
                 for (var j = 0; j < count; ++j)
                     packet.ReadInt32("Extra Value", i, j);
-                    
+
                 if (bits[i, 3])
                     packet.ReadInt32("Unk Int32 2", i);
-                
+
                 packet.ReadInt32("Healing Done", i);
             }
         }
@@ -1230,7 +1230,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = new byte[8];
             guid[6] = packet.ReadBit();
             guid[1] = packet.ReadBit();
-            packet.ReadBit("Accepted");            
+            packet.ReadBit("Accepted");
             guid[5] = packet.ReadBit();
             guid[3] = packet.ReadBit();
             guid[2] = packet.ReadBit();
@@ -1464,7 +1464,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadByte("Unk Byte");
         }
-        
+
         [Parser(Opcode.CMSG_REQUEST_INSPECT_RATED_BG_STATS, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleRequestInspectRBGStats(Packet packet)
         {

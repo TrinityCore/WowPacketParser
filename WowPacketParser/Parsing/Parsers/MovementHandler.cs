@@ -689,7 +689,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.WriteGuid("Guid", guidBytes);
         }
-        
+
         [Parser(Opcode.MSG_MOVE_HEARTBEAT, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleMoveHeartbeat434(Packet packet)
         {
@@ -746,7 +746,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 12);
 
             packet.ParseBitStream(guid, 3, 6, 1, 7, 2, 5, 0, 4);
-            
+
             if (hasTrans)
             {
                 var tpos = new Vector4();
@@ -903,7 +903,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.WriteGuid("Guid", guidBytes);
         }
-        
+
         [Parser(Opcode.MSG_MOVE_SET_PITCH, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleMoveSetPitch434(Packet packet)
         {
@@ -1118,7 +1118,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guidBytes);
             packet.WriteGuid("Transport Guid", transportGuidBytes);
         }
-        
+
         [Parser(Opcode.MSG_MOVE_SET_FACING, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleMoveSetFacing434(Packet packet)
         {
@@ -1424,7 +1424,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guidBytes);
             packet.WriteGuid("Transport Guid", transportGuidBytes);
         }
-        
+
         [Parser(Opcode.MSG_MOVE_STOP, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleMoveStop434(Packet packet)
         {
@@ -1834,7 +1834,7 @@ namespace WowPacketParser.Parsing.Parsers
             ReadMovementInfo(ref packet, guid);
             packet.ReadInt32("Movement Counter"); // Possibly
         }
- 
+
         [Parser(Opcode.MSG_MOVE_START_ASCEND, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleMoveStartAscend434(Packet packet)
         {
@@ -3330,7 +3330,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
-        
+
         [Parser(Opcode.MSG_MOVE_START_BACKWARD, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleMoveStartBackward434(Packet packet)
         {
@@ -3444,7 +3444,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
-        
+
         [Parser(Opcode.MSG_MOVE_START_TURN_LEFT, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleMoveStartTurnLeft434(Packet packet)
         {
@@ -3679,7 +3679,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Move Event");
             packet.WriteGuid("Guid", guid);
         }
-        
+
         [Parser(Opcode.MSG_MOVE_STOP_TURN, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleMoveStopTurn434(Packet packet)
         {
@@ -3964,7 +3964,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePhaseShift422(Packet packet)
         {
             var guid = new byte[8];
-            
+
             guid[6] = packet.ReadBit();//0
             guid[1] = packet.ReadBit();//1
             guid[7] = packet.ReadBit();//2
@@ -4535,7 +4535,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadBits("Unknown bits", 2);
             var guid = packet.StartBitStream(6, 1, 4, 7, 5, 2, 0, 3);
-            
+
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 4);
@@ -4548,7 +4548,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Collision height");
             packet.WriteGuid("Guid", guid);
         }
-        
+
         [Parser(Opcode.MSG_MOVE_SET_RUN_MODE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleMoveSetRunMode434(Packet packet)
         {
@@ -4838,7 +4838,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var tpos = new Vector4();
 
-                tpos.Z = packet.ReadSingle(); 
+                tpos.Z = packet.ReadSingle();
                 packet.ReadXORByte(transportGuid, 3);
                 packet.ReadXORByte(transportGuid, 5);
                 packet.ReadXORByte(transportGuid, 4);
@@ -4890,7 +4890,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
-        
+
         [Parser(Opcode.CMSG_DISMISS_CONTROLLED_VEHICLE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleDismissControlledVehicle434(Packet packet)
         {

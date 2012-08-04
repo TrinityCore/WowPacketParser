@@ -27,7 +27,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(2, 6, 3, 7, 5, 1, 0, 4);
             packet.ParseBitStream(guid, 6, 4, 1, 3, 0, 5, 2, 7);
             packet.WriteGuid("Guid", guid);
-            
+
         }
 
         [Parser(Opcode.SMSG_GROUP_LIST)]
@@ -471,7 +471,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int 32");
 
             packet.WriteGuid("Guid", guid);
-            
+
         }
 
         [Parser(Opcode.CMSG_GROUP_UNINVITE_GUID)]
@@ -695,7 +695,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.WriteGuid("Guid", guids[i], i);
             }
-                
+
         }
 
         [Parser(Opcode.CMSG_GROUP_DISBAND)]

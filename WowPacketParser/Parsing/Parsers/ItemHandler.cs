@@ -192,7 +192,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleItemRefundInfoResponse434(Packet packet)
         {
             var guid = packet.StartBitStream(3, 5, 7, 6, 2, 4, 0, 1);
-            
+
             packet.ReadXORByte(guid, 7);
             packet.ReadUInt32("Time Left");
             for (var i = 0; i < 5; ++i)
@@ -966,7 +966,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(2,6,3,4,1,0,7,5);
             packet.ParseBitStream(guid,2,3,6,4,1,0,7,5);
             packet.WriteGuid("Reforger Guid", guid);
-            
+
         }
 
         [Parser(Opcode.SMSG_REFORGE_RESULT, ClientVersionBuild.V4_3_4_15595)]

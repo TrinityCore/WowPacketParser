@@ -20,7 +20,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("Answer", i);
             }
             packet.ReadCString("Comment");
-            
+
         }
 
         [Parser(Opcode.CMSG_GMTICKET_CREATE)]

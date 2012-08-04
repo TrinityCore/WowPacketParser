@@ -1503,7 +1503,7 @@ namespace WowPacketParser.Parsing.Parsers
                 guid1[i][1] = packet.ReadBit();
                 guid1[i][6] = packet.ReadBit();
             }
-        
+
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadXORByte(guid2[i], 3);
@@ -1989,7 +1989,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 5);
-            
+
             packet.ReadWoWString("Note", len);
 
             packet.ReadXORByte(guid, 7);

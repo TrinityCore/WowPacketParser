@@ -405,10 +405,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadTime("Join Date");
 
             packet.ReadXORByte(guid, 6);
-        
+
             for (var i = 0; i < 3; ++i)
                 packet.ReadByte("Unk Byte", i); // always 0
-        
+
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 4);
@@ -417,11 +417,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 0);
 
             packet.ReadInt32("Unk_UInt32_1"); // Same value than "Unk_UInt32_1" in SMSG_LFG_JOIN_RESULT - Only seen 3
-        
+
             packet.ReadXORByte(guid, 7);
-        
+
             for (var i = 0; i < count; ++i)
-                packet.ReadLfgEntry("Dungeon Entry", i); 
+                packet.ReadLfgEntry("Dungeon Entry", i);
 
             packet.WriteGuid("GUID", guid);
         }
@@ -448,7 +448,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(3, 2, 0, 6, 5, 7, 1, 4);
 
             packet.ReadXORByte(guid, 0);
-    
+
             //for (var i = 0; i < 3; ++i) byte uint32
             packet.ReadByte("Tank Unk");
             packet.ReadInt32("Tank Time");
@@ -459,7 +459,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 6);
-    
+
             packet.ReadInt32("Average Wait Time");
             packet.ReadTime("Join Time");
             packet.ReadLfgEntry("LFG Entry");
@@ -554,7 +554,7 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var j = 0; j < counts[i]; j++)
                     ReadDungeonJoinResults(ref packet, i, j);
 
-                packet.ParseBitStream(guids[i], 2, 5, 1, 0, 4, 3, 6, 7);        
+                packet.ParseBitStream(guids[i], 2, 5, 1, 0, 4, 3, 6, 7);
                 packet.WriteGuid("Guid", guids[i], i);
             }
 

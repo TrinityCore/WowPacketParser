@@ -45,7 +45,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("", i);
                 }
             }
-                
+
             if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
             {
                 packet.ReadUInt64("Bid");

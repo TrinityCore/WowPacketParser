@@ -301,7 +301,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteGuid("Character Guid", playerGuid[c],c);
                 packet.WriteGuid("Guild Guid", guildGuid[c],c);
 
-                
+
                 if (firstLogin[c])
                 {
                     var startPos = new StartPosition {Map = mapId, Position = pos, Zone = zone};
@@ -942,7 +942,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleXPGainAborted(Packet packet)
         {
             var guid = packet.StartBitStream(4, 0, 1, 2, 6, 7, 5, 3);
-            
+
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 4);

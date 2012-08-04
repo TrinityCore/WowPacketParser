@@ -155,7 +155,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 counter[i] = new byte[8];
                 guid2[i] = new byte[8];
-        
+
                 guid2[i][5] = packet.ReadBit();
                 guid2[i][3] = packet.ReadBit();
                 counter[i][1] = packet.ReadBit();
@@ -174,21 +174,21 @@ namespace WowPacketParser.Parsing.Parsers
                 counter[i][6] = packet.ReadBit();
                 guid2[i][7] = packet.ReadBit();
             }
-        
+
             guid[6] = packet.ReadBit();
             guid[5] = packet.ReadBit();
-        
+
             for (var i = 0; i < criterias; ++i)
             {
                 packet.ReadXORByte(counter[i], 3);
                 packet.ReadXORByte(guid2[i], 4);
-        
+
                 packet.ReadUInt32("Criteria Timer 2", i);
-        
+
                 packet.ReadXORByte(counter[i], 1);
-        
+
                 packet.ReadPackedTime("Criteria Time", i);
-        
+
                 packet.ReadXORByte(guid2[i], 3);
                 packet.ReadXORByte(guid2[i], 7);
                 packet.ReadXORByte(counter[i], 5);
@@ -214,7 +214,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 2);
-        
+
             for (var i = 0; i < achievements; ++i)
             {
                 packet.ReadUInt32("Achievement Id", i);

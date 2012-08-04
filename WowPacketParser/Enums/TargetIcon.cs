@@ -9,7 +9,7 @@
         GreenTriangle       = 3,
         WhiteCrescentMoon   = 4,
         BlueSquare          = 5,
-        RedCross            = 6, 
+        RedCross            = 6,
         WhiteSkull          = 7
     }
 }

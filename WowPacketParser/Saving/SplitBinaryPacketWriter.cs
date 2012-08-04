@@ -20,7 +20,7 @@ namespace WowPacketParser.Saving
 
             // split packets by opcode (group is a set of packets all with the same opcode)
             var groups = packets.GroupBy(p => p.Opcode);
-            
+
             // since we have one file per opcode it's possible to parallelize groups writing
             Parallel.ForEach(groups, WriteGroup);
         }

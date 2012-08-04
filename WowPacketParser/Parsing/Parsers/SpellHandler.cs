@@ -1181,7 +1181,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
-        
+
         [Parser(Opcode.SMSG_SPIRIT_HEALER_CONFIRM)]
         [Parser(Opcode.SMSG_CLEAR_TARGET)]
         public static void HandleMiscGuid(Packet packet)
