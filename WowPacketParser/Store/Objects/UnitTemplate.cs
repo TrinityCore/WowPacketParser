@@ -18,6 +18,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("type_flags")]
         public CreatureTypeFlag TypeFlags;
 
+        [DBFieldName("type_flags2")]
         public uint TypeFlags2;
 
         [DBFieldName("type")]
@@ -58,6 +59,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("movementId")]
         public uint MovementId;
 
+        [DBFieldName("exp_unk")]
         public ClientType Expansion;
     }
 }

@@ -271,7 +271,7 @@ namespace WowPacketParser.SQL
                 {
                     if (count >= MaxRowsPerInsert)
                     {
-                        query.ReplaceLast(',', ';');
+                        query.Replace( ")," , ");" );
                         query.Append(InsertHeader);
                         count = 0;
                     }
