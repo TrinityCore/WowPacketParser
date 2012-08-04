@@ -408,15 +408,15 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasTrans)
                 {
                     var tpos = new Vector4();
-                    packet.ReadSByte("Transport seat");
+                    packet.ReadSByte("Transport Seat");
                     tpos.O = packet.ReadSingle();
-                    packet.ReadUInt32("Transport time");
+                    packet.ReadUInt32("Transport Time");
 
                     packet.ReadXORByte(transportGuid, 6);
                     packet.ReadXORByte(transportGuid, 5);
 
                     if (hasTransTime2)
-                        packet.ReadUInt32("Transport time 2");
+                        packet.ReadUInt32("Transport Time 2");
 
                     tpos.X = packet.ReadSingle();
 
@@ -428,7 +428,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadXORByte(transportGuid, 0);
 
                     if (hasTransTime3)
-                        packet.ReadUInt32("Transport time 3");
+                        packet.ReadUInt32("Transport Time 3");
 
                     packet.ReadXORByte(transportGuid, 1);
                     packet.ReadXORByte(transportGuid, 3);

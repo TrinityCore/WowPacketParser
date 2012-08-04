@@ -226,7 +226,7 @@ namespace WowPacketParser.Parsing.Parsers
             var living = packet.ReadBit("Living", index);
             var unkLoopCounter = packet.ReadBits(24);
             /*var bit1 =*/ packet.ReadBit();
-            var hasGameObjectPosition = packet.ReadBit("Has GameObject position", index);
+            var hasGameObjectPosition = packet.ReadBit("Has GameObject Position", index);
             var hasStationaryPosition = packet.ReadBit("Has Stationary Position", index);
             var bit456 = packet.ReadBit();
             /*var bit2 =*/ packet.ReadBit();
@@ -272,7 +272,7 @@ namespace WowPacketParser.Parsing.Parsers
                 hasFallData = packet.ReadBit("Has Fall Data", index);
                 hasSplineElevation = !packet.ReadBit();
                 guid2[5] = packet.ReadBit();
-                hasTransportData = packet.ReadBit("Has transport data", index);
+                hasTransportData = packet.ReadBit("Has Transport Data", index);
                 hasTimestamp = !packet.ReadBit();
                 if (hasTransportData)
                 {
@@ -452,11 +452,11 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadXORByte(transportGuid, 5);
                     packet.ReadXORByte(transportGuid, 7);
 
-                    packet.ReadUInt32("Transport time", index);
+                    packet.ReadUInt32("Transport Time", index);
                     var transPos = new Vector4();
                     transPos.O = packet.ReadSingle();
                     if (hasTransportTime2)
-                        packet.ReadUInt32("Transport time 2", index);
+                        packet.ReadUInt32("Transport Time 2", index);
 
                     transPos.Y = packet.ReadSingle();
                     transPos.X = packet.ReadSingle();
@@ -466,9 +466,9 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadXORByte(transportGuid, 0);
 
                     if (hasTransportTime3)
-                        packet.ReadUInt32("Transport time 3", index);
+                        packet.ReadUInt32("Transport Time 3", index);
 
-                    packet.ReadSByte("Transport seat", index);
+                    packet.ReadSByte("Transport Seat", index);
                     packet.ReadXORByte(transportGuid, 1);
                     packet.ReadXORByte(transportGuid, 6);
                     packet.ReadXORByte(transportGuid, 2);
@@ -601,7 +601,7 @@ namespace WowPacketParser.Parsing.Parsers
             /*bool bit2 =*/ packet.ReadBit();
             /*bool bit0 =*/ packet.ReadBit();
             /*bool bit3 =*/ packet.ReadBit();
-            bool hasGameObjectPosition = packet.ReadBit("Has GameObject position", index);
+            bool hasGameObjectPosition = packet.ReadBit("Has GameObject Position", index);
             bool hasAnimKits = packet.ReadBit("Has AnimKits", index);
             bool hasGORotation = packet.ReadBit("Has GameObject Rotation", index);
             bool unkFloat1 = false;
@@ -668,12 +668,12 @@ namespace WowPacketParser.Parsing.Parsers
                         if (splineType == SplineType.FacingTarget)
                             facingTarget = packet.StartBitStream(0, 2, 7, 1, 6, 3, 4, 5);
 
-                        /*splineFlags =*/ packet.ReadEnum<SplineFlag422>("Spline flags", 25, index);
+                        /*splineFlags =*/ packet.ReadEnum<SplineFlag422>("Spline Flags", 25, index);
                         splineCount = packet.ReadBits(22);
                     }
                 }
 
-                hasTransportData = packet.ReadBit("Has transport data", index);
+                hasTransportData = packet.ReadBit("Has Transport Data", index);
                 guid2[1] = packet.ReadBit();
                 /*bit148 =*/ packet.ReadBit();
                 if (hasTransportData)

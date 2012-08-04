@@ -886,20 +886,20 @@ namespace WowPacketParser.Parsing.Parsers
                 tpos.Z = packet.ReadSingle();
 
                 if (hasTransTime3)
-                    packet.ReadUInt32("Transport time 3");
+                    packet.ReadUInt32("Transport Time 3");
 
                 packet.ReadXORByte(transportGuid, 0);
                 packet.ReadXORByte(transportGuid, 7);
                 packet.ReadXORByte(transportGuid, 3);
                 tpos.Y = packet.ReadSingle();
-                packet.ReadUInt32("Transport time");
-                packet.ReadSByte("Transport seat");
+                packet.ReadUInt32("Transport Time");
+                packet.ReadSByte("Transport Seat");
 
                 packet.ReadXORByte(transportGuid, 2);
                 packet.ReadXORByte(transportGuid, 1);
 
                 if (hasTransTime2)
-                    packet.ReadUInt32("Transport time 2");
+                    packet.ReadUInt32("Transport Time 2");
 
                 packet.ReadXORByte(transportGuid, 6);
 
