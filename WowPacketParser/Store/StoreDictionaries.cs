@@ -74,6 +74,13 @@ namespace WowPacketParser.Store
     {
         private readonly Dictionary<T, Tuple<TK, TimeSpan?>> _dictionary;
 
+        public StoreDictionary()
+        {
+            Type = "None";
+            Enabled = true;
+            _dictionary = new Dictionary<T, Tuple<TK, TimeSpan?>>();
+        }
+
         public StoreDictionary(string type)
         {
             Type = type;
@@ -86,9 +93,7 @@ namespace WowPacketParser.Store
             _dictionary = new Dictionary<T, Tuple<TK, TimeSpan?>>();
 
             foreach (var pair in dict)
-            {
                 _dictionary.Add(pair.Key, new Tuple<TK, TimeSpan?>(pair.Value, null));
-            }
 
             Type = string.Empty;
             Enabled = true;
@@ -136,7 +141,7 @@ namespace WowPacketParser.Store
             return false;
         }
 
-        public Tuple <TK, TimeSpan?> this[T key]
+        public Tuple<TK, TimeSpan?> this[T key]
         {
             get
             {
@@ -189,11 +194,31 @@ namespace WowPacketParser.Store
     {
         private readonly MultiDictionary<T, Tuple<TK, TimeSpan?>> _dictionary;
 
+        public StoreMulti()
+        {
+            Type = "None";
+            Enabled = true;
+            _dictionary = new MultiDictionary<T, Tuple<TK, TimeSpan?>>(true);
+        }
+
         public StoreMulti(string type)
         {
             Type = type;
             Enabled = ProcessFlags(Type, Flags);
             _dictionary = Enabled ? new MultiDictionary<T, Tuple<TK, TimeSpan?>>(true) : null;
+        }
+
+        public StoreMulti(MultiDictionary<T, TK> dict)
+        {
+            _dictionary = new MultiDictionary<T, Tuple<TK, TimeSpan?>>(true);
+
+            foreach (var pair in dict)
+                foreach (var k in pair.Value)
+                    _dictionary.Add(pair.Key, new Tuple<TK, TimeSpan?>(k, null));
+                
+
+            Type = string.Empty;
+            Enabled = true;
         }
 
         public void Add(T key, TK value, TimeSpan? time)
@@ -241,6 +266,22 @@ namespace WowPacketParser.Store
             if (Enabled)
                 return _dictionary.ContainsKey(key);
             return false;
+        }
+
+        public ICollection<Tuple<TK, TimeSpan?>> this[T key]
+        {
+            get
+            {
+                if (Enabled)
+                    return _dictionary[key];
+                return null;
+            }
+
+            set
+            {
+                if (Enabled)
+                    _dictionary[key] = value;
+            }
         }
     }
 

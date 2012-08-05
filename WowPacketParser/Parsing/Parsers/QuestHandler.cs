@@ -401,21 +401,21 @@ namespace WowPacketParser.Parsing.Parsers
                     var idx = packet.ReadInt32("POI Index", i, j);
                     questPoi.ObjectiveIndex = packet.ReadInt32("Objective Index", i, j);
 
-                    questPoi.Map = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id", i);
-                    questPoi.WorldMapAreaId = packet.ReadInt32("World Map Area", i, j);
-                    questPoi.FloorId = packet.ReadInt32("Floor Id", i, j);
-                    questPoi.UnkInt1 = packet.ReadInt32("Unk Int32 2", i, j);
-                    questPoi.UnkInt2 = packet.ReadInt32("Unk Int32 3", i, j);
+                    questPoi.Map = (uint) packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map Id", i);
+                    questPoi.WorldMapAreaId = packet.ReadUInt32("World Map Area", i, j);
+                    questPoi.FloorId = packet.ReadUInt32("Floor Id", i, j);
+                    questPoi.UnkInt1 = packet.ReadUInt32("Unk Int32 2", i, j);
+                    questPoi.UnkInt2 = packet.ReadUInt32("Unk Int32 3", i, j);
 
                     var pointsSize = packet.ReadInt32("Points Counter", i, j);
                     questPoi.Points = new List<QuestPOIPoint>(pointsSize);
-                    for (var k = 0; k < pointsSize; k++)
+                    for (var k = 0u; k < pointsSize; k++)
                     {
                         var questPoiPoint = new QuestPOIPoint
                                             {
                                                 Index = k,
-                                                X = packet.ReadInt32("Point X", i, j, k),
-                                                Y = packet.ReadInt32("Point Y", i, j, k)
+                                                X = packet.ReadInt32("Point X", i, j, (int) k),
+                                                Y = packet.ReadInt32("Point Y", i, j, (int) k)
                                             };
                         questPoi.Points.Add(questPoiPoint);
                     }

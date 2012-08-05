@@ -1,20 +1,28 @@
 ﻿using System.Collections.Generic;
+using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
+    [DBTableName("quest_poi")]
     public class QuestPOI
     {
+        [DBFieldName("objIndex")]
         public int ObjectiveIndex;
 
-        public int Map;
+        [DBFieldName("mapid")]
+        public uint Map;
 
-        public int WorldMapAreaId;
+        [DBFieldName("WorldMapAreaId")]
+        public uint WorldMapAreaId;
 
-        public int FloorId;
+        [DBFieldName("FloorId")]
+        public uint FloorId;
 
-        public int UnkInt1;
+        [DBFieldName("unk3")]
+        public uint UnkInt1;
 
-        public int UnkInt2;
+        [DBFieldName("unk4")]
+        public uint UnkInt2;
 
         public ICollection<QuestPOIPoint> Points;
     }

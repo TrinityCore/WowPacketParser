@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -199,6 +200,110 @@ namespace WowPacketParser.SQL
                 {
                     var row = new QueryBuilder.SQLInsertRow();
                     row.AddValue(primaryKeyName, elem1.Key);
+                    row.Comment = StoreGetters.GetName(storeType, Convert.ToInt32(elem1.Key), false);
+
+                    foreach (var field in fields)
+                    {
+                        if (field.Item1.FieldType.BaseType == typeof(Array))
+                        {
+                            var arr = (Array)field.Item1.GetValue(elem1.Value.Item1);
+                            for (var i = 0; i < arr.Length; i++)
+                                row.AddValue(field.Item2.Name + (field.Item2.StartAtZero ? i : i + 1), arr.GetValue(i));
+
+                            continue;
+                        }
+
+                        row.AddValue(field.Item2.Name, field.Item1.GetValue(elem1.Value.Item1));
+                    }
+                    rowsIns.Add(row);
+                }
+            }
+
+            var result = new QueryBuilder.SQLInsert(tableName, rowsIns, deleteDuplicates: false).Build() +
+                         new QueryBuilder.SQLUpdate(rowsUpd).Build();
+
+            return result;
+        }
+
+        /// <summary>
+        /// <para>Compare two dictionaries (of the same types) and creates SQL inserts
+        ///  or updates accordingly.</para>
+        /// <remarks>Second dictionary can be null (only inserts queries will be produced)</remarks>
+        /// </summary>
+        /// <typeparam name="T">Type of the primary key (uint)</typeparam>
+        /// <typeparam name="TK">Type of the WDB struct (field names and types must match DB field name and types)</typeparam>
+        /// <param name="dict1">Dictionary retrieved from  parser</param>
+        /// <param name="dict2">Dictionary retrieved from  DB</param>
+        /// <param name="storeType">Are we dealing with Spells, Quests, Units, ...?</param>
+        /// <param name="primaryKeyName1">The name of the first primary key</param>
+        /// <param name="primaryKeyName2">The name of the second primary key</param>
+        /// <returns>A string containing full SQL queries</returns>
+        public static string CompareDicts<T, TG, TK>(StoreDictionary<Tuple<T, TG>, TK> dict1, StoreDictionary<Tuple<T, TG>, TK> dict2, StoreNameType storeType, string primaryKeyName1, string primaryKeyName2)
+        {
+            var tableAttrs = (DBTableNameAttribute[])typeof(TK).GetCustomAttributes(typeof(DBTableNameAttribute), false);
+            if (tableAttrs.Length <= 0)
+                return string.Empty;
+            var tableName = tableAttrs[0].Name;
+
+            var fields = Utilities.GetFieldsAndAttribute<TK, DBFieldNameAttribute>();
+            if (fields == null)
+                return string.Empty;
+
+            var rowsIns = new List<QueryBuilder.SQLInsertRow>();
+            var rowsUpd = new List<QueryBuilder.SQLUpdateRow>();
+
+            foreach (var elem1 in dict1)
+            {
+                if (dict2 != null && dict2.ContainsKey(elem1.Key)) // update
+                {
+                    var row = new QueryBuilder.SQLUpdateRow();
+
+                    foreach (var field in fields)
+                    {
+                        var elem2 = dict2[elem1.Key];
+
+                        var val1 = field.Item1.GetValue(elem1.Value.Item1);
+                        var val2 = field.Item1.GetValue(elem2.Item1);
+
+                        var arr1 = val1 as Array;
+                        if (arr1 != null)
+                        {
+                            var arr2 = (Array)val2;
+
+                            var isString = arr1.GetType().GetElementType() == typeof(string);
+
+                            for (var i = 0; i < field.Item2.Count; i++)
+                            {
+                                var value1 = i >= arr1.Length ? (isString ? (object)string.Empty : 0) : arr1.GetValue(i);
+                                var value2 = i >= arr2.Length ? (isString ? (object)string.Empty : 0) : arr2.GetValue(i);
+
+                                if (!Utilities.EqualValues(value1, value2))
+                                    row.AddValue(field.Item2.Name + (field.Item2.StartAtZero ? i : i + 1), value1);
+                            }
+
+                            continue;
+                        }
+
+                        if (!Utilities.EqualValues(val1, val2))
+                            row.AddValue(field.Item2.Name, val1);
+                    }
+
+                    var key1 = Convert.ToUInt32(elem1.Key.Item1);
+                    var key2 = Convert.ToUInt32(elem1.Key.Item2);
+
+                    row.AddWhere(primaryKeyName1, key1);
+                    row.AddWhere(primaryKeyName2, key2);
+                    row.Comment = StoreGetters.GetName(storeType, (int)key1, false);
+                    row.Table = tableName;
+
+                    if (row.ValueCount != 0)
+                        rowsUpd.Add(row);
+                }
+                else // insert new
+                {
+                    var row = new QueryBuilder.SQLInsertRow();
+                    row.AddValue(primaryKeyName1, elem1.Key.Item1);
+                    row.AddValue(primaryKeyName2, elem1.Key.Item2);
                     row.Comment = StoreGetters.GetName(storeType, Convert.ToInt32(elem1.Key), false);
 
                     foreach (var field in fields)
