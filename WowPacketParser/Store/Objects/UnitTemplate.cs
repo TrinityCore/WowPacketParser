@@ -36,7 +36,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("KillCredit2")]
         public uint KillCredit2;
 
-        public int UnkInt;
+        public int UnkInt; // pre 3.1
 
         [DBFieldName("PetSpellDataId")]
         public uint PetSpellData;

@@ -554,6 +554,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.MSG_MOVE_UPDATE_TELEPORT, 0x50B2},
             {Opcode.MSG_MOVE_WORLDPORT_ACK, 0x2411},
             {Opcode.MSG_NOTIFY_PARTY_SQUELCH, 0x4D06},
+            {Opcode.MSG_PARTY_ASSIGNMENT, 0x0424}, // found cmsg
             {Opcode.MSG_PETITION_DECLINE, 0x4905},
             {Opcode.MSG_PETITION_RENAME, 0x4005},
             {Opcode.MSG_QUERY_NEXT_MAIL_TIME, 0x0F04},
@@ -1088,6 +1089,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_RESEARCH_COMPLETE, 0x35A6},
             {Opcode.SMSG_RESEARCH_SETUP_HISTORY, 0x10B6},
             {Opcode.SMSG_RESET_COMPRESSION_CONTEXT, 0x0142},
+            {Opcode.SMSG_RESET_FAILED_NOTIFY, 0x4616},
             {Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, 0x15B0},
             {Opcode.SMSG_RESURRECT_REQUEST, 0x2905},
             {Opcode.SMSG_RESYNC_RUNES, 0x6224},
