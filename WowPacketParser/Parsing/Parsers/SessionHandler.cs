@@ -240,19 +240,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleAuthResponse434(Packet packet)
         {
-            var isQueued = packet.ReadBit();
-            var hasAccountInfo = packet.ReadBit();
+            var isQueued = packet.ReadBit("Queued");
+            var hasAccountInfo = packet.ReadBit("Has account info");
 
             if (isQueued)
-            {
-                var unkByte = packet.ReadByte();
-                packet.WriteLine("Unk Byte: " + unkByte);
+                packet.ReadBit("UnkBit");
 
-                var position = packet.ReadInt32();
-                packet.WriteLine("Queue Position: " + position);
-
-
-            }
             if (hasAccountInfo)
             {
                 packet.ReadInt32("Billing Time Remaining");
@@ -263,9 +256,10 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<BillingFlag>("Billing Flags", TypeCode.Byte);
             }
 
-            var code = (ResponseCode)packet.ReadByte();
-            packet.WriteLine("Auth Code: " + code);
+            packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
 
+            if (isQueued)
+                packet.ReadInt32("Queue Position");
         }
 
         public static void ReadAuthResponseInfo(ref Packet packet)
