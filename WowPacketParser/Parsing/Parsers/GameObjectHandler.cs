@@ -49,7 +49,7 @@ namespace WowPacketParser.Parsing.Parsers
                     gameObject.QuestItems[i] = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item", i);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596))
-                gameObject.UnknownUInt = packet.ReadUInt32("Unknown UInt32");
+                gameObject.UnknownInt = packet.ReadInt32("Unknown UInt32");
 
             packet.AddSniffData(StoreNameType.GameObject, entry.Key, "QUERY_RESPONSE");
 

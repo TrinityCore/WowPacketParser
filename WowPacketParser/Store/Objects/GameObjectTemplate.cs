@@ -34,6 +34,6 @@ namespace WowPacketParser.Store.Objects
         public uint[] QuestItems;
 
         [DBFieldName("unkInt32")]
-        public uint UnknownUInt;
+        public int UnknownInt;
     }
 }
