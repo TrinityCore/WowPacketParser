@@ -60,7 +60,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Flags")]
         public QuestFlags Flags;
 
-        //[DBFieldName("MinimapTargetMark")] 4.x
+        [DBFieldName("MinimapTargetMark")] //4.x
         public uint MinimapTargetMark;
 
         [DBFieldName("RewardTitleId")]
@@ -75,19 +75,19 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RewardArenaPoints")]
         public uint RewardArenaPoints;
 
-        //[DBFieldName("RewardSkillId")] 4.x
+        [DBFieldName("RewardSkillId")] //4.x
         public uint RewardSkillId;
 
-        //[DBFieldName("RewardSkillPoints")] 4.x
+        [DBFieldName("RewardSkillPoints")] //4.x
         public uint RewardSkillPoints;
 
-        //[DBFieldName("RewardReputationMask")] 4.x
+        [DBFieldName("RewardReputationMask")] //4.x
         public uint RewardReputationMask;
 
-        //[DBFieldName("QuestGiverPortrait")] 4.x
+        [DBFieldName("QuestGiverPortrait")] //4.x
         public uint QuestGiverPortrait;
 
-        //[DBFieldName("QuestTurnInPortrait")] 4.x
+        [DBFieldName("QuestTurnInPortrait")] //4.x
         public uint QuestTurnInPortrait;
 
         [DBFieldName("RewardItemId", Count = 4)]
@@ -156,40 +156,40 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RequiredItemCount", Count = 6)]
         public uint[] RequiredItemCount;
 
-        //[DBFieldName("RequiredSpell")] 4.x
+        [DBFieldName("RequiredSpell")] //4.x
         public uint RequiredSpell;
 
         [DBFieldName("ObjectiveText", Count = 4)]
         public string[] ObjectiveText;
 
-        //[DBFieldName("RewardCurrencyId", Count = 4)] 4.x
+        [DBFieldName("RewardCurrencyId", Count = 4)] //4.x
         public uint[] RewardCurrencyId;
 
-        //[DBFieldName("RewardCurrencyCount", Count = 4)] 4.x
+        [DBFieldName("RewardCurrencyCount", Count = 4)] //4.x
         public uint[] RewardCurrencyCount;
 
-        //[DBFieldName("RequiredCurrencyId", Count = 4)] 4.x
+        [DBFieldName("RequiredCurrencyId", Count = 4)] //4.x
         public uint[] RequiredCurrencyId;
 
-        //[DBFieldName("RequiredCurrencyCount", Count = 4)] 4.x
+        [DBFieldName("RequiredCurrencyCount", Count = 4)] //4.x
         public uint[] RequiredCurrencyCount;
 
-        //[DBFieldName("QuestGiverTextWindow")] 4.x
+        [DBFieldName("QuestGiverTextWindow")] //4.x
         public string QuestGiverTextWindow;
 
-        //[DBFieldName("QuestGiverTargetName")] 4.x
+        [DBFieldName("QuestGiverTargetName")] //4.x
         public string QuestGiverTargetName;
 
-        //[DBFieldName("QuestTurnTextWindow")] 4.x
+        [DBFieldName("QuestTurnTextWindow")] //4.x
         public string QuestTurnTextWindow;
 
-        //[DBFieldName("QuestTurnTargetName")] 4.x
+        [DBFieldName("QuestTurnTargetName")] //4.x
         public string QuestTurnTargetName;
 
-        //[DBFieldName("SoundAccept")] 4.x
+        [DBFieldName("SoundAccept")] //4.x
         public uint SoundAccept;
 
-        //[DBFieldName("SoundTurnIn")] 4.x
+        [DBFieldName("SoundTurnIn")] //4.x
         public uint SoundTurnIn;
     }
 }
