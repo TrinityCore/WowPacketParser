@@ -271,12 +271,7 @@ namespace WowPacketParser.SQL
                 {
                     if (count >= MaxRowsPerInsert)
                     {
-                        var str = query.ToString();
-                        var index = str.LastIndexOf("),", System.StringComparison.Ordinal);
-
-                        query[index] = ')';
-                        query[index+1] = ';';
-
+                        query.ReplaceLast(',', ';');
                         query.Append(InsertHeader);
                         count = 0;
                     }
