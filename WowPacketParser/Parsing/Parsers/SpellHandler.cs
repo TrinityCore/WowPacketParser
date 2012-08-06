@@ -305,7 +305,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var castFlags = packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
             ReadSpellCastTargets(ref packet);
-            if (castFlags.HasAnyFlag(CastFlag.Unknown1))
+            if (castFlags.HasAnyFlag(CastFlag.HasTrajectory))
                 HandleSpellMissileAndMove(ref packet);
         }
 

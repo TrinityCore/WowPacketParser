@@ -7,7 +7,7 @@ namespace WowPacketParser.Enums
     {
         None            = 0x00000000,
         PendingCast     = 0x00000001, // 4.x NoCombatLog
-        Unknown1        = 0x00000002,
+        HasTrajectory   = 0x00000002,
         Unknown2        = 0x00000004,
         Unknown3        = 0x00000008,
         Unknown4        = 0x00000010,

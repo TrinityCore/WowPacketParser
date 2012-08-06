@@ -9,7 +9,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_RESET_FACTION_CHEAT)]
         public static void HandleResetFactionCheat(Packet packet)
         {
-            packet.ReadUInt32("Unk");
+            packet.ReadUInt32("Faction Id");
         }
 
         [Parser(Opcode.SMSG_INITIALIZE_FACTIONS)]
@@ -25,6 +25,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.SMSG_SET_FACTION_VISIBLE)]
         [Parser(Opcode.CMSG_SET_WATCHED_FACTION)]
+        [Parser(26423)]
         public static void HandleSetFactionMisc(Packet packet)
         {
             packet.ReadUInt32("Faction Id");

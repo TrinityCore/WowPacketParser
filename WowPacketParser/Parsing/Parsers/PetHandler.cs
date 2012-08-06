@@ -266,7 +266,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
             var castFlags = packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
             SpellHandler.ReadSpellCastTargets(ref packet);
-            if (castFlags.HasAnyFlag(CastFlag.Unknown1))
+            if (castFlags.HasAnyFlag(CastFlag.HasTrajectory))
                 SpellHandler.HandleSpellMissileAndMove(ref packet);
         }
 

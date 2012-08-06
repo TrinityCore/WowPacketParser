@@ -100,7 +100,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             SpellHandler.ReadSpellCastTargets(ref packet);
 
-            if (!castflag.HasAnyFlag(CastFlag.Unknown1))
+            if (!castflag.HasAnyFlag(CastFlag.HasTrajectory))
                 return;
 
             packet.ReadSingle("Elevation");
