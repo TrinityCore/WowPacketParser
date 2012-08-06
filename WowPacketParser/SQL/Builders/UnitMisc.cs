@@ -311,20 +311,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.Gossips.IsEmpty())
                 return String.Empty;
 
-            // `creature_template`
-            var gossipIds = new Dictionary<uint, UnitGossip>();
-            foreach (var gossip in Storage.Gossips)
-            {
-                if (gossip.Value.Item1.ObjectType != ObjectType.Unit) continue;
-                // no support for entries with multiple gossips (i.e changed by script)
-                if (gossipIds.ContainsKey(gossip.Value.Item1.ObjectEntry)) continue;
-
-                gossipIds.Add(gossip.Value.Item1.ObjectEntry, new UnitGossip {GossipId = gossip.Key.Item1});
-            }
-
-            var entries = gossipIds.Keys.ToList();
-            var gossipIdsDb = SQLDatabase.GetDict<uint, UnitGossip>(entries);
-            var result = SQLUtil.CompareDicts(new StoreDictionary<uint, UnitGossip>(gossipIds), gossipIdsDb, StoreNameType.Unit);
+            var result = "";
 
             // `gossip`
             if (SQLConnector.Enabled)
