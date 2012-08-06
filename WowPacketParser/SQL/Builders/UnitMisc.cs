@@ -551,20 +551,11 @@ namespace WowPacketParser.SQL.Builders
                         template.Faction == 1629 || template.Faction == 2203 || template.Faction == 2204) // player factions
                     template.Faction = 35;
 
-                if ((template.UnitFlag & (uint)UnitFlags.IsInCombat) != 0)
-                    template.UnitFlag &= ~(uint)UnitFlags.IsInCombat;
-
-                if ((template.UnitFlag & (uint)UnitFlags.PetIsAttackingTarget) != 0)
-                    template.UnitFlag &= ~(uint)UnitFlags.PetIsAttackingTarget;
-
-                if ((template.UnitFlag & (uint)UnitFlags.PlayerControlled) != 0)
-                    template.UnitFlag &= ~(uint)UnitFlags.PlayerControlled;
-
-                if ((template.UnitFlag & (uint)UnitFlags.Silenced) != 0)
-                    template.UnitFlag &= ~(uint)UnitFlags.Silenced;
-
-                if ((template.UnitFlag & (uint)UnitFlags.PossessedByPlayer) != 0)
-                    template.UnitFlag &= ~(uint)UnitFlags.PossessedByPlayer;
+                template.UnitFlag &= ~(uint)UnitFlags.IsInCombat;
+                template.UnitFlag &= ~(uint)UnitFlags.PetIsAttackingTarget;
+                template.UnitFlag &= ~(uint)UnitFlags.PlayerControlled;
+                template.UnitFlag &= ~(uint)UnitFlags.Silenced;
+                template.UnitFlag &= ~(uint)UnitFlags.PossessedByPlayer;
 
                 templates.Add(unit.Key.GetEntry(), template);
             }
@@ -590,7 +581,7 @@ namespace WowPacketParser.SQL.Builders
                     row.AddValue("minlevel", npcLocal.MinLevel);
 
                 if (!Utilities.EqualValues(npcLocal.MaxLevel, npcRemote.MaxLevel))
-                    row.AddValue("minlevel", npcLocal.MaxLevel);
+                    row.AddValue("maxlevel", npcLocal.MaxLevel);
 
                 if (!Utilities.EqualValues(npcLocal.Faction, npcRemote.Faction))
                 {
