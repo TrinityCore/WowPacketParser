@@ -304,7 +304,7 @@ namespace WowPacketParser.SQL
                     var row = new QueryBuilder.SQLInsertRow();
                     row.AddValue(primaryKeyName1, elem1.Key.Item1);
                     row.AddValue(primaryKeyName2, elem1.Key.Item2);
-                    row.Comment = StoreGetters.GetName(storeType, Convert.ToInt32(elem1.Key), false);
+                    row.Comment = StoreGetters.GetName(storeType, Convert.ToInt32(elem1.Key.Item1), false);
 
                     foreach (var field in fields)
                     {
