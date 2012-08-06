@@ -527,11 +527,24 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid 2", guid2);
         }
 
-        [Parser(Opcode.CMSG_GUILD_SWITCH_RANK, ClientVersionBuild.V4_0_6a_13623)]
+        [Parser(Opcode.CMSG_GUILD_SWITCH_RANK, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildSwitchRank(Packet packet)
         {
             packet.ReadBit("Direction");
             packet.ReadGuid("Player GUID");
+            packet.ReadUInt32("Rank Id");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_SWITCH_RANK, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildSwitchRank434(Packet packet)
+        {
+            packet.ReadUInt32("Rank Id");
+            packet.ReadBit("Direction");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_DEL_RANK, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildDelRank434(Packet packet)
+        {
             packet.ReadUInt32("Rank Id");
         }
 
@@ -2240,7 +2253,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_INFO)]
         [Parser(Opcode.CMSG_GUILD_LEAVE)]
         [Parser(Opcode.CMSG_GUILD_DISBAND)]
-        [Parser(Opcode.CMSG_GUILD_DEL_RANK)]
+        [Parser(Opcode.CMSG_GUILD_DEL_RANK, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_GUILD_EVENT_LOG_QUERY)]
         [Parser(Opcode.SMSG_GUILD_CANCEL)] // Fires GUILD_INVITE_CANCEL
         [Parser(Opcode.SMSG_GUILD_INVITE_CANCEL)]

@@ -1,6 +1,6 @@
 ﻿namespace WowPacketParser.Enums
 {
-    public enum  GuildNewsType
+    public enum GuildNewsType
     {
         GuildAchievement  = 0,
         PlayerAchievement = 1,

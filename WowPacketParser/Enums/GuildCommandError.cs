@@ -29,7 +29,7 @@
         ItemNotFound            = 29,
         TooMuchMoney            = 31,
         WrongTab                = 32,
-        RequiresAutenticator    = 34,
+        RequiresAuthenticator   = 34,
         BankVoucherFailed       = 35
     }
 }

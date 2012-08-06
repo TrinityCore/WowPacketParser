@@ -339,9 +339,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePlayerLogin422(Packet packet)
         {
             var guid = packet.StartBitStream(0, 4, 7, 1, 3, 2, 5, 6);
-
             packet.ParseBitStream(guid, 5, 0, 3, 4, 7, 2, 6, 1);
-
             packet.WriteGuid("Guid", guid);
             LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
         }
@@ -415,7 +413,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Address SHA-1 Hash: {0}", Utilities.ByteArrayToHexString(hash));
         }
 
-        [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleRedirectClient422(Packet packet)
         {
             var hash = packet.ReadBytes(255);
@@ -423,6 +421,16 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt16("Int 16");
             packet.ReadEnum<UnknownFlags>("Unknown int32 flag", TypeCode.Int32);
             packet.ReadInt64("Int 64");
+        }
+
+        [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleRedirectClient434(Packet packet)
+        {
+            packet.ReadUInt64("Unk Long");
+            packet.ReadUInt32("Token");
+            var hash = packet.ReadBytes(0x100);
+            packet.WriteLine("RSA Hash: {0}", Utilities.ByteArrayToHexString(hash));
+            packet.ReadByte("Unk Byte"); // 1 == Connecting to world server
         }
 
         [Parser(Opcode.CMSG_REDIRECTION_FAILED)]
@@ -445,7 +453,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(hash));
         }
 
-        [Parser(Opcode.CMSG_REDIRECTION_AUTH_PROOF, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.CMSG_REDIRECTION_AUTH_PROOF, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleRedirectionAuthProof422(Packet packet)
         {
             var bytes = new byte[20];
@@ -471,6 +479,35 @@ namespace WowPacketParser.Parsing.Parsers
             bytes[16] = packet.ReadByte();
             bytes[14] = packet.ReadByte();
             bytes[10] = packet.ReadByte();
+            packet.WriteLine("Proof RSA Hash: " + Utilities.ByteArrayToHexString(bytes));
+        }
+
+        [Parser(Opcode.CMSG_REDIRECTION_AUTH_PROOF, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleRedirectionAuthProof434(Packet packet)
+        {
+            var bytes = new byte[20];
+            packet.ReadUInt64("Unk Long");
+            packet.ReadUInt64("+ 4");
+            bytes[5] = packet.ReadByte();
+            bytes[2] = packet.ReadByte();
+            bytes[6] = packet.ReadByte();
+            bytes[10] = packet.ReadByte();
+            bytes[8] = packet.ReadByte();
+            bytes[17] = packet.ReadByte();
+            bytes[11] = packet.ReadByte();
+            bytes[15] = packet.ReadByte();
+            bytes[7] = packet.ReadByte();
+            bytes[1] = packet.ReadByte();
+            bytes[4] = packet.ReadByte();
+            bytes[16] = packet.ReadByte();
+            bytes[0] = packet.ReadByte();
+            bytes[12] = packet.ReadByte();
+            bytes[14] = packet.ReadByte();
+            bytes[13] = packet.ReadByte();
+            bytes[18] = packet.ReadByte();
+            bytes[9] = packet.ReadByte();
+            bytes[19] = packet.ReadByte();
+            bytes[3] = packet.ReadByte();
             packet.WriteLine("Proof RSA Hash: " + Utilities.ByteArrayToHexString(bytes));
         }
 
