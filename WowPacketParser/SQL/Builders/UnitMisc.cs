@@ -551,6 +551,21 @@ namespace WowPacketParser.SQL.Builders
                         template.Faction == 1629 || template.Faction == 2203 || template.Faction == 2204) // player factions
                     template.Faction = 35;
 
+                if ((template.UnitFlag & (uint)UnitFlags.IsInCombat) != 0)
+                    template.UnitFlag &= ~(uint)UnitFlags.IsInCombat;
+
+                if ((template.UnitFlag & (uint)UnitFlags.PetIsAttackingTarget) != 0)
+                    template.UnitFlag &= ~(uint)UnitFlags.PetIsAttackingTarget;
+
+                if ((template.UnitFlag & (uint)UnitFlags.PlayerControlled) != 0)
+                    template.UnitFlag &= ~(uint)UnitFlags.PlayerControlled;
+
+                if ((template.UnitFlag & (uint)UnitFlags.Silenced) != 0)
+                    template.UnitFlag &= ~(uint)UnitFlags.Silenced;
+
+                if ((template.UnitFlag & (uint)UnitFlags.PossessedByPlayer) != 0)
+                    template.UnitFlag &= ~(uint)UnitFlags.PossessedByPlayer;
+
                 templates.Add(unit.Key.GetEntry(), template);
             }
 
