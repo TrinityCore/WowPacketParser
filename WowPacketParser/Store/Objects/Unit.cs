@@ -37,31 +37,21 @@ namespace WowPacketParser.Store.Objects
         public UnitFlags? UnitFlags;
         public UnitFlags2? UnitFlags2;
         public uint? MeleeTime;
-        //public int? MeleeTime2;
         public uint? RangedTime;
         public uint? Model;
-        //public int? Model2;
         public uint? Mount;
-        // public int? MinDamage;
-        // public int? MaxDamage;
         public uint? Bytes1;
         public UnitDynamicFlags? DynamicFlags;
         public NPCFlags? NpcFlags;
         public EmoteType? EmoteState;
-        public uint[] Resistances;
         public uint? ManaMod;
         public uint? HealthMod;
         public uint? Bytes2;
-        //public int? MeleeAttackPower;
-        //public int? MeleeDamageMultiplier;
-        //public int? RangedAttackPower;
-        //public int? RangedMinDamage;
-        //public int? RangedMaxDamage;
         public float? BoundingRadius;
         public float? CombatReach;
         public float? HoverHeight;
 
-        // Fields calculate with bytes0
+        // Fields calculated with bytes0
         public PowerType? PowerType;
         public Gender? Gender;
         public Class? Class;
@@ -103,7 +93,7 @@ namespace WowPacketParser.Store.Objects
             DynamicFlags  = UpdateFields.GetEnum<UnitField, UnitDynamicFlags?>(UnitField.UNIT_DYNAMIC_FLAGS);
             NpcFlags      = UpdateFields.GetEnum<UnitField, NPCFlags?>(UnitField.UNIT_NPC_FLAGS);
             EmoteState    = UpdateFields.GetEnum<UnitField, EmoteType?>(UnitField.UNIT_NPC_EMOTESTATE);
-            Resistances   = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_FIELD_RESISTANCES_ARMOR, 7);
+            //Resistances   = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_FIELD_RESISTANCES_ARMOR, 7);
             ManaMod       = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASE_MANA);
             HealthMod     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASE_HEALTH);
             Bytes2        = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_2);

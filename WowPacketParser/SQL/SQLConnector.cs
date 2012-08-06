@@ -10,7 +10,7 @@ namespace WowPacketParser.SQL
     public static class SQLConnector
     {
         [ThreadStatic]
-        private static MySqlConnection Conn;
+        public static MySqlConnection Conn;
 
         public static bool Enabled = Settings.DBEnabled;
 

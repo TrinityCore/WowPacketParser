@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using WowPacketParser.Enums;
@@ -489,6 +488,28 @@ namespace WowPacketParser.SQL.Builders
             return result;
         }
 
+        //                      entry, <minlevel, maxlevel>
+        public static Dictionary<uint, Tuple<uint, uint>> GetLevels(Dictionary<Guid, Unit> units)
+        {
+            if (units.Count == 0)
+                return null;
+
+            var entries = units.GroupBy(unit => unit.Key.GetEntry());
+            var list = new Dictionary<uint, List<uint>>();
+
+            foreach (var pair in entries.SelectMany(entry => entry))
+            {
+                if (list.ContainsKey(pair.Key.GetEntry()))
+                    list[pair.Key.GetEntry()].Add(pair.Value.Level.GetValueOrDefault(1));
+                else
+                    list.Add(pair.Key.GetEntry(), new List<uint> { pair.Value.Level.GetValueOrDefault(1) });
+            }
+
+            var result = list.ToDictionary(pair => pair.Key, pair => Tuple.Create(pair.Value.Min(), pair.Value.Max()));
+
+            return result.Count == 0 ? null : result;
+        }
+
         // Non-WDB data but nevertheless data that should be saved to creature_template
         public static string NpcTemplateNonWDB(Dictionary<Guid, Unit> units)
         {
@@ -497,58 +518,109 @@ namespace WowPacketParser.SQL.Builders
 
             const string tableName = "creature_template";
 
-            var rows = new List<QueryBuilder.SQLUpdateRow>();
-            ICollection<uint> key = new Collection<uint>();
+            var levels = GetLevels(units);
 
+            var templates = new Dictionary<uint, UnitTemplateNonWDB>();
             foreach (var unit in units)
             {
-                // don't save duplicates
-                if (key.Contains(unit.Key.GetEntry()))
+                if (templates.ContainsKey(unit.Key.GetEntry()))
                     continue;
 
-                var row = new QueryBuilder.SQLUpdateRow();
                 var npc = unit.Value;
-
-                var name = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
-
-                // Only movement flags in 335 are being read correctly - fix them and remove this if
-                if (ClientVersion.Build == ClientVersionBuild.V3_3_5a_12340)
+                var template = new UnitTemplateNonWDB
                 {
-                    if (npc.Movement.Flags.HasAnyFlag(MovementFlag.CanFly) && npc.Movement.Flags.HasAnyFlag(MovementFlag.WalkMode))
-                        row.AddValue("InhabitType", InhabitType.Ground | InhabitType.Air, true);
-                    else if (npc.Movement.Flags.HasAnyFlag(MovementFlag.DisableGravity))
-                        row.AddValue("InhabitType", InhabitType.Air, true);
+                    GossipMenuId = npc.GossipId,
+                    MinLevel = levels[unit.Key.GetEntry()].Item1,
+                    MaxLevel = levels[unit.Key.GetEntry()].Item2,
+                    Faction = npc.Faction.GetValueOrDefault(35),
+                    NpcFlag = (uint) npc.NpcFlags.GetValueOrDefault(NPCFlags.None),
+                    SpeedWalk = npc.Movement.RunSpeed,
+                    SpeedRun = npc.Movement.WalkSpeed,
+                    BaseAttackTime = npc.MeleeTime.GetValueOrDefault(2000),
+                    RangedAttackTime = npc.RangedTime.GetValueOrDefault(2000),
+                    UnitClass = (uint) npc.Class.GetValueOrDefault(Class.Warrior),
+                    UnitFlag = (uint) npc.UnitFlags.GetValueOrDefault(UnitFlags.None),
+                    DynamicFlag = (uint) npc.DynamicFlags.GetValueOrDefault(UnitDynamicFlags.None),
+                    VehicleId = npc.Movement.VehicleId,
+                    HoverHeight = npc.HoverHeight.GetValueOrDefault(1.0f)
+                };
+
+                if (template.Faction == 1 || template.Faction == 2 || template.Faction == 3 ||
+                        template.Faction == 4 || template.Faction == 5 || template.Faction == 6 ||
+                        template.Faction == 115 || template.Faction == 116 || template.Faction == 1610 ||
+                        template.Faction == 1629 || template.Faction == 2203 || template.Faction == 2204) // player factions
+                    template.Faction = 35;
+
+                templates.Add(unit.Key.GetEntry(), template);
+            }
+
+
+            var db = SQLDatabase.GetDict<uint, UnitTemplateNonWDB>(templates.Keys.ToList());
+            if (db == null)
+                return "";
+
+            var rows = new List<QueryBuilder.SQLUpdateRow>();
+            foreach (var unit in templates)
+            {
+                var row = new QueryBuilder.SQLUpdateRow();
+                var npcLocal = unit.Value;
+                UnitTemplateNonWDB npcRemote;
+                if (!db.TryGetValue(unit.Key, out npcRemote))
+                    continue;
+
+                if (!Utilities.EqualValues(npcLocal.GossipMenuId, npcRemote.GossipMenuId))
+                    row.AddValue("gossip_menu_id", npcLocal.GossipMenuId);
+
+                if (!Utilities.EqualValues(npcLocal.MinLevel, npcRemote.MinLevel))
+                    row.AddValue("minlevel", npcLocal.MinLevel);
+
+                if (!Utilities.EqualValues(npcLocal.MaxLevel, npcRemote.MaxLevel))
+                    row.AddValue("minlevel", npcLocal.MaxLevel);
+
+                if (!Utilities.EqualValues(npcLocal.Faction, npcRemote.Faction))
+                {
+                    row.AddValue("faction_A", npcLocal.Faction);
+                    row.AddValue("faction_H", npcLocal.Faction);
                 }
 
-                row.AddValue("HoverHeight", npc.HoverHeight, 1);
-                row.AddValue("WalkSpeed", npc.Movement.WalkSpeed, 1);
-                row.AddValue("RunSpeed", npc.Movement.RunSpeed, 1.142857);
-                row.AddValue("VehicleId", npc.Movement.VehicleId, 0u);
-                row.AddValue("Size", npc.Size, 1u);
-                row.AddValue("Level", npc.Level, 1u); // min/max
-                row.AddValue("Faction", npc.Faction, 35u); // faction_A, faction_H
-                row.AddValue("UnitFlags", npc.UnitFlags, UnitFlags.None, true);
-                row.AddValue("BaseAttackTime", npc.MeleeTime, 2000u);
-                row.AddValue("RangeAttackTime", npc.RangedTime, 0u); // 2000?
-                row.AddValue("Model", npc.Model, 0u); // model1, model2, ...
-                row.AddValue("DynamicFlags", npc.DynamicFlags, UnitDynamicFlags.None, true);
-                row.AddValue("NpcFlags", npc.NpcFlags, NPCFlags.None, true);
+                if (!Utilities.EqualValues(npcLocal.NpcFlag, npcRemote.NpcFlag))
+                    row.AddValue("npcflag", npcLocal.NpcFlag);
 
-                if (npc.Resistances != null)
-                    for (var i = 1; i < npc.Resistances.Length; ++i) // No armor
-                        row.AddValue("Resistances" + i, npc.Resistances[i], 0u);
+                if (!Utilities.EqualValues(npcLocal.SpeedWalk, npcRemote.SpeedWalk))
+                    row.AddValue("speed_walk", npcLocal.SpeedWalk);
 
-                // row.AddValue("ManaMod", npc.ManaMod, 1); this is not mod, it needs to be calculated
-                // row.AddValue("HealthMod", npc.HealthMod, 1);
-                row.AddValue("Class", npc.Class, Class.Warrior);
-                //row.AddValue("Race", npc.Race, Race.None);
+                if (!Utilities.EqualValues(npcLocal.SpeedRun, npcRemote.SpeedRun))
+                    row.AddValue("speed_run", npcLocal.SpeedRun);
 
-                row.AddWhere("entry", unit.Key.GetEntry());
-                row.Table = tableName;
-                row.Comment = name;
+                if (!Utilities.EqualValues(npcLocal.BaseAttackTime, npcRemote.BaseAttackTime))
+                    row.AddValue("baseattacktime", npcLocal.BaseAttackTime);
 
-                rows.Add(row);
-                key.Add(unit.Key.GetEntry());
+                if (!Utilities.EqualValues(npcLocal.RangedAttackTime, npcRemote.RangedAttackTime))
+                    row.AddValue("rangeattacktime", npcLocal.RangedAttackTime);
+
+                if (!Utilities.EqualValues(npcLocal.UnitClass, npcRemote.UnitClass))
+                    row.AddValue("unit_class", npcLocal.UnitClass);
+
+                if (!Utilities.EqualValues(npcLocal.UnitFlag, npcRemote.UnitFlag))
+                    row.AddValue("unit_flags", npcLocal.UnitFlag);
+
+                if (!Utilities.EqualValues(npcLocal.DynamicFlag, npcRemote.DynamicFlag))
+                    row.AddValue("dynamicflags", npcLocal.DynamicFlag);
+
+                if (!Utilities.EqualValues(npcLocal.VehicleId, npcRemote.VehicleId))
+                    row.AddValue("VehicleId", npcLocal.VehicleId);
+
+                if (!Utilities.EqualValues(npcLocal.HoverHeight, npcRemote.UnitClass))
+                    row.AddValue("HoverHeight", npcLocal.HoverHeight);
+
+
+                if (row.ValueCount != 0)
+                {
+                    row.AddWhere("entry", unit.Key);
+                    row.Table = tableName;
+                    row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int) unit.Key, false);
+                    rows.Add(row);
+                }
             }
 
             return new QueryBuilder.SQLUpdate(rows).Build();
