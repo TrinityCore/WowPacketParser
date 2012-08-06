@@ -554,7 +554,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.MSG_MOVE_UPDATE_TELEPORT, 0x50B2},
             {Opcode.MSG_MOVE_WORLDPORT_ACK, 0x2411},
             {Opcode.MSG_NOTIFY_PARTY_SQUELCH, 0x4D06},
-            {Opcode.MSG_PARTY_ASSIGNMENT, 0x0424}, // found cmsg
+            {Opcode.MSG_PARTY_ASSIGNMENT, 0x0424}, // found CMSG
             {Opcode.MSG_PETITION_DECLINE, 0x4905},
             {Opcode.MSG_PETITION_RENAME, 0x4005},
             {Opcode.MSG_QUERY_NEXT_MAIL_TIME, 0x0F04},
@@ -595,7 +595,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_ARENA_TEAM_STATS, 0x4425},
             {Opcode.SMSG_ATTACKERSTATEUPDATE, 0x0B25},
             {Opcode.SMSG_ATTACKSTART, 0x2D15},
-            {Opcode.SMSG_ATTACKSTOP, 0x0934}, // or 0x2b07
+            {Opcode.SMSG_ATTACKSTOP, 0x0934}, // or 0x2B07
             {Opcode.SMSG_ATTACKSWING_BADFACING, 0x0B36},
             {Opcode.SMSG_ATTACKSWING_CANT_ATTACK, 0x0016},
             {Opcode.SMSG_ATTACKSWING_DEADTARGET, 0x2B26},
@@ -641,7 +641,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_BREAK_TARGET, 0x0105},
             {Opcode.SMSG_BUY_FAILED, 0x6435},
             {Opcode.SMSG_BUY_ITEM, 0x0F26},
-            {Opcode.SMSG_CALENDAR_ARENA_TEAM, 0x0615},//may be reversed with SMSG_CALENDAR_FILTER_GUILD
+            {Opcode.SMSG_CALENDAR_ARENA_TEAM, 0x0615}, // may be swapped with SMSG_CALENDAR_FILTER_GUILD
             {Opcode.SMSG_CALENDAR_CLEAR_PENDING_ACTION, 0x2106},
             {Opcode.SMSG_CALENDAR_COMMAND_RESULT, 0x6F36},
             {Opcode.SMSG_CALENDAR_EVENT_INVITE, 0x4E16},
@@ -655,7 +655,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_CALENDAR_EVENT_REMOVED_ALERT, 0x6D35},
             {Opcode.SMSG_CALENDAR_EVENT_STATUS, 0x2A27},
             {Opcode.SMSG_CALENDAR_EVENT_UPDATED_ALERT, 0x0907},
-            {Opcode.SMSG_CALENDAR_FILTER_GUILD, 0x4A26},//may be reversed with SMSG_CALENDAR_ARENA_TEAM
+            {Opcode.SMSG_CALENDAR_FILTER_GUILD, 0x4A26}, // may be swapped with SMSG_CALENDAR_ARENA_TEAM
             {Opcode.SMSG_CALENDAR_RAID_LOCKOUT_ADDED, 0x2305},
             {Opcode.SMSG_CALENDAR_RAID_LOCKOUT_REMOVED, 0x2E25},
             {Opcode.SMSG_CALENDAR_RAID_LOCKOUT_UPDATED, 0x4636},
@@ -890,7 +890,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_LFG_ROLE_CHOSEN, 0x6A26},
             {Opcode.SMSG_LFG_SLOT_INVALID, 0x54B5},
             {Opcode.SMSG_LFG_TELEPORT_DENIED, 0x0E14},
-            {Opcode.SMSG_LFG_UPDATE_SEARCH, 0x54A1}, // not cnfirmed
+            {Opcode.SMSG_LFG_UPDATE_SEARCH, 0x54A1}, // not confirmed
             {Opcode.SMSG_LFG_UPDATE_STATUS, 0x31A4},
             {Opcode.SMSG_LFG_UPDATE_STATUS_NONE, 0x7CA1},
             {Opcode.SMSG_LF_GUILD_APPLICANT_LIST_UPDATED, 0x10A4},
@@ -913,7 +913,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_LOOT_CONTENTS, 0x11B1},
             {Opcode.SMSG_LOOT_ITEM_NOTIFY, 0x6D15},
             {Opcode.SMSG_LOOT_LIST, 0x6807},
-            {Opcode.SMSG_LOOT_MASTER_LIST, 0x325},
+            {Opcode.SMSG_LOOT_MASTER_LIST, 0x0325},
             {Opcode.SMSG_LOOT_MONEY_NOTIFY, 0x2836},
             {Opcode.SMSG_LOOT_RELEASE_RESPONSE, 0x6D25},
             {Opcode.SMSG_LOOT_REMOVED, 0x6817},
