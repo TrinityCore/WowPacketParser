@@ -144,7 +144,8 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Unk Uint32", i);
                 vendorItem.ItemId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
                 packet.ReadInt32("Display ID", i);
-                vendorItem.MaxCount = packet.ReadInt32("Max Count", i);
+                var maxCount = packet.ReadInt32("Max Count", i);
+                vendorItem.MaxCount = maxCount == -1 ? 0 : maxCount; // TDB
                 packet.ReadInt32("Price", i);
                 packet.ReadInt32("Max Durability", i);
                 packet.ReadUInt32("Buy Count", i);
@@ -191,7 +192,8 @@ namespace WowPacketParser.Parsing.Parsers
                 vendorItem.ItemId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
                 packet.ReadInt32("Unk Int32 1", i);
                 packet.ReadInt32("Display ID", i);
-                vendorItem.MaxCount = packet.ReadInt32("Max Count", i);
+                var maxCount = packet.ReadInt32("Max Count", i);
+                vendorItem.MaxCount = maxCount == -1 ? 0 : maxCount; // TDB
                 packet.ReadUInt32("Buy Count", i);
                 vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
                 packet.ReadInt32("Unk Int32 2", i);
@@ -246,7 +248,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Display ID", i);
                 if (enabler2[i])
                     packet.ReadInt32("Unk Int32 8", i);
-                vendorItem.MaxCount = packet.ReadInt32("Max Count", i);
+                var maxCount = packet.ReadInt32("Max Count", i);
+                vendorItem.MaxCount = maxCount == -1 ? 0 : maxCount; // TDB
                 packet.ReadUInt32("Buy Count", i);
 
                 npcVendor.VendorItems.Add(vendorItem);
