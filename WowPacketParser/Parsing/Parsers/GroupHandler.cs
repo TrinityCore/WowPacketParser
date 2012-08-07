@@ -462,7 +462,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guid, 5);
 
-            packet.ReadWoWString("Inviter", count);
+            packet.ReadWoWString("Realm Name", count);
 
             packet.ReadXORByte(guid, 7);
 
