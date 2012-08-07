@@ -26,6 +26,8 @@ namespace WowPacketParser.Enums
         SpecialItem   = 0x00020000,
         ObjText       = 0x00040000,
         AutoAccept    = 0x00080000,
+        Unk100000     = 0x00100000,
+        Unk200000     = 0x00200000,
         Unk400000     = 0x00400000,
         Unk800000     = 0x00800000,
         Unk1000000    = 0x01000000

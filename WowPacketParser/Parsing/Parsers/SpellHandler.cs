@@ -897,7 +897,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
-                packet.ReadUInt32("Unk Uint32");
+                packet.ReadUInt32("DisplayId");
         }
 
         [Parser(Opcode.SMSG_MIRRORIMAGE_DATA)]
@@ -922,9 +922,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Hair Color");
             packet.ReadByte("Facial Hair");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                packet.ReadGuid("Unk");
+                packet.ReadGuid("Guild Guid");
             else
-                packet.ReadUInt32("Unk");
+                packet.ReadUInt32("Guild Id");
 
             EquipmentSlotType[] slots = {
                 EquipmentSlotType.Head, EquipmentSlotType.Shoulders, EquipmentSlotType.Shirt,

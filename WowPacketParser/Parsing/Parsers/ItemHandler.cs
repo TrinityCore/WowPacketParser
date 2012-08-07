@@ -247,28 +247,28 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(4, 5, 1, 6, 7, 0, 3, 2);
 
-            var unkBit = packet.ReadBit("Unk Bit 1");
-            packet.ReadBit("Unk Bit 2");
+            var unkBit = packet.ReadBit("Has Item Refund");
+            packet.ReadBit("Has Money Refund");
 
             if (unkBit)
             {
-                for (int i = 0; i < 5; ++i) // Item?
+                for (int i = 0; i < 5; ++i) // Currencies
                 {
-                    packet.ReadInt32("Unk Int32 1", i);  // Entry?
-                    packet.ReadInt32("Unk Int32 2", i);  // Count?
+                    packet.ReadInt32("CurrencyCount", i);
+                    packet.ReadInt32("Currency", i);
                 }
 
-                packet.ReadInt32("Unk Int32 3"); // Time Left?
+                packet.ReadInt32("Paid Money");
 
-                for (int i = 0; i < 5; ++i) // Currency?
+                for (int i = 0; i < 5; ++i) // Items
                 {
-                    packet.ReadInt32("Unk Int32 4", i);  // Entry?
-                    packet.ReadInt32("Unk Int32 5", i);  // Count?
+                    packet.ReadInt32("ItemCount", i);
+                    packet.ReadInt32("Item", i);
                 }
             }
 
             packet.ParseBitStream(guid, 0, 3, 1, 6, 4, 2, 7, 5);
-            packet.ReadByte("Unk Byte"); // Error Id?
+            packet.ReadByte("Error"); // Error Id?
             packet.WriteGuid("Item Guid", guid);
         }
 

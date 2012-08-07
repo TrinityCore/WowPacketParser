@@ -161,9 +161,9 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleChannelBan(Packet packet)
         {
             var channelLength = packet.ReadBits(8);
-            var passwordLength = packet.ReadBits(7);
-            packet.ReadWoWString("str1", channelLength);
-            packet.ReadWoWString("str2", passwordLength);
+            var nameLength = packet.ReadBits(7);
+            packet.ReadWoWString("Channel", channelLength);
+            packet.ReadWoWString("Player to ban", nameLength);
         }
 
         [Parser(Opcode.CMSG_JOIN_CHANNEL, ClientVersionBuild.V4_3_4_15595)]

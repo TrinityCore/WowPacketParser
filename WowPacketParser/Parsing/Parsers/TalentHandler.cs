@@ -151,7 +151,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET))
                 packet.ReadGuid("GUID");
             else
-                packet.ReadUInt32("Unk Int32");
+                packet.ReadUInt32("Tab Page");
 
             var count = packet.ReadUInt32("Talent Count");
             for (var i = 0; i < count; ++i)
