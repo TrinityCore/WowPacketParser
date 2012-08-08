@@ -1015,7 +1015,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid[3] = packet.ReadBit();
 
             var v7 = !packet.ReadBit("Unk Bit5");
-            var v48 = packet.ReadBit("Unk Bit6");
+            packet.ReadBit("Unk Bit6");
             guid[1] = packet.ReadBit();
             guid[5] = packet.ReadBit();
             guid[4] = packet.ReadBit();

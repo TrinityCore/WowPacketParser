@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;

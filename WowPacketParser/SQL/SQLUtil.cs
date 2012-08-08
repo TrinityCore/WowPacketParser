@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -230,7 +229,8 @@ namespace WowPacketParser.SQL
         ///  or updates accordingly.</para>
         /// <remarks>Second dictionary can be null (only inserts queries will be produced)</remarks>
         /// </summary>
-        /// <typeparam name="T">Type of the primary key (uint)</typeparam>
+        /// <typeparam name="T">Type of the first primary key</typeparam>
+        /// /// <typeparam name="TG">Type of the second primary key</typeparam>
         /// <typeparam name="TK">Type of the WDB struct (field names and types must match DB field name and types)</typeparam>
         /// <param name="dict1">Dictionary retrieved from  parser</param>
         /// <param name="dict2">Dictionary retrieved from  DB</param>
