@@ -897,7 +897,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
-                packet.ReadUInt32("DisplayId");
+                packet.ReadUInt32("Display Id");
         }
 
         [Parser(Opcode.SMSG_MIRRORIMAGE_DATA)]

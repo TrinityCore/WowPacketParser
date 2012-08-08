@@ -228,13 +228,12 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count1; i++)
             {
                 packet.ReadUInt32("Display ID", i);
-                packet.ReadInt32("Random Suffix Factor");
+                packet.ReadInt32("Random Suffix Factor", i);
                 packet.ReadInt32("Item Count", i);
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
                 packet.ReadInt32("Unk Int32", i); // possibly random property id or looted count
             }
         }
-
 
         [Parser(Opcode.CMSG_LOOT_CURRENCY)]
         [Parser(Opcode.SMSG_CURRENCY_LOOT_REMOVED)]

@@ -57,41 +57,13 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.NpcTexts.IsEmpty())
                 return String.Empty;
 
-            // Not TDB structure
-            const string tableName = "npc_text";
+            foreach (var npcText in Storage.NpcTexts)
+                npcText.Value.Item1.ConvertToDBStruct();
 
-            var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var npcTextPair in Storage.NpcTexts)
-            {
-                var row = new QueryBuilder.SQLInsertRow();
-                var npcText = npcTextPair.Value.Item1;
+            var entries = Storage.NpcTexts.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, NpcText>(entries, "ID");
 
-                row.AddValue("Id", npcTextPair.Key);
-
-                for (var i = 0; i < npcText.Probabilities.Length; i++)
-                    row.AddValue("Probability" + (i + 1), npcText.Probabilities[i]);
-
-                for (var i = 0; i < npcText.Texts1.Length; i++)
-                    row.AddValue("Text1_" + (i + 1), npcText.Texts1[i]);
-
-                for (var i = 0; i < npcText.Texts2.Length; i++)
-                    row.AddValue("Text2_" + (i + 1), npcText.Texts2[i]);
-
-                for (var i = 0; i < npcText.Languages.Length; i++)
-                    row.AddValue("Language" + (i + 1), npcText.Languages[i]);
-
-                for (var i = 0; i < npcText.EmoteDelays[0].Length; i++)
-                    for (var j = 0; j < npcText.EmoteDelays[1].Length; j++)
-                        row.AddValue("EmoteDelay" + (i + 1) + "_" + (j + 1), npcText.EmoteDelays[i][j]);
-
-                for (var i = 0; i < npcText.EmoteIds[0].Length; i++)
-                    for (var j = 0; j < npcText.EmoteIds[1].Length; j++)
-                        row.AddValue("EmoteId" + (i + 1) + "_" + (j + 1), npcText.EmoteDelays[i][j]);
-
-                rows.Add(row);
-            }
-
-            return new QueryBuilder.SQLInsert(tableName, rows).Build();
+            return SQLUtil.CompareDicts(Storage.NpcTexts, templatesDb, StoreNameType.NpcText, "ID");
         }
     }
 }

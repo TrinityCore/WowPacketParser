@@ -595,7 +595,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_ARENA_TEAM_STATS, 0x4425},
             {Opcode.SMSG_ATTACKERSTATEUPDATE, 0x0B25},
             {Opcode.SMSG_ATTACKSTART, 0x2D15},
-            {Opcode.SMSG_ATTACKSTOP, 0x0934}, // or 0x2B07
+            {Opcode.SMSG_ATTACKSTOP, 0x0934},
             {Opcode.SMSG_ATTACKSWING_BADFACING, 0x0B36},
             {Opcode.SMSG_ATTACKSWING_CANT_ATTACK, 0x0016},
             {Opcode.SMSG_ATTACKSWING_DEADTARGET, 0x2B26},
@@ -690,7 +690,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_CLEAR_TARGET, 0x4B26},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x2734},
             {Opcode.SMSG_CLIENT_CONTROL_UPDATE, 0x2837},
-            {Opcode.SMSG_COMBAT_EVENT_FAILED, 0x2B07}, // or 0x0934
+            {Opcode.SMSG_COMBAT_EVENT_FAILED, 0x2B07},
             {Opcode.SMSG_COMMENTATOR_MAP_INFO, 0x0327},
             {Opcode.SMSG_COMMENTATOR_PARTY_INFO, 0x38B0},
             {Opcode.SMSG_COMMENTATOR_PLAYER_INFO, 0x2F36},
