@@ -265,8 +265,8 @@ namespace WowPacketParser.Parsing.Parsers
                 guid[i] = new byte[8];
                 guid[i][3] = packet.ReadBit();
                 guid[i][4] = packet.ReadBit();
-                packet.ReadBit("Unk 360", i);
-                packet.ReadBit("Unk 361", i);
+                packet.ReadBit("Has Authenticator", i);
+                packet.ReadBit("Can SoR", i);
                 publicLength[i] = packet.ReadBits(8);
                 officerLength[i] = packet.ReadBits(8);
                 guid[i][0] = packet.ReadBit();
@@ -625,7 +625,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_DEMOTE)]
         [Parser(Opcode.CMSG_GUILD_REMOVE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
         [Parser(Opcode.CMSG_GUILD_LEADER)]
-        [Parser(Opcode.CMSG_GUILD_ADD_RANK, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
+        [Parser(Opcode.CMSG_GUILD_ADD_RANK, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildCreate(Packet packet)
         {
             packet.ReadCString("Name");
@@ -1974,7 +1974,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_GUILD_ADD_RANK)]
+        [Parser(Opcode.CMSG_GUILD_ADD_RANK, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildAddRank(Packet packet)
         {
             packet.ReadUInt32("Rank ID");

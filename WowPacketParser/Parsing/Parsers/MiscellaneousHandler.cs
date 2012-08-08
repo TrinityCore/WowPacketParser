@@ -174,9 +174,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_CHANGE_SEATS_ON_CONTROLLED_VEHICLE)]
         public static void HandleChangeSeatsOnControlledVehicle(Packet packet)
         {
-            packet.ReadPackedGuid("Vehicle GUID");
-            // FIXME: 3.3.3a has some data here
-            packet.ReadPackedGuid("Accesory GUID");
+            var guid = packet.ReadPackedGuid("Vehicle GUID");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3a_11723))
+                MovementHandler.ReadMovementInfo(ref packet, guid);
+
+            packet.ReadPackedGuid("Accessory GUID");
             packet.ReadByte("Seat");
         }
 
