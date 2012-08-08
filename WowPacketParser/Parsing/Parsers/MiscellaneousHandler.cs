@@ -1005,7 +1005,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_NOTIFICATION_2)]
-        public static void HandleNotification(Packet packet)
+        public static void HandleNotification2(Packet packet)
         {
             packet.ReadCString("Message");
         }

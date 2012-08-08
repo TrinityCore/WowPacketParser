@@ -14,7 +14,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(18438)]
-        public static void Handle16423(Packet packet)
+        public static void Handle18438(Packet packet)
         {
             packet.ReadInt32("Unk Int 32"); //error related
         }
