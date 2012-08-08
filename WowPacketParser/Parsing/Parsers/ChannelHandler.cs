@@ -204,5 +204,39 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Counter");
             packet.ReadCString("Channel Name");
         }
+
+        [Parser(Opcode.CMSG_CHANNEL_PASSWORD, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleChannelPassword(Packet packet)
+        {
+            packet.ReadCString("Channel Name");
+            packet.ReadCString("Password");
+        }
+        
+        [Parser(Opcode.CMSG_CHANNEL_PASSWORD, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleChannelPassword434(Packet packet)
+        {
+            var channelLen = packet.ReadBits(8);
+            var passLen = packet.ReadBits(7);
+            
+            packet.ReadWoWString("Channel Name", channelLen);
+            packet.ReadWoWString("Password", passLen);
+        }
+
+        [Parser(Opcode.CMSG_CHANNEL_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleChannelInvite(Packet packet)
+        {
+            packet.ReadCString("Channel Name");
+            packet.ReadCString("Name");
+        }
+
+        [Parser(Opcode.CMSG_CHANNEL_INVITE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleChannelInvite434(Packet packet)
+        {
+            var nameLen = packet.ReadBits(7);
+            var channelLen = packet.ReadBits(8);
+
+            packet.ReadWoWString("Name", nameLen);
+            packet.ReadWoWString("Channel Name", channelLen);
+        }
     }
 }

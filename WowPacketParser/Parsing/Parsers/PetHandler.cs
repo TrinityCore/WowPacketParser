@@ -275,5 +275,18 @@ namespace WowPacketParser.Parsing.Parsers
         {
         }
 
+        [Parser(Opcode.SMSG_PET_ADDED)] // 4.3.4
+        public static void HandlePetAdded(Packet packet)
+        {
+            packet.ReadInt32("Pet Level");
+            packet.ReadInt32("Unk Int32 2"); // probably the same unk in MSG_LIST_STABLED_PETS
+            packet.ReadByte("Stable Type");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Unit, "Entry");
+            packet.ReadInt32("Pet Number"); // not confirmed
+
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("Pet Name", len);
+        }
+
     }
 }

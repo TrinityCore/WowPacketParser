@@ -1893,6 +1893,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REQUEST_RATED_BG_STATS)]
         [Parser(Opcode.CMSG_PVP_LOG_DATA)]
         [Parser(Opcode.CMSG_REQUEST_PVP_REWARDS)]
+        [Parser(Opcode.CMSG_ARENA_TEAM_ACCEPT)]
         public static void HandleBattlegroundNull(Packet packet)
         {
         }
@@ -1901,5 +1902,19 @@ namespace WowPacketParser.Parsing.Parsers
         //[Parser(Opcode.CMSG_BATTLEFIELD_MANAGER_SET_NEXT_TRANSITION_TIME)]
         //[Parser(Opcode.CMSG_START_BATTLEFIELD_CHEAT)]
         //[Parser(Opcode.CMSG_END_BATTLEFIELD_CHEAT)]
+
+        [Parser(Opcode.CMSG_ARENA_TEAM_DISBAND)]
+        [Parser(Opcode.CMSG_ARENA_TEAM_LEAVE)]
+        public static void HandleArenaTeamIdMisc(Packet packet)
+        {
+            packet.ReadInt32("Arena Team Id");
+        }
+
+        [Parser(Opcode.SMSG_ARENA_TEAM_INVITE)]
+        public static void HandleArenaTeamInviteServer(Packet packet)
+        {
+            packet.ReadCString("Player Name");
+            packet.ReadCString("Arena Team Name");
+        }
     }
 }
