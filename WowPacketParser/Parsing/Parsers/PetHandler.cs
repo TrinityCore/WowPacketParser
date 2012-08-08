@@ -248,7 +248,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
             {
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // not verified
-                    packet.ReadInt32("Unk", i);
+                    packet.ReadInt32("Pet Slot", i);
 
                 packet.ReadInt32("Pet Number", i);
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Unit, "Pet Entry", i);
@@ -279,10 +279,10 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePetAdded(Packet packet)
         {
             packet.ReadInt32("Pet Level");
-            packet.ReadInt32("Unk Int32 2"); // probably the same unk in MSG_LIST_STABLED_PETS
+            packet.ReadInt32("Pet Slot");
             packet.ReadByte("Stable Type");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Unit, "Entry");
-            packet.ReadInt32("Pet Number"); // not confirmed
+            packet.ReadInt32("Pet Number");
 
             var len = packet.ReadBits(8);
             packet.ReadWoWString("Pet Name", len);
