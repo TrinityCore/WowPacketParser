@@ -104,6 +104,11 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_COOLDOWN_CHEAT)]
+        public static void HandleCooldownCheat(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+        }
+
         [Parser(Opcode.SMSG_COOLDOWN_EVENT)]
         public static void HandleCooldownEvent(Packet packet)
         {

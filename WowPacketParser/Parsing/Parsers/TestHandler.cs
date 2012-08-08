@@ -5,6 +5,20 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class TestHandler
     {
+
+        [Parser(16423)]
+        public static void Handle16423(Packet packet)
+        {
+            if (packet.CanRead())
+                packet.ReadByte("Unk Byte");
+        }
+
+        [Parser(18438)]
+        public static void Handle16423(Packet packet)
+        {
+            packet.ReadInt32("Unk Int 32"); //error related
+        }
+
         [Parser(17958)] // 4.3.4
         [Parser(18997)] // 4.3.4
         [Parser(26389)] // 4.3.4
