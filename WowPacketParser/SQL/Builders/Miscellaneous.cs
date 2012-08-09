@@ -136,19 +136,14 @@ namespace WowPacketParser.SQL.Builders
 
                 row.AddValue("Build", ClientVersion.Build);
                 row.AddValue("SniffName", data.Item1.FileName);
-                row.AddValue("TimeStamp", data.Item1.TimeStamp);
                 row.AddValue("ObjectType", data.Item1.ObjectType.ToString());
                 row.AddValue("Id", data.Item1.Id);
                 row.AddValue("Data", data.Item1.Data);
-                row.AddValue("Number", data.Item1.Number);
-
-                if (data.Item1.ObjectType == StoreNameType.Opcode)
-                    row.Comment = Opcodes.GetOpcodeName(data.Item1.Id);
 
                 rows.Add(row);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, rows, ignore: true, withDelete: false).Build();
+            return new QueryBuilder.SQLInsert(tableName, rows, ignore: true, withDelete: false, deleteDuplicates: true).Build();
         }
     }
 }

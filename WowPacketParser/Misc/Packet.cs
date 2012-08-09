@@ -81,11 +81,9 @@ namespace WowPacketParser.Misc
             var item = new SniffData
             {
                 FileName = FileName,
-                TimeStamp = Utilities.GetUnixTimeFromDateTime(Time),
                 ObjectType = type,
                 Id = id,
                 Data = data,
-                Number = Number,
             };
 
             Storage.SniffData.Add(item, TimeSpan);
