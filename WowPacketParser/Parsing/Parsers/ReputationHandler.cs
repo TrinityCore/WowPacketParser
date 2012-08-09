@@ -59,14 +59,14 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_SET_FACTION_INACTIVE, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_SET_FACTION_INACTIVE)]
         public static void HandleSetFactionInactive(Packet packet)
         {
             packet.ReadUInt32("Faction Id");
             packet.ReadBoolean("Inactive");
         }
 
-        [Parser(Opcode.CMSG_SET_FACTION_ATWAR, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_SET_FACTION_ATWAR)]
         public static void HandleSetFactionAtWar(Packet packet)
         {
             packet.ReadUInt32("Faction Id");

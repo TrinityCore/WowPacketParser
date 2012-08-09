@@ -177,7 +177,7 @@ namespace WowPacketParser.Parsing.Parsers
             quest.Flags = packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
-                quest.MinimapTargetMark = packet.ReadUInt32("Minimap Target Mark"); // missing enum. 1- Skull, 16 - Unknown, but exist
+                quest.MinimapTargetMark = packet.ReadUInt32("Minimap Target Mark"); // missing enum. 1- Skull, 16 - Unknown, but exists
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_4_0_8089))
                 quest.RewardTitleId = packet.ReadUInt32("Reward Title ID");
@@ -528,7 +528,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID1");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
-                packet.ReadGuid("Sharer GUID");
+                packet.ReadGuid("Unk NPC GUID");
 
             packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
             packet.ReadCString("Title");
@@ -649,15 +649,15 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS,ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestRequestItems434(Packet packet)
         {
             packet.ReadGuid("GUID");
             var entry = packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
             packet.ReadCString("Title");
             var text = packet.ReadCString("Text");
-            packet.ReadUInt32("Emote");
-            packet.ReadUInt32("Unk UInt32 1");
+            packet.ReadUInt32("Delay");  // not confirmed
+            packet.ReadUInt32("Emote");  // not confirmed
             packet.ReadUInt32("Close Window on Cancel");
 
             Storage.QuestRewards.Add((uint)entry, new QuestReward { RequestItemsText = text }, null);

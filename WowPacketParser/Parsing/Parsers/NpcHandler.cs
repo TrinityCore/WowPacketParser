@@ -65,7 +65,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleTrainerBuySpell(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadInt32("Unknown Int32");
+            packet.ReadInt32("Unknown Int32"); // same unk exists in SMSG_TRAINER_LIST
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
         }
 
@@ -79,7 +79,7 @@ namespace WowPacketParser.Parsing.Parsers
             npcTrainer.Type = packet.ReadEnum<TrainerType>("Type", TypeCode.Int32);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
-                packet.ReadInt32("Unk Int32");
+                packet.ReadInt32("Unk Int32"); // Same unk exists in CMSG_TRAINER_BUY_SPELL
 
             var count = packet.ReadInt32("Count");
             npcTrainer.TrainerSpells = new List<TrainerSpell>(count);
