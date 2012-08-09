@@ -5952,7 +5952,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_PITCH_RATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_PITCH_RATE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleSplineSetPitchRate434(Packet packet)
         {
             var guid = packet.StartBitStream(3, 5, 6, 1, 0, 4, 7, 2);
