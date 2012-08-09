@@ -67,6 +67,7 @@ namespace WowPacketParser.Enums.Version.V4_3_2_15211
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x453D},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x25FB},
             {Opcode.SMSG_DB_REPLY, 0x06D1},
+            {Opcode.SMSG_DEFENSE_MESSAGE, 0x456F},
             {Opcode.SMSG_EMOTE, 0x65F9},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x4D9B},
             {Opcode.SMSG_FLIGHT_SPLINE_SYNC, 0x6533},
