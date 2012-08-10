@@ -27,7 +27,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Server State", i);
         }
 
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleServerAuthChallenge422(Packet packet)
         {
             packet.ReadInt32("Unk1");
@@ -40,6 +40,21 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk6");
             packet.ReadInt32("Unk7");
             packet.ReadInt32("Unk8");
+        }
+
+        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleServerAuthChallenge434(Packet packet)
+        {
+            packet.ReadInt32("Unk1");
+            packet.ReadInt32("Unk2");
+            packet.ReadInt32("Unk3");
+            packet.ReadInt32("Unk4");
+            packet.ReadInt32("Unk5");
+            packet.ReadInt32("Unk6");
+            packet.ReadInt32("Unk7");
+            packet.ReadInt32("Unk8");
+            packet.ReadInt32("Server Seed");
+            packet.ReadByte("Unk Byte");
         }
 
         [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
@@ -250,9 +265,8 @@ namespace WowPacketParser.Parsing.Parsers
                 AddonHandler.ReadClientAddonsList(ref pkt2);
             }
 
-            var highBits = packet.ReadByte() << 5;
-            var lowBits = packet.ReadByte() >> 3;
-            var size = lowBits | highBits;
+            packet.ReadBit("Unk bit");
+            var size = (int)packet.ReadBits(12);
             packet.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(size)));
             packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
         }

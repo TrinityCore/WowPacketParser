@@ -317,7 +317,7 @@ namespace WowPacketParser.Parsing.Parsers
                     vec.Z += mid.Z;
                     packet.WriteLine("[0] Waypoint: " + vec);
 
-                    if (waypoints > 1)
+                    if (waypoints > 2)
                     {
                         for (var i = 1; i < waypoints - 1; ++i)
                         {
