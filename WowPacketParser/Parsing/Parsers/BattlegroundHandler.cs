@@ -1372,8 +1372,8 @@ namespace WowPacketParser.Parsing.Parsers
             var playerLength = packet.ReadBits(7);
             var teamLength = packet.ReadBits(8);
             packet.ReadWoWString("Player Name", playerLength);
-            packet.ReadUInt32("Unk1"); // Action or Event
-            packet.ReadUInt32("Unk2"); // Action or Event
+            packet.ReadUInt32("Action");
+            packet.ReadUInt32("ErrorId");
             packet.ReadWoWString("Team Name", teamLength);
         }
 
@@ -1894,6 +1894,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_PVP_LOG_DATA)]
         [Parser(Opcode.CMSG_REQUEST_PVP_REWARDS)]
         [Parser(Opcode.CMSG_ARENA_TEAM_ACCEPT)]
+        [Parser(Opcode.CMSG_ARENA_TEAM_DECLINE)]
         public static void HandleBattlegroundNull(Packet packet)
         {
         }
