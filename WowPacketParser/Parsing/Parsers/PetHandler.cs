@@ -213,7 +213,8 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.CMSG_PET_STOP_ATTACK)]
         [Parser(Opcode.CMSG_DISMISS_CRITTER)]
-        public static void HandleDismissCritter(Packet packet)
+        [Parser(Opcode.CMSG_PET_ABANDON)]
+        public static void HandlePetMiscGuid(Packet packet)
         {
             packet.ReadGuid("GUID");
         }
@@ -288,5 +289,23 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("Pet Name", len);
         }
 
+        [Parser(Opcode.CMSG_PET_RENAME)]
+        public static void HandlePetRename(Packet packet)
+        {
+            packet.ReadGuid("Pet Guid");
+            packet.ReadCString("Name");
+            var declined = packet.ReadBoolean("Is Declined");
+            if (declined)
+                for (var i = 0; i < 5; ++i)
+                    packet.ReadCString("Declined Name", i);
+        }
+
+        [Parser(Opcode.CMSG_PET_SPELL_AUTOCAST)]
+        public static void HandlePetSpellAutocast(Packet packet)
+        {
+            packet.ReadGuid("Pet Guid");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id");
+            packet.ReadByte("State");
+        }
     }
 }
