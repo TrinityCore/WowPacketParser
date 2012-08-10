@@ -269,7 +269,7 @@ namespace WowPacketParser.SQL
                 var count = 0;
                 foreach (var row in Rows)
                 {
-                    if (count >= MaxRowsPerInsert)
+                    if (count >= MaxRowsPerInsert && !_deleteDuplicates)
                     {
                         query.ReplaceLast(',', ';');
                         query.Append(InsertHeader);
