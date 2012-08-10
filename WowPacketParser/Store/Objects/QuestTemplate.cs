@@ -191,5 +191,8 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("SoundTurnIn")] //4.x
         public uint SoundTurnIn;
+
+        [DBFieldName("WDBVerified")]
+        public int WDBVerified;
     }
 }

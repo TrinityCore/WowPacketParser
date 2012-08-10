@@ -160,5 +160,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("prob7")] public float prob7;
         [DBFieldName("em7_", Count = 6, StartAtZero = true)] public uint[] em7_x;
         // ReSharper restore InconsistentNaming
+
+        [DBFieldName("WDBVerified")]
+        public int WDBVerified;
     }
 }

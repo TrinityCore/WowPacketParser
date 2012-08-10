@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL.Builders;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
@@ -21,6 +22,24 @@ namespace WowPacketParser.SQL
             if (units != null)
                 foreach (var unit in units)
                     unit.Value.LoadValuesFromUpdateFields();
+
+            // Ewwwww...
+            var build = ClientVersion.BuildInt;
+            if (Storage.GameObjectTemplates != null)
+                foreach (var obj in Storage.GameObjectTemplates)
+                    obj.Value.Item1.WDBVerified = build;
+            if (Storage.NpcTexts != null)
+                foreach (var obj in Storage.NpcTexts)
+                    obj.Value.Item1.WDBVerified = build;
+            if (Storage.PageTexts != null)
+                foreach (var obj in Storage.PageTexts)
+                    obj.Value.Item1.WDBVerified = build;
+            if (Storage.UnitTemplates != null)
+                foreach (var obj in Storage.UnitTemplates)
+                    obj.Value.Item1.WDBVerified = build;
+            if (Storage.QuestTemplates != null)
+                foreach (var obj in Storage.QuestTemplates)
+                    obj.Value.Item1.WDBVerified = build;
 
             using (var store = new SQLFile(fileName))
             {

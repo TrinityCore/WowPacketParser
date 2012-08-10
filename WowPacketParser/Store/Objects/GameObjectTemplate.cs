@@ -35,5 +35,8 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("unkInt32")]
         public int UnknownInt;
+
+        [DBFieldName("WDBVerified")]
+        public int WDBVerified;
     }
 }

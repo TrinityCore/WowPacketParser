@@ -61,5 +61,8 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("exp_unk")]
         public ClientType Expansion;
+
+        [DBFieldName("WDBVerified")]
+        public int WDBVerified;
     }
 }

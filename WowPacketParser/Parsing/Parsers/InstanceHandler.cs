@@ -194,7 +194,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
         }
 
-        [Parser(Opcode.CMSG_INSTANCE_LOCK_WARNING_RESPONSE, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_INSTANCE_LOCK_WARNING_RESPONSE)]
         [Parser(Opcode.CMSG_INSTANCE_LOCK_RESPONSE)]
         public static void HandleInstanceLockResponse(Packet packet)
         {
