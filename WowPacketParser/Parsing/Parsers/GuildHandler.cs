@@ -282,7 +282,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < size; ++i)
             {
                 packet.ReadEnum<Class>("Member Class", TypeCode.Byte, i);
-                packet.ReadInt32("Unk", i);
+                packet.ReadInt32("Guild Reputation", i);
 
                 packet.ReadXORByte(guid[i], 0);
 

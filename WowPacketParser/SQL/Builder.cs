@@ -25,19 +25,19 @@ namespace WowPacketParser.SQL
 
             // Ewwwww...
             var build = ClientVersion.BuildInt;
-            if (Storage.GameObjectTemplates != null)
+            if (!Storage.GameObjectTemplates.IsEmpty())
                 foreach (var obj in Storage.GameObjectTemplates)
                     obj.Value.Item1.WDBVerified = build;
-            if (Storage.NpcTexts != null)
+            if (!Storage.GameObjectTemplates.IsEmpty())
                 foreach (var obj in Storage.NpcTexts)
                     obj.Value.Item1.WDBVerified = build;
-            if (Storage.PageTexts != null)
+            if (!Storage.GameObjectTemplates.IsEmpty())
                 foreach (var obj in Storage.PageTexts)
                     obj.Value.Item1.WDBVerified = build;
-            if (Storage.UnitTemplates != null)
+            if (!Storage.GameObjectTemplates.IsEmpty())
                 foreach (var obj in Storage.UnitTemplates)
                     obj.Value.Item1.WDBVerified = build;
-            if (Storage.QuestTemplates != null)
+            if (!Storage.GameObjectTemplates.IsEmpty())
                 foreach (var obj in Storage.QuestTemplates)
                     obj.Value.Item1.WDBVerified = build;
 

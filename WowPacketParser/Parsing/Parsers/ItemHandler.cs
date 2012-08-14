@@ -306,7 +306,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Vendor GUID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623)) // not verified
-                packet.ReadByte("Unk (byte)");
+                packet.ReadByte("Type"); // 1 item, 2 currency
 
             packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
 
