@@ -9,5 +9,7 @@
         public int MaxCount;
 
         public uint ExtendedCostId;
+
+        public uint Type;
     }
 }

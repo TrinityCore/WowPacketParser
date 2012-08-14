@@ -18,6 +18,7 @@
         Zone,
         Area,
         Phase,
-        Player
+        Player,
+        Currency,
     }
 }

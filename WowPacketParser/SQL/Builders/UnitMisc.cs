@@ -201,7 +201,11 @@ namespace WowPacketParser.SQL.Builders
                     row.AddValue("slot", vendorItem.Slot);
                     row.AddValue("maxcount", vendorItem.MaxCount);
                     row.AddValue("ExtendedCost", vendorItem.ExtendedCostId);
-                    row.Comment = StoreGetters.GetName(StoreNameType.Item, (int)vendorItem.ItemId, false);
+
+                    if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
+                        row.AddValue("Type", vendorItem.Type);
+
+                    row.Comment = StoreGetters.GetName(vendorItem.Type <= 1 ? StoreNameType.Item : StoreNameType.Currency, (int)vendorItem.ItemId, false);
                     rows.Add(row);
                 }
             }

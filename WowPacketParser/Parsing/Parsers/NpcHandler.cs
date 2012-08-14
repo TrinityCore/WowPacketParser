@@ -141,7 +141,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 vendorItem.Slot = packet.ReadUInt32("Item Position", i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_3_13329))
-                    packet.ReadUInt32("Unk Uint32", i);
+                    vendorItem.Type = packet.ReadUInt32("Item Type", i); // not confirmed
                 vendorItem.ItemId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
                 packet.ReadInt32("Display ID", i);
                 var maxCount = packet.ReadInt32("Max Count", i);
@@ -199,6 +199,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Unk Int32 2", i);
                 packet.ReadInt32("Price", i);
 
+                // where's the vendorItem.Type (1/2)?
+
                 npcVendor.VendorItems.Add(vendorItem);
             }
 
@@ -243,7 +245,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasExtendedCost[i])
                     vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
                 vendorItem.ItemId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
-                packet.ReadInt32("Type", i); // 1 - item, 2 - currency
+                vendorItem.Type = packet.ReadUInt32("Type", i); // 1 - item, 2 - currency
                 packet.ReadInt32("Price", i);
                 packet.ReadInt32("Display ID", i);
                 if (enabler2[i])
