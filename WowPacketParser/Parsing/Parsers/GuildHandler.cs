@@ -1302,7 +1302,7 @@ namespace WowPacketParser.Parsing.Parsers
                 for (int j = 0; i < count[i]; ++j)
                 {
                     packet.ParseBitStream(guidIn[i][j], 0, 1, 4, 7, 5, 6, 3, 2);
-                    packet.WriteGuid("Guid", guidIn[i][j], i);
+                    packet.WriteGuid("Guid", guidIn[i][j], i, j);
                 }
 
                 packet.ReadXORByte(guidOut[i], 5);

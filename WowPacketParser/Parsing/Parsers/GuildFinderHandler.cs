@@ -6,16 +6,6 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class GuildFinderHandler
     {
-        [Parser(Opcode.CMSG_LF_GUILD_JOIN)]
-        public static void HandleGuildFinderJoin(Packet packet)
-        {
-            packet.ReadBit("Join");
-            packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32);
-            packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32);
-            packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32);
-            packet.ReadEnum<GuildFinderOptionsLevel>("Level", TypeCode.UInt32);
-            packet.ReadCString("Comment");
-        }
 
         [Parser(Opcode.CMSG_LF_GUILD_BROWSE)]
         public static void HandleGuildFinderBrowse(Packet packet)
@@ -26,31 +16,46 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Level");
         }
 
-        [Parser(Opcode.CMSG_LF_GUILD_SET_GUILD_POST)]
-        public static void HandleGuildFinderSetGuildPost(Packet packet)
+        [Parser(Opcode.CMSG_LF_GUILD_SET_GUILD_POST, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildFinderSetGuildPost422(Packet packet)
         {
-            packet.ReadUInt32("Unk int32 1");
-            packet.ReadUInt32("Unk int32 2");
-            packet.ReadUInt32("Unk int32 3");
-            packet.ReadUInt32("Unk int32 4");
+            packet.ReadBit("Join");
+            packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsLevel>("Level", TypeCode.UInt32);
+            packet.ReadCString("Comment");
+        }
+
+        [Parser(Opcode.CMSG_LF_GUILD_SET_GUILD_POST, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildFinderSetGuildPost434(Packet packet)
+        {
+            // order for the next 4 ints not confirmed
+            packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsLevel>("Level", TypeCode.UInt32);
             var length = packet.ReadBits(11);
-            packet.ReadBit("Unk bit");
-            packet.ReadWoWString("Unk string", length);
+            packet.ReadBit("Listed");
+            packet.ReadWoWString("Comment", length);
         }
 
         [Parser(Opcode.SMSG_LF_GUILD_POST_UPDATED)]
         public static void HandleGuildFinderPostUpdated(Packet packet)
         {
-            var b = packet.ReadByte("Unk byte");
+            var b = packet.ReadBit("Unk Bit");
 
             if (b != 0)
             {
+                var length = packet.ReadBits(11);
+                packet.ReadBit("Listed");
+                // Flush bits
+                packet.ReadInt32("AnyLevel/MaxLevel");
+                packet.ReadWoWString("Comment", length);
                 packet.ReadInt32("Unk Int32");
-                packet.ReadCString("Unk CString");
-                packet.ReadInt32("Unk Int32");
-                packet.ReadInt32("Unk Int32");
-                packet.ReadInt32("Unk Int32");
-                packet.ReadInt32("Unk Int32");
+                packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32);
+                packet.ReadInt32("Tank/Healer/Damage");
+                packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32);
             }
         }
 
@@ -61,8 +66,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32");
         }
 
-        [Parser(Opcode.SMSG_LF_GUILD_SEARCH_RESULT)]
-        public static void HandleGuildFinderSearchResult(Packet packet)
+        [Parser(Opcode.SMSG_LF_GUILD_BROWSE_UPDATED, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandlerLFGuildBrowseUpdated422(Packet packet)
         {
             var count = packet.ReadInt32("Count");
             if (count == 0)
@@ -115,6 +120,74 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guids[i], 1);
 
                 packet.WriteGuid("Guild GUID", guids[i], i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_LF_GUILD_BROWSE_UPDATED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandlerLFGuildBrowseUpdated434(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 19);
+
+            var guids = new byte[count][];
+            var strlen = new uint[count][];
+
+            for (int i = 0; i < count; ++i)
+            {
+                guids[i] = new byte[8];
+                strlen[i] = new uint[2];
+
+                guids[i][7] = packet.ReadBit();
+                guids[i][5] = packet.ReadBit();
+                strlen[i][1] = packet.ReadBits(8);
+                guids[i][0] = packet.ReadBit();
+                strlen[i][0] = packet.ReadBits(11);
+                guids[i][4] = packet.ReadBit();
+                guids[i][1] = packet.ReadBit();
+                guids[i][2] = packet.ReadBit();
+                guids[i][6] = packet.ReadBit();
+                guids[i][3] = packet.ReadBit();
+            }
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Tabard Emblem Color", i);
+                packet.ReadInt32("Unk Int 1", i); // + 140
+                packet.ReadInt32("Tabard Icon", i);
+                packet.ReadWoWString("Comment", strlen[i][0], i);
+                packet.ReadBoolean("Cached", i);
+
+                packet.ReadXORByte(guids[i], 5);
+
+                packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32, i);
+
+                packet.ReadXORByte(guids[i], 6);
+                packet.ReadXORByte(guids[i], 4);
+
+                packet.ReadInt32("Level", i);
+                packet.ReadWoWString("Name", strlen[i][1], i);
+                packet.ReadInt32("Achievement Points", i);
+
+                packet.ReadXORByte(guids[i], 7);
+
+                packet.ReadBoolean("Request Pending", i);
+
+                packet.ReadXORByte(guids[i], 2);
+                packet.ReadXORByte(guids[i], 0);
+
+                packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32, i);
+
+                packet.ReadXORByte(guids[i], 1);
+
+                packet.ReadInt32("Tabard Background Color", i);
+                packet.ReadInt32("Unk Int 2", i); // + 128
+                packet.ReadInt32("Tabard Border Color", i);
+                packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32, i);
+
+                packet.ReadXORByte(guids[i], 3);
+
+                packet.ReadInt32("Number of Members", i);
+
+                packet.WriteGuid("Guild Guid", guids[i], i);
             }
         }
 
@@ -239,74 +312,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             packet.ReadInt32("Unk int");
-        }
-
-        [Parser(Opcode.SMSG_LF_GUILD_BROWSE_UPDATED)]
-        public static void HandlerLFGuildBrowseUpdated(Packet packet)
-        {
-            var count = packet.ReadBits("Count", 19);
-
-            var guids = new byte[count][];
-            var strlen = new uint[count][];
-
-            for (int i = 0; i < count; ++i)
-            {
-                guids[i] = new byte[8];
-                strlen[i] = new uint[2];
-
-                guids[i][7] = packet.ReadBit();
-                guids[i][5] = packet.ReadBit();
-                strlen[i][1] = packet.ReadBits(8);
-                guids[i][0] = packet.ReadBit();
-                strlen[i][0] = packet.ReadBits(11);
-                guids[i][4] = packet.ReadBit();
-                guids[i][1] = packet.ReadBit();
-                guids[i][2] = packet.ReadBit();
-                guids[i][6] = packet.ReadBit();
-                guids[i][3] = packet.ReadBit();
-            }
-
-            for (int i = 0; i < count; ++i)
-            {
-                packet.ReadInt32("Tabard Emblem Color", i);
-                packet.ReadInt32("Unk Int 1", i); // + 140
-                packet.ReadInt32("Tabard Icon", i);
-                packet.ReadWoWString("Comment", strlen[i][0], i);
-                packet.ReadBoolean("Cached", i);
-
-                packet.ReadXORByte(guids[i], 5);
-
-                packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32, i);
-
-                packet.ReadXORByte(guids[i], 6);
-                packet.ReadXORByte(guids[i], 4);
-
-                packet.ReadInt32("Level", i);
-                packet.ReadWoWString("Name", strlen[i][1], i);
-                packet.ReadInt32("Achievement Points", i);
-
-                packet.ReadXORByte(guids[i], 7);
-
-                packet.ReadBoolean("Request Pending", i);
-
-                packet.ReadXORByte(guids[i], 2);
-                packet.ReadXORByte(guids[i], 0);
-
-                packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32, i);
-
-                packet.ReadXORByte(guids[i], 1);
-
-                packet.ReadInt32("Tabard Background Color", i);
-                packet.ReadInt32("Unk Int 2", i); // + 128
-                packet.ReadInt32("Tabard Border Color", i);
-                packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32, i);
-
-                packet.ReadXORByte(guids[i], 3);
-
-                packet.ReadInt32("Number of Members", i);
-
-                packet.WriteGuid("Guild Guid", guids[i], i);
-            }
         }
 
         [Parser(Opcode.CMSG_LF_GUILD_POST_REQUEST)]
