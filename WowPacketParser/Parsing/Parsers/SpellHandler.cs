@@ -352,6 +352,17 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Elevation");
             packet.ReadSingle("Missile speed");
             var hasMovement = packet.ReadBoolean("Has Movement Data");
+            if (ClientVersion.RemovedInVersion(ClientType.Cataclysm))
+            {
+                var opcode = packet.ReadInt32();
+                // None length is recieved, so we have to calculate the remaining bytes.
+                var remainingLength = packet.Length - packet.Position;
+                var bytes = packet.ReadBytes((int)remainingLength);
+
+                using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
+                    Handler.Parse(newpacket, true);
+                return;
+            }
             if (hasMovement)
             {
                 var guid = new byte[8];
