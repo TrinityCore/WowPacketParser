@@ -3,7 +3,7 @@ using System;
 namespace WowPacketParser.Enums
 {
     [Flags]
-    public enum QuestFlags
+    public enum QuestFlags : uint
     {
         None          = 0x00000000,
         StayAlive     = 0x00000001,
