@@ -13,7 +13,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32);
             packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32);
             packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32);
-            packet.ReadUInt32("Level");
+            packet.ReadUInt32("Player Level");
         }
 
         [Parser(Opcode.CMSG_LF_GUILD_SET_GUILD_POST, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
@@ -50,11 +50,11 @@ namespace WowPacketParser.Parsing.Parsers
                 var length = packet.ReadBits(11);
                 packet.ReadBit("Listed");
                 // Flush bits
-                packet.ReadInt32("AnyLevel/MaxLevel");
+                packet.ReadEnum<GuildFinderOptionsLevel>("Level", TypeCode.UInt32);
                 packet.ReadWoWString("Comment", length);
                 packet.ReadInt32("Unk Int32");
                 packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32);
-                packet.ReadInt32("Tank/Healer/Damage");
+                packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32);
                 packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32);
             }
         }
@@ -62,7 +62,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LF_GUILD_COMMAND_RESULT)]
         public static void HandleGuildFinderCommandResult(Packet packet)
         {
-            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Unk Byte"); // == 0 -> ERR_GUILD_INTERNAL
             packet.ReadInt32("Unk Int32");
         }
 
@@ -314,9 +314,28 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk int");
         }
 
+        [Parser(Opcode.CMSG_LF_GUILD_DECLINE_RECRUIT)] // 4.3.4
+        public static void HandleLFGuildDeclineRecruit(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 4, 5, 2, 6, 7, 0, 3);
+            packet.ParseBitStream(guid, 5, 7, 2, 3, 4, 1, 0, 6);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_LF_GUILD_REMOVE_RECRUIT)] // 4.3.4
+        public static void HandleLFGuildRemoveRecruit(Packet packet)
+        {
+            var guid = packet.StartBitStream(0, 4, 3, 5, 7, 6, 2, 1);
+            packet.ParseBitStream(guid, 4, 0, 3, 6, 5, 1, 2, 7);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        // TODO: CMSG_LF_GUILD_ADD_RECRUIT
+
         [Parser(Opcode.CMSG_LF_GUILD_POST_REQUEST)]
         [Parser(Opcode.CMSG_LF_GUILD_GET_APPLICATIONS)]
         [Parser(Opcode.SMSG_LF_GUILD_APPLICANT_LIST_UPDATED)]
+        [Parser(Opcode.SMSG_LF_GUILD_APPLICATIONS_LIST_CHANGED)]
         public static void HandlerLFGuildZeroLength(Packet packet)
         {
         }
