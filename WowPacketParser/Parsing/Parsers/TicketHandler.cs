@@ -98,6 +98,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk UInt32");
         }
 
+        [Parser(Opcode.CMSG_GMTICKET_UPDATETEXT)]
+        public static void HandleGMTicketUpdatetext(Packet packet)
+        {
+            packet.ReadCString("New Ticket Text");
+        }
+
         [Parser(Opcode.SMSG_GMRESPONSE_STATUS_UPDATE)]
         public static void HandleGMResponseStatusUpdate(Packet packet)
         {
