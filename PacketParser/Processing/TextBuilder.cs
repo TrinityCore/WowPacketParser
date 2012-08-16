@@ -85,8 +85,7 @@ namespace PacketParser.Processing
             }
             else if (t == typeof(NamedTreeNode))
             {
-                if (align.Length > 0)
-                    align.Remove(align.Length - 1, 1);
+                align.Remove(align.Length - 1, 1);
             }
         }
 

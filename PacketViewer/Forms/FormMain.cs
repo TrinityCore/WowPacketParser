@@ -27,7 +27,13 @@ namespace PacketViewer.Forms
             if (openFileDialogNewPacketFile.ShowDialog() != DialogResult.OK)
                 return;
             var file = openFileDialogNewPacketFile.FileName;
-            var newTab = new TabPageFile(file, new PacketFileTab(file));
+            var dial = new FormFileOpenDetails(file);
+            if (dial.ShowDialog(this) != System.Windows.Forms.DialogResult.OK)
+            {
+                dial.Dispose();
+                return;
+            }
+            var newTab = new TabPageFile(file, new PacketFileTab(file, dial));
             tabControlFiles.Controls.Add(newTab);
             tabControlFiles.SelectedTab = newTab;
         }

@@ -56,7 +56,7 @@ namespace PacketParser.Processing
             return Utilities.GetClasses(typeof(IPacketProcessor));
         }
 
-        protected void InitProcessors()
+        protected virtual void InitProcessors()
         {
             var procss = GetAvailableProcessors();
 

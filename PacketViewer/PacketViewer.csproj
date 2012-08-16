@@ -105,11 +105,23 @@
     <Compile Include="Forms\DetailsView.Designer.cs">
       <DependentUpon>DetailsView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FormFileOpenDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormFileOpenDetails.Designer.cs">
+      <DependentUpon>FormFileOpenDetails.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSettings.Designer.cs">
+      <DependentUpon>FormSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\PacketFileTab.cs">
       <SubType>UserControl</SubType>
@@ -120,7 +132,8 @@
     <Compile Include="Forms\TabPageFile.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Processing\BinOutput.cs" />
+    <Compile Include="Processing\HexOutput.cs" />
+    <Compile Include="Processing\IDetailsViewPacketProcessor.cs" />
     <Compile Include="Processing\PacketFileViewer.cs" />
     <Compile Include="Processing\TableOutput.cs" />
     <Compile Include="Processing\TextOutput.cs" />
@@ -128,6 +141,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\DetailsView.resx">
       <DependentUpon>DetailsView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormFileOpenDetails.resx">
+      <DependentUpon>FormFileOpenDetails.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>

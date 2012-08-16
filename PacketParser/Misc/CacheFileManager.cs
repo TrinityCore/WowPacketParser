@@ -15,7 +15,6 @@ namespace PacketParser.Misc
         protected List<bool> _dataBlocksCached = new List<bool>();
 
         protected FileStream _file;
-        protected static int _lastCacheFile = 0;
         protected BinaryFormatter bFormatter = new BinaryFormatter();
         protected string _fileName;
 
@@ -24,8 +23,7 @@ namespace PacketParser.Misc
 
         public CacheFileManager()
         {
-            _lastCacheFile++;
-            _fileName = "cachefile_" + _lastCacheFile;
+            _fileName = Path.GetTempFileName();
             _file = new FileStream(_fileName, FileMode.OpenOrCreate);
         }
 
@@ -80,6 +78,8 @@ namespace PacketParser.Misc
             _file.Seek(_dataBlockUpdateFirstBlockOffset, SeekOrigin.Begin);
             for (int i = _dataUpdateFirstBlockIndex; i < GetBlocksCount(); ++i)
             {
+                if (_dataBlocks[i] == null)
+                    continue;
                 _dataBlocksFileOffset[i] = _file.Position;
                 bFormatter.Serialize(_file, _dataBlocks[i]);
             }
@@ -149,6 +149,13 @@ namespace PacketParser.Misc
         {
             var count = GetBlocksCount();
             for (int i = 0; i < count; ++i)
+                UnCacheBlock(i);
+        }
+
+        public void UnCacheBlocksAfter(int firstBlockId)
+        {
+            var count = GetBlocksCount();
+            for (int i = firstBlockId; i < count; ++i)
                 UnCacheBlock(i);
         }
 

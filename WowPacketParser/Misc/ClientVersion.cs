@@ -87,6 +87,16 @@ namespace PacketParser.Misc
             }
         }
 
+        public static List<ClientVersionBuild>GetAvailableVersions()
+        {
+            var l = new List<ClientVersionBuild>(_clientBuilds.Length);
+            for (int i = 0; i < _clientBuilds.Length;++i)
+            {
+                l.Add(_clientBuilds[i].Key);
+            }
+            return l;
+        }
+
         public static int BuildInt
         {
             get { return (int) Build; }

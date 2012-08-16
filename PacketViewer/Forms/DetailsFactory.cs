@@ -16,8 +16,10 @@ namespace PacketViewer.Forms
         {
             if (cell.Row.Index % 2 == 0)
                 return null;
+            int packetUID = cell.Row.Parent == null ? (int)(cell.Row.Tag) : (int)cell.Row.Parent.Tag;
             DetailsView cont = new DetailsView(cell.Row);
             cont.Height = cell.Row.Height;
+            Tab.PacketProcessor.GetDetailsViewControlHandler(packetUID, cont, cell);
             return cont;
         }
 

@@ -13,19 +13,20 @@ using PacketViewer.Processing;
 
 using PacketViewer.DataStructures;
 using PacketParser.Misc;
+using PacketParser.Enums;
 
 namespace PacketViewer.Forms
 {
     public partial class PacketFileTab : UserControl
     {
-        public PacketFileTab(string file)
+        public PacketFileTab(string file, FormFileOpenDetails fileOpenDetails)
         {
             InitializeComponent();
             filename = file;
             backgroundWorkerProcessPackets.WorkerReportsProgress = true;
             backgroundWorkerProcessPackets.WorkerSupportsCancellation = true;
 
-            PacketProcessor = new PacketFileViewer(filename, new Tuple<int, int>(0, 0), this);
+            PacketProcessor = new PacketFileViewer(filename, this, fileOpenDetails, new Tuple<int, int>(0, 0));
             _fileinfo = PacketProcessor.GetFileInfoString();
             BecameSelected();
 

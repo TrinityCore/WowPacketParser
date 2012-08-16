@@ -7,9 +7,9 @@ namespace PacketParser.Loading
 {
     public static class Reader
     {
-        private static Dictionary<string, Type> _readers = LoadReaders();
+        private static Dictionary<string, Type> _readers = GetReaders();
 
-        public static Dictionary<string, Type> LoadReaders()
+        public static Dictionary<string, Type> GetReaders()
         {
             var readers = new Dictionary<string, Type>();
             readers.Add("pkt", typeof(BinaryPacketReader));

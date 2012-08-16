@@ -130,6 +130,10 @@ namespace PacketParser.DataStructures
                         Index = null;
                         return true;
                     }
+                    else if (((NamedTreeNode)Current).Count == 0)
+                    {
+                        CurrentClosedNodes.Add(new EnumeratedNamedNode(Type, Current, Name, itr));
+                    }
                     // fall threw, we had empty list and couldn't get inside, let's go to the next el of parent iterator
                 }
                 else if (Type == typeof(Packet))
@@ -145,6 +149,10 @@ namespace PacketParser.DataStructures
                         Index = null;
                         return true;
                     }
+                    else if (((Packet)Current).GetData().Count == 0)
+                    {
+                        CurrentClosedNodes.Add(new EnumeratedNamedNode(Type, Current, Name, itr));
+                    }
                     // fall threw, we had empty list and couldn't get inside, let's go to the next el of parent iterator
                 }
                 else if (Type == typeof(IndexedTreeNode))
@@ -157,6 +165,10 @@ namespace PacketParser.DataStructures
                         Current = itr.Current.Value;
                         Index = itr.Current.Key;
                         return true;
+                    }
+                    else if (((IndexedTreeNode)Current).Count == 0)
+                    {
+                        CurrentClosedNodes.Add(new EnumeratedIndexedNode(Type, Current, Name, itr));
                     }
                     // fall threw, we had empty list and couldn't get inside, let's go to the next el of parent iterator
                 }
