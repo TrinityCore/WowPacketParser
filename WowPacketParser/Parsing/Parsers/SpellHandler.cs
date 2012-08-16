@@ -129,9 +129,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Elevation");
             packet.ReadSingle("Speed");
             packet.ReadUInt32("Duration");
-
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_5a_12340) || ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
-                packet.ReadInt32("Unk");
+            packet.ReadInt32("Unk");
 
             if (packet.Length == 64) // packet always has length 64 length except for some rare exceptions with length 60 (hardcoded in the client)
                 packet.ReadSingle("Unk");
