@@ -150,6 +150,9 @@ namespace WowPacketParser.Misc
 
         public void Write(string value)
         {
+            if (Settings.DumpFormat == DumpFormatType.SqlOnly)
+                return;
+
             if (Writer == null)
                 Writer = new StringBuilder();
 
@@ -158,6 +161,9 @@ namespace WowPacketParser.Misc
 
         public void Write(string format, params object[] args)
         {
+            if (Settings.DumpFormat == DumpFormatType.SqlOnly)
+                return;
+
             if (Writer == null)
                 Writer = new StringBuilder();
 
@@ -166,6 +172,9 @@ namespace WowPacketParser.Misc
 
         public void WriteLine()
         {
+            if (Settings.DumpFormat == DumpFormatType.SqlOnly)
+                return;
+
             if (Writer == null)
                 Writer = new StringBuilder();
 
@@ -174,6 +183,9 @@ namespace WowPacketParser.Misc
 
         public void WriteLine(string value)
         {
+            if (Settings.DumpFormat == DumpFormatType.SqlOnly)
+                return;
+
             if (Writer == null)
                 Writer = new StringBuilder();
 
@@ -182,6 +194,9 @@ namespace WowPacketParser.Misc
 
         public void WriteLine(string format, params object[] args)
         {
+            if (Settings.DumpFormat == DumpFormatType.SqlOnly)
+                return;
+
             if (Writer == null)
                 Writer = new StringBuilder();
 
@@ -192,7 +207,9 @@ namespace WowPacketParser.Misc
         {
             if (Writer != null)
             {
-                Writer.Clear();
+                if (Settings.DumpFormat != DumpFormatType.SqlOnly)
+                    Writer.Clear();
+
                 Writer = null;
             }
 

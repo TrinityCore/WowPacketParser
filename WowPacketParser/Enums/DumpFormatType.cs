@@ -5,6 +5,7 @@
         None,           // No dump at all
         Text,
         Pkt,
-        PktSplit
+        PktSplit,
+        SqlOnly
     }
 }

@@ -49,9 +49,10 @@ namespace WowPacketParser.Loading
         {
             switch (_dumpFormat)
             {
+                case DumpFormatType.SqlOnly:
                 case DumpFormatType.Text:
                 {
-                    if (Utilities.FileIsInUse(_outFileName))
+                    if (Utilities.FileIsInUse(_outFileName) && Settings.DumpFormat != DumpFormatType.SqlOnly)
                     {
                         // If our dump format requires a .txt to be created,
                         // check if we can write to that .txt before starting parsing
@@ -139,11 +140,11 @@ namespace WowPacketParser.Loading
             Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Assumed version {2}",
                     _logPrefix, packetCount, ClientVersion.VersionString));
 
-            using (var writer = new StreamWriter(_outFileName, true))
+            using (var writer = (Settings.DumpFormat != DumpFormatType.SqlOnly ? new StreamWriter(_outFileName, true) : null))
             {
                 var i = 1;
-
-                writer.WriteLine(GetHeader());
+                if (Settings.DumpFormat != DumpFormatType.SqlOnly)
+                    writer.WriteLine(GetHeader());
 
                 _stats.SetStartTime(DateTime.Now);
                 foreach (var packet in _packets)
@@ -165,9 +166,12 @@ namespace WowPacketParser.Loading
                             _skippedHeaders.AddLast(packet.GetHeader());
                     }
 
-                    // Write to file
-                    writer.WriteLine(packet.Writer);
-                    writer.Flush();
+                    if (Settings.DumpFormat != DumpFormatType.SqlOnly)
+                    {
+                        // Write to file
+                        writer.WriteLine(packet.Writer);
+                        writer.Flush();
+                    }
 
                     // Close Writer, Stream - Dispose
                     packet.ClosePacket();
