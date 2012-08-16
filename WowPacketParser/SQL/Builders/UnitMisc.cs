@@ -210,7 +210,7 @@ namespace WowPacketParser.SQL.Builders
                 }
             }
 
-            return new QueryBuilder.SQLInsert(tableName, rows, 2).Build();
+            return new QueryBuilder.SQLInsert(tableName, rows, 1).Build();
         }
 
         public static string CreatureEquip(Dictionary<Guid, Unit> units)
