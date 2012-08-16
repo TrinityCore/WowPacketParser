@@ -148,10 +148,13 @@ namespace WowPacketParser.Parsing.Parsers
                 vendorItem.MaxCount = maxCount == -1 ? 0 : maxCount; // TDB
                 packet.ReadInt32("Price", i);
                 packet.ReadInt32("Max Durability", i);
-                packet.ReadUInt32("Buy Count", i);
+                var buyCount = packet.ReadUInt32("Buy Count", i);
                 vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_3_13329))
                     packet.ReadByte("Unk Byte", i);
+
+                if (vendorItem.Type == 2)
+                    vendorItem.MaxCount = (int)buyCount;
             }
 
             Storage.NpcVendors.Add(guid.GetEntry(), npcVendor, packet.TimeSpan);
@@ -252,7 +255,10 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Unk Int32 8", i);
                 var maxCount = packet.ReadInt32("Max Count", i);
                 vendorItem.MaxCount = maxCount == -1 ? 0 : maxCount; // TDB
-                packet.ReadUInt32("Buy Count", i);
+                var buyCount = packet.ReadUInt32("Buy Count", i);
+
+                if (vendorItem.Type == 2)
+                    vendorItem.MaxCount = (int) buyCount;
 
                 npcVendor.VendorItems.Add(vendorItem);
             }
