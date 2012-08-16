@@ -28,16 +28,16 @@ namespace WowPacketParser.SQL
             if (!Storage.GameObjectTemplates.IsEmpty())
                 foreach (var obj in Storage.GameObjectTemplates)
                     obj.Value.Item1.WDBVerified = build;
-            if (!Storage.GameObjectTemplates.IsEmpty())
+            if (!Storage.NpcTexts.IsEmpty())
                 foreach (var obj in Storage.NpcTexts)
                     obj.Value.Item1.WDBVerified = build;
-            if (!Storage.GameObjectTemplates.IsEmpty())
+            if (!Storage.PageTexts.IsEmpty())
                 foreach (var obj in Storage.PageTexts)
                     obj.Value.Item1.WDBVerified = build;
-            if (!Storage.GameObjectTemplates.IsEmpty())
+            if (!Storage.UnitTemplates.IsEmpty())
                 foreach (var obj in Storage.UnitTemplates)
                     obj.Value.Item1.WDBVerified = build;
-            if (!Storage.GameObjectTemplates.IsEmpty())
+            if (!Storage.QuestTemplates.IsEmpty())
                 foreach (var obj in Storage.QuestTemplates)
                     obj.Value.Item1.WDBVerified = build;
 
