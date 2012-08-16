@@ -607,7 +607,7 @@ namespace WowPacketParser.SQL.Builders
                 if (!Utilities.EqualValues(npcLocal.VehicleId, npcRemote.VehicleId))
                     row.AddValue("VehicleId", npcLocal.VehicleId);
 
-                if (!Utilities.EqualValues(npcLocal.HoverHeight, npcRemote.UnitClass))
+                if (!Utilities.EqualValues(npcLocal.HoverHeight, npcRemote.HoverHeight))
                     row.AddValue("HoverHeight", npcLocal.HoverHeight);
 
 
