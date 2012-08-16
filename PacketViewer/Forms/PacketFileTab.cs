@@ -68,20 +68,20 @@ namespace PacketViewer.Forms
             var col0 = new ControlColumn("", 1);
             col0.ControlFactory = new DetailsFactory(this);
             col0.ControlOffset = new Point(0, 0);
-            var col1 = new NumberColumn("Num", 50);
+            var col1 = new NumberColumn("Id", 50);
             col1.Editable = false;
-            var col12 = new NumberColumn("SubPacketNum", 50);
+            var col12 = new NumberColumn("SubId", 50);
             col12.Editable = false;
-            var col13 = new NumberColumn("OpcodeID", 50);
+            var col13 = new NumberColumn("OpcId", 50);
             col13.Editable = false;
-            var col2 = new TextColumn("OpcodeName", 250);
+            var col2 = new TextColumn("OpcName", 300);
             col2.Editable = false;
             var col21 = new TextColumn("Dir", 40);
             col21.Editable = false;
-            var col3 = new DateTimeColumn("Time", 100);
+            var col3 = new DateTimeColumn("Time", 120);
             col3.Editable = false;
             col3.DateTimeFormat = DateTimePickerFormat.Custom;
-            col3.CustomDateTimeFormat = "d/m/yyyy hh:mm";
+            col3.CustomDateTimeFormat = "d/m/yyyy hh:mm:ss";
             col3.ShowDropDownButton = false;
             var col4 = new NumberColumn("Sec", 50);
             col4.Editable = false;
@@ -111,21 +111,25 @@ namespace PacketViewer.Forms
         {
             if (packets.Count == 0)
                 return;
+            if (this.tablePackets == null)
+                return;
             this.tablePackets.BeginUpdate();
-            var id = this.tablePackets.TableModel.Rows.Count;
-            dataManager.BeginUpdate((int)(id));
+            dataManager.BeginUpdate((int)(packets[0].UID));
             var rows = this.tablePackets.TableModel.Rows;
             foreach (var entry in packets)
             {
-                dataManager.AddDataForTableRow(entry, (int)id);
+                dataManager.AddDataForRow(entry, (int)entry.UID);
                 RowWithSubrows row = new RowWithSubrows();
                 row.ExpandSubRows = false;
+                row.Tag = entry.UID;
 
                 this.tablePackets.TableModel.Rows.Add(row);
+                if (row.Index != (entry.UID*2))
+                    throw new Exception("Incorrect add row operation");
+
                 RowWithParent detailsRow = new RowWithParent();
                 detailsRow.Height = 2;
                 row.SubRows.Add(detailsRow);
-                id += 2;
             }
             dataManager.EndUpdate();
             this.tablePackets.EndUpdate();
@@ -199,14 +203,15 @@ namespace PacketViewer.Forms
     {
         private CacheFileManager<PacketEntry[]> _data = null;
         public List<byte> cachedBlockUpdatesLeft = new List<byte>();
-        public const int virtualBlocksNearIndex = 5;
+        public const int virtualBlocksNearIndex = 2;
 
         public const int cachedBlockUpdateInterval = 1000;
         public const byte cachedBlockUpdatesBeforeRemove = 3;
 
-        public const int virtualBlockSize = 20;
+        public const int virtualBlockSize = 10;
 
         private Table _table;
+        private List<Row> _rows = new List<Row>();
 
         public void Init(Table table)
         {
@@ -221,33 +226,41 @@ namespace PacketViewer.Forms
         // data requests handlers
         private void TabIndexChanged(object sender, EventArgs args)
         {
-            CacheTableRowBlock(_table.TabIndex, _table.TableModel.Rows, virtualBlocksNearIndex);
+            if (_table.TableModel.Rows.Count == 0)
+                return;
+            CacheTableRowBlock(_table.TableModel.Rows[_table.TabIndex], virtualBlocksNearIndex);
         }
 
         private void RowAdded(object sender, TableModelEventArgs args)
         {
-            var tableRowIndex = args.Row.Index;
-            var rows = args.Row.TableModel.Rows;
-            int blockId = GetBlockIndexForTableRow(tableRowIndex);
+            var rowIndex = args.Row.Index;
+            if (rowIndex >= _rows.Count)
+                _rows.AddRange(new Row[rowIndex - _rows.Count + 1]);
+            _rows[rowIndex] = args.Row;
+            int blockId = GetBlockIndexForTableRow(args.Row);
             if (cachedBlockUpdatesLeft[blockId] != 0)
-                CacheTableRow(tableRowIndex, rows, GetBlockDataIndexForTableRow(tableRowIndex), _data.GetBlock(blockId));
+            {
+                CacheTableRow(args.Row, GetBlockDataIndexForTableRow(args.Row), _data.GetBlock(blockId));
+                cachedBlockUpdatesLeft[blockId] = 4;
+            }
         }
 
         private void RowDataRequested(object caller, RowEventArgs args)
         {
-            int tableRowIndex = args.Row.Index;
-            int blockId = GetBlockIndexForTableRow(tableRowIndex);
+            int blockId = GetBlockIndexForTableRow(args.Row);
             if (cachedBlockUpdatesLeft[blockId] != 0)
             {
                 cachedBlockUpdatesLeft[blockId] = cachedBlockUpdatesBeforeRemove;
                 return;
             }
-            CacheTableRowBlock(tableRowIndex, args.Row.TableModel.Rows);
+            CacheTableRowBlock(args.Row);
         }
 
-        public int GetBlockIndexForTableRow(int tableRowIndex)
+        // table row
+        public int GetBlockIndexForTableRow(Row row)
         {
-            return tableRowIndex / (virtualBlockSize * 2);
+            int rIndex = row.Parent == null ? (int)row.Tag : (int)row.Parent.Tag;
+            return rIndex / (virtualBlockSize );
         }
 
         public int GetFirstTableRowIndexForBlock(int block)
@@ -260,14 +273,31 @@ namespace PacketViewer.Forms
             return GetFirstTableRowIndexForBlock(block+1)-1;
         }
 
-        public int GetBlockDataIndexForTableRow(int tableRowIndex)
+        public int GetBlockDataIndexForTableRow(Row row)
         {
-            return (tableRowIndex - GetFirstTableRowIndexForBlock(GetBlockIndexForTableRow(tableRowIndex))) / 2;
+            int rIndex = row.Parent == null ? (int)row.Tag : (int)row.Parent.Tag;
+            return (rIndex * 2 - GetFirstTableRowIndexForBlock(GetBlockIndexForTableRow(row))) / 2;
         }
 
-        public void BeginUpdate(int tableRowIndex)
+        // data row indexes
+        public int GetBlockIndexForRow(int rowIndex)
         {
-            _data.BeginBlocksUpdate(GetBlockIndexForTableRow(tableRowIndex));
+            return rowIndex / (virtualBlockSize);
+        }
+
+        public int GetBlockDataIndexForRow(int rowIndex)
+        {
+            return (rowIndex - GetFirstRowIndexForBlock(GetBlockIndexForRow(rowIndex)));
+        }
+
+        public int GetFirstRowIndexForBlock(int block)
+        {
+            return block * virtualBlockSize;
+        }
+
+        public void BeginUpdate(int rowIndex)
+        {
+            _data.BeginBlocksUpdate(GetBlockIndexForRow(rowIndex));
         }
 
         public void EndUpdate()
@@ -276,34 +306,25 @@ namespace PacketViewer.Forms
             _data.UnCacheAllBlocks();
         }
 
-        public void AddDataForTableRow(PacketEntry entry, int tableRowIndex)
+        public void AddDataForRow(PacketEntry entry, int rowIndex)
         {
-            int blockId = GetBlockIndexForTableRow(tableRowIndex);
+            int blockId = GetBlockIndexForRow(rowIndex);
             while (cachedBlockUpdatesLeft.Count <= blockId)
                 cachedBlockUpdatesLeft.Add(0);
 
             var block = _data.GetBlock(blockId);
             if (block == null)
                 block = new PacketEntry[virtualBlockSize];
-            var index  = GetBlockDataIndexForTableRow(tableRowIndex);
+            var index = GetBlockDataIndexForRow(rowIndex);
             block[index] = entry;
             _data.ChangeBlock(blockId, block);
         }
 
-        public PacketEntry GetDataForTableRow(int tableRowIndex)
-        {
-            int blockId = GetBlockIndexForTableRow(tableRowIndex);
-            var block = _data.GetBlock(blockId);
-            if (block != null)
-                return block[GetBlockDataIndexForTableRow(tableRowIndex)];
-            return null;
-        }
-
         public void MakeUnusedIndexesVirtual(RowCollectionForTable rows)
         {
-            if (_table == null)
+            if (_table == null || _table.TopIndex == -1)
                 return;
-            var topIndexBlock = GetBlockIndexForTableRow(_table.TopIndex);
+            /*var topIndexBlock = GetBlockIndexForTableRow(rows[_table.TopIndex]);
             var count = _data.GetBlocksCount();
             for (int i = 0; i < count; ++i)
             {
@@ -317,24 +338,24 @@ namespace PacketViewer.Forms
                     if (_table.InvokeRequired)
                     {
                         UnCacheRowCallback d = new UnCacheRowCallback(UnCacheRowsInBlock);
-                        _table.Invoke(d, new object[] { i, rows });
+                        _table.Invoke(d, new object[] { i });
                     }
                     else
                     {
-                        UnCacheRowsInBlock(i, rows);
+                        UnCacheRowsInBlock(i);
                     }
                 }
                 else
                 {
                     cachedBlockUpdatesLeft[i]--;
                 }
-            }
+            }*/
             Thread.Sleep(cachedBlockUpdateInterval);
         }
 
-        public delegate void UnCacheRowCallback(int blockId, RowCollectionForTable rows);
+        public delegate void UnCacheRowCallback(int blockId);
 
-        public void CacheRowsInBlock(int blockIndex, RowCollectionForTable rows)
+        public void CacheRowsInBlock(int blockIndex)
         {
             // already cached
             if (cachedBlockUpdatesLeft[blockIndex] != 0)
@@ -344,25 +365,25 @@ namespace PacketViewer.Forms
             }
             cachedBlockUpdatesLeft[blockIndex] = cachedBlockUpdatesBeforeRemove;
             var dataBlock = _data.GetBlock(blockIndex);
-            var lastRow = Math.Min(GetLastTableRowIndexForBlock(blockIndex), rows.Count-1);
+            var lastRow = Math.Min(GetLastTableRowIndexForBlock(blockIndex), _rows.Count-1);
             for (int tableRowIndex = GetFirstTableRowIndexForBlock(blockIndex); tableRowIndex <= lastRow; ++tableRowIndex)
-                CacheTableRow(tableRowIndex, rows, GetBlockDataIndexForTableRow(tableRowIndex), dataBlock);
+                CacheTableRow(_rows[tableRowIndex], GetBlockDataIndexForTableRow(_rows[tableRowIndex]), dataBlock);
         }
 
-        public void UnCacheRowsInBlock(int blockIndex, RowCollectionForTable rows)
+        public void UnCacheRowsInBlock(int blockIndex)
         {
             if (cachedBlockUpdatesLeft[blockIndex] == 0)
                 return;
             cachedBlockUpdatesLeft[blockIndex] = 0;
-            var lastRow = Math.Min(GetLastTableRowIndexForBlock(blockIndex), rows.Count - 1);
+            var lastRow = Math.Min(GetLastTableRowIndexForBlock(blockIndex), _rows.Count - 1);
             for (int tableRowIndex = GetFirstTableRowIndexForBlock(blockIndex); tableRowIndex <= lastRow; ++tableRowIndex)
-                UnCacheTableRow(tableRowIndex, rows);
+                UnCacheTableRow(_rows[tableRowIndex]);
             _data.UnCacheBlock(blockIndex);
         }
 
-        public void CacheTableRowBlock(int rownum, RowCollectionForTable rows, int nearbyBlocks = 0)
+        public void CacheTableRowBlock(Row row, int nearbyBlocks = 0)
         {
-            var rowBlock = GetBlockIndexForTableRow(rownum);
+            int rowBlock = GetBlockIndexForTableRow(row);
             var startBlock = Math.Max(rowBlock - nearbyBlocks, 0);
             var endBlock = Math.Min(rowBlock + nearbyBlocks+1, _data.GetBlocksCount());
             while (cachedBlockUpdatesLeft.Count < rowBlock + nearbyBlocks+1)
@@ -373,14 +394,14 @@ namespace PacketViewer.Forms
                     cachedBlockUpdatesLeft.Add(cachedBlockUpdatesBeforeRemove);
             }
             for (int blockIndex = startBlock; blockIndex < endBlock; ++blockIndex)
-                CacheRowsInBlock(blockIndex, rows);
+                CacheRowsInBlock(blockIndex);
         }
 
-        private void CacheTableRow(int tableRowIndex, RowCollectionForTable rows, int dataBlockIndex, PacketEntry[] dataBlock)
+        private void CacheTableRow(Row row, int dataBlockIndex, PacketEntry[] dataBlock)
         {
             if (dataBlock[dataBlockIndex] == null)
                 return;
-            var row = rows[tableRowIndex];
+            int tableRowIndex = row.Index;
             if (row.cells != null)
                 return;
             var entry = dataBlock[dataBlockIndex];
@@ -388,7 +409,7 @@ namespace PacketViewer.Forms
             _table.EventsDisabled = true;
             if ((tableRowIndex % 2) == 0)
             {
-                row.cells.AddRange(new Cell[] {new CellWithData(null), new CellWithData(entry.Number+1), new CellWithData((int)entry.SubPacketNumber), new CellWithData(entry.Opcode), new CellWithText(entry.OpcodeString),
+                row.cells.AddRange(new Cell[] {new Cell(), new CellWithData(entry.Number+1), new CellWithData((int)entry.SubPacketNumber), new CellWithData(entry.Opcode), new CellWithText(entry.OpcodeString),
                     new CellWithText(entry.Dir), new CellWithData(entry.Time), new CellWithData(entry.Sec), new CellWithText(entry.Status), new CellWithData(entry.Length)});
             }
             else
@@ -400,10 +421,10 @@ namespace PacketViewer.Forms
             _table.EventsDisabled = false;
         }
 
-        private void UnCacheTableRow(int tableRowIndex, RowCollectionForTable rows)
+        private void UnCacheTableRow(Row row)
         {
-            if (rows[tableRowIndex] != null)
-                rows.RemoveCacheAt(tableRowIndex);
+            if (row != null)
+                row.TableModel.Rows.RemoveCacheAt(row.Index);
         }
 
         public void Dispose()

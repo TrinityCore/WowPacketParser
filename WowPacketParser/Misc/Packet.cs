@@ -28,7 +28,8 @@ namespace PacketParser.DataStructures
             StoreObjects = new Stack<Tuple<NamedTreeNode, LinkedList<Tuple<NamedTreeNode, IndexedTreeNode>>>>();
             FileName = fileName;
             Status = ParsedStatus.None;
-            SubPacket = false;
+            SubPacketNumber = 0;
+            Parent = null;
 
             if (number == 0)
                 _firstPacketTime = Time;
@@ -52,8 +53,8 @@ namespace PacketParser.DataStructures
             StoreObjects = new Stack<Tuple<NamedTreeNode, LinkedList<Tuple<NamedTreeNode, IndexedTreeNode>>>>();
             FileName = parent.FileName;
             Status = ParsedStatus.None;
-            SubPacket = true;
-            ParentOpcode = parent.Opcode;
+            Parent = (parent.Parent != null) ? parent.Parent : parent;
+            SubPacketNumber = ++Parent.SubPacketCount;
         }
 
         public int Opcode { get; set; } // setter can't be private because it's used in multiple_packets
@@ -65,8 +66,28 @@ namespace PacketParser.DataStructures
         public string FileName { get; private set; }
         public ParsedStatus Status { get; set; }
         public string ErrorMessage = "";
-        public bool SubPacket;
-        public int ParentOpcode;
+
+        public Packet Parent;
+        public int SubPacketNumber;
+        private int SubPacketCount = 0;
+        public bool SubPacket
+        {
+            get
+            {
+                return Parent != null;
+            }
+        }
+        public int ParentOpcode
+        {
+            get
+            {
+                if (SubPacket)
+                    return Parent.Opcode;
+                return 0;
+            }
+        }
+
+        public int ParseID = -1;
 
         public NamedTreeNode GetData()
         {
@@ -163,6 +184,8 @@ namespace PacketParser.DataStructures
         {
             if (BaseStream != null)
                 BaseStream.Close();
+
+            Parent = null;
 
             Dispose(true);
         }

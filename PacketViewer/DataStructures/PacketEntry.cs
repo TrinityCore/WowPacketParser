@@ -9,7 +9,8 @@ namespace PacketViewer.DataStructures
     public class PacketEntry
     {
         public uint Number;
-        public byte SubPacketNumber;
+        public int SubPacketNumber;
+        public int UID;
         public string Dir;
         public ushort Opcode;
         public string OpcodeString;

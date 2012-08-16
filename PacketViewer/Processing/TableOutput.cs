@@ -33,24 +33,19 @@ namespace PacketViewer.Processing
         public void Finish()
         {
             AddPackets();
+            packets = null;
             Tab = null;
         }
-
-        byte subPacketNumber = 0;
 
         List<PacketEntry> packets = new List<PacketEntry>(PacketBufferSize);
 
         public void ProcessPacket(Packet packet)
         {
-            if (!packet.SubPacket)
-                subPacketNumber = 0;
-            else
-                subPacketNumber++;
-
             var packetEntry = new PacketEntry
             {
                 Number = (uint)packet.Number,
-                SubPacketNumber = subPacketNumber,
+                SubPacketNumber = packet.SubPacketNumber,
+                UID = packet.ParseID,
                 Dir = (packet.Direction == Direction.ClientToServer) ? "C->S" : "S->C",
                 Length = (ushort)packet.Length,
                 Sec = (uint)packet.TimeSpan.TotalSeconds,

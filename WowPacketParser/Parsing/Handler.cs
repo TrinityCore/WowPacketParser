@@ -74,18 +74,19 @@ namespace PacketParser.Parsing
         }
         [ThreadStatic]
         private static Dictionary<int, Action<Packet>> Handlers = null;
+        [ThreadStatic]
+        private static int lastUID;
 
         public static void InitForClientVersion()
         {
+            lastUID = 0;
             Handlers = LoadHandlers();
         }
 
         public static void Parse(Packet packet, bool checkLength = true)
         {
             var opcode = packet.Opcode;
-
-            if (opcode == 0)
-                return;
+            packet.ParseID = lastUID++;
 
             Action<Packet> handler;
             if (Handlers.TryGetValue(opcode, out handler))

@@ -24,5 +24,18 @@ namespace XPTable.Models
                 _subrows = value;
             }
         }
+
+        object _tag;
+        protected override object tag
+        {
+            get
+            {
+                return _tag;
+            }
+            set
+            {
+                _tag = value;
+            }
+        }
     }
 }

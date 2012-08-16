@@ -144,7 +144,7 @@ namespace XPTable.Models
 		/// <summary>
 		/// An object that contains data about the Row
 		/// </summary>
-		private object tag
+		protected virtual object tag
         {
             get
             {
