@@ -24,8 +24,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Server Seed");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
-                for (var i = 0; i < 8; i++)
+            {
+                var SStateCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_5a_12340) ? 8 : 4;
+                for (var i = 0; i < SStateCount; i++)
                     packet.ReadInt32("Server State", i);
+            }
         }
 
         [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
