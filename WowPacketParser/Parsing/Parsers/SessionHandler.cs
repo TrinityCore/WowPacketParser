@@ -4,6 +4,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects;
 using Guid=WowPacketParser.Misc.Guid;
+using WowPacketParser.Store;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -384,12 +385,16 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 2, 7, 0, 3, 5, 6, 1, 4);
             packet.WriteGuid("Guid", guid);
             LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+            WoWObject character;
+            if (Storage.Objects.TryGetValue(LoginGuid, out character))
+                LoggedInCharacter = (Player)character;
         }
 
         [Parser(Opcode.SMSG_CHARACTER_LOGIN_FAILED)]
         public static void HandleLoginFailed(Packet packet)
         {
             packet.ReadEnum<ResponseCode>("Fail reason", TypeCode.Byte);
+            LoggedInCharacter = null;
         }
 
         [Parser(Opcode.SMSG_LOGOUT_RESPONSE)]

@@ -416,10 +416,6 @@ namespace WowPacketParser.Parsing.Parsers
             CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
             packet.ReadSingle("Y"); // seriously...
 
-            WoWObject character;
-            if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
-                SessionHandler.LoggedInCharacter = (Player)character;
-
             packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
         }
 
