@@ -12,12 +12,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ACTION_BUTTONS)]
         public static void HandleInitialButtons(Packet packet)
         {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767) && ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_4_15595))
             {
                 // State = 0: Looks to be sent when initial action buttons get sent, however on Trinity we use 1 since 0 had some difficulties
                 // State = 1: Used in any SMSG_ACTION_BUTTONS packet with button data on Trinity. Only used after spec swaps on retail.
                 // State = 2: Clears the action bars client sided. This is sent during spec swap before unlearning and before sending the new buttons
-                if (packet.ReadByte("Packet Type") == 2 && ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_4_15595))
+                if (packet.ReadByte("Packet Type") == 2)
                     return;
             }
 
@@ -48,6 +48,9 @@ namespace WowPacketParser.Parsing.Parsers
 
                 startAction.Actions.Add(action);
             }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
+                packet.ReadByte("Packet Type");
 
             if (SessionHandler.LoggedInCharacter != null && SessionHandler.LoggedInCharacter.FirstLogin)
                 Storage.StartActions.Add(new Tuple<Race, Class>(SessionHandler.LoggedInCharacter.Race, SessionHandler.LoggedInCharacter.Class), startAction, packet.TimeSpan);
