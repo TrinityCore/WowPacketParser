@@ -32,7 +32,6 @@ namespace PacketParser.Parsing.Parsers
 
             ReadPetFlags(ref packet);
 
-
             packet.StoreBeginList("Spells/Actions");
             for (var i = 0; i < 10; i++) // Read pet/vehicle spell ids
             {
@@ -290,8 +289,12 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadCString("Name");
             var declined = packet.ReadBoolean("Is Declined");
             if (declined)
+            {
+                packet.StoreBeginList("Declined names");
                 for (var i = 0; i < 5; ++i)
                     packet.ReadCString("Declined Name", i);
+                packet.StoreEndList();
+            }
         }
 
         [Parser(Opcode.CMSG_PET_SPELL_AUTOCAST)]

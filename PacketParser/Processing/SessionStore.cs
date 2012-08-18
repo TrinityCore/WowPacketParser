@@ -16,6 +16,10 @@ namespace PacketParser.Processing
         public ProcessedDataNodeEventHandler ProcessedAnyDataNodeHandler { get { return null; } }
 
         public Guid? LoginGuid = null;
+        public int CurrentAreaId = -1;
+        public uint CurrentMapId = 0;
+        public int CurrentPhaseMask = 0;
+
         private Player LastPlayer = null;
 
         public bool Init(PacketFileProcessor p) { return true; }

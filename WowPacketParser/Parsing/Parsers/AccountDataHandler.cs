@@ -26,14 +26,16 @@ namespace PacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
                 mask = packet.ReadInt32("Mask");
 
+            packet.StoreBeginList("Times list");
             for (var i = 0; i < 8; i++)
             {
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
                     if ((mask & (1 << i)) == 0)
                         continue;
 
-                packet.ReadTime((AccountDataType)i + " Time");
+                packet.ReadTime((AccountDataType)i + " Time", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_REQUEST_ACCOUNT_DATA)]

@@ -181,9 +181,9 @@ namespace PacketParser.Parsing.Parsers
             packet.StoreBeginList("Invites");
             for (var i = 0; i < count; i++)
             {
-                packet.ReadPackedGuid("Creator GUID");
-                packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte);
-                packet.ReadEnum<CalendarModerationRank>("Moderation Rank", TypeCode.Byte);
+                packet.ReadPackedGuid("Creator GUID", i);
+                packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte, i);
+                packet.ReadEnum<CalendarModerationRank>("Moderation Rank", TypeCode.Byte, i);
             }
             packet.StoreEndList();
         }

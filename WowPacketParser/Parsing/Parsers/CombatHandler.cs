@@ -140,20 +140,22 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadInt32("OverDamage");
 
             var subDmgCount = packet.ReadByte("Count");
+            packet.StoreBeginList("SubDamages");
             for (var i = 0; i < subDmgCount; ++i)
             {
                 packet.ReadInt32("SchoolMask", i);
                 packet.ReadSingle("Float Damage", i);
                 packet.ReadInt32("Int Damage", i);
             }
-
+            
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_ABSORB | SpellHitInfo.HITINFO_FULL_ABSORB))
                 for (var i = 0; i < subDmgCount; ++i)
                     packet.ReadInt32("Damage Absorbed", i);
 
-                if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
-                    for (var i = 0; i < subDmgCount; ++i)
-                        packet.ReadInt32("Damage Resisted", i);
+            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
+                for (var i = 0; i < subDmgCount; ++i)
+                    packet.ReadInt32("Damage Resisted", i);
+            packet.StoreEndList();
 
             packet.ReadEnum<VictimStates>("VictimState", TypeCode.Byte);
             packet.ReadInt32("Unk Attacker State 0");

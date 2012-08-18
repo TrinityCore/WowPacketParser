@@ -76,6 +76,7 @@ namespace PacketParser.Parsing.Parsers
                 guid[i][7] = packet.ReadBit();
             }
 
+            packet.StoreBeginList("Items");
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadXORByte(guid[i], 3);
@@ -110,6 +111,7 @@ namespace PacketParser.Parsing.Parsers
                 packet.Store("Item Id", BitConverter.ToUInt64(id[i], 0), i);
                 packet.StoreBitstreamGuid("Item Player Creator Guid", guid[i], i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_VOID_STORAGE_TRANSFER_CHANGES)] // 4.3.4
@@ -147,12 +149,14 @@ namespace PacketParser.Parsing.Parsers
             for (int i = 0; i < count2; ++i)
                 id2[i] = packet.StartBitStream(1, 7, 3, 5, 6, 2, 4, 0);
 
+            packet.StoreBeginList("Items2");
             for (int i = 0; i < count2; ++i)
             {
                 packet.ParseBitStream(id2[i], 3, 1, 0, 2, 7, 5, 6, 4);
                 packet.Store("Item Id 2", BitConverter.ToUInt64(id2[i], 0), i);
             }
-
+            packet.StoreEndList();
+            packet.StoreBeginList("Items1");
             for (int i = 0; i < count1; ++i)
             {
                 packet.ReadInt32("Item Suffix Factor", i);
@@ -185,6 +189,7 @@ namespace PacketParser.Parsing.Parsers
                 packet.Store("Item Id 1", BitConverter.ToUInt64(id1[i], 0), i);
                 packet.StoreBitstreamGuid("Item Player Creator Guid", guid[i], i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_VOID_TRANSFER_RESULT)]
@@ -222,20 +227,24 @@ namespace PacketParser.Parsing.Parsers
 
             // FlushBits
 
+            packet.StoreBeginList("Items1");
             for (int i = 0; i < count1; ++i)
             {
                 packet.ParseBitStream(itemsGuid[i], 6, 1, 0, 2, 4, 5, 3, 7);
                 packet.StoreBitstreamGuid("Item Guid", itemsGuid[i], i);
             }
+            packet.StoreEndList();
 
             packet.ReadXORByte(npcGuid, 5);
             packet.ReadXORByte(npcGuid, 6);
 
+            packet.StoreBeginList("Items2");
             for (int i = 0; i < count2; ++i)
             {
                 packet.ParseBitStream(itemsId[i], 3, 1, 0, 6, 2, 7, 5, 4);
                 packet.Store("Item Id", BitConverter.ToUInt64(itemsId[i], 0), i);
             }
+            packet.StoreEndList();
 
             packet.ReadXORByte(npcGuid, 1);
             packet.ReadXORByte(npcGuid, 4);

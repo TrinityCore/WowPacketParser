@@ -137,13 +137,13 @@ namespace PacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldListServer434(Packet packet)
         {
-            packet.ReadInt32("Unk Int32"); // Winner Conquest Reward or Random Winner Conquest Reward
-            packet.ReadInt32("Unk Int32"); // Winner Conquest Reward or Random Winner Conquest Reward
-            packet.ReadInt32("Unk Int32"); // Loser Honor Reward or Random Loser Honor Reward
+            packet.ReadInt32("Unk Int32 1"); // Winner Conquest Reward or Random Winner Conquest Reward
+            packet.ReadInt32("Unk Int32 2"); // Winner Conquest Reward or Random Winner Conquest Reward
+            packet.ReadInt32("Unk Int32 3"); // Loser Honor Reward or Random Loser Honor Reward
             packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BG type");
-            packet.ReadInt32("Unk Int32"); // Loser Honor Reward or Random Loser Honor Reward
-            packet.ReadInt32("Unk Int32"); // Winner Honor Reward or Random Winner Honor Reward
-            packet.ReadInt32("Unk Int32"); // Winner Honor Reward or Random Winner Honor Reward
+            packet.ReadInt32("Unk Int32 4"); // Loser Honor Reward or Random Loser Honor Reward
+            packet.ReadInt32("Unk Int32 5"); // Winner Honor Reward or Random Winner Honor Reward
+            packet.ReadInt32("Unk Int32 6"); // Winner Honor Reward or Random Winner Honor Reward
             packet.ReadByte("Max level");
             packet.ReadByte("Min level");
 
@@ -152,24 +152,26 @@ namespace PacketParser.Parsing.Parsers
             guidBytes[0] = packet.ReadBit();
             guidBytes[1] = packet.ReadBit();
             guidBytes[7] = packet.ReadBit();
-            packet.ReadBit("Unk Bit");
-            packet.ReadBit("Unk Bit");
+            packet.ReadBit("Unk Bit 1");
+            packet.ReadBit("Unk Bit 2");
             var count = packet.ReadBits("BG Instance count", 24);
             guidBytes[6] = packet.ReadBit();
             guidBytes[4] = packet.ReadBit();
             guidBytes[2] = packet.ReadBit();
             guidBytes[3] = packet.ReadBit();
-            packet.ReadBit("Unk Bit");
+            packet.ReadBit("Unk Bit 3");
             guidBytes[5] = packet.ReadBit();
-            packet.ReadBit("Unk Bit");
+            packet.ReadBit("Unk Bit 4");
 
             packet.ReadXORByte(guidBytes, 6);
             packet.ReadXORByte(guidBytes, 1);
             packet.ReadXORByte(guidBytes, 7);
             packet.ReadXORByte(guidBytes, 5);
 
+            packet.StoreBeginList("Instances");
             for (var i = 0; i < count; i++)
                 packet.ReadUInt32("Instance ID", i);
+            packet.StoreEndList();
 
             packet.ReadXORByte(guidBytes, 0);
             packet.ReadXORByte(guidBytes, 2);
@@ -500,9 +502,9 @@ namespace PacketParser.Parsing.Parsers
         public static void HandleReportPvPAFKResult(Packet packet)
         {
             // First three bytes = result, 5 -> enabled, else except 6 -> disabled
-            packet.ReadByte("Unk byte");
-            packet.ReadByte("Unk byte");
-            packet.ReadByte("Unk byte");
+            packet.ReadByte("Unk byte 1");
+            packet.ReadByte("Unk byte 2");
+            packet.ReadByte("Unk byte 3");
             packet.ReadGuid("Unk guid");
         }
 
@@ -535,7 +537,7 @@ namespace PacketParser.Parsing.Parsers
             guid1[0] = packet.ReadBit();//32
             guid2[3] = packet.ReadBit();//59
             guid1[2] = packet.ReadBit();//34
-            packet.ReadBit("Unk Bit");//21
+            packet.ReadBit("Unk Bit 1");//21
             packet.ReadBit("Join Failed");//20
             guid2[2] = packet.ReadBit();//58
             guid1[1] = packet.ReadBit();//33
@@ -550,29 +552,29 @@ namespace PacketParser.Parsing.Parsers
             guid1[4] = packet.ReadBit();//36
 
             guid1[5] = packet.ReadBit();//37
-            packet.ReadBit("Unk Bit");//72
-            packet.ReadBit("Unk Bit");//28
+            packet.ReadBit("Unk Bit 2");//72
+            packet.ReadBit("Unk Bit 3");//28
             guid2[1] = packet.ReadBit();//57
 
             packet.ReadXORByte(guid1, 0);
 
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32 1");
 
             packet.ReadXORByte(guid2, 5);
             packet.ReadXORByte(guid1, 3);
 
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32 2");
 
             packet.ReadXORByte(guid2, 7);
             packet.ReadXORByte(guid2, 1);
             packet.ReadXORByte(guid2, 2);
 
-            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Unk Byte 1");
 
             packet.ReadXORByte(guid2, 4);
             packet.ReadXORByte(guid1, 2);
 
-            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Unk Byte 2");
 
             packet.ReadXORByte(guid2, 6);
             packet.ReadXORByte(guid1, 7);
@@ -581,14 +583,14 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadXORByte(guid2, 0);
 
             packet.ReadTime("Time");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32 3");
             packet.ReadByte("Min Level");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32 4");
 
             packet.ReadXORByte(guid1, 1);
             packet.ReadXORByte(guid1, 5);
 
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32 5");
 
             packet.ReadXORByte(guid1, 4);
 
@@ -775,17 +777,23 @@ namespace PacketParser.Parsing.Parsers
             var finished = packet.ReadBit("Is Finished");
 
             if (arenaStrings)
+            {
+                packet.StoreBeginList("ArenaStrings");
                 for (var i = 0; i < 2; ++i)
                     packet.ReadCString("Name", i);
+                packet.StoreEndList();
+            }
 
             if (arenaScores)
             {
+                packet.StoreBeginList("ArenaScores");
                 for (var i = 0; i < 2; ++i)
                 {
                     packet.ReadUInt32("Points Lost", i);
                     packet.ReadUInt32("Points Gained", i);
                     packet.ReadUInt32("Matchmaker Rating", i);
                 }
+                packet.StoreEndList();
             }
 
             var scoreCount = packet.ReadInt32("Score Count");
@@ -795,6 +803,7 @@ namespace PacketParser.Parsing.Parsers
 
             var bits = new Bit[scoreCount, 4];
 
+            packet.StoreBeginList("Scores");
             for (var i = 0; i < scoreCount; ++i)
             {
                 bits[i, 0] = packet.ReadBit("Unk Bit 1", i); //  sets *(v23 + v18 + 40)
@@ -821,14 +830,18 @@ namespace PacketParser.Parsing.Parsers
 
                 packet.ReadGuid("Player GUID", i);
                 packet.ReadInt32("Killing Blows");
+
+                packet.StoreBeginList("Extra Values", i);
                 for (var j = 0; j < count; ++j)
                     packet.ReadInt32("Extra Value", i, j);
+                packet.StoreEndList();
 
                 if (bits[i, 3])
                     packet.ReadInt32("Unk Int32 2", i);
 
                 packet.ReadInt32("Healing Done", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_PVP_LOG_DATA)] // 4.3.4
@@ -856,6 +869,7 @@ namespace PacketParser.Parsing.Parsers
             var unkBits5 = new bool[count];
             var unkBits6 = new bool[count];
 
+            var scores = packet.StoreBeginList("Scores");
             for (int i = 0; i < count; ++i)
             {
                 guids[i] = new byte[8];
@@ -884,6 +898,7 @@ namespace PacketParser.Parsing.Parsers
 
                 guids[i][4] = packet.ReadBit();
             }
+            packet.StoreEndList();
 
             var finished = packet.ReadBit("Finished");
 
@@ -897,6 +912,7 @@ namespace PacketParser.Parsing.Parsers
                 packet.ReadInt32("Unk Int32 6"); // 61, [0] Matchmaker Rating
             }
 
+            packet.StoreContinueList(scores);
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadInt32("Healing done", i);
@@ -929,8 +945,10 @@ namespace PacketParser.Parsing.Parsers
 
                 packet.ReadInt32("Unk Int32 16", i);
 
+                packet.StoreBeginList("Values", i);   
                 for (int j = 0; j < valuesCount[i]; ++j)
                     packet.ReadUInt32("Value", i, j);
+                packet.StoreEndList();
 
                 packet.ReadXORByte(guids[i], 6);
                 packet.ReadXORByte(guids[i], 3);
@@ -943,6 +961,7 @@ namespace PacketParser.Parsing.Parsers
 
                 packet.StoreBitstreamGuid("Player GUID", guids[i], i);
             }
+            packet.StoreEndList();
 
             if (arenaStrings)
             {
@@ -1047,7 +1066,7 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 2);
 
             if (v10)
-                packet.ReadInt32("Unk Int 32");
+                packet.ReadInt32("Unk Int 32 1");
 
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 6);
@@ -1059,18 +1078,18 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 0);
 
             if (v6)
-                packet.ReadInt32("Unk Int 32");
+                packet.ReadInt32("Unk Int 32 2");
 
             if (v11)
-                packet.ReadInt32("Unk Int 32");
+                packet.ReadInt32("Unk Int 32 3");
 
             if (v8)
-                packet.ReadInt32("Unk Int 32");
+                packet.ReadInt32("Unk Int 32 4");
 
             packet.ReadXORByte(guid, 4);
 
             if (v7)
-                packet.ReadInt32("Unk Int 32");
+                packet.ReadInt32("Unk Int 32 5");
 
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 7);
@@ -1515,18 +1534,22 @@ namespace PacketParser.Parsing.Parsers
         public static void HandleBattlegroundPlayerPositions(Packet packet)
         {
             var count1 = packet.ReadUInt32("Count 1");
+            packet.StoreBeginList("Positions1");
             for (var i = 0; i < count1; ++i)
             {
                 packet.ReadGuid("GUID", i);
                 packet.ReadVector2("Position", i);
             }
+            packet.StoreEndList();
 
             var count2 = packet.ReadUInt32("Count 2");
+            packet.StoreBeginList("Positions2");
             for (var i = 0; i < count2; ++i)
             {
                 packet.ReadGuid("GUID", i);
                 packet.ReadVector2("Position", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_INSPECT_RATED_BG_STATS)]
@@ -1569,25 +1592,29 @@ namespace PacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_RATED_BG_STATS)]
         public static void HandleRatedBGStats(Packet packet)
         {
+            packet.StoreBeginList("BGStatsList");
             for (var i = 0; i < 18; i++)
                 packet.ReadUInt32("Unk UInt32", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_PVP_OPTIONS_ENABLED)]
         public static void HandlePVPOptionsEnabled(Packet packet)
         {
+            packet.StoreBeginList("OptionsList");
             for (var i = 0; i < 5; i++)
                 packet.ReadBit("Unk Boolean", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE)]
         public static void HandlePVPRewardsResponse(Packet packet)
         {
             packet.ReadUInt32("Conquest Weekly Cap");
-            packet.ReadUInt32("Unk Uint32");
+            packet.ReadUInt32("Unk Uint32 1");
             packet.ReadUInt32("Arena Conquest Cap");
-            packet.ReadUInt32("Unk Uint32");
-            packet.ReadUInt32("Unk Uint32");
+            packet.ReadUInt32("Unk Uint32 2");
+            packet.ReadUInt32("Unk Uint32 3");
             packet.ReadUInt32("Current Conquest Points");
         }
 
@@ -1689,14 +1716,14 @@ namespace PacketParser.Parsing.Parsers
             guid2[7] = packet.ReadBit();//55
             guid2[1] = packet.ReadBit();//49
             guid1[5] = packet.ReadBit();//29
-            packet.ReadBit("Unk Bit");//76
+            packet.ReadBit("Unk Bit 1");//76
             guid2[0] = packet.ReadBit();//48
             guid1[1] = packet.ReadBit();//25
 
             guid2[3] = packet.ReadBit();//51
             guid1[6] = packet.ReadBit();//30
             guid2[5] = packet.ReadBit();//53
-            packet.ReadBit("Unk Bit");//64
+            packet.ReadBit("Unk Bit 2");//64
             guid1[4] = packet.ReadBit();//28
             guid2[6] = packet.ReadBit();//54
             guid2[4] = packet.ReadBit();//52
@@ -1748,7 +1775,6 @@ namespace PacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_NEEDCONFIRMATION)]
         public static void HandleBattlefieldStatusNeedConfirmation(Packet packet)
         {
-
             packet.ReadUInt32("Client Instance ID");
             packet.ReadUInt32("Time until closed");
             packet.ReadByte("Unk Byte");
@@ -1808,14 +1834,14 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadUInt32("Queue slot");
             packet.ReadUInt32("Time until closed");
             packet.ReadUInt32("Unk Int32");
-            packet.ReadByte("Unk Byte");
-            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Unk Byte 1");
+            packet.ReadByte("Unk Byte 2");
             packet.ReadByte("Min Level");
-            packet.ReadByte("Unk Byte");
-            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Unk Byte 3");
+            packet.ReadByte("Unk Byte 4");
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
             packet.ReadTime("Time");
-            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Unk Byte 5");
             var guid1 = new byte[8];
             var guid2 = new byte[8];
 
@@ -1876,6 +1902,7 @@ namespace PacketParser.Parsing.Parsers
             for (int i = 0; i < count2; ++i)
                 guids2[i] = packet.StartBitStream(6, 5, 4, 7, 2, 1, 0, 3);
 
+            packet.StoreBeginList("Positions2");
             for (int i = 0; i < count2; ++i)
             {
                 packet.ReadXORByte(guids2[i], 2);
@@ -1894,7 +1921,9 @@ namespace PacketParser.Parsing.Parsers
 
                 packet.StoreBitstreamGuid("Guid 2", guids2[i], i);
             }
+            packet.StoreEndList();
 
+            packet.StoreBeginList("Positions1");
             for (int i = 0; i < count1; ++i)
             {
                 packet.ReadXORByte(guids1[i], 6);
@@ -1914,6 +1943,7 @@ namespace PacketParser.Parsing.Parsers
 
                 packet.StoreBitstreamGuid("Guid 1", guids1[i], i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_REQUEST_SCORE_DATA)]

@@ -16,7 +16,7 @@ namespace PacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_UPDATE_OBJECT)]
         public static void HandleUpdateObject(Packet packet)
         {
-            uint map = MovementHandler.CurrentMapId;
+            uint map = PacketFileProcessor.Current.GetProcessor<SessionStore>().CurrentMapId;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 map = packet.ReadUInt16("Map");
 
@@ -100,8 +100,8 @@ namespace PacketParser.Parsing.Parsers
             obj.Movement = moves;
             obj.UpdateFields = updates;
             obj.Map = map;
-            obj.Area = WorldStateHandler.CurrentAreaId;
-            obj.PhaseMask = (uint) MovementHandler.CurrentPhaseMask;
+            obj.Area = PacketFileProcessor.Current.GetProcessor<SessionStore>().CurrentAreaId;
+            obj.PhaseMask = (uint)PacketFileProcessor.Current.GetProcessor<SessionStore>().CurrentPhaseMask;
 
             // If this is the second time we see the same object (same guid,
             // same position) update its phasemask
@@ -333,8 +333,10 @@ namespace PacketParser.Parsing.Parsers
             packet.ResetBitReader();
 
             // Reading data
+            packet.StoreBeginList("Unk datas", index);
             for (var i = 0u; i < unkLoopCounter; ++i)
                 packet.ReadUInt32("Unk UInt32", index, (int)i);
+            packet.StoreEndList();
 
             if (living)
             {
@@ -373,6 +375,7 @@ namespace PacketParser.Parsing.Parsers
                             packet.StoreBitstreamGuid("Facing Target GUID", facingTargetGuid, index);
                         }
 
+                        packet.StoreBeginList("Spline Waypoints", index);
                         for (var i = 0; i < splineCount; ++i)
                         {
                             var wp = new Vector3
@@ -384,6 +387,7 @@ namespace PacketParser.Parsing.Parsers
 
                             packet.Store("Spline Waypoint", wp, index, i);
                         }
+                        packet.StoreEndList();
 
                         if (splineType == SplineType.FacingSpot)
                         {
@@ -1099,7 +1103,7 @@ namespace PacketParser.Parsing.Parsers
             packet.StoreBeginList("UnkInts", index);
             for (var i = 0; i < unkLoopCounter; ++i)
             {
-                packet.ReadInt32("UnkInt");
+                packet.ReadInt32("UnkInt", index, (int)i);
             }
             packet.StoreEndList();
 

@@ -40,11 +40,13 @@ namespace PacketParser.Parsing.Parsers
                     return;
 
                 var count = packet.ReadUInt32("Count");
+                packet.StoreBeginList("Items");
                 for (int i = 0; i < count; ++i)
                 {
                     packet.ReadGuid("Item Guid", i);
-                    packet.ReadInt32("", i);
+                    packet.ReadInt32("Count?", i);
                 }
+                packet.StoreEndList();
             }
 
             if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
@@ -123,8 +125,8 @@ namespace PacketParser.Parsing.Parsers
                     break;
                 case AuctionHouseError.HigherBid:
                     packet.ReadInt64("Unknown HigherBid Int64");
-                    packet.ReadInt32("Unknown HigherBid Int32");
-                    packet.ReadInt32("Unknown HigherBid Int32");
+                    packet.ReadInt32("Unknown HigherBid Int32 1");
+                    packet.ReadInt32("Unknown HigherBid Int32 2");
                     break;
             }
         }

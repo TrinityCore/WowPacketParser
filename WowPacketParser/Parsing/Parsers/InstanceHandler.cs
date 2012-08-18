@@ -242,6 +242,7 @@ namespace PacketParser.Parsing.Parsers
 
             var strlen = new uint[count];
 
+            packet.StoreBeginList("Profiles");
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadBit("Talent spec 2", i);
@@ -286,6 +287,7 @@ namespace PacketParser.Parsing.Parsers
                 packet.ReadInt16("Unk 154", i);
                 packet.ReadByte("Unk 148", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_LOAD_CUF_PROFILES)] // 4.3.4
@@ -295,6 +297,7 @@ namespace PacketParser.Parsing.Parsers
 
             var strlen = new uint[count];
 
+            packet.StoreBeginList("Profiles");
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadBit("Unk 157", i);
@@ -339,6 +342,7 @@ namespace PacketParser.Parsing.Parsers
                 packet.ReadByte("Unk 148", i);
                 packet.ReadWoWString("Name", (int)strlen[i], i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_RESET_INSTANCES)]

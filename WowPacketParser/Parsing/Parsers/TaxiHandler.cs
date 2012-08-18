@@ -49,8 +49,10 @@ namespace PacketParser.Parsing.Parsers
             }
 
             var count = packet.ReadInt32("Count");
+            packet.StoreBeginList("unk datas");
             for (int i = 0; i < count; ++i)
                 packet.ReadByte("Unk Byte", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_ACTIVATETAXI)]

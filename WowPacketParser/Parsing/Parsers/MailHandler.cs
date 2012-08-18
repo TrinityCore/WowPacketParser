@@ -128,6 +128,7 @@ namespace PacketParser.Parsing.Parsers
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
                         enchantmentCount = 10;
 
+                    packet.StoreBeginList("Enchantments", i, j);
                     for (var k = 0; k < enchantmentCount; ++k)
                     {
                         packet.ReadUInt32("Item Enchantment Id", i, j, k);
@@ -245,6 +246,7 @@ namespace PacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guid, 4);
 
+            packet.StoreBeginList("Items");
             for (var i = 0; i < count; i++)
             {
                 if (guid2[i][6] != 0) guid2[i][6] = packet.ReadByte();
@@ -258,6 +260,7 @@ namespace PacketParser.Parsing.Parsers
                 if (guid2[i][5] != 0) guid2[i][5] = packet.ReadByte();
                 packet.StoreBitstreamGuid("Item Guid", guid2[i], i);
             }
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 3);

@@ -11,6 +11,7 @@ namespace PacketParser.Parsing.Parsers
         public static void HandleGMSurveySubmit(Packet packet)
         {
             var count = packet.ReadUInt32("Survey Question Count");
+            packet.StoreBeginList("Surveys");
             for (var i = 0; i < count; ++i)
             {
                 var gmsurveyid = packet.ReadUInt32("GM Survey Id", i);
@@ -19,6 +20,7 @@ namespace PacketParser.Parsing.Parsers
                 packet.ReadByte("Question Number", i);
                 packet.ReadCString("Answer", i);
             }
+            packet.StoreEndList();
             packet.ReadCString("Comment");
 
         }
@@ -33,8 +35,10 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadBoolean("Need GM interaction");
             var count = packet.ReadInt32("Count");
 
+            packet.StoreBeginList("list");
             for (int i = 0; i < count; i++)
                 packet.Store("Sent", (packet.Time - packet.ReadTime()).ToFormattedString(), i);
+            packet.StoreEndList();
 
             if (count == 0)
                 packet.ReadInt32("Unk Int32");
@@ -123,12 +127,12 @@ namespace PacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_COMPLAIN)]
         public static void HandleComplain(Packet packet)
         {
-            packet.ReadBoolean("Unk bool");
+            packet.ReadBoolean("Unk bool 1");
             packet.ReadGuid("Guid");
-            packet.ReadInt32("Unk Int32");
-            packet.ReadInt32("Unk Int32");
-            packet.ReadInt32("Unk Int32");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32 2");
+            packet.ReadInt32("Unk Int32 3");
+            packet.ReadInt32("Unk Int32 4");
+            packet.ReadInt32("Unk Int32 5");
             packet.ReadCString("Complain");
         }
 
@@ -193,11 +197,13 @@ namespace PacketParser.Parsing.Parsers
             for (int i = 0; i < count; ++i)
                 strLength[i] = packet.ReadBits(13);
 
+            packet.StoreBeginList("Complains");
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadTime("Time", i);
                 packet.ReadWoWString("Data", strLength[i], i);
             }
+            packet.StoreEndList();
 
             packet.ReadInt32("Unk Int32 2");  // ##
 

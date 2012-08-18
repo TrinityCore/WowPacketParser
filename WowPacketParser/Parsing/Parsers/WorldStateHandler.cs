@@ -2,19 +2,18 @@ using System;
 using PacketParser.Enums;
 using PacketParser.Misc;
 using PacketParser.DataStructures;
+using PacketParser.Processing;
 
 namespace PacketParser.Parsing.Parsers
 {
     public static class WorldStateHandler
     {
-        public static int CurrentAreaId = -1;
-
         [Parser(Opcode.SMSG_INIT_WORLD_STATES)]
         public static void HandleInitWorldStates(Packet packet)
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
             packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
-            CurrentAreaId = packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area Id");
+            PacketFileProcessor.Current.GetProcessor<SessionStore>().CurrentAreaId = packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area Id");
 
             var numFields = packet.ReadInt16("Field Count");
             packet.StoreBeginList("WorldStateFields");

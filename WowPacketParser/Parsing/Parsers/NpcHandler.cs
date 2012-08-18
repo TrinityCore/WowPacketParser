@@ -78,7 +78,7 @@ namespace PacketParser.Parsing.Parsers
             npcTrainer.Type = packet.ReadEnum<TrainerType>("Type", TypeCode.Int32);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
-                packet.ReadInt32("Unk Int32"); // Same unk exists in CMSG_TRAINER_BUY_SPELL
+                packet.ReadInt32("Unk Int32 1"); // Same unk exists in CMSG_TRAINER_BUY_SPELL
 
             var count = packet.ReadInt32("Count");
             npcTrainer.TrainerSpells = new List<TrainerSpell>(count);
@@ -98,8 +98,8 @@ namespace PacketParser.Parsing.Parsers
                     trainerSpell.RequiredLevel = packet.ReadByte("Required Level", i);
                     trainerSpell.RequiredSkill = packet.ReadUInt32("Required Skill", i);
                     trainerSpell.RequiredSkillLevel = packet.ReadUInt32("Required Skill Level", i);
-                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Chain Spell ID", i, 0);
-                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Chain Spell ID", i, 1);
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Chain Spell ID 1", i, 0);
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Chain Spell ID 2", i, 1);
                 }
 
                 packet.ReadInt32("Profession Dialog", i);
@@ -110,12 +110,12 @@ namespace PacketParser.Parsing.Parsers
                     trainerSpell.RequiredLevel = packet.ReadByte("Required Level", i);
                     trainerSpell.RequiredSkill = packet.ReadUInt32("Required Skill", i);
                     trainerSpell.RequiredSkillLevel = packet.ReadUInt32("Required Skill Level", i);
-                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Chain Spell ID", i, 0);
-                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Chain Spell ID", i, 1);
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Chain Spell ID 1", i, 0);
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Chain Spell ID 2", i, 1);
                 }
 
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_0_6a_13623))
-                    packet.ReadInt32("Unk Int32", i);
+                    packet.ReadInt32("Unk Int32 2", i);
 
                 npcTrainer.TrainerSpells.Add(trainerSpell);
             }
@@ -243,6 +243,7 @@ namespace PacketParser.Parsing.Parsers
             guidBytes[4] = packet.ReadBit();
 
             npcVendor.VendorItems = new List<VendorItem>((int)itemCount);
+            packet.StoreBeginList("Items");
             for (int i = 0; i < itemCount; ++i)
             {
                 var vendorItem = new VendorItem();
@@ -266,6 +267,7 @@ namespace PacketParser.Parsing.Parsers
 
                 npcVendor.VendorItems.Add(vendorItem);
             }
+            packet.StoreEndList();
 
             packet.ReadXORByte(guidBytes, 5);
             packet.ReadXORByte(guidBytes, 4);
@@ -401,8 +403,10 @@ namespace PacketParser.Parsing.Parsers
         public static void HandleQueryCompletionNPCResponse(Packet packet)
         {
             var count = packet.ReadBits("Count", 24);
+            packet.StoreBeginList("Quests");
             for (int i = 0; i < count; ++i)
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_COMPLETION_NPC_RESPONSE)] // 4.3.4
@@ -411,15 +415,19 @@ namespace PacketParser.Parsing.Parsers
             var count = packet.ReadBits("Count", 23);
             var counts = new uint[count];
 
+            packet.StoreBeginList("Quests");
             for (int i = 0; i < count; ++i)
                 counts[i] = packet.ReadBits("Count", 24, i);
 
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest", i);
+                packet.StoreBeginList("Units", i);
                 for (int j = 0; j < counts[i]; ++j)
                     packet.ReadEntryWithName<UInt32>(StoreNameType.Unit, "Unit", i, j);
+                packet.StoreEndList();
             }
+            packet.StoreEndList();
         }
     }
 }

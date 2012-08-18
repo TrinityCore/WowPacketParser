@@ -94,7 +94,7 @@ namespace PacketParser.Parsing.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 {
                     packet.ReadUInt32("Arena Points");
-                    packet.ReadUInt32("Unk UInt32");
+                    packet.ReadUInt32("Unk UInt32 5");
                 }
             }
 
@@ -605,8 +605,8 @@ namespace PacketParser.Parsing.Parsers
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_3a_11723))
             {
-                packet.ReadByte("Unk");
-                packet.ReadByte("Unk");
+                packet.ReadByte("Unk 2");
+                packet.ReadByte("Unk 3");
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
@@ -712,19 +712,23 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadUInt32("Money");
 
             var countItems = packet.ReadUInt32("Number of Required Items");
+            packet.StoreBeginList("Required items");
             for (var i = 0; i < countItems; i++)
             {
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Required Item Id", i);
                 packet.ReadUInt32("Required Item Count", i);
                 packet.ReadUInt32("Required Item Display Id", i);
             }
+            packet.StoreEndList();
 
             var countCurrencies = packet.ReadUInt32("Number of Required Currencies");
+            packet.StoreBeginList("Required Currencies");
             for (var i = 0; i < countCurrencies; i++)
             {
                 packet.ReadUInt32("Required Currency Id", i);
                 packet.ReadUInt32("Required Currency Count", i);
             }
+            packet.StoreEndList();
 
             // flags, if any of these flags is 0 quest is not completable
             packet.ReadUInt32("Unk flags 1"); // 2

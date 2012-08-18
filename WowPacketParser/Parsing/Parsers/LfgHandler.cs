@@ -28,16 +28,20 @@ namespace PacketParser.Parsing.Parsers
         {
             packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
 
+            var duns = packet.StoreBeginList("Dungeons");
             for (var i = 0; i < 3; i++)
                 packet.ReadInt32("Unk Int32", i);
+            packet.StoreEndList();
 
             var length = packet.ReadBits(9);
             var count = packet.ReadBits("Join Dungeon Count", 24);
 
             packet.ReadWoWString("Comment", length);
 
+            packet.StoreContinueList(duns);
             for (var i = 0; i < count; i++)
                 packet.ReadLfgEntry("Dungeon Entry", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_LFG_LEAVE, ClientVersionBuild.V4_3_4_15595)]
@@ -82,10 +86,10 @@ namespace PacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LFG_PROPOSAL_RESULT, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleLfgProposalResult434(Packet packet)
         {
-            packet.ReadUInt32("Unk Uint32");
+            packet.ReadUInt32("Unk Uint32 1");
             packet.ReadTime("Time");
             packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
-            packet.ReadUInt32("Unk Uint32");
+            packet.ReadUInt32("Unk Uint32 2");
 
             var guid2 = packet.StartBitStream(4, 5, 0, 6, 2, 7, 1, 3);
             packet.ParseBitStream(guid2, 7, 4, 3, 2, 6, 0, 1, 5);
@@ -211,6 +215,7 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadUInt32("Base XP");
 
             var numFields = packet.ReadByte("Reward Item Count");
+            packet.StoreBeginList("Items");
             for (var i = 0; i < numFields; i++)
             {
                 packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Item Or Currency Id", i);
@@ -218,6 +223,7 @@ namespace PacketParser.Parsing.Parsers
                 packet.ReadInt32("Reward Item Stack Count", i);
                 packet.ReadBoolean("Is Currency", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_LFG_UPDATE_PLAYER)]
@@ -367,6 +373,7 @@ namespace PacketParser.Parsing.Parsers
 
             guid2[7] = packet.ReadBit();
 
+            packet.StoreBeginList("Proposals");
             for (var i = 0; i < count; ++i)
             {
                 var bits = new Bit[5];
@@ -398,6 +405,7 @@ namespace PacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; ++i)
                 packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32, i);
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid2, 7);
             packet.ReadXORByte(guid1, 4);
@@ -436,8 +444,10 @@ namespace PacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guid, 6);
 
+            packet.StoreBeginList("Unk datas");
             for (var i = 0; i < 3; ++i)
                 packet.ReadByte("Unk Byte", i); // always 0
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 2);
@@ -450,8 +460,10 @@ namespace PacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guid, 7);
 
+            packet.StoreBeginList("Dungeons");
             for (var i = 0; i < count; ++i)
                 packet.ReadLfgEntry("Dungeon Entry", i);
+            packet.StoreEndList();
 
             packet.StoreBitstreamGuid("GUID", guid);
         }
@@ -576,6 +588,7 @@ namespace PacketParser.Parsing.Parsers
             var guids = new byte[count][];
             var counts = new uint[count];
 
+            packet.StoreBeginList("Results");
             for (var i = 0; i < count; ++i)
             {
                 guids[i] = packet.StartBitStream(7, 5, 3, 6, 0, 2, 4, 1);
@@ -589,12 +602,15 @@ namespace PacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; ++i)
             {
+                packet.StoreBeginList("Dungeons", i);
                 for (var j = 0; j < counts[i]; j++)
                     ReadDungeonJoinResults(ref packet, i, j);
+                packet.StoreEndList();
 
                 packet.ParseBitStream(guids[i], 2, 5, 1, 0, 4, 3, 6, 7);
                 packet.StoreBitstreamGuid("Guid", guids[i], i);
             }
+            packet.StoreEndList();
 
             packet.ParseBitStream(guid, 1, 4, 3, 5, 0, 7, 2, 6);
             packet.StoreBitstreamGuid("Join GUID", guid);

@@ -130,10 +130,10 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadSingle("Elevation");
             packet.ReadSingle("Speed");
             packet.ReadUInt32("Duration");
-            packet.ReadInt32("Unk");
+            packet.ReadInt32("Unk 1");
 
             if (packet.Length == 64) // packet always has length 64 length except for some rare exceptions with length 60 (hardcoded in the client)
-                packet.ReadSingle("Unk");
+                packet.ReadSingle("Unk 2");
         }
 
         [Parser(Opcode.SMSG_WEEKLY_SPELL_USAGE)]
@@ -141,11 +141,13 @@ namespace PacketParser.Parsing.Parsers
         {
             var count = packet.ReadBits("Count", 23);
 
+            packet.StoreBeginList("unk datas 1");
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadInt32("Unk Int32");
                 packet.ReadByte("Unk Int8");
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_SEND_UNLEARN_SPELLS)]
@@ -741,9 +743,9 @@ namespace PacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL_KIT)] // 4.3.4
         public static void HandleCastVisualKit(Packet packet)
         {
-            packet.ReadUInt32("Unk");
+            packet.ReadUInt32("Unk 1");
             packet.ReadUInt32("SpellVisualKit ID");
-            packet.ReadUInt32("Unk");
+            packet.ReadUInt32("Unk 2");
 
             var guid = packet.StartBitStream(4, 7, 5, 3, 1, 2, 0, 6);
             packet.ParseBitStream(guid, 0, 4, 1, 6, 7, 2, 3, 5);
@@ -990,8 +992,10 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 3);
+            packet.StoreBeginList("Spells");
             for (var i = 0; i < count; i++)
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", i);
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 6);
@@ -1052,8 +1056,10 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadGuid("Target GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Dispelling Spell ID");
 
+            packet.StoreBeginList("Dispelled spell ids");
             for (var i = 0; packet.CanRead(); i++)
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Dispelled Spell ID", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_TOTEM_DESTROYED)]
@@ -1143,11 +1149,13 @@ namespace PacketParser.Parsing.Parsers
         {
             var count = packet.ReadBits("Count", 23);
 
+            packet.StoreBeginList("Cooldowns");
             for (int i = 0; i < count; ++i)
             {
-                packet.ReadInt32("Category Cooldown");
-                packet.ReadInt32("Cooldown");
+                packet.ReadInt32("Category Cooldown", i);
+                packet.ReadInt32("Cooldown", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_AURA_POINTS_DEPLETED)]
@@ -1178,8 +1186,8 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 1);
 
-            packet.ReadInt32("Unk Int32");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32 1");
+            packet.ReadInt32("Unk Int32 2");
 
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 5);

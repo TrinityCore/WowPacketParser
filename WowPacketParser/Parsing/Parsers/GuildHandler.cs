@@ -191,14 +191,17 @@ namespace PacketParser.Parsing.Parsers
 
             packet.Store("Unk bits", bits);
 
+            var members = packet.StoreBeginList("Members");
             for (var i = 0; i < size; ++i)
                 packet.ReadCString("Public Note", i);
 
             for (var i = 0; i < size; ++i)
                 packet.ReadUInt64("Week activity", i);
 
+            packet.StoreEndList();
             packet.ReadCString("Guild Info");
 
+            packet.StoreContinueList(members);
             for (var i = 0; i < size; ++i)
                 packet.ReadEnum<GuildMemberFlag>("Member Flags", TypeCode.Byte, i);
 
@@ -255,6 +258,7 @@ namespace PacketParser.Parsing.Parsers
 
             for (var i = 0; i < size; ++i)
                 packet.ReadSingle("Last online", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_GUILD_ROSTER, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
@@ -274,6 +278,7 @@ namespace PacketParser.Parsing.Parsers
             var publicLength = new uint[size];
             var officerLength = new uint[size];
 
+            var members = packet.StoreBeginList("Members");
             for (var i = 0; i < size; ++i)
             {
                 guid[i] = new byte[8];
@@ -291,6 +296,7 @@ namespace PacketParser.Parsing.Parsers
                 guid[i][5] = packet.ReadBit();
                 guid[i][7] = packet.ReadBit();
             }
+
             var infoLength = packet.ReadBits(12);
             var names = PacketFileProcessor.Current.GetProcessor<NameStore>();
 
@@ -304,12 +310,14 @@ namespace PacketParser.Parsing.Parsers
                 packet.ReadUInt64("Week activity", i);
                 packet.ReadUInt32("Member Rank", i);
                 packet.ReadUInt32("Member Achievement Points", i);
+                packet.StoreBeginList("Professions", i);
                 for (var j = 0; j < 2; ++j)
                 {
                     var rank = packet.ReadUInt32("Profession Id", i, j);
                     var value = packet.ReadUInt32("Value", i, j);
                     var id = packet.ReadUInt32("Rank", i, j);
                 }
+                packet.StoreEndList();
 
                 packet.ReadXORByte(guid[i], 2);
 
@@ -345,6 +353,7 @@ namespace PacketParser.Parsing.Parsers
                 packet.StoreBitstreamGuid("Guid", guid[i], i);
                 names.AddPlayerName(new Guid(BitConverter.ToUInt64(guid[i], 0)), name);
             }
+            packet.StoreEndList();
 
             packet.ReadWoWString("Guild Info", infoLength);
             packet.ReadWoWString("MOTD", motdLength);
@@ -459,16 +468,20 @@ namespace PacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_SET_RANK_PERMISSIONS, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRank406(Packet packet)
         {
+            var tabs = packet.StoreBeginList("Tabs");
             for (var i = 0; i < 8; ++i)
                 packet.ReadUInt32("Bank Slots", i);
+            packet.StoreEndList();
 
             packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.UInt32);
 
             packet.ReadUInt32("New Rank Id");
             packet.ReadUInt32("Old Rank Id");
 
+            packet.StoreContinueList(tabs);
             for (var i = 0; i < 8; ++i)
                 packet.ReadEnum<GuildBankRightsFlag>("Tab Rights", TypeCode.UInt32, i);
+            packet.StoreEndList();
 
             packet.ReadGuid("Guild GUID");
             packet.ReadEnum<GuildRankRightsFlag>("Old Rights", TypeCode.UInt32);
@@ -485,11 +498,13 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadEnum<GuildRankRightsFlag>("Old Rights", TypeCode.UInt32);
             packet.ReadEnum<GuildRankRightsFlag>("New Rights", TypeCode.UInt32);
 
+            packet.StoreBeginList("Tabs");
             for (var i = 0; i < 8; ++i)
             {
                 packet.ReadUInt32("Tab Slot", i);
                 packet.ReadEnum<GuildBankRightsFlag>("Tab Rights", TypeCode.UInt32, i);
             }
+            packet.StoreEndList();
 
             packet.ReadUInt32("Money Per Day");
             packet.ReadUInt32("New Rank Id");
@@ -680,11 +695,13 @@ namespace PacketParser.Parsing.Parsers
             for (int i = 0; i < count; ++i)
                 guid[i] = packet.StartBitStream(2, 3, 1, 6, 0, 7, 4, 5);
 
+            packet.StoreBeginList("Members");
             for (int i = 0; i < count; ++i)
             {
                 packet.ParseBitStream(guid[i], 1, 5, 6, 7, 2, 3, 0, 4);
                 packet.StoreBitstreamGuid("GUID", guid[i], i);
             }
+            packet.StoreEndList();
 
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
             packet.ReadUInt32("Skill ID");
@@ -1102,15 +1119,18 @@ namespace PacketParser.Parsing.Parsers
                 texts[i] = packet.ReadBits(7);
             }
 
+            packet.StoreBeginList("Tabs");
             for (var i = 0; i < count2; ++i)
             {
                 packet.ReadWoWString("Icon", icons[i], i);
                 packet.ReadUInt32("Index", i);
                 packet.ReadWoWString("Text", texts[i], i);
             }
+            packet.StoreEndList();
 
             packet.ReadUInt64("Money");
 
+            packet.StoreBeginList("Items");
             for (var i = 0; i < count; ++i)
             {
                 for (var j = 0; j < enchants[i]; ++j)
@@ -1129,6 +1149,7 @@ namespace PacketParser.Parsing.Parsers
                 packet.ReadUInt32("Spell Charges", i);
                 packet.ReadUInt32("Item Suffix Factor", i);
             }
+            packet.StoreEndList();
             packet.ReadUInt32("Tab");
             packet.ReadInt32("Remaining Withdraw");
         }
@@ -1244,11 +1265,14 @@ namespace PacketParser.Parsing.Parsers
         {
             var size = packet.ReadUInt32("Size");
 
+            packet.StoreBeginList("NewsList");
             for (var i = 0; i < size; ++i)
             {
                 var unk1 = packet.ReadUInt32("Unk count", i);
+                packet.StoreBeginList("Unk data", i);
                 for (var j = 0; j < unk1; ++j)
                     packet.ReadUInt64("Unk uint64", i, j);
+                packet.StoreEndList();
             }
 
             for (var i = 0; i < size; ++i)
@@ -1271,12 +1295,14 @@ namespace PacketParser.Parsing.Parsers
 
             for (var i = 0; i < size; ++i)
                 packet.ReadUInt32("Unk UInt32 4", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_GUILD_NEWS_UPDATE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildNewsUpdate422(Packet packet)
         {
             var size = packet.ReadUInt32("Size");
+            packet.StoreBeginList("NewsList");
             for (var i = 0; i < size; ++i)
                 packet.ReadUInt32("Guild/Player news", i);
 
@@ -1286,8 +1312,10 @@ namespace PacketParser.Parsing.Parsers
             for (var i = 0; i < size; ++i)
             {
                 var unk1 = packet.ReadUInt32("Unk count", i);
+                packet.StoreBeginList("Unk data", i);
                 for (var j = 0; j < unk1; ++j)
                     packet.ReadUInt64("Unk uint64", i, j);
+                packet.StoreEndList();
             }
 
             for (var i = 0; i < size; ++i)
@@ -1304,6 +1332,7 @@ namespace PacketParser.Parsing.Parsers
 
             for (var i = 0; i < size; ++i)
                 packet.ReadPackedTime("Time", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_GUILD_NEWS_UPDATE, ClientVersionBuild.V4_3_4_15595)]
@@ -1315,6 +1344,7 @@ namespace PacketParser.Parsing.Parsers
             var guidIn = new byte[size][][];
             var count = new uint[size];
 
+            packet.StoreBeginList("NewsList");
             for (int i = 0; i < size; ++i)
             {
                 count[i] = packet.ReadBits(26);
@@ -1339,11 +1369,13 @@ namespace PacketParser.Parsing.Parsers
 
             for (int i = 0; i < size; ++i)
             {
+                packet.StoreBeginList("Unk guids", i);
                 for (int j = 0; i < count[i]; ++j)
                 {
                     packet.ParseBitStream(guidIn[i][j], 0, 1, 4, 7, 5, 6, 3, 2);
                     packet.StoreBitstreamGuid("Guid", guidIn[i][j], i, j);
                 }
+                packet.StoreEndList();
 
                 packet.ReadXORByte(guidOut[i], 5);
 
@@ -1365,6 +1397,7 @@ namespace PacketParser.Parsing.Parsers
 
                 packet.StoreBitstreamGuid("Guid", guidOut[i], i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_QUERY_GUILD_REWARDS)]
@@ -1381,6 +1414,7 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadUInt32("Guild Id");
             var size = packet.ReadUInt32("Size");
 
+            packet.StoreBeginList("Rewards");
             for (var i = 0; i < size; ++i)
                 packet.ReadUInt32("Unk UInt32 1", i);
 
@@ -1398,6 +1432,7 @@ namespace PacketParser.Parsing.Parsers
 
             for (var i = 0; i < size; ++i)
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Id", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_GUILD_REWARDS_LIST, ClientVersionBuild.V4_3_4_15595)]
@@ -1405,6 +1440,7 @@ namespace PacketParser.Parsing.Parsers
         {
             var size = packet.ReadBits("Size", 21);
 
+            packet.StoreBeginList("Rewards");
             for (var i = 0; i < size; ++i)
             {
                 packet.ReadEnum<ReputationRank>("Faction Standing", TypeCode.UInt32, i);
@@ -1414,6 +1450,7 @@ namespace PacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk UInt32", i);
                 packet.ReadUInt32("Achievement Id", i);
             }
+            packet.StoreEndList();
 
             packet.ReadTime("Time");
         }
@@ -1485,11 +1522,13 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadEnum<GuildRankRightsFlag>("Rights", TypeCode.UInt32);
             packet.ReadInt32("Remaining Money");
             packet.ReadBits("Tab size", 23);
+            packet.StoreBeginList("Tabs");
             for (var i = 0; i < 8; i++)
             {
                 packet.ReadEnum<GuildBankRightsFlag>("Tab Rights", TypeCode.Int32, i);
                 packet.ReadInt32("Tab Slots", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.MSG_GUILD_BANK_MONEY_WITHDRAWN)]
@@ -1538,6 +1577,7 @@ namespace PacketParser.Parsing.Parsers
             var guid1 = new byte[count][];
             var guid2 = new byte[count][];
 
+            packet.StoreBeginList("Logs");
             for (var i = 0; i < count; ++i)
             {
                 guid1[i] = new byte[8];
@@ -1592,6 +1632,7 @@ namespace PacketParser.Parsing.Parsers
                 packet.StoreBitstreamGuid("GUID1", guid1[i], i);
                 packet.StoreBitstreamGuid("GUID2", guid2[i], i);
             }
+            packet.StoreEndList();
         }
 
 
@@ -1640,6 +1681,8 @@ namespace PacketParser.Parsing.Parsers
             var itemMoved = new byte[size];
             var hasItem = new byte[size];
             var guid = new byte[size][];
+
+            packet.StoreBeginList("Queries");
             for (var i = 0; i < size; i++)
             {
                 guid[i] = new byte[8];
@@ -1683,6 +1726,7 @@ namespace PacketParser.Parsing.Parsers
 
                 packet.StoreBitstreamGuid("Guid", guid[i], i);
             }
+            packet.StoreEndList();
             packet.ReadUInt32("Tab Id");
 
             if (hasWeekCashflow)
@@ -1834,8 +1878,8 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk UInt32 7");
             packet.ReadUInt32("Unk UInt32 8");
             packet.ReadUInt16("Unk UInt16 1");
-            packet.ReadUInt32("Unk UInt32 (Level?)");
-            packet.ReadUInt32("Unk UInt32 (Level?)");
+            packet.ReadUInt32("Unk UInt32 12(Level?)");
+            packet.ReadUInt32("Unk UInt32 13(Level?)");
             packet.ReadUInt32("Unk UInt32 11");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
@@ -1866,6 +1910,7 @@ namespace PacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GUILD_CHALLENGE_UPDATED)]
         public static void HandleGuildChallengeUpdated(Packet packet)
         {
+            packet.StoreBeginList("Guild challenges");
             for (int i = 0; i < 4; ++i)
                 packet.ReadInt32("Guild Experience Reward", i);
 
@@ -1880,6 +1925,7 @@ namespace PacketParser.Parsing.Parsers
 
             for (int i = 0; i < 4; ++i)
                 packet.ReadInt32("Current Count", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_GUILD_CHALLENGE_COMPLETED, ClientVersionBuild.V4_3_4_15595)]
@@ -1902,8 +1948,10 @@ namespace PacketParser.Parsing.Parsers
         public static void HandleGuildSetAchievementTracking(Packet packet)
         {
             var count = packet.ReadBits("Count", 24);
+            packet.StoreBeginList("Criterias");
             for (var i = 0; i < count; ++i)
                 packet.ReadUInt32("Criteria Id", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_QUERY_GUILD_RECIPES)] // 4.3.4
@@ -1918,13 +1966,16 @@ namespace PacketParser.Parsing.Parsers
         public static void HandleGuildRecipes(Packet packet)
         {
             var count = packet.ReadBits("Count", 16);
-
+            packet.StoreBeginList("Recipes");
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadInt32("Skill Id", i);         // iterate all SkillLineAbility.dbc rows:
+                packet.StoreBeginList("Bits", i);
                 for (int j = 0; j < 300; ++j)            // if (entry->skillId != "Skill Id") continue;
                     packet.ReadByte("Bit Index", i, j);  // if (mask[entry->col13 / 8] & (entry->col13 & 0x7)) recipe_spell_id: entry->spellId
+                packet.StoreEndList();
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_GUILD_MAX_DAILY_XP)]
@@ -1969,6 +2020,7 @@ namespace PacketParser.Parsing.Parsers
                 strlen[i][1] = packet.ReadBits(8);
             }
 
+            packet.StoreBeginList("Members");
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadByte("unk Byte 359", i); // 0 or 1
@@ -1980,12 +2032,14 @@ namespace PacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(guids[i], 2);
 
+                packet.StoreBeginList("Professions", i);
                 for (int j = 0; j < 2; ++j)
                 {
                     var rank = packet.ReadUInt32("Profession Id", i, j);
                     var id = packet.ReadUInt32("Value", i, j);
                     var value = packet.ReadUInt32("Rank", i, j);
                 }
+                packet.StoreEndList();
 
                 packet.ReadXORByte(guids[i], 0);
                 packet.ReadXORByte(guids[i], 6);
@@ -2016,6 +2070,7 @@ namespace PacketParser.Parsing.Parsers
 
                 packet.StoreBitstreamGuid("Player Guid", guids[i], i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_GUILD_INVITE_BY_NAME)]
@@ -2143,11 +2198,13 @@ namespace PacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guid, 5);
 
+            packet.StoreBeginList("Players");
             for (var i = 0; i < count; i++)
             {
                 packet.ParseBitStream(guid2[i], 1, 5, 7, 0, 6, 4, 3, 2);
                 packet.StoreBitstreamGuid("Player Guid", guid2[i], i);
             }
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 2);
@@ -2191,29 +2248,33 @@ namespace PacketParser.Parsing.Parsers
         public static void HandleGuildAchievementData(Packet packet)
         {
             var cnt = packet.ReadUInt32("Count");
+            packet.StoreBeginList("Achievements");
             for (var i = 0; i < cnt; ++i)
                 packet.ReadPackedTime("Date", i);
 
             for (var i = 0; i < cnt; ++i)
                 packet.ReadUInt32("Achievement Id", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_DATA, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildAchievementData434(Packet packet)
         {
             var count = packet.ReadBits("Count", 23);
+            packet.StoreBeginList("Achievements");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadPackedTime("Date", i);
                 packet.ReadUInt32("Achievement Id", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_GUILD_CRITERIA_DATA, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildCriteriaData(Packet packet)
         {
             var criterias = packet.ReadUInt32("Criterias");
-
+            packet.StoreBeginList("Criterias");
             for (var i = 0; i < criterias; ++i)
                 packet.ReadGuid("Player GUID", i);
 
@@ -2234,6 +2295,7 @@ namespace PacketParser.Parsing.Parsers
 
             for (var i = 0; i < criterias; ++i)
                 packet.ReadUInt32("Flag", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_GUILD_CRITERIA_DATA, ClientVersionBuild.V4_3_4_15595)]
@@ -2265,7 +2327,7 @@ namespace PacketParser.Parsing.Parsers
                 counter[i][7] = packet.ReadBit();
                 guid[i][4] = packet.ReadBit();
             }
-
+            packet.StoreBeginList("Criterias");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadXORByte(guid[i], 5);

@@ -11,11 +11,6 @@ namespace PacketParser.Parsing.Parsers
 {
     public static class MovementHandler
     {
-        [ThreadStatic]
-        public static uint CurrentMapId;
-
-        public static int CurrentPhaseMask = 1;
-
         public static MovementInfo ReadMovementInfo(ref Packet packet, Guid guid, params int[] index)
         {
             if (ClientVersion.Build == ClientVersionBuild.V4_2_0_14333)
@@ -297,12 +292,14 @@ namespace PacketParser.Parsing.Parsers
                 packet.ReadInt32("Async-time in ms");
             }
 
-            var waypoints = packet.ReadInt32("Waypoints");
+            var waypoints = packet.ReadInt32("Waypoints Count");
 
             if (flags.HasAnyFlag(SplineFlag434.UncompressedPath))
             {
+                packet.StoreBeginList("Waypoints");
                 for (var i = 0; i < waypoints; i++)
                     packet.ReadVector3("Waypoint", i);
+                packet.StoreEndList();
             }
             else
             {
@@ -315,6 +312,7 @@ namespace PacketParser.Parsing.Parsers
 
                 if (waypoints != 1)
                 {
+                    packet.StoreBeginList("Waypoints");
                     var vec = packet.ReadPackedVector3();
                     vec.X += mid.X;
                     vec.Y += mid.Y;
@@ -333,6 +331,7 @@ namespace PacketParser.Parsing.Parsers
                             packet.Store("Waypoint", vec, i);
                         }
                     }
+                    packet.StoreEndList();
                 }
             }
         }
@@ -391,7 +390,7 @@ namespace PacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
         public static void HandleEnterWorld(Packet packet)
         {
-            CurrentMapId = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
+            PacketFileProcessor.Current.GetProcessor<SessionStore>().CurrentMapId = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
             packet.ReadVector4("Position");
         }
 
@@ -399,7 +398,7 @@ namespace PacketParser.Parsing.Parsers
         public static void HandleNewWorld422(Packet packet)
         {
             packet.ReadVector3("Position");
-            CurrentMapId = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
+            PacketFileProcessor.Current.GetProcessor<SessionStore>().CurrentMapId = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
             packet.ReadSingle("Orientation");
         }
 
@@ -409,7 +408,7 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadSingle("X");
             packet.ReadSingle("Orientation");
             packet.ReadSingle("Z");
-            CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
+            PacketFileProcessor.Current.GetProcessor<SessionStore>().CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
             packet.ReadSingle("Y"); // seriously...
         }
 
@@ -3911,7 +3910,7 @@ namespace PacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandlePhaseShift(Packet packet)
         {
-            CurrentPhaseMask = packet.ReadInt32("Phase Mask");
+            PacketFileProcessor.Current.GetProcessor<SessionStore>().CurrentPhaseMask = packet.ReadInt32("Phase Mask");
         }
 
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_1_0_13914)]
@@ -4006,7 +4005,7 @@ namespace PacketParser.Parsing.Parsers
 
             if (phaseMask != -1)
             {
-                CurrentPhaseMask = phaseMask;
+                PacketFileProcessor.Current.GetProcessor<SessionStore>().CurrentPhaseMask = phaseMask;
             }
         }
 
@@ -4019,8 +4018,10 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 4);
 
             var count = packet.ReadUInt32("Count1") / 2;
+            packet.StoreBeginList("unk datas 1");
             for (var i = 0; i < count; ++i)
                 packet.ReadUInt16("First array", i);
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 1);
 
@@ -4031,20 +4032,26 @@ namespace PacketParser.Parsing.Parsers
 
             count = packet.ReadUInt32() / 2;
             packet.Store("Terrain swap count", count);
+            packet.StoreBeginList("Terrarin Swaps");
             for (var i = 0; i < count; ++i)
                 packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Terrain swap", i);
+            packet.StoreEndList();
 
             count = packet.ReadUInt32() / 2;
             packet.Store("Phases count", count);
+            packet.StoreBeginList("Phase IDs");
             for (var i = 0; i < count; ++i)
                 packet.ReadUInt16("Phase id", i); // Phase.dbc
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 0);
 
             count = packet.ReadUInt32("Count4") / 2;
+            packet.StoreBeginList("unk datas 4");
             for (var i = 0; i < count; ++i)
                 packet.ReadUInt16("Fourth array", i);
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 5);
             packet.StoreBitstreamGuid("GUID", guid);
@@ -8427,6 +8434,7 @@ namespace PacketParser.Parsing.Parsers
             var hasPosition = new byte[count];
             var unk4 = new byte[count];
 
+            packet.StoreBeginList("unk datas 1");
             for (int i = 0; i < count; ++i)
             {
                 unk1[i] = packet.ReadBit("Unk bit 1", i); // 36
@@ -8437,7 +8445,7 @@ namespace PacketParser.Parsing.Parsers
                 if (unk4[i] != 0)
                     packet.ReadBits("Unk bits", 2, i);
             }
-
+            
             for (int i = 0; i < count; ++i)
             {
 
@@ -8457,6 +8465,7 @@ namespace PacketParser.Parsing.Parsers
 
                 packet.ReadInt16("Unk Int16", i);
             }
+            packet.StoreEndList();
 
             packet.ParseBitStream(guid, 2, 1, 4, 5, 6, 7, 0, 3);
             packet.StoreBitstreamGuid("Guid", guid);

@@ -120,13 +120,14 @@ namespace PacketParser.Parsing.Parsers
             }
             packet.StoreEndList();
 
+            packet.StoreBeginList("Currencies");
             for (int i = 0; i < currencyCount; ++i)
             {
                 packet.ReadByte("Unk Byte", i); // only seen zero so far
                 packet.ReadInt32("Currency Id", i);
                 packet.ReadInt32("Count", i); // unconfirmed
             }
-
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_LOOT_ROLL)]
@@ -203,14 +204,17 @@ namespace PacketParser.Parsing.Parsers
         public static void HandleLootMasterList(Packet packet)
         {
             var count = packet.ReadByte("Count");
+            packet.StoreBeginList("Loot Master List");
             for (var i = 0; i < count; i++)
                 packet.ReadGuid("GUID", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_LOOT_CONTENTS)] //4.3.4
         public static void HandleLootContents(Packet packet)
         {
             var count1 = packet.ReadBits("Loot Items Count", 21);
+            packet.StoreBeginList("Loot items");
             for (var i = 0; i < count1; i++)
             {
                 packet.ReadUInt32("Display ID", i);
@@ -219,6 +223,7 @@ namespace PacketParser.Parsing.Parsers
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
                 packet.ReadInt32("Unk Int32", i); // possibly random property id or looted count
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_LOOT_CURRENCY)]

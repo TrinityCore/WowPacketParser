@@ -406,8 +406,8 @@ namespace PacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GROUP_INVITE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGroupInvite434(Packet packet)
         {
-            packet.ReadInt32("Unk Int32"); // Non-zero in cross realm parties (1383)
-            packet.ReadInt32("Unk Int32"); // Always 0
+            packet.ReadInt32("Unk Int32 1"); // Non-zero in cross realm parties (1383)
+            packet.ReadInt32("Unk Int32 2"); // Always 0
             var guid = new byte[8];
             guid[2] = packet.ReadBit();
             guid[7] = packet.ReadBit();
@@ -473,16 +473,18 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 4);
 
             packet.ReadInt32("Timestamp?");
-            packet.ReadInt32("Unk Int 32");
-            packet.ReadInt32("Unk Int 32");
+            packet.ReadInt32("Unk Int 32 1");
+            packet.ReadInt32("Unk Int 32 2");
 
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 3);
 
+            packet.StoreBeginList("UnkList");
             for (var i = 0; i < count3; i++)
-                packet.ReadInt32("Unk Int 32", i);
+                packet.ReadInt32("Unk Int 32 3", i);
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 5);
 
@@ -492,7 +494,7 @@ namespace PacketParser.Parsing.Parsers
 
             packet.ReadWoWString("Invited", count2);
 
-            packet.ReadInt32("Unk Int 32");
+            packet.ReadInt32("Unk Int 32 4");
 
             packet.StoreBitstreamGuid("Guid", guid);
 
@@ -702,6 +704,7 @@ namespace PacketParser.Parsing.Parsers
             for (int i = 0; i < count; ++i)
                 guids[i] = packet.StartBitStream(5, 3, 1, 7, 2, 0, 6, 4);
 
+            packet.StoreBeginList("Errors");
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadXORByte(guids[i], 4);
@@ -718,6 +721,7 @@ namespace PacketParser.Parsing.Parsers
 
                 packet.StoreBitstreamGuid("Guid", guids[i], i);
             }
+            packet.StoreEndList();
 
         }
 

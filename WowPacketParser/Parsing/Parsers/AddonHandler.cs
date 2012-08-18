@@ -136,8 +136,10 @@ namespace PacketParser.Parsing.Parsers
             for (var i = 0; i < count; ++i)
                 lengths[i] = (int)packet.ReadBits(5);
 
+            packet.StoreBeginList("Addons");
             for (var i = 0; i < count; ++i)
                 packet.ReadWoWString("Addon", lengths[i], i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES)]

@@ -166,11 +166,13 @@ namespace PacketParser.Parsing.Parsers
                 packet.ReadUInt32("Tab Page");
 
             var count = packet.ReadUInt32("Talent Count");
+            packet.StoreBeginList("talents");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadUInt32("Talent ID", i);
                 packet.ReadUInt32("Rank", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_LEARN_TALENT)]

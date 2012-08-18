@@ -190,21 +190,25 @@ namespace PacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guid, 7);
             packet.ReadUInt32("Time Left");
+            var items = packet.StoreBeginList("Items");
             for (var i = 0; i < 5; ++i)
             {
                 packet.ReadUInt32("Item Count", i);
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Cost Entry", i);
             }
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 2);
+            packet.StoreContinueList(items);
             for (var i = 0; i < 5; ++i)
             {
                 packet.ReadUInt32("Currency Count", i);
                 packet.ReadUInt32("Currency Entry", i);
             }
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 5);
@@ -247,19 +251,23 @@ namespace PacketParser.Parsing.Parsers
 
             if (unkBit)
             {
+                var items = packet.StoreBeginList("Items");
                 for (int i = 0; i < 5; ++i) // Currencies
                 {
                     packet.ReadInt32("CurrencyCount", i);
                     packet.ReadInt32("Currency", i);
                 }
+                packet.StoreEndList();
 
                 packet.ReadInt32("Paid Money");
 
+                packet.StoreContinueList(items);
                 for (int i = 0; i < 5; ++i) // Items
                 {
                     packet.ReadInt32("ItemCount", i);
                     packet.ReadInt32("Item", i);
                 }
+                packet.StoreEndList();
             }
 
             packet.ParseBitStream(guid, 0, 3, 1, 6, 4, 2, 7, 5);
@@ -425,7 +433,7 @@ namespace PacketParser.Parsing.Parsers
 
             item.SubClass = packet.ReadUInt32("Sub Class");
 
-            item.UnkInt32 = packet.ReadInt32("Unk Int32");
+            item.UnkInt32 = packet.ReadInt32("Unk Int32 1");
 
             var name = new string[4];
             packet.StoreBeginList("Names");
@@ -613,6 +621,7 @@ namespace PacketParser.Parsing.Parsers
             for (var i = 0; i < count; ++i)
                 guidBytes[i] = packet.StartBitStream(0, 4, 7, 2, 5, 3, 6, 1);
 
+            packet.StoreBeginList("Items");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadXORByte(guidBytes[i], 5);
@@ -629,6 +638,7 @@ namespace PacketParser.Parsing.Parsers
 
                 packet.StoreBitstreamGuid("GUID", guidBytes[i], i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
@@ -858,6 +868,7 @@ namespace PacketParser.Parsing.Parsers
                     packet.ReadInt32("Max Stack Size");
                     packet.ReadUInt32("Container Slots");
 
+                    packet.StoreBeginList("Stats");
                     for (var i = 0; i < 10; i++)
                         packet.ReadEnum<ItemModType>("Stat Type", TypeCode.Int32, i);
 
@@ -869,12 +880,14 @@ namespace PacketParser.Parsing.Parsers
 
                     for (var i = 0; i < 10; i++)
                         packet.ReadInt32("Unk UInt32 2", i);
+                    packet.StoreEndList();
 
                     packet.ReadUInt32("Scaling Stat Distribution");
                     packet.ReadEnum<DamageType>("Damage Type", TypeCode.Int32);
                     packet.ReadUInt32("Delay");
                     packet.ReadSingle("Ranged Mod");
 
+                    packet.StoreBeginList("Spells");
                     for (var i = 0; i < 5; i++)
                         packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Triggered Spell ID", i);
 
@@ -892,12 +905,15 @@ namespace PacketParser.Parsing.Parsers
 
                     for (var i = 0; i < 5; i++)
                         packet.ReadInt32("Triggered Spell Category Cooldown", i);
+                    packet.StoreEndList();
 
                     packet.ReadEnum<ItemBonding>("Bonding", TypeCode.Int32);
 
+                    packet.StoreBeginList("Names");
                     for (var i = 0; i < 4; i++)
                         if (packet.ReadUInt16() > 0)
                             packet.ReadCString("Name", i);
+                    packet.StoreEndList();
 
                     if (packet.ReadUInt16() > 0)
                         packet.ReadCString("Description");
@@ -922,11 +938,13 @@ namespace PacketParser.Parsing.Parsers
                     packet.ReadEnum<BagFamilyMask>("Bag Family", TypeCode.Int32);
                     packet.ReadEnum<TotemCategory>("Totem Category", TypeCode.Int32);
 
+                    packet.StoreBeginList("Sockets");
                     for (var i = 0; i < 3; i++)
                         packet.ReadEnum<ItemSocketColor>("Socket Color", TypeCode.Int32, i);
 
                     for (var i = 0; i < 3; i++)
                         packet.ReadUInt32("Socket Item", i);
+                    packet.StoreEndList();
 
                     packet.ReadUInt32("Socket Bonus");
                     packet.ReadUInt32("Gem Properties");
@@ -1022,7 +1040,7 @@ namespace PacketParser.Parsing.Parsers
             var npcGuid = packet.StartBitStream(7, 3, 5, 6, 1, 4, 0, 2);
 
             // flush bits
-
+            packet.StoreBeginList("Items");
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "New Entry", i);
@@ -1033,6 +1051,7 @@ namespace PacketParser.Parsing.Parsers
 
                 packet.StoreBitstreamGuid("ITem Guid", itemGuids[i], i);
             }
+            packet.StoreEndList();
 
             packet.ParseBitStream(npcGuid, 7, 2, 5, 4, 3, 1, 6, 0);
             packet.StoreBitstreamGuid("NPC Guid", npcGuid);

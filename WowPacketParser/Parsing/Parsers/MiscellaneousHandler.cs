@@ -24,9 +24,9 @@ namespace PacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_HOTFIX_NOTIFY)]
         public static void HandleHotfixNotify(Packet packet)
         {
-            packet.ReadInt32("Unk int32");
-            packet.ReadUInt32("Unk int32");
-            packet.ReadUInt32("Unk int32");
+            packet.ReadInt32("Unk int32 1");
+            packet.ReadUInt32("Unk int32 2");
+            packet.ReadUInt32("Unk int32 3");
         }
 
         [Parser(Opcode.SMSG_HOTFIX_INFO)]
@@ -506,6 +506,7 @@ namespace PacketParser.Parsing.Parsers
             packet.StoreBeginList("Zones");
             for (var i = 0; i < zones; ++i)
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id");
+            packet.StoreEndList();
 
             var patterns = packet.ReadUInt32("Pattern count");
             packet.StoreBeginList("Patterns");
@@ -562,7 +563,7 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk time"); // Time online?
 
             if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing)) // no idea when this was added exactly, doesn't exist in 2.4.0
-                packet.ReadUInt32("Unk int32");
+                packet.ReadUInt32("Unk int32 1");
         }
 
         [Parser(Opcode.CMSG_FAR_SIGHT)]
@@ -589,16 +590,16 @@ namespace PacketParser.Parsing.Parsers
             if (b2)
                 packet.ReadInt32("Unk Int32 (EVENT_INELIGIBLE_FOR_LOOT)");
 
-            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Unk Byte 4");
 
             if (b1)
-                packet.ReadInt32("Unk Int32");
+                packet.ReadInt32("Unk Int32 5");
 
             if (b0)
-                packet.ReadInt32("Unk Int32");
+                packet.ReadInt32("Unk Int32 6");
 
-            packet.ReadTime("Unk Time");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadTime("Unk Time 7");
+            packet.ReadInt32("Unk Int32 8");
         }
 
         [Parser(Opcode.MSG_INSPECT_HONOR_STATS)]
@@ -638,7 +639,7 @@ namespace PacketParser.Parsing.Parsers
         {
             packet.ReadBit("Loading"); // Not sure on the meaning
             var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
-            MovementHandler.CurrentMapId = (uint) mapId;
+            PacketFileProcessor.Current.GetProcessor<SessionStore>().CurrentMapId = (uint) mapId;
         }
 
         [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V4_3_4_15595)]
@@ -646,7 +647,7 @@ namespace PacketParser.Parsing.Parsers
         {
             var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
             packet.ReadBit("Loading");
-            MovementHandler.CurrentMapId = (uint)mapId;
+            PacketFileProcessor.Current.GetProcessor<SessionStore>().CurrentMapId = (uint)mapId;
         }
 
         [Parser(Opcode.MSG_VERIFY_CONNECTIVITY)]
@@ -697,13 +698,13 @@ namespace PacketParser.Parsing.Parsers
         public static void HandleMiniGameSetup(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadByte("unk byte");
-            byte unk1 = packet.ReadByte("unk byte");
-            packet.ReadGuid("unk guid");
-            packet.ReadGuid("unk guid");
+            packet.ReadByte("unk byte 1");
+            byte unk1 = packet.ReadByte("unk byte 2");
+            packet.ReadGuid("unk guid 3");
+            packet.ReadGuid("unk guid 4");
             packet.ReadCString("string");
             if (unk1 == 2)
-                packet.ReadByte("unk byte");
+                packet.ReadByte("unk byte 5");
         }
 
         [Parser(Opcode.SMSG_SUMMON_REQUEST)]
@@ -738,9 +739,9 @@ namespace PacketParser.Parsing.Parsers
         public static void HandleStartTimer(Packet packet)
         {
             // Unk use, related to EVENT_START_TIMER
-            packet.ReadInt32("Unk Int32");
-            packet.ReadInt32("Unk Int32");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32 1");
+            packet.ReadInt32("Unk Int32 2");
+            packet.ReadInt32("Unk Int32 3");
         }
 
         [Parser(Opcode.CMSG_SET_PREFERED_CEMETERY)] // 4.3.4
@@ -754,8 +755,10 @@ namespace PacketParser.Parsing.Parsers
         {
             packet.ReadBit("Unk Bit");
             var count = packet.ReadBits("Count", 24);
+            packet.StoreBeginList("CemeteryList");
             for (int i = 0; i < count; ++i)
                 packet.ReadInt32("Cemetery Id", i); // not confirmed
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_FORCE_SET_VEHICLE_REC_ID)] // 4.3.4
@@ -916,8 +919,10 @@ namespace PacketParser.Parsing.Parsers
         public static void HandleStreamingMovie(Packet packet)
         {
             var count = packet.ReadBits("Count", 25);
+            packet.StoreBeginList("Files list");
             for (int i = 0; i < count; ++i)
                 packet.ReadInt16("File Data ID");
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_WEEKLY_LAST_RESET)]
@@ -931,8 +936,10 @@ namespace PacketParser.Parsing.Parsers
         {
             packet.ReadInt32("unk int32");
             var count = packet.ReadInt32("Data Count");
+            packet.StoreBeginList("Unk bytes");
             for (var i = 0; i < count; i++)
                 packet.ReadByte("Unk Byte", i);
+            packet.StoreEndList();
         }
 
 
