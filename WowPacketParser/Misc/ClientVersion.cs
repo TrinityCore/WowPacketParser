@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using WowPacketParser.Enums;
+using PacketParser.Enums;
+using PacketParser.Enums.Version;
+using PacketParser.Parsing;
 
-namespace WowPacketParser.Misc
+namespace PacketParser.Misc
 {
     public static class ClientVersion
     {
@@ -67,9 +69,33 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V4_3_4_15595, new DateTime(2012, 4, 17))
         };
 
+        [ThreadStatic]
         private static ClientType _expansion;
 
-        public static ClientVersionBuild Build { get; private set; }
+        [ThreadStatic]
+        private static ClientVersionBuild _build;
+
+        public static ClientVersionBuild Build 
+        {
+            get
+            {
+                return _build;
+            }
+            private set
+            {
+                _build = value;
+            }
+        }
+
+        public static List<ClientVersionBuild>GetAvailableVersions()
+        {
+            var l = new List<ClientVersionBuild>(_clientBuilds.Length);
+            for (int i = 0; i < _clientBuilds.Length;++i)
+            {
+                l.Add(_clientBuilds[i].Key);
+            }
+            return l;
+        }
 
         public static int BuildInt
         {
@@ -81,7 +107,12 @@ namespace WowPacketParser.Misc
             get { return Build.ToString(); }
         }
 
-        private static ClientType GetExpansion(ClientVersionBuild build)
+        public static ClientType GetExpansion()
+        {
+            return GetExpansion(Build);
+        }
+
+        public static ClientType GetExpansion(ClientVersionBuild build)
         {
             if (build >= ClientVersionBuild.V4_0_3_13329)
                 return ClientType.Cataclysm;
@@ -93,7 +124,7 @@ namespace WowPacketParser.Misc
             return ClientType.WorldOfWarcraft;
         }
 
-        private static ClientVersionBuild GetVersion(DateTime time)
+        public static ClientVersionBuild GetVersion(DateTime time)
         {
             if (time < _clientBuilds[0].Value)
                 return ClientVersionBuild.Zero;
@@ -107,8 +138,13 @@ namespace WowPacketParser.Misc
 
         public static void SetVersion(ClientVersionBuild version)
         {
+            if (version == Build)
+                return;
             Build = version;
             _expansion = GetExpansion(version);
+            UpdateFields.InitForClientVersion();
+            Opcodes.InitForClientVersion();
+            Handler.InitForClientVersion();
         }
 
         public static void SetVersion(DateTime time)

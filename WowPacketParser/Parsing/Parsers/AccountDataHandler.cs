@@ -1,16 +1,19 @@
 using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class AccountDataHandler
     {
         [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES, ClientVersionBuild.Zero, ClientVersionBuild.V3_0_2_9056)]
         public static void HandleAccountDataTimes(Packet packet)
         {
+            packet.StoreBeginList("Unk block");
             for (var i = 0; i < 32; i++)
                 packet.ReadInt32("Unk Int32", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES, ClientVersionBuild.V3_0_2_9056)]
@@ -23,14 +26,16 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
                 mask = packet.ReadInt32("Mask");
 
+            packet.StoreBeginList("Times list");
             for (var i = 0; i < 8; i++)
             {
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
                     if ((mask & (1 << i)) == 0)
                         continue;
 
-                packet.ReadTime("[" + (AccountDataType)i + "]" + " Time");
+                packet.ReadTime((AccountDataType)i + " Time", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_REQUEST_ACCOUNT_DATA)]
@@ -46,7 +51,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadTime("Login Time");
 
             var decompCount = packet.ReadInt32();
-            packet = packet.Inflate(decompCount);
+            packet.Inflate(decompCount);
 
             packet.ReadWoWString("Account Data", decompCount);
         }

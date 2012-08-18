@@ -1,8 +1,10 @@
 using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using Guid=PacketParser.DataStructures.Guid;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class MailHandler
     {
@@ -61,6 +63,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Total Mails");
 
             var count = packet.ReadByte("Shown Mails");
+            packet.StoreBeginList("ShownMails");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadUInt16("Message Size", i);
@@ -110,6 +113,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadCString("Body", i);
 
                 var items = packet.ReadByte("Item Count", i);
+                packet.StoreBeginList("Items", i);
                 for (var j = 0; j < items; ++j)
                 {
                     packet.ReadByte("Item Index", i, j);
@@ -124,12 +128,14 @@ namespace WowPacketParser.Parsing.Parsers
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
                         enchantmentCount = 10;
 
+                    packet.StoreBeginList("Enchantments", i, j);
                     for (var k = 0; k < enchantmentCount; ++k)
                     {
                         packet.ReadUInt32("Item Enchantment Id", i, j, k);
                         packet.ReadUInt32("Item Enchantment Duration", i, j, k);
                         packet.ReadUInt32("Item Enchantment Charges", i, j, k);
                     }
+                    packet.StoreEndList();
 
                     packet.ReadInt32("Item Random Property Id", i, j);
                     packet.ReadUInt32("Item Suffix Factor", i, j);
@@ -146,7 +152,9 @@ namespace WowPacketParser.Parsing.Parsers
                     if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
                         packet.ReadByte("Unk byte", i, j);
                 }
+                packet.StoreEndList();
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.MSG_QUERY_NEXT_MAIL_TIME)]
@@ -159,6 +167,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Time since last time visiting a mailbox (can be < 0.0)");
 
             var count = packet.ReadUInt32("Count");
+            packet.StoreBeginList("Mails");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadUInt64("GUID", i);
@@ -167,6 +176,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Stationery", i);
                 packet.ReadSingle("Time?", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_SEND_MAIL_RESULT)]
@@ -194,11 +204,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Stationery?");
             packet.ReadUInt32("Unk Uint32");
             var items = packet.ReadByte("Item Count");
+            packet.StoreBeginList("Items");
             for (var i = 0; i < items; ++i)
             {
                 packet.ReadByte("Slot", i);
                 packet.ReadGuid("Item GUID", i);
             }
+            packet.StoreEndList();
             packet.ReadUInt32("Money");
             packet.ReadUInt32("COD");
             packet.ReadUInt64("Unk Uint64");
@@ -234,6 +246,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guid, 4);
 
+            packet.StoreBeginList("Items");
             for (var i = 0; i < count; i++)
             {
                 if (guid2[i][6] != 0) guid2[i][6] = packet.ReadByte();
@@ -245,8 +258,9 @@ namespace WowPacketParser.Parsing.Parsers
                 if (guid2[i][0] != 0) guid2[i][0] = packet.ReadByte();
                 if (guid2[i][4] != 0) guid2[i][4] = packet.ReadByte();
                 if (guid2[i][5] != 0) guid2[i][5] = packet.ReadByte();
-                packet.WriteGuid("Item Guid", guid2[i], i);
+                packet.StoreBitstreamGuid("Item Guid", guid2[i], i);
             }
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 3);
@@ -263,7 +277,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guid, 1);
 
-            packet.WriteGuid("Mailbox Guid", guid);
+            packet.StoreBitstreamGuid("Mailbox Guid", guid);
         }
 
         [Parser(Opcode.CMSG_MAIL_TAKE_ITEM)]

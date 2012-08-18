@@ -1,9 +1,10 @@
 using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Enums.Version;
+using PacketParser.Misc;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class LfgHandler
     {
@@ -13,10 +14,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
             packet.ReadBytes(2); // always 0
             var numFields = packet.ReadByte("Join Dungeon Count");
+            packet.StoreBeginList("Dungeons");
             for (var i = 0; i < numFields; i++)
                 packet.ReadLfgEntry("Dungeon Entry", i);
+            packet.StoreEndList();
 
-            packet.ReadUInt32(); // always 0 (for 1..3) 0
+            packet.ReadUInt32("unk"); // always 0 (for 1..3) 0
             packet.ReadCString("Comment");
         }
 
@@ -25,16 +28,20 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
 
+            var duns = packet.StoreBeginList("Dungeons");
             for (var i = 0; i < 3; i++)
                 packet.ReadInt32("Unk Int32", i);
+            packet.StoreEndList();
 
             var length = packet.ReadBits(9);
             var count = packet.ReadBits("Join Dungeon Count", 24);
 
             packet.ReadWoWString("Comment", length);
 
+            packet.StoreContinueList(duns);
             for (var i = 0; i < count; i++)
                 packet.ReadLfgEntry("Dungeon Entry", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_LFG_LEAVE, ClientVersionBuild.V4_3_4_15595)]
@@ -47,7 +54,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guid = packet.StartBitStream(4, 5, 0, 6, 2, 7, 1, 3);
             packet.ParseBitStream(guid, 7, 4, 3, 2, 6, 0, 1, 5);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_LFG_SET_COMMENT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -79,14 +86,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LFG_PROPOSAL_RESULT, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleLfgProposalResult434(Packet packet)
         {
-            packet.ReadUInt32("Unk Uint32");
+            packet.ReadUInt32("Unk Uint32 1");
             packet.ReadTime("Time");
             packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
-            packet.ReadUInt32("Unk Uint32");
+            packet.ReadUInt32("Unk Uint32 2");
 
             var guid2 = packet.StartBitStream(4, 5, 0, 6, 2, 7, 1, 3);
             packet.ParseBitStream(guid2, 7, 4, 3, 2, 6, 0, 1, 5);
-            packet.WriteGuid("Player Guid", guid2);
+            packet.StoreBitstreamGuid("Player Guid", guid2);
 
             var guid = new byte[8];
             guid[7] = packet.ReadBit();
@@ -100,7 +107,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid[2] = packet.ReadBit();
 
             packet.ParseBitStream(guid, 7, 1, 5, 6, 3, 4, 0, 2);
-            packet.WriteGuid("Instance Guid", guid);
+            packet.StoreBitstreamGuid("Instance Guid", guid);
 
         }
 
@@ -120,8 +127,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Comment");
         }
 
-        public static void ReadLfgRewardBlock(ref Packet packet)
+        public static void ReadLfgRewardBlock(ref Packet packet, params int[] values)
         {
+            packet.StoreBeginObj("Lfg Reward Block", values);
             packet.ReadBoolean("First Completion");
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_LFG_PLAYER_REWARD))
@@ -148,6 +156,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadByte("Unk 9");
 
+                packet.StoreBeginList("Unks");
                 // LFG_SLOT_INFO_LOOT related
                 for (var i = 0; i < 3; ++i)
                 {
@@ -157,6 +166,7 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadInt32("Unk 2", i);
                         packet.ReadInt32("Unk 3", i);
                         var unk4 = packet.ReadByte("Unk 4", i);
+                        packet.StoreBeginList("Unks2", i);
                         for (var j = 0; j < unk4; ++j)
                         {
                             packet.ReadInt32("Unk 5", j);
@@ -164,14 +174,17 @@ namespace WowPacketParser.Parsing.Parsers
                             packet.ReadInt32("Unk 7", j);
                             packet.ReadByte("Unk 8", j);
                         }
+                        packet.StoreEndList();
                     }
                 }
+                packet.StoreEndList();
 
                 packet.ReadInt32("Unk 10");
                 packet.ReadInt32("Unk 11");
             }
 
             var numFields = packet.ReadByte("Reward Item Count");
+            packet.StoreBeginList("Reward items");
             for (var i = 0; i < numFields; i++)
             {
                 packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Item Or Currency Id", i);
@@ -180,6 +193,8 @@ namespace WowPacketParser.Parsing.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                     packet.ReadBoolean("Is Currency", i);
             }
+            packet.StoreEndList();
+            packet.StoreEndObj();
         }
 
         [Parser(Opcode.SMSG_LFG_PLAYER_REWARD, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -200,6 +215,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Base XP");
 
             var numFields = packet.ReadByte("Reward Item Count");
+            packet.StoreBeginList("Items");
             for (var i = 0; i < numFields; i++)
             {
                 packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Item Or Currency Id", i);
@@ -207,6 +223,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Reward Item Stack Count", i);
                 packet.ReadBoolean("Is Currency", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_LFG_UPDATE_PLAYER)]
@@ -220,9 +237,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Queued");
             packet.ReadBytes(2); // always 0
             var numFields2 = packet.ReadByte("Slot Count");
+            packet.StoreBeginList("LfgList");
             for (var i = 0; i < numFields2; i++)
                 packet.ReadLfgEntry("LFG Entry", i);
-
+            packet.StoreEndList();
             packet.ReadCString("Comment");
         }
 
@@ -238,8 +256,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Queued");
             packet.ReadBytes(5); // always 0, 0, for (1..3) 0
             var numFields2 = packet.ReadByte("Slot Count");
+            packet.StoreBeginList("LfgList");
             for (var i = 0; i < numFields2; i++)
                 packet.ReadLfgEntry("LFG Entry", i);
+            packet.StoreEndList();
 
             packet.ReadCString("Comment");
         }
@@ -252,44 +272,54 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void ReadDungeonJoinResults(ref Packet packet, params int[] values)
         {
-            packet.ReadLfgEntry("LFG Entry", values);
-            packet.ReadEnum<LfgEntryCheckResult>("Entry Check Result", TypeCode.UInt32, values);
+            packet.StoreBeginObj("DungeonJoinResults", values);
+            packet.ReadLfgEntry("LFG Entry");
+            packet.ReadEnum<LfgEntryCheckResult>("Entry Check Result", TypeCode.UInt32);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
             {
-                packet.ReadInt32("needed ILvL", values);
-                packet.ReadInt32("player ILvL", values);
+                packet.ReadInt32("needed ILvL");
+                packet.ReadInt32("player ILvL");
             }
+            packet.StoreEndObj();
         }
 
-        public static void ReadPlayerLockedDungeons(ref Packet packet, int i)
+        public static void ReadPlayerLockedDungeons(ref Packet packet, params int[] values)
         {
-            var numFields = packet.ReadInt32("Entry Count", i);
+            packet.StoreBeginObj("PlayerLockedDungeons", values);
+            var numFields = packet.ReadInt32("Entry Count");
+            packet.StoreBeginList("LockedDungeons");
             for (var j = 0; j < numFields; j++)
-                ReadDungeonJoinResults(ref packet, i, j);
+                ReadDungeonJoinResults(ref packet, j);
+            packet.StoreEndList();
+            packet.StoreEndObj();
         }
 
         [Parser(Opcode.SMSG_LFG_PLAYER_INFO)]
         public static void HandleLfgPlayerLockInfoResponse(Packet packet)
         {
             var numFields = packet.ReadByte("Random Dungeon Count");
+            packet.StoreBeginList("Dungeons");
             for (var i = 0; i < numFields; i++)
             {
                 packet.ReadLfgEntry("Random Dungeon Entry", i);
-                ReadLfgRewardBlock(ref packet);
+                ReadLfgRewardBlock(ref packet, i);
             }
+            packet.StoreEndList();
 
-            ReadPlayerLockedDungeons(ref packet, -1);
+            ReadPlayerLockedDungeons(ref packet);
         }
 
         [Parser(Opcode.SMSG_LFG_PARTY_INFO)]
         public static void HandleLfgPlayerLockInfoUpdate(Packet packet)
         {
             var numFields = packet.ReadByte("Player Count");
+            packet.StoreBeginList("Players");
             for (var i = 0; i < numFields; i++)
             {
                 packet.ReadGuid("GUID", i);
                 ReadPlayerLockedDungeons(ref packet, i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_LFG_PROPOSAL_UPDATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -302,6 +332,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Silent");
 
             var numFields = packet.ReadByte("Response Count");
+            packet.StoreBeginList("Responses");
             for (var i = 0; i < numFields; i++)
             {
                 packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32, i);
@@ -311,6 +342,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadBoolean("Answer", i);
                 packet.ReadBoolean("Accept", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_LFG_PROPOSAL_UPDATE, ClientVersionBuild.V4_3_4_15595)]
@@ -341,13 +373,18 @@ namespace WowPacketParser.Parsing.Parsers
 
             guid2[7] = packet.ReadBit();
 
+            packet.StoreBeginList("Proposals");
             for (var i = 0; i < count; ++i)
             {
                 var bits = new Bit[5];
                 for (var j = 0; j < 5; ++j)
                     bits[j] = packet.ReadBit();
-                packet.WriteLine("[{0}] Bits: In Dungeon?: {1}, Same Group?: {2}, Accept: {3}, Answer: {4}, Self: {5}",
-                    i, bits[0], bits[1], bits[2], bits[3], bits[4]); // 0 and 1 could be swapped
+                // 0 and 1 could be swapped
+                packet.Store("In Dungeon", bits[0]);
+                packet.Store("Same Group?", bits[1]);
+                packet.Store("Accept", bits[2]);
+                packet.Store("Answer", bits[3]);
+                packet.Store("Self", bits[4]);
             }
 
             guid2[5] = packet.ReadBit();
@@ -368,6 +405,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; ++i)
                 packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32, i);
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid2, 7);
             packet.ReadXORByte(guid1, 4);
@@ -406,8 +444,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guid, 6);
 
+            packet.StoreBeginList("Unk datas");
             for (var i = 0; i < 3; ++i)
                 packet.ReadByte("Unk Byte", i); // always 0
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 2);
@@ -420,10 +460,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guid, 7);
 
+            packet.StoreBeginList("Dungeons");
             for (var i = 0; i < count; ++i)
                 packet.ReadLfgEntry("Dungeon Entry", i);
+            packet.StoreEndList();
 
-            packet.WriteGuid("GUID", guid);
+            packet.StoreBitstreamGuid("GUID", guid);
         }
 
         [Parser(Opcode.SMSG_LFG_QUEUE_STATUS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -476,7 +518,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadInt32("Wait Time"); // Matches "Role Unk2"
             packet.ReadInt32("Unk_UInt32_1"); // Same value than "Unk_UInt32_1" in SMSG_LFG_JOIN_RESULT - Only seen 3
-            packet.WriteGuid("GUID", guid);
+            packet.StoreBitstreamGuid("GUID", guid);
         }
 
         [Parser(Opcode.SMSG_LFG_ROLE_CHECK_UPDATE)]
@@ -486,10 +528,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Is Beginning");
 
             var numFields = packet.ReadByte("Entry Count");
+            packet.StoreBeginList("LfgList");
             for (var i = 0; i < numFields; i++)
                 packet.ReadLfgEntry("LFG Entry", i);
+            packet.StoreEndList();
 
             var numFields2 = packet.ReadByte("Player Count");
+            packet.StoreBeginList("Players");
             for (var i = 0; i < numFields2; i++)
             {
                 packet.ReadGuid("GUID", i);
@@ -497,6 +542,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32, i);
                 packet.ReadByte("Level", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_LFG_JOIN_RESULT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -509,13 +555,17 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
 
             var numFields = packet.ReadByte("Count");
+            packet.StoreBeginList("Players");
             for (var i = 0; i < numFields; i++)
             {
                 packet.ReadGuid("GUID", i);
                 var cnt2 = packet.ReadInt32("Dungeon Count", i);
+                packet.StoreBeginList("Join Results", i);
                 for (var j = 0; j < cnt2; j++)
                     ReadDungeonJoinResults(ref packet, i, j);
+                packet.StoreEndList();
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_LFG_JOIN_RESULT, ClientVersionBuild.V4_3_4_15595)]
@@ -538,6 +588,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guids = new byte[count][];
             var counts = new uint[count];
 
+            packet.StoreBeginList("Results");
             for (var i = 0; i < count; ++i)
             {
                 guids[i] = packet.StartBitStream(7, 5, 3, 6, 0, 2, 4, 1);
@@ -551,15 +602,18 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; ++i)
             {
+                packet.StoreBeginList("Dungeons", i);
                 for (var j = 0; j < counts[i]; j++)
                     ReadDungeonJoinResults(ref packet, i, j);
+                packet.StoreEndList();
 
                 packet.ParseBitStream(guids[i], 2, 5, 1, 0, 4, 3, 6, 7);
-                packet.WriteGuid("Guid", guids[i], i);
+                packet.StoreBitstreamGuid("Guid", guids[i], i);
             }
+            packet.StoreEndList();
 
             packet.ParseBitStream(guid, 1, 4, 3, 5, 0, 7, 2, 6);
-            packet.WriteGuid("Join GUID", guid);
+            packet.StoreBitstreamGuid("Join GUID", guid);
         }
 
         [Parser(Opcode.SMSG_LFG_ROLE_CHOSEN)]
@@ -616,13 +670,15 @@ namespace WowPacketParser.Parsing.Parsers
             if (unkBool)
             {
                 var count = packet.ReadInt32("Unknown count");
+                packet.StoreBeginList("UnkPlayerList");
                 for (var i = 0; i < count; i++)
                     packet.ReadGuid("Unk Player GUID", i);
+                packet.StoreEndList();
             }
 
             var count2 = packet.ReadInt32("Group count");
             packet.ReadInt32("Unknown group count");
-
+            packet.StoreBeginList("GroupList");
             for (var i = 0; i < count2; i++)
             {
                 packet.ReadGuid("Group GUID", i);
@@ -632,8 +688,13 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadCString("Comment", i);
 
                 if (flags.HasAnyFlag(LfgUpdateFlag.Roles))
+                {
+                    packet.StoreBeginList("Unk bytes", i);
                     for (var j = 0; j < 3; j++)
-                        packet.ReadByte("Unk byte 1 ", i , j); // Group have this role ?
+                        packet.ReadByte("Unk byte 1 ", i, j); // Group have this role ?
+                    packet.StoreEndList();
+                }
+
 
                 if (!flags.HasAnyFlag(LfgUpdateFlag.Binded))
                     continue;
@@ -641,10 +702,11 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("Instance GUID", i);
                 packet.ReadInt32("Encounters Mask", i);
             }
+            packet.StoreEndList();
 
             var count3 = packet.ReadInt32("Players count");
             packet.ReadInt32("Unknown player count");
-
+            packet.StoreBeginList("PlayerList");
             for (var i = 0; i < count3; i++)
             {
                 packet.ReadGuid("Player GUID", i);
@@ -656,8 +718,10 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadByte("Class", i);
                     packet.ReadByte("Race", i);
 
+                    packet.StoreBeginList("Talents", i);
                     for (var j = 0; j < 3; j++)
                         packet.ReadByte("Talents spent in row", i, j);
+                    packet.StoreEndList();
 
                     packet.ReadInt32("Armor", i);
                     packet.ReadInt32("Spell Damage Bonus", i);
@@ -705,6 +769,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("Instance GUID", i);
                 packet.ReadInt32("Encounters Mask", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_DUNGEON_FINDER_GET_SYSTEM_INFO)]
@@ -718,7 +783,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(1, 5, 7, 3, 2, 4, 0, 6);
             packet.ParseBitStream(guid, 4, 7, 0, 5, 1, 6, 2, 3);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_LFG_PLAYER_LOCK_INFO_REQUEST)]

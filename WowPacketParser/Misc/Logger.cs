@@ -2,24 +2,55 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using WowPacketParser.Enums;
+using PacketParser.Enums;
+using PacketDumper.Misc;
+using PacketParser.DataStructures;
+using PacketParser.Processing;
 
-namespace WowPacketParser.Misc
+namespace PacketDumper.Processing
 {
-    public static class Logger
+    public class EnumErrorOutput : IPacketProcessor
     {
-        private static readonly Dictionary<string, List<long>> EnumLogs =
+        private readonly Dictionary<string, List<long>> EnumLogs =
             new Dictionary<string, List<long>>();
 
-        public static void CheckForMissingValues<T>(long rawValue)
+        public bool LoadOnDepend { get { return false; } }
+        public Type[] DependsOn { get { return null; } }
+
+        public ProcessPacketEventHandler ProcessAnyPacketHandler { get { return null; } }
+        public ProcessedPacketEventHandler ProcessedAnyPacketHandler { get { return null; } }
+        public ProcessDataEventHandler ProcessAnyDataHandler { get { return ProcessData; } }
+        public ProcessedDataNodeEventHandler ProcessedAnyDataNodeHandler { get { return null; } }
+
+        public bool Init(PacketFileProcessor proc)
         {
-            if (!Settings.LogErrors || !typeof(T).IsEnum || !Attribute.IsDefined(typeof(T), typeof(FlagsAttribute)))
+            return Settings.LogEnumErrors;
+        }
+
+        public void Finish()
+        {
+            WriteErrors();
+        }
+
+        public void ProcessData(string name, int? index, Object obj, Type t)
+        {
+            if (obj is StoreEnum)
+            {
+                var e = (StoreEnum)obj;
+
+                if (e.rawVal > 0)
+                    CheckForMissingValues(e.rawVal, e.GetEnumType());
+            }
+        }
+        public void CheckForMissingValues(long rawValue, Type t)
+        {
+            if (!t.IsEnum || !Attribute.IsDefined(t, typeof(FlagsAttribute)))
                 return;
 
-            var key = typeof(T).ToString().Replace("WowPacketParser.Enums.", "");
+            var key = t.ToString().Replace("PacketParser.Enums.", "");
 
             // Remove all know values
-            foreach (T value in Enum.GetValues(typeof(T)))
+            foreach (IConvertible value in Enum.GetValues(t))
                 rawValue = rawValue & ~Convert.ToInt64(value, CultureInfo.InvariantCulture);
 
             if (rawValue == 0)
@@ -34,7 +65,7 @@ namespace WowPacketParser.Misc
             }
         }
 
-        private static void AddEnumErrorLog(string key, long rawValue)
+        private void AddEnumErrorLog(string key, long rawValue)
         {
             var exists = EnumLogs.ContainsKey(key);
             var list = exists ? EnumLogs[key] : new List<long>();
@@ -47,11 +78,8 @@ namespace WowPacketParser.Misc
                 EnumLogs.Add(key, list);
         }
 
-        public static void WriteErrors()
+        public void WriteErrors()
         {
-            if (!Settings.LogErrors)
-                return;
-
             Trace.WriteLine(Environment.NewLine);
             foreach (var pair in EnumLogs)
             {

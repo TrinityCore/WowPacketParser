@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using PacketParser.Misc;
 
-namespace WowPacketParser.Store.Objects
+namespace PacketParser.DataStructures
 {
     public class Loot
     {

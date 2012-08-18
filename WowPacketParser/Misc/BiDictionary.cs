@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace WowPacketParser.Misc
+namespace PacketParser.Misc
 {
     // By Jon Skeet (Stack Overflow), modified
     public class BiDictionary<TFirst, TSecond> : IDictionary<TFirst, TSecond>

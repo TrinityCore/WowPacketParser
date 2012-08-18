@@ -1,4 +1,4 @@
-﻿namespace WowPacketParser.Store.Objects
+﻿namespace PacketParser.DataStructures
 {
     public sealed class Item : WoWObject
     {

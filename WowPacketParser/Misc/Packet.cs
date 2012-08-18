@@ -2,32 +2,34 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
+using System.Collections.Generic;
 using ICSharpCode.SharpZipLib.Zip.Compression;
-using WowPacketParser.Enums;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
+using PacketParser.Enums;
+using PacketParser.Enums.Version;
+using PacketParser.Misc;
 
-namespace WowPacketParser.Misc
+namespace PacketParser.DataStructures
 {
-    public sealed partial class Packet : BinaryReader
+    public sealed partial class Packet : BinaryReader, ITreeNode
     {
-        private static readonly bool SniffData = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffData);
-        private static readonly bool SniffDataOpcodes = Settings.SQLOutput.HasAnyFlag(SQLOutputFlags.SniffDataOpcodes);
-
-        private static DateTime _firstPacketTime;
-
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
-        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringBuilder writer, string fileName)
-            : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
+        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, string fileName)
+            : base(new MemoryStream(input.Length), Encoding.UTF8)
         {
+            this.BaseStream.Write(input, 0, input.Length);
+            SetPosition(0);
             Opcode = opcode;
             Time = time;
             Direction = direction;
             Number = number;
-            Writer = writer;
+            StoreData = new NamedTreeNode();
+            StoreDataCache = StoreData;
+            StoreIndexedLists = new LinkedList<Tuple<NamedTreeNode, IndexedTreeNode>>();
+            StoreObjects = new Stack<Tuple<NamedTreeNode, LinkedList<Tuple<NamedTreeNode, IndexedTreeNode>>>>();
             FileName = fileName;
             Status = ParsedStatus.None;
-            WriteToFile = true;
+            SubPacketNumber = 0;
+            Parent = null;
 
             if (number == 0)
                 _firstPacketTime = Time;
@@ -36,79 +38,117 @@ namespace WowPacketParser.Misc
         }
 
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
-        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, string fileName)
-            : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
+        public Packet(byte[] input, int opcode, Packet parent)
+            : base(new MemoryStream(input.Length), Encoding.UTF8)
         {
+            this.BaseStream.Write(input, 0, input.Length);
+            SetPosition(0);
             Opcode = opcode;
-            Time = time;
-            Direction = direction;
-            Number = number;
-            Writer = null;
-            FileName = fileName;
+            Time = parent.Time;
+            Direction = parent.Direction;
+            Number = parent.Number;
+            StoreData = new NamedTreeNode();
+            StoreDataCache = StoreData;
+            StoreIndexedLists = new LinkedList<Tuple<NamedTreeNode, IndexedTreeNode>>();
+            StoreObjects = new Stack<Tuple<NamedTreeNode, LinkedList<Tuple<NamedTreeNode, IndexedTreeNode>>>>();
+            FileName = parent.FileName;
             Status = ParsedStatus.None;
-            WriteToFile = true;
-
-            if (number == 0)
-                _firstPacketTime = Time;
-
-            TimeSpan = Time - _firstPacketTime;
+            Parent = (parent.Parent != null) ? parent.Parent : parent;
+            SubPacketNumber = ++Parent.SubPacketCount;
         }
 
         public int Opcode { get; set; } // setter can't be private because it's used in multiple_packets
         public DateTime Time { get; private set; }
+        private DateTime _firstPacketTime;
         public TimeSpan TimeSpan { get; private set; }
         public Direction Direction { get; private set; }
         public int Number { get; private set; }
-        public StringBuilder Writer { get; private set; }
         public string FileName { get; private set; }
         public ParsedStatus Status { get; set; }
-        public bool WriteToFile { get; private set; }
+        public string ErrorMessage = "";
 
-        public void AddSniffData(StoreNameType type, int id, string data)
+        public Packet Parent;
+        public int SubPacketNumber;
+        private int SubPacketCount = 0;
+        public bool SubPacket
         {
-            if (type == StoreNameType.None)
-                return;
-
-            if (id == 0 && type != StoreNameType.Map)
-                return; // Only maps can have id 0
-
-            if (type == StoreNameType.Opcode && !SniffDataOpcodes)
-                return; // Don't add opcodes if its config is not enabled
-
-            if (type != StoreNameType.Opcode && !SniffData)
-                return;
-
-            var item = new SniffData
+            get
             {
-                FileName = FileName,
-                ObjectType = type,
-                Id = id,
-                Data = data,
-            };
-
-            Storage.SniffData.Add(item, TimeSpan);
+                return Parent != null;
+            }
+        }
+        public int ParentOpcode
+        {
+            get
+            {
+                if (SubPacket)
+                    return Parent.Opcode;
+                return 0;
+            }
         }
 
-        public Packet Inflate(int inflatedSize)
+        public int ParseID = -1;
+
+        public NamedTreeNode GetData()
         {
-            var arr = ReadToEnd();
+            return StoreData;
+        }
+
+        public string GetHeader()
+        {
+            StringBuilder output = new StringBuilder(100);
+            output.Append(Enum<Direction>.ToString(Direction));
+            output.Append(": ");
+            output.Append(Opcodes.GetOpcodeName(Opcode));
+            output.Append(" (0x");
+            output.Append(Opcode.ToString("X4"));
+            output.Append(") Length: ");
+            output.Append(Length);
+            output.Append(" Time: ");
+            output.Append(Time.ToString("MM/dd/yyyy HH:mm:ss.fff"));
+            output.Append(" Number: ");
+            output.Append(Number);
+            if (SubPacket)
+            {
+                output.Append(" (subpacket of packet: opcode ");
+                output.Append(Opcodes.GetOpcodeName(ParentOpcode));
+                output.Append(" (0x");
+                output.Append(ParentOpcode.ToString("X4"));
+                output.Append(") )");
+            }
+            output.AppendLine();
+            return output.ToString();
+        }
+
+        public void Inflate(int inflatedSize, int bytesToInflate)
+        {
+            var oldPos = Position;
+            var decompress = ReadBytes(bytesToInflate);
+            var tailData = ReadToEnd();
+            this.BaseStream.SetLength(oldPos + inflatedSize + tailData.Length);
+            
             var newarr = new byte[inflatedSize];
             try
             {
                 var inflater = new Inflater();
-                inflater.SetInput(arr, 0, arr.Length);
+                inflater.SetInput(decompress, 0, bytesToInflate);
                 inflater.Inflate(newarr, 0, inflatedSize);
             }
             catch (ICSharpCode.SharpZipLib.SharpZipBaseException)
             {
                 var inflater = new Inflater(true);
-                inflater.SetInput(arr, 0, arr.Length);
+                inflater.SetInput(decompress, 0, bytesToInflate);
                 inflater.Inflate(newarr, 0, inflatedSize);
             }
-
-            // Cannot use "using" here
-            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, FileName);
-            return pkt;
+            SetPosition(oldPos);
+            this.BaseStream.Write(newarr, 0, inflatedSize);
+            this.BaseStream.Write(tailData, 0, tailData.Length);
+            SetPosition(oldPos);
+        }
+            
+        public void Inflate(int inflatedSize)
+        {
+            Inflate(inflatedSize, (int)(Length - Position));
         }
 
         public byte[] GetStream(long offset)
@@ -118,14 +158,6 @@ namespace WowPacketParser.Misc
             var buffer = ReadToEnd();
             SetPosition(pos);
             return buffer;
-        }
-
-        public string GetHeader(bool isMultiple = false)
-        {
-            return string.Format("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}{6}",
-                Direction, Enums.Version.Opcodes.GetOpcodeName(Opcode), Opcode.ToString("X4"),
-                Length, Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
-                Number, isMultiple ? " (part of another packet)" : "");
         }
 
         public long Position
@@ -148,75 +180,46 @@ namespace WowPacketParser.Misc
             return Position != Length;
         }
 
-        public void Write(string value)
-        {
-            if (Settings.DumpFormat == DumpFormatType.SqlOnly)
-                return;
-
-            if (Writer == null)
-                Writer = new StringBuilder();
-
-            Writer.Append(value);
-        }
-
-        public void Write(string format, params object[] args)
-        {
-            if (Settings.DumpFormat == DumpFormatType.SqlOnly)
-                return;
-
-            if (Writer == null)
-                Writer = new StringBuilder();
-
-            Writer.AppendFormat(format, args);
-        }
-
-        public void WriteLine()
-        {
-            if (Settings.DumpFormat == DumpFormatType.SqlOnly)
-                return;
-
-            if (Writer == null)
-                Writer = new StringBuilder();
-
-            Writer.AppendLine();
-        }
-
-        public void WriteLine(string value)
-        {
-            if (Settings.DumpFormat == DumpFormatType.SqlOnly)
-                return;
-
-            if (Writer == null)
-                Writer = new StringBuilder();
-
-            Writer.AppendLine(value);
-        }
-
-        public void WriteLine(string format, params object[] args)
-        {
-            if (Settings.DumpFormat == DumpFormatType.SqlOnly)
-                return;
-
-            if (Writer == null)
-                Writer = new StringBuilder();
-
-            Writer.AppendLine(string.Format(format, args));
-        }
-
         public void ClosePacket()
         {
-            if (Writer != null)
-            {
-                if (Settings.DumpFormat != DumpFormatType.SqlOnly)
-                    Writer.Clear();
-
-                Writer = null;
-            }
-
             if (BaseStream != null)
                 BaseStream.Close();
 
+            Parent = null;
+
             Dispose(true);
+        }
+        public NodeType GetNode<NodeType>(params string[] address)
+        {
+            NodeType ret;
+            if (TryGetNode<NodeType>(out ret, address))
+                return ret;
+            throw new Exception(String.Format("Could not receive object of type {0} from address{1}", typeof(NodeType), address));
+        }
+        public bool TryGetNode<NodeType>(out NodeType ret, params string[] address)
+        {
+            return TryGetNode<NodeType>(out ret, address, 0);
+        }
+        public bool TryGetNode<NodeType>(out NodeType ret, string[] address, int addrIndex)
+        {
+            if (address.Length == addrIndex)
+            {
+                try
+                {
+                    ret = (NodeType)((Object)this);
+                    return true;
+                }
+                catch
+                {
+                    ret = default(NodeType);
+                    return false;
+                }
+            }
+            return StoreData.TryGetNode<NodeType>(out ret, address, addrIndex);
+        }
+        public TreeNodeEnumerator GetTreeEnumerator()
+        {
+            return new TreeNodeEnumerator(this);
         }
     }
 }

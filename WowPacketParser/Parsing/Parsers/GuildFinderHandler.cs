@@ -1,12 +1,12 @@
 ﻿using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class GuildFinderHandler
     {
-
         [Parser(Opcode.CMSG_LF_GUILD_BROWSE)]
         public static void HandleGuildFinderBrowse(Packet packet)
         {
@@ -77,6 +77,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; ++i)
                 guids[i] = packet.StartBitStream(7, 4, 5, 0, 2, 6, 1, 3);
 
+            packet.StoreBeginList("Guilds");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadInt32("Guild Emblem Border Color", i);
@@ -119,8 +120,9 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(guids[i], 1);
 
-                packet.WriteGuid("Guild GUID", guids[i], i);
+                packet.StoreBitstreamGuid("Guild GUID", guids[i], i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_LF_GUILD_BROWSE_UPDATED, ClientVersionBuild.V4_3_4_15595)]
@@ -148,6 +150,7 @@ namespace WowPacketParser.Parsing.Parsers
                 guids[i][3] = packet.ReadBit();
             }
 
+            packet.StoreBeginList("Guilds");
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadInt32("Tabard Emblem Color", i);
@@ -187,8 +190,9 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadInt32("Number of Members", i);
 
-                packet.WriteGuid("Guild Guid", guids[i], i);
+                packet.StoreBitstreamGuid("Guild Guid", guids[i], i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_LF_GUILD_GET_RECRUITS)]
@@ -222,6 +226,7 @@ namespace WowPacketParser.Parsing.Parsers
                 guids[i][6] = packet.ReadBit();
             }
 
+            packet.StoreBeginList("Recruits");
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadXORByte(guids[i], 4);
@@ -251,8 +256,9 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(guids[i], 5);
 
-                packet.WriteGuid("Guid", guids[i], i);
+                packet.StoreBitstreamGuid("Guid", guids[i], i);
             }
+            packet.StoreEndList();
 
             packet.ReadTime("Unk Time");
         }
@@ -283,6 +289,7 @@ namespace WowPacketParser.Parsing.Parsers
                 strlen[i][1] = packet.ReadBits(8);
             }
 
+            packet.StoreBeginList("Recruits");
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadXORByte(guids[i], 2);
@@ -308,8 +315,9 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Time Since", i);
                 packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32, i);
 
-                packet.WriteGuid("Guid", guids[i], i);
+                packet.StoreBitstreamGuid("Guid", guids[i], i);
             }
+            packet.StoreEndList();
 
             packet.ReadInt32("Unk int");
         }
@@ -319,7 +327,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(1, 4, 5, 2, 6, 7, 0, 3);
             packet.ParseBitStream(guid, 5, 7, 2, 3, 4, 1, 0, 6);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_LF_GUILD_REMOVE_RECRUIT)] // 4.3.4
@@ -327,7 +335,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(0, 4, 3, 5, 7, 6, 2, 1);
             packet.ParseBitStream(guid, 4, 0, 3, 6, 5, 1, 2, 7);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
 
         // TODO: CMSG_LF_GUILD_ADD_RECRUIT

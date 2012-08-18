@@ -1,10 +1,10 @@
 using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using PacketParser.Processing;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class ItemHandler
     {
@@ -29,20 +29,17 @@ namespace WowPacketParser.Parsing.Parsers
             var name = packet.ReadCString("Name");
             packet.ReadEnum<InventoryType>("Inventory Type", TypeCode.UInt32);
 
-            var objectName = new ObjectName
-            {
-                ObjectType = ObjectType.Item,
-                Name = name,
-            };
-            Storage.ObjectNames.Add((uint)entry, objectName, packet.TimeSpan);
+            PacketFileProcessor.Current.GetProcessor<NameStore>().AddName(StoreNameType.Item, entry, name, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_SOCKET_GEMS)]
         public static void HandleSocketGems(Packet packet)
         {
             packet.ReadGuid("GUID");
+            packet.StoreBeginList("Gems");
             for (var i = 0; i < 3; ++i)
                 packet.ReadGuid("Gem GUID", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_INVENTORY_CHANGE_FAILURE)]
@@ -111,11 +108,7 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
 
             var opcode = packet.ReadInt32();
-            var remainingLength = packet.Length - packet.Position;
-            var bytes = packet.ReadBytes((int)remainingLength);
-
-            using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
-                Handler.Parse(newpacket, true);
+            packet.ReadSubPacket(opcode, "MovePacket");
         }
 
         [Parser(Opcode.CMSG_AUTOSTORE_LOOT_ITEM)]
@@ -179,11 +172,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Money Cost");
             packet.ReadUInt32("Honor Cost");
             packet.ReadUInt32("Arena Cost");
+            packet.StoreBeginList("ExtendedCosts");
             for (var i = 0; i < 5; ++i)
             {
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Extended Cost Entry", i);
                 packet.ReadUInt32("Extended Cost Count", i);
             }
+            packet.StoreEndList();
             packet.ReadUInt32("Unk UInt32 1");
             packet.ReadUInt32("Time Left");
         }
@@ -195,28 +190,32 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guid, 7);
             packet.ReadUInt32("Time Left");
+            var items = packet.StoreBeginList("Items");
             for (var i = 0; i < 5; ++i)
             {
                 packet.ReadUInt32("Item Count", i);
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Cost Entry", i);
             }
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 2);
+            packet.StoreContinueList(items);
             for (var i = 0; i < 5; ++i)
             {
                 packet.ReadUInt32("Currency Count", i);
                 packet.ReadUInt32("Currency Entry", i);
             }
+            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 5);
             packet.ReadUInt32("Unk UInt32 1");
             packet.ReadXORByte(guid, 0);
             packet.ReadUInt32("Money Cost");
-            packet.WriteGuid("Item Guid", guid);
+            packet.StoreBitstreamGuid("Item Guid", guid);
         }
 
         [Parser(Opcode.SMSG_ITEM_REFUND_RESULT, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
@@ -239,7 +238,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 0);
-            packet.WriteGuid("Item Guid", guid);
+            packet.StoreBitstreamGuid("Item Guid", guid);
         }
 
         [Parser(Opcode.SMSG_ITEM_REFUND_RESULT, ClientVersionBuild.V4_3_4_15595)]
@@ -252,24 +251,28 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (unkBit)
             {
+                var items = packet.StoreBeginList("Items");
                 for (int i = 0; i < 5; ++i) // Currencies
                 {
                     packet.ReadInt32("CurrencyCount", i);
                     packet.ReadInt32("Currency", i);
                 }
+                packet.StoreEndList();
 
                 packet.ReadInt32("Paid Money");
 
+                packet.StoreContinueList(items);
                 for (int i = 0; i < 5; ++i) // Items
                 {
                     packet.ReadInt32("ItemCount", i);
                     packet.ReadInt32("Item", i);
                 }
+                packet.StoreEndList();
             }
 
             packet.ParseBitStream(guid, 0, 3, 1, 6, 4, 2, 7, 5);
             packet.ReadByte("Error"); // Error Id?
-            packet.WriteGuid("Item Guid", guid);
+            packet.StoreBitstreamGuid("Item Guid", guid);
         }
 
         [Parser(Opcode.CMSG_REPAIR_ITEM)]
@@ -430,11 +433,13 @@ namespace WowPacketParser.Parsing.Parsers
 
             item.SubClass = packet.ReadUInt32("Sub Class");
 
-            item.UnkInt32 = packet.ReadInt32("Unk Int32");
+            item.UnkInt32 = packet.ReadInt32("Unk Int32 1");
 
             var name = new string[4];
+            packet.StoreBeginList("Names");
             for (var i = 0; i < 4; i++)
                 name[i] = packet.ReadCString("Name", i);
+            packet.StoreEndList();
             item.Name = name[0];
 
             item.DisplayId = packet.ReadUInt32("Display ID");
@@ -483,11 +488,13 @@ namespace WowPacketParser.Parsing.Parsers
             item.StatsCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056) ? packet.ReadUInt32("Stats Count") : 10;
             item.StatTypes = new ItemModType[item.StatsCount];
             item.StatValues = new int[item.StatsCount];
+            packet.StoreBeginList("Stats");
             for (var i = 0; i < item.StatsCount; i++)
             {
                 item.StatTypes[i] = packet.ReadEnum<ItemModType>("Stat Type", TypeCode.Int32, i);
                 item.StatValues[i] = packet.ReadInt32("Stat Value", i);
             }
+            packet.StoreEndList();
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
             {
@@ -499,16 +506,20 @@ namespace WowPacketParser.Parsing.Parsers
             item.DamageMins = new float[dmgCount];
             item.DamageMaxs = new float[dmgCount];
             item.DamageTypes = new DamageType[dmgCount];
+            packet.StoreBeginList("Damages");
             for (var i = 0; i < dmgCount; i++)
             {
                 item.DamageMins[i] = packet.ReadSingle("Damage Min", i);
                 item.DamageMaxs[i] = packet.ReadSingle("Damage Max", i);
                 item.DamageTypes[i] = packet.ReadEnum<DamageType>("Damage Type", TypeCode.Int32, i);
             }
+            packet.StoreEndList();
 
             item.Resistances = new DamageType[7];
+            packet.StoreBeginList("Resistances");
             for (var i = 0; i < 7; i++)
-                item.Resistances[i] = packet.ReadEnum<DamageType>("Resistance", TypeCode.UInt32);
+                item.Resistances[i] = packet.ReadEnum<DamageType>("Resistance", TypeCode.UInt32, i);
+            packet.StoreEndList();
 
             item.Delay = packet.ReadUInt32("Delay");
 
@@ -522,6 +533,7 @@ namespace WowPacketParser.Parsing.Parsers
             item.TriggeredSpellCooldowns = new int[5];
             item.TriggeredSpellCategories = new uint[5];
             item.TriggeredSpellCategoryCooldowns = new int[5];
+            packet.StoreBeginList("Spells");
             for (var i = 0; i < 5; i++)
             {
                 item.TriggeredSpellIds[i] = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Triggered Spell ID", i);
@@ -531,6 +543,7 @@ namespace WowPacketParser.Parsing.Parsers
                 item.TriggeredSpellCategories[i] = packet.ReadUInt32("Triggered Spell Category", i);
                 item.TriggeredSpellCategoryCooldowns[i] = packet.ReadInt32("Triggered Spell Category Cooldown", i);
             }
+            packet.StoreEndList();
 
             item.Bonding = packet.ReadEnum<ItemBonding>("Bonding", TypeCode.Int32);
 
@@ -571,11 +584,13 @@ namespace WowPacketParser.Parsing.Parsers
 
             item.ItemSocketColors = new ItemSocketColor[3];
             item.SocketContent = new uint[3];
+            packet.StoreBeginList("Sockets");
             for (var i = 0; i < 3; i++)
             {
                 item.ItemSocketColors[i] = packet.ReadEnum<ItemSocketColor>("Socket Color", TypeCode.Int32, i);
                 item.SocketContent[i] = packet.ReadUInt32("Socket Item", i);
             }
+            packet.StoreEndList();
 
             item.SocketBonus = packet.ReadUInt32("Socket Bonus");
 
@@ -594,9 +609,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                 item.HolidayId = packet.ReadEnum<Holiday>("Holiday", TypeCode.Int32);
 
-            packet.AddSniffData(StoreNameType.Item, entry.Key, "QUERY_RESPONSE");
-
-            Storage.ItemTemplates.Add((uint) entry.Key, item, packet.TimeSpan);
+            packet.Store("ItemTemplateObject", item);
         }
 
         [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V4_3_4_15595)]
@@ -608,6 +621,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; ++i)
                 guidBytes[i] = packet.StartBitStream(0, 4, 7, 2, 5, 3, 6, 1);
 
+            packet.StoreBeginList("Items");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadXORByte(guidBytes[i], 5);
@@ -622,8 +636,9 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(guidBytes[i], 2);
 
-                packet.WriteGuid("GUID", guidBytes[i], i);
+                packet.StoreBitstreamGuid("GUID", guidBytes[i], i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
@@ -635,12 +650,14 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; ++i)
                 guidBytes[i] = packet.StartBitStream(7, 3, 0, 5, 6, 4, 1, 2);
 
+            packet.StoreBeginList("Items");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
                 guidBytes[i] = packet.ParseBitStream(guidBytes[i], 2, 6, 3, 0, 5, 7, 1, 4);
-                packet.WriteGuid("GUID", guidBytes[i], i);
+                packet.StoreBitstreamGuid("GUID", guidBytes[i], i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
@@ -649,12 +666,14 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadUInt32("Count");
             packet.ReadUInt32("Type");
 
+            packet.StoreBeginList("Items");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
                 packet.ReadUInt32("Unk UInt32 1", i);
                 packet.ReadUInt32("Unk UInt32 2", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -664,7 +683,7 @@ namespace WowPacketParser.Parsing.Parsers
             var itemId = packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                packet.ReadUInt32("Received Type");
+                packet.ReadUInt32("Received Type2");
 
             var size = packet.ReadUInt32("Size");
             if (size == 0)
@@ -673,7 +692,7 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
             }
 
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry2");
             if (size == 32)
             {
                 packet.ReadEnum<ItemClass>("Class", TypeCode.Int32);
@@ -707,6 +726,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Max Stack Size");
                 packet.ReadUInt32("Container Slots");
 
+                packet.StoreBeginList("Stats");
                 for (var i = 0; i < 10; i++)
                     packet.ReadEnum<ItemModType>("Stat Type", TypeCode.Int32, i);
 
@@ -718,12 +738,14 @@ namespace WowPacketParser.Parsing.Parsers
 
                 for (var i = 0; i < 10; i++)
                     packet.ReadInt32("Unk UInt32 2", i);
+                packet.StoreEndList();
 
                 packet.ReadUInt32("Scaling Stat Distribution");
                 packet.ReadEnum<DamageType>("Damage Type", TypeCode.Int32);
                 packet.ReadUInt32("Delay");
                 packet.ReadSingle("Ranged Mod");
 
+                packet.StoreBeginList("Spells");
                 for (var i = 0; i < 5; i++)
                     packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Triggered Spell ID", i);
 
@@ -741,12 +763,15 @@ namespace WowPacketParser.Parsing.Parsers
 
                 for (var i = 0; i < 5; i++)
                     packet.ReadInt32("Triggered Spell Category Cooldown", i);
+                packet.StoreEndList();
 
                 packet.ReadEnum<ItemBonding>("Bonding", TypeCode.Int32);
 
+                packet.StoreBeginList("Names");
                 for (var i = 0; i < 4; i++)
                     if (packet.ReadUInt16() > 0)
                         packet.ReadCString("Name", i);
+                packet.StoreEndList();
 
                 if (packet.ReadUInt16() > 0)
                     packet.ReadCString("Description");
@@ -764,16 +789,17 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Max Durability");
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Area, "Area");
                 // In this single (?) case, map 0 means no map
-                var map = packet.ReadUInt32();
-                packet.WriteLine("Map ID: " + (map != 0 ? StoreGetters.GetName(StoreNameType.Map, (int) map) : map + " (No map)"));
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
                 packet.ReadEnum<BagFamilyMask>("Bag Family", TypeCode.Int32);
                 packet.ReadEnum<TotemCategory>("Totem Category", TypeCode.Int32);
 
+                packet.StoreBeginList("Sockets");
                 for (var i = 0; i < 3; i++)
                     packet.ReadEnum<ItemSocketColor>("Socket Color", TypeCode.Int32, i);
 
                 for (var i = 0; i < 3; i++)
                     packet.ReadUInt32("Socket Item", i);
+                packet.StoreEndList();
 
                 packet.ReadUInt32("Socket Bonus");
                 packet.ReadUInt32("Gem Properties");
@@ -787,9 +813,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
-                packet.ReadUInt32("Received Type");
-
-            packet.AddSniffData(StoreNameType.Item, itemId, "DB_REPLY");
+                packet.ReadUInt32("Received Type3");
         }
 
         [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.V4_3_4_15595)]
@@ -797,6 +821,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var itemId = packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
             var type = packet.ReadUInt32("Type");
+            var names = PacketFileProcessor.Current.GetProcessor<NameStore>();
             packet.ReadTime("Hotfix date");
             var size = packet.ReadUInt32("Size");
             if (size == 0)
@@ -843,6 +868,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Max Stack Size");
                     packet.ReadUInt32("Container Slots");
 
+                    packet.StoreBeginList("Stats");
                     for (var i = 0; i < 10; i++)
                         packet.ReadEnum<ItemModType>("Stat Type", TypeCode.Int32, i);
 
@@ -854,12 +880,14 @@ namespace WowPacketParser.Parsing.Parsers
 
                     for (var i = 0; i < 10; i++)
                         packet.ReadInt32("Unk UInt32 2", i);
+                    packet.StoreEndList();
 
                     packet.ReadUInt32("Scaling Stat Distribution");
                     packet.ReadEnum<DamageType>("Damage Type", TypeCode.Int32);
                     packet.ReadUInt32("Delay");
                     packet.ReadSingle("Ranged Mod");
 
+                    packet.StoreBeginList("Spells");
                     for (var i = 0; i < 5; i++)
                         packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Triggered Spell ID", i);
 
@@ -877,12 +905,15 @@ namespace WowPacketParser.Parsing.Parsers
 
                     for (var i = 0; i < 5; i++)
                         packet.ReadInt32("Triggered Spell Category Cooldown", i);
+                    packet.StoreEndList();
 
                     packet.ReadEnum<ItemBonding>("Bonding", TypeCode.Int32);
 
+                    packet.StoreBeginList("Names");
                     for (var i = 0; i < 4; i++)
                         if (packet.ReadUInt16() > 0)
                             packet.ReadCString("Name", i);
+                    packet.StoreEndList();
 
                     if (packet.ReadUInt16() > 0)
                         packet.ReadCString("Description");
@@ -900,15 +931,20 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadEntryWithName<UInt32>(StoreNameType.Area, "Area");
                     // In this single (?) case, map 0 means no map
                     var map = packet.ReadUInt32();
-                    packet.WriteLine("Map ID: " + (map != 0 ? StoreGetters.GetName(StoreNameType.Map, (int)map) : map + " (No map)"));
+                    if (map != 0)
+                        packet.Store("Map ID", names.GetName(StoreNameType.Map, (int)map));
+                    else
+                        packet.Store("No map id", "");
                     packet.ReadEnum<BagFamilyMask>("Bag Family", TypeCode.Int32);
                     packet.ReadEnum<TotemCategory>("Totem Category", TypeCode.Int32);
 
+                    packet.StoreBeginList("Sockets");
                     for (var i = 0; i < 3; i++)
                         packet.ReadEnum<ItemSocketColor>("Socket Color", TypeCode.Int32, i);
 
                     for (var i = 0; i < 3; i++)
                         packet.ReadUInt32("Socket Item", i);
+                    packet.StoreEndList();
 
                     packet.ReadUInt32("Socket Bonus");
                     packet.ReadUInt32("Gem Properties");
@@ -928,8 +964,6 @@ namespace WowPacketParser.Parsing.Parsers
                     break;
                 }
             }
-
-            packet.AddSniffData(StoreNameType.Item, itemId, "DB_REPLY");
         }
 
         [Parser(Opcode.SMSG_UPDATE_ITEM_ENCHANTMENTS)]
@@ -938,8 +972,10 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
                 packet.ReadGuid("Item Guid");
 
+            packet.StoreBeginList("Auras");
             for (var i = 0; i < 4; i++)
                 packet.ReadInt32("Aura ID", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_SET_PROFICIENCY)]
@@ -965,7 +1001,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guid = packet.StartBitStream(2,6,3,4,1,0,7,5);
             packet.ParseBitStream(guid,2,3,6,4,1,0,7,5);
-            packet.WriteGuid("Reforger Guid", guid);
+            packet.StoreBitstreamGuid("Reforger Guid", guid);
 
         }
 
@@ -1004,7 +1040,7 @@ namespace WowPacketParser.Parsing.Parsers
             var npcGuid = packet.StartBitStream(7, 3, 5, 6, 1, 4, 0, 2);
 
             // flush bits
-
+            packet.StoreBeginList("Items");
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "New Entry", i);
@@ -1013,11 +1049,12 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadEnum<EquipmentSlotType>("Slot", TypeCode.UInt32, i);
 
-                packet.WriteGuid("ITem Guid", itemGuids[i], i);
+                packet.StoreBitstreamGuid("ITem Guid", itemGuids[i], i);
             }
+            packet.StoreEndList();
 
             packet.ParseBitStream(npcGuid, 7, 2, 5, 4, 3, 1, 6, 0);
-            packet.WriteGuid("NPC Guid", npcGuid);
+            packet.StoreBitstreamGuid("NPC Guid", npcGuid);
         }
 
         [Parser(Opcode.SMSG_ITEM_EXPIRE_PURCHASE_REFUND)]
@@ -1025,7 +1062,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(3, 0, 5, 4, 6, 2, 1, 7);
             packet.ParseBitStream(guid, 1, 0, 3, 4, 7, 6, 5, 2);
-            packet.WriteGuid("Guid", guid);
+            packet.StoreBitstreamGuid("Guid", guid);
         }
     }
 }

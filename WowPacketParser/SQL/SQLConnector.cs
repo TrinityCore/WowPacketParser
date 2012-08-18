@@ -3,26 +3,38 @@ using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using MySql.Data.MySqlClient;
-using WowPacketParser.Misc;
+using PacketParser.Misc;
 
-namespace WowPacketParser.SQL
+namespace PacketParser.SQL
 {
     public static class SQLConnector
     {
         [ThreadStatic]
         public static MySqlConnection Conn;
 
-        public static bool Enabled = Settings.DBEnabled;
+        private static bool connectionClosed = false;
+        public static bool Enabled
+        {
+            get
+            {
+                return ParserSettings.MySQL.Enabled && !connectionClosed;
+            }
+            set
+            {
+                connectionClosed = !value;
+            }
+        }
 
         private static void Connect()
         {
+            connectionClosed = false;
             if (!Enabled)
             {
                 Trace.WriteLine("DB queries are disabled. Will not connect.");
                 return;
             }
 
-            Trace.WriteLine("Connecting to MySQL server: " + ConnectionString.Replace("Password=" + Settings.Password + ";", String.Empty)); // Do not print password
+            Trace.WriteLine("Connecting to MySQL server: " + ConnectionString.Replace("Password=" + ParserSettings.MySQL.Password + ";", String.Empty)); // Do not print password
             Conn = new MySqlConnection(ConnectionString);
 
             try
@@ -42,7 +54,7 @@ namespace WowPacketParser.SQL
 
         public static void Disconnect()
         {
-            Enabled = false;
+            connectionClosed = true;
             if (Conn != null)
                 Conn.Close();
         }
@@ -58,7 +70,6 @@ namespace WowPacketParser.SQL
             catch (Exception e)
             {
                 // Something wrong happened, disabling everything MySQL/DB related
-                Enabled = false;
                 Trace.WriteLine(e.Message + " at query \"" + input + "\"");
                 Disconnect();
             }
@@ -70,7 +81,7 @@ namespace WowPacketParser.SQL
         {
             get
             {
-                var server = Settings.Server;
+                var server = ParserSettings.MySQL.Server;
                 var protocol = String.Empty;
                 var portOrPipe = "Port";
 
@@ -82,8 +93,8 @@ namespace WowPacketParser.SQL
                 }
 
                 return String.Format("Server={0};{1}={2};Username={3};Password={4};Database={5};CharSet={6};ConnectionTimeout=5;{7}",
-                    server, portOrPipe, Settings.Port, Settings.Username, Settings.Password, Settings.WPPDatabase,
-                    Settings.CharacterSet, protocol);
+                    server, portOrPipe, ParserSettings.MySQL.Port, ParserSettings.MySQL.Username, ParserSettings.MySQL.Password, ParserSettings.MySQL.PacketParserDB,
+                    ParserSettings.MySQL.CharacterSet, protocol);
             }
         }
 
@@ -92,7 +103,7 @@ namespace WowPacketParser.SQL
             if (!Enabled) return;
 
             // Enable SSH Tunnel
-            if (SSHTunnel.Enabled)
+            if (ParserSettings.SSHTunnel.Enabled)
             {
                 Trace.WriteLine("Enabling SSH Tunnel");
                 SSHTunnel.Connect();
@@ -111,7 +122,7 @@ namespace WowPacketParser.SQL
                 Trace.WriteLine(ex.GetType());
                 Trace.WriteLine(ex.Message);
                 Trace.WriteLine(ex.StackTrace);
-                Enabled = false; // Something failed, disabling everything SQL related
+                connectionClosed = true; // Something failed, disabling everything SQL related
             }
 
             var endTime = DateTime.Now;

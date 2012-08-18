@@ -1,13 +1,13 @@
-WowPacketParser
+WowPacketTools
 ========
 
-
-Usage
+Projects
 --------------------------------------------------
 
-* Compile WowPacketParser using Debug or Release.
-* Edit "WowPacketParser.exe.config" to fit your needs.
-* Drag files to the executable.
+* PacketParser - library containing the core parsing functionality (packet file loading and parsing)
+* PacketDumper - console app to dump data from parsed packet
+* PacketViewer - gui app to view packet data without the need to dump it first
+* HandlerQuery
 
 
 Thanks
@@ -22,3 +22,4 @@ Thanks
 - Spp
 - Subv
 - stfx
+- QAston

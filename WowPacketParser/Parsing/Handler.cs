@@ -1,12 +1,14 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Enums.Version;
+using PacketParser.Misc;
+using System;
+using PacketParser.DataStructures;
+using System.IO;
 
-namespace WowPacketParser.Parsing
+namespace PacketParser.Parsing
 {
     public static class Handler
     {
@@ -18,7 +20,7 @@ namespace WowPacketParser.Parsing
             var types = asm.GetTypes();
             foreach (var type in types)
             {
-                //if (type.Namespace != "WowPacketParser.Parsing.Parsers")
+                //if (type.Namespace != "PacketParser.Parsing.Parsers")
                 //    continue;
 
                 if (!type.IsAbstract)
@@ -70,19 +72,21 @@ namespace WowPacketParser.Parsing
 
             return handlers;
         }
+        [ThreadStatic]
+        private static Dictionary<int, Action<Packet>> Handlers = null;
+        [ThreadStatic]
+        private static int lastUID;
 
-        private static readonly Dictionary<int, Action<Packet>> Handlers = LoadHandlers();
-
-        public static void Parse(Packet packet, bool isMultiple = false)
+        public static void InitForClientVersion()
         {
-            ParsedStatus status;
+            lastUID = 0;
+            Handlers = LoadHandlers();
+        }
 
+        public static void Parse(Packet packet, bool checkLength = true)
+        {
             var opcode = packet.Opcode;
-
-            packet.WriteLine(packet.GetHeader(isMultiple));
-
-            if (opcode == 0)
-                return;
+            packet.ParseID = lastUID++;
 
             Action<Packet> handler;
             if (Handlers.TryGetValue(opcode, out handler))
@@ -91,41 +95,26 @@ namespace WowPacketParser.Parsing
                 {
                     handler(packet);
 
-                    if (packet.Position == packet.Length)
-                        status = ParsedStatus.Success;
+                    if (!checkLength || packet.Position == packet.Length)
+                        packet.Status = ParsedStatus.Success;
                     else
                     {
                         var pos = packet.Position;
                         var len = packet.Length;
-                        packet.WriteLine("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.",
-                            pos, len, len - pos);
-
-                        if (len < 300) // If the packet isn't "too big" and it is not full read, print its hex table
-                            packet.AsHex();
-
-                        status = ParsedStatus.WithErrors;
+                        packet.ErrorMessage = String.Format("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.", pos, len, len - pos);
+                        packet.Status = ParsedStatus.WithErrors;
                     }
                 }
                 catch (Exception ex)
                 {
-                    packet.WriteLine(ex.GetType().ToString());
-                    packet.WriteLine(ex.Message);
-                    packet.WriteLine(ex.StackTrace);
+                    packet.ErrorMessage = ex.GetType().ToString() + "\n" + ex.Message + "\n" + ex.StackTrace;
 
-                    status = ParsedStatus.WithErrors;
+                    packet.Status = ParsedStatus.WithErrors;
                 }
             }
             else
             {
-                packet.AsHex();
-                status = ParsedStatus.NotParsed;
-            }
-
-            if (!isMultiple)
-            {
-                packet.Status = status;
-                var data = status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode) : status.ToString();
-                packet.AddSniffData(StoreNameType.Opcode, packet.Opcode, data);
+                packet.Status = ParsedStatus.NotParsed;
             }
         }
     }

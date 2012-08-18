@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace WowPacketParser.Enums
+namespace PacketParser.Enums
 {
     [Flags]
-    public enum UnknownFlags
+    public enum UnknownFlags : uint
     {
         None        = 0x00000000,
         Unk1        = 0x00000001,
@@ -36,6 +36,7 @@ namespace WowPacketParser.Enums
         Unk8000000  = 0x08000000,
         Unk10000000 = 0x10000000,
         Unk20000000 = 0x20000000,
-        Unk40000000 = 0x40000000
+        Unk40000000 = 0x40000000,
+        Unk80000000 = 0x80000000,
     }
 }

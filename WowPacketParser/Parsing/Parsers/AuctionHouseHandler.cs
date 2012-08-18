@@ -1,9 +1,10 @@
 using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Enums.Version;
+using PacketParser.Misc;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class AuctionHouseHandler
     {
@@ -39,11 +40,13 @@ namespace WowPacketParser.Parsing.Parsers
                     return;
 
                 var count = packet.ReadUInt32("Count");
+                packet.StoreBeginList("Items");
                 for (int i = 0; i < count; ++i)
                 {
                     packet.ReadGuid("Item Guid", i);
-                    packet.ReadInt32("", i);
+                    packet.ReadInt32("Count?", i);
                 }
+                packet.StoreEndList();
             }
 
             if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
@@ -84,11 +87,14 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                 packet.ReadByte("Unk Byte");
             var count = packet.ReadByte("Unk Count");
+
+            packet.StoreBeginList("Unk Datas");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadByte("Unk Byte 2", i);
                 packet.ReadByte("Unk Byte 3", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_AUCTION_PLACE_BID)]
@@ -119,8 +125,8 @@ namespace WowPacketParser.Parsing.Parsers
                     break;
                 case AuctionHouseError.HigherBid:
                     packet.ReadInt64("Unknown HigherBid Int64");
-                    packet.ReadInt32("Unknown HigherBid Int32");
-                    packet.ReadInt32("Unknown HigherBid Int32");
+                    packet.ReadInt32("Unknown HigherBid Int32 1");
+                    packet.ReadInt32("Unknown HigherBid Int32 2");
                     break;
             }
         }
@@ -159,8 +165,11 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
 
             var count = packet.ReadUInt32("Outbidded Count");
+
+            packet.StoreBeginList("OutbiddedAuctions");
             for (var i = 0; i < count; ++i)
                 packet.ReadUInt32("Auction Id", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_AUCTION_BIDDER_LIST_RESULT)]
@@ -169,18 +178,22 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleAuctionListBidderResult(Packet packet)
         {
             var count = packet.ReadUInt32("Count");
+            packet.StoreBeginList("Auctions");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadUInt32("Auction Id", i);
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
 
                 int enchantmentCount = ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005) ? 10 : ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) ? 9 : ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 7 : 6;
+
+                packet.StoreBeginList("Item Enchantments", i);
                 for (var j = 0; j < enchantmentCount; ++j)
                 {
                     packet.ReadUInt32("Item Enchantment ID", i, j);
                     packet.ReadUInt32("Item Enchantment Duration", i, j);
                     packet.ReadUInt32("Item Enchantment Charges", i, j);
                 }
+                packet.StoreEndList();
 
                 packet.ReadInt32("Item Random Property ID", i);
                 packet.ReadUInt32("Item Suffix", i);
@@ -196,6 +209,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("Bidder", i);
                 packet.ReadValue("Bid", _auctionSize, i);
             }
+            packet.StoreEndList();
 
             packet.ReadUInt32("Own Count");
             packet.ReadUInt32("Unk UInt32 1");
@@ -216,6 +230,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleAuctionListPendingSalesResult(Packet packet)
         {
             var count = packet.ReadUInt32("Pending Sales Count");
+
+            packet.StoreBeginList("Pending Sales");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadCString("Unk String 1", i);
@@ -227,6 +243,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk UInt32 2", i);
                 packet.ReadSingle("Unk Single", i);
             }
+            packet.StoreEndList();
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class VoidStorageHandler
     {
@@ -29,13 +30,13 @@ namespace WowPacketParser.Parsing.Parsers
             if (usedDestSlot)
             {
                 packet.ParseBitStream(itemId2, 4, 6, 5, 2, 3, 1, 7, 0);
-                packet.WriteLine("Item Id 2: {0}", BitConverter.ToUInt64(itemId2, 0));
+                packet.Store("Item Id 2", BitConverter.ToUInt64(itemId2, 0));
             }
 
             if (usedSrcSlot)
             {
                 packet.ParseBitStream(itemId1, 6, 3, 5, 0, 1, 2, 4, 7);
-                packet.WriteLine("Item Id 1: {0}", BitConverter.ToUInt64(itemId1, 0));
+                packet.Store("Item Id 1", BitConverter.ToUInt64(itemId1, 0));
             }
 
             if (usedSrcSlot)
@@ -75,6 +76,7 @@ namespace WowPacketParser.Parsing.Parsers
                 guid[i][7] = packet.ReadBit();
             }
 
+            packet.StoreBeginList("Items");
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadXORByte(guid[i], 3);
@@ -106,9 +108,10 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(id[i], 7);
 
-                packet.WriteLine("[{1}] Item Id: {0}", BitConverter.ToUInt64(id[i], 0), i);
-                packet.WriteGuid("Item Player Creator Guid", guid[i], i);
+                packet.Store("Item Id", BitConverter.ToUInt64(id[i], 0), i);
+                packet.StoreBitstreamGuid("Item Player Creator Guid", guid[i], i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_VOID_STORAGE_TRANSFER_CHANGES)] // 4.3.4
@@ -146,12 +149,14 @@ namespace WowPacketParser.Parsing.Parsers
             for (int i = 0; i < count2; ++i)
                 id2[i] = packet.StartBitStream(1, 7, 3, 5, 6, 2, 4, 0);
 
+            packet.StoreBeginList("Items2");
             for (int i = 0; i < count2; ++i)
             {
                 packet.ParseBitStream(id2[i], 3, 1, 0, 2, 7, 5, 6, 4);
-                packet.WriteLine("[{1}] Item Id 2: {0}", BitConverter.ToUInt64(id2[i], 0), i);
+                packet.Store("Item Id 2", BitConverter.ToUInt64(id2[i], 0), i);
             }
-
+            packet.StoreEndList();
+            packet.StoreBeginList("Items1");
             for (int i = 0; i < count1; ++i)
             {
                 packet.ReadInt32("Item Suffix Factor", i);
@@ -181,9 +186,10 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadInt32("Item Random Property ID", i);
 
-                packet.WriteLine("[{1}] Item Id 1: {0}", BitConverter.ToUInt64(id1[i], 0), i);
-                packet.WriteGuid("Item Player Creator Guid", guid[i], i);
+                packet.Store("Item Id 1", BitConverter.ToUInt64(id1[i], 0), i);
+                packet.StoreBitstreamGuid("Item Player Creator Guid", guid[i], i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_VOID_TRANSFER_RESULT)]
@@ -221,20 +227,24 @@ namespace WowPacketParser.Parsing.Parsers
 
             // FlushBits
 
+            packet.StoreBeginList("Items1");
             for (int i = 0; i < count1; ++i)
             {
                 packet.ParseBitStream(itemsGuid[i], 6, 1, 0, 2, 4, 5, 3, 7);
-                packet.WriteGuid("Item Guid", itemsGuid[i], i);
+                packet.StoreBitstreamGuid("Item Guid", itemsGuid[i], i);
             }
+            packet.StoreEndList();
 
             packet.ReadXORByte(npcGuid, 5);
             packet.ReadXORByte(npcGuid, 6);
 
+            packet.StoreBeginList("Items2");
             for (int i = 0; i < count2; ++i)
             {
                 packet.ParseBitStream(itemsId[i], 3, 1, 0, 6, 2, 7, 5, 4);
-                packet.WriteLine("[{1}] Item Id: {0}", BitConverter.ToUInt64(itemsId[i], 0), i);
+                packet.Store("Item Id", BitConverter.ToUInt64(itemsId[i], 0), i);
             }
+            packet.StoreEndList();
 
             packet.ReadXORByte(npcGuid, 1);
             packet.ReadXORByte(npcGuid, 4);
@@ -243,7 +253,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(npcGuid, 2);
             packet.ReadXORByte(npcGuid, 0);
 
-            packet.WriteGuid("NPC Guid", npcGuid);
+            packet.StoreBitstreamGuid("NPC Guid", npcGuid);
         }
 
         [Parser(Opcode.CMSG_VOID_SWAP_ITEM)] // 4.3.4
@@ -288,8 +298,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(itemId, 7);
 
-            packet.WriteGuid("NPC Guid", guid);
-            packet.WriteLine("Item Id: {0}", BitConverter.ToUInt64(itemId, 0));
+            packet.StoreBitstreamGuid("NPC Guid", guid);
+            packet.Store("Item Id", BitConverter.ToUInt64(itemId, 0));
         }
 
         [Parser(Opcode.CMSG_VOID_STORAGE_QUERY)] // 4.3.4
@@ -297,7 +307,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(4, 0, 5, 7, 6, 3, 1, 2);
             packet.ParseBitStream(guid, 5, 6, 3, 7, 1, 0, 4, 2);
-            packet.WriteGuid("NPC Guid", guid);
+            packet.StoreBitstreamGuid("NPC Guid", guid);
         }
 
         [Parser(Opcode.SMSG_VOID_STORAGE_FAILED)]
@@ -311,7 +321,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(4, 5, 3, 0, 2, 1, 7, 6);
             packet.ParseBitStream(guid, 7, 1, 2, 3, 5, 0, 6, 4);
-            packet.WriteGuid("NPC Guid", guid);
+            packet.StoreBitstreamGuid("NPC Guid", guid);
         }
     }
 }

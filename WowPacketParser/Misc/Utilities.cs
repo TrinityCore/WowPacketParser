@@ -6,13 +6,18 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security;
-using WowPacketParser.Enums;
+using PacketParser.Enums;
 
-namespace WowPacketParser.Misc
+namespace PacketParser.Misc
 {
     public static class Utilities
     {
         private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+        public static E GetEnumForValue<E, T>(T value) where E : struct
+        {
+            return (E)Enum.ToObject(typeof(E), value);
+        }
 
         public static DateTime GetDateTimeFromUnixTime(double unixTime)
         {
@@ -155,6 +160,7 @@ namespace WowPacketParser.Misc
                     Trace.WriteLine("File " + files[i] + " was not found, removed.");
                     files.RemoveAt(i);
                     --i;
+                    continue;
                 }
             }
 
@@ -233,6 +239,18 @@ namespace WowPacketParser.Misc
         public static string FormattedDateTimeForFiles()
         {
             return DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
+        }
+
+        public static List<Type> GetClasses(Type baseType)
+        {
+            //var instances = from assembly in  from t in assembly.GetTypes() where t.GetInterfaces().Contains(typeof(ISomething)) && t.GetConstructor(Type.EmptyTypes) != null select Activator.CreateInstance(t) as ISomething;
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var list = new List<Type>();
+            foreach (var a in assemblies)
+            {
+                list.AddRange(a.GetTypes().Where(type => baseType.IsAssignableFrom(type)).ToList());
+            }
+            return list;
         }
     }
 }

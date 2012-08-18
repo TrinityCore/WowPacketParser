@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using Tamir.SharpSsh.jsch;
-using WowPacketParser.Misc;
+using PacketParser.Misc;
 
-namespace WowPacketParser.SQL
+namespace PacketParser.SQL
 {
     public class MyUserInfo : UserInfo
     {
@@ -26,7 +26,7 @@ namespace WowPacketParser.SQL
     {
         [ThreadStatic]
         private static Session Session;
-        public static bool Enabled = Settings.SSHEnabled;
+        public static bool Enabled = ParserSettings.SSHTunnel.Enabled;
 
         public static void Connect()
         {
@@ -34,16 +34,16 @@ namespace WowPacketParser.SQL
              {
                  var jsch = new JSch();
 
-                 Session = jsch.getSession(Settings.SSHUsername, Settings.SSHHost, Settings.SSHPort);
-                 Session.setHost(Settings.SSHHost);
-                 Session.setPassword(Settings.SSHPassword);
-                 UserInfo ui = new MyUserInfo(Settings.SSHPassword);
+                 Session = jsch.getSession(ParserSettings.SSHTunnel.Username, ParserSettings.SSHTunnel.Host, ParserSettings.SSHTunnel.Port);
+                 Session.setHost(ParserSettings.SSHTunnel.Host);
+                 Session.setPassword(ParserSettings.SSHTunnel.Password);
+                 UserInfo ui = new MyUserInfo(ParserSettings.SSHTunnel.Password);
                  Session.setUserInfo(ui);
                  Session.connect();
                  int port;
-                 if (!int.TryParse(Settings.Port, out port))
+                 if (!int.TryParse(ParserSettings.MySQL.Port, out port))
                      port = 3306;
-                 Session.setPortForwardingL(Settings.SSHLocalPort, "localhost", port);
+                 Session.setPortForwardingL(ParserSettings.SSHTunnel.LocalPort, "localhost", port);
                  if (!Session.isConnected())
                     Enabled = false;
              }

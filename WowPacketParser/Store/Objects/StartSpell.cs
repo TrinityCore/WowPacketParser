@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WowPacketParser.Store.Objects
+namespace PacketDumper.DataStructures
 {
     public class StartSpell
     {

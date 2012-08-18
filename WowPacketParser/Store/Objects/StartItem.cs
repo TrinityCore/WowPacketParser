@@ -1,4 +1,4 @@
-﻿namespace WowPacketParser.Store.Objects
+﻿namespace PacketParser.Store.Objects
 {
     public class StartItem
     {

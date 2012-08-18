@@ -1,7 +1,8 @@
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class TestHandler
     {
@@ -41,25 +42,29 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var count = packet.ReadInt32("Count");
 
+            var dat1 = packet.StoreBeginList("unk datas 1");
             for (var i = 0; i < count; i++)
-                packet.ReadInt32("Unk");
+                packet.ReadInt32("Unk 1", i);
 
             for (var i = 0; i < count; i++)
-                packet.ReadInt32("Unk");
+                packet.ReadInt32("Unk 2", i);
+            packet.StoreEndList();
 
-            packet.ReadInt32("Unk");
+            packet.ReadInt32("Unk3");
+
+            packet.StoreContinueList(dat1);
+            for (var i = 0; i < count; i++)
+                packet.ReadInt32("Unk4", i);
 
             for (var i = 0; i < count; i++)
-                packet.ReadInt32("Unk");
+                packet.ReadInt32("Unk5", i);
 
             for (var i = 0; i < count; i++)
-                packet.ReadInt32("Unk");
+                packet.ReadInt32("Unk6", i);
 
             for (var i = 0; i < count; i++)
-                packet.ReadInt32("Unk");
-
-            for (var i = 0; i < count; i++)
-                packet.ReadInt64("Unk");
+                packet.ReadInt64("Unk7", i);
+            packet.StoreEndList();
         }
 
         [Parser(30332)]
@@ -71,37 +76,41 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(13438)]
         public static void Handle13438(Packet packet)
         {
-            packet.ReadInt64("Unk");
-            packet.ReadInt64("Unk");
-            packet.ReadInt64("Unk");
-            packet.ReadInt64("Unk");
-            packet.ReadInt64("Unk");
+            packet.ReadInt64("Unk 1");
+            packet.ReadInt64("Unk 2");
+            packet.ReadInt64("Unk 3");
+            packet.ReadInt64("Unk 4");
+            packet.ReadInt64("Unk 5");
         }
 
         [Parser(13004)]
         public static void Handle13004(Packet packet)
         {
+            packet.StoreBeginList("unk datas 1");
             for (var i = 0; i < 5; i++)
             {
+                packet.StoreBeginList("unk datas 2");
                 for (var j = 0; j < 4; j++)
-                    packet.ReadInt32("Unk");
+                    packet.ReadInt32("Unk", i, j);
+                packet.StoreEndList();
             }
+            packet.StoreEndList();
         }
 
         [Parser(13516)]
         public static void Handle13516(Packet packet)
         {
-            packet.ReadByte("Unk");
-            packet.ReadInt32("Unk");
-            packet.ReadSingle("Unk");
-            packet.ReadInt32("Unk");
+            packet.ReadByte("Unk 1");
+            packet.ReadInt32("Unk 2");
+            packet.ReadSingle("Unk 3");
+            packet.ReadInt32("Unk 4");
         }
 
         [Parser(44964)] // 4.0.6a
         public static void Handle44964(Packet packet)
         {
-            using (var pkt = packet.Inflate(packet.ReadInt32()))
-                pkt.AsHex();
+            packet.Inflate(packet.ReadInt32());
+            packet.Store("Hex", packet.ToHex());
         }
 
         [Parser(Opcode.TEST_422_9838)]
@@ -146,7 +155,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 6);
 
-            packet.WriteGuid("Unk Guid?", guid);
+            packet.StoreBitstreamGuid("Unk Guid?", guid);
         }
     }
 }

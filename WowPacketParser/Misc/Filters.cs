@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using WowPacketParser.Enums;
+using PacketParser.Enums;
+using Guid = PacketParser.DataStructures.Guid;
+using PacketParser.Misc;
 
-namespace WowPacketParser.Misc
+namespace PacketDumper.Misc
 {
     public static class Filters
     {
         private static readonly Dictionary<StoreNameType, List<int>> NameStores =
             new Dictionary<StoreNameType, List<int>>();
 
+        public static bool Enabled
+        {
+            get { return NameStores.Count != 0; }
+        }
+
         public static void Initialize()
         {
-            foreach (var filter in Settings.IgnoreByEntryFilters)
+            foreach (var filter in Settings.TextOutputFilterIgnoreEntry)
             {
                 var elements = filter.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
                 if (elements.Length < 2)

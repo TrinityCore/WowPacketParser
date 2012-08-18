@@ -1,10 +1,11 @@
-﻿using WowPacketParser.Enums;
-using WowPacketParser.SQL;
+﻿using PacketParser.Enums;
+using PacketParser.SQL;
+using PacketParser.Misc;
 
-namespace WowPacketParser.Store.Objects
+namespace PacketParser.DataStructures
 {
     [DBTableName("gameobject_template")]
-    public sealed class GameObjectTemplate
+    public sealed class GameObjectTemplate : ITextOutputDisabled
     {
         [DBFieldName("type")]
         public GameObjectType Type;

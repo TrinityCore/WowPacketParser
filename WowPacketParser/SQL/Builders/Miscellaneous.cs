@@ -94,7 +94,7 @@ namespace WowPacketParser.SQL.Builders
                     }
                 }
 
-                result = new QueryBuilder.SQLInsert("playercreateinfo_spell", rows, 2).Build();
+                result += new QueryBuilder.SQLInsert("playercreateinfo_spell", rows, 2).Build();
             }
 
             return result;

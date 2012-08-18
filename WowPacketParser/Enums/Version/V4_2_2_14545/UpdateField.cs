@@ -1,4 +1,4 @@
-namespace WowPacketParser.Enums.Version.V4_2_2_14545
+namespace PacketParser.Enums.Version.V4_2_2_14545
 {
     // ReSharper disable InconsistentNaming
     // 4.2.2

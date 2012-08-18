@@ -1,8 +1,9 @@
 using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class CombatHandler
     {
@@ -139,20 +140,22 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("OverDamage");
 
             var subDmgCount = packet.ReadByte("Count");
+            packet.StoreBeginList("SubDamages");
             for (var i = 0; i < subDmgCount; ++i)
             {
                 packet.ReadInt32("SchoolMask", i);
                 packet.ReadSingle("Float Damage", i);
                 packet.ReadInt32("Int Damage", i);
             }
-
+            
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_ABSORB | SpellHitInfo.HITINFO_FULL_ABSORB))
                 for (var i = 0; i < subDmgCount; ++i)
                     packet.ReadInt32("Damage Absorbed", i);
 
-                if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
-                    for (var i = 0; i < subDmgCount; ++i)
-                        packet.ReadInt32("Damage Resisted", i);
+            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
+                for (var i = 0; i < subDmgCount; ++i)
+                    packet.ReadInt32("Damage Resisted", i);
+            packet.StoreEndList();
 
             packet.ReadEnum<VictimStates>("VictimState", TypeCode.Byte);
             packet.ReadInt32("Unk Attacker State 0");
@@ -195,6 +198,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("OverDamage");
 
             var subDmgCount = packet.ReadByte();
+            
+            packet.StoreBeginList("SubDamages");
             for (var i = 0; i < subDmgCount; ++i)
             {
                 packet.ReadInt32("SchoolMask", i);
@@ -209,6 +214,7 @@ namespace WowPacketParser.Parsing.Parsers
                     hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
                     packet.ReadInt32("Damage Resisted", i);
             }
+            packet.StoreEndList();
 
             var victimStateTypeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183) ? TypeCode.Byte : TypeCode.Int32;
             packet.ReadEnum<VictimStates>("VictimState", victimStateTypeCode);

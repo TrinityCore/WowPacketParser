@@ -1,8 +1,9 @@
 using System;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class InstanceHandler
     {
@@ -216,6 +217,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleRaidInstanceInfo(Packet packet)
         {
             var counter = packet.ReadInt32("Counter");
+            packet.StoreBeginList("RaidInstances");
             for (var i = 0; i < counter; ++i)
             {
                 packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID", i);
@@ -230,6 +232,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                     packet.ReadUInt32("Unk2", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_SAVE_CUF_PROFILES)] // 4.3.4
@@ -239,6 +242,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var strlen = new uint[count];
 
+            packet.StoreBeginList("Profiles");
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadBit("Talent spec 2", i);
@@ -283,6 +287,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt16("Unk 154", i);
                 packet.ReadByte("Unk 148", i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_LOAD_CUF_PROFILES)] // 4.3.4
@@ -292,6 +297,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var strlen = new uint[count];
 
+            packet.StoreBeginList("Profiles");
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadBit("Unk 157", i);
@@ -336,6 +342,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Unk 148", i);
                 packet.ReadWoWString("Name", (int)strlen[i], i);
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_RESET_INSTANCES)]

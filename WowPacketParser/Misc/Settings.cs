@@ -2,46 +2,56 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
-using WowPacketParser.Enums;
+using PacketParser.Enums;
+using PacketDumper.Enums;
+using PacketParser.Misc;
 
-namespace WowPacketParser.Misc
+namespace PacketDumper.Misc
 {
     public static class Settings
     {
+        static Settings()
+        {
+            ParserSettings.SSHTunnel.Enabled = GetBoolean("SSHEnabled", false);
+            ParserSettings.SSHTunnel.Host = GetString("SSHHost", "localhost");
+            ParserSettings.SSHTunnel.Username = GetString("SSHUsername", string.Empty);
+            ParserSettings.SSHTunnel.Password = GetString("SSHPassword", string.Empty);
+            ParserSettings.SSHTunnel.Port = GetInt32("SSHPort", 22);
+            ParserSettings.SSHTunnel.LocalPort = GetInt32("SSHLocalPort", 3307);
+
+            ParserSettings.MySQL.Enabled = GetBoolean("DBEnabled", false);
+            ParserSettings.MySQL.Server = GetString("Server", "localhost");
+            ParserSettings.MySQL.Port = GetString("Port", "3306");
+            ParserSettings.MySQL.Username = GetString("Username", "root");
+            ParserSettings.MySQL.Password = GetString("Password", string.Empty);
+            ParserSettings.MySQL.PacketParserDB = GetString("PacketParserDB", "WPP");
+            ParserSettings.MySQL.TDBDB = GetString("TDBDatabase", "world");
+            ParserSettings.MySQL.CharacterSet = GetString("CharacterSet", "utf8");
+
+            ParserSettings.ReadDebugValues = GetBoolean("DebugReads", false);
+        }
         private static readonly KeyValueConfigurationCollection SettingsCollection = GetConfiguration();
 
-        public static readonly string[] Filters = GetStringList("Filters", new string[0]);
-        public static readonly string[] IgnoreFilters = GetStringList("IgnoreFilters", new string[0]);
-        public static readonly string[] IgnoreByEntryFilters = GetStringList("IgnoreByEntryFilters", new string[0]);
-        public static readonly string[] AreaFilters = GetStringList("AreaFilters", new string[0]);
-        public static readonly int FilterPacketNumLow = GetInt32("FilterPacketNumLow", 0);
-        public static readonly int FilterPacketNumHigh = GetInt32("FilterPacketNumHigh", 0);
-        public static readonly int FilterPacketsNum = GetInt32("FilterPacketsNum", 0);
+        public static readonly string[] ReaderFilterOpcode = GetStringList("ReaderFilterOpcode", new string[0]);
+        public static readonly string[] ReaderFilterIgnoreOpcode = GetStringList("ReaderFilterIgnoreOpcode", new string[0]);
+        public static readonly int ReaderFilterPacketsNum = GetInt32("ReaderFilterPacketsNum", 0);
+        public static readonly int ReaderFilterPacketNumLow = GetInt32("ReaderFilterPacketNumLow", 0);
+        public static readonly int ReaderFilterPacketNumHigh = GetInt32("ReaderFilterPacketNumHigh", 0);
+
+        public static readonly string[] TextOutputFilterIgnoreEntry = GetStringList("TextOutputFilterIgnoreEntry", new string[0]);
+        public static readonly string[] SpawnDumpFilterArea = GetStringList("SpawnDumpFilterArea", new string[0]);
+
         public static readonly ClientVersionBuild ClientBuild = GetEnum("ClientBuild", ClientVersionBuild.Zero);
-        public static readonly DumpFormatType DumpFormat = GetEnum("DumpFormat", DumpFormatType.Text);
+        public static readonly string PacketFileType = GetString("PacketFileType", string.Empty);
+        public static readonly string RawOutputType = GetString("RawOutputType", string.Empty);
+        public static readonly bool SplitRawOutput = GetBoolean("SplitRawOutput", false);
+        public static readonly bool TextOutput = GetBoolean("TextOutput", false);
         public static readonly SQLOutputFlags SQLOutput = GetEnum("SQLOutput", SQLOutputFlags.None);
         public static readonly string SQLFileName = GetString("SQLFileName", string.Empty);
         public static readonly bool ShowEndPrompt = GetBoolean("ShowEndPrompt", false);
-        public static readonly bool LogErrors = GetBoolean("LogErrors", false);
         public static readonly bool LogPacketErrors = GetBoolean("LogPacketErrors", false);
-        public static readonly bool DebugReads = GetBoolean("DebugReads", false);
+        public static readonly bool LogEnumErrors = GetBoolean("LogEnumErrors", false);
         public static readonly bool ParsingLog = GetBoolean("ParsingLog", false);
-
-        public static readonly bool SSHEnabled = GetBoolean("SSHEnabled", false);
-        public static readonly string SSHHost = GetString("SSHHost", "localhost");
-        public static readonly string SSHUsername = GetString("SSHUsername", string.Empty);
-        public static readonly string SSHPassword = GetString("SSHPassword", string.Empty);
-        public static readonly int SSHPort = GetInt32("SSHPort", 22);
-        public static readonly int SSHLocalPort = GetInt32("SSHLocalPort", 3307);
-
-        public static readonly bool DBEnabled = GetBoolean("DBEnabled", false);
-        public static readonly string Server = GetString("Server", "localhost");
-        public static readonly string Port = GetString("Port", "3306");
-        public static readonly string Username = GetString("Username", "root");
-        public static readonly string Password = GetString("Password", string.Empty);
-        public static readonly string WPPDatabase = GetString("WPPDatabase", "WPP");
-        public static readonly string TDBDatabase = GetString("TDBDatabase", "world");
-        public static readonly string CharacterSet = GetString("CharacterSet", "utf8");
 
         private static KeyValueConfigurationCollection GetConfiguration()
         {

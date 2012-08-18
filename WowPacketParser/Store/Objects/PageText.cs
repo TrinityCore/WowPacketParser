@@ -1,9 +1,10 @@
-﻿using WowPacketParser.SQL;
+﻿using PacketParser.SQL;
+using PacketParser.Misc;
 
-namespace WowPacketParser.Store.Objects
+namespace PacketParser.DataStructures
 {
     [DBTableName("page_text")]
-    public class PageText
+    public class PageText : ITextOutputDisabled
     {
         [DBFieldName("text")]
         public string Text;

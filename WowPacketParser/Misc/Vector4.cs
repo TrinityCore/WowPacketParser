@@ -1,6 +1,7 @@
 using System;
+using System.Text;
 
-namespace WowPacketParser.Misc
+namespace PacketParser.DataStructures
 {
     public struct Vector4
     {
@@ -22,7 +23,16 @@ namespace WowPacketParser.Misc
 
         public override string ToString()
         {
-            return "X: " + X + " Y: " + Y + " Z: " + Z + " O: " + O;
+            StringBuilder builder = new StringBuilder(50);
+            builder.Append("X: ");
+            builder.Append(X);
+            builder.Append(" Y: ");
+            builder.Append(Y);
+            builder.Append(" Z: ");
+            builder.Append(Z);
+            builder.Append(" O: ");
+            builder.Append(O);
+            return builder.ToString();
         }
 
         public override bool Equals(object obj)

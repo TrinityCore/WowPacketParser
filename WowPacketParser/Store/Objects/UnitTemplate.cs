@@ -1,10 +1,11 @@
-﻿using WowPacketParser.Enums;
-using WowPacketParser.SQL;
+﻿using PacketParser.Enums;
+using PacketParser.SQL;
+using PacketParser.Misc;
 
-namespace WowPacketParser.Store.Objects
+namespace PacketParser.DataStructures
 {
     [DBTableName("creature_template")]
-    public class UnitTemplate
+    public class UnitTemplate : ITextOutputDisabled
     {
         [DBFieldName("name")]
         public string Name;

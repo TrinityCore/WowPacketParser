@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
-using WowPacketParser.Misc;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
+using PacketParser.Enums;
+using PacketParser.Misc;
+using PacketParser.DataStructures;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace PacketParser.Parsing.Parsers
 {
     public static class LootHandler
     {
@@ -107,6 +105,7 @@ namespace WowPacketParser.Parsing.Parsers
                 currencyCount = packet.ReadByte("Currency Count");
 
             loot.LootItems = new List<LootItem>(count);
+            packet.StoreBeginList("LootItems");
             for (var i = 0; i < count; ++i)
             {
                 var lootItem = new LootItem();
@@ -119,28 +118,16 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<LootSlotType>("Slot Type", TypeCode.Byte, i);
                 loot.LootItems.Add(lootItem);
             }
+            packet.StoreEndList();
 
+            packet.StoreBeginList("Currencies");
             for (int i = 0; i < currencyCount; ++i)
             {
                 packet.ReadByte("Unk Byte", i); // only seen zero so far
                 packet.ReadInt32("Currency Id", i);
                 packet.ReadInt32("Count", i); // unconfirmed
             }
-
-            // Items do not have item id in its guid, we need to query the wowobject store go
-            if (guid.GetObjectType() == ObjectType.Item)
-            {
-                WoWObject item;
-                UpdateField itemEntry;
-                if (Storage.Objects.TryGetValue(guid, out item))
-                    if (item.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out itemEntry))
-                    {
-                        Storage.Loots.Add(new Tuple<uint, ObjectType>(itemEntry.UInt32Value, guid.GetObjectType()), loot, packet.TimeSpan);
-                        return;
-                    }
-            }
-
-            Storage.Loots.Add(new Tuple<uint, ObjectType>(guid.GetEntry(), guid.GetObjectType()), loot, packet.TimeSpan);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_LOOT_ROLL)]
@@ -217,14 +204,17 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLootMasterList(Packet packet)
         {
             var count = packet.ReadByte("Count");
+            packet.StoreBeginList("Loot Master List");
             for (var i = 0; i < count; i++)
                 packet.ReadGuid("GUID", i);
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_LOOT_CONTENTS)] //4.3.4
         public static void HandleLootContents(Packet packet)
         {
             var count1 = packet.ReadBits("Loot Items Count", 21);
+            packet.StoreBeginList("Loot items");
             for (var i = 0; i < count1; i++)
             {
                 packet.ReadUInt32("Display ID", i);
@@ -233,6 +223,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
                 packet.ReadInt32("Unk Int32", i); // possibly random property id or looted count
             }
+            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_LOOT_CURRENCY)]
