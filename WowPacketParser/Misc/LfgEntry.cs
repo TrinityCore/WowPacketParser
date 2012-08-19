@@ -1,8 +1,6 @@
-using PacketParser.Enums;
-using System.Text;
-using PacketParser.Processing;
+using WowPacketParser.Enums;
 
-namespace PacketParser.DataStructures
+namespace WowPacketParser.Misc
 {
     public struct LfgEntry
     {
@@ -25,14 +23,8 @@ namespace PacketParser.DataStructures
 
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder(80);
-            builder.Append("Full: 0x");
-            builder.Append(Full.ToString("X4"));
-            builder.Append(" Type: ");
-            builder.Append(LfgType);
-            builder.Append(" Instance: ");
-            builder.Append(PacketFileProcessor.Current.GetProcessor<NameStore>().GetName(StoreNameType.LFGDungeon, InstanceId));
-            return builder.ToString();
+            return "Full: 0x" + Full.ToString("X4") + " Type: " + LfgType + " Instance: " +
+                StoreGetters.GetName(StoreNameType.LFGDungeon, InstanceId);
         }
 
         public bool Equals(LfgEntry other)

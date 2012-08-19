@@ -1,6 +1,6 @@
-﻿using PacketParser.SQL;
+﻿using WowPacketParser.SQL;
 
-namespace PacketDumper.DataStructures
+namespace WowPacketParser.Store.Objects
 {
     [DBTableName("creature_template")]
     public struct SpellsX

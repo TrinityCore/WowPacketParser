@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace PacketParser.SQL
+namespace WowPacketParser.SQL
 {
     [AttributeUsage(AttributeTargets.Field)]
     sealed public class DBFieldNameAttribute : Attribute

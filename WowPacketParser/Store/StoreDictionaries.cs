@@ -21,8 +21,7 @@ namespace WowPacketParser.Store
                     return flags.HasAnyFlag(SQLOutputFlags.CreatureSpawns) ||
                            flags.HasAnyFlag(SQLOutputFlags.GameObjectSpawns) ||
                            flags.HasAnyFlag(SQLOutputFlags.CreatureMovement) ||
-                           flags.HasAnyFlag(SQLOutputFlags.CreatureEquip) ||
-                           flags.HasAnyFlag(SQLOutputFlags.StartInformation);
+                           flags.HasAnyFlag(SQLOutputFlags.CreatureEquip);
                 case "GameObjectTemplates":
                     return flags.HasAnyFlag(SQLOutputFlags.GameObjectTemplate);
                 case "ItemTemplates":
@@ -216,7 +215,7 @@ namespace WowPacketParser.Store
             foreach (var pair in dict)
                 foreach (var k in pair.Value)
                     _dictionary.Add(pair.Key, new Tuple<TK, TimeSpan?>(k, null));
-
+                
 
             Type = string.Empty;
             Enabled = true;

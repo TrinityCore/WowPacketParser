@@ -1,9 +1,8 @@
 using System;
-using PacketParser.Enums;
-using PacketParser.Misc;
-using PacketParser.DataStructures;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
-namespace PacketParser.Parsing.Parsers
+namespace WowPacketParser.Parsing.Parsers
 {
     public static class TradeHandler
     {
@@ -18,7 +17,7 @@ namespace PacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(0, 3, 5, 1, 4, 6, 7, 2);
             packet.ParseBitStream(guid, 7, 4, 3, 5, 1, 2, 6, 0);
-            packet.StoreBitstreamGuid("Guid", guid);
+            packet.WriteGuid(guid);
         }
 
         [Parser(Opcode.CMSG_SET_TRADE_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -119,7 +118,7 @@ namespace PacketParser.Parsing.Parsers
 
             packet.ReadUInt32("Unk 8");
 
-            packet.StoreBitstreamGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_TRADE_STATUS, ClientVersionBuild.V4_3_4_15595)]
@@ -133,12 +132,12 @@ namespace PacketParser.Parsing.Parsers
                 case TradeStatus434.BeginTrade:
                     var guid = packet.StartBitStream(2, 4, 6, 0, 1, 3, 7, 5);
                     packet.ParseBitStream(guid, 4, 1, 2, 3, 0, 7, 6, 5);
-                    packet.StoreBitstreamGuid("GUID", guid);
+                    packet.WriteGuid("GUID", guid);
                     break;
                 case TradeStatus434.CloseWindow:
                     packet.ReadBit("Unk Bit");
-                    packet.ReadInt32("Unk Int32 1");
-                    packet.ReadInt32("Unk Int32 2");
+                    packet.ReadInt32("Unk Int32");
+                    packet.ReadInt32("Unk Int32");
                     break;
                 case TradeStatus434.TradeCurrency:
                 case TradeStatus434.CurrencyNotTradable:
@@ -165,7 +164,6 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadUInt32("Gold");
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
 
-            packet.StoreBeginList("Items");
             while (packet.CanRead())
             {
                 var slot = packet.ReadByte("Slot Index");
@@ -175,10 +173,8 @@ namespace PacketParser.Parsing.Parsers
                 packet.ReadUInt32("Item Wrapped", slot);
                 packet.ReadGuid("Item Gift Creator GUID", slot);
                 packet.ReadUInt32("Item Perm Enchantment Id", slot);
-                packet.StoreBeginList("Enchantments");
                 for (var i = 0; i < 3; ++i)
                     packet.ReadUInt32("Item Enchantment Id", slot, i);
-                packet.StoreEndList();
                 packet.ReadGuid("Item Creator GUID", slot);
                 packet.ReadInt32("Item Spell Charges", slot);
                 packet.ReadInt32("Item Suffix Factor", slot);
@@ -187,7 +183,6 @@ namespace PacketParser.Parsing.Parsers
                 packet.ReadUInt32("Item Max Durability", slot);
                 packet.ReadUInt32("Item Durability", slot);
             }
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
@@ -203,7 +198,6 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadUInt64("Gold");
             packet.ReadUInt32("Unk 6");
 
-            packet.StoreBeginList("Items");
             for (var i = 0; i < slots; ++i)
             {
                 packet.ReadUInt32("Unk1", i);
@@ -234,12 +228,12 @@ namespace PacketParser.Parsing.Parsers
                 //packet.ReadInt32("Item Random Property ID", slot);
                 //packet.ReadUInt32("Item Lock ID", slot);
             }
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleTradeStatusExtended422(Packet packet)
         {
+            packet.AsHex();
             packet.ReadInt32("Unk 1");
             packet.ReadInt32("Unk 2");
             packet.ReadInt32("Unk 3");
@@ -282,7 +276,6 @@ namespace PacketParser.Parsing.Parsers
                 guids1[i][4] = packet.ReadBit();
             }
 
-            packet.StoreBeginList("UnkList");
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadInt32("Unk 1", i);
@@ -335,10 +328,9 @@ namespace PacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(guids1[i], 3);
 
-                packet.StoreBitstreamGuid("Item Creator Guid", guids1[i], i);
-                packet.StoreBitstreamGuid("Item Gift Creator Guid", guids2[i], i);
+                packet.WriteGuid("Item Creator Guid", guids1[i], i);
+                packet.WriteGuid("Item Gift Creator Guid", guids2[i], i);
             }
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_TRADE_STATUS_EXTENDED, ClientVersionBuild.V4_3_4_15595)]
@@ -360,7 +352,6 @@ namespace PacketParser.Parsing.Parsers
 
             var isNotWrapped = new bool[count];
 
-            packet.StoreBeginList("Items");
             for (int i = 0; i < count; ++i)
             {
                 guids1[i] = new byte[8];
@@ -398,10 +389,8 @@ namespace PacketParser.Parsing.Parsers
 
                     packet.ReadInt32("Item Perm Enchantment Id", i);
 
-                    packet.StoreBeginList("Enchantments");
                     for (int j = 0; j < 3; ++j)
                         packet.ReadInt32("Item Enchantment Id", i, j);
-                    packet.StoreEndList();
 
                     packet.ReadInt32("Item Max Durability", i);
 
@@ -425,7 +414,7 @@ namespace PacketParser.Parsing.Parsers
 
                     packet.ReadXORByte(guids2[i], 5);
 
-                    packet.StoreBitstreamGuid("Creator Guid", guids2[i], i);
+                    packet.WriteGuid("Creator Guid", guids2[i], i);
                 }
 
                 packet.ReadXORByte(guids1[i], 6);
@@ -440,9 +429,8 @@ namespace PacketParser.Parsing.Parsers
                 packet.ReadXORByte(guids1[i], 2);
                 packet.ReadXORByte(guids1[i], 3);
 
-                packet.StoreBitstreamGuid("Gift Creator Guid", guids1[i], i);
+                packet.WriteGuid("Gift Creator Guid", guids1[i], i);
             }
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_ACCEPT_TRADE)]
@@ -459,7 +447,7 @@ namespace PacketParser.Parsing.Parsers
 
             var guid = packet.StartBitStream(5, 6, 4, 0, 2, 3, 7, 1);
             packet.ParseBitStream(guid, 5, 2, 3, 4, 1, 0, 6, 7);
-            packet.StoreBitstreamGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_IGNORE_TRADE)]

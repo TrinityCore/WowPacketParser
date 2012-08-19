@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PacketParser.SQL
+namespace WowPacketParser.SQL
 {
-    public static class QueryBuilder
+    static class QueryBuilder
     {
         public class SQLUpdate : ISQLQuery
         {

@@ -1,27 +1,21 @@
 using System;
-using PacketParser.Enums;
-using PacketParser.DataStructures;
-using PacketParser.Misc;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
-namespace PacketParser.Parsing.Parsers
+namespace WowPacketParser.Parsing.Parsers
 {
     public static class ContactHandler
     {
-        public static void ReadSingleContactBlock(ref Packet packet, bool onlineCheck, params int[] values)
+        public static void ReadSingleContactBlock(ref Packet packet, bool onlineCheck)
         {
-            packet.StoreBeginObj("ContactInfo", values);
             var status = packet.ReadEnum<ContactStatus>("Status", TypeCode.Byte);
 
             if (onlineCheck && status == ContactStatus.Offline)
-            {
-                packet.StoreEndObj();
                 return;
-            }
 
             packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area");
             packet.ReadInt32("Level");
             packet.ReadEnum<Class>("Class", TypeCode.Int32);
-            packet.StoreEndObj();
         }
 
         [Parser(Opcode.CMSG_CONTACT_LIST)]
@@ -37,21 +31,19 @@ namespace PacketParser.Parsing.Parsers
 
             var count = packet.ReadInt32("Count");
 
-            packet.StoreBeginList("Contacts");
             for (var i = 0; i < count; i++)
             {
-                packet.ReadGuid("GUID", i);
+                packet.ReadGuid("GUID");
 
-                var flag = packet.ReadEnum<ContactEntryFlag>("Flags", TypeCode.Int32, i);
+                var flag = packet.ReadEnum<ContactEntryFlag>("Flags", TypeCode.Int32);
 
-                packet.ReadCString("Note", i);
+                packet.ReadCString("Note");
 
                 if (!flag.HasAnyFlag(ContactEntryFlag.Friend))
                     continue;
 
-                ReadSingleContactBlock(ref packet, true, i);
+                ReadSingleContactBlock(ref packet, true);
             }
-            packet.StoreEndList();
 
             if (packet.CanRead())
                 WardenHandler.ReadCheatCheckDecryptionBlock(ref packet);

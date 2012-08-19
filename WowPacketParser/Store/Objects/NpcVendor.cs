@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using PacketParser.Misc;
 
-namespace PacketParser.DataStructures
+namespace WowPacketParser.Store.Objects
 {
-    public class NpcVendor : ITextOutputDisabled
+    public class NpcVendor
     {
         public ICollection<VendorItem> VendorItems;
     }

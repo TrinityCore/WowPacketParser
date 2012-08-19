@@ -1,6 +1,6 @@
 using System;
-using System.Text;
-namespace PacketParser.DataStructures
+
+namespace WowPacketParser.Misc
 {
     public struct UpdateField
     {
@@ -37,15 +37,6 @@ namespace PacketParser.DataStructures
         public static bool operator !=(UpdateField first, UpdateField other)
         {
             return !(first == other);
-        }
-
-        public override string ToString()
-        {
-            StringBuilder valueBuilder = new StringBuilder(30);
-            valueBuilder.Append(UInt32Value);
-            valueBuilder.Append("/");
-            valueBuilder.Append(SingleValue);
-            return valueBuilder.ToString();
         }
 
         public override int GetHashCode()

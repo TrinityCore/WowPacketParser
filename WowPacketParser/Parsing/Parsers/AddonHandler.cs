@@ -1,31 +1,23 @@
-using PacketParser.Enums;
-using PacketParser.Misc;
-using PacketParser.DataStructures;
+using System.Globalization;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
-namespace PacketParser.Parsing.Parsers
+namespace WowPacketParser.Parsing.Parsers
 {
     public static class AddonHandler
     {
         private static int _addonCount = -1;
 
-        public static void ReadClientAddonsList(Packet packet, int size = -1)
+        public static void ReadClientAddonsList(ref Packet packet)
         {
             var decompCount = packet.ReadInt32();
-            if (size == -1)
-            {
-                packet.Inflate(decompCount);
-            }
-            else
-            {
-                packet.Inflate(decompCount, size);
-            }
+            packet = packet.Inflate(decompCount);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
             {
                 var count = packet.ReadInt32("Addons Count");
                 _addonCount = count;
 
-                packet.StoreBeginList("Addons");
                 for (var i = 0; i < count; i++)
                 {
                     packet.ReadCString("Name", i);
@@ -33,7 +25,6 @@ namespace PacketParser.Parsing.Parsers
                     packet.ReadInt32("CRC", i);
                     packet.ReadInt32("Unk Int32", i);
                 }
-                packet.StoreEndList();
 
                 packet.ReadTime("Time");
             }
@@ -41,8 +32,7 @@ namespace PacketParser.Parsing.Parsers
             {
                 int count = 0;
 
-                packet.StoreBeginList("Addons");
-                while (packet.CanRead())
+                while (packet.Position != packet.Length)
                 {
                     packet.ReadCString("Name");
                     packet.ReadBoolean("Enabled");
@@ -51,7 +41,6 @@ namespace PacketParser.Parsing.Parsers
 
                     count++;
                 }
-                packet.StoreEndList();
 
                 _addonCount = count;
             }
@@ -63,12 +52,11 @@ namespace PacketParser.Parsing.Parsers
             // This packet requires _addonCount from CMSG_AUTH_SESSION to be parsed.
             if (_addonCount == -1)
             {
-                packet.Store("Parse Error", "CMSG_AUTH_SESSION was not received - cannot successfully parse this packet.");
+                packet.WriteLine("CMSG_AUTH_SESSION was not received - cannot successfully parse this packet.");
                 packet.ReadToEnd();
                 return;
             }
 
-            packet.StoreBeginList("Addons");
             for (var i = 0; i < _addonCount; i++)
             {
                 packet.ReadByte("Addon State", i);
@@ -81,7 +69,11 @@ namespace PacketParser.Parsing.Parsers
 
                     if (usePublicKey)
                     {
-                        packet.ReadChars("Public Key", 256, i);
+                        var pubKey = packet.ReadChars(256);
+                        packet.Write("[{0}] Public Key: ", i);
+
+                        foreach (var t in pubKey)
+                            packet.Write(t.ToString(CultureInfo.InvariantCulture));
                     }
 
                     packet.ReadInt32("Unk Int32", i);
@@ -90,29 +82,26 @@ namespace PacketParser.Parsing.Parsers
                 if (packet.ReadBoolean("Use URL File", i))
                     packet.ReadCString("Addon URL File", i);
             }
-            packet.StoreEndList();
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
             {
                 var bannedCount = packet.ReadInt32("Banned Addons Count");
 
-                packet.StoreBeginList("BannedAddons");
                 for (var i = 0; i < bannedCount; i++)
                 {
                     packet.ReadInt32("ID", i);
 
                     var unkStr2 = packet.ReadBytes(16);
-                    packet.Store("Unk Hash 1", Utilities.ByteArrayToHexString(unkStr2), i);
+                    packet.WriteLine("[{0}] Unk Hash 1: {1}", i, Utilities.ByteArrayToHexString(unkStr2));
 
                     var unkStr3 = packet.ReadBytes(16);
-                    packet.Store("Unk Hash 2", Utilities.ByteArrayToHexString(unkStr3), i);
+                    packet.WriteLine("[{0}] Unk Hash 2: {1}", i, Utilities.ByteArrayToHexString(unkStr3));
 
                     packet.ReadInt32("Unk Int32 3", i);
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3a_11723))
                         packet.ReadInt32("Unk Int32 4", i);
                 }
-                packet.StoreEndList();
             }
         }
 
@@ -121,11 +110,8 @@ namespace PacketParser.Parsing.Parsers
         public static void HandleAddonPrefixes(Packet packet)
         {
             var count = packet.ReadUInt32("Count");
-
-            packet.StoreBeginList("Addons");
             for (var i = 0; i < count; ++i)
                 packet.ReadCString("Addon", i);
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_ADDON_REGISTERED_PREFIXES, ClientVersionBuild.V4_3_4_15595)]
@@ -136,10 +122,8 @@ namespace PacketParser.Parsing.Parsers
             for (var i = 0; i < count; ++i)
                 lengths[i] = (int)packet.ReadBits(5);
 
-            packet.StoreBeginList("Addons");
             for (var i = 0; i < count; ++i)
                 packet.ReadWoWString("Addon", lengths[i], i);
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES)]

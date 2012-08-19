@@ -1,33 +1,30 @@
 using System;
-using PacketParser.Enums;
-using PacketParser.Misc;
-using PacketParser.DataStructures;
-using PacketParser.Processing;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
-namespace PacketParser.Parsing.Parsers
+namespace WowPacketParser.Parsing.Parsers
 {
     public static class WorldStateHandler
     {
+        public static int CurrentAreaId = -1;
+
         [Parser(Opcode.SMSG_INIT_WORLD_STATES)]
         public static void HandleInitWorldStates(Packet packet)
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
             packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
-            PacketFileProcessor.Current.GetProcessor<SessionStore>().CurrentAreaId = packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area Id");
+            CurrentAreaId = packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area Id");
 
             var numFields = packet.ReadInt16("Field Count");
-            packet.StoreBeginList("WorldStateFields");
             for (var i = 0; i < numFields; i++)
-                ReadWorldStateBlock(ref packet, i);
-            packet.StoreEndList();
+                ReadWorldStateBlock(ref packet);
         }
 
-        public static void ReadWorldStateBlock(ref Packet packet, params int[] values)
+        public static void ReadWorldStateBlock(ref Packet packet)
         {
-            packet.StoreBeginObj("WorldStateBlock", values);
-            packet.ReadInt32("Field");
-            packet.ReadInt32("Value");
-            packet.StoreEndObj();
+            var field = packet.ReadInt32();
+            var val = packet.ReadInt32();
+            packet.WriteLine("Field: {0} - Value: {1}", field, val);
         }
 
         [Parser(Opcode.SMSG_UPDATE_WORLD_STATE)]

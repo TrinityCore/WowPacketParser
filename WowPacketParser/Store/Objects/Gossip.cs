@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using PacketParser.Enums;
-using PacketParser.Misc;
+using WowPacketParser.Enums;
 
-namespace PacketParser.DataStructures
+namespace WowPacketParser.Store.Objects
 {
     //[DBTableName("gossip_menu")]
-    public class Gossip : ITextOutputDisabled
+    public class Gossip
     {
         public ObjectType ObjectType;
 
@@ -15,7 +14,7 @@ namespace PacketParser.DataStructures
     }
 
     //[DBTableName("gossip_menu_option")]
-    public class GossipOption : ITextOutputDisabled
+    public class GossipOption
     {
         //[DBFieldName("id")]
         public uint Index;

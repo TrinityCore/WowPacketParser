@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using PacketParser.Enums;
-using PacketParser.Processing;
-using PacketParser.Misc;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
+using WowPacketParser.Store;
 
-namespace PacketParser.SQL
+namespace WowPacketParser.SQL
 {
     public static class SQLUtil
     {
@@ -136,7 +136,7 @@ namespace PacketParser.SQL
         /// <param name="storeType">Are we dealing with Spells, Quests, Units, ...?</param>
         /// <param name="primaryKeyName">The name of the primary key, usually "entry"</param>
         /// <returns>A string containing full SQL queries</returns>
-        public static string CompareDicts<T, TK>(TimeSpanDictionary<T, TK> dict1, TimeSpanDictionary<T, TK> dict2, StoreNameType storeType, string primaryKeyName = "entry")
+        public static string CompareDicts<T, TK>(StoreDictionary<T, TK> dict1, StoreDictionary<T, TK> dict2, StoreNameType storeType, string primaryKeyName = "entry")
         {
             var tableAttrs = (DBTableNameAttribute[])typeof(TK).GetCustomAttributes(typeof(DBTableNameAttribute), false);
             if (tableAttrs.Length <= 0)
@@ -149,8 +149,6 @@ namespace PacketParser.SQL
 
             var rowsIns = new List<QueryBuilder.SQLInsertRow>();
             var rowsUpd = new List<QueryBuilder.SQLUpdateRow>();
-
-            var names = PacketFileProcessor.Current.GetProcessor<NameStore>();
 
             foreach (var elem1 in dict1)
             {
@@ -191,7 +189,7 @@ namespace PacketParser.SQL
                     var key = Convert.ToUInt32(elem1.Key);
 
                     row.AddWhere(primaryKeyName, key);
-                    row.Comment = names.GetName(storeType, (int)key, false);
+                    row.Comment = StoreGetters.GetName(storeType, (int)key, false);
                     row.Table = tableName;
 
                     if (row.ValueCount != 0)
@@ -201,7 +199,7 @@ namespace PacketParser.SQL
                 {
                     var row = new QueryBuilder.SQLInsertRow();
                     row.AddValue(primaryKeyName, elem1.Key);
-                    row.Comment = names.GetName(storeType, Convert.ToInt32(elem1.Key), false);
+                    row.Comment = StoreGetters.GetName(storeType, Convert.ToInt32(elem1.Key), false);
 
                     foreach (var field in fields)
                     {
@@ -240,9 +238,8 @@ namespace PacketParser.SQL
         /// <param name="primaryKeyName1">The name of the first primary key</param>
         /// <param name="primaryKeyName2">The name of the second primary key</param>
         /// <returns>A string containing full SQL queries</returns>
-        public static string CompareDicts<T, TG, TK>(TimeSpanDictionary<Tuple<T, TG>, TK> dict1, TimeSpanDictionary<Tuple<T, TG>, TK> dict2, StoreNameType storeType, string primaryKeyName1, string primaryKeyName2)
+        public static string CompareDicts<T, TG, TK>(StoreDictionary<Tuple<T, TG>, TK> dict1, StoreDictionary<Tuple<T, TG>, TK> dict2, StoreNameType storeType, string primaryKeyName1, string primaryKeyName2)
         {
-            var names = PacketFileProcessor.Current.GetProcessor<NameStore>();
             var tableAttrs = (DBTableNameAttribute[])typeof(TK).GetCustomAttributes(typeof(DBTableNameAttribute), false);
             if (tableAttrs.Length <= 0)
                 return string.Empty;
@@ -296,7 +293,7 @@ namespace PacketParser.SQL
 
                     row.AddWhere(primaryKeyName1, key1);
                     row.AddWhere(primaryKeyName2, key2);
-                    row.Comment = names.GetName(storeType, (int)key1, false);
+                    row.Comment = StoreGetters.GetName(storeType, (int)key1, false);
                     row.Table = tableName;
 
                     if (row.ValueCount != 0)
@@ -307,7 +304,7 @@ namespace PacketParser.SQL
                     var row = new QueryBuilder.SQLInsertRow();
                     row.AddValue(primaryKeyName1, elem1.Key.Item1);
                     row.AddValue(primaryKeyName2, elem1.Key.Item2);
-                    row.Comment = names.GetName(storeType, Convert.ToInt32(elem1.Key.Item1), false);
+                    row.Comment = StoreGetters.GetName(storeType, Convert.ToInt32(elem1.Key.Item1), false);
 
                     foreach (var field in fields)
                     {

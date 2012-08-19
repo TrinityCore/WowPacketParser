@@ -1,10 +1,9 @@
-﻿using PacketParser.Misc;
-using PacketParser.SQL;
+﻿using WowPacketParser.SQL;
 
-namespace PacketParser.DataStructures
+namespace WowPacketParser.Store.Objects
 {
     [DBTableName("quest_poi_points")]
-    public class QuestPOIPoint : ITextOutputDisabled
+    public class QuestPOIPoint
     {
         [DBFieldName("idx")]
         public uint Index; // Client expects a certain order although this is not on sniffs

@@ -1,4 +1,4 @@
-﻿namespace PacketParser.DataStructures
+﻿namespace WowPacketParser.Store.Objects
 {
     public class LootItem
     {

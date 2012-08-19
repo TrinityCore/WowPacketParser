@@ -1,9 +1,10 @@
 using System;
-using PacketParser.Enums;
-using PacketParser.Misc;
-using PacketParser.DataStructures;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
-namespace PacketParser.Parsing.Parsers
+namespace WowPacketParser.Parsing.Parsers
 {
     public static class ChatHandler
     {
@@ -39,6 +40,9 @@ namespace PacketParser.Parsing.Parsers
         {
             var emote = packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
             var guid = packet.ReadGuid("GUID");
+
+            if (guid.GetObjectType() == ObjectType.Unit)
+                Storage.Emotes.Add(guid, emote, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_TEXT_EMOTE)]
@@ -177,7 +181,8 @@ namespace PacketParser.Parsing.Parsers
             if (text.Type == ChatMessageType.Achievement || text.Type == ChatMessageType.GuildAchievement)
                 packet.ReadInt32("Achievement ID");
 
-            packet.Store("CreatureTextObject", text);
+            if (entry != 0)
+                Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT)]

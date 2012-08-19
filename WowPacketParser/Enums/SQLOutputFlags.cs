@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PacketDumper.Enums
+namespace WowPacketParser.Enums
 {
     [Flags]
     public enum SQLOutputFlags

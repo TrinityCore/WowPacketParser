@@ -1,6 +1,6 @@
 using System;
-using System.Text;
-namespace PacketParser.DataStructures
+
+namespace WowPacketParser.Misc
 {
     public struct Quaternion
     {
@@ -22,16 +22,7 @@ namespace PacketParser.DataStructures
 
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder(50);
-            builder.Append("X: ");
-            builder.Append(X);
-            builder.Append(" Y: ");
-            builder.Append(Y);
-            builder.Append(" Z: ");
-            builder.Append(Z);
-            builder.Append(" W: ");
-            builder.Append(W);
-            return builder.ToString();
+            return "X: " + X + " Y: " + Y + " Z: " + Z + " W: " + W;
         }
 
         public override bool Equals(object obj)

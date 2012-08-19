@@ -1,10 +1,9 @@
 using System;
 using System.Text;
-using PacketParser.Enums;
-using PacketParser.DataStructures;
-using PacketParser.Misc;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
-namespace PacketParser.Parsing.Parsers
+namespace WowPacketParser.Parsing.Parsers
 {
     public static class WardenHandler
     {
@@ -22,10 +21,10 @@ namespace PacketParser.Parsing.Parsers
                     packet.ReadByte();
 
                     var md5 = packet.ReadBytes(16);
-                    packet.Store("Module MD5", Utilities.ByteArrayToHexString(md5));
+                    packet.WriteLine("Module MD5: " + Utilities.ByteArrayToHexString(md5));
 
                     var rc4 = packet.ReadBytes(16);
-                    packet.Store("Module RC4", Utilities.ByteArrayToHexString(rc4));
+                    packet.WriteLine("Module RC4: " + Utilities.ByteArrayToHexString(rc4));
 
                     packet.ReadUInt32("Module Length");
                     break;
@@ -37,7 +36,7 @@ namespace PacketParser.Parsing.Parsers
                     var length = packet.ReadUInt16("Chunk Length");
 
                     var chunk = packet.ReadBytes(length);
-                    packet.Store("Module Chunk", Utilities.ByteArrayToHexString(chunk));
+                    packet.WriteLine("Module Chunk: " + Utilities.ByteArrayToHexString(chunk));
                     break;
                 }
                 case WardenServerOpcode.CheatChecks:
@@ -45,16 +44,12 @@ namespace PacketParser.Parsing.Parsers
                     packet.ReadByte();
 
                     byte length;
-                    int i = 0;
-                    packet.StoreBeginList("Strings");
                     while ((length = packet.ReadByte()) != 0)
                     {
                         var strBytes = packet.ReadBytes(length);
                         var str = Encoding.ASCII.GetString(strBytes);
-                        packet.Store("String", str, i);
-                        ++i;
+                        packet.WriteLine("String: " + str);
                     }
-                    packet.StoreEndList();
 
                     // var rest = (int)(packet.GetLength() - packet.GetPosition());
                     break;
@@ -70,7 +65,7 @@ namespace PacketParser.Parsing.Parsers
                         packet.ReadInt32("Data Checksum");
 
                         var data = packet.ReadBytes(length);
-                        packet.Store("Data", Utilities.ByteArrayToHexString(data));
+                        packet.WriteLine("Data: " + Utilities.ByteArrayToHexString(data));
                     }
                     break;
                 }
@@ -79,7 +74,7 @@ namespace PacketParser.Parsing.Parsers
                     packet.ReadByte();
 
                     var seed = packet.ReadBytes(16);
-                    packet.Store("Seed", Utilities.ByteArrayToHexString(seed));
+                    packet.WriteLine("Seed: " + Utilities.ByteArrayToHexString(seed));
                     break;
                 }
             }
@@ -99,14 +94,14 @@ namespace PacketParser.Parsing.Parsers
                     packet.ReadInt32("Check Result Checksum");
 
                     var result = packet.ReadBytes(length);
-                    packet.Store("Check Results", Utilities.ByteArrayToHexString(result));
+                    packet.WriteLine("Check Results: " + Utilities.ByteArrayToHexString(result));
 
                     break;
                 }
                 case WardenClientOpcode.TransformedSeed:
                 {
                     var sha1 = packet.ReadBytes(20);
-                    packet.Store("SHA1 Seed", Utilities.ByteArrayToHexString(sha1));
+                    packet.WriteLine("SHA1 Seed: " + Utilities.ByteArrayToHexString(sha1));
                     break;
                 }
             }
@@ -136,7 +131,7 @@ namespace PacketParser.Parsing.Parsers
         public static void ReadCheatCheckDecryptionBlock(ref Packet packet)
         {
             var arc4 = packet.ReadBytes(16);
-            packet.Store("ARC4 Key", Utilities.ByteArrayToHexString(arc4));
+            packet.WriteLine("ARC4 Key: " + Utilities.ByteArrayToHexString(arc4));
         }
     }
 }

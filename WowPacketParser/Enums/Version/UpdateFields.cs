@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
-using PacketParser.Misc;
+using WowPacketParser.Misc;
 
-namespace PacketParser.Enums.Version
+namespace WowPacketParser.Enums.Version
 {
     public static class UpdateFields
     {
-        [ThreadStatic]
-        private static Dictionary<Type, BiDictionary<string, int>> UpdateFieldDictionaries = null;
+        private static readonly Dictionary<Type, BiDictionary<string, int>> UpdateFieldDictionaries = LoadUFDictionaries();
 
         private static Dictionary<Type, BiDictionary<string, int>> LoadUFDictionaries()
         {
@@ -22,7 +22,7 @@ namespace PacketParser.Enums.Version
 
             foreach (var enumType in enumTypes)
             {
-                var vTypeString = string.Format("PacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionaryBuildName(ClientVersion.Build), enumType.Name);
+                var vTypeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionaryBuildName(ClientVersion.Build), enumType.Name);
                 var vEnumType = Assembly.GetExecutingAssembly().GetType(vTypeString);
                 if (vEnumType == null)
                     continue;   // versions prior to 4.3.0 do not have AreaTriggerField
@@ -37,118 +37,35 @@ namespace PacketParser.Enums.Version
 
                 dicts.Add(enumType, result);
             }
-            
+
             return dicts;
         }
 
-        public static void InitForClientVersion()
-        {
-            UpdateFieldDictionaries = LoadUFDictionaries();
-        }
-
-        // returns update field offset by generic - crossversion enum
-        public static int? GetUpdateFieldOffset<T>(T field) where T: struct, IConvertible
+        public static int GetUpdateField<T>(T field)
         {
             if (UpdateFieldDictionaries.ContainsKey(typeof(T)))
-            {
-                int offset;
-                if (UpdateFieldDictionaries[typeof(T)].TryGetByFirst(Enum<T>.ToString(field), out offset))
-                    return offset;
-            }
+                if (UpdateFieldDictionaries[typeof(T)].ContainsKey(field.ToString()))
+                    return UpdateFieldDictionaries[typeof(T)][field.ToString()];
 
-            return null;
+            return Convert.ToInt32(field);
         }
 
-        // returns update field name by offset
-        public static string GetUpdateFieldName(int fieldOffset, Type t)
+        public static int GetUpdateField<T>(int field)
         {
-            if (UpdateFieldDictionaries.ContainsKey(t))
-            {
-                string name;
-                if (UpdateFieldDictionaries[t].TryGetBySecond(fieldOffset, out name))
-                    return name;
-            }
+            if (UpdateFieldDictionaries.ContainsKey(typeof(T)))
+                if (UpdateFieldDictionaries[typeof(T)].ContainsKey(field.ToString(CultureInfo.InvariantCulture)))
+                    return UpdateFieldDictionaries[typeof(T)][field.ToString(CultureInfo.InvariantCulture)];
 
-            return null;
+            return field;
         }
 
-        public static string GetUpdateFieldName<T>(int fieldOffset)
+        public static string GetUpdateFieldName<T>(int field)
         {
-            return GetUpdateFieldName(fieldOffset, typeof(T));
-        }
+            if (UpdateFieldDictionaries.ContainsKey(typeof(T)))
+                if (UpdateFieldDictionaries[typeof(T)].ContainsValue(field))
+                    return UpdateFieldDictionaries[typeof (T)][field];
 
-        public static Type GetUpdateFieldEnumByOffset(Int32 offset, ObjectType type)
-        {
-            /*
-            switch (type)
-            {
-                case ObjectType.Object:
-                    return typeof(ObjectField);
-                case ObjectType.Item:
-                    {
-                        int max;
-                        Enums.Version.UpdateFields.UpdateFieldMaxOffsets.TryGetValue(typeof(ObjectField), out max);
-                        if (offset < max)
-                            goto case ObjectType.Object;
-                        return typeof(ItemField);
-                    }
-                case ObjectType.Container:
-                    {
-                        int max;
-                        Enums.Version.UpdateFields.UpdateFieldMaxOffsets.TryGetValue(typeof(ItemField), out max);
-                        if (offset < max)
-                            goto case ObjectType.Item;
-                        return typeof(ContainerField);
-                    }
-                case ObjectType.Unit:
-                    {
-                        int max;
-                        Enums.Version.UpdateFields.UpdateFieldMaxOffsets.TryGetValue(typeof(ObjectField), out max);
-                        if (offset < max)
-                            goto case ObjectType.Object;
-                        return typeof(UnitField);
-                    }
-                case ObjectType.Player:
-                    {
-                        int max;
-                        Enums.Version.UpdateFields.UpdateFieldMaxOffsets.TryGetValue(typeof(UnitField), out max);
-                        if (offset < max)
-                            goto case ObjectType.Unit;
-                        return typeof(PlayerField);
-                    }
-                case ObjectType.GameObject:
-                    {
-                        int max;
-                        Enums.Version.UpdateFields.UpdateFieldMaxOffsets.TryGetValue(typeof(ObjectField), out max);
-                        if (offset < max)
-                            goto case ObjectType.Object;
-                        return typeof(GameObjectField);
-                    }
-                case ObjectType.DynamicObject:
-                    {
-                        int max;
-                        Enums.Version.UpdateFields.UpdateFieldMaxOffsets.TryGetValue(typeof(ObjectField), out max);
-                        if (offset < max)
-                            goto case ObjectType.Object;
-                        return typeof(DynamicObjectField);
-                    }
-                case ObjectType.Corpse:
-                    {
-                        int max;
-                        Enums.Version.UpdateFields.UpdateFieldMaxOffsets.TryGetValue(typeof(ObjectField), out max);
-                        if (offset < max)
-                            goto case ObjectType.Object;
-                        return typeof(CorpseField);
-                    }
-                default:
-                    return typeof(Object);
-            }*/
-            return null;
-        }
-
-        public static string GetUpdateFieldNameByOffset(Int32 offset, ObjectType type)
-        {
-            return GetUpdateFieldName(offset, GetUpdateFieldEnumByOffset(offset, type));
+            return field.ToString(CultureInfo.InvariantCulture);
         }
 
         private static string GetUpdateFieldDictionaryBuildName(ClientVersionBuild build)

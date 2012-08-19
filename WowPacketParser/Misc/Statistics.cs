@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using PacketParser.Enums;
-using PacketParser.DataStructures;
-using PacketParser.Misc;
+using WowPacketParser.Enums;
 
-namespace PacketDumper.Misc
+namespace WowPacketParser.Misc
 {
     /// <summary>
     /// Represents parsing statistics for a single sniff/file.
@@ -221,17 +219,22 @@ namespace PacketDumper.Misc
 
             Parallel.ForEach(packets, packet =>
             {
-                switch (packet.Status)
+                if (!packet.WriteToFile)
+                    stats.AddNotParsed();
+                else
                 {
-                    case ParsedStatus.Success:
-                        stats.AddSucess();
-                        break;
-                    case ParsedStatus.WithErrors:
-                        stats.AddWithErrors();
-                        break;
-                    case ParsedStatus.NotParsed:
-                        stats.AddNotParsed();
-                        break;
+                    switch (packet.Status)
+                    {
+                        case ParsedStatus.Success:
+                            stats.AddSucess();
+                            break;
+                        case ParsedStatus.WithErrors:
+                            stats.AddWithErrors();
+                            break;
+                        case ParsedStatus.NotParsed:
+                            stats.AddNotParsed();
+                            break;
+                    }
                 }
             });
 

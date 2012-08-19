@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
-using PacketParser.Enums;
-using PacketParser.Enums.Version;
-using PacketParser.Misc;
-using PacketParser.DataStructures;
+using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
+using WowPacketParser.Misc;
 
-namespace PacketParser.Parsing.Parsers
+namespace WowPacketParser.Parsing.Parsers
 {
     public static class CombatLogHandler
     {
@@ -13,17 +12,58 @@ namespace PacketParser.Parsing.Parsers
         public static void HandleCombatLogMultiple(Packet packet)
         {
             var count = packet.ReadInt32("Count");
-            packet.ReadUInt32("Timestamp");
+            var unk1 = packet.ReadInt32();
 
-            packet.StoreBeginList("CombatLogPackets");
             for (var i = 0; i < count; i++)
             {
-                packet.ReadUInt32("Timestamp", i);
-                var opcode = packet.ReadInt32();
-                packet.Store("Opcode", Opcodes.GetOpcode(opcode), i);
-                packet.ReadSubPacket(opcode, "Packet", i);
+                var unk2 = packet.ReadInt32();
+                packet.WriteLine("["+ i+ "] Unknown: {0}", unk1 - unk2);
+
+                var opcode = Opcodes.GetOpcode(packet.ReadInt32());
+                packet.WriteLine("Opcode: " + opcode);
+                switch (opcode)
+                {
+                    case Opcode.SMSG_SPELLHEALLOG:
+                    {
+                        ReadSpellHealLog(ref packet, i);
+                        break;
+                    }
+                    case Opcode.SMSG_SPELLENERGIZELOG:
+                    {
+                        ReadSpellEnergizeLog(ref packet, i);
+                        break;
+                    }
+                    case Opcode.SMSG_PERIODICAURALOG:
+                    {
+                        ReadPeriodicAuraLog(ref packet, i); // sub_5EEE10
+                        break;
+                    }
+                    case Opcode.SMSG_SPELLLOGEXECUTE:
+                    {
+                        ReadSpellLogExecute(ref packet, i);
+                        break;
+                    }
+                    case Opcode.SMSG_SPELLNONMELEEDAMAGELOG:
+                    {
+                        ReadSpellNonMeleeDamageLog(ref packet, i);
+                        break;
+                    }
+                    case Opcode.SMSG_SPELLLOGMISS:
+                    {
+                        ReadSpellMissLog(ref packet, i);
+                        break;
+                    }
+                    case Opcode.SMSG_SPELLSTEALLOG:
+                    case Opcode.SMSG_SPELLDISPELLOG:
+                    case Opcode.SMSG_SPELLBREAKLOG:
+                    {
+                        ReadSpellRemoveLog(ref packet, i);
+                        break;
+                    }
+                    default:
+                        throw new InvalidDataException("Unknown Spell Log Type/Opcode: " + opcode);
+                }
             }
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_SPELLSTEALLOG)]
@@ -71,21 +111,19 @@ namespace PacketParser.Parsing.Parsers
         }
 
         // Unknown opcode name(s)
-        private static void ReadSpellRemoveLog(ref Packet packet)
+        private static void ReadSpellRemoveLog(ref Packet packet, int index = -1)
         {
-            packet.ReadPackedGuid("Target GUID");
-            packet.ReadPackedGuid("Caster GUID"); // Can be 0
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell"); // Can be 0
-            var debug = packet.ReadBoolean("Debug Output");
-            var count = packet.ReadInt32("Count");
+            packet.ReadPackedGuid("Target GUID", index);
+            packet.ReadPackedGuid("Caster GUID", index); // Can be 0
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell", index); // Can be 0
+            var debug = packet.ReadBoolean("Debug Output", index);
+            var count = packet.ReadInt32("Count", index);
 
-            packet.StoreBeginList("RemovedAuras");
             for (int i = 0; i < count; i++)
             {
-                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell", i);
-                packet.ReadByte("Unknown Byte/Bool", i);
+                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell", index, i);
+                packet.ReadByte("Unknown Byte/Bool", index, i);
             }
-            packet.StoreEndList();
 
             if (debug)
             {
@@ -94,18 +132,16 @@ namespace PacketParser.Parsing.Parsers
             }
         }
 
-        private static void ReadSpellLogExecute(ref Packet packet)
+        private static void ReadSpellLogExecute(ref Packet packet, int index = -1)
         {
-            packet.ReadPackedGuid("Caster GUID");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
-            var count = packet.ReadInt32("Count"); // v47
+            packet.ReadPackedGuid("Caster GUID", index);
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", index);
+            var count = packet.ReadInt32("Count", index); // v47
 
-            packet.StoreBeginList("SpellEffects");
             for (int i = 0; i < count; i++)
             {
-                var type = packet.ReadEnum<SpellEffect>("Spell Effect", TypeCode.Int32, i);
-                var count2 = packet.ReadInt32("Count", i);
-                packet.StoreBeginList("Targets", i);
+                var type = packet.ReadEnum<SpellEffect>("Spell Effect", TypeCode.Int32, index, i);
+                var count2 = packet.ReadInt32("Count", index, i);
                 for (int j = 0; j < count2; j++)
                 {
                     switch (type)
@@ -113,29 +149,29 @@ namespace PacketParser.Parsing.Parsers
                         case SpellEffect.PowerDrain:
                         case SpellEffect.PowerBurn:
                         {
-                            packet.ReadPackedGuid("Target GUID", i, j);
-                            packet.ReadInt32("Unknown Int32 1", i, j);
-                            packet.ReadInt32("Unknown Int32 2", i, j);
-                            packet.ReadSingle("Unknown Float", i, j);
+                            packet.ReadPackedGuid("Target GUID", index, i, j);
+                            packet.ReadInt32("Unknown Int32", index, i, j);
+                            packet.ReadInt32("Unknown Int32", index, i, j);
+                            packet.ReadSingle("Unknown Float", index, i, j);
                             break;
                         }
                         case SpellEffect.AddExtraAttacks:
                         {
-                            packet.ReadPackedGuid("Target GUID", i, j);
-                            packet.ReadInt32("Unknown Int32", i, j);
+                            packet.ReadPackedGuid("Target GUID", index, i, j);
+                            packet.ReadInt32("Unknown Int32", index, i, j);
                             break;
                         }
                         case SpellEffect.InterruptCast:
                         {
-                            packet.ReadPackedGuid("Target GUID", i, j);
-                            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Interrupted Spell ID", i, j);
+                            packet.ReadPackedGuid("Target GUID", index, i, j);
+                            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Interrupted Spell ID", index, i, j);
                             break;
                         }
                         case SpellEffect.DurabilityDamage:
                         {
-                            packet.ReadPackedGuid("Target GUID", i, j);
-                            packet.ReadInt32("Unknown Int32 1", i, j);
-                            packet.ReadInt32("Unknown Int32 2", i, j);
+                            packet.ReadPackedGuid("Target GUID", index, i, j);
+                            packet.ReadInt32("Unknown Int32", index, i, j);
+                            packet.ReadInt32("Unknown Int32", index, i, j);
                             break;
                         }
                         case SpellEffect.OpenLock:
@@ -147,7 +183,7 @@ namespace PacketParser.Parsing.Parsers
                         case SpellEffect.CreateRandomItem:
                         case SpellEffect.CreateItem2:
                         {
-                            packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Created Item", i, j);
+                            packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Created Item", index, i, j);
                             break;
                         }
                         case SpellEffect.Summon:
@@ -162,120 +198,116 @@ namespace PacketParser.Parsing.Parsers
                         case SpellEffect.SummonObjectSlot4:
                         case SpellEffect.Unk171:
                         {
-                            packet.ReadPackedGuid("Summoned GUID", i, j);
+                            packet.ReadPackedGuid("Summoned GUID", index, i, j);
                             break;
                         }
                         case SpellEffect.FeedPet:
                         {
-                            packet.ReadInt32("Unknown Int32", i, j);
+                            packet.ReadInt32("Unknown Int32", index, i, j);
                             break;
                         }
                         case SpellEffect.DismissPet:
                         {
-                            packet.ReadPackedGuid("GUID", i, j);
+                            packet.ReadPackedGuid("GUID", index, i, j);
                             break;
                         }
                         case SpellEffect.Resurrect:
                         case SpellEffect.ResurrectNew:
                         case SpellEffect.RessurectAOE:
                         {
-                            packet.ReadPackedGuid("GUID", i, j);
+                            packet.ReadPackedGuid("GUID", index, i, j);
                             break;
                         }
                         default:
                             throw new InvalidDataException("Unknown Spell Effect: " + type);
                     }
                 }
-                packet.StoreEndList();
             }
-            packet.StoreEndList();
         }
 
-        private static void ReadPeriodicAuraLog(ref Packet packet)
+        private static void ReadPeriodicAuraLog(ref Packet packet, int index = -1)
         {
-            packet.ReadPackedGuid("Target GUID");
-            packet.ReadPackedGuid("Caster GUID");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
-            var count = packet.ReadInt32("Count");
+            packet.ReadPackedGuid("Target GUID", index);
+            packet.ReadPackedGuid("Caster GUID", index);
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", index);
+            var count = packet.ReadInt32("Count", index);
 
-            packet.StoreBeginList("PeriodicAuras");
             for (var i = 0; i < count; i++)
             {
-                var aura = packet.ReadEnum<AuraType>("Aura Type", TypeCode.UInt32, i);
+                var aura = packet.ReadEnum<AuraType>("Aura Type", TypeCode.UInt32, index);
                 switch (aura)
                 {
                     case AuraType.PeriodicDamage:
                     case AuraType.PeriodicDamagePercent:
                     {
-                        packet.ReadUInt32("Damage", i);
+                        packet.ReadUInt32("Damage", index);
 
                         if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
-                            packet.ReadUInt32("Over damage", i);
+                            packet.ReadUInt32("Over damage", index);
 
-                        packet.ReadUInt32("Spell Proto", i);
-                        packet.ReadUInt32("Absorb", i);
-                        packet.ReadUInt32("Resist", i);
+                        packet.ReadUInt32("Spell Proto", index);
+                        packet.ReadUInt32("Absorb", index);
+                        packet.ReadUInt32("Resist", index);
 
                         if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
-                            packet.ReadByte("Critical", i);
+                            packet.ReadByte("Critical", index);
 
                         break;
                     }
                     case AuraType.PeriodicHeal:
                     case AuraType.ObsModHealth:
                     {
-                        packet.ReadUInt32("Damage", i);
+                        packet.ReadUInt32("Damage", index);
 
                         if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
-                            packet.ReadUInt32("Over damage", i);
+                            packet.ReadUInt32("Over damage", index);
 
                         if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                             // no idea when this was added exactly
-                            packet.ReadUInt32("Absorb", i);
+                            packet.ReadUInt32("Absorb", index);
 
                         if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
-                            packet.ReadByte("Critical", i);
+                            packet.ReadByte("Critical", index);
 
                         break;
                     }
                     case AuraType.ObsModPower:
                     case AuraType.PeriodicEnergize:
                     {
-                        packet.ReadEnum<PowerType>("Power type", TypeCode.Int32, i);
-                        packet.ReadUInt32("Amount", i);
+                        packet.ReadEnum<PowerType>("Power type", TypeCode.Int32, index);
+                        packet.ReadUInt32("Amount", index);
                         break;
                     }
                     case AuraType.PeriodicManaLeech:
                     {
-                        packet.ReadEnum<PowerType>("Power type", TypeCode.Int32, i);
-                        packet.ReadUInt32("Amount", i);
-                        packet.ReadSingle("Gain multiplier", i);
+                        packet.ReadEnum<PowerType>("Power type", TypeCode.Int32, index);
+                        packet.ReadUInt32("Amount", index);
+                        packet.ReadSingle("Gain multiplier", index);
                         break;
                     }
                 }
             }
-            packet.StoreEndList();
         }
 
-        private static void ReadSpellNonMeleeDamageLog(ref Packet packet)
+        private static void ReadSpellNonMeleeDamageLog(ref Packet packet, int index = -1)
         {
-            packet.ReadPackedGuid("Target GUID");
-            packet.ReadPackedGuid("Caster GUID");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadUInt32("Damage");
+            packet.ReadPackedGuid("Target GUID", index);
+            packet.ReadPackedGuid("Caster GUID", index);
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", index);
+            packet.ReadUInt32("Damage", index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183))
-                packet.ReadInt32("Overkill");
+                packet.ReadInt32("Overkill", index);
 
-            packet.ReadByte("SchoolMask");
-            packet.ReadUInt32("Absorb");
-            packet.ReadUInt32("Resist");
-            packet.ReadBoolean("Show spellname in log");
-            packet.ReadByte("Unk byte");
-            packet.ReadUInt32("Blocked");
-            var type = packet.ReadEnum<SpellHitType>("HitType", TypeCode.Int32);
+            packet.ReadByte("SchoolMask", index);
+            packet.ReadUInt32("Absorb", index);
+            packet.ReadUInt32("Resist", index);
+            packet.ReadBoolean("Show spellname in log", index);
+            packet.ReadByte("Unk byte", index);
+            packet.ReadUInt32("Blocked", index);
+            var type = packet.ReadEnum<SpellHitType>("HitType", TypeCode.Int32, index);
 
-            if (packet.ReadBoolean("Debug output"))
+            if (packet.ReadBoolean("Debug output", index))
             {
                 if (!type.HasAnyFlag(SpellHitType.SPELL_HIT_TYPE_UNK4))
                 {
@@ -304,56 +336,54 @@ namespace PacketParser.Parsing.Parsers
             }
         }
 
-        private static void ReadSpellHealLog(ref Packet packet)
+        private static void ReadSpellHealLog(ref Packet packet, int index = -1)
         {
-            packet.ReadPackedGuid("Target GUID");
-            packet.ReadPackedGuid("Caster GUID");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadUInt32("Damage");
+            packet.ReadPackedGuid("Target GUID", index);
+            packet.ReadPackedGuid("Caster GUID", index);
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", index);
+            packet.ReadUInt32("Damage", index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183))
-                packet.ReadUInt32("Overheal");
+                packet.ReadUInt32("Overheal", index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183)) // no idea when this was added exactly
-                packet.ReadUInt32("Absorb");
+                packet.ReadUInt32("Absorb", index);
 
-            packet.ReadBoolean("Critical");
-            if (packet.ReadBoolean("Debug output"))
+            packet.ReadBoolean("Critical", index);
+
+            if (packet.ReadBoolean("Debug output", index))
             {
-                packet.ReadSingle("Unk float");
-                packet.ReadSingle("Unk float 2");
+                packet.ReadSingle("Unk float", index);
+                packet.ReadSingle("Unk float 2", index);
             }
         }
 
-        private static void ReadSpellEnergizeLog(ref Packet packet)
+        private static void ReadSpellEnergizeLog(ref Packet packet, int index = -1)
         {
-            packet.ReadPackedGuid("Target GUID");
-            packet.ReadPackedGuid("Caster GUID");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadEnum<PowerType>("Power type", TypeCode.UInt32);
-            packet.ReadUInt32("Amount");
+            packet.ReadPackedGuid("Target GUID", index);
+            packet.ReadPackedGuid("Caster GUID", index);
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", index);
+            packet.ReadEnum<PowerType>("Power type", TypeCode.UInt32, index);
+            packet.ReadUInt32("Amount", index);
         }
 
-        private static void ReadSpellMissLog(ref Packet packet)
+        private static void ReadSpellMissLog(ref Packet packet, int index = -1)
         {
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadGuid("Caster GUID");
-            var debug = packet.ReadBoolean("Debug output");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", index);
+            packet.ReadGuid("Caster GUID", index);
+            var debug = packet.ReadBoolean("Debug output", index);
 
-            var count = packet.ReadUInt32("Target Count");
-
-            packet.StoreBeginList("Targets");
+            var count = packet.ReadUInt32("Target Count", index);
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadGuid("Target GUID", i);
-                packet.ReadEnum<SpellMissType>("Miss Info", TypeCode.Byte, i);
+                packet.ReadGuid("Target GUID", index);
+                packet.ReadEnum<SpellMissType>("Miss Info", TypeCode.Byte, index);
                 if (debug)
                 {
-                    packet.ReadSingle("Unk float 1", i);
-                    packet.ReadSingle("Unk float 2", i);
+                    packet.ReadSingle("Unk float");
+                    packet.ReadSingle("Unk float");
                 }
             }
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_SPELLDAMAGESHIELD)]

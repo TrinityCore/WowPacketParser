@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using PacketParser.Enums;
-using PacketParser.Misc;
-using PacketParser.DataStructures;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
-namespace PacketParser.Loading
+namespace WowPacketParser.Loading
 {
     public sealed class BinaryPacketReader : IPacketReader
     {
@@ -22,16 +21,16 @@ namespace PacketParser.Loading
 
         private readonly BinaryReader _reader;
 
+        private readonly SniffType _sniffType;
         private PktVersion _pktVersion;
 
         private DateTime _startTime;
         private uint _startTickCount;
 
-        private ClientVersionBuild _build = ClientVersionBuild.Zero;
-
-        public BinaryPacketReader(string fileName)
+        public BinaryPacketReader(SniffType type, string fileName, Encoding encoding)
         {
-            _reader = new BinaryReader(new FileStream(@fileName, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.ASCII);
+            _sniffType = type;
+            _reader = new BinaryReader(new FileStream(@fileName, FileMode.Open, FileAccess.Read, FileShare.Read), encoding);
             ReadHeader();
         }
 
@@ -106,31 +105,10 @@ namespace PacketParser.Loading
             }
         }
 
-        public void SetBuild(uint build)
+        static void SetBuild(uint build)
         {
-            _build = (ClientVersionBuild)build;
-        }
-
-        public ClientVersionBuild GetBuild()
-        {
-            if (_pktVersion == PktVersion.NoHeader)
-                return ClientVersion.GetVersion(PeekDateTime());
-            return _build;
-        }
-
-        public DateTime PeekDateTime()
-        {
-            var oldPos = _reader.BaseStream.Position;
-            var p = Read(0, "");
-            _reader.BaseStream.Position = oldPos;
-            return p.Time;
-        }
-
-        public uint GetProgress()
-        {
-            if (_reader.BaseStream.Length != 0)
-                return (uint)(_reader.BaseStream.Position*100 / _reader.BaseStream.Length);
-            return 100;
+            if (ClientVersion.IsUndefined())
+                ClientVersion.SetVersion((ClientVersionBuild)build);
         }
 
         public bool CanRead()
@@ -146,6 +124,7 @@ namespace PacketParser.Loading
             Direction direction;
             byte[] data;
 
+            if (_sniffType == SniffType.Pkt)
             {
                 switch (_pktVersion)
                 {
@@ -207,13 +186,21 @@ namespace PacketParser.Loading
                     }
                 }
             }
+            else // bin
+            {
+                opcode = _reader.ReadInt32();
+                length = _reader.ReadInt32();
+                time = Utilities.GetDateTimeFromUnixTime(_reader.ReadInt32());
+                direction = (Direction)_reader.ReadByte();
+                data = _reader.ReadBytes(length);
+            }
 
             // ignore opcodes that were not "decrypted" (usually because of
             // a missing session key) (only applicable to 335 or earlier)
-            if (opcode >= 1312 && ClientVersion.Build <= ClientVersionBuild.V3_3_5a_12340 && ClientVersion.Build > ClientVersionBuild.Zero)
+            if (opcode >= 1312 && ClientVersion.Build <= ClientVersionBuild.V3_3_5a_12340)
                 return null;
 
-            var packet = new Packet(data, opcode, time, direction, number, fileName);
+            var packet = new Packet(data, opcode, time, direction, number, Path.GetFileName(fileName));
             return packet;
         }
 

@@ -1,8 +1,7 @@
-﻿using PacketParser.Enums;
-using PacketParser.Misc;
-using PacketParser.DataStructures;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
-namespace PacketParser.Parsing.Parsers
+namespace WowPacketParser.Parsing.Parsers
 {
     public static class ArchaelogyHandler
     {
@@ -11,14 +10,12 @@ namespace PacketParser.Parsing.Parsers
         {
             var count = packet.ReadBits("Count", 22);
 
-            packet.StoreBeginList("Researches");
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadInt32("ResearchProject.Id", i);
                 packet.ReadInt32("Count", i);
                 packet.ReadTime("Time", i);
             }
-            packet.StoreEndList();
         }
     }
 }

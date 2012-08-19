@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PacketParser.Enums
+namespace WowPacketParser.Enums
 {
     [Flags]
     public enum GuildBankRightsFlag
@@ -9,6 +9,6 @@ namespace PacketParser.Enums
         ViewTab      = 0x01,
         WithdrawItem = 0x02,
         UpdateText   = 0x04,
-        //All          = -1
+        All          = -1
     }
 }

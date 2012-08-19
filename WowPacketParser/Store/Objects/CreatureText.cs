@@ -1,11 +1,10 @@
-﻿using PacketParser.Enums;
-using PacketParser.SQL;
-using PacketParser.Misc;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.SQL;
 
-namespace PacketParser.DataStructures
+namespace WowPacketParser.Store.Objects
 {
     [DBTableName("creature_text")]
-    public sealed class CreatureText : ITextOutputDisabled
+    public sealed class CreatureText
     {
         [DBFieldName("groupid")]
         public uint GroupId;

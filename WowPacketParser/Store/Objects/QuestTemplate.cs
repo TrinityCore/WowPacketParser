@@ -1,11 +1,10 @@
-﻿using PacketParser.Enums;
-using PacketParser.SQL;
-using PacketParser.Misc;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.SQL;
 
-namespace PacketParser.DataStructures
+namespace WowPacketParser.Store.Objects
 {
     [DBTableName("quest_template")]
-    public sealed class QuestTemplate : ITextOutputDisabled
+    public sealed class QuestTemplate
     {
         [DBFieldName("Method")]
         public QuestMethod Method;

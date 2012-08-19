@@ -1,9 +1,11 @@
-﻿using PacketParser.Enums;
+﻿using WowPacketParser.Enums;
 
-namespace PacketParser.Store.Objects
+namespace WowPacketParser.Store.Objects
 {
     public class ObjectName
-    
+    {
+        public ObjectType ObjectType;
+
         public string Name;
     }
 }

@@ -1,9 +1,8 @@
 using System;
-using PacketParser.Enums;
-using PacketParser.Misc;
-using PacketParser.DataStructures;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
-namespace PacketParser.Parsing.Parsers
+namespace WowPacketParser.Parsing.Parsers
 {
     public static class ReputationHandler
     {
@@ -17,13 +16,11 @@ namespace PacketParser.Parsing.Parsers
         public static void HandleInitializeFactions(Packet packet)
         {
             var count = packet.ReadInt32("Count");
-            packet.StoreBeginList("Factions");
             for (var i = 0; i < count; i++)
             {
                 packet.ReadEnum<FactionFlag>("Faction Flags", TypeCode.Byte, i);
                 packet.ReadEnum<ReputationRank>("Faction Standing", TypeCode.UInt32, i);
             }
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_SET_FACTION_VISIBLE)]
@@ -37,14 +34,12 @@ namespace PacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SET_FORCED_REACTIONS)]
         public static void HandleForcedReactions(Packet packet)
         {
-            var counter = packet.ReadInt32("Faction Count");
-            packet.StoreBeginList("Factions");
+            var counter = packet.ReadInt32("Factions");
             for (var i = 0; i < counter; i++)
             {
-                packet.ReadUInt32("Faction Id", i);
-                packet.ReadUInt32("Reputation Rank", i);
+                packet.ReadUInt32("Faction Id");
+                packet.ReadUInt32("Reputation Rank");
             }
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_SET_FACTION_STANDING)]
@@ -57,13 +52,11 @@ namespace PacketParser.Parsing.Parsers
                 packet.ReadBoolean("Play Visual");
 
             var count = packet.ReadInt32("Count");
-            packet.StoreBeginList("Factions");
             for (var i = 0; i < count; i++)
             {
-                packet.ReadInt32("Faction List Id", i);
-                packet.ReadInt32("Standing", i);
+                packet.ReadInt32("Faction List Id");
+                packet.ReadInt32("Standing");
             }
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_SET_FACTION_INACTIVE)]

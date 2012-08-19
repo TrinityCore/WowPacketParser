@@ -1,23 +1,21 @@
 ﻿using System.Globalization;
-using PacketParser.Enums.Version.V3_3_5a_12340;
-using PacketParser.Enums.Version.V4_0_3_13329;
-using PacketParser.Enums.Version.V4_0_6_13596;
-using PacketParser.Enums.Version.V4_1_0_13914;
-using PacketParser.Enums.Version.V4_2_0_14480;
-using PacketParser.Enums.Version.V4_2_2_14545;
-using PacketParser.Enums.Version.V4_3_0_15005;
-using PacketParser.Enums.Version.V4_3_2_15211;
-using PacketParser.Enums.Version.V4_3_3_15354;
-using PacketParser.Enums.Version.V4_3_4_15595;
-using PacketParser.Misc;
-using System;
+using WowPacketParser.Enums.Version.V3_3_5a_12340;
+using WowPacketParser.Enums.Version.V4_0_3_13329;
+using WowPacketParser.Enums.Version.V4_0_6_13596;
+using WowPacketParser.Enums.Version.V4_1_0_13914;
+using WowPacketParser.Enums.Version.V4_2_0_14480;
+using WowPacketParser.Enums.Version.V4_2_2_14545;
+using WowPacketParser.Enums.Version.V4_3_0_15005;
+using WowPacketParser.Enums.Version.V4_3_2_15211;
+using WowPacketParser.Enums.Version.V4_3_3_15354;
+using WowPacketParser.Enums.Version.V4_3_4_15595;
+using WowPacketParser.Misc;
 
-namespace PacketParser.Enums.Version
+namespace WowPacketParser.Enums.Version
 {
     public static class Opcodes
     {
-        [ThreadStatic]
-        private static BiDictionary<Opcode, int> Dict;
+        private static readonly BiDictionary<Opcode, int> Dict = GetOpcodeDictionary(ClientVersion.Build);
 
         private static BiDictionary<Opcode, int> GetOpcodeDictionary(ClientVersionBuild build)
         {
@@ -93,11 +91,6 @@ namespace PacketParser.Enums.Version
             }
         }
 
-        public static void InitForClientVersion()
-        {
-            Dict = GetOpcodeDictionary(ClientVersion.Build);
-        }
-
         public static Opcode GetOpcode(int opcodeId)
         {
             return Dict.GetBySecond(opcodeId);
@@ -111,7 +104,7 @@ namespace PacketParser.Enums.Version
         public static string GetOpcodeName(int opcodeId)
         {
             var opc = GetOpcode(opcodeId);
-            return opc == 0 ? opcodeId.ToString() : Enum<Opcode>.ToString(opc);
+            return opc == 0 ? opcodeId.ToString(CultureInfo.InvariantCulture) : opc.ToString();
         }
     }
 }

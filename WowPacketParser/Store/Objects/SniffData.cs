@@ -1,7 +1,7 @@
 ﻿using System;
-using PacketParser.Enums;
+using WowPacketParser.Enums;
 
-namespace PacketDumper.DataStructures
+namespace WowPacketParser.Store.Objects
 {
     public sealed class SniffData
     {

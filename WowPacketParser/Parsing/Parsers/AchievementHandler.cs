@@ -1,11 +1,8 @@
 using System;
-using PacketParser.Enums;
-using PacketParser.Misc;
-using Guid = PacketParser.DataStructures.Guid;
-using PacketParser.Processing;
-using PacketParser.DataStructures;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
-namespace PacketParser.Parsing.Parsers
+namespace WowPacketParser.Parsing.Parsers
 {
     public static class AchievementHandler
     {
@@ -21,7 +18,7 @@ namespace PacketParser.Parsing.Parsers
         {
             var name = packet.ReadCString("Player Name");
             var guid = packet.ReadGuid("Player GUID");
-            PacketFileProcessor.Current.GetProcessor<NameStore>().AddPlayerName(guid, name);
+            StoreGetters.AddName(guid, name);
             packet.ReadInt32("Achievement");
             packet.ReadInt32("Linked Name");
         }
@@ -44,16 +41,12 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32"); // some flag... & 1 -> delete
             packet.ReadPackedTime("Time");
 
-            packet.StoreBeginList("Timers");
             for (var i = 0; i < 2; i++)
-                packet.ReadInt32("Timer", i);
-            packet.StoreEndList();
+                packet.ReadInt32("Timer " + i);
         }
 
         public static void ReadAllAchievementData(ref Packet packet)
         {
-            var i = 0;
-            packet.StoreBeginList("Achievements");
             while (true)
             {
                 var id = packet.ReadInt32();
@@ -61,15 +54,11 @@ namespace PacketParser.Parsing.Parsers
                 if (id == -1)
                     break;
 
-                packet.Store("Achievement ID", id, i);
+                packet.WriteLine("Achievement ID: " + id);
 
-                packet.ReadPackedTime("Achievement Time", i);
-                ++i;
+                packet.ReadPackedTime("Achievement Time");
             }
-            packet.StoreEndList();
 
-            i = 0;
-            packet.StoreBeginList("Criterias");
             while (true)
             {
                 var id = packet.ReadInt32();
@@ -77,24 +66,20 @@ namespace PacketParser.Parsing.Parsers
                 if (id == -1)
                     break;
 
-                packet.Store("Criteria ID", id, i);
+                packet.WriteLine("Criteria ID: " + id);
 
                 var counter = packet.ReadPackedGuid();
-                packet.Store("Criteria Counter", counter.Full, i);
+                packet.WriteLine("Criteria Counter: " + counter.Full);
 
-                packet.ReadPackedGuid("Player GUID", i);
+                packet.ReadPackedGuid("Player GUID");
 
-                packet.ReadInt32("Unk Int32", i); // Unk flag, same as in SMSG_CRITERIA_UPDATE
+                packet.ReadInt32("Unk Int32"); // Unk flag, same as in SMSG_CRITERIA_UPDATE
 
-                packet.ReadPackedTime("Criteria Time", i);
+                packet.ReadPackedTime("Criteria Time");
 
-                packet.StoreBeginList("Timers", i);
-                for (var j = 0; j < 2; j++)
-                    packet.ReadInt32("Timer", i, j);
-                packet.StoreEndList();
-                ++i;
+                for (var i = 0; i < 2; i++)
+                    packet.ReadInt32("Timer " + i);
             }
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
@@ -109,15 +94,12 @@ namespace PacketParser.Parsing.Parsers
             var achievements = packet.ReadUInt32("Achievement count");
             var criterias = packet.ReadUInt32("Criterias count");
 
-            var achievementsList = packet.StoreBeginList("Achievements");
             for (var i = 0; i < achievements; ++i)
                 packet.ReadUInt32("Achievement Id", i);
 
             for (var i = 0; i < achievements; ++i)
                 packet.ReadPackedTime("Achievement Time", i);
-            packet.StoreEndList();
 
-            var criteriasList = packet.StoreBeginList("Criterias");
             for (var i = 0; i < criterias; ++i)
                 packet.ReadUInt64("Counter", i);
 
@@ -138,7 +120,6 @@ namespace PacketParser.Parsing.Parsers
 
             for (var i = 0; i < criterias; ++i)
                 packet.ReadUInt32("Criteria Id", i);
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_QUERY_INSPECT_ACHIEVEMENTS)]
@@ -170,7 +151,6 @@ namespace PacketParser.Parsing.Parsers
             var counter = new byte[criterias][];
             var guid2 = new byte[criterias][];
 
-            var criteriasList = packet.StoreBeginList("Criterias");
             for (var i = 0; i < criterias; ++i)
             {
                 counter[i] = new byte[8];
@@ -225,10 +205,9 @@ namespace PacketParser.Parsing.Parsers
                 packet.ReadXORByte(counter[i], 0);
                 packet.ReadXORByte(guid2[i], 2);
 
-                packet.Store("Criteria counter", BitConverter.ToUInt64(counter[i], 0));
-                packet.StoreBitstreamGuid("GUID2", guid2[i], i);
+                packet.WriteLine("[{0}] Criteria Counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
+                packet.WriteGuid("GUID2", guid2[i], i);
             }
-            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 6);
@@ -236,75 +215,63 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 2);
 
-            var achievementsList = packet.StoreBeginList("Achievements");
             for (var i = 0; i < achievements; ++i)
             {
                 packet.ReadUInt32("Achievement Id", i);
                 packet.ReadPackedTime("Achievement Time", i);
             }
-            packet.StoreEndList();
 
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 5);
-            packet.StoreBitstreamGuid("GUID", guid);
+            packet.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.SMSG_COMPRESSED_ACHIEVEMENT_DATA)]
         public static void HandleCompressedAllAchievementData(Packet packet)
         {
-            packet.Inflate(packet.ReadInt32());
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
-                HandleAllAchievementData434(packet);
-            else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                HandleAllAchievementData422(packet);
-            else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
-                HandleAllAchievementData406(packet);
-            else
-                HandleAllAchievementData(packet);
+            using (var packet2 = packet.Inflate(packet.ReadInt32()))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
+                    HandleAllAchievementData434(packet2);
+                else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+                    HandleAllAchievementData422(packet2);
+                else if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
+                    HandleAllAchievementData406(packet2);
+                else
+                    HandleAllAchievementData(packet2);
         }
 
         [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleAllAchievementData422(Packet packet)
         {
             var criterias = packet.ReadUInt32("Criterias Count");
-            var criteriasList = packet.StoreBeginList("Criterias");
             for (var i = 0; i < criterias; ++i)
-                packet.ReadBits("Flag", 2, i);
+                packet.ReadBits("Flag", 2, 0, i);
 
             for (var i = 0; i < criterias; ++i)
-                packet.ReadUInt64("Counter", i);
-            packet.StoreEndList();
+                packet.ReadUInt64("Counter", 0, i);
 
             var achievements = packet.ReadUInt32("Achievement Count");
-            var achievementsList = packet.StoreBeginList("Achievements");
             for (var i = 0; i < achievements; ++i)
-                packet.ReadPackedTime("Achievement Time", i);
-            packet.StoreEndList();
-
-            packet.StoreContinueList(criteriasList);
-            for (var i = 0; i < criterias; ++i)
-                packet.ReadGuid("Player GUID", i);
+                packet.ReadPackedTime("Achievement Time", 1, i);
 
             for (var i = 0; i < criterias; ++i)
-                packet.ReadPackedTime("Criteria Time",i);
+                packet.ReadGuid("Player GUID", 0, i);
 
             for (var i = 0; i < criterias; ++i)
-                packet.ReadUInt32("Timer 1", i);
-            packet.StoreEndList();
+                packet.ReadPackedTime("Criteria Time", 0, i);
 
-            packet.StoreContinueList(achievementsList);
+            for (var i = 0; i < criterias; ++i)
+                packet.ReadUInt32("Timer 1", 0, i);
+
             for (var i = 0; i < achievements; ++i)
-                packet.ReadUInt32("Achievement Id", i);
-            packet.StoreEndList();
-
-            packet.StoreContinueList(criteriasList);
-            for (var i = 0; i < criterias; ++i)
-                packet.ReadUInt32("Criteria Id", i);
+                packet.ReadUInt32("Achievement Id", 1, i);
 
             for (var i = 0; i < criterias; ++i)
-                packet.ReadUInt32("Timer 2", i);
-            packet.StoreEndList();
+                packet.ReadUInt32("Criteria Id", 0, i);
+
+            for (var i = 0; i < criterias; ++i)
+                packet.ReadUInt32("Timer 2", 0, i);
         }
 
         [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA, ClientVersionBuild.V4_3_4_15595)]
@@ -314,7 +281,6 @@ namespace PacketParser.Parsing.Parsers
             var counter = new byte[criterias][];
             var guid = new byte[criterias][];
             var flags = new byte[criterias];
-            var criteriasList = packet.StoreBeginList("Criterias");
             for (var i = 0; i < criterias; ++i)
             {
                 counter[i] = new byte[8];
@@ -338,11 +304,8 @@ namespace PacketParser.Parsing.Parsers
                 counter[i][5] = packet.ReadBit();
                 guid[i][1] = packet.ReadBit();
             }
-            packet.StoreEndList();
 
             var achievements = packet.ReadBits("Achievement count", 23);
-
-            packet.StoreContinueList(criteriasList);
             for (var i = 0; i < criterias; ++i)
             {
                 packet.ReadXORByte(guid[i], 3);
@@ -372,19 +335,16 @@ namespace PacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(guid[i], 1);
 
-                packet.Store("Criteria Flags", flags[i], i);
-                packet.Store("Criteria counter", BitConverter.ToUInt64(counter[i], 0));
-                packet.StoreBitstreamGuid("Criteria GUID", guid[i], i);
+                packet.WriteLine("[{0}] Criteria Flags: {1}", i, flags[i]);
+                packet.WriteLine("[{0}] Criteria Counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
+                packet.WriteGuid("Criteria GUID", guid[i], i);
             }
-            packet.StoreEndList();
 
-            var achievementsList = packet.StoreBeginList("Achievements");
             for (var i = 0; i < achievements; ++i)
             {
                 packet.ReadUInt32("Achievement Id", i);
                 packet.ReadPackedTime("Achievement Date", i);
             }
-            packet.StoreEndList();
         }
     }
 }

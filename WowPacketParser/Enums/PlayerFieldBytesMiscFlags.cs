@@ -1,6 +1,6 @@
 using System;
 
-namespace PacketParser.Enums
+namespace WowPacketParser.Enums
 {
     [Flags]
     public enum PlayerFieldBytesMiscFlags // 4.x - first byte of PLAYER_FIELD_BYTES

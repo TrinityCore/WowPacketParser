@@ -1,6 +1,6 @@
 using System;
 
-namespace PacketParser.Enums
+namespace WowPacketParser.Enums
 {
     public enum QuestGiverStatus
     {

@@ -1,7 +1,7 @@
-﻿using PacketParser.Enums;
-using PacketParser.Misc;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
-namespace PacketParser.DataStructures
+namespace WowPacketParser.Store.Objects
 {
     public class Aura
     {

@@ -4,9 +4,8 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using PacketParser.DataStructures;
 
-namespace PacketParser.Misc
+namespace WowPacketParser.Misc
 {
     public static class Extensions
     {
@@ -26,9 +25,12 @@ namespace PacketParser.Misc
         /// <param name="value">An enum, int, ...</param>
         /// <param name="flag">An enum, int, ...</param>
         /// <returns>A boolean</returns>
-        public static bool HasAnyFlag<T>(this T value, T flag)where T: struct, IConvertible
+        public static bool HasAnyFlag(this IConvertible value, IConvertible flag)
         {
-            return Enum<T>.HasFlag(value, flag);
+            var uFlag = flag.ToUInt64(null);
+            var uThis = value.ToUInt64(null);
+
+            return (uThis & uFlag) != 0;
         }
 
         /// <summary>
@@ -47,7 +49,7 @@ namespace PacketParser.Misc
         /// Shows our hex representation of a packet
         /// </summary>
         /// <param name="packet">A packet</param>
-        public static string ToHex(this Packet packet)
+        public static void AsHex(this Packet packet)
         {
             var n = Environment.NewLine;
             var hexDump = new StringBuilder();
@@ -97,7 +99,7 @@ namespace PacketParser.Misc
 
             hexDump.Append("|-------------------------------------------------|---------------------------------|");
 
-            return hexDump.ToString();
+            packet.WriteLine(hexDump.ToString());
         }
 
         /// <summary>

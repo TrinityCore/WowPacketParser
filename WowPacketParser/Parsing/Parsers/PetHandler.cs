@@ -1,20 +1,23 @@
 using System;
-using PacketParser.Enums;
-using PacketParser.Misc;
-using PacketParser.Processing;
-using Guid = PacketParser.DataStructures.Guid;
-using PacketParser.DataStructures;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
-namespace PacketParser.Parsing.Parsers
+namespace WowPacketParser.Parsing.Parsers
 {
     public static class PetHandler
     {
         public static void ReadPetFlags(ref Packet packet)
         {
             var petModeFlag = packet.ReadUInt32();
-            packet.Store("React state", (ReactState)((petModeFlag >> 8) & 0xFF));
-            packet.Store("Command state", (CommandState)((petModeFlag >> 16) & 0xFF));
-            packet.Store("Flag", (PetModeFlags)(petModeFlag & 0xFFFF0000));
+            packet.WriteLine("React state: " + (ReactState)((petModeFlag >> 8) & 0xFF));
+            packet.WriteLine("Command state: " + (CommandState)((petModeFlag >> 16) & 0xFF));
+            packet.WriteLine("Flag: " + (PetModeFlags)(petModeFlag & 0xFFFF0000));
         }
 
         [Parser(Opcode.SMSG_PET_SPELLS)]
@@ -32,32 +35,48 @@ namespace PacketParser.Parsing.Parsers
 
             ReadPetFlags(ref packet);
 
-            packet.StoreBeginList("Spells/Actions");
-            for (var i = 0; i < 10; i++) // Read pet/vehicle spell ids
+            var isPet = guid.GetHighType() == HighGuidType.Pet;
+            var isVehicle = guid.GetHighType() == HighGuidType.Vehicle;
+            var isMinion = guid.GetHighType() == HighGuidType.Unit;
+            const int maxCreatureSpells = 10;
+            var spells = new List<uint>(maxCreatureSpells);
+            for (var i = 0; i < maxCreatureSpells; i++) // Read pet/vehicle spell ids
             {
                 var spell16 = packet.ReadUInt16();
                 var spell8 = packet.ReadByte();
                 var spellId = spell16 + (spell8 << 16);
-                var slot = packet.ReadByte("Slot", i);
+                var slot = packet.ReadByte();
 
+                var s = new StringBuilder("[");
+                s.Append(i).Append("] ").Append("Spell/Action: ");
                 if (spellId <= 4)
-                    packet.Store("Action", spellId, i);
+                    s.Append(spellId);
                 else
-                    packet.Store("Spell", new StoreEntry(StoreNameType.Spell, spellId), i);
+                    s.Append(StoreGetters.GetName(StoreNameType.Spell, spellId));
+                s.Append(" slot: ").Append(slot);
+                packet.WriteLine(s.ToString());
+
+                // Spells for pets are on DBCs; also no entry in guid
+                // We don't need the actions sent for minions (slots lower than 8)
+                if (!isPet && (isVehicle || (isMinion && slot >= 8)))
+                    spells.Add((uint)spellId);
             }
-            packet.StoreEndList();
+
+            if (spells.Count != 0)
+            {
+                SpellsX spellsCr;
+                spellsCr.Spells = spells.ToArray();
+                Storage.SpellsX.Add(guid.GetEntry(), spellsCr, packet.TimeSpan);
+            }
 
             var spellCount = packet.ReadByte("Spell Count"); // vehicles -> 0, pets -> != 0. Could this be auras?
-            packet.StoreBeginList("Spells/auras?");
             for (var i = 0; i < spellCount; i++)
             {
                 packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Spell", i);
                 packet.ReadInt16("Active", i);
             }
-            packet.StoreEndList();
 
             var cdCount = packet.ReadByte("Cooldown count");
-            packet.StoreBeginList("Cooldowns");
             for (var i = 0; i < cdCount; i++)
             {
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
@@ -69,7 +88,6 @@ namespace PacketParser.Parsing.Parsers
                 packet.ReadUInt32("Cooldown", i);
                 packet.ReadUInt32("Category Cooldown", i);
             }
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_PET_TAME_FAILURE)]
@@ -81,17 +99,17 @@ namespace PacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_PET_NAME_QUERY)]
         public static void HandlePetNameQuery(Packet packet)
         {
-            var number = packet.ReadUInt32("Pet number");
+            var number = packet.ReadInt32("Pet number").ToString(CultureInfo.InvariantCulture);
             var guid = packet.ReadGuid("Guid");
 
-            // TimeSpanContainer temporary name (will be replaced in SMSG_PET_NAME_QUERY_RESPONSE)
-            PacketFileProcessor.Current.GetProcessor<SessionStore>().PetGuids[number] = guid;
+            // Store temporary name (will be replaced in SMSG_PET_NAME_QUERY_RESPONSE)
+            StoreGetters.AddName(guid, number);
         }
 
         [Parser(Opcode.SMSG_PET_NAME_QUERY_RESPONSE)]
         public static void HandlePetNameQueryResponse(Packet packet)
         {
-            var number = packet.ReadUInt32("Pet number");
+            var number = packet.ReadInt32("Pet number").ToString(CultureInfo.InvariantCulture);
 
             var petName = packet.ReadCString("Pet name");
             if (petName.Length == 0)
@@ -100,9 +118,9 @@ namespace PacketParser.Parsing.Parsers
                 return;
             }
 
-            Guid petGuid;
-            if (PacketFileProcessor.Current.GetProcessor<SessionStore>().PetGuids.TryGetValue(number, out petGuid))
-                PacketFileProcessor.Current.GetProcessor<NameStore>().AddPlayerName(petGuid, petName);
+            var guidArray = (from pair in StoreGetters.NameDict where Equals(pair.Value, number) select pair.Key).ToList();
+            foreach (var guid in guidArray)
+                StoreGetters.NameDict[guid] = petName;
 
             packet.ReadTime("Time");
             var declined = packet.ReadBoolean("Declined");
@@ -110,12 +128,8 @@ namespace PacketParser.Parsing.Parsers
             const int maxDeclinedNameCases = 5;
 
             if (declined)
-            {
-                packet.StoreBeginList("Declined names");
                 for (var i = 0; i < maxDeclinedNameCases; i++)
                     packet.ReadCString("Declined name", i);
-                packet.StoreEndList();
-            }
         }
 
         [Parser(Opcode.SMSG_PET_MODE)]
@@ -144,15 +158,13 @@ namespace PacketParser.Parsing.Parsers
         {
             var i = 0;
             packet.ReadGuid("GUID");
-            packet.StoreBeginList("Actions");
             while (packet.CanRead())
             {
                 packet.ReadUInt32("Position", i);
                 var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
-                packet.Store("Action", action, i);
+                packet.WriteLine("[{0}] Action: {1}", i, action);
                 packet.ReadEnum<ActionButtonType>("Type", TypeCode.Byte, i++);
             }
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_PET_ACTION)]
@@ -160,9 +172,9 @@ namespace PacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
-            packet.Store("Action", action);
+            packet.WriteLine("Action: {0}", action);
             packet.ReadEnum<ActionButtonType>("Type", TypeCode.Byte);
-            packet.ReadGuid("GUID2");
+            packet.ReadGuid("GUID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596))
                 packet.ReadVector3("Position");
         }
@@ -219,12 +231,8 @@ namespace PacketParser.Parsing.Parsers
         public static void HandlePetGuids(Packet packet)
         {
             var count = packet.ReadInt32("Count");
-            packet.StoreBeginList("Pet Guids");
             for (var i = 0; i < count; ++i)
-            {
                 packet.ReadGuid("Guid", i);
-            }
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.MSG_LIST_STABLED_PETS)]
@@ -237,7 +245,7 @@ namespace PacketParser.Parsing.Parsers
 
             var count = packet.ReadByte("Count");
             packet.ReadByte("Stable Slots");
-            packet.StoreBeginList("Stable pets");
+
             for (var i = 0; i < count; i++)
             {
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // not verified
@@ -249,7 +257,6 @@ namespace PacketParser.Parsing.Parsers
                 packet.ReadCString("Pet Name", i);
                 packet.ReadByte("Stable Type", i); // 1 = current, 2/3 = in stable
             }
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.CMSG_PET_CAST_SPELL)]
@@ -289,12 +296,8 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadCString("Name");
             var declined = packet.ReadBoolean("Is Declined");
             if (declined)
-            {
-                packet.StoreBeginList("Declined names");
                 for (var i = 0; i < 5; ++i)
                     packet.ReadCString("Declined Name", i);
-                packet.StoreEndList();
-            }
         }
 
         [Parser(Opcode.CMSG_PET_SPELL_AUTOCAST)]

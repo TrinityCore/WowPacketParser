@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using PacketParser.Enums;
-using PacketParser.SQL;
+using WowPacketParser.Enums;
+using WowPacketParser.SQL;
 
-namespace PacketParser.Misc
+namespace WowPacketParser.Misc
 {
     public static class StoreGetters
     {

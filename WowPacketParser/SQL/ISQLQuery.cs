@@ -1,4 +1,4 @@
-﻿namespace PacketParser.SQL
+﻿namespace WowPacketParser.SQL
 {
     interface ISQLQuery
     {

@@ -1,6 +1,6 @@
-using PacketParser.Enums;
+using WowPacketParser.Enums;
 
-namespace PacketParser.DataStructures
+namespace WowPacketParser.Store.Objects
 {
     public sealed class Player : WoWObject
     {

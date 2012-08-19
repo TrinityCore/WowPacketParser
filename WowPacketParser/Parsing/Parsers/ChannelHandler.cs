@@ -1,9 +1,8 @@
 using System;
-using PacketParser.Enums;
-using PacketParser.Misc;
-using PacketParser.DataStructures;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
-namespace PacketParser.Parsing.Parsers
+namespace WowPacketParser.Parsing.Parsers
 {
     public static class ChannelHandler
     {
@@ -37,13 +36,11 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadCString("Channel Name");
             packet.ReadEnum<ChannelFlag>("Flags", TypeCode.Byte);
             var count = packet.ReadInt32("Counter");
-            packet.StoreBeginList("ChannelMembers");
             for (var i = 0; i < count; i++)
             {
                 packet.ReadGuid("Player GUID " + i);
                 packet.ReadEnum<ChannelMemberFlag>("Player Flags " + i, TypeCode.Byte);
             }
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_CHANNEL_MEMBER_COUNT)]

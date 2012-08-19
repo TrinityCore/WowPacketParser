@@ -1,7 +1,7 @@
 using System;
-using PacketParser.Enums;
+using WowPacketParser.Enums;
 
-namespace PacketParser.DataStructures
+namespace WowPacketParser.Misc
 {
     public sealed class MovementInfo
     {

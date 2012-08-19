@@ -1,11 +1,10 @@
-﻿using PacketParser.Enums;
-using PacketParser.Misc;
-using PacketParser.SQL;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.SQL;
 
-namespace PacketParser.DataStructures
+namespace WowPacketParser.Store.Objects
 {
     [DBTableName("npc_text")]
-    public class NpcText : ITextOutputDisabled
+    public class NpcText
     {
         public float[] Probabilities;
 

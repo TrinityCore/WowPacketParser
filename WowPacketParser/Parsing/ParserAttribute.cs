@@ -1,9 +1,9 @@
 using System;
-using PacketParser.Enums;
-using PacketParser.Enums.Version;
-using PacketParser.Misc;
+using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
+using WowPacketParser.Misc;
 
-namespace PacketParser.Parsing
+namespace WowPacketParser.Parsing
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
     public sealed class ParserAttribute : Attribute

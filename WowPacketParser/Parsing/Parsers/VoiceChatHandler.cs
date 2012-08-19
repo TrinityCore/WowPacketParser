@@ -1,9 +1,7 @@
-using System;
-using PacketParser.Enums;
-using PacketParser.DataStructures;
-using PacketParser.Misc;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
-namespace PacketParser.Parsing.Parsers
+namespace WowPacketParser.Parsing.Parsers
 {
     public static class VoiceChatHandler
     {
@@ -21,27 +19,29 @@ namespace PacketParser.Parsing.Parsers
             packet.ReadInt16("Channel ID");
             packet.ReadByte("Channel Type"); // 0: channel, 2: party
             packet.ReadCString("Channel Name");
-            packet.Store("Encryption Key", Utilities.ByteArrayToHexString(packet.ReadBytes(16)));
-            packet.Store("IP", packet.ReadIPAddress());
+            packet.WriteLine("Encryption Key: " + Utilities.ByteArrayToHexString(packet.ReadBytes(16)));
+            packet.WriteLine("IP: " + packet.ReadIPAddress());
             packet.ReadInt16("Voice Server Port");
 
             var count = packet.ReadByte("Player Count");
 
             packet.ReadGuid("Leader GUID");
 
-            packet.ReadEnum<UnknownFlags>("Leader Flags 1", TypeCode.Byte);
+            var leaderFlags1 = packet.ReadByte();
+            packet.WriteLine("Leader Flags 1: 0x" + leaderFlags1.ToString("X2"));
 
-            packet.ReadEnum<UnknownFlags>("Leader Flags 2", TypeCode.Byte);
+            var leaderFlags2 = packet.ReadByte();
+            packet.WriteLine("Leader Flags 2: 0x" + leaderFlags2.ToString("X2"));
 
-            packet.StoreBeginList("Players");
             for (var i = 0; i < count - 1; i++)
             {
                 packet.ReadGuid("Player GUID");
                 packet.ReadByte("Index");
-                packet.ReadEnum<UnknownFlags>("Flags 1", TypeCode.Byte);
-                packet.ReadEnum<UnknownFlags>("Flags 2", TypeCode.Byte);
+                var flags1 = packet.ReadByte();
+                packet.WriteLine("Flags 1: 0x" + flags1.ToString("X2"));
+                var flags2 = packet.ReadByte();
+                packet.WriteLine("Flags 2: 0x" + flags2.ToString("X2"));
             }
-            packet.StoreEndList();
         }
 
         [Parser(Opcode.SMSG_VOICE_SESSION_LEAVE)]

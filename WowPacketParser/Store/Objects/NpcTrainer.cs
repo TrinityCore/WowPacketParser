@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using PacketParser.Enums;
-using PacketParser.Misc;
+using WowPacketParser.Enums;
 
-namespace PacketParser.DataStructures
+namespace WowPacketParser.Store.Objects
 {
-    public class NpcTrainer : ITextOutputDisabled
+    public class NpcTrainer
     {
         public TrainerType Type;
 

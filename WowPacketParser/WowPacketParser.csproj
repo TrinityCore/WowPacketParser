@@ -18,7 +18,6 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -31,6 +30,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -80,42 +80,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Debug\WowPacketParser.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>BasicCorrectnessRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Release\WowPacketParser.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -139,13 +103,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependencies\PowerCollections.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data.SQLite, Version=1.0.81.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dependencies\System.Data.SQLite.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.XML" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\AccountDataType.cs" />
@@ -199,6 +156,7 @@
     <Compile Include="Enums\DifficultyChangeType.cs" />
     <Compile Include="Enums\Direction.cs" />
     <Compile Include="Enums\DrunkenState.cs" />
+    <Compile Include="Enums\DumpFormatType.cs" />
     <Compile Include="Enums\EmoteType.cs" />
     <Compile Include="Enums\EncounterFrame.cs" />
     <Compile Include="Enums\EnvironmentDamage.cs" />
@@ -298,6 +256,7 @@
     <Compile Include="Enums\SellResult.cs" />
     <Compile Include="Enums\SheathState.cs" />
     <Compile Include="Enums\SheathType.cs" />
+    <Compile Include="Enums\SniffType.cs" />
     <Compile Include="Enums\SpeedType.cs" />
     <Compile Include="Enums\SpellCastFailureReason.cs" />
     <Compile Include="Enums\SpellEffect.cs" />
@@ -361,21 +320,9 @@
     <Compile Include="Enums\WeatherState.cs" />
     <Compile Include="Loading\BinaryPacketReader.cs" />
     <Compile Include="Loading\IPacketReader.cs" />
-    <Compile Include="Loading\IzidorPacketReader.cs" />
-    <Compile Include="Loading\KSnifferZackReader.cs" />
-    <Compile Include="Loading\KSnifferZorReader.cs" />
-    <Compile Include="Loading\NewZorReader.cs" />
     <Compile Include="Loading\Reader.cs" />
-    <Compile Include="Loading\SniffitztReader.cs" />
-    <Compile Include="Loading\SQLitePacketReader.cs" />
     <Compile Include="Misc\BiDictionary.cs" />
     <Compile Include="Misc\Bit.cs" />
-    <Compile Include="Loading\WlpReader.cs" />
-    <Compile Include="Loading\ZorReader.cs" />
-    <Compile Include="Misc\IndexedTreeNode.cs" />
-    <Compile Include="Misc\ITreeNode.cs" />
-    <Compile Include="Misc\NamedTreeNode.cs" />
-    <Compile Include="Misc\StoreEntry.cs" />
     <Compile Include="Misc\ClientVersion.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Misc\Filters.cs" />
@@ -390,19 +337,7 @@
     <Compile Include="Misc\Quaternion.cs" />
     <Compile Include="Misc\Settings.cs" />
     <Compile Include="Misc\StoreGetters.cs" />
-    <Compile Include="Misc\TreeNodeEnumerator.cs" />
     <Compile Include="Misc\UpdateField.cs" />
-    <Compile Include="Processing\IPacketProcessor.cs" />
-    <Compile Include="Processing\RawFileOutput.cs" />
-    <Compile Include="Processing\SniffDataTableOutput.cs" />
-    <Compile Include="Processing\SplitRawFileOutput.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Processing\TextBuilder.cs" />
-    <Compile Include="Processing\SQLFileOutput.cs" />
-    <Compile Include="Processing\TextFileOutput.cs" />
-    <Compile Include="Processing\RawFileWriters\IBinaryPacketWriter.cs" />
-    <Compile Include="Processing\RawFileWriters\KSZorBinaryPacketWriter.cs" />
     <Compile Include="Misc\Utilities.cs" />
     <Compile Include="Misc\Vector2.cs" />
     <Compile Include="Misc\Vector3.cs" />
@@ -455,6 +390,8 @@
     <Compile Include="Parsing\Parsers\WorldStateHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Saving\BinaryPacketWriter.cs" />
+    <Compile Include="Saving\SplitBinaryPacketWriter.cs" />
     <Compile Include="SQL\Builder.cs" />
     <Compile Include="SQL\Builders\Miscellaneous.cs" />
     <Compile Include="SQL\Builders\QuestMisc.cs" />
@@ -529,11 +466,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Parsing\SharpParser\Parsers\" />
-    <Folder Include="Parsing\WCellParser\Parsers\" />
-    <Folder Include="Processing\SqlOutput\Objects\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
