@@ -23,17 +23,11 @@ namespace WowPacketParser.Parsing.Parsers
 
             var buttonCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 144 : 132;
 
-            var startAction = new StartAction
-                              {
-                                  Actions = new List<Store.Objects.Action>(buttonCount)
-                              };
+            var startAction = new StartAction { Actions = new List<Store.Objects.Action>(buttonCount) };
 
             for (var i = 0; i < buttonCount; i++)
             {
-                var action = new Store.Objects.Action
-                             {
-                                 Button = (uint)i
-                             };
+                var action = new Store.Objects.Action { Button = (uint)i };
 
                 var packed = packet.ReadInt32();
 
@@ -49,8 +43,13 @@ namespace WowPacketParser.Parsing.Parsers
                 startAction.Actions.Add(action);
             }
 
-            if (SessionHandler.LoggedInCharacter != null && SessionHandler.LoggedInCharacter.FirstLogin)
-                Storage.StartActions.Add(new Tuple<Race, Class>(SessionHandler.LoggedInCharacter.Race, SessionHandler.LoggedInCharacter.Class), startAction, packet.TimeSpan);
+            WoWObject character;
+            if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
+            {
+                var player = character as Player;
+                if (player != null && player.FirstLogin)
+                    Storage.StartActions.Add(new Tuple<Race, Class>(player.Race, player.Class), startAction, packet.TimeSpan);
+            }
         }
 
 

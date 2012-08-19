@@ -1026,9 +1026,6 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < 5; i++)
                 packet.WriteLine("Stat " + (StatType)i + ": " + packet.ReadInt32());
-
-            if (SessionHandler.LoggedInCharacter != null)
-                SessionHandler.LoggedInCharacter.Level = level;
         }
 
         [Parser(Opcode.SMSG_HEALTH_UPDATE)]

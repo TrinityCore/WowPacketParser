@@ -9,10 +9,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class SessionHandler
     {
-        [ThreadStatic]
         public static Guid LoginGuid;
-
-        public static Player LoggedInCharacter;
 
         [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1a_13205)]
         public static void HandleServerAuthChallenge(Packet packet)
@@ -439,7 +436,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
         public static void HandleLogoutComplete(Packet packet)
         {
-            LoggedInCharacter = null;
+            LoginGuid = new Guid(0);
         }
 
         [Parser(Opcode.CMSG_CONNECT_TO_FAILED)]

@@ -192,8 +192,13 @@ namespace WowPacketParser.Parsing.Parsers
             var startSpell = new StartSpell();
             startSpell.Spells = spells;
 
-            if (SessionHandler.LoggedInCharacter != null && SessionHandler.LoggedInCharacter.FirstLogin)
-                Storage.StartSpells.Add(new Tuple<Race, Class>(SessionHandler.LoggedInCharacter.Race, SessionHandler.LoggedInCharacter.Class), startSpell, packet.TimeSpan);
+            WoWObject character;
+            if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
+            {
+                var player = character as Player;
+                if (player != null && player.FirstLogin)
+                    Storage.StartSpells.Add(new Tuple<Race, Class>(player.Race, player.Class), startSpell, packet.TimeSpan);
+            }
 
             var cooldownCount = packet.ReadInt16("Cooldown Count");
             for (var i = 0; i < cooldownCount; i++)
