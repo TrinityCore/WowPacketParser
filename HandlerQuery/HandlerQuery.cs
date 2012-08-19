@@ -81,7 +81,7 @@ namespace HandlerQuery
                         switch (str)
                         {
                             // unsupported:
-                            // ReadBit, ReadBits, ReadBytes, 
+                            // ReadBit, ReadBits, ReadBytes,
 
                             case "ead": // from CanRead
                             case "ToEnd": // from ReadToEnd

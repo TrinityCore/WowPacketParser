@@ -55,7 +55,8 @@ namespace HandlerQuery
                         equal = true;
                         continue;
                     }
-                    else if (s == "+")
+
+                    if (s == "+")
                     {
                         subset = true;
                         continue;

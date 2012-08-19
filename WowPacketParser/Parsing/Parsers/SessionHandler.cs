@@ -33,7 +33,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V4_0_1a_13205, ClientVersionBuild.V4_0_3_13329)]
         public static void HandleServerAuthChallenge401(Packet packet)
         {
-            var keys = new UInt32[2, 4];
             packet.ReadUInt32("Key pt3");
             packet.ReadUInt32("Key pt5");
             packet.ReadByte("Unk Byte");
@@ -49,8 +48,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V4_0_3_13329, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleServerAuthChallenge403(Packet packet)
         {
-            var keys = new UInt32[2, 4];
-
             packet.ReadUInt32("Key pt5");
             packet.ReadUInt32("Key pt8");
             packet.ReadUInt32("Server Seed");

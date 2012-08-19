@@ -208,14 +208,14 @@ namespace WowPacketParser.Store
             _dictionary = Enabled ? new MultiDictionary<T, Tuple<TK, TimeSpan?>>(true) : null;
         }
 
-        public StoreMulti(MultiDictionary<T, TK> dict)
+        public StoreMulti(IEnumerable<KeyValuePair<T, ICollection<TK>>> dict)
         {
             _dictionary = new MultiDictionary<T, Tuple<TK, TimeSpan?>>(true);
 
             foreach (var pair in dict)
                 foreach (var k in pair.Value)
                     _dictionary.Add(pair.Key, new Tuple<TK, TimeSpan?>(k, null));
-                
+
 
             Type = string.Empty;
             Enabled = true;

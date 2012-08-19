@@ -211,13 +211,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Channel Name");
             packet.ReadCString("Password");
         }
-        
+
         [Parser(Opcode.CMSG_CHANNEL_PASSWORD, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleChannelPassword434(Packet packet)
         {
             var channelLen = packet.ReadBits(8);
             var passLen = packet.ReadBits(7);
-            
+
             packet.ReadWoWString("Channel Name", channelLen);
             packet.ReadWoWString("Password", passLen);
         }
