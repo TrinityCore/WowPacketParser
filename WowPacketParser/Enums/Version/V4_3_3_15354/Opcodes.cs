@@ -11,6 +11,7 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
+            {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x0480},
             {Opcode.CMSG_AREATRIGGER, 0x33A4},
             {Opcode.CMSG_AUTH_SESSION, 0x0A02},
             {Opcode.CMSG_CHAR_ENUM, 0x2161},
@@ -31,7 +32,9 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.CMSG_LEAVE_CHANNEL, 0x0000},
             {Opcode.CMSG_LF_GUILD_ADD_RECRUIT, 0x0004},
             {Opcode.CMSG_LOAD_SCREEN, 0x3101},
+            {Opcode.CMSG_MESSAGECHAT_ADDON_GUILD, 0x0528},
             {Opcode.CMSG_MOVE_FALL_RESET, 0x12D0},
+            {Opcode.CMSG_MOVE_FORCE_RUN_SPEED_CHANGE_ACK, 0x1250},
             {Opcode.CMSG_MOVE_NOT_ACTIVE_MOVER, 0x1775},
             {Opcode.CMSG_MOVE_SET_FLY, 0x1BB4},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x7CA5},
@@ -57,6 +60,8 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.CMSG_SETSHEATHED, 0x2AED},
             {Opcode.CMSG_SET_ACTIONBAR_TOGGLES, 0x74A5},
             {Opcode.CMSG_SET_SELECTION, 0x2325},
+            {Opcode.CMSG_SET_VEHICLE_REC_ID_ACK, 0x1310},
+            {Opcode.CMSG_SUSPEND_TOKEN, 0x0A06},
             {Opcode.CMSG_TAXINODE_STATUS_QUERY, 0x7E65},
             {Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES, 0x0028},
             {Opcode.CMSG_USE_ITEM, 0x352D},

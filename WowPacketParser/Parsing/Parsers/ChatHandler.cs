@@ -252,18 +252,18 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("Message", msgLen);
         }
 
-        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_PARTY, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
-        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_GUILD, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
-        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_RAID, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
-        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_BATTLEGROUND, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_PARTY, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_3_15354)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_GUILD, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_3_15354)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_RAID, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_3_15354)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_BATTLEGROUND, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_3_15354)]
         public static void HandleClientChatMessageAddon(Packet packet)
         {
             packet.ReadCString("Message");
             packet.ReadCString("Prefix");
         }
 
-        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_GUILD, ClientVersionBuild.V4_3_4_15595)]
-        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_BATTLEGROUND, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_GUILD, ClientVersionBuild.V4_3_3_15354)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_BATTLEGROUND, ClientVersionBuild.V4_3_3_15354)]
         public static void HandleClientChatMessageAddon434(Packet packet)
         {
             var length1 = packet.ReadBits(9);
@@ -272,9 +272,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("Prefix", length2);
         }
 
-        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_PARTY, ClientVersionBuild.V4_3_4_15595)]
-        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_RAID, ClientVersionBuild.V4_3_4_15595)]
-        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_OFFICER, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_PARTY, ClientVersionBuild.V4_3_3_15354)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_RAID, ClientVersionBuild.V4_3_3_15354)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_OFFICER, ClientVersionBuild.V4_3_3_15354)]
         public static void HandleClientChatMessageAddonRaid434(Packet packet)
         {
             var length1 = packet.ReadBits(5);
@@ -283,7 +283,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("Message", length2);
         }
 
-        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_WHISPER, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_WHISPER, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_3_15354)]
         public static void HandleClientChatMessageAddonWhisper(Packet packet)
         {
             packet.ReadCString("Prefix");
@@ -291,7 +291,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Message");
         }
 
-        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_WHISPER, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_WHISPER, ClientVersionBuild.V4_3_3_15354)]
         public static void HandleClientChatMessageAddonWhisper434(Packet packet)
         {
             var msgLen = packet.ReadBits(9);

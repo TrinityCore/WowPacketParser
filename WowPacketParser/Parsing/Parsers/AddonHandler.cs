@@ -114,7 +114,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("Addon", i);
         }
 
-        [Parser(Opcode.CMSG_ADDON_REGISTERED_PREFIXES, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_ADDON_REGISTERED_PREFIXES, ClientVersionBuild.V4_3_3_15354)]
         public static void HandleAddonPrefixes434(Packet packet)
         {
             var count = packet.ReadBits("Count", 25);
