@@ -1147,7 +1147,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Tab Icon");
         }
 
-        [Parser(Opcode.CMSG_GUILD_QUERY_RANKS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_QUERY_RANKS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_3_15354)]
         [Parser(Opcode.CMSG_GUILD_QUERY_NEWS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_GUILD_REQUEST_MAX_DAILY_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_QUERY_GUILD_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -1179,6 +1179,14 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(4, 2, 6, 3, 5, 0, 1, 7);
             packet.ParseBitStream(guid, 4, 1, 5, 6, 0, 3, 7, 2);
             packet.WriteGuid("GUID", guid);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_QUERY_RANKS, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildRanks434(Packet packet)
+        {
+            var guid = packet.StartBitStream(2, 6, 1, 0, 5, 3, 7, 4);
+            packet.ParseBitStream(guid, 3, 6, 5, 4, 0, 7, 2, 1);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_GUILD_QUERY_RANKS, ClientVersionBuild.V4_3_4_15595)]
@@ -1389,7 +1397,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Money");
         }
 
-        [Parser(Opcode.CMSG_GUILD_BANK_QUERY_TEXT, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_BANK_QUERY_TEXT, ClientVersionBuild.V4_3_3_15354)]
         public static void HandleQueryGuildBankText(Packet packet)
         {
             packet.ReadUInt32("Tab Id");
@@ -1643,7 +1651,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt64("Week Cash Flow Contribution");
         }
 
-        [Parser(Opcode.CMSG_GUILD_BANK_LOG_QUERY, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_BANK_LOG_QUERY, ClientVersionBuild.V4_3_3_15354)]
         public static void HandleGuildBankLogQuery(Packet packet)
         {
             packet.ReadUInt32("Tab Id");
