@@ -267,8 +267,8 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 4; i++)
             {
                 reqId[i] = packet.ReadEntry();
-                quest.RequiredNpcOrGo[i] = reqId[i].Key;
                 var isGo = reqId[i].Value;
+                quest.RequiredNpcOrGo[i] = reqId[i].Key * (isGo ? -1 : 1);
 
                 packet.WriteLine("[" + i + "] Required " + (isGo ? "GO" : "NPC") +
                     " ID: " + StoreGetters.GetName(isGo ? StoreNameType.GameObject : StoreNameType.Unit, reqId[i].Key));
