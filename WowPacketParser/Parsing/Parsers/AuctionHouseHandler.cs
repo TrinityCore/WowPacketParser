@@ -204,6 +204,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_AUCTION_REMOVED_NOTIFICATION)]
         public static void HandleAuctionRemovedNotification(Packet packet)
         {
+            packet.ReadInt32("Unk Int32");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry");
+            packet.ReadInt32("Item Random Property ID");
         }
 
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
