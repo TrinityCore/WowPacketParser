@@ -25,6 +25,11 @@ namespace WowPacketParser.Store.Objects
             return false;
         }
 
+        public bool IsOnTransport()
+        {
+            return Movement.TransportGuid != Guid.Empty;
+        }
+
         public int GetDefaultSpawnTime()
         {
             // If map is Eastern Kingdoms, Kalimdor, Outland, Northrend or Ebon Hold use a lower respawn time

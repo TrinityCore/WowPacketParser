@@ -43,13 +43,24 @@ namespace WowPacketParser.SQL.Builders
 
                 row.AddValue("guid", "@CGUID+" + count, noQuotes: true);
                 row.AddValue("id", entry);
-                row.AddValue("map", creature.Map);
+                row.AddValue("map", !creature.IsOnTransport() ? creature.Map : 0);  // TODO: query transport template for map
                 row.AddValue("spawnMask", 1);
                 row.AddValue("phaseMask", creature.PhaseMask);
-                row.AddValue("position_x", creature.Movement.Position.X);
-                row.AddValue("position_y", creature.Movement.Position.Y);
-                row.AddValue("position_z", creature.Movement.Position.Z);
-                row.AddValue("orientation", creature.Movement.Orientation);
+                if (!creature.IsOnTransport())
+                {
+                    row.AddValue("position_x", creature.Movement.Position.X);
+                    row.AddValue("position_y", creature.Movement.Position.Y);
+                    row.AddValue("position_z", creature.Movement.Position.Z);
+                    row.AddValue("orientation", creature.Movement.Orientation);
+                }
+                else
+                {
+                    row.AddValue("position_x", creature.Movement.TransportOffset.X);
+                    row.AddValue("position_y", creature.Movement.TransportOffset.Y);
+                    row.AddValue("position_z", creature.Movement.TransportOffset.Z);
+                    row.AddValue("orientation", creature.Movement.TransportOffset.O);
+                }
+
                 row.AddValue("spawntimesecs", spawnTimeSecs);
                 row.AddValue("spawndist", spawnDist);
                 row.AddValue("MovementType", movementType);
@@ -60,6 +71,11 @@ namespace WowPacketParser.SQL.Builders
                 {
                     row.CommentOut = true;
                     row.Comment += " - !!! might be temporary spawn !!!";
+                }
+                else if (creature.IsOnTransport())
+                {
+                    row.CommentOut = true;
+                    row.Comment += " - !!! on transport (NYI) !!!";
                 }
                 else
                     ++count;
@@ -116,13 +132,23 @@ namespace WowPacketParser.SQL.Builders
 
                 row.AddValue("guid", "@OGUID+" + count, noQuotes: true);
                 row.AddValue("id", entry);
-                row.AddValue("map", go.Map);
+                row.AddValue("map", !go.IsOnTransport() ? go.Map : 0);  // TODO: query transport template for map
                 row.AddValue("spawnMask", 1);
                 row.AddValue("phaseMask", go.PhaseMask);
-                row.AddValue("position_x", go.Movement.Position.X);
-                row.AddValue("position_y", go.Movement.Position.Y);
-                row.AddValue("position_z", go.Movement.Position.Z);
-                row.AddValue("orientation", go.Movement.Orientation);
+                if (!go.IsOnTransport())
+                {
+                    row.AddValue("position_x", go.Movement.Position.X);
+                    row.AddValue("position_y", go.Movement.Position.Y);
+                    row.AddValue("position_z", go.Movement.Position.Z);
+                    row.AddValue("orientation", go.Movement.Orientation);
+                }
+                else
+                {
+                    row.AddValue("position_x", go.Movement.TransportOffset.X);
+                    row.AddValue("position_y", go.Movement.TransportOffset.Y);
+                    row.AddValue("position_z", go.Movement.TransportOffset.Z);
+                    row.AddValue("orientation", go.Movement.TransportOffset.O);
+                }
 
                 var rotation = go.GetRotation();
                 if (rotation != null && rotation.Length == 4)
@@ -155,6 +181,11 @@ namespace WowPacketParser.SQL.Builders
                 {
                     row.CommentOut = true;
                     row.Comment += " - !!! transport !!!";
+                }
+                else if (go.IsOnTransport())
+                {
+                    row.CommentOut = true;
+                    row.Comment += " - !!! on transport (NYI) !!!";
                 }
                 else
                     ++count;

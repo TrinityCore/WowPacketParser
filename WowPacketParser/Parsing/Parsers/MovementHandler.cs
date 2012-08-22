@@ -44,11 +44,11 @@ namespace WowPacketParser.Parsing.Parsers
             if (info.Flags.HasAnyFlag(MovementFlag.OnTransport))
             {
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
-                    packet.ReadPackedGuid("Transport GUID", index);
+                    info.TransportGuid = packet.ReadPackedGuid("Transport GUID", index);
                 else
-                    packet.ReadGuid("Transport GUID", index);
+                    info.TransportGuid = packet.ReadGuid("Transport GUID", index);
 
-                packet.ReadVector4("Transport Position", index);
+                info.TransportOffset = packet.ReadVector4("Transport Position", index);
                 packet.ReadInt32("Transport Time", index);
 
                 if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
@@ -134,8 +134,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (onTransport)
             {
-                packet.ReadGuid("Transport GUID", index);
-                packet.ReadVector4("Transport Position", index);
+                info.TransportGuid = packet.ReadGuid("Transport GUID", index);
+                info.TransportOffset = packet.ReadVector4("Transport Position", index);
                 packet.ReadByte("Transport Seat", index);
                 packet.ReadInt32("Transport Time", index);
                 if (hasInterpolatedMovement)

@@ -15,6 +15,10 @@ namespace WowPacketParser.Misc
 
         public float Orientation;
 
+        public Guid TransportGuid;
+
+        public Vector4 TransportOffset;
+
         public Quaternion Rotation;
 
         public float WalkSpeed;
