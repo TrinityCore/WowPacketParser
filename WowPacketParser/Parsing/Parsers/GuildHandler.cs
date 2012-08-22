@@ -1501,6 +1501,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_GUILD_BANK_MONEY_WITHDRAWN_QUERY)]
         [Parser(Opcode.MSG_GUILD_BANK_MONEY_WITHDRAWN)]
         public static void HandleGuildBankMoneyWithdrawn(Packet packet)
         {
@@ -1513,7 +1514,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GUILD_BANK_REM_MONEY_WITHDRAW_QUERY)]
+        [Parser(Opcode.SMSG_GUILD_BANK_MONEY_WITHDRAWN)]
         public static void HandleGuildBankMoneyWithdrawnResponse(Packet packet)
         {
             packet.ReadInt64("Remaining Money");
@@ -2299,7 +2300,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_GUILD_BANK_REM_MONEY_WITHDRAW_QUERY)]
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
         [Parser(Opcode.CMSG_GUILD_REQUEST_CHALLENGE_UPDATE)]
         [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
