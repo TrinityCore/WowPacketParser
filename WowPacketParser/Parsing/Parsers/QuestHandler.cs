@@ -336,35 +336,25 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.QuestTemplates.Add((uint) id.Key, quest, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
-        [Parser(Opcode.CMSG_QUEST_NPC_QUERY)]
+        [Parser(Opcode.CMSG_QUEST_POI_QUERY, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_QUEST_NPC_QUERY, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleQuestPoiQuery(Packet packet)
         {
-            int count;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
-            {
-                if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_QUEST_NPC_QUERY))
-                {
-                    packet.ReadByte("unk");
-                    packet.ReadByte("unk2");
-                    count = packet.ReadByte("Count");
-                }
-                else
-                {
-                    count = packet.ReadByte("Count");
-                    packet.ReadByte("unk");
-                    packet.ReadByte("unk2");
-                    packet.ReadByte("unk3");
-                }
-            }
-            else
-                count = packet.ReadInt32("Count");
+            var count = packet.ReadUInt32("Count");
 
             for (var i = 0; i < count; i++)
                 packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID", i);
         }
 
-        [Parser(Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE)]
+        [Parser(Opcode.CMSG_QUEST_NPC_QUERY, ClientVersionBuild.V4_3_0_15005)]
+        public static void HandleQuestNPCQuery430(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 24);
+            for (int i = 0; i < count; ++i)
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest", i);
+        }
+
+        [Parser(Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestNpcQueryResponse(Packet packet)
         {
             var count = packet.ReadUInt32("Count");
@@ -382,6 +372,27 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; ++i)
                 packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID", i);
+        }
+
+        [Parser(Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleQuestNpcQueryResponse434(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 23);
+            var counts = new uint[count];
+
+            for (int i = 0; i < count; ++i)
+                counts[i] = packet.ReadBits("Count", 24, i);
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID", i);
+                for (int j = 0; j < counts[i]; ++j)
+                {
+                    var entry = packet.ReadEntry();
+                    packet.WriteLine("[{0}] [{1}] {2}: {3}", i, j, entry.Value ? "Creature" : "GameObject",
+                        StoreGetters.GetName(entry.Value ? StoreNameType.GameObject : StoreNameType.Unit, entry.Key));
+                }
+            }
         }
 
         [Parser(Opcode.SMSG_QUEST_POI_QUERY_RESPONSE)]
