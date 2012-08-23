@@ -1,6 +1,6 @@
 namespace WowPacketParser.Enums
 {
-    public enum ItemModType
+    public enum ItemModType : byte
     {
         Mana = 0,
         Health = 1,

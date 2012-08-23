@@ -40,6 +40,17 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.GameObjectTemplates, tempatesDb, StoreNameType.GameObject);
         }
 
+        public static string Item()
+        {
+            if (Storage.ItemTemplates.IsEmpty())
+                return String.Empty;
+
+            var entries = Storage.ItemTemplates.Keys();
+            var tempatesDb = SQLDatabase.GetDict<uint, ItemTemplate>(entries);
+
+            return SQLUtil.CompareDicts(Storage.ItemTemplates, tempatesDb, StoreNameType.Item);
+        }
+
         public static string PageText()
         {
             if (Storage.PageTexts.IsEmpty())

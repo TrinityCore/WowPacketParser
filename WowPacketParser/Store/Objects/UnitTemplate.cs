@@ -38,7 +38,7 @@ namespace WowPacketParser.Store.Objects
 
         public int UnkInt; // pre 3.1
 
-        [DBFieldName("PetSpellDataId")]
+        //[DBFieldName("PetSpellDataId")]
         public uint PetSpellData;
 
         [DBFieldName("modelid", Count = 4)]

@@ -24,5 +24,6 @@ namespace WowPacketParser.Enums
         ObjectNames        = 0x08000,
         CreatureEquip      = 0x10000,
         CreatureMovement   = 0x20000,
+        ItemTemplate       = 0x40000,
     }
 }
