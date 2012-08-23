@@ -485,7 +485,8 @@ namespace WowPacketParser.Parsing.Parsers
             item.StatValues = new int[item.StatsCount];
             for (var i = 0; i < item.StatsCount; i++)
             {
-                item.StatTypes[i] = packet.ReadEnum<ItemModType>("Stat Type", TypeCode.Int32, i);
+                var type = packet.ReadEnum<ItemModType>("Stat Type", TypeCode.Int32, i);
+                item.StatTypes[i] = type == ItemModType.None ? ItemModType.Mana : type; // TDB
                 item.StatValues[i] = packet.ReadInt32("Stat Value", i);
             }
 
@@ -851,7 +852,10 @@ namespace WowPacketParser.Parsing.Parsers
 
                     item.StatTypes = new ItemModType[10];
                     for (var i = 0; i < 10; i++)
-                        item.StatTypes[i] = packet.ReadEnum<ItemModType>("Stat Type", TypeCode.Int32, i);
+                    {
+                        var statType = packet.ReadEnum<ItemModType>("Stat Type", TypeCode.Int32, i);
+                        item.StatTypes[i] = statType == ItemModType.None ? ItemModType.Mana : statType; // TDB
+                    }
 
                     item.StatValues = new int[10];
                     for (var i = 0; i < 10; i++)
