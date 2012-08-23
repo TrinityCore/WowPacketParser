@@ -153,7 +153,10 @@ namespace WowPacketParser.SQL
                             for (var j = 0; j < arr.Length; j++)
                             {
                                 var elemType = arr.GetType().GetElementType();
-                                var val = Convert.ChangeType(values[i + j], elemType);
+
+                                var val = elemType.IsEnum ?
+                                    Enum.Parse(elemType, values[i + j].ToString()) :
+                                    Convert.ChangeType(values[i + j], elemType);
 
                                 arr.SetValue(val, j);
                             }
@@ -175,7 +178,10 @@ namespace WowPacketParser.SQL
                             for (var j = 0; j < arr.Length; j++)
                             {
                                 var elemType = arr.GetType().GetElementType();
-                                var val = Convert.ChangeType(values[i + j], elemType);
+
+                                var val = elemType.IsEnum ?
+                                    Enum.Parse(elemType, values[i + j].ToString()) :
+                                    Convert.ChangeType(values[i + j], elemType);
 
                                 arr.SetValue(val, j);
                             }
@@ -289,18 +295,20 @@ namespace WowPacketParser.SQL
                             for (var j = 0; j < arr.Length; j++)
                             {
                                 var elemType = arr.GetType().GetElementType();
-                                var val = Convert.ChangeType(values[i + j], elemType);
+
+                                var val = elemType.IsEnum ?
+                                    Enum.Parse(elemType, values[i + j].ToString()) :
+                                    Convert.ChangeType(values[i + j], elemType);
 
                                 arr.SetValue(val, j);
                             }
-                            field.Item1.SetValue(instance, arr);
+                            field.Item1.SetValueDirect(__makeref(instance), arr);
                         }
                         else if (field.Item1.FieldType == typeof(bool))
                             field.Item1.SetValue(instance, Convert.ToBoolean(values[i]));
                         else
                             field.Item1.SetValue(instance, values[i]);
 #else
-
                         if (values[i] is DBNull && field.Item1.FieldType == typeof(string))
                             field.Item1.SetValueDirect(__makeref(instance), string.Empty);
                         else if (field.Item1.FieldType.BaseType == typeof(Enum))
@@ -312,7 +320,10 @@ namespace WowPacketParser.SQL
                             for (var j = 0; j < arr.Length; j++)
                             {
                                 var elemType = arr.GetType().GetElementType();
-                                var val = Convert.ChangeType(values[i + j], elemType);
+
+                                var val = elemType.IsEnum ?
+                                    Enum.Parse(elemType, values[i + j].ToString()) :
+                                    Convert.ChangeType(values[i + j], elemType);
 
                                 arr.SetValue(val, j);
                             }
