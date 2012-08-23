@@ -302,7 +302,7 @@ namespace WowPacketParser.SQL
 
                                 arr.SetValue(val, j);
                             }
-                            field.Item1.SetValueDirect(__makeref(instance), arr);
+                            field.Item1.SetValue(instance, arr);
                         }
                         else if (field.Item1.FieldType == typeof(bool))
                             field.Item1.SetValue(instance, Convert.ToBoolean(values[i]));
