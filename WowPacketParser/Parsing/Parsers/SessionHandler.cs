@@ -21,7 +21,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
             {
-                var SStateCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_5a_12340) ? 8 : 4;
+                var SStateCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685) ? 8 : 4;
                 for (var i = 0; i < SStateCount; i++)
                     packet.ReadInt32("Server State", i);
             }
