@@ -203,7 +203,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (updateFlags.HasFlag(GroupUpdateFlag422.VehicleSeat))
                 packet.ReadInt32("Vehicle Seat?");
 
-            if (updateFlags.HasFlag(GroupUpdateFlag422.Unk200000))
+            if (updateFlags.HasFlag(GroupUpdateFlag422.Phase))
             {
                 packet.ReadInt32("Unk int32");
                 var length = packet.ReadInt32("Unk int32");
