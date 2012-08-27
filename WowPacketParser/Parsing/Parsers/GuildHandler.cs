@@ -16,13 +16,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Emblem Background Color");
         }
 
-        [Parser(Opcode.CMSG_GUILD_BANK_SET_TAB_TEXT)] // 4.3.4
-        public static void HandleGuildBankSetTabText(Packet packet)
-        {
-            packet.ReadUInt32("Tab Id");
-            packet.ReadWoWString("Tab Text", packet.ReadBits(14));
-        }
-
         [Parser(Opcode.CMSG_GUILD_ASSIGN_MEMBER_RANK)] // 4.3.4
         public static void HandleGuildAssignMemberRank(Packet packet)
         {
@@ -105,7 +98,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid2[7] = packet.ReadBit();
             guid2[0] = packet.ReadBit();
             guid2[4] = packet.ReadBit();
-            guid1[4] = packet.ReadBit();        
+            guid1[4] = packet.ReadBit();
 
             packet.ReadXORByte(guid1, 3);
             packet.ReadXORByte(guid1, 5);
@@ -1469,11 +1462,18 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("Text", packet.ReadBits(14));
         }
 
-        [Parser(Opcode.CMSG_SET_GUILD_BANK_TEXT)]
+        [Parser(Opcode.CMSG_SET_GUILD_BANK_TEXT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildSetBankText(Packet packet)
         {
             packet.ReadByte("Tab Id");
             packet.ReadCString("Tab Text");
+        }
+
+        [Parser(Opcode.CMSG_SET_GUILD_BANK_TEXT, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildSetBankText434(Packet packet)
+        {
+            packet.ReadUInt32("Tab Id");
+            packet.ReadWoWString("Tab Text", packet.ReadBits(14));
         }
 
         [Parser(Opcode.MSG_GUILD_PERMISSIONS)]
