@@ -1420,7 +1420,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < size; ++i)
             {
                 packet.ReadEnum<ReputationRank>("Faction Standing", TypeCode.UInt32, i);
-                packet.ReadInt32("Unk Int32", i);
+                packet.ReadEnum<RaceMask>("Race mask", TypeCode.UInt32, i);
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Id", i);
                 packet.ReadUInt64("Price", i);
                 packet.ReadUInt32("Unk UInt32", i);
@@ -1650,8 +1650,8 @@ namespace WowPacketParser.Parsing.Parsers
             var hasWeekCashflow = packet.ReadBit("Has Cash flow Perk");
             var size = packet.ReadBits("Size", 23);
             var hasMoney = new byte[size];
-            var unk = new byte[size];
-            var itemMoved = new byte[size];
+            var tabChanged = new byte[size];
+            var stackCount = new byte[size];
             var hasItem = new byte[size];
             var guid = new byte[size][];
             for (var i = 0; i < size; i++)
@@ -1661,13 +1661,13 @@ namespace WowPacketParser.Parsing.Parsers
                 guid[i][4] = packet.ReadBit();
                 guid[i][1] = packet.ReadBit();
                 hasItem[i] = packet.ReadBit();
-                itemMoved[i] = packet.ReadBit();
+                stackCount[i] = packet.ReadBit();
                 guid[i][2] = packet.ReadBit();
                 guid[i][5] = packet.ReadBit();
                 guid[i][3] = packet.ReadBit();
                 guid[i][6] = packet.ReadBit();
                 guid[i][0] = packet.ReadBit();
-                unk[i] = packet.ReadBit(); //unk
+                tabChanged[i] = packet.ReadBit(); //unk
                 guid[i][7] = packet.ReadBit();
             }
             for (var i = 0; i < size; i++)
@@ -1675,8 +1675,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guid[i], 6);
                 packet.ReadXORByte(guid[i], 1);
                 packet.ReadXORByte(guid[i], 5);
-                if (itemMoved[i] != 0)
-                    packet.ReadUInt32("Tab Id", i);
+                if (stackCount[i] != 0)
+                    packet.ReadUInt32("Stack count", i);
                 packet.ReadEnum<GuildBankEventLogType>("Bank Log Event Type", TypeCode.Byte, i);
                 packet.ReadXORByte(guid[i], 2);
                 packet.ReadXORByte(guid[i], 4);
@@ -1692,8 +1692,8 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasMoney[i] != 0)
                     packet.ReadInt64("Money", i);
 
-                if (unk[i] != 0)
-                    packet.ReadByte("Unk byte", i);
+                if (tabChanged[i] != 0)
+                    packet.ReadByte("Dest tab id", i);
 
                 packet.WriteGuid("Guid", guid[i], i);
             }
