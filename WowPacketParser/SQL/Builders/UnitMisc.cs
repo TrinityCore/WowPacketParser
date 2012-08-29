@@ -61,93 +61,34 @@ namespace WowPacketParser.SQL.Builders
             if (units.Count == 0)
                 return string.Empty;
 
-            const string tableName = "creature_model_info";
-
             // Build a dictionary with model data; model is the key
-            var models = new SortedDictionary<uint, Tuple<float, float, Gender>>();
+            var models = new StoreDictionary<uint, ModelData>();
             foreach (var unit in units)
             {
                 var npc = unit.Value;
 
                 if (npc.Model == null)
                     continue;
-                var model = (uint)npc.Model;
+
+                var modelId = (uint)npc.Model;
 
                 // Do not add duplicate models
-                if (models.ContainsKey(model))
+                if (models.ContainsKey(modelId))
                     continue;
 
-                var boundingRadius = 0.0f;
-                if (npc.BoundingRadius != null)
-                    boundingRadius = (float)npc.BoundingRadius;
-
-                var combatReach = 0.0f;
-                if (npc.CombatReach != null)
-                    combatReach = (float)npc.CombatReach;
-
-                var gender = Gender.None;
-                if (npc.Gender != null)
-                    gender = (Gender)npc.Gender;
-
-                models.Add(model, Tuple.Create(boundingRadius, combatReach, gender));
-            }
-
-            Dictionary<uint, dynamic> modelsDb = null;
-            if (SQLConnector.Enabled)
-            {
-                modelsDb = SQLDatabase.GetDict<uint>(string.Format(
-                    "SELECT `modelid`, `bounding_radius`, `combat_reach`," +
-                    "`gender` FROM `{0}`.{1} WHERE `modelid` IN ({2});", Settings.TDBDatabase, tableName, String.Join(",", models.Keys)));
-            }
-
-            var rowsUpd = new List<QueryBuilder.SQLUpdateRow>();
-            var rowsIns = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var model in models)
-            {
-                if (modelsDb != null && modelsDb.Count != 0)
+                var model = new ModelData
                 {
-                    if (modelsDb.ContainsKey(model.Key)) // possible update
-                    {
-                        var row = new QueryBuilder.SQLUpdateRow();
+                    BoundingRadius = npc.BoundingRadius.GetValueOrDefault(0.306f),
+                    CombatReach = npc.CombatReach.GetValueOrDefault(1.5f),
+                    Gender = npc.Gender.GetValueOrDefault(Gender.Male)
+                };
 
-                        if (!Utilities.EqualValues(modelsDb[model.Key].Item1, model.Value.Item1))
-                            row.AddValue("bounding_radius", model.Value.Item1);
-
-                        if (!Utilities.EqualValues(modelsDb[model.Key].Item2, model.Value.Item2))
-                            row.AddValue("combat_reach", model.Value.Item2);
-
-                        if (!Utilities.EqualValues(modelsDb[model.Key].Item3, model.Value.Item3))
-                            row.AddValue("gender", model.Value.Item3);
-
-                        row.AddWhere("modelid", model.Key);
-                        row.Table = tableName;
-
-                        if (row.ValueCount != 0)
-                            rowsUpd.Add(row);
-                    }
-                    else // insert new
-                    {
-                        var row = new QueryBuilder.SQLInsertRow();
-                        row.AddValue("modelid", model.Key);
-                        row.AddValue("bounding_radius", model.Value.Item1);
-                        row.AddValue("combat_reach", model.Value.Item2);
-                        row.AddValue("gender", model.Value.Item3);
-                        rowsIns.Add(row);
-                    }
-                }
-                else // no db values, simply do inserts
-                {
-                    var row = new QueryBuilder.SQLInsertRow();
-                    row.AddValue("modelid", model.Key);
-                    row.AddValue("bounding_radius", model.Value.Item1);
-                    row.AddValue("combat_reach", model.Value.Item2);
-                    row.AddValue("gender", model.Value.Item3);
-                    rowsIns.Add(row);
-                }
+                models.Add(modelId, model, null);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, rowsIns).Build() +
-                   new QueryBuilder.SQLUpdate(rowsUpd).Build();
+            var entries = models.Keys();
+            var modelsDb = SQLDatabase.GetDict<uint, ModelData>(entries);
+            return SQLUtil.CompareDicts(models, modelsDb, StoreNameType.None, "modelid");
         }
 
         public static string NpcTrainer()
