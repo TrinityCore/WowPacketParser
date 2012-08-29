@@ -142,7 +142,7 @@ namespace WowPacketParser.SQL.Builders
                 rows.Add(row);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, rows, ignore: true, withDelete: false, deleteDuplicates: true).Build();
+            return new QueryBuilder.SQLInsert(tableName, rows, ignore: true, withDelete: false).Build();
         }
     }
 }

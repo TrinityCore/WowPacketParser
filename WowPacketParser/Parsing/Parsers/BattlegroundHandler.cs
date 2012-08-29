@@ -1108,17 +1108,13 @@ namespace WowPacketParser.Parsing.Parsers
             guid[4] = packet.ReadBit();
 
             if (hasSecondGuid)
-            {
                 guid2 = packet.StartBitStream(7, 3, 0, 4, 2, 6, 1, 5);
-            }
 
             guid[3] = packet.ReadBit();
             guid[2] = packet.ReadBit();
 
             if (hasSecondGuid)
-            {
                 packet.ParseBitStream(guid2, 2, 5, 3, 0, 4, 6, 1, 7);
-            }
 
             packet.ReadBoolean("Accepted");
 
@@ -1578,7 +1574,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_FAILED)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_FAILED)] // 4.3.4\
         public static void HandleBattlefieldStatusFailed(Packet packet)
         {
             var guid1 = new byte[8];
@@ -1651,7 +1647,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid3", guid3);
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_ACTIVE)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_ACTIVE)] // 4.3.4
         public static void HandleBattlefieldStatusActive(Packet packet)
         {
             var guid1 = new byte[8];
@@ -1717,7 +1713,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_NEEDCONFIRMATION)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_NEEDCONFIRMATION)] // 4.3.4
         public static void HandleBattlefieldStatusNeedConfirmation(Packet packet)
         {
 
@@ -1772,7 +1768,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("BG Guid", guid2);
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_WAITFORGROUPS)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_WAITFORGROUPS)] // 4.3.4
         public static void HandleBattlefieldStatusWaitForGroups(Packet packet)
         {
             packet.ReadByte("Unk Byte");

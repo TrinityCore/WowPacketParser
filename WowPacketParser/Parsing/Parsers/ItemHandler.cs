@@ -924,7 +924,7 @@ namespace WowPacketParser.Parsing.Parsers
                     // In this single (?) case, map 0 means no map
                     var map = packet.ReadInt32();
                     item.MapId = map;
-                    packet.WriteLine("Map ID: " + (map != 0 ? StoreGetters.GetName(StoreNameType.Map, (int)map) : map + " (No map)"));
+                    packet.WriteLine("Map ID: " + (map != 0 ? StoreGetters.GetName(StoreNameType.Map, map) : map + " (No map)"));
                     item.BagFamily = packet.ReadEnum<BagFamilyMask>("Bag Family", TypeCode.Int32);
                     item.TotemCategory = packet.ReadEnum<TotemCategory>("Totem Category", TypeCode.Int32);
 
@@ -946,7 +946,7 @@ namespace WowPacketParser.Parsing.Parsers
                     item.CurrencySubstitutionId = packet.ReadUInt32("Currency Substitution Id");
                     item.CurrencySubstitutionCount = packet.ReadUInt32("Currency Substitution Count");
 
-                    Storage.ObjectNames.Add(itemId, new ObjectName() { ObjectType = ObjectType.Item, Name = item.Name }, packet.TimeSpan);
+                    Storage.ObjectNames.Add(itemId, new ObjectName { ObjectType = ObjectType.Item, Name = item.Name }, packet.TimeSpan);
                     break;
                 }
                 case 0x6D8A2694: // KeyChain

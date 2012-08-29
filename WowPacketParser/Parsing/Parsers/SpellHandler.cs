@@ -522,8 +522,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var missCount = packet.ReadByte("Miss Count");
                 for (var i = 0; i < missCount; i++)
                 {
-                    var missGuid = packet.ReadGuid("Miss GUID", i);
-                    packet.WriteLine("Miss GUID " + i + ": " + missGuid);
+                    packet.ReadGuid("Miss GUID", i);
 
                     var missType = packet.ReadEnum<SpellMissType>("Miss Type", TypeCode.Byte, i);
                     if (missType != SpellMissType.Reflect)

@@ -1621,7 +1621,7 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var i = 0; i < size; i++)
                 {
                     var type = packet.ReadEnum<GuildBankEventLogType>("Bank Log Event Type", TypeCode.Byte, i);
-                    packet.ReadGuid("[" + i + "] GUID", i);
+                    packet.ReadGuid("GUID", i);
                     if (type == GuildBankEventLogType.BuySlot)
                         packet.ReadUInt32("Cost", i);
                     else

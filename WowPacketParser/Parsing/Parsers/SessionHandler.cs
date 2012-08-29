@@ -2,7 +2,6 @@ using System;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.Store.Objects;
 using Guid=WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -558,27 +557,21 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_KICK_REASON)]
         public static void HandleKickReason(Packet packet)
         {
-            var reason = (KickReason)packet.ReadByte();
-            packet.WriteLine("Reason: " + reason);
+            packet.ReadEnum<KickReason>("Reason", TypeCode.Byte);
 
             if (!packet.CanRead())
                 return;
 
-            var str = packet.ReadCString();
-            packet.WriteLine("Unk String: " + str);
+            packet.ReadCString("Unk String");
         }
 
         [Parser(Opcode.SMSG_MOTD)]
         public static void HandleMessageOfTheDay(Packet packet)
         {
-            var lineCount = packet.ReadInt32();
-            packet.WriteLine("Line Count: " + lineCount);
+            var lineCount = packet.ReadInt32("Line Count");
 
             for (var i = 0; i < lineCount; i++)
-            {
-                var lineStr = packet.ReadCString();
-                packet.WriteLine("Line " + i + ": " + lineStr);
-            }
+                packet.ReadCString("Line", i);
         }
     }
 }

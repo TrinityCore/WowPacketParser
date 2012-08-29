@@ -395,10 +395,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleTutorialFlags(Packet packet)
         {
             for (var i = 0; i < 8; i++)
-            {
-                var flag = packet.ReadInt32();
-                packet.WriteLine("Flags " + i + ": 0x" + flag.ToString("X8"));
-            }
+                packet.ReadInt32("Flag", i);
         }
 
         [Parser(Opcode.CMSG_AREATRIGGER)]
