@@ -447,8 +447,6 @@ namespace WowPacketParser.SQL.Builders
             if (units.Count == 0)
                 return string.Empty;
 
-            const string tableName = "creature_template";
-
             var levels = GetLevels(units);
 
             var templates = new StoreDictionary<uint, UnitTemplateNonWDB>();
