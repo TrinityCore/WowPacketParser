@@ -16,6 +16,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("rangeattacktime")] public uint RangedAttackTime;
         [DBFieldName("unit_class")] public uint UnitClass;
         [DBFieldName("unit_flags")] public uint UnitFlag;
+        [DBFieldName("unit_flags2")] public uint UnitFlag2;
         [DBFieldName("dynamicflags")] public uint DynamicFlag;
         [DBFieldName("VehicleId")] public uint VehicleId;
         [DBFieldName("HoverHeight")] public float HoverHeight;
