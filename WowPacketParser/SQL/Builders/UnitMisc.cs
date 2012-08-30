@@ -451,7 +451,7 @@ namespace WowPacketParser.SQL.Builders
 
             var levels = GetLevels(units);
 
-            var templates = new Dictionary<uint, UnitTemplateNonWDB>();
+            var templates = new StoreDictionary<uint, UnitTemplateNonWDB>();
             foreach (var unit in units)
             {
                 if (templates.ContainsKey(unit.Key.GetEntry()))
@@ -464,6 +464,7 @@ namespace WowPacketParser.SQL.Builders
                     MinLevel = levels[unit.Key.GetEntry()].Item1,
                     MaxLevel = levels[unit.Key.GetEntry()].Item2,
                     Faction = npc.Faction.GetValueOrDefault(35),
+                    Faction2 = npc.Faction.GetValueOrDefault(35),
                     NpcFlag = (uint) npc.NpcFlags.GetValueOrDefault(NPCFlags.None),
                     SpeedWalk = npc.Movement.RunSpeed,
                     SpeedRun = npc.Movement.WalkSpeed,
@@ -489,82 +490,11 @@ namespace WowPacketParser.SQL.Builders
                 template.UnitFlag &= ~(uint)UnitFlags.Silenced;
                 template.UnitFlag &= ~(uint)UnitFlags.PossessedByPlayer;
 
-                templates.Add(unit.Key.GetEntry(), template);
+                templates.Add(unit.Key.GetEntry(), template, null);
             }
 
-
-            var db = SQLDatabase.GetDict<uint, UnitTemplateNonWDB>(templates.Keys.ToList());
-            if (db == null)
-                return "";
-
-            var rows = new List<QueryBuilder.SQLUpdateRow>();
-            foreach (var unit in templates)
-            {
-                var row = new QueryBuilder.SQLUpdateRow();
-                var npcLocal = unit.Value;
-                UnitTemplateNonWDB npcRemote;
-                if (!db.TryGetValue(unit.Key, out npcRemote))
-                    continue;
-
-                if (!Utilities.EqualValues(npcLocal.GossipMenuId, npcRemote.GossipMenuId))
-                    row.AddValue("gossip_menu_id", npcLocal.GossipMenuId);
-
-                if (!Utilities.EqualValues(npcLocal.MinLevel, npcRemote.MinLevel))
-                    row.AddValue("minlevel", npcLocal.MinLevel);
-
-                if (!Utilities.EqualValues(npcLocal.MaxLevel, npcRemote.MaxLevel))
-                    row.AddValue("maxlevel", npcLocal.MaxLevel);
-
-                if (!Utilities.EqualValues(npcLocal.Faction, npcRemote.Faction))
-                {
-                    row.AddValue("faction_A", npcLocal.Faction);
-                    row.AddValue("faction_H", npcLocal.Faction);
-                }
-
-                if (!Utilities.EqualValues(npcLocal.NpcFlag, npcRemote.NpcFlag))
-                    row.AddValue("npcflag", npcLocal.NpcFlag);
-
-                if (!Utilities.EqualValues(npcLocal.SpeedWalk, npcRemote.SpeedWalk))
-                    row.AddValue("speed_walk", npcLocal.SpeedWalk);
-
-                if (!Utilities.EqualValues(npcLocal.SpeedRun, npcRemote.SpeedRun))
-                    row.AddValue("speed_run", npcLocal.SpeedRun);
-
-                if (!Utilities.EqualValues(npcLocal.BaseAttackTime, npcRemote.BaseAttackTime))
-                    row.AddValue("baseattacktime", npcLocal.BaseAttackTime);
-
-                if (!Utilities.EqualValues(npcLocal.RangedAttackTime, npcRemote.RangedAttackTime))
-                    row.AddValue("rangeattacktime", npcLocal.RangedAttackTime);
-
-                if (!Utilities.EqualValues(npcLocal.UnitClass, npcRemote.UnitClass))
-                    row.AddValue("unit_class", npcLocal.UnitClass);
-
-                if (!Utilities.EqualValues(npcLocal.UnitFlag, npcRemote.UnitFlag))
-                    row.AddValue("unit_flags", npcLocal.UnitFlag);
-
-                if (!Utilities.EqualValues(npcLocal.UnitFlag2, npcRemote.UnitFlag2))
-                    row.AddValue("unit_flags2", npcLocal.UnitFlag2);
-
-                if (!Utilities.EqualValues(npcLocal.DynamicFlag, npcRemote.DynamicFlag))
-                    row.AddValue("dynamicflags", npcLocal.DynamicFlag);
-
-                if (!Utilities.EqualValues(npcLocal.VehicleId, npcRemote.VehicleId))
-                    row.AddValue("VehicleId", npcLocal.VehicleId);
-
-                if (!Utilities.EqualValues(npcLocal.HoverHeight, npcRemote.HoverHeight))
-                    row.AddValue("HoverHeight", npcLocal.HoverHeight);
-
-
-                if (row.ValueCount != 0)
-                {
-                    row.AddWhere("entry", unit.Key);
-                    row.Table = tableName;
-                    row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int) unit.Key, false);
-                    rows.Add(row);
-                }
-            }
-
-            return new QueryBuilder.SQLUpdate(rows).Build();
+            var templatesDb = SQLDatabase.GetDict<uint, UnitTemplateNonWDB>(templates.Keys());
+            return SQLUtil.CompareDicts(templates, templatesDb, StoreNameType.Unit);
         }
 
         public static string SpellsX()
