@@ -63,14 +63,13 @@ namespace WowPacketParser.SQL.Builders
 
             // Build a dictionary with model data; model is the key
             var models = new StoreDictionary<uint, ModelData>();
-            foreach (var unit in units)
+            foreach (var npc in units.Select(unit => unit.Value))
             {
-                var npc = unit.Value;
-
-                if (npc.Model == null)
+                uint modelId;
+                if (npc.Model.HasValue)
+                    modelId = npc.Model.Value;
+                else
                     continue;
-
-                var modelId = (uint)npc.Model;
 
                 // Do not add duplicate models
                 if (models.ContainsKey(modelId))
@@ -472,6 +471,7 @@ namespace WowPacketParser.SQL.Builders
                     RangedAttackTime = npc.RangedTime.GetValueOrDefault(2000),
                     UnitClass = (uint) npc.Class.GetValueOrDefault(Class.Warrior),
                     UnitFlag = (uint) npc.UnitFlags.GetValueOrDefault(UnitFlags.None),
+                    UnitFlag2 = (uint) npc.UnitFlags2.GetValueOrDefault(UnitFlags2.None),
                     DynamicFlag = (uint) npc.DynamicFlags.GetValueOrDefault(UnitDynamicFlags.None),
                     VehicleId = npc.Movement.VehicleId,
                     HoverHeight = npc.HoverHeight.GetValueOrDefault(1.0f)
@@ -542,6 +542,9 @@ namespace WowPacketParser.SQL.Builders
                 if (!Utilities.EqualValues(npcLocal.UnitFlag, npcRemote.UnitFlag))
                     row.AddValue("unit_flags", npcLocal.UnitFlag);
 
+                if (!Utilities.EqualValues(npcLocal.UnitFlag2, npcRemote.UnitFlag2))
+                    row.AddValue("unit_flags2", npcLocal.UnitFlag2);
+
                 if (!Utilities.EqualValues(npcLocal.DynamicFlag, npcRemote.DynamicFlag))
                     row.AddValue("dynamicflags", npcLocal.DynamicFlag);
 
@@ -583,20 +586,20 @@ namespace WowPacketParser.SQL.Builders
             // For each sound and emote, if the time they were send is in the +1/-1 seconds range of
             // our texts, add that sound and emote to our Storage.CreatureTexts
 
-            foreach (KeyValuePair<uint, ICollection<Tuple<CreatureText, TimeSpan?>>> text in Storage.CreatureTexts)
+            foreach (var text in Storage.CreatureTexts)
             {
                 // For each text
-                foreach (Tuple<CreatureText, TimeSpan?> textValue in text.Value)
+                foreach (var textValue in text.Value)
                 {
                     // For each emote
-                    foreach (KeyValuePair<Guid, ICollection<Tuple<EmoteType, TimeSpan?>>> emote in Storage.Emotes)
+                    foreach (var emote in Storage.Emotes)
                     {
                         // Emote packets always have a sender (guid);
                         // skip this one if it was sent by a different creature
                         if (emote.Key.GetEntry() != text.Key)
                             continue;
 
-                        foreach (Tuple<EmoteType, TimeSpan?> emoteValue in emote.Value)
+                        foreach (var emoteValue in emote.Value)
                         {
                             var timeSpan = textValue.Item2 - emoteValue.Item2;
                             if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
@@ -605,7 +608,7 @@ namespace WowPacketParser.SQL.Builders
                     }
 
                     // For each sound
-                    foreach (Tuple<uint, TimeSpan?> sound in Storage.Sounds)
+                    foreach (var sound in Storage.Sounds)
                     {
                         var timeSpan = textValue.Item2 - sound.Item2;
                         if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
@@ -614,7 +617,7 @@ namespace WowPacketParser.SQL.Builders
                 }
             }
 
-            /* DB comparer not implemented yet
+            /* can't use compare DB without knowing values of groupid or id
             var entries = Storage.CreatureTexts.Keys.ToList();
             var creatureTextDb = SQLDatabase.GetDict<uint, CreatureText>(entries);
             */
@@ -622,9 +625,9 @@ namespace WowPacketParser.SQL.Builders
             const string tableName = "creature_text";
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (KeyValuePair<uint, ICollection<Tuple<CreatureText, TimeSpan?>>> text in Storage.CreatureTexts)
+            foreach (var text in Storage.CreatureTexts)
             {
-                foreach (Tuple<CreatureText, TimeSpan?> textValue in text.Value)
+                foreach (var textValue in text.Value)
                 {
                     var row = new QueryBuilder.SQLInsertRow();
 
