@@ -4,6 +4,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.SQL.Builders
 {
@@ -143,6 +144,44 @@ namespace WowPacketParser.SQL.Builders
             }
 
             return new QueryBuilder.SQLInsert(tableName, rows, ignore: true, withDelete: false).Build();
+        }
+
+        // Non-WDB data but nevertheless data that should be saved to gameobject_template
+
+        public static string GameobjectTemplateNonWDB(Dictionary<Guid, GameObject> gameobjects)
+        {
+            if (gameobjects.Count == 0)
+                return String.Empty;
+
+            var templates = new StoreDictionary<uint, GameObjectTemplateNonWDB>();
+            foreach (var goT in gameobjects)
+            {
+                if (templates.ContainsKey(goT.Key.GetEntry()))
+                    continue;
+
+                var go = goT.Value;
+                var template = new GameObjectTemplateNonWDB
+                                   {
+                                       Size = go.Size.GetValueOrDefault(1.0f),
+                                       Faction = go.Faction.GetValueOrDefault(0),
+                                       Flags = go.Flags.GetValueOrDefault(GameObjectFlag.None)
+                                   };
+
+                if (template.Faction == 1 || template.Faction == 2 || template.Faction == 3 ||
+                    template.Faction == 4 || template.Faction == 5 || template.Faction == 6 ||
+                    template.Faction == 115 || template.Faction == 116 || template.Faction == 1610 ||
+                    template.Faction == 1629 || template.Faction == 2203 || template.Faction == 2204) // player factions
+                    template.Faction = 0;
+
+                template.Flags &= ~GameObjectFlag.Triggered;
+                template.Flags &= ~GameObjectFlag.Damaged;
+                template.Flags &= ~GameObjectFlag.Destroyed;
+
+                templates.Add(goT.Key.GetEntry(), template, null);
+            }
+
+            var templatesDb = SQLDatabase.GetDict<uint, GameObjectTemplateNonWDB>(templates.Keys());
+            return SQLUtil.CompareDicts(templates, templatesDb, StoreNameType.GameObject);
         }
     }
 }

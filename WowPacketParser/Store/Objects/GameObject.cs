@@ -5,6 +5,18 @@ namespace WowPacketParser.Store.Objects
 {
     public sealed class GameObject : WoWObject
     {
+        // Fields from UPDATE_FIELDS
+        public float? Size;
+        public uint? Faction;
+        public GameObjectFlag? Flags;
+
+        public void LoadValuesFromUpdateFields()
+        {
+            Size = UpdateFields.GetValue<ObjectField, float?>(ObjectField.OBJECT_FIELD_SCALE_X);
+            Faction = UpdateFields.GetValue<GameObjectField, uint?>(GameObjectField.GAMEOBJECT_FACTION);
+            Flags = UpdateFields.GetValue<GameObjectField, GameObjectFlag?>(GameObjectField.GAMEOBJECT_FLAGS);
+        }
+
         public override bool IsTemporarySpawn()
         {
             // If our gameobject got the following update field set,

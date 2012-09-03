@@ -525,10 +525,8 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadGuid("Miss GUID", i);
 
                     var missType = packet.ReadEnum<SpellMissType>("Miss Type", TypeCode.Byte, i);
-                    if (missType != SpellMissType.Reflect)
-                        continue;
-
-                    packet.ReadEnum<SpellMissType>("Miss Reflect", TypeCode.Byte, i);
+                    if (missType == SpellMissType.Reflect)
+                        packet.ReadEnum<SpellMissType>("Miss Reflect", TypeCode.Byte, i);
                 }
             }
 
