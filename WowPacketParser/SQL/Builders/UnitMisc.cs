@@ -86,7 +86,7 @@ namespace WowPacketParser.SQL.Builders
             }
 
             var entries = models.Keys();
-            var modelsDb = SQLDatabase.GetDict<uint, ModelData>(entries);
+            var modelsDb = SQLDatabase.GetDict<uint, ModelData>(entries, "modelid");
             return SQLUtil.CompareDicts(models, modelsDb, StoreNameType.None, "modelid");
         }
 

@@ -161,11 +161,11 @@ namespace WowPacketParser.SQL.Builders
 
                 var go = goT.Value;
                 var template = new GameObjectTemplateNonWDB
-                                   {
-                                       Size = go.Size.GetValueOrDefault(1.0f),
-                                       Faction = go.Faction.GetValueOrDefault(0),
-                                       Flags = go.Flags.GetValueOrDefault(GameObjectFlag.None)
-                                   };
+                {
+                    Size = go.Size.GetValueOrDefault(1.0f),
+                    Faction = go.Faction.GetValueOrDefault(0),
+                    Flags = go.Flags.GetValueOrDefault(GameObjectFlag.None)
+                };
 
                 if (template.Faction == 1 || template.Faction == 2 || template.Faction == 3 ||
                     template.Faction == 4 || template.Faction == 5 || template.Faction == 6 ||
