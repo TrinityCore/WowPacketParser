@@ -313,6 +313,8 @@
     <Compile Include="Enums\Version\V4_3_4_15595\Opcodes.cs" />
     <Compile Include="Enums\Version\V4_3_4_15595\SplineFlag434.cs" />
     <Compile Include="Enums\Version\V4_3_4_15595\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V5_0_4_16016\Opcodes.cs" />
+    <Compile Include="Enums\Version\V5_0_4_16016\UpdateFields.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\VoidTransferError.cs" />
     <Compile Include="Enums\WardenCheckType.cs" />
