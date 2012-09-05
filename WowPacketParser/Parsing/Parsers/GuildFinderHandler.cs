@@ -329,7 +329,39 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        // TODO: CMSG_LF_GUILD_ADD_RECRUIT
+        [Parser(Opcode.CMSG_LF_GUILD_ADD_RECRUIT)]
+        public static void HandleLFGuildAddRecruit(Packet packet)
+        {
+            var guid = new byte[8];
+            // Order not confirmed
+            packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32);
+
+            guid[3] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            var comment = packet.ReadBits("Comment length", 11);
+            guid[5] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            var player = packet.ReadBits("Name length", 7);
+            guid[2] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadWoWString("Comment", comment);
+            packet.ReadWoWString("Player name", player);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 3);
+
+            packet.WriteGuid("Guild GUID", guid);
+        }
 
         [Parser(Opcode.CMSG_LF_GUILD_POST_REQUEST)]
         [Parser(Opcode.CMSG_LF_GUILD_GET_APPLICATIONS)]
