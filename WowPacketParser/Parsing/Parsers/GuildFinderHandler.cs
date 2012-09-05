@@ -32,8 +32,8 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadEnum<GuildFinderOptionsLevel>("Level", TypeCode.UInt32);
             packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32);
-            packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32);
             packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32);
             var length = packet.ReadBits(11);
             packet.ReadBit("Listed");
             packet.ReadWoWString("Comment", length);
