@@ -30,11 +30,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LF_GUILD_SET_GUILD_POST, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildFinderSetGuildPost434(Packet packet)
         {
-            // order for the next 4 ints not confirmed
-            packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsLevel>("Level", TypeCode.UInt32);
             packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32);
             packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32);
-            packet.ReadEnum<GuildFinderOptionsLevel>("Level", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32);
             var length = packet.ReadBits(11);
             packet.ReadBit("Listed");
             packet.ReadWoWString("Comment", length);
@@ -151,7 +150,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadInt32("Tabard Emblem Color", i);
-                packet.ReadInt32("Unk Int 1", i); // + 140
+                packet.ReadInt32("Tabard Border Style", i); // Guessed from sniffs
                 packet.ReadInt32("Tabard Icon", i);
                 packet.ReadWoWString("Comment", strlen[i][0], i);
                 packet.ReadBoolean("Cached", i);
@@ -179,7 +178,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guids[i], 1);
 
                 packet.ReadInt32("Tabard Background Color", i);
-                packet.ReadInt32("Unk Int 2", i); // + 128
+                packet.ReadInt32("Unk Int 2", i); // + 128 (Always 0 or 1)
                 packet.ReadInt32("Tabard Border Color", i);
                 packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32, i);
 
