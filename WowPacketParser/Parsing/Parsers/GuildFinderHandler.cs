@@ -234,8 +234,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Player level", i);
 
                 packet.ReadXORByte(guids[i], 6);
-                packet.ReadXORByte(guids[i], 2);
                 packet.ReadXORByte(guids[i], 7);
+                packet.ReadXORByte(guids[i], 2);
 
                 packet.ReadInt32("Time Since", i); // Time (in seconds) since the application was submitted.
                 packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32, i);
