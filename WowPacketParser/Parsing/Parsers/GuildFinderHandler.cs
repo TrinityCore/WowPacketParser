@@ -310,7 +310,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteGuid("Guid", guids[i], i);
             }
 
-            packet.ReadInt32("Unk int");
+            packet.ReadInt32("Left applications count");
         }
 
         [Parser(Opcode.CMSG_LF_GUILD_DECLINE_RECRUIT)] // 4.3.4
