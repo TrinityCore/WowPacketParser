@@ -1244,11 +1244,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GUILD_XP)]
         public static void HandleGuildXP(Packet packet)
         {
-            packet.ReadUInt64("Member Today XP");
-            packet.ReadUInt64("Remaining XP for next Level");
-            packet.ReadUInt64("Remaining Member Weekly XP");
-            packet.ReadUInt64("Current Guild XP");
-            packet.ReadUInt64("Today Guild XP");
+            packet.ReadUInt64("Member Total XP");
+            packet.ReadUInt64("Guild XP for next Level");
+            packet.ReadUInt64("Guild XP Today");
+            packet.ReadUInt64("Member Weekly XP");
+            packet.ReadUInt64("Guild Current XP");
         }
 
         [Parser(Opcode.SMSG_GUILD_NEWS_UPDATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
