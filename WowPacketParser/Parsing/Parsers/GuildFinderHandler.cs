@@ -42,7 +42,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LF_GUILD_POST_UPDATED)]
         public static void HandleGuildFinderPostUpdated(Packet packet)
         {
-            var b = packet.ReadBit("Unk Bit");
+            var b = packet.ReadBit("Unk Bit"); // Can set settings ?
 
             if (b != 0)
             {
@@ -225,7 +225,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadXORByte(guids[i], 4);
 
-                packet.ReadInt32("Unk Int32 1", i);
+                packet.ReadInt32("Unk Int32 1", i); // Is expired ?
 
                 packet.ReadXORByte(guids[i], 3);
                 packet.ReadXORByte(guids[i], 0);
@@ -256,7 +256,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadTime("Unk Time");
         }
 
-        // NOT TESTED
         [Parser(Opcode.SMSG_LF_GUILD_MEMBERSHIP_LIST_UPDATED)]
         public static void HandlerLFGuildMembershipListUpdated(Packet packet)
         {
@@ -286,11 +285,11 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadXORByte(guids[i], 2);
 
-                packet.ReadWoWString("Unk string", strlen[i][0], i);
+                packet.ReadWoWString("Guild name", strlen[i][0], i);
 
                 packet.ReadXORByte(guids[i], 5);
 
-                packet.ReadWoWString("Unk string", strlen[i][1], i);
+                packet.ReadWoWString("Request comment", strlen[i][1], i);
                 packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32, i);
                 packet.ReadInt32("Time Left", i);
 
@@ -333,20 +332,20 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLFGuildAddRecruit(Packet packet)
         {
             var guid = new byte[8];
-            // Order not confirmed
-            packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32);
+
             packet.ReadEnum<GuildFinderOptionsRoles>("Class Roles", TypeCode.UInt32);
             packet.ReadEnum<GuildFinderOptionsInterest>("Guild Interests", TypeCode.UInt32);
+            packet.ReadEnum<GuildFinderOptionsAvailability>("Availability", TypeCode.UInt32);
 
             guid[3] = packet.ReadBit();
             guid[0] = packet.ReadBit();
             guid[6] = packet.ReadBit();
             guid[1] = packet.ReadBit();
-            var comment = packet.ReadBits("Comment length", 11);
+            var comment = packet.ReadBits(11);
             guid[5] = packet.ReadBit();
             guid[4] = packet.ReadBit();
             guid[7] = packet.ReadBit();
-            var player = packet.ReadBits("Name length", 7);
+            var player = packet.ReadBits(7);
             guid[2] = packet.ReadBit();
 
             packet.ReadXORByte(guid, 4);
