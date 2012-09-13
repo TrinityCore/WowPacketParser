@@ -1013,6 +1013,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk Uint32");
         }
 
+        [Parser(Opcode.SMSG_AREA_TRIGGER_MESSAGE)]
+        public static void HandleAreaTriggerMessage(Packet packet)
+        {
+            var length = packet.ReadUInt32("Length");
+            packet.ReadWoWString("Text", length);
+        }
+
         [Parser(Opcode.SMSG_MINIGAME_STATE)]
         [Parser(Opcode.CMSG_KEEP_ALIVE)]
         [Parser(Opcode.CMSG_TUTORIAL_RESET)]

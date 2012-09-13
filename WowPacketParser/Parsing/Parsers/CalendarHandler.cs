@@ -26,7 +26,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < eventCount; i++)
             {
                 packet.ReadInt64("Event ID", i);
-                packet.ReadCString("Event Title ", i);
+                packet.ReadCString("Event Title", i);
                 packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Int32, i);
                 packet.ReadPackedTime("Event Time", i);
                 packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32, i);
@@ -376,7 +376,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<CalendarEventType>("Type", TypeCode.Int32);
             packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
             packet.ReadInt64("Invite ID");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15050))
             {
                 packet.ReadInt64("Unk Int64");
             }
