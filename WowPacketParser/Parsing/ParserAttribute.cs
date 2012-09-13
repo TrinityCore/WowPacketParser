@@ -36,6 +36,22 @@ namespace WowPacketParser.Parsing
             Opcode = opcode;
         }
 
+        public ParserAttribute(int opcode, ClientVersionBuild addedInVersion)
+        {
+            if (ClientVersion.AddedInVersion(addedInVersion))
+                Opcode = opcode;
+            else
+                Opcode = 0;
+        }
+
+        public ParserAttribute(int opcode, ClientVersionBuild addedInVersion, ClientVersionBuild removedInVersion)
+        {
+            if (ClientVersion.AddedInVersion(addedInVersion) && ClientVersion.RemovedInVersion(removedInVersion))
+                Opcode = opcode;
+            else
+                Opcode = 0;
+        }
+
         public int Opcode { get; private set; }
     }
 }

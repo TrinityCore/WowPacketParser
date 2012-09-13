@@ -19,7 +19,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int 32"); //error related
         }
 
-        [Parser(17958)] // 4.3.4
+        [Parser(17958, ClientVersionBuild.V4_3_4_15595)] // 4.3.4
         [Parser(18997)] // 4.3.4
         [Parser(26389)] // 4.3.4
         [Parser(3860)] // 4.3.4
