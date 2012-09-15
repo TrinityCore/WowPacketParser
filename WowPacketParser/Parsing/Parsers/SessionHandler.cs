@@ -11,7 +11,7 @@ namespace WowPacketParser.Parsing.Parsers
     public static class SessionHandler
     {
         public static Guid LoginGuid;
-        public static ZlibCodec z_stream = new ZlibCodec(CompressionMode.Decompress);
+        public static ZlibCodec[] z_streams = new ZlibCodec[2];
 
         [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1a_13205)]
         public static void HandleServerAuthChallenge(Packet packet)
@@ -581,7 +581,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleResetCompressionContext(Packet packet)
         {
             packet.ReadInt32("Unk?");
-            SessionHandler.z_stream = new Ionic.Zlib.ZlibCodec(Ionic.Zlib.CompressionMode.Decompress);
+            z_streams[packet.ConnectionIndex] = new ZlibCodec(CompressionMode.Decompress);
         }
     }
 }

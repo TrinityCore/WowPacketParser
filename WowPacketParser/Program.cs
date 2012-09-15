@@ -8,6 +8,8 @@ using WowPacketParser.Enums;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
+using WowPacketParser.Parsing.Parsers;
+using Ionic.Zlib;
 
 namespace WowPacketParser
 {
@@ -59,6 +61,8 @@ namespace WowPacketParser
             var count = 0;
             foreach (var file in files)
             {
+                SessionHandler.z_streams[0] = new ZlibCodec(CompressionMode.Decompress);
+                SessionHandler.z_streams[1] = new ZlibCodec(CompressionMode.Decompress);
                 ClientVersion.SetVersion(Settings.ClientBuild);
                 new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count),
                               Settings.SQLOutput).ProcessFile();

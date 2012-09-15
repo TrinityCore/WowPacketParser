@@ -64,6 +64,7 @@ namespace WowPacketParser.Misc
         public string FileName { get; private set; }
         public ParsedStatus Status { get; set; }
         public bool WriteToFile { get; private set; }
+        public int ConnectionIndex { get; set; }
 
         public void AddSniffData(StoreNameType type, int id, string data)
         {
@@ -94,15 +95,19 @@ namespace WowPacketParser.Misc
         {
             var arr = ReadToEnd();
             var newarr = new byte[inflatedSize];
+            
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_0_15005))
+                keepStream = false;
+                
             if (keepStream)
             {
-                SessionHandler.z_stream.InputBuffer = arr;
-                SessionHandler.z_stream.NextIn = 0;
-                SessionHandler.z_stream.AvailableBytesIn = arr.Length;
-                SessionHandler.z_stream.OutputBuffer = newarr;
-                SessionHandler.z_stream.NextOut = 0;
-                SessionHandler.z_stream.AvailableBytesOut = inflatedSize;
-                SessionHandler.z_stream.Inflate(FlushType.Sync);
+                SessionHandler.z_streams[ConnectionIndex].InputBuffer = arr;
+                SessionHandler.z_streams[ConnectionIndex].NextIn = 0;
+                SessionHandler.z_streams[ConnectionIndex].AvailableBytesIn = arr.Length;
+                SessionHandler.z_streams[ConnectionIndex].OutputBuffer = newarr;
+                SessionHandler.z_streams[ConnectionIndex].NextOut = 0;
+                SessionHandler.z_streams[ConnectionIndex].AvailableBytesOut = inflatedSize;
+                SessionHandler.z_streams[ConnectionIndex].Inflate(FlushType.Sync);
             }
             else
             {
@@ -132,6 +137,7 @@ namespace WowPacketParser.Misc
 
             // Cannot use "using" here
             var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, FileName);
+            pkt.ConnectionIndex = ConnectionIndex;
             return pkt;
         }
 
@@ -146,9 +152,9 @@ namespace WowPacketParser.Misc
 
         public string GetHeader(bool isMultiple = false)
         {
-            return string.Format("{0}: {1} (0x{2}) Length: {3} Time: {4} Number: {5}{6}",
+            return string.Format("{0}: {1} (0x{2}) Length: {3} ConnectionIndex: {4} Time: {5} Number: {6}{7}",
                 Direction, Enums.Version.Opcodes.GetOpcodeName(Opcode), Opcode.ToString("X4"),
-                Length, Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
+                Length, ConnectionIndex, Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
                 Number, isMultiple ? " (part of another packet)" : "");
         }
 

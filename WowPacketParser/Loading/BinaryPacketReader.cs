@@ -123,6 +123,7 @@ namespace WowPacketParser.Loading
             DateTime time;
             Direction direction;
             byte[] data;
+            int cIndex = 0;
 
             if (_sniffType == SniffType.Pkt)
             {
@@ -163,7 +164,7 @@ namespace WowPacketParser.Loading
                         }
                         else
                         {
-                            _reader.ReadUInt32(); // session id
+                            cIndex = (int)_reader.ReadUInt32(); // session id, connection index
                             var tickCount = _reader.ReadUInt32();
                             time = _startTime.AddMilliseconds(tickCount - _startTickCount);
                         }
@@ -201,6 +202,7 @@ namespace WowPacketParser.Loading
                 return null;
 
             var packet = new Packet(data, opcode, time, direction, number, Path.GetFileName(fileName));
+            packet.ConnectionIndex = cIndex;
             return packet;
         }
 

@@ -13,9 +13,9 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Unk Byte");
         }
 
-        [Parser(0x8703)]
-        [Parser(0x8C1E)]
-        [Parser(0x9431)]
+        [Parser(0x8703, ClientVersionBuild.V4_3_0_15005)] // 4.3.0
+        [Parser(0x8C1E, ClientVersionBuild.V4_3_0_15005)] // 4.3.0
+        [Parser(0x9431, ClientVersionBuild.V4_3_0_15005)] // 4.3.0
         public static void HandleGenericCompressed(Packet packet)
         {
             using (var newpkt = packet.Inflate(packet.ReadInt32()))
