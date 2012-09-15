@@ -3,12 +3,15 @@ using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using Guid=WowPacketParser.Misc.Guid;
+using Ionic.Zlib;
+using System.IO;
 
 namespace WowPacketParser.Parsing.Parsers
 {
     public static class SessionHandler
     {
         public static Guid LoginGuid;
+        public static ZlibCodec z_stream = new ZlibCodec(CompressionMode.Decompress);
 
         [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1a_13205)]
         public static void HandleServerAuthChallenge(Packet packet)
@@ -572,6 +575,13 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < lineCount; i++)
                 packet.ReadCString("Line", i);
+        }
+
+        [Parser(Opcode.SMSG_RESET_COMPRESSION_CONTEXT)]
+        public static void HandleResetCompressionContext(Packet packet)
+        {
+            packet.ReadInt32("Unk?");
+            SessionHandler.z_stream = new Ionic.Zlib.ZlibCodec(Ionic.Zlib.CompressionMode.Decompress);
         }
     }
 }

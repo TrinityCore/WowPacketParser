@@ -658,7 +658,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleDBReply(Packet packet)
         {
             packet.ReadUInt32("Type");
@@ -793,7 +793,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddSniffData(StoreNameType.Item, itemId, "DB_REPLY");
         }
 
-        [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleDBReply434(Packet packet)
         {
             var itemId = (uint)packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");

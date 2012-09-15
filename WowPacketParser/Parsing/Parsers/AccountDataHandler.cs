@@ -46,7 +46,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadTime("Login Time");
 
             var decompCount = packet.ReadInt32();
-            packet = packet.Inflate(decompCount);
+            packet = packet.Inflate(decompCount, false);
 
             packet.ReadWoWString("Account Data", decompCount);
         }

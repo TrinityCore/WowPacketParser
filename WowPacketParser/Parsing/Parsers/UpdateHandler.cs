@@ -1723,7 +1723,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.Build == ClientVersionBuild.V4_3_2_15211)
                 return ReadMovementUpdateBlock432(ref packet, guid, index);
 
-            if (ClientVersion.Build == ClientVersionBuild.V4_3_0_15005)
+            if (ClientVersion.Build == ClientVersionBuild.V4_3_0_15005 || ClientVersion.Build == ClientVersionBuild.V4_3_0_15050)
                 return ReadMovementUpdateBlock430(ref packet, guid, index);
 
             var moveInfo = new MovementInfo();

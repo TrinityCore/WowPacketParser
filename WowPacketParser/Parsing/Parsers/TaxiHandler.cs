@@ -47,7 +47,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var count = packet.ReadInt32("Count");
             for (int i = 0; i < count; ++i)
-                packet.ReadByte("Unk Byte", i);
+                packet.ReadByte("NodeMask", i);
         }
 
         [Parser(Opcode.CMSG_ACTIVATETAXI)]

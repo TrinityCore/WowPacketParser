@@ -82,6 +82,10 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ionic.Zlib, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\Ionic.Zlib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -92,10 +96,6 @@
       <HintPath>Dependencies\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="System.Configuration" />
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dependencies\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
     <Reference Include="SharpSSH, Version=2.0.0.25137, Culture=neutral, PublicKeyToken=null">
       <HintPath>Dependencies\SharpSSH.dll</HintPath>
     </Reference>

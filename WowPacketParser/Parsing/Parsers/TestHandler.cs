@@ -13,6 +13,15 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Unk Byte");
         }
 
+        [Parser(0x8703)]
+        [Parser(0x8C1E)]
+        [Parser(0x9431)]
+        public static void HandleGenericCompressed(Packet packet)
+        {
+            using (var newpkt = packet.Inflate(packet.ReadInt32()))
+                newpkt.AsHex();
+        }
+
         [Parser(18438)]
         public static void Handle18438(Packet packet)
         {

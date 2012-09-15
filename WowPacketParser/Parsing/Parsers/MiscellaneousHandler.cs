@@ -64,12 +64,14 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleCompressedMultiplePackets(Packet packet)
         {
             using (var packet2 = packet.Inflate(packet.ReadInt32()))
-                 HandleMultiplePackets(packet2);
-         }
+                HandleMultiplePackets(packet2);
+        }
 
         [Parser(Opcode.SMSG_MULTIPLE_PACKETS)]
         public static void HandleMultiplePackets(Packet packet)
         {
+            //packet.WriteLine("Starting Multiple_packets handler");
+            //packet.AsHex();
             // Testing: packet.WriteLine(packet.AsHex());
             packet.WriteLine("{");
             var i = 0;
@@ -262,7 +264,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Accept");
         }
 
-        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleFeatureSystemStatus(Packet packet)
         {
             packet.ReadByte("Unk byte");
@@ -275,6 +277,17 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Complain System Status");
                 packet.ReadInt32("Unknown Mail Url Related Value");
             }
+        }
+        
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleFeatureSystemStatus430(Packet packet)
+        {
+            packet.ReadInt32("Unk int32");
+            packet.ReadByte("Complain System Status");
+            packet.ReadInt32("Unknown Mail Url Related Value");
+            packet.ReadBit("IsVoiceChatAllowedByServer");
+            packet.ReadBit("CanSendSoRByText");
+            packet.ReadBit("HasTravelPass");
         }
 
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.V4_3_4_15595)]
