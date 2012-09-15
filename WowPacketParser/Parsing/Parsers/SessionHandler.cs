@@ -5,13 +5,14 @@ using WowPacketParser.Misc;
 using Guid=WowPacketParser.Misc.Guid;
 using Ionic.Zlib;
 using System.IO;
+using System.Collections.Generic;
 
 namespace WowPacketParser.Parsing.Parsers
 {
     public static class SessionHandler
     {
         public static Guid LoginGuid;
-        public static ZlibCodec[] z_streams = new ZlibCodec[2];
+        public static Dictionary<int, ZlibCodec> z_streams = new Dictionary<int, ZlibCodec>();
 
         [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1a_13205)]
         public static void HandleServerAuthChallenge(Packet packet)
