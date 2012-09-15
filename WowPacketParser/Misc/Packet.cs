@@ -101,6 +101,8 @@ namespace WowPacketParser.Misc
                 
             if (keepStream)
             {
+                if (!SessionHandler.z_streams.ContainsKey(ConnectionIndex))
+                    SessionHandler.z_streams[ConnectionIndex] = new ZlibCodec(CompressionMode.Decompress);
                 SessionHandler.z_streams[ConnectionIndex].InputBuffer = arr;
                 SessionHandler.z_streams[ConnectionIndex].NextIn = 0;
                 SessionHandler.z_streams[ConnectionIndex].AvailableBytesIn = arr.Length;
