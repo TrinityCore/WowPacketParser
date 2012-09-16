@@ -610,7 +610,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.SMSG_GROUP_CANCEL, 0xA627},
             {Opcode.SMSG_GROUP_DECLINE, 0x32E7},
             {Opcode.SMSG_GROUP_DESTROYED, 0x6AF6},
-            {Opcode.SMSG_GROUP_JOINED_BATTLEGROUND, 0x8707},
+            {Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED, 0x8707},
             {Opcode.SMSG_GROUP_LIST, 0xBEB3},
             {Opcode.SMSG_GROUP_SET_LEADER, 0x3A63},
             {Opcode.SMSG_GROUP_UNINVITE, 0xBE6B},

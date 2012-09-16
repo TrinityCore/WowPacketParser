@@ -797,7 +797,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_GROUP_DECLINE, 0x6835},
             {Opcode.SMSG_GROUP_DESTROYED, 0x2207},
             {Opcode.SMSG_GROUP_INVITE, 0x31B2},
-            {Opcode.SMSG_GROUP_JOINED_BATTLEGROUND, 0x35A1}, // maybe 0x71A7
+            {Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED, 0x35A1}, // maybe 0x71A7
             {Opcode.SMSG_GROUP_LIST, 0x4C24},
             {Opcode.SMSG_GROUP_SET_LEADER, 0x0526},
             {Opcode.SMSG_GROUP_SET_ROLE, 0x39A6},

@@ -518,7 +518,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid1[0] = packet.ReadBit();//32
             guid2[3] = packet.ReadBit();//59
             guid1[2] = packet.ReadBit();//34
-            packet.ReadBit("Unk Bit");//21
+            packet.ReadBit("Eligible In Queue");//21
             packet.ReadBit("Join Failed");//20
             guid2[2] = packet.ReadBit();//58
             guid1[1] = packet.ReadBit();//33
@@ -534,7 +534,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             guid1[5] = packet.ReadBit();//37
             packet.ReadBit("Unk Bit");//72
-            packet.ReadBit("Unk Bit");//28
+            packet.ReadBit("Waiting On Other Activity");//28
             guid2[1] = packet.ReadBit();//57
 
             packet.ReadXORByte(guid1, 0);
@@ -544,7 +544,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid2, 5);
             packet.ReadXORByte(guid1, 3);
 
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Estimated Wait Time");
 
             packet.ReadXORByte(guid2, 7);
             packet.ReadXORByte(guid2, 1);
@@ -564,9 +564,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid2, 0);
 
             packet.ReadTime("Time");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("QueueSlot");
             packet.ReadByte("Min Level");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Start Time");
 
             packet.ReadXORByte(guid1, 1);
             packet.ReadXORByte(guid1, 5);
@@ -1574,7 +1574,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_FAILED)] // 4.3.4\
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_FAILED)] // 4.3.4
         public static void HandleBattlefieldStatusFailed(Packet packet)
         {
             var guid1 = new byte[8];

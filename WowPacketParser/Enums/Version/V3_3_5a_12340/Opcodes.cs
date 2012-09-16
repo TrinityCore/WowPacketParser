@@ -754,7 +754,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.CMSG_GM_UNTEACH, 0x2E5},
             {Opcode.SMSG_WARDEN_DATA, 0x2E6},
             {Opcode.CMSG_WARDEN_DATA, 0x2E7},
-            {Opcode.SMSG_GROUP_JOINED_BATTLEGROUND, 0x2E8},
+            {Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED, 0x2E8},
             {Opcode.MSG_BATTLEGROUND_PLAYER_POSITIONS, 0x2E9},
             {Opcode.CMSG_PET_STOP_ATTACK, 0x2EA},
             {Opcode.SMSG_BINDER_CONFIRM, 0x2EB},

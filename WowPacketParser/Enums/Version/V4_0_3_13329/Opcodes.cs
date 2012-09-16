@@ -712,7 +712,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_GM_UNTEACH, 0x02E5}, // NF()(0x02E5) //
             {Opcode.SMSG_WARDEN_DATA, 0x212B}, // (0x23DD)(0x02E6) //
             {Opcode.CMSG_WARDEN_DATA, 0x467F}, // (0x233D)(0x02E7) //
-            {Opcode.SMSG_GROUP_JOINED_BATTLEGROUND, 0x02E8}, // NF()(0x02E8) //
+            {Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED, 0x02E8}, // NF()(0x02E8) //
             {Opcode.MSG_BATTLEGROUND_PLAYER_POSITIONS, 0xFFBB}, // NF(0x8772)(0x02E9) //
             {Opcode.CMSG_PET_STOP_ATTACK, 0x02EA}, // NF()(0x02EA) //
             {Opcode.SMSG_BINDER_CONFIRM, 0xEF7C}, // (0x4234)(0x02EB) //
