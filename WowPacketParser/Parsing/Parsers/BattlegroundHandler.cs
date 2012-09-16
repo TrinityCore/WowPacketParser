@@ -492,7 +492,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Unk guid");
         }
 
-        [Parser(Opcode.SMSG_GROUP_JOINED_BATTLEGROUND, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleRGroupJoinedBattleground(Packet packet)
         {
             var val = packet.ReadInt32();
@@ -508,7 +508,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteLine("Result: Joined (BGType: " + StoreGetters.GetName(StoreNameType.Battleground, val) + ")");
         }
 
-        [Parser(Opcode.SMSG_GROUP_JOINED_BATTLEGROUND, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleRGroupJoinedBattleground434(Packet packet)
         {
             var guid1 = new byte[8];
