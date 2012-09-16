@@ -1657,7 +1657,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid2[7] = packet.ReadBit();//55
             guid2[1] = packet.ReadBit();//49
             guid1[5] = packet.ReadBit();//29
-            packet.ReadBit("Unk Bit");//76
+            packet.ReadBit("Battlefield Faction ( 0 horde, 1 alliance )");//76
             guid2[0] = packet.ReadBit();//48
             guid1[1] = packet.ReadBit();//25
 
