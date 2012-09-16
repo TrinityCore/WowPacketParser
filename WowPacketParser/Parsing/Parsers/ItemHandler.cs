@@ -430,7 +430,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             item.SubClass = packet.ReadUInt32("Sub Class");
 
-            item.UnkInt32 = packet.ReadInt32("Unk Int32");
+            item.SoundOverrideSubclass = packet.ReadInt32("Sound Override Subclass");
 
             var name = new string[4];
             for (var i = 0; i < 4; i++)
@@ -812,7 +812,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
                     item.Class = packet.ReadEnum<ItemClass>("Class", TypeCode.Int32);
                     item.SubClass = packet.ReadUInt32("Sub Class");
-                    item.UnkInt32 = packet.ReadInt32("Unk Int32");
+                    item.SoundOverrideSubclass = packet.ReadInt32("Sound Override Subclass");
                     item.Material = packet.ReadEnum<Material>("Material", TypeCode.Int32);
                     item.DisplayId = packet.ReadUInt32("Display ID");
                     item.InventoryType = packet.ReadEnum<InventoryType>("Inventory Type", TypeCode.UInt32);

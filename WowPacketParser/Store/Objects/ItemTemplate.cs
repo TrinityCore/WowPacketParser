@@ -12,8 +12,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("subclass")]
         public uint SubClass;
 
-        [DBFieldName("unk0")]
-        public int UnkInt32;
+        [DBFieldName("SoundOverrideSubclass")]
+        public int SoundOverrideSubclass;
 
         [DBFieldName("name")]
         public string Name;

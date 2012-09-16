@@ -1359,7 +1359,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(guidOut[i], 5);
 
-                packet.ReadInt32("Unk Int32 1", i); // not 0 for playerachievements and raidencounters
+                packet.ReadInt32("Flag", i); // not 0 for playerachievements and raidencounters, 1 - sticky
                 packet.ReadInt32("Entry (item/achiev/encounter)", i);
                 packet.ReadInt32("Unk Int32 2", i); // always 0
 
