@@ -1524,7 +1524,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_RATED_INFO)]
         public static void HandleBattlefieldRatedInfo(Packet packet)
         {
-            packet.ReadUInt32("Rating");
+            packet.ReadUInt32("Reward");
             packet.ReadByte("Unk Byte");
             packet.ReadUInt32("Unk UInt32 2");
             packet.ReadUInt32("Unk UInt32 3");
@@ -1544,18 +1544,21 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PVP_OPTIONS_ENABLED)]
         public static void HandlePVPOptionsEnabled(Packet packet)
         {
-            for (var i = 0; i < 5; i++)
-                packet.ReadBit("Unk Boolean", i);
+            packet.ReadBit("Unk 1"); // probably debug unused
+            packet.ReadBit("WargamesEnabled");
+            packet.ReadBit("Unk 1"); // probably debug unused
+            packet.ReadBit("RatedBGsEnabled");
+            packet.ReadBit("RatedArenasEnabled");
         }
 
         [Parser(Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE)]
         public static void HandlePVPRewardsResponse(Packet packet)
         {
             packet.ReadUInt32("Conquest Weekly Cap");
-            packet.ReadUInt32("Unk Uint32");
+            packet.ReadUInt32("Conquest Points This Week");
             packet.ReadUInt32("Arena Conquest Cap");
-            packet.ReadUInt32("Unk Uint32");
-            packet.ReadUInt32("Unk Uint32");
+            packet.ReadUInt32("Conquest Points From Rated Bg");
+            packet.ReadUInt32("Conquest Points From Arena");
             packet.ReadUInt32("Current Conquest Points");
         }
 
@@ -1563,7 +1566,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldPort434(Packet packet)
         {
             packet.ReadTime("Time");
-            packet.ReadUInt32("Unk Uint32");
+            packet.ReadUInt32("Queue Slot");
             packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
 
             var guid = packet.StartBitStream(0, 1, 5, 6, 7, 4, 3, 2);
@@ -1693,11 +1696,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
             packet.ReadByte("Min Level");
-            packet.ReadUInt32("Time until closed");
+            packet.ReadUInt32("Elapsed Time");
 
             packet.ReadXORByte(guid1, 2);
 
-            packet.ReadUInt32("Time since started");
+            packet.ReadUInt32("Time To Close");
 
             packet.ReadXORByte(guid1, 0);
             packet.ReadXORByte(guid1, 3);

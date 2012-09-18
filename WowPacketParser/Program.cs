@@ -61,8 +61,7 @@ namespace WowPacketParser
             var count = 0;
             foreach (var file in files)
             {
-                foreach (var stream in SessionHandler.z_streams)
-                    SessionHandler.z_streams[stream.Key] = new ZlibCodec(CompressionMode.Decompress);
+                SessionHandler.z_streams.Clear();
                 ClientVersion.SetVersion(Settings.ClientBuild);
                 new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count),
                               Settings.SQLOutput).ProcessFile();
