@@ -277,14 +277,23 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_CALENDAR_EVENT_STATUS)]
-        [Parser(Opcode.CMSG_CALENDAR_EVENT_MODERATOR_STATUS)]
         public static void HandleCalendarEventStatus(Packet packet)
         {
             packet.ReadPackedGuid("Invitee GUID");
             packet.ReadInt64("Event ID");
-            packet.ReadInt64("Invitee ID");
             packet.ReadInt64("Invite ID");
+            packet.ReadInt64("Owner Invite ID"); // sender's invite id?
             packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Int32);
+        }
+
+        [Parser(Opcode.CMSG_CALENDAR_EVENT_MODERATOR_STATUS)]
+        public static void HandleCalendarEventModeratorStatus(Packet packet)
+        {
+            packet.ReadPackedGuid("Invitee GUID");
+            packet.ReadInt64("Event ID");
+            packet.ReadInt64("Invite ID");
+            packet.ReadInt64("Owner Invite ID"); // sender's invite id?
+            packet.ReadEnum<CalendarModerationRank>("Rank", TypeCode.Int32);
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_STATUS)]
@@ -304,7 +313,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("Invitee GUID");
             packet.ReadInt64("Event ID");
-            packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte);
+            packet.ReadEnum<CalendarModerationRank>("Rank", TypeCode.Byte);
             packet.ReadBoolean("Unk Boolean");
         }
 
