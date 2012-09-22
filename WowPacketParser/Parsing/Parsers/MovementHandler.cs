@@ -4009,14 +4009,15 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_3_4_15595)]
         public static void HandlePhaseShift434(Packet packet)
         {
-            var guid = packet.StartBitStream(2, 3, 1, 6, 4, 5, 7, 0);
+            var guid = packet.StartBitStream(2, 3, 1, 6, 4, 5, 0, 7);
 
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 4);
 
-            var count = packet.ReadUInt32("Count1") / 2;
+            var count = packet.ReadUInt32() / 2;
+            packet.WriteLine("WorldMapArea swap count: {0}", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadUInt16("First array", i);
+                packet.ReadUInt16("WorldMapArea swap", i);
 
             packet.ReadXORByte(guid, 1);
 
@@ -4026,9 +4027,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 6);
 
             count = packet.ReadUInt32() / 2;
-            packet.WriteLine("Terrain swap count: {0}", count);
+            packet.WriteLine("Inactive Terrain swap count: {0}", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Terrain swap", i);
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
 
             count = packet.ReadUInt32() / 2;
             packet.WriteLine("Phases count: {0}", count);
@@ -4038,9 +4039,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 0);
 
-            count = packet.ReadUInt32("Count4") / 2;
+            count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Active Terrain swap count: {0}", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadUInt16("Fourth array", i);
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Active Terrain swap", i);
 
             packet.ReadXORByte(guid, 5);
             packet.WriteLine("GUID {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
