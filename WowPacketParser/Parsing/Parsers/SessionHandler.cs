@@ -75,7 +75,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk8");
         }
 
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_0_5_16048)]
         public static void HandleServerAuthChallenge434(Packet packet)
         {
             packet.ReadUInt32("Key pt1");
@@ -87,6 +87,21 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Key pt7");
             packet.ReadUInt32("Key pt8");
             packet.ReadInt32("Server Seed");
+            packet.ReadByte("Unk Byte");
+        }
+
+        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V5_0_5_16048)]
+        public static void HandleServerAuthChallenge505(Packet packet)
+        {
+            packet.ReadInt32("Server Seed");
+            packet.ReadUInt32("Key pt1");
+            packet.ReadUInt32("Key pt2");
+            packet.ReadUInt32("Key pt3");
+            packet.ReadUInt32("Key pt4");
+            packet.ReadUInt32("Key pt5");
+            packet.ReadUInt32("Key pt6");
+            packet.ReadUInt32("Key pt7");
+            packet.ReadUInt32("Key pt8");
             packet.ReadByte("Unk Byte");
         }
 
