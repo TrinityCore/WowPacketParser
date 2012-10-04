@@ -10,7 +10,7 @@
         StandBy = 5,
         SignedUp = 6,
         NotSignedUp = 7,
-        Status8 = 8,
-        Status9 = 9
+        Tentative = 8,
+        Removed = 9     // is the name correct?
     }
 }
