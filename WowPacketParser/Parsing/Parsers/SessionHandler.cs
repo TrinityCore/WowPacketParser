@@ -273,7 +273,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_0_5_16048)]
         public static void HandleAuthSession434(Packet packet)
         {
             var sha = new byte[20];
@@ -319,6 +319,52 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
         }
 
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_0_5_16048)]
+        public static void HandleAuthSession505(Packet packet)
+        {
+            var sha = new byte[20];
+            packet.ReadUInt32("UInt32 2");//18
+            sha[2] = packet.ReadByte();//24
+            sha[15] = packet.ReadByte();//37
+            sha[12] = packet.ReadByte();//34
+            sha[11] = packet.ReadByte();//33
+            sha[10] = packet.ReadByte();//32
+            sha[9] = packet.ReadByte();//31
+            packet.ReadByte("Unk Byte");//20
+            packet.ReadUInt32("Client seed");//14
+            sha[16] = packet.ReadByte();//38
+            sha[5] = packet.ReadByte();//27
+            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);//34
+            packet.ReadUInt32("UInt32 4");//16
+            sha[18] = packet.ReadByte();//40
+            sha[0] = packet.ReadByte();//22
+            sha[13] = packet.ReadByte();//35
+            sha[3] = packet.ReadByte();//25
+            sha[14] = packet.ReadByte();//36
+            packet.ReadByte("Unk Byte");//21
+            sha[8] = packet.ReadByte();//30
+            sha[7] = packet.ReadByte();//29
+            packet.ReadUInt32("UInt32 3");//15
+            sha[4] = packet.ReadByte();//26
+            packet.ReadInt64("Int64");//12,13
+            sha[17] = packet.ReadByte();//39
+            sha[19] = packet.ReadByte();//41
+            packet.ReadUInt32("UInt32 1");//4
+            sha[6] = packet.ReadByte();//28
+            sha[1] = packet.ReadByte();//23
+
+            using (var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
+            {
+                var pkt2 = addons;
+                AddonHandler.ReadClientAddonsList(ref pkt2);
+            }
+
+            packet.ReadBit("Unk bit");
+            var size = (int)packet.ReadBits(12);
+            packet.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(size)));
+            packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
+        }
+
         [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleAuthResponse(Packet packet)
         {
@@ -346,8 +392,33 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_0_5_16048)]
         public static void HandleAuthResponse434(Packet packet)
+        {
+            var isQueued = packet.ReadBit("Queued");
+            var hasAccountInfo = packet.ReadBit("Has account info");
+
+            if (isQueued)
+                packet.ReadBit("UnkBit");
+
+            if (hasAccountInfo)
+            {
+                packet.ReadInt32("Billing Time Remaining");
+                packet.ReadEnum<ClientType>("Player Expansion", TypeCode.Byte);
+                packet.ReadInt32("Unknown UInt32");
+                packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
+                packet.ReadInt32("Billing Time Rested");
+                packet.ReadEnum<BillingFlag>("Billing Flags", TypeCode.Byte);
+            }
+
+            packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
+
+            if (isQueued)
+                packet.ReadInt32("Queue Position");
+        }
+
+        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V5_0_5_16048)]
+        public static void HandleAuthResponse505(Packet packet)
         {
             var isQueued = packet.ReadBit("Queued");
             var hasAccountInfo = packet.ReadBit("Has account info");

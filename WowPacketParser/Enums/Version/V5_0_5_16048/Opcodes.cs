@@ -18,6 +18,9 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
             {Opcode.SMSG_AUTH_CHALLENGE, 0x0523},
             {Opcode.CMSG_CHANNEL_MODERATOR, 0x0581},
             {Opcode.CMSG_GUILD_EVENT_LOG_QUERY, 0x06C3},
+            {Opcode.CMSG_REALM_SPLIT, 0x0820},
+            {Opcode.SMSG_TUTORIAL_FLAGS, 0x08AE},
+            {Opcode.SMSG_CLIENTCACHE_VERSION, 0x0956},
             {Opcode.SMSG_ADDON_INFO, 0x09C6},
             {Opcode.SMSG_AUTH_RESPONSE, 0x0E20},
         };
