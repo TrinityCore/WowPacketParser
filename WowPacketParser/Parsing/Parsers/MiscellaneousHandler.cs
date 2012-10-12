@@ -779,8 +779,8 @@ namespace WowPacketParser.Parsing.Parsers
         {
             // Unk use, related to EVENT_START_TIMER
             packet.ReadInt32("Unk Int32");
-            packet.ReadInt32("Unk Int32");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Current time (secs)");
+            packet.ReadInt32("Max time (secs)");
         }
 
         [Parser(Opcode.CMSG_SET_PREFERED_CEMETERY)] // 4.3.4
