@@ -23,6 +23,8 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x0956},
             {Opcode.SMSG_ADDON_INFO, 0x09C6},
             {Opcode.SMSG_AUTH_RESPONSE, 0x0E20},
+            {Opcode.SMSG_CHAR_ENUM, 0x0E28},
+            {Opcode.SMSG_MOTD, 0x0952}
         };
     }
 }
