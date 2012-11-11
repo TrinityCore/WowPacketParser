@@ -206,6 +206,38 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteLine("[" + index + "] " + key + ": " + value);
                 dict.Add(i, blockVal);
             }
+            
+            // Dynamic fields - NYI
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_4_16016))
+            {
+                maskSize = packet.ReadByte();
+                updateMask = new int[maskSize];
+                for (var i = 0; i < maskSize; i++)
+                    updateMask[i] = packet.ReadInt32();
+ 
+                mask = new BitArray(updateMask);
+                for (var i = 0; i < mask.Count; i++)
+                {
+                    if (!mask[i])
+                        continue;
+ 
+                    var flag = packet.ReadByte();
+ 
+                    if ((flag & 0x80) != 0)
+                        packet.ReadUInt16("Unk uint16", index, i);
+ 
+                    var cnt = flag & 0x7F;
+                    var vals = new uint[cnt];
+                    for (var j = 0; j < cnt; ++j)
+                        vals[j] = packet.ReadUInt32();
+ 
+                    for (var j = 0; j < cnt; ++j)
+                        if (vals[j] != 0)
+                            for (var k = 0; k < 32; ++k)
+                                if (((1 << k) & vals[j]) != 0)
+                                    packet.ReadUInt32();
+                }
+            }
 
             return dict;
         }
