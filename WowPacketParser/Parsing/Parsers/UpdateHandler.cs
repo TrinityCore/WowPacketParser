@@ -78,7 +78,7 @@ namespace WowPacketParser.Parsing.Parsers
             var objType = packet.ReadEnum<ObjectType>("Object Type", TypeCode.Byte, index);
             var moves = ReadMovementUpdateBlock(ref packet, guid, index);
             var updates = ReadValuesUpdateBlock(ref packet, objType, index);
-
+            
             WoWObject obj;
             switch (objType)
             {
@@ -135,22 +135,21 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static Dictionary<int, UpdateField> ReadValuesUpdateBlock(ref Packet packet, ObjectType type, int index)
         {
-            var maskSize = packet.ReadByte();
+            var maskSize = packet.ReadByte("Update Mask Size", index);
 
             var updateMask = new int[maskSize];
             for (var i = 0; i < maskSize; i++)
-                updateMask[i] = packet.ReadInt32();
+                updateMask[i] = packet.ReadInt32("Mask part", index, i);
 
             var mask = new BitArray(updateMask);
             var dict = new Dictionary<int, UpdateField>();
 
             int objectEnd = UpdateFields.GetUpdateField(ObjectField.OBJECT_END);
-
             for (var i = 0; i < mask.Count; i++)
             {
                 if (!mask[i])
                     continue;
-
+                    
                 var blockVal = packet.ReadUpdateField();
                 string key = "Block Value " + i;
                 string value = blockVal.UInt32Value + "/" + blockVal.SingleValue;
@@ -217,7 +216,6 @@ namespace WowPacketParser.Parsing.Parsers
             var hasAnimKit1 = false;
             var hasAnimKit2 = false;
             var hasAnimKit3 = false;
-            var HasSplineData = false;
             var hasExtendedSplineData = false;
             var bit64 = false;
             var bit66 = false;
@@ -246,7 +244,7 @@ namespace WowPacketParser.Parsing.Parsers
             var transportGuid = new byte[8];
             
             var hasTarget = packet.ReadBit("Has Target", index);
-            var isVehicle = packet.ReadBit("Is Vehicle", index);
+            var hasVehicleData = packet.ReadBit("Has Vehicle Data", index);
             
             var unkLoopCounter = packet.ReadBits(24);
             var bit1 = packet.ReadBit("Unk 1", index);
@@ -304,7 +302,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (living)
             {
                 guid0[3] = packet.ReadBit();
-                HasSplineData = packet.ReadBit("Has Spline Data", index);
+                moveInfo.HasSplineData = packet.ReadBit("Has Spline Data", index);
                 unkCount1 = packet.ReadBits(24);
                 guid0[4] = packet.ReadBit();
                 bit35 = packet.ReadBit("Unk 35", index);
@@ -327,15 +325,13 @@ namespace WowPacketParser.Parsing.Parsers
                 
                 bit49 = !packet.ReadBit("Unk 49", index);
                 guid0[7] = packet.ReadBit();
-                var bit51 = !packet.ReadBit("Unk 51", index);
+                var hasExtraMovementFlags = !packet.ReadBit("Has Extra Movement Flags", index);
                 guid0[0] = packet.ReadBit();
                 packet.ReadBit("Unk 53", index);
                 guid0[5] = packet.ReadBit();
                 
-                if (bit51)
-                {
-                    packet.ReadBits(13);
-                }
+                if (hasExtraMovementFlags)
+                    moveInfo.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13, index);
                 
                 guid0[2] = packet.ReadBit();
                 guid0[6] = packet.ReadBit();
@@ -351,7 +347,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadBit("Unk 61", index);
                 packet.ReadBit("Unk 62", index);
                 
-                if (HasSplineData)
+                if (moveInfo.HasSplineData)
                 {
                     hasExtendedSplineData = packet.ReadBit("Has Extended Spline Data", index);
                     if (hasExtendedSplineData)
@@ -412,7 +408,7 @@ namespace WowPacketParser.Parsing.Parsers
             
             if (living)
             {
-                if (HasSplineData)
+                if (moveInfo.HasSplineData)
                 {
                     if (hasExtendedSplineData)
                     {
@@ -549,40 +545,40 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSingle("Unk 124", index);
                 
                 packet.ReadXORByte(guid0, 0);
-                packet.WriteGuid("Weird guid", guid0);
+                packet.WriteGuid("Weird guid", guid0, index);
             }
             
             if (bit7)
             {
                 if (bit25)
                 {
-                    packet.ReadSingle("Unk 125");
-                    packet.ReadSingle("Unk 126");
-                    packet.ReadSingle("Unk 127");
-                    packet.ReadSingle("Unk 128");
-                    packet.ReadSingle("Unk 129");
-                    packet.ReadSingle("Unk 130");
+                    packet.ReadSingle("Unk 125", index);
+                    packet.ReadSingle("Unk 126", index);
+                    packet.ReadSingle("Unk 127", index);
+                    packet.ReadSingle("Unk 128", index);
+                    packet.ReadSingle("Unk 129", index);
+                    packet.ReadSingle("Unk 130", index);
                 }
                 
                 if (bit29)
                 {
-                    packet.ReadSingle("Unk 131");
-                    packet.ReadSingle("Unk 132");
+                    packet.ReadSingle("Unk 131", index);
+                    packet.ReadSingle("Unk 132", index);
                 }
                 
                 if (bit30)
                 {
                     // if ( v4->dword24C > 0u ) loop not taken?
-                    packet.ReadSingle("Unk 133");
+                    packet.ReadSingle("Unk 133", index);
                     // if ( v4->dword25C > 0u ) another loop not taken?
-                    packet.ReadSingle("Unk 134");
+                    packet.ReadSingle("Unk 134", index);
                 }
                 
-                packet.ReadUInt32("Unk 135");
+                packet.ReadUInt32("Unk 135", index);
                 
                 // if ( v4->byte270 ) if to another loop not taken
-                packet.ReadSingle("Unk 136");
-                packet.ReadSingle("Unk 137");
+                packet.ReadSingle("Unk 136", index);
+                packet.ReadSingle("Unk 137", index);
             }
             
             if (hasGOTransportPosition)
@@ -591,28 +587,29 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(transportGuid, 3);
                 packet.ReadXORByte(transportGuid, 5);
                 
-                packet.ReadSingle("Unk 138");
+                packet.ReadSingle("Unk 138", index);
                 
                 packet.ReadXORByte(transportGuid, 6);
                 packet.ReadXORByte(transportGuid, 0);
                 packet.ReadXORByte(transportGuid, 2);
                 
-                packet.ReadUInt32("Unk 139");
+                packet.ReadUInt32("Unk 139", index);
                 
                 packet.ReadXORByte(transportGuid, 1);
                 
-                packet.ReadSingle("Unk 140");
-                packet.ReadByte("Unk 141");
+                packet.ReadSingle("Unk 140", index);
+                packet.ReadSByte("Transport Seat", index);
                 
                 if (bit16)
-                    packet.ReadUInt32("Unk 142");
+                    packet.ReadUInt32("Unk 142", index);
                 
-                packet.ReadSingle("Unk 143");
+                packet.ReadSingle("Unk 143", index);
                 
                 packet.ReadXORByte(transportGuid, 4);
                 
-                packet.ReadSingle("Unk 144");
+                packet.ReadSingle("Unk 144", index);
                 
+                moveInfo.TransportGuid = new Guid(BitConverter.ToUInt64(transportGuid, 0));
                 packet.WriteGuid("Transport Guid", transportGuid, index);
             }
             
@@ -636,10 +633,10 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasGameObjectRotation)
                 packet.ReadPackedQuaternion("GameObject Rotation", index);
                 
-            if (isVehicle)
+            if (hasVehicleData)
             {
-                packet.ReadUInt32("Unk 150");
-                packet.ReadSingle("Unk 151");
+                packet.ReadUInt32("Vehicle Id", index);
+                packet.ReadSingle("Vehicle Orientation", index);
             }
             
             if (hasAnimKits)
