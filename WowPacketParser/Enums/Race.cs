@@ -26,5 +26,8 @@ namespace WowPacketParser.Enums
         IceTroll = 21,
         Worgen = 22,
         Gilnean = 23, // Human
+        Pandaren1 = 24,
+        Pandaren2 = 25,
+        Pandaren3 = 26,
     }
 }

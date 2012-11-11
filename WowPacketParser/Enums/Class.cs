@@ -12,7 +12,7 @@ namespace WowPacketParser.Enums
         Shaman = 7,
         Mage = 8,
         Warlock = 9,
-        Unknown = 10,
+        Monk = 10,
         Druid = 11
     }
 }
