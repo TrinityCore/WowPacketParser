@@ -26,6 +26,11 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
             {Opcode.SMSG_CHAR_ENUM, 0x0E28},
             {Opcode.SMSG_MOTD, 0x0952},
             {Opcode.SMSG_UPDATE_OBJECT, 0x08F7},
+            {Opcode.SMSG_GUILD_EVENT, 0x08E4},
+            {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x0D6B},
+            {Opcode.SMSG_GUILD_ROSTER, 0x0BEA},
+            //{Opcode.SMSG_MULTIPLE_PACKETS, 0x0826},
+            // {Opcode.SMSG_MULTIPLE_PACKETS_2, 0x0B8B},
         };
     }
 }

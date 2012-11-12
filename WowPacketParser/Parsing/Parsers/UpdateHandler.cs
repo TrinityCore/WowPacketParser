@@ -135,11 +135,11 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static Dictionary<int, UpdateField> ReadValuesUpdateBlock(ref Packet packet, ObjectType type, int index)
         {
-            var maskSize = packet.ReadByte("Update Mask Size", index);
+            var maskSize = packet.ReadByte();
 
             var updateMask = new int[maskSize];
             for (var i = 0; i < maskSize; i++)
-                updateMask[i] = packet.ReadInt32("Mask part", index, i);
+                updateMask[i] = packet.ReadInt32();
 
             var mask = new BitArray(updateMask);
             var dict = new Dictionary<int, UpdateField>();
@@ -224,7 +224,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var flag = packet.ReadByte();
  
                     if ((flag & 0x80) != 0)
-                        packet.ReadUInt16("Unk uint16", index, i);
+                        packet.ReadUInt16();
  
                     var cnt = flag & 0x7F;
                     var vals = new uint[cnt];
