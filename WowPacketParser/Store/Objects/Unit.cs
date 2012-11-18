@@ -75,7 +75,7 @@ namespace WowPacketParser.Store.Objects
             Race      = (Race)      ((Bytes0 & 0x000000FF) >> 00);
         }
 
-        public void LoadValuesFromUpdateFields()
+        public override void LoadValuesFromUpdateFields()
         {
             Size          = UpdateFields.GetValue<ObjectField, float?>(ObjectField.OBJECT_FIELD_SCALE_X);
             Bytes0        = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_0);

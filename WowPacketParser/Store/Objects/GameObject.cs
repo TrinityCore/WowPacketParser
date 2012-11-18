@@ -10,7 +10,7 @@ namespace WowPacketParser.Store.Objects
         public uint? Faction;
         public GameObjectFlag? Flags;
 
-        public void LoadValuesFromUpdateFields()
+        public override void LoadValuesFromUpdateFields()
         {
             Size = UpdateFields.GetValue<ObjectField, float?>(ObjectField.OBJECT_FIELD_SCALE_X);
             Faction = UpdateFields.GetValue<GameObjectField, uint?>(GameObjectField.GAMEOBJECT_FACTION);

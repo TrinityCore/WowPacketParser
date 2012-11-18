@@ -36,5 +36,7 @@ namespace WowPacketParser.Store.Objects
             // TODO: Rank and if npc is needed for quest kill should change spawntime as well
             return (Map == 0 || Map == 1 || Map == 530 || Map == 571 || Map == 609) ? 120 : 7200;
         }
+
+        public virtual void LoadValuesFromUpdateFields() { }
     }
 }

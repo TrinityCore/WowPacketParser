@@ -19,9 +19,8 @@ namespace WowPacketParser.SQL
             //var players = Storage.Objects.Where(obj => obj.Value.Type == ObjectType.Player).ToDictionary(obj => obj.Key, obj => obj.Value as Player);
             //var items = Storage.Objects.Where(obj => obj.Value.Type == ObjectType.Item).ToDictionary(obj => obj.Key, obj => obj.Value as Item);
 
-            if (units != null)
-                foreach (var unit in units)
-                    unit.Value.LoadValuesFromUpdateFields();
+            foreach (var obj in Storage.Objects)
+                obj.Value.Item1.LoadValuesFromUpdateFields();
 
             // Ewwwww...
             var build = ClientVersion.BuildInt;
