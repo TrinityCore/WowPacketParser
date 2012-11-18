@@ -14,7 +14,7 @@ namespace WowPacketParser.Store.Objects
         {
             Size = UpdateFields.GetValue<ObjectField, float?>(ObjectField.OBJECT_FIELD_SCALE_X);
             Faction = UpdateFields.GetValue<GameObjectField, uint?>(GameObjectField.GAMEOBJECT_FACTION);
-            Flags = UpdateFields.GetValue<GameObjectField, GameObjectFlag?>(GameObjectField.GAMEOBJECT_FLAGS);
+            Flags = UpdateFields.GetEnum<GameObjectField, GameObjectFlag?>(GameObjectField.GAMEOBJECT_FLAGS);
         }
 
         public override bool IsTemporarySpawn()
