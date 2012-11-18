@@ -78,7 +78,7 @@ namespace WowPacketParser.Parsing.Parsers
             var objType = packet.ReadEnum<ObjectType>("Object Type", TypeCode.Byte, index);
             var moves = ReadMovementUpdateBlock(ref packet, guid, index);
             var updates = ReadValuesUpdateBlock(ref packet, objType, index);
-            
+
             WoWObject obj;
             switch (objType)
             {
@@ -149,7 +149,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 if (!mask[i])
                     continue;
-                    
+
                 var blockVal = packet.ReadUpdateField();
                 string key = "Block Value " + i;
                 string value = blockVal.UInt32Value + "/" + blockVal.SingleValue;
@@ -206,7 +206,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteLine("[" + index + "] " + key + ": " + value);
                 dict.Add(i, blockVal);
             }
-            
+
             // Dynamic fields - NYI
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_4_16016))
             {
@@ -214,23 +214,23 @@ namespace WowPacketParser.Parsing.Parsers
                 updateMask = new int[maskSize];
                 for (var i = 0; i < maskSize; i++)
                     updateMask[i] = packet.ReadInt32();
- 
+
                 mask = new BitArray(updateMask);
                 for (var i = 0; i < mask.Count; i++)
                 {
                     if (!mask[i])
                         continue;
- 
+
                     var flag = packet.ReadByte();
- 
+
                     if ((flag & 0x80) != 0)
                         packet.ReadUInt16();
- 
+
                     var cnt = flag & 0x7F;
                     var vals = new uint[cnt];
                     for (var j = 0; j < cnt; ++j)
                         vals[j] = packet.ReadUInt32();
- 
+
                     for (var j = 0; j < cnt; ++j)
                         if (vals[j] != 0)
                             for (var k = 0; k < 32; ++k)
@@ -274,10 +274,10 @@ namespace WowPacketParser.Parsing.Parsers
             var facingTargetGuid = new byte[8];
             var targetGuid = new byte[8];
             var transportGuid = new byte[8];
-            
+
             var hasTarget = packet.ReadBit("Has Target", index);
             var hasVehicleData = packet.ReadBit("Has Vehicle Data", index);
-            
+
             var unkLoopCounter = packet.ReadBits(24);
             var bit1 = packet.ReadBit("Unk 1", index);
             var hasGOTransportPosition = packet.ReadBit("Has GO Transport Position", index);
@@ -294,7 +294,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasAnimKits = packet.ReadBit("Has Anim Kits", index);
             packet.ReadBit("Unk 13", index);
             packet.ReadBit("Self", index);
-            
+
             if (hasGOTransportPosition)
             {
                 transportGuid[4] = packet.ReadBit();
@@ -308,7 +308,7 @@ namespace WowPacketParser.Parsing.Parsers
                 transportGuid[2] = packet.ReadBit();
                 transportGuid[7] = packet.ReadBit();
             }
-            
+
             if (bit7)
             {
                 bit25 = packet.ReadBit("Unk 25", index);
@@ -316,12 +316,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadBit("Unk 27", index);
                 packet.ReadBit("Unk 28", index);
                 bit29 = packet.ReadBit("Unk 29", index);
-                
+
                 if (bit26)
                 {
                     packet.ReadBits(22);
                 }
-                
+
                 bit30 = packet.ReadBit("Unk 30", index);
                 if (bit30)
                 {
@@ -330,7 +330,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
                 packet.ReadBit("Unk 31", index);
             }
-            
+
             if (living)
             {
                 guid0[3] = packet.ReadBit();
@@ -354,31 +354,31 @@ namespace WowPacketParser.Parsing.Parsers
                     guid1[2] = packet.ReadBit();
                     guid1[5] = packet.ReadBit();
                 }
-                
+
                 bit49 = !packet.ReadBit("Unk 49", index);
                 guid0[7] = packet.ReadBit();
                 var hasExtraMovementFlags = !packet.ReadBit("Has Extra Movement Flags", index);
                 guid0[0] = packet.ReadBit();
                 packet.ReadBit("Unk 53", index);
                 guid0[5] = packet.ReadBit();
-                
+
                 if (hasExtraMovementFlags)
                     moveInfo.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13, index);
-                
+
                 guid0[2] = packet.ReadBit();
                 guid0[6] = packet.ReadBit();
                 var hasMovementFlags = !packet.ReadBit();
-                
+
                 if (isInterpolated)
                     isFalling = packet.ReadBit("Is Falling", index);
-                
+
                 if (hasMovementFlags)
                     moveInfo.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
-                
+
                 hasRotation = !packet.ReadBit("Lacks Rotation", index);
                 packet.ReadBit("Unk 61", index);
                 packet.ReadBit("Unk 62", index);
-                
+
                 if (moveInfo.HasSplineData)
                 {
                     hasExtendedSplineData = packet.ReadBit("Has Extended Spline Data", index);
@@ -392,22 +392,22 @@ namespace WowPacketParser.Parsing.Parsers
                             unkCount0 = packet.ReadBits(23);
                             packet.ReadBits(2);
                         }
-                        
+
                         bit66 = packet.ReadBit("Unk 66", index);
-                        
+
                         packet.ReadBits(22);
-                        
+
                         splineType = packet.ReadBits(2);
-                        
+
                         if (splineType == 0)
                             facingTargetGuid = packet.StartBitStream(4, 5, 0, 7, 1, 3, 2, 6);
                     }
                 }
-                
+
                 guid0[1] = packet.ReadBit();
                 bit76 = packet.ReadBit("Unk 76", index);
             }
-            
+
             if (hasTarget)
             {
                 targetGuid[2] = packet.ReadBit();
@@ -419,25 +419,25 @@ namespace WowPacketParser.Parsing.Parsers
                 targetGuid[4] = packet.ReadBit();
                 targetGuid[0] = packet.ReadBit();
             }
-            
+
             if (hasAnimKits)
             {
                 hasAnimKit1 = !packet.ReadBit("Lacks Anim Kit 1", index);
                 hasAnimKit2 = !packet.ReadBit("Lacks Anim Kit 2", index);
                 hasAnimKit3 = !packet.ReadBit("Lacks Anim Kit 3", index);
             }
-            
+
             if (bit11)
             {
                 packet.ReadBits(9);
             }
-            
+
             //  if ( *(v4 + 364) > 0u ) not taken?
-            
+
             // Reading data
             for (var i = 0u; i < unkLoopCounter; ++i)
                 packet.ReadUInt32("Unk UInt32", index, (int)i);
-            
+
             if (living)
             {
                 if (moveInfo.HasSplineData)
@@ -455,20 +455,20 @@ namespace WowPacketParser.Parsing.Parsers
 
                             packet.WriteLine("[{0}] Facing Spot: {1}", index, point);
                         }
-                        
+
                         if (splineType == 0)
                         {
                             packet.ParseBitStream(facingTargetGuid, 5, 6, 0, 1, 2, 4, 7, 3);
                             packet.WriteGuid("Facing Target", facingTargetGuid, index);
                         }
-                        
+
                         packet.ReadUInt32("Unk 85", index);
                         if (bit64)
                             packet.ReadSingle("Unk 86", index);
-                            
+
                         if (bit66)
                             packet.ReadUInt32("Unk 87", index);
-                            
+
                         if (bit65)
                         {
                             for (int i = 0; i < unkCount0; ++i)
@@ -477,27 +477,27 @@ namespace WowPacketParser.Parsing.Parsers
                                 packet.ReadSingle("Unk 89", i, index);
                             }
                         }
-                        
+
                         if (splineType == 3)
                             packet.ReadSingle("Facing Angle", index);
-                            
+
                         // dword124 loop of 3 floats, not taken?
                         packet.ReadSingle("Unk 90", index);
                         packet.ReadUInt32("Unk 91", index);
                         packet.ReadSingle("Unk 92", index);
                     }
-                    
+
                     packet.ReadSingle("Position X", index);
                     packet.ReadUInt32("Unk 94", index);
                     packet.ReadSingle("Position Y", index);
                     packet.ReadSingle("Position Z", index);
                 }
-                
+
                 for (int i = 0; i < unkCount1; ++i)
                     packet.ReadUInt32("Unk 97", i, index);
-                
+
                 packet.ReadSingle("Walk Speed", index);
-                
+
                 if (isTransport)
                 {
                     packet.ReadXORByte(guid1, 4);
@@ -520,9 +520,9 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadUInt32("Unk 106", index);
                     packet.WriteGuid("Transport Guid", guid1, index);
                 }
-                
+
                 packet.ReadXORByte(guid0, 2);
-                
+
                 if (isInterpolated)
                 {
                     packet.ReadUInt32("Unk 107", index);
@@ -534,52 +534,52 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                     packet.ReadSingle("Unk 111", index);
                 }
-                
+
                 packet.ReadXORByte(guid0, 7);
-                
+
                 if (isAlive)
                     packet.ReadUInt32("Unk 112", index);
-                    
+
                 packet.ReadSingle("Fly Back Speed", index);
                 packet.ReadSingle("Position X", index);
-                
+
                 if (bit49)
                     packet.ReadUInt32("Unk 115", index);
-                    
+
                 packet.ReadSingle("Position Y", index);
-                
+
                 packet.ReadXORByte(guid0, 5);
-                
+
                 packet.ReadSingle("Position Z", index);
-                
+
                 if (bit35)
                     packet.ReadSingle("Unk __SETP__", index);
-                
+
                 packet.ReadXORByte(guid0, 3);
                 packet.ReadXORByte(guid0, 6);
                 packet.ReadXORByte(guid0, 1);
-                
+
                 if (bit76)
                     packet.ReadSingle("Unk __SETP__", index);
-                
+
                 packet.ReadSingle("Unk 118", index);
                 packet.ReadSingle("Unk 119", index);
                 packet.ReadSingle("Unk 120", index);
-                
+
                 if (hasRotation)
                     packet.ReadSingle("Rotation", index);
-                
+
                 packet.ReadXORByte(guid0, 4);
-                
+
                 packet.ReadSingle("Unk 121", index);
                 packet.ReadSingle("Unk 122", index);
                 packet.ReadSingle("Unk 123", index);
                 packet.ReadSingle("Unk 124", index);
-                
+
                 packet.ReadXORByte(guid0, 0);
                 packet.WriteGuid("Weird guid", guid0, index);
             }
-            
+
             if (bit7)
             {
                 if (bit25)
@@ -591,13 +591,13 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadSingle("Unk 129", index);
                     packet.ReadSingle("Unk 130", index);
                 }
-                
+
                 if (bit29)
                 {
                     packet.ReadSingle("Unk 131", index);
                     packet.ReadSingle("Unk 132", index);
                 }
-                
+
                 if (bit30)
                 {
                     // if ( v4->dword24C > 0u ) loop not taken?
@@ -605,46 +605,46 @@ namespace WowPacketParser.Parsing.Parsers
                     // if ( v4->dword25C > 0u ) another loop not taken?
                     packet.ReadSingle("Unk 134", index);
                 }
-                
+
                 packet.ReadUInt32("Unk 135", index);
-                
+
                 // if ( v4->byte270 ) if to another loop not taken
                 packet.ReadSingle("Unk 136", index);
                 packet.ReadSingle("Unk 137", index);
             }
-            
+
             if (hasGOTransportPosition)
             {
                 packet.ReadXORByte(transportGuid, 7);
                 packet.ReadXORByte(transportGuid, 3);
                 packet.ReadXORByte(transportGuid, 5);
-                
+
                 packet.ReadSingle("Unk 138", index);
-                
+
                 packet.ReadXORByte(transportGuid, 6);
                 packet.ReadXORByte(transportGuid, 0);
                 packet.ReadXORByte(transportGuid, 2);
-                
+
                 packet.ReadUInt32("Unk 139", index);
-                
+
                 packet.ReadXORByte(transportGuid, 1);
-                
+
                 packet.ReadSingle("Unk 140", index);
                 packet.ReadSByte("Transport Seat", index);
-                
+
                 if (bit16)
                     packet.ReadUInt32("Unk 142", index);
-                
+
                 packet.ReadSingle("Unk 143", index);
-                
+
                 packet.ReadXORByte(transportGuid, 4);
-                
+
                 packet.ReadSingle("Unk 144", index);
-                
+
                 moveInfo.TransportGuid = new Guid(BitConverter.ToUInt64(transportGuid, 0));
                 packet.WriteGuid("Transport Guid", transportGuid, index);
             }
-            
+
             if (hasStationaryPosition)
             {
                 packet.ReadSingle("Stationary Position X/Y", index);
@@ -652,25 +652,25 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSingle("Stationary Position X/Y", index);
                 packet.ReadSingle("Stationary Orientation", index);
             }
-            
+
             if (hasTarget)
             {
                 packet.ParseBitStream(targetGuid, 3, 6, 4, 1, 5, 7, 0, 2);
                 packet.WriteGuid("Target Guid", targetGuid);
             }
-            
+
             if (bit4)
                 packet.ReadUInt32("Unk 149");
-            
+
             if (hasGameObjectRotation)
                 packet.ReadPackedQuaternion("GameObject Rotation", index);
-                
+
             if (hasVehicleData)
             {
                 packet.ReadUInt32("Vehicle Id", index);
                 packet.ReadSingle("Vehicle Orientation", index);
             }
-            
+
             if (hasAnimKits)
             {
                 if (hasAnimKit1)
@@ -680,13 +680,13 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasAnimKit3)
                     packet.ReadUInt16("Anim Kit 3");
             }
-            
+
             if (bit1)
                 packet.ReadUInt32("Unk 152");
-                
+
             return moveInfo;
         }
-        
+
         private static MovementInfo ReadMovementUpdateBlock434(ref Packet packet, Guid guid, int index)
         {
             var moveInfo = new MovementInfo();
@@ -2192,7 +2192,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             if (ClientVersion.Build == ClientVersionBuild.V5_0_4_16016 || ClientVersion.Build == ClientVersionBuild.V5_0_5_16048 || ClientVersion.Build == ClientVersionBuild.V5_0_5_16057 || ClientVersion.Build == ClientVersionBuild.V5_0_5_16135)
                 return ReadMovementUpdateBlock504(ref packet, guid, index);
-                
+
             if (ClientVersion.Build == ClientVersionBuild.V4_3_4_15595)
                 return ReadMovementUpdateBlock434(ref packet, guid, index);
 
