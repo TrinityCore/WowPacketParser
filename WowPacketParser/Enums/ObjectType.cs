@@ -9,6 +9,8 @@ namespace WowPacketParser.Enums
         Player = 4,
         GameObject = 5,
         DynamicObject = 6,
-        Corpse = 7
+        Corpse = 7,
+        AreaTrigger = 8,
+        SceneObject = 9
     }
 }

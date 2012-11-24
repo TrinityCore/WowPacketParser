@@ -432,6 +432,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadBits(9);
             }
 
+            packet.ResetBitReader();
+
             //  if ( *(v4 + 364) > 0u ) not taken?
 
             // Reading data
