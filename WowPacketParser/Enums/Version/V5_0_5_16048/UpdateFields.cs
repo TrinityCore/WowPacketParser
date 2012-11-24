@@ -12,7 +12,7 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
         OBJECT_FIELD_SCALE = 0x0006,
         OBJECT_FIELD_END   = 0x0007,
     };
-    
+
     public enum ItemField
     {
         ITEM_FIELD_OWNER                = ObjectField.OBJECT_FIELD_END + 0x0000,
@@ -32,20 +32,20 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
         ITEM_FIELD_MODIFIERS_MASK       = ObjectField.OBJECT_FIELD_END + 0x003C,
         ITEM_END                        = ObjectField.OBJECT_FIELD_END + 0x003D
     };
-    
+
     public enum ItemDynamicField
     {
         ITEM_DYNAMIC_FIELD_MODIFIERS = ItemField.ITEM_END + 0x0,
         ITEM_DYNAMIC_END = ItemField.ITEM_END + 0x48
     }
-    
+
     public enum ContainerField
     {
         CONTAINER_FIELD_NUM_SLOTS   = ItemField.ITEM_END + 0x0000,
         CONTAINER_FIELD_SLOTS       = ItemField.ITEM_END + 0x0001,
         CONTAINER_END               = ItemField.ITEM_END + 0x0049
     };
-    
+
     public enum UnitField
     {
         UNIT_FIELD_CHARM                                    = ObjectField.OBJECT_FIELD_END + 0x0000,
@@ -126,13 +126,13 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
         UNIT_FIELD_BATTLEPET_COMPANION_NAME_TIMESTAMP       = ObjectField.OBJECT_FIELD_END + 0x0091,
         UNIT_FIELD_END                                      = ObjectField.OBJECT_FIELD_END + 0x0092
     };
-    
+
     public enum UnitDynamicField
     {
         UNIT_DYNAMIC_FIELD_PASSIVE_SPELLS = ObjectField.OBJECT_FIELD_END + 0x0,
         UNIT_DYNAMIC_END = ObjectField.OBJECT_FIELD_END + 0x101
     }
-    
+
     public enum PlayerField
     {
         PLAYER_FIELD_DUEL_ARBITER = UnitField.UNIT_FIELD_END + 0x0,
@@ -224,14 +224,14 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
         PLAYER_FIELD_OVERRIDE_SPELLS_ID = UnitField.UNIT_FIELD_END + 0x0719,
         PLAYER_FIELD_END = UnitField.UNIT_FIELD_END + 0x071A
     };
-    
+
     public enum PlayerDynamicField
     {
         PLAYER_DYNAMIC_FIELD_RESEARCH_SITES = PlayerField.PLAYER_FIELD_END + 0x0,
         PLAYER_DYNAMIC_FIELD_DAILY_QUESTS_COMPLETED = PlayerField.PLAYER_FIELD_END + 0x2,
         PLAYER_DYNAMIC_END = PlayerField.PLAYER_FIELD_END + 0x4
     }
-    
+
     public enum GameObjectField
     {
         GAMEOBJECT_FIELD_CREATEDBY = ObjectField.OBJECT_FIELD_END + 0x0,
@@ -244,7 +244,7 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
         GAMEOBJECT_BYTES_1 = ObjectField.OBJECT_FIELD_END + 0xB,
         GAMEOBJECT_FIELD_END = ObjectField.OBJECT_FIELD_END + 0xC
     };
-    
+
     public enum DynamicObjectField
     {
         DYNAMICOBJECT_FIELD_CASTER = ObjectField.OBJECT_FIELD_END + 0x0,
@@ -254,7 +254,7 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
         DYNAMICOBJECT_FIELD_CASTTIME = ObjectField.OBJECT_FIELD_END + 0x5,
         DYNAMICOBJECT_FIELD_END = ObjectField.OBJECT_FIELD_END + 0x6
     };
-    
+
     public enum CorpseField
     {
         CORPSE_FIELD_OWNER = ObjectField.OBJECT_FIELD_END + 0x0,
@@ -267,7 +267,7 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
         CORPSE_FIELD_DYNAMIC_FLAGS = ObjectField.OBJECT_FIELD_END + 0x1B,
         CORPSE_END = ObjectField.OBJECT_FIELD_END + 0x1C
     };
-    
+
     public enum AreaTriggerField
     {
         AREATRIGGER_FIELD_CASTER = ObjectField.OBJECT_FIELD_END + 0x0,
@@ -276,7 +276,7 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
         AREATRIGGER_FIELD_DURATION = ObjectField.OBJECT_FIELD_END + 0x4,
         AREATRIGGER_END = ObjectField.OBJECT_FIELD_END + 0x5
     };
-    
+
     public enum SceneObjectField
     {
         SCENEOBJECT_FIELD_SCRIPT_PACKAGE_ID = ObjectField.OBJECT_FIELD_END + 0x0,
