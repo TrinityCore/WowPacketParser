@@ -88,7 +88,8 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            if (info.Flags.HasAnyFlag(MovementFlag.SplineElevation))
+            // HACK: "generic" movement flags are wrong for 4.2.2
+            if (info.Flags.HasAnyFlag(MovementFlag.SplineElevation) && ClientVersion.Build != ClientVersionBuild.V4_2_2_14545)
                 packet.ReadSingle("Spline Elevation", index);
 
             return info;
