@@ -2731,12 +2731,22 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Position: {0}", pos);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleSplineMovementSetRunSpeed422(Packet packet)
         {
             var guid = packet.StartBitStream(7, 2, 1, 3, 5, 6, 4, 0);
             packet.ParseBitStream(guid, 6, 7, 4, 3, 2, 5, 0, 1);
             packet.ReadSingle("Speed");
+            packet.WriteGuid("Guid", guid);
+        }
+        
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleSplineMovementSetRunSpeed430(Packet packet)
+        {
+            var guid = packet.StartBitStream(2, 6, 4, 1, 3, 0, 7, 5);
+            packet.ParseBitStream(guid, 2, 4, 3);
+            packet.ReadSingle("Speed");
+            packet.ParseBitStream(guid, 0, 6, 5, 1, 7);
             packet.WriteGuid("Guid", guid);
         }
 
