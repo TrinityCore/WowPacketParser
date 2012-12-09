@@ -43,7 +43,7 @@ namespace WowPacketParser.SQL.Builders
 
                 row.AddValue("guid", "@CGUID+" + count, noQuotes: true);
                 row.AddValue("id", entry);
-                row.AddValue("map", !creature.IsOnTransport() ? creature.Map : 0);  // TODO: query transport template for map
+                row.AddValue("map", creature.GetMapOrTransportMap());  // TODO: query transport template for map
                 row.AddValue("spawnMask", 1);
                 row.AddValue("phaseMask", creature.PhaseMask);
                 if (!creature.IsOnTransport())
@@ -132,7 +132,7 @@ namespace WowPacketParser.SQL.Builders
 
                 row.AddValue("guid", "@OGUID+" + count, noQuotes: true);
                 row.AddValue("id", entry);
-                row.AddValue("map", !go.IsOnTransport() ? go.Map : 0);  // TODO: query transport template for map
+                row.AddValue("map", go.GetMapOrTransportMap());  // TODO: query transport template for map
                 row.AddValue("spawnMask", 1);
                 row.AddValue("phaseMask", go.PhaseMask);
                 if (!go.IsOnTransport())
