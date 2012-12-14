@@ -33,7 +33,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID", i);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                    packet.ReadInt64("Unk int64");
+                    packet.ReadGuid("Guild GUID", i);
 
                 packet.ReadPackedGuid("Creator GUID", i);
             }
@@ -387,7 +387,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt64("Invite ID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15050))
             {
-                packet.ReadInt64("Unk Int64");
+                packet.ReadGuid("Guild GUID");
             }
             packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte);
             packet.ReadEnum<CalendarModerationRank>("Moderation Rank", TypeCode.Byte);

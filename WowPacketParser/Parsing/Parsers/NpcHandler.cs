@@ -318,6 +318,10 @@ namespace WowPacketParser.Parsing.Parsers
             gossip.ObjectEntry = guid.GetEntry();
 
             var menuId = packet.ReadUInt32("Menu Id");
+
+            if (ClientVersion.AddedInVersion(ClientType.MistsOfPandaria))
+                packet.ReadUInt32("Unk int32");
+
             var textId = packet.ReadUInt32("Text Id");
 
             if (guid.GetObjectType() == ObjectType.Unit)
