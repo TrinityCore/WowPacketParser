@@ -30,10 +30,12 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x0D6B},
             {Opcode.SMSG_GUILD_ROSTER, 0x0BEA},
             {Opcode.SMSG_MESSAGECHAT, 0x0C9F},
-            {Opcode.SMSG_NPC_TEXT_UPDATE, 0x0B8B},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x0DE4},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x0D6C},
-            //{Opcode.SMSG_MULTIPLE_PACKETS, 0x0826},
+            {Opcode.SMSG_AURA_UPDATE, 0x08AB},
+            {Opcode.SMSG_SPELL_START, 0x08FC},
+            {Opcode.SMSG_SPELL_GO, 0x0D42},
+            // {Opcode.SMSG_MULTIPLE_PACKETS, 0x0826},
             // {Opcode.SMSG_MULTIPLE_PACKETS_2, 0x0B8B},
         };
     }
