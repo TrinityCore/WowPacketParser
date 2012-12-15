@@ -220,30 +220,30 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        private static Aura ReadAuraUpdateBlock(ref Packet packet)
+        private static Aura ReadAuraUpdateBlock(ref Packet packet, int i)
         {
             var aura = new Aura();
 
-            aura.Slot = packet.ReadByte("Slot");
+            aura.Slot = packet.ReadByte("Slot", i);
 
-            var id = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            var id = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
             if (id <= 0)
                 return null;
             aura.SpellId = (uint)id;
-
+            
             var type = ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333) ? TypeCode.Int16 : TypeCode.Byte;
-            aura.AuraFlags = packet.ReadEnum<AuraFlag>("Flags", type);
+            aura.AuraFlags = packet.ReadEnum<AuraFlag>("Flags", type, i);
 
-            aura.Level = packet.ReadByte("Level");
+            aura.Level = packet.ReadByte("Level", i);
 
-            aura.Charges = packet.ReadByte("Charges");
+            aura.Charges = packet.ReadByte("Charges", i);
 
-            aura.CasterGuid = !aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster) ? packet.ReadPackedGuid("Caster GUID") : new Guid();
+            aura.CasterGuid = !aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster) ? packet.ReadPackedGuid("Caster GUID", i) : new Guid();
 
             if (aura.AuraFlags.HasAnyFlag(AuraFlag.Duration))
             {
-                aura.MaxDuration = packet.ReadInt32("Max Duration");
-                aura.Duration = packet.ReadInt32("Duration");
+                aura.MaxDuration = packet.ReadInt32("Max Duration", i);
+                aura.Duration = packet.ReadInt32("Duration", i);
             }
             else
             {
@@ -256,11 +256,11 @@ namespace WowPacketParser.Parsing.Parsers
                 // This aura is scalable with level/talents
                 // Here we show each effect value after scaling
                 if (aura.AuraFlags.HasAnyFlag(AuraFlag.EffectIndex0))
-                    packet.ReadInt32("Effect 0 Value");
+                    packet.ReadInt32("Effect 0 Value", i);
                 if (aura.AuraFlags.HasAnyFlag(AuraFlag.EffectIndex1))
-                    packet.ReadInt32("Effect 1 Value");
+                    packet.ReadInt32("Effect 1 Value", i);
                 if (aura.AuraFlags.HasAnyFlag(AuraFlag.EffectIndex2))
-                    packet.ReadInt32("Effect 2 Value");
+                    packet.ReadInt32("Effect 2 Value", i);
             }
 
             packet.AddSniffData(StoreNameType.Spell, (int)aura.SpellId, "AURA_UPDATE");
@@ -268,17 +268,68 @@ namespace WowPacketParser.Parsing.Parsers
             return aura;
         }
 
+        private static Aura ReadAuraUpdateBlock505(ref Packet packet, int i)
+        {
+            var aura = new Aura();
+
+            aura.Slot = packet.ReadByte("Slot", i);
+
+            var id = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+            if (id <= 0)
+                return null;
+            aura.SpellId = (uint)id;
+            
+            aura.AuraFlags = packet.ReadEnum<AuraFlagMoP>("Flags", TypeCode.Byte, i);
+            
+            var mask = packet.ReadUInt32("Effect Mask", i);
+
+            aura.Level = (uint)packet.ReadInt16("Level", i);
+
+            aura.Charges = packet.ReadByte("Charges", i);
+
+            aura.CasterGuid = !aura.AuraFlags.HasAnyFlag(AuraFlagMoP.NoCaster) ? packet.ReadPackedGuid("Caster GUID", i) : new Guid();
+
+            if (aura.AuraFlags.HasAnyFlag(AuraFlagMoP.Duration))
+            {
+                aura.MaxDuration = packet.ReadInt32("Max Duration", i);
+                aura.Duration = packet.ReadInt32("Duration", i);
+            }
+            else
+            {
+                aura.MaxDuration = 0;
+                aura.Duration = 0;
+            }
+            
+            if (aura.AuraFlags.HasAnyFlag(AuraFlagMoP.Scalable))
+            {
+                var b1 = packet.ReadByte("Unk byte", i);
+                for (var j = 0; j < b1; ++j)
+                    if (((1 << j) & mask) != 0)
+                        packet.ReadSingle("Unk Single", i, j);
+            }
+
+            packet.AddSniffData(StoreNameType.Spell, (int)aura.SpellId, "AURA_UPDATE");
+
+            return aura;
+        }
+        
         [Parser(Opcode.SMSG_AURA_UPDATE_ALL)]
         [Parser(Opcode.SMSG_AURA_UPDATE)]
         public static void HandleAuraUpdate(Packet packet)
         {
             var guid = packet.ReadPackedGuid("GUID");
-
+            var i = 0;
             var auras = new List<Aura>();
             while (packet.CanRead())
             {
-                var aura = ReadAuraUpdateBlock(ref packet);
-                auras.Add(aura);
+                Aura aura = null;
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_5_16048))
+                    aura = ReadAuraUpdateBlock505(ref packet, i++);
+                else
+                    aura = ReadAuraUpdateBlock(ref packet, i++);
+                
+                if (aura != null)
+                    auras.Add(aura);
             }
 
             // This only works if the parser saw UPDATE_OBJECT before this packet

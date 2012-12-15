@@ -33,6 +33,7 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x0DE4},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x0D6C},
             {Opcode.SMSG_AURA_UPDATE, 0x08AB},
+            {Opcode.SMSG_AURA_UPDATE_ALL, 0x0DDA},
             {Opcode.SMSG_SPELL_START, 0x08FC},
             {Opcode.SMSG_SPELL_GO, 0x0D42},
             // {Opcode.SMSG_MULTIPLE_PACKETS, 0x0826},
