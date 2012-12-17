@@ -119,7 +119,7 @@ namespace WowPacketParser.Parsing.Parsers
                 case DifficultyChangeType434.MapDifficultyRequirement:
                     packet.ReadInt32("Map Difficulty Id");
                     break;
-                case DifficultyChangeType434.Unk8:
+                case DifficultyChangeType434.PlayerAlreadyLocked:
                     packet.ReadPackedGuid("Guid");
                     break;
                 case DifficultyChangeType434.DifficultyChanged:

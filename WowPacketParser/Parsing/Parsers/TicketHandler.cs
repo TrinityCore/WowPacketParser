@@ -121,13 +121,17 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_COMPLAIN)]
         public static void HandleComplain(Packet packet)
         {
-            packet.ReadBoolean("Unk bool");
+            bool fromChat = packet.ReadBoolean("From Chat"); // false = from mail
             packet.ReadGuid("Guid");
-            packet.ReadInt32("Unk Int32");
-            packet.ReadInt32("Unk Int32");
-            packet.ReadInt32("Unk Int32");
-            packet.ReadInt32("Unk Int32");
-            packet.ReadCString("Complain");
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            packet.ReadEnum<ChatMessageType>("Type", TypeCode.Int32);
+            packet.ReadInt32("Channel ID");
+
+            if (fromChat)
+            {
+                packet.ReadTime("Time ago");
+                packet.ReadCString("Complain");
+            }
         }
 
         [Parser(Opcode.CMSG_SUBMIT_BUG)]

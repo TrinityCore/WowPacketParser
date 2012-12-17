@@ -1291,7 +1291,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleArenaTeamRoster(Packet packet)
         {
             packet.ReadUInt32("Team Id");
-            var unk = packet.ReadByte("Unk Byte");
+            var hiddenRating = packet.ReadBoolean("Send Hidden Rating");
             var count = packet.ReadUInt32("Member count");
             packet.ReadUInt32("Type");
 
@@ -1309,8 +1309,10 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Seasonal Games", i);
                 packet.ReadUInt32("Seasonal Wins", i);
                 packet.ReadUInt32("Personal Rating", i);
-                if (unk != 0)
+                if (hiddenRating)
                 {
+                    // Hidden rating, see LUA GetArenaTeamGdfInfo - gdf = Gaussian Density Filter
+                    // Introduced in Patch 3.0.8
                     packet.ReadSingle("Unk float 1", i);
                     packet.ReadSingle("Unk float 2", i);
                 }

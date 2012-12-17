@@ -389,7 +389,7 @@ namespace WowPacketParser.Parsing.Parsers
                 for (int j = 0; j < counts[i]; ++j)
                 {
                     var entry = packet.ReadEntry();
-                    packet.WriteLine("[{0}] [{1}] {2}: {3}", i, j, entry.Value ? "Creature" : "GameObject",
+                    packet.WriteLine("[{0}] [{1}] {2}: {3}", i, j, entry.Value ? "GameObject" : "Creature",
                         StoreGetters.GetName(entry.Value ? StoreNameType.GameObject : StoreNameType.Unit, entry.Key));
                 }
             }

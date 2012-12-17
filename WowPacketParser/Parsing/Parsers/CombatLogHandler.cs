@@ -150,15 +150,15 @@ namespace WowPacketParser.Parsing.Parsers
                         case SpellEffect.PowerBurn:
                         {
                             packet.ReadPackedGuid("Target GUID", index, i, j);
-                            packet.ReadInt32("Unknown Int32", index, i, j);
-                            packet.ReadInt32("Unknown Int32", index, i, j);
-                            packet.ReadSingle("Unknown Float", index, i, j);
+                            packet.ReadInt32("Power taken", index, i, j);
+                            packet.ReadInt32("Power type", index, i, j);
+                            packet.ReadSingle("Multiplier", index, i, j);
                             break;
                         }
                         case SpellEffect.AddExtraAttacks:
                         {
                             packet.ReadPackedGuid("Target GUID", index, i, j);
-                            packet.ReadInt32("Unknown Int32", index, i, j);
+                            packet.ReadInt32("Amount", index, i, j);
                             break;
                         }
                         case SpellEffect.InterruptCast:
@@ -170,8 +170,8 @@ namespace WowPacketParser.Parsing.Parsers
                         case SpellEffect.DurabilityDamage:
                         {
                             packet.ReadPackedGuid("Target GUID", index, i, j);
-                            packet.ReadInt32("Unknown Int32", index, i, j);
-                            packet.ReadInt32("Unknown Int32", index, i, j);
+                            packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item", index, i, j);
+                            packet.ReadInt32("Slot", index, i, j);
                             break;
                         }
                         case SpellEffect.OpenLock:

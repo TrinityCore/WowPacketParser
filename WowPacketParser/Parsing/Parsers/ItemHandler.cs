@@ -340,7 +340,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_2_14545))
                 packet.ReadInt32("Param");
-            packet.ReadEnum<UnknownFlags>("Result", TypeCode.Byte);
+            packet.ReadEnum<BuyResult>("Result", TypeCode.Byte);
         }
 
         [Parser(Opcode.CMSG_BUY_ITEM_IN_SLOT)]
