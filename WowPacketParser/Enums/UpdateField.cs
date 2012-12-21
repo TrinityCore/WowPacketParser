@@ -632,6 +632,14 @@ namespace WowPacketParser.Enums
         GAMEOBJECT_FLAGS,
         GAMEOBJECT_LEVEL,
         GAMEOBJECT_PARENTROTATION,
+        // Mists of Pandaria introduced a new naming for some UpdateFields
+        GAMEOBJECT_FIELD_CREATEDBY,
+        GAMEOBJECT_FIELD_DISPLAYID,
+        GAMEOBJECT_FIELD_FLAGS,
+        GAMEOBJECT_FIELD_PARENT_ROTATION,
+        GAMEOBJECT_FIELD_ANIM_PROGRESS,
+        GAMEOBJECT_FIELD_FACTION_TEMPLATE,
+        GAMEOBJECT_FIELD_LEVEL,
     }
 
     public enum DynamicObjectField
