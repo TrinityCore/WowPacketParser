@@ -404,9 +404,9 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadSingle("X");
             packet.ReadSingle("Orientation");
-            packet.ReadSingle("Z");
+            packet.ReadSingle("Y");
             CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
-            packet.ReadSingle("Y"); // seriously...
+            packet.ReadSingle("Z"); // seriously...
 
             packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
         }
