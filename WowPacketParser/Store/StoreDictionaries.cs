@@ -174,7 +174,7 @@ namespace WowPacketParser.Store
         {
             if (Enabled)
                 return _dictionary.GetEnumerator();
-            return null;
+            return new Dictionary<T, Tuple<TK, TimeSpan?>>().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -186,7 +186,7 @@ namespace WowPacketParser.Store
         {
             if (Enabled)
                 return _dictionary.Keys.ToList();
-            return null;
+            return new List<T>();
         }
     }
 
@@ -246,7 +246,7 @@ namespace WowPacketParser.Store
         {
             if (Enabled)
                 return _dictionary.GetEnumerator();
-            return null;
+            return new MultiDictionary<T, Tuple<TK, TimeSpan?>>(true).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -258,7 +258,7 @@ namespace WowPacketParser.Store
         {
             if (Enabled)
                 return _dictionary.Keys.ToList();
-            return null;
+            return List<T>();
         }
 
         public bool ContainsKey(T key)
@@ -319,7 +319,7 @@ namespace WowPacketParser.Store
         {
             if (Enabled)
                 return _bag.GetEnumerator();
-            return null;
+            return new Bag<Tuple<T, TimeSpan?>>().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
