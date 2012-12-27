@@ -258,7 +258,7 @@ namespace WowPacketParser.Store
         {
             if (Enabled)
                 return _dictionary.Keys.ToList();
-            return List<T>();
+            return new List<T>();
         }
 
         public bool ContainsKey(T key)
