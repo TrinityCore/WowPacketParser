@@ -156,6 +156,7 @@
     <Compile Include="Enums\DamageType.cs" />
     <Compile Include="Enums\DifficultyChangeType.cs" />
     <Compile Include="Enums\Direction.cs" />
+    <Compile Include="Enums\DismountResult.cs" />
     <Compile Include="Enums\DrunkenState.cs" />
     <Compile Include="Enums\DumpFormatType.cs" />
     <Compile Include="Enums\EmoteType.cs" />
@@ -168,6 +169,8 @@
     <Compile Include="Enums\GameObjectFlag.cs" />
     <Compile Include="Enums\GameObjectType.cs" />
     <Compile Include="Enums\Gender.cs" />
+    <Compile Include="Enums\GMTicketResponse.cs" />
+    <Compile Include="Enums\GMTicketStatus.cs" />
     <Compile Include="Enums\GossipOptionIcon.cs" />
     <Compile Include="Enums\GossipPoiIcon.cs" />
     <Compile Include="Enums\GroupMemberStatusFlag.cs" />
@@ -187,6 +190,7 @@
     <Compile Include="Enums\HighGuidType.cs" />
     <Compile Include="Enums\Holiday.cs" />
     <Compile Include="Enums\InhabitType.cs" />
+    <Compile Include="Enums\MountResult.cs" />
     <Compile Include="Enums\RaidSummonFail.cs" />
     <Compile Include="Enums\TalentErrors.cs" />
     <Compile Include="Enums\TargetIcon.cs" />

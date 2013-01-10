@@ -436,7 +436,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_ACCEPT_TRADE)]
         public static void HandleAcceptTrade(Packet packet)
         {
-            packet.ReadUInt32("Unk UInt32");
+            packet.ReadUInt32("Unk UInt32 - Trade Window Is Showing?");
         }
 
         [Parser(Opcode.CMSG_BEGIN_TRADE)]

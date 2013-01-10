@@ -122,7 +122,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (int i = 0; i < currencyCount; ++i)
             {
-                packet.ReadByte("Unk Byte", i); // only seen zero so far
+                packet.ReadByte("Slot", i);
                 packet.ReadInt32("Currency Id", i);
                 packet.ReadInt32("Count", i); // unconfirmed
             }
@@ -239,7 +239,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CURRENCY_LOOT_REMOVED)]
         public static void HandleLootCurrency(Packet packet)
         {
-            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Slot");
         }
 
         [Parser(Opcode.SMSG_LOOT_CLEAR_MONEY)]

@@ -12,6 +12,9 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLogDisconnect(Packet packet)
         {
             packet.ReadUInt32("Unk");
+            // 4 is inability for client to decrypt RSA
+            // 3 is not receiving "WORLD OF WARCRAFT CONNECTION - SERVER TO CLIENT"
+            // 11 is sent on receiving opcode 0x140 with some specific data
         }
 
         [Parser(Opcode.CMSG_VIOLENCE_LEVEL)]
@@ -362,7 +365,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LEARNED_DANCE_MOVES)]
         public static void HandleLearnedDanceMoves(Packet packet)
         {
-            packet.ReadInt32("Dance Move Id");
+            packet.ReadInt32("Dance Move Id"); // Dance move is Int64?
             packet.ReadInt32("Unk int");
         }
 

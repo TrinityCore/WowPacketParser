@@ -370,9 +370,9 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadWoWString("Guild Info", infoLength);
             packet.ReadWoWString("MOTD", motdLength);
-            packet.ReadUInt32("Unk Uint32 1");
-            packet.ReadUInt32("Unk Uint32 2");
-            packet.ReadUInt32("Unk Uint32 3");
+            packet.ReadUInt32("Accounts In Guild");
+            packet.ReadUInt32("Weekly Reputation Cap");
+            packet.ReadPackedTime("CreationTime");
             packet.ReadUInt32("Unk Uint32 4");
         }
 
@@ -488,7 +488,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGuildSetGuildMaster(Packet packet)
         {
             var nameLength = packet.ReadBits(7);
-            packet.ReadBit("Unk bit"); // Most probably related to guild finder inactivity
+            packet.ReadBit("Is Dethroned"); // Most probably related to guild finder inactivity
             packet.ReadWoWString("New GuildMaster name", nameLength);
         }
 
@@ -850,7 +850,7 @@ namespace WowPacketParser.Parsing.Parsers
             var oldGuildGuid = new byte[8];
 
             packet.ReadInt32("Guild Level");
-            packet.ReadInt32("Emblem Style"); // unconfirmed
+            packet.ReadInt32("Border Style");
             packet.ReadInt32("Border Color");
             packet.ReadInt32("Emblem Texture");
             packet.ReadInt32("Emblem Background Color");
@@ -1899,14 +1899,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Petition GUID");
         }
 
-        [Parser(Opcode.SMSG_GUILD_CHALLENGE_UPDATED)]
+        [Parser(Opcode.SMSG_GUILD_CHALLENGE_UPDATED, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildChallengeUpdated(Packet packet)
         {
             for (int i = 0; i < 4; ++i)
                 packet.ReadInt32("Guild Experience Reward", i);
 
             for (int i = 0; i < 4; ++i)
-                packet.ReadInt32("Gold Reward Unk 1", i);
+                packet.ReadInt32("Completion Gold Reward", i);
 
             for (int i = 0; i < 4; ++i)
                 packet.ReadInt32("Total Count", i);
