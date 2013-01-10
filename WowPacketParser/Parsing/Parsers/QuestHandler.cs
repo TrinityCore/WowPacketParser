@@ -520,7 +520,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
-            packet.ReadByte("Unknown Byte");
+            packet.ReadByte("Start/End (1/2)");
         }
 
         [Parser(Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST)]
@@ -800,7 +800,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestCompleted434(Packet packet)
         {
-            packet.ReadInt32("Unk Int32 1"); // Talent Points?
+            packet.ReadInt32("TalentPoints");
             packet.ReadInt32("RewSkillPoints");
             packet.ReadInt32("Money");
             packet.ReadInt32("XP");

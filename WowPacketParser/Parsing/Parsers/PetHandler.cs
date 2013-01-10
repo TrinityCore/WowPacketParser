@@ -206,7 +206,7 @@ namespace WowPacketParser.Parsing.Parsers
                     break;
                 case PetFeedback.CantAttackTarget:
                     if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
-                        packet.ReadInt32("Unk int32");
+                        packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");    // sub_8ADA60 2nd parameter is SpellID, check sub_8B22C0
                     break;
             }
         }

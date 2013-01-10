@@ -861,6 +861,9 @@ namespace WowPacketParser.Parsing.Parsers
                     break;
                 // Following is post 3.3.5a
                 case SpellCastFailureReason.NotReady:
+                    if (packet.CanRead())
+                        packet.ReadInt32("Extra Cast Number");
+                    break;
                 case SpellCastFailureReason.Silenced:
                 case SpellCastFailureReason.NotStanding:
                     if (packet.CanRead())
@@ -914,7 +917,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSpellChannelUpdate(Packet packet)
         {
             packet.ReadPackedGuid("GUID");
-            packet.ReadUInt32("Unk");
+            packet.ReadUInt32("Timestamp");
         }
 
         [Parser(Opcode.MSG_CHANNEL_START)]
@@ -956,7 +959,14 @@ namespace WowPacketParser.Parsing.Parsers
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623) && ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_4_15595))
                 packet.ReadPackedGuid("GUID");
-            packet.ReadUInt32("Result"); // FIXME Enum?
+            packet.ReadEnum<MountResult>("Result", TypeCode.Int32);
+        }
+
+        [Parser(Opcode.SMSG_DISMOUNTRESULT)]
+        public static void HandleDismountResult(Packet packet)
+        {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595)) // Don't know for previous.
+                packet.ReadEnum<DismountResult>("Result", TypeCode.Int32);
         }
 
         [Parser(Opcode.CMSG_GET_MIRRORIMAGE_DATA)]

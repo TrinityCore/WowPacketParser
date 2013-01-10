@@ -131,13 +131,13 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldListServer434(Packet packet)
         {
-            packet.ReadInt32("Unk Int32"); // Winner Conquest Reward or Random Winner Conquest Reward
-            packet.ReadInt32("Unk Int32"); // Winner Conquest Reward or Random Winner Conquest Reward
-            packet.ReadInt32("Unk Int32"); // Loser Honor Reward or Random Loser Honor Reward
+            packet.ReadInt32("Win Conquest Reward"); // Winner Conquest Reward or Random Winner Conquest Reward
+            packet.ReadInt32("Random Win Conquest Reward"); // Winner Conquest Reward or Random Winner Conquest Reward
+            packet.ReadInt32("Random Loss Conquest Reward"); // Loser Honor Reward or Random Loser Honor Reward
             packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BG type");
-            packet.ReadInt32("Unk Int32"); // Loser Honor Reward or Random Loser Honor Reward
-            packet.ReadInt32("Unk Int32"); // Winner Honor Reward or Random Winner Honor Reward
-            packet.ReadInt32("Unk Int32"); // Winner Honor Reward or Random Winner Honor Reward
+            packet.ReadInt32("Loss Conquest Reward"); // Loser Honor Reward or Random Loser Honor Reward
+            packet.ReadInt32("Win Conquest Reward"); // Winner Honor Reward or Random Winner Honor Reward
+            packet.ReadInt32("Random Win Conquest Reward"); // Winner Honor Reward or Random Winner Honor Reward
             packet.ReadByte("Max level");
             packet.ReadByte("Min level");
 
@@ -533,7 +533,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid1[4] = packet.ReadBit();//36
 
             guid1[5] = packet.ReadBit();//37
-            packet.ReadBit("Unk Bit");//72
+            packet.ReadBit("Is Rated");//72
             packet.ReadBit("Waiting On Other Activity");//28
             guid2[1] = packet.ReadBit();//57
 
@@ -838,7 +838,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 guids[i] = new byte[8];
 
-                packet.ReadBit("Unk Bit 1", i); // 13
+                packet.ReadBit("Unk Bit 1", i); // 13 true in wsg and arena
                 unkBits2[i] = packet.ReadBit("Unk Bit 2", i); // 40
 
                 guids[i][2] = packet.ReadBit();
@@ -854,7 +854,7 @@ namespace WowPacketParser.Parsing.Parsers
                 guids[i][1] = packet.ReadBit();
                 guids[i][6] = packet.ReadBit();
 
-                packet.ReadBit("Unk Bit 7", i); // 12
+                packet.ReadBit("Reversed team", i); // 12
 
                 guids[i][7] = packet.ReadBit();
 
@@ -892,7 +892,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Killing Blows", i);
 
                 if (unkBits5[i])
-                    packet.ReadInt32("Unk Int32 13", i);
+                    packet.ReadInt32("Rating Change", i);
 
                 packet.ReadXORByte(guids[i], 5);
 
@@ -924,16 +924,16 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (arenaStrings)
             {
-                packet.ReadWoWString("Unk Name 1", name1Length);
-                packet.ReadWoWString("Unk Name 2", name2Length);
+                packet.ReadWoWString("Team 2 Name", name1Length);
+                packet.ReadWoWString("Team 1 Name", name2Length);
             }
 
-            packet.ReadByte("Unk Byte 1");
+            packet.ReadByte("Unk Byte 1"); // Team Size
 
             if (finished)
                 packet.ReadByte("Winner");
 
-            packet.ReadByte("Unk Byte 2");
+            packet.ReadByte("Unk Byte 2"); // Team size
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGE, ClientVersionBuild.V4_3_4_15595)]

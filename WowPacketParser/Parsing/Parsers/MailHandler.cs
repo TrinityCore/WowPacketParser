@@ -210,7 +210,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSendMail434(Packet packet)
         {
             var guid = new byte[8];
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32"); // MailMessage.packageId ?
             packet.ReadInt32("Stationery?");
             packet.ReadInt64("COD");
             packet.ReadInt64("Money");

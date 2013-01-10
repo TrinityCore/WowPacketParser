@@ -71,8 +71,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GMTICKET_GETTICKET)]
         public static void HandleGetGMTicket(Packet packet)
         {
-            var unk = packet.ReadInt32("Unk UInt32");
-            if (unk != 6)
+            var ticketStatus = packet.ReadEnum<GMTicketStatus>("TicketStatus", TypeCode.Int32);
+            if (ticketStatus != GMTicketStatus.HasText)
                 return;
 
             packet.ReadInt32("TicketID");
@@ -95,7 +95,19 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GMTICKET_DELETETICKET)]
         public static void HandleCreateUpdateGMTicket(Packet packet)
         {
-            packet.ReadInt32("Unk UInt32");
+            var ticketResponse = packet.ReadEnum<GMTicketResponse>("TicketResponse", TypeCode.Int32);
+            switch (ticketResponse)
+            {
+                case GMTicketResponse.Failure:
+                    packet.WriteLine("Action failed");
+                    break;
+                case GMTicketResponse.Success:
+                    packet.WriteLine("Action succeeded");
+                    break;
+                case GMTicketResponse.Deleted:
+                    packet.WriteLine("Ticket deleted");
+                    break;
+            }
         }
 
         [Parser(Opcode.CMSG_GMTICKET_UPDATETEXT)]
@@ -144,7 +156,7 @@ namespace WowPacketParser.Parsing.Parsers
             pos.Y = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
             pos.X = packet.ReadSingle();
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Map ID");
             pos.O = packet.ReadSingle();
             packet.WriteLine("Position: {0}", pos);
         }
