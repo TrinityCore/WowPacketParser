@@ -748,14 +748,14 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk int", i);
             }
         }
-        
+
         [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V5_0_5_16048)]
         public static void HandleCharEnum505(Packet packet)
         {
             var unkCounter = packet.ReadBits("Unk Counter", 23);
             packet.ReadBit("Unk bit");
             var count = packet.ReadBits("Char count", 17);
-            
+
             var charGuids = new byte[count][];
             var guildGuids = new byte[count][];
             var firstLogins = new bool[count];
@@ -765,40 +765,40 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 charGuids[c] = new byte[8];
                 guildGuids[c] = new byte[8];
-                
+
                 charGuids[c][4] = packet.ReadBit();
-                
+
                 guildGuids[c][7] = packet.ReadBit();
                 guildGuids[c][3] = packet.ReadBit();
                 guildGuids[c][0] = packet.ReadBit();
                 guildGuids[c][1] = packet.ReadBit();
-                
+
                 firstLogins[c] = packet.ReadBit();
-                
+
                 charGuids[c][6] = packet.ReadBit();
-                
+
                 guildGuids[c][6] = packet.ReadBit();
-                
+
                 charGuids[c][1] = packet.ReadBit();
-                
+
                 nameLenghts[c] = packet.ReadBits(7);
-                
+
                 guildGuids[c][2] = packet.ReadBit();
-                
+
                 charGuids[c][2] = packet.ReadBit();
                 charGuids[c][0] = packet.ReadBit();
                 charGuids[c][3] = packet.ReadBit();
                 charGuids[c][5] = packet.ReadBit();
-                
+
                 guildGuids[c][4] = packet.ReadBit();
-                
+
                 charGuids[c][7] = packet.ReadBit();
-                
+
                 guildGuids[c][5] = packet.ReadBit();
             }
-            
+
             packet.ResetBitReader();
-            
+
             for (int c = 0; c < count; ++c)
             {
                 for (var itm = 0; itm < 23; ++itm)
@@ -807,64 +807,64 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Item DisplayID", c, itm);
                     packet.ReadEnum<InventoryType>("Item InventoryType", TypeCode.Byte, c, itm);
                 }
-               
+
                 packet.ReadByte("Hair Style", c);
-                
+
                 var race = packet.ReadEnum<Race>("Race", TypeCode.Byte, c);
-                
+
                 packet.ReadXORByte(charGuids[c], 0);
                 packet.ReadXORByte(guildGuids[c], 4);
-                
+
                 packet.ReadByte("Facial Hair", c);
                 packet.ReadByte("Hair Color", c);
-                
+
                 var z = packet.ReadSingle("Position Z", c);
-                
+
                 packet.ReadXORByte(guildGuids[c], 6);
                 packet.ReadXORByte(charGuids[c], 7);
                 packet.ReadXORByte(guildGuids[c], 0);
-                
+
                 packet.ReadEnum<CharacterFlag>("Character Flags", TypeCode.Int32, c);
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
-                
+
                 packet.ReadXORByte(charGuids[c], 5);
                 packet.ReadXORByte(charGuids[c], 6);
-                
+
                 packet.ReadEnum<CustomizationFlag>("Customization Flags", TypeCode.Int32, c);
                 packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id", c);
-                
+
                 packet.ReadXORByte(charGuids[c], 1);
-                
+
                 packet.ReadInt32("Pet Display Id", c);
-                
+
                 packet.ReadXORByte(guildGuids[c], 1);
-                
+
                 packet.ReadByte("Face", c);
                 packet.ReadEnum<CreatureFamily>("Pet Family", TypeCode.Int32, c);
                 packet.ReadByte("Skin", c);
-                
+
                 packet.ReadXORByte(charGuids[c], 4);
-                
+
                 packet.ReadXORByte(guildGuids[c], 5);
-                
+
                 var name = packet.ReadWoWString("Name", (int)nameLenghts[c], c);
-                
+
                 packet.ReadInt32("Pet Level", c);
                 packet.ReadByte("Gender", c);
                 packet.ReadSingle("Position X", c);
                 var clss = packet.ReadEnum<Class>("Class", TypeCode.Byte, c);
                 packet.ReadByte("Unk 8", c);
                 packet.ReadSingle("Position Y", c);
-                
+
                 packet.ReadXORByte(guildGuids[c], 3);
                 packet.ReadXORByte(guildGuids[c], 7);
                 packet.ReadXORByte(guildGuids[c], 2);
-                
+
                 var level = packet.ReadByte("Level", c);
-                
+
                 packet.ReadXORByte(charGuids[c], 2);
                 packet.ReadXORByte(charGuids[c], 3);
-                
+
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);
             }

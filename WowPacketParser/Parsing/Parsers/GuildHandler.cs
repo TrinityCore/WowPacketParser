@@ -622,7 +622,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Gold Per Day", i);
             }
         }
-        
+
         [Parser(Opcode.SMSG_GUILD_RANK, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRankServer430(Packet packet)
         {
@@ -631,7 +631,7 @@ namespace WowPacketParser.Parsing.Parsers
             var length = new int[count];
             for (var i = 0; i < count; ++i)
                 length[i] = (int)packet.ReadBits(7);
-                
+
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadWoWString("Name", length[i], i);

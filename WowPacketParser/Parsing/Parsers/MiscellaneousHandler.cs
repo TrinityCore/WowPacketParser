@@ -281,7 +281,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Unknown Mail Url Related Value");
             }
         }
-        
+
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleFeatureSystemStatus430(Packet packet)
         {

@@ -10,7 +10,7 @@ namespace WowPacketParser.Enums.Version.V5_0_4_16016
         }
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
-        {   
+        {
             {Opcode.CMSG_BATTLEFIELD_STATUS, 0x04ED},
             {Opcode.CMSG_BUG, 0x0790},
             {Opcode.CMSG_CAST_SPELL, 0x01BB},
@@ -21,7 +21,7 @@ namespace WowPacketParser.Enums.Version.V5_0_4_16016
             {Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST, 0x017D},
             {Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD, 0x0091},
             {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x01B3},
-            {Opcode.CMSG_QUESTGIVER_SHARE_QUEST, 0x00B3}, 
+            {Opcode.CMSG_QUESTGIVER_SHARE_QUEST, 0x00B3},
             {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY, 0x027F},
             {Opcode.CMSG_REQUEST_PET_INFO, 0x01F4},
             {Opcode.CMSG_SELL_ITEM, 0x0493},
