@@ -32,9 +32,28 @@ namespace WowPacketParser.Store.Objects
 
         public int GetDefaultSpawnTime()
         {
-            // If map is Eastern Kingdoms, Kalimdor, Outland, Northrend or Ebon Hold use a lower respawn time
+            // If map is Continent use a lower respawn time
             // TODO: Rank and if npc is needed for quest kill should change spawntime as well
-            return (Map == 0 || Map == 1 || Map == 530 || Map == 571 || Map == 609) ? 120 : 7200;
+            switch (Map)
+            {
+                case 0:     // Eastern Kingdoms
+                case 1:     // Kalimdor
+                case 530:   // Outland
+                case 571:   // Northrend
+                case 609:   // Ebon Hold
+                case 638:   // Gilneas 1
+                case 655:   // Gilneas 2
+                case 656:   // Gilneas 3
+                case 646:   // Deepholm
+                case 648:   // Kezan 1
+                case 659:   // Kezan 2
+                case 661:   // Kezan 3
+                case 732:   // Tol Barad
+                case 861:   // Firelands Dailies
+                    return 120;
+                default:
+                    return 7200;
+            }
         }
 
         public virtual void LoadValuesFromUpdateFields() { }
