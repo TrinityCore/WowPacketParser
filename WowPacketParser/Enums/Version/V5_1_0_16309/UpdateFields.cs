@@ -1,7 +1,8 @@
-namespace WowPacketParser.Enums.Version.V5_0_4_16016
+namespace WowPacketParser.Enums.Version.V5_1_0_16309
 {
     // ReSharper disable InconsistentNaming
-    // 5.0.4.16016
+    // 5.1.0.16309
+    // TODO: fix update fields for this version.
     public enum ObjectField
     {
         OBJECT_FIELD_GUID  = 0x0000,

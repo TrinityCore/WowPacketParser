@@ -19,7 +19,7 @@ namespace WowPacketParser.Enums
         Unk1000      = 0x1000,
         Unk4000      = 0x4000
     }
-    
+
     [Flags]
     public enum AuraFlagMoP
     {
