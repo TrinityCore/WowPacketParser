@@ -10,7 +10,7 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
         }
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
-        {   
+        {
             {Opcode.CMSG_GUILD_DISBAND, 0x0062},
             {Opcode.CMSG_AUTH_SESSION, 0x008A},
             {Opcode.CMSG_GROUP_RAID_CONVERT, 0x034F},

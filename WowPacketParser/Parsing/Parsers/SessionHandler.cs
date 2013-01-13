@@ -423,7 +423,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasAccountData = packet.ReadBit("Has Account Data");
             var count = 0u;
             var count1 = 0u;
-            
+
             if (hasAccountData)
             {
                 packet.ReadBit("Unk 2");
@@ -431,38 +431,38 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadBits("Unk", 22);
                 count1 = packet.ReadBits("Race Activation Count", 25);
             }
-            
+
             var isQueued = packet.ReadBit("Is In Queue");
             if (isQueued)
             {
                 packet.ReadBit("Unk 3");
                 packet.ReadUInt32("Queue Position");
             }
-            
+
             if (hasAccountData)
             {
                 packet.ReadByte("Unk 5");
                 packet.ReadEnum<ClientType>("Player Expansion", TypeCode.Byte);
-                
+
                 for (var i = 0; i < count; ++i)
                 {
                     packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
                     packet.ReadEnum<ClientType>("Class Expansion", TypeCode.Byte, i);
                 }
-                
+
                 packet.ReadUInt32("Unk 8");
                 packet.ReadUInt32("Unk 9");
                 packet.ReadUInt32("Unk 10");
-                
+
                 for (var i = 0; i < count1; ++i)
                 {
                     packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
                     packet.ReadEnum<ClientType>("Race Expansion", TypeCode.Byte, i);
                 }
-                
+
                 packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
             }
-            
+
             packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
         }
 

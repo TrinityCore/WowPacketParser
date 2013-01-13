@@ -230,7 +230,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (id <= 0)
                 return null;
             aura.SpellId = (uint)id;
-            
+
             var type = ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333) ? TypeCode.Int16 : TypeCode.Byte;
             aura.AuraFlags = packet.ReadEnum<AuraFlag>("Flags", type, i);
 
@@ -278,9 +278,9 @@ namespace WowPacketParser.Parsing.Parsers
             if (id <= 0)
                 return null;
             aura.SpellId = (uint)id;
-            
+
             aura.AuraFlags = packet.ReadEnum<AuraFlagMoP>("Flags", TypeCode.Byte, i);
-            
+
             var mask = packet.ReadUInt32("Effect Mask", i);
 
             aura.Level = (uint)packet.ReadInt16("Level", i);
@@ -299,7 +299,7 @@ namespace WowPacketParser.Parsing.Parsers
                 aura.MaxDuration = 0;
                 aura.Duration = 0;
             }
-            
+
             if (aura.AuraFlags.HasAnyFlag(AuraFlagMoP.Scalable))
             {
                 var b1 = packet.ReadByte("Unk byte", i);
@@ -312,7 +312,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             return aura;
         }
-        
+
         [Parser(Opcode.SMSG_AURA_UPDATE_ALL)]
         [Parser(Opcode.SMSG_AURA_UPDATE)]
         public static void HandleAuraUpdate(Packet packet)
@@ -327,7 +327,7 @@ namespace WowPacketParser.Parsing.Parsers
                     aura = ReadAuraUpdateBlock505(ref packet, i++);
                 else
                     aura = ReadAuraUpdateBlock(ref packet, i++);
-                
+
                 if (aura != null)
                     auras.Add(aura);
             }

@@ -95,10 +95,10 @@ namespace WowPacketParser.Misc
         {
             var arr = ReadToEnd();
             var newarr = new byte[inflatedSize];
-            
+
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_0_15005))
                 keepStream = false;
-                
+
             if (keepStream)
             {
                 if (!SessionHandler.z_streams.ContainsKey(ConnectionIndex))

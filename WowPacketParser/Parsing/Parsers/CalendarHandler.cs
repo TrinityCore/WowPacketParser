@@ -385,7 +385,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<CalendarEventType>("Type", TypeCode.Int32);
             packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
             packet.ReadInt64("Invite ID");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15050))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0a_15050))
             {
                 packet.ReadGuid("Guild GUID");
             }

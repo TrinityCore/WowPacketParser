@@ -2739,7 +2739,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Speed");
             packet.WriteGuid("Guid", guid);
         }
-        
+
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleSplineMovementSetRunSpeed430(Packet packet)
         {
