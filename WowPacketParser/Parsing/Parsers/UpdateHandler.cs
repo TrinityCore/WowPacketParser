@@ -2238,7 +2238,10 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static MovementInfo ReadMovementUpdateBlock(ref Packet packet, Guid guid, int index)
         {
-            if (ClientVersion.Build == ClientVersionBuild.V5_0_4_16016 || ClientVersion.Build == ClientVersionBuild.V5_0_5_16048 || ClientVersion.Build == ClientVersionBuild.V5_0_5_16057 || ClientVersion.Build == ClientVersionBuild.V5_0_5_16135)
+            if (ClientVersion.Build == ClientVersionBuild.V5_1_0_16309 || ClientVersion.Build == ClientVersionBuild.V5_1_0a_16357)
+                return ReadMovementUpdateBlock504(ref packet, guid, index);  // TODO: Check if it's been updated.
+
+            if (ClientVersion.Build == ClientVersionBuild.V5_0_4_16016 || ClientVersion.Build == ClientVersionBuild.V5_0_5_16048 || ClientVersion.Build == ClientVersionBuild.V5_0_5a_16057 || ClientVersion.Build == ClientVersionBuild.V5_0_5b_16135)
                 return ReadMovementUpdateBlock504(ref packet, guid, index);
 
             if (ClientVersion.Build == ClientVersionBuild.V4_3_4_15595)
@@ -2250,7 +2253,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.Build == ClientVersionBuild.V4_3_2_15211)
                 return ReadMovementUpdateBlock432(ref packet, guid, index);
 
-            if (ClientVersion.Build == ClientVersionBuild.V4_3_0_15005 || ClientVersion.Build == ClientVersionBuild.V4_3_0_15050)
+            if (ClientVersion.Build == ClientVersionBuild.V4_3_0_15005 || ClientVersion.Build == ClientVersionBuild.V4_3_0a_15050)
                 return ReadMovementUpdateBlock430(ref packet, guid, index);
 
             var moveInfo = new MovementInfo();
