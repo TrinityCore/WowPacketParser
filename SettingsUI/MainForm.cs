@@ -23,7 +23,7 @@ namespace SettingsUI
             get { return _sqlOutputMask; }
             set
             {
-                sqlOutputMaskLabel.Text = value.ToString(CultureInfo.InvariantCulture);
+                sqlOutputMaskLabel.Text = String.Format(CultureInfo.InvariantCulture, "{0,6} (0x{0,5:X})", value);
                 _sqlOutputMask = value;
             }
         }
@@ -74,6 +74,7 @@ namespace SettingsUI
                 {onCheckBox,   0x08000}, // ObjectNames
                 {ceCheckBox,   0x10000}, // CreatureEquip
                 {mCheckBox,    0x20000}, // Creature Movement
+                //{itCheckBox,   0x40000}, // Item Template
             };
 
             _defaultSettings = new Dictionary<Control, Tuple<string, dynamic>>
@@ -90,6 +91,7 @@ namespace SettingsUI
                 {clientBuildComboBox, new Tuple<string, dynamic>("ClientBuild", string.Empty)},
                 {sqlOutputMaskLabel, new Tuple<string, dynamic>("SQLOutput", 0)},
                 {showPromptCheckBox, new Tuple<string, dynamic>("ShowEndPrompt", true)},
+                //{packetLogErrorsCheckbox, new Tuple<string, dynamic>("LogPacketErrors", false)},
                 {logErrorCheckBox, new Tuple<string, dynamic>("LogErrors", false)},
                 {splitOutputCheckBox, new Tuple<string, dynamic>("SplitOutput", false)},
                 {debugReadsCheckBox, new Tuple<string, dynamic>("DebugReads", false)},
@@ -134,7 +136,6 @@ namespace SettingsUI
             {
                 try
                 {
-
                     var val = _configuration.GetSetting(element.Value.Item1, element.Value.Item2);
 
                     if (element.Key is CheckBox) // special case for checkboxes, changing "Text" is not correct
@@ -153,7 +154,6 @@ namespace SettingsUI
         {
             foreach (var element in _defaultSettings)
             {
-
                 string val;
                 if (element.Key is CheckBox)
                     val = ((CheckBox)element.Key).Checked ? "true" : "false";
