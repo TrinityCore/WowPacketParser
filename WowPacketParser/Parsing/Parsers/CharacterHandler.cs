@@ -1076,7 +1076,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Currency ID");
         }
 
-        [Parser(Opcode.SMSG_XP_GAIN_ABORTED, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_2_15211)]
+        [Parser(Opcode.SMSG_XP_GAIN_ABORTED, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15211)]
         public static void HandleXPGainAborted430(Packet packet)
         {
             packet.ReadInt32("Unk Int32 1");
@@ -1088,7 +1088,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_XP_GAIN_ABORTED, ClientVersionBuild.V4_3_2_15211, ClientVersionBuild.V4_3_4_15595)] // 4.3.4, related to EVENT_TRIAL_CAP_REACHED_LEVEL
+        [Parser(Opcode.SMSG_XP_GAIN_ABORTED, ClientVersionBuild.V4_3_4_15211)] // 4.3.4, related to EVENT_TRIAL_CAP_REACHED_LEVEL
         public static void HandleXPGainAborted434(Packet packet)
         {
             var guid = packet.StartBitStream(4, 0, 1, 2, 6, 7, 5, 3);
