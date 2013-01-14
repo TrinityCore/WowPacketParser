@@ -1076,7 +1076,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Currency ID");
         }
 
-        [Parser(Opcode.SMSG_XP_GAIN_ABORTED, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15211)]
+        [Parser(Opcode.SMSG_XP_GAIN_ABORTED, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleXPGainAborted430(Packet packet)
         {
             packet.ReadInt32("Unk Int32 1");
