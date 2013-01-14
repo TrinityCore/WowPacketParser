@@ -74,7 +74,7 @@ namespace SettingsUI
                 {onCheckBox,   0x08000}, // ObjectNames
                 {ceCheckBox,   0x10000}, // CreatureEquip
                 {mCheckBox,    0x20000}, // Creature Movement
-                //{itCheckBox,   0x40000}, // Item Template
+                {itCheckBox,   0x40000}, // Item Template
             };
 
             _defaultSettings = new Dictionary<Control, Tuple<string, dynamic>>

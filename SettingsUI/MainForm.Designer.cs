@@ -101,6 +101,7 @@
             this.sdCheckBox = new System.Windows.Forms.CheckBox();
             this.siCheckBox = new System.Windows.Forms.CheckBox();
             this.mCheckBox = new System.Windows.Forms.CheckBox();
+            this.itCheckBox = new System.Windows.Forms.CheckBox();
             this.selectAllButton = new System.Windows.Forms.Button();
             this.selectNoneButton = new System.Windows.Forms.Button();
             this.sqlOutputMaskLabel = new System.Windows.Forms.Label();
@@ -614,7 +615,16 @@
             this.clientBuildComboBox.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.clientBuildComboBox.Items.AddRange(new object[] {
             "None",
-            "V4_3_0_15050",
+            "V5_1_0a_16357",
+            "V5_1_0_16309",
+            "V5_0_5b_16135",
+            "V5_0_5a_16057",
+            "V5_0_5_16048",
+            "V5_0_4_16016",
+            "V4_3_4_15595",
+            "V4_3_3_15354",
+            "V4_3_2_15211",
+            "V4_3_0a_15050",
             "V4_3_0_15005",
             "V4_2_2_14545",
             "V4_2_0a_14480",
@@ -704,28 +714,30 @@
             //
             // sqlOutputTableLayoutPanel
             //
-            this.sqlOutputTableLayoutPanel.ColumnCount = 3;
-            this.sqlOutputTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.sqlOutputTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.sqlOutputTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.sqlOutputTableLayoutPanel.Controls.Add(this.ceCheckBox, 1, 5);
-            this.sqlOutputTableLayoutPanel.Controls.Add(this.onCheckBox, 0, 5);
+            this.sqlOutputTableLayoutPanel.ColumnCount = 4;
+            this.sqlOutputTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.sqlOutputTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28F));
+            this.sqlOutputTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 24.5F));
+            this.sqlOutputTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 17.5F));
+            this.sqlOutputTableLayoutPanel.Controls.Add(this.onCheckBox, 1, 3);
             this.sqlOutputTableLayoutPanel.Controls.Add(this.gotCheckBox, 0, 0);
             this.sqlOutputTableLayoutPanel.Controls.Add(this.gosCheckBox, 0, 1);
-            this.sqlOutputTableLayoutPanel.Controls.Add(this.qtCheckBox, 0, 2);
-            this.sqlOutputTableLayoutPanel.Controls.Add(this.qpoiCheckBox, 0, 3);
+            this.sqlOutputTableLayoutPanel.Controls.Add(this.siCheckBox, 2, 3);
+            this.sqlOutputTableLayoutPanel.Controls.Add(this.qpoiCheckBox, 2, 5);
             this.sqlOutputTableLayoutPanel.Controls.Add(this.ptCheckBox, 2, 1);
-            this.sqlOutputTableLayoutPanel.Controls.Add(this.sdoCheckBox, 2, 4);
+            this.sqlOutputTableLayoutPanel.Controls.Add(this.qtCheckBox, 2, 4);
             this.sqlOutputTableLayoutPanel.Controls.Add(this.ctCheckBox, 0, 4);
-            this.sqlOutputTableLayoutPanel.Controls.Add(this.csCheckBox, 1, 0);
-            this.sqlOutputTableLayoutPanel.Controls.Add(this.ntCheckBox, 1, 1);
-            this.sqlOutputTableLayoutPanel.Controls.Add(this.nvCheckBox, 1, 2);
             this.sqlOutputTableLayoutPanel.Controls.Add(this.gCheckBox, 2, 0);
-            this.sqlOutputTableLayoutPanel.Controls.Add(this.ntxtCheckBox, 1, 3);
-            this.sqlOutputTableLayoutPanel.Controls.Add(this.lCheckBox, 1, 4);
-            this.sqlOutputTableLayoutPanel.Controls.Add(this.sdCheckBox, 2, 3);
-            this.sqlOutputTableLayoutPanel.Controls.Add(this.siCheckBox, 2, 2);
-            this.sqlOutputTableLayoutPanel.Controls.Add(this.mCheckBox, 2, 5);
+            this.sqlOutputTableLayoutPanel.Controls.Add(this.mCheckBox, 0, 3);
+            this.sqlOutputTableLayoutPanel.Controls.Add(this.ceCheckBox, 0, 2);
+            this.sqlOutputTableLayoutPanel.Controls.Add(this.csCheckBox, 0, 5);
+            this.sqlOutputTableLayoutPanel.Controls.Add(this.ntCheckBox, 1, 0);
+            this.sqlOutputTableLayoutPanel.Controls.Add(this.nvCheckBox, 1, 1);
+            this.sqlOutputTableLayoutPanel.Controls.Add(this.ntxtCheckBox, 1, 2);
+            this.sqlOutputTableLayoutPanel.Controls.Add(this.itCheckBox, 2, 2);
+            this.sqlOutputTableLayoutPanel.Controls.Add(this.sdCheckBox, 1, 4);
+            this.sqlOutputTableLayoutPanel.Controls.Add(this.sdoCheckBox, 1, 5);
+            this.sqlOutputTableLayoutPanel.Controls.Add(this.lCheckBox, 3, 0);
             this.sqlOutputTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.sqlOutputTableLayoutPanel.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.sqlOutputTableLayoutPanel.Location = new System.Drawing.Point(3, 16);
@@ -743,18 +755,18 @@
             // ceCheckBox
             //
             this.ceCheckBox.AutoSize = true;
-            this.ceCheckBox.Location = new System.Drawing.Point(153, 118);
+            this.ceCheckBox.Location = new System.Drawing.Point(3, 49);
             this.ceCheckBox.Name = "ceCheckBox";
-            this.ceCheckBox.Size = new System.Drawing.Size(124, 17);
+            this.ceCheckBox.Size = new System.Drawing.Size(121, 17);
             this.ceCheckBox.TabIndex = 16;
-            this.ceCheckBox.Text = "Creature Equipments";
+            this.ceCheckBox.Text = "CreatureEquipments";
             this.ceCheckBox.UseVisualStyleBackColor = true;
             this.ceCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
             //
             // onCheckBox
             //
             this.onCheckBox.AutoSize = true;
-            this.onCheckBox.Location = new System.Drawing.Point(3, 118);
+            this.onCheckBox.Location = new System.Drawing.Point(138, 72);
             this.onCheckBox.Name = "onCheckBox";
             this.onCheckBox.Size = new System.Drawing.Size(90, 17);
             this.onCheckBox.TabIndex = 15;
@@ -767,9 +779,9 @@
             this.gotCheckBox.AutoSize = true;
             this.gotCheckBox.Location = new System.Drawing.Point(3, 3);
             this.gotCheckBox.Name = "gotCheckBox";
-            this.gotCheckBox.Size = new System.Drawing.Size(132, 17);
+            this.gotCheckBox.Size = new System.Drawing.Size(129, 17);
             this.gotCheckBox.TabIndex = 0;
-            this.gotCheckBox.Text = "GameObject Template";
+            this.gotCheckBox.Text = "GameObjectTemplate";
             this.gotCheckBox.UseVisualStyleBackColor = true;
             this.gotCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
             //
@@ -778,16 +790,16 @@
             this.gosCheckBox.AutoSize = true;
             this.gosCheckBox.Location = new System.Drawing.Point(3, 26);
             this.gosCheckBox.Name = "gosCheckBox";
-            this.gosCheckBox.Size = new System.Drawing.Size(126, 17);
+            this.gosCheckBox.Size = new System.Drawing.Size(123, 17);
             this.gosCheckBox.TabIndex = 1;
-            this.gosCheckBox.Text = "GameObject Spawns";
+            this.gosCheckBox.Text = "GameObjectSpawns";
             this.gosCheckBox.UseVisualStyleBackColor = true;
             this.gosCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
             //
             // qtCheckBox
             //
             this.qtCheckBox.AutoSize = true;
-            this.qtCheckBox.Location = new System.Drawing.Point(3, 49);
+            this.qtCheckBox.Location = new System.Drawing.Point(264, 95);
             this.qtCheckBox.Name = "qtCheckBox";
             this.qtCheckBox.Size = new System.Drawing.Size(98, 17);
             this.qtCheckBox.TabIndex = 2;
@@ -798,7 +810,7 @@
             // qpoiCheckBox
             //
             this.qpoiCheckBox.AutoSize = true;
-            this.qpoiCheckBox.Location = new System.Drawing.Point(3, 72);
+            this.qpoiCheckBox.Location = new System.Drawing.Point(264, 118);
             this.qpoiCheckBox.Name = "qpoiCheckBox";
             this.qpoiCheckBox.Size = new System.Drawing.Size(75, 17);
             this.qpoiCheckBox.TabIndex = 3;
@@ -809,7 +821,7 @@
             // ptCheckBox
             //
             this.ptCheckBox.AutoSize = true;
-            this.ptCheckBox.Location = new System.Drawing.Point(303, 26);
+            this.ptCheckBox.Location = new System.Drawing.Point(264, 26);
             this.ptCheckBox.Name = "ptCheckBox";
             this.ptCheckBox.Size = new System.Drawing.Size(72, 17);
             this.ptCheckBox.TabIndex = 11;
@@ -820,11 +832,11 @@
             // sdoCheckBox
             //
             this.sdoCheckBox.AutoSize = true;
-            this.sdoCheckBox.Location = new System.Drawing.Point(303, 95);
+            this.sdoCheckBox.Location = new System.Drawing.Point(138, 118);
             this.sdoCheckBox.Name = "sdoCheckBox";
-            this.sdoCheckBox.Size = new System.Drawing.Size(119, 17);
+            this.sdoCheckBox.Size = new System.Drawing.Size(116, 17);
             this.sdoCheckBox.TabIndex = 14;
-            this.sdoCheckBox.Text = "Sniff Data:Opcodes";
+            this.sdoCheckBox.Text = "SniffData:Opcodes";
             this.sdoCheckBox.UseVisualStyleBackColor = true;
             this.sdoCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
             //
@@ -842,7 +854,7 @@
             // csCheckBox
             //
             this.csCheckBox.AutoSize = true;
-            this.csCheckBox.Location = new System.Drawing.Point(153, 3);
+            this.csCheckBox.Location = new System.Drawing.Point(3, 118);
             this.csCheckBox.Name = "csCheckBox";
             this.csCheckBox.Size = new System.Drawing.Size(104, 17);
             this.csCheckBox.TabIndex = 5;
@@ -853,7 +865,7 @@
             // ntCheckBox
             //
             this.ntCheckBox.AutoSize = true;
-            this.ntCheckBox.Location = new System.Drawing.Point(153, 26);
+            this.ntCheckBox.Location = new System.Drawing.Point(138, 3);
             this.ntCheckBox.Name = "ntCheckBox";
             this.ntCheckBox.Size = new System.Drawing.Size(79, 17);
             this.ntCheckBox.TabIndex = 6;
@@ -864,7 +876,7 @@
             // nvCheckBox
             //
             this.nvCheckBox.AutoSize = true;
-            this.nvCheckBox.Location = new System.Drawing.Point(153, 49);
+            this.nvCheckBox.Location = new System.Drawing.Point(138, 26);
             this.nvCheckBox.Name = "nvCheckBox";
             this.nvCheckBox.Size = new System.Drawing.Size(80, 17);
             this.nvCheckBox.TabIndex = 7;
@@ -875,7 +887,7 @@
             // gCheckBox
             //
             this.gCheckBox.AutoSize = true;
-            this.gCheckBox.Location = new System.Drawing.Point(303, 3);
+            this.gCheckBox.Location = new System.Drawing.Point(264, 3);
             this.gCheckBox.Name = "gCheckBox";
             this.gCheckBox.Size = new System.Drawing.Size(58, 17);
             this.gCheckBox.TabIndex = 10;
@@ -886,7 +898,7 @@
             // ntxtCheckBox
             //
             this.ntxtCheckBox.AutoSize = true;
-            this.ntxtCheckBox.Location = new System.Drawing.Point(153, 72);
+            this.ntxtCheckBox.Location = new System.Drawing.Point(138, 49);
             this.ntxtCheckBox.Name = "ntxtCheckBox";
             this.ntxtCheckBox.Size = new System.Drawing.Size(67, 17);
             this.ntxtCheckBox.TabIndex = 8;
@@ -897,7 +909,7 @@
             // lCheckBox
             //
             this.lCheckBox.AutoSize = true;
-            this.lCheckBox.Location = new System.Drawing.Point(153, 95);
+            this.lCheckBox.Location = new System.Drawing.Point(374, 3);
             this.lCheckBox.Name = "lCheckBox";
             this.lCheckBox.Size = new System.Drawing.Size(47, 17);
             this.lCheckBox.TabIndex = 9;
@@ -908,18 +920,18 @@
             // sdCheckBox
             //
             this.sdCheckBox.AutoSize = true;
-            this.sdCheckBox.Location = new System.Drawing.Point(303, 72);
+            this.sdCheckBox.Location = new System.Drawing.Point(138, 95);
             this.sdCheckBox.Name = "sdCheckBox";
-            this.sdCheckBox.Size = new System.Drawing.Size(73, 17);
+            this.sdCheckBox.Size = new System.Drawing.Size(70, 17);
             this.sdCheckBox.TabIndex = 13;
-            this.sdCheckBox.Text = "Sniff Data";
+            this.sdCheckBox.Text = "SniffData";
             this.sdCheckBox.UseVisualStyleBackColor = true;
             this.sdCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
             //
             // siCheckBox
             //
             this.siCheckBox.AutoSize = true;
-            this.siCheckBox.Location = new System.Drawing.Point(303, 49);
+            this.siCheckBox.Location = new System.Drawing.Point(264, 72);
             this.siCheckBox.Name = "siCheckBox";
             this.siCheckBox.Size = new System.Drawing.Size(103, 17);
             this.siCheckBox.TabIndex = 12;
@@ -930,13 +942,24 @@
             // mCheckBox
             //
             this.mCheckBox.AutoSize = true;
-            this.mCheckBox.Location = new System.Drawing.Point(303, 118);
+            this.mCheckBox.Location = new System.Drawing.Point(3, 72);
             this.mCheckBox.Name = "mCheckBox";
-            this.mCheckBox.Size = new System.Drawing.Size(119, 17);
+            this.mCheckBox.Size = new System.Drawing.Size(116, 17);
             this.mCheckBox.TabIndex = 17;
-            this.mCheckBox.Text = "Creature Movement";
+            this.mCheckBox.Text = "CreatureMovement";
             this.mCheckBox.UseVisualStyleBackColor = true;
             this.mCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
+            //
+            // itCheckBox
+            //
+            this.itCheckBox.AutoSize = true;
+            this.itCheckBox.Location = new System.Drawing.Point(264, 49);
+            this.itCheckBox.Name = "itCheckBox";
+            this.itCheckBox.Size = new System.Drawing.Size(90, 17);
+            this.itCheckBox.TabIndex = 17;
+            this.itCheckBox.Text = "ItemTemplate";
+            this.itCheckBox.UseVisualStyleBackColor = true;
+            this.itCheckBox.CheckedChanged += new System.EventHandler(this.SQLOutputCheckBoxChanged);
             //
             // selectAllButton
             //
@@ -1177,6 +1200,7 @@
         private System.Windows.Forms.TextBox sqlFileNameTextBox;
         private System.Windows.Forms.Label sqlFileNameLabel;
         private System.Windows.Forms.CheckBox mCheckBox;
+        private System.Windows.Forms.CheckBox itCheckBox;
         private System.Windows.Forms.TextBox databaseWTextBox;
     }
 }
