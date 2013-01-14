@@ -23,7 +23,7 @@ namespace SettingsUI
             get { return _sqlOutputMask; }
             set
             {
-                sqlOutputMaskLabel.Text = String.Format(CultureInfo.InvariantCulture, "{0,6} (0x{0,5:X})", value);
+                sqlOutputMaskLabel.Text = String.Format(CultureInfo.InvariantCulture, "{0,6:D6} (0x{0,5:X5})", value);
                 _sqlOutputMask = value;
             }
         }
@@ -140,12 +140,14 @@ namespace SettingsUI
 
                     if (element.Key is CheckBox) // special case for checkboxes, changing "Text" is not correct
                         ((CheckBox)element.Key).Checked = Convert.ToBoolean(val);
+                    else if (String.Equals(element.Value.Item1, "SQLOutput"))
+                        UpdateSQLOutputCheckBoxes(Convert.ToUInt32(val));
                     else
                         element.Key.Text = val.ToString();
                 }
                 catch
                 {
-                    MessageBox.Show(string.Format("Setting: {0}, default: {1}", element.Value.Item1, element.Value.Item2), "Failed to get setting", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(String.Format("Setting: {0}, default: {1}", element.Value.Item1, element.Value.Item2), "Failed to get setting", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -164,6 +166,8 @@ namespace SettingsUI
                     var undertype = Enum.GetUnderlyingType(enumType);
                     val = Convert.ChangeType(a, undertype).ToString();
                 }
+                else if (String.Equals(element.Value.Item1, "SQLOutput"))
+                    val = SQLOutputMask.ToString();
                 else
                     val = element.Key.Text;
 
