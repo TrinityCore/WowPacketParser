@@ -1088,7 +1088,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_XP_GAIN_ABORTED, ClientVersionBuild.V4_3_4_15211)] // 4.3.4, related to EVENT_TRIAL_CAP_REACHED_LEVEL
+        [Parser(Opcode.SMSG_XP_GAIN_ABORTED, ClientVersionBuild.V4_3_4_15595)] // 4.3.4, related to EVENT_TRIAL_CAP_REACHED_LEVEL
         public static void HandleXPGainAborted434(Packet packet)
         {
             var guid = packet.StartBitStream(4, 0, 1, 2, 6, 7, 5, 3);
