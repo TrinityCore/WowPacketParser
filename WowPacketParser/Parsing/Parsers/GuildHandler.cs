@@ -1234,12 +1234,28 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.CMSG_GUILD_QUERY_RANKS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_3_15354)]
         [Parser(Opcode.CMSG_GUILD_QUERY_NEWS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
-        [Parser(Opcode.CMSG_GUILD_REQUEST_MAX_DAILY_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
-        [Parser(Opcode.CMSG_QUERY_GUILD_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_REQUEST_MAX_DAILY_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
+        [Parser(Opcode.CMSG_QUERY_GUILD_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         [Parser(Opcode.CMSG_GUILD_QUERY_TRADESKILL)]
         public static void HandleGuildRequestMulti(Packet packet)
         {
             packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_REQUEST_MAX_DAILY_XP, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildRequestMaxDailyXP430(Packet packet)
+        {
+            var guid = packet.StartBitStream(6, 5, 2, 3, 0, 4, 7, 1);
+            packet.ParseBitStream(guid, 0, 6, 4, 5, 3, 7, 0, 2);
+            packet.WriteGuid("GUID", guid);
+        }
+
+        [Parser(Opcode.CMSG_QUERY_GUILD_XP, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildQueryGuildXP430(Packet packet)
+        {
+            var guid = packet.StartBitStream(4, 2, 5, 6, 1, 0, 3, 7);
+            packet.ParseBitStream(guid, 0, 1, 4, 3, 2, 6, 7, 5);
+            packet.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.CMSG_GUILD_REQUEST_MAX_DAILY_XP, ClientVersionBuild.V4_3_4_15595)]

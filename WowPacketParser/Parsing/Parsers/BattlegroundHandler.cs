@@ -427,7 +427,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlegroundPlayerJoined430(Packet packet)
         {
             var guid = packet.StartBitStream(2, 3, 5, 4, 6, 7, 1, 0);
-            packet.ParseBitStream(guid, 3, 1, 2, 6, 0, 7, 4, 5);
+            packet.ParseBitStream(guid, 1, 5, 3, 2, 0, 7, 4, 6);
             packet.WriteGuid("Guid", guid);
         }
 
@@ -817,7 +817,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_PVP_LOG_DATA)] // 4.3.4
+        [Parser(Opcode.SMSG_PVP_LOG_DATA, ClientVersionBuild.V4_3_4_15595)] // 4.3.4
         public static void HandlePvPLogData434(Packet packet)
         {
             // FIXME, lots of unks
