@@ -413,13 +413,22 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guild Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleGuildUpdatePartyStateResponse(Packet packet)
         {
             packet.ReadByte("Unk byte");
             packet.ReadUInt32("Unk UInt32 1");
             packet.ReadUInt32("Unk UInt32 2");
             packet.ReadUInt32("Unk UInt32 3");
+        }
+
+        [Parser(Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildUpdatePartyStateResponse430(Packet packet)
+        {
+            packet.ReadSingle("Guild XP multiplier");
+            packet.ReadUInt32("Current guild members"); // TODO: Check this.
+            packet.ReadUInt32("Needed guild members");  // TODO: Check this.
+            packet.ReadBit("Is guild group");
         }
 
         [Parser(Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, ClientVersionBuild.V4_3_4_15595)]
