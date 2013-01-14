@@ -1020,12 +1020,29 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_UPDATE_CURRENCY, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_UPDATE_CURRENCY, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleUpdateCurrency(Packet packet)
         {
             packet.ReadUInt32("Currency ID");
             packet.ReadUInt32("Week Count");
             packet.ReadUInt32("Total Count");
+        }
+
+        [Parser(Opcode.SMSG_UPDATE_CURRENCY, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleUpdateCurrency430(Packet packet)
+        {
+            packet.ReadInt32("Currency ID");
+            packet.ReadInt32("Total Count");
+
+            var hasSeasonCount = packet.ReadBit();
+            var hasWeekCap = packet.ReadBit();
+            packet.ReadBit("Print in log");
+
+            if (hasWeekCap)
+                packet.ReadInt32("Week Count");
+
+            if (hasSeasonCount)
+                packet.ReadInt32("Season Total Earned");
         }
 
         [Parser(Opcode.SMSG_UPDATE_CURRENCY, ClientVersionBuild.V4_3_4_15595)]
@@ -1059,8 +1076,20 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Currency ID");
         }
 
-        [Parser(Opcode.SMSG_XP_GAIN_ABORTED)] // 4.3.4, related to EVENT_TRIAL_CAP_REACHED_LEVEL
-        public static void HandleXPGainAborted(Packet packet)
+        [Parser(Opcode.SMSG_XP_GAIN_ABORTED, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15211)]
+        public static void HandleXPGainAborted430(Packet packet)
+        {
+            packet.ReadInt32("Unk Int32 1");
+            packet.ReadInt32("Unk Int32 2");
+            packet.ReadInt32("Unk Int32 3");
+
+            var guid = packet.StartBitStream(5, 7, 4, 2, 3, 1, 6, 0);
+            packet.ParseBitStream(guid, 0, 6, 1, 2, 4, 7, 3, 5);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_XP_GAIN_ABORTED, ClientVersionBuild.V4_3_4_15595)] // 4.3.4, related to EVENT_TRIAL_CAP_REACHED_LEVEL
+        public static void HandleXPGainAborted434(Packet packet)
         {
             var guid = packet.StartBitStream(4, 0, 1, 2, 6, 7, 5, 3);
 

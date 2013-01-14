@@ -417,10 +417,18 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUEUE)]
         [Parser(Opcode.CMSG_REPORT_PVP_AFK)]
         [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_LEFT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
-        [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleBattlemasterHello(Packet packet)
         {
             packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleBattlegroundPlayerJoined430(Packet packet)
+        {
+            var guid = packet.StartBitStream(2, 3, 5, 4, 6, 7, 1, 0);
+            packet.ParseBitStream(guid, 3, 1, 2, 6, 0, 7, 4, 5);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED, ClientVersionBuild.V4_3_4_15595)]
@@ -1523,7 +1531,20 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_RATED_INFO)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_RATED_INFO, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleBattlefieldRatedInfo430(Packet packet)
+        {
+            packet.ReadUInt32("Unk UInt32 5");
+            packet.ReadUInt32("Current Conquest Points");
+            packet.ReadUInt32("Conquest Points Weekly Cap");
+            packet.ReadByte("Unk Byte");
+            packet.ReadUInt32("Reward");
+            packet.ReadUInt32("Unk UInt32 3");
+            packet.ReadUInt32("Unk UInt32 6");
+            packet.ReadUInt32("Unk UInt32 2");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_RATED_INFO, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldRatedInfo(Packet packet)
         {
             packet.ReadUInt32("Reward");
@@ -1543,8 +1564,18 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk UInt32", i);
         }
 
-        [Parser(Opcode.SMSG_PVP_OPTIONS_ENABLED)]
-        public static void HandlePVPOptionsEnabled(Packet packet)
+        [Parser(Opcode.SMSG_PVP_OPTIONS_ENABLED, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandlePVPOptionsEnabled430(Packet packet)
+        {
+            packet.ReadBit("WargamesEnabled");
+            packet.ReadBit("RatedArenasEnabled");
+            packet.ReadBit("RatedBGsEnabled");
+            packet.ReadBit("Unk 1"); // probably debug unused
+            packet.ReadBit("Unk 1"); // probably debug unused
+        }
+
+        [Parser(Opcode.SMSG_PVP_OPTIONS_ENABLED, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandlePVPOptionsEnabled434(Packet packet)
         {
             packet.ReadBit("Unk 1"); // probably debug unused
             packet.ReadBit("WargamesEnabled");
@@ -1553,8 +1584,19 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBit("RatedArenasEnabled");
         }
 
-        [Parser(Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE)]
-        public static void HandlePVPRewardsResponse(Packet packet)
+        [Parser(Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandlePVPRewardsResponse430(Packet packet)
+        {
+            packet.ReadUInt32("Conquest Points From Arena");
+            packet.ReadUInt32("Arena Conquest Cap");
+            packet.ReadUInt32("Conquest Points From Rated Bg");
+            packet.ReadUInt32("Conquest Weekly Cap");
+            packet.ReadUInt32("Current Conquest Points");
+            packet.ReadUInt32("Conquest Points This Week");
+        }
+
+        [Parser(Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandlePVPRewardsResponse434(Packet packet)
         {
             packet.ReadUInt32("Conquest Weekly Cap");
             packet.ReadUInt32("Conquest Points This Week");
