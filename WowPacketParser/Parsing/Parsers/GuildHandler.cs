@@ -390,11 +390,19 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_REQUEST_GUILD_PARTY_STATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_3_15354)]
+        [Parser(Opcode.CMSG_REQUEST_GUILD_PARTY_STATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleGuildUpdatePartyState(Packet packet)
         {
             packet.ReadGuid("Guild GUID");
             packet.ReadGuid("Player GUID");
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_GUILD_PARTY_STATE, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_3_15354)]
+        public static void HandleGuildUpdatePartyState430(Packet packet)
+        {
+            var guid = packet.StartBitStream(6, 5, 2, 4, 1, 3, 7, 0);
+            packet.ParseBitStream(guid, 1, 3, 5, 0, 4, 2, 6, 7);
+            packet.WriteGuid("Guild Guid", guid);
         }
 
         [Parser(Opcode.CMSG_REQUEST_GUILD_PARTY_STATE, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]
