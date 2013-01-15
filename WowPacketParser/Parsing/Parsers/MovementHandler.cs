@@ -3862,11 +3862,19 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Collision Height");
         }
 
-        [Parser(Opcode.CMSG_SET_ACTIVE_MOVER, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_SET_ACTIVE_MOVER, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         [Parser(Opcode.SMSG_MOUNTSPECIAL_ANIM)]
         public static void HandleSetActiveMover(Packet packet)
         {
             packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_SET_ACTIVE_MOVER, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleSetActiveMover430(Packet packet)
+        {
+            var guid = packet.StartBitStream(7, 2, 0, 4, 3, 5, 6, 1);
+            packet.ParseBitStream(guid, 1, 3, 2, 6, 0, 5, 4, 7);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_SET_ACTIVE_MOVER, ClientVersionBuild.V4_3_4_15595)]
@@ -4059,7 +4067,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("GUID {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
         }
 
-        [Parser(Opcode.SMSG_TRANSFER_PENDING, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_TRANSFER_PENDING, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleTransferPending(Packet packet)
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
@@ -4069,6 +4077,24 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadInt32("Transport Entry");
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Transport Map ID");
+        }
+
+        [Parser(Opcode.SMSG_TRANSFER_PENDING, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleTransferPending430(Packet packet)
+        {
+            var bit1 = packet.ReadBit();
+            var hasTransport = packet.ReadBit();
+
+            if (bit1)
+                packet.ReadUInt32("Unk int");
+
+            if (hasTransport)
+            {
+                packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Transport Map ID");
+                packet.ReadInt32("Transport Entry");
+            }
+
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
         }
 
         [Parser(Opcode.SMSG_TRANSFER_PENDING, ClientVersionBuild.V4_3_4_15595)]
@@ -8422,6 +8448,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32"); // ##
             var guid = packet.StartBitStream(3, 0, 1, 5, 7, 4, 6, 2);
             packet.ParseBitStream(guid, 2, 7, 1, 4, 5, 0, 3, 6);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_SET_ACTIVE_MOVER, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleMoveSetActiveMover430(Packet packet)
+        {
+            var guid = packet.StartBitStream(6, 2, 7, 0, 3, 5, 4, 1);
+            packet.ParseBitStream(guid, 3, 5, 6, 7, 2, 0, 1, 4);
             packet.WriteGuid("Guid", guid);
         }
 

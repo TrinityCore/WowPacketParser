@@ -616,8 +616,29 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Message");
         }
 
-        [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
+        [Parser(Opcode.SMSG_WORLD_SERVER_INFO, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleWorldServerInfo(Packet packet)
+        {
+            packet.ReadByte("Unk Byte");
+            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32");
+
+            var b0 = packet.ReadBit("Unk Bit 1");
+            var b1 = packet.ReadBit("Unk Bit 2");
+            var b2 = packet.ReadBit("Unk Bit 3");
+
+            if (b2)
+                packet.ReadInt32("Unk Int32 (EVENT_INELIGIBLE_FOR_LOOT)");
+
+            if (b0)
+                packet.ReadInt32("Unk Int32");
+
+            if (b1)
+                packet.ReadInt32("Unk Int32");
+        }
+
+        [Parser(Opcode.SMSG_WORLD_SERVER_INFO, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleWorldServerInfo434(Packet packet)
         {
             var b0 = packet.ReadBit("Unk Bit 1");
             var b1 = packet.ReadBit("Unk Bit 2");
