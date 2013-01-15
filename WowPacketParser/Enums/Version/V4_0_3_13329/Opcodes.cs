@@ -1265,7 +1265,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_REDIRECT_CLIENT, 0x9000}, // (0x8400)(0x050D) //}, uint16 port}, uint32 unk}, uint8[20] hash (ip + port}, seed=sessionkey)
             {Opcode.CMSG_REDIRECTION_FAILED, 0x0509}, // (0x1201)(0x050E) // with networking
             {Opcode.SMSG_UNKNOWN_1295, 0x050F}, // NF()(0x050F) // // not found - disconnect
-            {Opcode.CMSG_UNKNOWN_1296, 0x0510}, // NF()(0x0510) // // something with networking
+            {Opcode.CMSG_ENABLE_NAGLE, 0x0510}, // NF()(0x0510) // // something with networking
             {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 0x0511}, // NF()(0x0511) // // not found - crash
             {Opcode.CMSG_REDIRECTION_AUTH_PROOF, 0x0512}, // NF()(0x0512) // // something with networking
             {Opcode.UMSG_UNKNOWN_1299, 0x0513}, // NF()(0x0513) // // not found

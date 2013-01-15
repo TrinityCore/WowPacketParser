@@ -366,7 +366,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.CMSG_TUTORIAL_FLAG, 0x266A},
             {Opcode.CMSG_TUTORIAL_RESET, 0xB6BF},
             {Opcode.CMSG_UNACCEPT_TRADE, 0x8848},
-            {Opcode.CMSG_UNKNOWN_1296, 0x9A0},
+            {Opcode.CMSG_ENABLE_NAGLE, 0x9A0},
             {Opcode.CMSG_UNLEARN_SKILL, 0xB2EE},
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x66FF},
             {Opcode.CMSG_USE_ITEM, 0x22B3},

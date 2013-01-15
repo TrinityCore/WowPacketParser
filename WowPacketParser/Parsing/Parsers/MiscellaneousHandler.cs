@@ -50,6 +50,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadVector4("Position");
         }
 
+        [Parser(Opcode.CMSG_ENABLE_NAGLE)]
+        public static void HandleEnableNagle(Packet packet)
+        {
+            packet.ReadUInt32("Enable");
+        }
+
         [Parser(Opcode.CMSG_SUSPEND_TOKEN)]
         public static void HandleSuspendToken(Packet packet)
         {
