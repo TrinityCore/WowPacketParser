@@ -973,7 +973,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGetMirrorImageData(Packet packet)
         {
             packet.ReadGuid("GUID");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
                 packet.ReadUInt32("Display Id");
         }
 
