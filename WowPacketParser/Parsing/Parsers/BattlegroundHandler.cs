@@ -427,7 +427,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlegroundPlayerJoined430(Packet packet)
         {
             var guid = packet.StartBitStream(2, 3, 5, 4, 6, 7, 1, 0);
-            packet.ParseBitStream(guid, 1, 5, 3, 2, 0, 7, 4, 6);
+            packet.ParseBitStream(guid, 3, 1, 2, 6, 0, 7, 4, 5);
             packet.WriteGuid("Guid", guid);
         }
 
