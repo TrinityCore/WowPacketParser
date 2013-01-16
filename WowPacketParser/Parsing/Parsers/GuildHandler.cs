@@ -1284,7 +1284,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Tab Icon");
         }
 
-        [Parser(Opcode.CMSG_GUILD_QUERY_RANKS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_3_15354)]
+        [Parser(Opcode.CMSG_GUILD_QUERY_RANKS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         [Parser(Opcode.CMSG_GUILD_QUERY_NEWS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_GUILD_REQUEST_MAX_DAILY_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         [Parser(Opcode.CMSG_QUERY_GUILD_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
