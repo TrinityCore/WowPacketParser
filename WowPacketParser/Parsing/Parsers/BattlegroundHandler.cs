@@ -1445,7 +1445,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_REQUEST, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattelfieldMgrQueueRequest(Packet packet)
         {
-            packet.ReadGuid("GUID");
+            packet.ReadUInt32("BattleID");
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_REQUEST, ClientVersionBuild.V4_3_4_15595)]
