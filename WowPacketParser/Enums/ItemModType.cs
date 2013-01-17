@@ -47,5 +47,6 @@ namespace WowPacketParser.Enums
         HealthRegeneration = 46,
         SpellPenetration = 47,
         BlockValue = 48,
+        Mastery = 49,
     }
 }
