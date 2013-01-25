@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Store.Objects;
 using Guid = WowPacketParser.Misc.Guid;
@@ -9,59 +10,57 @@ namespace WowPacketParser.Store
     {
         // Stores opcodes read, npc/GOs/spell/item/etc IDs found in sniffs
         // and other miscellaneous stuff
-        public static readonly StoreBag<SniffData> SniffData = new StoreBag<SniffData>("SniffData");
+        public static readonly StoreBag<SniffData> SniffData = new StoreBag<SniffData>(new List<SQLOutput> { SQLOutput.SniffData, SQLOutput.SniffDataOpcodes });
 
         /* Key: Guid */
 
         // Units, GameObjects, Players, Items
-        public static readonly StoreDictionary<Guid, WoWObject> Objects = new StoreDictionary<Guid, WoWObject>("Objects");
+        public static readonly StoreDictionary<Guid, WoWObject> Objects = new StoreDictionary<Guid, WoWObject>(new List<SQLOutput> { SQLOutput.None });
 
         /* Key: Entry */
 
         // Templates
-        public static readonly StoreDictionary<uint, GameObjectTemplate> GameObjectTemplates = new StoreDictionary<uint, GameObjectTemplate>("GameObjectTemplates");
-        public static readonly StoreDictionary<uint, ItemTemplate> ItemTemplates = new StoreDictionary<uint, ItemTemplate>("ItemTemplates");
-        public static readonly StoreDictionary<uint, QuestTemplate> QuestTemplates = new StoreDictionary<uint, QuestTemplate>("QuestTemplates");
-        public static readonly StoreDictionary<uint, UnitTemplate> UnitTemplates = new StoreDictionary<uint, UnitTemplate>("UnitTemplates");
+        public static readonly StoreDictionary<uint, GameObjectTemplate> GameObjectTemplates = new StoreDictionary<uint, GameObjectTemplate>(new List<SQLOutput> { SQLOutput.gameobject_template });
+        public static readonly StoreDictionary<uint, ItemTemplate> ItemTemplates = new StoreDictionary<uint, ItemTemplate>(new List<SQLOutput> { SQLOutput.item_template });
+        public static readonly StoreDictionary<uint, QuestTemplate> QuestTemplates = new StoreDictionary<uint, QuestTemplate>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly StoreDictionary<uint, UnitTemplate> UnitTemplates = new StoreDictionary<uint, UnitTemplate>(new List<SQLOutput> { SQLOutput.creature_template });
 
         // Vendor & trainer
-        public static readonly StoreDictionary<uint, NpcTrainer> NpcTrainers = new StoreDictionary<uint, NpcTrainer>("NpcTrainers");
-        public static readonly StoreDictionary<uint, NpcVendor> NpcVendors = new StoreDictionary<uint, NpcVendor>("NpcVendors");
+        public static readonly StoreDictionary<uint, NpcTrainer> NpcTrainers = new StoreDictionary<uint, NpcTrainer>(new List<SQLOutput> { SQLOutput.npc_trainer });
+        public static readonly StoreDictionary<uint, NpcVendor> NpcVendors = new StoreDictionary<uint, NpcVendor>(new List<SQLOutput> { SQLOutput.npc_vendor });
 
         // Page & npc text
-        public static readonly StoreDictionary<uint, PageText> PageTexts = new StoreDictionary<uint, PageText>("PageTexts");
-        public static readonly StoreDictionary<uint, NpcText> NpcTexts = new StoreDictionary<uint, NpcText>("NpcTexts");
-
-        // More quest related
-        public static readonly StoreDictionary<uint, QuestOffer> QuestOffers = new StoreDictionary<uint, QuestOffer>("QuestOffers");
-        public static readonly StoreDictionary<uint, QuestReward> QuestRewards = new StoreDictionary<uint, QuestReward>("QuestRewards");
+        public static readonly StoreDictionary<uint, PageText> PageTexts = new StoreDictionary<uint, PageText>(new List<SQLOutput> { SQLOutput.page_text });
+        public static readonly StoreDictionary<uint, NpcText> NpcTexts = new StoreDictionary<uint, NpcText>(new List<SQLOutput> { SQLOutput.npc_text });
 
         // `creature_text`
-        public static readonly StoreMulti<uint, CreatureText> CreatureTexts = new StoreMulti<uint, CreatureText>("CreatureTexts");
+        public static readonly StoreMulti<uint, CreatureText> CreatureTexts = new StoreMulti<uint, CreatureText>(new List<SQLOutput> { SQLOutput.creature_text });
 
         // "Helper" stores, do not match a specific table
-        public static readonly StoreMulti<Guid, EmoteType> Emotes = new StoreMulti<Guid, EmoteType>("Emotes");
-        public static readonly StoreBag<uint> Sounds = new StoreBag<uint>("Sounds");
-        public static readonly StoreDictionary<uint, SpellsX> SpellsX = new StoreDictionary<uint, SpellsX>("SpellsX"); // `creature_template`.`spellsX`
+        public static readonly StoreMulti<Guid, EmoteType> Emotes = new StoreMulti<Guid, EmoteType>(new List<SQLOutput> { SQLOutput.creature_text });
+        public static readonly StoreBag<uint> Sounds = new StoreBag<uint>(new List<SQLOutput> { SQLOutput.creature_text });
+        public static readonly StoreDictionary<uint, SpellsX> SpellsX = new StoreDictionary<uint, SpellsX>(new List<SQLOutput> { SQLOutput.creature_template }); // `creature_template`.`spellsX`
+        public static readonly StoreDictionary<uint, QuestOffer> QuestOffers = new StoreDictionary<uint, QuestOffer>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly StoreDictionary<uint, QuestReward> QuestRewards = new StoreDictionary<uint, QuestReward>(new List<SQLOutput> { SQLOutput.quest_template });
 
         /* Key: Misc */
 
         // Start info (Race, Class)
-        public static readonly StoreDictionary<Tuple<Race, Class>, StartAction> StartActions = new StoreDictionary<Tuple<Race, Class>, StartAction>("StartActions");
-        public static readonly StoreDictionary<Tuple<Race, Class>, StartSpell> StartSpells = new StoreDictionary<Tuple<Race, Class>, StartSpell>("StartSpells");
-        public static readonly StoreDictionary<Tuple<Race, Class>, StartPosition> StartPositions = new StoreDictionary<Tuple<Race, Class>, StartPosition>("StartPositions");
+        public static readonly StoreDictionary<Tuple<Race, Class>, StartAction> StartActions = new StoreDictionary<Tuple<Race, Class>, StartAction>(new List<SQLOutput> { SQLOutput.playercreateinfo_action });
+        public static readonly StoreDictionary<Tuple<Race, Class>, StartSpell> StartSpells = new StoreDictionary<Tuple<Race, Class>, StartSpell>(new List<SQLOutput> { SQLOutput.playercreateinfo_spell });
+        public static readonly StoreDictionary<Tuple<Race, Class>, StartPosition> StartPositions = new StoreDictionary<Tuple<Race, Class>, StartPosition>(new List<SQLOutput> { SQLOutput.playercreateinfo });
 
         // Gossips (MenuId, TextId)
-        public static readonly StoreDictionary<Tuple<uint, uint>, Gossip> Gossips = new StoreDictionary<Tuple<uint, uint>, Gossip>("Gossips");
+        public static readonly StoreDictionary<Tuple<uint, uint>, Gossip> Gossips = new StoreDictionary<Tuple<uint, uint>, Gossip>(new List<SQLOutput> { SQLOutput.gossip_menu_option });
 
         // Loot (ItemId, LootType)
-        public static readonly StoreDictionary<Tuple<uint, ObjectType>, Loot> Loots = new StoreDictionary<Tuple<uint, ObjectType>, Loot>("Loots");
+        public static readonly StoreDictionary<Tuple<uint, ObjectType>, Loot> Loots = new StoreDictionary<Tuple<uint, ObjectType>, Loot>(new List<SQLOutput> { SQLOutput.LootTemplate });
 
         // Quest POI (QuestId, Id)
-        public static readonly StoreDictionary<Tuple<uint, uint>, QuestPOI> QuestPOIs = new StoreDictionary<Tuple<uint, uint>, QuestPOI>("QuestPOIs");
+        public static readonly StoreDictionary<Tuple<uint, uint>, QuestPOI> QuestPOIs = new StoreDictionary<Tuple<uint, uint>, QuestPOI>(new List<SQLOutput> { SQLOutput.quest_poi_points });
 
         // Names
-        public static readonly StoreDictionary<uint, ObjectName> ObjectNames = new StoreDictionary<uint, ObjectName>("ObjectNames");
+        public static readonly StoreDictionary<uint, ObjectName> ObjectNames = new StoreDictionary<uint, ObjectName>(new List<SQLOutput> { SQLOutput.ObjectNames });
 
         public static void ClearContainers()
         {
@@ -80,10 +79,13 @@ namespace WowPacketParser.Store
             PageTexts.Clear();
             NpcTexts.Clear();
 
-            SpellsX.Clear();
             CreatureTexts.Clear();
+
             Emotes.Clear();
             Sounds.Clear();
+            SpellsX.Clear();
+            QuestOffers.Clear();
+            QuestRewards.Clear();
 
             StartActions.Clear();
             StartSpells.Clear();

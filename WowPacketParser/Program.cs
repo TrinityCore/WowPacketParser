@@ -9,7 +9,6 @@ using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 using WowPacketParser.Parsing.Parsers;
-using Ionic.Zlib;
 
 namespace WowPacketParser
 {
@@ -63,8 +62,7 @@ namespace WowPacketParser
             {
                 SessionHandler.z_streams.Clear();
                 ClientVersion.SetVersion(Settings.ClientBuild);
-                new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count),
-                              Settings.SQLOutput).ProcessFile();
+                new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count)).ProcessFile();
             }
 
             SQLConnector.Disconnect();

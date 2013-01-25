@@ -79,8 +79,8 @@ namespace WowPacketParser.Store.Objects
 
             PowerType = (PowerType) ((Bytes0 & 0x7FFFFFFF) >> 24);
             Gender    = (Gender)    ((Bytes0 & 0x00FF0000) >> 16);
-            Class     = (Class)     ((Bytes0 & 0x0000FF00) >> 08);
-            Race      = (Race)      ((Bytes0 & 0x000000FF) >> 00);
+            Class     = (Class)     ((Bytes0 & 0x0000FF00) >>  8);
+            Race      = (Race)      ((Bytes0 & 0x000000FF) >>  0);
         }
 
         public override void LoadValuesFromUpdateFields()

@@ -17,6 +17,9 @@ namespace WowPacketParser.SQL.Builders
             if (units.Count == 0)
                 return string.Empty;
 
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature))
+                return string.Empty;
+
             const string tableName = "creature";
 
             uint count = 0;
@@ -99,6 +102,9 @@ namespace WowPacketParser.SQL.Builders
         public static string GameObject(Dictionary<Guid, GameObject> gameObjects)
         {
             if (gameObjects.Count == 0)
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject))
                 return string.Empty;
 
             const string tableName = "gameobject";

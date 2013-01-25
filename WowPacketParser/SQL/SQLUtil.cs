@@ -128,9 +128,10 @@ namespace WowPacketParser.SQL
         /// <para>Compare two dictionaries (of the same types) and creates SQL inserts
         ///  or updates accordingly.</para>
         /// <remarks>Second dictionary can be null (only inserts queries will be produced)</remarks>
+        /// <remarks>Use DBTableName and DBFieldName attributes to specify table and field names, in TK</remarks>
         /// </summary>
         /// <typeparam name="T">Type of the primary key (uint)</typeparam>
-        /// <typeparam name="TK">Type of the WDB struct (field names and types must match DB field name and types)</typeparam>
+        /// <typeparam name="TK">Type of the WDB struct (field types must match DB field)</typeparam>
         /// <param name="dict1">Dictionary retrieved from  parser</param>
         /// <param name="dict2">Dictionary retrieved from  DB</param>
         /// <param name="storeType">Are we dealing with Spells, Quests, Units, ...?</param>
@@ -228,6 +229,7 @@ namespace WowPacketParser.SQL
         /// <para>Compare two dictionaries (of the same types) and creates SQL inserts
         ///  or updates accordingly.</para>
         /// <remarks>Second dictionary can be null (only inserts queries will be produced)</remarks>
+        /// <remarks>Use DBTableName and DBFieldName attributes to specify table and field names, in TK</remarks>
         /// </summary>
         /// <typeparam name="T">Type of the first primary key</typeparam>
         /// /// <typeparam name="TG">Type of the second primary key</typeparam>

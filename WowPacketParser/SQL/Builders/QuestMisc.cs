@@ -14,6 +14,9 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.QuestOffers.IsEmpty())
                 return String.Empty;
 
+            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return string.Empty;
+
             var entries = Storage.QuestOffers.Keys();
             var offerDb = SQLDatabase.GetDict<uint, QuestOffer>(entries, "Id");
 
@@ -24,6 +27,9 @@ namespace WowPacketParser.SQL.Builders
         {
             if (Storage.QuestRewards.IsEmpty())
                 return String.Empty;
+
+            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return string.Empty;
 
             var entries = Storage.QuestRewards.Keys();
             var rewardDb = SQLDatabase.GetDict<uint, QuestReward>(entries, "Id");
@@ -36,10 +42,15 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.QuestPOIs.IsEmpty())
                 return String.Empty;
 
-            var entries = Storage.QuestPOIs.Keys();
-            var poiDb = SQLDatabase.GetDict<uint, uint, QuestPOI>(entries, "questid", "id");
+            var sql = string.Empty;
 
-            var sql = SQLUtil.CompareDicts(Storage.QuestPOIs, poiDb, StoreNameType.Quest, "questid", "id");
+            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_poi))
+            {
+                var entries = Storage.QuestPOIs.Keys();
+                var poiDb = SQLDatabase.GetDict<uint, uint, QuestPOI>(entries, "questid", "id");
+
+                sql = SQLUtil.CompareDicts(Storage.QuestPOIs, poiDb, StoreNameType.Quest, "questid", "id");
+            }
 
             //var points = new StoreMulti<Tuple<uint, uint>, QuestPOIPoint>();
             //
@@ -52,29 +63,32 @@ namespace WowPacketParser.SQL.Builders
 
             const string tableName2 = "quest_poi_points";
 
-            // `quest_poi_points`
-            var rows = new List<QueryBuilder.SQLInsertRow>();
-            foreach (var quest in Storage.QuestPOIs)
+            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_poi_points))
             {
-                var questPOI = quest.Value.Item1;
+                var rows = new List<QueryBuilder.SQLInsertRow>();
+                foreach (var quest in Storage.QuestPOIs)
+                {
+                    var questPOI = quest.Value.Item1;
 
-                if (questPOI.Points != null) // Needed?
-                    foreach (var point in questPOI.Points)
-                    {
-                        var row = new QueryBuilder.SQLInsertRow();
+                    if (questPOI.Points != null) // Needed?
+                        foreach (var point in questPOI.Points)
+                        {
+                            var row = new QueryBuilder.SQLInsertRow();
 
-                        row.AddValue("questId", quest.Key.Item1);
-                        row.AddValue("id", quest.Key.Item2);
-                        row.AddValue("idx", point.Index); // Not on sniffs
-                        row.AddValue("x", point.X);
-                        row.AddValue("y", point.Y);
-                        row.Comment = StoreGetters.GetName(StoreNameType.Quest, (int)quest.Key.Item1, false);
+                            row.AddValue("questId", quest.Key.Item1);
+                            row.AddValue("id", quest.Key.Item2);
+                            row.AddValue("idx", point.Index); // Not on sniffs
+                            row.AddValue("x", point.X);
+                            row.AddValue("y", point.Y);
+                            row.Comment = StoreGetters.GetName(StoreNameType.Quest, (int) quest.Key.Item1, false);
 
-                        rows.Add(row);
-                    }
+                            rows.Add(row);
+                        }
+                }
+
+                sql += new QueryBuilder.SQLInsert(tableName2, rows, 2).Build();
+
             }
-
-            sql += new QueryBuilder.SQLInsert(tableName2, rows, 2).Build();
 
             return sql;
         }

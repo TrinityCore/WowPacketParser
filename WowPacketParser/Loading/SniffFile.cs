@@ -21,12 +21,11 @@ namespace WowPacketParser.Loading
         private LinkedList<Packet> _packets;
         private readonly DumpFormatType _dumpFormat;
         private readonly string _logPrefix;
-        private readonly SQLOutputFlags _sqlOutput;
 
         private readonly LinkedList<string> _withErrorHeaders = new LinkedList<string>();
         private readonly LinkedList<string> _skippedHeaders = new LinkedList<string>();
 
-        public SniffFile(string fileName, DumpFormatType dumpFormat = DumpFormatType.Text, Tuple<int, int> number = null, SQLOutputFlags sqlOutput = SQLOutputFlags.None)
+        public SniffFile(string fileName, DumpFormatType dumpFormat = DumpFormatType.Text, Tuple<int, int> number = null)
         {
             if (string.IsNullOrWhiteSpace(fileName))
                 throw new ArgumentException("fileName cannot be null, empty or whitespace.", "fileName");
@@ -35,7 +34,6 @@ namespace WowPacketParser.Loading
             _packets = null;
             _fileName = fileName;
             _dumpFormat = dumpFormat;
-            _sqlOutput = sqlOutput;
 
             _outFileName = Path.ChangeExtension(fileName, null) + "_parsed.txt";
 
@@ -60,14 +58,14 @@ namespace WowPacketParser.Loading
                         return;
                     }
 
-                    Store.Store.Flags = _sqlOutput;
+                    Store.Store.SQLEnabledFlags = Settings.SQLOutputFlag;
 
                     if (!ReadPackets())
                         return;
 
                     ParsePackets();
 
-                    if (_sqlOutput != SQLOutputFlags.None)
+                    if (Settings.SQLOutputFlag != 0)
                         WriteSQLs();
 
                     if (Settings.LogPacketErrors)

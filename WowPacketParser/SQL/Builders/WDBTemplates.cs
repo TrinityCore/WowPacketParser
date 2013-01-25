@@ -1,5 +1,6 @@
 ﻿using System;
 using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -12,6 +13,9 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.QuestTemplates.IsEmpty())
                 return String.Empty;
 
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return string.Empty;
+
             var entries = Storage.QuestTemplates.Keys();
             var templatesDb = SQLDatabase.GetDict<uint, QuestTemplate>(entries, "Id");
 
@@ -22,6 +26,9 @@ namespace WowPacketParser.SQL.Builders
         {
             if (Storage.UnitTemplates.IsEmpty())
                 return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
+                return string.Empty;
 
             var entries = Storage.UnitTemplates.Keys();
             var templatesDb = SQLDatabase.GetDict<uint, UnitTemplate>(entries);
@@ -34,6 +41,9 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.GameObjectTemplates.IsEmpty())
                 return String.Empty;
 
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_template))
+                return string.Empty;
+
             var entries = Storage.GameObjectTemplates.Keys();
             var tempatesDb = SQLDatabase.GetDict<uint, GameObjectTemplate>(entries);
 
@@ -44,6 +54,9 @@ namespace WowPacketParser.SQL.Builders
         {
             if (Storage.ItemTemplates.IsEmpty())
                 return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.item_template))
+                return string.Empty;
 
             var entries = Storage.ItemTemplates.Keys();
             var tempatesDb = SQLDatabase.GetDict<uint, ItemTemplate>(entries);
@@ -56,6 +69,9 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.PageTexts.IsEmpty())
                 return String.Empty;
 
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.page_text))
+                return string.Empty;
+
             var entries = Storage.PageTexts.Keys();
             var templatesDb = SQLDatabase.GetDict<uint, PageText>(entries);
 
@@ -66,6 +82,9 @@ namespace WowPacketParser.SQL.Builders
         {
             if (Storage.NpcTexts.IsEmpty())
                 return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_text))
+                return string.Empty;
 
             foreach (var npcText in Storage.NpcTexts)
                 npcText.Value.Item1.ConvertToDBStruct();

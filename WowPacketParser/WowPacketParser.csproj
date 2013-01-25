@@ -274,7 +274,7 @@
     <Compile Include="Enums\SplineFlag.cs" />
     <Compile Include="Enums\SplineMode.cs" />
     <Compile Include="Enums\SplineType.cs" />
-    <Compile Include="Enums\SQLOutputFlags.cs" />
+    <Compile Include="Enums\SQLOutput.cs" />
     <Compile Include="Enums\StatType.cs" />
     <Compile Include="Enums\StoreNameType.cs" />
     <Compile Include="Enums\TargetFlag.cs" />

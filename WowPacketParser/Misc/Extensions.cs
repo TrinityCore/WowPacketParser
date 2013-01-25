@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,25 @@ namespace WowPacketParser.Misc
         }
 
         /// <summary>
-        /// // Return true if our string is a substring of any filter (case insensitive)
+        /// Returns true if bit is set in value (&)
+        /// </summary>
+        /// <param name="value">An enum, int, ...</param>
+        /// <param name="bit">An int</param>
+        /// <returns>A boolean</returns>
+        public static bool HasAnyFlagBit(this IConvertible value, IConvertible bit)
+        {
+            var uBit = bit.ToInt32(null);
+
+            Contract.Assert(uBit >= 0 && uBit <= 63);
+
+            var uFlag = (UInt64)(1 << uBit);
+            var uThis = value.ToUInt64(null);
+
+            return (uThis & uFlag) != 0;
+        }
+
+        /// <summary>
+        /// Return true if our string is a substring of any filter (case insensitive)
         /// </summary>
         /// <param name="value">String</param>
         /// <param name="filters">List of strings</param>
