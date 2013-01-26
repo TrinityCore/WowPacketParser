@@ -11,12 +11,6 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
-            {Opcode.CMSG_AUTH_CHALLENGE, 0xCAF},
-            {Opcode.CMSG_DROP_NEW_CONNECTION, 0xC2F},        
-            {Opcode.CMSG_FLOOD_DETECTED, 0xA2A},
-            {Opcode.CMSG_PONG, 0x8AE},
-            {Opcode.CMSG_RESET_COMPRESSION_CONTEXT, 0xE2F},
-            {Opcode.CMSG_SUSPEND_COMMS, 0x82A},
             {Opcode.MSG_MOVE_TELEPORT, 0x371},
             {Opcode.MSG_MOVE_TIME_SKIPPED, 0x338}, // could be MSG_MOVE_HEARTBEAT
             {Opcode.MSG_RANDOM_ROLL, 0xA5C},
@@ -27,6 +21,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_AREA_TRIGGER_MOVEMENT_UPDATE, 0x898},
             {Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT, 0x5B4},
             {Opcode.SMSG_AURA_POINTS_DEPLETED, 0x095},
+            {Opcode.SMSG_AUTH_CHALLENGE, 0xCAF},
             {Opcode.SMSG_AUTH_RESPONSE, 0xA15},
             {Opcode.SMSG_BATTLEFIELD_MGR_EJECTED, 0x7F1},
             {Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING, 0xE54},
@@ -58,9 +53,11 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_DISENCHANT_CREDIT, 0x990},
             {Opcode.SMSG_DISPLAY_GAME_ERROR, 0xA11},
             {Opcode.SMSG_DONT_AUTO_PUSH_SPELLS_TO_ACTION_BAR, 0x318},
+            {Opcode.SMSG_DROP_NEW_CONNECTION, 0xC2F},        
             {Opcode.SMSG_DUMP_RIDE_TICKETS_RESPONSE, 0xAB5},
             {Opcode.SMSG_FAILED_PLAYER_CONDITION, 0x77D},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x7F9},
+            {Opcode.SMSG_FLOOD_DETECTED, 0xA2A},
             {Opcode.SMSG_FORGE_MASTER_SET, 0xB39},
             {Opcode.SMSG_GAME_EVENT_DEBUG_LOG, 0x291},
             {Opcode.SMSG_GAME_OBJECT_ACTIVATE_ANIM_KIT, 0xB19},
@@ -176,6 +173,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_PET_SLOT_UPDATED, 0xA5D},
             {Opcode.SMSG_PLAY_SPELL_VISUAL, 0xF55},
             {Opcode.SMSG_PLAY_SPELL_VISUAL_KIT, 0x230},
+            {Opcode.SMSG_PONG, 0x8AE},
             {Opcode.SMSG_PVP_LOG_DATA, 0xC5D},
             {Opcode.SMSG_PVP_OPTIONS_ENABLED, 0xA78},
             {Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, 0xC9C}, // QuestCompletionNPCResponse
@@ -189,6 +187,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE, 0x23D},
             {Opcode.SMSG_RESEARCH_COMPLETE, 0xF99},
             {Opcode.SMSG_RESEARCH_SETUP_HISTORY, 0xD7C},
+            {Opcode.SMSG_RESET_COMPRESSION_CONTEXT, 0xE2F},
             {Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, 0x7B8},
             {Opcode.SMSG_ROLE_POLL_BEGIN, 0xF15},	
             {Opcode.SMSG_SERVER_FIRST_ACHIEVEMENT, 0xD78},
@@ -200,6 +199,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0xDD9},
             {Opcode.SMSG_START_TIMER, 0x9B0},
             {Opcode.SMSG_SUPPRESS_NPC_GREETINGS, 0x2FC},
+            {Opcode.SMSG_SUSPEND_COMMS, 0x82A},
             {Opcode.SMSG_TRADE_STATUS, 0x5B1},
             {Opcode.SMSG_TRANSFER_PENDING, 0xEBC},
             {Opcode.SMSG_UPDATE_SERVER_PLAYER_POSITION, 0x71C},
