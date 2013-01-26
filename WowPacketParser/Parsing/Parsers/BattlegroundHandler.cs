@@ -1489,7 +1489,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_POSITIONS)]
+        [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_POSITIONS, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleBattlegroundPlayerPositions(Packet packet)
         {
             var count1 = packet.ReadUInt32("Count 1");

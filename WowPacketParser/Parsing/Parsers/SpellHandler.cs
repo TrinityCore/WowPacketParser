@@ -777,8 +777,20 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Unk Guid", guid2);
         }
 
-        [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL_KIT)] // 4.3.4
-        public static void HandleCastVisualKit(Packet packet)
+        [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL_KIT, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleCastVisualKit430(Packet packet)
+        {
+            packet.ReadUInt32("SpellVisualKit ID");
+            packet.ReadUInt32("Unk");
+            packet.ReadUInt32("Unk");
+
+            var guid = packet.StartBitStream(0, 4, 3, 6, 5, 7, 2, 1);
+            packet.ParseBitStream(guid, 5, 7, 6, 1, 4, 3, 2, 0);
+            packet.WriteGuid("Caster Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL_KIT, ClientVersionBuild.V4_3_4_15595)] // 4.3.4
+        public static void HandleCastVisualKit434(Packet packet)
         {
             packet.ReadUInt32("Unk");
             packet.ReadUInt32("SpellVisualKit ID");
