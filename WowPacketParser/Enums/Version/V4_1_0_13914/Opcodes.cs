@@ -48,6 +48,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_AUCTION_OWNER_LIST_RESULT, 0x01A6D}, // 4.1.0 13914
             {Opcode.SMSG_AUCTION_OWNER_NOTIFICATION, 0x00D2C}, // 4.1.0 13914
             {Opcode.SMSG_AUCTION_REMOVED_NOTIFICATION, 0x0ED3D}, // 4.1.0 13914
+            {Opcode.SMSG_AURA_UPDATE, 0xE86C},
             {Opcode.SMSG_AVAILABLE_VOICE_CHANNEL, 0x04C7E}, // 4.1.0 13914
             {Opcode.SMSG_BARBER_SHOP_RESULT, 0x0FF2C}, // 4.1.0 13914
             {Opcode.SMSG_BATTLEGROUND_INFO_THROTTLED, 0x02C6D}, // 4.1.0 13914
@@ -156,6 +157,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_MEETINGSTONE_MEMBER_ADDED, 0x02F6C}, // 4.1.0 13914
             {Opcode.SMSG_MESSAGECHAT, 0x0DD7C}, // 4.1.0 13914
             {Opcode.SMSG_MIRRORIMAGE_DATA, 0x01C3E}, // 4.1.0 13914
+            {Opcode.SMSG_MONSTER_MOVE, 0xAA6D},
             {Opcode.SMSG_MOTD, 0x0987F}, // 4.1.0 13914
             {Opcode.SMSG_MOUNTSPECIAL_ANIM, 0x0BC2C}, // 4.1.0 13914
             {Opcode.SMSG_MULTIPLE_PACKETS_2, 0x04F2E}, // 4.1.0 13914
@@ -223,6 +225,8 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_SPELL_DELAYED, 0x0093C}, // 4.1.0 13914
             {Opcode.SMSG_SPELL_FAILED_OTHER, 0x07C2E}, // 4.1.0 13914
             {Opcode.SMSG_SPELL_FAILURE, 0x0AF3E}, // 4.1.0 13914
+            {Opcode.SMSG_SPELL_GO, 0xEC2D}, 
+            {Opcode.SMSG_SPELL_START, 0xDB2F}, 
             {Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS, 0x06B3C}, // 4.1.0 13914
             {Opcode.SMSG_STABLE_RESULT, 0x0896F}, // 4.1.0 13914
             {Opcode.SMSG_STANDSTATE_UPDATE, 0x0D87F}, // 4.1.0 13914
