@@ -276,6 +276,7 @@ namespace WowPacketParser.Parsing.Parsers
             var id = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
             if (id <= 0)
                 return null;
+
             aura.SpellId = (uint)id;
 
             aura.AuraFlags = packet.ReadEnum<AuraFlagMoP>("Flags", TypeCode.Byte, i);
@@ -301,10 +302,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (aura.AuraFlags.HasAnyFlag(AuraFlagMoP.Scalable))
             {
-                var b1 = packet.ReadByte("Unk byte", i);
+                var b1 = packet.ReadByte("Effect Count", i);
                 for (var j = 0; j < b1; ++j)
                     if (((1 << j) & mask) != 0)
-                        packet.ReadSingle("Unk Single", i, j);
+                        packet.ReadSingle("Effect Value", i, j);
             }
 
             packet.AddSniffData(StoreNameType.Spell, (int)aura.SpellId, "AURA_UPDATE");
