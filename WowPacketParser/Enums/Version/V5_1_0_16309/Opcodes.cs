@@ -12,7 +12,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
             {Opcode.MSG_MOVE_TELEPORT, 0x371},
-            {Opcode.MSG_MOVE_TIME_SKIPPED, 0x338}, -- could be MSG_MOVE_HEARTBEAT
+            {Opcode.MSG_MOVE_TIME_SKIPPED, 0x338}, // could be MSG_MOVE_HEARTBEAT
             {Opcode.MSG_RANDOM_ROLL, 0xA5C},
             {Opcode.SMSG_ACCOUNT_INFO_RESPONSE, 0x659},
             {Opcode.SMSG_ACCOUNT_RESTRICTED_WARNING, 0xCD8},
@@ -109,7 +109,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_LFG_UPDATE_SEARCH, 0x05C},
             {Opcode.SMSG_LFG_UPDATE_STATUS, 0x154},
             {Opcode.SMSG_LFG_UPDATE_STATUS_NONE, 0xABD},
-            {Opcode.SMSG_LF_GUILD_APPLICANT_LIST_UPDATED, 0x335}, -- OR 0x130? (LFGuildApplications)
+            {Opcode.SMSG_LF_GUILD_APPLICANT_LIST_UPDATED, 0x335}, // OR 0x130? (LFGuildApplications)
             {Opcode.SMSG_LF_GUILD_APPLICATIONS_LIST_CHANGED, 0x2D5},
             {Opcode.SMSG_LF_GUILD_BROWSE_UPDATED, 0x19},
             {Opcode.SMSG_LF_GUILD_COMMAND_RESULT, 0x570},
@@ -117,7 +117,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_LF_GUILD_RECRUIT_LIST_UPDATED, 0x45D},
             {Opcode.SMSG_LOOT_ALL_PASSED, 0x1BD},
             {Opcode.SMSG_LOOT_CONTENTS, 0xDB1},
-            {Opcode.SMSG_LOOT_LIST, 0x3B9}, -- MASTER LIST?
+            {Opcode.SMSG_LOOT_LIST, 0x3B9}, // MASTER LIST?
             {Opcode.SMSG_LOOT_MONEY_NOTIFY, 0xB38},
             {Opcode.SMSG_LOOT_REMOVED, 0x1F0},
             {Opcode.SMSG_LOOT_RESPONSE, 0xD98},
@@ -176,10 +176,10 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_PONG, 0x8AE},
             {Opcode.SMSG_PVP_LOG_DATA, 0xC5D},
             {Opcode.SMSG_PVP_OPTIONS_ENABLED, 0xA78},
-            {Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, 0xC9C}, -- QuestCompletionNPCResponse
+            {Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, 0xC9C}, // QuestCompletionNPCResponse
             {Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, 0xE35},
             {Opcode.SMSG_RAID_MARKERS_CHANGED, 0x930},
-            {Opcode.SMSG_RANDOMIZE_CHAR_NAME, }, -- GenerateRandomCharacterNameResult
+            {Opcode.SMSG_RANDOMIZE_CHAR_NAME, }, // GenerateRandomCharacterNameResult
             {Opcode.SMSG_RATED_BG_RATING, 0x935},
             {Opcode.SMSG_RATED_BG_STATS, 0x418},
             {Opcode.SMSG_REFORGE_RESULT, 0x95D},
