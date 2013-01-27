@@ -198,7 +198,7 @@ namespace WowPacketParser.Loading
 
             // ignore opcodes that were not "decrypted" (usually because of
             // a missing session key) (only applicable to 335 or earlier)
-            if (opcode >= 1312 && ClientVersion.Build <= ClientVersionBuild.V3_3_5a_12340)
+            if (opcode >= 1312 && (ClientVersion.Build <= ClientVersionBuild.V3_3_5a_12340 && ClientVersion.Build != ClientVersionBuild.Zero))
                 return null;
 
             var packet = new Packet(data, opcode, time, direction, number, Path.GetFileName(fileName));
