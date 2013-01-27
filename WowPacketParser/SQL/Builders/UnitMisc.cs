@@ -183,6 +183,9 @@ namespace WowPacketParser.SQL.Builders
                 if (npc.Equipment == null || npc.Equipment.Length != 3)
                     continue;
 
+                if (npc.Equipment[0] == 0 && npc.Equipment[1] == 0 && npc.Equipment[2] == 0)
+                    continue;
+
                 if (equips.ContainsKey(entry))
                 {
                     var existingEquip = equips[entry].Item1;
