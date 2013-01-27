@@ -3,7 +3,6 @@
     public enum SQLOutput
     {
 // ReSharper disable InconsistentNaming
-        None = -1,
         creature,
         creature_equip_template,
         creature_model_info,

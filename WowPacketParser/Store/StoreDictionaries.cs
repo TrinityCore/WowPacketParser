@@ -15,8 +15,7 @@ namespace WowPacketParser.Store
 
         protected bool ProcessFlags()
         {
-            return (Types.Count == 1 && Types.First() == SQLOutput.None) ||
-                Types.Any(sqlOutput => SQLEnabledFlags.HasAnyFlagBit(sqlOutput));
+            return Types.Count == 0 || Types.Any(sqlOutput => SQLEnabledFlags.HasAnyFlagBit(sqlOutput));
         }
 
         public abstract void Clear();
@@ -31,7 +30,7 @@ namespace WowPacketParser.Store
 
         public StoreDictionary()
         {
-            Types = new List<SQLOutput> { SQLOutput.None };
+            Types = new List<SQLOutput>();
             Enabled = true;
             _dictionary = new Dictionary<T, Tuple<TK, TimeSpan?>>();
         }
@@ -50,7 +49,7 @@ namespace WowPacketParser.Store
             foreach (var pair in dict)
                 _dictionary.Add(pair.Key, new Tuple<TK, TimeSpan?>(pair.Value, null));
 
-            Types = new List<SQLOutput> { SQLOutput.None };
+            Types = new List<SQLOutput>();
             Enabled = true;
         }
 
@@ -140,7 +139,7 @@ namespace WowPacketParser.Store
 
         public StoreMulti()
         {
-            Types = new List<SQLOutput> { SQLOutput.None };
+            Types = new List<SQLOutput>();
             Enabled = true;
             _dictionary = new MultiDictionary<T, Tuple<TK, TimeSpan?>>(true);
         }
@@ -161,7 +160,7 @@ namespace WowPacketParser.Store
                     _dictionary.Add(pair.Key, new Tuple<TK, TimeSpan?>(k, null));
 
 
-            Types = new List<SQLOutput> { SQLOutput.None };
+            Types = new List<SQLOutput>();
             Enabled = true;
         }
 

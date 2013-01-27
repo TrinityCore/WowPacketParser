@@ -15,7 +15,7 @@ namespace WowPacketParser.Store
         /* Key: Guid */
 
         // Units, GameObjects, Players, Items
-        public static readonly StoreDictionary<Guid, WoWObject> Objects = new StoreDictionary<Guid, WoWObject>(new List<SQLOutput> { SQLOutput.None });
+        public static readonly StoreDictionary<Guid, WoWObject> Objects = new StoreDictionary<Guid, WoWObject>(new List<SQLOutput>());
 
         /* Key: Entry */
 

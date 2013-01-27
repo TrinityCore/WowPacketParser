@@ -168,7 +168,7 @@ namespace WowPacketParser.Misc
 
             var result = 0;
 
-            for (var i = 1; i < names.Length; ++i) // first name/val is none
+            for (var i = 0; i < names.Length; ++i)
             {
                 if (GetBoolean(names[i], false))
                     result += (1 << (int)values.GetValue(i));
