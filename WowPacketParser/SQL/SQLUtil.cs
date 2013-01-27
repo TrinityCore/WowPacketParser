@@ -219,6 +219,9 @@ namespace WowPacketParser.SQL
                         if (field.Item1.FieldType.BaseType == typeof(Array))
                         {
                             var arr = (Array)field.Item1.GetValue(elem1.Value.Item1);
+                            if (arr == null)
+                                continue;
+
                             for (var i = 0; i < arr.Length; i++)
                                 row.AddValue(field.Item2.Name + (field.Item2.StartAtZero ? i : i + 1), arr.GetValue(i));
 
@@ -337,6 +340,9 @@ namespace WowPacketParser.SQL
                         if (field.Item1.FieldType.BaseType == typeof(Array))
                         {
                             var arr = (Array)field.Item1.GetValue(elem1.Value.Item1);
+                            if (arr == null)
+                                continue;
+
                             for (var i = 0; i < arr.Length; i++)
                                 row.AddValue(field.Item2.Name + (field.Item2.StartAtZero ? i : i + 1), arr.GetValue(i));
 
