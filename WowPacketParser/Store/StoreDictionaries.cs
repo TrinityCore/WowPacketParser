@@ -53,7 +53,7 @@ namespace WowPacketParser.Store
             Enabled = true;
         }
 
-        public void Add(T key, TK value, TimeSpan? time)
+        public void Add(T key, TK value, TimeSpan? time = null)
         {
             if (!Enabled)
                 return;
@@ -62,6 +62,11 @@ namespace WowPacketParser.Store
                 return;
 
             _dictionary.Add(key, new Tuple<TK, TimeSpan?>(value, time));
+        }
+
+        public bool Remove(T key)
+        {
+            return !Enabled || _dictionary.Remove(key);
         }
 
         public bool ContainsKey(T key)
@@ -170,6 +175,11 @@ namespace WowPacketParser.Store
                 return;
 
             _dictionary.Add(key, new Tuple<TK, TimeSpan?>(value, time));
+        }
+
+        public bool Remove(T key)
+        {
+            return !Enabled || _dictionary.Remove(key);
         }
 
         public override void Clear()
