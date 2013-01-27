@@ -239,8 +239,11 @@ namespace WowPacketParser.Loading
             else
                 sqlFileName = Settings.SQLFileName;
 
-            Builder.DumpSQL(string.Format("{0}: Dumping sql", _logPrefix), sqlFileName, GetHeader());
-            Storage.ClearContainers();
+            if (String.IsNullOrWhiteSpace(Settings.SQLFileName))
+            {
+                Storage.ClearContainers();
+                Builder.DumpSQL(string.Format("{0}: Dumping sql", _logPrefix), sqlFileName, GetHeader());
+            }
         }
 
         private void WritePacketErrors()

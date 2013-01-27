@@ -66,6 +66,9 @@ namespace WowPacketParser
                 new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count)).ProcessFile();
             }
 
+            if (!String.IsNullOrWhiteSpace(Settings.SQLFileName))
+                Builder.DumpSQL("Dumping global sql", Settings.SQLFileName, "# multiple files\n");
+
             SQLConnector.Disconnect();
             SSHTunnel.Disconnect();
             Logger.WriteErrors();
