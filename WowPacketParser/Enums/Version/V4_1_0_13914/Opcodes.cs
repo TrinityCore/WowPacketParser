@@ -225,8 +225,8 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_SPELL_DELAYED, 0x0093C}, // 4.1.0 13914
             {Opcode.SMSG_SPELL_FAILED_OTHER, 0x07C2E}, // 4.1.0 13914
             {Opcode.SMSG_SPELL_FAILURE, 0x0AF3E}, // 4.1.0 13914
-            {Opcode.SMSG_SPELL_GO, 0xEC2D}, 
-            {Opcode.SMSG_SPELL_START, 0xDB2F}, 
+            {Opcode.SMSG_SPELL_GO, 0xEC2D},
+            {Opcode.SMSG_SPELL_START, 0xDB2F},
             {Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS, 0x06B3C}, // 4.1.0 13914
             {Opcode.SMSG_STABLE_RESULT, 0x0896F}, // 4.1.0 13914
             {Opcode.SMSG_STANDSTATE_UPDATE, 0x0D87F}, // 4.1.0 13914

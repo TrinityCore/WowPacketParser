@@ -84,7 +84,6 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_GUILD_MEMBERS_FOR_RECIPE, 0x411},
             {Opcode.SMSG_GUILD_MEMBER_DAILY_RESET, 0x554},
             {Opcode.SMSG_GUILD_MEMBER_RECIPES, 0x1B4},
-            {Opcode.SMSG_GUILD_MEMBER_RECIPES, 0x1B4},
             {Opcode.SMSG_GUILD_MEMBER_UPDATE_NOTE, 0xAB4},
             {Opcode.SMSG_GUILD_MOVE_COMPLETE, 0x8FC},
             {Opcode.SMSG_GUILD_MOVE_STARTING, 0x730},
