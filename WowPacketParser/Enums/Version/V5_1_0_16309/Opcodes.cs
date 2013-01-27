@@ -142,7 +142,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_MOVE_KNOCK_BACK, 0x194},
             {Opcode.SMSG_MOVE_LAND_WALK, 0xD94},
             {Opcode.SMSG_MOVE_NORMAL_FALL, 0xC9D},
-            {Opcode.SMSG_MOVE_ROOT, 0x995},
+            {Opcode.SMSG_MOVE_ROOT, 0x955},
             {Opcode.SMSG_MOVE_SET_ACTIVE_MOVER, 0x7DC},
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x419},
             {Opcode.SMSG_MOVE_SET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY, 0x459},
