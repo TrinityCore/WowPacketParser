@@ -14,7 +14,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.QuestOffers.IsEmpty())
                 return String.Empty;
 
-            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
                 return string.Empty;
 
             var entries = Storage.QuestOffers.Keys();
@@ -28,7 +28,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.QuestRewards.IsEmpty())
                 return String.Empty;
 
-            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
                 return string.Empty;
 
             var entries = Storage.QuestRewards.Keys();
