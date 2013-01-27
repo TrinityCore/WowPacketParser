@@ -173,28 +173,35 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_equip_template))
                 return string.Empty;
 
-            const string tableName = "creature_equip_template";
-
-            var rows = new List<QueryBuilder.SQLInsertRow>();
+            var equips = new StoreDictionary<uint, CreatureEquipment>();
             foreach (var unit in units)
             {
-                var row = new QueryBuilder.SQLInsertRow();
-                var creature = unit.Value;
-                var equipData = creature.Equipment;
+                var equip = new CreatureEquipment();
+                var npc = unit.Value;
+                var entry = unit.Key.GetEntry();
 
-                // check if fields are empty
-                if (equipData == null || equipData.All(value => value == 0))
+                if (equips.ContainsKey(entry))
+                {
+                    var existingEquip = equips[entry].Item1;
+
+                    if (existingEquip.ItemEntry1 != npc.Equipment[0] ||
+                          existingEquip.ItemEntry2 != npc.Equipment[1] ||
+                          existingEquip.ItemEntry3 != npc.Equipment[2])
+                        equips.Remove(entry); // no conflicts
+
                     continue;
+                }
 
-                row.AddValue("entry", unit.Key.GetEntry());
-                row.AddValue("itemEntry1", equipData[0]);
-                row.AddValue("itemEntry2", equipData[1]);
-                row.AddValue("itemEntry3", equipData[2]);
-                row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
-                rows.Add(row);
+                equip.ItemEntry1 = npc.Equipment[0];
+                equip.ItemEntry2 = npc.Equipment[1];
+                equip.ItemEntry3 = npc.Equipment[2];
+
+                equips.Add(entry, equip);
             }
 
-            return new QueryBuilder.SQLInsert(tableName, rows).Build();
+            var entries = equips.Keys();
+            var equipsDb = SQLDatabase.GetDict<uint, CreatureEquipment>(entries);
+            return SQLUtil.CompareDicts(equips, equipsDb, StoreNameType.Unit);
         }
 
         public static string CreatureMovement(Dictionary<Guid, Unit> units)

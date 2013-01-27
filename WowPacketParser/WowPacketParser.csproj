@@ -418,6 +418,7 @@
     <Compile Include="SQL\SQLUtil.cs" />
     <Compile Include="SQL\SSHTunnel.cs" />
     <Compile Include="Store\Objects\Aura.cs" />
+    <Compile Include="Store\Objects\CreatureEquipment.cs" />
     <Compile Include="Store\Objects\GameObjectTemplateNonWDB.cs" />
     <Compile Include="Store\Objects\CreatureText.cs" />
     <Compile Include="Store\Objects\GameObject.cs" />
