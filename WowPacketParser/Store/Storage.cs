@@ -33,8 +33,11 @@ namespace WowPacketParser.Store
         public static readonly StoreDictionary<uint, PageText> PageTexts = new StoreDictionary<uint, PageText>(new List<SQLOutput> { SQLOutput.page_text });
         public static readonly StoreDictionary<uint, NpcText> NpcTexts = new StoreDictionary<uint, NpcText>(new List<SQLOutput> { SQLOutput.npc_text });
 
-        // `creature_text`
+        // Creature text (says, yells, etc.)
         public static readonly StoreMulti<uint, CreatureText> CreatureTexts = new StoreMulti<uint, CreatureText>(new List<SQLOutput> { SQLOutput.creature_text });
+
+        // Points of Interest
+        public static readonly StoreDictionary<uint, GossipPOI> GossipPOIs = new StoreDictionary<uint, GossipPOI>(new List<SQLOutput> { SQLOutput.points_of_interest });
 
         // "Helper" stores, do not match a specific table
         public static readonly StoreMulti<Guid, EmoteType> Emotes = new StoreMulti<Guid, EmoteType>(new List<SQLOutput> { SQLOutput.creature_text });
@@ -42,6 +45,7 @@ namespace WowPacketParser.Store
         public static readonly StoreDictionary<uint, SpellsX> SpellsX = new StoreDictionary<uint, SpellsX>(new List<SQLOutput> { SQLOutput.creature_template }); // `creature_template`.`spellsX`
         public static readonly StoreDictionary<uint, QuestOffer> QuestOffers = new StoreDictionary<uint, QuestOffer>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly StoreDictionary<uint, QuestReward> QuestRewards = new StoreDictionary<uint, QuestReward>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly StoreDictionary<Tuple<uint, uint>, object> GossipSelects = new StoreDictionary<Tuple<uint, uint>, object>(new List<SQLOutput> { SQLOutput.points_of_interest, SQLOutput.gossip_menu, SQLOutput.gossip_menu_option });
 
         /* Key: Misc */
 

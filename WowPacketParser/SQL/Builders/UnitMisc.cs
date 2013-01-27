@@ -460,6 +460,76 @@ namespace WowPacketParser.SQL.Builders
             return result;
         }
 
+        public static string PointsOfInterest()
+        {
+            if (Storage.GossipPOIs.IsEmpty())
+                return string.Empty;
+
+            var result = string.Empty;
+
+            if (!Storage.GossipSelects.IsEmpty() && Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_option))
+            {
+                var gossipPOIsTable = new Dictionary<Tuple<uint, uint>, uint>();
+
+                foreach (var poi in Storage.GossipPOIs)
+                {
+                    foreach (var gossipSelect in Storage.GossipSelects)
+                    {
+                        var timeSpan = poi.Value.Item2 - gossipSelect.Value.Item2;
+                        if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
+                            gossipPOIsTable.Add(Tuple.Create(gossipSelect.Key.Item1, gossipSelect.Key.Item2), poi.Key);
+                    }
+                }
+
+                var rowsUpd = new List<QueryBuilder.SQLUpdateRow>();
+
+                foreach (var u in gossipPOIsTable)
+                {
+                    var row = new QueryBuilder.SQLUpdateRow();
+
+                    row.AddValue("action_poi_id", u.Value);
+
+                    row.AddWhere("menu_id", u.Key.Item1);
+                    row.AddWhere("id", u.Key.Item2);
+
+                    row.Table = "gossip_menu_option";
+
+                    rowsUpd.Add(row);
+                }
+
+                result += new QueryBuilder.SQLUpdate(rowsUpd).Build();
+            }
+
+            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.points_of_interest))
+            {
+                const string tableName = "points_of_interest";
+                var rowsIns = new List<QueryBuilder.SQLInsertRow>();
+
+                uint count = 0;
+
+                foreach (var poi in Storage.GossipPOIs)
+                {
+                    var row = new QueryBuilder.SQLInsertRow();
+
+                    row.AddValue("entry", "@ID+" + count, noQuotes: true);
+                    row.AddValue("x", poi.Value.Item1.XPos);
+                    row.AddValue("y", poi.Value.Item1.YPos);
+                    row.AddValue("icon", poi.Value.Item1.Icon);
+                    row.AddValue("flags", poi.Value.Item1.Flags);
+                    row.AddValue("data", poi.Value.Item1.Data);
+                    row.AddValue("icon_name", poi.Value.Item1.IconName);
+
+                    rowsIns.Add(row);
+                    entry++;
+                }
+
+                result += new QueryBuilder.SQLDelete(Tuple.Create("@ID+0", "@ID+" + --count), "entry", tableName).Build();
+                result += new QueryBuilder.SQLInsert(tableName, rowsIns, withDelete: false).Build();
+            }
+
+            return result;
+        }
+
         //                      entry, <minlevel, maxlevel>
         public static Dictionary<uint, Tuple<uint, uint>> GetLevels(Dictionary<Guid, Unit> units)
         {

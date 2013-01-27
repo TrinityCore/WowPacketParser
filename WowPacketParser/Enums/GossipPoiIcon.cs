@@ -1,6 +1,6 @@
 namespace WowPacketParser.Enums
 {
-    public enum GossipPoiIcon
+    public enum GossipPOIIcon : uint
     {
         Blank = 0,
         GreyAlteracValleyMine = 1,

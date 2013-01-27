@@ -24,6 +24,7 @@
         playercreateinfo,
         playercreateinfo_action,
         playercreateinfo_spell,
+        points_of_interest,
         quest_poi,
         quest_poi_points,
         quest_template,

@@ -12,14 +12,25 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class NpcHandler
     {
+        public static uint LastGossipPOIEntry = 0;
+
         [Parser(Opcode.SMSG_GOSSIP_POI)]
         public static void HandleGossipPoi(Packet packet)
         {
-            packet.ReadEnum<UnknownFlags>("Flags", TypeCode.Int32);
-            packet.ReadVector2("Coordinates");
-            packet.ReadEnum<GossipPoiIcon>("Icon", TypeCode.UInt32);
-            packet.ReadInt32("Data");
-            packet.ReadCString("Icon Name");
+            LastGossipPOIEntry++;
+
+            var gossipPOI = new GossipPOI();
+
+            gossipPOI.Flags = (uint) packet.ReadEnum<UnknownFlags>("Flags", TypeCode.Int32);
+            var pos = packet.ReadVector2("Coordinates");
+            gossipPOI.Icon = packet.ReadEnum<GossipPOIIcon>("Icon", TypeCode.UInt32);
+            gossipPOI.Data = packet.ReadUInt32("Data");
+            gossipPOI.IconName = packet.ReadCString("Icon Name");
+
+            gossipPOI.XPos = pos.X;
+            gossipPOI.YPos = pos.Y;
+
+            Storage.GossipPOIs.Add(LastGossipPOIEntry, gossipPOI, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_TRAINER_BUY_SPELL, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
@@ -300,11 +311,13 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleNpcGossipSelectOption(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadUInt32("Menu Id");
-            packet.ReadUInt32("Gossip Id");
+            var menuEntry = packet.ReadUInt32("Menu Id");
+            var gossipId = packet.ReadUInt32("Gossip Id");
 
             if (packet.CanRead()) // if ( byte_F3777C[v3] & 1 )
                 packet.ReadCString("Box Text");
+
+            Storage.GossipSelects.Add(Tuple.Create(menuEntry, gossipId), null, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
