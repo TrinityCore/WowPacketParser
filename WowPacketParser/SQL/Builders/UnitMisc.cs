@@ -481,9 +481,14 @@ namespace WowPacketParser.SQL.Builders
                 {
                     foreach (var gossipSelect in Storage.GossipSelects)
                     {
+                        var tuple = Tuple.Create(gossipSelect.Key.Item1, gossipSelect.Key.Item2);
+
+                        if (gossipPOIsTable.ContainsKey(tuple))
+                            continue;
+
                         var timeSpan = poi.Value.Item2 - gossipSelect.Value.Item2;
                         if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
-                            gossipPOIsTable.Add(Tuple.Create(gossipSelect.Key.Item1, gossipSelect.Key.Item2), poi.Key);
+                            gossipPOIsTable.Add(tuple, poi.Key);
                     }
                 }
 
