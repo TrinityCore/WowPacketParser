@@ -193,8 +193,20 @@ namespace WowPacketParser.SQL
                     row.Comment = StoreGetters.GetName(storeType, (int)key, false);
                     row.Table = tableName;
 
-                    if (row.ValueCount != 0)
-                        rowsUpd.Add(row);
+                    if (row.ValueCount == 0)
+                        continue;
+
+                    var lastField = fields[fields.Count - 1];
+                    if (lastField.Item2.Name == "WDBVerified")
+                    {
+                        var wdbvSniff = (int)lastField.Item1.GetValue(elem1.Value.Item1);
+                        var wdbvDB = (int)lastField.Item1.GetValue(dict2[elem1.Key].Item1);
+
+                        if (wdbvDB > wdbvSniff) // skip update if DB already has a WDBVerified higher than this one
+                            continue;
+                    }
+
+                    rowsUpd.Add(row);
                 }
                 else // insert new
                 {
@@ -298,8 +310,20 @@ namespace WowPacketParser.SQL
                     row.Comment = StoreGetters.GetName(storeType, (int)key1, false);
                     row.Table = tableName;
 
-                    if (row.ValueCount != 0)
-                        rowsUpd.Add(row);
+                    if (row.ValueCount == 0)
+                        continue;
+
+                    var lastField = fields[fields.Count - 1];
+                    if (lastField.Item2.Name == "WDBVerified")
+                    {
+                        var wdbvSniff = (int)lastField.Item1.GetValue(elem1.Value.Item1);
+                        var wdbvDB = (int)lastField.Item1.GetValue(dict2[elem1.Key].Item1);
+
+                        if (wdbvDB > wdbvSniff) // skip update if DB already has a WDBVerified higher than this one
+                            continue;
+                    }
+
+                    rowsUpd.Add(row);
                 }
                 else // insert new
                 {
