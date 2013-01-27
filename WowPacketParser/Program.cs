@@ -47,7 +47,8 @@ namespace WowPacketParser
                 throw new ConstraintException("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
 
             // Disable DB when we don't need its data (dumping to a binary file)
-            if (Settings.DumpFormat != DumpFormatType.Text)
+            if (Settings.DumpFormat == DumpFormatType.None || Settings.DumpFormat == DumpFormatType.Pkt ||
+                Settings.DumpFormat == DumpFormatType.PktSplit)
             {
                 SQLConnector.Enabled = false;
                 SSHTunnel.Enabled = false;
