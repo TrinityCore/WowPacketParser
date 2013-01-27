@@ -279,7 +279,7 @@ namespace WowPacketParser.SQL.Builders
             var result = "";
 
             // `gossip`
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu))
+            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu))
             {
                 if (SQLConnector.Enabled)
                 {
@@ -342,7 +342,7 @@ namespace WowPacketParser.SQL.Builders
             }
 
             // `gossip_menu_option`
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_option))
+            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_option))
             {
                 if (SQLConnector.Enabled)
                 {
