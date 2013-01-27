@@ -520,10 +520,10 @@ namespace WowPacketParser.SQL.Builders
                     row.AddValue("icon_name", poi.Value.Item1.IconName);
 
                     rowsIns.Add(row);
-                    entry++;
+                    count++;
                 }
 
-                result += new QueryBuilder.SQLDelete(Tuple.Create("@ID+0", "@ID+" + --count), "entry", tableName).Build();
+                result += new QueryBuilder.SQLDelete(Tuple.Create("@ID+0", "@ID+" + (count - 1)), "entry", tableName).Build();
                 result += new QueryBuilder.SQLInsert(tableName, rowsIns, withDelete: false).Build();
             }
 
