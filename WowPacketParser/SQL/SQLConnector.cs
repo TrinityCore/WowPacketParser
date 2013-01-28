@@ -53,7 +53,10 @@ namespace WowPacketParser.SQL
             try
             {
                 using (var command = new MySqlCommand(input, Conn))
+                {
+                    command.CommandTimeout = 2147483; // max timeout val, 0 doesn't work
                     return command.ExecuteReader();
+                }
             }
             catch (Exception e)
             {
