@@ -181,6 +181,10 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Unk Attacker State 3 12");
                 packet.ReadInt32("Unk Attacker State 3 13");
             }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
+                if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK | SpellHitInfo.HITINFO_UNK12))
+                    packet.ReadSingle("Unk Float");
         }
 
         [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]

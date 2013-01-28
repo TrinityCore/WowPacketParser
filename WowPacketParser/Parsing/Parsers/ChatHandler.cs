@@ -167,7 +167,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadInt32("Text Length");
             text.Text = packet.ReadCString("Text");
-            packet.ReadEnum<ChatTag>("Chat Tag", TypeCode.Byte);
+            packet.ReadEnum<ChatTag>("Chat Tag", ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309) ? TypeCode.Int16 : TypeCode.Byte);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
             {
@@ -388,7 +388,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID 2");
             packet.ReadInt32("Message Length");
             packet.ReadCString("Message");
-            packet.ReadEnum<ChatTag>("Chat Tag", TypeCode.Byte);
+            packet.ReadEnum<ChatTag>("Chat Tag", ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309) ? TypeCode.Int16 : TypeCode.Byte);
         }
 
         [Parser(Opcode.SMSG_CHAT_RESTRICTED)]

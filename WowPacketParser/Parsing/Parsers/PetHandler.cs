@@ -31,6 +31,9 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                 packet.ReadEnum<CreatureFamily>("Pet Family", TypeCode.UInt16); // vehicles -> 0
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
+                packet.ReadUInt16("Unk UInt16");
+
             packet.ReadUInt32("Expiration Time");
 
             ReadPetFlags(ref packet);
@@ -87,6 +90,17 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt16("Category", i);
                 packet.ReadUInt32("Cooldown", i);
                 packet.ReadUInt32("Category Cooldown", i);
+            }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
+            {
+                var unkLoopCounter = packet.ReadByte("Unk count");
+                for (var i = 0; i < unkLoopCounter; i++)
+                {
+                    packet.ReadUInt32("Unk UInt32 1", i);
+                    packet.ReadByte("Unk Byte", i);
+                    packet.ReadUInt32("Unk UInt32 2", i);
+                }
             }
         }
 
