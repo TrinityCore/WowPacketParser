@@ -802,8 +802,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (size == 32)
             {
-                var item = new ItemTemplate();
                 var itemId2 = packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+                var item = Storage.ItemTemplates.ContainsKey((uint) itemId2) ? Storage.ItemTemplates[(uint) itemId2].Item1 : new ItemTemplate();
                 item.Class = packet.ReadEnum<ItemClass>("Class", TypeCode.Int32);
                 item.SubClass = packet.ReadUInt32("Sub Class");
                 item.SoundOverrideSubclass = packet.ReadInt32("Sound Override Subclass");
@@ -975,7 +975,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 case 0x50238EC2:    // Item
                 {
-                    var item = new ItemTemplate();
+                    var item = Storage.ItemTemplates.ContainsKey(itemId) ? Storage.ItemTemplates[itemId].Item1 : new ItemTemplate();
 
                     packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
                     item.Class = packet.ReadEnum<ItemClass>("Class", TypeCode.Int32);

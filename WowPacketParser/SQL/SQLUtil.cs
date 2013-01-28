@@ -183,6 +183,9 @@ namespace WowPacketParser.SQL
                             continue;
                         }
 
+                        if ((val2 is Array) && val1 == null)
+                            continue;
+
                         if (!Utilities.EqualValues(val1, val2))
                             row.AddValue(field.Item2.Name, val1);
                     }
