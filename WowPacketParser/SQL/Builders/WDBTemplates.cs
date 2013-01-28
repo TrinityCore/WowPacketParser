@@ -45,9 +45,9 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             var entries = Storage.GameObjectTemplates.Keys();
-            var tempatesDb = SQLDatabase.GetDict<uint, GameObjectTemplate>(entries);
+            var templatesDb = SQLDatabase.GetDict<uint, GameObjectTemplate>(entries);
 
-            return SQLUtil.CompareDicts(Storage.GameObjectTemplates, tempatesDb, StoreNameType.GameObject);
+            return SQLUtil.CompareDicts(Storage.GameObjectTemplates, templatesDb, StoreNameType.GameObject);
         }
 
         public static string Item()
@@ -59,9 +59,9 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             var entries = Storage.ItemTemplates.Keys();
-            var tempatesDb = SQLDatabase.GetDict<uint, ItemTemplate>(entries);
+            var templatesDb = SQLDatabase.GetDict<uint, ItemTemplate>(entries);
 
-            return SQLUtil.CompareDicts(Storage.ItemTemplates, tempatesDb, StoreNameType.Item);
+            return SQLUtil.CompareDicts(Storage.ItemTemplates, templatesDb, StoreNameType.Item);
         }
 
         public static string PageText()
