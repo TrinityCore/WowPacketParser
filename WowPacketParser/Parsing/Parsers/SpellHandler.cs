@@ -363,9 +363,19 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Glyph Index");
 
             var castFlags = packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
-            ReadSpellCastTargets(ref packet);
             if (castFlags.HasAnyFlag(CastFlag.HasTrajectory))
+            {
+                ReadSpellCastTargets(ref packet);
                 HandleSpellMissileAndMove(ref packet);
+            }
+            else
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
+                    if (castFlags.HasAnyFlag(CastFlag.Unknown4))
+                        HandleSpellMove(ref packet);
+
+                ReadSpellCastTargets(ref packet);
+            }
         }
 
         public static TargetFlag ReadSpellCastTargets(ref Packet packet)
@@ -405,7 +415,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadSingle("Elevation");
             packet.ReadSingle("Missile speed");
-            var hasMovement = packet.ReadBoolean("Has Movement Data");
             if (ClientVersion.RemovedInVersion(ClientType.Cataclysm))
             {
                 var opcode = packet.ReadInt32();
@@ -417,6 +426,152 @@ namespace WowPacketParser.Parsing.Parsers
                     Handler.Parse(newpacket, true);
                 return;
             }
+            else
+                HandleSpellMove(ref packet);
+        }
+
+        public static void HandleSpellMove510(ref Packet packet)
+        {
+            var hasMovement = packet.ReadBoolean("Has Movement Data");
+            if (hasMovement)
+            {
+                var guid = new byte[8];
+                var transportGuid = new byte[8];
+                var hasTransTime2 = false;
+                var hasTransTime3 = false;
+                var hasFallDirection = false;
+                var pos = new Vector4();
+
+                pos.Z = packet.ReadSingle();
+                pos.X = packet.ReadSingle();
+                pos.Y = packet.ReadSingle();
+
+                guid[7] = packet.ReadBit();
+                var hasTrans = packet.ReadBit("Has Transport");
+                var hasFallData = packet.ReadBit("Has Fall Data");
+                var hasField152 = !packet.ReadBit("Lacks field152");
+                var hasMovementFlags = !packet.ReadBit();
+                packet.ReadBit();
+                guid[0] = packet.ReadBit();
+                var hasMovementFlags2 = !packet.ReadBit();
+                var hasO = !packet.ReadBit("Lacks Orientation");
+                guid[2] = packet.ReadBit();
+                var hasTime = !packet.ReadBit("Lacks Timestamp");
+                guid[1] = packet.ReadBit();
+                packet.ReadBit("Has Spline");
+                guid[3] = packet.ReadBit();
+                var unkLoopCounter = packet.ReadBits(24);
+                guid[5] = packet.ReadBit();
+                guid[6] = packet.ReadBit();
+                var hasPitch = !packet.ReadBit("Lacks Pitch");
+                guid[4] = packet.ReadBit();
+                var hasSplineElev = !packet.ReadBit("Lacks Spline Elevation");
+                packet.ReadBit();
+                if (hasTrans)
+                {
+                    hasTransTime2 = packet.ReadBit();
+                    transportGuid[2] = packet.ReadBit();
+                    transportGuid[3] = packet.ReadBit();
+                    transportGuid[4] = packet.ReadBit();
+                    transportGuid[0] = packet.ReadBit();
+                    transportGuid[5] = packet.ReadBit();
+                    hasTransTime3 = packet.ReadBit();
+                    transportGuid[6] = packet.ReadBit();
+                    transportGuid[7] = packet.ReadBit();
+                    transportGuid[1] = packet.ReadBit();
+                }
+
+                if (hasMovementFlags2)
+                    packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
+
+                if (hasFallData)
+                    hasFallDirection = packet.ReadBit("Has Fall Direction");
+
+                if (hasMovementFlags)
+                    packet.ReadEnum<MovementFlag>("Movement Flags", 30);
+
+                packet.ReadXORByte(guid, 1);
+                packet.ReadXORByte(guid, 2);
+                packet.ReadXORByte(guid, 5);
+                for (var i = 0; i < unkLoopCounter; i++)
+                    packet.ReadUInt32("Unk UInt32", i);
+
+                packet.ReadXORByte(guid, 6);
+                packet.ReadXORByte(guid, 7);
+                packet.ReadXORByte(guid, 4);
+                packet.ReadXORByte(guid, 0);
+                packet.ReadXORByte(guid, 3);
+
+                if (hasTrans)
+                {
+                    var tpos = new Vector4();
+                    packet.ReadUInt32("Transport Time");
+                    packet.ReadXORByte(transportGuid, 5);
+                    packet.ReadSByte("Transport Seat");
+                    tpos.O = packet.ReadSingle();
+                    packet.ReadXORByte(transportGuid, 7);
+                    packet.ReadXORByte(transportGuid, 1);
+                    tpos.Z = packet.ReadSingle();
+                    tpos.X = packet.ReadSingle();
+                    packet.ReadXORByte(transportGuid, 6);
+                    tpos.Y = packet.ReadSingle();
+                    packet.ReadXORByte(transportGuid, 4);
+                    packet.ReadXORByte(transportGuid, 2);
+
+                    if (hasTransTime3)
+                        packet.ReadUInt32("Transport Time 3");
+
+                    if (hasTransTime2)
+                        packet.ReadUInt32("Transport Time 2");
+
+                    packet.ReadXORByte(transportGuid, 0);
+                    packet.ReadXORByte(transportGuid, 3);
+
+                    packet.WriteGuid("Transport Guid", transportGuid);
+                    packet.WriteLine("Transport Position: {0}", tpos);
+                }
+
+                if (hasTime)
+                    packet.ReadUInt32("Timestamp");
+
+                if (hasO)
+                    pos.O = packet.ReadSingle();
+
+                if (hasFallData)
+                {
+                    packet.ReadUInt32("Fall Time");
+                    if (hasFallDirection)
+                    {
+                        packet.ReadSingle("Fall Sin");
+                        packet.ReadSingle("Fall Cos");
+                        packet.ReadSingle("Horizontal Speed");
+                    }
+                    packet.ReadSingle("Vertical Speed");
+                }
+
+                if (hasField152)
+                    packet.ReadUInt32("Unk field152");
+
+                if (hasPitch)
+                    packet.ReadSingle("Pitch");
+
+                if (hasSplineElev)
+                    packet.ReadSingle("Spline Elevation");
+
+                packet.WriteGuid("Guid", guid);
+                packet.WriteLine("Position: {0}", pos);
+            }
+        }
+
+        public static void HandleSpellMove(ref Packet packet)
+        {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
+            {
+                HandleSpellMove510(ref packet);
+                return;
+            }
+
+            var hasMovement = packet.ReadBoolean("Has Movement Data");
             if (hasMovement)
             {
                 var guid = new byte[8];
@@ -586,7 +741,19 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
             {
                 if (flags.HasAnyFlag(CastFlag.PredictedPower))
-                    packet.ReadInt32("Rune Cooldown");
+                {
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
+                    {
+                        var count = packet.ReadUInt32("Modified Power Count");
+                        for (var i = 0; i < count; i++)
+                        {
+                            packet.ReadEnum<PowerType>("Power Type", TypeCode.UInt32, i);
+                            packet.ReadInt32("Power Value", i);
+                        }
+                    }
+                    else
+                        packet.ReadInt32("Rune Cooldown");
+                }
 
                 if (flags.HasAnyFlag(CastFlag.RuneInfo))
                 {
