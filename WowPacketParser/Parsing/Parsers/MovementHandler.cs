@@ -217,6 +217,13 @@ namespace WowPacketParser.Parsing.Parsers
                     return;
             }
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
+            {
+                // Not the best way
+                ReadSplineMovement510(ref packet, pos);
+                return;
+            }
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
             {
                 // Not the best way
@@ -271,6 +278,80 @@ namespace WowPacketParser.Parsing.Parsers
                     vec.Z += mid.Z;
 
                     packet.WriteLine("[" + i + "]" + " Waypoint: " + vec);
+                }
+            }
+        }
+
+        private static void ReadSplineMovement510(ref Packet packet, Vector3 pos)
+        {
+            var flags = packet.ReadEnum<SplineFlag434>("Spline Flags", TypeCode.Int32);
+
+            if (flags.HasAnyFlag(SplineFlag434.Animation))
+            {
+                packet.ReadEnum<MovementAnimationState>("Animation State", TypeCode.Byte);
+                packet.ReadInt32("Asynctime in ms"); // Async-time in ms
+            }
+
+            packet.ReadInt32("Move Time");
+
+            if (flags.HasAnyFlag(SplineFlag434.Parabolic))
+            {
+                packet.ReadSingle("Vertical Speed");
+                packet.ReadInt32("Async-time in ms");
+            }
+
+            var waypoints = packet.ReadInt32("Waypoints");
+
+            if (flags.HasAnyFlag(SplineFlag434.UncompressedPath))
+            {
+                for (var i = 0; i < waypoints; i++)
+                    packet.ReadVector3("Waypoint", i);
+            }
+            else
+            {
+                var newpos = packet.ReadVector3("Waypoint Endpoint");
+
+                var mid = new Vector3();
+                mid.X = (pos.X + newpos.X) * 0.5f;
+                mid.Y = (pos.Y + newpos.Y) * 0.5f;
+                mid.Z = (pos.Z + newpos.Z) * 0.5f;
+
+                if (waypoints != 1)
+                {
+                    var vec = packet.ReadPackedVector3();
+                    vec.X += mid.X;
+                    vec.Y += mid.Y;
+                    vec.Z += mid.Z;
+                    packet.WriteLine("[0] Waypoint: " + vec);
+
+                    if (waypoints > 2)
+                    {
+                        for (var i = 1; i < waypoints - 1; ++i)
+                        {
+                            vec = packet.ReadPackedVector3();
+                            vec.X += mid.X;
+                            vec.Y += mid.Y;
+                            vec.Z += mid.Z;
+
+                            packet.WriteLine("[" + i + "]" + " Waypoint: " + vec);
+                        }
+                    }
+                }
+            }
+
+            var unkLoopCounter = packet.ReadUInt16("Unk UInt16");
+            if (unkLoopCounter > 1)
+            {
+                packet.ReadSingle("Unk Float 1");
+                packet.ReadUInt16("Unk UInt16 1");
+                packet.ReadUInt16("Unk UInt16 2");
+                packet.ReadSingle("Unk Float 2");
+                packet.ReadUInt16("Unk UInt16 3");
+
+                for (var i = 0; i < unkLoopCounter; i++)
+                {
+                    packet.ReadUInt16("Unk UInt16 1", i);
+                    packet.ReadUInt16("Unk UInt16 2", i);
                 }
             }
         }
@@ -4025,7 +4106,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
         public static void HandlePhaseShift434(Packet packet)
         {
             var guid = packet.StartBitStream(2, 3, 1, 6, 4, 5, 0, 7);
@@ -4064,6 +4145,46 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Active Terrain swap", i);
 
             packet.ReadXORByte(guid, 5);
+            packet.WriteLine("GUID {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+        }
+
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V5_1_0_16309)]
+        public static void HandlePhaseShift510(Packet packet)
+        {
+            var guid = packet.StartBitStream(6, 4, 7, 2, 0, 1, 3, 5);
+            packet.ReadXORByte(guid, 4);
+
+            var count = packet.ReadUInt32() / 2;
+            packet.WriteLine("WorldMapArea swap count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt16("WorldMapArea swap", i);
+
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 3);
+
+            count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Phases count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt16("Phase id", i); // Phase.dbc
+
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 6);
+
+            count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Active Terrain swap count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Active Terrain swap", i);
+
+            packet.ReadUInt32("UInt32");
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 5);
+
+            count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Inactive Terrain swap count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
+
             packet.WriteLine("GUID {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
         }
 
