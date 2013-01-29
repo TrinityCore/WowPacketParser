@@ -88,8 +88,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PARTY_MEMBER_STATS_FULL, ClientVersionBuild.V4_2_2_14545)]
         public static void HandlePartyMemberStats422(Packet packet)
         {
-            // GroupUpdateFlag enum might need update for 4.x
-
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PARTY_MEMBER_STATS_FULL))
                 packet.ReadBoolean("Add arena opponent");
 
@@ -147,6 +145,9 @@ namespace WowPacketParser.Parsing.Parsers
                 var cnt = packet.ReadUInt32("Aura count");
                 for (var i = 0; i < cnt; ++i)
                 {
+                    if (mask == 0) // bad packet
+                        break;
+
                     if ((mask & (1ul << i)) == 0)
                         continue;
 
