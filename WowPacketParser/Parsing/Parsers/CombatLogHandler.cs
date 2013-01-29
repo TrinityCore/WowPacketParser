@@ -3,6 +3,8 @@ using System.IO;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -198,7 +200,12 @@ namespace WowPacketParser.Parsing.Parsers
                         case SpellEffect.SummonObjectSlot4:
                         case SpellEffect.Unk171:
                         {
-                            packet.ReadPackedGuid("Summoned GUID", index, i, j);
+                            var guid = packet.ReadPackedGuid("Summoned GUID", index, i, j);
+
+                            WoWObject obj;
+                            if (Storage.Objects.TryGetValue(guid, out obj))
+                                obj.ForceTemporarySpawn = true;
+
                             break;
                         }
                         case SpellEffect.FeedPet:

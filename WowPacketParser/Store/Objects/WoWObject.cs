@@ -20,9 +20,11 @@ namespace WowPacketParser.Store.Objects
 
         public uint PhaseMask;
 
+        public bool ForceTemporarySpawn;
+
         public virtual bool IsTemporarySpawn()
         {
-            return false;
+            return ForceTemporarySpawn;
         }
 
         public bool IsOnTransport()

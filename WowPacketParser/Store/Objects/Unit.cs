@@ -14,6 +14,9 @@ namespace WowPacketParser.Store.Objects
 
         public override bool IsTemporarySpawn()
         {
+            if (ForceTemporarySpawn)
+                return true;
+
             // If our unit got any of the following update fields set,
             // it's probably a temporary spawn
             UpdateField uf;
