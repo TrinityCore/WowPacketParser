@@ -480,7 +480,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
         }
 
-        [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleNewWorld434(Packet packet)
         {
             packet.ReadSingle("X");
@@ -488,6 +488,18 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Y");
             CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
             packet.ReadSingle("Z"); // seriously...
+
+            packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
+        }
+
+        [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V5_1_0_16309)]
+        public static void HandleNewWorld510(Packet packet)
+        {
+            CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
+            packet.ReadSingle("Y");
+            packet.ReadSingle("Orientation");
+            packet.ReadSingle("X");
+            packet.ReadSingle("Z");
 
             packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
         }
