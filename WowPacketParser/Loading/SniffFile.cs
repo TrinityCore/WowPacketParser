@@ -79,7 +79,39 @@ namespace WowPacketParser.Loading
                 {
                     if (!ReadPackets())
                         return;
-                    BinaryDump();
+
+                    if (Settings.FilterPacketNumLow == 0 && Settings.FilterPacketNumHigh == 0 &&
+                        Settings.FilterPacketsNum < 0)
+                    {
+                        int packetsPerSplit = Math.Abs(Settings.FilterPacketsNum);
+                        int totalPackets = _packets.Count;
+
+                        int numberOfSplits = totalPackets / packetsPerSplit;
+
+                        for (int i = 0; i < numberOfSplits; ++i)
+                        {
+                            var fileNamePart = _fileName + "_part_" + (i + 1) + ".pkt";
+
+                            var packetsPart = new LinkedList<Packet>();
+
+                            for (int j = 0; j < packetsPerSplit; ++j)
+                            {
+                                if (_packets.Count == 0)
+                                    break;
+
+                                packetsPart.AddLast(_packets.First.Value);
+                                _packets.RemoveFirst();
+                            }
+
+                            BinaryDump(fileNamePart, packetsPart);
+                        }
+                    }
+                    else
+                    {
+                        var fileNameExcerpt = Path.ChangeExtension(_fileName, null) + "_excerpt.pkt";
+                        BinaryDump(fileNameExcerpt, _packets);
+                    }
+
                     break;
                 }
 
@@ -213,14 +245,13 @@ namespace WowPacketParser.Loading
             }
         }
 
-        private void BinaryDump()
+        private void BinaryDump(string fileName, ICollection<Packet> packets)
         {
-            Trace.WriteLine(string.Format("{0}: Copying {1} packets to .pkt format...", _logPrefix, _packets.Count));
-            var dumpFileName = Path.ChangeExtension(_fileName, null) + "_excerpt.pkt";
+            Trace.WriteLine(string.Format("{0}: Copying {1} packets to .pkt format...", _logPrefix, packets.Count));
 
             try
             {
-                BinaryPacketWriter.Write(SniffType.Pkt, dumpFileName, Encoding.ASCII, _packets);
+                BinaryPacketWriter.Write(SniffType.Pkt, fileName, Encoding.ASCII, packets);
             }
             catch (Exception ex)
             {
