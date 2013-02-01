@@ -10,7 +10,7 @@ namespace WowPacketParser.SQL
     {
         private StreamWriter _file;
 
-        private string _fileName;
+        private readonly string _fileName;
 
         private readonly List<string> _sqls = new List<string>();
 

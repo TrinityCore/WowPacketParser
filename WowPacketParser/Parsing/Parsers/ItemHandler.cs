@@ -417,6 +417,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [HasSniffData]
         [Parser(Opcode.SMSG_ITEM_QUERY_SINGLE_RESPONSE)]
         public static void HandleItemQueryResponse(Packet packet)
         {
@@ -658,6 +659,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [HasSniffData]
         [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleDBReply(Packet packet)
         {
@@ -793,6 +795,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddSniffData(StoreNameType.Item, itemId, "DB_REPLY");
         }
 
+        [HasSniffData]
         [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleDBReply430(Packet packet)
         {
@@ -961,6 +964,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddSniffData(StoreNameType.Item, (int)itemId, "DB_REPLY");
         }
 
+        [HasSniffData]
         [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleDBReply434(Packet packet)
         {

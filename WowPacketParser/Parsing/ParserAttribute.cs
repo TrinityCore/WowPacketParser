@@ -8,6 +8,7 @@ namespace WowPacketParser.Parsing
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
     public sealed class ParserAttribute : Attribute
     {
+        // versionless
         public ParserAttribute(Opcode opcode)
         {
             Opcode = Opcodes.GetOpcode(opcode);
@@ -31,11 +32,13 @@ namespace WowPacketParser.Parsing
                 Opcode = 0;
         }
 
+        // versionless
         public ParserAttribute(int opcode)
         {
             Opcode = opcode;
         }
 
+        // [addedInVersion, +inf[
         public ParserAttribute(int opcode, ClientVersionBuild addedInVersion)
         {
             if (ClientVersion.AddedInVersion(addedInVersion))
@@ -44,6 +47,7 @@ namespace WowPacketParser.Parsing
                 Opcode = 0;
         }
 
+        // [addedInVersion, removedInVersion[
         public ParserAttribute(int opcode, ClientVersionBuild addedInVersion, ClientVersionBuild removedInVersion)
         {
             if (ClientVersion.AddedInVersion(addedInVersion) && ClientVersion.RemovedInVersion(removedInVersion))

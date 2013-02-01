@@ -48,7 +48,7 @@ namespace WowPacketParser
 
             // Disable DB when we don't need its data (dumping to a binary file)
             if (Settings.DumpFormat == DumpFormatType.None || Settings.DumpFormat == DumpFormatType.Pkt ||
-                Settings.DumpFormat == DumpFormatType.PktSplit)
+                Settings.DumpFormat == DumpFormatType.PktSplit || Settings.DumpFormat == DumpFormatType.SniffDataOnly)
             {
                 SQLConnector.Enabled = false;
                 SSHTunnel.Enabled = false;

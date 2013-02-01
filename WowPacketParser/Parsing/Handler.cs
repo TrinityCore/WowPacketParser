@@ -34,8 +34,7 @@ namespace WowPacketParser.Parsing
                     if (!method.IsPublic)
                         continue;
 
-                    var attrs = (ParserAttribute[])method.GetCustomAttributes(typeof(ParserAttribute),
-                        false);
+                    var attrs = (ParserAttribute[])method.GetCustomAttributes(typeof(ParserAttribute), false);
 
                     if (attrs.Length <= 0)
                         continue;
@@ -87,6 +86,19 @@ namespace WowPacketParser.Parsing
             Action<Packet> handler;
             if (Handlers.TryGetValue(opcode, out handler))
             {
+                if (Settings.DumpFormat == DumpFormatType.SniffDataOnly)
+                {
+                    var attr = handler.GetMethodInfo().GetCustomAttribute<HasSniffDataAttribute>();
+
+                    packet.AddSniffData(StoreNameType.Opcode, packet.Opcode, Opcodes.GetOpcodeName(packet.Opcode));
+
+                    if (attr == null)
+                    {
+                        packet.Status = ParsedStatus.NotParsed;
+                        return; // skip parsing "useless" packets when in SniffData-only-mode
+                    }
+                }
+
                 try
                 {
                     handler(packet);
@@ -124,8 +136,13 @@ namespace WowPacketParser.Parsing
             if (!isMultiple)
             {
                 packet.Status = status;
-                var data = status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode) : status.ToString();
-                packet.AddSniffData(StoreNameType.Opcode, packet.Opcode, data);
+
+                if (Settings.DumpFormat != DumpFormatType.SniffDataOnly)
+                {
+                    // added before for this type
+                    var data = status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode) : status.ToString();
+                    packet.AddSniffData(StoreNameType.Opcode, packet.Opcode, data);
+                }
             }
         }
     }

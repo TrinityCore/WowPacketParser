@@ -176,5 +176,10 @@ namespace WowPacketParser.Misc
 
             return result;
         }
+
+        public static bool DumpFormatWithText()
+        {
+            return DumpFormat != DumpFormatType.SqlOnly && DumpFormat != DumpFormatType.SniffDataOnly;
+        }
     }
 }

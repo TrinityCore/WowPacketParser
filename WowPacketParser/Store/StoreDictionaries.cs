@@ -15,7 +15,9 @@ namespace WowPacketParser.Store
 
         protected bool ProcessFlags()
         {
-            return Types.Count == 0 || Types.Any(sqlOutput => SQLEnabledFlags.HasAnyFlagBit(sqlOutput));
+            return Types.Count == 0 ||
+                Settings.DumpFormat == DumpFormatType.SniffDataOnly ||
+                Types.Any(sqlOutput => SQLEnabledFlags.HasAnyFlagBit(sqlOutput));
         }
 
         public abstract void Clear();

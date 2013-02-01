@@ -12,6 +12,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class UpdateHandler
     {
+        [HasSniffData] // in ReadCreateObjectBlock
         [Parser(Opcode.SMSG_UPDATE_OBJECT)]
         public static void HandleUpdateObject(Packet packet)
         {

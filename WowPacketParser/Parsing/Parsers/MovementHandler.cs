@@ -460,6 +460,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [HasSniffData]
         [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
         public static void HandleEnterWorld(Packet packet)
@@ -470,6 +471,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddSniffData(StoreNameType.Map, (int) CurrentMapId, "NEW_WORLD");
         }
 
+        [HasSniffData]
         [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleNewWorld422(Packet packet)
         {
@@ -480,6 +482,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
         }
 
+        [HasSniffData]
         [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleNewWorld434(Packet packet)
         {
@@ -492,6 +495,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
         }
 
+        [HasSniffData]
         [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleNewWorld510(Packet packet)
         {
@@ -4020,6 +4024,7 @@ namespace WowPacketParser.Parsing.Parsers
             ReadMovementInfo(ref packet, guid);
         }
 
+        [HasSniffData]
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandlePhaseShift(Packet packet)
         {
@@ -4028,6 +4033,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddSniffData(StoreNameType.Phase, CurrentPhaseMask, "PHASEMASK");
         }
 
+        [HasSniffData]
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_1_0_13914)]
         public static void HandlePhaseShift406(Packet packet)
         {
@@ -4059,6 +4065,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddSniffData(StoreNameType.Phase, phaseMask, "PHASEMASK 406");
         }
 
+        [HasSniffData]
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandlePhaseShift422(Packet packet)
         {

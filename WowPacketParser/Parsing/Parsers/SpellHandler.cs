@@ -313,6 +313,7 @@ namespace WowPacketParser.Parsing.Parsers
             return aura;
         }
 
+        [HasSniffData] // in ReadAuraUpdateBlock and ReadAuraUpdateBlock505
         [Parser(Opcode.SMSG_AURA_UPDATE_ALL)]
         [Parser(Opcode.SMSG_AURA_UPDATE)]
         public static void HandleAuraUpdate(Packet packet)
@@ -695,6 +696,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [HasSniffData]
         [Parser(Opcode.SMSG_SPELL_START)]
         [Parser(Opcode.SMSG_SPELL_GO)]
         public static void HandleSpellStart(Packet packet)

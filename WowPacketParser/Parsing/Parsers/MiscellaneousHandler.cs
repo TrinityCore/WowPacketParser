@@ -697,6 +697,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [HasSniffData]
         [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)] // Also named CMSG_LOADING_SCREEN_NOTIFY
         public static void HandleClientEnterWorld(Packet packet)
         {
@@ -708,6 +709,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
         }
 
+        [HasSniffData]
         [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleClientEnterWorld434(Packet packet)
         {

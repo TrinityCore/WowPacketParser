@@ -174,6 +174,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Entry");
         }
 
+        [HasSniffData]
         [Parser(Opcode.SMSG_QUEST_QUERY_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V5_0_5_16048)]
         public static void HandleQuestQueryResponse(Packet packet)
         {
@@ -386,6 +387,7 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.QuestTemplates.Add((uint) id.Key, quest, packet.TimeSpan);
         }
 
+        [HasSniffData]
         [Parser(Opcode.SMSG_QUEST_QUERY_RESPONSE, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestQueryResponse510(Packet packet)
         {

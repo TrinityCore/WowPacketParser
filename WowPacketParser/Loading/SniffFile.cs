@@ -47,6 +47,19 @@ namespace WowPacketParser.Loading
         {
             switch (_dumpFormat)
             {
+                case DumpFormatType.SniffDataOnly:
+                {
+                    if (!ReadPackets())
+                        return;
+
+                    ParsePackets();
+
+                    WriteSQLs();
+
+                    GC.Collect();
+
+                    break;
+                }
                 case DumpFormatType.SqlOnly:
                 case DumpFormatType.Text:
                 {
@@ -170,10 +183,10 @@ namespace WowPacketParser.Loading
             Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Assumed version {2}",
                     _logPrefix, packetCount, ClientVersion.VersionString));
 
-            using (var writer = (Settings.DumpFormat != DumpFormatType.SqlOnly ? new StreamWriter(_outFileName, true) : null))
+            using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(_outFileName, true) : null))
             {
                 var i = 1;
-                if (Settings.DumpFormat != DumpFormatType.SqlOnly)
+                if (Settings.DumpFormatWithText())
                     writer.WriteLine(GetHeader());
 
                 _stats.SetStartTime(DateTime.Now);
@@ -196,7 +209,7 @@ namespace WowPacketParser.Loading
                             _skippedHeaders.AddLast(packet.GetHeader());
                     }
 
-                    if (Settings.DumpFormat != DumpFormatType.SqlOnly)
+                    if (Settings.DumpFormatWithText())
                     {
                         // Write to file
                         writer.WriteLine(packet.Writer);

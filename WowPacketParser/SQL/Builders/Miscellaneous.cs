@@ -132,8 +132,9 @@ namespace WowPacketParser.SQL.Builders
 
             const string tableName = "SniffData";
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffData) && !Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffDataOpcodes))
-                return string.Empty;
+            if (Settings.DumpFormat != DumpFormatType.SniffDataOnly)
+                if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffData) && !Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffDataOpcodes))
+                    return string.Empty;
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var data in Storage.SniffData)

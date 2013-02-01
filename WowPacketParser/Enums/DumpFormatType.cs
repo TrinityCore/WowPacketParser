@@ -6,6 +6,7 @@
         Text,
         Pkt,
         PktSplit,
-        SqlOnly
+        SqlOnly,
+        SniffDataOnly
     }
 }
