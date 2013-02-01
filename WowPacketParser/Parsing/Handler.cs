@@ -88,7 +88,7 @@ namespace WowPacketParser.Parsing
             {
                 if (Settings.DumpFormat == DumpFormatType.SniffDataOnly)
                 {
-                    var attr = handler.GetMethodInfo().GetCustomAttribute<HasSniffDataAttribute>();
+                    var attr = handler.Method.GetCustomAttribute<HasSniffDataAttribute>();
 
                     packet.AddSniffData(StoreNameType.Opcode, packet.Opcode, Opcodes.GetOpcodeName(packet.Opcode));
 
