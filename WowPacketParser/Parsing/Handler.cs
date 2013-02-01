@@ -88,11 +88,11 @@ namespace WowPacketParser.Parsing
             {
                 if (Settings.DumpFormat == DumpFormatType.SniffDataOnly)
                 {
-                    var attr = handler.Method.GetCustomAttribute<HasSniffDataAttribute>();
+                    var attrs = handler.Method.GetCustomAttributes(typeof (HasSniffDataAttribute), false);
 
                     packet.AddSniffData(StoreNameType.Opcode, packet.Opcode, Opcodes.GetOpcodeName(packet.Opcode));
 
-                    if (attr == null)
+                    if (attrs.Length == 0)
                     {
                         packet.Status = ParsedStatus.NotParsed;
                         return; // skip parsing "useless" packets when in SniffData-only-mode
