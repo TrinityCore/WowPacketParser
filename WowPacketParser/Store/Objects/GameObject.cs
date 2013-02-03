@@ -25,8 +25,7 @@ namespace WowPacketParser.Store.Objects
             // If our gameobject got the following update field set,
             // it's probably a temporary spawn
             UpdateField uf;
-            if (UpdateFields.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_5_16048) ?
-                  GameObjectField.GAMEOBJECT_FIELD_CREATEDBY : GameObjectField.GAMEOBJECT_FIELD_CREATED_BY), out uf))
+            if (UpdateFields.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(GameObjectField.GAMEOBJECT_FIELD_CREATED_BY), out uf))
                 return uf.UInt32Value != 0;
             return false;
         }
