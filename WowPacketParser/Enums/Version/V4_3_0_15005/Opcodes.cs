@@ -321,7 +321,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.CMSG_REQUEST_PVP_OPTIONS_ENABLED, 854},
             {Opcode.CMSG_REQUEST_PVP_REWARDS, 26257},
             {Opcode.CMSG_REQUEST_RAID_INFO, 31362},
-            {Opcode.CMSG_REQUEST_RATED_BG_INFO, 788},
+//            {Opcode.CMSG_RECONNECT_PROOF, 788},
             {Opcode.CMSG_REQUEST_VEHICLE_NEXT_SEAT, 1542},
             {Opcode.CMSG_REQUEST_VEHICLE_PREV_SEAT, 16516},
             {Opcode.CMSG_REQUEST_VEHICLE_SWITCH_SEAT, 17542},
