@@ -1003,7 +1003,7 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.QuestRewards.Add((uint)entry, new QuestReward { RequestItemsText = text }, null);
 
             packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
-            packet.ReadUInt32("Unk UInt32");
+            packet.ReadEnum<QuestFlags2>("Quest Flags 2", TypeCode.UInt32);
             packet.ReadUInt32("Suggested Players");
             packet.ReadUInt32("Money");
 
