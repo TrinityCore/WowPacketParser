@@ -18,5 +18,6 @@ namespace WowPacketParser.Enums
         NoGuildXp                       = 0x0200,
         ResetCacheOnAccept              = 0x0400,
         NoAbandonWithCompletedObjective = 0x0800,
+        RecastAcceptSpellOnLogin        = 0x1000
     }
 }

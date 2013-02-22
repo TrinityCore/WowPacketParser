@@ -76,6 +76,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED, 0x0DC},
             {Opcode.SMSG_BATTLEGROUND_PLAYER_LEFT, 0x1FD},
             {Opcode.SMSG_BREAK_TARGET, 0x0201},
+            {Opcode.SMSG_CAST_FAILED, 0x0D84},
             {Opcode.SMSG_CHANNEL_NOTIFY, 0x044D},
             {Opcode.SMSG_CHAR_ENUM, 0x033D},
             {Opcode.SMSG_CHAT_IGNORED_ACCOUNT_MUTED, 0x115},
