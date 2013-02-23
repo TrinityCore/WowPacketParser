@@ -777,7 +777,7 @@ namespace WowPacketParser.Parsing.Parsers
             var bits16C = packet.ReadBits(21);
             var transport = packet.ReadBit("Transport", index);
             var bit208 = packet.ReadBit();
-            var bit28C = packet.ReadBit();
+            /*var bit 28C =*/ packet.ReadBit();
             var living = packet.ReadBit("Living", index);
             /*var bit1 =*/ packet.ReadBit();
             var bit28D = packet.ReadBit();

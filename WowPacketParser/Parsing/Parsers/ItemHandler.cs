@@ -957,7 +957,7 @@ namespace WowPacketParser.Parsing.Parsers
                 Storage.ObjectNames.Add((uint)itemId2, new ObjectName { ObjectType = ObjectType.Item, Name = item.Name }, packet.TimeSpan);
             }
 
-            var type = packet.ReadUInt32("Type");
+            packet.ReadUInt32("Type");
             packet.ReadTime("Hotfix date");
             var itemId = (uint)packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
 

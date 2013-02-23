@@ -870,7 +870,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("QuestGiver Portrait");
             packet.ReadUInt32("QuestTurn Portrait");
             packet.ReadBoolean("Auto Accept");
-            var flags = packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
+            packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
             packet.ReadUInt32("Unk UInt32");
             packet.ReadUInt32("Suggested Players");
             packet.ReadByte("Unknown byte");

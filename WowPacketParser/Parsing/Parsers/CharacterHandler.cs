@@ -752,7 +752,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleCharEnum505(Packet packet)
         {
-            var unkCounter = packet.ReadBits("Unk Counter", 23);
+            packet.ReadBits("Unk Counter", 23);
             packet.ReadBit("Unk bit");
             var count = packet.ReadBits("Char count", 17);
 
@@ -825,13 +825,13 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guildGuids[c], 0);
 
                 packet.ReadEnum<CharacterFlag>("Character Flags", TypeCode.Int32, c);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
+                var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
 
                 packet.ReadXORByte(charGuids[c], 5);
                 packet.ReadXORByte(charGuids[c], 6);
 
                 packet.ReadEnum<CustomizationFlag>("Customization Flags", TypeCode.Int32, c);
-                packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id", c);
+                var mapId = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id", c);
 
                 packet.ReadXORByte(charGuids[c], 1);
 
@@ -851,10 +851,10 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadInt32("Pet Level", c);
                 packet.ReadByte("Gender", c);
-                packet.ReadSingle("Position X", c);
+                var x = packet.ReadSingle("Position X", c);
                 var clss = packet.ReadEnum<Class>("Class", TypeCode.Byte, c);
                 packet.ReadByte("Unk 8", c);
-                packet.ReadSingle("Position Y", c);
+                var y = packet.ReadSingle("Position Y", c);
 
                 packet.ReadXORByte(guildGuids[c], 3);
                 packet.ReadXORByte(guildGuids[c], 7);
@@ -865,8 +865,27 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(charGuids[c], 2);
                 packet.ReadXORByte(charGuids[c], 3);
 
+                var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
+
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);
+
+                if (firstLogins[c])
+                {
+                    var startPos = new StartPosition();
+                    startPos.Map = mapId;
+                    startPos.Position = new Vector3(x, y, z);
+                    startPos.Zone = zone;
+
+                    Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
+                }
+
+                var playerInfo = new Player { Race = race, Class = clss, Name = name, FirstLogin = firstLogins[c], Level = level };
+                if (Storage.Objects.ContainsKey(playerGuid))
+                    Storage.Objects[playerGuid] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
+                else
+                    Storage.Objects.Add(playerGuid, playerInfo, packet.TimeSpan);
+                StoreGetters.AddName(playerGuid, name);
             }
         }
 

@@ -593,18 +593,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REDIRECTION_FAILED)]
         public static void HandleRedirectFailed(Packet packet)
         {
-            var token = packet.ReadInt32();
-            packet.WriteLine("Token: " + token);
+            packet.ReadInt32("Token");
         }
 
         [Parser(Opcode.CMSG_REDIRECTION_AUTH_PROOF, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleRedirectionAuthProof(Packet packet)
         {
-            var name = packet.ReadCString();
-            packet.WriteLine("Account: " + name);
-
-            var unk = packet.ReadInt64();
-            packet.WriteLine("Unk Int64: " + unk);
+            packet.ReadCString("Account");
+            packet.ReadInt64("Unk Int64");
 
             var hash = packet.ReadBytes(20);
             packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(hash));
