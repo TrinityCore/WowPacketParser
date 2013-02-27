@@ -152,7 +152,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.SMSG_STOP_DANCE)]
         [Parser(Opcode.SMSG_INVALIDATE_PLAYER)]
-        [Parser(Opcode.CMSG_SET_SELECTION)]
+        [Parser(Opcode.CMSG_SET_SELECTION, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
         [Parser(Opcode.CMSG_INSPECT)]
         [Parser(Opcode.CMSG_BUY_BANK_SLOT)]
         [Parser(Opcode.CMSG_DEL_FRIEND)]
@@ -165,6 +165,14 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleReadGuid(Packet packet)
         {
             packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_SET_SELECTION, ClientVersionBuild.V5_1_0_16309)]
+        public static void HandleSetSelection510(Packet packet)
+        {
+            var guid = packet.StartBitStream(3, 1, 7, 2, 6, 4, 0, 5);
+            packet.ParseBitStream(guid, 4, 1, 5, 2, 6, 7, 0, 3);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_GRANT_LEVEL)]
@@ -238,7 +246,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Text");
         }
 
-        [Parser(Opcode.CMSG_SET_ACTION_BUTTON)]
+        [Parser(Opcode.CMSG_SET_ACTION_BUTTON, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleActionButton(Packet packet)
         {
             packet.ReadByte("Button");
@@ -246,6 +254,15 @@ namespace WowPacketParser.Parsing.Parsers
             var type = (ActionButtonType)((data & 0xFF000000) >> 24);
             var action = (data & 0x00FFFFFF);
             packet.WriteLine("Type: " + type + " ID: " + action);
+        }
+
+        [Parser(Opcode.CMSG_SET_ACTION_BUTTON, ClientVersionBuild.V5_1_0_16309)]
+        public static void HandleSetActionButton(Packet packet)
+        {
+            packet.ReadByte("Slot Id");
+            var actionId = packet.StartBitStream(0, 7, 6, 1, 3, 5, 2, 4);
+            packet.ParseBitStream(actionId, 3, 0, 1, 4, 7, 2, 6, 5);
+            packet.WriteLine("Action Id: {0}", BitConverter.ToUInt32(actionId, 0));
         }
 
         [Parser(Opcode.SMSG_RESURRECT_REQUEST)]

@@ -401,7 +401,7 @@ namespace WowPacketParser.Parsing.Parsers
                 Level = packet.ReadInt32("Level")
             };
 
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Package Id");
             quest.MinLevel = packet.ReadInt32("Min Level");
             quest.ZoneOrSort = packet.ReadEnum<QuestSort>("Sort", TypeCode.Int32);
             quest.Type = packet.ReadEnum<QuestType>("Type", TypeCode.Int32);
@@ -416,10 +416,10 @@ namespace WowPacketParser.Parsing.Parsers
             quest.RewardHonorMultiplier = packet.ReadSingle("Reward Honor Multiplier");
             quest.SourceItemId = (uint)packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Source Item ID");
             quest.Flags = packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32);
+            packet.ReadEnum<QuestFlags2>("Flags 2", TypeCode.UInt32);
             quest.MinimapTargetMark = packet.ReadUInt32("Minimap Target Mark"); // missing enum. 1- Skull, 16 - Unknown, but exists
             quest.RewardTitleId = packet.ReadUInt32("Reward Title ID");
             quest.RequiredPlayerKills = packet.ReadUInt32("Required Player Kills");
-            quest.RewardTalents = packet.ReadUInt32("Bonus Talents");
             quest.RewardSkillId = packet.ReadUInt32("RewSkillId");
             quest.RewardSkillPoints = packet.ReadUInt32("RewSkillPoints");
             quest.RewardReputationMask = packet.ReadUInt32("RewRepMask");
@@ -540,6 +540,7 @@ namespace WowPacketParser.Parsing.Parsers
             quest.RequiredFactionId = new uint[2];
             quest.RequiredFactionValue = new int[2];
             quest.ObjectiveText = new string[4];
+            quest.RewardTalents = 0;
 
             packet.AddSniffData(StoreNameType.Quest, id.Key, "QUERY_RESPONSE");
 
@@ -708,7 +709,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("QuestTurn Portrait");
             packet.ReadByte("Unk Byte");
             packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
-            packet.ReadInt32("Unk Int32");
+            packet.ReadEnum<QuestFlags2>("Quest Flags 2", TypeCode.UInt32);
             packet.ReadInt32("Unk Int32");
 
             var emoteCount = packet.ReadUInt32("Quest Emote Count");
@@ -758,7 +759,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Quest Level", i);
                 packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32, i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
-                    packet.ReadUInt32("Unk UInt32", i); // if this flag is 0x100, quest icon is LegendaryQuestIcon
+                    packet.ReadEnum<QuestFlags2>("Quest Flags 2", TypeCode.UInt32, i);
 
                 packet.ReadBoolean("Change icon", i);
                 packet.ReadCString("Title", i);
@@ -871,7 +872,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("QuestTurn Portrait");
             packet.ReadBoolean("Auto Accept");
             packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
-            packet.ReadUInt32("Unk UInt32");
+            packet.ReadEnum<QuestFlags2>("Quest Flags 2", TypeCode.UInt32);
             packet.ReadUInt32("Suggested Players");
             packet.ReadByte("Unknown byte");
             packet.ReadBoolean("Starts at AreaTrigger");
@@ -1142,7 +1143,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestCompleted510(Packet packet)
         {
-            packet.ReadInt32("Unk Int32 1"); // Talent Points?
+            packet.ReadInt32("Unk Int32 1"); // Talent Points? - NO, since MoP Quests don't reward talents!
             packet.ReadInt32("Money");
             packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
             packet.ReadInt32("XP");
