@@ -339,7 +339,7 @@ namespace WowPacketParser.Parsing.Parsers
             var menuId = packet.ReadUInt32("Menu Id");
 
             if (ClientVersion.AddedInVersion(ClientType.MistsOfPandaria))
-                packet.ReadUInt32("Unk int32");
+                packet.ReadUInt32("Friendship Faction");
 
             var textId = packet.ReadUInt32("Text Id");
 
@@ -376,7 +376,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Level", i);
                 packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32, i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
-                    packet.ReadUInt32("Unk UInt32", i); // if this flag is 0x100, quest icon is LegendaryQuestIcon
+                    packet.ReadEnum<QuestFlags2>("Flags 2", TypeCode.UInt32, i);
 
                 packet.ReadBoolean("Change Icon", i);
                 packet.ReadCString("Title", i);

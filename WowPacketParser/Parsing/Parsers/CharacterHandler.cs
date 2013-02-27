@@ -1312,6 +1312,9 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < 5; i++)
                 packet.WriteLine("Stat " + (StatType)i + ": " + packet.ReadInt32());
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
+                packet.ReadInt32("Talent Level"); // 0 - No Talent gain / 1 - Talent Point gain
         }
 
         [Parser(Opcode.SMSG_HEALTH_UPDATE)]
