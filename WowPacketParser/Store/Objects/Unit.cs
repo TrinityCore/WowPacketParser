@@ -20,19 +20,11 @@ namespace WowPacketParser.Store.Objects
             // If our unit got any of the following update fields set,
             // it's probably a temporary spawn
             UpdateField uf;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_5_16048))
-            {
-                if (UpdateFields.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_SUMMONEDBY), out uf) ||
-                    UpdateFields.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_CREATEDBY), out uf))
-                    return uf.UInt32Value != 0;
-            }
-            else
-            {
-                if (UpdateFields.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_SUMMONEDBY), out uf) ||
-                    UpdateFields.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(UnitField.UNIT_CREATED_BY_SPELL), out uf) ||
-                    UpdateFields.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_CREATEDBY), out uf))
-                    return uf.UInt32Value != 0;
-            }
+            if (UpdateFields.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_SUMMONEDBY), out uf) ||
+                UpdateFields.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(UnitField.UNIT_CREATED_BY_SPELL), out uf) ||
+                UpdateFields.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_CREATEDBY), out uf))
+                return uf.UInt32Value != 0;
+
             return false;
         }
 
@@ -88,8 +80,20 @@ namespace WowPacketParser.Store.Objects
 
         public override void LoadValuesFromUpdateFields()
         {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
+            {
+                Bytes0    = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_DISPLAY_POWER);
+                Bytes1    = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_ANIMTIER);
+                Bytes2    = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_SHAPESHIFT_FORM);
+            }
+            else
+            {
+                Bytes0    = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_0);
+                Bytes1    = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_1);
+                Bytes2    = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_2);
+            }
+
             Size          = UpdateFields.GetValue<ObjectField, float?>(ObjectField.OBJECT_FIELD_SCALE_X);
-            Bytes0        = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_0);
             MaxHealth     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_MAXHEALTH);
             Level         = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_LEVEL);
             Faction       = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_FACTIONTEMPLATE);
@@ -100,14 +104,12 @@ namespace WowPacketParser.Store.Objects
             RangedTime    = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_RANGEDATTACKTIME);
             Model         = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_DISPLAYID);
             Mount         = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_MOUNTDISPLAYID);
-            Bytes1        = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_1);
             DynamicFlags  = UpdateFields.GetEnum<UnitField, UnitDynamicFlags?>(UnitField.UNIT_DYNAMIC_FLAGS);
             NpcFlags      = UpdateFields.GetEnum<UnitField, NPCFlags?>(UnitField.UNIT_NPC_FLAGS);
             EmoteState    = UpdateFields.GetEnum<UnitField, EmoteType?>(UnitField.UNIT_NPC_EMOTESTATE);
             //Resistances   = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_FIELD_RESISTANCES_ARMOR, 7);
             ManaMod       = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASE_MANA);
             HealthMod     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASE_HEALTH);
-            Bytes2        = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_2);
             BoundingRadius= UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_BOUNDINGRADIUS);
             CombatReach   = UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_COMBATREACH);
             HoverHeight   = UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_HOVERHEIGHT);

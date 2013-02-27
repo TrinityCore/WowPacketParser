@@ -535,6 +535,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(1, 5, 0, 2, 7, 6, 3, 4);
             packet.ParseBitStream(guid, 6, 4, 3, 5, 0, 2, 7, 1);
             packet.WriteGuid("Guid", guid);
+            packet.ReadSingle("Unk Float");
             LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
         }
 

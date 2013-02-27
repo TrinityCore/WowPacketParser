@@ -1143,7 +1143,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestCompleted510(Packet packet)
         {
-            packet.ReadInt32("Unk Int32 1"); // Talent Points? - NO, since MoP Quests don't reward talents!
+            packet.ReadInt32("Unk Int32 1");
             packet.ReadInt32("Money");
             packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
             packet.ReadInt32("XP");
