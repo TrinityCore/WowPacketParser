@@ -169,7 +169,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32");
         }
 
-        [Parser(Opcode.SMSG_INITIAL_SPELLS)]
+        [Parser(Opcode.SMSG_INITIAL_SPELLS, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleInitialSpells(Packet packet)
         {
             packet.ReadByte("Talent Spec");
@@ -216,6 +216,31 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Cooldown Time", i);
                 var catCd = packet.ReadUInt32();
                 packet.WriteLine("[{0}] Cooldown Category Time: {1}", i, ((catCd >> 31) != 0 ? "Infinite" : (catCd & 0x7FFFFFFF).ToString(CultureInfo.InvariantCulture)));
+            }
+        }
+
+        [Parser(Opcode.SMSG_INITIAL_SPELLS, ClientVersionBuild.V5_1_0_16309)]
+        public static void HandleInitialSpells510(Packet packet)
+        {
+            var count = packet.ReadBits("Spell Count", 24);
+            packet.ReadBit("Unk Bit");
+            packet.ResetBitReader();
+
+            var spells = new List<uint>((int)count);
+            for (var i = 0; i < count; i++)
+            {
+                var spellId = packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", i);
+                spells.Add((uint)spellId);
+            }
+
+            var startSpell = new StartSpell { Spells = spells };
+
+            WoWObject character;
+            if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
+            {
+                var player = character as Player;
+                if (player != null && player.FirstLogin)
+                    Storage.StartSpells.Add(new Tuple<Race, Class>(player.Race, player.Class), startSpell, packet.TimeSpan);
             }
         }
 

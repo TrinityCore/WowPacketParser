@@ -13,6 +13,12 @@ namespace WowPacketParser.Enums
         SoulShards = 7,
         Eclipse = 8,
         HolyPower = 9,
-        Alternate = 10
+        Alternate = 10,
+        ElusiveBrew = 11,
+        Chi = 12,
+        ShadowOrbs = 13,
+        BurningEmbers = 14,
+        DemonicFury = 15,
+        ArcaneCharge = 16
     }
 }
