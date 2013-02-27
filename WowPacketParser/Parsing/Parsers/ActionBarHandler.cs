@@ -9,7 +9,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class ActionBarHandler
     {
-        [Parser(Opcode.SMSG_ACTION_BUTTONS, ClientVersionBuild.Zero, ClientVersionBuild.V5_0_5b_16135)]
+        [Parser(Opcode.SMSG_ACTION_BUTTONS, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleInitialButtons(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767) && ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_4_15595))
