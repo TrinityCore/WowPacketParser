@@ -1351,7 +1351,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.MSG_MOVE_TELEPORT, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.MSG_MOVE_TELEPORT, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleMoveTeleport434(Packet packet)
         {
             var guid = new byte[8];
@@ -1401,6 +1401,67 @@ namespace WowPacketParser.Parsing.Parsers
             pos.Y = packet.ReadSingle();
 
             packet.WriteLine("Destination: {0}", pos);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.MSG_MOVE_TELEPORT, ClientVersionBuild.V5_1_0_16309)]
+        public static void HandleMoveTeleport510(Packet packet)
+        {
+            var guid = new byte[8];
+            var transGuid = new byte[8];
+            var pos = new Vector4();
+
+            packet.ReadUInt32("Unk");
+
+            pos.X = packet.ReadSingle();
+            pos.Y = packet.ReadSingle();
+            pos.Z = packet.ReadSingle();
+            pos.O = packet.ReadSingle();
+            packet.WriteLine("Destination: {0}", pos);
+
+            guid[3] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+
+            var bit48 = packet.ReadBit();
+
+            guid[6] = packet.ReadBit();
+
+            if (bit48)
+            {
+                packet.ReadBit("Unk bit 50");
+                packet.ReadBit("Unk bit 51");
+            }
+
+            guid[0] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+
+            var onTransport = packet.ReadBit("On transport");
+            guid[2] = packet.ReadBit();
+            if (onTransport)
+                transGuid = packet.StartBitStream(7, 5, 2, 1, 0, 4, 3, 6);
+
+            guid[5] = packet.ReadBit();
+
+            if (onTransport)
+            {
+                packet.ParseBitStream(transGuid, 1, 5, 7, 0, 3, 4, 6, 2);
+                packet.WriteGuid("Transport Guid", transGuid);
+            }
+
+            packet.ReadXORByte(guid, 3);
+
+            if (bit48)
+                packet.ReadUInt32("Unk int");
+
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 0);
+
             packet.WriteGuid("Guid", guid);
         }
 
@@ -6270,7 +6331,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_MOVE_SET_RUN_SPEED, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_MOVE_SET_RUN_SPEED, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleMoveSetRunSpeed434(Packet packet)
         {
             var guid = packet.StartBitStream(6, 1, 5, 2, 7, 0, 3, 4);
@@ -6284,6 +6345,17 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 2);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_SET_RUN_SPEED, ClientVersionBuild.V5_1_0_16309)]
+        public static void HandleMoveSetRunSpeed510(Packet packet)
+        {
+            var guid = packet.StartBitStream(0, 4, 1, 6, 3, 5, 7, 2);
+            packet.ReadSingle("Speed");
+            packet.ReadXORByte(guid, 7);
+            packet.ReadInt32("Unk Int32");
+            packet.ParseBitStream(guid, 3, 6, 0, 4, 1, 5, 2);
             packet.WriteGuid("Guid", guid);
         }
 

@@ -39,10 +39,12 @@ namespace WowPacketParser.SQL.Builders
                 {
                     foreach (var aura in npc.Auras)
                     {
-                        if (aura == null) continue;
-                        if (!aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster)) continue; // usually "template auras" do not have caster
-                        auras += aura.SpellId + " ";
-                        commentAuras += StoreGetters.GetName(StoreNameType.Spell, (int) aura.SpellId, false) + ", ";
+                        if (aura == null)
+                            continue;
+
+                        // usually "template auras" do not have caster
+                        if (ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) ? !aura.AuraFlags.HasAnyFlag(AuraFlagMoP.NoCaster) : !aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster))
+                            continue;
                     }
                     auras = auras.TrimEnd(' ');
                     commentAuras = commentAuras.TrimEnd(',', ' ');

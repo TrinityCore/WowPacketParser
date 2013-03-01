@@ -80,24 +80,14 @@ namespace WowPacketParser.Store.Objects
 
         public override void LoadValuesFromUpdateFields()
         {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
-            {
-                Bytes0    = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_DISPLAY_POWER);
-                Bytes1    = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_ANIMTIER);
-                Bytes2    = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_SHAPESHIFT_FORM);
-            }
-            else
-            {
-                Bytes0    = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_0);
-                Bytes1    = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_1);
-                Bytes2    = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_2);
-            }
-
+            Bytes0        = UpdateFields.GetValue<UnitField, uint?>(ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) ? UnitField.UNIT_FIELD_DISPLAY_POWER : UnitField.UNIT_FIELD_BYTES_0);
+            Bytes1        = UpdateFields.GetValue<UnitField, uint?>(ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) ? UnitField.UNIT_FIELD_ANIMTIER : UnitField.UNIT_FIELD_BYTES_1);
+            Bytes2        = UpdateFields.GetValue<UnitField, uint?>(ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) ? UnitField.UNIT_FIELD_SHAPESHIFT_FORM : UnitField.UNIT_FIELD_BYTES_2);
             Size          = UpdateFields.GetValue<ObjectField, float?>(ObjectField.OBJECT_FIELD_SCALE_X);
             MaxHealth     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_MAXHEALTH);
             Level         = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_LEVEL);
             Faction       = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_FACTIONTEMPLATE);
-            Equipment     = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_VIRTUAL_ITEM_SLOT_ID1, 3);
+            Equipment     = UpdateFields.GetArray<UnitField, uint>(ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) ? UnitField.UNIT_FIELD_VIRTUAL_ITEM_ID1 : UnitField.UNIT_VIRTUAL_ITEM_SLOT_ID1, 3);
             UnitFlags     = UpdateFields.GetEnum<UnitField, UnitFlags?>(UnitField.UNIT_FIELD_FLAGS);
             UnitFlags2    = UpdateFields.GetEnum<UnitField, UnitFlags2?>(UnitField.UNIT_FIELD_FLAGS_2);
             MeleeTime     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASEATTACKTIME);

@@ -623,7 +623,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var idx = packet.ReadInt32("POI Index", i, j);
                     questPoi.ObjectiveIndex = packet.ReadInt32("Objective Index", i, j);
 
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_5_16048))
                         packet.ReadUInt32("Unk Int32 4", i, j);
 
                     questPoi.Map = (uint) packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map Id", i);
@@ -632,7 +632,7 @@ namespace WowPacketParser.Parsing.Parsers
                     questPoi.UnkInt1 = packet.ReadUInt32("Unk Int32 2", i, j);
                     questPoi.UnkInt2 = packet.ReadUInt32("Unk Int32 3", i, j);
 
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_5_16048))
                     {
                         packet.ReadUInt32("Unk Int32 5", i, j);
                         packet.ReadUInt32("Unk Int32 6", i, j);
