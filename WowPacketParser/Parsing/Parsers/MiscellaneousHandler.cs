@@ -170,7 +170,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_SET_SELECTION, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleSetSelection510(Packet packet)
         {
-            var guid = packet.StartBitStream(3, 1, 7, 2, 6, 4, 0, 5);
+            var guid = packet.StartBitStream(0, 1, 2, 4, 7, 3, 6, 5);
             packet.ParseBitStream(guid, 4, 1, 5, 2, 6, 7, 0, 3);
             packet.WriteGuid("Guid", guid);
         }
