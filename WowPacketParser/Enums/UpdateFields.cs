@@ -204,9 +204,13 @@ namespace WowPacketParser.Enums
         UNIT_MOD_CAST_SPEED,
         UNIT_NPC_EMOTESTATE,
         UNIT_NPC_FLAGS,
+        UNIT_FIELD_DISPLAY_POWER,
+        UNIT_FIELD_ANIMTIER,
+        UNIT_FIELD_SHAPESHIFT_FORM,
         UNIT_VIRTUAL_ITEM_SLOT_ID1,
         UNIT_VIRTUAL_ITEM_SLOT_ID2,
         UNIT_VIRTUAL_ITEM_SLOT_ID3,
+        UNIT_FIELD_END,
     }
 
     public enum PlayerField

@@ -181,7 +181,7 @@ namespace WowPacketParser.Parsing.Parsers
                         }
                         case ObjectType.Player:
                         {
-                            if (i < UpdateFields.GetUpdateField(UnitField.UNIT_END))
+                            if (i < UpdateFields.GetUpdateField(UnitField.UNIT_END) || i < UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_END))
                                 goto case ObjectType.Unit;
 
                             key = UpdateFields.GetUpdateFieldName<PlayerField>(i);
@@ -258,7 +258,7 @@ namespace WowPacketParser.Parsing.Parsers
             var moveInfo = new MovementInfo();
 
             var bit654 = packet.ReadBit("Has bit654", index);
-            packet.ReadBit("Self", index);
+            packet.ReadBit();
             var hasGameObjectRotation = packet.ReadBit("Has GameObject Rotation", index);
             var hasAttackingTarget = packet.ReadBit("Has Attacking Target", index);
             /*var bit2 = */ packet.ReadBit();
@@ -268,7 +268,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasGameObjectPosition = packet.ReadBit("Has GameObject Position", index);
             /*var bit653 = */ packet.ReadBit();
             var bit784 = packet.ReadBit("Has bit784", index);
-            /*var bit652 = */ packet.ReadBit();
+            /*var isSelf = */ packet.ReadBit("Self", index);
             /*var bit1 = */ packet.ReadBit();
             var living = packet.ReadBit("Living", index);
             /*var bit3 = */ packet.ReadBit();
@@ -452,7 +452,7 @@ namespace WowPacketParser.Parsing.Parsers
                 attackingTargetGuid = packet.StartBitStream(2, 6, 7, 1, 0, 3, 4, 5);
 
             if (bit784)
-                bit198 = packet.ReadBits(9);
+                bit198 = packet.ReadBits(24);
 
             if (hasAnimKits)
             {
@@ -479,7 +479,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (living)
             {
-                packet.ReadSingle("Fly Speed", index);
+                packet.ReadSingle("FlyBack Speed", index);
                 if (moveInfo.HasSplineData)
                 {
                     if (hasFullSpline)
@@ -556,8 +556,8 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     if (hasFallDirection)
                     {
-                        packet.ReadSingle("Jump Cos", index);
                         packet.ReadSingle("Jump Velocity", index);
+                        packet.ReadSingle("Jump Cos", index);
                         packet.ReadSingle("Jump Sin", index);
                     }
 
@@ -594,14 +594,14 @@ namespace WowPacketParser.Parsing.Parsers
                 }
 
                 packet.ReadXORByte(guid2, 1);
-                packet.ReadSingle("FlyBack Speed", index);
+                packet.ReadSingle("Turn Speed", index);
                 moveInfo.Position.Y = packet.ReadSingle();
                 packet.ReadXORByte(guid2, 3);
                 moveInfo.Position.Z = packet.ReadSingle();
                 if (hasOrientation)
                     moveInfo.Orientation = packet.ReadSingle();
 
-                packet.ReadSingle("SwimBack Speed", index);
+                packet.ReadSingle("Run Back Speed", index);
                 if (hasSplineElevation)
                     packet.ReadSingle("Spline Elevation", index);
 
@@ -626,9 +626,9 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guid2, 2);
                 moveInfo.RunSpeed = packet.ReadSingle("Run Speed", index) / 7.0f;
                 packet.ReadXORByte(guid2, 7);
-                packet.ReadSingle("RunBack Speed", index);
+                packet.ReadSingle("SwimBack Speed", index);
                 packet.ReadXORByte(guid2, 4);
-                packet.ReadSingle("Turn Speed", index);
+                packet.ReadSingle("Fly Speed", index);
 
                 packet.WriteLine("[{0}] GUID 2: {1}", index, new Guid(BitConverter.ToUInt64(guid2, 0)));
                 packet.WriteLine("[{0}] Position: {1}", index, moveInfo.Position);
@@ -2936,11 +2936,19 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadBoolean("Despawn Animation");
         }
 
-        [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED)] // 4.3.4
+        [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)] // 4.3.4
         public static void HandleObjectUpdateFailed(Packet packet)
         {
             var guid = packet.StartBitStream(6, 7, 4, 0, 1, 5, 3, 2);
             packet.ParseBitStream(guid, 6, 7, 2, 3, 1, 4, 0, 5);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED, ClientVersionBuild.V5_1_0_16309)]
+        public static void HandleObjectUpdateFailed510(Packet packet)
+        {
+            var guid = packet.StartBitStream(5, 3, 0, 6, 1, 4, 2, 7);
+            packet.ParseBitStream(guid, 2, 3, 7, 4, 5, 1, 0, 6);
             packet.WriteGuid("Guid", guid);
         }
     }

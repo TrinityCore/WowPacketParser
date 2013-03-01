@@ -118,10 +118,49 @@ namespace WowPacketParser.Parsing.Parsers
                 Handler.Parse(newpacket, true);
         }
 
-        [Parser(Opcode.CMSG_AUTOSTORE_LOOT_ITEM)]
+        [Parser(Opcode.CMSG_AUTOSTORE_LOOT_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleAutoStoreLootItem(Packet packet)
         {
             packet.ReadByte("Slot");
+        }
+
+        [Parser(Opcode.CMSG_AUTOSTORE_LOOT_ITEM, ClientVersionBuild.V5_1_0_16309)]
+        public static void HandleAutoStoreLootItem510(Packet packet)
+        {
+            var counter = packet.ReadBits("Count", 25);
+
+            var guid = new byte[counter][];
+
+            for (var i = 0; i < counter; ++i)
+            {
+                guid[i] = new byte[8];
+
+                guid[i][5] = packet.ReadBit();
+                guid[i][6] = packet.ReadBit();
+                guid[i][7] = packet.ReadBit();
+                guid[i][4] = packet.ReadBit();
+                guid[i][3] = packet.ReadBit();
+                guid[i][0] = packet.ReadBit();
+                guid[i][2] = packet.ReadBit();
+                guid[i][1] = packet.ReadBit();
+            }
+
+            packet.ResetBitReader();
+
+            for (var i = 0; i < counter; ++i)
+            {
+                packet.ReadXORByte(guid[i], 4);
+                packet.ReadXORByte(guid[i], 1);
+                packet.ReadXORByte(guid[i], 5);
+                packet.ReadXORByte(guid[i], 3);
+                packet.ReadXORByte(guid[i], 6);
+                packet.ReadXORByte(guid[i], 7);
+                packet.ReadByte("Slot", i);
+                packet.ReadXORByte(guid[i], 0);
+                packet.ReadXORByte(guid[i], 2);
+
+                packet.WriteGuid("Lootee GUID", guid[i], i);
+            }
         }
 
         [Parser(Opcode.CMSG_SWAP_INV_ITEM)]

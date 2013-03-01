@@ -1310,11 +1310,19 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.CMSG_GUILD_REQUEST_MAX_DAILY_XP, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_REQUEST_MAX_DAILY_XP, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleGuildRequestMaxDailyXP434(Packet packet)
         {
             var guid = packet.StartBitStream(0, 3, 5, 1, 4, 6, 7, 2);
             packet.ParseBitStream(guid, 7, 4, 3, 5, 1, 2, 6, 0);
+            packet.WriteGuid("GUID", guid);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_REQUEST_MAX_DAILY_XP, ClientVersionBuild.V5_1_0_16309)]
+        public static void HandleGuildRequestMaxDailyXP510(Packet packet)
+        {
+            var guid = packet.StartBitStream(5, 3, 6, 4, 7, 2, 1, 0);
+            packet.ParseBitStream(guid, 4, 7, 5, 6, 0, 1, 2, 3);
             packet.WriteGuid("GUID", guid);
         }
 
@@ -2027,11 +2035,19 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Criteria Id", i);
         }
 
-        [Parser(Opcode.CMSG_QUERY_GUILD_RECIPES)] // 4.3.4
+        [Parser(Opcode.CMSG_QUERY_GUILD_RECIPES, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)] // 4.3.4
         public static void HandleQueryGuildRecipes(Packet packet)
         {
             var guid = packet.StartBitStream(5, 6, 1, 4, 2, 7, 0, 3);
             packet.ParseBitStream(guid, 3, 1, 0, 5, 4, 2, 6, 7);
+            packet.WriteGuid("Guild Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_QUERY_GUILD_RECIPES, ClientVersionBuild.V5_1_0_16309)]
+        public static void HandleQueryGuildRecipes510(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 4, 3, 5, 0, 6, 2, 7);
+            packet.ParseBitStream(guid, 5, 3, 1, 4, 0, 7, 6, 2);
             packet.WriteGuid("Guild Guid", guid);
         }
 
