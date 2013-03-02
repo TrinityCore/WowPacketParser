@@ -441,6 +441,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleClientAreaTrigger(Packet packet)
         {
             packet.ReadInt32("Area Trigger Id");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
+                packet.ReadByte("Unk Byte");
         }
 
         [Parser(Opcode.SMSG_PRE_RESURRECT)]

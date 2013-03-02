@@ -45,6 +45,9 @@ namespace WowPacketParser.SQL.Builders
                         // usually "template auras" do not have caster
                         if (ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) ? !aura.AuraFlags.HasAnyFlag(AuraFlagMoP.NoCaster) : !aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster))
                             continue;
+
+                        auras += aura.SpellId + " ";
+                        commentAuras += StoreGetters.GetName(StoreNameType.Spell, (int) aura.SpellId, false) + ", ";
                     }
                     auras = auras.TrimEnd(' ');
                     commentAuras = commentAuras.TrimEnd(',', ' ');
