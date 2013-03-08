@@ -326,6 +326,8 @@
     <Compile Include="Enums\Version\V5_0_4_16016\UpdateFields.cs" />
     <Compile Include="Enums\Version\V5_1_0_16309\Opcodes.cs" />
     <Compile Include="Enums\Version\V5_1_0_16309\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V5_2_0_16650\Opcodes.cs" />
+    <Compile Include="Enums\Version\V5_2_0_16650\UpdateFields.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\VoidTransferError.cs" />
     <Compile Include="Enums\WardenCheckType.cs" />

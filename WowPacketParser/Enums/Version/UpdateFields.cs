@@ -150,6 +150,10 @@ namespace WowPacketParser.Enums.Version
                 {
                     return "V5_1_0_16309";
                 }
+                case ClientVersionBuild.V5_2_0_16650:
+                {
+                    return "V5_2_0_16650";
+                }
                 default:
                 {
                     return "V3_3_5a_12340";
