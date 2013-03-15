@@ -1007,12 +1007,17 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleDBReply434(Packet packet)
         {
-            var itemId = (uint)packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+            var id = packet.ReadInt32("Entry");
             var type = packet.ReadUInt32("Type");
             packet.ReadTime("Hotfix date");
             var size = packet.ReadUInt32("Size");
             if (size == 0)
                 return;
+
+            if (id < 0)
+                return;
+
+            var itemId = (uint)id;
 
             switch (type)
             {
@@ -1163,7 +1168,7 @@ namespace WowPacketParser.Parsing.Parsers
                 case 0x6D8A2694: // KeyChain
                 {
                     packet.ReadUInt32("Key Chain Id");
-                    packet.ReadCString("Unk String"); //not sure what this is
+                    packet.WriteLine("Key: {0}", Utilities.ByteArrayToHexString(packet.ReadBytes(32)));
                     break;
                 }
             }
