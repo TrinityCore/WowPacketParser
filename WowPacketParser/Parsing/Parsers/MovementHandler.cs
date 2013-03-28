@@ -4945,7 +4945,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasMovementFlags2)
                 packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 12);
 
-            packet.ParseBitStream(guid, 5, 6, 7, 3, 0, 2, 1);
+            packet.ParseBitStream(guid, 5, 6, 4, 7, 3, 0, 2, 1);
 
             if (hasTrans)
             {
