@@ -21,9 +21,9 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var i = 0; i < count; i++)
                 {
                     packet.ReadCString("Name", i);
-                    packet.ReadBoolean("Enabled", i);
-                    packet.ReadInt32("CRC", i);
-                    packet.ReadInt32("Unk Int32", i);
+                    packet.ReadBoolean("Uses public key", i);
+                    packet.ReadInt32("Public key CRC", i);
+                    packet.ReadInt32("URL file CRC", i);
                 }
 
                 packet.ReadTime("Time");
@@ -69,11 +69,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                     if (usePublicKey)
                     {
-                        var pubKey = packet.ReadChars(256);
-                        packet.Write("[{0}] Public Key: ", i);
-
-                        foreach (var t in pubKey)
-                            packet.Write(t.ToString(CultureInfo.InvariantCulture));
+                        var pubKey = packet.ReadBytes(256);
+                        packet.WriteLine("[{0}] Name MD5: {1}", i, Utilities.ByteArrayToHexString(pubKey));
                     }
 
                     packet.ReadInt32("Unk Int32", i);
@@ -92,15 +89,15 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("ID", i);
 
                     var unkStr2 = packet.ReadBytes(16);
-                    packet.WriteLine("[{0}] Unk Hash 1: {1}", i, Utilities.ByteArrayToHexString(unkStr2));
+                    packet.WriteLine("[{0}] Name MD5: {1}", i, Utilities.ByteArrayToHexString(unkStr2));
 
                     var unkStr3 = packet.ReadBytes(16);
-                    packet.WriteLine("[{0}] Unk Hash 2: {1}", i, Utilities.ByteArrayToHexString(unkStr3));
+                    packet.WriteLine("[{0}] Version MD5: {1}", i, Utilities.ByteArrayToHexString(unkStr3));
 
-                    packet.ReadInt32("Unk Int32 3", i);
+                    packet.ReadTime("Time", i);
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3a_11723))
-                        packet.ReadInt32("Unk Int32 4", i);
+                        packet.ReadInt32("Is banned", i);
                 }
             }
         }
