@@ -577,7 +577,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadXORByte(transportGuid, 5);
                     packet.ReadXORByte(transportGuid, 1);
                     moveInfo.TransportOffset.O = packet.ReadSingle();
-                    moveInfo.TransportOffset.X = packet.ReadSingle();
+                    moveInfo.TransportOffset.Y = packet.ReadSingle();
                     packet.ReadSByte("Transport Seat", index);
                     packet.ReadXORByte(transportGuid, 7);
                     if (hasTransportTime2)
