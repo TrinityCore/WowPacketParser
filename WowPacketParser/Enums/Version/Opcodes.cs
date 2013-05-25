@@ -13,6 +13,7 @@ using WowPacketParser.Enums.Version.V5_0_4_16016;
 using WowPacketParser.Enums.Version.V5_0_5_16048;
 using WowPacketParser.Enums.Version.V5_1_0_16309;
 using WowPacketParser.Enums.Version.V5_2_0_16650;
+using WowPacketParser.Enums.Version.V5_3_0_16981;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Enums.Version
@@ -115,6 +116,12 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V5_2_0_16826:
                 {
                     return Opcodes_5_2_0.Opcodes();
+                }
+                case ClientVersionBuild.V5_3_0_16981:
+                case ClientVersionBuild.V5_3_0_16983:
+                case ClientVersionBuild.V5_3_0_16992:
+                {
+                    return Opcodes_5_3_0.Opcodes();
                 }
                 default:
                 {
