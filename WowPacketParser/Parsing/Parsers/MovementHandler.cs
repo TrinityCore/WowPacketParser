@@ -4301,7 +4301,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_TRANSFER_PENDING, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleTransferPending434(Packet packet)
         {
-            var bit1 = packet.ReadBit();
+            // s_customLoadScreenSpellID
+            var customLoadScreenSpell = packet.ReadBit();
             var hasTransport = packet.ReadBit();
             if (hasTransport)
             {
@@ -4309,8 +4310,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Transport Entry");
             }
 
-            if (bit1)
-                packet.ReadUInt32("Unk int");
+            if (customLoadScreenSpell)
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
 
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
         }

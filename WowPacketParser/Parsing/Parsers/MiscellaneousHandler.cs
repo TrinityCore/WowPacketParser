@@ -293,7 +293,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleFeatureSystemStatus(Packet packet)
         {
-            packet.ReadByte("Unk byte");
+            packet.ReadBoolean("Enable Complaint Chat");
             packet.ReadBoolean("Enable Voice Chat");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
@@ -320,29 +320,30 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleFeatureSystemStatus434(Packet packet)
         {
             packet.ReadByte("Complain System Status");
-            packet.ReadInt32("NumSoRRemaining");
-            packet.ReadInt32("Unk Int32 (SoR)");
-            packet.ReadInt32("Unk Int32 2"); // unused
-            packet.ReadInt32("Unk Int32 3"); // unused
-            packet.ReadBit("HasTravelPass"); // order of these 3 bits can be wrong
+            packet.ReadInt32("Scroll of Resurrections Remaining");
+            packet.ReadInt32("Scroll of Resurrections Per Day");
+            packet.ReadInt32("Unused Int32");
+            packet.ReadInt32("Unused Int32");
+            packet.ReadBit("HasTravelPass");
             packet.ReadBit("GMItemRestorationButtonEnabled");
-            packet.ReadBit("CanSendSoRByText");
+            packet.ReadBit("Scroll of Resurrection Enabled");
+            var quickTicket = packet.ReadBit("EuropaTicketSystemEnabled");
             var sessionTimeAlert = packet.ReadBit("Session Time Alert");
-            var quickTicket = packet.ReadBit("GMQuickTicketSystemEnabled");
             packet.ReadBit("IsVoiceChatAllowedByServer");
-            if (sessionTimeAlert)
+
+            if (quickTicket)
             {
                 packet.ReadInt32("Unk5");
-                packet.ReadInt32("Play Time"); // unconfirmed
+                packet.ReadInt32("Unk6");
                 packet.ReadInt32("Unk7");
                 packet.ReadInt32("Unk8");
             }
 
-            if (quickTicket)
+            if (sessionTimeAlert)
             {
-                packet.ReadInt32("Unk9");
-                packet.ReadInt32("Unk10");
-                packet.ReadInt32("Unk11");
+                packet.ReadInt32("Session Alert Delay");
+                packet.ReadInt32("Session Alert Period");
+                packet.ReadInt32("Session Alert DisplayTime");
             }
         }
 
