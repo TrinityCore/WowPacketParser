@@ -282,6 +282,7 @@
     <Compile Include="Enums\TargetFlag.cs" />
     <Compile Include="Enums\TaxiError.cs" />
     <Compile Include="Enums\TeamType.cs" />
+    <Compile Include="Enums\TimerType.cs" />
     <Compile Include="Enums\TotemCategory.cs" />
     <Compile Include="Enums\TradeStatus.cs" />
     <Compile Include="Enums\TrainerSpellState.cs" />

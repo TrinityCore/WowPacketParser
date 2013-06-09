@@ -666,23 +666,24 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_WORLD_SERVER_INFO, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleWorldServerInfo434(Packet packet)
         {
-            var b0 = packet.ReadBit("Unk Bit 1");
-            var b1 = packet.ReadBit("Unk Bit 2");
-            var b2 = packet.ReadBit("Unk Bit 3");
+            var hasRestrictedMoney = packet.ReadBit();
+            var hasRestrictedLevel = packet.ReadBit();
+            var isNotEligibleForLoot = packet.ReadBit();
 
-            if (b2)
-                packet.ReadInt32("Unk Int32 (EVENT_INELIGIBLE_FOR_LOOT)");
+            // Sends: "You are not eligible for these items because you recently defeated this encounter."
+            if (isNotEligibleForLoot)
+                packet.ReadUInt32("Unk UInt32");
 
-            packet.ReadByte("Unk Byte");
+            packet.ReadBoolean("Is On Tournament Realm");
 
-            if (b1)
-                packet.ReadInt32("Unk Int32");
+            if (hasRestrictedLevel)
+                packet.ReadInt32("Restricted Account Max Level");
 
-            if (b0)
-                packet.ReadInt32("Unk Int32");
+            if (hasRestrictedMoney)
+                packet.ReadInt32("Restricted Account Max Money");
 
-            packet.ReadTime("Unk Time");
-            packet.ReadInt32("Unk Int32");
+            packet.ReadTime("Last Weekly Reset");
+            packet.ReadInt32("Instance Difficulty ID");
         }
 
         [Parser(Opcode.MSG_INSPECT_HONOR_STATS)]
@@ -704,9 +705,10 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(4, 3, 6, 2, 5, 0, 7, 1);
 
-            packet.ReadByte("Max Rank");
-            packet.ReadInt16("Yesterday"); // Today?
-            packet.ReadInt16("Today"); // Yesterday?
+            packet.ReadByte("Lifetime Max Rank");
+            // Might be swapped, unsure
+            packet.ReadInt16("Yesterday Honorable Kills");
+            packet.ReadInt16("Today Honorable Kills");
 
             packet.ParseBitStream(guid, 2, 0, 6, 3, 4, 1, 5);
 
@@ -829,10 +831,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_START_TIMER)]
         public static void HandleStartTimer(Packet packet)
         {
-            // Unk use, related to EVENT_START_TIMER
-            packet.ReadInt32("Unk Int32");
-            packet.ReadInt32("Current time (secs)");
-            packet.ReadInt32("Max time (secs)");
+            packet.ReadEnum<TimerType>("Timer type", TypeCode.UInt32);
+            packet.ReadInt32("Time left (secs)");
+            packet.ReadInt32("Total time (secs)");
         }
 
         [Parser(Opcode.CMSG_SET_PREFERED_CEMETERY)] // 4.3.4
@@ -844,10 +845,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE)] // 4.3.4
         public static void HandleRequestCemeteryListResponse(Packet packet)
         {
-            packet.ReadBit("Unk Bit");
+            packet.ReadBit("Is MicroDungeon"); // Named in WorldMapFrame.lua
             var count = packet.ReadBits("Count", 24);
             for (int i = 0; i < count; ++i)
-                packet.ReadInt32("Cemetery Id", i); // not confirmed
+                packet.ReadInt32("Cemetery Id", i);
         }
 
         [Parser(Opcode.SMSG_FORCE_SET_VEHICLE_REC_ID)] // 4.3.4
