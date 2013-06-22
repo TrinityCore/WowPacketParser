@@ -120,65 +120,68 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Comment");
         }
 
-        public static void ReadLfgRewardBlock(ref Packet packet)
+        public static void ReadLfgRewardBlock(ref Packet packet, int index)
         {
-            packet.ReadBoolean("First Completion");
+            packet.ReadBoolean("First Completion", index);
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_LFG_PLAYER_REWARD))
-                packet.ReadInt32("Strangers");
-
-            packet.ReadInt32("Base Money");
-            packet.ReadInt32("Base XP");
-            packet.ReadInt32("Variable Money");
-            packet.ReadInt32("Variable XP");
+                packet.ReadInt32("Strangers", index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
             {
-                packet.ReadInt32("Unk 1");
-                packet.ReadInt32("Unk 2");
-                packet.ReadInt32("Unk 3");
-                packet.ReadInt32("Unk 4");
-                packet.ReadInt32("Unk 5");
-                packet.ReadInt32("Unk 6");
-                packet.ReadInt32("Unk 7");
-                packet.ReadInt32("Unk 8");
+                packet.ReadInt32("currencyQuantity", index);
+                packet.ReadInt32("Unk 2", index);
+                packet.ReadInt32("currencyID", index);
+                packet.ReadInt32("tier1Quantity", index);
+                packet.ReadInt32("tier1Limit", index);
+                packet.ReadInt32("overallQuantity", index);
+                packet.ReadInt32("overallLimit", index);
+                packet.ReadInt32("periodPurseQuantity", index);
+                packet.ReadInt32("periodPurseLimit", index);
+                packet.ReadInt32("purseQuantity", index);
+                packet.ReadInt32("purseLimit", index);
+                packet.ReadInt32("Unk 4", index);
+                packet.ReadInt32("completedEncounters", index);
 
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595)) // perhaps earlier, confirmed for 434
-                    packet.ReadInt32("Unk 8.1");
-
-                packet.ReadByte("Unk 9");
+                packet.ReadByte("Call to Arms eligible", index);
 
                 // LFG_SLOT_INFO_LOOT related
                 for (var i = 0; i < 3; ++i)
                 {
-                    var unk1 = packet.ReadInt32("Unk 1", i);
+                    var unk1 = packet.ReadEnum<LfgRoleFlag>("Call to Arms Role", TypeCode.Int32, index, i);
                     if (unk1 != 0)
                     {
-                        packet.ReadInt32("Unk 2", i);
-                        packet.ReadInt32("Unk 3", i);
-                        var unk4 = packet.ReadByte("Unk 4", i);
+                        packet.ReadInt32("Call to Arms Money", index, i);
+                        packet.ReadInt32("Call to Arms XP", index, i);
+                        var unk4 = packet.ReadByte("Call to Arms Item Count", index, i);
                         for (var j = 0; j < unk4; ++j)
                         {
-                            packet.ReadInt32("Unk 5", j);
-                            packet.ReadInt32("Unk 6", j);
-                            packet.ReadInt32("Unk 7", j);
-                            packet.ReadByte("Unk 8", j);
+                            packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Call to Arms Item Or Currency Id", index, i, j);
+                            packet.ReadInt32("Call to Arms Item Display ID", index, i, j);
+                            packet.ReadInt32("Call to Arms Item Stack Count", index, i, j);
+                            packet.ReadBoolean("Call to Arms Is Currency", index, i, j);
                         }
                     }
                 }
-
-                packet.ReadInt32("Unk 10");
-                packet.ReadInt32("Unk 11");
             }
 
-            var numFields = packet.ReadByte("Reward Item Count");
+            packet.ReadInt32("Base Money", index);
+            packet.ReadInt32("Base XP", index);
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_0_6a_13623))
+            {
+                packet.ReadInt32("Variable Money", index);
+                packet.ReadInt32("Variable XP", index);
+            }
+
+            var numFields = packet.ReadByte("Reward Item Count", index);
             for (var i = 0; i < numFields; i++)
             {
-                packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Item Or Currency Id", i);
-                packet.ReadInt32("Reward Item Display ID", i);
-                packet.ReadInt32("Reward Item Stack Count", i);
+                packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Item Or Currency Id", index, i);
+                packet.ReadInt32("Reward Item Display ID", index, i);
+                packet.ReadInt32("Reward Item Stack Count", index, i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
-                    packet.ReadBoolean("Is Currency", i);
+                    packet.ReadBoolean("Is Currency", index, i);
             }
         }
 
@@ -188,7 +191,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadLfgEntry("Random LFG Entry");
             packet.ReadLfgEntry("Actual LFG Entry");
 
-            ReadLfgRewardBlock(ref packet);
+            ReadLfgRewardBlock(ref packet, -1);
         }
 
         [Parser(Opcode.SMSG_LFG_PLAYER_REWARD, ClientVersionBuild.V4_3_4_15595)]
@@ -275,7 +278,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < numFields; i++)
             {
                 packet.ReadLfgEntry("Random Dungeon Entry", i);
-                ReadLfgRewardBlock(ref packet);
+                ReadLfgRewardBlock(ref packet, i);
             }
 
             ReadPlayerLockedDungeons(ref packet, -1);
@@ -445,7 +448,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LFG_QUEUE_STATUS, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleLfgQueueStatusUpdate434(Packet packet)
         {
-            var guid = packet.StartBitStream(3, 2, 0, 6, 5, 7, 1, 4);
+            var guid = packet.StartBitStream(3, 0, 2, 6, 5, 7, 1, 4);
 
             packet.ReadXORByte(guid, 0);
 
