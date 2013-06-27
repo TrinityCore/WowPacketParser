@@ -268,6 +268,16 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_SET_PET_SLOT)]
+        public static void HandleSetPetSlot(Packet packet)
+        {
+            packet.ReadInt32("Unk 0");
+            packet.ReadByte("Unk 1");
+            var guid = packet.StartBitStream(3, 2, 0, 7, 5, 6, 1, 4);
+            packet.ParseBitStream(guid, 5, 3, 1, 7, 4, 0, 6, 2);
+            packet.WriteGuid("Guid", guid);
+        }
+        
         [Parser(Opcode.CMSG_PET_CAST_SPELL)]
         public static void HandlePetCastSpell(Packet packet)
         {
