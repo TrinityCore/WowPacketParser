@@ -7,6 +7,7 @@
         Pkt,
         PktSplit,
         SqlOnly,
-        SniffDataOnly
+        SniffDataOnly,
+        StatisticsPreParse
     }
 }

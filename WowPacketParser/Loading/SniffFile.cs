@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -47,6 +48,38 @@ namespace WowPacketParser.Loading
         {
             switch (_dumpFormat)
             {
+                case DumpFormatType.StatisticsPreParse:
+                {
+                    if (!ReadPackets())
+                        return;
+
+                    if (_packets.Count == 0)
+                        return;
+
+                    // CSV format:
+                    // - sniff file name
+                    // - time of first packet
+                    // - time of last packet
+                    // - sniff duration (seconds)
+                    // - packet count
+                    // - total packets size (bytes)
+                    // - average packet size (bytes)
+                    // - smaller packet size (bytes)
+                    // - larger packet size (bytes)
+
+                    Trace.WriteLine(String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
+                        _fileName,
+                        _packets.First.Value.Time,
+                        _packets.Last.Value.Time,
+                        (_packets.Last.Value.Time - _packets.First.Value.Time).TotalSeconds,
+                        _packets.Count,
+                        _packets.AsParallel().Sum(packet => packet.Length),
+                        _packets.AsParallel().Average(packet => packet.Length),
+                        _packets.AsParallel().Min(packet => packet.Length),
+                        _packets.AsParallel().Max(packet => packet.Length)));
+
+                    break;
+                }
                 case DumpFormatType.SniffDataOnly:
                 {
                     if (!ReadPackets())
