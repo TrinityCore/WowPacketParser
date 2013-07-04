@@ -8,24 +8,51 @@ namespace WowPacketParser.Enums.Version
 {
     public static class UpdateFields
     {
-        private static readonly Dictionary<Type, BiDictionary<string, int>> UpdateFieldDictionaries = LoadUFDictionaries();
-
-        private static Dictionary<Type, BiDictionary<string, int>> LoadUFDictionaries()
+        private static Dictionary<Type, BiDictionary<string, int>> LoadDefaultUFDictionaries()
         {
-            Type[] enumTypes = {
-                               typeof (ObjectField), typeof (ItemField), typeof (ContainerField), typeof (UnitField),
-                               typeof (PlayerField), typeof (GameObjectField), typeof (DynamicObjectField),
-                               typeof (CorpseField), typeof (AreaTriggerField)
-                           };
-
             var dicts = new Dictionary<Type, BiDictionary<string, int>>();
+
+            LoadUFDictionariesInto(dicts, Assembly.GetExecutingAssembly(), ClientVersionBuild.Zero);
+
+            return dicts;
+        }
+
+        // TEMPORARY HACK
+        // This is needed because currently opcode handlers are only registersd if version is matching
+        // so we need to clear them and reinitialize default handlers
+        // This will be obsolete when all version specific stuff is moved to their own modules
+        public static void ResetUFDictionaries()
+        {
+            UpdateFieldDictionaries.Clear();
+        }
+
+        public static void LoadUFDictionaries(Assembly asm, ClientVersionBuild build)
+        {
+            LoadUFDictionariesInto(UpdateFieldDictionaries, asm, build);
+        }
+
+        private static Dictionary<Type, BiDictionary<string, int>> UpdateFieldDictionaries = LoadDefaultUFDictionaries();
+
+        private static void LoadUFDictionariesInto(Dictionary<Type, BiDictionary<string, int>> dicts, Assembly asm, ClientVersionBuild build)
+        {
+            Type[] enumTypes =
+            {
+                typeof(ObjectField), typeof(ItemField), typeof(ContainerField), typeof(UnitField),
+                typeof(PlayerField), typeof(GameObjectField), typeof(DynamicObjectField),
+                typeof(CorpseField), typeof(AreaTriggerField)
+            };
 
             foreach (var enumType in enumTypes)
             {
-                var vTypeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionaryBuildName(ClientVersion.Build), enumType.Name);
-                var vEnumType = Assembly.GetExecutingAssembly().GetType(vTypeString);
+                var vTypeString = string.Format("WowPacketParserModule.{0}.Enums.{1}", GetUpdateFieldDictionaryBuildName(build), enumType.Name);
+                var vEnumType = asm.GetType(vTypeString);
                 if (vEnumType == null)
-                    continue;   // versions prior to 4.3.0 do not have AreaTriggerField
+                {
+                    vTypeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionaryBuildName(build), enumType.Name);
+                    vEnumType = Assembly.GetExecutingAssembly().GetType(vTypeString);
+                    if (vEnumType == null)
+                        continue;   // versions prior to 4.3.0 do not have AreaTriggerField
+                }
 
                 var vValues = Enum.GetValues(vEnumType);
                 var vNames = Enum.GetNames(vEnumType);
@@ -37,8 +64,6 @@ namespace WowPacketParser.Enums.Version
 
                 dicts.Add(enumType, result);
             }
-
-            return dicts;
         }
 
         public static int GetUpdateField<T>(T field)

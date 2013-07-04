@@ -10,11 +10,32 @@ namespace WowPacketParser.Parsing
 {
     public static class Handler
     {
-        private static Dictionary<int, Action<Packet>> LoadHandlers()
+        private static Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>> LoadDefaultHandlers()
         {
-            var handlers = new Dictionary<int, Action<Packet>>(1000);
+            var handlers = new Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>>(1000);
 
-            var asm = Assembly.GetExecutingAssembly();
+            LoadHandlersInto(handlers, Assembly.GetExecutingAssembly(), ClientVersionBuild.Zero);
+
+            return handlers;
+        }
+
+        // TEMPORARY HACK
+        // This is needed because currently opcode handlers are only registersd if version is matching
+        // so we need to clear them and reinitialize default handlers
+        // This will be obsolete when all version specific stuff is moved to their own modules
+        public static void ResetHandlers()
+        {
+            VersionHandlers.Clear();
+            LoadHandlersInto(VersionHandlers, Assembly.GetExecutingAssembly(), ClientVersionBuild.Zero);
+        }
+
+        public static void LoadHandlers(Assembly asm, ClientVersionBuild build)
+        {
+            LoadHandlersInto(VersionHandlers, asm, build);
+        }
+
+        private static void LoadHandlersInto(Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>> handlers, Assembly asm, ClientVersionBuild build)
+        {
             var types = asm.GetTypes();
             foreach (var type in types)
             {
@@ -50,45 +71,54 @@ namespace WowPacketParser.Parsing
                     foreach (var attr in attrs)
                     {
                         var opc = attr.Opcode;
-                        if (opc == 0)
+                        if (opc == Opcode.NULL_OPCODE)
                             continue;
+
+                        var key = new KeyValuePair<ClientVersionBuild, Opcode>(build, opc);
 
                         var del = (Action<Packet>)Delegate.CreateDelegate(typeof(Action<Packet>), method);
 
-                        if (handlers.ContainsKey(opc))
+                        if (handlers.ContainsKey(key))
                         {
                             Trace.WriteLine(string.Format("Error: (Build: {0}) tried to overwrite delegate for opcode {1} ({2}); new handler: {3}; old handler: {4}",
-                                ClientVersion.Build, opc, Opcodes.GetOpcodeName(opc), del.Method, handlers[opc].Method));
+                                ClientVersion.Build, Opcodes.GetOpcode(attr.Opcode), attr.Opcode, del.Method, handlers[key].Method));
                             continue;
                         }
 
-                        handlers[opc] = del;
+                        handlers[key] = del;
                     }
                 }
             }
-
-            return handlers;
         }
 
-        private static readonly Dictionary<int, Action<Packet>> Handlers = LoadHandlers();
+        private static Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>> VersionHandlers = LoadDefaultHandlers();
 
         public static void Parse(Packet packet, bool isMultiple = false)
         {
             ParsedStatus status;
 
-            var opcode = packet.Opcode;
+            var opcode = Opcodes.GetOpcode(packet.Opcode);
 
             packet.WriteLine(packet.GetHeader(isMultiple));
 
-            if (opcode == 0)
+            if (packet.Opcode == 0)
                 return;
 
+            var key = new KeyValuePair<ClientVersionBuild, Opcode>(ClientVersion.Build, opcode);
+
             Action<Packet> handler;
-            if (Handlers.TryGetValue(opcode, out handler))
+            var hasHandler = VersionHandlers.TryGetValue(key, out handler);
+            if (!hasHandler)
+            {
+                key = new KeyValuePair<ClientVersionBuild, Opcode>(ClientVersionBuild.Zero, opcode);
+                hasHandler = VersionHandlers.TryGetValue(key, out handler);
+            }
+
+            if (hasHandler)
             {
                 if (Settings.DumpFormat == DumpFormatType.SniffDataOnly)
                 {
-                    var attrs = handler.Method.GetCustomAttributes(typeof (HasSniffDataAttribute), false);
+                    var attrs = handler.Method.GetCustomAttributes(typeof(HasSniffDataAttribute), false);
 
                     packet.AddSniffData(StoreNameType.Opcode, packet.Opcode, Opcodes.GetOpcodeName(packet.Opcode));
 

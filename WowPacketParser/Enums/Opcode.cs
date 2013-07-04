@@ -8,6 +8,7 @@ namespace WowPacketParser.Enums
         * (Important) This enum should NOT contain two
         * or more opcode names that represent the same opcode
         */
+        NULL_OPCODE = 0,
         CMSG_ACCEPT_LEVEL_GRANT,
         CMSG_ACCEPT_TRADE,
         CMSG_ACTIVATETAXI,

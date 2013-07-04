@@ -93,6 +93,76 @@ namespace WowPacketParser.Misc
 
         public static ClientVersionBuild Build { get; private set; }
 
+        // Returns the build that will define opcodes/updatefields/handlers for given Build
+        public static ClientVersionBuild VersionDefiningBuild
+        {
+            get
+            {
+                switch (Build)
+                {
+                    case ClientVersionBuild.V2_4_3_8606:
+                    case ClientVersionBuild.V3_0_2_9056:
+                    case ClientVersionBuild.V3_0_3_9183:
+                    case ClientVersionBuild.V3_0_8_9464:
+                    case ClientVersionBuild.V3_0_8a_9506:
+                    case ClientVersionBuild.V3_0_9_9551:
+                    case ClientVersionBuild.V3_1_0_9767:
+                    case ClientVersionBuild.V3_1_1_9806:
+                    case ClientVersionBuild.V3_1_1a_9835:
+                    case ClientVersionBuild.V3_1_2_9901:
+                    case ClientVersionBuild.V3_1_3_9947:
+                    case ClientVersionBuild.V3_2_0_10192:
+                    case ClientVersionBuild.V3_2_0a_10314:
+                    case ClientVersionBuild.V3_2_2_10482:
+                    case ClientVersionBuild.V3_2_2a_10505:
+                    case ClientVersionBuild.V3_3_0_10958:
+                    case ClientVersionBuild.V3_3_0a_11159:
+                        return ClientVersionBuild.V3_3_0a_11159;
+                    case ClientVersionBuild.V3_3_3_11685:
+                    case ClientVersionBuild.V3_3_3a_11723:
+                    case ClientVersionBuild.V3_3_5a_12340:
+                        return ClientVersionBuild.V3_3_5a_12340;
+                    case ClientVersionBuild.V4_0_6_13596:
+                    case ClientVersionBuild.V4_0_6a_13623:
+                    case ClientVersionBuild.V4_1_0_13914:
+                    case ClientVersionBuild.V4_1_0a_14007:
+                        return ClientVersionBuild.V4_0_6_13596;
+                    case ClientVersionBuild.V4_2_0_14333:
+                    case ClientVersionBuild.V4_2_0a_14480:
+                        return ClientVersionBuild.V4_2_0_14333;
+                    case ClientVersionBuild.V4_3_0_15005:
+                    case ClientVersionBuild.V4_3_0a_15050:
+                        return ClientVersionBuild.V4_3_0a_15050;
+                    case ClientVersionBuild.V5_0_5_16048:
+                    case ClientVersionBuild.V5_0_5a_16057:
+                    case ClientVersionBuild.V5_0_5b_16135:
+                        return ClientVersionBuild.V5_0_5_16048;
+                    case ClientVersionBuild.V5_1_0_16309:
+                    case ClientVersionBuild.V5_1_0a_16357:
+                        return ClientVersionBuild.V5_1_0_16309;
+                    case ClientVersionBuild.V5_2_0_16650:
+                    case ClientVersionBuild.V5_2_0_16669:
+                    case ClientVersionBuild.V5_2_0_16683:
+                    case ClientVersionBuild.V5_2_0_16685:
+                    case ClientVersionBuild.V5_2_0_16701:
+                    case ClientVersionBuild.V5_2_0_16709:
+                    case ClientVersionBuild.V5_2_0_16716:
+                    case ClientVersionBuild.V5_2_0_16733:
+                    case ClientVersionBuild.V5_2_0_16769:
+                    case ClientVersionBuild.V5_2_0_16826:
+                        return ClientVersionBuild.V5_2_0_16826;
+                    case ClientVersionBuild.V5_3_0_16981:
+                    case ClientVersionBuild.V5_3_0_16983:
+                    case ClientVersionBuild.V5_3_0_16992:
+                    case ClientVersionBuild.V5_3_0_17055:
+                        return ClientVersionBuild.V5_3_0_16981;
+                    default:
+                        return Build;
+                }
+            }
+            private set { }
+        }
+
         public static int BuildInt
         {
             get { return (int) Build; }

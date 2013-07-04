@@ -11,51 +11,43 @@ namespace WowPacketParser.Parsing
         // versionless
         public ParserAttribute(Opcode opcode)
         {
-            Opcode = Opcodes.GetOpcode(opcode);
+            Opcode = opcode;
         }
 
         // [addedInVersion, +inf[
         public ParserAttribute(Opcode opcode, ClientVersionBuild addedInVersion)
         {
             if (ClientVersion.AddedInVersion(addedInVersion))
-                Opcode = Opcodes.GetOpcode(opcode);
-            else
-                Opcode = 0;
+                Opcode = opcode;
         }
 
         // [addedInVersion, removedInVersion[
         public ParserAttribute(Opcode opcode, ClientVersionBuild addedInVersion, ClientVersionBuild removedInVersion)
         {
             if (ClientVersion.AddedInVersion(addedInVersion) && ClientVersion.RemovedInVersion(removedInVersion))
-                Opcode = Opcodes.GetOpcode(opcode);
-            else
-                Opcode = 0;
+                Opcode = opcode;
         }
 
         // versionless
         public ParserAttribute(int opcode)
         {
-            Opcode = opcode;
+            Opcode = Opcodes.GetOpcode(opcode);
         }
 
         // [addedInVersion, +inf[
         public ParserAttribute(int opcode, ClientVersionBuild addedInVersion)
         {
             if (ClientVersion.AddedInVersion(addedInVersion))
-                Opcode = opcode;
-            else
-                Opcode = 0;
+                Opcodes.GetOpcode(opcode);
         }
 
         // [addedInVersion, removedInVersion[
         public ParserAttribute(int opcode, ClientVersionBuild addedInVersion, ClientVersionBuild removedInVersion)
         {
             if (ClientVersion.AddedInVersion(addedInVersion) && ClientVersion.RemovedInVersion(removedInVersion))
-                Opcode = opcode;
-            else
-                Opcode = 0;
+                Opcode = Opcodes.GetOpcode(opcode);
         }
 
-        public int Opcode { get; private set; }
+        public Opcode Opcode { get; private set; }
     }
 }
