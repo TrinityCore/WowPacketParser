@@ -53,7 +53,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_ENABLE_NAGLE)]
         public static void HandleEnableNagle(Packet packet)
         {
-            packet.ReadUInt32("Enable");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_4_15595))
+                packet.ReadUInt32("Enable");
         }
 
         [Parser(Opcode.CMSG_SUSPEND_TOKEN)]
