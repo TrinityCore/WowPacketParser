@@ -72,6 +72,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
         UNIT_FIELD_SUMMONEDBY = ObjectField.OBJECT_END + 0x0008,
         UNIT_FIELD_CREATEDBY = ObjectField.OBJECT_END + 0x000A,
         UNIT_FIELD_TARGET = ObjectField.OBJECT_END + 0x000C,
+        UNIT_FIELD_CHANNEL_OBJECT = ObjectField.OBJECT_END + 0x000E,
         UNIT_CHANNEL_SPELL = ObjectField.OBJECT_END + 0x0010,
         UNIT_FIELD_BYTES_0 = ObjectField.OBJECT_END + 0x0011,
         UNIT_FIELD_HEALTH = ObjectField.OBJECT_END + 0x0012,
