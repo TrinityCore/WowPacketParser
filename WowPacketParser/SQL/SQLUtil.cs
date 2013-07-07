@@ -148,6 +148,8 @@ namespace WowPacketParser.SQL
             if (fields == null)
                 return string.Empty;
 
+            fields.RemoveAll(field => field.Item2.Name == null);
+
             var rowsIns = new List<QueryBuilder.SQLInsertRow>();
             var rowsUpd = new List<QueryBuilder.SQLUpdateRow>();
 
@@ -268,6 +270,8 @@ namespace WowPacketParser.SQL
             var fields = Utilities.GetFieldsAndAttribute<TK, DBFieldNameAttribute>();
             if (fields == null)
                 return string.Empty;
+
+            fields.RemoveAll(field => field.Item2.Name == null);
 
             var rowsIns = new List<QueryBuilder.SQLInsertRow>();
             var rowsUpd = new List<QueryBuilder.SQLUpdateRow>();

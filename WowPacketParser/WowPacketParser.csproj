@@ -416,7 +416,8 @@
     <Compile Include="SQL\Builders\Spawns.cs" />
     <Compile Include="SQL\Builders\UnitMisc.cs" />
     <Compile Include="SQL\Builders\WDBTemplates.cs" />
-    <Compile Include="SQL\DBAttributes.cs" />
+    <Compile Include="SQL\DBFieldNameAttribute.cs" />
+    <Compile Include="SQL\DBTableNameAttribute.cs" />
     <Compile Include="SQL\ISQLQuery.cs" />
     <Compile Include="SQL\QueryBuilder.cs" />
     <Compile Include="SQL\SQLConnector.cs" />

@@ -4,7 +4,6 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using Guid=WowPacketParser.Misc.Guid;
 using Ionic.Zlib;
-using System.IO;
 using System.Collections.Generic;
 
 namespace WowPacketParser.Parsing.Parsers

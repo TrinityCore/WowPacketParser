@@ -107,6 +107,7 @@ namespace WowPacketParser.SQL
             var tableName = tableAttrs[0].Name;
 
             var fields = Utilities.GetFieldsAndAttribute<TK, DBFieldNameAttribute>();
+            fields.RemoveAll(field => field.Item2.Name == null);
 
             var fieldCount = 1;
             var fieldNames = new StringBuilder();
@@ -228,6 +229,7 @@ namespace WowPacketParser.SQL
             var tableName = tableAttrs[0].Name;
 
             var fields = Utilities.GetFieldsAndAttribute<TK, DBFieldNameAttribute>();
+            fields.RemoveAll(field => field.Item2.Name == null);
 
             var fieldCount = 2;
             var fieldNames = new StringBuilder();
@@ -358,6 +360,7 @@ namespace WowPacketParser.SQL
             var tableName = tableAttrs[0].Name;
 
             var fields = Utilities.GetFieldsAndAttribute<TK, DBFieldNameAttribute>();
+            fields.RemoveAll(field => field.Item2.Name == null);
 
             var fieldCount = 2;
             var fieldNames = new StringBuilder();

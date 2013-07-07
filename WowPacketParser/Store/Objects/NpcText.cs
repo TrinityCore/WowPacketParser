@@ -127,38 +127,38 @@ namespace WowPacketParser.Store.Objects
         }
 
         // ReSharper disable InconsistentNaming
-        [DBFieldName("text0_", Count = 2, StartAtZero = true)] public string[] text0_x;
+        [DBFieldName("text0_", 2, true)] public string[] text0_x;
         [DBFieldName("lang0")] public uint lang0;
         [DBFieldName("prob0")] public float prob0;
-        [DBFieldName("em0_", Count = 6, StartAtZero = true)] public uint[] em0_x;
-        [DBFieldName("text1_", Count = 2, StartAtZero = true)] public string[] text1_x;
+        [DBFieldName("em0_", 6, true)] public uint[] em0_x;
+        [DBFieldName("text1_", 2, true)] public string[] text1_x;
         [DBFieldName("lang1")] public uint lang1;
         [DBFieldName("prob1")] public float prob1;
-        [DBFieldName("em1_", Count = 6, StartAtZero = true)] public uint[] em1_x;
-        [DBFieldName("text2_", Count = 2, StartAtZero = true)] public string[] text2_x;
+        [DBFieldName("em1_", 6, true)] public uint[] em1_x;
+        [DBFieldName("text2_", 2, true)] public string[] text2_x;
         [DBFieldName("lang2")] public uint lang2;
         [DBFieldName("prob2")] public float prob2;
-        [DBFieldName("em2_", Count = 6, StartAtZero = true)] public uint[] em2_x;
-        [DBFieldName("text3_", Count = 2, StartAtZero = true)] public string[] text3_x;
+        [DBFieldName("em2_", 6, true)] public uint[] em2_x;
+        [DBFieldName("text3_", 2, true)] public string[] text3_x;
         [DBFieldName("lang3")] public uint lang3;
         [DBFieldName("prob3")] public float prob3;
-        [DBFieldName("em3_", Count = 6, StartAtZero = true)] public uint[] em3_x;
-        [DBFieldName("text4_", Count = 2, StartAtZero = true)] public string[] text4_x;
+        [DBFieldName("em3_", 6, true)] public uint[] em3_x;
+        [DBFieldName("text4_", 2, true)] public string[] text4_x;
         [DBFieldName("lang4")] public uint lang4;
         [DBFieldName("prob4")] public float prob4;
-        [DBFieldName("em4_", Count = 6, StartAtZero = true)] public uint[] em4_x;
-        [DBFieldName("text5_", Count = 2, StartAtZero = true)] public string[] text5_x;
+        [DBFieldName("em4_", 6, true)] public uint[] em4_x;
+        [DBFieldName("text5_", 2, true)] public string[] text5_x;
         [DBFieldName("lang5")] public uint lang5;
         [DBFieldName("prob5")] public float prob5;
-        [DBFieldName("em5_", Count = 6, StartAtZero = true)] public uint[] em5_x;
-        [DBFieldName("text6_", Count = 2, StartAtZero = true)] public string[] text6_x;
+        [DBFieldName("em5_", 6, true)] public uint[] em5_x;
+        [DBFieldName("text6_", 2, true)] public string[] text6_x;
         [DBFieldName("lang6")] public uint lang6;
         [DBFieldName("prob6")] public float prob6;
-        [DBFieldName("em6_", Count = 6, StartAtZero = true)] public uint[] em6_x;
-        [DBFieldName("text7_", Count = 2, StartAtZero = true)] public string[] text7_x;
+        [DBFieldName("em6_", 6, true)] public uint[] em6_x;
+        [DBFieldName("text7_", 2, true)] public string[] text7_x;
         [DBFieldName("lang7")] public uint lang7;
         [DBFieldName("prob7")] public float prob7;
-        [DBFieldName("em7_", Count = 6, StartAtZero = true)] public uint[] em7_x;
+        [DBFieldName("em7_", 6, true)] public uint[] em7_x;
         // ReSharper restore InconsistentNaming
 
         [DBFieldName("WDBVerified")]

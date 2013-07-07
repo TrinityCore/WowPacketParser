@@ -1,6 +1,6 @@
 namespace WowPacketParser.Enums
 {
-    public enum DamageType
+    public enum DamageType : byte
     {
         Physical = 0,
         Holy = 1,

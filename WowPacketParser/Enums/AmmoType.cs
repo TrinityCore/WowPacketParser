@@ -1,6 +1,6 @@
 namespace WowPacketParser.Enums
 {
-    public enum AmmoType
+    public enum AmmoType : byte
     {
         None = 0,
         Arrows = 2,

@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System.Runtime.InteropServices.ComTypes;
+using WowPacketParser.Enums;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -30,10 +31,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("FlagsExtra")]
         public ItemFlagExtra ExtraFlags;
 
-        [DBFieldName("Unk430_1")]
+        [DBFieldName("Unk430_1", ClientVersionBuild.V4_3_0_15005)]
         public float Unk430_1;
 
-        [DBFieldName("Unk430_2")]
+        [DBFieldName("Unk430_2", ClientVersionBuild.V4_3_0_15005)]
         public float Unk430_2;
 
         [DBFieldName("BuyCount")]
@@ -90,57 +91,67 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ContainerSlots")]
         public uint ContainerSlots;
 
+        [DBFieldName("StatsCount", ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1_13164)]
         public uint StatsCount;
 
-        [DBFieldName("stat_type", Count = 10, StartAtZero = false)]
+        [DBFieldName("stat_type", 10, false)]
         public ItemModType[] StatTypes;
 
-        [DBFieldName("stat_value", Count = 10, StartAtZero = false)]
+        [DBFieldName("stat_value", 10, false)]
         public int[] StatValues;
 
-        [DBFieldName("stat_unk1_", Count = 10, StartAtZero = false)]
+        [DBFieldName("stat_unk1_", ClientVersionBuild.V4_0_1_13164, 10, false)]
         public int[] StatUnk1;
 
-        [DBFieldName("stat_unk2_", Count = 10, StartAtZero = false)]
+        [DBFieldName("stat_unk2_", ClientVersionBuild.V4_0_1_13164, 10, false)]
         public int[] StatUnk2;
 
         [DBFieldName("ScalingStatDistribution")]
         public int ScalingStatDistribution;
 
+        [DBFieldName("ScalingStatValue", ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1_13164)]
         public uint ScalingStatValue;
 
+        [DBFieldName("dmg_min", ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1_13164, 2)]
         public float[] DamageMins;
-        public float[] DamageMaxs;
-        public DamageType[] DamageTypes;
-        public DamageType[] Resistances;
 
-        [DBFieldName("DamageType")]
+        [DBFieldName("dmg_max", ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1_13164, 2)]
+        public float[] DamageMaxs;
+
+        [DBFieldName("dmg_type", ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1_13164, 2)]
+        public DamageType[] DamageTypes;
+
+        //[DBFieldName(ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1_13164, "armor", "holy_res", "fire_res", "nature_res", "frost_res", "shadow_res", "arcane_res")]
+        public DamageType[] Resistances; // armor is included
+
+        [DBFieldName("DamageType", ClientVersionBuild.V4_0_1_13164)]
         public DamageType DamageType;
 
         [DBFieldName("delay")]
         public uint Delay;
 
+        [DBFieldName("ammo_type", ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1_13164)]
         public AmmoType AmmoType;
 
         [DBFieldName("RangedModRange")]
         public float RangedMod;
 
-        [DBFieldName("spellid_", Count = 5, StartAtZero = false)]
+        [DBFieldName("spellid_", 5)]
         public int[] TriggeredSpellIds;
 
-        [DBFieldName("spelltrigger_", Count = 5, StartAtZero = false)]
+        [DBFieldName("spelltrigger_", 5)]
         public ItemSpellTriggerType[] TriggeredSpellTypes;
 
-        [DBFieldName("spellcharges_", Count = 5, StartAtZero = false)]
+        [DBFieldName("spellcharges_", 5)]
         public int[] TriggeredSpellCharges;
 
-        [DBFieldName("spellcooldown_", Count = 5, StartAtZero = false)]
+        [DBFieldName("spellcooldown_", 5)]
         public int[] TriggeredSpellCooldowns;
 
-        [DBFieldName("spellcategory_", Count = 5, StartAtZero = false)]
+        [DBFieldName("spellcategory_", 5)]
         public uint[] TriggeredSpellCategories;
 
-        [DBFieldName("spellcategorycooldown_", Count = 5, StartAtZero = false)]
+        [DBFieldName("spellcategorycooldown_", 5)]
         public int[] TriggeredSpellCategoryCooldowns;
 
         [DBFieldName("bonding")]
@@ -176,11 +187,13 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RandomSuffix")]
         public uint RandomSuffix;
 
+        [DBFieldName("block", ClientVersionBuild.Zero, ClientVersionBuild.V4_1_0_13914)]
         public uint Block;
 
         [DBFieldName("itemset")]
         public uint ItemSet;
 
+        [DBFieldName("MaxDurability")]
         public uint MaxDurability;
 
         [DBFieldName("area")]
@@ -195,10 +208,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("TotemCategory")]
         public TotemCategory TotemCategory;
 
-        [DBFieldName("socketColor_", Count = 3, StartAtZero = false)]
+        [DBFieldName("socketColor_", 3)]
         public ItemSocketColor[] ItemSocketColors;
 
-        [DBFieldName("socketContent_", Count = 3, StartAtZero = false)]
+        [DBFieldName("socketContent_", 3)]
         public uint[] SocketContent;
 
         [DBFieldName("socketBonus")]
@@ -207,6 +220,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("GemProperties")]
         public int GemProperties;
 
+        [DBFieldName("RequiredDisenchantSkill", ClientVersionBuild.Zero, ClientVersionBuild.V4_1_0_13914)]
         public int RequiredDisenchantSkill;
 
         [DBFieldName("ArmorDamageModifier")]
@@ -221,13 +235,13 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("HolidayId")]
         public Holiday HolidayId;
 
-        [DBFieldName("StatScalingFactor")]
+        [DBFieldName("StatScalingFactor", ClientVersionBuild.V4_0_1_13164)]
         public float StatScalingFactor;
 
-        [DBFieldName("CurrencySubstitutionId")]
+        [DBFieldName("CurrencySubstitutionId", ClientVersionBuild.V4_0_1_13164)]
         public uint CurrencySubstitutionId;
 
-        [DBFieldName("CurrencySubstitutionCount")]
+        [DBFieldName("CurrencySubstitutionCount", ClientVersionBuild.V4_0_1_13164)]
         public uint CurrencySubstitutionCount;
 
         [DBFieldName("WDBVerified")]

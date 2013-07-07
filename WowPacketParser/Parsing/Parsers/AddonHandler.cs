@@ -1,4 +1,3 @@
-using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
