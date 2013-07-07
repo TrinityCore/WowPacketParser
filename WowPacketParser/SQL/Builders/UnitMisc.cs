@@ -178,12 +178,12 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_equip_template))
                 return string.Empty;
 
-            var equips = new StoreDictionary<ushort, CreatureEquipment>();
+            var equips = new StoreDictionary<uint, CreatureEquipment>();
             foreach (var unit in units)
             {
                 var equip = new CreatureEquipment();
                 var npc = unit.Value;
-                var entry = (ushort)unit.Key.GetEntry();
+                var entry = unit.Key.GetEntry();
 
                 if (npc.Equipment == null || npc.Equipment.Length != 3)
                     continue;
@@ -211,7 +211,7 @@ namespace WowPacketParser.SQL.Builders
             }
 
             var entries = equips.Keys();
-            var equipsDb = SQLDatabase.GetDict<ushort, CreatureEquipment>(entries);
+            var equipsDb = SQLDatabase.GetDict<uint, CreatureEquipment>(entries);
             return SQLUtil.CompareDicts(equips, equipsDb, StoreNameType.Unit);
         }
 
