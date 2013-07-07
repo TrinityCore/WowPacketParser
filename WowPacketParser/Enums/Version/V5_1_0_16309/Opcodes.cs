@@ -11,7 +11,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
-            {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0x0D85}, 
+            {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0x0D85},
             {Opcode.CMSG_ACCEPT_TRADE, 0x0157},
             {Opcode.CMSG_ACTIVATETAXI, 0x04A0},
             {Opcode.CMSG_ACTIVATETAXIEXPRESS, 0x04A9},
@@ -398,7 +398,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.MSG_CORPSE_QUERY, 0x0D13},
             {Opcode.MSG_INSPECT_ARENA_TEAMS, 0x0204},
             {Opcode.MSG_LIST_STABLED_PETS, 0x08E1},
-            {Opcode.MSG_MINIMAP_PING, 0x008A}, 
+            {Opcode.MSG_MINIMAP_PING, 0x008A},
             {Opcode.MSG_MOVE_CHARM_TELEPORT_CHEAT, 0x0217},
             {Opcode.MSG_MOVE_FALL_LAND, 0x078B},
             {Opcode.MSG_MOVE_HEARTBEAT, 0x0BD2},

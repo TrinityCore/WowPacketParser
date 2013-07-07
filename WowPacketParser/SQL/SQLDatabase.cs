@@ -195,7 +195,10 @@ namespace WowPacketParser.SQL
 #endif
                         i += field.Item2.Count;
                     }
-                    dict.Add((T)values[0], instance);
+
+                    T key = (T)values[0];
+                    if (!dict.ContainsKey(key))
+                        dict.Add(key, instance);
                 }
             }
 
@@ -338,7 +341,10 @@ namespace WowPacketParser.SQL
 #endif
                         i += field.Item2.Count;
                     }
-                    dict.Add(Tuple.Create((T)values[0], (TG)values[1]), instance);
+
+                    var key = Tuple.Create((T)values[0], (TG)values[1]);
+                    if (!dict.ContainsKey(key))
+                        dict.Add(key, instance);
                 }
             }
 
@@ -463,7 +469,10 @@ namespace WowPacketParser.SQL
 #endif
                         i += field.Item2.Count;
                     }
-                    dict.Add(Tuple.Create((T)values[0], (TG)values[1]), instance);
+
+                    var key = Tuple.Create((T)values[0], (TG)values[1]);
+                    if (!dict.ContainsKey(key))
+                        dict.Add(key, instance);
                 }
             }
 

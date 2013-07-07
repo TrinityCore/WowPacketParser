@@ -19,7 +19,7 @@ namespace WowPacketParser.SQL
         public string Name { get; set; }
 
         /// <summary>
-        /// Number of fields  
+        /// Number of fields
         /// </summary>
         public int Count { get; set; }
 
