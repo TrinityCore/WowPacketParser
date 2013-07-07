@@ -90,9 +90,13 @@ namespace WowPacketParser.SQL.Builders
             }
 
             var result = new StringBuilder();
-            // delete query for GUIDs
-            var delete = new QueryBuilder.SQLDelete(Tuple.Create("@CGUID+0", "@CGUID+" + --count), "guid", tableName);
-            result.Append(delete.Build());
+
+            if (count > 0)
+            {
+                // delete query for GUIDs
+                var delete = new QueryBuilder.SQLDelete(Tuple.Create("@CGUID+0", "@CGUID+" + --count), "guid", tableName);
+                result.Append(delete.Build());
+            }
 
             var sql = new QueryBuilder.SQLInsert(tableName, rows, withDelete: false);
             result.Append(sql.Build());
@@ -201,9 +205,12 @@ namespace WowPacketParser.SQL.Builders
 
             var result = new StringBuilder();
 
-            // delete query for GUIDs
-            var delete = new QueryBuilder.SQLDelete(Tuple.Create("@OGUID+0", "@OGUID+" + --count), "guid", tableName);
-            result.Append(delete.Build());
+            if (count > 0)
+            {
+                // delete query for GUIDs
+                var delete = new QueryBuilder.SQLDelete(Tuple.Create("@OGUID+0", "@OGUID+" + --count), "guid", tableName);
+                result.Append(delete.Build());
+            }
 
             var sql = new QueryBuilder.SQLInsert(tableName, rows, withDelete: false);
             result.Append(sql.Build());
