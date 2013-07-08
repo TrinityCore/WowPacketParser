@@ -120,7 +120,7 @@ namespace WowPacketParser.Loading
             UpdateFields.ResetUFDictionaries();
             try
             {
-                var asm = Assembly.LoadFrom(string.Format("WowPacketParserModule.{0}.dll", ClientVersion.VersionDefiningBuild));
+                var asm = Assembly.LoadFrom(string.Format(AppDomain.CurrentDomain.BaseDirectory + "/" + "WowPacketParserModule.{0}.dll", ClientVersion.VersionDefiningBuild));
                 Trace.WriteLine(string.Format("Loading module WowPacketParserModule.{0}.dll", ClientVersion.VersionDefiningBuild));
                 Handler.LoadHandlers(asm, ClientVersion.VersionDefiningBuild);
                 UpdateFields.LoadUFDictionaries(asm, ClientVersion.VersionDefiningBuild);
