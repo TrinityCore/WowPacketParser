@@ -41,8 +41,14 @@ namespace WowPacketParser.SQL.Builders
                 var entry = uf.UInt32Value;
 
                 var spawnTimeSecs = creature.GetDefaultSpawnTime();
-                var movementType = 0; // TODO: Find a way to check if our unit got random movement
-                var spawnDist = (movementType == 1) ? 5 : 0;
+                var movementType = 0;
+                var spawnDist = 0;
+
+                if (creature.Movement.HasWpsOrRandMov)
+                {
+                    movementType = 1;
+                    spawnDist = 5;
+                }
 
                 row.AddValue("guid", "@CGUID+" + count, noQuotes: true);
                 row.AddValue("id", entry);
