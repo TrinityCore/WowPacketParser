@@ -36,7 +36,20 @@ namespace WowPacketParser.Store.Objects
         {
             // If map is Continent use a lower respawn time
             // TODO: Rank and if npc is needed for quest kill should change spawntime as well
-            switch (Map)
+            return MapIsContinent(Map) ? 120 : 7200;
+        }
+
+        public int GetDefaultSpawnMask()
+        {
+            // 3 is the most common spawnmask outside of continents although it is not correct in all cases
+            // TODO: read map/instance db to guess correct spawnmask
+            return MapIsContinent(Map) ? 1 : 3;
+        }
+
+        private static bool MapIsContinent(uint mapId)
+        {
+            // TODO: remove hardcoded checks and read map dbc instead
+            switch (mapId)
             {
                 case 0:     // Eastern Kingdoms
                 case 1:     // Kalimdor
@@ -52,9 +65,9 @@ namespace WowPacketParser.Store.Objects
                 case 661:   // Kezan 3
                 case 732:   // Tol Barad
                 case 861:   // Firelands Dailies
-                    return 120;
+                    return true;
                 default:
-                    return 7200;
+                    return false;
             }
         }
 

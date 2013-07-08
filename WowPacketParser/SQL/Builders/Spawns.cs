@@ -40,7 +40,6 @@ namespace WowPacketParser.SQL.Builders
 
                 var entry = uf.UInt32Value;
 
-                var spawnTimeSecs = creature.GetDefaultSpawnTime();
                 var movementType = 0;
                 var spawnDist = 0;
 
@@ -53,7 +52,7 @@ namespace WowPacketParser.SQL.Builders
                 row.AddValue("guid", "@CGUID+" + count, noQuotes: true);
                 row.AddValue("id", entry);
                 row.AddValue("map", !creature.IsOnTransport() ? creature.Map : 0);  // TODO: query transport template for map
-                row.AddValue("spawnMask", 1);
+                row.AddValue("spawnMask", creature.GetDefaultSpawnMask());
                 row.AddValue("phaseMask", creature.PhaseMask);
                 if (!creature.IsOnTransport())
                 {
@@ -70,7 +69,7 @@ namespace WowPacketParser.SQL.Builders
                     row.AddValue("orientation", creature.Movement.TransportOffset.O);
                 }
 
-                row.AddValue("spawntimesecs", spawnTimeSecs);
+                row.AddValue("spawntimesecs", creature.GetDefaultSpawnTime());
                 row.AddValue("spawndist", spawnDist);
                 row.AddValue("MovementType", movementType);
                 row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
@@ -149,7 +148,7 @@ namespace WowPacketParser.SQL.Builders
                 row.AddValue("guid", "@OGUID+" + count, noQuotes: true);
                 row.AddValue("id", entry);
                 row.AddValue("map", !go.IsOnTransport() ? go.Map : 0);  // TODO: query transport template for map
-                row.AddValue("spawnMask", 1);
+                row.AddValue("spawnMask", go.GetDefaultSpawnMask());
                 row.AddValue("phaseMask", go.PhaseMask);
                 if (!go.IsOnTransport())
                 {
