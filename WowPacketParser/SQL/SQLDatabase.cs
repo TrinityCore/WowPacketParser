@@ -56,32 +56,6 @@ namespace WowPacketParser.SQL
             }
         }
 
-        // Returns a dictionary from a DB query with any number of parameters
-        // TODO: Drop this and use the GetDict<T, TK> method below
-        public static Dictionary<T, dynamic> GetDict<T>(string query)
-        {
-            using (var reader = SQLConnector.ExecuteQuery(query))
-            {
-                if (reader == null)
-                    return null;
-
-                var dict = new Dictionary<T, dynamic>();
-
-                while (reader.Read())
-                {
-                    var pk = (T)reader.GetValue(0);
-
-                    var objs = new object[30];
-                    var fieldCount = reader.GetValues(objs);
-                    var obj = objs.ToTuple(fieldCount);
-
-                    dict.Add(pk, obj);
-                }
-
-                return dict;
-            }
-        }
-
         /// <summary>
         /// Gets from `world` database a dictionary of the given struct/class.
         /// Structs fields type must match the type of the DB columns.
