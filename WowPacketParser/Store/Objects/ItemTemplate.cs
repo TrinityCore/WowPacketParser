@@ -26,7 +26,7 @@ namespace WowPacketParser.Store.Objects
         public ItemQuality Quality;
 
         [DBFieldName("Flags")]
-        public ItemFlag Flags;
+        public ItemProtoFlags Flags;
 
         [DBFieldName("FlagsExtra")]
         public ItemFlagExtra ExtraFlags;

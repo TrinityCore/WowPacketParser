@@ -481,7 +481,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             item.Quality = packet.ReadEnum<ItemQuality>("Quality", TypeCode.Int32);
 
-            item.Flags = packet.ReadEnum<ItemFlag>("Flags", TypeCode.Int32);
+            item.Flags = packet.ReadEnum<ItemProtoFlags>("Flags", TypeCode.UInt32);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
                 item.ExtraFlags = packet.ReadEnum<ItemFlagExtra>("Extra Flags", TypeCode.Int32);
@@ -729,7 +729,7 @@ namespace WowPacketParser.Parsing.Parsers
             else
             {
                 packet.ReadEnum<ItemQuality>("Quality", TypeCode.Int32);
-                packet.ReadEnum<ItemFlag>("Flags", TypeCode.Int32);
+                packet.ReadEnum<ItemProtoFlags>("Flags", TypeCode.UInt32);
                 packet.ReadEnum<ItemFlagExtra>("Extra Flags", TypeCode.Int32);
                 packet.ReadInt32("Buy Price");
                 packet.ReadUInt32("Sell Price");
@@ -874,7 +874,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var item = Storage.ItemTemplates.ContainsKey((uint)itemId2) ? Storage.ItemTemplates[(uint)itemId2].Item1 : new ItemTemplate();
 
                 item.Quality = packet.ReadEnum<ItemQuality>("Quality", TypeCode.Int32);
-                item.Flags = packet.ReadEnum<ItemFlag>("Flags", TypeCode.Int32);
+                item.Flags = packet.ReadEnum<ItemProtoFlags>("Flags", TypeCode.UInt32);
                 item.ExtraFlags = packet.ReadEnum<ItemFlagExtra>("Extra Flags", TypeCode.Int32);
                 item.Unk430_1 = packet.ReadSingle("Unk430_1");
                 item.Unk430_2 = packet.ReadSingle("Unk430_2");
@@ -1043,7 +1043,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                     packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
                     item.Quality = packet.ReadEnum<ItemQuality>("Quality", TypeCode.Int32);
-                    item.Flags = packet.ReadEnum<ItemFlag>("Flags", TypeCode.Int32);
+                    item.Flags = packet.ReadEnum<ItemProtoFlags>("Flags", TypeCode.UInt32);
                     item.ExtraFlags = packet.ReadEnum<ItemFlagExtra>("Extra Flags", TypeCode.Int32);
                     item.Unk430_1 = packet.ReadSingle("Unk430_1");
                     item.Unk430_2 = packet.ReadSingle("Unk430_2");

@@ -148,6 +148,7 @@
     <Compile Include="Enums\ContactResult.cs" />
     <Compile Include="Enums\ContactStatus.cs" />
     <Compile Include="Enums\BuyResult.cs" />
+    <Compile Include="Enums\ItemFieldFlags.cs" />
     <Compile Include="Enums\QuestFlags2.cs" />
     <Compile Include="Enums\QuestRequirementType.cs" />
     <Compile Include="Enums\CreatureFamily.cs" />
@@ -202,7 +203,7 @@
     <Compile Include="Enums\InventoryType.cs" />
     <Compile Include="Enums\ItemBonding.cs" />
     <Compile Include="Enums\ItemClass.cs" />
-    <Compile Include="Enums\ItemFlag.cs" />
+    <Compile Include="Enums\ItemProtoFlags.cs" />
     <Compile Include="Enums\ItemFlagExtra.cs" />
     <Compile Include="Enums\ItemModType.cs" />
     <Compile Include="Enums\ItemQuality.cs" />

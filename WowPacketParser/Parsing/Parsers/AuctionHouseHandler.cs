@@ -186,7 +186,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Item Suffix", i);
                 packet.ReadUInt32("Item Count", i);
                 packet.ReadInt32("Item Spell Charges", i);
-                //packet.ReadEnum<ItemFlag>("Item Flags", TypeCode.UInt32, i);
+                //packet.ReadEnum<ItemProtoFlags>("Item Flags", TypeCode.UInt32, i);
                 packet.ReadUInt32("Unk UInt32 1", i);
                 packet.ReadGuid("Owner", i);
                 packet.ReadValue("Start Bid", _auctionSize, i);
