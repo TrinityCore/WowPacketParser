@@ -10,7 +10,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void ReadClientAddonsList(ref Packet packet)
         {
             var decompCount = packet.ReadInt32();
-            packet = packet.Inflate(decompCount);
+            packet = packet.Inflate(decompCount, false);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
             {

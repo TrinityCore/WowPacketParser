@@ -91,6 +91,27 @@ namespace WowPacketParser.Misc
             Storage.SniffData.Add(item, TimeSpan);
         }
 
+        public bool TryInflate(int inflatedSize, int index, byte[] arr, ref byte[] newarr)
+        {
+            try
+            {
+                if (!SessionHandler.z_streams.ContainsKey(index))
+                    SessionHandler.z_streams[index] = new ZlibCodec(CompressionMode.Decompress);
+                SessionHandler.z_streams[index].InputBuffer = arr;
+                SessionHandler.z_streams[index].NextIn = 0;
+                SessionHandler.z_streams[index].AvailableBytesIn = arr.Length;
+                SessionHandler.z_streams[index].OutputBuffer = newarr;
+                SessionHandler.z_streams[index].NextOut = 0;
+                SessionHandler.z_streams[index].AvailableBytesOut = inflatedSize;
+                SessionHandler.z_streams[index].Inflate(FlushType.Sync);
+                return true;
+            }
+            catch (Ionic.Zlib.ZlibException)
+            {
+                return false;
+            }
+        }
+
         public Packet Inflate(int inflatedSize, bool keepStream = true)
         {
             var arr = ReadToEnd();
@@ -101,15 +122,9 @@ namespace WowPacketParser.Misc
 
             if (keepStream)
             {
-                if (!SessionHandler.z_streams.ContainsKey(ConnectionIndex))
-                    SessionHandler.z_streams[ConnectionIndex] = new ZlibCodec(CompressionMode.Decompress);
-                SessionHandler.z_streams[ConnectionIndex].InputBuffer = arr;
-                SessionHandler.z_streams[ConnectionIndex].NextIn = 0;
-                SessionHandler.z_streams[ConnectionIndex].AvailableBytesIn = arr.Length;
-                SessionHandler.z_streams[ConnectionIndex].OutputBuffer = newarr;
-                SessionHandler.z_streams[ConnectionIndex].NextOut = 0;
-                SessionHandler.z_streams[ConnectionIndex].AvailableBytesOut = inflatedSize;
-                SessionHandler.z_streams[ConnectionIndex].Inflate(FlushType.Sync);
+                int idx = ConnectionIndex;
+                while (!TryInflate(inflatedSize, idx, arr, ref newarr))
+                    idx += 1;
             }
             else
             {
