@@ -128,8 +128,7 @@ namespace WowPacketParser.Loading
             catch (FileNotFoundException)
             {
                 // No dll found, try to load the data in the executable itself
-                Handler.LoadHandlers(Assembly.GetExecutingAssembly(), (ClientVersionBuild)build);
-                UpdateFields.LoadUFDictionaries(Assembly.GetExecutingAssembly(), (ClientVersionBuild)build);
+                UpdateFields.LoadUFDictionaries(Assembly.GetExecutingAssembly(), ClientVersion.Build);
             }
         }
 

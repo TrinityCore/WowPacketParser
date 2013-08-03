@@ -563,7 +563,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleResetCompressionContext(Packet packet)
         {
             packet.ReadInt32("Unk?");
-            //z_streams[packet.ConnectionIndex] = new ZlibCodec(CompressionMode.Decompress);
+            z_streams[packet.ConnectionIndex] = new ZlibCodec(CompressionMode.Decompress);
         }
     }
 }
