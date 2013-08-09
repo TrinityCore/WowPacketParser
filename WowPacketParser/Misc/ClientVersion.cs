@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
+using WowPacketParser.Parsing;
 
 namespace WowPacketParser.Misc
 {
@@ -201,8 +206,27 @@ namespace WowPacketParser.Misc
 
         public static void SetVersion(ClientVersionBuild version)
         {
+            if (Build == version)
+                return;
+
             Build = version;
             _expansion = GetExpansion(version);
+
+            Opcodes.InitializeOpcodeDictionary();
+            Handler.ResetHandlers();
+            UpdateFields.ResetUFDictionaries();
+            try
+            {
+                var asm = Assembly.LoadFrom(string.Format(AppDomain.CurrentDomain.BaseDirectory + "/" + "WowPacketParserModule.{0}.dll", ClientVersion.VersionDefiningBuild));
+                Trace.WriteLine(string.Format("Loading module WowPacketParserModule.{0}.dll", ClientVersion.VersionDefiningBuild));
+                Handler.LoadHandlers(asm, ClientVersion.VersionDefiningBuild);
+                UpdateFields.LoadUFDictionaries(asm, ClientVersion.VersionDefiningBuild);
+            }
+            catch (FileNotFoundException)
+            {
+                // No dll found, try to load the data in the executable itself
+                UpdateFields.LoadUFDictionaries(Assembly.GetExecutingAssembly(), ClientVersion.Build);
+            }
         }
 
         public static void SetVersion(DateTime time)

@@ -1,12 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
-using WowPacketParser.Parsing;
-using System.Diagnostics;
 
 namespace WowPacketParser.Loading
 {
@@ -111,25 +107,7 @@ namespace WowPacketParser.Loading
 
         static void SetBuild(uint build)
         {
-            if (ClientVersion.BuildInt == build)
-                return;
-
             ClientVersion.SetVersion((ClientVersionBuild)build);
-            Opcodes.InitializeOpcodeDictionary();
-            Handler.ResetHandlers();
-            UpdateFields.ResetUFDictionaries();
-            try
-            {
-                var asm = Assembly.LoadFrom(string.Format(AppDomain.CurrentDomain.BaseDirectory + "/" + "WowPacketParserModule.{0}.dll", ClientVersion.VersionDefiningBuild));
-                Trace.WriteLine(string.Format("Loading module WowPacketParserModule.{0}.dll", ClientVersion.VersionDefiningBuild));
-                Handler.LoadHandlers(asm, ClientVersion.VersionDefiningBuild);
-                UpdateFields.LoadUFDictionaries(asm, ClientVersion.VersionDefiningBuild);
-            }
-            catch (FileNotFoundException)
-            {
-                // No dll found, try to load the data in the executable itself
-                UpdateFields.LoadUFDictionaries(Assembly.GetExecutingAssembly(), ClientVersion.Build);
-            }
         }
 
         public bool CanRead()
