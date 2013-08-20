@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsers\CharacterHandler.cs" />
+    <Compile Include="Parsers\MiscellaneousHandler.cs" />
     <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -62,6 +63,9 @@
       <Name>WowPacketParser</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

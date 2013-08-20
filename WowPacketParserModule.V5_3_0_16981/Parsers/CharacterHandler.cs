@@ -10,7 +10,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
     public static class CharacterHandler
     {
-        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V5_3_0_16992)]
+        [Parser(Opcode.SMSG_CHAR_ENUM)]
         public static void HandleCharEnum(Packet packet)
         {
             //var unkCounter = packet.ReadBits("Unk Counter", 21);

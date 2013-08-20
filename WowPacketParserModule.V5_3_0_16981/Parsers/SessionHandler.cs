@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
     public static class SessionHandler
     {
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V5_3_0_16981)]
+        [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
         public static void HandleServerAuthChallenge(Packet packet)
         {
             packet.ReadUInt32("Key pt1");
@@ -24,7 +24,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadByte("Unk Byte");
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_3_0_16981)]
+        [Parser(Opcode.CMSG_AUTH_SESSION)]
         public static void HandleAuthSession(Packet packet)
         {
             var sha = new byte[20];
