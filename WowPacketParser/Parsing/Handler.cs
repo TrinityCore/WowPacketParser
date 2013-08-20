@@ -104,7 +104,7 @@ namespace WowPacketParser.Parsing
             if (packet.Opcode == 0)
                 return;
 
-            var key = new KeyValuePair<ClientVersionBuild, Opcode>(ClientVersion.Build, opcode);
+            var key = new KeyValuePair<ClientVersionBuild, Opcode>(ClientVersion.VersionDefiningBuild, opcode);
 
             Action<Packet> handler;
             var hasHandler = VersionHandlers.TryGetValue(key, out handler);

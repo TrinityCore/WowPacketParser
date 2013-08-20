@@ -141,7 +141,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             bytes[9] = packet.ReadByte();
             bytes[19] = packet.ReadByte();
             bytes[3] = packet.ReadByte();
-            packet.WriteLine("Proof RSA Hash: " + Utilities.ByteArrayToHexString(bytes));
+            packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(bytes));
         }
     }
 }
