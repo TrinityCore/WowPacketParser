@@ -6,6 +6,8 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using Guid = WowPacketParser.Misc.Guid;
+using MovementFlag = WowPacketParserModule.V4_3_4_15595.Enums.MovementFlag;
+using MovementFlagExtra = WowPacketParserModule.V4_3_4_15595.Enums.MovementFlagExtra;
 using SplineFlag = WowPacketParserModule.V4_3_4_15595.Enums.SplineFlag;
 
 namespace WowPacketParserModule.V4_3_4_15595.Parsers
