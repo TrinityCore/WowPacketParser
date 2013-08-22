@@ -59,7 +59,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
         UNIT_FIELD_TARGET                                = ObjectField.OBJECT_END + 0x000C, // Size =   2, Type: Flags PUBLIC
         UNIT_FIELD_BATTLE_PET_COMPANION_GUID             = ObjectField.OBJECT_END + 0x000E, // Size =   2, Type: Flags PUBLIC
         UNIT_FIELD_CHANNEL_OBJECT                        = ObjectField.OBJECT_END + 0x0010, // Size =   2, Type: Flags PUBLIC | DYNAMIC
-        UNIT_FIELD_channelSpell                          = ObjectField.OBJECT_END + 0x0012, // Size =   1, Type: Flags PUBLIC | DYNAMIC
+        UNIT_FIELD_CHANNEL_SPELL                         = ObjectField.OBJECT_END + 0x0012, // Size =   1, Type: Flags PUBLIC | DYNAMIC
         UNIT_FIELD_SUMMONED_BY_HOME_REALM                = ObjectField.OBJECT_END + 0x0013, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_DISPLAY_POWER                         = ObjectField.OBJECT_END + 0x0014, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_OVERRIDE_DISPLAY_POWER_ID             = ObjectField.OBJECT_END + 0x0015, // Size =   1, Type: Flags PUBLIC
