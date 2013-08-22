@@ -1,5 +1,5 @@
 using WowPacketParser.Misc;
- 
+
 namespace WowPacketParser.Enums.Version.V5_3_0_16981
 {
     public static class Opcodes_5_3_0
@@ -8,7 +8,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
         {
             return Opcs;
         }
- 
+
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_AUTH_SESSION, 0x09F1},
@@ -37,6 +37,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x091D},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x0755},
             {Opcode.CMSG_REALM_SPLIT, 0x0B48},
+            {Opcode.CMSG_REDIRECTION_AUTH_PROOF, 0x1AA1},
             {Opcode.CMSG_SET_ACTION_BUTTON, 0x0400},
             {Opcode.CMSG_SET_SELECTION, 0x1759},
             {Opcode.CMSG_SET_SPECIALIZATION, 0x005B},
@@ -129,6 +130,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_GROUPACTION_THROTTLED, 0x1394},
             {Opcode.SMSG_GROUP_INVITE, 0x11DD},
             {Opcode.SMSG_GUILD_REPUTATION_WEEKLY_CAP, 0x1A83},
+            {Opcode.SMSG_GUILD_ROSTER, 0x0C0A},
             {Opcode.SMSG_HOTFIX_INFO, 0x1584},
             {Opcode.SMSG_HOTFIX_NOTIFY, 0x0EDC},
             {Opcode.SMSG_INITIAL_SPELLS, 0x173F},
@@ -169,6 +171,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_RATED_BG_RATING, 0x05C8},
             {Opcode.SMSG_RATED_BG_STATS, 0x0394},
             {Opcode.SMSG_REALM_SPLIT, 0x0F89},
+            {Opcode.SMSG_REDIRECT_CLIENT, 0x0328},
             {Opcode.SMSG_REFORGE_RESULT, 0x03D5},
             {Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE, 0x1389},
             {Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, 0x0DD1},

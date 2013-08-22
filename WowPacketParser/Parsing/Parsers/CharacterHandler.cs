@@ -37,7 +37,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Outfit Id");
         }
 
-		[Parser(Opcode.CMSG_CHAR_CREATE)]
+        [Parser(Opcode.CMSG_CHAR_CREATE)]
         public static void HandleClientCharCreate530(Packet packet)
         {
             packet.ReadByte("Hair Style");
