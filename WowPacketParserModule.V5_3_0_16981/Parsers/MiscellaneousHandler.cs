@@ -23,5 +23,14 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ParseBitStream(guid, 7, 6, 4, 0, 3, 1, 2, 5);
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_REALM_SPLIT)]
+        public static void HandleServerRealmSplit(Packet packet)
+        {
+            var len = packet.ReadBits(7);
+            packet.ReadWoWString("Split Date", len);
+            packet.ReadUInt32("Client State");
+            packet.ReadUInt32("Split State");
+        }
     }
 }
