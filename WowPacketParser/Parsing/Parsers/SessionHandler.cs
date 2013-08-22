@@ -19,7 +19,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
                 packet.ReadInt32("Shuffle Count");
 
-            packet.ReadInt32("Server Seed");
+            packet.ReadUInt32("Server Seed");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
             {
@@ -62,22 +62,22 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleServerAuthChallenge422(Packet packet)
         {
-            packet.ReadInt32("Unk1");
-            packet.ReadInt32("Unk2");
-            packet.ReadInt32("Unk3");
-            packet.ReadInt32("Unk4");
-            packet.ReadInt32("Server Seed");
+            packet.ReadUInt32("Unk1");
+            packet.ReadUInt32("Unk2");
+            packet.ReadUInt32("Unk3");
+            packet.ReadUInt32("Unk4");
+            packet.ReadUInt32("Server Seed");
             packet.ReadByte("Unk Byte");
-            packet.ReadInt32("Unk5");
-            packet.ReadInt32("Unk6");
-            packet.ReadInt32("Unk7");
-            packet.ReadInt32("Unk8");
+            packet.ReadUInt32("Unk5");
+            packet.ReadUInt32("Unk6");
+            packet.ReadUInt32("Unk7");
+            packet.ReadUInt32("Unk8");
         }
 
         [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V5_0_5_16048)]
         public static void HandleServerAuthChallenge505(Packet packet)
         {
-            packet.ReadInt32("Server Seed");
+            packet.ReadUInt32("Server Seed");
             packet.ReadUInt32("Key pt1");
             packet.ReadUInt32("Key pt2");
             packet.ReadUInt32("Key pt3");
@@ -188,7 +188,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Unk Byte");
             packet.ReadByte("Unk Byte");
 
-            packet.ReadInt32("Client Seed");
+            packet.ReadUInt32("Client Seed");
 
             for (var i = 0; i < 2; i++)
                 packet.ReadByte("Digest (6)", i);
@@ -232,7 +232,7 @@ namespace WowPacketParser.Parsing.Parsers
             sha[3] = packet.ReadByte();
             sha[10] = packet.ReadByte();
 
-            packet.ReadInt32("Client Seed");
+            packet.ReadUInt32("Client Seed");
 
             sha[16] = packet.ReadByte();
             sha[4] = packet.ReadByte();
@@ -473,7 +473,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Reason?");
         }
 
-        [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleRedirectClient(Packet packet)
         {
             var ip = packet.ReadIPAddress();
@@ -482,6 +482,16 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Token");
             var hash = packet.ReadBytes(20);
             packet.WriteLine("Address SHA-1 Hash: {0}", Utilities.ByteArrayToHexString(hash));
+        }
+
+        [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleRedirectClient406(Packet packet)
+        {
+            packet.ReadInt64("Int 64");
+            var hash = packet.ReadBytes(256);
+            packet.WriteLine("RSA Hash: {0}", Utilities.ByteArrayToHexString(hash));
+            packet.ReadByte("Byte");
+            packet.ReadInt32("Int32");
         }
 
         [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]

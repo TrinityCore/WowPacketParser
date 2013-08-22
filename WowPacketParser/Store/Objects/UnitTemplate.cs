@@ -30,11 +30,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("rank")]
         public CreatureRank Rank;
 
-        [DBFieldName("KillCredit1")]
-        public uint KillCredit1;
-
-        [DBFieldName("KillCredit2")]
-        public uint KillCredit2;
+        [DBFieldName("KillCredit", 2)]
+        public uint[] KillCredits;
 
         [DBFieldName("UnkInt", ClientVersionBuild.Zero, ClientVersionBuild.V3_1_0_9767)]
         public int UnkInt;

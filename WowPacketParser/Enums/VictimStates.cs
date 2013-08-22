@@ -1,6 +1,6 @@
 ﻿namespace WowPacketParser.Enums
 {
-    enum VictimStates
+    public enum VictimStates
     {
         VICTIMSTATE_UNKNOWN1 = 0,
         VICTIMSTATE_NORMAL = 1,
