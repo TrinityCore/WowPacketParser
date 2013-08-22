@@ -20,7 +20,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadUInt32("Key pt6");
             packet.ReadUInt32("Key pt7");
             packet.ReadUInt32("Key pt8");
-            packet.ReadInt32("Server Seed");
+            packet.ReadUInt32("Server Seed");
             packet.ReadByte("Unk Byte");
         }
 
@@ -71,5 +71,64 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
         }
 
+        [Parser(Opcode.SMSG_AUTH_RESPONSE)]
+        public static void HandleAuthResponse(Packet packet)
+        {
+            var count = 0u;
+            var count1 = 0u;
+            var isQueued = packet.ReadBit("Is In Queue");
+
+            if (isQueued)
+                packet.ReadBit("unk0");
+
+            var hasAccountData = packet.ReadBit("Has Account Data");
+
+            if (hasAccountData)
+            {
+                packet.ReadBit("Unk 1");
+                packet.ReadBit("Unk 2");
+                count1 = packet.ReadBits("Race Activation Count", 23);
+                packet.ReadBit("Unk 3");
+                packet.ReadBits("Unkbits", 21);
+                count = packet.ReadBits("Class Activation Count", 23);
+                packet.ReadBits("Unkbits", 22);
+                packet.ReadBit("Unk 4");
+
+            }
+            packet.ResetBitReader();
+
+            if (hasAccountData)
+            {
+                packet.ReadByte("unk");
+                for (var i = 0; i < count; ++i)
+                {
+                    packet.ReadEnum<ClientType>("Class Expansion", TypeCode.Byte, i);
+                    packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
+                }
+
+                packet.ReadInt16("UnkInt16 1");
+                packet.ReadInt16("UnkInt16 2");
+
+                for (var i = 0; i < count1; ++i)
+                {
+                    packet.ReadEnum<ClientType>("Race Expansion", TypeCode.Byte, i);
+                    packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
+                }
+
+                packet.ReadUInt32("Unk 8");
+                packet.ReadUInt32("Unk 9");
+                packet.ReadUInt32("Unk 10");
+
+
+                packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
+                packet.ReadEnum<ClientType>("Player Expansion", TypeCode.Byte);
+
+            }
+
+            packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
+
+            if (isQueued)
+                packet.ReadUInt32("Unk 11");
+        }
     }
 }
