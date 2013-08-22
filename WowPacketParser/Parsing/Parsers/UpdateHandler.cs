@@ -146,7 +146,7 @@ namespace WowPacketParser.Parsing.Parsers
             var dict = new Dictionary<int, UpdateField>();
 
             int objectEnd = UpdateFields.GetUpdateField(ObjectField.OBJECT_END);
-            for (var i = 0; i < mask.Count; i++)
+            for (var i = 0; i < mask.Count; ++i)
             {
                 if (!mask[i])
                     continue;
@@ -243,10 +243,21 @@ namespace WowPacketParser.Parsing.Parsers
                         vals[j] = packet.ReadUInt32();
 
                     for (var j = 0; j < cnt; ++j)
+                    {
                         if (vals[j] != 0)
+                        {
                             for (var k = 0; k < 32; ++k)
+                            {
                                 if (((1 << k) & vals[j]) != 0)
-                                    packet.ReadUInt32();
+                                {
+                                    var blockVal = packet.ReadUpdateField();
+                                    string key = "Dynamic block Value ";
+                                    string value = blockVal.UInt32Value + "/" + blockVal.SingleValue;
+                                    packet.WriteLine("[" + index + "] " + key + ": " + value, i, j, k);
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -2376,19 +2387,19 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static MovementInfo ReadMovementUpdateBlock(ref Packet packet, Guid guid, int index)
         {
-            if (ClientVersion.Build == ClientVersionBuild.V5_1_0_16309 || ClientVersion.Build == ClientVersionBuild.V5_1_0a_16357)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
                 return ReadMovementUpdateBlock510(ref packet, guid, index);
 
-            if (ClientVersion.Build == ClientVersionBuild.V5_0_4_16016 || ClientVersion.Build == ClientVersionBuild.V5_0_5_16048 || ClientVersion.Build == ClientVersionBuild.V5_0_5a_16057 || ClientVersion.Build == ClientVersionBuild.V5_0_5b_16135)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_4_16016))
                 return ReadMovementUpdateBlock504(ref packet, guid, index);
 
-            if (ClientVersion.Build == ClientVersionBuild.V4_3_3_15354)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_3_15354))
                 return ReadMovementUpdateBlock433(ref packet, guid, index);
 
-            if (ClientVersion.Build == ClientVersionBuild.V4_3_2_15211)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_2_15211))
                 return ReadMovementUpdateBlock432(ref packet, guid, index);
 
-            if (ClientVersion.Build == ClientVersionBuild.V4_3_0_15005 || ClientVersion.Build == ClientVersionBuild.V4_3_0a_15050)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
                 return ReadMovementUpdateBlock430(ref packet, guid, index);
 
             var moveInfo = new MovementInfo();

@@ -514,6 +514,12 @@ namespace WowPacketParser.Misc
             return bytes;
         }
 
+        public void StartBitStream(byte[] stream, params int[] values)
+        {
+            foreach (var value in values)
+                stream[value] = (byte)(ReadBit() ? 1 : 0);
+        }
+
         public byte ParseBitStream(byte[] stream, byte value)
         {
             if (stream[value] != 0)
@@ -544,6 +550,13 @@ namespace WowPacketParser.Misc
                 return stream[value] ^= ReadByte();
 
             return 0;
+        }
+
+        public void ReadXORBytes(byte[] stream, params byte[] values)
+        {
+            foreach (var value in values)
+                if (stream[value] != 0)
+                    stream[value] ^= ReadByte();
         }
 
         public string WriteGuid(byte[] stream)
