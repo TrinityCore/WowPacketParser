@@ -37,26 +37,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Outfit Id");
         }
 
-        [Parser(Opcode.CMSG_CHAR_CREATE)]
-        public static void HandleClientCharCreate530(Packet packet)
-        {
-            packet.ReadByte("Hair Style");
-            packet.ReadByte("Face");
-            packet.ReadByte("Facial Hair");
-            packet.ReadByte("Hair Color");
-            packet.ReadEnum<Race>("Race", TypeCode.Byte);
-            packet.ReadEnum<Class>("Class", TypeCode.Byte);
-            packet.ReadByte("Skin");
-            packet.ReadEnum<Gender>("Gender", TypeCode.Byte);            
-            packet.ReadByte("Outfit Id");
-           
-            var counter = packet.ReadBits(6);
-            var unk = packet.ReadBit("unk");
-            packet.ReadWoWString("Name", counter);
-            if (unk)
-                packet.ReadUInt32("unk20");
-        }
-		
         [Parser(Opcode.CMSG_CHAR_DELETE)]
         public static void HandleClientCharDelete(Packet packet)
         {

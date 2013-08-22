@@ -122,5 +122,55 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 StoreGetters.AddName(playerGuid, name);
             }
         }
+
+        [Parser(Opcode.CMSG_CHAR_CREATE)]
+        public static void HandleClientCharCreate(Packet packet)
+        {
+            packet.ReadByte("Hair Style");
+            packet.ReadByte("Face");
+            packet.ReadByte("Facial Hair");
+            packet.ReadByte("Hair Color");
+            packet.ReadEnum<Race>("Race", TypeCode.Byte);
+            packet.ReadEnum<Class>("Class", TypeCode.Byte);
+            packet.ReadByte("Skin");
+            packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
+            packet.ReadByte("Outfit Id");
+
+            var nameLength = packet.ReadBits(6);
+            var unk = packet.ReadBit("unk");
+            packet.ReadWoWString("Name", nameLength);
+            if (unk)
+                packet.ReadUInt32("unk20");
+        }
+
+        [Parser(Opcode.CMSG_CHAR_DELETE)]
+        public static void HandleClientCharDelete(Packet packet)
+        {
+            var playerGuid = new byte[8];
+
+            playerGuid[2] = packet.ReadBit();
+            playerGuid[1] = packet.ReadBit();
+            playerGuid[5] = packet.ReadBit();
+            playerGuid[7] = packet.ReadBit();
+            playerGuid[6] = packet.ReadBit();
+
+            var unknown = packet.ReadBit();
+
+            playerGuid[3] = packet.ReadBit();
+            playerGuid[0] = packet.ReadBit();
+            playerGuid[4] = packet.ReadBit();
+
+            packet.ReadXORByte(playerGuid, 1);
+            packet.ReadXORByte(playerGuid, 3);
+            packet.ReadXORByte(playerGuid, 4);
+            packet.ReadXORByte(playerGuid, 0);
+            packet.ReadXORByte(playerGuid, 7);
+            packet.ReadXORByte(playerGuid, 2);
+            packet.ReadXORByte(playerGuid, 5);
+            packet.ReadXORByte(playerGuid, 6);
+
+            var guid = new Guid(BitConverter.ToUInt64(playerGuid, 0));
+            packet.WriteGuid("GUID", playerGuid);
+        }
     }
 }
