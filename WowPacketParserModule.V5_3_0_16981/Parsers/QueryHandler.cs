@@ -56,16 +56,19 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             if (hasUnk1)
             {
+                var name = new string[8];
                 for (var i = 0; i < 4; ++i)
                 {
                     if (stringLens[i][0] > 1)
-                        packet.ReadWoWString("string1", stringLens[i][0], i);
+                        packet.ReadCString("string1", stringLens[i][0], i);
                     if (stringLens[i][1] > 1)
-                        packet.ReadWoWString("string2", stringLens[i][1], i);
+                        name[i] = packet.ReadCString("Name", stringLens[i][1], i);
                 }
+                creature.Name = name[0];
+
                 creature.Modifier1 = packet.ReadSingle("Modifier 1");
                 if (lenS3 > 1)
-                    creature.SubName = packet.ReadWoWString("Sub Name", lenS3);
+                    creature.SubName = packet.ReadCString("Sub Name", lenS3);
 
                 creature.Rank = packet.ReadEnum<CreatureRank>("Rank", TypeCode.Int32);
 
