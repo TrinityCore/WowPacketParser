@@ -67,6 +67,7 @@ namespace WowPacketParser.Store.Objects
                 case 861:   // Firelands Dailies
                 case 870:   // Pandaria
                 case 974:   // Darkmoon Faire
+                case 1064:  // Mogu Island Daily Area
                     return true;
                 default:
                     return false;
