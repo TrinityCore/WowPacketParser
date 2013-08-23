@@ -60,7 +60,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 for (var i = 0; i < 4; ++i)
                 {
                     if (stringLens[i][0] > 1)
-                        packet.ReadCString("string1", stringLens[i][0], i);
+                        packet.ReadCString("Female Name", stringLens[i][0], i);
                     if (stringLens[i][1] > 1)
                         name[i] = packet.ReadCString("Name", stringLens[i][1], i);
                 }
@@ -77,21 +77,21 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     creature.QuestItems[i] = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item", i);
 
                 creature.Type = packet.ReadEnum<CreatureType>("Type", TypeCode.Int32);
-                packet.ReadInt32("int27");
-                packet.ReadInt32("int28");
-                packet.ReadInt32("int13");
+                creature.KillCredits = new uint[2];
+                for (var i = 0; i < 2; ++i)
+                    creature.KillCredits[i] = packet.ReadUInt32("Kill Credit", i);
+                creature.Family = packet.ReadEnum<CreatureFamily>("Family", TypeCode.Int32);
                 if (lenS4 > 1)
-                    packet.ReadWoWString("string4", lenS4);
+                    creature.IconName = packet.ReadCString("Icon Name");
 
                 creature.DisplayIds = new uint[4];
                 creature.DisplayIds[1] = packet.ReadUInt32("Display ID 1");
                 creature.DisplayIds[0] = packet.ReadUInt32("Display ID 0");
-                creature.Family = packet.ReadEnum<CreatureFamily>("Family", TypeCode.Int32);
+                creature.MovementId = packet.ReadUInt32("Movement ID");
                 creature.DisplayIds[3] = packet.ReadUInt32("Display ID 3");
 
-                creature.KillCredits = new uint[2];
-                for (var i = 0; i < 2; ++i)
-                    creature.KillCredits[i] = packet.ReadUInt32("Kill Credit", i);
+                creature.TypeFlags = packet.ReadEnum<CreatureTypeFlag>("Type Flags", TypeCode.UInt32);
+                creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2"); // Missing enum
 
                 if (lenS5 > 1)
                     packet.ReadWoWString("string5", lenS5);
