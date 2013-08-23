@@ -65,6 +65,8 @@ namespace WowPacketParser.Store.Objects
                 case 661:   // Kezan 3
                 case 732:   // Tol Barad
                 case 861:   // Firelands Dailies
+                case 870:   // Pandaria
+                case 974:   // Darkmoon Faire
                     return true;
                 default:
                     return false;
