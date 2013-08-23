@@ -72,7 +72,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadXORByte(charGuids[c], 5);
                 var y = packet.ReadSingle("Position Y", c);
                 packet.ReadInt32("Pet Family", c);
-                var name = packet.ReadWoWString("Name", (int)nameLenghts[c], c);
+                var name = packet.ReadCString("Name", (int)nameLenghts[c], c);
                 packet.ReadInt32("Pet Display ID", c);
                 packet.ReadXORByte(guildGuids[c], 3);
                 packet.ReadXORByte(charGuids[c], 7);
@@ -138,7 +138,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             var nameLength = packet.ReadBits(6);
             var unk = packet.ReadBit("unk");
-            packet.ReadWoWString("Name", nameLength);
+            packet.ReadCString("Name", (int)nameLength);
             if (unk)
                 packet.ReadUInt32("unk20");
         }

@@ -60,15 +60,15 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 for (var i = 0; i < 4; ++i)
                 {
                     if (stringLens[i][0] > 1)
-                        packet.ReadCString("Female Name", stringLens[i][0], i);
+                        packet.ReadCString("Female Name", i);
                     if (stringLens[i][1] > 1)
-                        name[i] = packet.ReadCString("Name", stringLens[i][1], i);
+                        name[i] = packet.ReadCString("Name", i);
                 }
                 creature.Name = name[0];
 
                 creature.Modifier1 = packet.ReadSingle("Modifier 1");
                 if (lenS3 > 1)
-                    creature.SubName = packet.ReadCString("Sub Name", lenS3);
+                    creature.SubName = packet.ReadCString("Sub Name");
 
                 creature.Rank = packet.ReadEnum<CreatureRank>("Rank", TypeCode.Int32);
 
@@ -94,7 +94,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2"); // Missing enum
 
                 if (lenS5 > 1)
-                    packet.ReadWoWString("string5", lenS5);
+                    packet.ReadCString("string5");
                 creature.DisplayIds[2] = packet.ReadUInt32("Display ID 2");
                 creature.Modifier2 = packet.ReadSingle("Modifier 2");
                 creature.Expansion = packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);

@@ -130,5 +130,17 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             if (isQueued)
                 packet.ReadUInt32("Unk 11");
         }
+
+        [Parser(Opcode.SMSG_MOTD)]
+        public static void HandleMessageOfTheDay(Packet packet)
+        {
+            var lineCount = packet.ReadBits("Line Count", 4);
+            var lineLength = new int[lineCount];
+            for (var i = 0; i < lineCount; i++)
+                lineLength[i] = (int)packet.ReadBits(7);
+
+            for (var i = 0; i < lineCount; i++)
+                packet.ReadWoWString("Line", lineLength[i], i);
+        }
     }
 }
