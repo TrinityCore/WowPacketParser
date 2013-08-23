@@ -249,9 +249,9 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
         GAMEOBJECT_PARENTROTATION                        = ObjectField.OBJECT_END + 0x0004, // Size =   4, Type: Flags PUBLIC
         GAMEOBJECT_FACTION                               = ObjectField.OBJECT_END + 0x0008, // Size =   1, Type: Flags PUBLIC
         GAMEOBJECT_LEVEL                                 = ObjectField.OBJECT_END + 0x0009, // Size =   1, Type: Flags PUBLIC
-        GAMEOBJECT_PERCENT_HEALTH                        = ObjectField.OBJECT_END + 0x000A, // Size =   1, Type: Flags PUBLIC | DYNAMIC
-        GAMEOBJECT_STATESPELL_VISUAL_ID                  = ObjectField.OBJECT_END + 0x000B, // Size =   1, Type: Flags PUBLIC | DYNAMIC
-        GAMEOBJECT_FIELD_END                             = ObjectField.OBJECT_END + 0xC
+        GAMEOBJECT_BYTES_1                               = ObjectField.OBJECT_END + 0x000A, // Size =   1, Type: Flags PUBLIC | DYNAMIC
+        GAMEOBJECT_FIELD_ANIM_PROGRESS                   = ObjectField.OBJECT_END + 0x000B, // Size =   1, Type: Flags PUBLIC | DYNAMIC
+        GAMEOBJECT_FIELD_END                             = ObjectField.OBJECT_END + 0x000C
     };
 
     public enum DynamicObjectField

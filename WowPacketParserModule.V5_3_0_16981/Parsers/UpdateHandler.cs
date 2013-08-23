@@ -156,7 +156,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var bit20 = false;
             var bit95 = false;
             var bit94 = false;
-            var bit30 = false;
+            var hasOrientation = false;
             var hasTransportData = false;
             var hasTransportTime3 = false;
             var hasTransportTime2 = false;
@@ -198,7 +198,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 bit20 = !packet.ReadBit();
                 bit95 = packet.ReadBit();
                 bit94 = packet.ReadBit();
-                bit30 = !packet.ReadBit();
+                hasOrientation = !packet.ReadBit();
                 if (bit18)
                     moveInfo.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
 
@@ -377,10 +377,10 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         packet.ReadInt32("Int104", index);
                     }
 
-                    packet.ReadSingle("FloatE8", index);
-                    packet.ReadSingle("FloatEC", index);
+                    moveInfo.Position.Y = packet.ReadSingle();
+                    moveInfo.Position.Z = packet.ReadSingle();
                     packet.ReadInt32("IntE0", index);
-                    packet.ReadSingle("FloatE4", index);
+                    moveInfo.Position.X = packet.ReadSingle();
                 }
 
                 if (hasTransportData)
@@ -425,9 +425,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
                 packet.ReadSingle("Pitch Speed", index);
                 packet.ReadXORByte(guid1, 5);
-                packet.ReadSingle("Float2C", index);
-                if (bit30)
-                    packet.ReadSingle("Float30", index);
+                moveInfo.Position.Z = packet.ReadSingle();
+                if (hasOrientation)
+                    moveInfo.Orientation = packet.ReadSingle();
 
                 packet.ReadXORByte(guid1, 6);
                 if (bit90)
@@ -444,15 +444,17 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 if (bitA8)
                     packet.ReadInt32("IntA8", index);
 
-                packet.ReadSingle("Float28", index);
+                moveInfo.Position.Y = packet.ReadSingle();
                 packet.ReadSingle("FloatBC", index);
                 packet.ReadSingle("Swim Speed", index);
                 packet.ReadXORByte(guid1, 7);
                 packet.ReadSingle("FloatB4", index);
-                packet.ReadSingle("Float24", index);
+                moveInfo.Position.X = packet.ReadSingle();
                 packet.ReadXORByte(guid1, 4);
 
                 packet.WriteGuid("GUID1", guid1, index);
+                packet.WriteLine("[{0}] Position: {1}", index, moveInfo.Position);
+                packet.WriteLine("[{0}] Orientation: {1}", index, moveInfo.Orientation);
             }
 
             if (bit310)
@@ -569,10 +571,11 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             if (HasStationaryPosition)
             {
-                packet.ReadSingle("Float1B4", index);
-                packet.ReadSingle("Float1BC", index);
-                packet.ReadSingle("Float1C0", index);
-                packet.ReadSingle("Float1B8", index);
+                moveInfo.Position.X = packet.ReadSingle();
+                moveInfo.Position.Z = packet.ReadSingle();
+                moveInfo.Orientation = packet.ReadSingle("Stationary Orientation", index);
+                moveInfo.Position.Y = packet.ReadSingle();
+                packet.WriteLine("[{0}] Stationary Position: {1}", index, moveInfo.Position);
             }
 
             if (bit1D8)
