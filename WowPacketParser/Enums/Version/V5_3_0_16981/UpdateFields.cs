@@ -99,8 +99,8 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
         UNIT_FIELD_MOD_HASTE                             = ObjectField.OBJECT_END + 0x0048, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_MOD_HASTE_REGEN                       = ObjectField.OBJECT_END + 0x0049, // Size =   1, Type: Flags PUBLIC
         UNIT_CREATED_BY_SPELL                            = ObjectField.OBJECT_END + 0x004A, // Size =   1, Type: Flags PUBLIC
-        UNIT_NPC_FLAGS_UNK                               = ObjectField.OBJECT_END + 0x004B, // Size =   1, Type: Flags PUBLIC | UNUSED2
-        UNIT_NPC_FLAGS                                   = ObjectField.OBJECT_END + 0x004C, // Size =   2, Type: Flags PUBLIC
+        UNIT_NPC_FLAGS                                   = ObjectField.OBJECT_END + 0x004B, // Size =   1, Type: Flags PUBLIC | UNUSED2
+        UNIT_NPC_EMOTESTATE                              = ObjectField.OBJECT_END + 0x004C, // Size =   2, Type: Flags PUBLIC
         UNIT_FIELD_STATS                                 = ObjectField.OBJECT_END + 0x004E, // Size =   5, Type: Flags PRIVATE | OWNER
         UNIT_FIELD_STAT_POSBUFF                          = ObjectField.OBJECT_END + 0x0053, // Size =   5, Type: Flags PRIVATE | OWNER
         UNIT_FIELD_STAT_NEGBUFF                          = ObjectField.OBJECT_END + 0x0058, // Size =   5, Type: Flags PRIVATE | OWNER
