@@ -16,5 +16,15 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
             packet.ReadSingle("Position X");
         }
+
+        [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]
+        public static void HandleLoginSetTimeSpeed(Packet packet)
+        {
+            packet.ReadPackedTime("Game Time");
+            packet.ReadUInt32("bit5");
+            packet.ReadUInt32("bit7");
+            packet.ReadUInt32("bit6");
+            packet.ReadSingle("Game Speed");
+        }
     }
 }

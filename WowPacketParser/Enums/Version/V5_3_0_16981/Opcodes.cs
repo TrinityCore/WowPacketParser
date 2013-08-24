@@ -144,6 +144,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_ITEM_REMOVE_PASSIVE, 0x1298},
             {Opcode.SMSG_ITEM_SEND_PASSIVE, 0x0DDD},
             {Opcode.SMSG_LOAD_CUF_PROFILES, 0x09CC},
+            {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x0C8D},
             {Opcode.SMSG_MAP_OBJ_EVENTS, 0x0A84},
             {Opcode.SMSG_MESSAGE_BOX, 0x14D9},
             {Opcode.SMSG_MISSILE_CANCEL, 0x03CD},
