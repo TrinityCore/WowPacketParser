@@ -3,12 +3,15 @@ using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using Guid = WowPacketParser.Misc.Guid;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
     public static class SessionHandler
     {
+        public static Guid LoginGuid;
+
         [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
         public static void HandleServerAuthChallenge(Packet packet)
         {
@@ -141,6 +144,22 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             for (var i = 0; i < lineCount; i++)
                 packet.ReadWoWString("Line", lineLength[i], i);
+        }
+
+        [Parser(Opcode.CMSG_PLAYER_LOGIN)]
+        public static void HandlePlayerLogin(Packet packet)
+        {
+            packet.ReadSingle("Unk Float");
+            var guid = packet.StartBitStream(3, 4, 0, 6, 7, 1, 2, 5);
+            packet.ParseBitStream(guid, 0, 3, 7, 6, 1, 2, 4, 5);
+            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
+        public static void HandleLogoutComplete(Packet packet)
+        {
+            LoginGuid = new Guid(0);
         }
     }
 }
