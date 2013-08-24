@@ -135,6 +135,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_HOTFIX_NOTIFY, 0x0EDC},
             {Opcode.SMSG_INITIAL_SPELLS, 0x173F},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0FDC},
+            {Opcode.SMSG_INITIALIZE_FACTIONS, 0x0598},
             {Opcode.SMSG_INSPECT_HONOR_STATS, 0x109C},
             {Opcode.SMSG_INSPECT_RATED_BG_STATS, 0x1498},
             {Opcode.SMSG_ITEM_ADD_PASSIVE, 0x1384},
