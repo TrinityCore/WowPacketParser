@@ -32,5 +32,32 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadUInt32("Client State");
             packet.ReadUInt32("Split State");
         }
+
+        [Parser(Opcode.CMSG_INSPECT_HONOR_STATS)]
+        public static void HandleClientInspect(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[2] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+
+
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 5);
+
+            packet.WriteGuid("Player GUID: ", guid);
+        }
     }
 }
