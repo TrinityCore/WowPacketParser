@@ -160,7 +160,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var hasTransportData = false;
             var hasTransportTime3 = false;
             var hasTransportTime2 = false;
-            var bit70 = false;
+            var hasPitch = false;
             var bitF0 = false;
             var bit118 = false;
             var bit134 = false;
@@ -212,7 +212,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     transportGuid[5] = packet.ReadBit();
                 }
 
-                bit70 = !packet.ReadBit();
+                hasPitch = !packet.ReadBit("Lacks pitch", index);
                 guid1[6] = packet.ReadBit();
                 bits168 = packet.ReadBits(19);
                 bits168A = new uint[bits168];
@@ -434,8 +434,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     packet.ReadSingle("Float90", index);
 
                 packet.ReadSingle("Pitch Speed", index);
-                if (bit70)
-                    packet.ReadSingle("Float70", index);
+                if (hasPitch)
+                    packet.ReadSingle("Pitch", index);
 
                 for (var i = 0; i < bits98; ++i)
                     packet.ReadInt32("Int9C", index, i);
