@@ -129,9 +129,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             var bit28D = packet.ReadBit();
             var bits404 = packet.ReadBits(22);
-            var hasVehicleData = packet.ReadBit();
+            var hasVehicleData = packet.ReadBit("Has Vehicle Data", index);
             var bit3F0 = packet.ReadBit();
-            var hasGameObjectPosition = packet.ReadBit();
+            var hasGameObjectPosition = packet.ReadBit("Has GameObject Rotation", index);
             guid0[3] = packet.ReadBit();
             var bit310 = packet.ReadBit();
             var bit1D8 = packet.ReadBit();
@@ -141,13 +141,13 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var hasAttackingTarget = packet.ReadBit();
             guid0[2] = packet.ReadBit();
             guid0[0] = packet.ReadBit();
-            var isSelf = packet.ReadBit();
+            var isSelf = packet.ReadBit("Self", index);
             guid0[1] = packet.ReadBit();
-            var living = packet.ReadBit();
+            var living = packet.ReadBit("Living", index);
             var bit3E8 = packet.ReadBit();
             var bit28E = packet.ReadBit();
-            var hasAnimKits = packet.ReadBit();
-            var HasStationaryPosition = packet.ReadBit();
+            var hasAnimKits = packet.ReadBit("Has AnimKits", index);
+            var hasStationaryPosition = packet.ReadBit("Has Stationary Position", index);
 
             var bit90 = false;
             var hasMoveFlagsExtra = false;
@@ -245,9 +245,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 if (hasMoveFlagsExtra)
                     moveInfo.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13, index);
 
-                hasFallData = packet.ReadBit();
+                hasFallData = packet.ReadBit("Has Fall Data", index);
                 if (hasFallData)
-                    hasFallDirection = packet.ReadBit();
+                    hasFallDirection = packet.ReadBit("Has Fall Direction", index);
 
                 packet.ReadBit("bitAC", index);
             }
@@ -569,7 +569,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.WriteLine("Bytes", bytes.ToString(), index);
             }
 
-            if (HasStationaryPosition)
+            if (hasStationaryPosition)
             {
                 moveInfo.Position.X = packet.ReadSingle();
                 moveInfo.Position.Z = packet.ReadSingle();
