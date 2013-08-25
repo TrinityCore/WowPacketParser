@@ -139,5 +139,17 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
+
+        [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
+        public static void HandleLoginVerifyWorld(Packet packet)
+        {
+            packet.ReadUInt32("MapId");
+
+            packet.ReadSingle("PositionX");
+            packet.ReadSingle("PositionY");
+            packet.ReadSingle("PositionZ");
+
+            packet.ReadSingle("Orientation");
+        }
     }
 }

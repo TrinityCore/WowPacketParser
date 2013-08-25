@@ -182,7 +182,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_LFG_UPDATE_STATUS_NONE, 0x0A89},
             {Opcode.SMSG_LOAD_CUF_PROFILES, 0x09CC},
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x0C8D},
-            {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0B6C},
+            {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0434},
             {Opcode.SMSG_LOOT_ALL_PASSED, 0x0DC1},
             {Opcode.SMSG_LOOT_CONTENTS, 0x0580},
             {Opcode.SMSG_LOOT_LIST, 0x0CC4},
