@@ -112,7 +112,6 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         {
             var moveInfo = new MovementInfo();
 
-            var guid0 = new byte[8];
             var guid1 = new byte[8];
             var transportGuid = new byte[8];
             var goTransportGuid = new byte[8];
@@ -132,27 +131,27 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var hasVehicleData = packet.ReadBit("Has Vehicle Data", index);
             var bit3F0 = packet.ReadBit();
             var hasGameObjectPosition = packet.ReadBit("Has GameObject Rotation", index);
-            guid0[3] = packet.ReadBit();
+            packet.ReadBit(); // fake bit
             var bit310 = packet.ReadBit();
             var bit1D8 = packet.ReadBit();
             var bit284 = packet.ReadBit();
             var bit208 = packet.ReadBit();
             var bit1F8 = packet.ReadBit();
             var hasAttackingTarget = packet.ReadBit("Has Attacking Target", index);
-            guid0[2] = packet.ReadBit();
-            guid0[0] = packet.ReadBit();
+            packet.ReadBit(); // fake bit
+            packet.ReadBit(); // fake bit
             var isSelf = packet.ReadBit("Self", index);
-            guid0[1] = packet.ReadBit();
+            packet.ReadBit(); // fake bit
             var living = packet.ReadBit("Living", index);
             var bit3E8 = packet.ReadBit();
             var bit28E = packet.ReadBit();
             var hasAnimKits = packet.ReadBit("Has AnimKits", index);
             var hasStationaryPosition = packet.ReadBit("Has Stationary Position", index);
 
-            var bit90 = false;
+            var hasSplineElevation = false;
             var hasMoveFlagsExtra = false;
             var bitD8 = false;
-            var bit18 = false;
+            var hasMovementFlags = false;
             var hasTimestamp = false;
             var bit95 = false;
             var bit94 = false;
@@ -189,17 +188,17 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             if (living)
             {
                 guid1[0] = packet.ReadBit();
-                bit90 = !packet.ReadBit();
+                hasSplineElevation = !packet.ReadBit();
                 packet.StartBitStream(guid1, 4, 7);
                 hasMoveFlagsExtra = !packet.ReadBit();
                 packet.StartBitStream(guid1, 5, 2);
                 bitD8 = packet.ReadBit();
-                bit18 = !packet.ReadBit();
+                hasMovementFlags = !packet.ReadBit();
                 hasTimestamp = !packet.ReadBit("Lacks timestamp", index);
                 bit95 = packet.ReadBit();
                 bit94 = packet.ReadBit();
                 hasOrientation = !packet.ReadBit();
-                if (bit18)
+                if (hasMovementFlags)
                     moveInfo.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
 
                 hasTransportData = packet.ReadBit("Has Transport Data", index);
@@ -428,8 +427,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     moveInfo.Orientation = packet.ReadSingle();
 
                 packet.ReadXORByte(guid1, 6);
-                if (bit90)
-                    packet.ReadSingle("Float90", index);
+                if (hasSplineElevation)
+                    packet.ReadSingle("Spline Elevation", index);
 
                 packet.ReadSingle("Pitch Speed", index);
                 if (hasPitch)

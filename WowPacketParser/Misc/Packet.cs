@@ -158,6 +158,52 @@ namespace WowPacketParser.Misc
             return pkt;
         }
 
+        public Packet Inflate(int arrSize, int inflatedSize, bool keepStream = true)
+        {
+            var arr = ReadBytes(arrSize);
+            var newarr = new byte[inflatedSize];
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_0_15005))
+                keepStream = false;
+
+            if (keepStream)
+            {
+                int idx = ConnectionIndex;
+                while (!TryInflate(inflatedSize, idx, arr, ref newarr))
+                    idx += 1;
+            }
+            else
+            {
+                /*try
+                {
+                    var inflater = new Inflater(true);
+                    inflater.SetInput(arr, 0, arr.Length);
+                    inflater.Inflate(newarr, 0, inflatedSize);
+                }
+                catch (ICSharpCode.SharpZipLib.SharpZipBaseException)
+                {
+                    var inflater = new Inflater(true);
+                    inflater.SetInput(arr, 0, arr.Length);
+                    inflater.Inflate(newarr, 0, inflatedSize);
+                }*/
+                ZlibCodec stream = new ZlibCodec(CompressionMode.Decompress);
+                stream.InputBuffer = arr;
+                stream.NextIn = 0;
+                stream.AvailableBytesIn = arr.Length;
+                stream.OutputBuffer = newarr;
+                stream.NextOut = 0;
+                stream.AvailableBytesOut = inflatedSize;
+                stream.Inflate(FlushType.None);
+                stream.Inflate(FlushType.Finish);
+                stream.EndInflate();
+            }
+
+            // Cannot use "using" here
+            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, FileName);
+            pkt.ConnectionIndex = ConnectionIndex;
+            return pkt;
+        }
+
         public byte[] GetStream(long offset)
         {
             var pos = Position;

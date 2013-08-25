@@ -23,7 +23,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var HasCastCount = !packet.ReadBit();
             packet.ReadBit("Fake bit? Has TargetGUID"); // TargetGUID
             var hasbit1C = !packet.ReadBit();
-            var hasbit100 = packet.ReadBit();
+            var hasMovment = packet.ReadBit();
             var hasbit78 = !packet.ReadBit();
             var hasbitF8 = !packet.ReadBit();
             var hasGUID2 = packet.ReadBit();
@@ -48,10 +48,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             TargetGUID = packet.StartBitStream(3, 0, 2, 7, 6, 4, 1, 5);
 
             if (unk_bit)
-            {
-                var flags = packet.ReadBits(20);
-                packet.WriteLine("Cast Flags: {0} {1}", (CastFlag)flags, flags);
-            }
+                packet.ReadEnum<CastFlag>("Cast Flags", 20);
 
             if (hasbit1C)
                 packet.ReadBits("hasbit1C", 5);
@@ -59,7 +56,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             uint len78 = 0;
             if (hasbit78)
                 len78 = packet.ReadBits("hasbit78", 7);
-            packet.ResetBitReader(); // maybe no need
+            packet.ResetBitReader();
 
             for (var i = 0; i < counter; ++i)
             {
@@ -103,10 +100,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             if (hasbit18)
                 packet.ReadInt32("Int18");
 
-            if (hasbit100) // targets data TO DO
-            {
-                packet.WriteLine("Missing data for bit100");
-            }
+            if (hasMovment)
+                MovementHandler.ReadClientMovementBlock(ref packet);
 
             if (hasSpellId)
                 packet.ReadInt32("SpellId");
