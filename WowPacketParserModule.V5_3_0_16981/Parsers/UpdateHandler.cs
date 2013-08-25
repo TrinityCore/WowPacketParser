@@ -138,7 +138,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var bit284 = packet.ReadBit();
             var bit208 = packet.ReadBit();
             var bit1F8 = packet.ReadBit();
-            var hasAttackingTarget = packet.ReadBit();
+            var hasAttackingTarget = packet.ReadBit("Has Attacking Target", index);
             guid0[2] = packet.ReadBit();
             guid0[0] = packet.ReadBit();
             var isSelf = packet.ReadBit("Self", index);
@@ -153,7 +153,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var hasMoveFlagsExtra = false;
             var bitD8 = false;
             var bit18 = false;
-            var bit20 = false;
+            var hasTimestamp = false;
             var bit95 = false;
             var bit94 = false;
             var hasOrientation = false;
@@ -195,14 +195,14 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.StartBitStream(guid1, 5, 2);
                 bitD8 = packet.ReadBit();
                 bit18 = !packet.ReadBit();
-                bit20 = !packet.ReadBit();
+                hasTimestamp = !packet.ReadBit("Lacks timestamp", index);
                 bit95 = packet.ReadBit();
                 bit94 = packet.ReadBit();
                 hasOrientation = !packet.ReadBit();
                 if (bit18)
                     moveInfo.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
 
-                hasTransportData = packet.ReadBit();
+                hasTransportData = packet.ReadBit("Has Transport Data", index);
                 if (hasTransportData)
                 {
                     packet.StartBitStream(transportGuid, 1, 0, 6);
@@ -294,9 +294,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             }
 
             if (bit310)
-            {
                 packet.WriteLine("Missing data for bit310");
-            }
 
             if (bit3F0)
                 bits3F4 = packet.ReadBits(22);
@@ -311,8 +309,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             if (living)
             {
-                if (bit20)
-                    packet.ReadInt32("Int20", index);
+                if (hasTimestamp)
+                    packet.ReadUInt32("Time", index);
 
                 for (var i = 0; i < bits168; ++i)
                 {
