@@ -540,8 +540,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             if (hasVehicleData)
             {
-                packet.ReadSingle("Float1E4", index);
-                packet.ReadInt32("Int1E8", index);
+                packet.ReadSingle("Vehicle Orientation", index);
+                moveInfo.VehicleId = packet.ReadUInt32("Vehicle Id", index);
             }
 
             if (hasAttackingTarget)
