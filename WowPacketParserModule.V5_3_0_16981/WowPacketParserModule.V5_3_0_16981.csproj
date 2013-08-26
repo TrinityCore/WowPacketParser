@@ -55,6 +55,7 @@
     <Compile Include="Parsers\CharacterHandler.cs" />
     <Compile Include="Parsers\CombatHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
+    <Compile Include="Parsers\ItemHandler.cs" />
     <Compile Include="Parsers\MiscellaneousHandler.cs" />
     <Compile Include="Parsers\MovementHandler.cs" />
     <Compile Include="Parsers\QueryHandler.cs" />
