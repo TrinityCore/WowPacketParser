@@ -589,10 +589,10 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             if (living && moveInfo.HasSplineData && hasFullSpline && splineType == 3)
             {
-                var guid8 = new byte[8];
-                guid8 = packet.StartBitStream(2, 4, 6, 3, 1, 5, 7, 0);
-                packet.ParseBitStream(guid8, 1, 3, 6, 7, 2, 4, 5, 0);
-                packet.WriteGuid("Guid8 GUID", guid8, index);
+                var facingTargetGuid = new byte[8];
+                facingTargetGuid = packet.StartBitStream(2, 4, 6, 3, 1, 5, 7, 0);
+                packet.ParseBitStream(facingTargetGuid, 1, 3, 6, 7, 2, 4, 5, 0);
+                packet.WriteGuid("Facing Target GUID", facingTargetGuid, index);
             }
 
             return moveInfo;
