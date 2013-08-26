@@ -403,10 +403,10 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 }
 
                 packet.ReadXORBytes(guid1, 2, 1);
-                packet.ReadSingle("SwimBack Speed", index);
-                packet.ReadSingle("Turn Speed", index);
-                packet.ReadXORBytes(guid1, 0, 3);
                 packet.ReadSingle("RunBack Speed", index);
+                packet.ReadSingle("Fly Speed", index);
+                packet.ReadXORBytes(guid1, 0, 3);
+                packet.ReadSingle("SwimBack Speed", index);
                 if (hasFallData)
                 {
                     if (hasFallDirection)
@@ -419,7 +419,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     packet.ReadUInt32("Time Fallen", index);
                 }
 
-                packet.ReadSingle("FlyBack Speed", index);
+                packet.ReadSingle("Turn Speed", index);
                 packet.ReadXORByte(guid1, 5);
                 moveInfo.Position.Z = packet.ReadSingle();
                 if (hasOrientation)
@@ -442,7 +442,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
                 moveInfo.Position.Y = packet.ReadSingle();
                 packet.ReadSingle("Swim Speed", index);
-                packet.ReadSingle("Fly Speed", index);
+                packet.ReadSingle("FlyBack Speed", index);
                 packet.ReadXORByte(guid1, 7);
                 moveInfo.RunSpeed = packet.ReadSingle("Run Speed", index) / 7.0f;
                 moveInfo.Position.X = packet.ReadSingle();
