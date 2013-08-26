@@ -127,16 +127,16 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var hasAnimKit3 = false;
 
             var bit28D = packet.ReadBit();
-            var bits404 = packet.ReadBits(22);
+            var transportFrames = packet.ReadBits(22);
             var hasVehicleData = packet.ReadBit("Has Vehicle Data", index);
             var bit3F0 = packet.ReadBit();
-            var hasGameObjectPosition = packet.ReadBit("Has GameObject Rotation", index);
+            var hasGameObjectPosition = packet.ReadBit("Has GameObject Position", index);
             packet.ReadBit(); // fake bit
             var bit310 = packet.ReadBit();
-            var bit1D8 = packet.ReadBit();
+            var transport = packet.ReadBit("On transport", index);
             var bit284 = packet.ReadBit();
             var bit208 = packet.ReadBit();
-            var bit1F8 = packet.ReadBit();
+            var hasGameObjectRotation = packet.ReadBit();
             var hasAttackingTarget = packet.ReadBit("Has Attacking Target", index);
             packet.ReadBit(); // fake bit
             packet.ReadBit(); // fake bit
@@ -150,7 +150,6 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             var hasSplineElevation = false;
             var hasMoveFlagsExtra = false;
-            var bitD8 = false;
             var hasMovementFlags = false;
             var hasTimestamp = false;
             var bit95 = false;
@@ -160,10 +159,10 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var hasTransportTime3 = false;
             var hasTransportTime2 = false;
             var hasPitch = false;
-            var bitF0 = false;
-            var bit118 = false;
+            var hasFullSpline = false;
+            var hasSplineStartTime = false;
             var bit134 = false;
-            var bit110 = false;
+            var hasSplineVerticalAcceleration = false;
             var bitA8 = false;
             var hasFallData = false;
             var hasFallDirection = false;
@@ -192,7 +191,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.StartBitStream(guid1, 4, 7);
                 hasMoveFlagsExtra = !packet.ReadBit();
                 packet.StartBitStream(guid1, 5, 2);
-                bitD8 = packet.ReadBit();
+                moveInfo.HasSplineData = packet.ReadBit("Has spline data", index);
                 hasMovementFlags = !packet.ReadBit();
                 hasTimestamp = !packet.ReadBit("Lacks timestamp", index);
                 bit95 = packet.ReadBit();
@@ -219,16 +218,16 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     bits168A[i] = packet.ReadBits("bits168", 2, index);
 
                 guid1[1] = packet.ReadBit();
-                if (bitD8)
+                if (moveInfo.HasSplineData)
                 {
-                    bitF0 = packet.ReadBit();
-                    if (bitF0)
+                    hasFullSpline = packet.ReadBit();
+                    if (hasFullSpline)
                     {
-                        bit118 = packet.ReadBit();
+                        hasSplineStartTime = packet.ReadBit();
                         bit134 = packet.ReadBit();
                         packet.ReadBits("bits130", 2, index);
                         bits120 = packet.ReadBits(20);
-                        bit110 = packet.ReadBit();
+                        hasSplineVerticalAcceleration = packet.ReadBit();
                         if (bit134)
                         {
                             bits138 = packet.ReadBits(21);
@@ -303,8 +302,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             packet.ResetBitReader();
 
-            for (var i = 0; i < bits404; ++i)
-                packet.ReadInt32("Int408", index);
+            for (var i = 0; i < transportFrames; ++i)
+                packet.ReadInt32("Transport frame", i, index);
 
             if (living)
             {
@@ -321,18 +320,18 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     packet.ReadSingle("Float16C+3", index);
                 }
 
-                if (bitD8)
+                if (moveInfo.HasSplineData)
                 {
-                    if (bitF0)
+                    if (hasFullSpline)
                     {
-                        if (bit118)
-                            packet.ReadInt32("Int11C", index);
+                        if (hasSplineStartTime)
+                            packet.ReadInt32("Spline Start Time", index);
 
-                        packet.ReadSingle("Float108", index);
-                        if (bit110)
-                            packet.ReadSingle("Float114", index);
+                        packet.ReadSingle("Spline Duration Multiplier", index);
+                        if (hasSplineVerticalAcceleration)
+                            packet.ReadSingle("Spline Vertical Acceleration", index);
 
-                        packet.ReadInt32("Int100", index);
+                        packet.ReadInt32("Spline Time", index);
                         for (var i = 0u; i < bits120; ++i)
                         {
                             var wp = new Vector3
@@ -354,8 +353,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                             }
                         }
 
-                        packet.ReadSingle("Float10C", index);
-                        splineType = packet.ReadByte("ByteFC", index);
+                        packet.ReadSingle("Spline Duration Multiplier Next", index);
+                        splineType = packet.ReadByte("Spline type", index);
                         if (splineType == 4)
                             packet.ReadSingle("Facing Angle", index);
 
@@ -371,12 +370,12 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                             packet.WriteLine("[{0}] Facing Spot: {1}", index, point);
                         }
 
-                        packet.ReadInt32("Int104", index);
+                        packet.ReadInt32("Spline Full Time", index);
                     }
 
                     moveInfo.Position.Y = packet.ReadSingle();
                     moveInfo.Position.Z = packet.ReadSingle();
-                    packet.ReadInt32("IntE0", index);
+                    packet.ReadInt32("Spline Id", index);
                     moveInfo.Position.X = packet.ReadSingle();
                 }
 
@@ -412,9 +411,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 {
                     if (hasFallDirection)
                     {
-                        packet.ReadSingle("Float88", index);
-                        packet.ReadSingle("Float8C", index);
-                        packet.ReadSingle("Float84", index);
+                        packet.ReadSingle("Jump Sin", index);
+                        packet.ReadSingle("Jump Velocity", index);
+                        packet.ReadSingle("Jump Cos", index);
                     }
                     packet.ReadSingle("Fall Start Velocity", index);
                     packet.ReadUInt32("Time Fallen", index);
@@ -547,8 +546,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.WriteGuid("Attacking GUID", attackingTargetGuid, index);
             }
 
-            if (bit1F8)
-                packet.ReadGuid("GUIDX", index);
+            if (hasGameObjectRotation)
+                packet.ReadPackedQuaternion("GameObject Rotation", index);
 
             if (hasAnimKits)
             {
@@ -575,8 +574,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.WriteLine("[{0}] Stationary Position: {1}", index, moveInfo.Position);
             }
 
-            if (bit1D8)
-                packet.ReadInt32("Int1DC", index);
+            if (transport)
+                packet.ReadInt32("Transport path timer", index);
 
             if (bit3F0)
                 for (var i = 0; i < bits3F4; ++i)
@@ -588,10 +587,10 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             if (bit3E8)
                 packet.ReadInt32("Int3EC", index);
 
-            if (living && bitD8 && bitF0 && splineType == 3)
+            if (living && moveInfo.HasSplineData && hasFullSpline && splineType == 3)
             {
                 var guid8 = new byte[8];
-                guid8 = packet.StartBitStream(2, 4, 6, 3, 1, 5, 6, 0);
+                guid8 = packet.StartBitStream(2, 4, 6, 3, 1, 5, 7, 0);
                 packet.ParseBitStream(guid8, 1, 3, 6, 7, 2, 4, 5, 0);
                 packet.WriteGuid("Guid8 GUID", guid8, index);
             }
