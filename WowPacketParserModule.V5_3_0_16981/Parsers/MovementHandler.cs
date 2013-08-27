@@ -151,5 +151,15 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             packet.ReadSingle("Orientation");
         }
+
+        [Parser(Opcode.CMSG_SET_ACTIVE_MOVER)]
+        public static void HandleSetActiveMover(Packet packet)
+        {
+            packet.ReadBit("unk");
+
+            var guid = packet.StartBitStream(6, 2, 3, 0, 4, 1, 7, 5);
+            packet.ParseBitStream(guid, 5, 1, 0, 2, 6, 3, 7, 4);
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
