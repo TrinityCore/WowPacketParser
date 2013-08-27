@@ -52,6 +52,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Parsers\AccountDataHandler.cs" />
+    <Compile Include="Parsers\ActionBarHandler.cs" />
     <Compile Include="Parsers\CharacterHandler.cs" />
     <Compile Include="Parsers\CombatHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
