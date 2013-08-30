@@ -39,7 +39,7 @@ namespace WowPacketParser.Enums.Version
             {
                 typeof(ObjectField), typeof(ItemField), typeof(ContainerField), typeof(UnitField),
                 typeof(PlayerField), typeof(GameObjectField), typeof(DynamicObjectField),
-                typeof(CorpseField), typeof(AreaTriggerField)
+                typeof(CorpseField), typeof(AreaTriggerField), typeof(SceneObjectField)
             };
 
             foreach (var enumType in enumTypes)

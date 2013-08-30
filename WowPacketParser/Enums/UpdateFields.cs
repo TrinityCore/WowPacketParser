@@ -675,5 +675,14 @@ namespace WowPacketParser.Enums
         AREATRIGGER_SPELLID,
         AREATRIGGER_SPELLVISUALID,
     }
+
+    public enum SceneObjectField
+    {
+        SCENEOBJECT_FIELD_CREATEDBY,
+        SCENEOBJECT_FIELD_END,
+        SCENEOBJECT_FIELD_RND_SEED_VAL,
+        SCENEOBJECT_FIELD_SCENE_TYPE,
+        SCENEOBJECT_FIELD_SCRIPT_PACKAGE_ID,
+    };
     // ReSharper restore InconsistentNaming, UnusedMember.Global
 }
