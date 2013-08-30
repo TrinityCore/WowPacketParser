@@ -212,6 +212,11 @@ namespace WowPacketParser.Parsing.Parsers
                             key = UpdateFields.GetUpdateFieldName<AreaTriggerField>(i);
                             break;
                         }
+                        case ObjectType.SceneObject:
+                        {
+                            key = UpdateFields.GetUpdateFieldName<SceneObjectField>(i);
+                            break;
+                        }
                     }
                 }
                 packet.WriteLine("[" + index + "] " + key + ": " + value);
