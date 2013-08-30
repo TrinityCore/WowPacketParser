@@ -288,10 +288,11 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
 
     public enum SceneObjectField
     {
-        SCENEOBJECT_FIELD_SCRIPT_PACKAGE_ID              = ObjectField.OBJECT_END + 0x0,
-        SCENEOBJECT_FIELD_RND_SEED_VAL                   = ObjectField.OBJECT_END + 0x1,
-        SCENEOBJECT_FIELD_CREATEDBY                      = ObjectField.OBJECT_END + 0x2,
-        SCENEOBJECT_FIELD_END                            = ObjectField.OBJECT_END + 0x4
+        SCENEOBJECT_FIELD_SCRIPT_PACKAGE_ID              = ObjectField.OBJECT_END + 0x0000, // Size = 1, Type: Flags PUBLIC
+        SCENEOBJECT_FIELD_RND_SEED_VAL                   = ObjectField.OBJECT_END + 0x0001, // Size = 1, Type: Flags PUBLIC
+        SCENEOBJECT_FIELD_CREATEDBY                      = ObjectField.OBJECT_END + 0x0002, // Size = 2, Type: Flags PUBLIC
+        SCENEOBJECT_FIELD_SCENE_TYPE                     = ObjectField.OBJECT_END + 0x0004, // Size = 1, Type: Flags PUBLIC
+        SCENEOBJECT_FIELD_END                            = ObjectField.OBJECT_END + 0x0005
     };
     // ReSharper restore InconsistentNaming
 }
