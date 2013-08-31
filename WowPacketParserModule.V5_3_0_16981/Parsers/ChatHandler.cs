@@ -4,6 +4,8 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using Guid = WowPacketParser.Misc.Guid;
+using ChatMessageType530 = WowPacketParserModule.V5_3_0_16981.Enums.ChatMessageType;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
@@ -57,7 +59,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             var bit2630 = !packet.ReadBit();
             if (bit2630)
-                packet.ReadBits("bits2630", 9);
+                packet.ReadEnum<ChatTag>("Chat Tag", 9);
 
             var hasLang = !packet.ReadBit();
             int prefixLen = 0;
@@ -77,13 +79,18 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.WriteGuid("GroupGUID", GroupGUID);
             packet.WriteGuid("GuildGUID", GuildGUID);
 
+            uint entry = 0;
+            var guid = new Guid(BitConverter.ToUInt64(SenderGUID, 0));
+            if (guid.GetObjectType() == ObjectType.Unit)
+                entry = guid.GetEntry();
+
             if (hasAchi)
                 packet.ReadInt32("Achievement");
 
             if (hasReceiver)
                 packet.ReadWoWString("Receiver Name", receiverLen);
 
-            text.Type = packet.ReadEnum<ChatMessageType>("Chat type", TypeCode.Byte); // enum is wrong for this 5.3 e.g. achievement
+            text.Type = (ChatMessageType)packet.ReadEnum<ChatMessageType530>("Chat type", TypeCode.Byte);
             if (hasText)
                 text.Text = packet.ReadWoWString("Text", textLen);
 
@@ -100,7 +107,10 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadWoWString("Sender Name", senderName);
 
             if (hasLang)
-                text.Language = packet.ReadEnum<Language>("byte11",TypeCode.Byte);
+                text.Language = packet.ReadEnum<Language>("Language", TypeCode.Byte);
+
+            if (entry != 0)
+                Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
         }
     }
 }

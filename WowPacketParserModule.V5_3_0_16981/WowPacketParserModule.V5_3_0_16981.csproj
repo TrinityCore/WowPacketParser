@@ -51,6 +51,7 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Enums\ChatMessageType.cs" />
     <Compile Include="Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsers\ActionBarHandler.cs" />
     <Compile Include="Parsers\CharacterHandler.cs" />
