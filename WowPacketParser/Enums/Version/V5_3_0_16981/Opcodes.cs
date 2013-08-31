@@ -168,6 +168,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_DISPLAY_GAME_ERROR, 0x07D5},
             {Opcode.SMSG_DONT_AUTO_PUSH_SPELLS_TO_ACTION_BAR, 0x0BD9},
             {Opcode.SMSG_DUMP_RIDE_TICKETS_RESPONSE, 0x10D5},
+            {Opcode.SMSG_EMOTE, 0x056D},
             {Opcode.SMSG_EQUIPMENT_SET_SAVED, 0x0888},
             {Opcode.SMSG_EQUIPMENT_SET_USE_RESULT, 0x12CD},
             {Opcode.SMSG_EXPLORATION_EXPERIENCE, 0x0D84},
