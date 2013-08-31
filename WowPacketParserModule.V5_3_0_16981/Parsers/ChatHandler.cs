@@ -104,7 +104,12 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadWoWString("Channel Name", channelLen);
 
             if (hasSender)
-                packet.ReadWoWString("Sender Name", senderName);
+            {
+                if (entry != 0)
+                    text.Comment = packet.ReadWoWString("Sender Name", senderName);
+                else
+                    packet.ReadWoWString("Sender Name", senderName);
+            }
 
             if (hasLang)
                 text.Language = packet.ReadEnum<Language>("Language", TypeCode.Byte);
