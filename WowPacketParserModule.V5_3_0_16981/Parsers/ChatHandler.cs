@@ -117,5 +117,63 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             if (entry != 0)
                 Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
         }
+
+        [Parser(Opcode.CMSG_TEXT_EMOTE)]
+        public static void HandleTextEmote(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadInt32("Text Emote ID");
+            packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
+
+            guid[3] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 0);
+            packet.WriteGuid("GUID", guid);
+        }
+
+        [Parser(Opcode.SMSG_TEXT_EMOTE)]
+        public static void HandleTextEmoteServer(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[4] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            var bits7 = packet.ReadBits(7);
+            guid[7] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+
+            packet.ReadInt32("Text Emote ID");
+            packet.ReadWoWString("Name", bits7);
+            packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
+
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 6);
+            packet.WriteGuid("GUID", guid);
+        }
     }
 }
