@@ -15,6 +15,8 @@ namespace WowPacketParser.Enums
         NotSpecified = 10,
         Totem = 11,
         NonCombatPet = 12,
-        GasCloud = 13
+        GasCloud = 13,
+        WildPet = 14,
+        Aberration = 15
     }
 }

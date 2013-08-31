@@ -95,7 +95,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 text.Text = packet.ReadWoWString("Text", textLen);
 
             if (bit38)
-                packet.ReadInt32("int38");
+                packet.ReadInt32("Constant time");
 
             if (bit1316)
                 packet.ReadSingle("float1316");

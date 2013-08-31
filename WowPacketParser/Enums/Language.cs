@@ -22,6 +22,10 @@ namespace WowPacketParser.Enums
         GoblinBinary = 38,
         Worgen = 39,
         Goblin = 40,
+        Pandaren1 = 42,
+        Pandaren2 = 43,
+        Pandaren3 = 44,
+        Rikkitun = 168,
         Addon = uint.MaxValue
     }
 }
