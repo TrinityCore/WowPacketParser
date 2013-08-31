@@ -48,7 +48,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_TEXT_EMOTE)]
         public static void HandleTextEmote(Packet packet)
         {
-            packet.ReadInt32("Text Emote ID");
+            packet.ReadEnum<EmoteTextType>("Text Emote ID", TypeCode.Int32);
             packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
             packet.ReadGuid("GUID");
         }
@@ -57,7 +57,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleTextEmoteServer(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadInt32("Text Emote ID");
+            packet.ReadEnum<EmoteTextType>("Text Emote ID", TypeCode.Int32);
             packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
             packet.ReadInt32("Name length");
             packet.ReadCString("Name");

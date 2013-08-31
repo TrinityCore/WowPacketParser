@@ -123,7 +123,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         {
             var guid = new byte[8];
 
-            packet.ReadInt32("Text Emote ID");
+            packet.ReadEnum<EmoteTextType>("Text Emote ID", TypeCode.Int32);
             packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
 
             guid[3] = packet.ReadBit();
@@ -161,9 +161,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             guid[7] = packet.ReadBit();
             guid[3] = packet.ReadBit();
 
-            packet.ReadInt32("Text Emote ID");
-            packet.ReadWoWString("Name", bits7);
             packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
+            packet.ReadWoWString("Name", bits7);
+            packet.ReadEnum<EmoteTextType>("Text Emote ID", TypeCode.Int32);
 
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 0);

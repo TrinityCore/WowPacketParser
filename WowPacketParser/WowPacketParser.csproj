@@ -162,6 +162,7 @@
     <Compile Include="Enums\DismountResult.cs" />
     <Compile Include="Enums\DrunkenState.cs" />
     <Compile Include="Enums\DumpFormatType.cs" />
+    <Compile Include="Enums\EmoteTextType.cs" />
     <Compile Include="Enums\EmoteType.cs" />
     <Compile Include="Enums\EncounterFrame.cs" />
     <Compile Include="Enums\EnvironmentDamage.cs" />
