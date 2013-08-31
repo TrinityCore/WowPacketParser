@@ -361,7 +361,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_WHOIS, 0x0D89},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x1091},
             {Opcode.SMSG_XP_GAIN_ABORTED, 0x1188},
-            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x053F},        
+            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x053F}
         };
     }
 }

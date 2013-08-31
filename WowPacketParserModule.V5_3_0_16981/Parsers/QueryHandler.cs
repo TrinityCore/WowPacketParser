@@ -162,5 +162,57 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadWoWString("Realmname", bits278);
             packet.ReadWoWString("Realmname2", bits22);
         }
+
+        [Parser(Opcode.SMSG_NAME_QUERY_RESPONSE)]
+        public static void HandleNameQueryResponse(Packet packet)
+        {
+            var guid = new byte[8];
+
+            var bit16 = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+
+            if (bit16)
+            {
+                for (var i = 0; i < 5; ++i)
+                {
+                    var counter = packet.ReadBits(7);
+                }
+            }
+            var bits32 = packet.ReadBits(6);
+            guid[6] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            var bit83 = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 1);
+            packet.ReadWoWString("Name: ", bits32);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 7);
+
+            packet.ReadByte("Race");
+            packet.ReadByte("unk81");
+            packet.ReadByte("Gender");
+
+            if (bit16)
+            {
+                for (var i = 0; i < 5; ++i)
+                {
+                    packet.ReadCString("Declined Name");
+                }
+            }
+            packet.ReadByte("Class");
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadUInt32("unk84");
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 2);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
