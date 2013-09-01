@@ -454,7 +454,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Int32);
             packet.ReadXORByte(guid3, 2);
-            packet.ReadUInt32("Spell Id");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
             packet.ReadXORByte(guid4, 0);
             packet.ReadXORByte(guid3, 5);
 
@@ -491,9 +491,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadXORByte(guid4, 6);
 
             if (bit106)
-                packet.ReadUInt32("unk106");
+                packet.ReadUInt32("Heal");
 
-            packet.ReadUInt32("unk12");
+            packet.ReadUInt32("Cast time");
             packet.ReadXORByte(guid4, 5);
 
             if (bit91)
