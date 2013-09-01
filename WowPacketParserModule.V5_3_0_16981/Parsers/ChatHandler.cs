@@ -175,5 +175,19 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadXORByte(guid, 6);
             packet.WriteGuid("GUID", guid);
         }
+
+        [Parser(Opcode.CMSG_CHANNEL_LIST)]
+        public static void HandleChannelList(Packet packet)
+        {
+            packet.ReadUInt32("Flags");
+            var password = packet.ReadBits(7);
+            packet.ReadBit();
+            var length = packet.ReadBits(7);
+            packet.ReadBit();
+
+            packet.ReadWoWString("Password", password);
+            packet.ReadWoWString("Channel Name", length);
+
+        }
     }
 }
