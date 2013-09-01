@@ -48,7 +48,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             if (hasText)
                 textLen = (int)packet.ReadBits(12);
 
-            var bit38 = !packet.ReadBit();
+            var hasConstTime = !packet.ReadBit();
             var hasAchi = !packet.ReadBit();
             packet.ReadBit(); // fake bit
             packet.StartBitStream(SenderGUID, 5, 4, 1, 0, 6, 2, 7, 3);
@@ -94,7 +94,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             if (hasText)
                 text.Text = packet.ReadWoWString("Text", textLen);
 
-            if (bit38)
+            if (hasConstTime)
                 packet.ReadInt32("Constant time");
 
             if (bit1316)

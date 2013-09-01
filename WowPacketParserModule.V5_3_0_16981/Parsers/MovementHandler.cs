@@ -161,5 +161,154 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ParseBitStream(guid, 5, 1, 0, 2, 6, 3, 7, 4);
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_MONSTER_MOVE)]
+        public static void HandleMonsterMove(Packet packet)
+        {
+            var ownerGUID = new byte[8];
+            var guid2 = new byte[8];
+            var factingTargetGUID = new byte[8];
+            var pos = new Vector3();
+
+            packet.ReadSingle("Float34");
+            packet.ReadInt32("Move Ticks");
+            pos.X = packet.ReadSingle();
+            pos.Z = packet.ReadSingle();
+            packet.ReadSingle("Float30");
+            packet.ReadSingle("Float2C");
+            pos.Y = packet.ReadSingle();
+
+            packet.ReadBit("bit38");
+            packet.ReadBit(); // fake bit
+            var bit6C = !packet.ReadBit();
+            ownerGUID[4] = packet.ReadBit();
+            var hasTime = !packet.ReadBit();
+            ownerGUID[1] = packet.ReadBit();
+            var bit6D = !packet.ReadBit();
+            ownerGUID[2] = packet.ReadBit();
+            var bit4C = !packet.ReadBit();
+
+            packet.StartBitStream(guid2, 6, 1, 3, 5, 2, 7, 4, 0);
+            var bit8C = packet.ReadBit();
+            ownerGUID[3] = packet.ReadBit();
+            var hasFlags = !packet.ReadBit();
+            var waypointCount = packet.ReadBits(22);
+            packet.StartBitStream(ownerGUID, 5, 0);
+            var hasAnimationTime = !packet.ReadBit();
+            var hasParabolicTime = !packet.ReadBit();
+            ownerGUID[6] = packet.ReadBit();
+
+            var bits90 = 0u;
+            if (bit8C)
+            {
+                bits90 = packet.ReadBits(22);
+                packet.ReadBits("bitsA0", 2);
+            }
+
+            var hasAnimationState = !packet.ReadBit();
+            var splineType = packet.ReadBits(3);
+            var splineCount = packet.ReadBits(20);
+
+            if (splineType == 3)
+                packet.StartBitStream(factingTargetGUID, 5, 3, 6, 2, 1, 4, 7, 0);
+
+            var hasParabolicSpeed = !packet.ReadBit();
+            ownerGUID[7] = packet.ReadBit();
+            var bit78 = packet.ReadBit();
+
+            packet.ResetBitReader();
+            packet.ReadXORByte(ownerGUID, 2);
+            if (splineType == 3)
+            {
+                packet.ParseBitStream(factingTargetGUID, 1, 0, 6, 5, 3, 4, 7, 2);
+                packet.WriteGuid("Facting Target GUID", factingTargetGUID);
+            }
+
+            if (bit6D)
+                packet.ReadByte("byte6D");
+
+            if (hasParabolicTime)
+                packet.ReadInt32("Async-time in ms");
+
+            if (hasAnimationState)
+                packet.ReadEnum<MovementAnimationState>("Animation State", TypeCode.Byte);
+
+            if (hasTime)
+                packet.ReadInt32("Move Time in ms");
+
+            packet.ReadXORBytes(ownerGUID, 7, 1);
+
+            if (hasParabolicSpeed)
+                packet.ReadSingle("Vertical Speed");
+
+            packet.ReadXORByte(ownerGUID, 0);
+            if (bit8C)
+            {
+                for (var i = 0; i < bits90; ++i)
+                {
+                    packet.ReadInt16("short94+2", i);
+                    packet.ReadInt16("short94+0", i);
+                }
+
+                packet.ReadInt16("shortA8");
+                packet.ReadInt16("shortB0");
+                packet.ReadSingle("floatAC");
+                packet.ReadSingle("floatA4");
+            }
+
+            if (hasFlags)
+                packet.ReadEnum<SplineFlag434>("Spline Flags", TypeCode.Int32);
+
+            if (splineType == 2)
+                packet.ReadVector3("Facing Spot");
+
+            if (bit6C)
+                packet.ReadByte("byte6C");
+
+            packet.ReadXORBytes(guid2, 4, 1, 0, 7, 5, 6, 3, 2);
+
+            Vector3 endpos = new Vector3();
+            for (var i = 0; i < splineCount; ++i)
+            {
+                // client always taking first point
+                if (i == 0)
+                    endpos = packet.ReadVector3("Spline Waypoint", i);
+                else
+                    packet.ReadVector3("Spline Waypoint", i);
+            }
+
+            packet.ReadXORBytes(ownerGUID, 6, 3, 5);
+            if (bit4C)
+                packet.ReadInt32("int4C");
+
+            if (splineType == 4)
+                packet.ReadSingle("Facing Angle");
+
+            if (!bit78)
+                packet.ReadByte("byte78");
+
+            packet.ReadXORByte(ownerGUID, 4);
+            if (hasAnimationTime)
+                packet.ReadInt32("Asynctime in ms"); // Async-time in ms
+
+            // Calculate mid pos
+            var mid = new Vector3();
+            mid.X = (pos.X + endpos.X) * 0.5f;
+            mid.Y = (pos.Y + endpos.Y) * 0.5f;
+            mid.Z = (pos.Z + endpos.Z) * 0.5f;
+            for (var i = 0; i < waypointCount; ++i)
+            {
+                // sub_7D11B4(result& wp, int32(from packet), mid)
+                var vec = packet.ReadPackedVector3();
+                vec.X = mid.X - vec.X;
+                vec.Y = mid.Y - vec.Y;
+                vec.Z = mid.Z - vec.Z;
+                packet.WriteLine("[{0}] Waypoint: {1}", i, vec);
+            }
+
+            packet.WriteGuid("Owner GUID", ownerGUID);
+            packet.WriteGuid("GUID2", guid2);
+            packet.WriteLine("Position: {0}", pos);
+        }
     }
 }
