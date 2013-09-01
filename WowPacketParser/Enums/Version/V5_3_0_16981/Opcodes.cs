@@ -342,6 +342,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x0D7E},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA, 0x0684},
             {Opcode.SMSG_UPDATE_DUNGEON_ENCOUNTER_FOR_LOOT, 0x03D9},
+            {Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT, 0x196E},
             {Opcode.SMSG_UPDATE_OBJECT, 0x0C65},
             {Opcode.SMSG_UPDATE_SERVER_PLAYER_POSITION, 0x0E84},
             {Opcode.SMSG_UPDATE_WORLD_STATE, 0x13C8},
