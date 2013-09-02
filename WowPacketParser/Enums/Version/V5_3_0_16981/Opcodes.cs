@@ -187,6 +187,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_GROUP_INVITE, 0x11DD},
             {Opcode.SMSG_GUILD_EVENT, 0x11CC},
             {Opcode.SMSG_GUILD_REPUTATION_WEEKLY_CAP, 0x1A83},
+            {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x0E0A},
             {Opcode.SMSG_GUILD_ROSTER, 0x0C0A},
             {Opcode.SMSG_HEALTH_UPDATE, 0x13D8},
             {Opcode.SMSG_HOTFIX_INFO, 0x1584},
