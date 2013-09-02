@@ -22,6 +22,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.CMSG_DISMISS_CONTROLLED_VEHICLE, 0x0A56},
             {Opcode.CMSG_FORCE_MOVE_ROOT_ACK, 0x08CE},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x058F},
+            {Opcode.CMSG_GOSSIP_HELLO, 0x1414},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x1341},
             {Opcode.CMSG_INSPECT, 0x1515},
             {Opcode.CMSG_INSPECT_HONOR_STATS, 0x01D6},
