@@ -37,6 +37,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Unk430_2", ClientVersionBuild.V4_3_0_15005)]
         public float Unk430_2;
 
+        [DBFieldName("Unk530_1", ClientVersionBuild.V5_3_0_16981)]
+        public float Unk530_1;
+
         [DBFieldName("BuyCount")]
         public uint BuyCount;
 
