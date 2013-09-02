@@ -36,6 +36,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.CMSG_MOVE_SET_FLY, 0x0ADF},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x009E},
             {Opcode.CMSG_OBJECT_UPDATE_FAILED, 0x0492},
+            {Opcode.CMSG_PAGE_TEXT_QUERY, 0x055E},
             {Opcode.CMSG_PING, 0x08E3},
             {Opcode.CMSG_PLAYER_LOGIN, 0x0A19},
             {Opcode.CMSG_QUERY_PLAYER_NAME, 0x0018},
