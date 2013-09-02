@@ -300,19 +300,22 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             if (bit160)
             {
+                var pos = new Vector3();
                 packet.ReadXORByte(guid7, 0);
                 packet.ReadXORByte(guid7, 1);
-                var float46 = packet.ReadSingle("float46");
+                pos.Z = packet.ReadSingle();
                 packet.ReadXORByte(guid7, 5);
                 packet.ReadXORByte(guid7, 3);
-                var float45 = packet.ReadSingle("float45");
+                pos.Y = packet.ReadSingle();
                 packet.ReadXORByte(guid7, 2);
-                var float44 = packet.ReadSingle("float44");
+                pos.X = packet.ReadSingle();
                 packet.ReadXORByte(guid7, 6);
                 packet.ReadXORByte(guid7, 7);
                 packet.ReadXORByte(guid7, 4);
                 packet.WriteGuid("GUID7", guid7);
+                packet.WriteLine("Position: {0}", pos);
             }
+
             packet.ReadXORByte(TargetGUID, 1);
             packet.ReadXORByte(TargetGUID, 0);
             packet.ReadXORByte(TargetGUID, 5);
@@ -410,18 +413,20 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             if (bit128)
             {
+                var pos = new Vector3();
                 packet.ReadXORByte(guid8, 2);
                 packet.ReadXORByte(guid8, 4);
                 packet.ReadXORByte(guid8, 1);
-                packet.ReadSingle("float38");
+                pos.Z = packet.ReadSingle();
                 packet.ReadXORByte(guid8, 0);
                 packet.ReadXORByte(guid8, 5);
                 packet.ReadXORByte(guid8, 3);
-                packet.ReadSingle("float36");
-                packet.ReadSingle("float37");
+                pos.X = packet.ReadSingle();
+                pos.Y = packet.ReadSingle();
                 packet.ReadXORByte(guid8, 7);
                 packet.ReadXORByte(guid8, 6);
                 packet.WriteGuid("GUID8", guid8);
+                packet.WriteLine("Position: {0}", pos);
             }
 
             for (var i = 0; i < bits340; ++i)

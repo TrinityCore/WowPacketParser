@@ -21,7 +21,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             guid[3] = packet.ReadBit();
             guid[5] = packet.ReadBit();
             guid[7] = packet.ReadBit();
- 
+
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 7);
@@ -31,9 +31,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 3);
             packet.WriteGuid("GUID", guid);
- 
+
         }
-        
+
         [Parser(Opcode.CMSG_GOSSIP_SELECT_OPTION)]
         public static void HandleNpcGossipSelectOption(Packet packet)
         {
@@ -48,11 +48,11 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             guid[5] = packet.ReadBit();
             guid[3] = packet.ReadBit();
             guid[7] = packet.ReadBit();
-            
+
             var bits8 = packet.ReadBits(8);
-            
+
             packet.ReadXORByte(guid, 0);
-            
+
             packet.ReadWoWString("Box Text", bits8);
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 5);
@@ -61,7 +61,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 1);
- 
+
             Storage.GossipSelects.Add(Tuple.Create(menuEntry, gossipId), null, packet.TimeSpan);
             packet.WriteGuid("GUID", guid);
         }
