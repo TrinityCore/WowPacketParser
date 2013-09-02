@@ -182,7 +182,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var entry = packet.ReadUInt32("Entry");
 
-            pageText.Text = packet.ReadCString("Page Tex");
+            pageText.Text = packet.ReadCString("Page Text");
 
             pageText.NextPageId = packet.ReadUInt32("Next Page");
 

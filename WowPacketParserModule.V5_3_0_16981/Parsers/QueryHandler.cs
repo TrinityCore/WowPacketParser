@@ -234,7 +234,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             switch (type)
             {
-                case 0x50238EC2:    // Item
+                case 0x50238EC2:    // Item.db2
                     {
                         var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
 
@@ -251,7 +251,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         packet.AddSniffData(StoreNameType.Item, (int)entry, "DB_REPLY");
                         break;
                     }
-                case 0x919BE54E:    // Item-sparse
+                case 0x919BE54E:    // Item-sparse.db2
                     {
                         var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
 
@@ -381,7 +381,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         packet.AddSniffData(StoreNameType.Item, (int)entry, "DB_REPLY");
                         break;
                     }
-                case 0x6D8A2694: // KeyChain
+                case 0x6D8A2694: // KeyChain.db2
                     {
                         db2File.ReadUInt32("Key Chain Id");
                         db2File.WriteLine("Key: {0}", Utilities.ByteArrayToHexString(db2File.ReadBytes(32)));
@@ -390,12 +390,12 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 case 0xC9D6B6B3: // Creature.db2
                     {
                         db2File.ReadUInt32("Npc Entry");
-                        db2File.ReadUInt32("Int1");
-                        db2File.ReadUInt32("Int2");
-                        db2File.ReadUInt32("Int3");
-                        db2File.ReadUInt32("Int4");
-                        db2File.ReadUInt32("Int5");
-                        db2File.ReadUInt32("Int6");
+                        db2File.ReadUInt32("Item Entry 1");
+                        db2File.ReadUInt32("Item Entry 2");
+                        db2File.ReadUInt32("Item Entry 3");
+                        db2File.ReadUInt32("Projectile Entry 1");
+                        db2File.ReadUInt32("Projectile Entry 2");
+                        db2File.ReadUInt32("Mount");
                         db2File.ReadUInt32("Display Id 1");
                         db2File.ReadUInt32("Display Id 2");
                         db2File.ReadUInt32("Display Id 3");
@@ -407,7 +407,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         if (db2File.ReadUInt16() > 0)
                             db2File.ReadCString("Name");
 
-                        db2File.ReadUInt32("Int7");
+                        db2File.ReadUInt32("InhabitType");
                         break;
                     }
                 default:
