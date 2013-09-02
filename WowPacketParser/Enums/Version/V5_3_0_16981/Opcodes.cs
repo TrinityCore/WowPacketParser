@@ -260,6 +260,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_NEUTRAL_PLAYER_FACTION_SELECT_RESULT, 0x0480},
             {Opcode.SMSG_NEW_WORLD, 0x04D9},
             {Opcode.SMSG_NEW_WORLD_ABORT, 0x0399},
+            {Opcode.SMSG_NPC_TEXT_UPDATE, 0x02CC},
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x0384},
             {Opcode.SMSG_PETITION_ALREADY_SIGNED, 0x10CD},
             {Opcode.SMSG_PET_ACTION_FEEDBACK, 0x08C4},
