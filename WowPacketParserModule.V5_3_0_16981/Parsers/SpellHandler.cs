@@ -685,6 +685,5 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.WriteGuid("GUID10", guid10);
             packet.WriteGuid("GUID11", guid11);
         }
-
     }
 }
