@@ -312,8 +312,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadXORByte(guid7, 6);
                 packet.ReadXORByte(guid7, 7);
                 packet.ReadXORByte(guid7, 4);
-                packet.WriteGuid("GUID7", guid7);
-                packet.WriteLine("Position: {0}", pos);
+                packet.WriteGuid("Destination Transport GUID", guid7);
+                packet.WriteLine("Destination Position: {0}", pos);
             }
 
             packet.ReadXORByte(TargetGUID, 1);
@@ -425,8 +425,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 pos.Y = packet.ReadSingle();
                 packet.ReadXORByte(guid8, 7);
                 packet.ReadXORByte(guid8, 6);
-                packet.WriteGuid("GUID8", guid8);
-                packet.WriteLine("Position: {0}", pos);
+                packet.WriteGuid("Source Transport GUID", guid8);
+                packet.WriteLine("Source Position: {0}", pos);
             }
 
             for (var i = 0; i < bits340; ++i)
