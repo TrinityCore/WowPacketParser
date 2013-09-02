@@ -527,5 +527,410 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     Storage.StartSpells.Add(new Tuple<Race, Class>(player.Race, player.Class), startSpell, packet.TimeSpan);
             }
         }
+
+        [Parser(Opcode.SMSG_AURA_UPDATE)]
+        public static void HandleAuraUpdate(Packet packet)
+        {
+            var guid = new byte[8];
+            var guid2 = new byte[8];
+            var guid3 = new byte[8];
+            byte[][] guid4;
+            byte[][] guid5;
+            var guid6 = new byte[8];
+            byte[][] guid7;
+            var guid8 = new byte[8];
+            var guid9 = new byte[8];
+            var guid10 = new byte[8];
+            var guid11 = new byte[8];
+
+            packet.WriteGuid("GUID1: ", guid);
+            packet.WriteGuid("GUID2: ", guid2);
+            packet.WriteGuid("GUID3: ", guid3);
+            packet.WriteGuid("GUID6: ", guid6);
+            packet.WriteGuid("GUID8: ", guid8);
+            packet.WriteGuid("GUID9: ", guid9);
+            packet.WriteGuid("GUID10: ", guid10);
+            packet.WriteGuid("GUID11: ", guid11);
+
+            uint counter5 = 0;
+
+            // main func sub_BF21FA
+            guid10[5] = packet.ReadBit();
+            var counter = packet.ReadBits(24); // field_74
+            var bit476 = !packet.ReadBit("field_1DC");
+            var bit404 = !packet.ReadBit("field_193");
+            packet.ReadBit("field_A8");
+            guid11[6] = packet.ReadBit();
+            var bit432 = !packet.ReadBit("field_1B0");
+            var counter3 = packet.ReadBits(20);
+            guid[2] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+
+            guid10[0] = packet.ReadBit();
+            guid10[1] = packet.ReadBit();
+            guid10[3] = packet.ReadBit();
+
+            guid7 = new byte[counter][];
+            for (var i = 0; i < counter; ++i)
+            {
+                guid7[i] = new byte[8];
+                guid7[i][5] = packet.ReadBit();
+                guid7[i][6] = packet.ReadBit();
+                guid7[i][4] = packet.ReadBit();
+                guid7[i][7] = packet.ReadBit();
+                guid7[i][1] = packet.ReadBit();
+                guid7[i][2] = packet.ReadBit();
+                guid7[i][3] = packet.ReadBit();
+                guid7[i][0] = packet.ReadBit();
+            }
+
+            var bit452 = !packet.ReadBit("field_1C4");
+            guid11[5] = packet.ReadBit();
+            var bit385 = !packet.ReadBit("field_17F");
+            var counter7 = packet.ReadBits(21); // field_16F
+            var bit408 = !packet.ReadBit("field_197");
+            var counter2 = packet.ReadBits(24); // field_64
+            var bit16 = packet.ReadBit(); // field_10
+            guid10[6] = packet.ReadBit();
+            guid10[2] = packet.ReadBit();
+            guid11[7] = packet.ReadBit();
+            var counter6 = packet.ReadBits(3); // field_183
+            var bit152 = !packet.ReadBit(); // field_95
+            var bit176 = packet.ReadBit(); // field_B0
+
+            if (bit16)
+            {
+                guid2[7] = packet.ReadBit();
+                guid2[4] = packet.ReadBit();
+                guid2[5] = packet.ReadBit();
+                guid2[0] = packet.ReadBit();
+                guid2[2] = packet.ReadBit();
+                guid2[6] = packet.ReadBit();
+                guid2[3] = packet.ReadBit();
+                guid2[1] = packet.ReadBit();
+                counter5 = packet.ReadBits(21); // field_2C
+            }
+
+            var bit412 = !packet.ReadBit(); // field_19B
+
+            if (bit176)
+            {
+                guid3[6] = packet.ReadBit();
+                guid3[3] = packet.ReadBit();
+                guid3[0] = packet.ReadBit();
+                guid3[1] = packet.ReadBit();
+                guid3[4] = packet.ReadBit();
+                guid3[5] = packet.ReadBit();
+                guid3[2] = packet.ReadBit();
+                guid3[7] = packet.ReadBit();
+            }
+
+            guid11[1] = packet.ReadBit();
+
+            guid4 = new byte[counter2][];
+            for (var i = 0; i < counter2; ++i)
+            {
+                guid4[i] = new byte[8];
+                guid4[i][6] = packet.ReadBit();
+                guid4[i][4] = packet.ReadBit();
+                guid4[i][1] = packet.ReadBit();
+                guid4[i][7] = packet.ReadBit();
+                guid4[i][5] = packet.ReadBit();
+                guid4[i][2] = packet.ReadBit();
+                guid4[i][3] = packet.ReadBit();
+                guid4[i][0] = packet.ReadBit();
+            }
+
+            guid5 = new byte[counter3][];
+            for (var i = 0; i < counter3; ++i)
+            {
+                guid5[i] = new byte[8];
+                guid5[i][7] = packet.ReadBit();
+                guid5[i][6] = packet.ReadBit();
+                guid5[i][5] = packet.ReadBit();
+                guid5[i][0] = packet.ReadBit();
+                guid5[i][4] = packet.ReadBit();
+                guid5[i][3] = packet.ReadBit();
+                guid5[i][1] = packet.ReadBit();
+                guid5[i][2] = packet.ReadBit();
+            }
+            var bit416 = !packet.ReadBit(); // field_19F
+            guid11[0] = packet.ReadBit();
+            packet.ReadBits(12); // field_5C
+            guid10[7] = packet.ReadBit();
+            guid10[4] = packet.ReadBit();
+            var bit208 = packet.ReadBit(); // field_CF
+
+            if (bit208)
+            {
+                guid6[0] = packet.ReadBit();
+                guid6[2] = packet.ReadBit();
+                guid6[7] = packet.ReadBit();
+                guid6[6] = packet.ReadBit();
+                guid6[1] = packet.ReadBit();
+                guid6[4] = packet.ReadBit();
+                guid6[3] = packet.ReadBit();
+                guid6[5] = packet.ReadBit();
+            }
+
+            var bit384 = !packet.ReadBit(); // field_17F
+            var bit456 = !packet.ReadBit(); // field_1C8
+            guid11[3] = packet.ReadBit();
+            var bit420 = packet.ReadBit(); // field_1A3
+            var bit472 = !packet.ReadBit(); // field_1D8
+            guid11[4] = packet.ReadBit();
+            var unkflag27 = packet.ReadBit(); // field_EF
+
+            int bits7 = 0;
+            if (!unkflag27)
+            {
+                bits7 = (int)packet.ReadBits(7); // field_EF
+            }
+
+            var counter4 = packet.ReadBits(25); // field_81
+            guid11[2] = packet.ReadBit();
+
+            for (var i = 0; i < counter4; ++i)
+            {
+                var bit136 = packet.ReadBits(4); // field_85
+
+                if (bit136 == 11)
+                    packet.ReadBits(4);
+            }
+
+            packet.ReadBit("unk464"); // field_1D0
+
+            guid8[7] = packet.ReadBit();
+            guid8[3] = packet.ReadBit();
+            guid8[6] = packet.ReadBit();
+            guid8[4] = packet.ReadBit();
+            guid8[2] = packet.ReadBit();
+            guid8[5] = packet.ReadBit();
+            guid8[0] = packet.ReadBit();
+            guid8[1] = packet.ReadBit();
+
+            packet.ReadBit("unk160"); // field_9D
+
+            guid9[3] = packet.ReadBit();
+            guid9[5] = packet.ReadBit();
+            guid9[2] = packet.ReadBit();
+            guid9[1] = packet.ReadBit();
+            guid9[4] = packet.ReadBit();
+            guid9[0] = packet.ReadBit();
+            guid9[6] = packet.ReadBit();
+            guid9[7] = packet.ReadBit();
+
+            if (bit152)
+            {
+                packet.ReadBits(20); // field_95
+            }
+
+            if (bit176)
+            {
+                packet.ReadXORByte(guid3, 3);
+                packet.ReadXORByte(guid3, 7);
+                packet.ReadXORByte(guid3, 4);
+                packet.ReadSingle("unkFloat192"); // field_C0
+                packet.ReadXORByte(guid3, 6);
+                packet.ReadXORByte(guid3, 5);
+                packet.ReadXORByte(guid3, 2);
+                packet.ReadSingle("unkFloat200"); // field_C7
+                packet.ReadSingle("unkFloat196"); // field_C3
+                packet.ReadXORByte(guid3, 0);
+                packet.ReadXORByte(guid3, 1);
+            }
+
+
+            for (var i = 0; i < counter3; ++i) // field_1B8
+            {
+                packet.ReadXORByte(guid5[i], 4);
+                packet.ReadXORByte(guid5[i], 0);
+                packet.ReadXORByte(guid5[i], 7);
+                packet.ReadXORByte(guid5[i], 6);
+                packet.ReadXORByte(guid5[i], 2);
+                packet.ReadXORByte(guid5[i], 1);
+                packet.ReadSingle("unk448"); // field_1B8
+                packet.ReadXORByte(guid5[i], 5);
+                packet.ReadXORByte(guid5[i], 3);
+                packet.ReadSingle("unk452"); // field_1B8
+                packet.ReadSingle("unk440"); // field_1B8
+                packet.WriteGuid("GUID5: ", guid5[i], i);
+            }
+
+            for (var i = 0; i < counter; ++i)
+            {
+                packet.ReadXORByte(guid7[i], 2);
+                packet.ReadXORByte(guid7[i], 1);
+                packet.ReadXORByte(guid7[i], 5);
+                packet.ReadXORByte(guid7[i], 3);
+                packet.ReadXORByte(guid7[i], 7);
+                packet.ReadXORByte(guid7[i], 0);
+                packet.ReadXORByte(guid7[i], 4);
+                packet.ReadXORByte(guid7[i], 6);
+                packet.WriteGuid("GUID7: ", guid7[i], i);
+            }
+
+            if (bit208)
+            {
+                packet.ReadXORByte(guid6, 1);
+                packet.ReadXORByte(guid6, 4);
+                packet.ReadSingle("Position Z"); // field_E7
+                packet.ReadXORByte(guid6, 0);
+                packet.ReadXORByte(guid6, 7);
+                packet.ReadXORByte(guid6, 3);
+                packet.ReadXORByte(guid6, 5);
+                packet.ReadSingle("Position Y"); // field_E3
+                packet.ReadXORByte(guid6, 6);
+                packet.ReadSingle("Position X"); // field_E0
+                packet.ReadXORByte(guid6, 2);
+            }
+            if (bit408)
+                packet.ReadSingle("unkfloat"); // field_197
+
+            if (bit416)
+                packet.ReadByte("unk.416"); // field_19F
+
+            packet.ReadXORByte(guid8, 5);
+            packet.ReadXORByte(guid8, 0);
+            packet.ReadXORByte(guid8, 2);
+            packet.ReadXORByte(guid8, 7);
+            packet.ReadXORByte(guid8, 6);
+            packet.ReadXORByte(guid8, 3);
+            packet.ReadXORByte(guid8, 4);
+            packet.ReadXORByte(guid8, 1);
+
+            for (var i = 0; i < counter2; ++i) // field_64
+            {
+                packet.ReadXORByte(guid4[i], 6);
+                packet.ReadXORByte(guid4[i], 3);
+                packet.ReadXORByte(guid4[i], 1);
+                packet.ReadXORByte(guid4[i], 0);
+                packet.ReadXORByte(guid4[i], 2);
+                packet.ReadXORByte(guid4[i], 4);
+                packet.ReadXORByte(guid4[i], 7);
+                packet.ReadXORByte(guid4[i], 5);
+                packet.WriteGuid("GUID4: ", guid4[i], i);
+            }
+
+            if (bit16)
+            {
+                packet.ReadXORByte(guid2, 3);
+                packet.ReadUInt32("Spell Power"); // field_28
+                packet.ReadXORByte(guid2, 6);
+                packet.ReadXORByte(guid2, 4);
+                packet.ReadXORByte(guid2, 7);
+                packet.ReadXORByte(guid2, 0);
+                packet.ReadUInt32("Attack Power"); // field_24
+                packet.ReadXORByte(guid2, 2);
+
+                for (var i = 0; i < counter5; ++i)
+                {
+                    packet.ReadUInt32("uint32 60");
+                    packet.ReadUInt32("uint32 48");
+                }
+
+                packet.ReadUInt32("Health");
+                packet.ReadXORByte(guid2, 1);
+                packet.ReadXORByte(guid2, 5);
+            }
+
+            packet.ReadXORByte(guid9, 2);
+            packet.ReadXORByte(guid9, 3);
+            packet.ReadXORByte(guid9, 4);
+            packet.ReadXORByte(guid9, 7);
+            packet.ReadXORByte(guid9, 5);
+            packet.ReadXORByte(guid9, 1);
+            packet.ReadXORByte(guid9, 6);
+            packet.ReadXORByte(guid9, 0);
+
+            packet.ReadByte("Cast Count"); // field_50
+
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 3);
+
+            packet.ReadXORByte(guid10, 7);
+            if (bit476)
+                packet.ReadByte("unk476"); // field_1DC
+
+            if (bit472)
+                packet.ReadUInt32("uint32 472"); // field_1D8
+
+            packet.ReadXORByte(guid10, 3);
+
+            packet.ReadWoWString("Text:", bits7);
+
+            if (bit404)
+                packet.ReadUInt32("uint32 404"); // field_193
+
+            if (bit456)
+                packet.ReadUInt32("uint32 456"); // field_1C8
+
+            packet.ReadXORByte(guid10, 2);
+            packet.ReadXORByte(guid11, 0);
+
+            if (bit420)
+            {
+                packet.ReadUInt32("uint32 424"); // field_1A8
+                packet.ReadUInt32("uint32 428"); // field_1AC
+            }
+
+            if (bit412)
+                packet.ReadUInt32("uint32 412"); // field_19B
+
+            packet.ReadXORByte(guid11, 2);
+            packet.ReadXORByte(guid10, 0);
+            packet.ReadXORByte(guid10, 1);
+            packet.ReadXORByte(guid11, 3);
+
+            for (var i = 0; i < counter6; ++i) // field_183
+            {
+                packet.ReadByte("unk392"); // field_187
+            }
+
+            if (bit384)
+                packet.ReadByte("unk384"); // field_17F
+
+            packet.ReadXORByte(guid11, 1);
+            packet.ReadXORByte(guid10, 4);
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID"); // field_54
+
+            if (bit385)
+                packet.ReadByte("Effect Count"); // field_17F
+
+            packet.ReadXORByte(guid10, 6);
+            packet.ReadXORByte(guid11, 5);
+            packet.ReadUInt32("uint32 88"); // field_58
+            packet.ReadXORByte(guid11, 4);
+            packet.ReadUInt32("uint32 96"); // field_60
+
+            for (var i = 0; i < counter7; ++i)
+            {
+                packet.ReadUInt32("uint32 372"); // field_173
+                packet.ReadByte("unk380"); // field_173
+            }
+            packet.ReadXORByte(guid10, 5);
+            packet.ReadXORByte(guid11, 6);
+
+            if (bit452)
+                packet.ReadUInt32("uint 452"); // field_1C4
+
+            packet.ReadXORByte(guid11, 7);
+
+            if (bit432)
+                packet.ReadByte("unk432"); // field_1B0
+        }
+
     }
 }
