@@ -611,12 +611,12 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var count = packet.ReadInt32("Count");
 
-            for (var i = 0; i < count; i++)
+            for (var i = 0; i < count; ++i)
             {
                 var questId = packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID", i);
 
                 var counter = packet.ReadInt32("POI Counter", i);
-                for (var j = 0; j < counter; j++)
+                for (var j = 0; j < counter; ++j)
                 {
                     var questPoi = new QuestPOI();
 
@@ -640,7 +640,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                     var pointsSize = packet.ReadInt32("Points Counter", i, j);
                     questPoi.Points = new List<QuestPOIPoint>(pointsSize);
-                    for (var k = 0u; k < pointsSize; k++)
+                    for (var k = 0u; k < pointsSize; ++k)
                     {
                         var questPoiPoint = new QuestPOIPoint
                                             {

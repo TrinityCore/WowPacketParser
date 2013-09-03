@@ -6,6 +6,9 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("quest_poi")]
     public class QuestPOI
     {
+        [DBFieldName("idx")]
+        public uint Idx;
+
         [DBFieldName("objIndex")]
         public int ObjectiveIndex;
 

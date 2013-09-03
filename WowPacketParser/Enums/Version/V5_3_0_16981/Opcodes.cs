@@ -12,6 +12,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_AUTH_SESSION, 0x09F1},
+            {Opcode.CMSG_AREATRIGGER, 0x04DB},
             {Opcode.CMSG_CAST_SPELL, 0x01CE},
             {Opcode.CMSG_CHANNEL_LIST, 0x047B},
             {Opcode.CMSG_CHAR_CREATE, 0x0404},
@@ -41,6 +42,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.CMSG_PING, 0x08E3},
             {Opcode.CMSG_PLAYER_LOGIN, 0x0A19},
             {Opcode.CMSG_QUERY_PLAYER_NAME, 0x0018},
+            {Opcode.CMSG_QUEST_POI_QUERY, 0x04D7},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x091D},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x0755},
             {Opcode.CMSG_REALM_QUERY, 0x0209},
@@ -55,7 +57,6 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.CMSG_TEXT_EMOTE, 0x1444},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0853},
             {Opcode.CMSG_UI_TIME_REQUEST, 0x0405},
-            {Opcode.CMSG_UNKNOWN_1243, 0x04DB},
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x0800},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x054B},
             {Opcode.CMSG_ZONEUPDATE, 0x2000},
@@ -293,6 +294,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x03ED},
             {Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS, 0x07F4},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x13BF},
+            {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x0EE4},
             {Opcode.SMSG_RAID_MARKERS_CHANGED, 0x0595},
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x0AD9},
             {Opcode.SMSG_RATED_BG_RATING, 0x05C8},
