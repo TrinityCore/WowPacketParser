@@ -93,5 +93,13 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
+
+        [Parser(Opcode.CMSG_AREATRIGGER)]
+        public static void HandleClientAreaTrigger(Packet packet)
+        {
+            packet.ReadInt32("Area Trigger Id");
+            packet.ReadBit("Unk bit1");
+            packet.ReadBit("Unk bit2");
+        }
     }
 }
