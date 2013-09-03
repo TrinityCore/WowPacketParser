@@ -685,5 +685,13 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.WriteGuid("GUID10", guid10);
             packet.WriteGuid("GUID11", guid11);
         }
+
+        [Parser(Opcode.SMSG_REMOVED_SPELL)]
+        public static void HandleRemovedSpell2(Packet packet)
+        {
+            var count = packet.ReadBits(22);
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", i);
+        }
     }
 }

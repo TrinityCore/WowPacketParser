@@ -356,10 +356,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             if (hasMovementFlags)
                 packet.ReadEnum<MovementFlag>("Movement Flags", 30);
 
+            var isAlive = !packet.ReadBit();
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
-
-            var isAlive = !packet.ReadBit();
 
             guid[2] = packet.ReadBit();
             guid[3] = packet.ReadBit();
@@ -412,16 +411,13 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             packet.ReadXORByte(guid, 1);
             pos.Y = packet.ReadSingle();
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 5);
+            packet.ReadXORBytes(guid, 2, 7, 5);
             pos.Z = packet.ReadSingle();
 
             if (hasPitch)
                 packet.ReadSingle("Pitch");
 
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 4);
+            packet.ReadXORBytes(guid, 0, 4);
 
             if (hasSplineElevation)
                 packet.ReadSingle("Spline Elevation");
