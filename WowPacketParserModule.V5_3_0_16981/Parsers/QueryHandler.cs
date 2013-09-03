@@ -393,6 +393,25 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         db2File.ReadUInt32("InhabitType");
                         break;
                     }
+				case DB2Hash.BroadcastText:
+                    {
+                        db2File.ReadUInt32("Broadcast Text Entry");
+                        db2File.ReadUInt32("Unk int1");
+                        if (db2File.ReadUInt16() > 0)
+                            db2File.ReadCString("Text 1");
+                        if (db2File.ReadUInt16() > 0)
+                            db2File.ReadCString("Text 2");
+                        db2File.ReadInt32("Unk int2");
+                        db2File.ReadInt32("Unk int3");
+                        db2File.ReadInt32("Unk int4");
+                        db2File.ReadInt32("Unk int5");
+                        db2File.ReadInt32("Unk int6");
+                        db2File.ReadInt32("Unk int7");
+                        db2File.ReadUInt32("Sound Id");
+                        db2File.ReadUInt32("Unk int9");
+                        db2File.ReadUInt32("Broadcast Text Id");
+                        break;
+                    }
                 default:
                     {
                         db2File.WriteLine("Unknown DB2 file type: {0} (0x{0:x})", type);
