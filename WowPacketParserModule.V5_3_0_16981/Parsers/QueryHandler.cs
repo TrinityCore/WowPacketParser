@@ -461,16 +461,16 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             var quest = new QuestTemplate();
 
-            var len2113 = (int)packet.ReadBits(10);
-            var len908 = (int)packet.ReadBits(12);
-            var len1793 = (int)packet.ReadBits(10);
+            var QuestTurnTextWindow = (int)packet.ReadBits(10);
+            var Details = (int)packet.ReadBits(12);
+            var QuestGiverTextWindow = (int)packet.ReadBits(10);
             var len1658 = (int)packet.ReadBits(9);
-            var len2433 = (int)packet.ReadBits(11);
+            var CompletedText = (int)packet.ReadBits(11);
             var len158 = (int)packet.ReadBits(12);
-            var len2049 = (int)packet.ReadBits(8);
-            var len30 = (int)packet.ReadBits(9);
-            var len2369 = (int)packet.ReadBits(8);
-            var count = (int)packet.ReadBits("bits2948", 19);
+            var QuestGiverTargetName = (int)packet.ReadBits(8);
+            var Title = (int)packet.ReadBits(9);
+            var QuestTurnTargetName = (int)packet.ReadBits(8);
+            var count = (int)packet.ReadBits("Requirement Count", 19);
 
             var len2949_20 = new int[count];
             var counter = new int[count];
@@ -490,26 +490,26 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadInt32("int2949+12", i);
 
                 for (var j = 0; j < counter[i]; ++j)
-                    packet.ReadInt32("int2949+280", i, j);
+                    packet.ReadInt32("Unk UInt32", i, j);
 
-                packet.ReadInt32("int2949+0", i);
+                packet.ReadInt32("Unk UInt32", i);
                 packet.ReadInt32("int2949+8", i);
             }
 
             packet.ReadWoWString("string158", len158);
-            packet.ReadInt32("int14");
+            quest.NextQuestIdChain = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Next Chain Quest");
             packet.ReadInt32("int2971");
-            packet.ReadInt32("int20");
+            quest.RewardSpellCast = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Reward Spell Cast");
             packet.ReadInt32("int2955");
-            packet.ReadInt32("int22");
+            quest.RewardHonorMultiplier = packet.ReadSingle("Reward Honor Multiplier");
             packet.ReadInt32("int2970");
             packet.ReadInt32("int2984");
             packet.ReadInt32("int2979");
-            packet.ReadInt32("int10");
-            packet.ReadInt32("int1790");
-            packet.ReadInt32("int1791");
+            quest.MinLevel = packet.ReadInt32("Min Level");
+            quest.RewardSkillPoints = packet.ReadUInt32("RewSkillPoints");
+            quest.QuestGiverPortrait = packet.ReadUInt32("QuestGiverPortrait");
             packet.ReadInt32("int21");
-            packet.ReadInt32("int12");
+            quest.Type = packet.ReadEnum<QuestType>("Type", TypeCode.Int32);
             for (var i = 0; i < 5; ++i)
             {
                 packet.ReadInt32("int2986+40");
@@ -523,67 +523,67 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadInt32("int3001+16");
                 packet.ReadInt32("int3001+0");
             }
-            packet.ReadInt32("int13");
+            quest.SuggestedPlayers = packet.ReadUInt32("Suggested Players");
             packet.ReadInt32("int2972");
             packet.ReadInt32("int2959");
-            packet.ReadWoWString("string30", len30);
+            quest.Title = packet.ReadWoWString("Title", Title);
             packet.ReadInt32("int2965");
             packet.ReadInt32("int2978");
-            packet.ReadInt32("int1789");
+            quest.RewardSkillId = packet.ReadUInt32("RewSkillId");
             packet.ReadInt32("int2982");
             packet.ReadInt32("int2968");
             packet.ReadInt32("int2964");
             packet.ReadInt32("int2957");
             packet.ReadInt32("int2969");
             packet.ReadInt32("int1786");
-            packet.ReadInt32("int2946");
+            quest.SoundAccept = packet.ReadUInt32("Sound Accept");
             packet.ReadInt32("int2981");
             packet.ReadInt32("int2961");
             packet.ReadInt32("int15");
             packet.ReadInt32("int2967");
-            packet.ReadWoWString("string2433", len2433);
+            quest.CompletedText = packet.ReadWoWString("Completed Text", CompletedText);
             packet.ReadInt32("int25");
             packet.ReadInt32("Quest Id");
-            packet.ReadInt32("int28");
+            quest.PointY = packet.ReadSingle("Point Y");
             packet.ReadInt32("int2974");
             packet.ReadInt32("int2952");
-            packet.ReadWoWString("string908", len908);
-            packet.ReadInt32("int8");
-            packet.ReadInt32("int26");
+            quest.Details = packet.ReadWoWString("Details", Details);
+            quest.Level = packet.ReadInt32("Level");
+            quest.PointMapId = packet.ReadUInt32("Point Map ID");
             packet.ReadWoWString("string1658", len1658);
-            quest.RewardHonorMultiplier = packet.ReadSingle("Reward Honor Multiplier");
+            quest.PointX = packet.ReadSingle("Point X");
             packet.ReadInt32("int17");
             packet.ReadInt32("int2962");
-            packet.ReadWoWString("string1793", len1793);
+            quest.QuestGiverTextWindow = packet.ReadWoWString("QuestGiver Text Window", QuestGiverTextWindow);
             packet.ReadInt32("int2963");
             packet.ReadInt32("int2985");
-            packet.ReadInt32("int7");
-            packet.ReadInt32("int2945");
+            quest.Method = packet.ReadEnum<QuestMethod>("Method", TypeCode.Int32);
+            quest.RewardReputationMask = packet.ReadUInt32("RewRepMask");
             packet.ReadInt32("int2953");
             packet.ReadInt32("int2983");
             packet.ReadInt32("int9");
-            packet.ReadWoWString("string2049", len2049);
-            packet.ReadInt32("int11");
+            quest.QuestGiverTargetName = packet.ReadWoWString("QuestGiver Target Name", QuestGiverTargetName);
+            quest.ZoneOrSort = packet.ReadEnum<QuestSort>("Sort", TypeCode.Int32);
             packet.ReadInt32("int1788");
-            packet.ReadInt32("int2947");
-            packet.ReadInt32("int23");
-            packet.ReadWoWString("string2369", len2369);
-            packet.ReadInt32("int1792");
-            packet.ReadInt32("int24");
+            quest.SoundTurnIn = packet.ReadUInt32("Sound TurnIn");
+            quest.SourceItemId = (uint) packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Source Item ID");
+            quest.QuestTurnTargetName = packet.ReadWoWString("QuestTurn Target Name", QuestTurnTargetName);
+            quest.QuestTurnInPortrait = packet.ReadUInt32("QuestTurnInPortrait");
+            quest.Flags = packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32);
             packet.ReadInt32("int2954");
             packet.ReadInt32("int2958");
-            packet.ReadInt32("int18");
+            quest.RewardMoneyMaxLevel = packet.ReadUInt32("Reward Money Max Level");
             packet.ReadInt32("int1787");
-            packet.ReadWoWString("string2113", len2113);
+            quest.QuestTurnTextWindow = packet.ReadWoWString("QuestTurn Text Window", QuestTurnTextWindow);
             packet.ReadInt32("int2977");
             packet.ReadInt32("int2980");
             packet.ReadInt32("int2975");
-            packet.ReadInt32("int19");
-            packet.ReadInt32("int16");
+            quest.RewardSpell = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Reward Spell");
+            quest.RewardOrRequiredMoney = packet.ReadInt32("Reward Money");
             packet.ReadInt32("int2973");
             packet.ReadInt32("int2966");
             packet.ReadInt32("int2976");
-            packet.ReadInt32("int29");
+            quest.PointOption = packet.ReadUInt32("Point Opt");
             packet.ReadInt32("int2956");
 
             var id = packet.ReadEntry("Quest ID");
