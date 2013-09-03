@@ -393,23 +393,23 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         db2File.ReadUInt32("InhabitType");
                         break;
                     }
-				case DB2Hash.BroadcastText:
+                case DB2Hash.BroadcastText:
                     {
                         db2File.ReadUInt32("Broadcast Text Entry");
-                        db2File.ReadUInt32("Unk int1");
+                        db2File.ReadUInt32("Language");
                         if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Text 1");
+                            db2File.ReadCString("Male Text");
                         if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Text 2");
-                        db2File.ReadInt32("Unk int2");
-                        db2File.ReadInt32("Unk int3");
-                        db2File.ReadInt32("Unk int4");
-                        db2File.ReadInt32("Unk int5");
-                        db2File.ReadInt32("Unk int6");
-                        db2File.ReadInt32("Unk int7");
+                            db2File.ReadCString("Female Text");
+ 
+                        for (var i = 0; i < 3; ++i)
+                            db2File.ReadInt32("Emote ID", i);
+                        for (var i = 0; i < 3; ++i)
+                            db2File.ReadInt32("Emote Delay", i);
+ 
                         db2File.ReadUInt32("Sound Id");
-                        db2File.ReadUInt32("Unk int9");
-                        db2File.ReadUInt32("Broadcast Text Id");
+                        db2File.ReadUInt32("Unk0");
+                        db2File.ReadUInt32("Unk1"); // kind of type?
                         break;
                     }
                 default:
