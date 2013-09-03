@@ -22,83 +22,71 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         public static void HandleCreatureQueryResponse(Packet packet)
         {
             var entry = packet.ReadEntry("Entry");
-            if (entry.Value)
-                return;
+            var hasData = packet.ReadBit();
+            if (!hasData)
+                return; // nothing to do
 
             var creature = new UnitTemplate();
 
-            var hasData = packet.ReadBit();
+            var lenS3 = (int)packet.ReadBits(11);
+            creature.RacialLeader = packet.ReadBit("Racial Leader");
+
             var stringLens = new int[4][];
-            int lenS3 = 0;
-            int lenS4 = 0;
-            int lenS5 = 0;
-            uint qItemCount = 0;
-
-            if (hasData)
+            for (var i = 0; i < 4; i++)
             {
-                lenS3 = (int)packet.ReadBits(11);
-                creature.RacialLeader = packet.ReadBit("Racial Leader");
-
-                stringLens = new int[4][];
-                for (var i = 0; i < 4; i++)
-                {
-                    stringLens[i] = new int[2];
-                    stringLens[i][0] = (int)packet.ReadBits(11);
-                    stringLens[i][1] = (int)packet.ReadBits(11);
-                }
-
-                lenS4 = (int)packet.ReadBits(6);
-                lenS5 = (int)packet.ReadBits(11);
-                qItemCount = packet.ReadBits(22);
+                stringLens[i] = new int[2];
+                stringLens[i][0] = (int)packet.ReadBits(11);
+                stringLens[i][1] = (int)packet.ReadBits(11);
             }
+
+            var lenS4 = (int)packet.ReadBits(6);
+            var lenS5 = (int)packet.ReadBits(11);
+            var qItemCount = packet.ReadBits(22);
 
             packet.ResetBitReader();
 
-            if (hasData)
+            var name = new string[8];
+            for (var i = 0; i < 4; ++i)
             {
-                var name = new string[8];
-                for (var i = 0; i < 4; ++i)
-                {
-                    if (stringLens[i][0] > 1)
-                        packet.ReadCString("Female Name", i);
-                    if (stringLens[i][1] > 1)
-                        name[i] = packet.ReadCString("Name", i);
-                }
-                creature.Name = name[0];
-
-                creature.Modifier1 = packet.ReadSingle("Modifier 1");
-                if (lenS3 > 1)
-                    creature.SubName = packet.ReadCString("Sub Name");
-
-                creature.Rank = packet.ReadEnum<CreatureRank>("Rank", TypeCode.Int32);
-
-                creature.QuestItems = new uint[qItemCount];
-                for (var i = 0; i < qItemCount; ++i)
-                    creature.QuestItems[i] = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item", i);
-
-                creature.Type = packet.ReadEnum<CreatureType>("Type", TypeCode.Int32);
-                creature.KillCredits = new uint[2];
-                for (var i = 0; i < 2; ++i)
-                    creature.KillCredits[i] = packet.ReadUInt32("Kill Credit", i);
-                creature.Family = packet.ReadEnum<CreatureFamily>("Family", TypeCode.Int32);
-                if (lenS4 > 1)
-                    creature.IconName = packet.ReadCString("Icon Name");
-
-                creature.DisplayIds = new uint[4];
-                creature.DisplayIds[1] = packet.ReadUInt32("Display ID 1");
-                creature.DisplayIds[0] = packet.ReadUInt32("Display ID 0");
-                creature.MovementId = packet.ReadUInt32("Movement ID");
-                creature.DisplayIds[3] = packet.ReadUInt32("Display ID 3");
-
-                creature.TypeFlags = packet.ReadEnum<CreatureTypeFlag>("Type Flags", TypeCode.UInt32);
-                creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2"); // Missing enum
-
-                if (lenS5 > 1)
-                    packet.ReadCString("string5");
-                creature.DisplayIds[2] = packet.ReadUInt32("Display ID 2");
-                creature.Modifier2 = packet.ReadSingle("Modifier 2");
-                creature.Expansion = packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);
+                if (stringLens[i][0] > 1)
+                    packet.ReadCString("Female Name", i);
+                if (stringLens[i][1] > 1)
+                    name[i] = packet.ReadCString("Name", i);
             }
+            creature.Name = name[0];
+
+            creature.Modifier1 = packet.ReadSingle("Modifier 1");
+            if (lenS3 > 1)
+                creature.SubName = packet.ReadCString("Sub Name");
+
+            creature.Rank = packet.ReadEnum<CreatureRank>("Rank", TypeCode.Int32);
+
+            creature.QuestItems = new uint[qItemCount];
+            for (var i = 0; i < qItemCount; ++i)
+                creature.QuestItems[i] = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item", i);
+
+            creature.Type = packet.ReadEnum<CreatureType>("Type", TypeCode.Int32);
+            creature.KillCredits = new uint[2];
+            for (var i = 0; i < 2; ++i)
+                creature.KillCredits[i] = packet.ReadUInt32("Kill Credit", i);
+            creature.Family = packet.ReadEnum<CreatureFamily>("Family", TypeCode.Int32);
+            if (lenS4 > 1)
+                creature.IconName = packet.ReadCString("Icon Name");
+
+            creature.DisplayIds = new uint[4];
+            creature.DisplayIds[1] = packet.ReadUInt32("Display ID 1");
+            creature.DisplayIds[0] = packet.ReadUInt32("Display ID 0");
+            creature.MovementId = packet.ReadUInt32("Movement ID");
+            creature.DisplayIds[3] = packet.ReadUInt32("Display ID 3");
+
+            creature.TypeFlags = packet.ReadEnum<CreatureTypeFlag>("Type Flags", TypeCode.UInt32);
+            creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2"); // Missing enum
+
+            if (lenS5 > 1)
+                packet.ReadCString("string5");
+            creature.DisplayIds[2] = packet.ReadUInt32("Display ID 2");
+            creature.Modifier2 = packet.ReadSingle("Modifier 2");
+            creature.Expansion = packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 
@@ -437,6 +425,206 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         break;
                     }
             }
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE)]
+        public static void HandlePageTextResponse(Packet packet)
+        {
+            var pageText = new PageText();
+
+            var entry = packet.ReadUInt32("Entry");
+            var hasData = packet.ReadBit();
+            if (!hasData)
+                return; // nothing to do
+
+            var textLen = (int)packet.ReadBits(12);
+            packet.ResetBitReader();
+            pageText.Text = packet.ReadWoWString("Page Text", textLen);
+            pageText.NextPageId = packet.ReadUInt32("Next Page");
+            packet.ReadUInt32("Entry");
+
+            packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
+            Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_QUEST_QUERY_RESPONSE)]
+        public static void HandleQuestQueryResponse510(Packet packet)
+        {
+            var hasData = packet.ReadBit();
+            if (!hasData)
+            {
+                packet.ReadUInt32("Entry");
+                return; // nothing to do
+            }
+
+            var quest = new QuestTemplate();
+
+            var len2113 = (int)packet.ReadBits(10);
+            var len908 = (int)packet.ReadBits(12);
+            var len1793 = (int)packet.ReadBits(10);
+            var len1658 = (int)packet.ReadBits(9);
+            var len2433 = (int)packet.ReadBits(11);
+            var len158 = (int)packet.ReadBits(12);
+            var len2049 = (int)packet.ReadBits(8);
+            var len30 = (int)packet.ReadBits(9);
+            var len2369 = (int)packet.ReadBits(8);
+            var count = (int)packet.ReadBits("bits2948", 19);
+
+            var len2949_20 = new int[count];
+            var counter = new int[count];
+            for (var i = 0; i < count; ++i)
+            {
+                len2949_20[i] = (int)packet.ReadBits(8);
+                counter[i] = (int)packet.ReadBits(22);
+            }
+            packet.ResetBitReader();
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadWoWString("string2949+20", len2949_20[i], i);
+                packet.ReadInt32("int2949+16", i);
+                packet.ReadByte("byte2949+5", i);
+                packet.ReadByte("byte2949+4", i);
+                packet.ReadInt32("int2949+12", i);
+
+                for (var j = 0; j < counter[i]; ++j)
+                    packet.ReadInt32("int2949+280", i, j);
+
+                packet.ReadInt32("int2949+0", i);
+                packet.ReadInt32("int2949+8", i);
+            }
+
+            packet.ReadWoWString("string158", len158);
+            packet.ReadInt32("int14");
+            packet.ReadInt32("int2971");
+            packet.ReadInt32("int20");
+            packet.ReadInt32("int2955");
+            packet.ReadInt32("int22");
+            packet.ReadInt32("int2970");
+            packet.ReadInt32("int2984");
+            packet.ReadInt32("int2979");
+            packet.ReadInt32("int10");
+            packet.ReadInt32("int1790");
+            packet.ReadInt32("int1791");
+            packet.ReadInt32("int21");
+            packet.ReadInt32("int12");
+            for (var i = 0; i < 5; ++i)
+            {
+                packet.ReadInt32("int2986+40");
+                packet.ReadInt32("int2986+0");
+                packet.ReadInt32("int2986+20");
+            }
+
+            packet.ReadInt32("int2960");
+            for (var i = 0; i < 4; ++i)
+            {
+                packet.ReadInt32("int3001+16");
+                packet.ReadInt32("int3001+0");
+            }
+            packet.ReadInt32("int13");
+            packet.ReadInt32("int2972");
+            packet.ReadInt32("int2959");
+            packet.ReadWoWString("string30", len30);
+            packet.ReadInt32("int2965");
+            packet.ReadInt32("int2978");
+            packet.ReadInt32("int1789");
+            packet.ReadInt32("int2982");
+            packet.ReadInt32("int2968");
+            packet.ReadInt32("int2964");
+            packet.ReadInt32("int2957");
+            packet.ReadInt32("int2969");
+            packet.ReadInt32("int1786");
+            packet.ReadInt32("int2946");
+            packet.ReadInt32("int2981");
+            packet.ReadInt32("int2961");
+            packet.ReadInt32("int15");
+            packet.ReadInt32("int2967");
+            packet.ReadWoWString("string2433", len2433);
+            packet.ReadInt32("int25");
+            packet.ReadInt32("Quest Id");
+            packet.ReadInt32("int28");
+            packet.ReadInt32("int2974");
+            packet.ReadInt32("int2952");
+            packet.ReadWoWString("string908", len908);
+            packet.ReadInt32("int8");
+            packet.ReadInt32("int26");
+            packet.ReadWoWString("string1658", len1658);
+            quest.RewardHonorMultiplier = packet.ReadSingle("Reward Honor Multiplier");
+            packet.ReadInt32("int17");
+            packet.ReadInt32("int2962");
+            packet.ReadWoWString("string1793", len1793);
+            packet.ReadInt32("int2963");
+            packet.ReadInt32("int2985");
+            packet.ReadInt32("int7");
+            packet.ReadInt32("int2945");
+            packet.ReadInt32("int2953");
+            packet.ReadInt32("int2983");
+            packet.ReadInt32("int9");
+            packet.ReadWoWString("string2049", len2049);
+            packet.ReadInt32("int11");
+            packet.ReadInt32("int1788");
+            packet.ReadInt32("int2947");
+            packet.ReadInt32("int23");
+            packet.ReadWoWString("string2369", len2369);
+            packet.ReadInt32("int1792");
+            packet.ReadInt32("int24");
+            packet.ReadInt32("int2954");
+            packet.ReadInt32("int2958");
+            packet.ReadInt32("int18");
+            packet.ReadInt32("int1787");
+            packet.ReadWoWString("string2113", len2113);
+            packet.ReadInt32("int2977");
+            packet.ReadInt32("int2980");
+            packet.ReadInt32("int2975");
+            packet.ReadInt32("int19");
+            packet.ReadInt32("int16");
+            packet.ReadInt32("int2973");
+            packet.ReadInt32("int2966");
+            packet.ReadInt32("int2976");
+            packet.ReadInt32("int29");
+            packet.ReadInt32("int2956");
+
+            var id = packet.ReadEntry("Quest ID");
+
+            packet.AddSniffData(StoreNameType.Quest, id.Key, "QUERY_RESPONSE");
+            Storage.QuestTemplates.Add((uint)id.Key, quest, packet.TimeSpan);
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]
+        public static void HandleNpcTextUpdate(Packet packet)
+        {
+            var npcText = new NpcText();
+
+            var entry = packet.ReadEntry("Entry");
+            if (entry.Value) // Can be masked
+                return;
+
+            var size = packet.ReadInt32("Size");
+            var data = packet.ReadBytes(size);
+            var hasData = packet.ReadBit();
+            if (!hasData)
+                return; // nothing to do
+
+            var pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            npcText.Probabilities = new float[8];
+            pkt.ReadSingle("Probability");
+            pkt.ReadInt32("Int1");
+            pkt.ReadInt32("Int2");
+            pkt.ReadInt32("Int3");
+            pkt.ReadInt32("Int4");
+            pkt.ReadInt32("Int5");
+            pkt.ReadInt32("Int6");
+            pkt.ReadInt32("Int7");
+            pkt.ReadInt32("Int8");
+            pkt.ReadInt32("Int9");
+            pkt.ReadInt32("Int10");
+            pkt.ReadInt32("Int11");
+            pkt.ReadInt32("Int12");
+            pkt.ReadInt32("Int13");
+            pkt.ReadInt32("Int14");
         }
     }
 }
