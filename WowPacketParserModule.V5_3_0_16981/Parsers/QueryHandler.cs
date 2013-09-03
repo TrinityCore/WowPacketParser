@@ -610,21 +610,22 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             var pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
             npcText.Probabilities = new float[8];
-            pkt.ReadSingle("Probability");
-            pkt.ReadInt32("Int1");
-            pkt.ReadInt32("Int2");
-            pkt.ReadInt32("Int3");
-            pkt.ReadInt32("Int4");
-            pkt.ReadInt32("Int5");
-            pkt.ReadInt32("Int6");
-            pkt.ReadInt32("Int7");
-            pkt.ReadInt32("Int8");
-            pkt.ReadInt32("Int9");
-            pkt.ReadInt32("Int10");
-            pkt.ReadInt32("Int11");
-            pkt.ReadInt32("Int12");
-            pkt.ReadInt32("Int13");
-            pkt.ReadInt32("Int14");
+            pkt.ReadSingle("Probability 1");
+            pkt.ReadSingle("Probability 2");
+            pkt.ReadSingle("Probability 3");
+            pkt.ReadSingle("Probability 4");
+            pkt.ReadSingle("Probability 5");
+            pkt.ReadSingle("Probability 6");
+            pkt.ReadSingle("Probability 7");
+            pkt.ReadSingle("Probability 8");
+            pkt.ReadInt32("Broadcast Text Id 1");
+            pkt.ReadInt32("Broadcast Text Id 2");
+            pkt.ReadInt32("Broadcast Text Id 3");
+            pkt.ReadInt32("Broadcast Text Id 4");
+            pkt.ReadInt32("Broadcast Text Id 5");
+            pkt.ReadInt32("Broadcast Text Id 6");
+            pkt.ReadInt32("Broadcast Text Id 7");
+            pkt.ReadInt32("Broadcast Text Id 8");
         }
     }
 }
