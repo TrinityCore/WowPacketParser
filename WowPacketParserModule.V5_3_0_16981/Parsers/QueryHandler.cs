@@ -5,6 +5,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using WowPacketParserModule.V5_3_0_16981.Enums;
 using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers
@@ -162,12 +163,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             guid[2] = packet.ReadBit();
 
             if (bit16)
-            {
                 for (var i = 0; i < 5; ++i)
-                {
-                    var counter = packet.ReadBits(7);
-                }
-            }
+                    packet.ReadBits("bits", 7);
+
             var bits32 = packet.ReadBits(6);
             guid[6] = packet.ReadBit();
             guid[4] = packet.ReadBit();
@@ -186,12 +184,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadByte("Gender");
 
             if (bit16)
-            {
                 for (var i = 0; i < 5; ++i)
-                {
                     packet.ReadCString("Declined Name");
-                }
-            }
+
             packet.ReadByte("Class");
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 6);
@@ -207,7 +202,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.SMSG_DB_REPLY)]
         public static void HandleDBReply(Packet packet)
         {
-            var type = packet.ReadUInt32("Type");
+            var type = packet.ReadEnum<DB2Hash>("DB2 File", TypeCode.UInt32);
             packet.ReadTime("Hotfix date");
             var size = packet.ReadInt32("Size");
 
@@ -222,7 +217,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             switch (type)
             {
-                case 0x50238EC2:    // Item.db2
+                case DB2Hash.Item:    // Item.db2
                     {
                         var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
 
@@ -239,7 +234,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         packet.AddSniffData(StoreNameType.Item, (int)entry, "DB_REPLY");
                         break;
                     }
-                case 0x919BE54E:    // Item-sparse.db2
+                case DB2Hash.Item_sparse:    // Item-sparse.db2
                     {
                         var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
 
@@ -369,13 +364,13 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         packet.AddSniffData(StoreNameType.Item, (int)entry, "DB_REPLY");
                         break;
                     }
-                case 0x6D8A2694: // KeyChain.db2
+                case DB2Hash.KeyChain: // KeyChain.db2
                     {
                         db2File.ReadUInt32("Key Chain Id");
                         db2File.WriteLine("Key: {0}", Utilities.ByteArrayToHexString(db2File.ReadBytes(32)));
                         break;
                     }
-                case 0xC9D6B6B3: // Creature.db2
+                case DB2Hash.Creature: // Creature.db2
                     {
                         db2File.ReadUInt32("Npc Entry");
                         db2File.ReadUInt32("Item Entry 1");
@@ -610,22 +605,10 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             var pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
             npcText.Probabilities = new float[8];
-            pkt.ReadSingle("Probability 1");
-            pkt.ReadSingle("Probability 2");
-            pkt.ReadSingle("Probability 3");
-            pkt.ReadSingle("Probability 4");
-            pkt.ReadSingle("Probability 5");
-            pkt.ReadSingle("Probability 6");
-            pkt.ReadSingle("Probability 7");
-            pkt.ReadSingle("Probability 8");
-            pkt.ReadInt32("Broadcast Text Id 1");
-            pkt.ReadInt32("Broadcast Text Id 2");
-            pkt.ReadInt32("Broadcast Text Id 3");
-            pkt.ReadInt32("Broadcast Text Id 4");
-            pkt.ReadInt32("Broadcast Text Id 5");
-            pkt.ReadInt32("Broadcast Text Id 6");
-            pkt.ReadInt32("Broadcast Text Id 7");
-            pkt.ReadInt32("Broadcast Text Id 8");
+            for (var i = 0; i < 8; ++i)
+                npcText.Probabilities[i] = pkt.ReadSingle("Probability", i);
+            for (var i = 0; i < 8; ++i)
+                pkt.ReadSingle("Broadcast Text Id", i);
         }
     }
 }
