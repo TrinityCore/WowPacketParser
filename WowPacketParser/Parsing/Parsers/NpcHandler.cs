@@ -94,7 +94,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var count = packet.ReadInt32("Count");
             npcTrainer.TrainerSpells = new List<TrainerSpell>(count);
-            for (var i = 0; i < count; i++)
+            for (var i = 0; i < count; ++i)
             {
                 var trainerSpell = new TrainerSpell();
 

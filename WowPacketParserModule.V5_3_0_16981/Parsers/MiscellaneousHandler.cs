@@ -2,6 +2,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
@@ -76,6 +77,21 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
             packet.ReadSingle("Grade");
             packet.ReadBit("Unk bit");
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_NEW_WORLD)]
+        public static void HandleNewWorld434(Packet packet)
+        {
+            var pos = new Vector4();
+            pos.O = packet.ReadSingle();
+            pos.Y = packet.ReadSingle();
+            pos.Z = packet.ReadSingle();
+            pos.X = packet.ReadSingle();
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
+            packet.WriteLine("Position: {0}", pos);
+
+            packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
     }
 }
