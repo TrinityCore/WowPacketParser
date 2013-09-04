@@ -126,23 +126,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadEnum<EmoteTextType>("Text Emote ID", TypeCode.Int32);
             packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
 
-            guid[3] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 0);
+            packet.StartBitStream(guid, 3, 4, 5, 1, 6, 2, 0, 7);
+            packet.ParseBitStream(guid, 6, 7, 4, 5, 2, 1, 3, 0);
             packet.WriteGuid("GUID", guid);
         }
 
