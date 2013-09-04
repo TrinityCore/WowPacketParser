@@ -82,13 +82,13 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.SMSG_QUESTGIVER_QUEST_DETAILS)]
         public static void HandleQuestgiverDetails(Packet packet)
         {
-            packet.ReadInt32("int2359");
+            packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
             packet.ReadInt32("int1215");
             packet.ReadInt32("int896");
             packet.ReadInt32("int912");
             packet.ReadInt32("int927");
             packet.ReadInt32("int929");
-            packet.ReadInt32("int1216");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
             for (var i = 0; i < 5; i++)
                 packet.ReadUInt32("Reputation Value Id", i);
             for (var i = 0; i < 5; i++)
@@ -96,7 +96,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             for (var i = 0; i < 5; i++)
                 packet.ReadInt32("Reputation Value", i);
             packet.ReadInt32("int9128");
-            packet.ReadInt32("int10");
+            packet.ReadInt32("QuestGiver Portrait");
             for (var i = 0; i < 4; i++)
                 packet.ReadUInt32("Currency Id", i);
             for (var i = 0; i < 4; i++)
@@ -143,7 +143,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             var guid1 = new byte[8];
             var guid2 = new byte[8];
-            var len79 = packet.ReadBits(8);
+            var QuestTurnTargetName = packet.ReadBits(8);
             guid1[3] = packet.ReadBit();
             guid2[2] = packet.ReadBit();
             var bit5893 = packet.ReadBit();
@@ -154,21 +154,21 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.StartBitStream(guid2, 6, 3);
             var bit6432 = packet.ReadBit();
             packet.StartBitStream(guid1, 1, 2);
-            var len957 = packet.ReadBits(10);
-            var len11 = packet.ReadBits(8);
+            var QuestTurnTextWindow = packet.ReadBits(10);
+            var QuestGiverTargetName = packet.ReadBits(8);
             guid1[6] = packet.ReadBit();
             var bits75 = packet.ReadBits(21);
             guid2[7] = packet.ReadBit();
-            var len143 = packet.ReadBits(12);
+            var Details = packet.ReadBits(12);
             guid2[0] = packet.ReadBit();
             guid1[7] = packet.ReadBit();
             guid2[4] = packet.ReadBit();
             guid1[5] = packet.ReadBit();
-            var len4869 = packet.ReadBits(10);
+            var QuestGiverTextWindow = packet.ReadBits(10);
             var bits4 = packet.ReadBits(20);
             guid1[0] = packet.ReadBit();
-            var len5894 = packet.ReadBits(9);
-            var len6433 = packet.ReadBits(12);
+            var Title = packet.ReadBits(9);
+            var Objectives = packet.ReadBits(12);
             packet.ReadBit("bit4868");
 
             for (var i = 0; i < bits4; ++i)
@@ -184,27 +184,27 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             for (var i = 0; i < bits75; ++i)
             {
-                packet.ReadInt32("int76+0", i);
-                packet.ReadInt32("int76+4", i);
+                packet.ReadUInt32("Emote Id", i);
+                packet.ReadUInt32("Emote Delay (ms)", i); // verify but good at 99%
             }
 
             packet.ReadXORByte(guid2, 5);
             packet.ReadXORBytes(guid1, 5, 1, 4, 7);
             packet.ReadXORByte(guid2, 7);
-            packet.ReadWoWString("string4869", len4869);
+            packet.ReadWoWString("QuestGiver Text Window", QuestGiverTextWindow);
             packet.ReadXORByte(guid1, 0);
             packet.ReadXORBytes(guid2, 0, 6);
             packet.ReadXORByte(guid1, 6);
             packet.ReadXORByte(guid2, 2);
-            packet.ReadWoWString("string5894", len5894);
+            packet.ReadWoWString("Title", Title);
             packet.ReadXORByte(guid1, 3);
-            packet.ReadWoWString("string79", len79);
-            packet.ReadWoWString("string143", len143);
-            packet.ReadWoWString("string957", len957);
-            packet.ReadWoWString("string6433", len6433);
+            packet.ReadWoWString("QuestTurn Target Name", QuestTurnTargetName);
+            packet.ReadWoWString("Details", Details);
+            packet.ReadWoWString("QuestTurn Text Window", QuestTurnTextWindow);
+            packet.ReadWoWString("Objectives", Objectives);
             packet.ReadXORBytes(guid2, 1, 3, 4);
             packet.ReadXORByte(guid1, 2);
-            packet.ReadWoWString("string11", len11);
+            packet.ReadWoWString("QuestGiver Target Name", QuestGiverTargetName);
             packet.WriteGuid("Guid1", guid1);
             packet.WriteGuid("Guid2", guid2);
         }
@@ -257,9 +257,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadUInt32("Required Item Count", i);
             }
 
-            packet.ReadInt32("int3560");
+            packet.ReadInt32("Money");
             packet.ReadInt32("int3604");
-            packet.ReadInt32("int3548");
+            packet.ReadInt32("Emote");
 
             for (var i = 0; i < countCurrencies; i++)
             {
