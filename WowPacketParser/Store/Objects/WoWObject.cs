@@ -64,6 +64,7 @@ namespace WowPacketParser.Store.Objects
                 case 659:   // Kezan 2
                 case 661:   // Kezan 3
                 case 732:   // Tol Barad
+                case 860:   // The Wandering Isle
                 case 861:   // Firelands Dailies
                 case 870:   // Pandaria
                 case 974:   // Darkmoon Faire
