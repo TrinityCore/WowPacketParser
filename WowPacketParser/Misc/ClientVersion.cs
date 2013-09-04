@@ -160,6 +160,7 @@ namespace WowPacketParser.Misc
                     case ClientVersionBuild.V5_3_0_16983:
                     case ClientVersionBuild.V5_3_0_16992:
                     case ClientVersionBuild.V5_3_0_17055:
+                    case ClientVersionBuild.V5_3_0_17116:
                     case ClientVersionBuild.V5_3_0_17128:
                         return ClientVersionBuild.V5_3_0_16981;
                     default:
