@@ -36,7 +36,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var count = ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) ? packet.ReadBits("Count", 22) : packet.ReadUInt32("Count");
 
-            for (var i = 0; i < count; i++)
+            for (var i = 0; i < count; ++i)
             {
                 packet.ReadInt32("Hotfix type", i); // Also time?
                 packet.ReadTime("Hotfix date", i);

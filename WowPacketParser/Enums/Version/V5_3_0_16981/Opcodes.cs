@@ -226,6 +226,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_LFG_TELEPORT_DENIED, 0x049D},
             {Opcode.SMSG_LFG_UPDATE_STATUS, 0x0E98},
             {Opcode.SMSG_LFG_UPDATE_STATUS_NONE, 0x0A89},
+            {Opcode.SMSG_LIST_INVENTORY, 0x128D},
             {Opcode.SMSG_LOAD_CUF_PROFILES, 0x09CC},
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x0C8D},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0434},

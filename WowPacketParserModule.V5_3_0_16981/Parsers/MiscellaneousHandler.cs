@@ -2,6 +2,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParserModule.V5_3_0_16981.Enums;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers
@@ -100,6 +101,51 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadInt32("Area Trigger Id");
             packet.ReadBit("Unk bit1");
             packet.ReadBit("Unk bit2");
+        }
+
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
+        public static void HandleFeatureSystemStatus(Packet packet)
+        {
+            packet.ReadInt32("Scroll of Resurrections Remaining");
+            packet.ReadInt32("Realm Id?");
+            packet.ReadByte("Complain System Status");
+            packet.ReadInt32("Unused Int32");
+            packet.ReadInt32("Scroll of Resurrections Per Day");
+            var sessionTimeAlert = packet.ReadBit("Session Time Alert");
+            packet.ReadBit("IsVoiceChatAllowedByServer");
+            packet.ReadBit("Scroll of Resurrection Enabled");
+            packet.ReadBit("GMItemRestorationButtonEnabled");
+            var quickTicket = packet.ReadBit("EuropaTicketSystemEnabled");
+            packet.ReadBit("HasTravelPass");
+            packet.ReadBit("Something with web ticket");
+
+            if (quickTicket)
+            {
+                packet.ReadInt32("Unk5");
+                packet.ReadInt32("Unk6");
+                packet.ReadInt32("Unk7");
+                packet.ReadInt32("Unk8");
+            }
+
+            if (sessionTimeAlert)
+            {
+                packet.ReadInt32("Session Alert Period");
+                packet.ReadInt32("Session Alert DisplayTime");
+                packet.ReadInt32("Session Alert Delay");
+            }
+        }
+
+        [Parser(Opcode.SMSG_HOTFIX_INFO)]
+        public static void HandleHotfixInfo(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 20);
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Hotfixed entry", i);
+                packet.ReadEnum<DB2Hash>("Hotfix DB2 File", TypeCode.UInt32, i);
+                packet.ReadTime("Hotfix date", i);
+            }
         }
     }
 }
