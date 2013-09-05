@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Enums\ChatMessageType.cs" />
     <Compile Include="Enums\DB2Hash.cs" />
+    <Compile Include="Enums\TradeStatus.cs" />
     <Compile Include="Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsers\AchievementHandler.cs" />
     <Compile Include="Parsers\ActionBarHandler.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Parsers\CorpseHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
     <Compile Include="Parsers\GuildHandler.cs" />
+    <Compile Include="Parsers\InstanceHandler.cs" />
     <Compile Include="Parsers\ItemHandler.cs" />
     <Compile Include="Parsers\MiscellaneousHandler.cs" />
     <Compile Include="Parsers\MovementHandler.cs" />
@@ -72,6 +74,7 @@
     <Compile Include="Parsers\ReputationHandler.cs" />
     <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />
+    <Compile Include="Parsers\TradeHandler.cs" />
     <Compile Include="Parsers\UpdateHandler.cs" />
     <Compile Include="Parsers\WorldStateHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

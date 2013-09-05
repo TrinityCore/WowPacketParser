@@ -172,5 +172,39 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var guid = new Guid(BitConverter.ToUInt64(playerGuid, 0));
             packet.WriteGuid("GUID", playerGuid);
         }
+
+        [Parser(Opcode.SMSG_LOG_XPGAIN)]
+        public static void HandleLogXPGain(Packet packet)
+        {
+            var guid = new byte[8];
+            packet.StartBitStream(guid, 1, 0, 3, 7);
+            var hasBaseXP = !packet.ReadBit();
+            packet.StartBitStream(guid, 4, 2, 6, 5);
+            var hasGroupRate = !packet.ReadBit();
+            packet.ReadBit("RAF Bonus");
+            packet.ResetBitReader();
+
+            packet.ReadXORBytes(guid, 5, 2);
+
+            if (hasBaseXP)
+                packet.ReadUInt32("Base XP");
+            packet.ReadXORByte(guid, 4);
+            packet.ReadUInt32("Total XP");
+            packet.ReadXORBytes(guid, 6, 0, 3);
+            packet.ReadByte("XP type");
+
+            if (hasGroupRate)
+                packet.ReadSingle("Group rate");
+            packet.ReadXORBytes(guid, 1, 7);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_TITLE_EARNED)]
+        [Parser(Opcode.SMSG_TITLE_REMOVED)]
+        public static void HandleServerTitle(Packet packet)
+        {
+            packet.ReadUInt32("Title Id");
+        }
     }
 }
