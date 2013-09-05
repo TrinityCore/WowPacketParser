@@ -245,11 +245,11 @@ namespace WowPacketParser.Parsing.Parsers
             guidBytes[7] = packet.ReadBit();
 
             var hasExtendedCost = new bool[itemCount];
-            var enabler2 = new bool[itemCount];
+            var hasCondition = new bool[itemCount];
             for (int i = 0; i < itemCount; ++i)
             {
                 hasExtendedCost[i] = !packet.ReadBit();
-                enabler2[i] = !packet.ReadBit();
+                hasCondition[i] = !packet.ReadBit();
             }
 
             guidBytes[4] = packet.ReadBit();
@@ -267,8 +267,8 @@ namespace WowPacketParser.Parsing.Parsers
                 vendorItem.Type = packet.ReadUInt32("Type", i); // 1 - item, 2 - currency
                 packet.ReadInt32("Price", i);
                 packet.ReadInt32("Display ID", i);
-                if (enabler2[i])
-                    packet.ReadInt32("Unk Int32 8", i);
+                if (hasCondition[i])
+                    packet.ReadInt32("Condition ID", i);
                 var maxCount = packet.ReadInt32("Max Count", i);
                 vendorItem.MaxCount = maxCount == -1 ? 0 : maxCount; // TDB
                 var buyCount = packet.ReadUInt32("Buy Count", i);

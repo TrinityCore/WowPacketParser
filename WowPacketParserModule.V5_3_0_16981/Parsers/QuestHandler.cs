@@ -185,7 +185,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             for (var i = 0; i < bits75; ++i)
             {
                 packet.ReadUInt32("Emote Id", i);
-                packet.ReadUInt32("Emote Delay (ms)", i); // verify but good at 99%
+                packet.ReadUInt32("Emote Delay (ms)", i);
             }
 
             packet.ReadXORByte(guid2, 5);

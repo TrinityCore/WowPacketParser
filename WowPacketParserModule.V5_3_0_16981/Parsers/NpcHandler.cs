@@ -188,10 +188,10 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var itemCount = packet.ReadBits("Item Count", 18);
 
             var hasExtendedCost = new bool[itemCount];
-            var bit20_28 = new bool[itemCount];
+            var hasCondition = new bool[itemCount];
             for (int i = 0; i < itemCount; ++i)
             {
-                bit20_28[i] = !packet.ReadBit();
+                hasCondition[i] = !packet.ReadBit();
                 hasExtendedCost[i] = !packet.ReadBit();
                 packet.ReadBit("Unk bit", i);
             }
@@ -207,19 +207,19 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
                 vendorItem.ItemId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
                 vendorItem.Slot = packet.ReadUInt32("Item Position", i);
-                packet.ReadInt32("Unk Int32 1", i);
+                packet.ReadInt32("Item Upgrade ID", i);
                 packet.ReadInt32("Display ID", i);
                 var maxCount = packet.ReadInt32("Max Count", i);
                 var buyCount = packet.ReadUInt32("Buy Count", i);
                 packet.ReadInt32("Price", i);
 
-                if (hasExtendedCost[i])
-                    vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
+                if (hasCondition[i])
+                    packet.ReadInt32("Condition ID", i);
 
                 vendorItem.Type = packet.ReadUInt32("Type", i); // 1 - item, 2 - currency
                 packet.ReadInt32("Max Durability", i);
-                if (bit20_28[i])
-                    packet.ReadInt32("Unk Int32 2", i);
+                if (hasExtendedCost[i])
+                    vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
 
                 vendorItem.MaxCount = maxCount == -1 ? 0 : maxCount; // TDB
                 if (vendorItem.Type == 2)
