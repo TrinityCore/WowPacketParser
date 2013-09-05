@@ -1,6 +1,6 @@
 ﻿namespace WowPacketParser.Enums
 {
-    enum TargetIcon
+    public enum TargetIcon
     {
         None                = -1,
         Yellow4PointStar    = 0,
