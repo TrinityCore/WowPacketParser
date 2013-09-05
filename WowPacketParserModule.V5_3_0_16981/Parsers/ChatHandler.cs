@@ -174,5 +174,51 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadWoWString("Channel Name", length);
 
         }
+
+        [Parser(Opcode.CMSG_MESSAGECHAT_GUILD)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_INSTANCE)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_OFFICER)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_PARTY)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_RAID)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_RAID_WARNING)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_SAY)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_YELL)]
+        public static void HandleClientChatMessage(Packet packet)
+        {
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("Message", len);
+        }
+
+        [Parser(Opcode.CMSG_MESSAGECHAT_AFK)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_DND)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_EMOTE)]
+        public static void HandleClientChatMessage2(Packet packet)
+        {
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("Message", len);
+        }
+
+        [Parser(Opcode.CMSG_MESSAGECHAT_CHANNEL)]
+        public static void HandleClientChatMessageChannel(Packet packet)
+        {
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            var msgLen = packet.ReadBits(8);
+            var channelNameLen = packet.ReadBits(9);
+
+            packet.ReadWoWString("Message", msgLen);
+            packet.ReadWoWString("Channel Name", channelNameLen);
+        }
+
+        [Parser(Opcode.CMSG_MESSAGECHAT_WHISPER)]
+        public static void HandleClientChatMessageWhisper(Packet packet)
+        {
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            var recvName = packet.ReadBits(9);
+            var msgLen = packet.ReadBits(8);
+
+            packet.ReadWoWString("Message", msgLen);
+            packet.ReadWoWString("Receivers Name", recvName);
+        }
     }
 }

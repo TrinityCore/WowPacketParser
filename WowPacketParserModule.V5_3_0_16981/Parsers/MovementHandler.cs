@@ -433,5 +433,39 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
+
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
+        public static void HandlePhaseShift(Packet packet)
+        {
+            var guid = packet.StartBitStream(2, 6, 3, 1, 5, 7, 0, 4);
+            packet.ReadXORBytes(guid, 5, 3, 0);
+
+            var count = packet.ReadUInt32() / 2;
+            packet.WriteLine("WorldMapArea swap count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt16("WorldMapArea swap", i);
+
+            packet.ReadUInt32("UInt32 1");
+            packet.ReadXORByte(guid, 4);
+
+            count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Inactive Terrain swap count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
+
+            count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Phases count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt16("Phase id", i); // Phase.dbc
+
+            packet.ReadXORByte(guid, 7);
+            count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Active Terrain swap count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Active Terrain swap", i);
+
+            packet.ReadXORBytes(guid, 6, 2, 1);
+            packet.WriteGuid("GUID", guid);
+        }
     }
 }
