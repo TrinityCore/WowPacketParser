@@ -18,6 +18,7 @@ namespace WowPacketParser.Enums
         Key = 13,
         Permanent = 14,
         Miscellaneous = 15,
-        Glyph = 16
+        Glyph = 16,
+        BattlePets = 17
     }
 }

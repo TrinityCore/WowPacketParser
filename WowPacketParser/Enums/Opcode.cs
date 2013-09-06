@@ -758,7 +758,6 @@ namespace WowPacketParser.Enums
         CMSG_UNCLAIM_LICENSE,
         CMSG_UNDRESSPLAYER,
         CMSG_UNITANIMTIER_CHEAT,
-        CMSG_UNKNOWN_1243,
         CMSG_UNKNOWN_1296,
         CMSG_UNKNOWN_1303,
         CMSG_UNKNOWN_1309,
