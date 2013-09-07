@@ -70,6 +70,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.CMSG_UI_TIME_REQUEST, 0x0405},
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x0800},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x054B},
+            {Opcode.CMSG_WHO, 0x0308},
             {Opcode.CMSG_ZONEUPDATE, 0x2000},
             {Opcode.MSG_MOVE_FALL_LAND, 0x0CCF},
             {Opcode.MSG_MOVE_HEARTBEAT, 0x0E0B},
