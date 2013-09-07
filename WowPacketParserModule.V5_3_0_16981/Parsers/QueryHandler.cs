@@ -633,7 +633,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             for (var i = 0; i < 8; ++i)
                 npcText.Probabilities[i] = pkt.ReadSingle("Probability", i);
             for (var i = 0; i < 8; ++i)
-                pkt.ReadSingle("Broadcast Text Id", i);
+                pkt.ReadInt32("Broadcast Text Id", i);
         }
     }
 }
