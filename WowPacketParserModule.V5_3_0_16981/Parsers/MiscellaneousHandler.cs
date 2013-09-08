@@ -147,5 +147,12 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadTime("Hotfix date", i);
             }
         }
+
+        [Parser(Opcode.SMSG_SEND_SERVER_LOCATION)]
+        public static void HandleSendServerLocation(Packet packet)
+        {
+            packet.ReadBits("Unk Bits", 16);
+            packet.ReadCString("Server Location");
+        }
     }
 }
