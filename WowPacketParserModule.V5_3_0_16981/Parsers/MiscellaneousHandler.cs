@@ -151,7 +151,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.SMSG_SEND_SERVER_LOCATION)]
         public static void HandleSendServerLocation(Packet packet)
         {
-            packet.ReadBits("Unk Bits", 16);
+            packet.ReadBits("Unk Bits", 9);
             packet.ReadCString("Server Location");
         }
 

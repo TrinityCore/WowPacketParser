@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
     public static class InstanceHandler
     {
-        [Parser(Opcode.CMSG_SAVE_CUF_PROFILES)] // 4.3.4
+        [Parser(Opcode.CMSG_SAVE_CUF_PROFILES)]
         public static void HandleSaveCufProfiles(Packet packet)
         {
             var count = packet.ReadBits("Count", 19);
