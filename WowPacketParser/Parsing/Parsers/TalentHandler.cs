@@ -139,7 +139,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_TALENTS_INFO, ClientVersionBuild.V5_1_0_16309)]
-        public static void ReadTalentInfo510(ref Packet packet)
+        public static void ReadTalentInfo510(Packet packet)
         {
             var specCount = packet.ReadByte("Spec Group count");
             packet.ReadByte("Active Spec Group");
