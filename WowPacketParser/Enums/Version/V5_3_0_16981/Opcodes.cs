@@ -11,6 +11,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
+            {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x0470},
             {Opcode.CMSG_AUTH_SESSION, 0x09F1},
             {Opcode.CMSG_AREATRIGGER, 0x04DB},
             {Opcode.CMSG_CAST_SPELL, 0x01CE},
@@ -32,6 +33,8 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.CMSG_LOAD_SCREEN, 0x0341},
             {Opcode.CMSG_LOGOUT_REQUEST, 0x1150},
             {Opcode.CMSG_LOG_DISCONNECT, 0x09A2},
+            {Opcode.CMSG_MESSAGECHAT_ADDON_PARTY, 0x117A},
+            {Opcode.CMSG_MESSAGECHAT_ADDON_RAID, 0x0171},
             {Opcode.CMSG_MESSAGECHAT_AFK, 0x062B},
             {Opcode.CMSG_MESSAGECHAT_CHANNEL, 0x0132},
             {Opcode.CMSG_MESSAGECHAT_DND, 0x1271},
