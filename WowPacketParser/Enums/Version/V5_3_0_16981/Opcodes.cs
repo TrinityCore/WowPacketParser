@@ -65,6 +65,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.CMSG_REDIRECTION_AUTH_PROOF, 0x1AA1},
             {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x0A82},
             {Opcode.CMSG_SAVE_CUF_PROFILES, 0x059B},
+            {Opcode.CMSG_SEND_MAIL, 0x0550},
             {Opcode.CMSG_SET_ACTION_BUTTON, 0x0400},
             {Opcode.CMSG_SET_ACTIVE_MOVER, 0x0A53},
             {Opcode.CMSG_SET_PLAYER_DECLINED_NAMES, 0x0815},
@@ -265,6 +266,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_LOOT_ROLL_WON, 0x0985},
             {Opcode.SMSG_LOOT_START_ROLL, 0x10C8},
             //{Opcode.SMSG_LOOT_UPDATED, 0x15C4}, new
+            {Opcode.SMSG_MAIL_LIST_RESULT, 0x14C8},
             {Opcode.SMSG_MAP_OBJ_EVENTS, 0x0A84},
             {Opcode.SMSG_MESSAGECHAT, 0x0699},
             {Opcode.SMSG_MESSAGE_BOX, 0x14D9},
