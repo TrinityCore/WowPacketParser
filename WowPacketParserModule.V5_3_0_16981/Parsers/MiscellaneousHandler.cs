@@ -154,5 +154,12 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadBits("Unk Bits", 16);
             packet.ReadCString("Server Location");
         }
+
+        [Parser(Opcode.CMSG_UNKNOWN_2979)]
+        public static void HandleUnknow2979(Packet packet)
+        {
+            packet.ReadBits("String length", 9);
+            packet.ReadCString("File");
+        }
     }
 }
