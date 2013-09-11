@@ -165,9 +165,9 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
                 for (var i = 0; i < bits6; ++i)
                 {
-                    packet.ReadWoWString("String 1", len5[i], i);
-                    packet.ReadWoWString("String 2", len261[i], i);
-                    packet.ReadInt32("Unk int", i);
+                    packet.ReadWoWString("Realm", len5[i], i);
+                    packet.ReadWoWString("Realm", len261[i], i);
+                    packet.ReadInt32("Time", i);
                 }
                 packet.ReadInt32("Unk int 5");
                 packet.ReadInt32("Unk int 11");
