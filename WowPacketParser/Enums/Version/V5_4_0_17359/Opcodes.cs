@@ -18,6 +18,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0784}, //?
             {Opcode.CMSG_UNKNOWN_903, 0x0387},
             {Opcode.SMSG_ADDON_INFO, 0x0128},
+            {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x0816},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x016A},
             {Opcode.SMSG_AUTH_RESPONSE, 0x090E},
             {Opcode.SMSG_CHAR_ENUM, 0x0193},
