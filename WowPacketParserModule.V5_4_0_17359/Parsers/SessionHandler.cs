@@ -24,5 +24,156 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadByte("Unk Byte");
             packet.ReadUInt32("Server Seed");
         }
+
+        [Parser(Opcode.CMSG_AUTH_SESSION)]
+        public static void HandleAuthSession(Packet packet)
+        {
+            var sha = new byte[20];
+            packet.ReadUInt32("UInt32 2");
+            sha[4] = packet.ReadByte();
+            packet.ReadUInt32("UInt32 4");
+            packet.ReadByte("Unk Byte");
+            sha[19] = packet.ReadByte();
+            sha[12] = packet.ReadByte();
+            sha[9]= packet.ReadByte();
+            sha[6] = packet.ReadByte();
+            sha[18] = packet.ReadByte();
+            sha[17] = packet.ReadByte();
+            sha[8] = packet.ReadByte();
+            sha[13] = packet.ReadByte();
+            sha[1] = packet.ReadByte();
+            sha[10] = packet.ReadByte();
+            sha[11] = packet.ReadByte();
+            sha[15] = packet.ReadByte();
+            packet.ReadUInt32("Client seed");
+            sha[3] = packet.ReadByte();
+            sha[14] = packet.ReadByte();
+            sha[7] = packet.ReadByte();
+            packet.ReadInt64("Int64");
+            packet.ReadByte("Unk Byte");
+            packet.ReadUInt32("UInt32 1");
+            sha[5] = packet.ReadByte();
+            sha[0] = packet.ReadByte();
+            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);//20
+            sha[16] = packet.ReadByte();
+            sha[2] = packet.ReadByte();
+            packet.ReadUInt32("UInt32 3");
+            using (var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
+            {
+                var pkt2 = addons;
+                CoreParsers.AddonHandler.ReadClientAddonsList(ref pkt2);
+            }
+
+            var size = (int)packet.ReadBits(11);
+            packet.ReadBit("Unk bit");
+            packet.ResetBitReader();
+            packet.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(size)));
+            packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
+        }
+
+        [Parser(Opcode.SMSG_AUTH_RESPONSE)]
+        public static void HandleAuthResponse(Packet packet)
+        {
+            var isQueued = packet.ReadBit("Is In Queue");
+            var hasAccountData = packet.ReadBit("Has Account Data");
+
+            var classCount = 0u;
+            var raceCount = 0u;
+            var bits23 = 0u;
+            var bits6 = 0u;
+            bool bit112 = false;
+            bool bit116 = false;
+            uint[] count1096 = null;
+            uint[] len4 = null;
+            uint[] len5 = null;
+            uint[] len69 = null;
+            uint[] len261 = null;
+            if (hasAccountData)
+            {
+                bits23 = packet.ReadBits("Unkbits", 21);
+                packet.ReadBit("Unk 1");
+                classCount = packet.ReadBits("Class Activation Count", 23);
+                packet.ReadBit("Unk 2");
+
+                bit112 = packet.ReadBit();
+                count1096 = new uint[bits23];
+                len4 = new uint[bits23];
+                len69 = new uint[bits23];
+                for (var i = 0; i < bits23; ++i)
+                {
+                    count1096[i] = packet.ReadBits(23);
+                    len4[i] = packet.ReadBits(7);
+                    len69[i] = packet.ReadBits(10);
+                }
+
+                bits6 = packet.ReadBits(21);
+                len5 = new uint[bits6];
+                len261 = new uint[bits6];
+                for (var i = 0; i < bits6; ++i)
+                {
+                    len261[i] = packet.ReadBits(8);
+                    packet.ReadBit("unk bit", i);
+                    len5[i] = packet.ReadBits(8);
+                }
+                bit116 = packet.ReadBit();
+                raceCount = packet.ReadBits("Race Activation Count", 23);
+            }
+
+            if (isQueued)
+                packet.ReadBit("unk0");
+
+            packet.ResetBitReader();
+
+            if (isQueued)
+                packet.ReadUInt32("Unk 11");
+
+            if (hasAccountData)
+            {
+                for (var i = 0; i < classCount; ++i)
+                {
+                    packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
+                    packet.ReadEnum<ClientType>("Class Expansion", TypeCode.Byte, i);
+                }
+
+                packet.ReadUInt32("Unk int 12");
+                for (var i = 0; i < raceCount; ++i)
+                {
+                    packet.ReadEnum<ClientType>("Race Expansion", TypeCode.Byte, i);
+                    packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
+                }
+
+                packet.ReadInt32("Unk int 10");
+                packet.ReadInt32("Unk int 14");
+                if (bit112)
+                    packet.ReadInt16("UnkInt16 1");
+
+                for (var i = 0; i < bits23; ++i)
+                {
+                    packet.ReadInt32("Unk int32", i);
+                    for (var j = 0; j < count1096[i]; ++j)
+                    {
+                        packet.ReadByte("Unk byte 1", i, j);
+                        packet.ReadByte("Unk byte 0", i, j);
+                    }
+                    packet.ReadWoWString("String 1", len69[i], i);
+                    packet.ReadWoWString("String 2", len4[i], i);
+                }
+                packet.ReadEnum<ClientType>("Player Expansion", TypeCode.Byte);
+                packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
+                if (bit116)
+                    packet.ReadInt16("UnkInt16 2");
+
+                for (var i = 0; i < bits6; ++i)
+                {
+                    packet.ReadWoWString("String 1", len5[i], i);
+                    packet.ReadWoWString("String 2", len261[i], i);
+                    packet.ReadInt32("Unk int", i);
+                }
+                packet.ReadInt32("Unk int 5");
+                packet.ReadInt32("Unk int 11");
+            }
+
+            packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
+        }
     }
 }
