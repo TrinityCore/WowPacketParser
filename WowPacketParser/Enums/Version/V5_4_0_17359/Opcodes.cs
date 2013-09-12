@@ -30,6 +30,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_MOTD, 0x082A},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x142D},
             {Opcode.SMSG_REALM_SPLIT, 0x0099},
+            {Opcode.SMSG_SEND_SERVER_LOCATION, 0x0883},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x1F35},
             {Opcode.SMSG_UPDATE_OBJECT, 0x17D9},
         };

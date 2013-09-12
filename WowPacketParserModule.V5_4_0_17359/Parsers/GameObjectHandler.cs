@@ -20,7 +20,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 return;
 
             var unk1 = packet.ReadInt32("Unk1 UInt32");
-            if (unk1 == 0) // entry is masked
+            if (unk1 == 0)
                 return;
 
             gameObject.Type = packet.ReadEnum<GameObjectType>("Type", TypeCode.Int32);
