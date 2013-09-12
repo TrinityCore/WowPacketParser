@@ -30,7 +30,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             pos.Y = packet.ReadSingle();
             pos.X = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
-            packet.ReadInt32("AreaId");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area Id");
             CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
 
             packet.WriteLine("Position: {0}", pos);
