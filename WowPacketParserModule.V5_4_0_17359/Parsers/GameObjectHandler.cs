@@ -19,7 +19,9 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             if (entry.Value) // entry is masked
                 return;
 
-            packet.ReadInt32("Unk1 UInt32");
+            var unk1 = packet.ReadInt32("Unk1 UInt32");
+            if (unk1 == 0) // entry is masked
+                return;
 
             gameObject.Type = packet.ReadEnum<GameObjectType>("Type", TypeCode.Int32);
             gameObject.DisplayId = packet.ReadUInt32("Display ID");
