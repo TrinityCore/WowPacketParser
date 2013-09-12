@@ -10,127 +10,127 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
         OBJECT_FIELD_ENTRY                                  = 0x0005, // Size = 1
         OBJECT_FIELD_DYNAMIC_FLAGS                          = 0x0006, // Size = 1
         OBJECT_FIELD_SCALE_X                                = 0x0007, // Size = 1
-        OBJECT_FIELD_END                                    = 0x0008,
+        OBJECT_END                                          = 0x0008,
     };
 
     public enum ItemField
     {
-        ITEM_FIELD_OWNER                                    = ObjectField.OBJECT_FIELD_END + 0x0000, // Size = 2
-        ITEM_FIELD_CONTAINED_IN                             = ObjectField.OBJECT_FIELD_END + 0x0002, // Size = 2
-        ITEM_FIELD_CREATOR                                  = ObjectField.OBJECT_FIELD_END + 0x0004, // Size = 2
-        ITEM_FIELD_GIFT_CREATOR                             = ObjectField.OBJECT_FIELD_END + 0x0006, // Size = 2
-        ITEM_FIELD_STACK_COUNT                              = ObjectField.OBJECT_FIELD_END + 0x0008, // Size = 1
-        ITEM_FIELD_EXPIRATION                               = ObjectField.OBJECT_FIELD_END + 0x0009, // Size = 1
-        ITEM_FIELD_SPELL_CHARGES                            = ObjectField.OBJECT_FIELD_END + 0x000A, // Size = 5
-        ITEM_FIELD_DYNAMIC_FLAGS                            = ObjectField.OBJECT_FIELD_END + 0x000F, // Size = 1
-        ITEM_FIELD_ENCHANTMENT                              = ObjectField.OBJECT_FIELD_END + 0x0010, // Size = 39
-        ITEM_FIELD_PROPERTY_SEED                            = ObjectField.OBJECT_FIELD_END + 0x0037, // Size = 1
-        ITEM_FIELD_RANDOM_PROPERTIES_ID                     = ObjectField.OBJECT_FIELD_END + 0x0038, // Size = 1
-        ITEM_FIELD_DURABILITY                               = ObjectField.OBJECT_FIELD_END + 0x0039, // Size = 1
-        ITEM_FIELD_MAX_DURABILITY                           = ObjectField.OBJECT_FIELD_END + 0x003A, // Size = 1
-        ITEM_FIELD_CREATE_PLAYED_TIME                       = ObjectField.OBJECT_FIELD_END + 0x003B, // Size = 1
-        ITEM_FIELD_MODIFIERS_MASK                           = ObjectField.OBJECT_FIELD_END + 0x003C, // Size = 1
-        ITEM_FIELD_END                                      = ObjectField.OBJECT_FIELD_END + 0x003D,
+        ITEM_FIELD_OWNER                                    = ObjectField.OBJECT_END + 0x0000, // Size = 2
+        ITEM_FIELD_CONTAINED_IN                             = ObjectField.OBJECT_END + 0x0002, // Size = 2
+        ITEM_FIELD_CREATOR                                  = ObjectField.OBJECT_END + 0x0004, // Size = 2
+        ITEM_FIELD_GIFT_CREATOR                             = ObjectField.OBJECT_END + 0x0006, // Size = 2
+        ITEM_FIELD_STACK_COUNT                              = ObjectField.OBJECT_END + 0x0008, // Size = 1
+        ITEM_FIELD_EXPIRATION                               = ObjectField.OBJECT_END + 0x0009, // Size = 1
+        ITEM_FIELD_SPELL_CHARGES                            = ObjectField.OBJECT_END + 0x000A, // Size = 5
+        ITEM_FIELD_DYNAMIC_FLAGS                            = ObjectField.OBJECT_END + 0x000F, // Size = 1
+        ITEM_FIELD_ENCHANTMENT                              = ObjectField.OBJECT_END + 0x0010, // Size = 39
+        ITEM_FIELD_PROPERTY_SEED                            = ObjectField.OBJECT_END + 0x0037, // Size = 1
+        ITEM_FIELD_RANDOM_PROPERTIES_ID                     = ObjectField.OBJECT_END + 0x0038, // Size = 1
+        ITEM_FIELD_DURABILITY                               = ObjectField.OBJECT_END + 0x0039, // Size = 1
+        ITEM_FIELD_MAX_DURABILITY                           = ObjectField.OBJECT_END + 0x003A, // Size = 1
+        ITEM_FIELD_CREATE_PLAYED_TIME                       = ObjectField.OBJECT_END + 0x003B, // Size = 1
+        ITEM_FIELD_MODIFIERS_MASK                           = ObjectField.OBJECT_END + 0x003C, // Size = 1
+        ITEM_END                                            = ObjectField.OBJECT_END + 0x003D,
     };
 
     public enum ItemDynamicField
     {
-        ITEM_DYNAMIC_FIELD_MODIFIERS                        = ItemField.ITEM_FIELD_END + 0x0,
-        ITEM_DYNAMIC_END                                    = ItemField.ITEM_FIELD_END + 0x48
+        ITEM_DYNAMIC_FIELD_MODIFIERS                        = ItemField.ITEM_END + 0x0,
+        ITEM_DYNAMIC_END                                    = ItemField.ITEM_END + 0x48
     }
 
     public enum ContainerField
     {
-        CONTAINER_FIELD_SLOTS                               = ItemField.ITEM_FIELD_END + 0x0000, // Size =  72
-        CONTAINER_FIELD_NUM_SLOTS                           = ItemField.ITEM_FIELD_END + 0x0048, // Size =   1
-        CONTAINER_END                                       = ItemField.ITEM_FIELD_END + 0x0049,
+        CONTAINER_FIELD_SLOTS                               = ItemField.ITEM_END + 0x0000, // Size =  72
+        CONTAINER_FIELD_NUM_SLOTS                           = ItemField.ITEM_END + 0x0048, // Size =   1
+        CONTAINER_END                                       = ItemField.ITEM_END + 0x0049,
     };
 
     public enum UnitField
     {
-        UNIT_FIELD_CHARM                                    = ObjectField.OBJECT_FIELD_END + 0x0000, // Size = 2
-        UNIT_FIELD_SUMMON                                   = ObjectField.OBJECT_FIELD_END + 0x0002, // Size = 2
-        UNIT_FIELD_CRITTER                                  = ObjectField.OBJECT_FIELD_END + 0x0004, // Size = 2
-        UNIT_FIELD_CHARMEDBY                                = ObjectField.OBJECT_FIELD_END + 0x0006, // Size = 2
-        UNIT_FIELD_SUMMONEDBY                               = ObjectField.OBJECT_FIELD_END + 0x0008, // Size = 2
-        UNIT_FIELD_CREATEDBY                                = ObjectField.OBJECT_FIELD_END + 0x000A, // Size = 2
-        UNIT_FIELD_DEMON_CREATOR                            = ObjectField.OBJECT_FIELD_END + 0x000C, // Size = 2
-        UNIT_FIELD_TARGET                                   = ObjectField.OBJECT_FIELD_END + 0x000E, // Size = 2
-        UNIT_FIELD_BATTLE_PET_COMPANION_GUID                = ObjectField.OBJECT_FIELD_END + 0x0010, // Size = 2
-        UNIT_FIELD_CHANNEL_OBJECT                           = ObjectField.OBJECT_FIELD_END + 0x0012, // Size = 2
-        UNIT_FIELD_CHANNEL_SPELL                            = ObjectField.OBJECT_FIELD_END + 0x0014, // Size = 1
-        UNIT_FIELD_SUMMONED_BY_HOME_REALM                   = ObjectField.OBJECT_FIELD_END + 0x0015, // Size = 1
-        UNIT_FIELD_SEX                                      = ObjectField.OBJECT_FIELD_END + 0x0016, // Size = 1
-        UNIT_FIELD_DISPLAY_POWER                            = ObjectField.OBJECT_FIELD_END + 0x0017, // Size = 1
-        UNIT_FIELD_OVERRIDE_DISPLAY_POWER_ID                = ObjectField.OBJECT_FIELD_END + 0x0018, // Size = 1
-        UNIT_FIELD_HEALTH                                   = ObjectField.OBJECT_FIELD_END + 0x0019, // Size = 1
-        UNIT_FIELD_POWER                                    = ObjectField.OBJECT_FIELD_END + 0x001A, // Size = 5
-        UNIT_FIELD_MAXHEALTH                                = ObjectField.OBJECT_FIELD_END + 0x001F, // Size = 1
-        UNIT_FIELD_MAXPOWER                                 = ObjectField.OBJECT_FIELD_END + 0x0020, // Size = 5
-        UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER                = ObjectField.OBJECT_FIELD_END + 0x0025, // Size = 5
-        UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER    = ObjectField.OBJECT_FIELD_END + 0x002A, // Size = 5
-        UNIT_FIELD_LEVEL                                    = ObjectField.OBJECT_FIELD_END + 0x002F, // Size = 1
-        UNIT_FIELD_EFFECTIVE_LEVEL                          = ObjectField.OBJECT_FIELD_END + 0x0030, // Size = 1
-        UNIT_FIELD_FACTIONTEMPLATE                          = ObjectField.OBJECT_FIELD_END + 0x0031, // Size = 1
-        UNIT_FIELD_VIRTUAL_ITEM_ID1                         = ObjectField.OBJECT_FIELD_END + 0x0032, // Size = 1
-        UNIT_FIELD_VIRTUAL_ITEM_ID2                         = ObjectField.OBJECT_FIELD_END + 0x0033, // Size = 1
-        UNIT_FIELD_VIRTUAL_ITEM_ID3                         = ObjectField.OBJECT_FIELD_END + 0x0034, // Size = 1
-        UNIT_FIELD_FLAGS                                    = ObjectField.OBJECT_FIELD_END + 0x0035, // Size = 1
-        UNIT_FIELD_FLAGS_2                                  = ObjectField.OBJECT_FIELD_END + 0x0036, // Size = 1
-        UNIT_FIELD_AURASTATE                                = ObjectField.OBJECT_FIELD_END + 0x0037, // Size = 1
-        UNIT_FIELD_BASEATTACKTIME                           = ObjectField.OBJECT_FIELD_END + 0x0038, // Size = 2
-        UNIT_FIELD_RANGEDATTACKTIME                         = ObjectField.OBJECT_FIELD_END + 0x003A, // Size = 1
-        UNIT_FIELD_BOUNDINGRADIUS                           = ObjectField.OBJECT_FIELD_END + 0x003B, // Size = 1
-        UNIT_FIELD_COMBATREACH                              = ObjectField.OBJECT_FIELD_END + 0x003C, // Size = 1
-        UNIT_FIELD_DISPLAYID                                = ObjectField.OBJECT_FIELD_END + 0x003D, // Size = 1
-        UNIT_FIELD_NATIVEDISPLAYID                          = ObjectField.OBJECT_FIELD_END + 0x003E, // Size = 1
-        UNIT_FIELD_MOUNTDISPLAYID                           = ObjectField.OBJECT_FIELD_END + 0x003F, // Size = 1
-        UNIT_FIELD_MIN_DAMAGE                               = ObjectField.OBJECT_FIELD_END + 0x0040, // Size = 1
-        UNIT_FIELD_MAX_DAMAGE                               = ObjectField.OBJECT_FIELD_END + 0x0041, // Size = 1
-        UNIT_FIELD_MIN_OFFHAND_DAMAGE                       = ObjectField.OBJECT_FIELD_END + 0x0042, // Size = 1
-        UNIT_FIELD_MAX_OFFHAND_DAMAGE                       = ObjectField.OBJECT_FIELD_END + 0x0043, // Size = 1
-        UNIT_FIELD_ANIMTIER                                 = ObjectField.OBJECT_FIELD_END + 0x0044, // Size = 1
-        UNIT_FIELD_PET_NUMBER                               = ObjectField.OBJECT_FIELD_END + 0x0045, // Size = 1
-        UNIT_FIELD_PET_NAME_TIMESTAMP                       = ObjectField.OBJECT_FIELD_END + 0x0046, // Size = 1
-        UNIT_FIELD_PET_EXPERIENCE                           = ObjectField.OBJECT_FIELD_END + 0x0047, // Size = 1
-        UNIT_FIELD_PET_NEXTLEVEL_EXPERIENCE                 = ObjectField.OBJECT_FIELD_END + 0x0048, // Size = 1
-        UNIT_FIELD_MOD_CASTING_SPEED                        = ObjectField.OBJECT_FIELD_END + 0x0049, // Size = 1
-        UNIT_FIELD_MOD_SPELL_HASTE                          = ObjectField.OBJECT_FIELD_END + 0x004A, // Size = 1
-        UNIT_FIELD_MOD_HASTE                                = ObjectField.OBJECT_FIELD_END + 0x004B, // Size = 1
-        UNIT_FIELD_MOD_RANGED_HASTE                         = ObjectField.OBJECT_FIELD_END + 0x004C, // Size = 1
-        UNIT_FIELD_MOD_HASTE_REGEN                          = ObjectField.OBJECT_FIELD_END + 0x004D, // Size = 1
-        UNIT_CREATED_BY_SPELL                               = ObjectField.OBJECT_FIELD_END + 0x004E, // Size = 1
-        UNIT_NPC_FLAGS                                      = ObjectField.OBJECT_FIELD_END + 0x004F, // Size = 1
-        UNIT_NPC_EMOTESTATE                                 = ObjectField.OBJECT_FIELD_END + 0x0050, // Size = 2
-        UNIT_FIELD_STATS                                    = ObjectField.OBJECT_FIELD_END + 0x0052, // Size = 5
-        UNIT_FIELD_STAT_POSBUFF                             = ObjectField.OBJECT_FIELD_END + 0x0057, // Size = 5
-        UNIT_FIELD_STAT_NEGBUFF                             = ObjectField.OBJECT_FIELD_END + 0x005C, // Size = 5
-        UNIT_FIELD_RESISTANCES                              = ObjectField.OBJECT_FIELD_END + 0x0061, // Size = 7
-        UNIT_FIELD_RESISTANCE_BUFF_MODS_POSITIVE            = ObjectField.OBJECT_FIELD_END + 0x0068, // Size = 7
-        UNIT_FIELD_RESISTANCE_BUFF_MODS_NEGATIVE            = ObjectField.OBJECT_FIELD_END + 0x006F, // Size = 7
-        UNIT_FIELD_BASE_MANA                                = ObjectField.OBJECT_FIELD_END + 0x0076, // Size = 1
-        UNIT_FIELD_BASE_HEALTH                              = ObjectField.OBJECT_FIELD_END + 0x0077, // Size = 1
-        UNIT_FIELD_SHAPESHIFT_FORM                          = ObjectField.OBJECT_FIELD_END + 0x0078, // Size = 1
-        UNIT_FIELD_ATTACK_POWER                             = ObjectField.OBJECT_FIELD_END + 0x0079, // Size = 1
-        UNIT_FIELD_ATTACK_POWER_MOD_POS                     = ObjectField.OBJECT_FIELD_END + 0x007A, // Size = 1
-        UNIT_FIELD_ATTACK_POWER_MOD_NEG                     = ObjectField.OBJECT_FIELD_END + 0x007B, // Size = 1
-        UNIT_FIELD_ATTACK_POWER_MULTIPLIER                  = ObjectField.OBJECT_FIELD_END + 0x007C, // Size = 1
-        UNIT_FIELD_RANGED_ATTACK_POWER                      = ObjectField.OBJECT_FIELD_END + 0x007D, // Size = 1
-        UNIT_FIELD_RANGED_ATTACK_POWER_MOD_POS              = ObjectField.OBJECT_FIELD_END + 0x007E, // Size = 1
-        UNIT_FIELD_RANGED_ATTACK_POWER_MOD_NEG              = ObjectField.OBJECT_FIELD_END + 0x007F, // Size = 1
-        UNIT_FIELD_RANGED_ATTACK_POWER_MULTIPLIER           = ObjectField.OBJECT_FIELD_END + 0x0080, // Size = 1
-        UNIT_FIELD_MIN_RANGED_DAMAGE                        = ObjectField.OBJECT_FIELD_END + 0x0081, // Size = 1
-        UNIT_FIELD_MAX_RANGED_DAMAGE                        = ObjectField.OBJECT_FIELD_END + 0x0082, // Size = 1
-        UNIT_FIELD_POWER_COST_MODIFIER                      = ObjectField.OBJECT_FIELD_END + 0x0083, // Size = 7
-        UNIT_FIELD_POWER_COST_MULTIPLIER                    = ObjectField.OBJECT_FIELD_END + 0x008A, // Size = 7
-        UNIT_FIELD_MAX_HEALTH_MODIFIER                      = ObjectField.OBJECT_FIELD_END + 0x0091, // Size = 1
-        UNIT_FIELD_HOVERHEIGHT                              = ObjectField.OBJECT_FIELD_END + 0x0092, // Size = 1
-        UNIT_FIELD_MIN_ITEM_LEVEL                           = ObjectField.OBJECT_FIELD_END + 0x0093, // Size = 1
-        UNIT_FIELD_MAX_ITEM_LEVEL                           = ObjectField.OBJECT_FIELD_END + 0x0094, // Size = 1
-        UNIT_FIELD_WILD_BATTLEPET_LEVEL                     = ObjectField.OBJECT_FIELD_END + 0x0095, // Size = 1
-        UNIT_FIELD_BATTLEPET_COMPANION_NAME_TIMESTAMP       = ObjectField.OBJECT_FIELD_END + 0x0096, // Size = 1
-        UNIT_FIELD_INTERACT_SPELLID                         = ObjectField.OBJECT_FIELD_END + 0x0097, // Size = 1
-        UNIT_FIELD_END                                      = ObjectField.OBJECT_FIELD_END + 0x0098,
+        UNIT_FIELD_CHARM                                    = ObjectField.OBJECT_END + 0x0000, // Size = 2
+        UNIT_FIELD_SUMMON                                   = ObjectField.OBJECT_END + 0x0002, // Size = 2
+        UNIT_FIELD_CRITTER                                  = ObjectField.OBJECT_END + 0x0004, // Size = 2
+        UNIT_FIELD_CHARMEDBY                                = ObjectField.OBJECT_END + 0x0006, // Size = 2
+        UNIT_FIELD_SUMMONEDBY                               = ObjectField.OBJECT_END + 0x0008, // Size = 2
+        UNIT_FIELD_CREATEDBY                                = ObjectField.OBJECT_END + 0x000A, // Size = 2
+        UNIT_FIELD_DEMON_CREATOR                            = ObjectField.OBJECT_END + 0x000C, // Size = 2
+        UNIT_FIELD_TARGET                                   = ObjectField.OBJECT_END + 0x000E, // Size = 2
+        UNIT_FIELD_BATTLE_PET_COMPANION_GUID                = ObjectField.OBJECT_END + 0x0010, // Size = 2
+        UNIT_FIELD_CHANNEL_OBJECT                           = ObjectField.OBJECT_END + 0x0012, // Size = 2
+        UNIT_FIELD_CHANNEL_SPELL                            = ObjectField.OBJECT_END + 0x0014, // Size = 1
+        UNIT_FIELD_SUMMONED_BY_HOME_REALM                   = ObjectField.OBJECT_END + 0x0015, // Size = 1
+        UNIT_FIELD_SEX                                      = ObjectField.OBJECT_END + 0x0016, // Size = 1
+        UNIT_FIELD_DISPLAY_POWER                            = ObjectField.OBJECT_END + 0x0017, // Size = 1
+        UNIT_FIELD_OVERRIDE_DISPLAY_POWER_ID                = ObjectField.OBJECT_END + 0x0018, // Size = 1
+        UNIT_FIELD_HEALTH                                   = ObjectField.OBJECT_END + 0x0019, // Size = 1
+        UNIT_FIELD_POWER                                    = ObjectField.OBJECT_END + 0x001A, // Size = 5
+        UNIT_FIELD_MAXHEALTH                                = ObjectField.OBJECT_END + 0x001F, // Size = 1
+        UNIT_FIELD_MAXPOWER                                 = ObjectField.OBJECT_END + 0x0020, // Size = 5
+        UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER                = ObjectField.OBJECT_END + 0x0025, // Size = 5
+        UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER    = ObjectField.OBJECT_END + 0x002A, // Size = 5
+        UNIT_FIELD_LEVEL                                    = ObjectField.OBJECT_END + 0x002F, // Size = 1
+        UNIT_FIELD_EFFECTIVE_LEVEL                          = ObjectField.OBJECT_END + 0x0030, // Size = 1
+        UNIT_FIELD_FACTIONTEMPLATE                          = ObjectField.OBJECT_END + 0x0031, // Size = 1
+        UNIT_FIELD_VIRTUAL_ITEM_ID1                         = ObjectField.OBJECT_END + 0x0032, // Size = 1
+        UNIT_FIELD_VIRTUAL_ITEM_ID2                         = ObjectField.OBJECT_END + 0x0033, // Size = 1
+        UNIT_FIELD_VIRTUAL_ITEM_ID3                         = ObjectField.OBJECT_END + 0x0034, // Size = 1
+        UNIT_FIELD_FLAGS                                    = ObjectField.OBJECT_END + 0x0035, // Size = 1
+        UNIT_FIELD_FLAGS_2                                  = ObjectField.OBJECT_END + 0x0036, // Size = 1
+        UNIT_FIELD_AURASTATE                                = ObjectField.OBJECT_END + 0x0037, // Size = 1
+        UNIT_FIELD_BASEATTACKTIME                           = ObjectField.OBJECT_END + 0x0038, // Size = 2
+        UNIT_FIELD_RANGEDATTACKTIME                         = ObjectField.OBJECT_END + 0x003A, // Size = 1
+        UNIT_FIELD_BOUNDINGRADIUS                           = ObjectField.OBJECT_END + 0x003B, // Size = 1
+        UNIT_FIELD_COMBATREACH                              = ObjectField.OBJECT_END + 0x003C, // Size = 1
+        UNIT_FIELD_DISPLAYID                                = ObjectField.OBJECT_END + 0x003D, // Size = 1
+        UNIT_FIELD_NATIVEDISPLAYID                          = ObjectField.OBJECT_END + 0x003E, // Size = 1
+        UNIT_FIELD_MOUNTDISPLAYID                           = ObjectField.OBJECT_END + 0x003F, // Size = 1
+        UNIT_FIELD_MIN_DAMAGE                               = ObjectField.OBJECT_END + 0x0040, // Size = 1
+        UNIT_FIELD_MAX_DAMAGE                               = ObjectField.OBJECT_END + 0x0041, // Size = 1
+        UNIT_FIELD_MIN_OFFHAND_DAMAGE                       = ObjectField.OBJECT_END + 0x0042, // Size = 1
+        UNIT_FIELD_MAX_OFFHAND_DAMAGE                       = ObjectField.OBJECT_END + 0x0043, // Size = 1
+        UNIT_FIELD_ANIMTIER                                 = ObjectField.OBJECT_END + 0x0044, // Size = 1
+        UNIT_FIELD_PET_NUMBER                               = ObjectField.OBJECT_END + 0x0045, // Size = 1
+        UNIT_FIELD_PET_NAME_TIMESTAMP                       = ObjectField.OBJECT_END + 0x0046, // Size = 1
+        UNIT_FIELD_PET_EXPERIENCE                           = ObjectField.OBJECT_END + 0x0047, // Size = 1
+        UNIT_FIELD_PET_NEXTLEVEL_EXPERIENCE                 = ObjectField.OBJECT_END + 0x0048, // Size = 1
+        UNIT_FIELD_MOD_CASTING_SPEED                        = ObjectField.OBJECT_END + 0x0049, // Size = 1
+        UNIT_FIELD_MOD_SPELL_HASTE                          = ObjectField.OBJECT_END + 0x004A, // Size = 1
+        UNIT_FIELD_MOD_HASTE                                = ObjectField.OBJECT_END + 0x004B, // Size = 1
+        UNIT_FIELD_MOD_RANGED_HASTE                         = ObjectField.OBJECT_END + 0x004C, // Size = 1
+        UNIT_FIELD_MOD_HASTE_REGEN                          = ObjectField.OBJECT_END + 0x004D, // Size = 1
+        UNIT_CREATED_BY_SPELL                               = ObjectField.OBJECT_END + 0x004E, // Size = 1
+        UNIT_NPC_FLAGS                                      = ObjectField.OBJECT_END + 0x004F, // Size = 1
+        UNIT_NPC_EMOTESTATE                                 = ObjectField.OBJECT_END + 0x0050, // Size = 2
+        UNIT_FIELD_STATS                                    = ObjectField.OBJECT_END + 0x0052, // Size = 5
+        UNIT_FIELD_STAT_POSBUFF                             = ObjectField.OBJECT_END + 0x0057, // Size = 5
+        UNIT_FIELD_STAT_NEGBUFF                             = ObjectField.OBJECT_END + 0x005C, // Size = 5
+        UNIT_FIELD_RESISTANCES                              = ObjectField.OBJECT_END + 0x0061, // Size = 7
+        UNIT_FIELD_RESISTANCE_BUFF_MODS_POSITIVE            = ObjectField.OBJECT_END + 0x0068, // Size = 7
+        UNIT_FIELD_RESISTANCE_BUFF_MODS_NEGATIVE            = ObjectField.OBJECT_END + 0x006F, // Size = 7
+        UNIT_FIELD_BASE_MANA                                = ObjectField.OBJECT_END + 0x0076, // Size = 1
+        UNIT_FIELD_BASE_HEALTH                              = ObjectField.OBJECT_END + 0x0077, // Size = 1
+        UNIT_FIELD_SHAPESHIFT_FORM                          = ObjectField.OBJECT_END + 0x0078, // Size = 1
+        UNIT_FIELD_ATTACK_POWER                             = ObjectField.OBJECT_END + 0x0079, // Size = 1
+        UNIT_FIELD_ATTACK_POWER_MOD_POS                     = ObjectField.OBJECT_END + 0x007A, // Size = 1
+        UNIT_FIELD_ATTACK_POWER_MOD_NEG                     = ObjectField.OBJECT_END + 0x007B, // Size = 1
+        UNIT_FIELD_ATTACK_POWER_MULTIPLIER                  = ObjectField.OBJECT_END + 0x007C, // Size = 1
+        UNIT_FIELD_RANGED_ATTACK_POWER                      = ObjectField.OBJECT_END + 0x007D, // Size = 1
+        UNIT_FIELD_RANGED_ATTACK_POWER_MOD_POS              = ObjectField.OBJECT_END + 0x007E, // Size = 1
+        UNIT_FIELD_RANGED_ATTACK_POWER_MOD_NEG              = ObjectField.OBJECT_END + 0x007F, // Size = 1
+        UNIT_FIELD_RANGED_ATTACK_POWER_MULTIPLIER           = ObjectField.OBJECT_END + 0x0080, // Size = 1
+        UNIT_FIELD_MIN_RANGED_DAMAGE                        = ObjectField.OBJECT_END + 0x0081, // Size = 1
+        UNIT_FIELD_MAX_RANGED_DAMAGE                        = ObjectField.OBJECT_END + 0x0082, // Size = 1
+        UNIT_FIELD_POWER_COST_MODIFIER                      = ObjectField.OBJECT_END + 0x0083, // Size = 7
+        UNIT_FIELD_POWER_COST_MULTIPLIER                    = ObjectField.OBJECT_END + 0x008A, // Size = 7
+        UNIT_FIELD_MAX_HEALTH_MODIFIER                      = ObjectField.OBJECT_END + 0x0091, // Size = 1
+        UNIT_FIELD_HOVERHEIGHT                              = ObjectField.OBJECT_END + 0x0092, // Size = 1
+        UNIT_FIELD_MIN_ITEM_LEVEL                           = ObjectField.OBJECT_END + 0x0093, // Size = 1
+        UNIT_FIELD_MAX_ITEM_LEVEL                           = ObjectField.OBJECT_END + 0x0094, // Size = 1
+        UNIT_FIELD_WILD_BATTLEPET_LEVEL                     = ObjectField.OBJECT_END + 0x0095, // Size = 1
+        UNIT_FIELD_BATTLEPET_COMPANION_NAME_TIMESTAMP       = ObjectField.OBJECT_END + 0x0096, // Size = 1
+        UNIT_FIELD_INTERACT_SPELLID                         = ObjectField.OBJECT_END + 0x0097, // Size = 1
+        UNIT_FIELD_END                                      = ObjectField.OBJECT_END + 0x0098,
     };
 
     public enum UnitDynamicField
@@ -243,57 +243,57 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
 
     public enum GameObjectField
     {
-        GAMEOBJECT_FIELD_CREATED_BY                         = ObjectField.OBJECT_FIELD_END + 0x0000, // Size = 2
-        GAMEOBJECT_DISPLAYID                                = ObjectField.OBJECT_FIELD_END + 0x0002, // Size = 1
-        GAMEOBJECT_FLAGS                                    = ObjectField.OBJECT_FIELD_END + 0x0003, // Size = 1
-        GAMEOBJECT_PARENTROTATION                           = ObjectField.OBJECT_FIELD_END + 0x0004, // Size = 4
-        GAMEOBJECT_FACTION                                  = ObjectField.OBJECT_FIELD_END + 0x0008, // Size = 1
-        GAMEOBJECT_LEVEL                                    = ObjectField.OBJECT_FIELD_END + 0x0009, // Size = 1
-        GAMEOBJECT_BYTES_1                                  = ObjectField.OBJECT_FIELD_END + 0x000A, // Size = 1
-        GAMEOBJECT_FIELD_ANIM_PROGRESS                      = ObjectField.OBJECT_FIELD_END + 0x000B, // Size = 1
-        GAMEOBJECT_FIELD_END                                = ObjectField.OBJECT_FIELD_END + 0x000C
+        GAMEOBJECT_FIELD_CREATED_BY                         = ObjectField.OBJECT_END + 0x0000, // Size = 2
+        GAMEOBJECT_DISPLAYID                                = ObjectField.OBJECT_END + 0x0002, // Size = 1
+        GAMEOBJECT_FLAGS                                    = ObjectField.OBJECT_END + 0x0003, // Size = 1
+        GAMEOBJECT_PARENTROTATION                           = ObjectField.OBJECT_END + 0x0004, // Size = 4
+        GAMEOBJECT_FACTION                                  = ObjectField.OBJECT_END + 0x0008, // Size = 1
+        GAMEOBJECT_LEVEL                                    = ObjectField.OBJECT_END + 0x0009, // Size = 1
+        GAMEOBJECT_BYTES_1                                  = ObjectField.OBJECT_END + 0x000A, // Size = 1
+        GAMEOBJECT_FIELD_ANIM_PROGRESS                      = ObjectField.OBJECT_END + 0x000B, // Size = 1
+        GAMEOBJECT_END                                = ObjectField.OBJECT_END + 0x000C
     };
 
     public enum DynamicObjectField
     {
-        DYNAMICOBJECT_FIELD_CASTER                          = ObjectField.OBJECT_FIELD_END + 0x0000, // Size = 2
-        DYNAMICOBJECT_FIELD_TYPE_AND_VISUAL_ID              = ObjectField.OBJECT_FIELD_END + 0x0002, // Size = 1
-        DYNAMICOBJECT_FIELD_SPELLID                         = ObjectField.OBJECT_FIELD_END + 0x0003, // Size = 1
-        DYNAMICOBJECT_FIELD_RADIUS                          = ObjectField.OBJECT_FIELD_END + 0x0004, // Size = 1
-        DYNAMICOBJECT_FIELD_CASTTIME                        = ObjectField.OBJECT_FIELD_END + 0x0005, // Size = 1
-        DYNAMICOBJECT_FIELD_END                             = ObjectField.OBJECT_FIELD_END + 0x0006,
+        DYNAMICOBJECT_FIELD_CASTER                          = ObjectField.OBJECT_END + 0x0000, // Size = 2
+        DYNAMICOBJECT_FIELD_TYPE_AND_VISUAL_ID              = ObjectField.OBJECT_END + 0x0002, // Size = 1
+        DYNAMICOBJECT_FIELD_SPELLID                         = ObjectField.OBJECT_END + 0x0003, // Size = 1
+        DYNAMICOBJECT_FIELD_RADIUS                          = ObjectField.OBJECT_END + 0x0004, // Size = 1
+        DYNAMICOBJECT_FIELD_CASTTIME                        = ObjectField.OBJECT_END + 0x0005, // Size = 1
+        DYNAMICOBJECT_END                             = ObjectField.OBJECT_END + 0x0006,
     };
 
     public enum CorpseField
     {
-        CORPSE_FIELD_OWNER                                  = ObjectField.OBJECT_FIELD_END + 0x0000, // Size = 2
-        CORPSE_FIELD_PARTY_GUID                             = ObjectField.OBJECT_FIELD_END + 0x0002, // Size = 2
-        CORPSE_FIELD_DISPLAYID                              = ObjectField.OBJECT_FIELD_END + 0x0004, // Size = 1
-        CORPSE_FIELD_ITEMS                                  = ObjectField.OBJECT_FIELD_END + 0x0005, // Size = 19
-        CORPSE_FIELD_SKINID                                 = ObjectField.OBJECT_FIELD_END + 0x0018, // Size = 1
-        CORPSE_FIELD_FACIAL_HAIR_STYLE_ID                   = ObjectField.OBJECT_FIELD_END + 0x0019, // Size = 1
-        CORPSE_FIELD_FLAGS                                  = ObjectField.OBJECT_FIELD_END + 0x001A, // Size = 1
-        CORPSE_FIELD_DYNAMIC_FLAGS                          = ObjectField.OBJECT_FIELD_END + 0x001B, // Size = 1
-        CORPSE_FIELD_END                                    = ObjectField.OBJECT_FIELD_END + 0x001C,
+        CORPSE_FIELD_OWNER                                  = ObjectField.OBJECT_END + 0x0000, // Size = 2
+        CORPSE_FIELD_PARTY_GUID                             = ObjectField.OBJECT_END + 0x0002, // Size = 2
+        CORPSE_FIELD_DISPLAYID                              = ObjectField.OBJECT_END + 0x0004, // Size = 1
+        CORPSE_FIELD_ITEMS                                  = ObjectField.OBJECT_END + 0x0005, // Size = 19
+        CORPSE_FIELD_SKINID                                 = ObjectField.OBJECT_END + 0x0018, // Size = 1
+        CORPSE_FIELD_FACIAL_HAIR_STYLE_ID                   = ObjectField.OBJECT_END + 0x0019, // Size = 1
+        CORPSE_FIELD_FLAGS                                  = ObjectField.OBJECT_END + 0x001A, // Size = 1
+        CORPSE_FIELD_DYNAMIC_FLAGS                          = ObjectField.OBJECT_END + 0x001B, // Size = 1
+        CORPSE_FIELD_END                                    = ObjectField.OBJECT_END + 0x001C,
     };
 
     public enum AreaTriggerField
     {
-        AREATRIGGER_FIELD_CASTER                            = ObjectField.OBJECT_FIELD_END + 0x0000, // Size = 2
-        AREATRIGGER_FIELD_DURATION                          = ObjectField.OBJECT_FIELD_END + 0x0002, // Size = 1
-        AREATRIGGER_FIELD_SPELLID                           = ObjectField.OBJECT_FIELD_END + 0x0003, // Size = 1
-        AREATRIGGER_FIELD_SPELL_VISUAL_ID                   = ObjectField.OBJECT_FIELD_END + 0x0004, // Size = 1
-        AREATRIGGER_FIELD_EXPLICIT_SCALE                    = ObjectField.OBJECT_FIELD_END + 0x0005, // Size = 1
-        AREATRIGGER_FIELD_END                               = ObjectField.OBJECT_FIELD_END + 0x0006,
+        AREATRIGGER_FIELD_CASTER                            = ObjectField.OBJECT_END + 0x0000, // Size = 2
+        AREATRIGGER_FIELD_DURATION                          = ObjectField.OBJECT_END + 0x0002, // Size = 1
+        AREATRIGGER_FIELD_SPELLID                           = ObjectField.OBJECT_END + 0x0003, // Size = 1
+        AREATRIGGER_FIELD_SPELL_VISUAL_ID                   = ObjectField.OBJECT_END + 0x0004, // Size = 1
+        AREATRIGGER_FIELD_EXPLICIT_SCALE                    = ObjectField.OBJECT_END + 0x0005, // Size = 1
+        AREATRIGGER_FIELD_END                               = ObjectField.OBJECT_END + 0x0006,
     };
 
     public enum SceneObjectField
     {
-        SCENEOBJECT_FIELD_SCRIPT_PACKAGE_ID                 = ObjectField.OBJECT_FIELD_END + 0x0000, // Size = 1
-        SCENEOBJECT_FIELD_RND_SEED_VAL                      = ObjectField.OBJECT_FIELD_END + 0x0001, // Size = 1
-        SCENEOBJECT_FIELD_CREATEDBY                         = ObjectField.OBJECT_FIELD_END + 0x0002, // Size = 2
-        SCENEOBJECT_FIELD_SCENE_TYPE                        = ObjectField.OBJECT_FIELD_END + 0x0004, // Size = 1
-        SCENEOBJECT_FIELD_END                               = ObjectField.OBJECT_FIELD_END + 0x0005,
+        SCENEOBJECT_FIELD_SCRIPT_PACKAGE_ID                 = ObjectField.OBJECT_END + 0x0000, // Size = 1
+        SCENEOBJECT_FIELD_RND_SEED_VAL                      = ObjectField.OBJECT_END + 0x0001, // Size = 1
+        SCENEOBJECT_FIELD_CREATEDBY                         = ObjectField.OBJECT_END + 0x0002, // Size = 2
+        SCENEOBJECT_FIELD_SCENE_TYPE                        = ObjectField.OBJECT_END + 0x0004, // Size = 1
+        SCENEOBJECT_END                               = ObjectField.OBJECT_END + 0x0005,
     };
     // ReSharper restore InconsistentNaming
 }
