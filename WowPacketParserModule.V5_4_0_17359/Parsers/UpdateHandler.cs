@@ -173,7 +173,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var isLiving = packet.ReadBit("Is Living", index);
             var hasStationaryPosition = packet.ReadBit("Has Stationary Position", index);
             var hasGameObjectPosition = packet.ReadBit("Has GameObject Position", index);
-            var bit200 = packet.ReadBit();
+            var hasGameObjectRotation = packet.ReadBit("Has GameObject Rotation", index);
             var hasAttackingTarget = packet.ReadBit("Has Attacking Target", index);
             var bit428 = packet.ReadBit();
             packet.ReadBit(); // fake 3
@@ -190,9 +190,147 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.StartBitStream(goTransportGuid, 4, 1);
             }
 
+            // Sceneobject data
+            var CreatorGUID = new byte[8];
+            byte[][] guid358 = null;
+            byte[][][] guid358_6 = null;
+            uint[] bits358_5 = null;
+            uint[][] bits358_6_84 = null;
+            uint[][] bits358_6_94 = null;
+            uint[][] bits358_6_31 = null;
+            uint[][] bits358_6_74 = null;
+            byte[][][] bit358_6_78_9 = null;
+            byte[][][] bit358_6_88_10 = null;
+            bool[][][] bit358_6_88_C = null;
+            bool[][][] bit358_6_88_8 = null;
+            bool[][] bit358_6_2E = null;
+            bool[][] bit358_6_30 = null;
+            bool[] bit358_10 = null;
+            bool[] bit358_C = null;
+            bool[] bit358_24 = null;
+
+            var bit338 = false;
+            var bit330 = false;
+            var bit341 = false;
+            var bit340 = false;
+            var bit332 = false;
+            var bit33C = false;
+
+            uint[] bits388 = null;
+            uint[] bits388_10 = null;
+            byte[][] bit388_1_10 = null;
+            bool[][] bit388_1_C = null;
+            bool[][] bit388_1_8 = null;
+
             if (hasSceneObjectData)
             {
-                packet.WriteLine("Missing data for scene object", index);
+                guid358 = new byte[2][];
+                guid358_6 = new byte[2][][];
+                bits358_5 = new uint[2];
+                bits358_6_84 = new uint[2][];
+                bits358_6_94 = new uint[2][];
+                bits358_6_31 = new uint[2][];
+                bits358_6_74 = new uint[2][];
+                bit358_6_78_9 = new byte[2][][];
+                bit358_6_88_10 = new byte[2][][];
+                bit358_6_88_C = new bool[2][][];
+                bit358_6_88_8 = new bool[2][][];
+                bit358_6_2E = new bool[2][];
+                bit358_6_30 = new bool[2][];
+                bit358_10 = new bool[2];
+                bit358_C = new bool[2];
+                bit358_24 = new bool[2];
+
+                for (var i = 0; i < 2; ++i)
+                {
+                    guid358[i] = new byte[8];
+                    packet.StartBitStream(guid358[i], 2, 0, 4);
+                    bit358_10[i] = !packet.ReadBit();
+                    guid358[i][7] = packet.ReadBit();
+                    bits358_5[i] = packet.ReadBits(2);
+
+                    guid358_6[i] = new byte[bits358_5[i]][];
+                    bits358_6_84[i] = new uint[bits358_5[i]];
+                    bits358_6_94[i] = new uint[bits358_5[i]];
+                    bits358_6_31[i] = new uint[bits358_5[i]];
+                    bits358_6_74[i] = new uint[bits358_5[i]];
+                    bit358_6_78_9[i] = new byte[bits358_5[i]][];
+                    bit358_6_88_10[i] = new byte[bits358_5[i]][];
+                    bit358_6_88_C[i] = new bool[bits358_5[i]][];
+                    bit358_6_88_8[i] = new bool[bits358_5[i]][];
+                    bit358_6_2E[i] = new bool[bits358_5[i]];
+                    bit358_6_30[i] = new bool[bits358_5[i]];
+
+                    for (var j = 0; j < bits358_5[i]; ++j)
+                    {
+                        guid358_6[i][j] = new byte[8];
+                        bits358_6_31[i][j] = packet.ReadBits(7);
+                        guid358_6[i][j][3] = packet.ReadBit();
+                        bit358_6_2E[i][j] = !packet.ReadBit();
+                        packet.StartBitStream(guid358_6[i][j], 2, 6, 4);
+                        bits358_6_84[i][j] = packet.ReadBits(21);
+                        guid358_6[i][j][1] = packet.ReadBit();
+
+                        bit358_6_88_8[i][j] = new bool[bits358_6_84[i][j]];
+                        bit358_6_88_C[i][j] = new bool[bits358_6_84[i][j]];
+                        bit358_6_88_10[i][j] = new byte[bits358_6_84[i][j]];
+                        for (var k = 0; k < bits358_6_84[i][j]; ++k)
+                        {
+                            bit358_6_88_8[i][j][k] = !packet.ReadBit();
+                            bit358_6_88_C[i][j][k] = !packet.ReadBit();
+                            bit358_6_88_10[i][j][k] = (byte)(10 - packet.ReadBit());
+                        }
+
+                        guid358_6[i][j][5] = packet.ReadBit();
+                        bits358_6_74[i][j] = packet.ReadBits(20);
+                        packet.StartBitStream(guid358_6[i][j], 7, 0);
+
+                        bit358_6_78_9[i][j] = new byte[bits358_6_74[i][j]];
+                        for (var k = 0; k < bits358_6_74[i][j]; ++k)
+                            bit358_6_78_9[i][j][k] = (byte)(10 - packet.ReadBit());
+
+                        bit358_6_30[i][j] = packet.ReadBit();
+                        bits358_6_94[i][j] = packet.ReadBits(21);
+                    }
+
+                    packet.StartBitStream(guid358[i], 6, 1, 5, 3);
+                    bit358_C[i] = !packet.ReadBit();
+                    bit358_24[i] = packet.ReadBit();
+                }
+
+                bit338 = !packet.ReadBit();
+                bit33C = !packet.ReadBit();
+
+                bits388 = new uint[3];
+                bits388_10 = new uint[3];
+                bit388_1_10 = new byte[3][];
+                bit388_1_C = new bool[3][];
+                bit388_1_8 = new bool[3][];
+
+                for (var i = 0; i < 3; ++i)
+                {
+                    bits388_10[i] = packet.ReadBits(21);
+                    bits388[i] = packet.ReadBits(21);
+                    bit388_1_10[i] = new byte[bits388[i]];
+                    bit388_1_C[i] = new bool[bits388[i]];
+                    bit388_1_8[i] = new bool[bits388[i]];
+
+                    for (var j = 0; j < bits388[i]; ++j)
+                    {
+                        bit388_1_C[i][j] = !packet.ReadBit();
+                        bit388_1_10[i][j] = (byte)(10 - packet.ReadBit());
+                        bit388_1_8[i][j] = !packet.ReadBit();
+                    }
+                }
+
+                packet.ReadBit(); // fake bit
+                packet.StartBitStream(CreatorGUID, 5, 1, 6, 4, 3, 7, 0, 2);
+                bit330 = !packet.ReadBit();
+                packet.ReadBit("bit351", index);
+                packet.ReadBit("bit350", index);
+                bit341 = !packet.ReadBit();
+                bit340 = !packet.ReadBit();
+                bit332 = !packet.ReadBit();
             }
 
             if (bit29C)
@@ -525,7 +663,133 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             if (hasSceneObjectData)
             {
-                packet.WriteLine("Missing data for Scene Object", index);
+                packet.ReadInt32("int334", index);
+                if (bit340)
+                    packet.ReadByte("byte340", index);
+
+                for (var i = 0; i < 2; ++i)
+                {
+                    packet.ReadXORByte(guid358[i], 3);
+                    for (var j = 0; j < bits358_5[i]; ++j)
+                    {
+                        if (bit358_6_2E[i][j])
+                            packet.ReadInt16("short358+6+2E", index, i, j);
+
+                        packet.ReadXORByte(guid358_6[i][j], 3);
+                        for (var k = 0; k < bits358_6_74[i][j]; ++k)
+                        {
+                            packet.ReadByte("byte358+6+78+8", index, i, j, k);
+                            if (bit358_6_78_9[i][j][k] != 9)
+                                packet.ReadByte("byte358+6+78+9", index, i, j, k);
+
+                            packet.ReadInt16("short358+6+78+2", index, i, j, k);
+                            packet.ReadInt32("int358+6+78+0", index, i, j, k);
+                            packet.ReadInt16("short358+6+78+3", index, i, j, k);
+                        }
+
+                        packet.ReadXORByte(guid358_6[i][j], 6);
+                        for (var k = 0; k < bits358_6_84[i][j]; ++k)
+                        {
+                            packet.ReadInt32("int358+6+88+0", index, i, j, k);
+                            if (bit358_6_88_C[i][j][k])
+                                packet.ReadInt32("int358+6+88+C", index, i, j, k);
+
+                            if (bit358_6_88_8[i][j][k])
+                                packet.ReadInt32("int358+6+88+8", index, i, j, k);
+
+                            if (bit358_6_88_10[i][j][k] != 9)
+                                packet.ReadByte("byte358+6+88+10", index, i, j, k);
+
+                            packet.ReadInt32("int358+6+88+4", index, i, j, k);
+                        }
+
+                        packet.ReadInt32("int358+6+28", index, i, j);
+                        packet.ReadWoWString("String358+6+31", (int)bits358_6_31[i][j], index, i, j);
+
+                        if (!bit358_6_30[i][j])
+                            packet.ReadByte("byte358+6+30", index, i, j);
+
+                        packet.ReadInt32("int358+6+24", index, i, j);
+                        packet.ReadXORByte(guid358_6[i][j], 5);
+                        packet.ReadInt32("int358+6+C", index, i, j);
+                        for (var k = 0; k < bits358_6_94[i][j]; ++k)
+                        {
+                            packet.ReadInt32("int358+6+98+0", index, i, j, k);
+                            packet.ReadInt32("int358+6+98+4", index, i, j, k);
+                        }
+
+                        packet.ReadXORByte(guid358_6[i][j], 7);
+                        packet.ReadInt32("int358+6+18", index, i, j);
+                        packet.ReadInt16("short358+6+2C", index, i, j);
+                        packet.ReadInt32("int358+6+20", index, i, j);
+                        packet.ReadInt32("int358+6+1C", index, i, j);
+                        packet.ReadInt32("int358+6+10", index, i, j);
+                        packet.ReadXORByte(guid358_6[i][j], 4);
+                        packet.ReadInt16("short358+6+16", index, i, j);
+                        packet.ReadXORByte(guid358_6[i][j], 2);
+                        packet.ReadInt32("Int358+6+8", index, i, j);
+                        packet.ReadXORByte(guid358_6[i][j], 1);
+                        packet.ReadInt16("short358+6+14", index, i, j);
+                        packet.ReadXORByte(guid358_6[i][j], 0);
+                        packet.WriteGuid("Guid 358_6", guid358_6[i][j], index, i, j);
+                    }
+
+                    packet.ReadXORBytes(guid358[i], 5, 4, 0);
+                    packet.ReadInt32("int358+8", index, i);
+                    packet.ReadXORBytes(guid358[i], 7);
+                    if (!bit358_24[i])
+                        packet.ReadByte("byte358+24", index, i);
+
+                    if (bit358_10[i])
+                        packet.ReadInt16("Short358+10", index, i);
+
+                    packet.ReadXORBytes(guid358[i], 6);
+                    if (bit358_C[i])
+                        packet.ReadInt32("int358+C", index, i);
+
+                    packet.ReadByte("byte358+37", index, i);
+                    packet.ReadXORBytes(guid358[i], 1, 2);
+                    packet.WriteGuid("Guid358", guid358[i], index, i);
+                }
+
+                for (var i = 0; i < 3; ++i)
+                {
+                    for (var j = 0; j < bits388_10[i]; ++j)
+                    {
+                        packet.ReadInt32("int388+6+4", index, i, j);
+                        packet.ReadInt32("int388+6+0", index, i, j);
+                    }
+
+                    for (var j = 0; j < bits388[i]; ++j)
+                    {
+                        if (bit388_1_C[i][j])
+                            packet.ReadInt32("int388+1+C", index, i, j);
+
+                        packet.ReadInt32("int388+1+0", index, i, j);
+
+                        if (bit388_1_10[i][j] != 9)
+                            packet.ReadByte("byte388+1+10", index, i, j);
+
+                        packet.ReadInt32("int388+1+4", index, i, j);
+
+                        if (bit388_1_8[i][j])
+                            packet.ReadInt32("int388+1+8", index, i, j);
+                    }
+                }
+
+                packet.ParseBitStream(CreatorGUID, 7, 0, 6, 2, 5, 1, 3, 4);
+                if (bit332)
+                    packet.ReadInt16("short332", index);
+                if (bit338)
+                    packet.ReadInt32("int338", index);
+                if (bit341)
+                    packet.ReadByte("byte341", index);
+                if (bit33C)
+                    packet.ReadInt32("int33C", index);
+                if (bit330)
+                    packet.ReadInt16("Short318", index);
+
+                packet.WriteGuid("Creator GUID", CreatorGUID, index);
             }
 
             if (hasGameObjectPosition)
@@ -570,8 +834,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadInt32("int1D8", index);
             if (bit2A4)
                 packet.ReadInt32("int2A0", index);
-            if (bit200)
-                packet.ReadInt32("int1F8", index);
+            if (hasGameObjectRotation)
+                packet.ReadPackedQuaternion("GameObject Rotation", index);
 
             if (hasVehicleData)
             {
