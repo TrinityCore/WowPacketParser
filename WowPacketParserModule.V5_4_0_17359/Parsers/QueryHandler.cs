@@ -213,27 +213,32 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                         db2File.WriteLine("Key: {0}", Utilities.ByteArrayToHexString(db2File.ReadBytes(32)));
                         break;
                     }
-                case DB2Hash.Creature: // Creature.db2
+                case DB2Hash.Creature: // Creature.db2 - new structure 5.4
                     {
                         db2File.ReadUInt32("Npc Entry");
                         db2File.ReadUInt32("Item Entry 1");
                         db2File.ReadUInt32("Item Entry 2");
                         db2File.ReadUInt32("Item Entry 3");
-                        db2File.ReadUInt32("Projectile Entry 1");
-                        db2File.ReadUInt32("Projectile Entry 2");
                         db2File.ReadUInt32("Mount");
                         db2File.ReadUInt32("Display Id 1");
                         db2File.ReadUInt32("Display Id 2");
                         db2File.ReadUInt32("Display Id 3");
                         db2File.ReadUInt32("Display Id 4");
-                        db2File.ReadSingle("Float1");
-                        db2File.ReadSingle("Float2");
-                        db2File.ReadSingle("Float3");
-                        db2File.ReadSingle("Float4");
+                        db2File.ReadSingle("Unk Float 1");
+                        db2File.ReadSingle("Unk Float 2");
+                        db2File.ReadSingle("Unk Float 3");
+                        db2File.ReadSingle("Unk Float 4");
                         if (db2File.ReadUInt16() > 0)
                             db2File.ReadCString("Name");
 
-                        db2File.ReadUInt32("InhabitType");
+                        if (db2File.ReadUInt16() > 0)
+                        db2File.ReadCString("Sub Name");
+
+                        if (db2File.ReadUInt16() > 0)
+                        db2File.ReadCString("Unk String");
+
+                        db2File.ReadUInt32("Rank");
+                        db2File.ReadUInt32("Inhabit Type");
                         break;
                     }
                 case DB2Hash.BroadcastText:
