@@ -13,8 +13,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         public static void HandleDefenseMessage(Packet packet)
         {
             packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
-            packet.ReadBits("Message Length?", 9);
-            packet.ReadCString("Message");
+            var len = packet.ReadBits(12);
+            packet.ReadWoWString("Message", len);
         }
     }
 }

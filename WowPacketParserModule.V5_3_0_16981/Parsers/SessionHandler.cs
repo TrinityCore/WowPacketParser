@@ -10,8 +10,6 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
     public static class SessionHandler
     {
-        public static Guid LoginGuid;
-
         [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
         public static void HandleServerAuthChallenge(Packet packet)
         {
@@ -152,14 +150,14 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadSingle("Unk Float");
             var guid = packet.StartBitStream(3, 4, 0, 6, 7, 1, 2, 5);
             packet.ParseBitStream(guid, 0, 3, 7, 6, 1, 2, 4, 5);
-            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+            CoreParsers.SessionHandler.LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
             packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
         public static void HandleLogoutComplete(Packet packet)
         {
-            LoginGuid = new Guid(0);
+            CoreParsers.SessionHandler.LoginGuid = new Guid(0);
         }
     }
 }
