@@ -17,6 +17,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_LOG_DISCONNECT, 0x0380},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0784}, //?
             {Opcode.CMSG_UNKNOWN_903, 0x0387},
+            {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0890},
             {Opcode.SMSG_ADDON_INFO, 0x0128},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x0816},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x016A},
@@ -25,7 +26,9 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x0825},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x01B4},
             {Opcode.SMSG_DB_REPLY, 0x0025},
+            {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x00B9},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x0015},
+            {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0896},
             {Opcode.SMSG_MESSAGECHAT, 0x092F},
             {Opcode.SMSG_MOTD, 0x082A},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x142D},
