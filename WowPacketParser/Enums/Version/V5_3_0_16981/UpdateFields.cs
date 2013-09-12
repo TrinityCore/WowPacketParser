@@ -133,8 +133,8 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
 
     public enum UnitDynamicField
     {
-        UNIT_DYNAMIC_FIELD_PASSIVE_SPELLS                = ObjectField.OBJECT_END + 0x0,
-        UNIT_DYNAMIC_END                                 = ObjectField.OBJECT_END + 0x101
+        UNIT_DYNAMIC_FIELD_PASSIVE_SPELLS                = UnitField.UNIT_FIELD_END + 0x0,
+        UNIT_DYNAMIC_END                                 = UnitField.UNIT_FIELD_END + 0x101
     }
 
     public enum PlayerField
