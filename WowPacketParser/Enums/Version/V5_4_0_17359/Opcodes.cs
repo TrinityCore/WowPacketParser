@@ -11,6 +11,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
+            {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x10BD},
             {Opcode.CMSG_AUTH_SESSION, 0x0790},
             {Opcode.CMSG_CREATURE_QUERY, 0x1585},
             {Opcode.CMSG_DB_QUERY_BULK, 0x1A8B},
@@ -32,8 +33,10 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_EMOTE, 0x1B7D},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x00B9},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x0015},
-            {Opcode.SMSG_GOSSIP_MESSAGE,  0x1508 },
+            {Opcode.SMSG_GOSSIP_MESSAGE, 0x1508},
             {Opcode.SMSG_GUILD_EVENT, 0x0D47},
+            {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x0D42},
+            {Opcode.SMSG_GUILD_ROSTER, 0x044E},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0896},
             {Opcode.SMSG_MESSAGECHAT, 0x092F},
             {Opcode.SMSG_MOTD, 0x082A},
