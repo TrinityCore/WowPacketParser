@@ -13,6 +13,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
         {
             {Opcode.CMSG_AUTH_SESSION, 0x0790},
             {Opcode.CMSG_CREATURE_QUERY, 0x1585},
+            {Opcode.CMSG_DB_QUERY_BULK, 0x1A8B},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x15A4},
             {Opcode.CMSG_LOG_DISCONNECT, 0x0380},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0784}, //?

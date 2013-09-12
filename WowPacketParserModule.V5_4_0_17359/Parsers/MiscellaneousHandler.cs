@@ -11,15 +11,17 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.CMSG_UNKNOWN_903)]
         public static void HandleUnknow903(Packet packet)
         {
-            packet.ReadBits("String length", 9);
-            packet.ReadCString("File");
+            var len = packet.ReadBits(9);
+            packet.ReadWoWString("File name", len);
         }
 
         [Parser(Opcode.SMSG_SEND_SERVER_LOCATION)]
         public static void HandleSendServerLocation(Packet packet)
         {
-            packet.ReadBits("Unk Bits", 9);
-            packet.ReadCString("Server Location");
+            var len1 = packet.ReadBits(7);
+            var len2 = packet.ReadBits(7);
+            packet.ReadWoWString("Server Location", len1);
+            packet.ReadWoWString("Server Location", len2);
         }
 
         [HasSniffData]
