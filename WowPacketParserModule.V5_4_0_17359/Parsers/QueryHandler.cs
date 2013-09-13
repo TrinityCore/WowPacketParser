@@ -176,10 +176,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                         db2File.ReadUInt32("Display Id 2");
                         db2File.ReadUInt32("Display Id 3");
                         db2File.ReadUInt32("Display Id 4");
-                        db2File.ReadSingle("Display Id Possibility 1");
-                        db2File.ReadSingle("Display Id Possibility 2");
-                        db2File.ReadSingle("Display Id Possibility 3");
-                        db2File.ReadSingle("Display Id Possibility 4");
+                        db2File.ReadSingle("Display Id Probability 1");
+                        db2File.ReadSingle("Display Id Probability 2");
+                        db2File.ReadSingle("Display Id Probability 3");
+                        db2File.ReadSingle("Display Id Probability 4");
                         if (db2File.ReadUInt16() > 0)
                             db2File.ReadCString("Name");
 
