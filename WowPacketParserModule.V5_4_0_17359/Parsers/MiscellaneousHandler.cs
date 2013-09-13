@@ -38,5 +38,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
+
+        [Parser(Opcode.SMSG_REALM_SPLIT)]
+        public static void HandleServerRealmSplit(Packet packet)
+        {
+            var len = packet.ReadBits(7);
+            packet.ReadUInt32("Split State");
+            packet.ReadUInt32("Client State");
+            packet.ReadWoWString("Split Date", len);
+        }
     }
 }
