@@ -70,9 +70,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ResetBitReader();
 
             creature.Type = packet.ReadEnum<CreatureType>("Type", TypeCode.Int32);
-            creature.Family = packet.ReadEnum<CreatureFamily>("Family", TypeCode.Int32);
-            creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2"); // Missing enum
+            creature.KillCredits = new uint[2];
+            creature.KillCredits[1] = packet.ReadUInt32("Kill Credit 1");
             creature.DisplayIds = new uint[4];
+            creature.DisplayIds[3] = packet.ReadUInt32("Display ID 3");
             creature.DisplayIds[2] = packet.ReadUInt32("Display ID 2");
 
             creature.QuestItems = new uint[qItemCount];
@@ -85,9 +86,9 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             for (var i = 0; i < 4; ++i)
             {
                 if (stringLens[i][0] > 1)
-                    packet.ReadCString("Female Name", i);
-                if (stringLens[i][1] > 1)
                     name[i] = packet.ReadCString("Name", i);
+                if (stringLens[i][1] > 1)
+                    packet.ReadCString("Female Name", i);
             }
             creature.Name = name[0];
 
@@ -95,24 +96,23 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadCString("string5");
 
             creature.Modifier2 = packet.ReadSingle("Modifier 2");
-            creature.DisplayIds[1] = packet.ReadUInt32("Display ID 1");
+            creature.DisplayIds[0] = packet.ReadUInt32("Display ID 0");
 
             if (lenS4 > 1)
                 creature.IconName = packet.ReadCString("Icon Name");
 
-            creature.DisplayIds[0] = packet.ReadUInt32("Display ID 0");
-            creature.DisplayIds[3] = packet.ReadUInt32("Display ID 3");
+            creature.KillCredits[0] = packet.ReadUInt32("Kill Credit 0");
+            creature.DisplayIds[1] = packet.ReadUInt32("Display ID 1");
 
             if (lenS3 > 1)
                 creature.SubName = packet.ReadCString("Sub Name");
 
-            creature.KillCredits = new uint[2];
-            for (var i = 0; i < 2; ++i)
-                creature.KillCredits[i] = packet.ReadUInt32("Kill Credit", i);
+            creature.TypeFlags = packet.ReadEnum<CreatureTypeFlag>("Type Flags", TypeCode.UInt32);
+            creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2"); // Missing enum
 
             creature.Modifier1 = packet.ReadSingle("Modifier 1");
+            creature.Family = packet.ReadEnum<CreatureFamily>("Family", TypeCode.Int32);
             creature.Rank = packet.ReadEnum<CreatureRank>("Rank", TypeCode.Int32);
-            creature.TypeFlags = packet.ReadEnum<CreatureTypeFlag>("Type Flags", TypeCode.UInt32);
             creature.MovementId = packet.ReadUInt32("Movement ID");
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
