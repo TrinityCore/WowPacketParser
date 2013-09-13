@@ -411,5 +411,31 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadWoWString("Realmname", bits22);
             packet.ReadWoWString("Realmname (without white char)", bits278);
         }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE)]
+        public static void HandlePageTextResponse(Packet packet)
+        {
+            var pageText = new PageText();
+
+            var hasData = packet.ReadBit();
+            if (!hasData)
+            {
+                packet.ReadUInt32("Entry");
+                return; // nothing to do
+            }
+
+            var textLen = packet.ReadBits(12);
+
+            packet.ResetBitReader();
+            pageText.Text = packet.ReadWoWString("Page Text", textLen);
+
+            var entry = packet.ReadUInt32("Entry");
+            pageText.NextPageId = packet.ReadUInt32("Next Page");
+            packet.ReadUInt32("Entry");
+
+            packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
+            Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
+        }
     }
 }
