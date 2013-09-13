@@ -397,5 +397,19 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     }
             }
         }
+
+        [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE)]
+        public static void HandleRealmQueryResponse(Packet packet)
+        {
+            packet.ReadByte("Unk byte");
+            packet.ReadInt32("Realm Id");
+
+            var bits278 = packet.ReadBits(8);
+            packet.ReadBit();
+            var bits22 = packet.ReadBits(8);
+
+            packet.ReadWoWString("Realmname", bits22);
+            packet.ReadWoWString("Realmname (without white char)", bits278);
+        }
     }
 }
