@@ -60,7 +60,77 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             switch (type)
             {
-                case DB2Hash.Item:    // Item.db2
+                case DB2Hash.BroadcastText:
+                    {
+                        db2File.ReadUInt32("Broadcast Text Entry");
+                        db2File.ReadUInt32("Language");
+                        if (db2File.ReadUInt16() > 0)
+                            db2File.ReadCString("Male Text");
+                        if (db2File.ReadUInt16() > 0)
+                            db2File.ReadCString("Female Text");
+
+                        for (var i = 0; i < 3; ++i)
+                            db2File.ReadInt32("Emote ID", i);
+                        for (var i = 0; i < 3; ++i)
+                            db2File.ReadInt32("Emote Delay", i);
+
+                        db2File.ReadUInt32("Sound Id");
+                        db2File.ReadUInt32("Unk0"); // emote unk
+                        db2File.ReadUInt32("Unk1"); // kind of type?
+                        break;
+                    }
+                case DB2Hash.Creature: // New structure - 5.4
+                    {
+                        db2File.ReadUInt32("Creature Entry");
+                        db2File.ReadUInt32("Item Entry 1");
+                        db2File.ReadUInt32("Item Entry 2");
+                        db2File.ReadUInt32("Item Entry 3");
+                        db2File.ReadUInt32("Mount");
+                        db2File.ReadUInt32("Display Id 1");
+                        db2File.ReadUInt32("Display Id 2");
+                        db2File.ReadUInt32("Display Id 3");
+                        db2File.ReadUInt32("Display Id 4");
+                        db2File.ReadSingle("Unk Float 1");
+                        db2File.ReadSingle("Unk Float 2");
+                        db2File.ReadSingle("Unk Float 3");
+                        db2File.ReadSingle("Unk Float 4");
+                        if (db2File.ReadUInt16() > 0)
+                            db2File.ReadCString("Name");
+
+                        if (db2File.ReadUInt16() > 0)
+                        db2File.ReadCString("Sub Name");
+
+                        if (db2File.ReadUInt16() > 0)
+                        db2File.ReadCString("Unk String");
+
+                        db2File.ReadUInt32("Rank");
+                        db2File.ReadUInt32("Inhabit Type");
+                        break;
+                    }
+                case DB2Hash.GameObjects:
+                    {
+                        db2File.ReadUInt32("Gameobject Entry");
+                        db2File.ReadUInt32("Map");
+                        db2File.ReadUInt32("Display Id");
+                        db2File.ReadSingle("Position X");
+                        db2File.ReadSingle("Position Y");
+                        db2File.ReadSingle("Position Z");
+                        db2File.ReadSingle("Rotation 1");
+                        db2File.ReadSingle("Rotation 2");
+                        db2File.ReadSingle("Rotation 3");
+                        db2File.ReadSingle("Rotation 4");
+                        db2File.ReadSingle("Size");
+                        db2File.ReadUInt32("Type");
+                        db2File.ReadUInt32("Data 0");
+                        db2File.ReadUInt32("Data 1");
+                        db2File.ReadUInt32("Data 2");
+                        db2File.ReadUInt32("Data 3");
+                        if (db2File.ReadUInt16() > 0)
+                        db2File.ReadCString("Name");
+
+                        break;
+                    }
+                case DB2Hash.Item:
                     {
                         var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
 
@@ -77,7 +147,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                         packet.AddSniffData(StoreNameType.Item, (int)entry, "DB_REPLY");
                         break;
                     }
-                case DB2Hash.Item_sparse:    // Item-sparse.db2
+                case DB2Hash.Item_sparse:
                     {
                         var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
 
@@ -207,57 +277,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                         packet.AddSniffData(StoreNameType.Item, (int)entry, "DB_REPLY");
                         break;
                     }
-                case DB2Hash.KeyChain: // KeyChain.db2
+                case DB2Hash.KeyChain:
                     {
                         db2File.ReadUInt32("Key Chain Id");
                         db2File.WriteLine("Key: {0}", Utilities.ByteArrayToHexString(db2File.ReadBytes(32)));
-                        break;
-                    }
-                case DB2Hash.Creature: // Creature.db2 - new structure 5.4
-                    {
-                        db2File.ReadUInt32("Npc Entry");
-                        db2File.ReadUInt32("Item Entry 1");
-                        db2File.ReadUInt32("Item Entry 2");
-                        db2File.ReadUInt32("Item Entry 3");
-                        db2File.ReadUInt32("Mount");
-                        db2File.ReadUInt32("Display Id 1");
-                        db2File.ReadUInt32("Display Id 2");
-                        db2File.ReadUInt32("Display Id 3");
-                        db2File.ReadUInt32("Display Id 4");
-                        db2File.ReadSingle("Unk Float 1");
-                        db2File.ReadSingle("Unk Float 2");
-                        db2File.ReadSingle("Unk Float 3");
-                        db2File.ReadSingle("Unk Float 4");
-                        if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Name");
-
-                        if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Sub Name");
-
-                        if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Unk String");
-
-                        db2File.ReadUInt32("Rank");
-                        db2File.ReadUInt32("Inhabit Type");
-                        break;
-                    }
-                case DB2Hash.BroadcastText:
-                    {
-                        db2File.ReadUInt32("Broadcast Text Entry");
-                        db2File.ReadUInt32("Language");
-                        if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Male Text");
-                        if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Female Text");
-
-                        for (var i = 0; i < 3; ++i)
-                            db2File.ReadInt32("Emote ID", i);
-                        for (var i = 0; i < 3; ++i)
-                            db2File.ReadInt32("Emote Delay", i);
-
-                        db2File.ReadUInt32("Sound Id");
-                        db2File.ReadUInt32("Unk0");
-                        db2File.ReadUInt32("Unk1"); // kind of type?
                         break;
                     }
                 default:

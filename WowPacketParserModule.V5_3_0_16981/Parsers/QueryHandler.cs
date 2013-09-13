@@ -223,7 +223,49 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             switch (type)
             {
-                case DB2Hash.Item:    // Item.db2
+                case DB2Hash.BroadcastText:
+                    {
+                        db2File.ReadUInt32("Broadcast Text Entry");
+                        db2File.ReadUInt32("Language");
+                        if (db2File.ReadUInt16() > 0)
+                            db2File.ReadCString("Male Text");
+                        if (db2File.ReadUInt16() > 0)
+                            db2File.ReadCString("Female Text");
+ 
+                        for (var i = 0; i < 3; ++i)
+                            db2File.ReadInt32("Emote ID", i);
+                        for (var i = 0; i < 3; ++i)
+                            db2File.ReadInt32("Emote Delay", i);
+ 
+                        db2File.ReadUInt32("Sound Id");
+                        db2File.ReadUInt32("Unk0"); // emote unk
+                        db2File.ReadUInt32("Unk1"); // kind of type?
+                        break;
+                    }
+                case DB2Hash.Creature:
+                    {
+                        db2File.ReadUInt32("Creature Entry");
+                        db2File.ReadUInt32("Item Entry 1");
+                        db2File.ReadUInt32("Item Entry 2");
+                        db2File.ReadUInt32("Item Entry 3");
+                        db2File.ReadUInt32("Projectile Entry 1");
+                        db2File.ReadUInt32("Projectile Entry 2");
+                        db2File.ReadUInt32("Mount");
+                        db2File.ReadUInt32("Display Id 1");
+                        db2File.ReadUInt32("Display Id 2");
+                        db2File.ReadUInt32("Display Id 3");
+                        db2File.ReadUInt32("Display Id 4");
+                        db2File.ReadSingle("Unk Float 1");
+                        db2File.ReadSingle("Unk Float 2");
+                        db2File.ReadSingle("Unk Float 3");
+                        db2File.ReadSingle("Unk Float 4");
+                        if (db2File.ReadUInt16() > 0)
+                            db2File.ReadCString("Name");
+
+                        db2File.ReadUInt32("Inhabit Type");
+                        break;
+                    }
+                case DB2Hash.Item:
                     {
                         var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
 
@@ -240,7 +282,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         packet.AddSniffData(StoreNameType.Item, (int)entry, "DB_REPLY");
                         break;
                     }
-                case DB2Hash.Item_sparse:    // Item-sparse.db2
+                case DB2Hash.Item_sparse:
                     {
                         var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
 
@@ -370,52 +412,10 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         packet.AddSniffData(StoreNameType.Item, (int)entry, "DB_REPLY");
                         break;
                     }
-                case DB2Hash.KeyChain: // KeyChain.db2
+                case DB2Hash.KeyChain:
                     {
                         db2File.ReadUInt32("Key Chain Id");
                         db2File.WriteLine("Key: {0}", Utilities.ByteArrayToHexString(db2File.ReadBytes(32)));
-                        break;
-                    }
-                case DB2Hash.Creature: // Creature.db2
-                    {
-                        db2File.ReadUInt32("Npc Entry");
-                        db2File.ReadUInt32("Item Entry 1");
-                        db2File.ReadUInt32("Item Entry 2");
-                        db2File.ReadUInt32("Item Entry 3");
-                        db2File.ReadUInt32("Projectile Entry 1");
-                        db2File.ReadUInt32("Projectile Entry 2");
-                        db2File.ReadUInt32("Mount");
-                        db2File.ReadUInt32("Display Id 1");
-                        db2File.ReadUInt32("Display Id 2");
-                        db2File.ReadUInt32("Display Id 3");
-                        db2File.ReadUInt32("Display Id 4");
-                        db2File.ReadSingle("Float1");
-                        db2File.ReadSingle("Float2");
-                        db2File.ReadSingle("Float3");
-                        db2File.ReadSingle("Float4");
-                        if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Name");
-
-                        db2File.ReadUInt32("InhabitType");
-                        break;
-                    }
-                case DB2Hash.BroadcastText:
-                    {
-                        db2File.ReadUInt32("Broadcast Text Entry");
-                        db2File.ReadUInt32("Language");
-                        if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Male Text");
-                        if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Female Text");
- 
-                        for (var i = 0; i < 3; ++i)
-                            db2File.ReadInt32("Emote ID", i);
-                        for (var i = 0; i < 3; ++i)
-                            db2File.ReadInt32("Emote Delay", i);
- 
-                        db2File.ReadUInt32("Sound Id");
-                        db2File.ReadUInt32("Unk0");
-                        db2File.ReadUInt32("Unk1"); // kind of type?
                         break;
                     }
                 default:
