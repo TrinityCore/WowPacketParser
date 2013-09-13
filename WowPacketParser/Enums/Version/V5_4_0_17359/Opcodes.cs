@@ -18,6 +18,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x15A4},
             {Opcode.CMSG_LOAD_SCREEN, 0x160B},
             {Opcode.CMSG_LOG_DISCONNECT, 0x0380},
+            {Opcode.CMSG_PLAYER_LOGIN, 0x1BC7},
             {Opcode.CMSG_REALM_SPLIT, 0x129F},
             {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x0A93},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0784}, 
