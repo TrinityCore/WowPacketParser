@@ -21,6 +21,12 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadEnum<ClientSplitState>("Client State", TypeCode.Int32);
         }
 
+        [Parser(Opcode.CMSG_VIOLENCE_LEVEL)]
+        public static void HandleSetViolenceLevel(Packet packet)
+        {
+            packet.ReadByte("Level");
+        }
+
         [Parser(Opcode.SMSG_SEND_SERVER_LOCATION)]
         public static void HandleSendServerLocation(Packet packet)
         {
