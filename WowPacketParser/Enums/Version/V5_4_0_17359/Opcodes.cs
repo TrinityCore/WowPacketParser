@@ -17,6 +17,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_DB_QUERY_BULK, 0x1A8B},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x15A4},
             {Opcode.CMSG_LOG_DISCONNECT, 0x0380},
+            {Opcode.CMSG_REALM_SPLIT, 0x129F},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0784}, //?
             {Opcode.CMSG_UNKNOWN_903, 0x0387},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0890},

@@ -15,6 +15,12 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadWoWString("File name", len);
         }
 
+        [Parser(Opcode.CMSG_REALM_SPLIT)]
+        public static void HandleClientRealmSplit(Packet packet)
+        {
+            packet.ReadEnum<ClientSplitState>("Client State", TypeCode.Int32);
+        }
+
         [Parser(Opcode.SMSG_SEND_SERVER_LOCATION)]
         public static void HandleSendServerLocation(Packet packet)
         {
