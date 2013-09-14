@@ -42,7 +42,6 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_DEFENSE_MESSAGE, 0x0826},
             {Opcode.SMSG_EMOTE, 0x1B7D},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x00B9},
-            {Opcode.SMSG_GAMEOBJECT_CUSTOM_ANIM, 0x04BD},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x0015},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x1508},
             {Opcode.SMSG_GUILD_EVENT, 0x0D47},
