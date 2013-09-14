@@ -81,8 +81,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             BoxTextLen = new uint[AmountOfOptions];
             for (var i = 0; i < AmountOfOptions; ++i)
             {
-                BoxTextLen[i] = packet.ReadBits(12);
                 OptionTextLen[i] = packet.ReadBits(12);
+                BoxTextLen[i] = packet.ReadBits(12);
             }
             packet.StartBitStream(guid, 4, 3, 2);
                       
@@ -93,7 +93,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             {
                 titleLen[i] = packet.ReadBits(9);
                 packet.ReadBit("Change Icon", i);
-                //packet.ReadBit("bit12");
             }
             guid[5] = packet.ReadBit();
             packet.ResetBitReader();
@@ -121,7 +120,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     Box = packet.ReadBoolean("Box", i),
                     OptionText = packet.ReadWoWString("Text", OptionTextLen[i], i),
                     OptionIcon = packet.ReadEnum<GossipOptionIcon>("Icon", TypeCode.Byte, i),
-                    
                 };
 
                 gossip.GossipOptions.Add(gossipOption);
