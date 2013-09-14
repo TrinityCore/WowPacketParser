@@ -239,9 +239,9 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
                         db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
                         item.Quality = db2File.ReadEnum<ItemQuality>("Quality", TypeCode.Int32);
-                        item.Flags = db2File.ReadEnum<ItemProtoFlags>("Flags", TypeCode.UInt32);
-                        item.ExtraFlags = db2File.ReadEnum<ItemFlagExtra>("Extra Flags", TypeCode.Int32);
-                        item.MaxUpgradeLevel = db2File.ReadUInt32("Max Upgrade Level");
+                        item.Flags1 = db2File.ReadEnum<ItemProtoFlags>("Flags 1", TypeCode.UInt32);
+                        item.Flags2 = db2File.ReadEnum<ItemFlagExtra>("Flags 2", TypeCode.Int32);
+                        item.Flags3 = db2File.ReadUInt32("Flags 3");
                         item.Unk430_1 = db2File.ReadSingle("Unk430_1");
                         item.Unk430_2 = db2File.ReadSingle("Unk430_2");
                         item.BuyCount = db2File.ReadUInt32("Buy count");
