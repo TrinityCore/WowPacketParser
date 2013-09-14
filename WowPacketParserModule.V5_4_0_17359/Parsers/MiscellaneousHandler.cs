@@ -23,6 +23,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadBit("Loading");
         }
 
+        [Parser(Opcode.CMSG_SET_SELECTION)]
+        public static void HandleSetSelection(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 3, 4, 6, 0, 5, 7, 2);
+            packet.ParseBitStream(guid, 7, 6, 0, 2, 3, 1, 4, 5);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.CMSG_REALM_SPLIT)]
         public static void HandleClientRealmSplit(Packet packet)
         {

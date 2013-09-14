@@ -13,6 +13,30 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {
     public static class NpcHandler
     {
+        [Parser(Opcode.CMSG_GOSSIP_HELLO)]
+        public static void HandleGossipHello(Packet packet)
+        {
+            var guid = new byte[8];
+            guid[2] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.WriteGuid("GUID", guid);
+        }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
         public static void HandleNpcGossip(Packet packet)
