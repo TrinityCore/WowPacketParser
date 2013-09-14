@@ -269,7 +269,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     {
                         var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
 
-                        db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+                        db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry");
                         item.Class = db2File.ReadEnum<ItemClass>("Class", TypeCode.Int32);
                         item.SubClass = db2File.ReadUInt32("Sub Class");
                         item.SoundOverrideSubclass = db2File.ReadInt32("Sound Override Subclass");
@@ -286,7 +286,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     {
                         var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
 
-                        db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+                        db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Sparse Entry");
                         item.Quality = db2File.ReadEnum<ItemQuality>("Quality", TypeCode.Int32);
                         item.Flags1 = db2File.ReadEnum<ItemProtoFlags>("Flags 1", TypeCode.UInt32);
                         item.Flags2 = db2File.ReadEnum<ItemFlagExtra>("Flags 2", TypeCode.Int32);

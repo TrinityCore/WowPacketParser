@@ -193,6 +193,21 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                         db2File.ReadUInt32("Inhabit Type");
                         break;
                     }
+                case DB2Hash.CreatureDifficulty:
+                    {
+                        db2File.ReadUInt32("Id");
+                        db2File.ReadUInt32("Creature Entry");
+                        db2File.ReadUInt32("Faction Template Id");
+                        db2File.ReadUInt32("Expansion HP");
+                        db2File.ReadUInt32("Min Level");
+                        db2File.ReadUInt32("Max Level");
+                        db2File.ReadUInt32("Unk 1");
+                        db2File.ReadUInt32("Unk 2");
+                        db2File.ReadUInt32("Unk 3");
+                        db2File.ReadUInt32("Unk 4");
+                        db2File.ReadUInt32("Unk 5");
+                        break;
+                    }					
                 case DB2Hash.GameObjects:
                     {
                         db2File.ReadUInt32("Gameobject Entry");
@@ -220,7 +235,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     {
                         var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
 
-                        db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+                        db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry");
                         item.Class = db2File.ReadEnum<ItemClass>("Class", TypeCode.Int32);
                         item.SubClass = db2File.ReadUInt32("Sub Class");
                         item.SoundOverrideSubclass = db2File.ReadInt32("Sound Override Subclass");
@@ -237,7 +252,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     {
                         var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
 
-                        db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+                        db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Sparse Entry");
                         item.Quality = db2File.ReadEnum<ItemQuality>("Quality", TypeCode.Int32);
                         item.Flags1 = db2File.ReadEnum<ItemProtoFlags>("Flags 1", TypeCode.UInt32);
                         item.Flags2 = db2File.ReadEnum<ItemFlagExtra>("Flags 2", TypeCode.Int32);
