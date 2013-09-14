@@ -237,6 +237,5 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             Storage.NpcVendors.Add(GUID.GetEntry(), npcVendor, packet.TimeSpan);
         }
-
     }
 }

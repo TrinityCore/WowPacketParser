@@ -211,9 +211,9 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                         db2File.ReadUInt32("Data 1");
                         db2File.ReadUInt32("Data 2");
                         db2File.ReadUInt32("Data 3");
-                        if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Name");
 
+                        if (db2File.ReadUInt16() > 0)
+                            db2File.ReadCString("Name");
                         break;
                     }
                 case DB2Hash.Item:

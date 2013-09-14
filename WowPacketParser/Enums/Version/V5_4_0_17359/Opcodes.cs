@@ -47,6 +47,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_GUILD_EVENT, 0x0D47},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x0D42},
             {Opcode.SMSG_GUILD_ROSTER, 0x044E},
+            {Opcode.SMSG_LIST_INVENTORY, 0x088D},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0896},
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x088C}, 
             {Opcode.SMSG_MESSAGECHAT, 0x092F},
