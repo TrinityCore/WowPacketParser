@@ -38,7 +38,7 @@ namespace WowPacketParser.Store.Objects
         public float Unk430_2;
 
         [DBFieldName("Unk530_1", ClientVersionBuild.V5_3_0_16981)]
-        public int MaxUpgradeLevel;
+        public uint MaxUpgradeLevel;
 
         [DBFieldName("BuyCount")]
         public uint BuyCount;
