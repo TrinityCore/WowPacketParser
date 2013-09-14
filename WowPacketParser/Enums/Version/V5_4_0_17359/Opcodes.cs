@@ -53,6 +53,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_MESSAGECHAT, 0x092F},
             {Opcode.SMSG_MONSTER_MOVE, 0x137A},
             {Opcode.SMSG_MOTD, 0x082A},
+            {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x0C43},
             {Opcode.SMSG_NEW_WORLD, 0x01AE},
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x0114},
             {Opcode.SMSG_PLAYER_MOVE, 0x139F},
