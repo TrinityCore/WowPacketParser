@@ -37,6 +37,30 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
+        [Parser(Opcode.CMSG_GOSSIP_SELECT_OPTION)]
+        public static void HandleNpcGossipSelectOption(Packet packet)
+        {
+            var guid = new byte[8];
+            var gossipId = packet.ReadUInt32("Gossip Id");
+            var menuEntry = packet.ReadUInt32("Menu Id");
+            guid[7] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            var bits8 = packet.ReadBits(8);
+            guid[5] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+
+            packet.ReadXORBytes(guid, 1, 0, 6, 3, 7, 5, 2);
+            packet.ReadWoWString("Box Text", bits8);
+            packet.ReadXORByte(guid, 4);
+
+            Storage.GossipSelects.Add(Tuple.Create(menuEntry, gossipId), null, packet.TimeSpan);
+            packet.WriteGuid("GUID", guid);
+        }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
         public static void HandleNpcGossip(Packet packet)
@@ -45,10 +69,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             uint[] titleLen;
             uint[] OptionTextLen;
             uint[] BoxTextLen;
-                    
-            var textId = packet.ReadUInt32("Text Id");
-            packet.ReadUInt32("Friendship Faction");
+
             var menuId = packet.ReadUInt32("Menu Id");
+            packet.ReadUInt32("Friendship Faction");
+            var textId = packet.ReadUInt32("Text Id");
             packet.StartBitStream(guid, 0, 1);         
             var AmountOfOptions = packet.ReadBits("Amount of Options", 20);
             packet.StartBitStream(guid, 6, 7);

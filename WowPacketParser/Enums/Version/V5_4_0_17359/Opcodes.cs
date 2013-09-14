@@ -17,6 +17,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_DB_QUERY_BULK, 0x1A8B},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x15A4},
             {Opcode.CMSG_GOSSIP_HELLO, 0x1A3F},
+            {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x136B},
             {Opcode.CMSG_LOAD_SCREEN, 0x160B},
             {Opcode.CMSG_LOG_DISCONNECT, 0x0380},
             {Opcode.CMSG_MESSAGECHAT_SAY, 0x10BE},
