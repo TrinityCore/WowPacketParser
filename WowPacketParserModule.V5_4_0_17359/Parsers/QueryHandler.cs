@@ -397,6 +397,18 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                         db2File.ReadUInt32("Next Scene Script");
                         break;
                     }
+                case DB2Hash.Vignette:
+                    {
+                        db2File.ReadUInt32("Vignette Entry");
+                        if (db2File.ReadUInt16() > 0)
+                            db2File.ReadCString("Name");
+
+                        db2File.ReadUInt32("Icon");
+                        db2File.ReadUInt32("Flag"); // not 100% sure (8 & 32 as values only) - todo verify with more data
+                        db2File.ReadSingle("Unk Float 1");
+                        db2File.ReadSingle("Unk Float 2");
+                        break;
+                    }
                 default:
                     {
                         db2File.WriteLine("Unknown DB2 file type: {0} (0x{0:x})", type);
