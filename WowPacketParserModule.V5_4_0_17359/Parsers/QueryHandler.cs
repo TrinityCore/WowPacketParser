@@ -161,8 +161,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                             db2File.ReadInt32("Emote Delay", i);
 
                         db2File.ReadUInt32("Sound Id");
-                        db2File.ReadUInt32("Unk0"); // emote unk
-                        db2File.ReadUInt32("Unk1"); // kind of type?
+                        db2File.ReadUInt32("Unk 1"); // emote unk
+                        db2File.ReadUInt32("Unk 2"); // kind of type?
                         break;
                     }
                 case DB2Hash.Creature: // New structure - 5.4
@@ -172,14 +172,12 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                         db2File.ReadUInt32("Item Entry 2");
                         db2File.ReadUInt32("Item Entry 3");
                         db2File.ReadUInt32("Mount");
-                        db2File.ReadUInt32("Display Id 1");
-                        db2File.ReadUInt32("Display Id 2");
-                        db2File.ReadUInt32("Display Id 3");
-                        db2File.ReadUInt32("Display Id 4");
-                        db2File.ReadSingle("Display Id Probability 1");
-                        db2File.ReadSingle("Display Id Probability 2");
-                        db2File.ReadSingle("Display Id Probability 3");
-                        db2File.ReadSingle("Display Id Probability 4");
+                        for (var i = 0; i < 4; ++i)
+                            db2File.ReadInt32("Display Id", i);
+
+                        for (var i = 0; i < 4; ++i)
+                            db2File.ReadSingle("Display Id Probability", i);
+
                         if (db2File.ReadUInt16() > 0)
                             db2File.ReadCString("Name");
 
@@ -268,7 +266,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                         for (var i = 0; i < 5; ++i)
                             db2File.ReadUInt32("Required Currency Count", i);
 
-                        db2File.ReadUInt32("Requried Faction Id");
+                        db2File.ReadUInt32("Required Faction Id");
                         db2File.ReadUInt32("Required Faction Standing");
                         db2File.ReadUInt32("Requirement Flags");
                         db2File.ReadUInt32("Required Guild Level");
