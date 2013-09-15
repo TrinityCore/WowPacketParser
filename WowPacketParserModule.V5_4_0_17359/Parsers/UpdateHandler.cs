@@ -399,7 +399,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
                 bits160 = packet.ReadBits(19);
                 for (var i = 0; i < bits160; ++i)
-                    packet.ReadBits("bits164", 2, index);
+                    packet.ReadBits("bits164", 2, index, i);
                 hasMoveFlagsExtra = !packet.ReadBit();
                 guid1[2] = packet.ReadBit();
                 hasMovementFlags = !packet.ReadBit();
@@ -438,7 +438,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ResetBitReader();
 
             for (var i = 0; i < transportFrames; ++i)
-                packet.ReadInt32("Transport frame", i, index);
+                packet.ReadInt32("Transport frame", index, i);
 
             if (bit29C)
             {
@@ -456,15 +456,15 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 {
                     for (var i = 0; i < bits25C; ++i)
                     {
-                        packet.ReadSingle("Float260+1", index);
-                        packet.ReadSingle("Float260+0", index);
+                        packet.ReadSingle("Float260+1", index, i);
+                        packet.ReadSingle("Float260+0", index, i);
                     }
 
                     packet.ReadSingle("Float280", index);
                     for (var i = 0; i < bits26C; ++i)
                     {
-                        packet.ReadSingle("Float270+1", index);
-                        packet.ReadSingle("Float270+0", index);
+                        packet.ReadSingle("Float270+1", index, i);
+                        packet.ReadSingle("Float270+0", index, i);
                     }
 
                     packet.ReadSingle("Float27C", index);
@@ -481,9 +481,9 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 {
                     for (var i = 0; i < bits288; ++i)
                     {
-                        packet.ReadSingle("Float28C+0", index);
-                        packet.ReadSingle("Float28C+2", index);
-                        packet.ReadSingle("Float28C+1", index);
+                        packet.ReadSingle("Float28C+0", index, i);
+                        packet.ReadSingle("Float28C+2", index, i);
+                        packet.ReadSingle("Float28C+1", index, i);
                     }
                 }
 
@@ -599,12 +599,12 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
                 for (var i = 0; i < bits160; ++i)
                 {
-                    packet.ReadSingle("Float16C+1", index);
-                    packet.ReadInt32("Int16C+4", index);
-                    packet.ReadInt32("Int16C+0", index);
-                    packet.ReadSingle("Float16C+3", index);
-                    packet.ReadSingle("Float16C+5", index);
-                    packet.ReadSingle("Float16C+2", index);
+                    packet.ReadSingle("Float16C+1", index, i);
+                    packet.ReadInt32("Int16C+4", index, i);
+                    packet.ReadInt32("Int16C+0", index, i);
+                    packet.ReadSingle("Float16C+3", index, i);
+                    packet.ReadSingle("Float16C+5", index, i);
+                    packet.ReadSingle("Float16C+2", index, i);
                 }
 
                 packet.ReadXORBytes(guid1, 2, 6, 0);
@@ -808,6 +808,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 if (hasGOTransportTime2)
                     packet.ReadUInt32("GO Transport Time 2", index);
 
+                packet.ReadXORByte(goTransportGuid, 2);
                 moveInfo.TransportOffset.X = packet.ReadSingle();
                 moveInfo.TransportGuid = new Guid(BitConverter.ToUInt64(goTransportGuid, 0));
                 packet.WriteLine("[{0}] GO Transport GUID {1}", index, moveInfo.TransportGuid);
