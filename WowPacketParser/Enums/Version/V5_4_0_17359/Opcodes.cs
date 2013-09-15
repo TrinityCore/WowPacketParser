@@ -24,6 +24,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_PLAYER_LOGIN, 0x1BC7},
             {Opcode.CMSG_REALM_SPLIT, 0x129F},
             {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x0A93},
+            {Opcode.CMSG_SAVE_CUF_PROFILES, 0x158D},
             {Opcode.CMSG_SET_SELECTION, 0x1B76},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0784}, 
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x1927},
