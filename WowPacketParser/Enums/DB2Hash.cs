@@ -1,4 +1,4 @@
-namespace WowPacketParserModule.V5_3_0_16981.Enums
+namespace WowPacketParser.Enums
 {
     public enum DB2Hash : uint
     {
@@ -17,6 +17,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Enums
         BattlePetVisual = 0xC3ADEB43,
         BroadcastText = 0x021826BB,
         Creature = 0xC9D6B6B3,
+        CreatureDifficulty = 0xC9E0A749,
+        Curve = 0x4BD9DF7A,
+        CurvePoint = 0x700ECA3A,
         GameObjects = 0x13C403A5,
         Item_sparse = 0x919BE54E,
         Item = 0x50238EC2,
@@ -38,7 +41,17 @@ namespace WowPacketParserModule.V5_3_0_16981.Enums
         SceneScript = 0xD4B163CC,
         SceneScriptPackage = 0xE8CB5E09,
         SceneScriptPackageMember = 0xE44DB71C,
+        SpellEffectCameraShakes = 0x73985069,
+        SpellMissile = 0x688F7A07,
+        SpellMissileMotion = 0x37717679,
         SpellReagents = 0xAB66C99F,
+        SpellVisual = 0xF72496D9,
+        SpellVisualEffectName = 0x02E18F32,
+        SpellVisualKit = 0xF483EADB,
+        SpellVisualKitAreaModel = 0x208AB51D,
+        SpellVisualKitModelAttach = 0xF07194C3,
+        SpellVisualMissile = 0x51A28350,
+        Vignette = 0xEFB13552,
         WbAccessControlList = 0x580B4EF3,
         WbCertBlacklist = 0xCDAB90DF,
         WbCertWhitelist = 0x885585BD,

@@ -52,7 +52,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Enums\ChatMessageType.cs" />
-    <Compile Include="Enums\DB2Hash.cs" />
     <Compile Include="Enums\TradeStatus.cs" />
     <Compile Include="Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsers\AchievementHandler.cs" />

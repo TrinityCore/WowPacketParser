@@ -38,7 +38,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadInt32("Hotfix type", i); // Also time?
+                packet.ReadEnum<DB2Hash>("Hotfix DB2 File", TypeCode.UInt32, i);
                 packet.ReadTime("Hotfix date", i);
                 packet.ReadInt32("Hotfixed entry", i);
             }

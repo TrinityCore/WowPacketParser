@@ -2,7 +2,6 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParserModule.V5_3_0_16981.Enums;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers

@@ -1008,7 +1008,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleDBReply434(Packet packet)
         {
             var id = packet.ReadInt32("Entry");
-            var type = packet.ReadUInt32("Type");
+
+            var type = packet.ReadEnum<DB2Hash>("Hotfix DB2 File", TypeCode.UInt32);
             packet.ReadTime("Hotfix date");
             var size = packet.ReadUInt32("Size");
             if (size == 0)
@@ -1021,7 +1022,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             switch (type)
             {
-                case 0x50238EC2:    // Item
+                case DB2Hash.Item:
                 {
                     var item = Storage.ItemTemplates.ContainsKey(itemId) ? Storage.ItemTemplates[itemId].Item1 : new ItemTemplate();
 
@@ -1037,7 +1038,7 @@ namespace WowPacketParser.Parsing.Parsers
                     Storage.ItemTemplates.Add(itemId, item, packet.TimeSpan);
                     break;
                 }
-                case 0x919BE54E:    // Item-sparse
+                case DB2Hash.Item_sparse:
                 {
                     var item = Storage.ItemTemplates.ContainsKey(itemId) ? Storage.ItemTemplates[itemId].Item1 : new ItemTemplate();
 
@@ -1165,7 +1166,7 @@ namespace WowPacketParser.Parsing.Parsers
                     Storage.ObjectNames.Add(itemId, new ObjectName { ObjectType = ObjectType.Item, Name = item.Name }, packet.TimeSpan);
                     break;
                 }
-                case 0x6D8A2694: // KeyChain
+                case DB2Hash.KeyChain:
                 {
                     packet.ReadUInt32("Key Chain Id");
                     packet.WriteLine("Key: {0}", Utilities.ByteArrayToHexString(packet.ReadBytes(32)));

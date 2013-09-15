@@ -5,7 +5,6 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using WowPacketParserModule.V5_4_0_17359.Enums;
 using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_4_0_17359.Parsers
