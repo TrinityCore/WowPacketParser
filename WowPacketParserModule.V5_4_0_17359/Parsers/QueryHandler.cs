@@ -384,6 +384,19 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                         db2File.WriteLine("Key: {0}", Utilities.ByteArrayToHexString(db2File.ReadBytes(32)));
                         break;
                     }
+                case DB2Hash.SceneScript: // lua ftw!
+                    {
+                        db2File.ReadUInt32("Scene Script Id");
+                        if (db2File.ReadUInt16() > 0)
+                            db2File.ReadCString("Name");
+
+                        if (db2File.ReadUInt16() > 0)
+                            db2File.ReadCString("Script");
+                        // note they act as a kind of script "relations"; may not be exactly that.
+                        db2File.ReadUInt32("Previous Scene Script");
+                        db2File.ReadUInt32("Next Scene Script");
+                        break;
+                    }
                 default:
                     {
                         db2File.WriteLine("Unknown DB2 file type: {0} (0x{0:x})", type);
