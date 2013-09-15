@@ -248,6 +248,33 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                         packet.AddSniffData(StoreNameType.Item, (int)entry, "DB_REPLY");
                         break;
                     }
+                case DB2Hash.ItemExtendedCost:
+                    {
+                        db2File.ReadUInt32("Item Extended Cost Entry");
+                        db2File.ReadUInt32("Required Honor Points");
+                        db2File.ReadUInt32("Required Arena Points");
+                        db2File.ReadUInt32("Required Arena Slot");
+                        for (var i = 0; i < 5; ++i)
+                            db2File.ReadUInt32("Required Item", i);
+
+                        for (var i = 0; i < 5; ++i)
+                            db2File.ReadUInt32("Required Item Count", i);
+
+                        db2File.ReadUInt32("Required Personal Arena Rating");
+                        db2File.ReadUInt32("Item Purchase Group");
+                        for (var i = 0; i < 5; ++i)
+                            db2File.ReadUInt32("Required Currency", i);
+
+                        for (var i = 0; i < 5; ++i)
+                            db2File.ReadUInt32("Required Currency Count", i);
+
+                        db2File.ReadUInt32("Requried Faction Id");
+                        db2File.ReadUInt32("Required Faction Standing");
+                        db2File.ReadUInt32("Requirement Flags");
+                        db2File.ReadUInt32("Required Guild Level");
+                        db2File.ReadUInt32("Required Achievement");
+                        break;
+                    }
                 case DB2Hash.Item_sparse:
                     {
                         var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
