@@ -51,6 +51,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Enums
         SpellVisualKitAreaModel = 0x208AB51D,
         SpellVisualKitModelAttach = 0xF07194C3,
         SpellVisualMissile = 0x51A28350,
+        Vignette = 0xEFB13552,
         WbAccessControlList = 0x580B4EF3,
         WbCertBlacklist = 0xCDAB90DF,
         WbCertWhitelist = 0x885585BD,
