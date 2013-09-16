@@ -34,6 +34,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0890},
             {Opcode.SMSG_ADDON_INFO, 0x0128},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x0816},
+            {Opcode.SMSG_ATTACKERSTATEUPDATE, 0x1BC0},
             {Opcode.SMSG_AURA_UPDATE, 0x19B3},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x016A},
             {Opcode.SMSG_AUTH_RESPONSE, 0x090E},
