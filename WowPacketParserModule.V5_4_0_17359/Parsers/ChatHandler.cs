@@ -21,13 +21,12 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         public static void HandleChannelList(Packet packet)
         {
             packet.ReadUInt32("Flags");
-            var password = packet.ReadBits(7);
             packet.ReadBit();
-            var length = packet.ReadBits(7);
+            var length = packet.ReadBits("", 7);
             packet.ReadBit();
+            packet.ReadBits("HasPassword", 7);
 
             packet.ReadWoWString("Channel Name", length);
-            packet.ReadWoWString("Password", password);
         }
     }
 }
