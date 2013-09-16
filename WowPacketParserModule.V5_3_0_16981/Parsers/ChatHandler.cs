@@ -172,7 +172,6 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             packet.ReadWoWString("Password", password);
             packet.ReadWoWString("Channel Name", length);
-
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT_GUILD)]

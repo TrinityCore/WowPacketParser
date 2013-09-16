@@ -196,7 +196,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 5);
-            packet.ReadUInt32("unk84");
+            packet.ReadUInt32("Realm Id");
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 2);
 

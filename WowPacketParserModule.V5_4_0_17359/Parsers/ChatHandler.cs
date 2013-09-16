@@ -16,5 +16,18 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var len = packet.ReadBits(12);
             packet.ReadWoWString("Message", len);
         }
+
+        [Parser(Opcode.CMSG_CHANNEL_LIST)]
+        public static void HandleChannelList(Packet packet)
+        {
+            packet.ReadUInt32("Flags");
+            var password = packet.ReadBits(7);
+            packet.ReadBit();
+            var length = packet.ReadBits(7);
+            packet.ReadBit();
+
+            packet.ReadWoWString("Channel Name", length);
+            packet.ReadWoWString("Password", password);
+        }
     }
 }
