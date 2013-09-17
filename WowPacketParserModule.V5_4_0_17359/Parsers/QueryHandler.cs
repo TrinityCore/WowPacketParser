@@ -501,5 +501,29 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
             Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
         }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]
+        public static void HandleNpcTextUpdate(Packet packet)
+        {
+            var npcText = new NpcText();
+
+            var entry = packet.ReadEntry("Entry");
+            if (entry.Value) // Can be masked
+                return;
+
+            var size = packet.ReadInt32("Size");
+            var data = packet.ReadBytes(size);
+            var hasData = packet.ReadBit();
+            if (!hasData)
+                return; // nothing to do
+
+            var pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            npcText.Probabilities = new float[8];
+            for (var i = 0; i < 8; ++i)
+                npcText.Probabilities[i] = pkt.ReadSingle("Probability", i);
+            for (var i = 0; i < 8; ++i)
+                pkt.ReadInt32("Broadcast Text Id", i);
+        }
     }
 }
