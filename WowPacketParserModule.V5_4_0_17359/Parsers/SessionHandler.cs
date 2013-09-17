@@ -177,7 +177,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 {
                     packet.ReadWoWString("Realm", len5[i], i);
                     packet.ReadWoWString("Realm", len261[i], i);
-                    packet.ReadInt32("Time", i);
+                    packet.ReadInt32("Realm Id", i);
                 }
                 packet.ReadInt32("Unk int 5");
                 packet.ReadInt32("Unk int 11");
