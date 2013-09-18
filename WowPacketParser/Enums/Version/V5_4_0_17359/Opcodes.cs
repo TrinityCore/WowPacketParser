@@ -75,6 +75,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_REALM_SPLIT, 0x0099},
             {Opcode.SMSG_SEND_SERVER_LOCATION, 0x0883},
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x0919},
+            {Opcode.SMSG_SPELLHEALLOG, 0x1594},
             {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x1085},
             {Opcode.SMSG_SPELL_GO, 0x1C17},
             {Opcode.SMSG_SPELL_START, 0x10B6},
