@@ -78,8 +78,9 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x1085},
             {Opcode.SMSG_SPELL_GO, 0x1C17},
             {Opcode.SMSG_SPELL_START, 0x10B6},
+            {Opcode.SMSG_THREAT_UPDATE, 0x000B},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x1F35},
-            {Opcode.SMSG_UPDATE_OBJECT, 0x17D9},
+            {Opcode.SMSG_UPDATE_OBJECT, 0x17D9}
         };
     }
 }
