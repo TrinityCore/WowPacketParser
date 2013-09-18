@@ -13,6 +13,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
         {
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x10BD},
             {Opcode.CMSG_AUTH_SESSION, 0x0790},
+            {Opcode.CMSG_CAST_SPELL, 0x1429},
             {Opcode.CMSG_CHANNEL_LIST, 0x1C14},
             {Opcode.CMSG_CREATURE_QUERY, 0x1585},
             {Opcode.CMSG_DB_QUERY_BULK, 0x1A8B},
