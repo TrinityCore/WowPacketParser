@@ -86,6 +86,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x042B},
             {Opcode.SMSG_REALM_SPLIT, 0x0099},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x0143},
+            {Opcode.SMSG_REMOVED_SPELL, 0x0523},
             {Opcode.SMSG_SEND_SERVER_LOCATION, 0x0883},
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x0919},
             {Opcode.SMSG_SET_PROFICIENCY, 0x012C},

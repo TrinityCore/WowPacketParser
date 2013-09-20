@@ -35,5 +35,25 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     Storage.StartSpells.Add(new Tuple<Race, Class>(player.Race, player.Class), startSpell, packet.TimeSpan);
             }
         }
+
+        [Parser(Opcode.SMSG_LEARNED_SPELL)]
+        public static void HandleLearnSpell(Packet packet)
+        {
+            packet.ReadBits("Unk Bits", 22);
+
+            var count = packet.ReadBit("Spell Count");
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+        }
+
+        [Parser(Opcode.SMSG_REMOVED_SPELL)]
+        public static void HandleRemovedSpell(Packet packet)
+        {
+            var count = packet.ReadBits("Spell Count", 22);
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", i);
+        }
     }
 }
