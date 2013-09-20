@@ -95,6 +95,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_TIME_SYNC_REQ, 0x08A6},
             {Opcode.SMSG_TRANSFER_PENDING, 0x08B5},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x1F35},
+            {Opcode.SMSG_UPDATE_LAST_INSTANCE, 0x05B2},
             {Opcode.SMSG_UPDATE_OBJECT, 0x17D9},
             {Opcode.SMSG_WARDEN_DATA, 0x0002}
         };
