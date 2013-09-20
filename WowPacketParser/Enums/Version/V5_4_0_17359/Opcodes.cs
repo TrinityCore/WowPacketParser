@@ -43,6 +43,8 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_ADDON_INFO, 0x0128},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x0816},
             {Opcode.SMSG_ATTACKERSTATEUPDATE, 0x1BC0},
+            {Opcode.SMSG_ATTACKSTART, 0x0427},  // correct?
+            {Opcode.SMSG_ATTACKSTOP, 0x050F},   // correct?
             {Opcode.SMSG_AURA_UPDATE, 0x19B3},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x016A},
             {Opcode.SMSG_AUTH_RESPONSE, 0x090E},
