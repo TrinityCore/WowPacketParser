@@ -106,7 +106,8 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_UPDATE_LAST_INSTANCE, 0x05B2},
             {Opcode.SMSG_UPDATE_OBJECT, 0x17D9},
             {Opcode.SMSG_UPDATE_WORLD_STATE, 0x090D},
-            {Opcode.SMSG_WARDEN_DATA, 0x0002}
+            {Opcode.SMSG_WARDEN_DATA, 0x0002},
+            {Opcode.SMSG_WEATHER, 0x04A7}
         };
     }
 }

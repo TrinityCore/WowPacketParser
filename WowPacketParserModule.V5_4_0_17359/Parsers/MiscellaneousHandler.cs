@@ -83,5 +83,13 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadBit("Unk bit1");
             packet.ReadBit("Unk bit2");
         }
+
+        [Parser(Opcode.SMSG_WEATHER)]
+        public static void HandleWeatherStatus(Packet packet)
+        {
+            packet.ReadBit("Unk bit");
+            packet.ReadSingle("Grade");
+            packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
+        }
     }
 }
