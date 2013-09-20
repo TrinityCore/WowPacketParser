@@ -39,6 +39,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x1927},
             {Opcode.CMSG_UNKNOWN_903, 0x0387},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0890},
+            {Opcode.SMSG_ACTION_BUTTONS, 0x0096},
             {Opcode.SMSG_ADDON_INFO, 0x0128},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x0816},
             {Opcode.SMSG_ATTACKERSTATEUPDATE, 0x1BC0},
@@ -63,6 +64,9 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x0D42},
             {Opcode.SMSG_GUILD_RANK, 0x0446},
             {Opcode.SMSG_GUILD_ROSTER, 0x044E},
+            {Opcode.SMSG_INITIAL_SPELLS, 0x1534},
+            {Opcode.SMSG_INIT_WORLD_STATES, 0x0929},
+            {Opcode.SMSG_LEARNED_SPELL, 0x0830},
             {Opcode.SMSG_LIST_INVENTORY, 0x088D},
             {Opcode.SMSG_LOAD_CUF_PROFILES, 0x009D},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0896},
@@ -97,6 +101,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x1F35},
             {Opcode.SMSG_UPDATE_LAST_INSTANCE, 0x05B2},
             {Opcode.SMSG_UPDATE_OBJECT, 0x17D9},
+            {Opcode.SMSG_UPDATE_WORLD_STATE, 0x090D},
             {Opcode.SMSG_WARDEN_DATA, 0x0002}
         };
     }
