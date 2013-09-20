@@ -67,6 +67,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_GUILD_RANK, 0x0446},
             {Opcode.SMSG_GUILD_ROSTER, 0x044E},
             {Opcode.SMSG_INITIAL_SPELLS, 0x1534},
+            {Opcode.SMSG_INIT_CURRENCY, 0x0494},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0929},
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0x090F},
             {Opcode.SMSG_LEARNED_SPELL, 0x0830},
