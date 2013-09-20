@@ -55,5 +55,17 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             for (var i = 0; i < count; ++i)
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", i);
         }
+
+        [Parser(Opcode.SMSG_SPELL_CATEGORY_COOLDOWN)]
+        public static void HandleSpellCategoryCooldown(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 21);
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Category Cooldown");
+                packet.ReadInt32("Cooldown");
+            }
+        }
     }
 }
