@@ -74,6 +74,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0929},
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0x090F},
             {Opcode.SMSG_LEARNED_SPELL, 0x0830},
+            {Opcode.SMSG_LEVELUP_INFO, 0x0402},
             {Opcode.SMSG_LIST_INVENTORY, 0x088D},
             {Opcode.SMSG_LOAD_CUF_PROFILES, 0x009D},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0896},

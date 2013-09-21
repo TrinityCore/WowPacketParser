@@ -128,5 +128,21 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 StoreGetters.AddName(playerGuid, name);
             }
         }
+
+        [Parser(Opcode.SMSG_LEVELUP_INFO)]
+        public static void HandleLevelUp(Packet packet)
+        {
+            packet.ReadInt32("Health");
+            
+            for (var i = 0; i < 5; i++)
+                packet.WriteLine("Stat " + (StatType)i + ": " + packet.ReadInt32());
+
+            packet.ReadInt32("Talent Level"); // 0 - No Talent gain / 1 - Talent Point gain
+
+            packet.ReadInt32("Level");
+
+            for (var i = 0; i < 5; i++)
+                packet.WriteLine("Power " + (PowerType)i + ": " + packet.ReadInt32());
+        }
     }
 }
