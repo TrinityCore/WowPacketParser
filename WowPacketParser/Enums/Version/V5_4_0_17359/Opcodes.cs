@@ -68,7 +68,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x0D42},
             {Opcode.SMSG_GUILD_RANK, 0x0446},
             {Opcode.SMSG_GUILD_ROSTER, 0x044E},
-            {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x082C},
+            {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x0437},
             {Opcode.SMSG_INITIAL_SPELLS, 0x1534},
             {Opcode.SMSG_INIT_CURRENCY, 0x0494},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0929},

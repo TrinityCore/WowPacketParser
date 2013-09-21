@@ -75,14 +75,12 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         public static void HandleAttackerStateUpdate(Packet packet)
         {
             var guid = new Byte[8];
-            var counter = 0;
-            var unk2 = 0;
 
             var hitInfo = packet.ReadEnum<SpellHitInfo>("HitInfo", TypeCode.Int32);
             packet.ReadPackedGuid("AttackerGUID");
             packet.ReadPackedGuid("TargetGUID");
             packet.ReadInt32("Damage");
-            unk2 = packet.ReadInt32("OverDamage");
+            packet.ReadInt32("OverDamage");
 
             var subDmgCount = packet.ReadByte();
 
@@ -140,7 +138,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
                 guid[7] = packet.ReadBit();
                 guid[6] = packet.ReadBit();
-                packet.ReadBits(21);
+                var counter = packet.ReadBits(21);
                 guid[2] = packet.ReadBit();
                 guid[0] = packet.ReadBit();
                 guid[3] = packet.ReadBit();
