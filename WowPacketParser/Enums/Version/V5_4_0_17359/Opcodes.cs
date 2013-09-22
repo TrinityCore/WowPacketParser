@@ -125,9 +125,12 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x1F35},
             {Opcode.SMSG_UPDATE_LAST_INSTANCE, 0x05B2},
             {Opcode.SMSG_UPDATE_OBJECT, 0x17D9},
+            {Opcode.SMSG_UPDATE_CURRENCY_WEEK_LIMIT, 0x019D},
             {Opcode.SMSG_UPDATE_WORLD_STATE, 0x090D},
             {Opcode.SMSG_WARDEN_DATA, 0x0002},
-            {Opcode.SMSG_WEATHER, 0x04A7}
+            {Opcode.SMSG_WEATHER, 0x04A7},
+            {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x1124},
+            {Opcode.SMSG_WORLD_SERVER_INFO, 0x052E}
         };
     }
 }

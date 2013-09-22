@@ -144,5 +144,12 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             for (var i = 0; i < 5; i++)
                 packet.WriteLine("Power " + (PowerType)i + ": " + packet.ReadInt32());
         }
+
+        [Parser(Opcode.SMSG_UPDATE_CURRENCY_WEEK_LIMIT)]
+        public static void HandleUpdateCurrencyWeekLimit(Packet packet)
+        {
+            packet.ReadUInt32("Currency ID");
+            packet.ReadUInt32("Week Cap");
+        }
     }
 }
