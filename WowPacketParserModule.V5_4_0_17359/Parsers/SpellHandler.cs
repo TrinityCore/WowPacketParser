@@ -67,5 +67,17 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadInt32("Cooldown");
             }
         }
+
+        [Parser(Opcode.SMSG_WEEKLY_SPELL_USAGE)]
+        public static void HandleWeeklySpellUsage(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 21);
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadByte("Unk Int8");
+                packet.ReadInt32("Unk Int32");
+            }
+        }
     }
 }
