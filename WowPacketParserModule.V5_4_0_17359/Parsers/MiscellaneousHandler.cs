@@ -91,5 +91,18 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadSingle("Grade");
             packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
         }
+
+        [Parser(Opcode.SMSG_HOTFIX_INFO)]
+        public static void HandleHotfixInfo(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 20);
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Hotfixed entry", i);
+                packet.ReadTime("Hotfix date", i);
+                packet.ReadEnum<DB2Hash>("Hotfix DB2 File", TypeCode.Int32, i);
+            }
+        }
     }
 }
