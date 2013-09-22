@@ -30,6 +30,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_NAME_QUERY, 0x16DB},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x108B},
             {Opcode.CMSG_PAGE_TEXT_QUERY, 0x1082},
+            {Opcode.CMSG_PET_NAME_QUERY, 0x1428},
             {Opcode.CMSG_PLAYER_LOGIN, 0x1BC7},
             {Opcode.CMSG_REALM_SPLIT, 0x129F},
             {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x0A93},

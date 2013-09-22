@@ -163,26 +163,20 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var guid = new byte[8];
 
             var bit16 = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
+            packet.StartBitStream(guid, 1, 3, 2);
 
             if (bit16)
                 for (var i = 0; i < 5; ++i)
                     packet.ReadBits("bits", 7);
 
             var bits32 = packet.ReadBits(6);
-            guid[6] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
+            packet.StartBitStream(guid, 6, 4, 0);
             var bit83 = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
+            packet.StartBitStream(guid, 5, 7);
 
             packet.ReadXORByte(guid, 1);
             packet.ReadWoWString("Name: ", bits32);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 7);
+            packet.ReadXORBytes(guid, 0, 7);
 
             packet.ReadByte("Race");
             packet.ReadByte("unk81");
@@ -193,12 +187,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     packet.ReadCString("Declined Name");
 
             packet.ReadByte("Class");
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 5);
+            packet.ReadXORBytes(guid, 4, 6, 5);
             packet.ReadUInt32("Realm Id");
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 2);
+            packet.ReadXORBytes(guid, 3, 2);
 
             packet.WriteGuid("Guid", guid);
         }
