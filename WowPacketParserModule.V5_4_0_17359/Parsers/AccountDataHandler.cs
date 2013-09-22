@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {
     public static class AccountDataHandler
     {
-      [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES)]
+        [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES)]
         public static void HandleAccountDataTimes(Packet packet)
         {
             packet.ReadTime("Server Time");
