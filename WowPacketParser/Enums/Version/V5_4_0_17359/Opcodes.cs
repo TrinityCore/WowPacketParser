@@ -100,6 +100,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x0114},
             {Opcode.SMSG_PERIODICAURALOG, 0x1097},
             {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0x05A1},
+            {Opcode.SMSG_PLAY_SOUND, 0x04A1},
             {Opcode.SMSG_PLAYER_MOVE, 0x139F},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x142D},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x19AB},

@@ -2,6 +2,8 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_4_0_17359.Parsers
@@ -103,6 +105,20 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadTime("Hotfix date", i);
                 packet.ReadEnum<DB2Hash>("Hotfix DB2 File", TypeCode.Int32, i);
             }
+        }
+
+        [Parser(Opcode.SMSG_PLAY_SOUND)]
+        public static void HandlePlaySound(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 6, 7, 5, 2, 1, 4, 0, 3);
+            packet.ParseBitStream(guid, 7, 0, 5, 4, 3, 1, 2, 6);
+
+            var sound = packet.ReadUInt32("Sound Id");
+            packet.WriteGuid("Guid", guid);
+
+            Storage.Sounds.Add(sound, packet.TimeSpan);
         }
     }
 }
