@@ -66,5 +66,27 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteLine("Counter: {0}", BitConverter.ToInt64(counter, 0));
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_CRITERIA_UNKNOWN)]
+        public static void HandleCriteriaUnknow(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadInt32("Criteria ID");
+            packet.ReadInt32("Flags");
+
+            packet.ResetBitReader();
+
+            packet.ReadPackedTime("Time");
+
+            packet.ReadInt32("Timer 1");
+            packet.ReadInt64("Int28");
+            packet.ReadInt32("Timer 2");
+
+            packet.StartBitStream(guid, 2, 4, 1, 5, 3, 6, 7, 0);
+            packet.ParseBitStream(guid, 7, 0, 6, 5, 2, 1, 4, 3);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
