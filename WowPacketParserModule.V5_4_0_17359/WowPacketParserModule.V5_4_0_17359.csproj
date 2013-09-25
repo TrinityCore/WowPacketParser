@@ -52,6 +52,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Enums\ChatMessageType.cs" />
+    <Compile Include="Parsers\AchievementHandler.cs" />
     <Compile Include="Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsers\ArenaHandler.cs" />
     <Compile Include="Parsers\CharacterHandler.cs" />

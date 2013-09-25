@@ -260,14 +260,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             guid[3] = packet.ReadBit();
             var hasTimeStamp = !packet.ReadBit();
             var hasTransportData = packet.ReadBit();
-            var bit5C = false;
-            var bit64 = false;
+            var hasTransportTime2 = false;
+            var hasTransportTime3 = false;
 
             if (hasTransportData)
             {
                 packet.StartBitStream(transportGUID, 1, 2, 3, 4, 5);
-                bit64 = packet.ReadBit();
-                bit5C = packet.ReadBit();
+                hasTransportTime3 = packet.ReadBit();
+                hasTransportTime2 = packet.ReadBit();
                 packet.StartBitStream(transportGUID, 0, 7, 6);
             }
  
@@ -320,14 +320,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadByte("Seat");
                 packet.ReadXORByte(transportGUID, 4);
                 packet.ReadXORByte(transportGUID, 3);
-                if (bit5C)
-                    packet.ReadInt32("Int58");
+                if (hasTransportTime2)
+                    packet.ReadInt32("Transport Time 2");
  
                 packet.ReadXORByte(transportGUID, 6);
                 packet.ReadXORByte(transportGUID, 7);
                 transPos.X = packet.ReadSingle();
-                if (bit64)
-                    packet.ReadInt32("Int60");
+                if (hasTransportTime3)
+                    packet.ReadInt32("Transport Time 3");
 
                 packet.ReadInt32("Transport Time");
                 transPos.Z = packet.ReadSingle();
