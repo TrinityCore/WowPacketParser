@@ -79,5 +79,17 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadInt32("Unk Int32");
             }
         }
+
+        [Parser(Opcode.SMSG_SEND_UNLEARN_SPELLS)]
+        public static void HandleSendUnlearnSpells(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 21);
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadByte("Unk Byte", i);
+                packet.ReadInt32("Unk Int32", i);
+                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+            }
+        }
     }
 }
