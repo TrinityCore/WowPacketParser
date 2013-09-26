@@ -196,11 +196,126 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.ReadXORByte(guid2, 3);
             packet.ReadXORByte(guid1, 4);
-            packet.ReadInt32("Spell Id");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
             packet.ReadXORByte(guid2, 1);
             packet.ReadInt32("Overheal");
             packet.WriteGuid("GUID1", guid1);
             packet.WriteGuid("GUID2", guid2);
+        }
+
+        [Parser(Opcode.SMSG_PERIODICAURALOG)]
+        public static void HandlePeriodicAuraLog(Packet packet)
+        {
+            var targetGUID = new byte[8];
+            var powerGUID = new byte[8];
+            var casterGUID = new byte[8];
+
+            casterGUID[7] = packet.ReadBit();
+
+            var hasPowerData = packet.ReadBit();
+
+            packet.StartBitStream(casterGUID, 3, 5);
+
+            var bits34 = 0u;
+            if (hasPowerData)
+            {
+                packet.StartBitStream(powerGUID, 4, 6, 7, 1, 0, 2);
+                bits34 = packet.ReadBits(21);
+                packet.StartBitStream(powerGUID, 5, 3);
+            }
+
+            casterGUID[6] = packet.ReadBit();
+            targetGUID[1] = packet.ReadBit();
+            var bits58 = packet.ReadBits(21);
+            packet.StartBitStream(casterGUID, 2, 1);
+            packet.StartBitStream(targetGUID, 2, 4);
+            casterGUID[4] = packet.ReadBit();
+            
+            var bit8 = new bool[bits58];
+            var hasSpellProto = new bool[bits58];
+            var hasAbsorb = new bool[bits58];
+            var hasOverDamage = new bool[bits58];
+
+            for (var i = 0; i < bits58; ++i)
+            {
+                packet.ReadBit(); // fake bit
+
+                hasOverDamage[i] = !packet.ReadBit();
+                hasAbsorb[i] = !packet.ReadBit();
+                hasSpellProto[i] = !packet.ReadBit();
+                bit8[i] = !packet.ReadBit();
+            }
+
+            casterGUID[0] = packet.ReadBit();
+
+            packet.StartBitStream(targetGUID, 0, 7, 3, 6, 5);
+            packet.ReadXORByte(targetGUID, 5);
+            packet.ReadXORByte(casterGUID, 7);
+
+            for (var i = 0; i < bits58; ++i)
+            {
+                if (bit8[i])
+                    packet.ReadInt32("bit8", i);
+
+                var aura = packet.ReadEnum<AuraType>("Aura Type", TypeCode.UInt32, i);
+
+                if (hasOverDamage[i])
+                    packet.ReadInt32("Over damage", i);
+
+                if (hasAbsorb[i])
+                    packet.ReadInt32("Absorb", i);
+
+                packet.ReadInt32("Damage", i);
+
+                if (hasSpellProto[i])
+                    packet.ReadUInt32("Spell Proto", i);
+            }
+
+            packet.ReadXORByte(targetGUID, 0);
+            packet.ReadXORByte(targetGUID, 4);
+            packet.ReadXORByte(targetGUID, 2);
+
+            if (hasPowerData)
+            {
+                packet.ReadXORByte(powerGUID, 0);
+                packet.ReadXORByte(powerGUID, 3);
+                packet.ReadInt32("Attack power");
+                packet.ReadInt32("Spell power");
+                packet.ReadXORByte(powerGUID, 4);
+                packet.ReadXORByte(powerGUID, 1);
+                packet.ReadXORByte(powerGUID, 5);
+                packet.ReadXORByte(powerGUID, 2);
+                packet.ReadInt32("Current health");
+
+                for (var i = 0; i < bits34; ++i)
+                {
+                    packet.ReadInt32("Value", i);
+                    packet.ReadEnum<PowerType>("Power type", TypeCode.Int32, i); // Actually powertype for class
+                }
+
+                packet.ReadXORByte(powerGUID, 6);
+                packet.ReadXORByte(powerGUID, 7);
+                packet.WriteGuid("Power GUID", powerGUID);
+            }
+
+            packet.ReadXORByte(casterGUID, 4);
+            packet.ReadXORByte(casterGUID, 3);
+            packet.ReadXORByte(targetGUID, 1);
+            packet.ReadXORByte(casterGUID, 0);
+            packet.ReadXORByte(casterGUID, 5);
+
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+
+            packet.ReadXORByte(casterGUID, 1);
+            packet.ReadXORByte(targetGUID, 7);
+            packet.ReadXORByte(casterGUID, 2);
+            packet.ReadXORByte(targetGUID, 6);
+            packet.ReadXORByte(targetGUID, 3);
+            packet.ReadXORByte(casterGUID, 6);
+
+            packet.WriteGuid("Target GUID", targetGUID);
+            packet.WriteGuid("Caster GUID", casterGUID);
+
         }
     }
 }
