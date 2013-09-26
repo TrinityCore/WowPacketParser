@@ -2,6 +2,7 @@ using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {
@@ -104,6 +105,112 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadInt32("Creation Order", i);
                 packet.ReadInt32("Rights Order", i);
             }
+        }
+
+        [Parser(Opcode.SMSG_GUILD_ROSTER)]
+        public static void HandleGuildRoster(Packet packet)
+        {
+            packet.ReadPackedTime("Time");
+            packet.ReadInt32("Accounts In Guild");
+            packet.ReadInt32("Unk Uint32 4");
+            packet.ReadInt32("Weekly Reputation Cap");
+
+            var motdLength = packet.ReadBits(10);
+            var size = packet.ReadBits(17);
+            
+            var guid = new byte[size][];
+            var nameLength = new uint[size];
+            var publicLength = new uint[size];
+            var officerLength = new uint[size];
+
+            for (var i = 0; i < size; ++i)
+            {
+                guid[i] = new byte[8];
+
+                packet.ReadBit("Can SoR", i);
+
+                packet.StartBitStream(guid[i], 0, 7, 2);
+
+                packet.ReadBit("Has Authenticator", i);
+
+                officerLength[i] = packet.ReadBits(8);
+
+                guid[i][3] = packet.ReadBit();
+                nameLength[i] = packet.ReadBits(6);
+
+                packet.StartBitStream(guid[i], 6, 4, 1, 5);
+
+                publicLength[i] = packet.ReadBits(8);
+            }
+
+            var infoLength = packet.ReadBits(11);
+
+            for (var i = 0; i < size; ++i)
+            {
+                packet.ReadSingle("Last online", i);
+
+                packet.ReadWoWString("Officer note", officerLength[i], i);
+
+                if (guid[i][4] != 0)
+                    guid[i][4] ^= packet.ReadByte();
+
+                packet.ReadByte("Unk Byte", i);
+
+                if (guid[i][0] != 0)
+                    guid[i][0] ^= packet.ReadByte();
+
+                packet.ReadInt32("Remaining guild week Rep", i);
+
+                for (var j = 0; j < 2; ++j)
+                {
+                    var rank = packet.ReadUInt32();
+                    var value = packet.ReadUInt32();
+                    var id = packet.ReadUInt32();
+                    packet.WriteLine("[{0}][{1}] Profession: Id {2} - Value {3} - Rank {4}", i, j, id, value, rank);
+                }
+
+                packet.ReadInt32("Guild Reputation", i);
+
+                var name = packet.ReadWoWString("Name", nameLength[i], i);
+
+                if (guid[i][6] != 0)
+                    guid[i][6] ^= packet.ReadByte();
+
+                packet.ReadByte("Member Level", i);
+
+                if (guid[i][5] != 0)
+                    guid[i][5] ^= packet.ReadByte();
+
+                if (guid[i][1] != 0)
+                    guid[i][1] ^= packet.ReadByte();
+
+                if (guid[i][3] != 0)
+                    guid[i][3] ^= packet.ReadByte();
+
+                packet.ReadInt32("Member Achievement Points", i);
+
+                if (guid[i][7] != 0)
+                    guid[i][7] ^= packet.ReadByte();
+
+                packet.ReadEnum<GuildMemberFlag>("Member Flags", TypeCode.Byte, i);
+                packet.ReadInt32("Member Rank", i);
+                packet.ReadEnum<Class>("Member Class", TypeCode.Byte, i);
+
+                if (guid[i][2] != 0)
+                    guid[i][2] ^= packet.ReadByte();
+
+                packet.ReadInt64("Unk 2", i);
+                packet.ReadInt64("Week activity", i);
+                packet.ReadInt32("Zone Id", i);
+                packet.ReadInt32("Total activity", i);
+
+                packet.ReadWoWString("Public note", publicLength[i], i);
+                packet.WriteGuid("Guid", guid[i], i);
+                StoreGetters.AddName(new Guid(BitConverter.ToUInt64(guid[i], 0)), name);
+            }
+
+            packet.ReadWoWString("Guild Info", infoLength);
+            packet.ReadWoWString("MOTD", motdLength);
         }
     }
 }
