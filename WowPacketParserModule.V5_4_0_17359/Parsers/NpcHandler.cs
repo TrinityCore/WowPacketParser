@@ -135,5 +135,77 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             Storage.Gossips.Add(Tuple.Create(menuId, textId), gossip, packet.TimeSpan);
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, GUID.GetEntry().ToString(CultureInfo.InvariantCulture));
         }
+
+        [Parser(Opcode.SMSG_THREAT_UPDATE)]
+        public static void HandleThreatlistUpdate(Packet packet)
+        {            
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            guid1[5] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid1[4] = packet.ReadBit();
+            packet.StartBitStream(guid2, 5, 3);
+            guid1[1] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            packet.StartBitStream(guid1, 2, 0, 6);
+            guid2[7] = packet.ReadBit();
+
+            var count = packet.ReadBits(21);
+
+            var guid = new byte[count][];
+
+            for (var i = 0; i < count; i++)
+            {
+                guid[i] = new byte[8];
+
+                packet.StartBitStream(guid[i], 5, 0, 6, 2, 7, 3, 4, 1);
+            }
+
+            packet.StartBitStream(guid2, 4, 2);
+
+            guid1[3] = packet.ReadBit();
+
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid1, 4);
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadXORByte(guid[i], 6);
+                packet.ReadXORByte(guid[i], 3);
+                packet.ReadXORByte(guid[i], 2);
+                packet.ReadXORByte(guid[i], 0);
+                packet.ReadXORByte(guid[i], 5);
+
+                packet.ReadInt32("Threat", i);
+
+                packet.ReadXORByte(guid[i], 1);
+                packet.ReadXORByte(guid[i], 7);
+                packet.ReadXORByte(guid[i], 4);
+
+                packet.WriteGuid("Hostile", guid[i], i);
+            }
+
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid2, 1);
+
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("GUID2", guid2);
+
+        }
     }
 }
