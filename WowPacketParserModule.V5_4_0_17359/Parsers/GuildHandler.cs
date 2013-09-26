@@ -10,8 +10,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_GUILD_QUERY_RESPONSE)]
         public static void HandleGuildQueryResponse(Packet packet)
         {
-            var Guild2 = new byte[8];
             var Guild1 = new byte[8];
+            var Guild2 = new byte[8];
 
             int nameLen = 0;
             int rankCount = 0;
@@ -71,7 +71,12 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ParseBitStream(Guild2, 4, 1, 0, 3, 5, 7, 6, 2);
 
             packet.WriteGuid("Guild1", Guild2);
+        }
 
+        [Parser(Opcode.SMSG_GUILD_NEWS_TEXT)]
+        public static void HandleNewText(Packet packet)
+        {
+            packet.ReadWoWString("Text", (int)packet.ReadBits(10));
         }
     }
 }
