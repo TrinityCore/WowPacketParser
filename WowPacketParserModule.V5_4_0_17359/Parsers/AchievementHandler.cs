@@ -80,7 +80,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadPackedTime("Time");
 
             packet.ReadInt32("Timer 1");
-            packet.ReadInt64("Int28");
+            packet.ReadInt64("Counter");
             packet.ReadInt32("Timer 2");
 
             packet.StartBitStream(guid, 2, 4, 1, 5, 3, 6, 7, 0);
