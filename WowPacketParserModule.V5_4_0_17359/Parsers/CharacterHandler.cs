@@ -151,5 +151,43 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadUInt32("Currency ID");
             packet.ReadUInt32("Week Cap");
         }
+
+        [Parser(Opcode.SMSG_INIT_CURRENCY)]
+        public static void HandleInitCurrency(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 21);
+            if (count == 0)
+                return;
+
+            var hasWeekCount = new bool[count];
+            var hasWeekCap = new bool[count];
+            var hasSeasonTotal = new bool[count];
+            var flags = new uint[count];
+
+            for (var i = 0; i < count; ++i)
+            {
+                hasWeekCap[i] = packet.ReadBit();       // 0Ch
+                hasWeekCount[i] = packet.ReadBit();     // 1Ch
+                hasSeasonTotal[i] = packet.ReadBit();   // 14h
+                flags[i] = packet.ReadBits(5);          // 20h
+            }
+            
+            for (var i = 0; i < count; ++i)
+            {
+                packet.WriteLine("[{0}] Flags {1}", i, flags[i]); // 20h
+                packet.ReadUInt32("Currency count", i);
+
+                if (hasSeasonTotal[i]) // 0Ch
+                    packet.ReadUInt32("Season total earned", i);
+
+                if (hasWeekCap[i]) // 14h
+                    packet.ReadUInt32("Weekly cap", i);
+
+                if (hasWeekCount[i]) // 1Ch
+                    packet.ReadUInt32("Weekly count", i);
+
+                packet.ReadUInt32("Currency id", i);
+            }
+        }
     }
 }

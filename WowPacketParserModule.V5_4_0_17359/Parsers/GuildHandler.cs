@@ -83,7 +83,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         public static void HandleGuildRankServer434(Packet packet)
         {
             const int guildBankMaxTabs = 8;
-            var count = packet.ReadBits("Count", 17);            
+            var count = packet.ReadBits("Count", 17);
             var length = new int[count];
 
             for (var i = 0; i < count; ++i)
