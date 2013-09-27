@@ -317,5 +317,52 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Caster GUID", casterGUID);
 
         }
+
+        [Parser(Opcode.SMSG_ATTACKSTOP)]
+        public static void HandleAttackStartStop(Packet packet)
+        {
+            var AttackerGUID = new byte[8];
+            var VictimGUID = new byte[8];
+
+            AttackerGUID[0] = packet.ReadBit();
+            VictimGUID[4] = packet.ReadBit();
+            AttackerGUID[1] = packet.ReadBit();
+            VictimGUID[7] = packet.ReadBit();
+            packet.StartBitStream(AttackerGUID, 6, 3);
+
+            packet.ReadBit("Unk bit");
+
+            AttackerGUID[5] = packet.ReadBit();
+            packet.StartBitStream(VictimGUID, 1, 0);
+            AttackerGUID[7] = packet.ReadBit();
+
+            VictimGUID[6] = packet.ReadBit();
+            AttackerGUID[4] = packet.ReadBit();
+            AttackerGUID[2] = packet.ReadBit();
+            VictimGUID[3] = packet.ReadBit();
+            VictimGUID[2] = packet.ReadBit();
+            VictimGUID[5] = packet.ReadBit();
+
+            packet.ReadXORByte(VictimGUID, 2);
+            packet.ReadXORByte(VictimGUID, 7);
+            packet.ReadXORByte(AttackerGUID, 0);
+            packet.ReadXORByte(VictimGUID, 5);
+            packet.ReadXORByte(AttackerGUID, 5);
+            packet.ReadXORByte(VictimGUID, 3);
+            packet.ReadXORByte(AttackerGUID, 7);
+            packet.ReadXORByte(AttackerGUID, 1);
+            packet.ReadXORByte(AttackerGUID, 3);
+            packet.ReadXORByte(VictimGUID, 0);
+            packet.ReadXORByte(AttackerGUID, 4);
+            packet.ReadXORByte(AttackerGUID, 6);
+            packet.ReadXORByte(VictimGUID, 1);
+            packet.ReadXORByte(VictimGUID, 6);
+            packet.ReadXORByte(AttackerGUID, 2);
+            packet.ReadXORByte(VictimGUID, 4);
+
+            packet.WriteGuid("Attacker GUID", AttackerGUID);
+            packet.WriteGuid("Victim GUID", VictimGUID);
+
+        }
     }
 }
