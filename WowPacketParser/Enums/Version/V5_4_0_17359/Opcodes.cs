@@ -27,6 +27,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_LOAD_SCREEN, 0x160B},
             {Opcode.CMSG_LOG_DISCONNECT, 0x0380},
             {Opcode.CMSG_MESSAGECHAT_SAY, 0x10BE},
+            {Opcode.CMSG_MOVE_TIME_SKIPPED, 0x0313},
             {Opcode.CMSG_NAME_QUERY, 0x16DB},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x108B},
             {Opcode.CMSG_PAGE_TEXT_QUERY, 0x1082},
