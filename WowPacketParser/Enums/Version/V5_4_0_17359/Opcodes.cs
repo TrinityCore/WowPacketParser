@@ -117,6 +117,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x0919},
             {Opcode.SMSG_SET_PROFICIENCY, 0x012C},
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x1434},
+            {Opcode.SMSG_SPELLENERGIZELOG, 0x1492},
             {Opcode.SMSG_SPELLHEALLOG, 0x1594},
             {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x1085},
             {Opcode.SMSG_SPELL_GO, 0x1C17},
