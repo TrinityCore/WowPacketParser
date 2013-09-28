@@ -515,11 +515,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var hasPowerData = packet.ReadBit();
             targetGUID[0] = packet.ReadBit();
 
-            var counter = 0u;
+            var powerCount = 0u;
             if (hasPowerData)
             {
                 packet.StartBitStream(powerGUID, 1, 0, 2, 5);
-                counter = packet.ReadBits(21);
+                powerCount = packet.ReadBits(21);
                 packet.StartBitStream(powerGUID, 7, 3, 4, 6);
             }
 
@@ -543,7 +543,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadXORByte(powerGUID, 5);
                 packet.ReadXORByte(powerGUID, 3);
 
-                for (var i = 0; i < counter; i++)
+                for (var i = 0; i < powerCount; i++)
                 {
                     packet.ReadInt32("Power Value", i);
                     packet.ReadEnum<PowerType>("Power Type", TypeCode.UInt32, i);

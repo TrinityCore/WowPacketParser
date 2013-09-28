@@ -110,11 +110,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             var hasPowerData = packet.ReadBit();
 
-            var bits34 = 0u;
+            var powerCount = 0u;
             if (hasPowerData)
             {
                 packet.StartBitStream(powerGUID, 7, 0, 6);
-                bits34 = packet.ReadBits(21);
+                powerCount = packet.ReadBits(21);
                 packet.StartBitStream(powerGUID, 3, 1, 2, 4, 5);
             }
 
@@ -201,7 +201,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadXORByte(powerGUID, 5);
                 packet.ReadXORByte(powerGUID, 1);
                 packet.ReadXORByte(powerGUID, 6);
-                for (var i = 0; i < bits34; ++i)
+                for (var i = 0; i < powerCount; ++i)
                 {
                     packet.ReadInt32("Value", i);
                     packet.ReadEnum<PowerType>("Power type", TypeCode.Int32, i); // Actually powertype for class
@@ -893,6 +893,106 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Guid3", guid3);
             packet.WriteGuid("Guid4", guid4);
             packet.WriteGuid("Guid5", guid2);
+        }
+
+        [Parser(Opcode.SMSG_UNKNOWN_5410)]
+        public static void HandleUnknow5410(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var powerGUID = new byte[8];
+            var guid3 = new byte[8];
+
+            guid1[2] = packet.ReadBit();
+            packet.StartBitStream(guid3, 2, 1);
+            var bit20 = packet.ReadBit();
+            packet.StartBitStream(guid1, 0, 5);
+            var bit6C = packet.ReadBit();
+            packet.StartBitStream(guid3, 7, 5);
+            guid1[7] = packet.ReadBit();
+            packet.StartBitStream(guid3, 0, 4);
+            guid1[1] = packet.ReadBit();
+            guid3[3] = packet.ReadBit();
+            guid1[3] = packet.ReadBit();
+            guid3[6] = packet.ReadBit();
+
+            var hasPowerData = packet.ReadBit();
+            var counter = packet.ReadBits(22);
+
+            var powerCount = 0u;
+            if (hasPowerData)
+            {
+                packet.StartBitStream(powerGUID, 2, 5, 7, 6);
+                powerCount = packet.ReadBits(21);
+                packet.StartBitStream(powerGUID, 4, 3, 0, 1);
+            }
+
+            guid1[6] = packet.ReadBit();
+            guid1[4] = packet.ReadBit();
+
+            var bitC = new bool[counter];
+            var bit14 = new bool[counter];
+            for (var i = 0; i < counter; ++i)
+            {
+                bitC[i] = packet.ReadBit();
+                bit14[i] = packet.ReadBit();
+                packet.ReadBit();
+            }
+
+            for (var i = 0; i < counter; ++i)
+            {
+                if (bitC[i])
+                    packet.ReadInt32("IntC", i);
+
+                if (bit14[i])
+                    packet.ReadInt32("Int14", i);
+
+                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+            }
+
+            if (hasPowerData)
+            {
+                packet.ReadXORByte(powerGUID, 3);
+                packet.ReadInt32("Spell power");
+                packet.ReadInt32("Current Health");
+                packet.ReadXORByte(powerGUID, 6);
+                packet.ReadXORByte(powerGUID, 7);
+
+                for (var i = 0; i < powerCount; ++i)
+                {
+                    packet.ReadInt32("Power Value", i);
+                    packet.ReadEnum<PowerType>("Power Type", TypeCode.UInt32, i);
+                }
+
+                packet.ReadInt32("Attack power");
+                packet.ReadXORByte(powerGUID, 2);
+                packet.ReadXORByte(powerGUID, 4);
+                packet.ReadXORByte(powerGUID, 1);
+                packet.ReadXORByte(powerGUID, 5);
+                packet.ReadXORByte(powerGUID, 0);
+
+                packet.WriteGuid("Power GUID", powerGUID);
+            }
+
+            packet.ReadInt32("Int68");
+            packet.ReadXORByte(guid3, 0);
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadXORByte(guid3, 3);
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid3, 4);
+            packet.ReadXORByte(guid3, 5);
+            packet.ReadXORByte(guid3, 7);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid3, 2);
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid3, 1);
+            packet.ReadXORByte(guid3, 6);
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid1, 7);
+
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("Guid2", guid3);
         }
     }
 }
