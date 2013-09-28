@@ -73,8 +73,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         public static void HandleServerRealmSplit(Packet packet)
         {
             var len = packet.ReadBits(7);
-            packet.ReadUInt32("Split State");
-            packet.ReadUInt32("Client State");
+            packet.ReadEnum<PendingSplitState>("Split State", TypeCode.Int32);
+            packet.ReadEnum<ClientSplitState>("Client State", TypeCode.Int32);
             packet.ReadWoWString("Split Date", len);
         }
 

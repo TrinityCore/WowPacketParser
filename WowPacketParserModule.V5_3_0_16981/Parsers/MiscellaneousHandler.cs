@@ -30,8 +30,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         {
             var len = packet.ReadBits(7);
             packet.ReadWoWString("Split Date", len);
-            packet.ReadUInt32("Client State");
-            packet.ReadUInt32("Split State");
+            packet.ReadEnum<ClientSplitState>("Client State", TypeCode.Int32);
+            packet.ReadEnum<PendingSplitState>("Split State", TypeCode.Int32);
         }
 
         [Parser(Opcode.CMSG_INSPECT)]
