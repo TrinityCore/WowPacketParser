@@ -120,5 +120,27 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }
+
+        [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
+        public static void HandleWorldServerInfo(Packet packet)
+        {
+            packet.ReadInt32("Instance Difficulty ID");
+            packet.ReadTime("Last Weekly Reset");
+            packet.ReadByte("Byte18");
+
+            var bit20 = packet.ReadBit();
+            var bit38 = packet.ReadBit();
+            var bit2C = packet.ReadBit();
+            var bit14 = packet.ReadBit();
+
+            if (bit20)
+                packet.ReadInt32("Int1C");
+            if (bit38)
+                packet.ReadInt32("Int34");
+            if (bit2C)
+                packet.ReadInt32("Int28");
+            if (bit14)
+                packet.ReadInt32("Int10");
+        }
     }
 }
