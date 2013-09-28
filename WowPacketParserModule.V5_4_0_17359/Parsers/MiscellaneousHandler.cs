@@ -198,5 +198,53 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.WriteGuid("Guid2", guid2[i], i);
             }
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_6011)]
+        public static void HandleUnknown6011(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 4, 2, 5, 1, 0, 7, 6, 3);
+            packet.ParseBitStream(guid, 7, 5, 3, 0, 6, 1, 4, 2);
+
+            packet.WriteGuid("GUID", guid);
+        }
+
+        [Parser(Opcode.SMSG_UNKNOWN_4615)]
+        public static void HandleUnknown4615(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 0, 5, 3, 6, 1, 4, 2, 7);
+            packet.ParseBitStream(guid, 6, 3, 1, 5, 4, 7, 2, 0);
+
+            packet.WriteGuid("GUID", guid);
+        }
+
+        [Parser(Opcode.SMSG_UNKNOWN_406)]
+        public static void HandleUnknown406(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 3, 1, 6, 0, 4);
+            packet.ReadBit("bit18");
+            packet.StartBitStream(guid, 2, 5, 7);
+            packet.ParseBitStream(guid, 3, 2, 1, 4, 6, 7, 0, 5);
+
+            packet.WriteGuid("GUID", guid);
+        }
+
+        [Parser(Opcode.SMSG_UNKNOWN_1024)]
+        public static void HandleUnknown1024(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 7, 4, 1, 5, 0, 3, 6);
+            packet.ReadBits("bits0", 3);
+            guid[2] = packet.ReadBit();
+            packet.ParseBitStream(guid, 3, 6, 0, 5, 1, 7, 4, 2);
+
+            packet.WriteGuid("GUID", guid);
+        }
     }
 }
