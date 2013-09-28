@@ -128,6 +128,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_TIME_SYNC_REQ, 0x08A6},
             {Opcode.SMSG_TRANSFER_PENDING, 0x08B5},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x1F35},
+            {Opcode.SMSG_UNKNOWN_274, 0x0112},
             {Opcode.SMSG_UPDATE_LAST_INSTANCE, 0x05B2},
             {Opcode.SMSG_UPDATE_OBJECT, 0x17D9},
             {Opcode.SMSG_UPDATE_CURRENCY_WEEK_LIMIT, 0x019D},

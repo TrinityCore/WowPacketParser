@@ -1803,6 +1803,7 @@ namespace WowPacketParser.Enums
         SMSG_ZONE_MAP,
         SMSG_ZONE_UNDER_ATTACK,
         UMSG_DELETE_GUILD_CHARTER,
+        SMSG_UNKNOWN_274,
         UMSG_UNKNOWN_1189,
         UMSG_UNKNOWN_1196,
         UMSG_UNKNOWN_1197,
