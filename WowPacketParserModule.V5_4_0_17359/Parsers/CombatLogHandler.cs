@@ -503,7 +503,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         }
 
         [Parser(Opcode.SMSG_SPELLENERGIZELOG)]
-        public static void HandleUnknow5266(Packet packet)
+        public static void HandleSpellEnergizeLog(Packet packet)
         {
             var casterGUID = new byte[8];
             var targetGUID = new byte[8];
