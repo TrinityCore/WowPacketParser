@@ -57,7 +57,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             var hasPrefix = !packet.ReadBit();
             var bit1494 = packet.ReadBit();
-            var hasConstTime = !packet.ReadBit();
+            var hasRealmId = !packet.ReadBit();
             var bit1490 = !packet.ReadBit();
 
             int senderName = 0;
@@ -116,8 +116,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             if (hasPrefix)
                 packet.ReadWoWString("Addon Message Prefix", prefixLen);
 
-            if (hasConstTime)
-                packet.ReadInt32("Constant time");
+            if (hasRealmId)
+                packet.ReadInt32("Realm Id");
 
             packet.ParseBitStream(GuildGUID, 1, 0, 3, 7, 6, 5, 2, 4);
 
