@@ -877,5 +877,18 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             return moveInfo;
         }
+
+        [Parser(Opcode.SMSG_DESTROY_OBJECT)]
+        public static void HandleDestroyObject(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 3, 5, 4, 6, 7, 2, 0);
+            packet.ReadBit("Despawn Animation");
+            guid[1] = packet.ReadBit();
+            packet.ParseBitStream(guid, 4, 2, 0, 3, 7, 1, 5, 6);
+
+            packet.WriteGuid("GUID", guid);
+        }
     }
 }
