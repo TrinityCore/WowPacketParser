@@ -149,5 +149,47 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             if (entry != 0)
                 Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
         }
+
+        [Parser(Opcode.SMSG_TEXT_EMOTE)]
+        public static void HandleTextEmoteServer(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            guid2[0] = packet.ReadBit();
+            packet.StartBitStream(guid1, 3, 4);
+            packet.StartBitStream(guid2, 6, 7, 3);
+            packet.StartBitStream(guid1, 6, 7);
+            packet.StartBitStream(guid2, 5, 2, 1);
+            guid1[0] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            packet.StartBitStream(guid1, 1, 5, 2);
+
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid1, 6);
+
+            packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
+
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid1, 4);
+
+            packet.ReadEnum<EmoteTextType>("Text Emote ID", TypeCode.Int32);
+
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid1, 3);
+
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("Guid2", guid2);
+        }
     }
 }

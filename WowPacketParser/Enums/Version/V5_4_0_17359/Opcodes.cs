@@ -142,6 +142,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x1124},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x052E},
 
+            {Opcode.SMSG_UNKNOWN_59, 0x003B},
             {Opcode.SMSG_UNKNOWN_406, 0x0196},
             {Opcode.SMSG_UNKNOWN_1024, 0x0400},
             {Opcode.SMSG_UNKNOWN_4615, 0x1207},
