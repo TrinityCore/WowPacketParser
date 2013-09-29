@@ -554,5 +554,22 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_TRANSFER_PENDING)]
+        public static void HandleTransferPending434(Packet packet)
+        {
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
+
+            var customLoadScreenSpell = packet.ReadBit();
+            var hasTransport = packet.ReadBit();
+            if (hasTransport)
+            {
+                packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Transport Map ID");
+                packet.ReadInt32("Transport Entry");
+            }
+
+            if (customLoadScreenSpell)
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+        }
     }
 }
