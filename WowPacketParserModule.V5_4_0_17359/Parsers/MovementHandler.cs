@@ -541,5 +541,18 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("GUID", guid);
         }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED)]
+        public static void HandleSplineSetWalkSpeed(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 1, 0, 6, 5, 7, 4, 3, 2);
+            packet.ParseBitStream(guid, 7, 5, 1, 6, 3, 2, 4, 0);
+
+            packet.ReadSingle("Speed");
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
