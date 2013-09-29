@@ -1802,6 +1802,7 @@ namespace WowPacketParser.Enums
         SMSG_XP_GAIN_ABORTED,
         SMSG_ZONE_MAP,
         SMSG_ZONE_UNDER_ATTACK,
+        SMSG_UNKNOWN_3,
         SMSG_UNKNOWN_274,
         SMSG_UNKNOWN_406,
         SMSG_UNKNOWN_1024,
