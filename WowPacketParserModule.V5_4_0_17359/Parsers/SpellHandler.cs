@@ -1009,5 +1009,26 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER)]
+        public static void HandleSetSpellModifierFlat(Packet packet)
+        {
+            var modCount = packet.ReadBits("Modifier type count", 22);            
+            var modTypeCount = new uint[modCount];
+
+            for (var j = 0; j < modCount; ++j)
+                modTypeCount[j] = packet.ReadBits("Count", 21, j);
+            
+            for (var j = 0; j < modCount; ++j)
+            {
+                for (var i = 0; i < modTypeCount[j]; ++i)
+                {
+                    packet.ReadSingle("Amount", j, i);
+                    packet.ReadByte("Spell Mask bitpos", j, i);
+                }
+
+                packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte, j);
+            }
+        }
     }
 }
