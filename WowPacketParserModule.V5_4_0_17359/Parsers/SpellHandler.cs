@@ -994,5 +994,20 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Guid1", guid1);
             packet.WriteGuid("Guid2", guid3);
         }
+
+        [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL_KIT)]
+        public static void HandleCastVisualKit(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 3, 0, 6, 7, 4, 1, 5, 2);
+            packet.ReadInt32("SpellVisualKit ID");
+            packet.ParseBitStream(guid, 4, 7, 0);
+            packet.ReadInt32("Int20");
+            packet.ParseBitStream(guid, 2, 1, 5, 6, 3);
+            packet.ReadInt32("Int1C");
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

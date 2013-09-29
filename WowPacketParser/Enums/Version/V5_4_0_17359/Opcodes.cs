@@ -106,6 +106,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_PERIODICAURALOG, 0x1097},
             {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0x05A1},
             {Opcode.SMSG_PLAY_SOUND, 0x04A1},
+            {Opcode.SMSG_PLAY_SPELL_VISUAL_KIT, 0x01A5},
             {Opcode.SMSG_PLAYER_MOVE, 0x139F},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x142D},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x19AB},
@@ -127,6 +128,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED, 0x16FB},
             {Opcode.SMSG_SUSPEND_COMMS, 0x0862},
             {Opcode.SMSG_SUSPEND_TOKEN_RESPONSE, 0x0422},
+            {Opcode.SMSG_TEXT_EMOTE, 0x003B},
             {Opcode.SMSG_THREAT_UPDATE, 0x000B},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x08A6},
             {Opcode.SMSG_TRANSFER_PENDING, 0x08B5},
@@ -142,7 +144,6 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x1124},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x052E},
 
-            {Opcode.SMSG_UNKNOWN_59, 0x003B},
             {Opcode.SMSG_UNKNOWN_406, 0x0196},
             {Opcode.SMSG_UNKNOWN_1024, 0x0400},
             {Opcode.SMSG_UNKNOWN_4615, 0x1207},
