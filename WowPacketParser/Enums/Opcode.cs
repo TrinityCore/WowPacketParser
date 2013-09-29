@@ -1808,6 +1808,7 @@ namespace WowPacketParser.Enums
         SMSG_UNKNOWN_4615,
         SMSG_UNKNOWN_5410,
         SMSG_UNKNOWN_6011,
+        SMSG_UNKNOWN_6775,
         UMSG_DELETE_GUILD_CHARTER,
         UMSG_UNKNOWN_1189,
         UMSG_UNKNOWN_1196,
