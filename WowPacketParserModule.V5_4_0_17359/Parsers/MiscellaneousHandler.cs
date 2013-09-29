@@ -335,5 +335,12 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("GUID", guid);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_56)]
+        public static void HandleUnknown56(Packet packet)
+        {
+            packet.ReadInt32("Int14");
+            packet.ReadInt32("Int10");
+        }
     }
 }
