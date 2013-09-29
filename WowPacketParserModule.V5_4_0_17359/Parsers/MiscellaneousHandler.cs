@@ -143,6 +143,41 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadInt32("Int10");
         }
 
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
+        public static void HandleFeatureSystemStatus(Packet packet)
+        {
+            packet.ReadInt32("Scroll of Resurrections Remaining");
+            packet.ReadInt32("Realm Id?");
+            packet.ReadByte("Complain System Status");
+            packet.ReadInt32("Unused Int32");
+            packet.ReadInt32("Scroll of Resurrections Per Day");
+
+            packet.ReadBit("bit26");
+            packet.ReadBit("bit54");
+            packet.ReadBit("bit30");
+            var sessionTimeAlert = packet.ReadBit("Session Time Alert");
+            packet.ReadBit("bit38");
+            var quickTicket = packet.ReadBit("EuropaTicketSystemEnabled");
+            packet.ReadBit("bit25");
+            packet.ReadBit("bit24");
+            packet.ReadBit("bit28");
+
+            if (sessionTimeAlert)
+            {
+                packet.ReadInt32("Int10");
+                packet.ReadInt32("Int18");
+                packet.ReadInt32("Int14");
+            }
+
+            if (quickTicket)
+            {
+                packet.ReadInt32("Unk5");
+                packet.ReadInt32("Unk6");
+                packet.ReadInt32("Unk7");
+                packet.ReadInt32("Unk8");
+            }
+        }
+
         [Parser(Opcode.SMSG_UNKNOWN_274)]
         public static void HandleUnknow274(Packet packet)
         {
@@ -256,7 +291,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ParseBitStream(guid, 1, 5, 0, 6, 4, 2, 3, 7);
 
             packet.WriteGuid("Guid", guid);
-
         }
     }
 }
