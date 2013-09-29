@@ -1805,6 +1805,7 @@ namespace WowPacketParser.Enums
         SMSG_UNKNOWN_3,
         SMSG_UNKNOWN_56,
         SMSG_UNKNOWN_57,
+        SMSG_UNKNOWN_170,
         SMSG_UNKNOWN_274,
         SMSG_UNKNOWN_406,
         SMSG_UNKNOWN_1024,

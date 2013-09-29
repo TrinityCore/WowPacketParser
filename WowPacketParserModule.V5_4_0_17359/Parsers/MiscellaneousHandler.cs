@@ -390,7 +390,13 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadInt32("Int10");
             if (bit14)
                 packet.ReadInt32("Int14");
+        }
 
+        [Parser(Opcode.SMSG_UNKNOWN_170)]
+        public static void HandleUnknown170(Packet packet)
+        {
+            packet.ReadInt32("Int14");
+            packet.ReadBits("bits10", 2);
         }
     }
 }
