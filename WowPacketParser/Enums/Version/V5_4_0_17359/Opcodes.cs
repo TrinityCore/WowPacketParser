@@ -83,6 +83,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_GUILD_RANK, 0x0446},
             {Opcode.SMSG_GUILD_ROSTER, 0x044E},
             {Opcode.SMSG_GUILD_NEWS_TEXT, 0x0D47},
+            {Opcode.SMSG_HIGHEST_THREAT_UPDATE, 0x0012},
             {Opcode.SMSG_HOTFIX_INFO, 0x0416},
             {Opcode.SMSG_INITIAL_SPELLS, 0x1534},
             {Opcode.SMSG_INIT_CURRENCY, 0x0494},

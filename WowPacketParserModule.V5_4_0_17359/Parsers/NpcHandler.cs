@@ -207,5 +207,36 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("GUID2", guid2);
 
         }
+
+        [Parser(Opcode.SMSG_HIGHEST_THREAT_UPDATE)]
+        public static void HandleHighestThreatlistUpdate(Packet packet)
+        {
+            var guid1 = new byte[8];
+
+            var count = packet.ReadBits("Size", 21);
+
+            var guid2 = new byte[count][];
+            for (var i = 0; i < count; ++i)
+            {
+                guid2[i] = new byte[8];
+                packet.StartBitStream(guid2[i], 7, 4, 3, 2, 6, 1, 0, 5);
+            }
+
+
+            packet.StartBitStream(guid1, 2, 7, 4, 0, 1, 6, 3, 5);
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ParseBitStream(guid2[i], 2, 5, 6, 0, 1, 4);
+                packet.ReadInt32("IntED", i);
+                packet.ParseBitStream(guid2[i], 7, 3);
+                packet.WriteGuid("Guid1D", guid2[i], i);
+
+            }
+
+            packet.ParseBitStream(guid1, 1, 0, 6, 3, 2, 7, 5, 4);
+
+            packet.WriteGuid("Guid1", guid1);
+        }
     }
 }
