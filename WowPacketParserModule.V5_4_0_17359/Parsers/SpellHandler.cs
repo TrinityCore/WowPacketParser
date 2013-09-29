@@ -40,9 +40,9 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_LEARNED_SPELL)]
         public static void HandleLearnSpell(Packet packet)
         {
-            packet.ReadBits("Unk Bits", 22);
+            packet.ReadBit("Unk Bits");
 
-            var count = packet.ReadBit("Spell Count");
+            var count = packet.ReadBits("Spell Count", 22);
 
             for (var i = 0; i < count; ++i)
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
