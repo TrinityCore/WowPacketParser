@@ -1050,5 +1050,249 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 }
             }
         }
+
+        [Parser(Opcode.CMSG_CAST_SPELL)]
+        public static void HandleCastSpell(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+            var guid3 = new byte[8];
+            var guid4 = new byte[8];
+            var guid5 = new byte[8];
+            var guid6 = new byte[8];
+            
+            var bit158 = false;
+            var bit154 = false;
+            var bit14C = false;
+            var bit120 = false;
+            var bit17C = false;
+            var bit178 = false;
+            var bit180 = false;
+            var bit110 = false;
+            var bit198 = false;
+            var bit160 = false;
+
+            var hasCastFlags = !packet.ReadBit();
+            var hasCastCount = !packet.ReadBit();
+            var bit18 = !packet.ReadBit();
+            var hasSpellId = !packet.ReadBit();
+
+            var counter = packet.ReadBits(2);
+
+            packet.ReadBit(); // fake bit
+
+            var bitFC = !packet.ReadBit();
+
+            packet.ReadBit(); // fake bit
+
+            var bit70 = packet.ReadBit();
+            var bitF8 = !packet.ReadBit();
+            var bit78 = !packet.ReadBit();
+            var bit50 = packet.ReadBit();
+            var bit1A0 = packet.ReadBit();
+            var bit1C = !packet.ReadBit();
+            
+            for (var i = 0; i < counter; ++i)
+                packet.ReadBits("unk value0", 2, i);
+
+            var bits188 = 0u;
+            if (bit1A0)
+            {
+                bit198 = !packet.ReadBit();
+                guid1[3] = packet.ReadBit();
+                bit180 = !packet.ReadBit();
+                bits188 = packet.ReadBits(22);
+                bit17C = packet.ReadBit();
+                var bit108 = !packet.ReadBit();
+
+                packet.StartBitStream(guid1, 6, 0);
+
+                if (bit108)
+                    packet.ReadBits("bits108", 30);
+
+                bit160 = !packet.ReadBit();
+                var bit184 = packet.ReadBit();
+
+                packet.StartBitStream(guid1, 2, 7, 1, 5);
+
+                bit120 = !packet.ReadBit();
+
+                if (bit17C)
+                    bit178 = packet.ReadBit();
+
+                var bit19C = packet.ReadBit();
+                guid1[4] = packet.ReadBit();
+                bit158 = packet.ReadBit();
+
+                if (bit158)
+                {
+                    bit14C = packet.ReadBit("bit14C");
+                    packet.StartBitStream(guid2, 6, 3, 1, 0, 4);
+                    bit154 = packet.ReadBit();
+                    packet.StartBitStream(guid2, 7, 2, 5);
+                }
+
+                var bit185 = packet.ReadBit();
+                var bit10C = !packet.ReadBit();
+
+                if (bit10C)
+                    packet.ReadBits("bits10C", 13);
+
+                bit110 = !packet.ReadBit();
+            }
+
+            if (hasCastFlags)
+                packet.ReadEnum<CastFlag>("Cast Flags", 20);
+
+            packet.StartBitStream(guid3, 2, 1, 3, 6, 5, 4, 7, 0);
+
+            if (bit70)
+                packet.StartBitStream(guid4, 3, 6, 1, 0, 4, 5, 7, 2);
+
+            if (bit50)
+                packet.StartBitStream(guid5, 6, 3, 5, 2, 0, 4, 1, 7);
+        
+            packet.StartBitStream(guid6, 5, 0, 2, 3, 1, 4, 6, 7);
+
+            var bits2F7 = 0u;
+            if (bit78)
+                bits2F7 = packet.ReadBits("bits2F7", 7);
+
+            if (bit1C)
+                packet.ReadBits("bits2F5", 5);
+
+            for (var i = 0; i < counter; ++i)
+            {
+                packet.ReadInt32("Int1AC", 7);
+                packet.ReadInt32("Int1AC", 7);
+            }
+
+            if (bit1A0)
+            {
+                if (bit158)
+                {
+                    packet.ReadXORByte(guid2, 5);
+
+                    if (bit154)
+                        packet.ReadInt32("Int150");
+
+                    packet.ReadSingle("Float13C");
+                    packet.ReadSingle("Float134");
+
+                    if (bit14C)
+                        packet.ReadInt32("Int148");
+
+                    packet.ParseBitStream(guid2, 7, 2, 0);
+
+                    packet.ReadInt32("Int144");
+
+                    packet.ParseBitStream(guid2, 1, 6, 3);
+
+                    packet.ReadSingle("Float130");
+
+                    packet.ReadXORByte(guid2, 4);
+
+                    packet.ReadByte("Byte140");
+                    packet.ReadSingle("Float138");
+
+                    packet.WriteGuid("Guid2", guid2);
+                }
+
+                if (bit120)
+                    packet.ReadSingle("Float120");
+
+                packet.ParseBitStream(guid1, 6, 4);
+
+                if (bit17C)
+                {
+                    packet.ReadInt32("Int164");
+
+                    if (bit178)
+                    {
+                        packet.ReadSingle("Float170");
+                        packet.ReadSingle("Float16C");
+                        packet.ReadSingle("Float174");
+                    }
+
+                    packet.ReadSingle("Float168");
+                }
+
+                packet.ParseBitStream(guid1, 3, 2);
+
+                if (bit160)
+                    packet.ReadSingle("Float160");
+
+                if (bit198)
+                    packet.ReadInt32("Int198");
+
+                packet.ReadSingle("Float11C");
+
+                if (bit110)
+                    packet.ReadInt32("Int110");
+                
+                packet.ParseBitStream(guid1, 5, 0);
+
+                packet.ReadSingle("Float114");
+                packet.ReadSingle("Float118");
+
+                for (var i = 0; i < bits188; ++i)
+                    packet.ReadInt32("IntEB", i);
+
+                if (bit180)
+                    packet.ReadSingle("Float180");
+
+                packet.ParseBitStream(guid1, 7, 1);
+
+                packet.WriteGuid("Guid1", guid1);
+            }
+
+            if (hasSpellId)
+                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+
+            if (bit50)
+            {
+                packet.ReadXORByte(guid5, 7);
+                packet.ReadSingle("Float40");
+                packet.ParseBitStream(guid5, 6, 0);
+                packet.ReadSingle("Float44");
+                packet.ParseBitStream(guid5, 1, 4);
+                packet.ReadSingle("Float48");
+                packet.ParseBitStream(guid5, 3, 2, 5);
+                packet.WriteGuid("Guid5", guid5);
+            }
+
+            if (bit70)
+            {
+                packet.ParseBitStream(guid4, 5, 4, 3, 1);
+                packet.ReadSingle("Float68");
+                packet.ReadSingle("Float64");
+                packet.ParseBitStream(guid4, 2, 6, 7);
+                packet.ReadSingle("Float60");
+                packet.ReadXORByte(guid4, 0);
+
+                packet.WriteGuid("Guid4", guid4);
+            }
+
+            packet.ParseBitStream(guid6, 7, 2, 6, 0, 4, 5, 1, 3);
+            packet.ParseBitStream(guid3, 1, 0, 2, 3, 5, 6, 7, 4);
+
+            if (hasCastCount)
+                packet.ReadByte("Cast Count");
+
+            if (bitF8)
+                packet.ReadSingle("FloatF8");
+
+            if (bit78)
+                packet.ReadWoWString("string2F7", bits2F7);
+
+            if (bit18)
+                packet.ReadInt32("Int18");
+
+            if (bitFC)
+                packet.ReadSingle("FloatFC");
+
+            packet.WriteGuid("Guid6", guid6);
+            packet.WriteGuid("Guid3", guid3);
+        }
     }
 }
