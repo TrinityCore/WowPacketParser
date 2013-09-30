@@ -636,5 +636,16 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
+        public static void HandleNpcTextQuery(Packet packet)
+        {
+            var entry = packet.ReadInt32("Entry");
+
+            var guid = new byte[8];
+            packet.StartBitStream(guid, 7, 3, 1, 5, 6, 4, 0, 2);
+            packet.ParseBitStream(guid, 1, 5, 2, 7, 3, 6, 4, 0);
+            packet.WriteGuid("GUID", guid);
+        }
     }
 }
