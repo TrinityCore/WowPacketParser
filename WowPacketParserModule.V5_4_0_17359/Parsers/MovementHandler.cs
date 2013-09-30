@@ -854,5 +854,18 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Guid", guid1);
             packet.WriteLine("Position: {0}", pos);
         }
+
+        [Parser(Opcode.SMSG_MOVE_UPDATE_FLIGHT_SPEED)]
+        public static void HandleMoveUpdateFlightSpeed(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 7, 1, 5, 6, 4, 3, 0, 2);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadSingle("Speed");
+            packet.ParseBitStream(guid, 6, 2, 3, 1, 7, 4, 5);
+
+            packet.WriteGuid("GUID", guid);
+        }
     }
 }

@@ -108,6 +108,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_MESSAGECHAT, 0x092F},
             {Opcode.SMSG_MONSTER_MOVE, 0x137A},
             {Opcode.SMSG_MOTD, 0x082A},
+            {Opcode.SMSG_MOVE_UPDATE_FLIGHT_SPEED, 0x160E},
             {Opcode.SMSG_SPLINE_MOVE_GRAVITY_DISABLE, 0x1207},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x00B7},
             {Opcode.SMSG_NEW_WORLD, 0x01AE},
@@ -169,7 +170,6 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_UNKNOWN_5125, 0x1405},
             {Opcode.SMSG_UNKNOWN_5730, 0x1662},
             {Opcode.SMSG_UNKNOWN_5738, 0x166A},
-            {Opcode.SMSG_UNKNOWN_5746, 0x160E},
             {Opcode.SMSG_UNKNOWN_5963, 0x174B},
             {Opcode.SMSG_UNKNOWN_6775, 0x1A77},
         };
