@@ -195,5 +195,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guild GUID", guid);
         }
+
+        [Parser(Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE)]
+        public static void HandleGuildPartyStateResponse(Packet packet)
+        {
+            packet.ReadSingle("Guild XP multiplier");
+            packet.ReadInt32("Int10");
+            packet.ReadInt32("Int14");
+            packet.ReadBit("Is guild group");
+        }
     }
 }
