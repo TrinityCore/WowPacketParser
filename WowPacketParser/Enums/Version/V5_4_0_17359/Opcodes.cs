@@ -48,6 +48,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x1927},
             {Opcode.CMSG_UNKNOWN_903, 0x0387},
             {Opcode.CMSG_UNKNOWN_1815, 0x0717},
+            {Opcode.CMSG_UNKNOWN_2874, 0x0B3A},
             {Opcode.CMSG_WARDEN_DATA, 0x1702},
             {Opcode.MSG_MOVE_UPDATE_RUN_SPEED, 0x176F},
             {Opcode.MSG_QUERY_NEXT_MAIL_TIME, 0x1F61},
