@@ -19,5 +19,12 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             for (var i = 0; i < 256; i++)
                 packet.ReadBit("Count", i);
         }
+
+        [Parser(Opcode.CMSG_RESET_FACTION_CHEAT)]
+        public static void HandleResetFactionCheat(Packet packet)
+        {
+            packet.ReadUInt32("Faction Id");
+            packet.ReadUInt32("Unk Int");
+        }
     }
 }
