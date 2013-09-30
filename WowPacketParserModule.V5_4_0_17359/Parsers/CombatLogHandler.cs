@@ -578,5 +578,15 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Caster GUID", casterGUID);
             packet.WriteGuid("Target GUID", targetGUID);
         }
+
+        [Parser(Opcode.SMSG_CANCEL_AUTO_REPEAT)]
+        public static void HandleCancelAutoRepeat(Packet packet)
+        {
+            var guid = new byte[8];
+            packet.StartBitStream(guid, 3, 7, 2, 5, 4, 1, 0, 6);
+            packet.ParseBitStream(guid, 4, 1, 0, 7, 2, 3, 6, 5);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

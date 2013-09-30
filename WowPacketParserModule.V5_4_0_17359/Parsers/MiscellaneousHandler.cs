@@ -178,6 +178,16 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE)]
+        public static void HandleRequestCemeteryListResponse(Packet packet)
+        {
+            packet.ReadBit("Is MicroDungeon"); // Named in WorldMapFrame.lua
+            var count = packet.ReadBits("Count", 22);
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadInt32("Cemetery Id", i);
+        }
+
         [Parser(Opcode.SMSG_UNKNOWN_274)]
         public static void HandleUnknow274(Packet packet)
         {
@@ -234,41 +244,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_UNKNOWN_6011)]
-        public static void HandleUnknown6011(Packet packet)
-        {
-            var guid = new byte[8];
-
-            packet.StartBitStream(guid, 4, 2, 5, 1, 0, 7, 6, 3);
-            packet.ParseBitStream(guid, 7, 5, 3, 0, 6, 1, 4, 2);
-
-            packet.WriteGuid("GUID", guid);
-        }
-
-        [Parser(Opcode.SMSG_UNKNOWN_4615)]
-        public static void HandleUnknown4615(Packet packet)
-        {
-            var guid = new byte[8];
-
-            packet.StartBitStream(guid, 0, 5, 3, 6, 1, 4, 2, 7);
-            packet.ParseBitStream(guid, 6, 3, 1, 5, 4, 7, 2, 0);
-
-            packet.WriteGuid("GUID", guid);
-        }
-
-        [Parser(Opcode.SMSG_UNKNOWN_406)]
-        public static void HandleUnknown406(Packet packet)
-        {
-            var guid = new byte[8];
-
-            packet.StartBitStream(guid, 3, 1, 6, 0, 4);
-            packet.ReadBit("bit18");
-            packet.StartBitStream(guid, 2, 5, 7);
-            packet.ParseBitStream(guid, 3, 2, 1, 4, 6, 7, 0, 5);
-
-            packet.WriteGuid("GUID", guid);
-        }
-
         [Parser(Opcode.SMSG_UNKNOWN_1024)]
         public static void HandleUnknown1024(Packet packet)
         {
@@ -301,13 +276,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ParseBitStream(guid, 1, 4, 0, 6, 3, 7, 5, 2);
 
             packet.WriteGuid("Guid", guid);
-        }
-
-        [Parser(Opcode.SMSG_UNKNOWN_1325)]
-        public static void HandleUnknown1325(Packet packet)
-        {
-            packet.ReadInt32("Int10");
-            packet.ReadBit("bit14");
         }
 
         [Parser(Opcode.SMSG_UNKNOWN_1457)]
@@ -343,16 +311,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadInt32("Int10");
         }
 
-        [Parser(Opcode.SMSG_UNKNOWN_1177)]
-        public static void HandleUnknown1177(Packet packet)
-        {
-            packet.ReadBit("bit20");
-            var count = packet.ReadBits(22);
-
-            for (var i = 0; i < count; ++i)
-                packet.ReadInt32("IntEB", i);
-        }
-
         [Parser(Opcode.SMSG_UNKNOWN_5125)]
         public static void HandleUnknown5125(Packet packet)
         {
@@ -364,16 +322,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ParseBitStream(guid, 3, 6);
 
             packet.WriteGuid("GUID", guid);
-        }
-
-        [Parser(Opcode.SMSG_UNKNOWN_1052)]
-        public static void HandleUnknown1052(Packet packet)
-        {
-            var guid = new byte[8];
-            packet.StartBitStream(guid, 3, 7, 2, 5, 4, 1, 0, 6);
-            packet.ParseBitStream(guid, 4, 1, 0, 7, 2, 3, 6, 5);
-
-            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_UNKNOWN_57)]
