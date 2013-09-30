@@ -392,5 +392,50 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid3", guid);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_2048)]
+        public static void HandleUnknown2048(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            guid1[7] = packet.ReadBit();
+            packet.StartBitStream(guid2, 6, 5);
+            packet.StartBitStream(guid1, 3, 0, 6);
+            guid2[2] = packet.ReadBit();
+            var bit18 = packet.ReadBit();
+            guid1[5] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            packet.StartBitStream(guid1, 1, 4);
+            packet.StartBitStream(guid2, 4, 7, 3);
+            guid1[2] = packet.ReadBit();
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadSingle("Float2C");
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadSingle("Float30");
+            packet.ReadSingle("Float1C");
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadInt32("Int24");
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadInt16("Int20");
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadInt16("Int40");
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadSingle("Float28");
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid1, 1);
+
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("Guid2", guid2);
+        }
     }
 }
