@@ -457,5 +457,37 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid2", guid);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_443)]
+        public static void HandleUnknown443(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            packet.StartBitStream(guid1, 6, 2);
+            packet.StartBitStream(guid2, 5, 6, 7, 4, 3, 2, 1);
+            packet.StartBitStream(guid1, 1, 5, 7, 4, 3);
+            guid2[0] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid2, 5);
+
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("Guid2", guid2);
+        }
     }
 }
