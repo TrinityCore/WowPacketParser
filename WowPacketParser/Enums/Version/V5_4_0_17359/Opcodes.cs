@@ -22,6 +22,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x15A4},
             {Opcode.CMSG_GOSSIP_HELLO, 0x1A3F},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x136B},
+            {Opcode.CMSG_GUILD_REQUEST_PARTY_STATE, 0x1885},
             {Opcode.CMSG_GUILD_ROSTER, 0x0315},
             {Opcode.CMSG_GUILD_QUERY_RANKS, 0x0A1D},
             {Opcode.CMSG_LOAD_SCREEN, 0x160B},

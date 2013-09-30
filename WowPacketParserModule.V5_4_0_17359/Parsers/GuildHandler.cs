@@ -184,5 +184,16 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadWoWString("Guild Info", infoLength);
             packet.ReadWoWString("MOTD", motdLength);
         }
+
+        [Parser(Opcode.CMSG_GUILD_REQUEST_PARTY_STATE)]
+        public static void HandleGuildRequestPartyState(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 0, 1, 2, 6, 5, 7, 4);
+            packet.ParseBitStream(guid, 4, 1, 6, 7, 2, 5, 0);
+
+            packet.WriteGuid("Guild GUID", guid);
+        }
     }
 }
