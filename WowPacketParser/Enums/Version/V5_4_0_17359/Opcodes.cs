@@ -36,6 +36,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_PLAYER_LOGIN, 0x1BC7},
             {Opcode.CMSG_REALM_SPLIT, 0x129F},
             {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x0A93},
+            {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x16CF},
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x0A96},
             {Opcode.CMSG_QUERY_WORLD_COUNTDOWN_TIMER, 0x10A8},
             {Opcode.CMSG_QUEST_NPC_QUERY, 0x1084},
