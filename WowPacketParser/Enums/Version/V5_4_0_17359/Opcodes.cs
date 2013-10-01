@@ -176,6 +176,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_UNKNOWN_2048, 0x0800},
             {Opcode.SMSG_UNKNOWN_2093, 0x082D},
             {Opcode.SMSG_UNKNOWN_4501, 0x1195},
+            {Opcode.SMSG_UNKNOWN_4262, 0x10A6},
             {Opcode.SMSG_UNKNOWN_5125, 0x1405},
             {Opcode.SMSG_UNKNOWN_5730, 0x1662},
             {Opcode.SMSG_UNKNOWN_5738, 0x166A},
