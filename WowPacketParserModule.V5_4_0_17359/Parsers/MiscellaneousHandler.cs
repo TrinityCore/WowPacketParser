@@ -998,5 +998,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             packet.ReadInt32("Int10");
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_1036)]
+        public static void HandleUnknown1036(Packet packet)
+        {
+            packet.ReadInt32("Int10");
+        }
     }
 }
