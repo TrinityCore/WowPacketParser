@@ -1021,5 +1021,19 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             for (var i = 0; i < bits14; ++i)
                 packet.ReadByte("Byte18", i);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_1135)]
+        public static void HandleUnknown1135(Packet packet)
+        {
+            var bits10 = packet.ReadBits(15);
+
+            for (var i = 0; i < bits10; ++i)
+            {
+                packet.ReadInt32("Int14", i);
+
+                for (var j = 0; j < 300; ++j)
+                    packet.ReadByte("ByteEB", i, j);
+            }
+        }
     }
 }
