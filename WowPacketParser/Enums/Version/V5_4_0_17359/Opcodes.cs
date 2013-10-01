@@ -144,6 +144,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_SPLINE_MOVE_ROOT, 0x177B},
             {Opcode.SMSG_SUSPEND_COMMS, 0x0862},
             {Opcode.SMSG_SUSPEND_TOKEN_RESPONSE, 0x0422},
+            {Opcode.SMSG_TALENTS_INFO, 0x0924},
             {Opcode.SMSG_TEXT_EMOTE, 0x003B},
             {Opcode.SMSG_THREAT_UPDATE, 0x000B},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x08A6},
