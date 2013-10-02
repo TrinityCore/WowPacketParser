@@ -1041,5 +1041,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             packet.ReadInt32("Time?");
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_1139)]
+        public static void HandleUnknown1139(Packet packet)
+        {
+            packet.ReadInt64("Int10");
+        }
     }
 }
