@@ -78,6 +78,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_DESTROY_OBJECT, 0x04BD},
             {Opcode.SMSG_EMOTE, 0x1B7D},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x0938},
+            {Opcode.SMSG_FAILED_PLAYER_CONDITION, 0x0524},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x00B9},
             {Opcode.SMSG_FLIGHT_SPLINE_SYNC, 0x1692},
             {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 0x004A},
