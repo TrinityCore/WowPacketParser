@@ -1035,5 +1035,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     packet.ReadByte("ByteEB", i, j);
             }
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_2321)]
+        public static void HandleUnknown2321(Packet packet)
+        {
+            packet.ReadInt32("Time?");
+        }
     }
 }
