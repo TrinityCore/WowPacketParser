@@ -173,8 +173,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadXORByte(powerGUID, 3);
                 for (var i = 0; i < powerCount; ++i)
                 {
-                    packet.ReadEnum<PowerType>("Power type", TypeCode.Int32); // Actually powertype for class
-                    packet.ReadInt32("Value");
+                    packet.ReadEnum<PowerType>("Power type", TypeCode.Int32, i); // Actually powertype for class
+                    packet.ReadInt32("Value", i);
                 }
 
                 packet.ReadXORBytes(powerGUID, 0, 1, 7, 2, 4, 6, 5);
