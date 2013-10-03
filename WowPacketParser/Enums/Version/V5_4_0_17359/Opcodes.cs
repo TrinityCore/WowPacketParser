@@ -85,6 +85,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x0015},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x1508},
             {Opcode.SMSG_GROUP_LIST, 0x013D},
+            {Opcode.SMSG_GUILD_ACHIEVEMENT_DATA, 0x0C5E},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x0D42},
             {Opcode.SMSG_GUILD_RANK, 0x0446},
             {Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, 0x0C73},
