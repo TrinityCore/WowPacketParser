@@ -238,5 +238,75 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid1", guid1);
         }
+
+        [Parser(Opcode.SMSG_LIST_INVENTORY)]
+        public static void HandleVendorInventoryList(Packet packet)
+        {
+            var npcVendor = new NpcVendor();
+
+            var guid = new byte[8];
+
+            guid[5] = packet.ReadBit();
+            var itemCount = packet.ReadBits(18);
+            guid[0] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            
+            var hasExtendedCost = new bool[itemCount];
+            var hasCondition = new bool[itemCount];
+
+            for (int i = 0; i < itemCount; ++i)
+            {
+                packet.ReadBit("Unk bit", i);
+                hasExtendedCost[i] = !packet.ReadBit();
+                hasCondition[i] = !packet.ReadBit();
+            }
+
+            packet.StartBitStream(guid, 3, 7, 1, 6, 4);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 1);
+
+            npcVendor.VendorItems = new List<VendorItem>((int)itemCount);
+            for (int i = 0; i < itemCount; ++i)
+            {
+                var vendorItem = new VendorItem();
+                
+                var maxCount = packet.ReadInt32("Max Count", i);
+                vendorItem.Type = packet.ReadUInt32("Type", i); // 1 - item, 2 - currency
+
+                if (hasCondition[i])
+                    packet.ReadInt32("Condition ID", i);
+
+                packet.ReadInt32("Max Durability", i);
+                packet.ReadInt32("Item Upgrade ID", i);
+                packet.ReadInt32("Price", i);
+                packet.ReadInt32("Display ID", i);
+                vendorItem.ItemId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
+                vendorItem.Slot = packet.ReadUInt32("Item Position", i);
+
+                if (hasExtendedCost[i])
+                    vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
+
+                var buyCount = packet.ReadUInt32("Buy Count", i);
+
+                vendorItem.MaxCount = maxCount == -1 ? 0 : maxCount; // TDB
+                if (vendorItem.Type == 2)
+                    vendorItem.MaxCount = (int)buyCount;
+
+                npcVendor.VendorItems.Add(vendorItem);
+            }
+
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadByte("Byte10");
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 3);
+
+            packet.WriteGuid("Guid", guid);
+
+            var vendorGUID = new Guid(BitConverter.ToUInt64(guid, 0));
+            Storage.NpcVendors.Add(vendorGUID.GetEntry(), npcVendor, packet.TimeSpan);
+        }
     }
 }
