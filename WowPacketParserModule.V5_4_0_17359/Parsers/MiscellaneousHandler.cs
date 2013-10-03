@@ -701,11 +701,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var bits4 = new uint[bits10];
 
             guid2 = new byte[bits10][];
-
-            guid3 = new byte[2][][];
-            guid4 = new byte[2][][];
-            guid5 = new byte[2][][];
-            guid6 = new byte[2][][];
+            guid3 = new byte[bits10][][];
+            guid4 = new byte[bits10][][];
+            guid5 = new byte[bits10][][];
+            guid6 = new byte[bits10][][];
 
             for (var i = 0; i < bits10; ++i)
             {
