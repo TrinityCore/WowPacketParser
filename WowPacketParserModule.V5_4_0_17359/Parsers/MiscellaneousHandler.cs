@@ -1132,5 +1132,35 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadInt32("Entry");
             packet.ReadInt32("Int10");
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_2080)]
+        public static void HandleUnknown2080(Packet packet)
+        {
+            var bits18 = 0;
+            var bits7FA = 0;
+
+            var bitC00 = packet.ReadBit();
+            if (bitC00)
+            {
+                bits7FA = (int)packet.ReadBits(10);
+                bits18 = (int)packet.ReadBits(11);
+            }
+
+            if (bitC00)
+            {
+                packet.ReadInt32("Int7F0");
+                packet.ReadWoWString("String18", bits18);
+                packet.ReadByte("Byte7E9");
+                packet.ReadWoWString("String7FA", bits7FA);
+                packet.ReadByte("Byte7F9");
+                packet.ReadInt32("Int7F4");
+                packet.ReadInt32("IntBFC");
+                packet.ReadInt32("Int7EC");
+                packet.ReadByte("Byte7F8");
+                packet.ReadInt32("Int14");
+            }
+
+            packet.ReadInt32("Int10");
+        }
     }
 }
