@@ -1168,5 +1168,21 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             packet.ReadSingle("Float10");
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_2087)]
+        public static void HandleUnknown2087(Packet packet)
+        {
+            for (var i = 0; i < 4; ++i)
+            {
+                packet.ReadInt32("Unk 1", i);
+                packet.ReadInt32("Unk 2", i);
+                packet.ReadInt32("Unk 3", i);
+                packet.ReadInt32("Unk 4", i);
+                packet.ReadInt32("Unk 5", i);
+                packet.ReadInt32("Unk 6", i);
+                packet.ReadInt32("Unk 7", i);
+                packet.ReadInt32("Unk 8", i);
+            }
+        }
     }
 }
