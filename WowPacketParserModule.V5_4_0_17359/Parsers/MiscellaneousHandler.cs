@@ -1099,7 +1099,38 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(guid, 6);
 
             packet.WriteGuid("Guid", guid);
+        }
 
+        [Parser(Opcode.SMSG_UNKNOWN_2205)] // Battle Pet?
+        public static void HandleUnknown2205(Packet packet)
+        {
+            var count = 5;
+
+            var bits25 = packet.ReadBit();
+
+            var bits26 = 0u;
+            var bitsA7 = new int[count];
+            if (bits25) // has custom Name?
+            {
+                bits26 = packet.ReadBits(8);
+
+                for (var i = 0; i < count; ++i)
+                    bitsA7[i] = (int)packet.ReadBits(7);
+
+                packet.ReadBit();
+            }
+
+            if (bits25) // has custom Name?
+            {
+                for (var i = 0; i < count; ++i)
+                    packet.ReadWoWString("StringA7", bitsA7[i]);
+
+                packet.ReadWoWString("Name", bits26);
+            }
+
+            packet.ReadInt64("Int18");
+            packet.ReadInt32("Entry");
+            packet.ReadInt32("Int10");
         }
     }
 }
