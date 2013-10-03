@@ -1555,5 +1555,18 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid2", guid);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_2235)]
+        public static void HandleUnknown2235(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadInt16("Int18");
+
+            packet.StartBitStream(guid, 7, 2, 0, 1, 6, 3, 4, 5);
+            packet.ParseBitStream(guid, 7, 0, 4, 5, 6, 2, 3, 1);
+
+            packet.WriteGuid("GUID", guid);
+        }
     }
 }
