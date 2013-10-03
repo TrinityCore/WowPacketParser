@@ -1069,11 +1069,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             }
             else
             {
-                packet.WriteLine("ServerToClient: Quest opcode?");
+                packet.WriteLine("ServerToClient: SMSG_QUESTGIVER_QUEST_COMPLETE");
 
-                packet.ReadInt32("Int2C");
-                packet.ReadInt32("Quest Id?");
-                packet.ReadInt32("Int14");
+                packet.ReadInt32("Reward XP");
+                packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
+                packet.ReadInt32("Money");
                 packet.ReadInt32("Int1C");
                 packet.ReadInt32("Int24");
                 packet.ReadInt32("Int20");
