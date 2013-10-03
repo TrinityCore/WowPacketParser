@@ -1232,5 +1232,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             for (var i = 0; i < packet.ReadBits("Count", 22); ++i)
                 packet.ReadInt32("IntED", i);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_1317)]
+        public static void HandleUnknown1317(Packet packet)
+        {
+            packet.ReadInt32("Int10");
+        }
     }
 }
