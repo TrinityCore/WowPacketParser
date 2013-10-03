@@ -236,5 +236,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.WriteGuid("GUID", guid[i], i);
             }
         }
+
+        [Parser(Opcode.SMSG_GUILD_REPUTATION_WEEKLY_CAP)]
+        public static void HandleGuildReputationWeeklyCap(Packet packet)
+        {
+            packet.ReadUInt32("Cap");
+        }
     }
 }

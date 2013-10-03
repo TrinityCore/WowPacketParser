@@ -91,6 +91,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, 0x0C73},
             {Opcode.SMSG_GUILD_ROSTER, 0x044E},
             {Opcode.SMSG_GUILD_NEWS_TEXT, 0x0D47},
+            {Opcode.SMSG_GUILD_REPUTATION_WEEKLY_CAP, 0x0457},
             {Opcode.SMSG_HIGHEST_THREAT_UPDATE, 0x0012},
             {Opcode.SMSG_HOTFIX_INFO, 0x0416},
             {Opcode.SMSG_INITIAL_SPELLS, 0x1534},
