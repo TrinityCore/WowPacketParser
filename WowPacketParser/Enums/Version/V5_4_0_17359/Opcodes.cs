@@ -124,6 +124,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_PLAYER_MOVE, 0x139F},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x142D},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x19AB},
+            {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x183F},
             {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x042B},
             {Opcode.SMSG_REALM_SPLIT, 0x0099},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x0143},
