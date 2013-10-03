@@ -14,7 +14,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             var count = packet.ReadBits("Count", 19);
 
-            var guid1 = new byte[NumSlots][][];
+            var guid1 = new byte[count][][];
             var guid2 = new byte[count][];
 
             var bits0 = new uint[count];
