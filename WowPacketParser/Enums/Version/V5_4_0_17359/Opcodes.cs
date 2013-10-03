@@ -11,7 +11,6 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
-            {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x10BD},
             {Opcode.CMSG_AREATRIGGER, 0x1907},
             {Opcode.CMSG_AUTH_SESSION, 0x0790},
             {Opcode.CMSG_CAST_SPELL, 0x1429},
@@ -51,6 +50,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_UNKNOWN_2874, 0x0B3A},
             {Opcode.CMSG_WARDEN_DATA, 0x1702},
             {Opcode.MSG_MOVE_UPDATE_RUN_SPEED, 0x176F},
+            {Opcode.MSG_MULTIPLE_PACKETS, 0x10BD},
             {Opcode.MSG_QUERY_NEXT_MAIL_TIME, 0x1F61},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0890},
             {Opcode.SMSG_ACTION_BUTTONS, 0x0096},

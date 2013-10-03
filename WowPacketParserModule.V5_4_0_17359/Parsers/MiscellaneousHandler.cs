@@ -1052,5 +1052,34 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             packet.ReadInt32("Int10");
         }
+
+        [Parser(Opcode.MSG_MULTIPLE_PACKETS)]
+        public static void MultiplePackets(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                packet.WriteLine("ClientToServer: CMSG_ADDON_REGISTERED_PREFIXES");
+                var count = packet.ReadBits("Count", 24);
+                var lengths = new int[count];
+                for (var i = 0; i < count; ++i)
+                    lengths[i] = (int)packet.ReadBits(5);
+
+                for (var i = 0; i < count; ++i)
+                    packet.ReadWoWString("Addon", lengths[i], i);
+            }
+            else
+            {
+                packet.WriteLine("ServerToClient: Quest opcode?");
+
+                packet.ReadInt32("Int2C");
+                packet.ReadInt32("Quest Id?");
+                packet.ReadInt32("Int14");
+                packet.ReadInt32("Int1C");
+                packet.ReadInt32("Int24");
+                packet.ReadInt32("Int20");
+                packet.ReadBit("bit28");
+                packet.ReadBit("bit18");
+            }
+        }
     }
 }
