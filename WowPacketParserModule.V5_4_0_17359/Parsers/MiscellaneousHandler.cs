@@ -1162,5 +1162,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.ReadInt32("Int10");
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_438)]
+        public static void HandleUnknown438(Packet packet)
+        {
+            packet.ReadSingle("Float10");
+        }
     }
 }
