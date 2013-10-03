@@ -1513,7 +1513,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadInt32("Int2C");
             }
 
-            packet.ReadInt32("Int10");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
             packet.ReadInt32("Int24");
             packet.ReadXORByte(guid2, 0);
             packet.ReadXORByte(guid2, 2);
