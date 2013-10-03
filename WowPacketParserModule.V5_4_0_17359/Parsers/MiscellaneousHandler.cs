@@ -1343,5 +1343,58 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Item GUID", guid3);
             packet.WriteGuid("Guid4", guid4);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_5553)]
+        public static void HandleUnknown5553(Packet packet) // Item opcode?
+        {
+            var guid = new byte[8];
+            var powerGUID = new byte[8];
+
+            packet.StartBitStream(guid, 6, 1, 5, 0, 3, 7, 2);
+            var bit50 = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+
+            if (bit50)
+            {
+                packet.StartBitStream(powerGUID, 6, 5, 2, 1, 0, 7);
+                var powerCount = packet.ReadBits(21);
+                packet.StartBitStream(powerGUID, 4, 3);
+
+                packet.ReadXORByte(powerGUID, 1);
+                packet.ReadInt32("Attack power");
+                packet.ReadXORByte(powerGUID, 2);
+                packet.ReadInt32("Spell power");
+                packet.ReadXORByte(powerGUID, 5);
+
+                for (var i = 0; i < powerCount; ++i)
+                {
+                    packet.ReadEnum<PowerType>("Power type", TypeCode.Int32); // Actually powertype for class
+                    packet.ReadInt32("Value");
+                }
+
+                packet.ReadXORByte(powerGUID, 7);
+                packet.ReadXORByte(powerGUID, 6);
+                packet.ReadXORByte(powerGUID, 3);
+                packet.ReadXORByte(powerGUID, 4);
+                packet.ReadXORByte(powerGUID, 0);
+                packet.ReadInt32("Current health");
+                packet.WriteGuid("Power GUID", powerGUID);
+            }
+
+            packet.ReadInt32("Int1C");
+            packet.ReadInt32("Int24");
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadInt32("Int18");
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadByte("Byte20");
+            packet.ReadXORByte(guid, 0);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
