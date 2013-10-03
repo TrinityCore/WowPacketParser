@@ -1200,7 +1200,30 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ParseBitStream(guid, 4, 2, 7, 5, 3, 1, 6, 0);
 
             packet.WriteGuid("Guid", guid);
+        }
 
+        [Parser(Opcode.SMSG_UNKNOWN_3139)] // Send Name and RealmId
+        public static void HandleUnknown3139(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadBit("bit48");
+            var bits11 = packet.ReadBits(6);
+            packet.ReadBit("bit10");
+
+            packet.StartBitStream(guid, 0, 2, 6, 7, 3, 4, 5, 1);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadWoWString("Name", bits11);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadInt32("Realm Id");
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 3);
+
+            packet.WriteGuid("Guid", guid);
         }
     }
 }
