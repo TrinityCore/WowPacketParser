@@ -1325,5 +1325,120 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid1", guid1);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_5942)]
+        public static void HandleUnknown5942(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            var bit5C = false;
+            var bit64 = false;
+            var bit88 = false;
+
+            var bit20 = !packet.ReadBit();
+            packet.StartBitStream(guid1, 2, 5);
+            var bit90 = !packet.ReadBit();
+            packet.StartBitStream(guid1, 3, 1);
+            var bitA8 = !packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+            var bit95 = packet.ReadBit();
+            var bit68 = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+
+            if (bit68)
+            {
+                packet.StartBitStream(guid2, 5, 7, 1, 6);
+                bit5C = packet.ReadBit();
+                packet.StartBitStream(guid2, 0, 2, 3);
+                bit64 = packet.ReadBit();
+                guid2[4] = packet.ReadBit();
+            }
+
+            var bitAC = packet.ReadBit();
+            var bit94 = packet.ReadBit();
+            var bit30 = !packet.ReadBit();
+            var bits98 = (int)packet.ReadBits(22);
+            var bit8C = packet.ReadBit();
+            if (bit8C)
+                bit88 = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            var bit70 = !packet.ReadBit();
+
+            var hasExtraMovementFlags = !packet.ReadBit();
+            if (hasExtraMovementFlags)
+                packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
+
+            guid1[4] = packet.ReadBit();
+
+            var hasMovementFlags = !packet.ReadBit();
+            if (hasMovementFlags)
+                packet.ReadEnum<MovementFlag>("Movement flags", 30);
+
+            if (bit68)
+            {
+                if (bit5C)
+                    packet.ReadInt32("Int58");
+                packet.ReadXORByte(guid2, 7);
+                packet.ReadSingle("Float44");
+                packet.ReadXORByte(guid2, 1);
+                if (bit64)
+                    packet.ReadInt32("Int60");
+                packet.ReadSingle("Float4C");
+                packet.ReadXORByte(guid2, 2);
+                packet.ReadXORByte(guid2, 5);
+                packet.ReadXORByte(guid2, 0);
+                packet.ReadSingle("Float48");
+                packet.ReadInt32("Int54");
+                packet.ReadXORByte(guid2, 3);
+                packet.ReadSingle("Float40");
+                packet.ReadXORByte(guid2, 6);
+                packet.ReadByte("Byte50");
+                packet.ReadXORByte(guid2, 4);
+                packet.WriteGuid("Guid2", guid2);
+            }
+
+            if (bit8C)
+            {
+                if (bit88)
+                {
+                    packet.ReadSingle("Float80");
+                    packet.ReadSingle("Float84");
+                    packet.ReadSingle("Float7C");
+                }
+
+                packet.ReadSingle("Float78");
+                packet.ReadInt32("Int74");
+            }
+
+            packet.ReadSingle("Float2C");
+            packet.ReadXORByte(guid1, 1);
+            if (bit90)
+                packet.ReadSingle("Float90");
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid1, 4);
+            if (bit20)
+                packet.ReadInt32("Int20");
+            packet.ReadSingle("Float24");
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid1, 6);
+            for (var i = 0; i < bits98; ++i)
+                packet.ReadInt32("IntEA", i);
+
+            packet.ReadXORByte(guid1, 0);
+            if (bit70)
+                packet.ReadSingle("Float70");
+            if (bitA8)
+                packet.ReadInt32("IntA8");
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadSingle("FloatB0");
+            if (bit30)
+                packet.ReadSingle("Float30");
+            packet.ReadSingle("Float28");
+            packet.ReadXORByte(guid1, 3);
+
+            packet.WriteGuid("Guid1", guid1);
+
+        }
     }
 }
