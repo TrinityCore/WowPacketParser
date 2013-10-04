@@ -2353,5 +2353,51 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid2", guid2);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_2202)]
+        public static void HandleUnknown2202(Packet packet) // Ticket stuff? browser? mhm
+        {
+            packet.ReadInt32("Int14");
+            packet.ReadInt32("Int10");
+
+            var bits18 = packet.ReadBits(20);
+
+            var guid = new byte[bits18][];            
+            var bit410 = new bool[bits18];
+            var bitsC = new uint[bits18];
+            var bit820 = new bool[bits18];
+            var bits420 = new uint[bits18];
+
+            for (var i = 0; i < bits18; ++i)
+            {
+                guid[i] = new byte[8];
+                bit410[i] = !packet.ReadBit();
+                bitsC[i] = packet.ReadBits(11);
+                packet.ReadBit(); // fake bit
+                packet.StartBitStream(guid[i], 7, 6, 1, 2, 5, 3, 0, 4);
+                bit820[i] = !packet.ReadBit();
+                bits420[i] = packet.ReadBits(10);
+            }
+            
+            for (var i = 0; i < bits18; ++i)
+            {
+                packet.ParseBitStream(guid[i], 6, 0, 7, 3, 5, 1, 4, 2);
+
+                if (bit410[i])
+                    packet.ReadInt32("Int1C", i);
+
+                packet.ReadWoWString("Status Text", bits420[i], i);
+
+                if (bit820[i])
+                    packet.ReadInt32("Int1C", i);
+
+                packet.ReadInt32("Ticket Id", i);
+                packet.ReadInt32("Int1C", i);
+                packet.ReadInt32("Int1C", i);
+                packet.ReadWoWString("URL", bitsC[i], i);
+
+                packet.WriteGuid("GUID", guid[i], i);
+            }
+        }
     }
 }
