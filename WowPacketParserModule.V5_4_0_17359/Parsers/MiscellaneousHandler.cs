@@ -2224,5 +2224,13 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_2066)]
+        public static void HandleUnknown2066(Packet packet)
+        {
+            packet.ReadInt32("Int14");
+            packet.ReadInt32("Int10");
+            packet.ReadBit("bit18");
+        }
     }
 }
