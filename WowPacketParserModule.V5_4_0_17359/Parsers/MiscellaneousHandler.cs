@@ -1951,7 +1951,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_UNKNOWN_177)]
+        [Parser(Opcode.SMSG_SET_VIGNETTE)]
         public static void HandleUnknown177(Packet packet)
         {
 
@@ -2014,24 +2014,24 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadXORByte(guid5[i], 4);
                 packet.ReadXORByte(guid5[i], 0);
                 packet.ReadXORByte(guid5[i], 5);
-                packet.ReadInt32("Int58");
+                packet.ReadInt32("Vignette Id");
                 packet.ReadXORByte(guid5[i], 7);
-                packet.ReadSingle("Float58");
-                packet.ReadSingle("Float58");
+                packet.ReadSingle("Z");
+                packet.ReadSingle("Y");
                 packet.ReadXORByte(guid5[i], 6);
-                packet.ReadSingle("Float58");
+                packet.ReadSingle("X");
 
                 packet.WriteGuid("Guid5", guid5[i]);
             }
             
             for (var i = 0; i < bits34; ++i)
             {
-                packet.ReadSingle("FloatED");
-                packet.ReadInt32("IntED");
+                packet.ReadSingle("Y");
+                packet.ReadInt32("Vignette Id");
                 packet.ReadXORByte(guid2[i], 0);
-                packet.ReadSingle("FloatED");
+                packet.ReadSingle("Z");
                 packet.ReadXORByte(guid2[i], 3);
-                packet.ReadSingle("FloatED");
+                packet.ReadSingle("X");
                 packet.ReadXORByte(guid2[i], 4);
                 packet.ReadXORByte(guid2[i], 7);
                 packet.ReadXORByte(guid2[i], 6);
