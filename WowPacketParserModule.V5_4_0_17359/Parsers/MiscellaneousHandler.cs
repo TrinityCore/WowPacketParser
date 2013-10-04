@@ -1842,5 +1842,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Guid1", guid1);
             packet.WriteGuid("Guid2", guid2);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_1347)]
+        public static void HandleUnknown1347(Packet packet)
+        {
+            packet.ReadInt64("Time?");
+        }
     }
 }
