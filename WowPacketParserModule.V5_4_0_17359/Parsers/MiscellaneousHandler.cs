@@ -2130,5 +2130,69 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_1119)]
+        public static void HandleUnknown1119(Packet packet)
+        {
+            var bits10 = packet.ReadBits(17);
+            
+            var guid = new byte[bits10][];
+            var bits30 = new uint[bits10];
+            var bit16E = new bool[bits10];
+            var bits0 = new uint[bits10];
+            var bitsA2 = new uint[bits10];
+            var bit16F = new bool[bits10];
+
+            for (var i = 0; i < bits10; ++i)
+            {
+                guid[i] = new byte[8];
+                bits30[i] = packet.ReadBits(6);
+                packet.StartBitStream(guid[i], 4, 0, 2, 3);
+                bit16E[i] = packet.ReadBit();
+                guid[i][7] = packet.ReadBit();
+                bits0[i] = packet.ReadBits(8);
+                guid[i][1] = packet.ReadBit();
+                bitsA2[i] = packet.ReadBits(8);
+                packet.StartBitStream(guid[i], 6, 5);
+                bit16F[i] = packet.ReadBit();
+            }
+            
+            for (var i = 0; i < bits10; ++i)
+            {
+                packet.ReadByte("Byte14", i);
+                packet.ReadInt32("Realm Id", i);
+                packet.ReadXORByte(guid[i], 7);
+                packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area Id");
+                packet.ReadXORByte(guid[i], 0);
+                packet.ReadInt32("Int14", i);
+                packet.ReadSingle("Float14", i);
+
+                for (var j = 0; j < 2; ++j) // skill?
+                {
+                    packet.ReadInt32("Int14", i, j);
+                    packet.ReadInt32("Int14", i, j);
+                    packet.ReadInt32("Int14", i, j);
+                }
+
+                packet.ReadXORByte(guid[i], 3);
+                packet.ReadWoWString("Name", bits30[i], i);
+                packet.ReadXORByte(guid[i], 1);
+                packet.ReadWoWString("Note?", bitsA2[i], i);
+                packet.ReadEnum<Class>("Class", TypeCode.Byte);
+                packet.ReadXORByte(guid[i], 4);
+                packet.ReadInt64("Int8", i);
+                packet.ReadByte("Byte14", i);
+                packet.ReadInt32("Int14", i);
+                packet.ReadInt32("Int14", i);
+                packet.ReadXORByte(guid[i], 2);
+                packet.ReadXORByte(guid[i], 6);
+                packet.ReadXORByte(guid[i], 5);
+                packet.ReadWoWString("String14", bits0[i], i);
+                packet.ReadInt64("IntED", i);
+                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
+                packet.ReadByte("Level", i);
+                packet.WriteGuid("Guid", guid[i], i);
+            }
+        }
     }
 }
