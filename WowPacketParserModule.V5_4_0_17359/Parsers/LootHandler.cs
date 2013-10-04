@@ -84,14 +84,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 if (bit14[i])
                     packet.ReadByte("Byte14", i);
 
-                packet.ReadInt32("Int14", i);
+                packet.ReadInt32("Item Display Id", i);
                 packet.ReadInt32("Int14", i);
                 packet.ReadInt32("Int14", i);
                 var len = packet.ReadInt32("Int50", i);
 
                 packet.ReadBytes(len);
 
-                packet.ReadInt32("itemId?", i);
+                packet.ReadInt32("Item Id", i);
             }
 
             packet.ReadXORByte(guid1, 0);
