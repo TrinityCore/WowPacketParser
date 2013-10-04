@@ -1897,5 +1897,58 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.WriteGuid("Guid", guid[i]);
             }
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_1358)]
+        public static void HandleUnknown1358(Packet packet)
+        {
+            var bits10 = packet.ReadBits(19);
+            
+            var bits38 = new uint[bits10];
+            var guid1 = new byte[bits10][];
+            var guid2 = new byte[bits10][][];
+            
+            for (var i = 0; i < bits10; ++i)
+            {
+                bits38[i] = packet.ReadBits(24);
+                
+                guid1[i] = new byte[8];
+                guid2[i] = new byte[bits38[i]][];
+
+                for (var j = 0; j < bits38[i]; ++j)
+                {
+                    guid2[i][j] = new byte[8];
+                    packet.StartBitStream(guid2[i][j], 5, 2, 6, 0, 1, 4, 3, 7);
+                }
+
+                packet.StartBitStream(guid1[i], 2, 0, 4, 1, 7, 3, 5, 6);
+            }
+            
+            for (var i = 0; i < bits10; ++i)
+            {
+                packet.ReadXORByte(guid1[i], 2);
+                
+                for (var j = 0; j < bits38[i]; ++j)
+                {
+                    packet.ParseBitStream(guid2[i][j], 4, 0, 1, 5, 3, 7, 2, 6);
+                    packet.WriteGuid("Guid2", guid2[i][j], i, j);
+                }
+
+                packet.ReadInt32("IntED", i);
+                packet.ReadPackedTime("Date");
+                packet.ReadXORByte(guid1[i], 1);
+                packet.ReadXORByte(guid1[i], 4);
+                packet.ReadXORByte(guid1[i], 6);
+                packet.ReadInt32("IntED", i);
+                packet.ReadXORByte(guid1[i], 3);
+                packet.ReadXORByte(guid1[i], 7);
+                packet.ReadInt32("IntED", i); // item id?
+                packet.ReadXORByte(guid1[i], 5);
+                packet.ReadInt32("Int14", i);
+                packet.ReadInt32("IntED", i);
+                packet.ReadXORByte(guid1[i], 0);
+
+                packet.WriteGuid("Guid1", guid1[i], i);
+            }
+        }
     }
 }
