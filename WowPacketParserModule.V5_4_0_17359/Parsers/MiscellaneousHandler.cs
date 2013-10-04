@@ -2519,5 +2519,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_1394)]
+        public static void HandleUnknown1394(Packet packet)
+        {
+            packet.ReadInt64("Int18");
+            packet.ReadInt64("Int28");
+            packet.ReadInt64("Int20");
+            packet.ReadInt64("Int10");
+        }
     }
 }
