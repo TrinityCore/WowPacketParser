@@ -1653,5 +1653,56 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_6454)]
+        public static void HandleUnknown6454(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            packet.ReadByte("Byte10");
+            packet.ReadByte("Byte38");
+            packet.ReadByte("Byte26");
+            packet.ReadByte("Byte41");
+            packet.ReadByte("Byte40");
+            packet.ReadByte("Byte25");
+            packet.ReadInt32("Int3C");
+            packet.ReadByte("Byte24");
+            packet.ReadByte("Byte42");
+
+            guid2[7] = packet.ReadBit();
+            packet.StartBitStream(guid1, 3, 1, 5, 7);
+            guid2[6] = packet.ReadBit();
+            guid1[4] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+            var bits14 = packet.ReadBits(22);
+            packet.StartBitStream(guid2, 5, 1, 4);
+            packet.StartBitStream(guid1, 2, 0);
+            packet.StartBitStream(guid2, 0, 2);
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid2, 6);
+
+            for (var i = 0; i < bits14; ++i)
+                packet.ReadInt32("IntED", i);
+
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid1, 7);
+
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("Guid2", guid2);
+        }
     }
 }
