@@ -1848,5 +1848,25 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             packet.ReadInt64("Time?");
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_1197)] // Energize opcode
+        public static void HandleUnknown1197(Packet packet)
+        {
+            var powerGUID = new byte[8];
+
+            packet.StartBitStream(powerGUID, 7, 2, 4, 3, 6, 1);
+            var powerCount = (int)packet.ReadBits(21);
+            packet.StartBitStream(powerGUID, 0, 5);
+
+            for (var i = 0; i < powerCount; ++i)
+            {
+                packet.ReadInt32("Value", i);
+                packet.ReadEnum<PowerType>("Power type", TypeCode.Byte, i);
+            }
+
+            packet.ParseBitStream(powerGUID, 4, 2, 3, 7, 0, 6, 1, 5);
+
+            packet.WriteGuid("Power GUID", powerGUID);
+        }
     }
 }
