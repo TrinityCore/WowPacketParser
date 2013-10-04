@@ -2538,5 +2538,40 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadInt32("Int14");
             packet.ReadInt32("Int18");
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_1203)] // Instance stuff?
+        public static void HandleUnknown1203(Packet packet)
+        {
+            var bits10 = packet.ReadBits(20);
+
+            var guid = new byte[bits10][];
+            
+            for (var i = 0; i < bits10; ++i)
+            {
+                guid[i] = new byte[8];
+                packet.StartBitStream(guid[i], 0, 7, 5);
+                packet.ReadBit();
+                packet.StartBitStream(guid[i], 2, 1);
+                packet.ReadBit();
+                packet.StartBitStream(guid[i], 3, 4, 6);
+            }
+            
+            for (var i = 0; i < bits10; ++i)
+            {
+                packet.ReadInt32("IntED", i);
+                packet.ReadXORByte(guid[i], 5);
+                packet.ReadInt32("IntED", i);
+                packet.ReadXORByte(guid[i], 1);
+                packet.ReadXORByte(guid[i], 4);
+                packet.ReadXORByte(guid[i], 6);
+                packet.ReadXORByte(guid[i], 3);
+                packet.ReadInt32("Int14", i);
+                packet.ReadXORByte(guid[i], 2);
+                packet.ReadXORByte(guid[i], 0);
+                packet.ReadInt32("IntED", i);
+                packet.ReadXORByte(guid[i], 7);
+                packet.WriteGuid("Guid", guid[i], i);
+            }
+        }
     }
 }
