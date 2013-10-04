@@ -2655,5 +2655,24 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Guid1", guid1);
             packet.WriteGuid("Guid2", guid2);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_54)]
+        public static void HandleUnknown54(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 6, 2, 5, 4, 7, 0, 1, 3);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadByte("Byte18");
+            packet.ReadXORByte(guid, 6);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
