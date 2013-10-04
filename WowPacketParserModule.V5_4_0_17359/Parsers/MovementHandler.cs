@@ -8,6 +8,17 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {
     public static class MovementHandler
     {
+
+        [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]
+        public static void HandleUnknown431(Packet packet)
+        {
+            packet.ReadSingle("Game Speed");
+            packet.ReadPackedTime("Game Time");
+            packet.ReadInt32("Unk 1");
+            packet.ReadInt32("Unk 2");
+            packet.ReadPackedTime("Game Time?");
+        }
+
         [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
         public static void HandleLoginVerifyWorld(Packet packet)
         {
