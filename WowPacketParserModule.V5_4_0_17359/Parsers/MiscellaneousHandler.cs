@@ -2232,5 +2232,61 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadInt32("Int10");
             packet.ReadBit("bit18");
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_23)]
+        public static void HandleUnknown23(Packet packet)
+        {            
+            var guid1 = new byte[8];
+
+            packet.StartBitStream(guid1, 4, 5, 0, 2);
+
+            var bits2C = (int)packet.ReadBits(22);
+
+            var guid2 = new byte[bits2C][];
+            var bits8 = new uint[bits2C];
+            
+            for (var i = 0; i < bits2C; ++i)
+            {
+                guid2[i] = new byte[8];
+                packet.StartBitStream(guid2[i], 4, 5, 6, 0);
+                bits8[i] = packet.ReadBits(20);
+                packet.StartBitStream(guid2[i], 7, 3, 2, 1);
+            }
+            
+            packet.StartBitStream(guid1, 1, 3, 6, 7);
+            
+            for (var i = 0; i < bits2C; ++i)
+            {
+                
+                for (var j = 0; j < bits8[i]; ++j)
+                {
+                    packet.ReadInt32("Int30", i);
+                    packet.ReadInt32("Int0", i);
+                    packet.ReadInt32("Int30", i);
+                    packet.ReadInt32("Int30", i);
+                }
+
+                packet.ParseBitStream(guid2[i], 0, 1, 2, 5, 3, 6, 4, 7);
+
+                packet.WriteGuid("Guid2", guid2[i], i);
+            }
+
+            packet.ReadByte("Byte3C");
+            packet.ReadByte("Byte28");
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadInt32("Int1C");
+            packet.ReadInt32("Int20");
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadInt32("Int18");
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid1, 6);
+
+            packet.WriteGuid("Guid1", guid1);
+
+        }
     }
 }
