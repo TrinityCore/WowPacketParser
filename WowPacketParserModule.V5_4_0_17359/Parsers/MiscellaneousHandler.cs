@@ -1868,5 +1868,34 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Power GUID", powerGUID);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_6285)]
+        public static void HandleUnknown6285(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 21);
+            
+            var guid = new byte[count][];
+
+            for (var i = 0; i < count; ++i)
+            {
+                guid[i] = new byte[8];
+                packet.StartBitStream(guid[i], 6, 3, 4, 2, 5, 1, 7, 0);
+            }
+            
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadXORByte(guid[i], 7);
+                packet.ReadXORByte(guid[i], 1);
+                packet.ReadXORByte(guid[i], 2);
+                packet.ReadInt32("Int14"); // flags?
+                packet.ReadXORByte(guid[i], 3);
+                packet.ReadXORByte(guid[i], 5);
+                packet.ReadXORByte(guid[i], 4);
+                packet.ReadXORByte(guid[i], 0);
+                packet.ReadXORByte(guid[i], 6);
+
+                packet.WriteGuid("Guid", guid[i]);
+            }
+        }
     }
 }
