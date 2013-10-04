@@ -2201,5 +2201,28 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadInt32("Int14");
             packet.ReadInt32("Int10");
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_141)]
+        public static void HandleUnknown141(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadInt32("Int38");
+            packet.ReadInt32("Int28");
+            packet.ReadInt32("Int30");
+            packet.ReadInt32("Int20");
+            packet.ReadInt32("Int24");
+            packet.ReadInt32("Int10");
+            for (var i = 0; i < 3; ++i)
+            {
+                packet.ReadInt32("Unk 1", i);
+                packet.ReadByte("Byte48", i);
+            }
+            packet.ReadInt32("Int34");
+            packet.StartBitStream(guid, 7, 6, 5, 2, 3, 0, 4, 1);
+            packet.ParseBitStream(guid, 4, 7, 2, 3, 1, 6, 5, 0);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
