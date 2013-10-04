@@ -1606,5 +1606,119 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid9", guid1);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_6127)]
+        public static void HandleUnknown6127(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            var bit5C = false;
+            var bit64 = false;
+            var bit88 = false;
+
+            var bitA8 = !packet.ReadBit();
+            packet.StartBitStream(guid1, 1, 5);
+            var bits98 = packet.ReadBits(22);
+            packet.StartBitStream(guid1, 2, 4);
+            var bit90 = !packet.ReadBit();
+            var bit95 = packet.ReadBit();
+            var bit70 = !packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            var bit30 = !packet.ReadBit();
+            var bit20 = !packet.ReadBit();
+            var bit94 = packet.ReadBit();
+            packet.StartBitStream(guid1, 7, 6);
+            var bitAC = packet.ReadBit();
+            guid1[3] = packet.ReadBit();
+
+            var bit68 = packet.ReadBit();
+            if (bit68)
+            {
+                packet.StartBitStream(guid2, 4, 2, 7, 6, 3);
+                bit64 = packet.ReadBit();
+                guid2[1] = packet.ReadBit();
+                bit5C = packet.ReadBit();
+                packet.StartBitStream(guid2, 0, 5);
+            }
+
+            var bit8C = packet.ReadBit();
+
+            var hasExtraMovementFlags = !packet.ReadBit();
+            if (hasExtraMovementFlags)
+                packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
+
+            if (bit8C)
+                bit88 = packet.ReadBit();
+
+            var hasMovementFlags = !packet.ReadBit();
+            if (hasMovementFlags)
+                packet.ReadEnum<MovementFlag>("Movement flags", 30);
+
+            if (bit8C)
+            {
+                packet.ReadInt32("Int74");
+
+                if (bit88)
+                {
+                    packet.ReadSingle("Float80");
+                    packet.ReadSingle("Float84");
+                    packet.ReadSingle("Float7C");
+                }
+
+                packet.ReadSingle("Float78");
+            }
+
+            if (bit68)
+            {
+                if (bit64)
+                    packet.ReadInt32("Int60");
+
+                packet.ReadXORByte(guid2, 4);
+                packet.ReadSingle("Float4C");
+                packet.ReadSingle("Float44");
+                packet.ReadXORByte(guid2, 7);
+                packet.ReadXORByte(guid2, 3);
+                packet.ReadXORByte(guid2, 5);
+                packet.ReadSingle("Float40");
+                packet.ReadXORByte(guid2, 2);
+                packet.ReadSingle("Float48");
+                packet.ReadByte("Byte50");
+                packet.ReadXORByte(guid2, 6);
+                packet.ReadInt32("Int54");
+                if (bit5C)
+                    packet.ReadInt32("Int58");
+                packet.ReadXORByte(guid2, 1);
+                packet.ReadXORByte(guid2, 0);
+                packet.WriteGuid("Guid2", guid2);
+            }
+
+            packet.ReadSingle("Float24");
+            if (bit20)
+                packet.ReadInt32("Int20");
+            if (bit70)
+                packet.ReadSingle("Float70");
+            packet.ReadXORByte(guid1, 2);
+            if (bit90)
+                packet.ReadSingle("Float90");
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid1, 5);
+            if (bitA8)
+                packet.ReadInt32("IntA8");
+            packet.ReadSingle("Float28");
+            if (bit30)
+                packet.ReadSingle("Float30");
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid1, 4);
+            for (var i = 0; i < bits98; ++i)
+                packet.ReadInt32("IntEA", i);
+
+            packet.ReadSingle("Float2C");
+
+            packet.WriteGuid("Guid1", guid1);
+        }
     }
 }
