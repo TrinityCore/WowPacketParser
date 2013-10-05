@@ -3151,5 +3151,18 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadSingle("Float14");
             packet.ReadSingle("Float1C");
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_159)]
+        public static void HandleUnknown159(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 3, 2, 5, 0, 7);
+            packet.ReadBits("bits10", 2);
+            packet.StartBitStream(guid, 6, 4, 1);
+            packet.ParseBitStream(guid, 7, 3, 2, 1, 4, 6, 0, 5);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
