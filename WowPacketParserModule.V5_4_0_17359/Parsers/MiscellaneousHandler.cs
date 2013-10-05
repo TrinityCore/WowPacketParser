@@ -312,17 +312,32 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadInt32("Int10");
         }
 
-        [Parser(Opcode.SMSG_UNKNOWN_5125)]
+        [Parser(Opcode.MSG_UNKNOWN_5125)]
         public static void HandleUnknown5125(Packet packet)
         {
-            var guid = new byte[8];
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                var guid = new byte[8];
 
-            packet.StartBitStream(guid, 2, 7, 0, 6, 5, 3, 1, 4);
-            packet.ParseBitStream(guid, 2, 0, 1, 7, 4, 5);
-            packet.ReadInt32("Int18");
-            packet.ParseBitStream(guid, 3, 6);
+                packet.ReadByte("Unk 1 byte");
+                packet.ReadByte("Unk 2 byte");
 
-            packet.WriteGuid("GUID", guid);
+                packet.StartBitStream(guid, 1, 5, 7, 2, 3, 4, 0, 6);
+                packet.ParseBitStream(guid, 2, 3, 7, 0, 6, 5, 1, 4);
+
+                packet.WriteGuid("Guid", guid);
+            }
+            else
+            {
+                var guid = new byte[8];
+
+                packet.StartBitStream(guid, 2, 7, 0, 6, 5, 3, 1, 4);
+                packet.ParseBitStream(guid, 2, 0, 1, 7, 4, 5);
+                packet.ReadInt32("Int18");
+                packet.ParseBitStream(guid, 3, 6);
+
+                packet.WriteGuid("GUID", guid);
+            }
         }
 
         [Parser(Opcode.SMSG_UNKNOWN_57)]
