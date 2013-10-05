@@ -647,5 +647,17 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ParseBitStream(guid, 1, 5, 2, 7, 3, 6, 4, 0);
             packet.WriteGuid("GUID", guid);
         }
+
+        [Parser(Opcode.CMSG_PAGE_TEXT_QUERY)]
+        public static void HandlePageTextQuery(Packet packet)
+        {
+            var guid = new byte[8];
+            packet.ReadInt32("Entry");
+
+            packet.StartBitStream(guid, 0, 7, 5, 2, 1, 3, 4, 6);
+            packet.ParseBitStream(guid, 7, 4, 6, 5, 2, 3, 0, 1);
+
+            packet.WriteGuid("GUID", guid);
+        }
     }
 }
