@@ -191,5 +191,20 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Guid1", guid1);
             packet.WriteGuid("Guid2", guid2);
         }
+
+        [Parser(Opcode.CMSG_MESSAGECHAT_GUILD)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_INSTANCE)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_OFFICER)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_PARTY)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_RAID)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_RAID_WARNING)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_SAY)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_YELL)]
+        public static void HandleClientChatMessage(Packet packet)
+        {
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("Message", len);
+        }
     }
 }
