@@ -3062,5 +3062,67 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_1406)]
+        public static void HandleUnknown1406(Packet packet)
+        {
+            var bits10 = packet.ReadBits(19);
+            
+            var guid1 = new byte[bits10][];
+            var guid2 = new byte[bits10][];
+
+            for (var i = 0; i < bits10; ++i)
+            {
+                guid1[i] = new byte[8];
+                guid2[i] = new byte[8];
+
+                packet.StartBitStream(guid1[i], 3, 6);
+                packet.StartBitStream(guid2[i], 5, 4);               
+                guid1[i][2] = packet.ReadBit();
+                guid2[i][0] = packet.ReadBit();
+                guid1[i][7] = packet.ReadBit();                
+                packet.StartBitStream(guid2[i], 6, 7, 3);
+                packet.StartBitStream(guid1[i], 5, 0);
+                guid2[i][2] = packet.ReadBit();
+                packet.StartBitStream(guid1[i], 2, 4);
+                guid2[i][1] = packet.ReadBit();
+            }
+            
+            for (var i = 0; i < bits10; ++i)
+            {
+                packet.ReadXORByte(guid2[i], 4);
+
+                packet.ReadInt32("Int14");
+
+                packet.ReadXORByte(guid1[i], 2);
+                packet.ReadXORByte(guid1[i], 0);
+
+                packet.ReadInt32("Int14");
+
+                packet.ReadXORByte(guid2[i], 7);
+                packet.ReadXORByte(guid2[i], 1);
+
+                packet.ReadInt32("Int14");
+                packet.ReadInt32("Int14");
+
+                packet.ReadXORByte(guid2[i], 6);
+                packet.ReadXORByte(guid1[i], 1);
+                packet.ReadXORByte(guid2[i], 3);
+                packet.ReadXORByte(guid1[i], 4);
+
+                packet.ReadInt32("Int14");
+
+                packet.ReadXORByte(guid1[i], 5);
+                packet.ReadXORByte(guid1[i], 3);
+                packet.ReadXORByte(guid2[i], 0);
+                packet.ReadXORByte(guid1[i], 6);
+                packet.ReadXORByte(guid1[i], 7);
+                packet.ReadXORByte(guid2[i], 2);
+                packet.ReadXORByte(guid2[i], 5);
+
+                packet.WriteGuid("Guid1", guid1[i]);
+                packet.WriteGuid("Guid2", guid2[i]);
+            }
+        }
     }
 }
