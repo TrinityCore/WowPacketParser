@@ -2186,7 +2186,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         public static void HandleUnknown140(Packet packet)
         {
             packet.ReadInt32("Int14");
-            packet.ReadPackedTime("Time");
+            packet.ReadInt32("Unix Time");
         }
 
         [Parser(Opcode.SMSG_UNKNOWN_141)]
@@ -2195,7 +2195,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var guid = new byte[8];
 
             packet.ReadInt32("Int38");
-            packet.ReadPackedTime("Time");
+            packet.ReadInt32("Unix Time");
             packet.ReadInt32("Int30");
             packet.ReadInt32("Int20");
             packet.ReadInt32("Int24");
@@ -2289,7 +2289,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadByte("Byte12");
             packet.ReadByte("Byte11");
             packet.ReadInt32("Int148");
-            packet.ReadPackedTime("Time");
+            packet.ReadInt32("Unix Time");
 
             guid2[5] = packet.ReadBit();
             var bits10 = packet.ReadBits(8);
@@ -2344,7 +2344,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_UNKNOWN_2202)]
         public static void HandleUnknown2202(Packet packet) // Ticket stuff? browser? mhm
         {
-            packet.ReadPackedTime("Time");
+            packet.ReadInt32("Time");
             packet.ReadInt32("Int10");
 
             var bits18 = packet.ReadBits(20);
@@ -2805,7 +2805,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(guid2, 0);
             packet.ReadXORByte(guid2, 2);
             packet.ReadXORByte(guid2, 6);
-            packet.ReadPackedTime("Time");
+            packet.ReadInt32("Unix Time");
             packet.ReadXORByte(guid2, 7);
 
             for (var i = 0; i < bits40; ++i)
