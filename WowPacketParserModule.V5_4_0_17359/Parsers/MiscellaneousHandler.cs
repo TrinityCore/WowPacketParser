@@ -3467,5 +3467,18 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.CMSG_UNKNOWN_5412)]
+        public static void HandleUnknown5412(Packet packet)
+        {
+            var bit20 = !packet.ReadBit();
+            var bit16 = !packet.ReadBit();
+
+            if (bit16)
+                packet.ReadInt32("Int16"); // spellId?
+
+            if (bit20)
+                packet.ReadByte("Byte20");
+        }
     }
 }
