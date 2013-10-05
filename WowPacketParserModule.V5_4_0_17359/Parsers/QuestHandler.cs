@@ -31,6 +31,25 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID", i);
         }
 
+        [Parser(Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE)]
+        public static void HandleUnknown6462(Packet packet)
+        {
+            var bits10 = (int)packet.ReadBits(21);
+
+            var bits4 = new uint[bits10];
+            
+            for (var i = 0; i < bits10; ++i)
+                bits4[i] = packet.ReadBits(22);
+            
+            for (var i = 0; i < bits10; ++i)
+            {
+                for (var j = 0; j < bits4[i]; ++j)
+                    packet.ReadInt32("Creature", i, j);
+
+                packet.ReadInt32("Quest Id", i);
+            }
+        }
+
         [Parser(Opcode.SMSG_QUEST_POI_QUERY_RESPONSE)]
         public static void HandleQuestPoiQueryResponse(Packet packet)
         {

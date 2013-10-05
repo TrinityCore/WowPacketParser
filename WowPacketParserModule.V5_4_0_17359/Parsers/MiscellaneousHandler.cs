@@ -2186,7 +2186,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         public static void HandleUnknown140(Packet packet)
         {
             packet.ReadInt32("Int14");
-            packet.ReadInt32("Int10");
+            packet.ReadPackedTime("Time");
         }
 
         [Parser(Opcode.SMSG_UNKNOWN_141)]
@@ -2195,7 +2195,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var guid = new byte[8];
 
             packet.ReadInt32("Int38");
-            packet.ReadInt32("Int28");
+            packet.ReadPackedTime("Time");
             packet.ReadInt32("Int30");
             packet.ReadInt32("Int20");
             packet.ReadInt32("Int24");
@@ -2289,7 +2289,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadByte("Byte12");
             packet.ReadByte("Byte11");
             packet.ReadInt32("Int148");
-            packet.ReadInt32("Int150");
+            packet.ReadPackedTime("Time");
 
             guid2[5] = packet.ReadBit();
             var bits10 = packet.ReadBits(8);
@@ -2344,7 +2344,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_UNKNOWN_2202)]
         public static void HandleUnknown2202(Packet packet) // Ticket stuff? browser? mhm
         {
-            packet.ReadInt32("Int14");
+            packet.ReadPackedTime("Time");
             packet.ReadInt32("Int10");
 
             var bits18 = packet.ReadBits(20);
@@ -2759,25 +2759,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_UNKNOWN_6462)]
-        public static void HandleUnknown6462(Packet packet)
-        {
-            var bits10 = (int)packet.ReadBits(21);
-
-            var bits4 = new uint[bits10];
-            
-            for (var i = 0; i < bits10; ++i)
-                bits4[i] = packet.ReadBits(22);
-            
-            for (var i = 0; i < bits10; ++i)
-            {
-                for (var j = 0; j < bits4[i]; ++j)
-                    packet.ReadInt32("Int14", i, j);
-
-                packet.ReadInt32("Int14", i);
-            }
-        }
-
         [Parser(Opcode.SMSG_UNKNOWN_1183)]
         public static void HandleUnknown1183(Packet packet)
         {
@@ -2824,7 +2805,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(guid2, 0);
             packet.ReadXORByte(guid2, 2);
             packet.ReadXORByte(guid2, 6);
-            packet.ReadInt32("Int38");
+            packet.ReadPackedTime("Time");
             packet.ReadXORByte(guid2, 7);
 
             for (var i = 0; i < bits40; ++i)
