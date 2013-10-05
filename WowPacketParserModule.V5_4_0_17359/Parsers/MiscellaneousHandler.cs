@@ -2923,5 +2923,32 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             packet.ReadInt32("Int10");
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_22)]
+        public static void HandleUnknown22(Packet packet)
+        {
+            packet.ReadInt32("Int18");
+            var bit10 = !packet.ReadBit();
+            var bit3C = packet.ReadBit();
+            var bits14 = packet.ReadBits("bits14", 2);
+
+            if (bits14 == 2)
+                packet.ReadBit("bit34");
+
+            if (bits14 == 2)
+            {
+                packet.ReadInt32("Int24");
+                packet.ReadInt32("Int2C");
+                packet.ReadInt32("Int30");
+                packet.ReadInt32("Int1C");
+                packet.ReadInt32("Int20");
+                packet.ReadInt32("Int28");
+            }
+
+            if (bit10)
+                packet.ReadByte("Byte10");
+            if (bits14 == 1)
+                packet.ReadInt32("Int38");
+        }
     }
 }
