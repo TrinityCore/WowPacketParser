@@ -3503,5 +3503,16 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             else
                 packet.ReadInt32("Int10");
         }
+
+        [Parser(Opcode.CMSG_UNKNOWN_6062)]
+        public static void HandleUnknown6062(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 3, 1, 2, 6, 4, 7, 0, 5);
+            packet.ParseBitStream(guid, 3, 0, 5, 2, 7, 6, 1, 4);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

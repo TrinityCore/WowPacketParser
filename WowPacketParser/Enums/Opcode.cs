@@ -769,6 +769,7 @@ namespace WowPacketParser.Enums
         CMSG_UNKNOWN_2979,
         CMSG_UNKNOWN_4524,
         CMSG_UNKNOWN_5412,
+        CMSG_UNKNOWN_6062,
         CMSG_UNKNOWN_6083,
         MSG_UNKNOWN_6315,
         CMSG_UNKNOWN_6774,
