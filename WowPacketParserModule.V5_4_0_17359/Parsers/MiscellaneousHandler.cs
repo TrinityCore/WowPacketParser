@@ -3334,5 +3334,12 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ParseBitStream(guid1, 0, 2, 5, 4, 3, 1, 6, 7);
             packet.WriteGuid("Guid1", guid1);
         }
+
+        [Parser(Opcode.CMSG_UNKNOWN_515)] // CMSG_TIME_SYNC_RESP?
+        public static void HandleUnknown515(Packet packet)
+        {
+            packet.ReadInt32("Int10"); // Count?
+            packet.ReadInt32("Int20"); // Ticks?
+        }
     }
 }
