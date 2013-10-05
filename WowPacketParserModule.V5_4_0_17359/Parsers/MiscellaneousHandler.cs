@@ -5,6 +5,7 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
+using SpellHandler = WowPacketParser.V5_4_0_17359.Parsers.SpellHandler;
 
 namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {
@@ -3380,6 +3381,22 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid1", guid1);
             packet.WriteGuid("Guid2", guid2);
+        }
+
+        [Parser(Opcode.MSG_MULTIPLE_PACKETS1)] // CMSG_TIME_SYNC_RESP?
+        public static void HandleMultiplePackets1(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                packet.WriteLine("ClientToServer: CMSG_UNKNOWN_4278"); // Addon?
+                var len1 = packet.ReadByte();
+                var len2 = packet.ReadBits(5);
+
+                packet.ReadWoWString("string1", len2);
+                packet.ReadWoWString("Text", len1);
+            }
+            else
+                SpellHandler.HandleSpellStart(packet);
         }
     }
 }

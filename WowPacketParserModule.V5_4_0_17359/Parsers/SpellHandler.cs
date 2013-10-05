@@ -9,7 +9,7 @@ using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using Guid = WowPacketParser.Misc.Guid;
 
-namespace WowPacketParserModule.V5_4_0_17359.Parsers
+namespace WowPacketParser.V5_4_0_17359.Parsers
 {
     public static class SpellHandler
     {
@@ -568,9 +568,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_SPELL_START)]
+        //[Parser(Opcode.SMSG_SPELL_START)]
         public static void HandleSpellStart(Packet packet)
         {
+            packet.WriteLine("ServerToClient: SMSG_SPELL_START");
             var guid1 = new byte[8];
             var guid2 = new byte[8];
             var guid3 = new byte[8];
@@ -619,7 +620,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             guid2[3] = packet.ReadBit();
 
-            var counter2 = (int)packet.ReadBits(20);
+            var counter2 = packet.ReadBits(20);
 
             guid2[1] = packet.ReadBit();
             guid1[0] = packet.ReadBit();
@@ -652,7 +653,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var bitB8 = packet.ReadBit();
 
             packet.ReadBit(); // fake bit
-            
+
             guid7 = new byte[counter2][];
             for (var i = 0; i < counter2; ++i)
             {
@@ -667,7 +668,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.StartBitStream(guid9, 4, 1, 7, 3, 0, 5, 6, 2);
 
             var hasPowerData = packet.ReadBit();
-            var counter3 = (int)packet.ReadBits(24);
+            var counter3 = packet.ReadBits(24);
 
             var PowerTypeCount = 0u;
             if (hasPowerData)
