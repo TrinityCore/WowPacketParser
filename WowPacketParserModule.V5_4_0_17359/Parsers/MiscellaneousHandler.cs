@@ -2746,5 +2746,30 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Guid1", guid1);
             packet.WriteGuid("Guid2", guid2);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_410)] // SMSG_GAMEOBJECT_CUSTOM_ANIM???
+        public static void HandleUnknown410(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadBit("bit14");
+            packet.StartBitStream(guid, 6, 4, 0, 2);
+            var bit10 = !packet.ReadBit();
+            packet.StartBitStream(guid, 5, 7, 3, 1);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 7);
+
+            if (bit10)
+                packet.ReadInt32("Int10"); // Anim?
+
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 2);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
