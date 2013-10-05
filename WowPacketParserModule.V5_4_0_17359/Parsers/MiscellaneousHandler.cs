@@ -3480,5 +3480,23 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             if (bit20)
                 packet.ReadByte("Byte20");
         }
+
+        [Parser(Opcode.MSG_UNKNOWN_6315)] // Item opcode?
+        public static void HandleUnknown6315(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                var guid = new byte[8];
+
+                packet.ReadInt32("Int10");
+
+                packet.StartBitStream(guid, 0, 4, 1, 7, 6, 2, 5, 3);
+                packet.ParseBitStream(guid, 4, 0, 6, 7, 3, 2, 1, 5);
+
+                packet.WriteGuid("Guid", guid);
+            }
+            else
+                packet.ReadInt32("Int10");
+        }
     }
 }

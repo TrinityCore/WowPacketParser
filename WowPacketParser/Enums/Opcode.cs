@@ -770,6 +770,7 @@ namespace WowPacketParser.Enums
         CMSG_UNKNOWN_4524,
         CMSG_UNKNOWN_5412,
         CMSG_UNKNOWN_6083,
+        MSG_UNKNOWN_6315,
         CMSG_UNKNOWN_6774,
         CMSG_UNLEARN_DANCE_MOVE,
         CMSG_UNLEARN_SKILL,
