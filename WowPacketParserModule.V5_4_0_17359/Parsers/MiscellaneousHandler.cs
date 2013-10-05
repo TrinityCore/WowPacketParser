@@ -3527,5 +3527,98 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.MSG_UNKNOWN_5383)]
+        public static void HandleUnknown5383(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                var guid = new byte[8];
+
+                packet.ReadInt32("Int10");
+
+                packet.StartBitStream(guid, 3, 6, 2, 0, 4, 1, 7, 5);
+                packet.ParseBitStream(guid, 4, 0, 1, 7, 5, 3, 2, 6);
+
+                packet.WriteGuid("Guid", guid);
+            }
+            else
+            {
+                var guid1 = new byte[8];
+                var guid2 = new byte[8];
+                var powerGUID = new byte[8];
+
+                packet.ReadInt32("Int50");
+                packet.ReadInt32("Int10");
+                packet.ReadInt32("Int64");
+                packet.ReadInt32("Int14");
+                packet.ReadInt32("Int60");
+
+                packet.StartBitStream(guid2, 1, 6);
+                packet.StartBitStream(guid1, 3, 2, 7);
+                packet.StartBitStream(guid2, 3, 2);
+                guid1[6] = packet.ReadBit();
+                var hasPowerData = packet.ReadBit();
+                guid1[4] = packet.ReadBit();
+
+                var powerCount = 0u;
+                if (hasPowerData)
+                {
+                    packet.StartBitStream(powerGUID, 0, 7);
+                    powerCount = packet.ReadBits(21);
+                    packet.StartBitStream(powerGUID, 3, 2, 6, 4, 1, 5);
+                }
+
+                guid1[0] = packet.ReadBit();
+                guid2[5] = packet.ReadBit();
+                guid1[1] = packet.ReadBit();
+                guid2[7] = packet.ReadBit();
+                guid2[0] = packet.ReadBit();
+                guid1[5] = packet.ReadBit();
+                guid2[4] = packet.ReadBit();
+                packet.ReadXORByte(guid2, 3);
+                packet.ReadXORByte(guid1, 5);
+                packet.ReadXORByte(guid1, 1);
+                if (hasPowerData)
+                {
+                    packet.ReadXORByte(powerGUID, 2);
+
+                    for (var i = 0; i < powerCount; i++)
+                    {
+                        packet.ReadInt32("Value", i);
+                        packet.ReadEnum<PowerType>("Power type", TypeCode.UInt32, i);
+                    }
+
+                    packet.ReadInt32("Current Health");
+                    packet.ReadXORByte(powerGUID, 6);
+                    packet.ReadInt32("Spell power");
+                    packet.ReadXORByte(powerGUID, 4);
+                    packet.ReadXORByte(powerGUID, 1);
+                    packet.ReadXORByte(powerGUID, 3);
+                    packet.ReadInt32("Attack Power");
+                    packet.ReadXORByte(powerGUID, 0);
+                    packet.ReadXORByte(powerGUID, 7);
+                    packet.ReadXORByte(powerGUID, 5);
+                    packet.WriteGuid("Power GUID", powerGUID);
+                }
+
+                packet.ReadXORByte(guid2, 4);
+                packet.ReadXORByte(guid1, 4);
+                packet.ReadXORByte(guid1, 6);
+                packet.ReadXORByte(guid2, 7);
+                packet.ReadXORByte(guid1, 2);
+                packet.ReadXORByte(guid2, 2);
+                packet.ReadXORByte(guid1, 0);
+                packet.ReadXORByte(guid2, 6);
+                packet.ReadXORByte(guid2, 1);
+                packet.ReadXORByte(guid2, 0);
+                packet.ReadXORByte(guid2, 5);
+                packet.ReadXORByte(guid1, 3);
+                packet.ReadXORByte(guid1, 7);
+
+                packet.WriteGuid("Guid1", guid1);
+                packet.WriteGuid("Guid2", guid2);
+            }
+        }
     }
 }

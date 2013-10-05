@@ -59,6 +59,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.MSG_MULTIPLE_PACKETS, 0x10BD}, // CMSG_ADDON_REGISTERED_PREFIXES and SMSG_QUESTGIVER_QUEST_COMPLETE
             {Opcode.MSG_MULTIPLE_PACKETS1, 0x10B6}, // SMSG_SPELL_START and ???
             {Opcode.MSG_QUERY_NEXT_MAIL_TIME, 0x1F61},
+            {Opcode.MSG_UNKNOWN_5383, 0x1507},
             {Opcode.MSG_UNKNOWN_6315, 0x18AB},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0890},
             {Opcode.SMSG_ACTION_BUTTONS, 0x0096},
