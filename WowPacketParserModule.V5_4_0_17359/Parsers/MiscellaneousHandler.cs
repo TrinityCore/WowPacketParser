@@ -3341,5 +3341,45 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadInt32("Int10"); // Count?
             packet.ReadInt32("Int20"); // Ticks?
         }
+
+        [Parser(Opcode.CMSG_UNKNOWN_6083)] // Guild opcode?
+        public static void HandleUnknown6083(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            guid2[2] = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+            packet.StartBitStream(guid2, 6, 1);
+            packet.StartBitStream(guid1, 5, 4, 6, 1);
+            guid2[3] = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid1[3] = packet.ReadBit();
+            packet.StartBitStream(guid2, 5, 7);
+
+
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid2, 1);
+
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("Guid2", guid2);
+        }
     }
 }
