@@ -4251,7 +4251,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadInt32("Int10");
         }
 
-        [Parser(Opcode.SMSG_UNKNOWN_301)]
+        [Parser(Opcode.SMSG_UNKNOWN_301)] // Group opcode?
         public static void HandleUnknown301(Packet packet)
         {
             var guid1 = new byte[8];
@@ -4284,6 +4284,25 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid1", guid1);
             packet.WriteGuid("Guid2", guid2);
+        }
+
+        [Parser(Opcode.SMSG_UNKNOWN_133)]
+        public static void HandleUnknown133(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 3, 2, 6, 1, 0, 7, 5, 4);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadByte("Byte18");
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 1);
+
+            packet.WriteGuid("Guid", guid);
         }
     }
 }
