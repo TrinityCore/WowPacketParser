@@ -1540,6 +1540,7 @@ namespace WowPacketParser.Enums
         SMSG_PLAY_DANCE,
         SMSG_PLAY_MUSIC,
         SMSG_PLAY_OBJECT_SOUND,
+        SMSG_PLAY_SCENE, // 5.x
         SMSG_PLAY_SOUND,
         SMSG_PLAY_SPELL_IMPACT,
         SMSG_PLAY_SPELL_VISUAL,
@@ -1650,7 +1651,7 @@ namespace WowPacketParser.Enums
         SMSG_SET_PLAY_HOVER_ANIM,
         SMSG_SET_PROFICIENCY,
         SMSG_SET_PROJECTILE_POSITION,
-        SMSG_SET_VIGNETTE,
+        SMSG_SET_VIGNETTE, // 5.4
         SMSG_SHOWTAXINODES,
         SMSG_SHOW_BANK,
         SMSG_SHOW_MAILBOX,
@@ -1847,7 +1848,6 @@ namespace WowPacketParser.Enums
         SMSG_UNKNOWN_316,
         SMSG_UNKNOWN_389,
         SMSG_UNKNOWN_410,
-        SMSG_UNKNOWN_425,
         SMSG_UNKNOWN_429,
         SMSG_UNKNOWN_431,
         SMSG_UNKNOWN_438,

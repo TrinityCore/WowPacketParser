@@ -179,6 +179,45 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_PLAY_SCENE)]
+        public static void HandleUnknown425(Packet packet)
+        {
+            var guid = new byte[8];
+            // Positions where the scene should start?
+            packet.ReadSingle("Z");
+            packet.ReadSingle("Y");
+            packet.ReadSingle("X");
+
+            var bit34 = !packet.ReadBit();
+            var bit1C = !packet.ReadBit();
+            var bit24 = !packet.ReadBit();
+
+            packet.ReadBit(); // fake bit
+
+            packet.StartBitStream(guid, 4, 2, 3, 6, 1, 5, 0, 7);
+
+            var bit18 = !packet.ReadBit();
+            var bit0 = !packet.ReadBit();
+            if (bit34)
+                packet.ReadSingle("O");
+
+            packet.ParseBitStream(guid, 4, 6, 0, 5, 2, 7, 3, 1);
+
+            if (bit0)
+                packet.ReadInt32("Unk 1");
+
+            if (bit24)
+                packet.ReadInt32("Scene Script Package Id");
+
+            if (bit18)
+                packet.ReadInt32("Unk 2");
+
+            if (bit1C)
+                packet.ReadInt32("Unk 3");
+
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE)]
         public static void HandleRequestCemeteryListResponse(Packet packet)
         {
@@ -3768,45 +3807,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadSingle("float144");
 
             packet.WriteGuid("Guid1", guid1);
-        }
-
-        [Parser(Opcode.SMSG_UNKNOWN_425)]
-        public static void HandleUnknown425(Packet packet)
-        {
-            var guid = new byte[8];
-
-            packet.ReadSingle("Float30"); // Z
-            packet.ReadSingle("Float2C"); // Y
-            packet.ReadSingle("Float28"); // X
-
-            var bit34 = !packet.ReadBit();
-            var bit1C = !packet.ReadBit();
-            var bit24 = !packet.ReadBit();
-
-            packet.ReadBit(); // fake bit
-
-            packet.StartBitStream(guid, 4, 2, 3, 6, 1, 5, 0, 7);
-
-            var bit18 = !packet.ReadBit();
-            var bit0 = !packet.ReadBit();
-            if (bit34)
-                packet.ReadSingle("Float34"); // O
-
-            packet.ParseBitStream(guid, 4, 6, 0, 5, 2, 7, 3, 1);
-
-            if (bit0)
-                packet.ReadInt32("Int20");
-
-            if (bit24)
-                packet.ReadInt32("Int24");
-
-            if (bit18)
-                packet.ReadInt32("Int18");
-
-            if (bit1C)
-                packet.ReadInt32("Int1C");
-
-            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_UNKNOWN_4831)]
