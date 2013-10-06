@@ -3640,5 +3640,135 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.CMSG_UNKNOWN_1827)]
+        public static void HandleUnknown1827(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            var bit92 = false;
+            var bit100 = false;
+            var bit136 = false;
+
+            packet.ReadSingle("float44");
+            packet.ReadSingle("float36");
+            packet.ReadSingle("float40");
+
+            var bit48 = !packet.ReadBit();
+            var bit144 = !packet.ReadBit();
+            packet.StartBitStream(guid1, 4, 3);
+            var bit104 = packet.ReadBit();
+            var bit172 = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
+            var bit24 = !packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            var bits152 = packet.ReadBits(22);
+            guid1[6] = packet.ReadBit();
+            var bit168 = !packet.ReadBit();
+            var bit28 = !packet.ReadBit();
+            var bit32 = !packet.ReadBit();
+            packet.ReadBit("bit149");
+            var bit140 = packet.ReadBit();
+            guid1[5] = packet.ReadBit();
+            packet.ReadBit("bit148");
+            packet.StartBitStream(guid1, 7, 1);
+
+            var bit112 = !packet.ReadBit();
+
+            if (bit104)
+            {
+                packet.StartBitStream(guid2, 4, 3, 2);
+                bit92 = packet.ReadBit();
+                bit100 = packet.ReadBit();
+                packet.StartBitStream(guid2, 7, 1, 0, 5, 6);
+            }
+
+            if (bit24)
+                packet.ReadBits("bits24", 30);
+
+            if (bit140)
+                bit136 = packet.ReadBit();
+
+            if (bit28)
+                packet.ReadBits("bits28", 13);
+
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid1, 2);
+
+            for (var i = 0; i < bits152; ++i)
+                packet.ReadInt32("Int152");
+
+            packet.ReadXORByte(guid1, 3);
+
+            if (bit104)
+            {
+                packet.ReadXORByte(guid2, 0);
+                packet.ReadXORByte(guid2, 5);
+                packet.ReadXORByte(guid2, 6);
+                packet.ReadXORByte(guid2, 7);
+
+                if (bit100)
+                    packet.ReadInt32("Int100");
+
+                packet.ReadXORByte(guid2, 2);
+
+                packet.ReadSingle("float76");
+                packet.ReadInt32("Int84");
+                packet.ReadByte("byte80");
+
+                packet.ReadXORByte(guid2, 1);
+
+                packet.ReadSingle("float72");
+                packet.ReadSingle("float64");
+
+                packet.ReadXORByte(guid2, 4);
+
+                if (bit92)
+                    packet.ReadInt32("Int88");
+
+                packet.ReadXORByte(guid2, 3);
+                packet.ReadSingle("float68");
+
+                packet.WriteGuid("Guid2", guid2);
+            }
+
+            if (bit32)
+                packet.ReadInt32("Int32");
+
+            if (bit112)
+                packet.ReadSingle("float112");
+
+            if (bit140)
+            {
+                packet.ReadInt32("Int116");
+
+                if (bit136)
+                {
+                    packet.ReadSingle("float132");
+                    packet.ReadSingle("float128");
+                    packet.ReadSingle("float124");
+                }
+
+                packet.ReadSingle("float120");
+
+            }
+
+            if (bit168)
+                packet.ReadInt32("Int116");
+
+            if (bit48)
+                packet.ReadSingle("float48");
+
+            if (bit144)
+                packet.ReadSingle("float144");
+
+            packet.WriteGuid("Guid1", guid1);
+        }
     }
 }
