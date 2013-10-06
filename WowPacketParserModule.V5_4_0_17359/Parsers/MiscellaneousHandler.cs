@@ -4139,5 +4139,26 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadInt32("IntED", i);
             }
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_1355)]
+        public static void HandleUnknown1355(Packet packet)
+        {
+            uint count = 6;
+            
+            for (var i = 0; i < count; ++i)
+                packet.ReadInt32("Int10", i);
+            
+            for (var i = 0; i < count; ++i)
+                packet.ReadInt32("Int28", i);
+            
+            for (var i = 0; i < count; ++i)
+                packet.ReadInt32("Int40", i);
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadInt32("Int58", i);
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadInt32("Int70", i);
+        }
     }
 }
