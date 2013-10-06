@@ -3833,5 +3833,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             packet.ReadInt32("Unk1 Int32");
         }
+
+        [Parser(Opcode.CMSG_UNKNOWN_5079)]
+        public static void HandleUnknown5079(Packet packet)
+        {
+            packet.ReadInt32("Unk1 Int32");
+        }
     }
 }
