@@ -4378,5 +4378,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             if (bit10)
                 packet.ReadInt32("Int10");
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_2181)]
+        public static void HandleUnknown2181(Packet packet)
+        {
+            packet.ReadSingle("Float18");
+            packet.ReadSingle("Float1C");
+            packet.ReadInt32("Int10");
+            packet.ReadSingle("Float14");
+        }
     }
 }
