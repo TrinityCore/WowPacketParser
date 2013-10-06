@@ -3818,5 +3818,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadBytes(len);
             packet.ReadBits("bit3", 3);
         }
+
+        [Parser(Opcode.CMSG_UNKNOWN_822)]
+        public static void HandleUnknown822(Packet packet)
+        {
+            var bit16 = !packet.ReadBit();
+
+            if (bit16)
+                packet.ReadInt32("Int16");
+        }
     }
 }
