@@ -13,6 +13,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {
     public static class NpcHandler
     {
+        public static uint LastGossipPOIEntry = 0;
+
         [Parser(Opcode.CMSG_GOSSIP_HELLO)]
         public static void HandleGossipHello(Packet packet)
         {
@@ -134,6 +136,25 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             Storage.Gossips.Add(Tuple.Create(menuId, textId), gossip, packet.TimeSpan);
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, GUID.GetEntry().ToString(CultureInfo.InvariantCulture));
+        }
+
+        [Parser(Opcode.SMSG_GOSSIP_POI)]
+        public static void HandleGossipPoi(Packet packet)
+        {
+            LastGossipPOIEntry++;
+
+            var gossipPOI = new GossipPOI();
+
+            gossipPOI.Flags = (uint) packet.ReadEnum<UnknownFlags>("Flags", TypeCode.Int32);
+            var pos = packet.ReadVector2("Coordinates");
+            gossipPOI.Icon = packet.ReadEnum<GossipPOIIcon>("Icon", TypeCode.UInt32);
+            gossipPOI.Data = packet.ReadUInt32("Data");
+            gossipPOI.IconName = packet.ReadCString("Icon Name");
+
+            gossipPOI.XPos = pos.X;
+            gossipPOI.YPos = pos.Y;
+
+            Storage.GossipPOIs.Add(LastGossipPOIEntry, gossipPOI, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_THREAT_UPDATE)]
