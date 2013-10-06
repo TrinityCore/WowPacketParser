@@ -4617,5 +4617,43 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadInt32("Int14", i);
             }
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_28)]
+        public static void HandleUnknown28(Packet packet)
+        {
+            var guid = new byte[8];
+            var bit161 = packet.ReadBit();
+            var bit129 = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            var bits130 = packet.ReadBits(6);
+            guid[2] = packet.ReadBit();
+            var bit21 = packet.ReadBit();
+            var bit20 = packet.ReadBit();
+            packet.StartBitStream(guid, 3, 7);
+            var bits28 = packet.ReadBits(9);
+            packet.StartBitStream(guid, 0, 5);
+            var bits10 = packet.ReadBits(22);
+            packet.StartBitStream(guid, 6, 1);
+            packet.ReadInt32("Int12C");
+            packet.ReadInt64("Int170");
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadInt32("Int164");
+            packet.ReadWoWString("String28", bits28); // Realm?
+            packet.ReadWoWString("String130", bits130); // Name?
+            packet.ReadInt32("Int24");
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 1);
+            for (var i = 0; i < bits10; ++i)
+                packet.ReadInt32("IntEA", i);
+
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 0);
+
+            packet.WriteGuid("Guid", guid);
+
+        }
     }
 }
