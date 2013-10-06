@@ -3959,7 +3959,19 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(guid, 6);
 
             packet.WriteGuid("Guid", guid);
+        }
 
+        [Parser(Opcode.CMSG_UNKNOWN_5091)]
+        public static void HandleUnknown5091(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadByte("Unk byte");
+
+            packet.StartBitStream(guid, 5, 3, 0, 7, 4, 6, 2, 1);
+            packet.ParseBitStream(guid, 7, 2, 0, 6, 5, 3, 4, 1);
+
+            packet.WriteGuid("Guid", guid);
         }
     }
 }
