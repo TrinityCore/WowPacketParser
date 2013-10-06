@@ -4046,5 +4046,18 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Guid1", guid1);
             packet.WriteGuid("Guid2", guid2);
         }
+
+        [Parser(Opcode.CMSG_UNKNOWN_5134)]
+        public static void HandleUnknown5134(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadInt32("Int10");
+            packet.ReadBit(); // fake bit?
+            packet.StartBitStream(guid, 0, 2, 4, 1, 3, 7, 5, 6);
+            packet.ParseBitStream(guid, 5, 1, 4, 6, 0, 7, 3, 2);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
