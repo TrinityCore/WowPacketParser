@@ -3883,5 +3883,16 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             packet.ReadInt32("Unk1 Int32");
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_4998)] // Pet opcode?
+        public static void HandleUnknown4998(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 6, 5, 0, 3, 1, 7, 4, 2);
+            packet.ParseBitStream(guid, 7, 6, 5, 1, 4, 3, 2, 0);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
