@@ -3827,5 +3827,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             if (bit16)
                 packet.ReadInt32("Int16");
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_289)]
+        public static void HandleUnknown289(Packet packet)
+        {
+            packet.ReadInt32("Unk1 Int32");
+        }
     }
 }
