@@ -4059,5 +4059,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.CMSG_UNKNOWN_2951)]
+        public static void HandleUnknown2951(Packet packet)
+        {
+            packet.ReadInt32("Int10");
+        }
     }
 }
