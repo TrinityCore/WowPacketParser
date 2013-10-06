@@ -659,5 +659,153 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("GUID", guid);
         }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_QUEST_QUERY_RESPONSE)]
+        public static void HandleQuestQueryResponse(Packet packet)
+        {
+            var hasData = packet.ReadBit();
+            if (!hasData)
+            {
+                packet.ReadUInt32("Entry");
+                return; // nothing to do
+            }
+
+            var quest = new QuestTemplate();
+
+            var bits907 = packet.ReadBits(12);
+            var count = packet.ReadBits(19);
+            
+            var len2949_20 = new uint[count];
+            var counter = new uint[count];
+
+            for (var i = 0; i < count; ++i)
+            {
+                len2949_20[i] = packet.ReadBits(8);
+                counter[i] = packet.ReadBits(22);
+            }
+
+            var bits2432 = packet.ReadBits(11);
+            var bits2048 = packet.ReadBits(8);
+            var bits2112 = packet.ReadBits(10);
+            var bits157 = packet.ReadBits(12);
+            var bits1657 = packet.ReadBits(9);
+            var bits2368 = packet.ReadBits(8);
+            var bits1792 = packet.ReadBits(10);
+            var bits29 = packet.ReadBits(9);
+
+            packet.ReadInt32("Int2E34");
+            packet.ReadInt32("Int4C");
+            packet.ReadSingle("Float54");
+            
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Int2E10", i);
+                packet.ReadInt32("IntED", i);
+                packet.ReadInt32("IntED", i);
+                packet.ReadInt32("IntEA", i);
+                packet.ReadWoWString("StringEA", len2949_20[i], i);
+                packet.ReadByte("ByteED", i);
+                packet.ReadByte("ByteEA", i);
+
+                for (var j = 0; j < counter[i]; ++j)
+                    packet.ReadInt32("Int118", i);
+            }
+
+            packet.ReadInt32("Int58");
+            packet.ReadInt32("Int2E54");
+            packet.ReadSingle("Float6C");
+            packet.ReadWoWString("String2500", bits2368);
+            packet.ReadInt32("Int34");
+            packet.ReadWoWString("String19E4", bits1657);
+            packet.ReadInt32("Int2E74");
+
+            for (var i = 0; i < 4; ++i)
+            {
+                packet.ReadInt32("int3001+16", i);
+                packet.ReadInt32("int3001+0", i);
+            }
+
+            packet.ReadInt32("Int1C");
+            packet.ReadSingle("Float68");
+            packet.ReadInt32("Int2E28");
+
+            for (var i = 0; i < 5; ++i)
+            {
+                packet.ReadInt32("int2986+40", i);
+                packet.ReadInt32("int2986+0", i);
+                packet.ReadInt32("int2986+20", i);
+            }
+
+            packet.ReadInt32("Int1BE8");
+            packet.ReadInt32("Int2E7C");
+            packet.ReadInt32("Int1BF8");
+            packet.ReadInt32("Int1BFC");
+            packet.ReadInt32("Int2E90");
+            packet.ReadInt32("Int2E48");
+            packet.ReadWoWString("String74", bits29);
+            packet.ReadInt32("Int2E2C");
+            packet.ReadInt32("Int2E50");
+            packet.ReadInt32("Int2E64");
+            packet.ReadInt32("Int1BEC");
+            packet.ReadInt32("Int60");
+            packet.ReadInt32("Int2E88");
+            packet.ReadInt32("Int2E94");
+            packet.ReadInt32("Int2E6C");
+            packet.ReadInt32("Int14");
+            packet.ReadInt32("Int2E20");
+            packet.ReadInt32("Int2E30");
+            packet.ReadInt32("Int2E24");
+            packet.ReadInt32("Int1BF0");
+            packet.ReadInt32("Int2E4C");
+            packet.ReadInt32("Int2E68");
+            packet.ReadInt32("Int20");
+            packet.ReadInt32("Int1BF4");
+            packet.ReadWoWString("String2100", bits2112);
+            packet.ReadInt32("Int2E08");
+            packet.ReadInt32("Int38");
+            packet.ReadInt32("Int5C");
+            packet.ReadWoWString("String2600", bits2432);
+            packet.ReadInt32("Int24");
+            packet.ReadInt32("Int2E58");
+            packet.ReadInt32("Int30");
+            packet.ReadInt32("Int64");
+            packet.ReadInt32("Int44");
+            packet.ReadInt32("Int2E00");
+            packet.ReadInt32("Int2E44");
+            packet.ReadInt32("Int2EA0");
+            packet.ReadInt32("Int28");
+            packet.ReadInt32("Int2E1C");
+            packet.ReadInt32("Int40");
+            packet.ReadWoWString("StringE2C", bits907);
+            packet.ReadInt32("Int2E60");
+            packet.ReadWoWString("String2000", bits2048);
+            packet.ReadInt32("Int2E70");
+            packet.ReadInt32("Int2E5C");
+            packet.ReadInt32("Int18");
+            packet.ReadInt32("Int50");
+            packet.ReadInt32("Int1BE4");
+            packet.ReadWoWString("String1C00", bits1792);
+            packet.ReadInt32("Int3C");
+            packet.ReadInt32("Int2C");
+            packet.ReadWoWString("String274", bits157);
+            packet.ReadInt32("Int48");
+            packet.ReadInt32("Int2E80");
+            packet.ReadInt32("Int2E40");
+            packet.ReadInt32("Int2E9C");
+            packet.ReadInt32("Int2E84");
+            packet.ReadInt32("Int2E38");
+            packet.ReadInt32("Int2E04");
+            packet.ReadInt32("Int2E98");
+            packet.ReadInt32("Int2E3C");
+            packet.ReadInt32("Int2E78");
+            packet.ReadInt32("Int70");
+            packet.ReadInt32("Int2E8C");
+
+            var id = packet.ReadInt32("Int2F00");
+
+            //packet.AddSniffData(StoreNameType.Quest, id.Key, "QUERY_RESPONSE");
+            //Storage.QuestTemplates.Add((uint)id.Key, quest, packet.TimeSpan);
+        }
     }
 }
