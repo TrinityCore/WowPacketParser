@@ -4581,5 +4581,20 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Guid1", guid1);
             packet.WriteGuid("Guid2", guid2);
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_180)]
+        public static void HandleUnknown180(Packet packet)
+        {
+            var bit14 = packet.ReadBit();
+            packet.ReadBit("bit1C");
+            var bit28 = packet.ReadBit();
+            if (bit28)
+                packet.ReadInt32("Int24");
+            packet.ReadInt32("Int18");
+            packet.ReadInt32("Int20");
+            packet.ReadInt32("Int2C");
+            if (bit14)
+                packet.ReadInt32("Int10");
+        }
     }
 }
