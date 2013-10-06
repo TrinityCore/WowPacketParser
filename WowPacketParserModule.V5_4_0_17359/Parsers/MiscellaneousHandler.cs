@@ -3839,5 +3839,43 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             packet.ReadInt32("Unk1 Int32");
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_1446)]
+        public static void HandleUnknown1446(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            packet.StartBitStream(guid1, 7, 0, 5);
+            guid2[5] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+            packet.StartBitStream(guid2, 2, 3);
+            guid1[2] = packet.ReadBit();
+            packet.StartBitStream(guid2, 1, 7);
+            guid1[1] = packet.ReadBit();
+            packet.StartBitStream(guid2, 4, 6);
+            packet.StartBitStream(guid1, 4, 3);
+            guid2[0] = packet.ReadBit();
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadByte("Byte20");
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid1, 0);
+
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("Guid2", guid2);
+        }
     }
 }
