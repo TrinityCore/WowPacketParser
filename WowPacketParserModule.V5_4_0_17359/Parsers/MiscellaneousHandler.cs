@@ -3756,7 +3756,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 }
 
                 packet.ReadSingle("float120");
-
             }
 
             if (bit168)
@@ -3769,6 +3768,45 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadSingle("float144");
 
             packet.WriteGuid("Guid1", guid1);
+        }
+
+        [Parser(Opcode.SMSG_UNKNOWN_425)]
+        public static void HandleUnknown425(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadSingle("Float30"); // Z
+            packet.ReadSingle("Float2C"); // Y
+            packet.ReadSingle("Float28"); // X
+
+            var bit34 = !packet.ReadBit();
+            var bit1C = !packet.ReadBit();
+            var bit24 = !packet.ReadBit();
+
+            packet.ReadBit(); // fake bit
+
+            packet.StartBitStream(guid, 4, 2, 3, 6, 1, 5, 0, 7);
+
+            var bit18 = !packet.ReadBit();
+            var bit0 = !packet.ReadBit();
+            if (bit34)
+                packet.ReadSingle("Float34"); // O
+
+            packet.ParseBitStream(guid, 4, 6, 0, 5, 2, 7, 3, 1);
+
+            if (bit0)
+                packet.ReadInt32("Int20");
+
+            if (bit24)
+                packet.ReadInt32("Int24");
+
+            if (bit18)
+                packet.ReadInt32("Int18");
+
+            if (bit1C)
+                packet.ReadInt32("Int1C");
+
+            packet.WriteGuid("Guid", guid);
         }
     }
 }
