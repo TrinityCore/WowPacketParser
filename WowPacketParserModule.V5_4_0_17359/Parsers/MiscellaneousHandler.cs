@@ -4250,5 +4250,40 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             packet.ReadInt32("Int10");
         }
+
+        [Parser(Opcode.SMSG_UNKNOWN_301)]
+        public static void HandleUnknown301(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+            packet.StartBitStream(guid2, 5, 3, 2);
+            packet.StartBitStream(guid1, 1, 3, 2);
+            packet.StartBitStream(guid2, 4, 0, 1);
+            packet.StartBitStream(guid1, 5, 4, 0, 7);
+            guid2[6] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadByte("Byte1C");
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadInt32("Int18");
+
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("Guid2", guid2);
+        }
     }
 }
