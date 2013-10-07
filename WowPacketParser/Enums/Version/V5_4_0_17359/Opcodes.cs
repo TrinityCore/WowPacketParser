@@ -46,6 +46,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0784},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x1927},
             {Opcode.CMSG_UNKNOWN_515, 0x0203},
+            {Opcode.CMSG_UNKNOWN_597, 0x0255},
             {Opcode.CMSG_UNKNOWN_822, 0x0336},
             {Opcode.CMSG_UNKNOWN_903, 0x0387},
             {Opcode.CMSG_UNKNOWN_1815, 0x0717},

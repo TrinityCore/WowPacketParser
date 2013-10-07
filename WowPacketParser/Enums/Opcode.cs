@@ -759,6 +759,7 @@ namespace WowPacketParser.Enums
         CMSG_UNDRESSPLAYER,
         CMSG_UNITANIMTIER_CHEAT,
         CMSG_UNKNOWN_515,
+        CMSG_UNKNOWN_597,
         CMSG_UNKNOWN_822,
         CMSG_UNKNOWN_903,
         CMSG_UNKNOWN_1296,

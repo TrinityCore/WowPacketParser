@@ -4815,5 +4815,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadBit("Unk1 bit");
             packet.ReadBit("Unk2 bit");
         }
+
+        [Parser(Opcode.CMSG_UNKNOWN_597)]
+        public static void HandleUnknown597(Packet packet)
+        {
+            var bits10 = packet.ReadBits("Unk bits22", 22);
+
+            for (var i = 0; i < bits10; ++i)
+                packet.ReadInt32("Unk Int32");
+        }
     }
 }
