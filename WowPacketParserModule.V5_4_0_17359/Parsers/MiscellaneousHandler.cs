@@ -4802,5 +4802,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.CMSG_UNKNOWN_5675)]
+        public static void HandleUnknown5675(Packet packet)
+        {
+            packet.ReadByte("Unk Byte");
+        }
     }
 }
