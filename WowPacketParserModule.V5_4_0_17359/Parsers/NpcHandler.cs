@@ -329,5 +329,49 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var vendorGUID = new Guid(BitConverter.ToUInt64(guid, 0));
             Storage.NpcVendors.Add(vendorGUID.GetEntry(), npcVendor, packet.TimeSpan);
         }
+
+        [Parser(Opcode.SMSG_TRAINER_LIST)]
+        public static void HandleServerTrainerList(Packet packet)
+        {
+            var guid = new byte[8];
+            var npcTrainer = new NpcTrainer();
+
+            guid[0] = packet.ReadBit();
+            var titleLen = packet.ReadBits(11);
+            packet.StartBitStream(guid, 5, 6, 1, 2, 7, 4, 3);
+            var count = (int)packet.ReadBits("Count", 19);
+
+            npcTrainer.TrainerSpells = new List<TrainerSpell>(count);
+            for (var i = 0; i < count; ++i)
+            {
+                //var trainerSpell = new TrainerSpell();
+                packet.ReadInt32("Int824", i);
+                packet.ReadInt32("Int824", i);
+                packet.ReadByte("Byte824", i);
+                for (var j = 0; j < 3; ++j)
+                    packet.ReadInt32("Int824", i, j);
+                packet.ReadInt32("Int824", i);
+                packet.ReadByte("Byte824", i);
+                packet.ReadInt32("Int824", i);
+
+                //npcTrainer.TrainerSpells.Add(trainerSpell);
+            }
+
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 6);
+            npcTrainer.Title = packet.ReadWoWString("Title", titleLen);
+            packet.ReadInt32("Int818");
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadInt32("Int81C");
+
+            packet.WriteGuid("GUID", guid);
+            //var GUID = new Guid(BitConverter.ToUInt64(guid, 0));
+            //Storage.NpcTrainers.Add(GUID.GetEntry(), npcTrainer, packet.TimeSpan);
+        }
     }
 }
