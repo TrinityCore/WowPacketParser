@@ -4824,5 +4824,19 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             for (var i = 0; i < bits10; ++i)
                 packet.ReadInt32("Unk Int32");
         }
+
+        [Parser(Opcode.CMSG_UNKNOWN_6910)]
+        public static void HandleUnknown6910(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadByte("Unk Byte");
+            packet.ReadInt32("Unk Int32");
+
+            packet.StartBitStream(guid, 7, 4, 6, 5, 0, 1, 3, 2);
+            packet.ParseBitStream(guid, 5, 4, 2, 6, 3, 7, 0, 1);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

@@ -69,6 +69,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_UNKNOWN_6062, 0x17AE},
             {Opcode.CMSG_UNKNOWN_6083, 0x17C3},
             {Opcode.CMSG_UNKNOWN_6774, 0x1A76},
+            {Opcode.CMSG_UNKNOWN_6910, 0x1AFE},
             {Opcode.CMSG_WARDEN_DATA, 0x1702},
             {Opcode.MSG_MOVE_UPDATE_RUN_SPEED, 0x176F},
             {Opcode.MSG_MULTIPLE_PACKETS, 0x10BD}, // CMSG_ADDON_REGISTERED_PREFIXES and SMSG_QUESTGIVER_QUEST_COMPLETE
