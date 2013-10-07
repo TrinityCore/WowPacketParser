@@ -396,7 +396,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         }
 
         [Parser(Opcode.MSG_MOVE_UPDATE_RUN_SPEED)]
-        public static void HandleMoveUpdateRunSpeed434(Packet packet)
+        public static void HandleMoveUpdateRunSpeed(Packet packet)
         {
             var guid = new byte[8];
             var transportGuid = new byte[8];
