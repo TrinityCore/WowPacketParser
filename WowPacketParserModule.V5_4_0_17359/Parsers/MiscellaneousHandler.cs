@@ -4783,5 +4783,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             packet.ReadBits("bits3", 3);
         }
+
+        [Parser(Opcode.CMSG_UNKNOWN_4266)]
+        public static void HandleUnknown4266(Packet packet)
+        {
+            packet.ReadBit("Unk bit");
+        }
     }
 }
