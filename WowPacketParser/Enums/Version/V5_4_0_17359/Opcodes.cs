@@ -179,6 +179,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_THREAT_UPDATE, 0x000B},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x08A6},
             {Opcode.SMSG_TOTEM_CREATED, 0x0904},
+            {Opcode.SMSG_TRAINER_LIST, 0x009A},
             {Opcode.SMSG_TRANSFER_PENDING, 0x08B5},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x1F35},
             {Opcode.SMSG_UNKNOWN_3, 0x0003},
