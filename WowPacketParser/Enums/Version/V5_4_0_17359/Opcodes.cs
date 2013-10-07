@@ -50,6 +50,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_UNKNOWN_903, 0x0387},
             {Opcode.CMSG_UNKNOWN_1815, 0x0717},
             {Opcode.CMSG_UNKNOWN_1827, 0x0723},
+            {Opcode.CMSG_UNKNOWN_2851, 0x0B23},
             {Opcode.CMSG_UNKNOWN_2874, 0x0B3A},
             {Opcode.CMSG_UNKNOWN_2951, 0x0B87},
             {Opcode.CMSG_UNKNOWN_4266, 0x10AA},
