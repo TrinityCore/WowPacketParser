@@ -14,7 +14,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.CMSG_CREATURE_QUERY)]
         public static void HandleCreatureQuery(Packet packet)
         {
-            var entry = packet.ReadInt32("Entry");
+            packet.ReadInt32("Entry");
         }
 
         [HasSniffData]
