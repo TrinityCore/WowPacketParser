@@ -7149,6 +7149,13 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_ANIM)]
+        public static void HandleSplineMoveSetAnim(Packet packet)
+        {
+            packet.ReadPackedGuid("Guid");
+            packet.ReadEnum<MovementAnimationState>("Animation", TypeCode.UInt32);
+        }
+
         [Parser(Opcode.SMSG_MOVE_UPDATE_KNOCK_BACK)]
         public static void HandleMoveUpdateKnockBack434(Packet packet)
         {

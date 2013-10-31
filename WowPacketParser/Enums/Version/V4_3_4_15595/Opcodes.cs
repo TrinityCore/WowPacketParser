@@ -1148,6 +1148,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_SPELL_START, 0x6415},
             {Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS, 0x6006},
             {Opcode.SMSG_SPIRIT_HEALER_CONFIRM, 0x4917},
+            {Opcode.SMSG_SPLINE_MOVE_SET_ANIM, 0x4335},
             {Opcode.SMSG_SPLINE_MOVE_COLLISION_DISABLE, 0x35B1},
             {Opcode.SMSG_SPLINE_MOVE_COLLISION_ENABLE, 0x3CB0},
             {Opcode.SMSG_SPLINE_MOVE_GRAVITY_DISABLE, 0x5DB5},
