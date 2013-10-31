@@ -86,10 +86,11 @@ namespace WowPacketParser.SQL.Builders
                 if (models.ContainsKey(modelId))
                     continue;
 
+                float scale = npc.Size.GetValueOrDefault(1.0f);
                 var model = new ModelData
                 {
-                    BoundingRadius = npc.BoundingRadius.GetValueOrDefault(0.306f),
-                    CombatReach = npc.CombatReach.GetValueOrDefault(1.5f),
+                    BoundingRadius = npc.BoundingRadius.GetValueOrDefault(0.306f) / scale,
+                    CombatReach = npc.CombatReach.GetValueOrDefault(1.5f) / scale,
                     Gender = npc.Gender.GetValueOrDefault(Gender.Male)
                 };
 
