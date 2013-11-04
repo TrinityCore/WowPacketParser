@@ -54,6 +54,7 @@
     <Compile Include="Enums\ChatMessageType.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
     <Compile Include="Parsers\QueryHandler.cs" />
+    <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
