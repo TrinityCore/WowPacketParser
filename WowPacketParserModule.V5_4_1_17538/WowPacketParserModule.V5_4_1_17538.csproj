@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{bd889d75-6f3f-4222-92c1-b32548952b4e}</ProjectGuid>
+    <ProjectGuid>{BD889D75-6F3F-4222-92C1-B32548952B4E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WowPacketParserModule.V5_4_1_17538</RootNamespace>
