@@ -36,6 +36,54 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             packet.ReadUInt32("Server Seed");
         }
 
+        [Parser(Opcode.CMSG_AUTH_SESSION)]
+        public static void HandleAuthSession(Packet packet)
+        {
+            var sha = new byte[20];
+            packet.ReadUInt32("UInt32 2");
+            sha[14] = packet.ReadByte();
+            sha[8] = packet.ReadByte();
+            packet.ReadUInt32("UInt32 4");
+            sha[10] = packet.ReadByte();
+            sha[19] = packet.ReadByte();
+            sha[16] = packet.ReadByte();
+            sha[13] = packet.ReadByte();
+            sha[4] = packet.ReadByte();
+            packet.ReadByte("Unk Byte");
+            sha[9] = packet.ReadByte();
+            sha[0] = packet.ReadByte();
+            packet.ReadUInt32("Client seed");
+            sha[5] = packet.ReadByte();
+            sha[2] = packet.ReadByte();
+            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);//20
+            sha[12] = packet.ReadByte();
+            packet.ReadUInt32("UInt32 3");
+            sha[18] = packet.ReadByte();
+            sha[17] = packet.ReadByte();
+            sha[11] = packet.ReadByte();
+            packet.ReadInt64("Int64");
+            sha[7] = packet.ReadByte();
+            sha[1] = packet.ReadByte();
+            sha[3] = packet.ReadByte();
+            packet.ReadByte("Unk Byte");
+            sha[6] = packet.ReadByte();
+            packet.ReadUInt32("UInt32 1");
+            sha[15] = packet.ReadByte();
+            //packet.ReadUInt32("UInt32 5");
+
+            using (var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
+            {
+                var pkt2 = addons;
+                CoreParsers.AddonHandler.ReadClientAddonsList(ref pkt2);
+            }
+
+            var size = (int)packet.ReadBits(11);
+            packet.ReadBit("Unk bit");
+            packet.ResetBitReader();
+            packet.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(size)));
+            packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
+        }
+
         [Parser(Opcode.SMSG_MOTD)]
         public static void HandleMessageOfTheDay(Packet packet)
         {
