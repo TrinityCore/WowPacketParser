@@ -1,0 +1,135 @@
+using System;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
+using WowPacketParser.Parsing;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
+using Guid = WowPacketParser.Misc.Guid;
+
+namespace WowPacketParserModule.V5_4_1_17538.Parsers
+{
+    public static class CharacterHandler
+    {
+        [Parser(Opcode.SMSG_CHAR_ENUM)]
+        public static void HandleCharEnum(Packet packet)
+        {
+            var count = packet.ReadBits("Char count", 16);
+
+            var charGuids = new byte[count][];
+            var guildGuids = new byte[count][];
+            var firstLogins = new bool[count];
+            var nameLenghts = new uint[count];
+
+            for (int c = 0; c < count; ++c)
+            {
+                charGuids[c] = new byte[8];
+                guildGuids[c] = new byte[8];
+
+                
+                guildGuids[c][3] = packet.ReadBit();
+                firstLogins[c] = packet.ReadBit();
+                charGuids[c][6] = packet.ReadBit();
+                guildGuids[c][1] = packet.ReadBit();
+                charGuids[c][1] = packet.ReadBit();
+                charGuids[c][5] = packet.ReadBit();
+                guildGuids[c][6] = packet.ReadBit();
+                charGuids[c][7] = packet.ReadBit();
+                charGuids[c][0] = packet.ReadBit();
+                guildGuids[c][5] = packet.ReadBit();
+                charGuids[c][2] = packet.ReadBit();
+                nameLenghts[c] = packet.ReadBits(6);
+                charGuids[c][4] = packet.ReadBit();             
+                guildGuids[c][4] = packet.ReadBit();
+                guildGuids[c][2] = packet.ReadBit();
+                charGuids[c][3] = packet.ReadBit();
+                guildGuids[c][0] = packet.ReadBit();
+                guildGuids[c][7] = packet.ReadBit();
+                
+            }
+            
+            packet.ReadBit("Unk bit");
+            var count2 = packet.ReadBits("RIDBIT21", 21);
+
+            packet.ResetBitReader();
+
+            for (int c = 0; c < count; ++c)
+            {
+                packet.ReadByte("Skin", c); //v4+61
+                packet.ReadXORByte(charGuids[c], 2);
+                packet.ReadXORByte(charGuids[c], 7);
+                packet.ReadInt32("Pet Display ID", c); //v4+108
+                var name = packet.ReadWoWString("Name", (int)nameLenghts[c], c); // v4 + 8
+                
+                for (int j = 0; j < 23; ++j)
+                {
+                    packet.ReadInt32("Item DisplayID", c, j);
+                    packet.ReadInt32("Item EnchantID", c, j);
+                    packet.ReadEnum<InventoryType>("Item InventoryType", TypeCode.Byte, c, j);
+                }
+                
+                packet.ReadXORByte(charGuids[c], 4);
+                packet.ReadXORByte(charGuids[c], 6);
+                
+                var level = packet.ReadByte("Level", c); // v4+66
+                var y = packet.ReadSingle("Position Y", c); // v4+80
+                var x = packet.ReadSingle("Position X", c); //v4+76
+                packet.ReadByte("Face", c); // v4+62
+                packet.ReadXORByte(guildGuids[c], 0);
+                packet.ReadByte("List Order", c); //v4+57
+                var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
+                packet.ReadXORByte(guildGuids[c], 7);
+                packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
+                var mapId = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id", c); //v4+72
+                var race = packet.ReadEnum<Race>("Race", TypeCode.Byte, c); //v4+58
+                var z = packet.ReadSingle("Position Z", c); //v4+84
+                packet.ReadXORByte(guildGuids[c], 1);
+                packet.ReadEnum<Gender>("Gender", TypeCode.Byte, c); //v4+60
+                packet.ReadXORByte(charGuids[c], 3);
+                packet.ReadByte("Hair Color", c); // v4+64
+                packet.ReadXORByte(guildGuids[c], 5);
+                var clss = packet.ReadEnum<Class>("Class", TypeCode.Byte, c); // v4+59
+                packet.ReadXORByte(guildGuids[c], 2);
+                packet.ReadXORByte(charGuids[c], 1);
+                packet.ReadEnum<CustomizationFlag>("CustomizationFlag", TypeCode.UInt32, c); //v4+100
+                packet.ReadByte("Facial Hair", c); // v4+65
+                packet.ReadXORByte(guildGuids[c], 6);
+                packet.ReadXORByte(charGuids[c], 0);
+                packet.ReadByte("Hair Style", c); // v4+63
+                packet.ReadXORByte(charGuids[c], 5);
+                packet.ReadInt32("Pet Family", c); // v4+116
+                packet.ReadXORByte(guildGuids[c], 2);
+                packet.ReadInt32("Pet Level", c); // v4+112
+                packet.ReadXORByte(guildGuids[c], 4);
+
+                for (var i = 0; i < count2; ++i)
+                {
+                    packet.ReadByte("unk2");
+                    packet.ReadUInt32("unk1");  
+                }
+
+                var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
+
+                packet.WriteGuid("Character GUID", charGuids[c], c);
+                packet.WriteGuid("Guild GUID", guildGuids[c], c);
+
+                if (firstLogins[c])
+                {
+                    var startPos = new StartPosition();
+                    startPos.Map = mapId;
+                    startPos.Position = new Vector3(x, y, z);
+                    startPos.Zone = zone;
+
+                    Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
+                }
+
+                var playerInfo = new Player { Race = race, Class = clss, Name = name, FirstLogin = firstLogins[c], Level = level };
+                if (Storage.Objects.ContainsKey(playerGuid))
+                    Storage.Objects[playerGuid] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
+                else
+                    Storage.Objects.Add(playerGuid, playerInfo, packet.TimeSpan);
+
+                StoreGetters.AddName(playerGuid, name);
+            }
+        }
+    }
+}
