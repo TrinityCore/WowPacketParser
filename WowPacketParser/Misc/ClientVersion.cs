@@ -91,7 +91,8 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_3_0_16992, new DateTime(2013, 05, 23)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_3_0_17055, new DateTime(2013, 06, 10)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_3_0_17116, new DateTime(2013, 06, 21)),
-            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_3_0_17128, new DateTime(2013, 06, 26))
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_3_0_17128, new DateTime(2013, 06, 26)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_4_1_17538, new DateTime(2013, 10, 29))
         };
 
         private static ClientType _expansion;
@@ -163,6 +164,8 @@ namespace WowPacketParser.Misc
                     case ClientVersionBuild.V5_3_0_17116:
                     case ClientVersionBuild.V5_3_0_17128:
                         return ClientVersionBuild.V5_3_0_16981;
+                    case ClientVersionBuild.V5_4_1_17538:
+                        return ClientVersionBuild.V5_4_1_17538;
                     default:
                         return Build;
                 }

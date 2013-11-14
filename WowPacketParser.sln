@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParser", "WowPacketParser\WowPacketParser.csproj", "{0BF6F270-0B6F-4705-8E1A-F57DB76DB407}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettingsUI", "SettingsUI\SettingsUI.csproj", "{FB1CFFDE-B370-47D8-AE1C-28C838507DC3}"
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V4_3_4_15595", "WowPacketParserModule.V4_3_4_15595\WowPacketParserModule.V4_3_4_15595.csproj", "{7A909478-8263-498D-9F0C-52480E29825E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V5_3_0_16981", "WowPacketParserModule.V5_3_0_16981\WowPacketParserModule.V5_3_0_16981.csproj", "{422AC0F6-A8DF-4FFF-8A98-A830F4002C53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V5_4_1_17538", "WowPacketParserModule.V5_4_1_17538\WowPacketParserModule.V5_4_1_17538.csproj", "{7DBA8CAB-A268-424A-A321-C2FCA6D4CF22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +39,10 @@ Global
 		{422AC0F6-A8DF-4FFF-8A98-A830F4002C53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{422AC0F6-A8DF-4FFF-8A98-A830F4002C53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{422AC0F6-A8DF-4FFF-8A98-A830F4002C53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DBA8CAB-A268-424A-A321-C2FCA6D4CF22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DBA8CAB-A268-424A-A321-C2FCA6D4CF22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DBA8CAB-A268-424A-A321-C2FCA6D4CF22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DBA8CAB-A268-424A-A321-C2FCA6D4CF22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
