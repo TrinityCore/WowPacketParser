@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
+    <Compile Include="Parsers\QueryHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
