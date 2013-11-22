@@ -55,6 +55,7 @@
     <Compile Include="Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsers\CharacterHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
+    <Compile Include="Parsers\NpcHandler.cs" />
     <Compile Include="Parsers\QueryHandler.cs" />
     <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />

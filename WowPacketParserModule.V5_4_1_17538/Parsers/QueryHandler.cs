@@ -378,5 +378,28 @@ namespace WowPacketParserModule.V5_4_1_17359.Parsers
                     }
             }
         }
+
+        [Parser(Opcode.CMSG_DB_QUERY_BULK)]
+        public static void HandleDBQueryBulk(Packet packet)
+        {
+            packet.ReadEnum<DB2Hash>("DB2 File", TypeCode.Int32);
+            var count = packet.ReadBits(21);
+
+            var guids = new byte[count][];
+            for (var i = 0; i < count; ++i)
+            {
+                guids[i] = new byte[8];
+                packet.StartBitStream(guids[i], 1, 7, 2, 5, 0, 6, 3, 4);
+            }
+
+            packet.ResetBitReader();
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadXORBytes(guids[i], 4, 7, 6, 0, 2, 3);
+                packet.ReadInt32("Entry", i);
+                packet.ReadXORBytes(guids[i], 5, 1);
+                packet.WriteGuid("Guid", guids[i], i);
+            }
+        }
     }
 }

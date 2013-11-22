@@ -77,6 +77,7 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
             {Opcode.SMSG_MOVE_UNSET_CAN_FLY, 0x031B},
             {Opcode.SMSG_NEW_WORLD, 0x010F},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x1407},
+            {Opcode.SMSG_NPC_TEXT_UPDATE, 0x101F},
             {Opcode.SMSG_PONG, 0x005D},
             {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x052D},
             {Opcode.SMSG_REALM_SPLIT, 0x0884},
