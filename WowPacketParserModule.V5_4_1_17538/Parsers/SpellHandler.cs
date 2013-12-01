@@ -23,5 +23,14 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
             for (var i = 0; i < count; ++i)
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
         }
+
+        [Parser(Opcode.CMSG_LEARN_TALENT)]
+        public static void HandleLearnTalents(Packet packet)
+        {
+            var talentCount = packet.ReadBits("Learned Talent Count", 23);
+
+            for (int i = 0; i < talentCount; i++)
+                packet.ReadUInt16("Talent Id", i);
+        }
     }
 }
