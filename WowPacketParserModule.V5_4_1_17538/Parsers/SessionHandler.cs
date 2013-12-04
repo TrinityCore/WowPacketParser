@@ -117,5 +117,15 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             if (isQueued)
                 packet.ReadUInt32("Queue Pos");
         }
+		
+		[Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
+        public static void HandleLoginVerifyWorld(Packet packet)
+        {
+            packet.ReadSingle("Z");
+            packet.ReadSingle("Y");
+            packet.ReadUInt32("Map");
+            packet.ReadSingle("O");
+            packet.ReadSingle("X");
+        }
     }
 }

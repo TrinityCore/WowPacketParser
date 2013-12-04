@@ -16,6 +16,7 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x1486},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x011C},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x0916},
+            {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0C24},
             {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x052D},
             {Opcode.SMSG_SHOW_BANK, 0x008E},
             
