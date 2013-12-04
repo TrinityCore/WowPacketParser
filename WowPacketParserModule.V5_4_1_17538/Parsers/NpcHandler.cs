@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
         [Parser(Opcode.CMSG_GOSSIP_HELLO)]
         public static void HandleGossipHello(Packet packet)
         {
-            var guid = packet.StartBitStream(2, 0, 1, 2, 7, 6, 4, 3);
+            var guid = packet.StartBitStream(2, 0, 1, 5, 7, 6, 4, 3);
             packet.ParseBitStream(guid, 6, 3, 2, 0, 5, 1, 7, 4);
             packet.WriteGuid("NPC Guid", guid);
         }
