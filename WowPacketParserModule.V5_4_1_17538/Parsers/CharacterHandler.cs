@@ -235,7 +235,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
                 packet.ReadXORByte(accountId[i], 6);
 
-                    packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
+                packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
                 packet.ReadInt32("RealmId", i);
 
                 packet.ReadXORByte(accountId[i], 1);
