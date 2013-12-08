@@ -203,7 +203,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             for (var i = 0; i < specCount; ++i)
             {
                 for (var j = 0; j < 6; ++j)
-                    packet.ReadUInt16("Unk Int", i, j);
+                    packet.ReadUInt16("Glyph", i, j);
 
                 for (var j = 0; j < spentTalents[i]; ++j)
                     packet.ReadUInt16("Talent Id", i, j);

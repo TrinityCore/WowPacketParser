@@ -82,11 +82,14 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
             {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x052D},
             {Opcode.SMSG_REALM_SPLIT, 0x0884},
             {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x049E},
+            {Opcode.SMSG_SPELL_GO, 0x0CCC},
+            {Opcode.SMSG_TALENTS_INFO, 0x0494},
             {Opcode.SMSG_TRANSFER_PENDING, 0x0917},
             {Opcode.SMSG_TRIGGER_CINEMATIC, 0x0198},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x0D1B},
             {Opcode.SMSG_UPDATE_ACTION_BUTTONS, 0x0406},
-            {Opcode.SMSG_UPDATE_OBJECT, 0x0C22}
+            {Opcode.SMSG_UPDATE_OBJECT, 0x0C22},
+            {Opcode.SMSG_WHO, 0x053C},
         };
     }
 }
