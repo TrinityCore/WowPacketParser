@@ -19,6 +19,7 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0C24},
             {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x052D},
             {Opcode.SMSG_SHOW_BANK, 0x008E},
+            {Opcode.SMSG_INITIAL_SPELLS, 0x1164},
             
         };
     }
