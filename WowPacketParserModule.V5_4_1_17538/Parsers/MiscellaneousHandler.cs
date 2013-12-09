@@ -158,5 +158,12 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             packet.ReadBit("Unk bit1");
             packet.ReadBit("Unk bit2");
         }
+
+        [Parser(Opcode.SMSG_SET_PROFICIENCY)]
+        public static void HandleSetProficency(Packet packet)
+        {
+            packet.ReadEnum<UnknownFlags>("Mask", TypeCode.UInt32);
+            packet.ReadEnum<ItemClass>("Class", TypeCode.Byte);
+        }
     }
 }
