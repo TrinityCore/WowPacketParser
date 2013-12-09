@@ -41,7 +41,7 @@ namespace WowPacketParser.SQL.Builders
                     }
                 }
 
-                result = new QueryBuilder.SQLInsert("playercreateinfo_action", rows, 2).Build();
+                result += new QueryBuilder.SQLInsert("playercreateinfo_action", rows, 2).Build();
             }
 
             if (!Storage.StartPositions.IsEmpty() && Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playercreateinfo))
@@ -94,7 +94,7 @@ namespace WowPacketParser.SQL.Builders
                     }
                 }
 
-                result = new QueryBuilder.SQLInsert("playercreateinfo_spell", rows, 2).Build();
+                result += new QueryBuilder.SQLInsert("playercreateinfo_spell", rows, 2).Build();
             }
 
             return result;
