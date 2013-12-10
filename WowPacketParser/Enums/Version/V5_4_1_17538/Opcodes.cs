@@ -80,6 +80,7 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
             {Opcode.SMSG_LEARNED_SPELL, 0x118E},
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x0D17},
             {Opcode.SMSG_LOGOUT_COMPLETE, 0x0D95},
+            {Opcode.SMSG_MESSAGECHAT, 0x14AC},
             {Opcode.SMSG_MOTD, 0x04AC},
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x0209},
             {Opcode.SMSG_MOVE_UNSET_CAN_FLY, 0x031B},
