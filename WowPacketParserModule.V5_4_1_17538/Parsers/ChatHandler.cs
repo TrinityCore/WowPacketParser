@@ -146,8 +146,8 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             packet.ReadUInt32("Flags");
             packet.ReadBit();
             var length = packet.ReadBits(7);
-            packet.ReadBit();
-            packet.ReadBits("HasPassword", 7);
+            packet.ReadBits(7);
+            packet.ReadBit("HasPassword");
 
             packet.ReadWoWString("Channel Name", length);
         }
