@@ -16,6 +16,7 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
             {Opcode.CMSG_AUTH_SESSION, 0x14DA},
             {Opcode.CMSG_AREATRIGGER, 0x1376},
             {Opcode.CMSG_CAST_SPELL, 0x127D},
+            {Opcode.CMSG_CHANNEL_LIST, 0x1178},
             {Opcode.CMSG_CHAR_DELETE, 0x09C0},
             {Opcode.CMSG_CHAR_ENUM, 0x0848},
             {Opcode.CMSG_CREATURE_QUERY, 0x1647},
