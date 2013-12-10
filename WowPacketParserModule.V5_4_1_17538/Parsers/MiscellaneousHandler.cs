@@ -165,5 +165,13 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             packet.ReadEnum<UnknownFlags>("Mask", TypeCode.UInt32);
             packet.ReadEnum<ItemClass>("Class", TypeCode.Byte);
         }
+
+        [Parser(Opcode.CMSG_DESTROY_ITEM)]
+        public static void HandleDestroyItem(Packet packet)
+        {
+            packet.ReadUInt32("Count");
+            packet.ReadSByte("Bag");
+            packet.ReadByte("Slot");
+        }
     }
 }

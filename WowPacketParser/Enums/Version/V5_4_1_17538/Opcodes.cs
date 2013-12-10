@@ -11,12 +11,16 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
+            {Opcode.CMSG_ADD_FRIEND, 0x0112},
+            {Opcode.CMSG_ADD_IGNORE, 0x0922},
             {Opcode.CMSG_AUTH_SESSION, 0x14DA},
             {Opcode.CMSG_AREATRIGGER, 0x1376},
+            {Opcode.CMSG_CAST_SPELL, 0x127D},
             {Opcode.CMSG_CHAR_DELETE, 0x09C0},
             {Opcode.CMSG_CHAR_ENUM, 0x0848},
             {Opcode.CMSG_CREATURE_QUERY, 0x1647},
             {Opcode.CMSG_DB_QUERY_BULK, 0x01E4},
+            {Opcode.CMSG_DESTROY_ITEM, 0x16CF},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x1677},
             {Opcode.CMSG_GOSSIP_HELLO, 0x025C},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x03EE},
@@ -87,7 +91,8 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
             {Opcode.SMSG_REALM_SPLIT, 0x0884},
             {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x049E},
             {Opcode.SMSG_SET_PROFICIENCY, 0x05B6},
-            {Opcode.SMSG_SPELL_GO, 0x0CCC},
+            {Opcode.SMSG_SPELL_GO, 0x0165},
+            {Opcode.SMSG_SPELL_START, 0x0CCC},
             {Opcode.SMSG_TALENTS_INFO, 0x0494},
             {Opcode.SMSG_TRANSFER_PENDING, 0x0917},
             {Opcode.SMSG_TRIGGER_CINEMATIC, 0x0198},

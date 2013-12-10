@@ -57,8 +57,9 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
             packet.ReadByte("Active Spec Group");
         }
 
-        [Parser(Opcode.SMSG_SPELL_GO)]
-        public static void HandleSpellGo(Packet packet)
+        [HasSniffData]
+        [Parser(Opcode.SMSG_SPELL_START)]
+        public static void HandleSpellStart(Packet packet)
         {
             var guid1 = new byte[8];
             var guid2 = new byte[8];
