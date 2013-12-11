@@ -57,6 +57,7 @@
     <Compile Include="Parsers\CharacterHandler.cs" />
     <Compile Include="Parsers\ChatHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
+    <Compile Include="Parsers\GroupHandler.cs" />
     <Compile Include="Parsers\MiscellaneousHandler.cs" />
     <Compile Include="Parsers\NpcHandler.cs" />
     <Compile Include="Parsers\QueryHandler.cs" />
