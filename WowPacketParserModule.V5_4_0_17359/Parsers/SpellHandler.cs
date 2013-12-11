@@ -1164,8 +1164,8 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
 
             for (var i = 0; i < counter; ++i)
             {
-                packet.ReadInt32("Int1AC", 7);
-                packet.ReadInt32("Int1AC", 7);
+                packet.ReadInt32("Int1AC", i);
+                packet.ReadInt32("Int1AC", i);
             }
 
             if (bit1A0)

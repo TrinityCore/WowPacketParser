@@ -200,7 +200,8 @@ namespace WowPacketParserModule.V5_4_1_17359.Parsers
             guid[3] = packet.ReadBit();
             guid[6] = packet.ReadBit();
             guid[7] = packet.ReadBit();
-            
+
+            npcVendor.VendorItems = new List<VendorItem>((int)itemCount);
             for (int i = 0; i < itemCount; ++i)
             {
                 var vendorItem = new VendorItem();

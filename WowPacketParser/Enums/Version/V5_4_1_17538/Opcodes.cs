@@ -111,7 +111,6 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
             {Opcode.SMSG_TRANSFER_PENDING, 0x0917},
             {Opcode.SMSG_TRIGGER_CINEMATIC, 0x0198},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x0D1B},
-            {Opcode.SMSG_UPDATE_ACTION_BUTTONS, 0x0406},
             {Opcode.SMSG_UPDATE_OBJECT, 0x0C22},
             {Opcode.SMSG_WHO, 0x053C},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x148D},
