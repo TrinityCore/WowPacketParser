@@ -23,6 +23,9 @@ namespace WowPacketParser.Loading
 
             switch (extension.ToLower())
             {
+                case ".ari":
+                    reader = new BinaryPacketReader(SniffType.Ari, fileName, Encoding.ASCII);
+                    break;
                 case ".bin":
                     reader = new BinaryPacketReader(SniffType.Bin, fileName, Encoding.ASCII);
                     break;

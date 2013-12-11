@@ -2,6 +2,7 @@
 {
     public enum SniffType
     {
+        Ari,
         Bin,
         Pkt,
     }

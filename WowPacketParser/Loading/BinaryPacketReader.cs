@@ -186,6 +186,14 @@ namespace WowPacketParser.Loading
                     }
                 }
             }
+            else if (_sniffType == SniffType.Ari) // Ari
+            {
+                opcode = _reader.ReadInt32();
+                direction = (Direction)_reader.ReadByte();
+                length = _reader.ReadInt32();
+                time = Utilities.GetDateTimeFromUnixTime(_reader.ReadInt32());
+                data = _reader.ReadBytes(length);
+            }
             else // bin
             {
                 opcode = _reader.ReadInt32();
