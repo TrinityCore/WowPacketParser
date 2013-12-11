@@ -94,7 +94,7 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
             {Opcode.SMSG_SEND_SERVER_LOCATION, 0x14AF},
             {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x049E},
             {Opcode.SMSG_SET_PROFICIENCY, 0x05B6},
-            {Opcode.SMSG_SPELL_GO, 0x0165},
+            {Opcode.SMSG_SPELL_GO, 0x14EC},
             {Opcode.SMSG_SPELL_START, 0x0CCC},
             {Opcode.SMSG_TALENTS_INFO, 0x0494},
             {Opcode.SMSG_TRANSFER_PENDING, 0x0917},
