@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{BD889D75-6F3F-4222-92C1-B32548952B4E}</ProjectGuid>
+    <ProjectGuid>{611E8ABD-9581-4CDC-A98E-FDDD743B7908}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WowPacketParserModule.V5_4_1_17538</RootNamespace>
-    <AssemblyName>WowPacketParserModule.V5_4_1_17538</AssemblyName>
+    <RootNamespace>WowPacketParserModule.V5_4_2_17658</RootNamespace>
+    <AssemblyName>WowPacketParserModule.V5_4_2_17658</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -24,7 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Debug\WowPacketParserModule.V5_4_1_17538.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisLogFile>bin\Debug\WowPacketParserModule.V5_4_2_17658.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
@@ -39,7 +39,7 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Release\WowPacketParserModule.V5_4_1_17538.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisLogFile>bin\Release\WowPacketParserModule.V5_4_2_17658.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -51,20 +51,8 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Enums\ChatMessageType.cs" />
-    <Compile Include="Parsers\AccountDataHandler.cs" />
-    <Compile Include="Parsers\ActionBarHandler.cs" />
-    <Compile Include="Parsers\ChannelHandler.cs" />
-    <Compile Include="Parsers\CharacterHandler.cs" />
-    <Compile Include="Parsers\ChatHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
-    <Compile Include="Parsers\GroupHandler.cs" />
-    <Compile Include="Parsers\MiscellaneousHandler.cs" />
-    <Compile Include="Parsers\NpcHandler.cs" />
     <Compile Include="Parsers\QueryHandler.cs" />
-    <Compile Include="Parsers\SessionHandler.cs" />
-    <Compile Include="Parsers\SpellHandler.cs" />
-    <Compile Include="Parsers\UpdateHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
