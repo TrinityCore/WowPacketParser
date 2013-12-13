@@ -5,11 +5,10 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
-namespace WowPacketParserModule.V5_4_1_17538.Parsers
+namespace WowPacketParserModule.V5_4_2_17658.Parsers
 {
     public static class ChannelHandler
     {
-
         [Parser(Opcode.CMSG_CHANNEL_LIST)]
         public static void HandleChannelList(Packet packet)
         {
