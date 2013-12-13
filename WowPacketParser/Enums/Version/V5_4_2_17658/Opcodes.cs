@@ -36,10 +36,12 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x0448},
             {Opcode.CMSG_WHO, 0x0CFD},
             {Opcode.SMSG_ADDON_INFO, 0x0A9C},
+            {Opcode.SMSG_AUTH_CHALLENGE, 0x0C42},
             {Opcode.SMSG_AUTH_RESPONSE, 0x03A8},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x0E85},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x08F3},
             {Opcode.SMSG_MESSAGECHAT, 0x0A5B},
+            {Opcode.SMSG_SEND_SERVER_LOCATION, 0x038B},
             {Opcode.SMSG_UPDATE_OBJECT, 0x1C89},
         };
     }
