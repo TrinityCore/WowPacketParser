@@ -2495,12 +2495,24 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 if (flags.HasAnyFlag(UpdateFlag.GOPosition))
                 {
-                    moveInfo.TransportGuid = packet.ReadPackedGuid("GO Position GUID", index);
+                    moveInfo.TransportGuid = packet.ReadPackedGuid();
 
-                    moveInfo.Position = packet.ReadVector3("[" + index + "] GO Position");
-                    packet.ReadVector3("GO Transport Position", index);
+                    moveInfo.Position = packet.ReadVector3();
+                    moveInfo.TransportOffset.X = packet.ReadSingle();
+                    moveInfo.TransportOffset.Y = packet.ReadSingle();
+                    moveInfo.TransportOffset.Z = packet.ReadSingle();
 
-                    moveInfo.Orientation = packet.ReadSingle("[" + index + "] GO Orientation");
+                    moveInfo.Orientation = packet.ReadSingle();
+                    moveInfo.TransportOffset.O = moveInfo.Orientation;
+
+                    packet.WriteLine("[{0}] GO Position: {1} Orientation: {2}", index, moveInfo.Position, moveInfo.Orientation);
+
+                    if (moveInfo.TransportGuid != Guid.Empty)
+                    {
+                        packet.WriteLine("[{0}] GO Transport GUID: {1}", index, moveInfo.TransportGuid);
+                        packet.WriteLine("[{0}] GO Transport Position: {1}", index, moveInfo.TransportOffset);
+                    }
+
                     packet.ReadSingle("Corpse Orientation", index);
                 }
                 else if (flags.HasAnyFlag(UpdateFlag.StationaryObject))
