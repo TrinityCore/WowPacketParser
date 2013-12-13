@@ -588,6 +588,7 @@ namespace WowPacketParser.Enums
         CMSG_READY_FOR_ACCOUNT_DATA_TIMES,
         CMSG_READ_ITEM,
         CMSG_REALM_QUERY,
+        CMSG_REALM_NAME_QUERY,
         CMSG_REALM_SPLIT,
         CMSG_RECHARGE,
         CMSG_RECLAIM_CORPSE,
