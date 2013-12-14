@@ -8,7 +8,7 @@ using WowPacketParser.Store.Objects;
 using CoreObjects = WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
-namespace WowPacketParserModule.V5_4_2_17658.Parsers
+namespace WowPacketParserModule.V5_4_1_17538.Parsers
 {
     public static class ActionBarHandler
     {
@@ -24,40 +24,40 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             for (var i = 0; i < buttonCount; i++)
             {
                 buttons[i] = new byte[8];
-                buttons[i][2] = packet.ReadBit();
+                buttons[i][0] = packet.ReadBit();
             }
 
             for (var i = 0; i < buttonCount; i++)
-                buttons[i][7] = packet.ReadBit();
+                buttons[i][1] = packet.ReadBit();
             for (var i = 0; i < buttonCount; i++)
                 buttons[i][3] = packet.ReadBit();
             for (var i = 0; i < buttonCount; i++)
-                buttons[i][0] = packet.ReadBit();
+                buttons[i][4] = packet.ReadBit();
             for (var i = 0; i < buttonCount; i++)
                 buttons[i][6] = packet.ReadBit();
             for (var i = 0; i < buttonCount; i++)
-                buttons[i][1] = packet.ReadBit();
+                buttons[i][7] = packet.ReadBit();
             for (var i = 0; i < buttonCount; i++)
-                buttons[i][4] = packet.ReadBit();
+                buttons[i][2] = packet.ReadBit();
             for (var i = 0; i < buttonCount; i++)
                 buttons[i][5] = packet.ReadBit();
 
             for (var i = 0; i < buttonCount; i++)
-                packet.ReadXORByte(buttons[i], 7);
-            for (var i = 0; i < buttonCount; i++)
-                packet.ReadXORByte(buttons[i], 0);
-            for (var i = 0; i < buttonCount; i++)
-                packet.ReadXORByte(buttons[i], 6);
-            for (var i = 0; i < buttonCount; i++)
                 packet.ReadXORByte(buttons[i], 5);
-            for (var i = 0; i < buttonCount; i++)
-                packet.ReadXORByte(buttons[i], 1);
             for (var i = 0; i < buttonCount; i++)
                 packet.ReadXORByte(buttons[i], 2);
             for (var i = 0; i < buttonCount; i++)
-                packet.ReadXORByte(buttons[i], 4);
+                packet.ReadXORByte(buttons[i], 0);
+            for (var i = 0; i < buttonCount; i++)
+                packet.ReadXORByte(buttons[i], 1);
             for (var i = 0; i < buttonCount; i++)
                 packet.ReadXORByte(buttons[i], 3);
+            for (var i = 0; i < buttonCount; i++)
+                packet.ReadXORByte(buttons[i], 6);
+            for (var i = 0; i < buttonCount; i++)
+                packet.ReadXORByte(buttons[i], 4);
+            for (var i = 0; i < buttonCount; i++)
+                packet.ReadXORByte(buttons[i], 7);
 
             packet.ReadByte("Packet Type");
 

@@ -129,5 +129,64 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
                 }
             }
         }
+
+        [Parser(Opcode.SMSG_INITIAL_SPELLS)]
+        public static void HandleInitialSpells(Packet packet)
+        {
+            var count = packet.ReadBits("Spell Count", 22);
+            packet.ReadBit("Unk Bit");
+
+            var spells = new List<uint>((int)count);
+            for (var i = 0; i < count; i++)
+            {
+                var spellId = packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", i);
+                spells.Add((uint)spellId);
+            }
+
+            var startSpell = new StartSpell { Spells = spells };
+
+            WoWObject character;
+            if (Storage.Objects.TryGetValue(CoreParsers.SessionHandler.LoginGuid, out character))
+            {
+                var player = character as Player;
+                if (player != null && player.FirstLogin)
+                    Storage.StartSpells.Add(new Tuple<Race, Class>(player.Race, player.Class), startSpell, packet.TimeSpan);
+            }
+        }
+
+        [Parser(Opcode.SMSG_TALENTS_INFO)]
+        public static void ReadTalentInfo(Packet packet)
+        {
+            var specCount = packet.ReadBits("Spec Group count", 19);
+
+            var spentTalents = new uint[specCount];
+
+            for (var i = 0; i < specCount; ++i)
+                spentTalents[i] = packet.ReadBits("Spec Talent Count", 23, i);
+
+            for (var i = 0; i < specCount; ++i)
+            {
+                for (var j = 0; j < 6; ++j)
+                    packet.ReadUInt16("Glyph", i, j);
+
+                packet.ReadUInt32("Spec Id", i);
+
+                for (var j = 0; j < spentTalents[i]; ++j)
+                    packet.ReadUInt16("Talent Id", i, j);
+            }
+
+            packet.ReadByte("Active Spec Group");
+        }
+
+        [Parser(Opcode.SMSG_LEARNED_SPELL)]
+        public static void HandleLearnSpell(Packet packet)
+        {
+            var count = packet.ReadBits("Spell Count", 22);
+
+            packet.ReadBit("Unk Bits");
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+        }
     }
 }

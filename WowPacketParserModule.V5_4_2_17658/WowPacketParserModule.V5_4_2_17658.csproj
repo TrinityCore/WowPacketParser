@@ -52,9 +52,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Enums\ChatMessageType.cs" />
+    <Compile Include="Parsers\ActionBarHandler.cs" />
+    <Compile Include="Parsers\ArenaHandler.cs" />
     <Compile Include="Parsers\ChannelHandler.cs" />
     <Compile Include="Parsers\ChatHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
+    <Compile Include="Parsers\HotfixHandler.cs" />
+    <Compile Include="Parsers\ItemHandler.cs" />
     <Compile Include="Parsers\MiscellaneousHandler.cs" />
     <Compile Include="Parsers\MovementHandler.cs" />
     <Compile Include="Parsers\NpcHandler.cs" />

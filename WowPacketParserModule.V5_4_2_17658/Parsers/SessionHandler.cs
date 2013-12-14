@@ -23,5 +23,18 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             CoreParsers.SessionHandler.LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_MOTD)]
+        public static void HandleMessageOfTheDay(Packet packet)
+        {
+            var lineCount = packet.ReadBits("Line Count", 4);
+            var lineLength = new int[lineCount];
+
+            for (var i = 0; i < lineCount; i++)
+                lineLength[i] = (int)packet.ReadBits(7);
+
+            for (var i = 0; i < lineCount; i++)
+                packet.ReadWoWString("Line", lineLength[i], i);
+        }
     }
 }
