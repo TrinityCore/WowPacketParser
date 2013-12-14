@@ -34,16 +34,32 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_SET_SELECTION, 0x0AC5},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x06AB},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x0448},
+            {Opcode.CMSG_WARDEN_DATA, 0x0573},
             {Opcode.CMSG_WHO, 0x0CFD},
+
+            {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x0E29},
+            {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0899},
             {Opcode.SMSG_ADDON_INFO, 0x0A9C},
+            {Opcode.SMSG_AURA_UPDATE, 0x0400},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x0C42},
             {Opcode.SMSG_AUTH_RESPONSE, 0x03A8},
+            {Opcode.SMSG_CHAR_ENUM, 0x08B9},
+            {Opcode.SMSG_CLIENTCACHE_VERSION, 0x0A4C},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x0E85},
+            {Opcode.SMSG_CRITERIA_UPDATE, 0x0A64},
             {Opcode.SMSG_DB_REPLY, 0x089A},
+            {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x0E88},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x08F3},
+            {Opcode.SMSG_GUILD_ROSTER, 0x050E},
             {Opcode.SMSG_MESSAGECHAT, 0x0A5B},
+            {Opcode.SMSG_MONSTER_MOVE, 0x0256},
+            {Opcode.SMSG_PLAYER_MOVE, 0x0EC4},
             {Opcode.SMSG_SEND_SERVER_LOCATION, 0x038B},
+            {Opcode.SMSG_SPELL_GO, 0x003E},
+            {Opcode.SMSG_SPELL_START, 0x069C},
+            {Opcode.SMSG_TUTORIAL_FLAGS, 0x138D},
             {Opcode.SMSG_UPDATE_OBJECT, 0x1C89},
+            {Opcode.SMSG_WARDEN_DATA, 0x083E}
         };
     }
 }
