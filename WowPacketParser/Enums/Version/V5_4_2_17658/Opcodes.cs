@@ -46,6 +46,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_AURA_UPDATE, 0x0400},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x0C42},
             {Opcode.SMSG_AUTH_RESPONSE, 0x03A8},
+            {Opcode.SMSG_BINDPOINTUPDATE, 0x0A12},
             {Opcode.SMSG_CHAR_ENUM, 0x08B9},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x0A4C},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x0E85},

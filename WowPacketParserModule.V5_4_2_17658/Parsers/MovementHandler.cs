@@ -176,5 +176,20 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteLine("Position: {0}", pos);
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
+
+        [Parser(Opcode.SMSG_BINDPOINTUPDATE)]
+        public static void HandleBindPointUpdate(Packet packet)
+        {
+            var pos = new Vector3();
+
+            packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area Id");
+            pos.Z = packet.ReadSingle();
+            pos.X = packet.ReadSingle();
+            pos.Y = packet.ReadSingle();
+
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
+
+            packet.WriteLine("Position: {0}", pos);
+        }
     }
 }
