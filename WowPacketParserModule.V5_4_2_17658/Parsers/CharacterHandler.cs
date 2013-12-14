@@ -121,5 +121,16 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadByte("unk2", i);
             }
         }
+
+        [Parser(Opcode.CMSG_CHAR_DELETE)]
+        public static void HandleClientCharDelete(Packet packet)
+        {
+            var playerGuid = new byte[8];
+
+            packet.StartBitStream(playerGuid, 7, 0, 1, 3, 5, 2, 4, 6);
+            packet.ParseBitStream(playerGuid, 6, 7, 5, 0, 4, 2, 3, 1);
+
+            packet.WriteGuid("GUID", playerGuid);
+        }
     }
 }
