@@ -111,8 +111,28 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadByte("Face", c); // v4+62
                 var x = packet.ReadSingle("Position X", c); //v4+76
 
+                var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
+
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);
+
+                if (firstLogins[c])
+                {
+                    var startPos = new StartPosition();
+                    startPos.Map = mapId;
+                    startPos.Position = new Vector3(x, y, z);
+                    startPos.Zone = zone;
+
+                    Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
+                }
+
+                var playerInfo = new Player { Race = race, Class = clss, Name = name, FirstLogin = firstLogins[c], Level = level };
+                if (Storage.Objects.ContainsKey(playerGuid))
+                    Storage.Objects[playerGuid] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
+                else
+                    Storage.Objects.Add(playerGuid, playerInfo, packet.TimeSpan);
+
+                StoreGetters.AddName(playerGuid, name);
             }
 
             for (var i = 0; i < count2; ++i)
