@@ -9,7 +9,7 @@ using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using Guid = WowPacketParser.Misc.Guid;
 
-namespace WowPacketParserModule.V5_4_1_17359.Parsers
+namespace WowPacketParserModule.V5_4_1_17358.Parsers
 {
     public static class NpcHandler
     {
