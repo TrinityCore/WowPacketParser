@@ -55,6 +55,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_GUILD_ROSTER, 0x050E},
             {Opcode.SMSG_MESSAGECHAT, 0x0A5B},
             {Opcode.SMSG_MONSTER_MOVE, 0x0256},
+            {Opcode.SMSG_NPC_TEXT_UPDATE, 0x0877},
             {Opcode.SMSG_PLAYER_MOVE, 0x0EC4},
             {Opcode.SMSG_SEND_SERVER_LOCATION, 0x038B},
             {Opcode.SMSG_SPELL_GO, 0x003E},

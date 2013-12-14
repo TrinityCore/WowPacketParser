@@ -109,6 +109,50 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadXORByte(guid, 0);
 
             packet.WriteGuid("Guid", guid);
+
+            var GUID = new Guid(BitConverter.ToUInt64(guid, 0));
+            gossip.ObjectType = GUID.GetObjectType();
+            gossip.ObjectEntry = GUID.GetEntry();
+
+            Storage.Gossips.Add(Tuple.Create(menuId, textId), gossip, packet.TimeSpan);
+            packet.AddSniffData(StoreNameType.Gossip, (int)menuId, GUID.GetEntry().ToString(CultureInfo.InvariantCulture));
         }
+
+        [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
+        public static void HandleNpcTextQuery(Packet packet)
+        {
+            var entry = packet.ReadInt32("Entry");
+
+            var guid = new byte[8];
+            packet.StartBitStream(guid, 5, 6, 7, 4, 3, 0, 2, 1);
+            packet.ParseBitStream(guid, 0, 7, 1, 4, 3, 5, 2, 6);
+            packet.WriteGuid("GUID", guid);
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]
+        public static void HandleNpcTextUpdate(Packet packet)
+        {
+            var npcText = new NpcText();
+
+            var hasData = packet.ReadBit();
+            if (!hasData)
+                return; // nothing to do
+
+            var entry = packet.ReadEntry("Entry");
+            if (entry.Value) // Can be masked
+                return;
+
+            var size = packet.ReadInt32("Size");
+            var data = packet.ReadBytes(size);
+
+            var pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            npcText.Probabilities = new float[8];
+            for (var i = 0; i < 8; ++i)
+                npcText.Probabilities[i] = pkt.ReadSingle("Probability", i);
+            for (var i = 0; i < 8; ++i)
+                pkt.ReadInt32("Broadcast Text Id", i);
+        }
+               
     }
 }
