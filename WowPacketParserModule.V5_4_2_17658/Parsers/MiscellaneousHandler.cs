@@ -21,5 +21,13 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadWoWString("Server Location", len2);
             packet.ReadWoWString("Server Location", len1);
         }
+
+        [Parser(Opcode.CMSG_SET_SELECTION)]
+        public static void HandleSetSelection(Packet packet)
+        {
+            var guid = packet.StartBitStream(0, 2, 3, 5, 6, 4, 1, 7);
+            packet.ParseBitStream(guid, 2, 0, 3, 7, 4, 5, 6, 1);
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

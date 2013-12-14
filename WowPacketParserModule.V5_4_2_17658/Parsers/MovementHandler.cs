@@ -160,5 +160,21 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_NEW_WORLD)]
+        public static void HandleNewWorld(Packet packet)
+        {
+            var pos = new Vector4();
+
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
+            pos.X = packet.ReadSingle();
+            pos.O = packet.ReadSingle();
+            pos.Y = packet.ReadSingle();
+            pos.Z = packet.ReadSingle();
+
+            packet.WriteLine("Position: {0}", pos);
+            packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
+        }
     }
 }
