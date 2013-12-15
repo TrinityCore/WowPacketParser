@@ -15,6 +15,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_AUTH_SESSION, 0x196E},
             {Opcode.CMSG_CHANNEL_LIST, 0x0847},
             {Opcode.CMSG_BUY_BANK_SLOT, 0x01AD},
+            {Opcode.CMSG_CAST_SPELL, 0x0AB8},
             {Opcode.CMSG_CHAR_CREATE, 0x077B},
             {Opcode.CMSG_CHAR_DELETE, 0x067A},
             {Opcode.CMSG_CHAR_ENUM, 0x047C},
