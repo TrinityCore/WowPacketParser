@@ -142,5 +142,35 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var len = packet.ReadBits(8);
             packet.ReadWoWString("Message", len);
         }
+
+        [Parser(Opcode.SMSG_EMOTE)]
+        public static void HandleEmote(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[5] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 6);
+            var emote = packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 1);
+
+            packet.WriteGuid("Guid", guid);
+
+            var SenderGUID = new Guid(BitConverter.ToUInt64(guid, 0));
+            if (SenderGUID.GetObjectType() == ObjectType.Unit)
+                Storage.Emotes.Add(SenderGUID, emote, packet.TimeSpan);
+        }
     }
 }

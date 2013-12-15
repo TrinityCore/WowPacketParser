@@ -35,7 +35,6 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_MESSAGECHAT_SAY, 0x0866},
             {Opcode.CMSG_MESSAGECHAT_YELL, 0x03AB},
             {Opcode.CMSG_NAME_QUERY, 0x05F4},
-            {Opcode.CMSG_NPC_TEXT_QUERY, 0x006C},
             {Opcode.CMSG_PING, 0x18E2},
             {Opcode.CMSG_PLAYER_LOGIN, 0x0754},
             {Opcode.CMSG_REALM_NAME_QUERY, 0x0472},
@@ -52,6 +51,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_WHO, 0x0CFD},
 
             {Opcode.MSG_MULTIPLE_PACKETS1, 0x0E48},
+            {Opcode.MSG_MULTIPLE_PACKETS2, 0x006C},
 
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x0E29},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0899},
@@ -71,6 +71,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_CRITERIA_UPDATE, 0x0A64},
             {Opcode.SMSG_CRITERIA_UNKNOWN, 0x0C0D},
             {Opcode.SMSG_DB_REPLY, 0x089A},
+            {Opcode.SMSG_EMOTE, 0x0A15},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x0F08},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x0839},
             {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 0x0C40},
@@ -96,6 +97,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_NEW_WORLD, 0x0E04},
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x0877},
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x0EA4},
+            {Opcode.SMSG_PLAY_SOUND, 0x006C},
             {Opcode.SMSG_PLAYER_MOVE, 0x0EC4},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x1A6B},
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x0C1D},

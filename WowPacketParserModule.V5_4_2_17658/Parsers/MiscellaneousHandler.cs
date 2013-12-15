@@ -63,5 +63,33 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadBit("Unk bit1");
             packet.ReadBit("Unk bit2");
         }
+
+        //[Parser(Opcode.SMSG_PLAY_SOUND)]
+        public static void HandlePlaySound(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[5] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 1);
+            var sound = packet.ReadUInt32("Sound Id");
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 0);
+
+            packet.WriteGuid("Guid", guid);
+
+            Storage.Sounds.Add(sound, packet.TimeSpan);
+        }
     }
 }

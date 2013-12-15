@@ -174,7 +174,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             Storage.GossipPOIs.Add(LastGossipPOIEntry, gossipPOI, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
+        //[Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
         public static void HandleNpcTextQuery(Packet packet)
         {
             var entry = packet.ReadInt32("Entry");

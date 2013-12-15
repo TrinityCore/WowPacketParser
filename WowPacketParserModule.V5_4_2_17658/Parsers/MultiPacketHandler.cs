@@ -25,5 +25,20 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 QueryHandler.HandleNameQueryResponse(packet);
             }
         }
+
+        [Parser(Opcode.MSG_MULTIPLE_PACKETS2)]
+        public static void HandleMultiplePackets2(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                packet.WriteLine("ClientToServer: CMSG_NPC_TEXT_QUERY (0x006C)");
+                NpcHandler.HandleNpcTextQuery(packet);
+            }
+            else
+            {
+                packet.WriteLine("ServerToClient: SMSG_PLAY_SOUND (0x006C)");
+                MiscellaneousHandler.HandlePlaySound(packet);
+            }
+        }
     }
 }
