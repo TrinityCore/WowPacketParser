@@ -435,6 +435,19 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                         db2File.ReadSingle("Unk Float 2");
                         break;
                     }
+                case DB2Hash.WbAccessControlList:
+                    {
+                        db2File.ReadUInt32("Id");
+
+                        if (db2File.ReadUInt16() > 0)
+                            db2File.ReadCString("Address");
+
+                        db2File.ReadUInt32("UnkMoP1");
+                        db2File.ReadUInt32("UnkMoP1");
+                        db2File.ReadUInt32("UnkMoP1");
+                        db2File.ReadUInt32("UnkMoP1"); // flags?
+                        break;
+                    }
                 default:
                     {
                         db2File.WriteLine("Unknown DB2 file type: {0} (0x{0:x})", type);
