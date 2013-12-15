@@ -476,5 +476,26 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     }
             }
         }
+
+        [Parser(Opcode.CMSG_NAME_QUERY)]
+        public static void HandleNameQuery(Packet packet)
+        {
+            var guid = new byte[8];
+
+            var hasRealmId2 = packet.ReadBit();
+            packet.StartBitStream(guid, 0, 6, 2, 1, 7);
+
+            var hasRealmId1 = packet.ReadBit();
+            packet.StartBitStream(guid, 3, 5, 4);
+            packet.ParseBitStream(guid, 0, 5, 2, 4, 7, 6, 1, 3);
+
+            if (hasRealmId1)
+                packet.ReadInt32("Realm Id 1");
+
+            if (hasRealmId2)
+                packet.ReadInt32("Realm Id 2");
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
