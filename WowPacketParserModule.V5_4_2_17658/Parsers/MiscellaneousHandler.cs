@@ -49,5 +49,11 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadSingle("Grade");
             packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
         }
+
+        [Parser(Opcode.CMSG_QUERY_WORLD_COUNTDOWN_TIMER)]
+        public static void HandleQueryWorldCountdownTimer(Packet packet)
+        {
+            packet.ReadInt32("Int10");
+        }
     }
 }
