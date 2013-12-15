@@ -161,6 +161,191 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteLine("Position: {0}", pos);
         }
 
+        [Parser(Opcode.SMSG_MONSTER_MOVE)]
+        public static void HandleMonsterMove(Packet packet)
+        {
+            var pos = new Vector3();
+
+            var guid2 = new byte[8];
+            var factingTargetGUID = new byte[8];
+            var ownerGUID = new byte[8];
+
+            ownerGUID[4] = packet.ReadBit();
+
+            var bit40 = !packet.ReadBit();
+            var hasTime = !packet.ReadBit();
+
+            ownerGUID[3] = packet.ReadBit();
+
+            var bit30 = !packet.ReadBit();
+
+            packet.ReadBit(); // fake bit
+
+            var splineCount = (int)packet.ReadBits(20);
+            var bit98 = packet.ReadBit();
+            var splineType = (int)packet.ReadBits(3);
+            
+            if (splineType == 3)
+                packet.StartBitStream(factingTargetGUID, 0, 7, 3, 4, 5, 6, 1, 2);
+
+            var bit55 = !packet.ReadBit();
+            var bit60 = !packet.ReadBit();
+            var bit54 = !packet.ReadBit();
+            var bit34 = !packet.ReadBit();
+
+            ownerGUID[6] = packet.ReadBit();
+            ownerGUID[1] = packet.ReadBit();
+            ownerGUID[0] = packet.ReadBit();
+
+            packet.StartBitStream(guid2, 1, 3, 4, 5, 6, 0, 7, 2);
+
+            ownerGUID[5] = packet.ReadBit();
+            var bit20 = packet.ReadBit();
+            ownerGUID[7] = packet.ReadBit();
+            var bit2D = !packet.ReadBit();
+
+            var bits84 = 0u;
+            if (bit98)
+            {
+                packet.ReadBits("bits74", 2);
+                bits84 = packet.ReadBits(22);
+            }
+
+            var hasFlags = !packet.ReadBit();
+            ownerGUID[2] = packet.ReadBit();
+            var bits64 = (int)packet.ReadBits(22);
+            var bit0 = !packet.ReadBit();
+            packet.ReadSingle("Float14");
+            
+            if (splineType == 3)
+            {
+                packet.ParseBitStream(factingTargetGUID, 1, 6, 4, 3, 5, 0, 2, 7);
+                packet.WriteGuid("Facting Target GUID", factingTargetGUID);
+            }
+
+            packet.ReadXORByte(ownerGUID, 5);
+            if (bit54)
+                packet.ReadByte("Byte54");
+            packet.ReadXORByte(ownerGUID, 4);
+            if (bit98)
+            {
+                packet.ReadSingle("Float88");
+                for (var i = 0; i < bits84; ++i)
+                {
+                    packet.ReadInt16("short74+2", i);
+                    packet.ReadInt16("short74+0", i);
+                }
+
+                packet.ReadInt16("Int8C");
+                packet.ReadInt16("Int94");
+                packet.ReadSingle("Float90");
+            }
+
+            if (hasFlags)
+                packet.ReadEnum<SplineFlag434>("Spline Flags", TypeCode.Int32);
+
+            if (bit40)
+                packet.ReadInt32("Int40");
+
+            if (bit2D)
+                packet.ReadByte("Byte2D");
+
+            Vector3 endpos = new Vector3();
+            for (var i = 0; i < splineCount; ++i)
+            {
+                var spot = new Vector3
+                {
+                    Y = packet.ReadSingle(),
+                    X = packet.ReadSingle(),
+                    Z = packet.ReadSingle(),
+                };
+                // client always taking first point
+                if (i == 0)
+                {
+                    endpos = spot;
+                }
+
+                packet.WriteLine("[{0}] Spline Waypoint: {1}", i, spot);
+            }
+
+            packet.ParseBitStream(guid2, 6, 7, 2, 5, 3, 4, 1, 0);
+
+            if (bit55)
+                packet.ReadByte("Byte55");
+
+            packet.ReadInt32("Move Ticks");
+
+            packet.ReadXORByte(ownerGUID, 0);
+
+            if (splineType == 4)
+                packet.ReadSingle("Facing Angle");
+
+            pos.Y = packet.ReadSingle();
+
+            if (bit0)
+                packet.ReadSingle("Float3C");
+
+            packet.ReadXORByte(ownerGUID, 7);
+            packet.ReadXORByte(ownerGUID, 1);
+
+            var waypoints = new Vector3[bits64];
+            for (var i = 0; i < bits64; ++i)
+            {
+                var vec = packet.ReadPackedVector3();
+                waypoints[i].X = vec.X;
+                waypoints[i].Y = vec.Y;
+                waypoints[i].Z = vec.Z;
+            }
+
+            if (splineType == 2)
+            {
+                packet.ReadSingle("FloatA8");
+                packet.ReadSingle("FloatAC");
+                packet.ReadSingle("FloatB0");
+            }
+
+            if (hasTime)
+                packet.ReadInt32("Move Time in ms");
+
+            if (bit30)
+                packet.ReadInt32("Int30");
+
+            packet.ReadXORByte(ownerGUID, 6);
+            packet.ReadSingle("Float1C");
+            packet.ReadXORByte(ownerGUID, 3);
+            pos.X = packet.ReadSingle();
+            packet.ReadXORByte(ownerGUID, 2);
+
+            if (bit34)
+                packet.ReadInt32("Int34");
+
+            if (bit60)
+                packet.ReadByte("Byte60");
+
+            packet.ReadSingle("Float18");
+            pos.Z = packet.ReadSingle();
+
+            // Calculate mid pos
+            var mid = new Vector3();
+            mid.X = (pos.X + endpos.X) * 0.5f;
+            mid.Y = (pos.Y + endpos.Y) * 0.5f;
+            mid.Z = (pos.Z + endpos.Z) * 0.5f;
+            for (var i = 0; i < bits64; ++i)
+            {
+                var vec = new Vector3
+                {
+                    X = mid.X - waypoints[i].X,
+                    Y = mid.Y - waypoints[i].Y,
+                    Z = mid.Z - waypoints[i].Z,
+                };
+                packet.WriteLine("[{0}] Waypoint: {1}", i, vec);
+            }
+
+            packet.WriteGuid("Owner GUID", ownerGUID);
+            packet.WriteGuid("GUID2", guid2);
+            packet.WriteLine("Position: {0}", pos);
+        }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_NEW_WORLD)]
         public static void HandleNewWorld(Packet packet)
