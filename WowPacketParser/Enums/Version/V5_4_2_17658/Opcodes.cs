@@ -74,6 +74,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x0E88},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x08F3},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x1736},
+            {Opcode.SMSG_GUILD_RANK, 0x05AA},
             {Opcode.SMSG_GUILD_ROSTER, 0x050E},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x0502},
             {Opcode.SMSG_HOTFIX_INFO, 0x0A4B},
