@@ -11,6 +11,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
+            {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x133F},
             {Opcode.CMSG_AUTH_SESSION, 0x196E},
             {Opcode.CMSG_CHANNEL_LIST, 0x0847},
             {Opcode.CMSG_BUY_BANK_SLOT, 0x01AD},
@@ -64,6 +65,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_GUILD_ROSTER, 0x050E},
             {Opcode.SMSG_HOTFIX_INFO, 0x0A4B},
             {Opcode.SMSG_LEARNED_SPELL, 0x0C6E},
+            {Opcode.SMSG_LOAD_CUF_PROFILES, 0x0044},
             {Opcode.SMSG_MESSAGECHAT, 0x0A5B},
             {Opcode.SMSG_MOTD, 0x08BB},
             {Opcode.SMSG_MONSTER_MOVE, 0x0256},
