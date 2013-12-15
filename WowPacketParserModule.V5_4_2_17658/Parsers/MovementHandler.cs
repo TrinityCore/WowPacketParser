@@ -362,6 +362,20 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
 
+        [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
+        public static void HandleLoginVerifyWorld(Packet packet)
+        {
+            var pos = new Vector4();
+
+            pos.Y = packet.ReadSingle();
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
+            pos.X = packet.ReadSingle();
+            pos.Z = packet.ReadSingle();
+            pos.O = packet.ReadSingle();
+
+            packet.WriteLine("Position: {0}", pos);
+        }
+
         [Parser(Opcode.SMSG_BINDPOINTUPDATE)]
         public static void HandleBindPointUpdate(Packet packet)
         {

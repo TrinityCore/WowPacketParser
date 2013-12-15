@@ -87,6 +87,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_LEARNED_SPELL, 0x0C6E},
             {Opcode.SMSG_LIST_INVENTORY, 0x0ADC},
             {Opcode.SMSG_LOAD_CUF_PROFILES, 0x0044},
+            {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0ABF},
             {Opcode.SMSG_MESSAGECHAT, 0x0A5B},
             {Opcode.SMSG_MOTD, 0x08BB},
             {Opcode.SMSG_MONSTER_MOVE, 0x0256},
