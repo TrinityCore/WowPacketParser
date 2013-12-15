@@ -390,5 +390,16 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             packet.WriteLine("Position: {0}", pos);
         }
+
+        [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]
+        public static void HandleLoginSetTimeSpeed(Packet packet)
+        {
+            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32");
+            packet.ReadPackedTime("Game Time");
+            packet.ReadSingle("Game Speed");
+
+            packet.ReadInt32("Unk Int32");
+        }
     }
 }

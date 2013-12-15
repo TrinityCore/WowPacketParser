@@ -189,6 +189,15 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
         }
 
+        [Parser(Opcode.SMSG_REMOVED_SPELL)]
+        public static void HandleRemovedSpell(Packet packet)
+        {
+            var count = packet.ReadBits("Spell Count", 22);
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", i);
+        }
+
         [Parser(Opcode.SMSG_SPELL_GO)]
         public static void HandleSpellGo(Packet packet)
         {
