@@ -56,8 +56,11 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0x085A},
             {Opcode.SMSG_CRITERIA_UPDATE, 0x0A64},
             {Opcode.SMSG_DB_REPLY, 0x089A},
+            {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x0F08},
             {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 0x0C40},
+            {Opcode.SMSG_INITIALIZE_FACTIONS, 0x0269},
             {Opcode.SMSG_INITIAL_SPELLS, 0x0623},
+            {Opcode.SMSG_INIT_CURRENCY, 0x0AF3},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x006B},
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x0E88},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x08F3},
@@ -81,10 +84,12 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_SPELL_START, 0x069C},
             {Opcode.SMSG_SUSPEND_COMMS, 0x0645},
             {Opcode.SMSG_TALENTS_INFO, 0x0A79},
+            {Opcode.SMSG_TIME_SYNC_REQ, 0x0F05},
             {Opcode.SMSG_TRAINER_LIST, 0x026D},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x138D},
             {Opcode.SMSG_UPDATE_OBJECT, 0x1C89},
-            {Opcode.SMSG_WARDEN_DATA, 0x083E}
+            {Opcode.SMSG_WARDEN_DATA, 0x083E},
+            {Opcode.SMSG_WEATHER, 0x0267}
         };
     }
 }

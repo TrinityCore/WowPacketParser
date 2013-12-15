@@ -41,5 +41,13 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             for (var i = 0; i < count; ++i)
                 packet.ReadWoWString("Addon", lengths[i], i);
         }
+
+        [Parser(Opcode.SMSG_WEATHER)]
+        public static void HandleWeatherStatus(Packet packet)
+        {
+            packet.ReadBit("Unk Bit"); // Type
+            packet.ReadSingle("Grade");
+            packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
+        }
     }
 }
