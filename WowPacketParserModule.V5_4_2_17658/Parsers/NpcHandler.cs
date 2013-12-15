@@ -24,6 +24,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             packet.WriteGuid("GUID", guid);
         }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
         public static void HandleNpcGossip(Packet packet)
@@ -81,6 +82,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     OptionIcon = packet.ReadEnum<GossipOptionIcon>("Icon", TypeCode.Byte, i),
                     RequiredMoney = packet.ReadUInt32("Required money", i),
                 };
+
+                gossip.GossipOptions.Add(gossipOption);
             }
             
             for (var i = 0; i < questgossips; ++i)
