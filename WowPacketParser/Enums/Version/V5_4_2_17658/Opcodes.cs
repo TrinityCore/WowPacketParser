@@ -81,6 +81,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_SPELL_START, 0x069C},
             {Opcode.SMSG_SUSPEND_COMMS, 0x0645},
             {Opcode.SMSG_TALENTS_INFO, 0x0A79},
+            {Opcode.SMSG_TRAINER_LIST, 0x026D},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x138D},
             {Opcode.SMSG_UPDATE_OBJECT, 0x1C89},
             {Opcode.SMSG_WARDEN_DATA, 0x083E}

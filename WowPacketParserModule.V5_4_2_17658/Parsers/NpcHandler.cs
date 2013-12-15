@@ -221,6 +221,66 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteGuid("Guid", guid);
 
             var vendorGUID = new Guid(BitConverter.ToUInt64(guid, 0));
-        }               
+        }
+
+        [Parser(Opcode.SMSG_TRAINER_LIST)]
+        public static void HandleServerTrainerList(Packet packet)
+        {
+            var npcTrainer = new NpcTrainer();
+
+            var guid = new byte[8];
+
+            guid[1] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+
+            var titleLen = packet.ReadBits(11);
+
+            guid[3] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+
+            var count = (int)packet.ReadBits("Count", 19);
+
+            npcTrainer.Type = packet.ReadEnum<TrainerType>("Type", TypeCode.Int32);
+
+            npcTrainer.TrainerSpells = new List<TrainerSpell>(count);
+            for (var i = 0; i < count; ++i)
+            {
+                var trainerSpell = new TrainerSpell();
+                for (var j = 0; j < 3; ++j)
+                    packet.ReadInt32("Int818", i, j);
+
+                packet.ReadEnum<TrainerSpellState>("State", TypeCode.Byte, i);
+                trainerSpell.RequiredSkill = packet.ReadUInt32("Required Skill", i);
+                trainerSpell.Spell = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+                trainerSpell.Cost = packet.ReadUInt32("Cost", i);
+                trainerSpell.RequiredLevel = packet.ReadByte("Required Level", i);
+                trainerSpell.RequiredSkillLevel = packet.ReadUInt32("Required Skill Level", i);
+
+                npcTrainer.TrainerSpells.Add(trainerSpell);
+            }
+
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 1);
+
+            npcTrainer.Title = packet.ReadWoWString("Title", titleLen);
+
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 4);
+
+            packet.ReadInt32("Unk Int32"); // Same unk exists in CMSG_TRAINER_BUY_SPELL
+
+            packet.ReadXORByte(guid, 3);
+
+            packet.WriteGuid("Guid", guid);
+            var GUID = new Guid(BitConverter.ToUInt64(guid, 0));
+            Storage.NpcTrainers.Add(GUID.GetEntry(), npcTrainer, packet.TimeSpan);
+        }
     }
 }
