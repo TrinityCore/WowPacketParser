@@ -29,5 +29,17 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ParseBitStream(guid, 2, 0, 3, 7, 4, 5, 6, 1);
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.CMSG_ADDON_REGISTERED_PREFIXES)]
+        public static void MultiplePackets(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 24);
+            var lengths = new int[count];
+            for (var i = 0; i < count; ++i)
+                lengths[i] = (int)packet.ReadBits(5);
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadWoWString("Addon", lengths[i], i);
+        }
     }
 }
