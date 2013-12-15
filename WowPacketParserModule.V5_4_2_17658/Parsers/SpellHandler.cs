@@ -188,5 +188,314 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
             for (var i = 0; i < count; ++i)
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
         }
+
+        [Parser(Opcode.SMSG_SPELL_GO)]
+        public static void HandleSpellGo(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+            var guid3 = new byte[8];
+            var guid4 = new byte[8];
+            var guid6 = new byte[8];
+            var guid7 = new byte[8];
+            var guid8 = new byte[8];
+            byte[][] guid9;
+            byte[][] guid10;
+            byte[][] guid11;
+
+            packet.ReadInt32("Int24");
+            packet.ReadByte("Byte20");
+            packet.ReadInt32("Int30");
+            packet.ReadInt32("Int28");
+
+            guid1[2] = packet.ReadBit();
+
+            var bitC0 = !packet.ReadBit();
+            var bit164 = !packet.ReadBit();
+            var bits44 = (int)packet.ReadBits(24);
+
+            guid2[2] = packet.ReadBit();
+            var bits184 = (int)packet.ReadBits(20);
+            guid2[3] = packet.ReadBit();
+            var bit17C = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            
+            guid9 = new byte[bits184][];
+            for (var i = 0; i < bits184; ++i)
+            {
+                guid9[i] = new byte[8];
+                packet.StartBitStream(guid9[i], 0, 3, 2, 4, 1, 5, 7, 6);
+            }
+
+            guid2[5] = packet.ReadBit();
+            guid1[5] = packet.ReadBit();
+            guid1[1] = packet.ReadBit();
+            packet.ReadBit(); // fake bit
+            var bits54 = (int)packet.ReadBits(25);
+            var bit194 = !packet.ReadBit();
+            var bit170 = !packet.ReadBit();
+            var bit180 = !packet.ReadBit();
+            var hasTargetFlags = !packet.ReadBit();
+            guid4[3] = packet.ReadBit();
+            guid4[1] = packet.ReadBit();
+            guid4[6] = packet.ReadBit();
+            guid4[2] = packet.ReadBit();
+            guid4[7] = packet.ReadBit();
+            guid4[5] = packet.ReadBit();
+            guid4[0] = packet.ReadBit();
+            guid4[4] = packet.ReadBit();
+            var bit1A8 = !packet.ReadBit();
+            var bits34 = (int)packet.ReadBits(24);
+
+            guid10 = new byte[bits44][];
+            for (var i = 0; i < bits44; ++i)
+            {
+                guid10[i] = new byte[8];
+                packet.StartBitStream(guid10[i], 2, 1, 5, 6, 7, 0, 4, 3);
+            }
+
+            var bits140 = (int)packet.ReadBits(21);
+            var bit98 = packet.ReadBit();
+            if (bit98)
+            {
+                guid6[1] = packet.ReadBit();
+                guid6[2] = packet.ReadBit();
+                guid6[5] = packet.ReadBit();
+                guid6[3] = packet.ReadBit();
+                guid6[4] = packet.ReadBit();
+                guid6[6] = packet.ReadBit();
+                guid6[0] = packet.ReadBit();
+                guid6[7] = packet.ReadBit();
+            }
+
+            guid11 = new byte[bits34][];
+            for (var i = 0; i < bits34; ++i)
+            {
+                guid11[i] = new byte[8];
+                packet.StartBitStream(guid11[i], 7, 3, 1, 4, 0, 5, 6, 2);
+            }
+
+            var bit198 = !packet.ReadBit();
+            var bit1AC = !packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            var bits154 = (int)packet.ReadBits(3);
+            guid2[6] = packet.ReadBit();
+            packet.ReadBit(); // fake bit
+            guid3[6] = packet.ReadBit();
+            guid3[1] = packet.ReadBit();
+            guid3[5] = packet.ReadBit();
+            guid3[0] = packet.ReadBit();
+            guid3[7] = packet.ReadBit();
+            guid3[3] = packet.ReadBit();
+            guid3[2] = packet.ReadBit();
+            guid3[4] = packet.ReadBit();
+            var bit168 = !packet.ReadBit();
+
+            var bitB8 = packet.ReadBit();
+            if (bitB8)
+            {
+                guid7[3] = packet.ReadBit();
+                guid7[1] = packet.ReadBit();
+                guid7[4] = packet.ReadBit();
+                guid7[5] = packet.ReadBit();
+                guid7[6] = packet.ReadBit();
+                guid7[0] = packet.ReadBit();
+                guid7[7] = packet.ReadBit();
+                guid7[2] = packet.ReadBit();
+            }
+
+            guid1[3] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+
+            if (hasTargetFlags)
+                packet.ReadEnum<TargetFlag>("Target Flags", 20);
+            
+            for (var i = 0; i < bits54; ++i)
+            {
+                var bits136 = packet.ReadBits(4);
+
+                if (bits136 == 11)
+                    packet.ReadBits("bits140", 4, i);
+            }
+
+            var bit151 = !packet.ReadBit();
+            var bit16C = !packet.ReadBit();
+            packet.ReadBits("bits2C", 13);
+            guid2[0] = packet.ReadBit();
+            packet.ReadBit(); // fake bit
+            guid8[7] = packet.ReadBit();
+            guid8[1] = packet.ReadBit();
+            guid8[0] = packet.ReadBit();
+            guid8[4] = packet.ReadBit();
+            guid8[3] = packet.ReadBit();
+            guid8[5] = packet.ReadBit();
+            guid8[6] = packet.ReadBit();
+            guid8[2] = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+
+            var bitsC0 = 0u;
+            if (bitC0)
+                bitsC0 = packet.ReadBits(7);
+
+            var bit150 = !packet.ReadBit();
+
+            guid1[4] = packet.ReadBit();
+
+            for (var i = 0; i < bits44; ++i)
+            {
+                packet.ParseBitStream(guid10[i], 0, 1, 7, 4, 3, 6, 2, 5);
+                packet.WriteGuid("Guid9", guid10[i]);
+            }
+
+            if (bitB8)
+            {
+                packet.ReadSingle("FloatAC");
+                packet.ReadSingle("FloatB0");
+                packet.ReadXORByte(guid7, 0);
+                packet.ReadXORByte(guid7, 1);
+                packet.ReadXORByte(guid7, 2);
+                packet.ReadXORByte(guid7, 7);
+                packet.ReadXORByte(guid7, 5);
+                packet.ReadXORByte(guid7, 3);
+                packet.ReadXORByte(guid7, 4);
+                packet.ReadXORByte(guid7, 6);
+                packet.ReadSingle("FloatA8");
+                packet.WriteGuid("Guid7", guid7);
+            }
+            
+            for (var i = 0; i < bits184; ++i)
+            {
+                packet.ReadXORByte(guid9[i], 4);
+                packet.ReadXORByte(guid9[i], 1);
+                packet.ReadXORByte(guid9[i], 3);
+                packet.ReadXORByte(guid9[i], 5);
+                packet.ReadSingle("Float188");
+                packet.ReadSingle("Float188");
+                packet.ReadXORByte(guid9[i], 0);
+                packet.ReadSingle("Float188");
+                packet.ReadXORByte(guid9[i], 7);
+                packet.ReadXORByte(guid9[i], 2);
+                packet.ReadXORByte(guid9[i], 6);
+                packet.WriteGuid("Guid9", guid9[i]);
+            }
+
+            if (bit98)
+            {
+                packet.ReadXORByte(guid6, 1);
+                packet.ReadSingle("Float88");
+                packet.ReadXORByte(guid6, 7);
+                packet.ReadXORByte(guid6, 0);
+                packet.ReadSingle("Float8C");
+                packet.ReadXORByte(guid6, 3);
+                packet.ReadXORByte(guid6, 6);
+                packet.ReadSingle("Float90");
+                packet.ReadXORByte(guid6, 2);
+                packet.ReadXORByte(guid6, 4);
+                packet.ReadXORByte(guid6, 5);
+                packet.WriteGuid("Guid6", guid6);
+            }
+
+            if (bit180)
+                packet.ReadByte("Byte180");
+            packet.ReadXORByte(guid2, 6);
+
+            for (var i = 0; i < bits34; ++i)
+            {
+                packet.ParseBitStream(guid11[i], 0, 7, 2, 3, 5, 1, 4, 6);
+                packet.WriteGuid("Guid11", guid11[i]);
+            }
+
+            packet.ReadXORByte(guid8, 0);
+            packet.ReadXORByte(guid8, 1);
+            packet.ReadXORByte(guid8, 3);
+            packet.ReadXORByte(guid8, 7);
+            packet.ReadXORByte(guid8, 5);
+            packet.ReadXORByte(guid8, 2);
+            packet.ReadXORByte(guid8, 4);
+            packet.ReadXORByte(guid8, 6);
+            packet.ReadXORByte(guid1, 4);
+            if (bit1A8)
+                packet.ReadInt32("Int1A8");
+            for (var i = 0; i < bits140; ++i)
+            {
+                packet.ReadInt32("IntED", i);
+                packet.ReadByte("ByteED", i);
+            }
+
+            if (bit198)
+                packet.ReadInt32("Int198");
+
+            if (bit164)
+                packet.ReadInt32("Int164");
+
+            packet.ReadXORByte(guid4, 1);
+            packet.ReadXORByte(guid4, 6);
+            packet.ReadXORByte(guid4, 5);
+            packet.ReadXORByte(guid4, 4);
+            packet.ReadXORByte(guid4, 2);
+            packet.ReadXORByte(guid4, 0);
+            packet.ReadXORByte(guid4, 7);
+            packet.ReadXORByte(guid4, 3);
+            packet.ReadXORByte(guid3, 0);
+            packet.ReadXORByte(guid3, 5);
+            packet.ReadXORByte(guid3, 4);
+            packet.ReadXORByte(guid3, 2);
+            packet.ReadXORByte(guid3, 7);
+            packet.ReadXORByte(guid3, 6);
+            packet.ReadXORByte(guid3, 1);
+            packet.ReadXORByte(guid3, 3);
+            if (bit194)
+                packet.ReadInt32("Int194");
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadWoWString("StringC0", bitsC0);
+            packet.ReadXORByte(guid2, 7);
+            if (bit1AC)
+                packet.ReadByte("Byte1AC");
+            if (bit170)
+                packet.ReadByte("Byte170");
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid2, 3);
+            if (bit17C)
+            {
+                packet.ReadInt32("Int174");
+                packet.ReadInt32("Int178");
+            }
+
+            if (bit151)
+                packet.ReadByte("Byte151");
+            for (var i = 0; i < bits154; ++i)
+                packet.ReadByte("Byte158", i);
+
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid1, 5);
+
+            if (bit16C)
+                packet.ReadInt32("Int16C");
+
+            packet.ReadXORByte(guid1, 0);
+
+            if (bit168)
+                packet.ReadSingle("Float168");
+
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid1, 3);
+
+            if (bit150)
+                packet.ReadByte("Byte150");
+
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid1, 7);
+
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("Guid2", guid2);
+            packet.WriteGuid("Guid3", guid3);
+            packet.WriteGuid("Guid4", guid4);
+            packet.WriteGuid("Guid8", guid8);
+        }
     }
 }
