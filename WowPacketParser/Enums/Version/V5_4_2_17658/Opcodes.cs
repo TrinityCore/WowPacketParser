@@ -64,6 +64,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x0E85},
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0x085A},
             {Opcode.SMSG_CRITERIA_UPDATE, 0x0A64},
+            {Opcode.SMSG_CRITERIA_UNKNOWN, 0x0C0D},
             {Opcode.SMSG_DB_REPLY, 0x089A},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x0F08},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x0839},
