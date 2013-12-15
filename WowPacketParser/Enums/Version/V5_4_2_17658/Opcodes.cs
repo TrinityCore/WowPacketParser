@@ -88,6 +88,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_TRAINER_LIST, 0x026D},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x138D},
             {Opcode.SMSG_UPDATE_OBJECT, 0x1C89},
+            {Opcode.SMSG_UPDATE_WORLD_STATE, 0x0CA1},
             {Opcode.SMSG_WARDEN_DATA, 0x083E},
             {Opcode.SMSG_WEATHER, 0x0267}
         };
