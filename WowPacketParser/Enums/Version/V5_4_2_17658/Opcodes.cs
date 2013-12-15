@@ -31,7 +31,6 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_LOGOUT_CANCEL, 0x0EE9},
             {Opcode.CMSG_NAME_QUERY, 0x05F4},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x006C},
-            {Opcode.CMSG_PAGE_TEXT_QUERY, 0x0E48},
             {Opcode.CMSG_PING, 0x18E2},
             {Opcode.CMSG_PLAYER_LOGIN, 0x0754},
             {Opcode.CMSG_REALM_NAME_QUERY, 0x0472},
@@ -46,6 +45,8 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x0448},
             {Opcode.CMSG_WARDEN_DATA, 0x0573},
             {Opcode.CMSG_WHO, 0x0CFD},
+
+            {Opcode.MSG_MULTIPLE_PACKETS1, 0x0E48},
 
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x0E29},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0899},

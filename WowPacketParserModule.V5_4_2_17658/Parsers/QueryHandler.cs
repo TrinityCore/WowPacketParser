@@ -498,7 +498,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_PAGE_TEXT_QUERY)]
+        //[Parser(Opcode.CMSG_PAGE_TEXT_QUERY)]
         public static void HandlePageTextQuery(Packet packet)
         {
             var guid = new byte[8];
@@ -534,6 +534,101 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
             Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
+        }
+
+        //[Parser(Opcode.SMSG_NAME_QUERY_RESPONSE)]
+        public static void HandleNameQueryResponse(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+            var guid3 = new byte[8];
+
+            guid1[4] = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
+            guid1[5] = packet.ReadBit();
+            guid1[1] = packet.ReadBit();
+            guid1[3] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadXORByte(guid1, 1);
+            
+            var hasData = packet.ReadByte("HasData");
+            if (hasData == 0)
+            {
+                packet.ReadEnum<Class>("Class", TypeCode.Byte);
+                packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
+                packet.ReadInt32("Realm Id");
+                packet.ReadEnum<Race>("Race", TypeCode.Byte);
+                packet.ReadInt32("Int24");
+                packet.ReadByte("Level");
+            }
+
+            packet.ReadXORByte(guid1, 5);
+
+            if (hasData == 0)
+            {
+                guid3[3] = packet.ReadBit();
+                guid2[7] = packet.ReadBit();
+                
+                var count = new int[5];
+                for (var i = 0; i < 5; ++i)
+                    count[i] = (int)packet.ReadBits(7);
+
+                guid2[3] = packet.ReadBit();
+                guid3[0] = packet.ReadBit();
+                guid2[5] = packet.ReadBit();
+                guid3[4] = packet.ReadBit();
+                guid2[0] = packet.ReadBit();
+                guid3[6] = packet.ReadBit();
+                guid3[7] = packet.ReadBit();
+                guid2[6] = packet.ReadBit();
+                guid2[1] = packet.ReadBit();
+                var bit20 = packet.ReadBit();
+                guid3[1] = packet.ReadBit();
+                var bits38 = (int)packet.ReadBits(6);
+                guid3[2] = packet.ReadBit();
+                guid2[4] = packet.ReadBit();
+                guid3[5] = packet.ReadBit();
+                guid2[2] = packet.ReadBit();
+
+                packet.ReadXORByte(guid3, 4);
+                packet.ReadXORByte(guid3, 1);
+                packet.ReadXORByte(guid3, 5);
+
+                for (var i = 0; i < 5; ++i)
+                    packet.ReadWoWString("Name Declined", count[i], i);
+
+                packet.ReadWoWString("Name", bits38);
+
+                packet.ReadXORByte(guid2, 2);
+                packet.ReadXORByte(guid2, 5);
+                packet.ReadXORByte(guid3, 0);
+                packet.ReadXORByte(guid3, 3);
+                packet.ReadXORByte(guid2, 0);
+                packet.ReadXORByte(guid2, 6);
+                packet.ReadXORByte(guid2, 1);
+                packet.ReadXORByte(guid3, 7);
+                packet.ReadXORByte(guid2, 4);
+                packet.ReadXORByte(guid2, 3);
+                packet.ReadXORByte(guid3, 6);
+                packet.ReadXORByte(guid2, 7);
+                packet.ReadXORByte(guid3, 2);
+
+                packet.WriteGuid("Guid2", guid2);
+                packet.WriteGuid("Guid3", guid3);
+
+            }
+
+            packet.WriteGuid("Guid1", guid1);
+
         }
     }
 }
