@@ -89,6 +89,8 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x0EA4},
             {Opcode.SMSG_PLAYER_MOVE, 0x0EC4},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x1A6B},
+            {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x0C1D},
+            {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x06A0},
             {Opcode.SMSG_SET_PROFICIENCY, 0x03AA},
             {Opcode.SMSG_SEND_SERVER_LOCATION, 0x038B},
             {Opcode.SMSG_SPELL_GO, 0x003E},
