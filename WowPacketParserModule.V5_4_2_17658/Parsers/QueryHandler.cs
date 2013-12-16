@@ -540,8 +540,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         public static void HandleNameQueryResponse(Packet packet)
         {
             var guid1 = new byte[8];
+            var accountId = new byte[8];
             var guid2 = new byte[8];
-            var guid3 = new byte[8];
 
             guid1[4] = packet.ReadBit();
             guid1[7] = packet.ReadBit();
@@ -575,60 +575,59 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             if (hasData == 0)
             {
-                guid3[3] = packet.ReadBit();
-                guid2[7] = packet.ReadBit();
+                guid2[3] = packet.ReadBit();
+                accountId[7] = packet.ReadBit();
                 
                 var count = new int[5];
                 for (var i = 0; i < 5; ++i)
                     count[i] = (int)packet.ReadBits(7);
 
-                guid2[3] = packet.ReadBit();
-                guid3[0] = packet.ReadBit();
-                guid2[5] = packet.ReadBit();
-                guid3[4] = packet.ReadBit();
+                accountId[3] = packet.ReadBit();
                 guid2[0] = packet.ReadBit();
-                guid3[6] = packet.ReadBit();
-                guid3[7] = packet.ReadBit();
-                guid2[6] = packet.ReadBit();
-                guid2[1] = packet.ReadBit();
-                var bit20 = packet.ReadBit();
-                guid3[1] = packet.ReadBit();
-                var bits38 = (int)packet.ReadBits(6);
-                guid3[2] = packet.ReadBit();
+                accountId[5] = packet.ReadBit();
                 guid2[4] = packet.ReadBit();
-                guid3[5] = packet.ReadBit();
+                accountId[0] = packet.ReadBit();
+                guid2[6] = packet.ReadBit();
+                guid2[7] = packet.ReadBit();
+                accountId[6] = packet.ReadBit();
+                accountId[1] = packet.ReadBit();
+                var bit20 = packet.ReadBit();
+                guid2[1] = packet.ReadBit();
+                var bits38 = (int)packet.ReadBits(6);
                 guid2[2] = packet.ReadBit();
+                accountId[4] = packet.ReadBit();
+                guid2[5] = packet.ReadBit();
+                accountId[2] = packet.ReadBit();
 
-                packet.ReadXORByte(guid3, 4);
-                packet.ReadXORByte(guid3, 1);
-                packet.ReadXORByte(guid3, 5);
+                packet.ReadXORByte(guid2, 4);
+                packet.ReadXORByte(guid2, 1);
+                packet.ReadXORByte(guid2, 5);
 
                 for (var i = 0; i < 5; ++i)
                     packet.ReadWoWString("Name Declined", count[i], i);
 
                 packet.ReadWoWString("Name", bits38);
 
-                packet.ReadXORByte(guid2, 2);
-                packet.ReadXORByte(guid2, 5);
-                packet.ReadXORByte(guid3, 0);
-                packet.ReadXORByte(guid3, 3);
+                packet.ReadXORByte(accountId, 2);
+                packet.ReadXORByte(accountId, 5);
                 packet.ReadXORByte(guid2, 0);
-                packet.ReadXORByte(guid2, 6);
-                packet.ReadXORByte(guid2, 1);
-                packet.ReadXORByte(guid3, 7);
-                packet.ReadXORByte(guid2, 4);
                 packet.ReadXORByte(guid2, 3);
-                packet.ReadXORByte(guid3, 6);
+                packet.ReadXORByte(accountId, 0);
+                packet.ReadXORByte(accountId, 6);
+                packet.ReadXORByte(accountId, 1);
                 packet.ReadXORByte(guid2, 7);
-                packet.ReadXORByte(guid3, 2);
+                packet.ReadXORByte(accountId, 4);
+                packet.ReadXORByte(accountId, 3);
+                packet.ReadXORByte(guid2, 6);
+                packet.ReadXORByte(accountId, 7);
+                packet.ReadXORByte(guid2, 2);
 
+                packet.WriteLine("Account: {0}", BitConverter.ToUInt64(accountId, 0));
                 packet.WriteGuid("Guid2", guid2);
-                packet.WriteGuid("Guid3", guid3);
 
             }
 
             packet.WriteGuid("Guid1", guid1);
-
         }
 
         [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE)]
