@@ -91,5 +91,42 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }
+
+        [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
+        public static void HandleWorldServerInfo(Packet packet)
+        {
+            packet.ReadTime("Last Weekly Reset");
+            packet.ReadInt32("Instance Difficulty ID");
+            packet.ReadByte("Byte18");
+
+            var bit30 = packet.ReadBit();
+            var bit14 = packet.ReadBit();
+            var bit20 = packet.ReadBit();
+            var bit38 = packet.ReadBit();
+
+            if (bit38)
+                packet.ReadInt32("Int34");
+
+            if (bit14)
+                packet.ReadInt32("Int10");
+
+            if (bit30)
+                packet.ReadInt32("Int2C");
+
+            if (bit20)
+                packet.ReadInt32("Int1C");
+        }
+
+        [Parser(Opcode.SMSG_WEEKLY_SPELL_USAGE)]
+        public static void HandleWeeklySpellUsage(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 21);
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadByte("Unk Int8");
+                packet.ReadInt32("Unk Int32");
+            }
+        }
     }
 }

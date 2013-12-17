@@ -109,8 +109,10 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_REMOVED_SPELL, 0x0008},
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x0C1D},
             {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x06A0},
+            {Opcode.SMSG_SET_PHASE_SHIFT, 0x0AD1},
             {Opcode.SMSG_SET_PROFICIENCY, 0x03AA},
             {Opcode.SMSG_SEND_SERVER_LOCATION, 0x038B},
+            {Opcode.SMSG_WORLD_SERVER_INFO, 0x134B},
             {Opcode.SMSG_SPELL_GO, 0x003E},
             {Opcode.SMSG_SPELL_START, 0x069C},
             {Opcode.SMSG_SUSPEND_COMMS, 0x0645},
@@ -124,7 +126,8 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_UPDATE_OBJECT, 0x1C89},
             {Opcode.SMSG_UPDATE_WORLD_STATE, 0x0CA1},
             {Opcode.SMSG_WARDEN_DATA, 0x083E},
-            {Opcode.SMSG_WEATHER, 0x0267}
+            {Opcode.SMSG_WEATHER, 0x0267},
+            {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x0419},
         };
     }
 }
