@@ -21,19 +21,19 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var bit10 = new bool[count];
             var bit2C = new bool[count];
 
-            var bits0 = new uint[count];
-            var bits2094 = new uint[count];
-            var bits10 = new uint[count];
+            var subjectLength = new uint[count];
+            var itemCount = new uint[count];
+            var bodyLength = new uint[count];
             
             for (var i = 0; i < count; ++i)
             {
                 bit1C[i] = packet.ReadBit();
                 bit24[i] = packet.ReadBit();
-                bits0[i] = packet.ReadBits(8);
-                bits2094[i] = packet.ReadBits(17);
-                bits10[i] = packet.ReadBits(13);
+                subjectLength[i] = packet.ReadBits(8);
+                itemCount[i] = packet.ReadBits(17);
+                bodyLength[i] = packet.ReadBits(13);
                 
-                for (var j = 0; j < bits2094[i]; ++j)
+                for (var j = 0; j < itemCount[i]; ++j)
                     packet.ReadBit("bit84", i, j);
 
                 bit10[i] = packet.ReadBit();
@@ -55,7 +55,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     packet.WriteGuid("Guid", guid[i]);
                 }
                 
-                for (var j = 0; j < bits2094[i]; ++j)
+                for (var j = 0; j < itemCount[i]; ++j)
                 {
                     packet.ReadInt32("Int14", i, j);
 
@@ -81,10 +81,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     packet.ReadByte("ByteED", i, j);
                 }
 
-                packet.ReadWoWString("Subject", bits0[i], i);
+                packet.ReadWoWString("Subject", subjectLength[i], i);
                 packet.ReadInt32("IntED", i);
                 packet.ReadInt32("IntED", i);
-                packet.ReadWoWString("Body", bits10[i], i);
+                packet.ReadWoWString("Body", bodyLength[i], i);
                 packet.ReadInt32("IntED", i);
                 packet.ReadSingle("Time", i);
                 packet.ReadByte("ByteED", i);
