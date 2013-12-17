@@ -152,5 +152,36 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadInt32("Int40");
             }
         }
+
+        [Parser(Opcode.CMSG_REDIRECT_AUTH_PROOF)]
+        public static void HandleRedirectAuthProof(Packet packet)
+        {
+            var sha = new byte[20];
+            packet.ReadInt64("Int64 Unk1");
+            packet.ReadInt64("Int64 Unk2");
+
+            sha[10] = packet.ReadByte();
+            sha[17] = packet.ReadByte();
+            sha[1] = packet.ReadByte();
+            sha[4] = packet.ReadByte();
+            sha[0] = packet.ReadByte();
+            sha[8] = packet.ReadByte();
+            sha[2] = packet.ReadByte();
+            sha[11] = packet.ReadByte();
+            sha[15] = packet.ReadByte();
+            sha[6] = packet.ReadByte();
+            sha[13] = packet.ReadByte();
+            sha[12] = packet.ReadByte();
+            sha[3] = packet.ReadByte();
+            sha[5] = packet.ReadByte();
+            sha[14] = packet.ReadByte();
+            sha[19] = packet.ReadByte();
+            sha[18] = packet.ReadByte();
+            sha[16] = packet.ReadByte();
+            sha[9] = packet.ReadByte();
+            sha[7] = packet.ReadByte();
+
+            packet.WriteLine("SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
+        }
     }
 }
