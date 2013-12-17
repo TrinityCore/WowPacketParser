@@ -56,6 +56,7 @@
     <Compile Include="Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsers\ActionBarHandler.cs" />
     <Compile Include="Parsers\ArenaHandler.cs" />
+    <Compile Include="Parsers\BattlePetHandler.cs" />
     <Compile Include="Parsers\ChannelHandler.cs" />
     <Compile Include="Parsers\CharacterHandler.cs" />
     <Compile Include="Parsers\ChatHandler.cs" />
