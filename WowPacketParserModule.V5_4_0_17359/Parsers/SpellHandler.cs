@@ -64,8 +64,8 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
 
             for (int i = 0; i < count; ++i)
             {
-                packet.ReadInt32("Category Cooldown");
-                packet.ReadInt32("Cooldown");
+                packet.ReadInt32("Category Cooldown", i);
+                packet.ReadInt32("Cooldown", i);
             }
         }
 

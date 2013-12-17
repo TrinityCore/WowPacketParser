@@ -868,5 +868,29 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
                 }
             }
         }
+
+        [Parser(Opcode.SMSG_SPELL_CATEGORY_COOLDOWN)]
+        public static void HandleSpellCategoryCooldown(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 21);
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Category Cooldown", i);
+                packet.ReadInt32("Cooldown", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_SEND_UNLEARN_SPELLS)]
+        public static void HandleSendUnlearnSpells(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 21);
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadByte("Unk Byte", i);
+                packet.ReadInt32("Unk Int32", i);
+                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+            }
+        }
     }
 }

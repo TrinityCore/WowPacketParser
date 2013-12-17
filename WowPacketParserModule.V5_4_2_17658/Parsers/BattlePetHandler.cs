@@ -116,7 +116,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadInt16("IntED", i);
                 packet.ReadInt16("IntED", i);
 
-                packet.ReadWoWString("StringED", bits2C[i], i);
+                packet.ReadWoWString("Custom Name", bits2C[i], i);
 
                 packet.ReadXORByte(guid3[i], 7);
 
