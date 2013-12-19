@@ -327,5 +327,77 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
             packet.WriteGuid("Target GUID", targetGUID);
             packet.WriteGuid("Caster GUID", casterGUID);
         }
+
+        [Parser(Opcode.SMSG_SPELLHEALLOG)]
+        public static void HandleRandom(Packet packet)
+        {
+            var guid2 = new byte[8];
+            var guid4 = new byte[8];
+
+            var bits44 = 0;
+
+            guid4[7] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            var bit5C = packet.ReadBit();
+            guid4[5] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            var bit64 = packet.ReadBit();
+            guid4[0] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid4[1] = packet.ReadBit();
+            guid4[3] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid4[2] = packet.ReadBit();
+            var hasPowerData = packet.ReadBit();
+            guid4[4] = packet.ReadBit();
+            var bit18 = packet.ReadBit();
+            if (hasPowerData)
+                bits44 = (int)packet.ReadBits(21);
+            guid4[6] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            packet.ReadInt32("Int34");
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid4, 7);
+            packet.ReadXORByte(guid4, 0);
+            packet.ReadXORByte(guid4, 4);
+            packet.ReadInt32("Overheal");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            if (bit5C)
+                packet.ReadSingle("Float58");
+            if (hasPowerData)
+            {
+                packet.ReadInt32("Int3C");
+                packet.ReadInt32("Int40");
+                for (var i = 0; i < bits44; ++i)
+                {
+                    packet.ReadInt32("IntED", i);
+                    packet.ReadInt32("IntED", i);
+                }
+
+                packet.ReadInt32("Int38");
+            }
+
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid2, 3);
+            if (bit64)
+                packet.ReadSingle("Float60");
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadInt32("Damage");
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid4, 1);
+            packet.ReadXORByte(guid4, 5);
+            packet.ReadXORByte(guid4, 3);
+            packet.ReadXORByte(guid4, 2);
+            packet.ReadXORByte(guid4, 6);
+            packet.ReadXORByte(guid2, 2);
+
+            packet.WriteGuid("Guid2", guid2);
+            packet.WriteGuid("Guid4", guid4);
+        }
     }
 }

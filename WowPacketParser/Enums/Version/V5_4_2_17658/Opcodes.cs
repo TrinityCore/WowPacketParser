@@ -124,6 +124,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x134B},
             {Opcode.SMSG_SPELL_GO, 0x003E},
             {Opcode.SMSG_SPELL_START, 0x069C},
+            {Opcode.SMSG_SPELLHEALLOG, 0x0518},
             {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x0596},
             {Opcode.SMSG_SUSPEND_COMMS, 0x0645},
             {Opcode.SMSG_TALENTS_INFO, 0x0A79},
