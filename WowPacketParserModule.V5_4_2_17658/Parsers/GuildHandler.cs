@@ -191,5 +191,11 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadInt32("Creation Order", i);
             }
         }
+
+        [Parser(Opcode.SMSG_GUILD_NEWS_TEXT)]
+        public static void HandleNewText(Packet packet)
+        {
+            packet.ReadWoWString("Text", (int)packet.ReadBits(10));
+        }
     }
 }

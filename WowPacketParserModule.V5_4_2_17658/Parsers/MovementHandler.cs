@@ -401,5 +401,23 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             packet.ReadInt32("Unk Int32");
         }
+
+        [Parser(Opcode.SMSG_TRANSFER_PENDING)]
+        public static void HandleTransferPending(Packet packet)
+        {
+            var customLoadScreenSpell = packet.ReadBit();
+            var hasTransport = packet.ReadBit();
+            
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
+
+            if (hasTransport)
+            {
+                packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Transport Map ID");
+                packet.ReadInt32("Transport Entry");
+            }
+
+            if (customLoadScreenSpell)
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+        }
     }
 }
