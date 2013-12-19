@@ -40,5 +40,20 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 MiscellaneousHandler.HandlePlaySound(packet);
             }
         }
+
+        [Parser(Opcode.MSG_MULTIPLE_PACKETS3)]
+        public static void HandleMultiplePackets3(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                packet.WriteLine("ClientToServer: CMSG_GAMEOBJECT_QUERY (0x08BC)");
+                GameObjectHandler.HandleGameObjectQuery(packet);
+            }
+            else
+            {
+                packet.WriteLine("ServerToClient: SMSG_PET_NAME_QUERY_RESPONSE (0x08BC)");
+                PetHandler.HandlePetNameQueryResponse(packet);
+            }
+        }
     }
 }

@@ -23,7 +23,6 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_CREATURE_QUERY, 0x0C4A},
             {Opcode.CMSG_DB_QUERY_BULK, 0x0676},
             {Opcode.CMSG_DUNGEON_FINDER_GET_SYSTEM_INFO, 0x05DA},
-            {Opcode.CMSG_GAMEOBJECT_QUERY, 0x08BC},
             {Opcode.CMSG_GOSSIP_HELLO, 0x02EF},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x0ECA},
             {Opcode.CMSG_INSPECT, 0x0206},
@@ -35,6 +34,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_MESSAGECHAT_SAY, 0x0866},
             {Opcode.CMSG_MESSAGECHAT_YELL, 0x03AB},
             {Opcode.CMSG_NAME_QUERY, 0x05F4},
+            {Opcode.CMSG_PET_NAME_QUERY, 0x0249},
             {Opcode.CMSG_PING, 0x18E2},
             {Opcode.CMSG_PLAYER_LOGIN, 0x0754},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x047F},
@@ -54,6 +54,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
 
             {Opcode.MSG_MULTIPLE_PACKETS1, 0x0E48},
             {Opcode.MSG_MULTIPLE_PACKETS2, 0x006C},
+            {Opcode.MSG_MULTIPLE_PACKETS3, 0x08BC},
 
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x0E29},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0899},
