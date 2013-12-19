@@ -79,7 +79,7 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
             }
 
             packet.ReadXORByte(targetGUID, 6);
-            packet.ReadInt32("Int94");
+            packet.ReadUInt32("Blocked"); // correct?
             packet.ReadXORByte(casterGUID, 1);
             packet.ReadXORByte(targetGUID, 0);
             packet.ReadByte("SchoolMask");
@@ -114,7 +114,7 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
             packet.ReadXORByte(casterGUID, 4);
             packet.ReadXORByte(casterGUID, 2);
             packet.ReadXORByte(targetGUID, 5);
-            packet.ReadInt32("Int88");
+            packet.ReadUInt32("Absorb"); // correct?
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
             packet.ReadXORByte(targetGUID, 2);
             packet.ReadInt32("Overkill");
@@ -122,7 +122,7 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
             packet.ReadXORByte(casterGUID, 5);
             packet.ReadUInt32("Damage");
             packet.ReadXORByte(casterGUID, 3);
-            packet.ReadUInt32("Resist");
+            packet.ReadUInt32("Resist"); // correct?
             packet.ReadXORByte(targetGUID, 4);
             packet.ReadXORByte(targetGUID, 7);
             packet.ReadXORByte(casterGUID, 7);
