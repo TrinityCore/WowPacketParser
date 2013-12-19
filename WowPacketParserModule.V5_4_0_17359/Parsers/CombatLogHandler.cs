@@ -354,7 +354,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Attacker GUID", AttackerGUID);
             packet.WriteGuid("Victim GUID", VictimGUID);
-
         }
 
         [Parser(Opcode.SMSG_ATTACKSTOP)]
@@ -401,7 +400,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Attacker GUID", AttackerGUID);
             packet.WriteGuid("Victim GUID", VictimGUID);
-
         }
 
         [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]
