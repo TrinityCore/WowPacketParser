@@ -315,7 +315,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Target GUID", targetGUID);
             packet.WriteGuid("Caster GUID", casterGUID);
-
         }
 
         [Parser(Opcode.SMSG_ATTACKSTART)]

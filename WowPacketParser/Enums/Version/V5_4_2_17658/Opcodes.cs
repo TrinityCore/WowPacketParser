@@ -110,6 +110,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_NEW_WORLD, 0x0E04},
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x0877},
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x0EA4},
+            {Opcode.SMSG_PERIODICAURALOG, 0x0515},
             {Opcode.SMSG_PLAYER_MOVE, 0x0EC4},
             {Opcode.SMSG_PONG, 0x0C46},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x1A6B},
