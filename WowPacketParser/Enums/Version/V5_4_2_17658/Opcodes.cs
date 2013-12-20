@@ -58,6 +58,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.MSG_MULTIPLE_PACKETS3, 0x08BC},
 
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x0E29},
+            {Opcode.SMSG_ALL_ACHIEVEMENT_CRITERIA_DATA, 0x08F2},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0899},
             {Opcode.SMSG_ACTION_BUTTONS, 0x0E2C},
             {Opcode.SMSG_ADDON_INFO, 0x0A9C},
@@ -100,6 +101,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x0502},
             {Opcode.SMSG_HOTFIX_INFO, 0x0A4B},
             {Opcode.SMSG_LEARNED_SPELL, 0x0C6E},
+            {Opcode.SMSG_LFG_PLAYER_INFO, 0x0DA0},
             {Opcode.SMSG_LIST_INVENTORY, 0x0ADC},
             {Opcode.SMSG_LOAD_CUF_PROFILES, 0x0044},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0ABF},
