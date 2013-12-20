@@ -108,6 +108,7 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
             {Opcode.SMSG_SPELL_GO, 0x14EC},
             {Opcode.SMSG_SPELL_START, 0x0CCC},
             {Opcode.SMSG_TALENTS_INFO, 0x0494},
+            {Opcode.SMSG_TRAINER_LIST, 0x01BC},
             {Opcode.SMSG_TRANSFER_PENDING, 0x0917},
             {Opcode.SMSG_TRIGGER_CINEMATIC, 0x0198},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x0D1B},

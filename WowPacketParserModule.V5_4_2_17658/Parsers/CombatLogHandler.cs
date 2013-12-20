@@ -329,7 +329,7 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
         }
 
         [Parser(Opcode.SMSG_SPELLHEALLOG)]
-        public static void HandleRandom(Packet packet)
+        public static void HandleSpellHealLog(Packet packet)
         {
             var guid2 = new byte[8];
             var guid4 = new byte[8];
@@ -353,7 +353,7 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
             guid4[2] = packet.ReadBit();
             var hasPowerData = packet.ReadBit();
             guid4[4] = packet.ReadBit();
-            var bit18 = packet.ReadBit();
+            packet.ReadBit("Critical");
             if (hasPowerData)
                 bits44 = (int)packet.ReadBits(21);
             guid4[6] = packet.ReadBit();
