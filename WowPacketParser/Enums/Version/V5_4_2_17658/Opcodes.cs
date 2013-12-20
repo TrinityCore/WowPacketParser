@@ -25,6 +25,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_DUNGEON_FINDER_GET_SYSTEM_INFO, 0x05DA},
             {Opcode.CMSG_GOSSIP_HELLO, 0x02EF},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x0ECA},
+            {Opcode.CMSG_GUILD_QUERY, 0x055C},
             {Opcode.CMSG_INSPECT, 0x0206},
             {Opcode.CMSG_LEARN_TALENT, 0x026C},
             {Opcode.CMSG_LOAD_SCREEN, 0x0650},
