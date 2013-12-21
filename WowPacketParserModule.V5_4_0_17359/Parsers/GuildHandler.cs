@@ -206,7 +206,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         }
 
         [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_DATA)]
-        public static void HandleUnknown3166(Packet packet)
+        public static void HandleGuildAchievementData(Packet packet)
         {
             var count = packet.ReadBits("Criteria count", 20);
 

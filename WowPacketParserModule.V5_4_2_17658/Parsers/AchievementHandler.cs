@@ -194,6 +194,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             var counter = new byte[count][];
             var accountId = new byte[count][];
+            var flags = new byte[count];
 
             for (var i = 0; i < count; ++i)
             {
@@ -202,7 +203,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
                 accountId[i][6] = packet.ReadBit();
 
-                packet.ReadBits("Flags", 4, i); // some flag... & 1 -> delete
+                flags[i] = (byte)(packet.ReadBits(4) & 0xFFu);
 
                 counter[i][1] = packet.ReadBit();
                 counter[i][5] = packet.ReadBit();
@@ -250,8 +251,9 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadXORByte(counter[i], 0);
                 packet.ReadXORByte(accountId[i], 3);
 
-                packet.WriteLine("[{0}] Counter: {1}", i, BitConverter.ToInt64(counter[i], 0));
-                packet.WriteLine("[{0}] Account: {0}", i, BitConverter.ToUInt64(accountId[i], 0));
+                packet.WriteLine("[{0}] Criteria Flags: {1}", i, flags[i]);
+                packet.WriteLine("[{0}] Criteria Counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
+                packet.WriteLine("[{0}] Account: {1}", i, BitConverter.ToUInt64(accountId[i], 0));
             }
         }
     }
