@@ -91,7 +91,18 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 foreach (var questpoi in questPOIs)
                     Storage.QuestPOIs.Add(new Tuple<uint, uint>((uint)questId, questpoi.Idx), questpoi, packet.TimeSpan);
             }
+        }
 
+        [Parser(Opcode.CMSG_QUEST_QUERY)]
+        public static void HandleQuestQuery(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadInt32("Entry");
+            packet.StartBitStream(guid, 1, 6, 3, 5, 0, 7, 4, 2);
+            packet.ParseBitStream(guid, 0, 5, 4, 1, 7, 6, 3, 2);
+
+            packet.WriteGuid("Guid", guid);
         }
     }
 }

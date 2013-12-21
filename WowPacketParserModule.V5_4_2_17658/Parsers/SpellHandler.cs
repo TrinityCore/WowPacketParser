@@ -335,7 +335,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
                 packet.ReadXORByte(guid4, 0);
                 packet.ReadXORByte(guid4, 7);
                 packet.ReadXORByte(guid4, 4);
-                packet.WriteGuid("GuidB", guid4);
+                packet.WriteGuid("Guid4", guid4);
             }
             
             packet.ParseBitStream(guid1, 4, 2, 1, 0, 5, 3, 6, 7);
@@ -355,13 +355,13 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
                 {
                     packet.ReadSingle("Float168");
                     packet.ReadInt32("Int164");
+
                     if (bit178)
                     {
                         packet.ReadSingle("Float170");
                         packet.ReadSingle("Float174");
                         packet.ReadSingle("Float16C");
                     }
-
                 }
 
                 if (bit120)
@@ -394,28 +394,37 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
                     if (bit14C)
                         packet.ReadInt32("Int148");
 
-                    packet.WriteGuid("Guid25", guid6);
+                    packet.WriteGuid("Guid6", guid6);
                 }
 
                 if (bit180)
                     packet.ReadSingle("Float180");
 
                 packet.ReadXORByte(guid5, 2);
+
                 packet.ReadSingle("Float11C");
+
                 packet.ReadXORByte(guid5, 1);
                 packet.ReadXORByte(guid5, 3);
+
                 packet.ReadSingle("Float114");
+
                 if (bit198)
                     packet.ReadInt32("Int198");
+
                 packet.ReadXORByte(guid5, 0);
                 packet.ReadSingle("Float118");
                 packet.ReadXORByte(guid5, 5);
+
                 if (bit160)
                     packet.ReadSingle("Float160");
+
                 packet.ReadXORByte(guid5, 6);
+
                 if (bit110)
                     packet.ReadInt32("Int110");
-                packet.WriteGuid("Guid20", guid5);
+
+                packet.WriteGuid("Guid5", guid5);
             }
 
             packet.ParseBitStream(guid2, 7, 2, 6, 3, 5, 0, 1, 4);
@@ -433,7 +442,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
                 packet.ReadXORByte(guid3, 3);
                 packet.ReadXORByte(guid3, 7);
                 packet.ReadXORByte(guid3, 5);
-                packet.WriteGuid("Guid7", guid3);
+                packet.WriteGuid("Guid3", guid3);
             }
 
             if (bit18)
@@ -442,8 +451,8 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
             if (hasCastCount)
                 packet.ReadByte("Cast Count");
 
-            packet.WriteGuid("Guid5", guid1);
-            packet.WriteGuid("Guid6", guid2);
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("Guid2", guid2);
         }
 
         [Parser(Opcode.SMSG_SPELL_GO)]
