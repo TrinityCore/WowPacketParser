@@ -228,7 +228,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadXORByte(counter[i], 2);
                 packet.ReadXORByte(guid[i], 4);
                 packet.ReadXORByte(counter[i], 7);
-                packet.ReadXORByte(counter[i], 4);
+                packet.ReadXORByte(counter[i], 3);
 
                 packet.ReadPackedTime("Time", i);
 
