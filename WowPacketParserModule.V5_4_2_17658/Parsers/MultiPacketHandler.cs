@@ -83,5 +83,18 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 MovementHandler.HandleMoveTeleport(packet);
             }
         }
+
+        [Parser(Opcode.MSG_MULTIPLE_PACKETS6)]
+        public static void HandleMultiplePackets6(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+            }
+            else
+            {
+                packet.WriteLine("ServerToClient: SMSG_MOVE_SET_RUN_SPEED (0x0183)");
+                MovementHandler.HandleMoveSetRunSpeed(packet);
+            }
+        }
     }
 }

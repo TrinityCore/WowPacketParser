@@ -477,5 +477,22 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteLine("Destination: {0}", pos);
             packet.WriteGuid("Guid", guid);
         }
+
+        //[Parser(Opcode.SMSG_MOVE_SET_RUN_SPEED)]
+        public static void HandleMoveSetRunSpeed(Packet packet)
+        {
+            var guid = packet.StartBitStream(3, 4, 5, 7, 1, 2, 6, 0);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadSingle("Speed");
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadInt32("Unk Int32");
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 4);
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
