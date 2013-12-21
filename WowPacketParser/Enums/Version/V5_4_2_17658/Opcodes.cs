@@ -76,6 +76,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_CHAR_ENUM, 0x08B9},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x0A4C},
             {Opcode.SMSG_CHANNEL_NOTIFY, 0x1C04},
+            {Opcode.SMSG_CHANNEL_START, 0x0034},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x0E85},
             {Opcode.SMSG_CHAR_CREATE, 0x0FAD},
             {Opcode.SMSG_LOGOUT_COMPLETE, 0x0C6D},

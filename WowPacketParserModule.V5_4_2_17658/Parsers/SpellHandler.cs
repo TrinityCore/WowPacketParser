@@ -1132,5 +1132,97 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
             }
         }
+
+        [Parser(Opcode.SMSG_CHANNEL_START)]
+        public static void HandleSpellChannelStart(Packet packet)
+        {
+            var targetGUD = new byte[8];
+            var guid2 = new byte[8];
+            var casterGUID = new byte[8];
+
+            var bit20 = false;
+            var bit24 = false;
+
+            casterGUID[3] = packet.ReadBit();
+            casterGUID[2] = packet.ReadBit();
+            casterGUID[5] = packet.ReadBit();
+            casterGUID[0] = packet.ReadBit();
+            casterGUID[4] = packet.ReadBit();
+
+            var bit28 = packet.ReadBit();
+            if (bit28)
+            {
+                targetGUD[0] = packet.ReadBit();
+                targetGUD[3] = packet.ReadBit();
+                targetGUD[5] = packet.ReadBit();
+
+                bit24 = !packet.ReadBit();
+
+                targetGUD[6] = packet.ReadBit();
+                targetGUD[4] = packet.ReadBit();
+
+                bit20 = !packet.ReadBit();
+                packet.ReadBit(); // fake bit
+
+                packet.StartBitStream(guid2, 2, 5, 0, 6, 3, 7, 4, 1);
+
+                targetGUD[2] = packet.ReadBit();
+                targetGUD[7] = packet.ReadBit();
+                targetGUD[1] = packet.ReadBit();
+            }
+
+            casterGUID[6] = packet.ReadBit();
+            casterGUID[7] = packet.ReadBit();
+            casterGUID[1] = packet.ReadBit();
+
+            var bit48 = packet.ReadBit();
+            if (bit28)
+            {
+                packet.ParseBitStream(guid2, 4, 7, 6, 0, 1, 3, 5, 2);
+
+                packet.ReadXORByte(targetGUD, 0);
+
+                if (bit20)
+                    packet.ReadInt32("Heal Amount");
+
+                packet.ReadXORByte(targetGUD, 4);
+                packet.ReadXORByte(targetGUD, 5);
+                packet.ReadXORByte(targetGUD, 3);
+                packet.ReadXORByte(targetGUD, 7);
+                packet.ReadXORByte(targetGUD, 2);
+                packet.ReadXORByte(targetGUD, 1);
+
+                if (bit24)
+                    packet.ReadByte("Type");
+
+                packet.ReadXORByte(targetGUD, 6);
+
+                packet.WriteGuid("TargetGUD", targetGUD);
+                packet.WriteGuid("Guid2", guid2);
+            }
+
+            packet.ReadXORByte(casterGUID, 2);
+            packet.ReadXORByte(casterGUID, 4);
+            packet.ReadXORByte(casterGUID, 7);
+
+            if (bit48)
+            {
+                packet.ReadInt32("Int44");
+                packet.ReadInt32("Int40");
+            }
+
+            packet.ReadXORByte(casterGUID, 1);
+            packet.ReadXORByte(casterGUID, 5);
+            packet.ReadXORByte(casterGUID, 3);
+
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+
+            packet.ReadXORByte(casterGUID, 0);
+            packet.ReadXORByte(casterGUID, 6);
+
+            packet.ReadInt32("Duration");
+
+            packet.WriteGuid("CasterGUID", casterGUID);
+        }
     }
 }
