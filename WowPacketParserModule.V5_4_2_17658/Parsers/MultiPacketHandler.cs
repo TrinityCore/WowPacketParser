@@ -55,5 +55,20 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 PetHandler.HandlePetNameQueryResponse(packet);
             }
         }
+
+        [Parser(Opcode.MSG_MULTIPLE_PACKETS4)]
+        public static void HandleMultiplePackets4(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                packet.WriteLine("ClientToServer: CMSG_PLAYED_TIME (0x0A12)");
+                CharacterHandler.HandlePlayedTime(packet);
+            }
+            else
+            {
+                packet.WriteLine("ServerToClient: SMSG_BINDPOINTUPDATE (0x0A12)");
+                MovementHandler.HandleBindPointUpdate(packet);
+            }
+        }
     }
 }

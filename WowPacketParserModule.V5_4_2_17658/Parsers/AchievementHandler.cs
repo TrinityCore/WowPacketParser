@@ -92,7 +92,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         public static void HandleAllAchievementData(Packet packet)
         {
             var bits10 = packet.ReadBits("Achievement count", 20);
-            
+
             var guid1 = new byte[bits10][];
             for (var i = 0; i < bits10; ++i)
             {
@@ -101,7 +101,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             }
 
             var bits20 = packet.ReadBits(19);
-            
+
             var counter = new byte[bits20][];
             var guid2 = new byte[bits20][];
             var flags = new byte[bits20];
@@ -130,7 +130,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 guid2[i][3] = packet.ReadBit();
                 guid2[i][0] = packet.ReadBit();
             }
-            
+
             for (var i = 0; i < bits20; ++i)
             {
                 packet.ReadXORByte(guid2[i], 2);
@@ -165,7 +165,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.WriteLine("[{0}] Criteria Counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
                 packet.WriteGuid("Criteria GUID", guid2[i], i);
             }
-            
+
             for (var i = 0; i < bits10; ++i)
             {
                 packet.ReadUInt32("Achievement Id", i);
@@ -185,6 +185,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
                 packet.WriteGuid("Criteria GUID", guid1[i], i);
             }
+        }
 
         [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_CRITERIA_DATA)]
         public static void HandleAllAchievementCriteriaData(Packet packet)

@@ -8,7 +8,7 @@ using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_4_2_17658.Parsers
 {
-    public static class charGuids
+    public static class CharacterHandler
     {
         [Parser(Opcode.SMSG_CHAR_ENUM)]
         public static void HandleCharEnum(Packet packet)
@@ -189,6 +189,12 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 if (hasWeekCount[i]) // 1Ch
                     packet.ReadUInt32("Weekly count", i);
             }
+        }
+
+        [Parser(Opcode.CMSG_PLAYED_TIME)]
+        public static void HandlePlayedTime(Packet packet)
+        {
+            packet.ReadBoolean("Print in chat");
         }
     }
 }

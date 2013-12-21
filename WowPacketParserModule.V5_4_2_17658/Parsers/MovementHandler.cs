@@ -376,7 +376,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteLine("Position: {0}", pos);
         }
 
-        [Parser(Opcode.SMSG_BINDPOINTUPDATE)]
+        //[Parser(Opcode.SMSG_BINDPOINTUPDATE)]
         public static void HandleBindPointUpdate(Packet packet)
         {
             var pos = new Vector3();

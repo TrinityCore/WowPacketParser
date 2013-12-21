@@ -40,6 +40,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_PLAYER_LOGIN, 0x0754},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x047F},
             {Opcode.CMSG_REALM_NAME_QUERY, 0x0472},
+            {Opcode.CMSG_REALM_SPLIT, 0x10EE},
             {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x1262},
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x126E},
             {Opcode.CMSG_QUERY_WORLD_COUNTDOWN_TIMER, 0x08DD},
@@ -56,6 +57,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.MSG_MULTIPLE_PACKETS1, 0x0E48},
             {Opcode.MSG_MULTIPLE_PACKETS2, 0x006C},
             {Opcode.MSG_MULTIPLE_PACKETS3, 0x08BC},
+            {Opcode.MSG_MULTIPLE_PACKETS4, 0x0A12},
 
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x0E29},
             {Opcode.SMSG_ALL_ACHIEVEMENT_CRITERIA_DATA, 0x08F2},
@@ -69,7 +71,6 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_AUTH_CHALLENGE, 0x0C42},
             {Opcode.SMSG_AUTH_RESPONSE, 0x03A8},
             {Opcode.SMSG_BATTLE_PET_JOURNAL, 0x024B},
-            {Opcode.SMSG_BINDPOINTUPDATE, 0x0A12},
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x02FE},
             {Opcode.SMSG_CHAR_ENUM, 0x08B9},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x0A4C},
