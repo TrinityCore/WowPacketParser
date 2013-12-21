@@ -500,9 +500,7 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
                 bits120 = packet.ReadBits("bits120", 7);
 
             if (bit112)
-            {
                 packet.StartBitStream(guid1, 3, 5, 1, 7, 0, 6, 2, 4);
-            }
 
             if (bit416)
             {
@@ -592,6 +590,7 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
             if (bit416)
             {
                 packet.ReadXORByte(guid2, 3);
+
                 if (bit344)
                 {
                     packet.ReadXORByte(guid3, 2);
@@ -640,9 +639,8 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
                 packet.ParseBitStream(guid2, 0, 6);
 
                 for (var i = 0; i < bits392; ++i)
-                {
                     packet.ReadUInt32("unk8", i);
-                }
+
                 packet.ReadSingle("float11x");
                 packet.ReadXORByte(guid2, 2);
                 packet.ReadSingle("float12");
