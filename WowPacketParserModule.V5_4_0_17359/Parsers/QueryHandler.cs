@@ -709,7 +709,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadByte("ByteEA", i);
 
                 for (var j = 0; j < counter[i]; ++j)
-                    packet.ReadInt32("Int118", i);
+                    packet.ReadInt32("Int118", i, j);
             }
 
             packet.ReadInt32("Int58");
