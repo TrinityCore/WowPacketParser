@@ -88,8 +88,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA)]
-        public static void HandleAllAchievementData(Packet packet)
+        [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA_PLAYER)]
+        public static void HandleAllAchievementDataPlayer(Packet packet)
         {
             var bits10 = packet.ReadBits("Achievement count", 20);
 
@@ -187,71 +187,71 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_CRITERIA_DATA)]
-        public static void HandleAllAchievementCriteriaData(Packet packet)
+        [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA_ACCOUNT)]
+        public static void HandleAllAchievementCriteriaDataAccount(Packet packet)
         {
             var count = packet.ReadBits("Criteria count", 19);
 
             var counter = new byte[count][];
-            var guid = new byte[count][];
+            var accountId = new byte[count][];
 
             for (var i = 0; i < count; ++i)
             {
                 counter[i] = new byte[8];
-                guid[i] = new byte[8];
+                accountId[i] = new byte[8];
 
-                guid[i][6] = packet.ReadBit();
+                accountId[i][6] = packet.ReadBit();
 
                 packet.ReadBits("Flags", 4, i); // some flag... & 1 -> delete
 
                 counter[i][1] = packet.ReadBit();
                 counter[i][5] = packet.ReadBit();
-                guid[i][2] = packet.ReadBit();
-                guid[i][7] = packet.ReadBit();
-                guid[i][4] = packet.ReadBit();
+                accountId[i][2] = packet.ReadBit();
+                accountId[i][7] = packet.ReadBit();
+                accountId[i][4] = packet.ReadBit();
                 counter[i][4] = packet.ReadBit();
-                guid[i][3] = packet.ReadBit();
+                accountId[i][3] = packet.ReadBit();
                 counter[i][3] = packet.ReadBit();
                 counter[i][2] = packet.ReadBit();
                 counter[i][6] = packet.ReadBit();
-                guid[i][5] = packet.ReadBit();
-                guid[i][0] = packet.ReadBit();
+                accountId[i][5] = packet.ReadBit();
+                accountId[i][0] = packet.ReadBit();
                 counter[i][0] = packet.ReadBit();
                 counter[i][7] = packet.ReadBit();
-                guid[i][1] = packet.ReadBit();
+                accountId[i][1] = packet.ReadBit();
             }
 
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadXORByte(counter[i], 6);
-                packet.ReadXORByte(guid[i], 1);
+                packet.ReadXORByte(accountId[i], 1);
                 packet.ReadXORByte(counter[i], 2);
-                packet.ReadXORByte(guid[i], 4);
+                packet.ReadXORByte(accountId[i], 4);
                 packet.ReadXORByte(counter[i], 7);
                 packet.ReadXORByte(counter[i], 3);
 
                 packet.ReadPackedTime("Time", i);
 
                 packet.ReadXORByte(counter[i], 4);
-                packet.ReadXORByte(guid[i], 7);
+                packet.ReadXORByte(accountId[i], 7);
 
                 packet.ReadInt32("Criteria ID", i);
                 packet.ReadUInt32("Timer 1", i);
 
-                packet.ReadXORByte(guid[i], 2);
-                packet.ReadXORByte(guid[i], 0);
+                packet.ReadXORByte(accountId[i], 2);
+                packet.ReadXORByte(accountId[i], 0);
 
                 packet.ReadUInt32("Timer 2", i);
 
                 packet.ReadXORByte(counter[i], 5);
                 packet.ReadXORByte(counter[i], 1);
-                packet.ReadXORByte(guid[i], 5);
-                packet.ReadXORByte(guid[i], 6);
+                packet.ReadXORByte(accountId[i], 5);
+                packet.ReadXORByte(accountId[i], 6);
                 packet.ReadXORByte(counter[i], 0);
-                packet.ReadXORByte(guid[i], 3);
+                packet.ReadXORByte(accountId[i], 3);
 
                 packet.WriteLine("[{0}] Counter: {1}", i, BitConverter.ToInt64(counter[i], 0));
-                packet.WriteGuid("Guid", guid[i], i);
+                packet.WriteLine("[{0}] Account: {0}", i, BitConverter.ToUInt64(accountId[i], 0));
             }
         }
     }
