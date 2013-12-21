@@ -80,19 +80,35 @@ namespace WowPacketParser.SQL.Builders
 
         public static string NpcText()
         {
-            if (Storage.NpcTexts.IsEmpty())
+            if (!Storage.NpcTexts.IsEmpty())
+            {
+                if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_text))
+                    return string.Empty;
+
+                foreach (var npcText in Storage.NpcTexts)
+                    npcText.Value.Item1.ConvertToDBStruct();
+
+                var entries = Storage.NpcTexts.Keys();
+                var templatesDb = SQLDatabase.GetDict<uint, NpcText>(entries, "ID");
+
+                return SQLUtil.CompareDicts(Storage.NpcTexts, templatesDb, StoreNameType.NpcText, "ID");
+            }
+            else if (!Storage.NpcTextsMop.IsEmpty())
+            {
+
+                if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_text))
+                    return string.Empty;
+
+                foreach (var npcText in Storage.NpcTextsMop)
+                    npcText.Value.Item1.ConvertToDBStruct();
+
+                var entries = Storage.NpcTextsMop.Keys();
+                var templatesDb = SQLDatabase.GetDict<uint, NpcTextMop>(entries, "ID");
+
+                return SQLUtil.CompareDicts(Storage.NpcTextsMop, templatesDb, StoreNameType.NpcText, "ID");
+            }
+            else
                 return String.Empty;
-
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_text))
-                return string.Empty;
-
-            foreach (var npcText in Storage.NpcTexts)
-                npcText.Value.Item1.ConvertToDBStruct();
-
-            var entries = Storage.NpcTexts.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, NpcText>(entries, "ID");
-
-            return SQLUtil.CompareDicts(Storage.NpcTexts, templatesDb, StoreNameType.NpcText, "ID");
         }
     }
 }
