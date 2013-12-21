@@ -30,6 +30,9 @@ namespace WowPacketParser.SQL
             if (!Storage.NpcTexts.IsEmpty())
                 foreach (var obj in Storage.NpcTexts)
                     obj.Value.Item1.WDBVerified = build;
+            if (!Storage.NpcTextsMop.IsEmpty())
+                foreach (var obj in Storage.NpcTextsMop)
+                    obj.Value.Item1.WDBVerified = build;
             if (!Storage.PageTexts.IsEmpty())
                 foreach (var obj in Storage.PageTexts)
                     obj.Value.Item1.WDBVerified = build;
