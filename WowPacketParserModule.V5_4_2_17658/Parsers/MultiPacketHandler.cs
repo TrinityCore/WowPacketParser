@@ -70,5 +70,18 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 MovementHandler.HandleBindPointUpdate(packet);
             }
         }
+
+        [Parser(Opcode.MSG_MULTIPLE_PACKETS5)]
+        public static void HandleMultiplePackets5(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+            }
+            else
+            {
+                packet.WriteLine("ServerToClient: SMSG_MOVE_TELEPORT (0x0EC5)");
+                MovementHandler.HandleMoveTeleport(packet);
+            }
+        }
     }
 }

@@ -59,6 +59,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.MSG_MULTIPLE_PACKETS2, 0x006C},
             {Opcode.MSG_MULTIPLE_PACKETS3, 0x08BC},
             {Opcode.MSG_MULTIPLE_PACKETS4, 0x0A12},
+            {Opcode.MSG_MULTIPLE_PACKETS5, 0x0EC5},
 
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_ACCOUNT, 0x08F2},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_PLAYER, 0x0E29},

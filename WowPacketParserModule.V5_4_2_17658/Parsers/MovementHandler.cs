@@ -419,5 +419,63 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             if (customLoadScreenSpell)
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
         }
+
+        //[Parser(Opcode.SMSG_MOVE_TELEPORT)]
+        public static void HandleMoveTeleport(Packet packet)
+        {
+            var pos = new Vector4();
+
+            var transGuid = new byte[8];
+            var guid = new byte[8];
+
+            var onTransport = packet.ReadBit();
+
+            guid[3] = packet.ReadBit();
+
+            if (onTransport)
+                packet.StartBitStream(transGuid, 1, 3, 6, 4, 5, 7, 0, 2);
+
+            guid[4] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+
+            var bit17 = packet.ReadBit();
+            if (bit17)
+            {
+                packet.ReadBit("Unk bit 50");
+                packet.ReadBit("Unk bit 51");
+            }
+
+            guid[7] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+
+            if (onTransport)
+            {
+                packet.ParseBitStream(transGuid, 2, 3, 5, 0, 4, 6, 1, 7);
+                packet.WriteGuid("Transport Guid", transGuid);
+            }
+
+            if (bit17)
+                packet.ReadByte("Byte14");
+
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 1);
+            pos.O = packet.ReadSingle();
+            pos.Z = packet.ReadSingle();
+            packet.ReadXORByte(guid, 3);
+            pos.Y = packet.ReadSingle();
+            packet.ReadUInt32("Time");
+            pos.X = packet.ReadSingle();
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 2);
+
+            packet.WriteLine("Destination: {0}", pos);
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
