@@ -95,7 +95,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
                 packet.ReadXORByte(guildGuids[c], 4);
 
-                packet.ReadByte("Hair Style", c); // v4+63
+                packet.ReadByte("Skin", c); // v4+63
                 var mapId = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id", c); //v4+72
                 packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
                 var y = packet.ReadSingle("Position Y", c); // v4+80
@@ -140,6 +140,26 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadUInt32("unk1", i);
                 packet.ReadByte("unk2", i);
             }
+        }
+
+        [Parser(Opcode.CMSG_CHAR_CREATE)]
+        public static void HandleClientCharCreate(Packet packet)
+        {
+            packet.ReadByte("Hair Style");
+            packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
+            packet.ReadByte("Skin");
+            packet.ReadByte("Hair Color");
+            packet.ReadByte("Facial Hair");
+            packet.ReadEnum<Class>("Class", TypeCode.Byte);
+            packet.ReadEnum<Race>("Race", TypeCode.Byte);
+            packet.ReadByte("Face");
+            packet.ReadByte("Outfit Id");
+
+            var unk = packet.ReadBit("unk");
+            var nameLength = packet.ReadBits(6);
+            packet.ReadWoWString("Name", (int)nameLength);
+            if (unk)
+                packet.ReadUInt32("unk20");
         }
 
         [Parser(Opcode.CMSG_CHAR_DELETE)]
