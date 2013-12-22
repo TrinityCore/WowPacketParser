@@ -345,10 +345,10 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteGuid("GUID2", guid2);
             packet.WriteLine("Position: {0}", pos);
         }
+        
 
-        [HasSniffData]
-        [Parser(Opcode.SMSG_NEW_WORLD)]
-        public static void HandleNewWorld(Packet packet)
+        [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
+        public static void HandleLoginVerifyWorld(Packet packet)
         {
             var pos = new Vector4();
 
@@ -362,8 +362,9 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
 
-        [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
-        public static void HandleLoginVerifyWorld(Packet packet)
+        [HasSniffData]
+        [Parser(Opcode.SMSG_NEW_WORLD)]
+        public static void HandleNewWorld(Packet packet)
         {
             var pos = new Vector4();
 

@@ -138,7 +138,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Leader GUID", guid1);
             packet.WriteGuid("Group GUID", guid2);
-
         }
 
         [Parser(Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS)]
