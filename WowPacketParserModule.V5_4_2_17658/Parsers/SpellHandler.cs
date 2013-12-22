@@ -1243,5 +1243,24 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
 
             packet.WriteGuid("guid", guid);
         }
+
+        [Parser(Opcode.SMSG_PET_CAST_FAILED)]
+        public static void HandleCastFailed(Packet packet)
+        {
+            var bit10 = !packet.ReadBit();
+            var bit1C = !packet.ReadBit();
+
+            var result = packet.ReadEnum<SpellCastFailureReason>("Reason", TypeCode.Int32);
+
+            if (bit1C)
+                packet.ReadInt32("Int1C");
+
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+
+            if (bit10)
+                packet.ReadInt32("Int10");
+
+            packet.ReadByte("Cast count");
+        }
     }
 }
