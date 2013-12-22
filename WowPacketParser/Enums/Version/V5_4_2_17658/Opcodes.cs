@@ -11,6 +11,8 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
+            {Opcode.CMSG_ADD_FRIEND, 0x1388},
+            {Opcode.CMSG_ADD_IGNORE, 0x1A01},
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x133F},
             {Opcode.CMSG_AREATRIGGER, 0x024C},
             {Opcode.CMSG_AUTH_SESSION, 0x196E},
@@ -22,6 +24,8 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_CHAR_ENUM, 0x047C},
             {Opcode.CMSG_CREATURE_QUERY, 0x0C4A},
             {Opcode.CMSG_DB_QUERY_BULK, 0x0676},
+            {Opcode.CMSG_DEL_IGNORE, 0x1DE9},
+            {Opcode.CMSG_DEL_FRIEND, 0x1A60},
             {Opcode.CMSG_DUNGEON_FINDER_GET_SYSTEM_INFO, 0x05DA},
             //{Opcode.CMSG_GAMEOBJECT_QUERY, 0x08BC},
             {Opcode.CMSG_GOSSIP_HELLO, 0x02EF},
