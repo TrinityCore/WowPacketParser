@@ -101,16 +101,15 @@ namespace WowPacketParserModule.V5_4_1_17358.Parsers
         {
             var npcText = new NpcTextMop();
 
-            var hasData = packet.ReadBit();
-            if (!hasData)
-                return; // nothing to do
-
             var entry = packet.ReadEntry("Entry");
             if (entry.Value) // Can be masked
                 return;
 
             var size = packet.ReadInt32("Size");
             var data = packet.ReadBytes(size);
+            var hasData = packet.ReadBit();
+            if (!hasData)
+                return; // nothing to do
 
             var pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
             npcText.Probabilities = new float[8];
