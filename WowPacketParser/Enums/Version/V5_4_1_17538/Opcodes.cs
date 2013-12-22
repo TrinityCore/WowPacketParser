@@ -84,6 +84,7 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
             {Opcode.SMSG_DB_REPLY, 0x1406},
             {Opcode.SMSG_DEFENSE_MESSAGE, 0x0D14},
             {Opcode.SMSG_DESTROY_OBJECT, 0x04B4},
+            {Opcode.SMSG_EMOTE, 0x0D8B},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x0916},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x03FC},
             {Opcode.SMSG_GROUP_INVITE, 0x09A6},

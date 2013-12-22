@@ -102,7 +102,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_CRITERIA_UPDATE_PLAYER, 0x0C0D},
             {Opcode.SMSG_DB_REPLY, 0x089A},
             {Opcode.SMSG_DESTROY_OBJECT, 0x0A75},
-            {Opcode.SMSG_EMOTE, 0x0A15},
+            {Opcode.SMSG_EMOTE, 0x1A48},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x0F08},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x0839},
             {Opcode.SMSG_FLIGHT_SPLINE_SYNC, 0x009E},
