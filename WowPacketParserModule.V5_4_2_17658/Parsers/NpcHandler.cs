@@ -268,6 +268,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
                 if (hasCondition[i])
                     packet.ReadInt32("Condition ID", i);
+
+                npcVendor.VendorItems.Add(vendorItem);
             }
 
             packet.ReadByte("Byte28");
@@ -282,6 +284,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteGuid("Guid", guid);
 
             var vendorGUID = new Guid(BitConverter.ToUInt64(guid, 0));
+            Storage.NpcVendors.Add(vendorGUID.GetEntry(), npcVendor, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_TRAINER_LIST)]

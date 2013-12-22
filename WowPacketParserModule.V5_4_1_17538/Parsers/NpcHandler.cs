@@ -228,6 +228,8 @@ namespace WowPacketParserModule.V5_4_1_17358.Parsers
                 vendorItem.Type = packet.ReadUInt32("Type", i); // 1 - item, 2 - currency
                 packet.ReadInt32("Item Upgrade ID", i);
                 packet.ReadInt32("Max Durability", i);
+
+                npcVendor.VendorItems.Add(vendorItem);
             }
 
             packet.ParseBitStream(guid, 0, 2, 1, 3, 5, 7, 4, 6);
