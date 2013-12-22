@@ -89,6 +89,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             //{Opcode.SMSG_BINDPOINTUPDATE, 0x0A12},
             {Opcode.SMSG_BATTLE_PET_JOURNAL, 0x024B},
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x02FE},
+            {Opcode.SMSG_CAST_FAILED, 0x032B},
             {Opcode.SMSG_CHAR_ENUM, 0x08B9},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x0A4C},
             {Opcode.SMSG_CHANNEL_NOTIFY, 0x1C04},
