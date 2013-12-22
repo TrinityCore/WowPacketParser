@@ -1224,5 +1224,24 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
 
             packet.WriteGuid("CasterGUID", casterGUID);
         }
+
+        [Parser(Opcode.SMSG_CHANNEL_UPDATE)]
+        public static void HandleSpellChannelUpdate(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 2, 7, 0, 4, 1, 3, 5, 6);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadInt32("Timestamp");
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+
+            packet.WriteGuid("guid", guid);
+        }
     }
 }
