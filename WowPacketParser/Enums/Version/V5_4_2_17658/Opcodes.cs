@@ -35,6 +35,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_MESSAGECHAT_GUILD, 0x0243},
             {Opcode.CMSG_MESSAGECHAT_SAY, 0x0866},
             {Opcode.CMSG_MESSAGECHAT_YELL, 0x03AB},
+            {Opcode.CMSG_MOVE_SET_FACING, 0x04AF},
             {Opcode.CMSG_NAME_QUERY, 0x05F4},
             //{Opcode.CMSG_NPC_TEXT_QUERY, 0x006C},
             //{Opcode.CMSG_PAGE_TEXT_QUERY, 0x0E48},
