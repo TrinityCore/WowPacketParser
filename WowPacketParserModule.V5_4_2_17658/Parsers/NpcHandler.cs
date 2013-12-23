@@ -346,5 +346,14 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var GUID = new Guid(BitConverter.ToUInt64(guid, 0));
             Storage.NpcTrainers.Add(GUID.GetEntry(), npcTrainer, packet.TimeSpan);
         }
+
+        [Parser(Opcode.CMSG_BANKER_ACTIVATE)]
+        public static void HandleBankerActivate(Packet packet)
+        {
+            var guid = packet.StartBitStream(0, 1, 5, 2, 4, 3, 7, 6);
+            packet.ParseBitStream(guid, 3, 6, 2, 0, 7, 4, 5, 1);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

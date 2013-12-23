@@ -193,5 +193,16 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadUInt32("Token");
             packet.ReadUInt64("Unk Long");
         }
+
+        [Parser(Opcode.SMSG_LOGOUT_RESPONSE)]
+        public static void HandlePlayerLogoutResponse(Packet packet)
+        {
+            packet.ReadBit("Instant");
+            packet.ReadInt32("Reason");
+            // From TC:
+            // Reason 1: IsInCombat
+            // Reason 2: InDuel or frozen by GM
+            // Reason 3: Jumping or Falling
+        }
     }
 }

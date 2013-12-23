@@ -89,6 +89,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         {
             if (packet.Direction == Direction.ClientToServer)
             {
+                packet.WriteLine("ClientToServer: CMSG_LOGOUT_REQUEST (0x0183)");
             }
             else
             {
