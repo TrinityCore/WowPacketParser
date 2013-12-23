@@ -33,5 +33,13 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             packet.WriteGuid("GUID", guid);
         }
+
+        [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED)]
+        public static void HandleObjectUpdateFailed(Packet packet)
+        {
+            var guid = packet.StartBitStream(5, 4, 2, 7, 0, 6, 3, 1);
+            packet.ParseBitStream(guid, 6, 3, 0, 7, 1, 4, 2, 5);
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

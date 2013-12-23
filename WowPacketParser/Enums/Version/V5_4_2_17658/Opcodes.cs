@@ -43,6 +43,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_MOVE_SET_FACING, 0x04AF},
             {Opcode.CMSG_NAME_QUERY, 0x05F4},
             //{Opcode.CMSG_NPC_TEXT_QUERY, 0x006C},
+            {Opcode.CMSG_OBJECT_UPDATE_FAILED, 0x0A95},
             //{Opcode.CMSG_PAGE_TEXT_QUERY, 0x0E48},
             {Opcode.CMSG_PET_CAST_SPELL, 0x0AB8},
             {Opcode.CMSG_PET_NAME_QUERY, 0x0249},
