@@ -568,10 +568,9 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
         }
 
         [HasSniffData]
-        //[Parser(Opcode.SMSG_SPELL_START)]
+        [Parser(Opcode.SMSG_SPELL_START, Direction.ServerToClient)]
         public static void HandleSpellStart(Packet packet)
         {
-            packet.WriteLine("ServerToClient: SMSG_SPELL_START");
             var guid1 = new byte[8];
             var guid2 = new byte[8];
             var guid3 = new byte[8];

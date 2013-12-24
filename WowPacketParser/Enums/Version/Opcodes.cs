@@ -161,6 +161,21 @@ namespace WowPacketParser.Enums.Version
             return Dict.GetBySecond(opcodeId);
         }
 
+        public static Opcode GetOpcode(int opcodeId, Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.Both:
+                    return GetOpcode(opcodeId);
+                case Direction.ClientToServer:
+                    return GetOpcode(opcodeId | 0x10000);
+                case Direction.ServerToClient:
+                    return GetOpcode(opcodeId | 0x20000);
+            }
+
+            return Opcode.NULL_OPCODE;
+        }
+
         public static int GetOpcode(Opcode opcode)
         {
             return Dict.GetByFirst(opcode);
@@ -169,6 +184,14 @@ namespace WowPacketParser.Enums.Version
         public static string GetOpcodeName(int opcodeId)
         {
             var opc = GetOpcode(opcodeId);
+            return opc == 0 ? opcodeId.ToString(CultureInfo.InvariantCulture) : opc.ToString();
+        }
+
+        public static string GetOpcodeName(int opcodeId, Direction direction)
+        {
+            var opc = GetOpcode(opcodeId, direction);
+            if (opc == 0)
+                opc = GetOpcode(opcodeId);
             return opc == 0 ? opcodeId.ToString(CultureInfo.InvariantCulture) : opc.ToString();
         }
     }

@@ -10,9 +10,9 @@ namespace WowPacketParser.Parsing
 {
     public static class Handler
     {
-        private static Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>> LoadDefaultHandlers()
+        private static Dictionary<KeyValuePair<KeyValuePair<ClientVersionBuild, Opcode>, Direction>, Action<Packet>> LoadDefaultHandlers()
         {
-            var handlers = new Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>>(1000);
+            var handlers = new Dictionary<KeyValuePair<KeyValuePair<ClientVersionBuild, Opcode>, Direction>, Action<Packet>>(1000);
 
             LoadHandlersInto(handlers, Assembly.GetExecutingAssembly(), ClientVersionBuild.Zero);
 
@@ -34,7 +34,7 @@ namespace WowPacketParser.Parsing
             LoadHandlersInto(VersionHandlers, asm, build);
         }
 
-        private static void LoadHandlersInto(Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>> handlers, Assembly asm, ClientVersionBuild build)
+        private static void LoadHandlersInto(Dictionary<KeyValuePair<KeyValuePair<ClientVersionBuild, Opcode>, Direction>, Action<Packet>> handlers, Assembly asm, ClientVersionBuild build)
         {
             var types = asm.GetTypes();
             foreach (var type in types)
@@ -74,7 +74,7 @@ namespace WowPacketParser.Parsing
                         if (opc == Opcode.NULL_OPCODE)
                             continue;
 
-                        var key = new KeyValuePair<ClientVersionBuild, Opcode>(build, opc);
+                        var key = new KeyValuePair<KeyValuePair<ClientVersionBuild, Opcode>, Direction>(new KeyValuePair<ClientVersionBuild, Opcode>(build, opc), attr.Direction);
 
                         var del = (Action<Packet>)Delegate.CreateDelegate(typeof(Action<Packet>), method);
 
@@ -91,26 +91,38 @@ namespace WowPacketParser.Parsing
             }
         }
 
-        private static Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>> VersionHandlers = LoadDefaultHandlers();
+        private static Dictionary<KeyValuePair<KeyValuePair<ClientVersionBuild, Opcode>, Direction>, Action<Packet>> VersionHandlers = LoadDefaultHandlers();
 
         public static void Parse(Packet packet, bool isMultiple = false)
         {
             ParsedStatus status;
 
-            var opcode = Opcodes.GetOpcode(packet.Opcode);
+            var opcode = Opcodes.GetOpcode(packet.Opcode, packet.Direction);
+            if (opcode == Opcode.NULL_OPCODE)
+                opcode = Opcodes.GetOpcode(packet.Opcode);
 
             packet.WriteLine(packet.GetHeader(isMultiple));
 
             if (packet.Opcode == 0)
                 return;
 
-            var key = new KeyValuePair<ClientVersionBuild, Opcode>(ClientVersion.VersionDefiningBuild, opcode);
+            var key = new KeyValuePair<KeyValuePair<ClientVersionBuild, Opcode>, Direction>(new KeyValuePair<ClientVersionBuild, Opcode>(ClientVersion.VersionDefiningBuild, opcode), packet.Direction);
 
             Action<Packet> handler;
             var hasHandler = VersionHandlers.TryGetValue(key, out handler);
             if (!hasHandler)
             {
-                key = new KeyValuePair<ClientVersionBuild, Opcode>(ClientVersionBuild.Zero, opcode);
+                key = new KeyValuePair<KeyValuePair<ClientVersionBuild, Opcode>, Direction>(new KeyValuePair<ClientVersionBuild, Opcode>(ClientVersionBuild.Zero, opcode), packet.Direction);
+                hasHandler = VersionHandlers.TryGetValue(key, out handler);
+            }
+            if (!hasHandler)
+            {
+                key = new KeyValuePair<KeyValuePair<ClientVersionBuild, Opcode>, Direction>(new KeyValuePair<ClientVersionBuild, Opcode>(ClientVersion.VersionDefiningBuild, opcode), Direction.Both);
+                hasHandler = VersionHandlers.TryGetValue(key, out handler);
+            }
+            if (!hasHandler)
+            {
+                key = new KeyValuePair<KeyValuePair<ClientVersionBuild, Opcode>, Direction>(new KeyValuePair<ClientVersionBuild, Opcode>(ClientVersionBuild.Zero, opcode), Direction.Both);
                 hasHandler = VersionHandlers.TryGetValue(key, out handler);
             }
 

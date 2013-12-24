@@ -216,7 +216,7 @@ namespace WowPacketParser.Misc
         public string GetHeader(bool isMultiple = false)
         {
             return string.Format("{0}: {1} (0x{2}) Length: {3} ConnectionIndex: {4} Time: {5} Number: {6}{7}",
-                Direction, Enums.Version.Opcodes.GetOpcodeName(Opcode), Opcode.ToString("X4"),
+                Direction, Enums.Version.Opcodes.GetOpcodeName(Opcode, Direction), Opcode.ToString("X4"),
                 Length, ConnectionIndex, Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
                 Number, isMultiple ? " (part of another packet)" : "");
         }

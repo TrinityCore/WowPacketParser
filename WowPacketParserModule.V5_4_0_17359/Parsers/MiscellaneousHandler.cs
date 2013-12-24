@@ -3442,20 +3442,15 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Guid2", guid2);
         }
 
-        [Parser(Opcode.MSG_MULTIPLE_PACKETS1)] // CMSG_TIME_SYNC_RESP?
+        [Parser(Opcode.MSG_MULTIPLE_PACKETS1, Direction.ClientToServer)] // CMSG_TIME_SYNC_RESP?
         public static void HandleMultiplePackets1(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-                packet.WriteLine("ClientToServer: CMSG_UNKNOWN_4278"); // Addon?
-                var len1 = packet.ReadByte();
-                var len2 = packet.ReadBits(5);
+            packet.WriteLine("ClientToServer: CMSG_UNKNOWN_4278"); // Addon?
+            var len1 = packet.ReadByte();
+            var len2 = packet.ReadBits(5);
 
-                packet.ReadWoWString("string1", len2);
-                packet.ReadWoWString("Text", len1);
-            }
-            else
-                SpellHandler.HandleSpellStart(packet);
+            packet.ReadWoWString("string1", len2);
+            packet.ReadWoWString("Text", len1);
         }
 
         [Parser(Opcode.CMSG_QUERY_WORLD_COUNTDOWN_TIMER)] // CMSG_TIME_SYNC_RESP?
