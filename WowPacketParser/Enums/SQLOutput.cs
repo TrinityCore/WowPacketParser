@@ -3,6 +3,7 @@
     public enum SQLOutput
     {
 // ReSharper disable InconsistentNaming
+        broadcast_text,
         creature,
         creature_equip_template,
         creature_model_info,

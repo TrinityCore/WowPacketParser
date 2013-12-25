@@ -149,21 +149,27 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             {
                 case DB2Hash.BroadcastText:
                     {
-                        db2File.ReadUInt32("Broadcast Text Entry");
-                        db2File.ReadUInt32("Language");
-                        if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Male Text");
-                        if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Female Text");
+                        var broadcastText = new BroadcastText();
 
-                        for (var i = 0; i < 3; ++i)
-                            db2File.ReadInt32("Emote ID", i);
-                        for (var i = 0; i < 3; ++i)
-                            db2File.ReadInt32("Emote Delay", i);
+                        var Id = db2File.ReadEntry("Broadcast Text Entry");
+                        broadcastText.language = db2File.ReadUInt32("Language");
+                        if (db2File.ReadUInt16() > 0)
+                            broadcastText.maleText = db2File.ReadCString("Male Text");
+                        if (db2File.ReadUInt16() > 0)
+                            broadcastText.femaleText = db2File.ReadCString("Female Text");
 
-                        db2File.ReadUInt32("Sound Id");
-                        db2File.ReadUInt32("Unk 1"); // emote unk
-                        db2File.ReadUInt32("Unk 2"); // kind of type?
+                        broadcastText.EmoteID = new int[3];
+                        broadcastText.EmoteDelay = new int[3];
+                        for (var i = 0; i < 3; ++i)
+                            broadcastText.EmoteID[i] = db2File.ReadInt32("Emote ID", i);
+                        for (var i = 0; i < 3; ++i)
+                            broadcastText.EmoteDelay[i] = db2File.ReadInt32("Emote Delay", i);
+
+                        broadcastText.soundId = db2File.ReadUInt32("Sound Id");
+                        broadcastText.unk1 = db2File.ReadUInt32("Unk 1"); // emote unk
+                        broadcastText.unk2 = db2File.ReadUInt32("Unk 2"); // kind of type?
+
+                        Storage.BroadcastTexts.Add((uint)Id.Key, broadcastText, packet.TimeSpan);
                         break;
                     }
                 case DB2Hash.Creature: // New structure - 5.4

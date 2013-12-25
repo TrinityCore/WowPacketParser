@@ -45,12 +45,15 @@ namespace WowPacketParser.SQL
             if (!Storage.ItemTemplates.IsEmpty())
                 foreach (var obj in Storage.ItemTemplates)
                     obj.Value.Item1.WDBVerified = build;
+            if (!Storage.BroadcastTexts.IsEmpty())
+                foreach (var obj in Storage.BroadcastTexts)
+                    obj.Value.Item1.WDBVerified = build;
 
             using (var store = new SQLFile(fileName))
             {
                 // TODO: Rewrite this
                 var i = 0;
-                const int max = 27;
+                const int max = 28;
                 Trace.WriteLine(string.Format("{0}/{1} - Write WDBTemplates.GameObject", ++i, max)); store.WriteData(WDBTemplates.GameObject());
                 Trace.WriteLine(string.Format("{0}/{1} - Write Spawns.GameObject", ++i, max)); if (gameObjects != null) store.WriteData(Spawns.GameObject(gameObjects));
                 Trace.WriteLine(string.Format("{0}/{1} - Write WDBTemplates.Quest", ++i, max)); store.WriteData(WDBTemplates.Quest());
@@ -78,10 +81,11 @@ namespace WowPacketParser.SQL
                 Trace.WriteLine(string.Format("{0}/{1} - Write QuestOffer.QuestRewards", ++i, max)); store.WriteData(QuestMisc.QuestReward());
                 Trace.WriteLine(string.Format("{0}/{1} - Write WDBTemplates.Item", ++i, max)); store.WriteData(WDBTemplates.Item());
                 Trace.WriteLine(string.Format("{0}/{1} - Write UnitMisc.PointsOfInterest", ++i, max)); store.WriteData(UnitMisc.PointsOfInterest());
+                Trace.WriteLine(string.Format("{0}/{1} - Write UnitMisc.BroadcastText", ++i, max)); store.WriteData(DB2.BroadcastText());
 
                 Trace.WriteLine(store.WriteToFile(header)
-                                    ? String.Format("{0}: Saved file to '{1}'", prefix, fileName)
-                                    : "No SQL files created -- empty.");
+                    ? String.Format("{0}: Saved file to '{1}'", prefix, fileName)
+                    : "No SQL files created -- empty.");
             }
         }
     }

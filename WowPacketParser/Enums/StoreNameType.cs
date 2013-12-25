@@ -6,6 +6,7 @@
         Spell,
         Map,
         LFGDungeon,
+        BroadcastText,
         Battleground,
         Unit,
         GameObject,

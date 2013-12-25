@@ -600,36 +600,36 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     packet.ReadInt32("Int98", index);
 
                 packet.ReadXORByte(guid1, 1);
-                packet.ReadSingle("FloatC4", index);
-                packet.ReadSingle("FloatC0", index);
-                packet.ReadSingle("FloatB8", index);
+                packet.ReadSingle("Turn Speed", index);
+                packet.ReadSingle("FlyBack Speed", index);
+                packet.ReadSingle("RunBack Speed", index);
 
                 if (hasTimestamp)
                     packet.ReadUInt32("Time", index);
 
                 moveInfo.Position.X = packet.ReadSingle();
                 packet.ReadXORByte(guid1, 2);
-                packet.ReadSingle("FloatB4", index);
-                packet.ReadSingle("FloatB0", index);
+                packet.ReadSingle("Swim Speed", index);
+                packet.ReadSingle("SwimBack Speed", index);
 
                 if (hasOrientation)
                     moveInfo.Orientation = packet.ReadSingle();
 
-                packet.ReadSingle("FloatBC", index);
+                packet.ReadSingle("Fly Speed", index);
                 packet.ReadXORByte(guid1, 6);
 
                 if (hasPitch)
                     packet.ReadSingle("Pitch", index);
 
-                packet.ReadSingle("FloatAC", index);
-                packet.ReadSingle("FloatC8", index);
+                moveInfo.RunSpeed = packet.ReadSingle("Run Speed", index) / 7.0f;
+                packet.ReadSingle("Pitch Speed", index);
                 packet.ReadXORBytes(guid1, 0, 5);
 
                 for (var i = 0; i < bits90; ++i)
                     packet.ReadInt32("Int8C", index, i);
 
                 packet.ReadXORByte(guid1, 4);
-                packet.ReadSingle("FloatA8", index);
+                moveInfo.WalkSpeed = packet.ReadSingle("Walk Speed", index) / 2.5f;
                 moveInfo.Position.Z = packet.ReadSingle();
                 packet.ReadXORByte(guid1, 3);
 
