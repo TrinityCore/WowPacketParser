@@ -215,21 +215,27 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             {
                 case DB2Hash.BroadcastText:
                     {
-                        db2File.ReadUInt32("Broadcast Text Entry");
-                        db2File.ReadUInt32("Language");
+                        var broadcastText = new BroadcastText();
+
+                        var Id = db2File.ReadEntry("Broadcast Text Entry");
+                        broadcastText.language = db2File.ReadUInt32("Language");
                         if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Male Text");
+                            broadcastText.MaleText = db2File.ReadCString("Male Text");
                         if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Female Text");
- 
+                            broadcastText.FemaleText = db2File.ReadCString("Female Text");
+
+                        broadcastText.EmoteID = new uint[3];
+                        broadcastText.EmoteDelay = new uint[3];
                         for (var i = 0; i < 3; ++i)
-                            db2File.ReadInt32("Emote ID", i);
+                            broadcastText.EmoteID[i] = (uint)db2File.ReadInt32("Emote ID", i);
                         for (var i = 0; i < 3; ++i)
-                            db2File.ReadInt32("Emote Delay", i);
- 
-                        db2File.ReadUInt32("Sound Id");
-                        db2File.ReadUInt32("Unk0"); // emote unk
-                        db2File.ReadUInt32("Unk1"); // kind of type?
+                            broadcastText.EmoteDelay[i] = (uint)db2File.ReadInt32("Emote Delay", i);
+
+                        broadcastText.soundId = db2File.ReadUInt32("Sound Id");
+                        broadcastText.unk1 = db2File.ReadUInt32("Unk 1"); // emote unk
+                        broadcastText.unk2 = db2File.ReadUInt32("Unk 2"); // kind of type?
+
+                        Storage.BroadcastTexts.Add((uint)Id.Key, broadcastText, packet.TimeSpan);
                         break;
                     }
                 case DB2Hash.Creature:
@@ -606,7 +612,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]
         public static void HandleNpcTextUpdate(Packet packet)
         {
-            var npcText = new NpcText();
+            var npcText = new NpcTextMop();
 
             var entry = packet.ReadEntry("Entry");
             if (entry.Value) // Can be masked
@@ -620,10 +626,15 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             var pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
             npcText.Probabilities = new float[8];
+            npcText.BroadcastTextId = new uint[8];
             for (var i = 0; i < 8; ++i)
                 npcText.Probabilities[i] = pkt.ReadSingle("Probability", i);
             for (var i = 0; i < 8; ++i)
-                pkt.ReadInt32("Broadcast Text Id", i);
+                npcText.BroadcastTextId[i] = pkt.ReadUInt32("Broadcast Text Id", i);
+
+            packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
+
+            Storage.NpcTextsMop.Add((uint)entry.Key, npcText, packet.TimeSpan);
         }
     }
 }

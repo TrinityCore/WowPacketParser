@@ -73,7 +73,6 @@
     <Compile Include="Parsers\MailHandler.cs" />
     <Compile Include="Parsers\MiscellaneousHandler.cs" />
     <Compile Include="Parsers\MovementHandler.cs" />
-    <Compile Include="Parsers\MultiPacketHandler.cs" />
     <Compile Include="Parsers\NpcHandler.cs" />
     <Compile Include="Parsers\PetHandler.cs" />
     <Compile Include="Parsers\ReputationHandler.cs" />

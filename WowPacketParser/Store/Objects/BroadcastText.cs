@@ -6,9 +6,12 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("broadcast_text")]
     public class BroadcastText
     {
-        public int[] EmoteID;
+        public uint[] EmoteID;
 
-        public int[] EmoteDelay;
+        public uint[] EmoteDelay;
+
+        public string MaleText = "";
+        public string FemaleText = "";
 
         public void ConvertToDBStruct()
         {
@@ -21,6 +24,9 @@ namespace WowPacketParser.Store.Objects
             emoteDelay0 = EmoteID[0];
             emoteDelay1 = EmoteID[1];
             emoteDelay2 = EmoteID[2];
+
+            maleText = MaleText;
+            femaleText = FemaleText;
         }
 
         // ReSharper disable InconsistentNaming
@@ -31,17 +37,17 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("FemaleText")]
         public string femaleText;
         [DBFieldName("EmoteID0")]
-        public int emoteID0;
+        public uint emoteID0;
         [DBFieldName("EmoteID1")]
-        public int emoteID1;
+        public uint emoteID1;
         [DBFieldName("EmoteID2")]
-        public int emoteID2;
+        public uint emoteID2;
         [DBFieldName("EmoteDelay0")]
-        public int emoteDelay0;
+        public uint emoteDelay0;
         [DBFieldName("EmoteDelay1")]
-        public int emoteDelay1;
+        public uint emoteDelay1;
         [DBFieldName("EmoteDelay2")]
-        public int emoteDelay2;
+        public uint emoteDelay2;
         [DBFieldName("SoundId")]
         public uint soundId;
         [DBFieldName("Unk1")]

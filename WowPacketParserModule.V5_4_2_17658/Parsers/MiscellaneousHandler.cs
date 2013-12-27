@@ -64,7 +64,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadBit("Unk bit2");
         }
 
-        //[Parser(Opcode.SMSG_PLAY_SOUND)]
+        [Parser(Opcode.SMSG_PLAY_SOUND)]
         public static void HandlePlaySound(Packet packet)
         {
             var guid = new byte[8];

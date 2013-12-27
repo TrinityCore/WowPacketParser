@@ -152,16 +152,16 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                         var Id = db2File.ReadEntry("Broadcast Text Entry");
                         broadcastText.language = db2File.ReadUInt32("Language");
                         if (db2File.ReadUInt16() > 0)
-                            broadcastText.maleText = db2File.ReadCString("Male Text");
+                            broadcastText.MaleText = db2File.ReadCString("Male Text");
                         if (db2File.ReadUInt16() > 0)
-                            broadcastText.femaleText = db2File.ReadCString("Female Text");
+                            broadcastText.FemaleText = db2File.ReadCString("Female Text");
 
-                        broadcastText.EmoteID = new int[3];
-                        broadcastText.EmoteDelay = new int[3];
+                        broadcastText.EmoteID = new uint[3];
+                        broadcastText.EmoteDelay = new uint[3];
                         for (var i = 0; i < 3; ++i)
-                            broadcastText.EmoteID[i] = db2File.ReadInt32("Emote ID", i);
+                            broadcastText.EmoteID[i] = (uint)db2File.ReadInt32("Emote ID", i);
                         for (var i = 0; i < 3; ++i)
-                            broadcastText.EmoteDelay[i] = db2File.ReadInt32("Emote Delay", i);
+                            broadcastText.EmoteDelay[i] = (uint)db2File.ReadInt32("Emote Delay", i);
 
                         broadcastText.soundId = db2File.ReadUInt32("Sound Id");
                         broadcastText.unk1 = db2File.ReadUInt32("Unk 1"); // emote unk

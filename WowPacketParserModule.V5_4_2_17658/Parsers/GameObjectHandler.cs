@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 {
     public static class GameObjectHandler
     {
-        //[Parser(Opcode.CMSG_GAMEOBJECT_QUERY)]
+        [Parser(Opcode.CMSG_GAMEOBJECT_QUERY)]
         public static void HandleGameObjectQuery(Packet packet)
         {
             var guid = new byte[8];
@@ -33,7 +33,10 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             var unk1 = packet.ReadInt32("Unk1 UInt32");
             if (unk1 == 0)
+            {
+                packet.ReadByte("Unk1 Byte");
                 return;
+            }
 
             gameObject.Type = packet.ReadEnum<GameObjectType>("Type", TypeCode.Int32);
             gameObject.DisplayId = packet.ReadUInt32("Display ID");
@@ -54,7 +57,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             gameObject.Size = packet.ReadSingle("Size");
 
-            gameObject.QuestItems = new uint[packet.ReadByte("QuestItems Length")]; // correct?
+            gameObject.QuestItems = new uint[packet.ReadByte("QuestItems Length")];
 
             for (var i = 0; i < gameObject.QuestItems.Length; i++)
                 gameObject.QuestItems[i] = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item", i);

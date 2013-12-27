@@ -377,7 +377,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteLine("Position: {0}", pos);
         }
 
-        //[Parser(Opcode.SMSG_BINDPOINTUPDATE)]
+        [Parser(Opcode.SMSG_BINDPOINTUPDATE)]
         public static void HandleBindPointUpdate(Packet packet)
         {
             var pos = new Vector3();
@@ -421,7 +421,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
         }
 
-        //[Parser(Opcode.SMSG_MOVE_TELEPORT)]
+        [Parser(Opcode.SMSG_MOVE_TELEPORT)]
         public static void HandleMoveTeleport(Packet packet)
         {
             var pos = new Vector4();
@@ -479,7 +479,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        //[Parser(Opcode.SMSG_MOVE_SET_RUN_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SET_RUN_SPEED)]
         public static void HandleMoveSetRunSpeed(Packet packet)
         {
             var guid = packet.StartBitStream(3, 4, 5, 7, 1, 2, 6, 0);

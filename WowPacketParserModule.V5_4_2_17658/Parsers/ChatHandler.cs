@@ -20,7 +20,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var ReceiverGUID = new byte[8];
             var GroupGUID = new byte[8];
 
-            var hasReceiver = !packet.ReadBit();
+            var hasSender = !packet.ReadBit();
             var hasText = !packet.ReadBit();
 
             packet.ReadBit(); // fake bit
@@ -38,9 +38,9 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             
             packet.StartBitStream(GuildGUID, 0, 7, 6, 4, 1, 3, 2, 5);
 
-            var receiverLen = 0u;
-            if (hasReceiver)
-                receiverLen = packet.ReadBits(11);
+            var senderNameLen = 0u;
+            if (hasSender)
+                senderNameLen = packet.ReadBits(11);
             
             var textLen = 0u;
             if (hasText)
@@ -105,8 +105,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             if (bit1490)
                 packet.ReadSingle("Float1490");
 
-            if (hasReceiver)
-                packet.ReadWoWString("Receiver Name", receiverLen);
+            if (hasSender)
+                text.Comment = packet.ReadWoWString("Sender Name", senderNameLen);
 
             if (hasText)
                 text.Text = packet.ReadWoWString("Text", textLen);
