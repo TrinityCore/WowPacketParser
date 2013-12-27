@@ -3442,7 +3442,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Guid2", guid2);
         }
 
-        [Parser(Opcode.MSG_MULTIPLE_PACKETS1, Direction.ClientToServer)] // CMSG_TIME_SYNC_RESP?
+        [Parser(Opcode.MSG_MULTIPLE_PACKETS1)] // CMSG_TIME_SYNC_RESP?
         public static void HandleMultiplePackets1(Packet packet)
         {
             packet.WriteLine("ClientToServer: CMSG_UNKNOWN_4278"); // Addon?

@@ -165,15 +165,13 @@ namespace WowPacketParser.Enums.Version
         {
             switch (direction)
             {
-                case Direction.Both:
-                    return GetOpcode(opcodeId);
                 case Direction.ClientToServer:
                     return GetOpcode(opcodeId | 0x10000);
                 case Direction.ServerToClient:
                     return GetOpcode(opcodeId | 0x20000);
+                default:
+                    return GetOpcode(opcodeId);
             }
-
-            return Opcode.NULL_OPCODE;
         }
 
         public static int GetOpcode(Opcode opcode)
