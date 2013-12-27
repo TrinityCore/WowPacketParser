@@ -12,7 +12,27 @@ namespace WowPacketParser.SQL.Builders
 {
     public static class Spawns
     {
-        public static string Creature(Dictionary<Guid, Unit> units)
+        private static bool GetTransportMap(WoWObject @object, Dictionary<Guid, GameObject> gameobjects, out int mapId)
+        {
+            mapId = -1;
+
+            GameObject transport;
+            if (!gameobjects.TryGetValue(@object.Movement.TransportGuid, out transport))
+                return false;
+
+            UpdateField entry;
+            if (!transport.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out entry))
+                return false;
+
+            var transportTemplates = SQLDatabase.GetDict<uint, GameObjectTemplate>(new List<uint>() { entry.UInt32Value });
+            if (transportTemplates.IsEmpty())
+                return false;
+
+            mapId = transportTemplates[entry.UInt32Value].Item1.Data[6];
+            return true;
+        }
+
+        public static string Creature(Dictionary<Guid, Unit> units, Dictionary<Guid, GameObject> gameObjects)
         {
             if (units.Count == 0)
                 return string.Empty;
@@ -27,6 +47,7 @@ namespace WowPacketParser.SQL.Builders
             foreach (var unit in units)
             {
                 var row = new QueryBuilder.SQLInsertRow();
+                var badTransport = false;
 
                 var creature = unit.Value;
 
@@ -49,9 +70,20 @@ namespace WowPacketParser.SQL.Builders
                     spawnDist = 5;
                 }
 
+
                 row.AddValue("guid", "@CGUID+" + count, noQuotes: true);
                 row.AddValue("id", entry);
-                row.AddValue("map", !creature.IsOnTransport() ? creature.Map : 0);  // TODO: query transport template for map
+                if (!creature.IsOnTransport())
+                {
+                    row.AddValue("map", creature.Map);
+                }
+                else
+                {
+                    int mapId;
+                    badTransport = !GetTransportMap(creature, gameObjects, out mapId);
+                    row.AddValue("map", mapId);
+                }
+
                 row.AddValue("spawnMask", creature.GetDefaultSpawnMask());
                 row.AddValue("phaseMask", creature.PhaseMask);
                 if (!creature.IsOnTransport())
@@ -80,10 +112,10 @@ namespace WowPacketParser.SQL.Builders
                     row.CommentOut = true;
                     row.Comment += " - !!! might be temporary spawn !!!";
                 }
-                else if (creature.IsOnTransport())
+                else if (creature.IsOnTransport() && badTransport)
                 {
                     row.CommentOut = true;
-                    row.Comment += " - !!! on transport (NYI) !!!";
+                    row.Comment += " - !!! on transport - transport template not found !!!";
                 }
                 else
                     ++count;
@@ -137,6 +169,7 @@ namespace WowPacketParser.SQL.Builders
                     continue;   // broken entry, nothing to spawn
 
                 var entry = uf.UInt32Value;
+                var badTransport = false;
 
                 if (go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(GameObjectField.GAMEOBJECT_BYTES_1), out uf))
                 {
@@ -147,7 +180,17 @@ namespace WowPacketParser.SQL.Builders
 
                 row.AddValue("guid", "@OGUID+" + count, noQuotes: true);
                 row.AddValue("id", entry);
-                row.AddValue("map", !go.IsOnTransport() ? go.Map : 0);  // TODO: query transport template for map
+                if (!go.IsOnTransport())
+                {
+                    row.AddValue("map", go.Map);
+                }
+                else
+                {
+                    int mapId;
+                    badTransport = !GetTransportMap(go, gameObjects, out mapId);
+                    row.AddValue("map", mapId);
+                }
+
                 row.AddValue("spawnMask", go.GetDefaultSpawnMask());
                 row.AddValue("phaseMask", go.PhaseMask);
                 if (!go.IsOnTransport())
@@ -197,10 +240,10 @@ namespace WowPacketParser.SQL.Builders
                     row.CommentOut = true;
                     row.Comment += " - !!! transport !!!";
                 }
-                else if (go.IsOnTransport())
+                else if (go.IsOnTransport() && badTransport)
                 {
                     row.CommentOut = true;
-                    row.Comment += " - !!! on transport (NYI) !!!";
+                    row.Comment += " - !!! on transport - transport template not found !!!";
                 }
                 else
                     ++count;

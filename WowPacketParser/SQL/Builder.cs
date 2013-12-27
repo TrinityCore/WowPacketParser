@@ -65,7 +65,7 @@ namespace WowPacketParser.SQL
                 Trace.WriteLine(string.Format("{0}/{1} - Write UnitMisc.ModelData", ++i, max)); if (units != null) store.WriteData(UnitMisc.ModelData(units));
                 Trace.WriteLine(string.Format("{0}/{1} - Write UnitMisc.SpellsX", ++i, max)); store.WriteData(UnitMisc.SpellsX());
                 Trace.WriteLine(string.Format("{0}/{1} - Write UnitMisc.CreatureText", ++i, max)); store.WriteData(UnitMisc.CreatureText());
-                Trace.WriteLine(string.Format("{0}/{1} - Write Spawns.Creature", ++i, max)); if (units != null) store.WriteData(Spawns.Creature(units));
+                Trace.WriteLine(string.Format("{0}/{1} - Write Spawns.Creature", ++i, max)); if (units != null) store.WriteData(Spawns.Creature(units, gameObjects));
                 Trace.WriteLine(string.Format("{0}/{1} - Write UnitMisc.NpcTrainer", ++i, max)); store.WriteData(UnitMisc.NpcTrainer());
                 Trace.WriteLine(string.Format("{0}/{1} - Write UnitMisc.NpcVendor", ++i, max)); store.WriteData(UnitMisc.NpcVendor());
                 Trace.WriteLine(string.Format("{0}/{1} - Write WDBTemplates.PageText", ++i, max)); store.WriteData(WDBTemplates.PageText());
