@@ -25,10 +25,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Quality")]
         public ItemQuality Quality;
 
-        [DBFieldName("Flags 1")]
+        [DBFieldName("Flags")]
         public ItemProtoFlags Flags1;
 
-        [DBFieldName("Flags 2")]
+        [DBFieldName("FlagsExtra")]
         public ItemFlagExtra Flags2;
 
         [DBFieldName("Unk430_1", ClientVersionBuild.V4_3_0_15005)]
@@ -37,7 +37,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Unk430_2", ClientVersionBuild.V4_3_0_15005)]
         public float Unk430_2;
 
-        [DBFieldName("Flags 3", ClientVersionBuild.V5_3_0_16981)]
+        //[DBFieldName("Flags 3", ClientVersionBuild.V5_3_0_16981)] Added in soon
         public uint Flags3;
 
         [DBFieldName("BuyCount")]
