@@ -43,6 +43,8 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0899}, // 17688
             {Opcode.SMSG_AUTH_CHALLENGE, 0x0C42}, // 17688
             {Opcode.SMSG_AUTH_RESPONSE, 0x03A8}, // 17688
+            {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x0E85}, // 17688
+            {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x08F3}, // 17688
             {Opcode.SMSG_CHAR_CREATE, 0x0FAD}, // 17688
             {Opcode.SMSG_CHAR_DELETE, 0x0A1E}, // 17688
             {Opcode.SMSG_CHAR_ENUM, 0x08B9}, // 17688
