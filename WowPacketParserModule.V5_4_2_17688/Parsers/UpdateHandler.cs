@@ -115,33 +115,35 @@ namespace WowPacketParserModule.V5_4_2_17688.Parsers
             var hasVehicleData = packet.ReadBit("Has Vehicle Data", index);
             var isSelf = packet.ReadBit("Self", index);
 
-            packet.ReadBit();
+            packet.ReadBit(); // fake bit
 
             var transport = packet.ReadBit("Transport", index);
 
-            packet.ReadBit();
-            packet.ReadBit();
+            packet.ReadBit(); // fake bit
+            var byte2A9 = packet.ReadBit("byte2A9", index);
 
             var hasAttackingTarget = packet.ReadBit("Has Attacking Target", index);
             var hasStationaryPosition = packet.ReadBit("Has Stationary Position", index);
 
-            packet.ReadBit(); 
+            var isAreaTrigger = packet.ReadBit("Area Trigger", index);
+
+            var byte428 = packet.ReadBit("byte428", index);            
             
             var isSceneObject = packet.ReadBit("Scene Object", index);
 
-            packet.ReadBit();
-            packet.ReadBit();
+            packet.ReadBit(); // fake bit
+            var byte32A = packet.ReadBit("byte32A", index);
 
             var transportFrames = packet.ReadBits(22);
             var living = packet.ReadBit("Living", index);
             var hasGameObjectPosition = packet.ReadBit("Has GameObject Position", index);
 
-            packet.ReadBit();
+            packet.ReadBit(); // fake bit
 
             var hasGameObjectRotation = packet.ReadBit("Has GameObject Rotation", index);
 
-            packet.ReadBit();
-            packet.ReadBit(); 
+            var byte2A4 = packet.ReadBit("byte2A4", index);
+            var byte414 = packet.ReadBit("byte414", index); 
 
             var hasAnimKits = packet.ReadBit("Has AnimKits", index);
 
@@ -162,7 +164,7 @@ namespace WowPacketParserModule.V5_4_2_17688.Parsers
 
             if (hasAttackingTarget)
             {
-                // need update
+                attackingTargetGuid = packet.StartBitStream(4, 0, 6, 2, 1, 5, 3, 7);
             }
 
             if (isSceneObject)
@@ -194,12 +196,13 @@ namespace WowPacketParserModule.V5_4_2_17688.Parsers
 
             if (hasAttackingTarget)
             {
-                // need update
+                packet.ParseBitStream(attackingTargetGuid, 1, 3, 5, 4, 7, 6, 2, 0);
+                packet.WriteGuid("Attacking GUID", attackingTargetGuid, index);
             }
 
             if (hasGameObjectRotation)
             {
-                // need update
+                packet.ReadPackedQuaternion("GameObject Rotation", index);
             }
 
             if (hasAnimKits)
