@@ -344,7 +344,18 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             packet.WriteGuid("Guid", guid);
             var GUID = new Guid(BitConverter.ToUInt64(guid, 0));
-            Storage.NpcTrainers.Add(GUID.GetEntry(), npcTrainer, packet.TimeSpan);
+
+            if (Storage.NpcTrainers.ContainsKey(GUID.GetEntry()))
+            {
+                var oldTrainer = Storage.NpcTrainers[GUID.GetEntry()];
+                if (oldTrainer != null)
+                {
+                    foreach (var trainerSpell in npcTrainer.TrainerSpells)
+                        oldTrainer.Item1.TrainerSpells.Add(trainerSpell);
+                }
+            }
+            else
+                Storage.NpcTrainers.Add(GUID.GetEntry(), npcTrainer, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_BANKER_ACTIVATE)]
