@@ -112,6 +112,12 @@ namespace WowPacketParserModule.V5_4_2_17688.Parsers
         {
             var moveInfo = new MovementInfo();
 
+            var goTransportGuid = new byte[8];
+            var attackingTargetGuid = new byte[8];
+            
+            var hasGOTransportTime2 = false;
+            var hasGOTransportTime3 = false;
+
             var hasVehicleData = packet.ReadBit("Has Vehicle Data", index);
             var isSelf = packet.ReadBit("Self", index);
 
