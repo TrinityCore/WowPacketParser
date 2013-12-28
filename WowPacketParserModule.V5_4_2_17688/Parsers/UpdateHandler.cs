@@ -154,7 +154,9 @@ namespace WowPacketParserModule.V5_4_2_17688.Parsers
 
             if (hasGameObjectPosition)
             {
-                // need update
+                hasGOTransportTime3 = packet.ReadBit();
+                hasGOTransportTime2 = packet.ReadBit();
+                packet.StartBitStream(goTransportGuid, 4, 2, 7, 6, 3, 0, 1, 5);
             }
 
             if (hasAnimKits)
@@ -186,7 +188,28 @@ namespace WowPacketParserModule.V5_4_2_17688.Parsers
 
             if (hasGameObjectPosition)
             {
-                // need update
+                packet.ReadSByte("GO Transport Seat", index);
+                
+                if (hasGOTransportTime2)
+                    packet.ReadUInt32("GO Transport Time 2", index);
+                
+                packet.ParseBitStream(goTransportGuid, 4, 3);
+                
+                if (hasGOTransportTime2)
+                    packet.ReadUInt32("GO Transport Time 3", index);
+                    
+                packet.ParseBitStream(goTransportGuid, 7, 6, 5, 0);
+                moveInfo.TransportOffset.Z = packet.ReadSingle();
+                moveInfo.TransportOffset.X = packet.ReadSingle();
+                packet.ReadUInt32("GO Transport Time", index);
+                moveInfo.TransportOffset.O = packet.ReadSingle();
+                packet.ReadXORByte(goTransportGuid, 1);
+                moveInfo.TransportOffset.Y = packet.ReadSingle();
+                packet.ReadXORByte(goTransportGuid, 2);
+                
+                moveInfo.TransportGuid = new Guid(BitConverter.ToUInt64(goTransportGuid, 0));
+                packet.WriteLine("[{0}] GO Transport GUID {1}", index, moveInfo.TransportGuid);
+                packet.WriteLine("[{0}] GO Transport Position: {1}", index, moveInfo.TransportOffset);
             }
 
             if (hasVehicleData)
