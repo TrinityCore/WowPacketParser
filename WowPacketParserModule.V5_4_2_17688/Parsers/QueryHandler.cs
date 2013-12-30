@@ -94,5 +94,28 @@ namespace WowPacketParserModule.V5_4_2_17688.Parsers
             };
             Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
         }
+        
+        [HasSniffData]
+        [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]
+        public static void HandleNpcTextUpdate(Packet packet)
+        {
+            var npcText = new NpcText();
+            
+            var hasData = packet.ReadBit("hasData");
+            var entry = packet.ReadEntry("TextID");
+            if (entry.Value) // Can be masked
+                return;
+
+            if (!hasData)
+                return; // nothing to do
+
+            var size = packet.ReadInt32("Size");
+
+            npcText.Probabilities = new float[8];
+            for (var i = 0; i < 8; ++i)
+                npcText.Probabilities[i] = packet.ReadSingle("Probability", i);
+            for (var i = 0; i < 8; ++i)
+                packet.ReadInt32("Unknown Id", i);
+        } 
     }
 }
