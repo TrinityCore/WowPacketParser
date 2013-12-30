@@ -49,6 +49,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_CHAR_DELETE, 0x0A1E}, // 17688
             {Opcode.SMSG_CHAR_ENUM, 0x08B9}, // 17688
             {Opcode.SMSG_INITIAL_SPELLS, 0x0623}, // 17688
+            {Opcode.SMSG_LIST_INVENTORY, 0x0ADC}, // 17688
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0E04}, // 17688
             {Opcode.SMSG_LOGOUT_COMPLETE, 0x0C6D}, // 17688
             {Opcode.SMSG_LOGOUT_RESPONSE, 0x104A}, // 17688
