@@ -150,6 +150,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             var itemCount = packet.ReadByte("Item Count");
 
+            if (itemCount == 0)
+            {
+                packet.ReadByte("Unk 1");
+                return;
+            }
+
             npcVendor.VendorItems = new List<VendorItem>(itemCount);
             for (var i = 0; i < itemCount; i++)
             {
