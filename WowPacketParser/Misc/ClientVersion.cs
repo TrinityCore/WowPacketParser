@@ -95,7 +95,7 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_3_0_17128, new DateTime(2013, 06, 29)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_4_1_17538, new DateTime(2013, 10, 26)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_4_2_17658, new DateTime(2013, 12, 10)),
-            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_4_2_17668, new DateTime(2013, 12, 18))
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_4_2_17688, new DateTime(2013, 12, 18))
         };
 
         private static ClientType _expansion;
