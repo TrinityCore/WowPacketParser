@@ -385,7 +385,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                         for (var k = 0; k < bits358_6_74[i][j]; ++k)
                             bit358_6_78_9[i][j][k] = (byte)(10 - packet.ReadBit());
 
-                        bit358_6_30[i][j] = !packet.ReadBit();
+                        bit358_6_30[i][j] = packet.ReadBit();
                         bits358_6_94[i][j] = packet.ReadBits(21);
                     }
 
