@@ -67,5 +67,47 @@ namespace WowPacketParserModule.V5_4_2_17568.Parsers
                 packet.WriteGuid("GUID", guid2[i], i);
             }
         }
+
+        [Parser(Opcode.CMSG_EQUIPMENT_SET_USE)]
+        public static void HandleEquipmentSetUse(Packet packet)
+        {
+            var slotsInfo = new byte[19][];
+            for (var i = 0; i < 19; ++i)
+            {
+                slotsInfo[i] = new byte[2];
+                slotsInfo[i][0] = packet.ReadByte();
+                slotsInfo[i][1] = packet.ReadByte();
+            }
+
+            var itemGuids = new byte[19][];
+            for (var i = 0; i < 19; ++i)
+            {
+                itemGuids[i] = new byte[8];
+                packet.StartBitStream(itemGuids[i], 6, 1, 5, 2, 0, 4, 3, 7);
+            }
+
+            var someCount = packet.ReadBits("Some count", 2);
+            var someThings = new byte[someCount][];
+            for (var i = 0; i < someCount; ++i)
+            {
+                someThings[i] = new byte[2];
+                packet.StartBitStream(someThings[i], 1, 0);
+            }
+
+            for (var i = 0; i < 19; ++i)
+            {
+                packet.ParseBitStream(itemGuids[i], 1, 6, 4, 7, 0, 3, 5, 2);
+                packet.WriteGuid("ItemGUID", itemGuids[i], i);
+                packet.WriteLine("[{0}] Source bag: {1}", i, slotsInfo[i][0]);
+                packet.WriteLine("[{0}] Source slot: {1}", i, slotsInfo[i][1]);
+            }
+
+
+            for (var i = 0; i < someCount; ++i)
+            {
+                packet.ParseBitStream(someThings[i], 0, 1);
+                packet.WriteLine("[{0}] Unk byte 1 {1}, Unk byte 2 {2}", i, someThings[0], someThings[1]);
+            }
+        }
     }
 }

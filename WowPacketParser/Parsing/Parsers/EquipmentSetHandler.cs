@@ -46,11 +46,11 @@ namespace WowPacketParser.Parsing.Parsers
         {
             for (var i = 0; i < NumSlots; i++)
             {
-                packet.ReadPackedGuid("Item GUID " + i);
+                packet.ReadPackedGuid("Item GUID ", i);
 
-                packet.ReadByte("Source Bag");
+                packet.ReadByte("Source Bag", i);
 
-                packet.ReadByte("Source Slot");
+                packet.ReadByte("Source Slot", i);
             }
         }
 

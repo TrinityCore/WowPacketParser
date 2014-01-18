@@ -28,6 +28,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_DEL_IGNORE, 0x1DE9},
             {Opcode.CMSG_DEL_FRIEND, 0x1A60},
             {Opcode.CMSG_DUNGEON_FINDER_GET_SYSTEM_INFO, 0x05DA},
+            {Opcode.CMSG_EQUIPMENT_SET_USE, 0x02A2},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x08BC | 0x10000},
             {Opcode.CMSG_GOSSIP_HELLO, 0x02EF},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x0ECA},
