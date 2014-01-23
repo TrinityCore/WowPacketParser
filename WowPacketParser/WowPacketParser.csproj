@@ -274,6 +274,7 @@
     <Compile Include="Enums\SpellMechanic.cs" />
     <Compile Include="Enums\SpellMissType.cs" />
     <Compile Include="Enums\SpellModOp.cs" />
+    <Compile Include="Enums\SplineFlag542.cs" />
     <Compile Include="Enums\SplineFlag422.cs" />
     <Compile Include="Enums\SplineFlag.cs" />
     <Compile Include="Enums\SplineMode.cs" />
