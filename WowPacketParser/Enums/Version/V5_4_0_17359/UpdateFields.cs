@@ -60,7 +60,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
         UNIT_FIELD_CHANNEL_OBJECT                           = ObjectField.OBJECT_END + 0x0012, // Size = 2
         UNIT_FIELD_CHANNEL_SPELL                            = ObjectField.OBJECT_END + 0x0014, // Size = 1
         UNIT_FIELD_SUMMONED_BY_HOME_REALM                   = ObjectField.OBJECT_END + 0x0015, // Size = 1
-        UNIT_FIELD_SEX                                      = ObjectField.OBJECT_END + 0x0016, // Size = 1
+        UNIT_FIELD_BYTES_0                                  = ObjectField.OBJECT_END + 0x0016, // Size = 1
         UNIT_FIELD_DISPLAY_POWER                            = ObjectField.OBJECT_END + 0x0017, // Size = 1
         UNIT_FIELD_OVERRIDE_DISPLAY_POWER_ID                = ObjectField.OBJECT_END + 0x0018, // Size = 1
         UNIT_FIELD_HEALTH                                   = ObjectField.OBJECT_END + 0x0019, // Size = 1
@@ -72,9 +72,9 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
         UNIT_FIELD_LEVEL                                    = ObjectField.OBJECT_END + 0x002F, // Size = 1
         UNIT_FIELD_EFFECTIVE_LEVEL                          = ObjectField.OBJECT_END + 0x0030, // Size = 1
         UNIT_FIELD_FACTIONTEMPLATE                          = ObjectField.OBJECT_END + 0x0031, // Size = 1
-        UNIT_FIELD_VIRTUAL_ITEM_ID1                         = ObjectField.OBJECT_END + 0x0032, // Size = 1
-        UNIT_FIELD_VIRTUAL_ITEM_ID2                         = ObjectField.OBJECT_END + 0x0033, // Size = 1
-        UNIT_FIELD_VIRTUAL_ITEM_ID3                         = ObjectField.OBJECT_END + 0x0034, // Size = 1
+        UNIT_VIRTUAL_ITEM_SLOT_ID1                          = ObjectField.OBJECT_END + 0x0032, // Size = 1
+        UNIT_VIRTUAL_ITEM_SLOT_ID2                          = ObjectField.OBJECT_END + 0x0033, // Size = 1
+        UNIT_VIRTUAL_ITEM_SLOT_ID3                          = ObjectField.OBJECT_END + 0x0034, // Size = 1
         UNIT_FIELD_FLAGS                                    = ObjectField.OBJECT_END + 0x0035, // Size = 1
         UNIT_FIELD_FLAGS_2                                  = ObjectField.OBJECT_END + 0x0036, // Size = 1
         UNIT_FIELD_AURASTATE                                = ObjectField.OBJECT_END + 0x0037, // Size = 1
@@ -89,7 +89,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
         UNIT_FIELD_MAX_DAMAGE                               = ObjectField.OBJECT_END + 0x0041, // Size = 1
         UNIT_FIELD_MIN_OFFHAND_DAMAGE                       = ObjectField.OBJECT_END + 0x0042, // Size = 1
         UNIT_FIELD_MAX_OFFHAND_DAMAGE                       = ObjectField.OBJECT_END + 0x0043, // Size = 1
-        UNIT_FIELD_ANIMTIER                                 = ObjectField.OBJECT_END + 0x0044, // Size = 1
+        UNIT_FIELD_BYTES_1                                  = ObjectField.OBJECT_END + 0x0044, // Size = 1
         UNIT_FIELD_PET_NUMBER                               = ObjectField.OBJECT_END + 0x0045, // Size = 1
         UNIT_FIELD_PET_NAME_TIMESTAMP                       = ObjectField.OBJECT_END + 0x0046, // Size = 1
         UNIT_FIELD_PET_EXPERIENCE                           = ObjectField.OBJECT_END + 0x0047, // Size = 1
@@ -110,7 +110,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
         UNIT_FIELD_RESISTANCE_BUFF_MODS_NEGATIVE            = ObjectField.OBJECT_END + 0x006F, // Size = 7
         UNIT_FIELD_BASE_MANA                                = ObjectField.OBJECT_END + 0x0076, // Size = 1
         UNIT_FIELD_BASE_HEALTH                              = ObjectField.OBJECT_END + 0x0077, // Size = 1
-        UNIT_FIELD_SHAPESHIFT_FORM                          = ObjectField.OBJECT_END + 0x0078, // Size = 1
+        UNIT_FIELD_BYTES_2                                  = ObjectField.OBJECT_END + 0x0078, // Size = 1
         UNIT_FIELD_ATTACK_POWER                             = ObjectField.OBJECT_END + 0x0079, // Size = 1
         UNIT_FIELD_ATTACK_POWER_MOD_POS                     = ObjectField.OBJECT_END + 0x007A, // Size = 1
         UNIT_FIELD_ATTACK_POWER_MOD_NEG                     = ObjectField.OBJECT_END + 0x007B, // Size = 1
@@ -250,8 +250,8 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
         GAMEOBJECT_FACTION                                  = ObjectField.OBJECT_END + 0x0008, // Size = 1
         GAMEOBJECT_LEVEL                                    = ObjectField.OBJECT_END + 0x0009, // Size = 1
         GAMEOBJECT_BYTES_1                                  = ObjectField.OBJECT_END + 0x000A, // Size = 1
-        GAMEOBJECT_FIELD_ANIM_PROGRESS                      = ObjectField.OBJECT_END + 0x000B, // Size = 1
-        GAMEOBJECT_END                                = ObjectField.OBJECT_END + 0x000C
+        GAMEOBJECT_STATE_SPELL_VISUAL_ID                    = ObjectField.OBJECT_END + 0x000B, // Size = 1
+        GAMEOBJECT_END                                      = ObjectField.OBJECT_END + 0x000C
     };
 
     public enum DynamicObjectField
@@ -261,7 +261,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
         DYNAMICOBJECT_FIELD_SPELLID                         = ObjectField.OBJECT_END + 0x0003, // Size = 1
         DYNAMICOBJECT_FIELD_RADIUS                          = ObjectField.OBJECT_END + 0x0004, // Size = 1
         DYNAMICOBJECT_FIELD_CASTTIME                        = ObjectField.OBJECT_END + 0x0005, // Size = 1
-        DYNAMICOBJECT_END                             = ObjectField.OBJECT_END + 0x0006,
+        DYNAMICOBJECT_END                                   = ObjectField.OBJECT_END + 0x0006,
     };
 
     public enum CorpseField
@@ -293,7 +293,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
         SCENEOBJECT_FIELD_RND_SEED_VAL                      = ObjectField.OBJECT_END + 0x0001, // Size = 1
         SCENEOBJECT_FIELD_CREATEDBY                         = ObjectField.OBJECT_END + 0x0002, // Size = 2
         SCENEOBJECT_FIELD_SCENE_TYPE                        = ObjectField.OBJECT_END + 0x0004, // Size = 1
-        SCENEOBJECT_END                               = ObjectField.OBJECT_END + 0x0005,
+        SCENEOBJECT_END                                     = ObjectField.OBJECT_END + 0x0005,
     };
     // ReSharper restore InconsistentNaming
 }

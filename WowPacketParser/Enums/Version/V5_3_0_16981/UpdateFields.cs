@@ -61,7 +61,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
         UNIT_FIELD_CHANNEL_OBJECT                        = ObjectField.OBJECT_END + 0x0010, // Size =   2, Type: Flags PUBLIC | DYNAMIC
         UNIT_FIELD_CHANNEL_SPELL                         = ObjectField.OBJECT_END + 0x0012, // Size =   1, Type: Flags PUBLIC | DYNAMIC
         UNIT_FIELD_SUMMONED_BY_HOME_REALM                = ObjectField.OBJECT_END + 0x0013, // Size =   1, Type: Flags PUBLIC
-        UNIT_FIELD_DISPLAY_POWER                         = ObjectField.OBJECT_END + 0x0014, // Size =   1, Type: Flags PUBLIC
+        UNIT_FIELD_BYTES_0                               = ObjectField.OBJECT_END + 0x0014, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_OVERRIDE_DISPLAY_POWER_ID             = ObjectField.OBJECT_END + 0x0015, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_HEALTH                                = ObjectField.OBJECT_END + 0x0016, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_POWER                                 = ObjectField.OBJECT_END + 0x0017, // Size =   5, Type: Flags PUBLIC
@@ -72,9 +72,9 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
         UNIT_FIELD_LEVEL                                 = ObjectField.OBJECT_END + 0x002C, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_EFFECTIVE_LEVEL                       = ObjectField.OBJECT_END + 0x002D, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_FACTIONTEMPLATE                       = ObjectField.OBJECT_END + 0x002E, // Size =   1, Type: Flags PUBLIC
-        UNIT_FIELD_VIRTUAL_ITEM_ID1                      = ObjectField.OBJECT_END + 0x002F, // Size =   1, Type: Flags PUBLIC
-        UNIT_FIELD_VIRTUAL_ITEM_ID2                      = ObjectField.OBJECT_END + 0x0030, // Size =   1, Type: Flags PUBLIC
-        UNIT_FIELD_VIRTUAL_ITEM_ID3                      = ObjectField.OBJECT_END + 0x0031, // Size =   1, Type: Flags PUBLIC
+        UNIT_VIRTUAL_ITEM_SLOT_ID1                       = ObjectField.OBJECT_END + 0x002F, // Size =   1, Type: Flags PUBLIC
+        UNIT_VIRTUAL_ITEM_SLOT_ID2                       = ObjectField.OBJECT_END + 0x0030, // Size =   1, Type: Flags PUBLIC
+        UNIT_VIRTUAL_ITEM_SLOT_ID3                       = ObjectField.OBJECT_END + 0x0031, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_FLAGS                                 = ObjectField.OBJECT_END + 0x0032, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_FLAGS_2                               = ObjectField.OBJECT_END + 0x0033, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_AURASTATE                             = ObjectField.OBJECT_END + 0x0034, // Size =   1, Type: Flags PUBLIC
@@ -89,7 +89,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
         UNIT_FIELD_MAX_DAMAGE                            = ObjectField.OBJECT_END + 0x003E, // Size =   1, Type: Flags PRIVATE | OWNER | ITEM_OWNER
         UNIT_FIELD_MIN_OFFHAND_DAMAGE                    = ObjectField.OBJECT_END + 0x003F, // Size =   1, Type: Flags PRIVATE | OWNER | ITEM_OWNER
         UNIT_FIELD_MAX_OFFHAND_DAMAGE                    = ObjectField.OBJECT_END + 0x0040, // Size =   1, Type: Flags PRIVATE | OWNER | ITEM_OWNER
-        UNIT_FIELD_ANIMTIER                              = ObjectField.OBJECT_END + 0x0041, // Size =   1, Type: Flags PUBLIC
+        UNIT_FIELD_BYTES_1                               = ObjectField.OBJECT_END + 0x0041, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_PET_NUMBER                            = ObjectField.OBJECT_END + 0x0042, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_PET_NAME_TIMESTAMP                    = ObjectField.OBJECT_END + 0x0043, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_PET_EXPERIENCE                        = ObjectField.OBJECT_END + 0x0044, // Size =   1, Type: Flags OWNER
@@ -109,7 +109,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
         UNIT_FIELD_RESISTANCE_BUFF_MODS_NEGATIVE         = ObjectField.OBJECT_END + 0x006B, // Size =   7, Type: Flags PRIVATE | OWNER
         UNIT_FIELD_BASE_MANA                             = ObjectField.OBJECT_END + 0x0072, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_BASE_HEALTH                           = ObjectField.OBJECT_END + 0x0073, // Size =   1, Type: Flags PRIVATE | OWNER
-        UNIT_FIELD_SHAPESHIFT_FORM                       = ObjectField.OBJECT_END + 0x0074, // Size =   1, Type: Flags PUBLIC
+        UNIT_FIELD_BYTES_2                               = ObjectField.OBJECT_END + 0x0074, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_ATTACK_POWER                          = ObjectField.OBJECT_END + 0x0075, // Size =   1, Type: Flags PRIVATE | OWNER
         UNIT_FIELD_ATTACK_POWER_MOD_POS                  = ObjectField.OBJECT_END + 0x0076, // Size =   1, Type: Flags PRIVATE | OWNER
         UNIT_FIELD_ATTACK_POWER_MOD_NEG                  = ObjectField.OBJECT_END + 0x0077, // Size =   1, Type: Flags PRIVATE | OWNER
@@ -250,7 +250,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
         GAMEOBJECT_FACTION                               = ObjectField.OBJECT_END + 0x0008, // Size =   1, Type: Flags PUBLIC
         GAMEOBJECT_LEVEL                                 = ObjectField.OBJECT_END + 0x0009, // Size =   1, Type: Flags PUBLIC
         GAMEOBJECT_BYTES_1                               = ObjectField.OBJECT_END + 0x000A, // Size =   1, Type: Flags PUBLIC | DYNAMIC
-        GAMEOBJECT_FIELD_ANIM_PROGRESS                   = ObjectField.OBJECT_END + 0x000B, // Size =   1, Type: Flags PUBLIC | DYNAMIC
+        GAMEOBJECT_STATE_SPELL_VISUAL_ID                 = ObjectField.OBJECT_END + 0x000B, // Size =   1, Type: Flags PUBLIC | DYNAMIC
         GAMEOBJECT_FIELD_END                             = ObjectField.OBJECT_END + 0x000C
     };
 
