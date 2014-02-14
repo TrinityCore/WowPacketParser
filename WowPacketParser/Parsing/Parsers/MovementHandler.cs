@@ -259,17 +259,12 @@ namespace WowPacketParser.Parsing.Parsers
                 var newpos = packet.ReadVector3("Waypoint Endpoint");
 
                 var mid = new Vector3();
-                mid.X = (pos.X + newpos.X) * 0.5f;
-                mid.Y = (pos.Y + newpos.Y) * 0.5f;
-                mid.Z = (pos.Z + newpos.Z) * 0.5f;
+                mid = (pos + newpos) * 0.5f;
 
                 for (var i = 1; i < waypoints; i++)
                 {
                     var vec = packet.ReadPackedVector3();
-                    vec.X += mid.X;
-                    vec.Y += mid.Y;
-                    vec.Z += mid.Z;
-
+                    vec = mid - vec;
                     packet.WriteLine("[" + i + "]" + " Waypoint: " + vec);
                 }
             }
