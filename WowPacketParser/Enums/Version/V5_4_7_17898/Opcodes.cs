@@ -12,6 +12,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_AUTH_SESSION, 0x1A51},
+            {Opcode.CMSG_CREATURE_QUERY, 0x1E72},
             {Opcode.CMSG_DB_QUERY_BULK, 0x16C2},
             {Opcode.CMSG_GUILD_QUERY, 0x1280},
             {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x1A5B},
@@ -28,6 +29,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_CHAR_ENUM, 0x040A},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x1E41},
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0x1E73},
+            {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x00E0},
             {Opcode.SMSG_CRITERIA_UPDATE_ACCOUNT, 0x12F9},
             {Opcode.SMSG_CRITERIA_UPDATE_PLAYER, 0x13B2},
             {Opcode.SMSG_DB_REPLY, 0x1F01},
