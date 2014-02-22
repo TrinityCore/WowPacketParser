@@ -13,9 +13,13 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
         {
             {Opcode.CMSG_AUTH_SESSION, 0x1A51},
             {Opcode.CMSG_CREATURE_QUERY, 0x1E72},
+            {Opcode.CMSG_CHAR_ENUM, 0x12C2},
             {Opcode.CMSG_DB_QUERY_BULK, 0x16C2},
             {Opcode.CMSG_GUILD_QUERY, 0x1280},
+            {Opcode.CMSG_LOAD_SCREEN, 0x1691},
+            {Opcode.CMSG_NAME_QUERY, 0x0DB3},
             {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x1A5B},
+            {Opcode.CMSG_PING, 0x1070},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x05A0},
 
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0F40},
@@ -25,6 +29,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_ARENA_SEASON_WORLD_STATE, 0x00E1},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x14B8},
             {Opcode.SMSG_AUTH_RESPONSE, 0x15A0},
+            {Opcode.SMSG_AURA_UPDATE, 0x1B8D}, // correct?
             {Opcode.SMSG_BINDPOINTUPDATE, 0x11E2},
             {Opcode.SMSG_CHAR_ENUM, 0x040A},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x1E41},
@@ -48,12 +53,14 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0603},
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x0F4A},
             {Opcode.SMSG_MESSAGECHAT, 0x0E60},
+            {Opcode.SMSG_MONSTER_MOVE, 0x12D8}, // correct?
             {Opcode.SMSG_MOTD, 0x0E20},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x1E5B},
             {Opcode.SMSG_NEW_WORLD, 0x13F3},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x05B9},
             {Opcode.SMSG_REMOVED_SPELL, 0x05E3},
             {Opcode.SMSG_PLAYER_MOVE, 0x1CB2},
+            {Opcode.SMSG_PONG, 0x15B1},
             {Opcode.SMSG_SEND_SERVER_LOCATION, 0x0C2B},
             {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x1B3E},
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x0179},
@@ -61,6 +68,8 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x1D52},
             {Opcode.SMSG_SET_PROFICIENCY, 0x1E3B},
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x053B},
+            {Opcode.SMSG_SPELL_START, 0x0130}, // correct?
+            {Opcode.SMSG_SPELL_GO, 0x0851}, // correct?
             {Opcode.SMSG_TALENTS_INFO, 0x0C68},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x12F1},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x10A7},
