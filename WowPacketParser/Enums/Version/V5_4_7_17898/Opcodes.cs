@@ -17,8 +17,10 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_DB_QUERY_BULK, 0x16C2},
             {Opcode.CMSG_GUILD_QUERY, 0x1280},
             {Opcode.CMSG_LOAD_SCREEN, 0x1691},
+            {Opcode.CMSG_LOG_DISCONNECT, 0x1A13},
             {Opcode.CMSG_NAME_QUERY, 0x0DB3},
             {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x1A5B},
+            {Opcode.CMSG_RESET_FACTION_CHEAT, 0x1B5A},
             {Opcode.CMSG_PING, 0x1070},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x05A0},
 
@@ -49,6 +51,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_GUILD_NEWS_TEXT, 0x1850},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x1953},
             {Opcode.SMSG_GUILD_RANK, 0x1271},
+            {Opcode.SMSG_HOTFIX_INFO, 0x0C81},
             {Opcode.SMSG_LEARNED_SPELL, 0x0C99},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0603},
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x0F4A},
@@ -56,7 +59,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_MONSTER_MOVE, 0x12D8}, // correct?
             {Opcode.SMSG_MOTD, 0x0E20},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x1E5B},
-            {Opcode.SMSG_NEW_WORLD, 0x13F3},
+            {Opcode.SMSG_NEW_WORLD, 0x05AB},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x05B9},
             {Opcode.SMSG_REMOVED_SPELL, 0x05E3},
             {Opcode.SMSG_PLAYER_MOVE, 0x1CB2},
@@ -70,8 +73,10 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x053B},
             {Opcode.SMSG_SPELL_START, 0x0130}, // correct?
             {Opcode.SMSG_SPELL_GO, 0x0851}, // correct?
+            {Opcode.SMSG_SUSPEND_COMMS, 0x10B0},
             {Opcode.SMSG_TALENTS_INFO, 0x0C68},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x12F1},
+            {Opcode.SMSG_TRANSFER_PENDING, 0x0440},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x10A7},
             {Opcode.SMSG_UPDATE_OBJECT, 0x1725},
             {Opcode.SMSG_UPDATE_WORLD_STATE, 0x1D13},

@@ -56,6 +56,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 if (stringLens[i][1] > 1)
                     name[i] = packet.ReadCString("Name", i);
             }
+            creature.Name = name[0];
 
             creature.Modifier1 = packet.ReadSingle("Modifier 1");
 
