@@ -35,7 +35,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x1E41},
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0x1E73},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x00E0},
-            {Opcode.SMSG_CRITERIA_UPDATE_ACCOUNT, 0x12F9},
+            {Opcode.SMSG_CRITERIA_UPDATE_ACCOUNT, 0x12F9 | 0x20000},
             {Opcode.SMSG_CRITERIA_UPDATE_PLAYER, 0x13B2},
             {Opcode.SMSG_DB_REPLY, 0x1F01},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x1520},

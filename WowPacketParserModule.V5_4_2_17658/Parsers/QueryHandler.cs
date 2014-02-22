@@ -102,7 +102,6 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 Name = creature.Name,
             };
             Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
-
         }
 
         [Parser(Opcode.CMSG_DB_QUERY_BULK)]
