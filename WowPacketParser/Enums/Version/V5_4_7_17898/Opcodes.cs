@@ -50,6 +50,16 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_AUTH_CHALLENGE, 0x14B8},
             {Opcode.SMSG_AUTH_RESPONSE, 0x15A0},
             {Opcode.SMSG_AURA_UPDATE, 0x1B8D}, // correct?
+            {Opcode.SMSG_BATTLEPET_CAGE_DATA_ERROR, 0x14A1},
+            {Opcode.SMSG_BATTLE_PET_DELETED, 0x13F1},
+            {Opcode.SMSG_BATTLE_PET_ERROR, 0x1C12},
+            {Opcode.SMSG_BATTLE_PET_HEALED, 0x1C3B},
+            {Opcode.SMSG_BATTLE_PET_JOURNAL, 0x14A0},
+            {Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED, 0x1C7A},
+            {Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_DENIED, 0x13E3},
+            {Opcode.SMSG_BATTLE_PET_LICENSE_CHANGED, 0x11E0},
+            {Opcode.SMSG_BATTLE_PET_TRAP_LEVEL, 0x13AA},
+            {Opcode.SMSG_BATTLE_PET_UPDATES, 0x04E3},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x11E2},
             {Opcode.SMSG_CHAR_CREATE, 0x1469},
             {Opcode.SMSG_CHAR_DELETE, 0x1529},
@@ -87,6 +97,20 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_MOVE_UNSET_CAN_FLY, 0x1D81},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x1E5B},
             {Opcode.SMSG_NEW_WORLD, 0x05AB},
+            {Opcode.SMSG_PET_BATTLE_CHAT_RESTRICTED, 0x1F53},  // 5.4.7 17930 PET_BATTLE NYI
+            {Opcode.SMSG_PET_BATTLE_DEBUG_QUEUE_DUMP_RESPONSE, 0x13E9},  // 5.4.7 17930 PET_BATTLE NYI
+            {Opcode.SMSG_PET_BATTLE_FULL_UPDATE, 0x01E3},  // 5.4.7 17930 PET_BATTLE NYI
+            {Opcode.SMSG_PET_BATTLE_FINAL_ROUND, 0x0891},  // 5.4.7 17930 PET_BATTLE NYI
+            {Opcode.SMSG_PET_BATTLE_FINISHED, 0x1E33},  // 5.4.7 17930 PET_BATTLE NYI
+            {Opcode.SMSG_PET_BATTLE_FIRST_ROUND, 0x1612},  // 5.4.7 17930 PET_BATTLE NYI
+            {Opcode.SMSG_PET_BATTLE_MAX_GAME_LENGTH_WARNING, 0x12BB},  // 5.4.7 17930 PET_BATTLE NYI
+            {Opcode.SMSG_PET_BATTLE_PVP_CHALLENGE, 0x1C08},  // 5.4.7 17930 PET_BATTLE NYI
+            {Opcode.SMSG_PET_BATTLE_QUEUE_PROPOSE_MATCH, 0x0E62},  // 5.4.7 17930 PET_BATTLE NYI
+            {Opcode.SMSG_PET_BATTLE_QUEUE_STATUS, 0x1540},  // 5.4.7 17930 PET_BATTLE NYI
+            {Opcode.SMSG_PET_BATTLE_ROUND_RESULT, 0x0709},  // 5.4.7 17930 PET_BATTLE NYI
+            {Opcode.SMSG_PET_BATTLE_REPLACEMENTS_MADE, 0x5BF},  // 5.4.0 17399 PET_BATTLE NYI
+            //SMSG_PET_BATTLE_REQUEST_FAILED, 0x0000},  // 5.4.7 17930 PET_BATTLE NYI (not sure)
+            {Opcode.SMSG_PET_BATTLE_SLOT_UPDATE, 0x0421},  // 5.4.7 17930 PET_BATTLE NYI
             {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x1652},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x05B9},
             {Opcode.SMSG_REMOVED_SPELL, 0x05E3},
@@ -114,6 +138,9 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_WEATHER, 0x0F41},
             {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x1D04},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x1D01},
+
+
+            
         };
     }
 }
