@@ -18,7 +18,8 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17930
             {Opcode.SMSG_MULTIPLE_PACKETS, 0x05B1},
             {Opcode.SMSG_ADDON_INFO, 0x10E2},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x14B8},
-            {Opcode.SMSG_AUTH_RESPONSE, 0x15A0}
+            {Opcode.SMSG_AUTH_RESPONSE, 0x15A0},
+            {Opcode.SMSG_CLIENTCACHE_VERSION, 0x1E41}
         };
     }
 }

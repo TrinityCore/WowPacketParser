@@ -93,8 +93,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleServerAuthChallenge547(Packet packet)
         {
             packet.ReadUInt32("Server Seed");
-            packet.ReadBytes(32);
-            packet.ReadByte("Unk Byte");
+            packet.WriteLine(packet.ReadBytes(32).ToString());
+            packet.ReadByte("Unk Byte");        
         }
 
         [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
