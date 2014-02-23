@@ -54,13 +54,15 @@
     <Compile Include="Enums\ChatMessageType.cs" />
     <Compile Include="Parsers\AchievementHandler.cs" />
     <Compile Include="Parsers\ActionBarHandler.cs" />
+    <Compile Include="Parsers\AddonHandler.cs" />
     <Compile Include="Parsers\ArenaHandler.cs" />
-	<Compile Include="Parsers\ChatHandler.cs" />
+    <Compile Include="Parsers\ChatHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
     <Compile Include="Parsers\GuildHandler.cs" />
     <Compile Include="Parsers\HotfixHandler.cs" />
     <Compile Include="Parsers\MiscellaneousHandler.cs" />
     <Compile Include="Parsers\MovementHandler.cs" />
+    <Compile Include="Parsers\NpcHandler.cs" />
     <Compile Include="Parsers\QueryHandler.cs" />
     <Compile Include="Parsers\ReputationHandler.cs" />
     <Compile Include="Parsers\SessionHandler.cs" />

@@ -20,6 +20,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_DB_QUERY_BULK, 0x16C2},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x14EA},
             {Opcode.CMSG_GOSSIP_HELLO, 0x05F6},
+            {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x02D7},
             {Opcode.CMSG_GUILD_QUERY, 0x1280},
             {Opcode.CMSG_LEARN_TALENT, 0x1F5A},
             {Opcode.CMSG_LOAD_SCREEN, 0x1691},
@@ -31,6 +32,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_MESSAGECHAT_WHISPER, 0x0D60},
             {Opcode.CMSG_MESSAGECHAT_YELL, 0x0C43},
             {Opcode.CMSG_NAME_QUERY, 0x0DB3},
+            {Opcode.CMSG_NPC_TEXT_QUERY, 0x12FA},
             {Opcode.CMSG_OBJECT_UPDATE_FAILED, 0x882},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x1DB9},
             {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x1A5B},
@@ -85,6 +87,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_GUILD_RANK, 0x1271},
             {Opcode.SMSG_HOTFIX_INFO, 0x0C81},
             {Opcode.SMSG_LEARNED_SPELL, 0x0C99},
+            {Opcode.SMSG_LIST_INVENTORY, 0x0D2A},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0603},
             {Opcode.SMSG_LOGOUT_CANCEL_ACK, 0x0E0A},
             {Opcode.SMSG_LOGOUT_COMPLETE, 0x0429},
@@ -97,6 +100,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_MOVE_UNSET_CAN_FLY, 0x1D81},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x1E5B},
             {Opcode.SMSG_NEW_WORLD, 0x05AB},
+            {Opcode.SMSG_NPC_TEXT_UPDATE, 0x10E0},
             {Opcode.SMSG_PET_BATTLE_CHAT_RESTRICTED, 0x1F53},  // 5.4.7 17930 PET_BATTLE NYI
             {Opcode.SMSG_PET_BATTLE_DEBUG_QUEUE_DUMP_RESPONSE, 0x13E9},  // 5.4.7 17930 PET_BATTLE NYI
             {Opcode.SMSG_PET_BATTLE_FULL_UPDATE, 0x01E3},  // 5.4.7 17930 PET_BATTLE NYI
@@ -128,6 +132,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SUSPEND_COMMS, 0x10B0},
             {Opcode.SMSG_TALENTS_INFO, 0x0C68},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x12F1},
+            {Opcode.SMSG_TRAINER_LIST, 0x1509},
             {Opcode.SMSG_TRANSFER_PENDING, 0x0440},
             {Opcode.SMSG_TRIGGER_CINEMATIC, 0x04CC},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x10A7},
@@ -138,9 +143,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_WEATHER, 0x0F41},
             {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x1D04},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x1D01},
-
-
-            
         };
     }
 }
+         
