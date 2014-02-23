@@ -25,6 +25,5 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var len = packet.ReadBits(8);
             packet.ReadWoWString("Message", len);
         }
-
     }
 }
