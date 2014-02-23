@@ -7,7 +7,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class WardenHandler
     {
-        [Parser(Opcode.SMSG_WARDEN_DATA)]
+        [Parser(Opcode.SMSG_WARDEN_DATA, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17930)]
         public static void HandleServerWardenData(Packet packet)
         {
             var opcode = packet.ReadEnum<WardenServerOpcode>("Warden Server Opcode", TypeCode.Byte);
@@ -80,7 +80,18 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_WARDEN_DATA)]
+        [Parser(Opcode.SMSG_WARDEN_DATA, ClientVersionBuild.V5_4_7_17930)]
+        public static void HandleServerWardenData547(Packet packet)
+        {
+            var Size = packet.ReadInt32();
+            byte[] WardenDataBuffer = packet.ReadBytes(Size);
+
+            Packet WardenData = new Packet(WardenDataBuffer, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+
+            HandleServerWardenData(WardenData);
+        }
+
+        [Parser(Opcode.CMSG_WARDEN_DATA, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17930)]
         public static void HandleClientWardenData(Packet packet)
         {
             var opcode = packet.ReadEnum<WardenClientOpcode>("Warden Client Opcode", TypeCode.Byte);
@@ -105,6 +116,17 @@ namespace WowPacketParser.Parsing.Parsers
                     break;
                 }
             }
+        }
+
+        [Parser(Opcode.CMSG_WARDEN_DATA, ClientVersionBuild.V5_4_7_17930)]
+        public static void HandleClientWardenData547(Packet packet)
+        {
+            var Size = packet.ReadInt32();
+            byte[] WardenDataBuffer = packet.ReadBytes(Size);
+
+            Packet WardenData = new Packet(WardenDataBuffer, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+
+            HandleClientWardenData(WardenData);
         }
 
         [Parser(Opcode.SMSG_CHECK_FOR_BOTS)]

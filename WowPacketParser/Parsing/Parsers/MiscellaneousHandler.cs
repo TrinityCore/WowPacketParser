@@ -1087,6 +1087,16 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("Text", length);
         }
 
+        [Parser(Opcode.SMSG_SERVER_TIMEZONE, ClientVersionBuild.V5_4_7_17930)]
+        public static void HandleServerTimezone547(Packet packet)
+        {
+            var Location2Lenght = packet.ReadBits(7);
+            var Location1Lenght = packet.ReadBits(7);
+
+            packet.ReadWoWString("Timezone Location1", Location1Lenght);
+            packet.ReadWoWString("Timezone Location2", Location2Lenght);
+        }
+
         [Parser(Opcode.SMSG_MINIGAME_STATE)]
         [Parser(Opcode.CMSG_KEEP_ALIVE)]
         [Parser(Opcode.CMSG_TUTORIAL_RESET)]
