@@ -72,7 +72,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             if (bits2C > 1)
                 creature.IconName = packet.ReadCString("Icon Name");
 
-            //for (var i = 0; i < 4; ++i)
+            //for (var i = 0; i < 2; ++i)
             //{
                 creature.TypeFlags = packet.ReadEnum<CreatureTypeFlag>("Type Flags", TypeCode.UInt32);
                 creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2"); // Missing enum
@@ -92,7 +92,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             creature.Rank = packet.ReadEnum<CreatureRank>("Rank", TypeCode.Int32);
 
             if (bits24 > 1)
-                packet.ReadCString("Sub Name");
+                creature.SubName = packet.ReadCString("Sub Name");
 
             creature.DisplayIds[3] = packet.ReadUInt32();
             
