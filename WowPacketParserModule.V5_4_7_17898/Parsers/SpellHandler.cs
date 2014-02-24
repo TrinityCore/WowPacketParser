@@ -35,8 +35,8 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_INITIAL_SPELLS)]
         public static void HandleInitialSpells(Packet packet)
         {
-            var count = packet.ReadBits("Spell Count", 22);
             packet.ReadBit("Unk Bit");
+            var count = packet.ReadBits("Spell Count", 22);
 
             var spells = new List<uint>((int)count);
             for (var i = 0; i < count; i++)
@@ -118,6 +118,18 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
 
                 for (var j = 0; j < spentTalents[i]; ++j)
                     packet.ReadUInt16("Talent Id", i, j);
+            }
+        }
+
+        [Parser(Opcode.SMSG_SPELL_CATEGORY_COOLDOWN)]
+        public static void HandleSpellCategoryCooldown(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 21);
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Category Cooldown", i);
+                packet.ReadInt32("Cooldown", i);
             }
         }
     }
