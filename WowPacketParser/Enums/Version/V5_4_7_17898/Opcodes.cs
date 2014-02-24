@@ -11,6 +11,8 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
+            {Opcode.CMSG_ATTACKSTOP,  0x1777},
+            {Opcode.CMSG_ATTACKSWING, 0x1513},
             {Opcode.CMSG_AUTH_SESSION, 0x1A51},
             {Opcode.CMSG_CREATURE_QUERY, 0x1E72},
             {Opcode.CMSG_CHAR_CREATE, 0x09B9},
@@ -49,6 +51,9 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_ADDON_INFO, 0x10E2},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_ACCOUNT, 0x13F0},
             {Opcode.SMSG_ARENA_SEASON_WORLD_STATE, 0x00E1},
+            {Opcode.SMSG_ATTACKERSTATEUPDATE, 0x0540},
+            {Opcode.SMSG_ATTACKSTART,  0x0403},
+            {Opcode.SMSG_ATTACKSTOP,  0x1448},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x14B8},
             {Opcode.SMSG_AUTH_RESPONSE, 0x15A0},
             {Opcode.SMSG_AURA_UPDATE, 0x1B8D}, // correct?
