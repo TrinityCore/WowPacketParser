@@ -11,7 +11,10 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17930
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
+            {Opcode.CMSG_ATTACKSTOP, 0x1E13},
+            {Opcode.CMSG_ATTACKSWING, 0x1513},
             {Opcode.CMSG_AUTH_SESSION, 0x1A51},
+            {Opcode.CMSG_AUTOEQUIP_ITEM, 0x166B},
             {Opcode.CMSG_CANCEL_TRADE, 0x1D32},
             {Opcode.CMSG_CHAR_CREATE, 0x09B9},
             {Opcode.CMSG_CHAR_DELETE, 0x113B},
@@ -37,6 +40,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17930
             {Opcode.CMSG_REDIRECTION_AUTH_PROOF, 0x1A5B},
             {Opcode.CMSG_SET_PRIMARY_TALENT_TREE, 0x04AA},
             {Opcode.CMSG_SET_SELECTION, 0x10D5},
+            {Opcode.CMSG_SWAP_ITEM, 0x150A},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0413},
             {Opcode.CMSG_TUTORIAL_FLAG, 0x07A4},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x05A0},
@@ -72,8 +76,12 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17930
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0F40},
             {Opcode.SMSG_ACTION_BUTTONS, 0x1768},
             {Opcode.SMSG_ADDON_INFO, 0x10E2},
+            {Opcode.SMSG_ATTACKERSTATEUPDATE, 0x0540},
+            {Opcode.SMSG_ATTACKSTART, 0x0403},
+            {Opcode.SMSG_ATTACKSTOP, 0x1448},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x14B8},
             {Opcode.SMSG_AUTH_RESPONSE, 0x15A0},
+            {Opcode.SMSG_CANCEL_COMBAT, 0x1E7A},
             {Opcode.SMSG_CHAR_CREATE, 0x1469},
             {Opcode.SMSG_CHAR_DELETE, 0x1529},
             {Opcode.SMSG_CHAR_ENUM, 0x040A},
