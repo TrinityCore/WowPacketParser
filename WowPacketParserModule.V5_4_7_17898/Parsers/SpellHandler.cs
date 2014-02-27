@@ -13,6 +13,98 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
 {
     public static class SpellHandler
     {
+        [HasSniffData]
+        [Parser(Opcode.SMSG_AURA_UPDATE)]
+        public static void HandleAuraUpdate(Packet packet)
+        {
+            var bits0 = 0;
+            var guid2 = new byte[8];
+            var bit18 = false;
+
+            guid2[3] = packet.ReadBit();
+            bit18 = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            bits0 = (int)packet.ReadBits(24);
+            guid2[7] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+
+            var hasCasterGUID = new bool[bits0];
+            var hasDuration = new bool[bits0];
+            var hasMaxDuration = new bool[bits0];
+            var hasAura = new bool[bits0];
+            var effectCount = new uint[bits0];
+            var bits48 = new uint[bits0];
+            var casterGUID = new byte[bits0][];
+
+            for (var i = 0; i < bits0; ++i)
+            {
+                hasAura[i] = packet.ReadBit();
+                if (hasAura[i])
+                {
+                    hasMaxDuration[i] = packet.ReadBit(); 
+                    bits48[i] = packet.ReadBits(22);
+                    hasDuration[i] = packet.ReadBit();
+                    hasCasterGUID[i] = packet.ReadBit();
+                    effectCount[i] = packet.ReadBits(22);
+
+                    if (hasCasterGUID[i])
+                    {
+                        casterGUID[i] = new byte[8];
+                        packet.StartBitStream(casterGUID[i], 1, 6, 0, 7, 5, 3, 2, 4);
+                    }
+                }
+            }
+
+            guid2[2] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+
+            var auras = new List<Aura>();
+            for (var i = 0; i < bits0; ++i)
+            {
+                if (hasAura[i])
+                {
+                    var aura = new Aura();
+                    if (hasCasterGUID[i])
+                    {
+                        packet.ParseBitStream(casterGUID[i], 2, 5, 6, 7, 0, 1, 4, 3);
+                        packet.WriteGuid("Caster GUID", casterGUID[i], i);
+                        aura.CasterGuid = new Guid(BitConverter.ToUInt64(casterGUID[i], 0));
+                    }
+
+                    for (var j = 0; j < bits48[i]; ++j)
+                    {
+                        packet.ReadSingle("FloatEM", i, j);
+                    }
+
+                    packet.ReadInt32("Effect Mask", i);
+
+                    for (var j = 0; j < effectCount[i]; ++j)
+                    {
+                        packet.ReadSingle("Effect Value", i, j);
+                    }
+
+                    aura.AuraFlags = packet.ReadEnum<AuraFlagMoP>("Flags", TypeCode.Byte, i);
+                    aura.SpellId = packet.ReadUInt32("Spell Id", i);
+                    aura.Level = packet.ReadUInt16("Caster Level", i);
+                    aura.Charges = packet.ReadByte("Charges", i);
+
+                    if (hasMaxDuration[i])
+                        aura.MaxDuration = packet.ReadInt32("Max Duration", i);
+                    else
+                        aura.MaxDuration = 0;
+
+                    if (hasDuration[i])
+                        aura.Duration = packet.ReadInt32("Duration", i);
+                    else
+                        aura.Duration = 0;
+                }
+                packet.ReadByte("Slot", i);
+            }
+            packet.ParseBitStream(guid2, 0, 1, 3, 4, 2, 6, 7, 5);
+            packet.WriteGuid("GUID2", guid2);
+        }
         [Parser(Opcode.SMSG_SPELL_GO)]
         public static void HandleSpellGo(Packet packet)
         {
