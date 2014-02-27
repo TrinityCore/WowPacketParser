@@ -13,6 +13,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
     public static class NpcHandler
     {
+        public static uint LastGossipPOIEntry = 0;
+
         [Parser(Opcode.CMSG_GOSSIP_HELLO)]
         public static void HandleGossipHello(Packet packet)
         {
@@ -149,6 +151,17 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, GUID.GetEntry().ToString(CultureInfo.InvariantCulture));
         }
 
+        [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
+        public static void HandleNpcTextQuery(Packet packet)
+        {
+            var entry = packet.ReadInt32("Entry");
+
+            var guid = new byte[8];
+            packet.StartBitStream(guid, 0, 1, 2, 6, 4, 3, 7, 5);
+            packet.ParseBitStream(guid, 3, 1, 4, 6, 2, 0, 5, 7);
+            packet.WriteGuid("GUID", guid);
+        }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]
         public static void HandleNpcTextUpdate(Packet packet)
@@ -177,6 +190,25 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
 
             Storage.NpcTextsMop.Add((uint)entry.Key, npcText, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_GOSSIP_POI)]
+        public static void HandleGossipPoi(Packet packet)
+        {
+            LastGossipPOIEntry++;
+
+            var gossipPOI = new GossipPOI();
+
+            gossipPOI.Flags = (uint)packet.ReadEnum<UnknownFlags>("Flags", TypeCode.Int32);
+            var pos = packet.ReadVector2("Coordinates");
+            gossipPOI.Icon = packet.ReadEnum<GossipPOIIcon>("Icon", TypeCode.UInt32);
+            gossipPOI.Data = packet.ReadUInt32("Data");
+            gossipPOI.IconName = packet.ReadCString("Icon Name");
+
+            gossipPOI.XPos = pos.X;
+            gossipPOI.YPos = pos.Y;
+
+            Storage.GossipPOIs.Add(LastGossipPOIEntry, gossipPOI, packet.TimeSpan);
         }
     }
 }
