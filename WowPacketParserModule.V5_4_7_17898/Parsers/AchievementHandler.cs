@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             accountId[4] = packet.ReadBit();
             accountId[5] = packet.ReadBit();
             accountId[7] = packet.ReadBit();
-            
+
             packet.ReadXORByte(accountId, 0);
             packet.ReadXORByte(counter, 1);
             packet.ReadXORByte(counter, 3);

@@ -82,7 +82,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var bits28 = 0;
             var bits38 = 0;
             var bitsED = new uint[bits18][];
-            
+
 
             var bit4 = new bool[bits18];
             var bit6 = new bool[bits18];
@@ -323,7 +323,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 guid2[i] = new byte[8];
                 packet.StartBitStream(guid2[i], 1, 3, 2, 4, 7, 6, 0, 5);
             }
-           
+
             var bit20 = packet.ReadBit();
 
             packet.ResetBitReader();
@@ -340,7 +340,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.WriteGuid("GUID", guid2[i], i);
             }
         }
-        
+
         [Parser(Opcode.SMSG_PET_BATTLE_FINAL_ROUND)]
         public static void HandleBattleFinalRound(Packet packet)
         {
