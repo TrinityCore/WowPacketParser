@@ -56,7 +56,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_ATTACKSTOP,  0x1448},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x14B8},
             {Opcode.SMSG_AUTH_RESPONSE, 0x15A0},
-            {Opcode.SMSG_AURA_UPDATE, 0x1B8D}, // correct?
+            {Opcode.SMSG_AURA_UPDATE, 0x1B8D},
             {Opcode.SMSG_BATTLEPET_CAGE_DATA_ERROR, 0x14A1},
             {Opcode.SMSG_BATTLE_PET_DELETED, 0x13F1},
             {Opcode.SMSG_BATTLE_PET_ERROR, 0x1C12},
@@ -99,7 +99,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_LOGOUT_RESPONSE, 0x0D2B},
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x0F4A},
             {Opcode.SMSG_MESSAGECHAT, 0x0E60},
-            {Opcode.SMSG_MONSTER_MOVE, 0x12D8}, // correct?
+            {Opcode.SMSG_MONSTER_MOVE, 0x12D8},
             {Opcode.SMSG_MOTD, 0x0E20},
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x01F4},
             {Opcode.SMSG_MOVE_UNSET_CAN_FLY, 0x1D81},
@@ -132,8 +132,8 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x1D52},
             {Opcode.SMSG_SET_PROFICIENCY, 0x1E3B},
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x053B},
-            {Opcode.SMSG_SPELL_START, 0x0130}, // correct?
-            {Opcode.SMSG_SPELL_GO, 0x0851}, // correct?
+            {Opcode.SMSG_SPELL_START, 0x0130},
+            {Opcode.SMSG_SPELL_GO, 0x0851},
             {Opcode.SMSG_SUSPEND_COMMS, 0x10B0},
             {Opcode.SMSG_TALENTS_INFO, 0x0C68},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x12F1},
