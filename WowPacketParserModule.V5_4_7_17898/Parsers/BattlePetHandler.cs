@@ -18,85 +18,163 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ParseBitStream(guid, 7, 3, 0, 4, 2, 5, 1, 6);
             packet.WriteGuid("GUID", guid);
         }
-        
+
+        [Parser(Opcode.SMSG_PET_BATTLE_MAX_GAME_LENGTH_WARNING)]
+        public static void HandleBattlePetMaxGameLengthWarning(Packet packet)
+        {
+            var bit14 = !packet.ReadBit();
+            packet.ReadInt32("Int10");
+            if (bit14)
+                packet.ReadInt32("Int14");
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_PVP_CHALLENGE)]
+        public static void HandleBattlePetPvpChallenge(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[4] = packet.ReadBit();
+            var bit10 = !packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            var bitA = !packet.ReadBit();
+
+            if (bit10)
+                packet.ReadSingle("Float20");
+
+            packet.ReadXORByte(guid, 1);
+            packet.ReadSingle("Float18");
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadSingle("Float1C");
+            if (bit10)
+                packet.ReadInt32("Int10");
+            packet.ReadXORByte(guid, 2);
+            for (var i = 0; i < 2; ++i)
+            {
+                packet.ReadSingle("Float4");
+                packet.ReadSingle("Float28");
+                packet.ReadSingle("Float28");
+            }
+
+            packet.ReadSingle("Float14");
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 6);
+
+            packet.WriteGuid("GUID", guid);
+        }
 
         [Parser(Opcode.SMSG_PET_BATTLE_FIRST_ROUND)]
         public static void HandleBattlePetFirstRound(Packet packet)
         {
-            var bit4 = false;
-            var bit6 = false;
-            var bit8 = false;
-            var bit9 = false;
-            var bitA = false;
-            var bitB = false;
-            var bitC = false;
-            var bit10 = false;
-            var bit14 = false;
-            var bit18 = false;
-            var bit1C = false;
-            var bit20 = false;
-            var bit24 = false;
-            var bit28 = false;
-            var bit2C = false;
-            var bit30 = false;
-            var bit34 = false;
-            var bit38 = false;
-            var bitEB = false;
 
-            var bits10 = 0;
             var bits18 = 0;
+            bits18 = (int)packet.ReadBits(22);
+            var bits10 = new uint[bits18];
+
             var bits28 = 0;
             var bits38 = 0;
-            var bitsED = 0;
+            var bitsED = new uint[bits18][];
+            
 
-            bits18 = (int)packet.ReadBits(22);
+            var bit4 = new bool[bits18];
+            var bit6 = new bool[bits18];
+            var bit8 = new bool[bits18];
+            var bit80 = new bool[bits18][];
+            var bit9 = new bool[bits38];
+            var bitA = new bool[bits18];
+            var bitB = new bool[bits18];
+            var bitC = new bool[bits18];
+            var bitCC = new bool[bits18][];
+            var bit10 = new bool[bits18];
+            var bit100 = new bool[bits18][];
+            var bit14 = false;
+            var bit140 = new bool[bits18][];
+            var bit18 = new bool[bits18][];
+            var bit1C = new bool[bits18][];
+            var bit20 = new bool[bits18][];
+            var bit24 = new bool[bits18][];
+            var bit28 = new bool[bits18][];
+            var bit2C = new bool[bits18][];
+            var bit30 = new bool[bits18][];
+            var bit34 = new bool[bits18][];
+            var bit38 = new bool[bits18][];
+            var bitEB = new bool[bits18];
+
             for (var i = 0; i < bits18; ++i)
             {
-                bitEB = !packet.ReadBit();
-                bitA = !packet.ReadBit();
-                bit4 = !packet.ReadBit();
-                bitB = !packet.ReadBit();
-                bit6 = !packet.ReadBit();
-                bitC = !packet.ReadBit();
-                bit8 = !packet.ReadBit();
-                bits10 = (int)packet.ReadBits(25);
+                bitEB[i] = !packet.ReadBit();
+                bitA[i] = !packet.ReadBit();
+                bit4[i] = !packet.ReadBit();
+                bitB[i] = !packet.ReadBit();
+                bit6[i] = !packet.ReadBit();
+                bitC[i] = !packet.ReadBit();
+                bit8[i] = !packet.ReadBit();
+                bits10[i] = packet.ReadBits(25);
 
-                for (var j = 0; j < bits10; ++j)
+                //case 1
+                bitCC[i] = new bool[bits10[i]];
+                bit140[i] = new bool[bits10[i]];
+                bit100[i] = new bool[bits10[i]];
+                bit80[i] = new bool[bits10[i]];
+                //case 2
+                bit34[i] = new bool[bits10[i]];
+                bit2C[i] = new bool[bits10[i]];
+                bit30[i] = new bool[bits10[i]];
+                //case 3
+                bit18[i] = new bool[bits10[i]];
+                bit1C[i] = new bool[bits10[i]];
+                //case 4
+                bit24[i] = new bool[bits10[i]];
+                //case 5
+                bit38[i] = new bool[bits10[i]];
+                //case 7
+                bit20[i] = new bool[bits10[i]];
+                bitsED[i] = new uint[bits10[i]];
+
+                for (var j = 0u; j < bits10[i]; ++j)
                 {
-                    bit1C = !packet.ReadBit();
-                    bitsED = (int)packet.ReadBits(3);
+                    bit1C[i][j] = !packet.ReadBit();
+                    bitsED[i][j] = packet.ReadBits(3);
 
-                    switch (bitsED)
+                    switch (bitsED[i][j])
                     {
                         case 0:
-                            bit28 = !packet.ReadBit(); break;
+                            bit28[i][j] = !packet.ReadBit(); break;
                         case 1:
                             {
-                                bitC = !packet.ReadBit();
-                                bit14 = !packet.ReadBit();
-                                bit10 = !packet.ReadBit();
-                                bit8 = !packet.ReadBit();
+                                bitCC[i][j] = !packet.ReadBit();
+                                bit140[i][j] = !packet.ReadBit();
+                                bit100[i][j] = !packet.ReadBit();
+                                bit80[i][j] = !packet.ReadBit();
                                 break;
                             }
                         case 2:
                             {
-                                bit34 = !packet.ReadBit();
-                                bit2C = !packet.ReadBit();
-                                bit30 = !packet.ReadBit();
+                                bit34[i][j] = !packet.ReadBit();
+                                bit2C[i][j] = !packet.ReadBit();
+                                bit30[i][j] = !packet.ReadBit();
                                 break;
                             }
                         case 3:
                             {
-                                bit18 = !packet.ReadBit();
-                                bit1C = !packet.ReadBit();
+                                bit18[i][j] = !packet.ReadBit();
+                                bit1C[i][j] = !packet.ReadBit();
                                 break;
                             }
                         case 4:
-                            bit24 = !packet.ReadBit(); break;
+                            bit24[i][j] = !packet.ReadBit(); break;
                         case 5:
-                            bit38 = !packet.ReadBit(); break;
+                            bit38[i][j] = !packet.ReadBit(); break;
                         case 7:
-                            bit20 = !packet.ReadBit(); break;
+                            bit20[i][j] = !packet.ReadBit(); break;
                     }
                 }
             }
@@ -107,104 +185,104 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             for (var i = 0; i < bits38; ++i)
             {
-                bit9 = !packet.ReadBit();
+                bit9[i] = !packet.ReadBit();
             }
 
             packet.ResetBitReader();
 
             for (var i = 0; i < bits38; ++i)
             {
-                if (bit9)
+                if (bit9[i])
                 {
-                    packet.ReadByte("Byte9");
+                    packet.ReadByte("Byte9", i);
                 }
-                packet.ReadInt16("IntED");
-                packet.ReadByte("ByteED");
-                packet.ReadInt32("Int3C");
-                packet.ReadInt16("IntED");
+                packet.ReadInt16("IntED", i);
+                packet.ReadByte("ByteED", i);
+                packet.ReadInt32("Int3C", i);
+                packet.ReadInt16("IntED", i);
             }
 
             for (var i = 0; i < bits18; ++i)
             {
-                if (bit8)
-                    packet.ReadInt16("Int8");
+                if (bit8[i])
+                    packet.ReadInt16("Int8", i);
 
-                for (var j = 0; j < bits10; ++j)
+                for (var j = 0; j < bits10[i]; ++j)
                 {
-                    switch (bitsED)
+                    switch (bitsED[i][j])
                     {
                         case 0:
                             {
-                                if (bit28)
-                                    packet.ReadInt32("Int28");
+                                if (bit28[i][j])
+                                    packet.ReadInt32("Int28", i, j);
                                 break;
                             }
                         case 1:
-                            { 
-                                if (bit14)
-                                    packet.ReadInt32("Int14");
-                                if (bit10)
-                                    packet.ReadInt32("Int10");
-                                if (bitC)
-                                    packet.ReadInt32("IntC");
-                                if (bit8)
-                                    packet.ReadInt32("Int8");
+                            {
+                                if (bit140[i][j])
+                                    packet.ReadInt32("Int14", i, j);
+                                if (bit100[i][j])
+                                    packet.ReadInt32("Int10", i, j);
+                                if (bitCC[i][j])
+                                    packet.ReadInt32("IntC", i, j);
+                                if (bit80[i][j])
+                                    packet.ReadInt32("Int8", i, j);
                                 break;
                             }
                         case 2:
                             {
-                                if (bit30)
-                                    packet.ReadInt32("Int30");
-                                if (bit2C)
-                                    packet.ReadInt32("Int2C");
-                                if (bit34)
-                                    packet.ReadInt32("Int34");
+                                if (bit30[i][j])
+                                    packet.ReadInt32("Int30", i, j);
+                                if (bit2C[i][j])
+                                    packet.ReadInt32("Int2C", i, j);
+                                if (bit34[i][j])
+                                    packet.ReadInt32("Int34", i, j);
                                 break;
                             }
                         case 3:
                             {
-                                if (bit18)
-                                    packet.ReadInt32("Int18");
-                                if (bit1C)
-                                    packet.ReadInt32("Int1C");
+                                if (bit18[i][j])
+                                    packet.ReadInt32("Int18", i, j);
+                                if (bit1C[i][j])
+                                    packet.ReadInt32("Int1C", i, j);
                                 break;
                             }
                         case 4:
                             {
-                                if (bit24)
-                                    packet.ReadInt32("Int24");
+                                if (bit24[i][j])
+                                    packet.ReadInt32("Int24", i, j);
                                 break;
                             }
                         case 5:
                             {
-                                if (bit38)
-                                    packet.ReadInt32("Int38");
+                                if (bit38[i][j])
+                                    packet.ReadInt32("Int38", i, j);
                                 break;
                             }
                         case 7:
                             {
-                                if (bit20)
-                                    packet.ReadInt32("Int20");
+                                if (bit20[i][j])
+                                    packet.ReadInt32("Int20", i, j);
                                 break;
                             }
                     }
 
-                    if (bit14)
-                        packet.ReadByte("Byte14");
+                    if (bit1C[i][j])
+                        packet.ReadByte("Byte14", i, j);
                 }
 
-                if (bit6)
-                    packet.ReadInt16("Int6");
-                if (bitB)
-                    packet.ReadByte("ByteB");
-                if (bitC)
-                    packet.ReadByte("ByteC");
-                if (bitEB)
-                    packet.ReadInt32("IntEB");
-                if (bitA)
-                    packet.ReadByte("ByteA");
-                if (bit4)
-                    packet.ReadInt16("Int4");
+                if (bit6[i])
+                    packet.ReadInt16("Int6", i);
+                if (bitB[i])
+                    packet.ReadByte("ByteB", i);
+                if (bitC[i])
+                    packet.ReadByte("ByteC", i);
+                if (bitEB[i])
+                    packet.ReadInt32("IntEB", i);
+                if (bitA[i])
+                    packet.ReadByte("ByteA", i);
+                if (bit4[i])
+                    packet.ReadInt16("Int4", i);
             }
 
             if (bit14)
@@ -212,16 +290,112 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             for (var i = 0; i < 2; ++i)
             {
-                packet.ReadInt16("Int4C");
-                packet.ReadByte("Byte4A");
-                packet.ReadByte("Byte4A");
+                packet.ReadInt16("Int4C", i);
+                packet.ReadByte("Byte4A", i);
+                packet.ReadByte("Byte4A", i);
             }
 
             packet.ReadInt32("Int10");
 
             for (var i = 0; i < bits28; ++i)
             {
-                packet.ReadByte("Byte2C");
+                packet.ReadByte("Byte2C", i);
+            }
+        }
+        [Parser(Opcode.SMSG_PET_BATTLE_SLOT_UPDATE)]
+        public static void HandleBattleSlotUpdate(Packet packet)
+        {
+            var bits10 = 0;
+            bits10 = (int)packet.ReadBits(25);
+
+            var guid2 = new byte[bits10][];
+            var bit8 = new bool[bits10];
+            var bit12 = new bool[bits10];
+            var bit13 = new bool[bits10];
+            var bit21 = packet.ReadBit();
+
+            for (var i = 0; i < bits10; ++i)
+            {
+                bit13[i] = packet.ReadBit();
+                bit8[i] = !packet.ReadBit();
+                bit12[i] = !packet.ReadBit();
+                packet.ReadBit(); // fake bit
+                guid2[i] = new byte[8];
+                packet.StartBitStream(guid2[i], 1, 3, 2, 4, 7, 6, 0, 5);
+            }
+           
+            var bit20 = packet.ReadBit();
+
+            packet.ResetBitReader();
+
+            for (var i = 0; i < bits10; ++i)
+            {
+                packet.ParseBitStream(guid2[i], 7, 5, 0, 3, 1, 4, 6, 2);
+
+                if (bit12[i])
+                    packet.ReadByte("Byte14", i);
+                if (bit8[i])
+                    packet.ReadInt32("Int14", i);
+
+                packet.WriteGuid("GUID", guid2[i], i);
+            }
+        }
+        
+        [Parser(Opcode.SMSG_PET_BATTLE_FINAL_ROUND)]
+        public static void HandleBattleFinalRound(Packet packet)
+        {
+            var bits14 = 0;
+            bits14 = (int)packet.ReadBits(20);
+
+            var bit1 = new bool[bits14];
+            var bit2 = new bool[bits14];
+            var bit3 = new bool[bits14];
+            var bit4 = new bool[bits14];
+            var bit6 = new bool[bits14];
+            var bit10 = new bool[bits14];
+            var battleAbandon = false;
+            var bit24 = false;
+            var bitEB = new bool[bits14];
+
+
+            for (var i = 0; i < 2; ++i) // for win/lose
+            {
+                bit24 = packet.ReadBit("Win/Lose", i);
+            }
+
+            for (var i = 0; i < bits14; ++i)
+            {
+                bit3[i] = packet.ReadBit();
+                bit1[i] = packet.ReadBit();
+                bit2[i] = packet.ReadBit();
+                bitEB[i] = packet.ReadBit();
+                bit4[i] = !packet.ReadBit("unk4", i);
+                bit6[i] = !packet.ReadBit("unk6", i);
+                bit10[i] = !packet.ReadBit("unk10", i);
+            }
+
+            var bit11 = packet.ReadBit();
+            battleAbandon = packet.ReadBit("battleAbandon");
+
+            for (var i = 0; i < 2; ++i)
+            {
+                packet.ReadInt32("Int28", i);
+            }
+
+            for (var i = 0; i < bits14; ++i)
+            {
+                packet.ReadByte("Slot", i);
+
+                if (bit4[i])
+                    packet.ReadInt16("Level after fight", i);
+                if (bit6[i])
+                    packet.ReadInt16("Experience", i);
+
+                packet.ReadInt32("Health after fight", i);
+                packet.ReadInt32("Health", i);
+
+                if (bit10[i])
+                    packet.ReadInt16("Level before fight", i);
             }
         }
         [Parser(Opcode.SMSG_BATTLE_PET_ERROR)]
@@ -237,6 +411,49 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             if (bit10)
                 packet.ReadInt32("Int10");
+        }
+        [Parser(Opcode.SMSG_PET_BATTLE_QUEUE_STATUS)]
+        public static void HandleBattlePetQueueStatus(Packet packet)
+        {
+            var guid2 = new byte[8];
+
+            var bits28 = 0;
+
+            guid2[5] = packet.ReadBit();
+            bits28 = (int)packet.ReadBits(22);
+            var bit48 = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            var bit3C = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            packet.ReadInt32("Int20");
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadInt32("Int40");
+            if (bit3C)
+                packet.ReadInt32("Int38");
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadInt32("Int1C");
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid2, 1);
+            if (bit48)
+                packet.ReadInt32("Int44");
+
+            for (var i = 0; i < bits28; ++i)
+            {
+                packet.ReadInt32("IntED", i);
+            }
+
+            packet.ReadInt32("Int18");
+            packet.ReadXORByte(guid2, 6);
+
+            packet.WriteGuid("GUID", guid2);
         }
 
         [Parser(Opcode.SMSG_BATTLE_PET_TRAP_LEVEL)]
