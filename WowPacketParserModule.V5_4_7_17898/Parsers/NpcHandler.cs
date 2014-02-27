@@ -273,5 +273,74 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             else
                 Storage.NpcTrainers.Add(GUID.GetEntry(), npcTrainer, packet.TimeSpan);
         }
+
+        [Parser(Opcode.SMSG_LIST_INVENTORY)]
+        public static void HandleVendorInventoryList(Packet packet)
+        {
+            var npcVendor = new NpcVendor();
+
+            var guid = new byte[8];
+
+            guid[4] = packet.ReadBit();
+            var itemCount = packet.ReadBits(18);
+            var hasCondition = new bool[itemCount];
+            var hasExtendedCost = new bool[itemCount];
+            
+            for (int i = 0; i < itemCount; ++i)
+            {
+                packet.ReadBit("Unk bit", i);
+                hasCondition[i]= !packet.ReadBit();
+                hasExtendedCost[i] = !packet.ReadBit();
+            }
+
+            guid[1] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 3);
+
+            npcVendor.VendorItems = new List<VendorItem>((int)itemCount);
+            for (int i = 0; i < itemCount; ++i)
+            {
+                var vendorItem = new VendorItem();
+                packet.ReadInt32("Max Durability", i);
+                vendorItem.Type = packet.ReadUInt32("Type", i); // 1 - item, 2 - currency
+                var buyCount = packet.ReadUInt32("Buy Count", i);
+
+                if (hasExtendedCost[i])
+                    vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
+
+                packet.ReadInt32("Price", i);
+                vendorItem.ItemId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
+                vendorItem.Slot = packet.ReadUInt32("Item Position", i);
+
+                if (hasCondition[i])
+                    packet.ReadInt32("Condition ID", i);
+
+                var maxCount = packet.ReadInt32("Max Count", i);
+                packet.ReadInt32("Item Upgrade ID", i);
+                packet.ReadInt32("Display ID", i);
+
+                npcVendor.VendorItems.Add(vendorItem);
+            }
+
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadByte("Byte10");
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 7);
+
+            packet.WriteGuid("Guid5", guid);
+
+            var vendorGUID = new Guid(BitConverter.ToUInt64(guid, 0));
+            Storage.NpcVendors.Add(vendorGUID.GetEntry(), npcVendor, packet.TimeSpan);
+        }
     }
 }
