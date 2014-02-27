@@ -8,7 +8,6 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 {
     public static class MovementHandler
     {
-
         [Parser(Opcode.SMSG_PLAYER_MOVE)]
         public static void HandlePlayerMove(Packet packet)
         {
