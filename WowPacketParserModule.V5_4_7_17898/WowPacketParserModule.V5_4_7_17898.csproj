@@ -70,6 +70,7 @@
     <Compile Include="Parsers\ReputationHandler.cs" />
     <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />
+    <Compile Include="Parsers\UpdateHandler.cs" />
     <Compile Include="Parsers\WorldStateHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
