@@ -59,10 +59,12 @@
     <Compile Include="Parsers\BattlePetHandler.cs" />
     <Compile Include="Parsers\ChatHandler.cs" />
     <Compile Include="Parsers\CombatLogHandler.cs" />
+    <Compile Include="Parsers\CorpseHandler.cs" />
     <Compile Include="Parsers\EquipmentSetHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
     <Compile Include="Parsers\GuildHandler.cs" />
     <Compile Include="Parsers\HotfixHandler.cs" />
+    <Compile Include="Parsers\ItemHandler.cs" />
     <Compile Include="Parsers\MiscellaneousHandler.cs" />
     <Compile Include="Parsers\MovementHandler.cs" />
     <Compile Include="Parsers\NpcHandler.cs" />

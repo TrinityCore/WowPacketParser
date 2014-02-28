@@ -57,5 +57,36 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             packet.ReadWoWString("Text", (int)packet.ReadBits(10));
         }
+
+        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_DATA)]
+        public static void HandleGuildAchievementData(Packet packet)
+        {
+            var count = packet.ReadBits("Criteria count", 20);
+
+            var guid = new byte[count][];
+
+            for (var i = 0; i < count; ++i)
+            {
+                guid[i] = new byte[8];
+                packet.StartBitStream(guid[i], 3, 5, 4, 7, 2, 1, 0, 6);
+            }
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadXORByte(guid[i], 2);
+                packet.ReadXORByte(guid[i], 7);
+                packet.ReadInt32("Unk 1", i);
+                packet.ReadXORByte(guid[i], 5);
+                packet.ReadXORByte(guid[i], 3);
+                packet.ReadXORByte(guid[i], 1);
+                packet.ReadInt32("Achievement Id", i);
+                packet.ReadXORByte(guid[i], 6);
+                packet.ReadInt32("Unk 2", i);
+                packet.ReadXORByte(guid[i], 4);
+                packet.ReadXORByte(guid[i], 0);
+                packet.ReadPackedTime("Time", i);
+                packet.WriteGuid("Guid", guid[i], i);
+            }
+        }
     }
 }

@@ -763,6 +763,19 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_SEND_UNLEARN_SPELLS)]
+        public static void HandleSendUnlearnSpells(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 21);
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadInt32("Unk Int32", i);
+                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+                packet.ReadByte("Unk Byte", i);
+            }
+        }
+
         [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER)]
         public static void HandleSetSpellModifierFlat(Packet packet)
         {
