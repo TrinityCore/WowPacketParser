@@ -57,5 +57,24 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteLine("Account: {0}", BitConverter.ToUInt64(accountId, 0));
             packet.WriteLine("Counter: {0}", BitConverter.ToInt64(counter, 0));
         }
+
+        [Parser(Opcode.SMSG_CRITERIA_UPDATE_PLAYER)]
+        public static void HandleCriteriaPlayer(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadPackedTime("Time");
+
+            packet.ReadInt32("Timer 1");
+            packet.ReadInt32("Timer 2");
+            packet.ReadInt64("Counter");
+            packet.ReadInt32("Criteria ID");
+            packet.ReadInt32("Flags");
+
+            packet.StartBitStream(guid, 2, 4, 0, 6, 3, 7, 5, 1);
+            packet.ParseBitStream(guid, 4, 2, 6, 1, 7, 3, 0, 5);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
