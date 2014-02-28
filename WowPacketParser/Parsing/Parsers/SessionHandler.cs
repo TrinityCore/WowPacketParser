@@ -74,7 +74,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk8");
         }
 
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_4_7_17930)]
+        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleServerAuthChallenge505(Packet packet)
         {
             packet.ReadUInt32("Server Seed");
@@ -89,7 +89,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Unk Byte");
         }
 
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V5_4_7_17930)]
+        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleServerAuthChallenge547(Packet packet)
         {
             packet.ReadUInt32("Server Seed");
@@ -265,7 +265,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_4_7_17930)]
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleAuthSession505(Packet packet)
         {
             var sha = new byte[20];
@@ -311,7 +311,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_4_7_17930)]
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleAuthSession547(Packet packet)
         {
             var sha = new byte[20];
@@ -384,7 +384,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_4_7_17930)]
+        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleAuthResponse505(Packet packet)
         {
             var hasAccountData = packet.ReadBit("Has Account Data");
@@ -433,7 +433,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
         }
 
-        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V5_4_7_17930)]
+        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleAuthResponse547(Packet packet)
         {
             var hasAccountData = packet.ReadBit("Has Account Data");

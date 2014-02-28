@@ -13,7 +13,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Unk Int32", i);
         }
 
-        [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES, ClientVersionBuild.V3_0_2_9056, ClientVersionBuild.V5_4_7_17930)]
+        [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES, ClientVersionBuild.V3_0_2_9056, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleAccountDataTimes2(Packet packet)
         {
             packet.ReadTime("Server Time");
@@ -33,7 +33,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES, ClientVersionBuild.V5_4_7_17930)]
+        [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleAccountDataTimes547(Packet packet)
         {
             packet.ReadUInt32("dword10");

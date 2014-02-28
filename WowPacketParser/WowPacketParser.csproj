@@ -310,6 +310,7 @@
     <Compile Include="Enums\Version\V4_0_6_13596\Opcodes.cs" />
     <Compile Include="Enums\Version\V4_0_6_13596\UpdateFields.cs" />
     <Compile Include="Enums\Version\V4_1_0_13914\Opcodes.cs" />
+    <Compile Include="Enums\Version\V4_1_0_13914\UpdateFields.cs" />
     <Compile Include="Enums\Version\V4_2_0_14333\Opcodes.cs" />
     <Compile Include="Enums\Version\V4_2_0_14333\UpdateFields.cs" />
     <Compile Include="Enums\Version\V4_2_2_14545\Opcodes.cs" />
@@ -332,8 +333,8 @@
     <Compile Include="Enums\Version\V5_2_0_16650\UpdateFields.cs" />
     <Compile Include="Enums\Version\V5_3_0_16981\Opcodes.cs" />
     <Compile Include="Enums\Version\V5_3_0_16981\UpdateFields.cs" />
-    <Compile Include="Enums\Version\V5_4_7_17930\Opcodes.cs" />
-    <Compile Include="Enums\Version\V5_4_7_17930\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V5_4_7_17956\Opcodes.cs" />
+    <Compile Include="Enums\Version\V5_4_7_17956\UpdateFields.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\VoidTransferError.cs" />
     <Compile Include="Enums\WardenCheckType.cs" />

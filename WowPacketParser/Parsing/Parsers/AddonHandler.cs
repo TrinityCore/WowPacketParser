@@ -46,7 +46,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_ADDON_INFO, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17930)]
+        [Parser(Opcode.SMSG_ADDON_INFO, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleServerAddonsList(Packet packet)
         {
             // This packet requires _addonCount from CMSG_AUTH_SESSION to be parsed.
@@ -102,7 +102,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_ADDON_INFO, ClientVersionBuild.V5_4_7_17930)]
+        [Parser(Opcode.SMSG_ADDON_INFO, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleServerAddonInfo547(Packet packet)
         {
             var AddonsCount = packet.ReadBits("Addons Count", 23);
