@@ -196,8 +196,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_SPELLNONMELEEDAMAGELOG)]
         public static void HandleSpellNonMeleeDmgLog(Packet packet)
         {
-            var guid10 = new byte[8];
-            var guid11 = new byte[8];
+            var targetGUID = new byte[8];
+            var casterGUID = new byte[8];
 
             var bit10 = false;
             var bit14 = false;
@@ -220,7 +220,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadInt32("Overkill");
             packet.ReadUInt32("Damage");
             packet.ReadEnum<AttackerStateFlags>("Attacker State Flags", TypeCode.Int32);
-            guid10[4] = packet.ReadBit();
+            targetGUID[4] = packet.ReadBit();
             var hasDebugOutput = packet.ReadBit("Has Debug Output");
             if (hasDebugOutput)
             {
@@ -236,28 +236,28 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 bit24 = !packet.ReadBit();
             }
 
-            guid11[7] = packet.ReadBit();
-            guid11[3] = packet.ReadBit();
-            guid10[3] = packet.ReadBit();
-            guid11[1] = packet.ReadBit();
-            guid10[6] = packet.ReadBit();
-            guid10[2] = packet.ReadBit();
+            casterGUID[7] = packet.ReadBit();
+            casterGUID[3] = packet.ReadBit();
+            targetGUID[3] = packet.ReadBit();
+            casterGUID[1] = packet.ReadBit();
+            targetGUID[6] = packet.ReadBit();
+            targetGUID[2] = packet.ReadBit();
             var hasPawerData = packet.ReadBit();
-            guid10[0] = packet.ReadBit();
-            guid11[6] = packet.ReadBit();
-            guid10[7] = packet.ReadBit();
+            targetGUID[0] = packet.ReadBit();
+            casterGUID[6] = packet.ReadBit();
+            targetGUID[7] = packet.ReadBit();
             var bit40 = packet.ReadBit();
-            guid10[5] = packet.ReadBit();
-            guid10[1] = packet.ReadBit();
-            guid11[0] = packet.ReadBit();
-            guid11[4] = packet.ReadBit();
-            guid11[2] = packet.ReadBit();
+            targetGUID[5] = packet.ReadBit();
+            targetGUID[1] = packet.ReadBit();
+            casterGUID[0] = packet.ReadBit();
+            casterGUID[4] = packet.ReadBit();
+            casterGUID[2] = packet.ReadBit();
             var bit50 = packet.ReadBit();
 
             if (hasPawerData)
                 bits68 = (int)packet.ReadBits(21);
 
-            guid11[5] = packet.ReadBit();
+            casterGUID[5] = packet.ReadBit();
 
             if (hasDebugOutput)
             {
@@ -283,9 +283,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     packet.ReadSingle("Float28");
             }
 
-            packet.ReadXORByte(guid10, 7);
-            packet.ReadXORByte(guid10, 6);
-            packet.ReadXORByte(guid11, 5);
+            packet.ReadXORByte(targetGUID, 7);
+            packet.ReadXORByte(targetGUID, 6);
+            packet.ReadXORByte(casterGUID, 5);
             if (hasPawerData)
             {
                 for (var i = 0; i < bits68; ++i)
@@ -299,23 +299,95 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadInt32("Int64");
             }
 
-            packet.ReadXORByte(guid10, 2);
-            packet.ReadXORByte(guid11, 6);
-            packet.ReadXORByte(guid10, 1);
-            packet.ReadXORByte(guid10, 4);
-            packet.ReadXORByte(guid11, 2);
-            packet.ReadXORByte(guid11, 1);
-            packet.ReadXORByte(guid11, 7);
-            packet.ReadXORByte(guid10, 5);
-            packet.ReadXORByte(guid11, 3);
-            packet.ReadXORByte(guid10, 0);
-            packet.ReadXORByte(guid11, 0);
-            packet.ReadXORByte(guid10, 3);
-            packet.ReadXORByte(guid11, 4);
+            packet.ReadXORByte(targetGUID, 2);
+            packet.ReadXORByte(casterGUID, 6);
+            packet.ReadXORByte(targetGUID, 1);
+            packet.ReadXORByte(targetGUID, 4);
+            packet.ReadXORByte(casterGUID, 2);
+            packet.ReadXORByte(casterGUID, 1);
+            packet.ReadXORByte(casterGUID, 7);
+            packet.ReadXORByte(targetGUID, 5);
+            packet.ReadXORByte(casterGUID, 3);
+            packet.ReadXORByte(targetGUID, 0);
+            packet.ReadXORByte(casterGUID, 0);
+            packet.ReadXORByte(targetGUID, 3);
+            packet.ReadXORByte(casterGUID, 4);
 
-            packet.WriteGuid("Guid10", guid10);
-            packet.WriteGuid("Guid11", guid11);
+            packet.WriteGuid("Caster GUID", casterGUID);
+            packet.WriteGuid("Target GUID", targetGUID);
+        }
 
+        [Parser(Opcode.SMSG_SPELLHEALLOG)]
+        public static void HandleSpellHealLog(Packet packet)
+        {
+            var targetGUID = new byte[8];
+            var casterGUID = new byte[8];
+
+            var bits38 = 0;
+
+            casterGUID[0] = packet.ReadBit();
+            casterGUID[7] = packet.ReadBit();
+            targetGUID[6] = packet.ReadBit();
+            var hasPowerData = packet.ReadBit();
+            targetGUID[5] = packet.ReadBit();
+            targetGUID[1] = packet.ReadBit();
+            var bit14 = packet.ReadBit();
+            if (hasPowerData)
+                bits38 = (int)packet.ReadBits(21);
+            targetGUID[4] = packet.ReadBit();
+            targetGUID[0] = packet.ReadBit();
+            casterGUID[3] = packet.ReadBit();
+            casterGUID[1] = packet.ReadBit();
+            casterGUID[5] = packet.ReadBit();
+            targetGUID[2] = packet.ReadBit();
+            casterGUID[2] = packet.ReadBit();
+            targetGUID[3] = packet.ReadBit();
+            var bit5C = packet.ReadBit();
+            casterGUID[6] = packet.ReadBit();
+            var bit64 = packet.ReadBit();
+            targetGUID[7] = packet.ReadBit();
+            casterGUID[4] = packet.ReadBit();
+            packet.ReadXORByte(casterGUID, 5);
+            packet.ReadXORByte(targetGUID, 7);
+            if (bit14)
+                packet.ReadSingle("Float10");
+            if (hasPowerData)
+            {
+                packet.ReadInt32("Int34");
+
+                for (var i = 0; i < bits38; ++i)
+                {
+                    packet.ReadInt32("IntED", i);
+                    packet.ReadInt32("IntED", i);
+                }
+
+                packet.ReadInt32("Int2C");
+                packet.ReadInt32("Int30");
+            }
+
+            packet.ReadXORByte(casterGUID, 2);
+            packet.ReadXORByte(targetGUID, 1);
+            packet.ReadXORByte(targetGUID, 5);
+            packet.ReadXORByte(targetGUID, 2);
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadXORByte(targetGUID, 6);
+            packet.ReadInt32("Int68");
+            packet.ReadInt32("Overheal");
+            packet.ReadXORByte(casterGUID, 6);
+            packet.ReadXORByte(targetGUID, 0);
+            packet.ReadXORByte(casterGUID, 7);
+            packet.ReadXORByte(casterGUID, 1);
+            packet.ReadXORByte(targetGUID, 3);
+            packet.ReadXORByte(casterGUID, 0);
+            if (bit64)
+                packet.ReadSingle("Float60");
+            packet.ReadXORByte(targetGUID, 4);
+            packet.ReadXORByte(casterGUID, 3);
+            packet.ReadInt32("Damage");
+            packet.ReadXORByte(casterGUID, 4);
+
+            packet.WriteGuid("Caster GUID", casterGUID);
+            packet.WriteGuid("Target GUID", targetGUID);
         }
     }
 }
