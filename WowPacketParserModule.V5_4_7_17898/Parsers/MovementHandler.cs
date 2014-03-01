@@ -575,7 +575,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 pos.O = packet.ReadSingle();
 
             packet.WriteGuid("Guid2", guid);
-
         }
     }
 }

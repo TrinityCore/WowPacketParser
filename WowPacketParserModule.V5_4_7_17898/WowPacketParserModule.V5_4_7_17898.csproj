@@ -72,6 +72,7 @@
     <Compile Include="Parsers\MiscellaneousHandler.cs" />
     <Compile Include="Parsers\MovementHandler.cs" />
     <Compile Include="Parsers\NpcHandler.cs" />
+    <Compile Include="Parsers\PetHandler.cs" />
     <Compile Include="Parsers\QueryHandler.cs" />
     <Compile Include="Parsers\QuestHandler.cs" />
     <Compile Include="Parsers\ReputationHandler.cs" />
