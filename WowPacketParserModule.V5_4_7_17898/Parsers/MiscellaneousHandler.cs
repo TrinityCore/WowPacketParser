@@ -33,16 +33,26 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_ADDON_REGISTERED_PREFIXES)]
-        public static void MultiplePackets(Packet packet)
+        [Parser(Opcode.SMSG_PLAY_SOUND)]
+        public static void HandlePlaySound(Packet packet)
         {
-            var count = packet.ReadBits("Count", 24);
-            var lengths = new int[count];
-            for (var i = 0; i < count; ++i)
-                lengths[i] = (int)packet.ReadBits(5);
+            var guid = new byte[8];
 
-            for (var i = 0; i < count; ++i)
-                packet.ReadWoWString("Addon", lengths[i], i);
+            packet.StartBitStream(guid, 1, 6, 7, 5, 4, 3, 0, 2);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 4);
+            var sound = packet.ReadUInt32("Sound Id");
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 7);
+
+            packet.WriteGuid("Guid2", guid);
+            ;
+
+            Storage.Sounds.Add(sound, packet.TimeSpan);
         }
     }
 }
