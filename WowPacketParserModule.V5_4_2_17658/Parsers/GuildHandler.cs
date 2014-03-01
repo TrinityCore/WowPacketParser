@@ -211,7 +211,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         }
 
         [Parser(Opcode.SMSG_GUILD_RANK)]
-        public static void HandleGuildRankServer434(Packet packet)
+        public static void HandleGuildRankServer(Packet packet)
         {
             const int guildBankMaxTabs = 8;
             var count = packet.ReadBits("Count", 17);

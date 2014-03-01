@@ -168,5 +168,34 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.WriteGuid("Guid", guid[i], i);
             }
         }
+
+        [Parser(Opcode.SMSG_GUILD_RANK)]
+        public static void HandleGuildRankServer(Packet packet)
+        {
+            const int guildBankMaxTabs = 8;
+            var count = packet.ReadBits("Count", 17);
+            var length = new uint[count];
+
+            for (var i = 0; i < count; ++i)
+                length[i] = packet.ReadBits(7);
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Creation Order", i);
+
+                packet.ReadWoWString("Name", length[i], i);
+
+                packet.ReadInt32("Unk 1", i);
+
+                for (var j = 0; j < guildBankMaxTabs; ++j)
+                {
+                    packet.ReadInt32("Tab Slots", i, j);
+                    packet.ReadEnum<GuildBankRightsFlag>("Tab Rights", TypeCode.Int32, i, j);
+                }
+
+                packet.ReadInt32("Gold Per Day", i);
+                packet.ReadInt32("Rights Order", i);
+            }
+        }
     }
 }
