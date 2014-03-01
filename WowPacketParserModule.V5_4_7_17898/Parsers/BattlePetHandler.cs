@@ -837,5 +837,10 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.ReadInt16("Int-26");
         }
+
+        [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]
+        public static void HandleZeroLengthPackets(Packet packet)
+        {
+        }
     }
 }
