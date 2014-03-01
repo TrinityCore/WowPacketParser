@@ -49,8 +49,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 7);
 
-            packet.WriteGuid("Guid2", guid);
-            ;
+            packet.WriteGuid("Guid", guid);
 
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }

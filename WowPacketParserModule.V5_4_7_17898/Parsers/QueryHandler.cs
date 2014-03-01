@@ -645,5 +645,17 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadWoWString("Realmname", bits22);
             packet.ReadWoWString("Realmname (without white char)", bits278);
         }
+
+        [Parser(Opcode.CMSG_QUEST_QUERY)]
+        public static void HandleQuestQuery(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
+            packet.StartBitStream(guid, 2, 3, 5, 1, 7, 0, 6, 4);
+            packet.ParseBitStream(guid, 4, 2, 1, 3, 5, 7, 0, 6);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
