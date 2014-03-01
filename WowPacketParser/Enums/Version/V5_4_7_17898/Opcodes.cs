@@ -110,6 +110,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_GUILD_NEWS_TEXT, 0x1850},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x1953},
             {Opcode.SMSG_GUILD_RANK, 0x1271},
+            {Opcode.SMSG_GUILD_ROSTER, 0x1231 | 0x20000},
             {Opcode.SMSG_HOTFIX_INFO, 0x0C81},
             {Opcode.SMSG_LEARNED_SPELL, 0x0C99},
             {Opcode.SMSG_LFG_PLAYER_INFO, 0x13B0},
