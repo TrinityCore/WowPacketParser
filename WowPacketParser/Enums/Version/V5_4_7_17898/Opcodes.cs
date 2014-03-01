@@ -15,6 +15,8 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_ATTACKSTOP,  0x1777},
             {Opcode.CMSG_ATTACKSWING, 0x1513},
             {Opcode.CMSG_AUTH_SESSION, 0x1A51},
+            {Opcode.CMSG_AUTOEQUIP_ITEM, 0x166B},
+            {Opcode.CMSG_CANCEL_TRADE, 0x1D32},
             {Opcode.CMSG_CAST_SPELL, 0x1E5B | 0x10000},
             {Opcode.CMSG_CHANNEL_LIST, 0x1D20},
             {Opcode.CMSG_CHAR_CREATE, 0x09B9},
@@ -51,6 +53,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x13CB},
             {Opcode.CMSG_PLAYER_LOGIN, 0x17D3},
             {Opcode.CMSG_PING, 0x1070},
+            {Opcode.CMSG_LEARN_TALENT, 0x115F},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0413},
             {Opcode.CMSG_TUTORIAL_FLAG, 0x07A4},
             {Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES, 0x072B | 0x10000},
@@ -138,10 +141,10 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_PET_BATTLE_REPLACEMENTS_MADE, 0x0891},  // 5.4.0 17399 PET_BATTLE NYI
             //SMSG_PET_BATTLE_REQUEST_FAILED, 0x0000},  // 5.4.7 17930 PET_BATTLE NYI (not sure)
             {Opcode.SMSG_PET_BATTLE_SLOT_UPDATE, 0x0421},  // 5.4.7 17930 PET_BATTLE NYI
-            {Opcode.SMSG_RAID_INSTANCE_INFO, 0x051B},
             {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x1652},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x05B9},
             {Opcode.SMSG_REMOVED_SPELL, 0x05E3},
+            {Opcode.SMSG_PERIODICAURALOG, 0x051B},
             {Opcode.SMSG_PLAYER_MOVE, 0x1CB2},
             {Opcode.SMSG_PONG, 0x15B1},
             {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 0x0957},
