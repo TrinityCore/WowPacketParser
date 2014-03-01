@@ -116,79 +116,86 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             var guid20 = new byte[8];
             var guid25 = new byte[8];
 
-            var bit108 = false;
-            var bit10C = false;
-            var bit110 = false;
-            var bit120 = false;
-            var bit14C = false;
-            var bit154 = false;
-            var bit158 = false;
-            var bit160 = false;
-            var bit178 = false;
-            var bit17C = false;
-            var bit180 = false;
+            var hasMovementFlags = false;
+            var hasMovementFlags2 = false;
+            var hasTimestamp = false;
+            var hasOrientation = false;
+            var hasTransportTime2 = false;
+            var hasTransportTime3 = false;
+            var hasTransport = false;
+            var hasPitch = false;
+            var hasFallDirection = false;
+            var hasFallData = false;
+            var hasSplineElevation = false;
             var bit184 = false;
             var bit185 = false;
-            var bit198 = false;
+            var hasUnkMovementField = false;
             var bit19C = false;
 
-            var bits188 = 0;
+            var unkMovementLoopCounter = 0;
 
             var hasCastCount = !packet.ReadBit();
-            var bit50 = packet.ReadBit();
-            var bit78 = !packet.ReadBit();
-            var hasCastFlags = !packet.ReadBit();
+            var hasSrcLocation = packet.ReadBit();
+            var hasTargetString = !packet.ReadBit();
+            var hasTargetMask = !packet.ReadBit();
             var hasSpellId = !packet.ReadBit();
-            var bit1C = !packet.ReadBit();
-            var bit70 = packet.ReadBit();
+            var hasCastFlags = !packet.ReadBit();
+            var hasDestLocation = packet.ReadBit();
             packet.ReadBit(); // fake bit?
             var archeologyCounter = packet.ReadBits(2);
-            var bit1A0 = packet.ReadBit();
+            var hasMovement = packet.ReadBit();
             packet.ReadBit(); // fake bit?
-            var bit18 = !packet.ReadBit();
+            var hasGlyphIndex = !packet.ReadBit();
 
             for (var i = 0; i < archeologyCounter; ++i)
                 packet.ReadBits("archeologyType", 2, i);
 
-            var bitF8 = !packet.ReadBit();
-            var bitFC = !packet.ReadBit();
+            var hasElevation = !packet.ReadBit();
+            var hasMissileSpeed = !packet.ReadBit();
 
-            if (bit70)
+            if (hasDestLocation)
                 packet.StartBitStream(guidB, 1, 2, 4, 3, 7, 6, 5, 0);
 
-            if (bit1A0)
+            if (hasMovement)
             {
-                bit108 = !packet.ReadBit();
+                hasMovementFlags = !packet.ReadBit();
                 guid20[5] = packet.ReadBit();
-                if (bit108)
-                    packet.ReadBits("bits108", 30);
-                bit180 = !packet.ReadBit();
+
+                if (hasMovementFlags)
+                    packet.ReadBits("hasMovementFlags", 30);
+
+                hasSplineElevation = !packet.ReadBit();
                 guid20[0] = packet.ReadBit();
                 guid20[2] = packet.ReadBit();
-                bit17C = packet.ReadBit();
-                bit160 = !packet.ReadBit();
+                hasFallData = packet.ReadBit();
+                hasPitch = !packet.ReadBit();
                 bit19C = packet.ReadBit();
                 bit185 = packet.ReadBit();
                 guid20[7] = packet.ReadBit();
-                bit110 = !packet.ReadBit();
-                bits188 = (int)packet.ReadBits(22);
+                hasTimestamp = !packet.ReadBit();
+                unkMovementLoopCounter = (int)packet.ReadBits(22);
                 guid20[1] = packet.ReadBit();
-                if (bit17C)
-                    bit178 = packet.ReadBit();
-                bit120 = !packet.ReadBit();
-                bit198 = !packet.ReadBit();
+
+                if (hasFallData)
+                    hasFallDirection = packet.ReadBit();
+
+                hasOrientation = !packet.ReadBit();
+                hasUnkMovementField = !packet.ReadBit();
                 guid20[6] = packet.ReadBit();
-                bit10C = !packet.ReadBit();
-                if (bit10C)
-                    packet.ReadBits("bits10C", 13);
-                bit158 = packet.ReadBit();
+                hasMovementFlags2 = !packet.ReadBit();
+
+                if (hasMovementFlags2)
+                    packet.ReadBits("hasMovementFlags2", 13);
+
+                hasTransport = packet.ReadBit();
                 bit184 = packet.ReadBit();
-                if (bit158)
+
+                if (hasTransport)
                 {
                     guid25[5] = packet.ReadBit();
                     guid25[0] = packet.ReadBit();
-                    bit14C = packet.ReadBit();
-                    bit154 = packet.ReadBit();
+                    hasTransportTime2 = packet.ReadBit();
+                    hasTransportTime3 = packet.ReadBit();
                     guid25[2] = packet.ReadBit();
                     guid25[1] = packet.ReadBit();
                     guid25[6] = packet.ReadBit();
@@ -203,18 +210,18 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
 
             packet.StartBitStream(guid5, 4, 7, 1, 0, 3, 6, 2, 5);
 
-            if (bit50)
+            if (hasSrcLocation)
                 packet.StartBitStream(guid7, 1, 3, 7, 5, 0, 2, 4, 6);
 
             packet.StartBitStream(guid6, 0, 5, 7, 1, 4, 6, 2, 3);
 
-            if (bit1C)
-                packet.ReadBits("bits1C", 5);
-
-            if (bit1C)
-                packet.ReadBits("bits1C", 7);
-
             if (hasCastFlags)
+                packet.ReadBits("hasCastFlags", 5);
+
+            if (hasTargetString)
+                packet.ReadBits("hasTargetString", 7);
+
+            if (hasTargetMask)
                 packet.ReadEnum<CastFlag>("Cast Flags", 20);
 
             for (var i = 0; i < archeologyCounter; ++i)
@@ -223,39 +230,39 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                 packet.ReadUInt32("unk2", i);
             }
 
-            if (bit18)
-                packet.ReadInt32("Int18");
+            if (hasGlyphIndex)
+                packet.ReadInt32("hasGlyphIndex");
 
             packet.ParseBitStream(guid6, 2, 7, 4, 3, 1, 0, 6, 5);
 
 
-            if (bit50)
+            if (hasSrcLocation)
             {
                 packet.ReadXORByte(guid7, 3);
                 packet.ReadXORByte(guid7, 4);
-                packet.ReadSingle("Float48");
+                packet.ReadSingle("Position Z");
                 packet.ReadXORByte(guid7, 1);
                 packet.ReadXORByte(guid7, 0);
                 packet.ReadXORByte(guid7, 2);
                 packet.ReadXORByte(guid7, 7);
-                packet.ReadSingle("Float40");
+                packet.ReadSingle("Position X");
                 packet.ReadXORByte(guid7, 6);
                 packet.ReadXORByte(guid7, 5);
-                packet.ReadSingle("Float44");
+                packet.ReadSingle("Position Y");
 
                 packet.WriteGuid("Guid7", guid7);
             }
 
-            if (bit70)
+            if (hasDestLocation)
             {
-                packet.ReadSingle("Float60");
-                packet.ReadSingle("Float64");
+                packet.ReadSingle("Position X");
+                packet.ReadSingle("Position Y");
                 packet.ReadXORByte(guidB, 6);
                 packet.ReadXORByte(guidB, 7);
                 packet.ReadXORByte(guidB, 0);
                 packet.ReadXORByte(guidB, 1);
                 packet.ReadXORByte(guidB, 3);
-                packet.ReadSingle("Float68");
+                packet.ReadSingle("Position Z");
                 packet.ReadXORByte(guidB, 5);
                 packet.ReadXORByte(guidB, 4);
                 packet.ReadXORByte(guidB, 2);
@@ -263,48 +270,48 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                 packet.WriteGuid("GuidB", guidB);
             }
 
-            if (bit1A0)
+            if (hasMovement)
             {
-                packet.ReadSingle("Float11C");
+                packet.ReadSingle("Position Z");
 
-                if (bit17C)
+                if (hasFallData)
                 {
-                    packet.ReadSingle("Float168");
+                    packet.ReadSingle("Z Speed");
 
-                    if (bit178)
+                    if (hasFallDirection)
                     {
-                        packet.ReadSingle("Float174");
-                        packet.ReadSingle("Float16C");
-                        packet.ReadSingle("Float170");
+                        packet.ReadSingle("XY Speed");
+                        packet.ReadSingle("SinAngle");
+                        packet.ReadSingle("CosAngle");
                     }
 
-                    packet.ReadInt32("Int164");
+                    packet.ReadInt32("FallTime");
                 }
 
-                if (bit160)
-                    packet.ReadSingle("Float160");
+                if (hasPitch)
+                    packet.ReadSingle("Pitch");
 
-                if (bit158)
+                if (hasTransport)
                 {
                     packet.ReadXORByte(guid25, 4);
-                    packet.ReadSingle("Float13C");
-                    packet.ReadInt32("Int144");
+                    packet.ReadSingle("Orientation");
+                    packet.ReadInt32("Transport Time");
                     packet.ReadXORByte(guid25, 7);
-                    packet.ReadSingle("Float134");
+                    packet.ReadSingle("Position Y");
                     packet.ReadXORByte(guid25, 1);
 
-                    if (bit14C)
-                        packet.ReadInt32("Int148");
+                    if (hasTransportTime2)
+                        packet.ReadInt32("hasTransportTime2");
 
-                    packet.ReadByte("Byte140");
-                    packet.ReadSingle("Float138");
+                    packet.ReadByte("Transport Seat");
+                    packet.ReadSingle("Position Z");
                     packet.ReadXORByte(guid25, 6);
                     packet.ReadXORByte(guid25, 5);
                     packet.ReadXORByte(guid25, 0);
-                    packet.ReadSingle("Float130");
+                    packet.ReadSingle("Position X");
                     packet.ReadXORByte(guid25, 2);
-                    if (bit154)
-                        packet.ReadInt32("Int150");
+                    if (hasTransportTime3)
+                        packet.ReadInt32("hasTransportTime3");
                     packet.ReadXORByte(guid25, 3);
 
                     packet.WriteGuid("Guid25", guid25);
@@ -315,26 +322,26 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                 packet.ReadXORByte(guid20, 0);
                 packet.ReadXORByte(guid20, 5);
                 packet.ReadXORByte(guid20, 2);
-                    
-                if (bit180)
-                    packet.ReadSingle("Float180");
 
-                for (var i = 0; i < bits188; ++i)
-                    packet.ReadInt32("IntEB", i);
+                if (hasSplineElevation)
+                    packet.ReadSingle("SplineElevation");
 
-                packet.ReadSingle("Float118");
+                for (var i = 0; i < unkMovementLoopCounter; ++i)
+                    packet.ReadInt32("MovementLoopCounter", i);
 
-                if (bit110)
-                    packet.ReadInt32("Int110");
+                packet.ReadSingle("Position Y");
 
-                if (bit198)
-                    packet.ReadInt32("Int198");
+                if (hasTimestamp)
+                    packet.ReadInt32("hasTimestamp");
+
+                if (hasUnkMovementField)
+                    packet.ReadInt32("MovementField");
 
                 packet.ReadXORByte(guid20, 1);
-                packet.ReadSingle("Float114");
+                packet.ReadSingle("Position X");
 
-                if (bit120)
-                    packet.ReadSingle("Float120");
+                if (hasOrientation)
+                    packet.ReadSingle("Orientation");
 
                 packet.ReadXORByte(guid20, 4);
                 packet.ReadXORByte(guid20, 3);
@@ -347,11 +354,11 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
 
             packet.ParseBitStream(guid5, 7, 0, 1, 2, 3, 5, 6, 4);
 
-            if (bitF8)
-                packet.ReadSingle("FloatF8");
+            if (hasElevation)
+                packet.ReadSingle("hasElevation");
 
-            if (bitFC)
-                packet.ReadSingle("FloatFC");
+            if (hasMissileSpeed)
+                packet.ReadSingle("missileSpeed");
 
             if (hasCastCount)
                 packet.ReadByte("Cast Count");
@@ -440,7 +447,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             guid3[3] = packet.ReadBit();
             var bit170 = !packet.ReadBit();
             guid2[6] = packet.ReadBit();
-            var bit180 = !packet.ReadBit();
+            var hasSplineElevation = !packet.ReadBit();
             var bit168 = !packet.ReadBit();
             var bit16C = !packet.ReadBit();
 
@@ -448,7 +455,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                 packet.ReadEnum<TargetFlag>("Target Flags", 20);
 
             var bit1AC = !packet.ReadBit();
-            var bit198 = !packet.ReadBit();
+            var hasUnkMovementField = !packet.ReadBit();
             var bits154 = (int)packet.ReadBits(3);
             var bit194 = !packet.ReadBit();
             var bit17C = packet.ReadBit();
@@ -549,7 +556,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
 
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
 
-            if (bit180)
+            if (hasSplineElevation)
                 packet.ReadByte("Byte180");
 
             if (bit1A8)
@@ -558,8 +565,8 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid2, 5);
             packet.ReadXORByte(guid3, 2);
 
-            if (bit198)
-                packet.ReadInt32("Int198");
+            if (hasUnkMovementField)
+                packet.ReadInt32("hasUnkMovementField");
 
             if (bitB8)
             {
@@ -669,7 +676,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             var bitC0 = !packet.ReadBit(); // some flag
             guid2[3] = packet.ReadBit();
             guid3[3] = packet.ReadBit();
-            var bit180 = !packet.ReadBit();
+            var hasSplineElevation = !packet.ReadBit();
             guid6[4] = packet.ReadBit();
             guid6[2] = packet.ReadBit();
             guid6[3] = packet.ReadBit();
@@ -762,7 +769,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             if (bit1CC)
                 bits1BC = (int)packet.ReadBits(21); // +444
 
-            var bit198 = !packet.ReadBit();
+            var hasUnkMovementField = !packet.ReadBit();
             var bitB8 = packet.ReadBit();
 
             if (bitB8)
@@ -841,8 +848,8 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                 packet.WriteGuid("GUID", guid4[i], i);
             }
 
-            if (bit198)
-                packet.ReadInt32("Int198");
+            if (hasUnkMovementField)
+                packet.ReadInt32("hasUnkMovementField");
 
             packet.ReadXORByte(guid10, 0);
             packet.ReadXORByte(guid10, 4);
@@ -945,8 +952,8 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                 packet.ReadByte("Byte158", i);
             }
 
-            if (bit180)
-                packet.ReadByte("Byte180");
+            if (hasSplineElevation)
+                packet.ReadByte("hasSplineElevation");
             packet.ReadXORByte(guid2, 3);
             if (bit170)
                 packet.ReadByte("Byte170");
