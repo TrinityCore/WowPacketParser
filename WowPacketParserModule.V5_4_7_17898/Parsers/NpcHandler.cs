@@ -115,9 +115,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             {
                 var gossipOption = new GossipOption
                 {
-                    Index = packet.ReadUInt32("Index", i),
-                    OptionText = packet.ReadWoWString("Text", OptionTextLen[i], i),
                     RequiredMoney = packet.ReadUInt32("Required money", i),
+                    OptionText = packet.ReadWoWString("Text", OptionTextLen[i], i),
+                    Index = packet.ReadUInt32("Index", i),
                     OptionIcon = packet.ReadEnum<GossipOptionIcon>("Icon", TypeCode.Byte, i),
                     BoxText = packet.ReadWoWString("Box Text", BoxTextLen[i], i),
                     Box = packet.ReadBoolean("Box", i),

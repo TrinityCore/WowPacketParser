@@ -264,5 +264,168 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Owner GUID", ownerGUID);
             packet.WriteGuid("Guid2", guid2);
         }
+
+        [Parser(Opcode.SMSG_PLAYER_MOVE)]
+        public static void HandlePlayerMove(Packet packet)
+        {
+            var pos = new Vector4();
+            var guid = new byte[8];
+            var transportGUID = new byte[8];
+
+            var hasTransportTime2 = false;
+            var hasTransportTime3 = false;
+            var hasFallDirection = false;
+
+            var hasMovementFlags = !packet.ReadBit();
+            if (hasMovementFlags)
+                packet.ReadEnum<MovementFlag>("Movement Flags", 30);
+
+            var hasSplineElevation = !packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            var bitA8 = !packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            var bit95 = packet.ReadBit();
+            var bitAC = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            var hasOrientation = !packet.ReadBit();
+            var hasExtraMovementFlags = !packet.ReadBit();
+            var hasPitch = !packet.ReadBit();
+
+            if (hasExtraMovementFlags)
+                packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
+
+            guid[7] = packet.ReadBit();
+            var counter = (int)packet.ReadBits(22);
+            guid[2] = packet.ReadBit();
+            var hasFallData = packet.ReadBit();
+            var hasTrans = packet.ReadBit();
+            if (hasTrans)
+            {
+                transportGUID[6] = packet.ReadBit();
+                transportGUID[3] = packet.ReadBit();
+                transportGUID[0] = packet.ReadBit();
+                transportGUID[5] = packet.ReadBit();
+                hasTransportTime2 = packet.ReadBit();
+                transportGUID[7] = packet.ReadBit();
+                transportGUID[2] = packet.ReadBit();
+                hasTransportTime3 = packet.ReadBit();
+                transportGUID[1] = packet.ReadBit();
+                transportGUID[4] = packet.ReadBit();
+            }
+
+            if (hasFallData)
+                hasFallDirection = packet.ReadBit();
+
+            var bit94 = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            var hasTimeStamp = !packet.ReadBit();
+            if (hasTrans)
+            {
+                var transPos = new Vector4();
+
+                if (hasTransportTime2)
+                    packet.ReadInt32("Transport Time 2");
+
+                transPos.X = packet.ReadSingle();
+                packet.ReadXORByte(transportGUID, 6);
+                transPos.O = packet.ReadSingle();
+                transPos.Z = packet.ReadSingle();
+
+                if (hasTransportTime3)
+                    packet.ReadInt32("Transport Time 3");
+
+                packet.ReadXORByte(transportGUID, 0);
+                packet.ReadInt32("Transport Time");
+                packet.ReadXORByte(transportGUID, 7);
+                packet.ReadXORByte(transportGUID, 2);
+                packet.ReadByte("Seat");
+                packet.ReadXORByte(transportGUID, 1);
+                packet.ReadXORByte(transportGUID, 3);
+                packet.ReadXORByte(transportGUID, 5);
+                transPos.Y = packet.ReadSingle();
+                packet.ReadXORByte(transportGUID, 4);
+
+                packet.WriteGuid("Transport Guid", transportGUID);
+                packet.WriteLine("Transport Position {0}", transPos);
+            }
+
+            packet.ReadXORByte(guid, 3);
+            if (hasPitch)
+                packet.ReadSingle("Pitch");
+            if (bitA8)
+                packet.ReadInt32("IntA8");
+            packet.ReadXORByte(guid, 6);
+            pos.X = packet.ReadSingle();
+            packet.ReadXORByte(guid, 4);
+
+            for (var i = 0; i < counter; ++i)
+                packet.ReadInt32("IntEA", i);
+
+            if (hasFallData)
+            {
+                if (hasFallDirection)
+                {
+                    packet.ReadSingle("Fall Cos");
+                    packet.ReadSingle("Fall Sin");
+                    packet.ReadSingle("Horizontal Speed");
+                }
+
+                packet.ReadSingle("Velocity Speed");
+                packet.ReadInt32("Fall Time");
+            }
+
+            pos.Y = packet.ReadSingle();
+
+            if (hasSplineElevation)
+                packet.ReadSingle("Spline Elevation");
+            if (hasTimeStamp)
+                packet.ReadInt32("Timestamp");
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 0);
+            pos.Z = packet.ReadSingle();
+            packet.ReadXORByte(guid, 7);
+            if (hasOrientation)
+                pos.O = packet.ReadSingle();
+
+            packet.WriteGuid("Guid", guid);
+            packet.WriteLine("Position: {0}", pos);
+        }
+
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
+        public static void HandlePhaseShift(Packet packet)
+        {
+            packet.ReadUInt32("UInt32 1");
+
+            var count = packet.ReadUInt32() / 2;
+            packet.WriteLine("WorldMapArea swap count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt16("WorldMapArea swap", i);
+
+            count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Phases count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt16("Phase id", i); // Phase.dbc
+
+            count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Inactive Terrain swap count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
+
+
+            count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Active Terrain swap count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Active Terrain swap", i);
+
+
+            var guid = packet.StartBitStream(4, 6, 1, 7, 2, 0, 5, 3);
+            packet.ParseBitStream(guid, 0, 4, 7, 6, 3, 5, 1, 2);
+
+            packet.WriteGuid("GUID", guid);
+        }
     }
 }
