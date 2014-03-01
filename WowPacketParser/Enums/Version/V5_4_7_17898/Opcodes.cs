@@ -83,6 +83,13 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_BATTLE_PET_TRAP_LEVEL, 0x13AA},
             {Opcode.SMSG_BATTLE_PET_UPDATES, 0x04E3},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x11E2},
+            {Opcode.SMSG_CHALLENGE_MODE_MAP_STATS_UPDATE, 0x0C9A}, // new in MoP
+            {Opcode.SMSG_CHALLENGE_MODE_DELETE_LEADER_RESULT, 0x05A2},
+            {Opcode.SMSG_CHALLENGE_MODE_ALL_MAP_STATS, 0x1621},
+            {Opcode.SMSG_CHALLENGE_MODE_REQUEST_LEADERS_RESULT, 0x0668},
+            {Opcode.SMSG_CHALLENGE_MODE_REWARDS, 0x1413},
+            {Opcode.SMSG_CHALLENGE_MODE_NEW_PLAYER_RECORD, 0x0C80},
+            {Opcode.SMSG_CHALLENGE_MODE_COMPLETE, 0x1D53},
             {Opcode.SMSG_CHAR_CREATE, 0x1469},
             {Opcode.SMSG_CHAR_DELETE, 0x1529},
             {Opcode.SMSG_CHAR_ENUM, 0x040A},
