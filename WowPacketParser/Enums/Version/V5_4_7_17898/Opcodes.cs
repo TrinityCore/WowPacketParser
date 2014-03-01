@@ -29,6 +29,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_GOSSIP_HELLO, 0x05F6},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x02D7},
             {Opcode.CMSG_GUILD_QUERY, 0x1280},
+            {Opcode.CMSG_INSPECT, 0x02FD},
             {Opcode.CMSG_LEARN_TALENT, 0x1F5A},
             {Opcode.CMSG_LOAD_SCREEN, 0x1691},
             {Opcode.CMSG_LOGOUT_CANCEL, 0x11D4},
