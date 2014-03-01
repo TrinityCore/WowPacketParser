@@ -427,5 +427,24 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("GUID", guid);
         }
+
+        [Parser(Opcode.SMSG_FLIGHT_SPLINE_SYNC)]
+        public static void HandleFlightSplineSync(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 1, 0, 4, 3, 5, 6, 2, 7);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadSingle("Duration modifier");
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+
+            packet.WriteGuid("GUID", guid);
+        }
     }
 }

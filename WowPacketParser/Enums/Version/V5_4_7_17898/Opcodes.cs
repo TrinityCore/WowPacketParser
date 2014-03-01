@@ -129,6 +129,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_EMOTE, 0x022F},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x1520},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x1560},
+            {Opcode.SMSG_FLIGHT_SPLINE_SYNC, 0x0992},
             {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 0x01B9},
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0x11E1},
             {Opcode.SMSG_INITIAL_SPELLS, 0x1B05},
