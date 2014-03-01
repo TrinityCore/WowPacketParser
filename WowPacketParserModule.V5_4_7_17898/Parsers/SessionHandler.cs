@@ -75,5 +75,16 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteLine("SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
         }
+
+
+        [Parser(Opcode.SMSG_REDIRECT_CLIENT)]
+        public static void HandleRedirectClient(Packet packet)
+        {
+            packet.ReadUInt64("Unk Long");
+            var hash = packet.ReadBytes(0x100);
+            packet.WriteLine("RSA Hash: {0}", Utilities.ByteArrayToHexString(hash));
+            packet.ReadByte("Unk Byte");
+            packet.ReadUInt32("Token");
+        }
     }
 }
