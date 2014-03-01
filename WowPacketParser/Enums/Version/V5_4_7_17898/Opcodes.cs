@@ -11,6 +11,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
+            {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x1C40},
             {Opcode.CMSG_ATTACKSTOP,  0x1777},
             {Opcode.CMSG_ATTACKSWING, 0x1513},
             {Opcode.CMSG_AUTH_SESSION, 0x1A51},
@@ -38,6 +39,9 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_NAME_QUERY, 0x0DB3},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x12FA},
             {Opcode.CMSG_OBJECT_UPDATE_FAILED, 0x0882},
+            {Opcode.CMSG_QUERY_TIME, 0x03FD},
+            {Opcode.CMSG_QUEST_NPC_QUERY, 0x16B8},
+            {Opcode.CMSG_QUEST_POI_QUERY, 0x1DA8},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x1DB9},
             {Opcode.CMSG_REALM_NAME_QUERY, 0x1899},
             {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x1A5B},
@@ -45,10 +49,11 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_SET_PRIMARY_TALENT_TREE, 0x04AA},
             {Opcode.CMSG_SET_SELECTION, 0x10D5},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x13CB},
-            {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0x17D3},
+            {Opcode.CMSG_PLAYER_LOGIN, 0x17D3},
             {Opcode.CMSG_PING, 0x1070},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0413},
             {Opcode.CMSG_TUTORIAL_FLAG, 0x07A4},
+            {Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES, 0x072B | 0x10000},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x05A0},
             {Opcode.CMSG_WARDEN_DATA, 0x1681},
 
@@ -56,7 +61,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_ACTION_BUTTONS, 0x1768},
             {Opcode.SMSG_ADDON_INFO, 0x10E2},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_ACCOUNT, 0x13F0},
-            {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_PLAYER, 0x072B},
+            {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_PLAYER, 0x072B | 0x20000},
             {Opcode.SMSG_ARENA_SEASON_WORLD_STATE, 0x00E1},
             {Opcode.SMSG_ATTACKERSTATEUPDATE, 0x0540},
             {Opcode.SMSG_ATTACKSTART,  0x0403},
@@ -86,6 +91,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_CRITERIA_UPDATE_PLAYER, 0x13B2},
             {Opcode.SMSG_DB_REPLY, 0x1F01},
             {Opcode.SMSG_DESTROY_OBJECT, 0x1D69},
+            {Opcode.SMSG_EMOTE, 0x022F},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x1520},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x1560},
             {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 0x01B9},
@@ -103,6 +109,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_GUILD_RANK, 0x1271},
             {Opcode.SMSG_HOTFIX_INFO, 0x0C81},
             {Opcode.SMSG_LEARNED_SPELL, 0x0C99},
+            {Opcode.SMSG_LFG_PLAYER_INFO, 0x13B0},
             {Opcode.SMSG_LIST_INVENTORY, 0x0D2A},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0603},
             {Opcode.SMSG_LOGOUT_CANCEL_ACK, 0x0E0A},
@@ -131,11 +138,14 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_PET_BATTLE_REPLACEMENTS_MADE, 0x0891},  // 5.4.0 17399 PET_BATTLE NYI
             //SMSG_PET_BATTLE_REQUEST_FAILED, 0x0000},  // 5.4.7 17930 PET_BATTLE NYI (not sure)
             {Opcode.SMSG_PET_BATTLE_SLOT_UPDATE, 0x0421},  // 5.4.7 17930 PET_BATTLE NYI
+            {Opcode.SMSG_RAID_INSTANCE_INFO, 0x051B},
             {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x1652},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x05B9},
             {Opcode.SMSG_REMOVED_SPELL, 0x05E3},
             {Opcode.SMSG_PLAYER_MOVE, 0x1CB2},
             {Opcode.SMSG_PONG, 0x15B1},
+            {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 0x0957},
+            {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x0F5F},
             {Opcode.SMSG_SEND_SERVER_LOCATION, 0x0C2B},
             {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x1B3E},
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x0179},
@@ -147,6 +157,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SPELL_GO, 0x0851},
             {Opcode.SMSG_SUSPEND_COMMS, 0x10B0},
             {Opcode.SMSG_TALENTS_INFO, 0x0C68},
+            {Opcode.SMSG_TEXT_EMOTE, 0x0522},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x12F1},
             {Opcode.SMSG_TRAINER_LIST, 0x1509},
             {Opcode.SMSG_TRANSFER_PENDING, 0x0440},
