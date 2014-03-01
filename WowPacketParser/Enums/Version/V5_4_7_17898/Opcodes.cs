@@ -58,6 +58,30 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES, 0x072B | 0x10000},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x05A0},
             {Opcode.CMSG_WARDEN_DATA, 0x1681},
+            
+            {Opcode.MSG_MOVE_SET_FACING, 0x005A}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_SET_PITCH, 0x047A}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_SET_RUN_MODE, 0x0878}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_SET_WALK_MODE, 0x0138}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_ASCEND, 0x0430}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_BACKWARD, 0x0459}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_DESCEND, 0x0132}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_FORWARD, 0x041B}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_PITCH_DOWN, 0x093B}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_PITCH_UP, 0x0079}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_STRAFE_LEFT, 0x0873}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_STRAFE_RIGHT, 0x0C12}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_SWIM, 0x0871}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_TURN_LEFT, 0x011B}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_TURN_RIGHT, 0x0411}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_STOP, 0x0570}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_STOP_ASCEND, 0x0012}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_STOP_PITCH, 0x0071}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_STOP_STRAFE, 0x0171}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_STOP_SWIM, 0x0578}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_STOP_TURN, 0x0530}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_TELEPORT, 0x00D5}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_TELEPORT_ACK, 0x0978}, // 5.4.7 17956
 
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0F40},
             {Opcode.SMSG_ACTION_BUTTONS, 0x1768},
@@ -129,8 +153,12 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_MESSAGECHAT, 0x0E60},
             {Opcode.SMSG_MONSTER_MOVE, 0x12D8},
             {Opcode.SMSG_MOTD, 0x0E20},
-            {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x01F4},
-            {Opcode.SMSG_MOVE_UNSET_CAN_FLY, 0x1D81},
+            {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x01F4}, // 5.4.7 17956
+            {Opcode.SMSG_MOVE_SET_FLIGHT_SPEED, 0x02DC}, // 5.4.7 17956
+            {Opcode.SMSG_MOVE_SET_RUN_SPEED, 0x1B9B}, // 5.4.7 17956
+            {Opcode.SMSG_MOVE_SET_SWIM_SPEED, 0x01D4}, // 5.4.7 17956
+            {Opcode.SMSG_MOVE_SET_WALK_SPEED, 0x00A0}, // 5.4.7 17956
+            {Opcode.SMSG_MOVE_UNSET_CAN_FLY, 0x1D81}, // 5.4.7 17956
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x1E5B | 0x20000},
             {Opcode.SMSG_NEW_WORLD, 0x05AB},
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x10E0},
