@@ -53,7 +53,6 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x13CB},
             {Opcode.CMSG_PLAYER_LOGIN, 0x17D3},
             {Opcode.CMSG_PING, 0x1070},
-            {Opcode.CMSG_LEARN_TALENT, 0x115F},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0413},
             {Opcode.CMSG_TUTORIAL_FLAG, 0x07A4},
             {Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES, 0x072B | 0x10000},
