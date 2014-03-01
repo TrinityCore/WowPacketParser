@@ -192,5 +192,130 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Caster GUID", casterGUID);
             packet.WriteGuid("Target GUID", targetGUID);
         }
+
+        [Parser(Opcode.SMSG_SPELLNONMELEEDAMAGELOG)]
+        public static void HandleSpellNonMeleeDmgLog(Packet packet)
+        {
+            var guid10 = new byte[8];
+            var guid11 = new byte[8];
+
+            var bit10 = false;
+            var bit14 = false;
+            var bit18 = false;
+            var bit1C = false;
+            var bit20 = false;
+            var bit24 = false;
+            var bit28 = false;
+            var bit2C = false;
+            var bit30 = false;
+            var bit34 = false;
+
+            var bits68 = 0;
+
+            packet.ReadByte("SchoolMask");
+            packet.ReadInt32("Int44");
+            packet.ReadUInt32("Absorb"); // correct?
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32("Int90");
+            packet.ReadInt32("Overkill");
+            packet.ReadUInt32("Damage");
+            packet.ReadEnum<AttackerStateFlags>("Attacker State Flags", TypeCode.Int32);
+            guid10[4] = packet.ReadBit();
+            var hasDebugOutput = packet.ReadBit("Has Debug Output");
+            if (hasDebugOutput)
+            {
+                bit34 = !packet.ReadBit();
+                bit30 = !packet.ReadBit();
+                bit28 = !packet.ReadBit();
+                bit2C = !packet.ReadBit();
+                bit1C = !packet.ReadBit();
+                bit10 = !packet.ReadBit();
+                bit20 = !packet.ReadBit();
+                bit18 = !packet.ReadBit();
+                bit14 = !packet.ReadBit();
+                bit24 = !packet.ReadBit();
+            }
+
+            guid11[7] = packet.ReadBit();
+            guid11[3] = packet.ReadBit();
+            guid10[3] = packet.ReadBit();
+            guid11[1] = packet.ReadBit();
+            guid10[6] = packet.ReadBit();
+            guid10[2] = packet.ReadBit();
+            var hasPawerData = packet.ReadBit();
+            guid10[0] = packet.ReadBit();
+            guid11[6] = packet.ReadBit();
+            guid10[7] = packet.ReadBit();
+            var bit40 = packet.ReadBit();
+            guid10[5] = packet.ReadBit();
+            guid10[1] = packet.ReadBit();
+            guid11[0] = packet.ReadBit();
+            guid11[4] = packet.ReadBit();
+            guid11[2] = packet.ReadBit();
+            var bit50 = packet.ReadBit();
+
+            if (hasPawerData)
+                bits68 = (int)packet.ReadBits(21);
+
+            guid11[5] = packet.ReadBit();
+
+            if (hasDebugOutput)
+            {
+                if (bit1C)
+                    packet.ReadSingle("Float1C");
+                if (bit34)
+                    packet.ReadSingle("Float34");
+                if (bit14)
+                    packet.ReadSingle("Float14");
+                if (bit10)
+                    packet.ReadSingle("Float10");
+                if (bit18)
+                    packet.ReadSingle("Float18");
+                if (bit2C)
+                    packet.ReadSingle("Float2C");
+                if (bit30)
+                    packet.ReadSingle("Float30");
+                if (bit24)
+                    packet.ReadSingle("Float24");
+                if (bit20)
+                    packet.ReadSingle("Float20");
+                if (bit28)
+                    packet.ReadSingle("Float28");
+            }
+
+            packet.ReadXORByte(guid10, 7);
+            packet.ReadXORByte(guid10, 6);
+            packet.ReadXORByte(guid11, 5);
+            if (hasPawerData)
+            {
+                for (var i = 0; i < bits68; ++i)
+                {
+                    packet.ReadInt32("IntED", i);
+                    packet.ReadInt32("IntED", i);
+                }
+
+                packet.ReadInt32("Int60");
+                packet.ReadInt32("Int5C");
+                packet.ReadInt32("Int64");
+            }
+
+            packet.ReadXORByte(guid10, 2);
+            packet.ReadXORByte(guid11, 6);
+            packet.ReadXORByte(guid10, 1);
+            packet.ReadXORByte(guid10, 4);
+            packet.ReadXORByte(guid11, 2);
+            packet.ReadXORByte(guid11, 1);
+            packet.ReadXORByte(guid11, 7);
+            packet.ReadXORByte(guid10, 5);
+            packet.ReadXORByte(guid11, 3);
+            packet.ReadXORByte(guid10, 0);
+            packet.ReadXORByte(guid11, 0);
+            packet.ReadXORByte(guid10, 3);
+            packet.ReadXORByte(guid11, 4);
+
+            packet.WriteGuid("Guid10", guid10);
+            packet.WriteGuid("Guid11", guid11);
+
+        }
     }
 }
