@@ -67,6 +67,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_TUTORIAL_FLAG, 0x07A4},
             {Opcode.CMSG_UI_TIME_REQUEST, 0x1CA3},
             {Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES, 0x072B | 0x10000},
+            {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x18B2},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x05A0},
             {Opcode.CMSG_WARDEN_DATA, 0x1681},
             
