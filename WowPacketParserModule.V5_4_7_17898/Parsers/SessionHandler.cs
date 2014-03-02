@@ -202,5 +202,20 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
         }
+
+        [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
+        public static void HandleLogoutComplete(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadBit(); // fake bit
+
+            packet.StartBitStream(guid, 7, 3, 1, 5, 0, 6, 4, 2);
+            packet.ParseBitStream(guid, 0, 5, 1, 2, 6, 3, 4, 7);
+
+            packet.WriteGuid("Guid", guid);
+
+            CoreParsers.SessionHandler.LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+        }
     }
 }
