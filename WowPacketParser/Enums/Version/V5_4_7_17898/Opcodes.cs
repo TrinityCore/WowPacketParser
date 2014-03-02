@@ -95,7 +95,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.MSG_MOVE_START_TURN_RIGHT, 0x0411}, // 5.4.7 17956
             {Opcode.MSG_MOVE_STOP, 0x0570}, // 5.4.7 17956
             {Opcode.MSG_MOVE_STOP_ASCEND, 0x0012}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_STOP_PITCH, 0x0071}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_STOP_PITCH, 0x0071 | 0x10000}, // 5.4.7 17956
             {Opcode.MSG_MOVE_STOP_STRAFE, 0x0171}, // 5.4.7 17956
             {Opcode.MSG_MOVE_STOP_SWIM, 0x0578}, // 5.4.7 17956
             {Opcode.MSG_MOVE_STOP_TURN, 0x0530}, // 5.4.7 17956
@@ -222,6 +222,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x193C},
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x1D52},
             {Opcode.SMSG_SET_PROFICIENCY, 0x1E3B},
+            {Opcode.SMSG_SPELLENERGIZELOG, 0x0071 | 0x20000},
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x053B},
             {Opcode.SMSG_SPELL_START, 0x0130},
             {Opcode.SMSG_SPELL_GO, 0x0851},
