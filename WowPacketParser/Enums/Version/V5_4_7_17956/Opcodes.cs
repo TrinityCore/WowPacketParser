@@ -123,7 +123,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17956
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x1E5B},
             {Opcode.SMSG_NEW_WORLD, 0x05AB},
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x10E0},
-            {Opcode.SMSG_PET_NAME_QUERY_RESPONSE 0x1F08},
+            {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0x1F08},
             {Opcode.SMSG_PLAYER_MOVE, 0x1CB2},
             {Opcode.SMSG_PONG, 0x15B1},
             {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x1652},
