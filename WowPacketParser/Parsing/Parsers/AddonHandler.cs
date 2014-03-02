@@ -46,7 +46,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_ADDON_INFO, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.SMSG_ADDON_INFO, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleServerAddonsList(Packet packet)
         {
             // This packet requires _addonCount from CMSG_AUTH_SESSION to be parsed.
@@ -102,7 +102,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_ADDON_INFO, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.SMSG_ADDON_INFO, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleServerAddonInfo547(Packet packet)
         {
             var AddonsCount = packet.ReadBits("Addons Count", 23);
@@ -113,14 +113,11 @@ namespace WowPacketParser.Parsing.Parsers
                 AddonsInfo[i, 0] = packet.ReadBit("Use CRC", i);
                 AddonsInfo[i, 2] = packet.ReadBit("Has URL", i);
                 AddonsInfo[i, 1] = packet.ReadBit("Has Public Key", i);
+
                 if (AddonsInfo[i, 2] == 1)
-                {
                     AddonsInfo[i, 3] = packet.ReadBits(8);
-                }
                 else
-                {
                     AddonsInfo[i, 3] = 0;
-                }
             }
 
             var BannedAddonsCount = packet.ReadBits("Banned Addons Count",18);
@@ -128,10 +125,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < AddonsCount; ++i)
             {
                 if (AddonsInfo[i, 1] == 1)
-                {
-                    packet.ReadBytes(256);
-                    // the bytes order isn't 1,2,3,4.. they are mangled
-                }
+                    packet.ReadBytes(256); // the bytes order isn't 1,2,3,4.. they are mangled.
 
                 if (AddonsInfo[i, 0] == 1)
                 {
@@ -142,9 +136,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Addon State", i);
 
                 if (AddonsInfo[i, 2] == 1 && AddonsInfo[i, 3] > 0)
-                {
                     packet.ReadWoWString("URL path", AddonsInfo[i, 3], i);
-                }
             }
 
             for (var i = 0; i < BannedAddonsCount; ++i)

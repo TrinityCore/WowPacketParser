@@ -22,7 +22,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Standstate");
         }
 
-        [Parser(Opcode.CMSG_CHAR_CREATE, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_CHAR_CREATE, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleClientCharCreate(Packet packet)
         {
             packet.ReadCString("Name");
@@ -37,7 +37,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Outfit Id");
         }
 
-        [Parser(Opcode.CMSG_CHAR_CREATE, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_CHAR_CREATE, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleClientCharCreate547(Packet packet)
         {
             packet.ReadByte("Outfit Id");
@@ -54,6 +54,7 @@ namespace WowPacketParser.Parsing.Parsers
             var hasDword = packet.ReadBit();
 
             packet.ReadWoWString("Name", NameLenght);
+
             if (hasDword)
                 packet.ReadUInt32("dword4C");
         }
@@ -910,7 +911,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleCharEnum510(Packet packet)
         {
             var unkCounter = packet.ReadBits("Unk Counter", 23);
@@ -1027,7 +1028,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleCharEnum574(Packet packet)
         {
             packet.ReadBit("Unk bit");

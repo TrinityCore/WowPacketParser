@@ -74,7 +74,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk8");
         }
 
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleServerAuthChallenge505(Packet packet)
         {
             packet.ReadUInt32("Server Seed");
@@ -89,7 +89,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Unk Byte");
         }
 
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleServerAuthChallenge547(Packet packet)
         {
             packet.ReadUInt32("Server Seed");
@@ -265,7 +265,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleAuthSession505(Packet packet)
         {
             var sha = new byte[20];
@@ -311,37 +311,50 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleAuthSession547(Packet packet)
         {
             var sha = new byte[20];
+
             packet.ReadUInt32("Unk UInt32");
             packet.ReadUInt32("Unk UInt32 2");
+
             sha[2] = packet.ReadByte();
             sha[11] = packet.ReadByte();
             sha[1] = packet.ReadByte();
             sha[16] = packet.ReadByte();
+
             packet.ReadUInt32("Billling Plan Flags");
+
             sha[10] = packet.ReadByte();
             sha[16] = packet.ReadByte();
             sha[13] = packet.ReadByte();
             sha[3] = packet.ReadByte();
+
             packet.ReadUInt64("something unk, it has smth to do with redirection");
+
             sha[9] = packet.ReadByte();
+
             packet.ReadUInt32("dword44");
+
             sha[5] = packet.ReadByte();
             sha[17] = packet.ReadByte();
             sha[14] = packet.ReadByte();
             sha[12] = packet.ReadByte();
+
             packet.ReadByte("byte28");
+
             sha[7] = packet.ReadByte();
+
             packet.ReadUInt16("Client Build");
             packet.ReadByte("byte29");
+
             sha[18] = packet.ReadByte();
             sha[15] = packet.ReadByte();
             sha[8] = packet.ReadByte();
             sha[4] = packet.ReadByte();
             sha[0] = packet.ReadByte();
+
             packet.ReadByte("byte18");
             packet.ReadUInt32("Client seed");
 
@@ -384,7 +397,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleAuthResponse505(Packet packet)
         {
             var hasAccountData = packet.ReadBit("Has Account Data");
@@ -433,10 +446,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
         }
 
-        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleAuthResponse547(Packet packet)
         {
             var hasAccountData = packet.ReadBit("Has Account Data");
+
             var count = 0u;
             uint[,] count_1 = new uint[1,2];
             var count1 = 0u;
@@ -494,15 +508,14 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadByte("Class or Race");
                         packet.ReadByte("Class or Race");
                     }
+
                     packet.ReadUInt32("Unk stuff");
                     packet.ReadBytes((int)count1_1[i, 1]);
                     packet.ReadBytes((int)count1_1[i, 2]);
                 }
 
                 if (hasByte7C)
-                {
                     packet.ReadUInt16("word7A");
-                }
 
                 for (int i = 0; i < ClassCount; ++i)
                 {
@@ -533,9 +546,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("dword80");
 
                 if (hasByte78)
-                {
                     packet.ReadUInt16("word76");
-                }
 
                 packet.ReadByte("byte3D");
                 packet.ReadUInt32("dword1C");
