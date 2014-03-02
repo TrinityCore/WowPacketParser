@@ -145,7 +145,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.StartBitStream(someThings[i], 1, 0);
             }
 
-            for (var i = 0; i < 19; ++i)
+            for (var i = 0; i < NumSlots; ++i)
             {
                 packet.ParseBitStream(itemGuids[i], 7, 3, 0, 4, 1, 2, 5, 6);
                 packet.WriteGuid("ItemGUID", itemGuids[i], i);
@@ -158,6 +158,12 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ParseBitStream(someThings[i], 0, 1);
                 packet.WriteLine("[{0}] Unk byte 1 {1}, Unk byte 2 {2}", i, someThings[0], someThings[1]);
             }
+        }
+
+        [Parser(Opcode.SMSG_EQUIPMENT_SET_USE_RESULT)]
+        public static void HandleEquipmentSetUseResult(Packet packet)
+        {
+            packet.ReadByte("Result");
         }
     }
 }
