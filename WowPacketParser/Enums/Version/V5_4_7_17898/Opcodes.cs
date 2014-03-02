@@ -11,6 +11,8 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
+            {Opcode.CMSG_ADD_FRIEND, 0x064F},
+            {Opcode.CMSG_ADD_IGNORE, 0x126D},
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x1C40},
             {Opcode.CMSG_ATTACKSTOP,  0x1777},
             {Opcode.CMSG_ATTACKSWING, 0x1513},
@@ -25,6 +27,8 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_CONNECT_TO_FAILED, 0x16C8},
             {Opcode.CMSG_CREATURE_QUERY, 0x1E72},
             {Opcode.CMSG_DB_QUERY_BULK, 0x16C2},
+            {Opcode.CMSG_DEL_IGNORE, 0x0385},
+            {Opcode.CMSG_DEL_FRIEND, 0x1707},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x14EA},
             {Opcode.CMSG_GOSSIP_HELLO, 0x05F6},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x02D7},
@@ -52,12 +56,15 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x1B5A | 0x10000},
             {Opcode.CMSG_SET_PRIMARY_TALENT_TREE, 0x04AA},
             {Opcode.CMSG_SET_SELECTION, 0x10D5},
+            {Opcode.CMSG_SET_SPECIALIZATION, 0x04AA},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x13CB},
+            {Opcode.CMSG_PAGE_TEXT_QUERY, 0x13B1},
             {Opcode.CMSG_PET_NAME_QUERY, 0x16A3},
             {Opcode.CMSG_PLAYER_LOGIN, 0x17D3},
             {Opcode.CMSG_PING, 0x1070},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0413},
             {Opcode.CMSG_TUTORIAL_FLAG, 0x07A4},
+            {Opcode.CMSG_UI_TIME_REQUEST, 0x1CA3},
             {Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES, 0x072B | 0x10000},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x05A0},
             {Opcode.CMSG_WARDEN_DATA, 0x1681},
@@ -134,6 +141,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_EMOTE, 0x022F},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x1520},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x1560},
+            {Opcode.SMSG_FRIEND_STATUS, 0x0707},
             {Opcode.SMSG_FLIGHT_SPLINE_SYNC, 0x0992},
             {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 0x01B9},
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0x11E1},
@@ -158,6 +166,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_LOGOUT_COMPLETE, 0x0429},
             {Opcode.SMSG_LOGOUT_RESPONSE, 0x0D2B},
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x0F4A},
+            {Opcode.SMSG_MAIL_LIST_RESULT, 0x0401},
             {Opcode.SMSG_MESSAGECHAT, 0x0E60},
             {Opcode.SMSG_MONSTER_MOVE, 0x12D8},
             {Opcode.SMSG_MOTD, 0x0E20},
@@ -170,6 +179,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x1E5B | 0x20000},
             {Opcode.SMSG_NEW_WORLD, 0x05AB},
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x10E0},
+            {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x1653},
             {Opcode.SMSG_PET_BATTLE_CHAT_RESTRICTED, 0x1F53},  // 5.4.7 17930 PET_BATTLE NYI
             {Opcode.SMSG_PET_BATTLE_DEBUG_QUEUE_DUMP_RESPONSE, 0x13E9},  // 5.4.7 17930 PET_BATTLE NYI
             {Opcode.SMSG_PET_BATTLE_FULL_UPDATE, 0x01E3},  // 5.4.7 17930 PET_BATTLE NYI 

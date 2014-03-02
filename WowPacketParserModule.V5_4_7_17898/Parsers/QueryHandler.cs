@@ -657,5 +657,41 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.CMSG_PAGE_TEXT_QUERY)]
+        public static void HandlePageTextQuery(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadInt32("Entry");
+
+            packet.StartBitStream(guid, 1, 5, 2, 3, 6, 4, 0, 7);
+            packet.ParseBitStream(guid, 6, 4, 0, 3, 7, 5, 2, 1);
+
+            packet.WriteGuid("GUID", guid);
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE)]
+        public static void HandlePageTextResponse(Packet packet)
+        {
+            var entry = packet.ReadUInt32("Entry");
+            var pageText = new PageText();
+
+            var hasData = packet.ReadBit();
+            if (!hasData)
+                return; // nothing to do
+
+            var textLen = packet.ReadBits(12);
+
+            packet.ResetBitReader();
+            packet.ReadUInt32("Entry");
+            pageText.Text = packet.ReadWoWString("Page Text", textLen);
+
+            pageText.NextPageId = packet.ReadUInt32("Next Page");
+
+            packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
+            Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
+        }
     }
 }
