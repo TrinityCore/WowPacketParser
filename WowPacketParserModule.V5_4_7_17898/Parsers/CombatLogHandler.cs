@@ -470,41 +470,41 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_SPELLENERGIZELOG)]
         public static void HandleSpellEnergizeLog(Packet packet)
         {
-            var casterGUID = new byte[8];
             var targetGUID = new byte[8];
+            var casterGUID = new byte[8];
 
             var powerCount = 0;
 
             var hasPowerData = packet.ReadBit();
-            casterGUID[1] = packet.ReadBit();
-            targetGUID[5] = packet.ReadBit();
             targetGUID[1] = packet.ReadBit();
-            targetGUID[0] = packet.ReadBit();
             casterGUID[5] = packet.ReadBit();
-            targetGUID[6] = packet.ReadBit();
-            targetGUID[7] = packet.ReadBit();
-            casterGUID[3] = packet.ReadBit();
-            casterGUID[4] = packet.ReadBit();
-            casterGUID[2] = packet.ReadBit();
-            casterGUID[7] = packet.ReadBit();
+            casterGUID[1] = packet.ReadBit();
+            casterGUID[0] = packet.ReadBit();
+            targetGUID[5] = packet.ReadBit();
             casterGUID[6] = packet.ReadBit();
+            casterGUID[7] = packet.ReadBit();
+            targetGUID[3] = packet.ReadBit();
             targetGUID[4] = packet.ReadBit();
+            targetGUID[2] = packet.ReadBit();
+            targetGUID[7] = packet.ReadBit();
+            targetGUID[6] = packet.ReadBit();
+            casterGUID[4] = packet.ReadBit();
             if (hasPowerData)
                 powerCount = (int)packet.ReadBits(21);
-            targetGUID[3] = packet.ReadBit();
-            targetGUID[2] = packet.ReadBit();
-            casterGUID[0] = packet.ReadBit();
-            packet.ReadXORByte(casterGUID, 5);
-            packet.ReadXORByte(casterGUID, 0);
-            packet.ReadXORByte(targetGUID, 3);
+            casterGUID[3] = packet.ReadBit();
+            casterGUID[2] = packet.ReadBit();
+            targetGUID[0] = packet.ReadBit();
             packet.ReadXORByte(targetGUID, 5);
-            packet.ReadEnum<PowerType>("Power Type", TypeCode.UInt32);
-            packet.ReadXORByte(targetGUID, 7);
-            packet.ReadXORByte(targetGUID, 1);
-            packet.ReadXORByte(casterGUID, 4);
+            packet.ReadXORByte(targetGUID, 0);
             packet.ReadXORByte(casterGUID, 3);
-            packet.ReadXORByte(targetGUID, 2);
-            packet.ReadXORByte(casterGUID, 6);
+            packet.ReadXORByte(casterGUID, 5);
+            packet.ReadEnum<PowerType>("Power Type", TypeCode.UInt32);
+            packet.ReadXORByte(casterGUID, 7);
+            packet.ReadXORByte(casterGUID, 1);
+            packet.ReadXORByte(targetGUID, 4);
+            packet.ReadXORByte(targetGUID, 3);
+            packet.ReadXORByte(casterGUID, 2);
+            packet.ReadXORByte(targetGUID, 6);
             if (hasPowerData)
             {
                 for (var i = 0; i < powerCount; i++)
@@ -518,14 +518,14 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadInt32("Int24");
             }
 
-            packet.ReadXORByte(casterGUID, 7);
+            packet.ReadXORByte(targetGUID, 7);
             packet.ReadInt32("Amount");
-            packet.ReadXORByte(targetGUID, 6);
-            packet.ReadXORByte(targetGUID, 0);
-            packet.ReadXORByte(targetGUID, 4);
+            packet.ReadXORByte(casterGUID, 6);
+            packet.ReadXORByte(casterGUID, 0);
+            packet.ReadXORByte(casterGUID, 4);
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadXORByte(casterGUID, 2);
-            packet.ReadXORByte(casterGUID, 1);
+            packet.ReadXORByte(targetGUID, 2);
+            packet.ReadXORByte(targetGUID, 1);
 
             packet.WriteGuid("Caster GUID", casterGUID);
             packet.WriteGuid("Target GUID", targetGUID);
