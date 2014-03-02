@@ -175,7 +175,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x01F4}, // 5.4.7 17956
             {Opcode.SMSG_MOVE_SET_FLIGHT_SPEED, 0x02DC}, // 5.4.7 17956
             {Opcode.SMSG_MOVE_SET_RUN_SPEED, 0x1B9B}, // 5.4.7 17956
-            {Opcode.SMSG_MOVE_SET_SWIM_SPEED, 0x01D4}, // 5.4.7 17956
+            {Opcode.SMSG_MOVE_SET_SWIM_SPEED, 0x01D4 | 0x20000}, // 5.4.7 17956
             {Opcode.SMSG_MOVE_SET_WALK_SPEED, 0x00A0}, // 5.4.7 17956
             {Opcode.SMSG_MOVE_UNSET_CAN_FLY, 0x1D81}, // 5.4.7 17956
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x1E5B | 0x20000},

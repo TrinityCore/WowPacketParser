@@ -595,6 +595,17 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_MOVE_SET_SWIM_SPEED)]
+        public static void HandleMoveSetSwimSpeed(Packet packet)
+        {
+            packet.ReadSingle("Speed");
+            packet.ReadInt32("Unk Int32");
+            var guid = packet.StartBitStream(4, 7, 6, 3, 5, 2, 0, 1);
+            packet.ParseBitStream(guid, 1, 6, 5, 2, 0, 3, 4, 7);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_MOVE_SET_CAN_FLY)]
         public static void HandleSetCanFly(Packet packet)
         {
