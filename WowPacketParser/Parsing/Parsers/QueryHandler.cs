@@ -17,10 +17,47 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Daily Quest Reset");
         }
 
-        [Parser(Opcode.CMSG_NAME_QUERY)]
+        [Parser(Opcode.CMSG_NAME_QUERY, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleNameQuery(Packet packet)
         {
             packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_NAME_QUERY, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleNameQuery547(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[4] = packet.ReadBit();
+
+            var bit20 = packet.ReadBit();
+
+            guid[2] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+
+            var bit28 = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 3);
+
+            if (bit28)
+                packet.ReadUInt32("Unk 1");
+
+            if (bit20)
+                packet.ReadUInt32("Unk 1");
+
+            packet.WriteGuid("Target Guid", guid);
         }
 
         [Parser(Opcode.SMSG_NAME_QUERY_RESPONSE)]

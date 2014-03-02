@@ -28,6 +28,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid[2] = packet.ReadBit();
 
             packet.ParseBitStream(guid, 1, 2, 5, 7, 0, 3, 6, 4);
+
             packet.WriteGuid("Target Guid", guid);
         }
 

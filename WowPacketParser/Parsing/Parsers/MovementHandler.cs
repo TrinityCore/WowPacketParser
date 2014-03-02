@@ -418,7 +418,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleNewWorld510(Packet packet)
         {
             CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
@@ -426,6 +426,18 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Orientation");
             packet.ReadSingle("X");
             packet.ReadSingle("Z");
+
+            packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
+        }
+
+        [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleNewWorld547(Packet packet)
+        {
+            CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
+            packet.ReadSingle("Y");
+            packet.ReadSingle("Z");
+            packet.ReadSingle("Orientation");
+            packet.ReadSingle("X");
 
             packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
         }
@@ -438,6 +450,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
                 packet.ReadInt32("Unk Int32");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_4_7_17898))
+            {
+                packet.ReadInt32("Unk Int32");
+                packet.ReadPackedTime("Game Time");
+            }
         }
 
         [Parser(Opcode.SMSG_BINDPOINTUPDATE)]

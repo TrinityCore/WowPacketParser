@@ -609,13 +609,26 @@ namespace WowPacketParser.Parsing.Parsers
             LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
         }
 
-        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17898)]
         public static void HandlePlayerLogin510(Packet packet)
         {
             var guid = packet.StartBitStream(1, 5, 0, 2, 7, 6, 3, 4);
             packet.ParseBitStream(guid, 6, 4, 3, 5, 0, 2, 7, 1);
             packet.WriteGuid("Guid", guid);
             packet.ReadSingle("Unk Float");
+            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+        }
+
+        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandlePlayerLogin547(Packet packet)
+        {
+            packet.ReadSingle("Unk Float");
+
+            var guid = packet.StartBitStream(7, 6, 0, 4, 5, 2, 3, 1);
+            packet.ParseBitStream(guid, 5, 0, 1, 6, 7, 2, 3, 4);
+
+            packet.WriteGuid("Guid", guid);
+
             LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
         }
 
