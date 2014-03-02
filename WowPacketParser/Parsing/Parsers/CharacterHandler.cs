@@ -38,6 +38,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_CHAR_CREATE, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_CHAR_CREATE, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleClientCharCreate547(Packet packet)
         {
             packet.ReadByte("Outfit Id");
@@ -1029,6 +1030,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleCharEnum574(Packet packet)
         {
             packet.ReadBit("Unk bit");

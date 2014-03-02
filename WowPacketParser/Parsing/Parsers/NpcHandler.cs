@@ -313,6 +313,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_SHOW_BANK, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.SMSG_SHOW_BANK, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleShowBank547(Packet packet)
         {
             var guid = new byte[8];
@@ -352,6 +353,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_GOSSIP_SELECT_OPTION, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_GOSSIP_SELECT_OPTION, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleNpcGossipSelectOption547(Packet packet)
         {
             var guid = new byte[8];

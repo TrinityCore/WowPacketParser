@@ -14,6 +14,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_ATTACKSWING, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_ATTACKSWING, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleAttackSwing547(Packet packet)
         {
             var guid = new byte[8];
@@ -140,6 +141,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_ATTACKSTART, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.SMSG_ATTACKSTART, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleAttackStart547(Packet packet)
         {
             var guid1 = new byte[8];
@@ -193,6 +195,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_ATTACKSTOP, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.SMSG_ATTACKSTOP, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleAttackStop547(Packet packet)
         {
             var guid1 = new byte[8];

@@ -24,6 +24,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_NAME_QUERY, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_NAME_QUERY, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleNameQuery547(Packet packet)
         {
             var guid = new byte[8];
