@@ -177,5 +177,69 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.WriteGuid("Criteria GUID", guid2[i], i);
             }
         }
+
+        [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA_ACCOUNT)]
+        public static void HandleAllAchievementCriteriaDataAccount(Packet packet)
+        {
+            var count = packet.ReadBits("Criteria count", 19);
+
+            var counter = new byte[count][];
+            var accountId = new byte[count][];
+            var flags = new byte[count];
+
+            for (var i = 0; i < count; ++i)
+            {
+                counter[i] = new byte[8];
+                accountId[i] = new byte[8];
+
+                counter[i][2] = packet.ReadBit();
+                accountId[i][0] = packet.ReadBit();
+                counter[i][0] = packet.ReadBit();
+                accountId[i][1] = packet.ReadBit();
+
+                flags[i] = (byte)(packet.ReadBits(4) & 0xFFu);
+
+                accountId[i][5] = packet.ReadBit();
+                accountId[i][7] = packet.ReadBit();
+                counter[i][7] = packet.ReadBit();
+                counter[i][6] = packet.ReadBit();
+                accountId[i][4] = packet.ReadBit();
+                accountId[i][2] = packet.ReadBit();
+                counter[i][4] = packet.ReadBit();
+                accountId[i][3] = packet.ReadBit();
+                accountId[i][6] = packet.ReadBit();
+                counter[i][3] = packet.ReadBit();
+                counter[i][5] = packet.ReadBit();
+                counter[i][1] = packet.ReadBit();
+            }
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadXORByte(accountId[i], 0);
+                packet.ReadXORByte(counter[i], 4);
+                packet.ReadXORByte(accountId[i], 2);
+                packet.ReadXORByte(counter[i], 0);
+                packet.ReadPackedTime("Time", i);
+                packet.ReadXORByte(accountId[i], 6);
+                packet.ReadInt32("Criteria ID", i);
+                packet.ReadXORByte(accountId[i], 5);
+                packet.ReadXORByte(counter[i], 1);
+                packet.ReadXORByte(counter[i], 2);
+                packet.ReadXORByte(counter[i], 3);
+                packet.ReadXORByte(accountId[i], 4);
+                packet.ReadXORByte(accountId[i], 1);
+                packet.ReadXORByte(accountId[i], 7);
+                packet.ReadXORByte(counter[i], 5);
+                packet.ReadUInt32("Timer 1", i);
+                packet.ReadXORByte(counter[i], 7);
+                packet.ReadXORByte(accountId[i], 3);
+                packet.ReadUInt32("Timer 2", i);
+                packet.ReadXORByte(counter[i], 6);
+
+                packet.WriteLine("[{0}] Criteria Flags: {1}", i, flags[i]);
+                packet.WriteLine("[{0}] Criteria Counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
+                packet.WriteLine("[{0}] Account: {1}", i, BitConverter.ToUInt64(accountId[i], 0));
+            }
+        }
     }
 }
