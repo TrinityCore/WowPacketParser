@@ -59,6 +59,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_REALM_NAME_QUERY, 0x1899},
             {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x1A5B},
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x1B5A | 0x10000},
+            {Opcode.CMSG_SEND_MAIL, 0x01A9},
             {Opcode.CMSG_SELL_ITEM, 0x115F},
             {Opcode.CMSG_SET_SELECTION, 0x10D5},
             {Opcode.CMSG_SET_SPECIALIZATION, 0x04AA},
