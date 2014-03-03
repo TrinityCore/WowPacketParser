@@ -72,12 +72,25 @@ namespace WowPacketParser.Parsing.Parsers
              * */
         }
 
-        [Parser(Opcode.CMSG_TRAINER_BUY_SPELL, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.CMSG_TRAINER_BUY_SPELL, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleTrainerBuySpell(Packet packet)
         {
             packet.ReadGuid("GUID");
             packet.ReadInt32("Unknown Int32"); // same unk exists in SMSG_TRAINER_LIST
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+        }
+
+        [Parser(Opcode.CMSG_TRAINER_BUY_SPELL, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_TRAINER_BUY_SPELL, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleTrainerBuySpell547(Packet packet)
+        {
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id");
+            packet.ReadUInt32("Trainer Id");
+
+            var guid = packet.StartBitStream(6, 2, 0, 7, 5, 3, 1, 4);
+            packet.ParseBitStream(guid, 6, 0, 5, 1, 7, 4, 2, 3);
+
+            packet.WriteGuid("NPC Guid", guid);
         }
 
         [Parser(Opcode.SMSG_TRAINER_LIST)]

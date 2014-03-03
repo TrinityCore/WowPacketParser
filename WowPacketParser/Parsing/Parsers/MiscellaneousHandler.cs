@@ -733,7 +733,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleClientEnterWorld434(Packet packet)
         {
             var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
@@ -742,6 +742,18 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (mapId >= 0 && mapId < 1000) // Getting some weird results in a couple of packets
                 packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
+        }
+
+        [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleClientEnterWorld547(Packet packet)
+        {
+            var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map Id");
+            packet.ReadBit("Loading");
+
+            MovementHandler.CurrentMapId = (uint)mapId;
+
+            packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
         }
 
         [Parser(Opcode.MSG_VERIFY_CONNECTIVITY)]

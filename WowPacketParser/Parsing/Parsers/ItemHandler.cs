@@ -386,7 +386,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<SellResult>("Sell Result", TypeCode.Byte);
         }
 
-        [Parser(Opcode.CMSG_BUY_ITEM)]
+        [Parser(Opcode.CMSG_BUY_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleBuyItem(Packet packet)
         {
             packet.ReadGuid("Vendor GUID");
@@ -408,6 +408,54 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("Bag GUID");
 
             packet.ReadByte("Bag Slot");
+        }
+
+        [Parser(Opcode.CMSG_BUY_ITEM, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_BUY_ITEM, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleBuyItem547(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            guid2[2] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+
+            packet.ReadBits("Item Type", 2);
+
+            guid2[6] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
+            guid1[1] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid1[5] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid1[4] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid1[3] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid1, 7);
+
+            packet.WriteGuid("Vendor Guid", guid1);
+            packet.WriteGuid("Bag Guid", guid2);
         }
 
         [Parser(Opcode.SMSG_BUY_ITEM)]
@@ -442,7 +490,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_AUTOSTORE_BANK_ITEM)]
-        [Parser(Opcode.CMSG_AUTOEQUIP_ITEM)]
+        [Parser(Opcode.CMSG_AUTOEQUIP_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         [Parser(Opcode.CMSG_AUTOBANK_ITEM)]
         [Parser(Opcode.CMSG_OPEN_ITEM)]
         [Parser(Opcode.CMSG_READ_ITEM)]
@@ -450,6 +498,14 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadSByte("Bag");
             packet.ReadByte("Slot");
+        }
+
+        [Parser(Opcode.CMSG_AUTOEQUIP_ITEM, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_AUTOEQUIP_ITEM, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleAutoEquipItem547(Packet packet)
+        {
+            packet.ReadByte("Slot");
+            packet.ReadSByte("Bag");
         }
 
         [Parser(Opcode.CMSG_DESTROY_ITEM)]
@@ -1256,7 +1312,6 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(2,6,3,4,1,0,7,5);
             packet.ParseBitStream(guid,2,3,6,4,1,0,7,5);
             packet.WriteGuid("Reforger Guid", guid);
-
         }
 
         [Parser(Opcode.SMSG_REFORGE_RESULT, ClientVersionBuild.V4_3_4_15595)]
