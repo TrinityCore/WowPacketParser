@@ -22,20 +22,20 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             guid[0] = packet.ReadBit();
             
-            var guid2 = new byte[count][];
+            var ItemGUID = new byte[count][];
             for (var i = 0; i < count; ++i)
-                packet.StartBitStream(guid2[i], 6, 5, 1, 3, 0, 4, 7, 2);
+                packet.StartBitStream(ItemGUID[i], 6, 5, 1, 3, 0, 4, 7, 2);
 
             guid[2] = packet.ReadBit();
             guid[3] = packet.ReadBit();
             guid[7] = packet.ReadBit();
             guid[5] = packet.ReadBit();
-            var bits15 = (int)packet.ReadBits(11);
-            var bits18 = (int)packet.ReadBits(9);
+            var len1 = (int)packet.ReadBits(11);
+            var len3 = (int)packet.ReadBits(9);
             guid[1] = packet.ReadBit();
             guid[4] = packet.ReadBit();
             guid[6] = packet.ReadBit();
-            var bits14A = (int)packet.ReadBits(9);
+            var len2 = (int)packet.ReadBits(9);
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 6);
@@ -44,23 +44,23 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(guid, 5);
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadXORByte(guid2[i], 6);
-                packet.ReadXORByte(guid2[i], 3);
-                packet.ReadXORByte(guid2[i], 0);
-                packet.ReadXORByte(guid2[i], 5);
-                packet.ReadXORByte(guid2[i], 7);
-                packet.ReadXORByte(guid2[i], 4);
+                packet.ReadXORByte(ItemGUID[i], 6);
+                packet.ReadXORByte(ItemGUID[i], 3);
+                packet.ReadXORByte(ItemGUID[i], 0);
+                packet.ReadXORByte(ItemGUID[i], 5);
+                packet.ReadXORByte(ItemGUID[i], 7);
+                packet.ReadXORByte(ItemGUID[i], 4);
                 packet.ReadByte("Slot", i);
-                packet.ReadXORByte(guid2[i], 1);
-                packet.ReadXORByte(guid2[i], 2);
-                packet.WriteGuid("Guid2", guid2[i]);
+                packet.ReadXORByte(ItemGUID[i], 1);
+                packet.ReadXORByte(ItemGUID[i], 2);
+                packet.WriteGuid("ItemGUID", ItemGUID[i]);
             }
 
-            packet.ReadWoWString("len1", bits14A);
+            packet.ReadWoWString("Body", len2);
             packet.ReadXORByte(guid, 1);
-            packet.ReadWoWString("len2", bits18);
+            packet.ReadWoWString("Receiver", len3);
             packet.ReadXORByte(guid, 7);
-            packet.ReadWoWString("len3", bits15);
+            packet.ReadWoWString("Subject", len1);
 
             packet.WriteGuid("Guid2", guid);
         }
