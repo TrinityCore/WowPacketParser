@@ -17,17 +17,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_ATTACKSWING, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleAttackSwing547(Packet packet)
         {
-            var guid = new byte[8];
-
-            guid[1] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-
+            var guid = packet.StartBitStream(1, 5, 7, 0, 4, 6, 3, 2);
             packet.ParseBitStream(guid, 1, 2, 5, 7, 0, 3, 6, 4);
 
             packet.WriteGuid("Target Guid", guid);

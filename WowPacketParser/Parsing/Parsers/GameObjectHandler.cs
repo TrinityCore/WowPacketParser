@@ -8,10 +8,22 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class GameObjectHandler
     {
-        [Parser(Opcode.CMSG_GAMEOBJECT_QUERY)]
+        [Parser(Opcode.CMSG_GAMEOBJECT_QUERY, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleGameObjectQuery(Packet packet)
         {
             QueryHandler.ReadQueryHeader(ref packet);
+        }
+
+        [Parser(Opcode.CMSG_GAMEOBJECT_QUERY, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_GAMEOBJECT_QUERY, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleGameObjectQuery547(Packet packet)
+        {
+            var entry = packet.ReadInt32("Entry");
+
+            var guid = packet.StartBitStream(1, 7, 0, 3, 5, 4, 6, 2);
+            packet.ParseBitStream(guid, 3, 6, 1, 2, 0, 7, 5, 4);
+
+            packet.WriteGuid("GameObject Guid", guid);
         }
 
         [HasSniffData]
