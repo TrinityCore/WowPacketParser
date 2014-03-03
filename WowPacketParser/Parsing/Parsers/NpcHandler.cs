@@ -298,9 +298,9 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.NpcVendors.Add(guid.GetEntry(), npcVendor, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_GOSSIP_HELLO)]
+        [Parser(Opcode.CMSG_GOSSIP_HELLO, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         [Parser(Opcode.CMSG_TRAINER_LIST)]
-        [Parser(Opcode.CMSG_LIST_INVENTORY)]
+        [Parser(Opcode.CMSG_LIST_INVENTORY, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         [Parser(Opcode.MSG_TABARDVENDOR_ACTIVATE)]
         [Parser(Opcode.CMSG_BANKER_ACTIVATE)]
         [Parser(Opcode.CMSG_SPIRIT_HEALER_ACTIVATE)]
@@ -310,6 +310,60 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleNpcHello(Packet packet)
         {
             packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_GOSSIP_HELLO, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_GOSSIP_HELLO, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleNpcHello547(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[6] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+
+            packet.WriteGuid("NPC Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_LIST_INVENTORY, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_LIST_INVENTORY, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleNpcListInventory547(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[1] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 2);
+
+            packet.WriteGuid("NPC Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SHOW_BANK, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]

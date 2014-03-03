@@ -319,7 +319,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Use guild money");
         }
 
-        [Parser(Opcode.CMSG_SELL_ITEM)]
+        [Parser(Opcode.CMSG_SELL_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleSellItem(Packet packet)
         {
             packet.ReadGuid("Vendor GUID");
@@ -329,6 +329,53 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Count");
             else
                 packet.ReadByte("Count");
+        }
+
+        [Parser(Opcode.CMSG_SELL_ITEM, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_SELL_ITEM, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleSellItem547(Packet packet)
+        {
+            packet.ReadUInt32("Count");
+
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            guid1[7] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid1[4] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+            guid1[5] = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            guid1[1] = packet.ReadBit();
+
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid1, 2);
+
+            packet.WriteGuid("Item Guid", guid1);
+            packet.WriteGuid("Vendor Guid", guid2);
         }
 
         [Parser(Opcode.SMSG_SELL_ITEM)]

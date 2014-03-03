@@ -229,10 +229,39 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
+        [Parser(Opcode.CMSG_NPC_TEXT_QUERY, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleNpcTextQuery(Packet packet)
         {
             ReadQueryHeader(ref packet);
+        }
+
+        [Parser(Opcode.CMSG_NPC_TEXT_QUERY, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_NPC_TEXT_QUERY, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleNpcTextQuery547(Packet packet)
+        {
+            packet.ReadUInt32("Text Id");
+
+            var guid = new byte[8];
+
+            guid[0] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+
+            packet.WriteGuid("NPC Guid", guid);
         }
 
         [HasSniffData]
