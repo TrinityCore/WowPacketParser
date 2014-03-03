@@ -521,13 +521,28 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Count");
         }
 
-        [Parser(Opcode.CMSG_SWAP_ITEM)]
+        [Parser(Opcode.CMSG_SWAP_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleSwapItem(Packet packet)
         {
             packet.ReadSByte("Bag");
             packet.ReadByte("Slot");
             packet.ReadByte("Destination Bag");
             packet.ReadByte("Destination Slot");
+        }
+
+        [Parser(Opcode.CMSG_SWAP_ITEM, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_SWAP_ITEM, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleSwapItem547(Packet packet)
+        {
+            packet.ReadByte("Unk 1");
+            packet.ReadByte("Unk 2");
+
+            packet.ReadBits("Item Count", 2);
+
+            packet.ReadByte("Destination Slot");
+            packet.ReadSByte("Destination Bag");
+            packet.ReadByte("Initial Slot");
+            packet.ReadSByte("Initial Bag");
         }
 
         [Parser(Opcode.CMSG_SPLIT_ITEM)]

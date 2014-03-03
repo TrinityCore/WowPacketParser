@@ -11,7 +11,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LOG_DISCONNECT)]
         public static void HandleLogDisconnect(Packet packet)
         {
-            packet.ReadUInt32("Unk");
+            packet.ReadUInt32("Disconnect Reason");
             // 4 is inability for client to decrypt RSA
             // 3 is not receiving "WORLD OF WARCRAFT CONNECTION - SERVER TO CLIENT"
             // 11 is sent on receiving opcode 0x140 with some specific data
@@ -168,12 +168,23 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
-        [Parser(Opcode.CMSG_SET_SELECTION, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.CMSG_SET_SELECTION, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleSetSelection510(Packet packet)
         {
             var guid = packet.StartBitStream(0, 1, 2, 4, 7, 3, 6, 5);
             packet.ParseBitStream(guid, 4, 1, 5, 2, 6, 7, 0, 3);
+
             packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_SET_SELECTION, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_SET_SELECTION, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleSetSelection547(Packet packet)
+        {
+            var guid = packet.StartBitStream(3, 5, 6, 7, 2, 4, 1, 0);
+            packet.ParseBitStream(guid, 5, 0, 4, 3, 1, 7, 2, 6);
+
+            packet.WriteGuid("Target Guid", guid);
         }
 
         [Parser(Opcode.CMSG_GRANT_LEVEL)]
@@ -362,17 +373,32 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Split Date");
         }
 
-        [Parser(Opcode.CMSG_PING)]
+        [Parser(Opcode.CMSG_PING, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleClientPing(Packet packet)
         {
             packet.ReadInt32("Ping");
             packet.ReadInt32("Ping Count");
         }
 
-        [Parser(Opcode.SMSG_PONG)]
+        [Parser(Opcode.CMSG_PING, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_PING, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleClientPing547(Packet packet)
+        {
+            packet.ReadUInt32("Latency");
+            packet.ReadUInt32("Ping");
+        }
+
+        [Parser(Opcode.SMSG_PONG, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleServerPong(Packet packet)
         {
             packet.ReadInt32("Ping");
+        }
+
+        [Parser(Opcode.SMSG_PONG, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.SMSG_PONG, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleServerPong547(Packet packet)
+        {
+            packet.ReadUInt32("Ping");
         }
 
         [Parser(Opcode.SMSG_CLIENTCACHE_VERSION)]
@@ -598,7 +624,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_TIME_SYNC_RESP)]
+        [Parser(Opcode.CMSG_TIME_SYNC_RESP, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleTimeSyncResp(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // no idea when this was added exactly
@@ -611,6 +637,14 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Counter");
                 packet.ReadUInt32("Ticks");
             }
+        }
+
+        [Parser(Opcode.CMSG_TIME_SYNC_RESP, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_TIME_SYNC_RESP, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleTimeSyncResp547(Packet packet)
+        {
+            packet.ReadUInt32("Counter");
+            packet.ReadUInt32("Client Ticks");
         }
 
         [Parser(Opcode.SMSG_GAMETIME_SET)]

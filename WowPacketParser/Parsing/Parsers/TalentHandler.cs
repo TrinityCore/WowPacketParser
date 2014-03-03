@@ -228,11 +228,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Spec Group Id");
         }
 
-        //[Parser(Opcode.CMSG_UNLEARN_TALENTS)]
+        [Parser(Opcode.CMSG_SET_PRIMARY_TALENT_TREE)]
+        public static void HandleSetPrimaryTalentTreeSpec(Packet packet)
+        {
+            packet.ReadUInt32("Spec Tab Id");
+        }
 
+        //[Parser(Opcode.CMSG_UNLEARN_TALENTS)]
         //[Parser(Opcode.CMSG_PET_LEARN_TALENT)]
         //[Parser(Opcode.CMSG_PET_UNLEARN_TALENTS)]
         //[Parser(Opcode.CMSG_SET_ACTIVE_TALENT_GROUP_OBSOLETE)]
-        //[Parser(Opcode.CMSG_SET_PRIMARY_TALENT_TREE)] 4.0.6a
     }
 }
