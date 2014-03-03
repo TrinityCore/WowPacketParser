@@ -414,6 +414,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BUY_ITEM, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleBuyItem547(Packet packet)
         {
+            packet.ReadUInt32("Bag Slot");
+            packet.ReadUInt32("Item Entry");
+            packet.ReadUInt32("Item Count");
+            packet.ReadUInt32("Vendor Slot");
+
             var guid1 = new byte[8];
             var guid2 = new byte[8];
 
