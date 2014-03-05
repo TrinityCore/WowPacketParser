@@ -653,9 +653,23 @@ namespace WowPacketParser.Parsing.Parsers
             // Reason 3: Jumping or Falling
         }
 
-        [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
+        [Parser(Opcode.SMSG_LOGOUT_COMPLETE, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleLogoutComplete(Packet packet)
         {
+            LoginGuid = new Guid(0);
+        }
+
+        [Parser(Opcode.SMSG_LOGOUT_COMPLETE, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.SMSG_LOGOUT_COMPLETE, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleLogoutComplete547(Packet packet)
+        {
+            packet.ReadBit("Unk 1");
+
+            var guid = packet.StartBitStream(7, 3, 1, 5, 0, 6, 4, 2);
+            packet.ParseBitStream(guid, 0, 5, 1, 2, 6, 3, 4, 7);
+
+            packet.WriteGuid("Guid", guid);
+
             LoginGuid = new Guid(0);
         }
 

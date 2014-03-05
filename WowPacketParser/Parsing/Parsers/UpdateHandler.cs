@@ -2590,7 +2590,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.SMSG_DESTROY_OBJECT, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
         [Parser(Opcode.SMSG_DESTROY_OBJECT, ClientVersionBuild.V5_4_7_17956)]
-        public static void HandleDestroyObject(Packet packet)
+        public static void HandleDestroyObject547(Packet packet)
         {
             var guid = new byte[8];
 
