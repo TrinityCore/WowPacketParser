@@ -57,6 +57,7 @@
     <Compile Include="Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsers\AchievementHandler.cs" />
     <Compile Include="Parsers\ActionBarHandler.cs" />
+    <Compile Include="Parsers\AddonHandler.cs" />
     <Compile Include="Parsers\CharacterHandler.cs" />
     <Compile Include="Parsers\ChatHandler.cs" />
     <Compile Include="Parsers\CombatHandler.cs" />
@@ -71,11 +72,14 @@
     <Compile Include="Parsers\NpcHandler.cs" />
     <Compile Include="Parsers\QueryHandler.cs" />
     <Compile Include="Parsers\QuestHandler.cs" />
+    <Compile Include="Parsers\PetHandler.cs" />
     <Compile Include="Parsers\ReputationHandler.cs" />
     <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />
+    <Compile Include="Parsers\TalentHandler.cs" />
     <Compile Include="Parsers\TradeHandler.cs" />
     <Compile Include="Parsers\UpdateHandler.cs" />
+    <Compile Include="Parsers\WardenHandler.cs" />
     <Compile Include="Parsers\WorldStateHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

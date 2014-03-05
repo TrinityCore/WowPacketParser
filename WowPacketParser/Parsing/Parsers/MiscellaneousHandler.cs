@@ -177,16 +177,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_SET_SELECTION, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_SET_SELECTION, ClientVersionBuild.V5_4_7_17956)]
-        public static void HandleSetSelection547(Packet packet)
-        {
-            var guid = packet.StartBitStream(3, 5, 6, 7, 2, 4, 1, 0);
-            packet.ParseBitStream(guid, 5, 0, 4, 3, 1, 7, 2, 6);
-
-            packet.WriteGuid("Target Guid", guid);
-        }
-
         [Parser(Opcode.CMSG_GRANT_LEVEL)]
         [Parser(Opcode.CMSG_ACCEPT_LEVEL_GRANT)]
         [Parser(Opcode.SMSG_PROPOSE_LEVEL_GRANT)]
@@ -380,38 +370,16 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Ping Count");
         }
 
-        [Parser(Opcode.CMSG_PING, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_PING, ClientVersionBuild.V5_4_7_17956)]
-        public static void HandleClientPing547(Packet packet)
-        {
-            packet.ReadUInt32("Latency");
-            packet.ReadUInt32("Ping");
-        }
-
         [Parser(Opcode.SMSG_PONG, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleServerPong(Packet packet)
         {
             packet.ReadInt32("Ping");
         }
 
-        [Parser(Opcode.SMSG_PONG, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.SMSG_PONG, ClientVersionBuild.V5_4_7_17956)]
-        public static void HandleServerPong547(Packet packet)
-        {
-            packet.ReadUInt32("Ping");
-        }
-
         [Parser(Opcode.SMSG_CLIENTCACHE_VERSION, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleClientCacheVersion(Packet packet)
         {
             packet.ReadInt32("Version");
-        }
-
-        [Parser(Opcode.SMSG_CLIENTCACHE_VERSION, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.SMSG_CLIENTCACHE_VERSION, ClientVersionBuild.V5_4_7_17956)]
-        public static void HandleClientCacheVersion547(Packet packet)
-        {
-            packet.ReadUInt32("Version");
         }
 
         [Parser(Opcode.SMSG_TIME_SYNC_REQ)]
@@ -646,14 +614,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_TIME_SYNC_RESP, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_TIME_SYNC_RESP, ClientVersionBuild.V5_4_7_17956)]
-        public static void HandleTimeSyncResp547(Packet packet)
-        {
-            packet.ReadUInt32("Counter");
-            packet.ReadUInt32("Client Ticks");
-        }
-
         [Parser(Opcode.SMSG_GAMETIME_SET)]
         public static void HandleGametimeSet(Packet packet)
         {
@@ -783,18 +743,6 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (mapId >= 0 && mapId < 1000) // Getting some weird results in a couple of packets
                 packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
-        }
-
-        [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V5_4_7_17956)]
-        public static void HandleClientEnterWorld547(Packet packet)
-        {
-            var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map Id");
-            packet.ReadBit("Loading");
-
-            MovementHandler.CurrentMapId = (uint)mapId;
-
-            packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
         }
 
         [Parser(Opcode.MSG_VERIFY_CONNECTIVITY)]
@@ -1138,17 +1086,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var length = packet.ReadUInt32("Length");
             packet.ReadWoWString("Text", length);
-        }
-
-        [Parser(Opcode.SMSG_SERVER_TIMEZONE, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.SMSG_SERVER_TIMEZONE, ClientVersionBuild.V5_4_7_17956)]
-        public static void HandleServerTimezone547(Packet packet)
-        {
-            var Location2Lenght = packet.ReadBits(7);
-            var Location1Lenght = packet.ReadBits(7);
-
-            packet.ReadWoWString("Timezone Location1", Location1Lenght);
-            packet.ReadWoWString("Timezone Location2", Location2Lenght);
         }
 
         [Parser(Opcode.SMSG_MINIGAME_STATE)]

@@ -2588,29 +2588,6 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadBoolean("Despawn Animation");
         }
 
-        [Parser(Opcode.SMSG_DESTROY_OBJECT, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.SMSG_DESTROY_OBJECT, ClientVersionBuild.V5_4_7_17956)]
-        public static void HandleDestroyObject547(Packet packet)
-        {
-            var guid = new byte[8];
-
-            guid[0] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-
-            packet.ReadBit("Despawn Animation");
-
-            guid[6] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-
-            packet.ParseBitStream(guid, 2, 1, 5, 4, 3, 6, 7, 0);
-
-            packet.WriteGuid("Object Guid", guid);
-        }
-
         [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)] // 4.3.4
         public static void HandleObjectUpdateFailed(Packet packet)
         {
@@ -2627,16 +2604,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 2, 3, 7, 4, 5, 1, 0, 6);
 
             packet.WriteGuid("Guid", guid);
-        }
-
-        [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED, ClientVersionBuild.V5_4_7_17956)]
-        public static void HandleObjectUpdateFailed547(Packet packet)
-        {
-            var guid = packet.StartBitStream(4, 6, 3, 0, 7, 5, 1, 2);
-            packet.ParseBitStream(guid, 4, 7, 0, 6, 5, 2, 1, 3);
-
-            packet.WriteGuid("Object Guid", guid);
         }
     }
 }

@@ -33,19 +33,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES, ClientVersionBuild.V5_4_7_17956)]
-        public static void HandleAccountDataTimes547(Packet packet)
-        {
-            packet.ReadUInt32("dword10");
-            packet.ReadTime("Server Time");
-
-            for (var i = 0; i < 8; ++i)
-                packet.ReadTime("[" + (AccountDataType)i + "]" + " Time");
-
-            packet.ReadBit("byte18");
-        }
-
         [Parser(Opcode.CMSG_REQUEST_ACCOUNT_DATA)]
         public static void HandleRequestAccountData(Packet packet)
         {
