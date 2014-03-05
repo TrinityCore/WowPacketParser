@@ -371,7 +371,7 @@
     <Compile Include="Parsing\Parsers\AchievementHandler.cs" />
     <Compile Include="Parsing\Parsers\ActionBarHandler.cs" />
     <Compile Include="Parsing\Parsers\AddonHandler.cs" />
-    <Compile Include="Parsing\Parsers\ArchaelogyHandler.cs" />
+    <Compile Include="Parsing\Parsers\ArchaeologyHandler.cs" />
     <Compile Include="Parsing\Parsers\AuctionHouseHandler.cs" />
     <Compile Include="Parsing\Parsers\BattlegroundHandler.cs" />
     <Compile Include="Parsing\Parsers\CalendarHandler.cs" />
