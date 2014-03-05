@@ -763,12 +763,46 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.ItemTemplates.Add((uint) entry.Key, item, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleItemRequestHotFix(Packet packet)
+        {
+            var count = packet.ReadUInt32("Count");
+            packet.ReadUInt32("Type");
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
+                packet.ReadUInt32("Unk UInt32 1", i);
+                packet.ReadUInt32("Unk UInt32 2", i);
+            }
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
+        public static void HandleItemRequestHotfix422(Packet packet)
+        {
+            packet.ReadUInt32("Type");
+            var count = packet.ReadUInt32("Count");
+            var guidBytes = new byte[count][];
+            for (var i = 0; i < count; ++i)
+                guidBytes[i] = packet.StartBitStream(7, 3, 0, 5, 6, 4, 1, 2);
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
+                guidBytes[i] = packet.ParseBitStream(guidBytes[i], 2, 6, 3, 0, 5, 7, 1, 4);
+                packet.WriteGuid("GUID", guidBytes[i], i);
+            }
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleItemRequestHotfix434(Packet packet)
         {
             packet.ReadUInt32("Type");
+
             var count = packet.ReadBits("Count", 23);
+
             var guidBytes = new byte[count][];
+
             for (var i = 0; i < count; ++i)
                 guidBytes[i] = packet.StartBitStream(0, 4, 7, 2, 5, 3, 6, 1);
 
@@ -790,34 +824,34 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
-        public static void HandleItemRequestHotfix422(Packet packet)
+        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleItemRequestHotfix547(Packet packet)
         {
             packet.ReadUInt32("Type");
-            var count = packet.ReadUInt32("Count");
+
+            var count = packet.ReadBits("Count", 21);
+
             var guidBytes = new byte[count][];
+
             for (var i = 0; i < count; ++i)
-                guidBytes[i] = packet.StartBitStream(7, 3, 0, 5, 6, 4, 1, 2);
+                guidBytes[i] = packet.StartBitStream(2, 4, 3, 6, 7, 1, 5, 0);
 
             for (var i = 0; i < count; ++i)
             {
+                packet.ReadXORByte(guidBytes[i], 5);
+                packet.ReadXORByte(guidBytes[i], 4);
+                packet.ReadXORByte(guidBytes[i], 3);
+
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
-                guidBytes[i] = packet.ParseBitStream(guidBytes[i], 2, 6, 3, 0, 5, 7, 1, 4);
+
+                packet.ReadXORByte(guidBytes[i], 7);
+                packet.ReadXORByte(guidBytes[i], 0);
+                packet.ReadXORByte(guidBytes[i], 2);
+                packet.ReadXORByte(guidBytes[i], 1);
+                packet.ReadXORByte(guidBytes[i], 6);
+
                 packet.WriteGuid("GUID", guidBytes[i], i);
-            }
-        }
-
-        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleItemRequestHotFix(Packet packet)
-        {
-            var count = packet.ReadUInt32("Count");
-            packet.ReadUInt32("Type");
-
-            for (var i = 0; i < count; ++i)
-            {
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
-                packet.ReadUInt32("Unk UInt32 1", i);
-                packet.ReadUInt32("Unk UInt32 2", i);
             }
         }
 

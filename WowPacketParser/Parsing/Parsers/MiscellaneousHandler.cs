@@ -401,10 +401,17 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Ping");
         }
 
-        [Parser(Opcode.SMSG_CLIENTCACHE_VERSION)]
+        [Parser(Opcode.SMSG_CLIENTCACHE_VERSION, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleClientCacheVersion(Packet packet)
         {
             packet.ReadInt32("Version");
+        }
+
+        [Parser(Opcode.SMSG_CLIENTCACHE_VERSION, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
+        [Parser(Opcode.SMSG_CLIENTCACHE_VERSION, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleClientCacheVersion547(Packet packet)
+        {
+            packet.ReadUInt32("Version");
         }
 
         [Parser(Opcode.SMSG_TIME_SYNC_REQ)]
