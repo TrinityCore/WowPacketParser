@@ -326,7 +326,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
+        [Parser(Opcode.SMSG_GOSSIP_MESSAGE, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleNpcGossip(Packet packet)
         {
             var gossip = new Gossip();
