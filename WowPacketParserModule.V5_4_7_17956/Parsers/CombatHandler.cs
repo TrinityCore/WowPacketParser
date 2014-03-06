@@ -9,8 +9,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
     public static class CombatHandler
     {
         [Parser(Opcode.CMSG_ATTACKSWING, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_ATTACKSWING)]
-        public static void HandleAttackSwing547(Packet packet)
+        [Parser(Opcode.CMSG_ATTACKSWING, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleAttackSwing(Packet packet)
         {
             var guid = packet.StartBitStream(1, 5, 7, 0, 4, 6, 3, 2);
             packet.ParseBitStream(guid, 1, 2, 5, 7, 0, 3, 6, 4);
@@ -19,8 +19,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
         }
 
         [Parser(Opcode.SMSG_ATTACKSTART, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.SMSG_ATTACKSTART)]
-        public static void HandleAttackStart547(Packet packet)
+        [Parser(Opcode.SMSG_ATTACKSTART, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleAttackStart(Packet packet)
         {
             var guid1 = new byte[8];
             var guid2 = new byte[8];
@@ -64,8 +64,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
         }
 
         [Parser(Opcode.SMSG_ATTACKSTOP, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.SMSG_ATTACKSTOP)]
-        public static void HandleAttackStop547(Packet packet)
+        [Parser(Opcode.SMSG_ATTACKSTOP, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleAttackStop(Packet packet)
         {
             var guid1 = new byte[8];
             var guid2 = new byte[8];
@@ -112,8 +112,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
         }
 
         [Parser(Opcode.SMSG_CANCEL_COMBAT, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.SMSG_CANCEL_COMBAT)]
-        public static void HandleCancelCombat547(Packet packet)
+        [Parser(Opcode.SMSG_CANCEL_COMBAT, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleCancelCombat(Packet packet)
         {
             var guid = packet.StartBitStream(3, 1, 0, 7, 6, 4, 2, 5);
 

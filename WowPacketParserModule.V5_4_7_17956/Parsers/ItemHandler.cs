@@ -8,16 +8,16 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
     public static class ItemHandler
     {
         [Parser(Opcode.CMSG_AUTOEQUIP_ITEM, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_AUTOEQUIP_ITEM)]
-        public static void HandleAutoEquipItem547(Packet packet)
+        [Parser(Opcode.CMSG_AUTOEQUIP_ITEM, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleAutoEquipItem(Packet packet)
         {
             packet.ReadByte("Slot");
             packet.ReadSByte("Bag");
         }
 
         [Parser(Opcode.CMSG_BUY_ITEM, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_BUY_ITEM)]
-        public static void HandleBuyItem547(Packet packet)
+        [Parser(Opcode.CMSG_BUY_ITEM, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleBuyItem(Packet packet)
         {
             packet.ReadUInt32("Bag Slot");
             packet.ReadUInt32("Item Entry");
@@ -69,8 +69,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
         }
 
         [Parser(Opcode.CMSG_SELL_ITEM, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_SELL_ITEM)]
-        public static void HandleSellItem547(Packet packet)
+        [Parser(Opcode.CMSG_SELL_ITEM, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleSellItem(Packet packet)
         {
             packet.ReadUInt32("Count");
 
@@ -116,8 +116,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
         }
 
         [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_REQUEST_HOTFIX)]
-        public static void HandleItemRequestHotfix547(Packet packet)
+        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleItemRequestHotfix(Packet packet)
         {
             packet.ReadUInt32("Type");
 
@@ -147,8 +147,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
         }
 
         [Parser(Opcode.CMSG_SWAP_ITEM, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_SWAP_ITEM)]
-        public static void HandleSwapItem547(Packet packet)
+        [Parser(Opcode.CMSG_SWAP_ITEM, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleSwapItem(Packet packet)
         {
             packet.ReadByte("Unk 1");
             packet.ReadByte("Unk 2");

@@ -14,8 +14,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
     public static class PetHandler
     {
         [Parser(Opcode.CMSG_PET_NAME_QUERY, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_PET_NAME_QUERY)]
-        public static void HandlePetNameQuery547(Packet packet)
+        [Parser(Opcode.CMSG_PET_NAME_QUERY, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandlePetNameQuery(Packet packet)
         {
             var guid1 = new byte[8];
             var guid2 = new byte[8];

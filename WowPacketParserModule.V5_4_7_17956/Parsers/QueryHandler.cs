@@ -13,15 +13,15 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
     public static class QueryHandler
     {
         [Parser(Opcode.CMSG_CREATURE_QUERY, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_CREATURE_QUERY)]
-        public static void HandleCreatureQuery547(Packet packet)
+        [Parser(Opcode.CMSG_CREATURE_QUERY, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleCreatureQuery(Packet packet)
         {
             packet.ReadUInt32("Entry");
         }
 
         [Parser(Opcode.CMSG_NAME_QUERY, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_NAME_QUERY)]
-        public static void HandleNameQuery547(Packet packet)
+        [Parser(Opcode.CMSG_NAME_QUERY, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleNameQuery(Packet packet)
         {
             var guid = new byte[8];
 
@@ -58,8 +58,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
         }
 
         [Parser(Opcode.CMSG_NPC_TEXT_QUERY, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
-        public static void HandleNpcTextQuery547(Packet packet)
+        [Parser(Opcode.CMSG_NPC_TEXT_QUERY, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleNpcTextQuery(Packet packet)
         {
             packet.ReadUInt32("Text Id");
 
@@ -71,8 +71,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
 
         [HasSniffData]
         [Parser(Opcode.SMSG_CREATURE_QUERY_RESPONSE, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.SMSG_CREATURE_QUERY_RESPONSE)]
-        public static void HandleCreatureQueryResponse547(Packet packet)
+        [Parser(Opcode.SMSG_CREATURE_QUERY_RESPONSE, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleCreatureQueryResponse(Packet packet)
         {
             var entry = packet.ReadEntry("Entry");
 

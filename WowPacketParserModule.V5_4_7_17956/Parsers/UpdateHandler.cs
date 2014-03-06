@@ -16,8 +16,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
     public static class UpdateHandler
     {
         [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED)]
-        public static void HandleObjectUpdateFailed547(Packet packet)
+        [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleObjectUpdateFailed(Packet packet)
         {
             var guid = packet.StartBitStream(4, 6, 3, 0, 7, 5, 1, 2);
             packet.ParseBitStream(guid, 4, 7, 0, 6, 5, 2, 1, 3);
@@ -26,8 +26,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
         }
 
         [Parser(Opcode.SMSG_DESTROY_OBJECT, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.SMSG_DESTROY_OBJECT)]
-        public static void HandleDestroyObject547(Packet packet)
+        [Parser(Opcode.SMSG_DESTROY_OBJECT, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleDestroyObject(Packet packet)
         {
             var guid = new byte[8];
 

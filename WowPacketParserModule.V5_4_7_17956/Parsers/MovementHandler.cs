@@ -13,8 +13,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
     {
         [HasSniffData]
         [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.SMSG_NEW_WORLD)]
-        public static void HandleNewWorld547(Packet packet)
+        [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleNewWorld(Packet packet)
         {
             CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
             packet.ReadSingle("Y");

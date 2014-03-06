@@ -10,8 +10,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
     public static class GameObjectHandler
     {
         [Parser(Opcode.CMSG_GAMEOBJECT_QUERY, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_GAMEOBJECT_QUERY)]
-        public static void HandleGameObjectQuery547(Packet packet)
+        [Parser(Opcode.CMSG_GAMEOBJECT_QUERY, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleGameObjectQuery(Packet packet)
         {
             var entry = packet.ReadUInt32("Entry");
 
@@ -23,8 +23,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
 
         [HasSniffData]
         [Parser(Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE)]
-        public static void HandleGameObjectQueryResponse547(Packet packet)
+        [Parser(Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleGameObjectQueryResponse(Packet packet)
         {
             var gameObject = new GameObjectTemplate();
 

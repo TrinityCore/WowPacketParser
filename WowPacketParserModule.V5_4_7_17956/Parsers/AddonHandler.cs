@@ -8,8 +8,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
     public static class AddonHandler
     {
         [Parser(Opcode.SMSG_ADDON_INFO, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.SMSG_ADDON_INFO)]
-        public static void HandleServerAddonInfo547(Packet packet)
+        [Parser(Opcode.SMSG_ADDON_INFO, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleServerAddonInfo(Packet packet)
         {
             var AddonsCount = packet.ReadBits("Addons Count", 23);
             uint[,] AddonsInfo = new uint[AddonsCount, 4];

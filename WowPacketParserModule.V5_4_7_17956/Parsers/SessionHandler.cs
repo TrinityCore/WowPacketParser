@@ -13,8 +13,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
         public static Guid LoginGuid;
 
         [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_AUTH_SESSION)]
-        public static void HandleAuthSession547(Packet packet)
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleAuthSession(Packet packet)
         {
             var sha = new byte[20];
 
@@ -73,8 +73,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
         }
 
         [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_PLAYER_LOGIN)]
-        public static void HandlePlayerLogin547(Packet packet)
+        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandlePlayerLogin(Packet packet)
         {
             packet.ReadSingle("Unk Float");
 
@@ -87,8 +87,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
         }
 
         [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
-        public static void HandleServerAuthChallenge547(Packet packet)
+        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleServerAuthChallenge(Packet packet)
         {
             packet.ReadUInt32("Server Seed");
             packet.WriteLine(packet.ReadBytes(32).ToString());
@@ -96,8 +96,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
         }
 
         [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.SMSG_AUTH_RESPONSE)]
-        public static void HandleAuthResponse547(Packet packet)
+        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleAuthResponse(Packet packet)
         {
             var hasAccountData = packet.ReadBit("Has Account Data");
 
@@ -206,8 +206,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
         }
 
         [Parser(Opcode.SMSG_LOGOUT_COMPLETE, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
-        public static void HandleLogoutComplete547(Packet packet)
+        [Parser(Opcode.SMSG_LOGOUT_COMPLETE, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleLogoutComplete(Packet packet)
         {
             packet.ReadBit("Unk 1");
 

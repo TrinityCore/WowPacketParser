@@ -12,8 +12,8 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
     public static class CharacterHandler
     {
         [Parser(Opcode.CMSG_CHAR_CREATE, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.CMSG_CHAR_CREATE)]
-        public static void HandleClientCharCreate547(Packet packet)
+        [Parser(Opcode.CMSG_CHAR_CREATE, ClientVersionBuild.V5_4_7_17956)]
+        public static void HandleClientCharCreate(Packet packet)
         {
             packet.ReadByte("Outfit Id");
             packet.ReadByte("Facial Hair");
@@ -36,7 +36,7 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
 
         [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
         [Parser(Opcode.SMSG_CHAR_ENUM)]
-        public static void HandleCharEnum574(Packet packet)
+        public static void HandleCharEnum(Packet packet)
         {
             packet.ReadBit("Unk bit");
 
