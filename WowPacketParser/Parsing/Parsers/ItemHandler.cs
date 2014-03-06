@@ -1007,7 +1007,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleDBReply434(Packet packet)
         {
             var id = packet.ReadInt32("Entry");
