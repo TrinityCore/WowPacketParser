@@ -397,7 +397,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         [HasSniffData]
         [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
-        [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
+        [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleEnterWorld(Packet packet)
         {
             CurrentMapId = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
