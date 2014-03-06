@@ -35,7 +35,7 @@ namespace WowPacketParserModule.V5_4_7_17956.Parsers
         }
 
         [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V5_4_7_17956)]
-        [Parser(Opcode.SMSG_CHAR_ENUM)]
+        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V5_4_7_17956)]
         public static void HandleCharEnum(Packet packet)
         {
             packet.ReadBit("Unk bit");
