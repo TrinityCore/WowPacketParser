@@ -128,7 +128,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_BATTLE_PET_TRAP_LEVEL, 0x13AA},
             {Opcode.SMSG_BATTLE_PET_UPDATES, 0x04E3},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x11E2},
-            {Opcode.SMSG_CANCEL_COMBAT, 0x1E7A},
+            {Opcode.SMSG_CAST_FAILED, 0x0560},
             {Opcode.SMSG_CHALLENGE_MODE_MAP_STATS_UPDATE, 0x0C9A}, // new in MoP
             {Opcode.SMSG_CHALLENGE_MODE_DELETE_LEADER_RESULT, 0x05A2},
             {Opcode.SMSG_CHALLENGE_MODE_ALL_MAP_STATS, 0x1621},
@@ -207,6 +207,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_PET_BATTLE_REPLACEMENTS_MADE, 0x0891},  // 5.4.0 17399 PET_BATTLE NYI
             //SMSG_PET_BATTLE_REQUEST_FAILED, 0x0000},  // 5.4.7 17930 PET_BATTLE NYI (not sure)
             {Opcode.SMSG_PET_BATTLE_SLOT_UPDATE, 0x0421},  // 5.4.7 17930 PET_BATTLE NYI
+            {Opcode.SMSG_PET_CAST_FAILED, 0x1D33 | 0x20000},
             {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0x1F08},
             {Opcode.SMSG_PLAY_SOUND, 0x0E22},
             {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x1652},
@@ -227,6 +228,8 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SET_PROFICIENCY, 0x1E3B},
             {Opcode.SMSG_SPELLENERGIZELOG, 0x0071 | 0x20000},
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x053B},
+            {Opcode.SMSG_SPELL_FAILED_OTHER, 0x1E7A},
+            {Opcode.SMSG_SPELL_FAILURE, 0x0E03},
             {Opcode.SMSG_SPELL_START, 0x0130},
             {Opcode.SMSG_SPELL_GO, 0x0851},
             {Opcode.SMSG_SPELLHEALLOG, 0x1BBF},

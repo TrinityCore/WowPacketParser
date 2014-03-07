@@ -1131,5 +1131,66 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                 packet.ReadInt32("Cooldown", i);
             }
         }
+
+        [Parser(Opcode.SMSG_CAST_FAILED)]
+        [Parser(Opcode.SMSG_PET_CAST_FAILED)]
+        public static void HandleCastFailed(Packet packet)
+        {
+            var result = packet.ReadEnum<SpellCastFailureReason>("Reason", TypeCode.Int32);
+            packet.ReadByte("Cast count");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+
+            var bit18 = !packet.ReadBit();
+            var bit14 = !packet.ReadBit();
+
+            if (bit18)
+                packet.ReadInt32("Int18");
+
+            if (bit14)
+                packet.ReadInt32("Int14");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_FAILURE)]
+        public static void HandleSpellFailed(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 1, 5, 3, 4, 2, 7, 0, 6);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadEnum<SpellCastFailureReason>("Reason", TypeCode.Byte);
+            packet.ReadByte("Cast count");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 7);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPELL_FAILED_OTHER)]
+        public static void HandleSpellFailedOther(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 3, 1, 0, 7, 6, 4, 2, 5);
+
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadEnum<SpellCastFailureReason>("Reason", TypeCode.Byte);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadXORByte(guid, 1);
+            packet.ReadByte("Cast count");
+            packet.ReadXORByte(guid, 0);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

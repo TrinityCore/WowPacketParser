@@ -288,6 +288,15 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.CMSG_LIST_INVENTORY)]
+        public static void HandleNpcListInventory(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 0, 6, 3, 5, 4, 7, 2);
+            packet.ParseBitStream(guid, 0, 5, 6, 7, 1, 3, 4, 2);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_LIST_INVENTORY)]
         public static void HandleVendorInventoryList(Packet packet)
         {
@@ -404,7 +413,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             var newHighestGUID = new byte[8];
             var guid = new byte[8];
-
 
             newHighestGUID[1] = packet.ReadBit();
             newHighestGUID[5] = packet.ReadBit();

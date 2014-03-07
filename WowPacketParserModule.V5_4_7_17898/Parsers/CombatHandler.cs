@@ -99,28 +99,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Victim GUID", VictimGUID);
         }
 
-        [Parser(Opcode.SMSG_CANCEL_COMBAT)]
-        public static void HandleCancelCombat(Packet packet)
-        {
-            var guid = new byte[8];
-
-            packet.StartBitStream(guid, 3, 1, 0, 7, 6, 4, 2, 5);
-
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadByte("Byte1C");
-            packet.ReadXORByte(guid, 7);
-            packet.ReadInt32("Int18");
-            packet.ReadXORByte(guid, 1);
-            packet.ReadByte("Byte1D");
-            packet.ReadXORByte(guid, 0);
-
-            packet.WriteGuid("Guid", guid);
-        }
-
         [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]
         public static void HandleAttackerStateUpdate(Packet packet)
         {
