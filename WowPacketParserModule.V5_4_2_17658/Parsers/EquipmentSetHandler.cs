@@ -102,7 +102,6 @@ namespace WowPacketParserModule.V5_4_2_17568.Parsers
                 packet.WriteLine("[{0}] Source slot: {1}", i, slotsInfo[i][1]);
             }
 
-
             for (var i = 0; i < someCount; ++i)
             {
                 packet.ParseBitStream(someThings[i], 0, 1);

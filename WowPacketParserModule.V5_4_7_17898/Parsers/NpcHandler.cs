@@ -274,6 +274,20 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 Storage.NpcTrainers.Add(GUID.GetEntry(), npcTrainer, packet.TimeSpan);
         }
 
+        [Parser(Opcode.CMSG_TRAINER_BUY_SPELL)]
+        public static void HandleTrainerBuySpell(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadInt32("Unknown Int32"); // same unk exists in SMSG_TRAINER_LIST
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+
+            packet.StartBitStream(guid, 6, 2, 0, 7, 5, 3, 1, 4);
+            packet.ParseBitStream(guid, 6, 0, 5, 1, 7, 4, 2, 3);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_LIST_INVENTORY)]
         public static void HandleVendorInventoryList(Packet packet)
         {
@@ -337,10 +351,125 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 7);
 
-            packet.WriteGuid("Guid5", guid);
+            packet.WriteGuid("Guid", guid);
 
             var vendorGUID = new Guid(BitConverter.ToUInt64(guid, 0));
             Storage.NpcVendors.Add(vendorGUID.GetEntry(), npcVendor, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_SHOW_BANK)]
+        public static void HandleShowBank(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 7, 1, 6, 4, 3, 5, 0, 2);
+            packet.ParseBitStream(guid, 6, 0, 7, 3, 5, 1, 4, 2);
+
+            packet.WriteGuid("Guid2", guid);
+        }
+
+        [Parser(Opcode.SMSG_THREAT_UPDATE)]
+        public static void HandleThreatlistUpdate(Packet packet)
+        {
+            var guid = new byte[8];
+
+            var count = packet.ReadBits("Size", 21);
+
+            var hostileGUID = new byte[count][];
+
+            for (var i = 0; i < count; ++i)
+            {
+                hostileGUID[i] = new byte[8];
+                packet.StartBitStream(hostileGUID[i], 6, 5, 3, 0, 4, 7, 2, 1);
+            }
+
+            packet.StartBitStream(guid, 7, 2, 4, 5, 0, 6, 1, 3);
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ParseBitStream(hostileGUID[i], 3, 7, 0, 1, 6, 5);
+                packet.ReadUInt32("Threat", i);
+                packet.ParseBitStream(hostileGUID[i], 4, 2);
+                packet.WriteGuid("Hostile", hostileGUID[i], i);
+
+            }
+
+            packet.ParseBitStream(guid, 4, 6, 5, 3, 0, 1, 7, 2);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_HIGHEST_THREAT_UPDATE)]
+        public static void HandleHighestThreatlistUpdate(Packet packet)
+        {
+            var newHighestGUID = new byte[8];
+            var guid = new byte[8];
+
+
+            newHighestGUID[1] = packet.ReadBit();
+            newHighestGUID[5] = packet.ReadBit();
+            newHighestGUID[3] = packet.ReadBit();
+            newHighestGUID[4] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            newHighestGUID[6] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            var count = packet.ReadBits(21);
+            guid[3] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+
+            var hostileGUID = new byte[count][];
+
+            for (var i = 0; i < count; i++)
+            {
+                hostileGUID[i] = new byte[8];
+
+                packet.StartBitStream(hostileGUID[i], 7, 6, 3, 2, 0, 5, 1, 4);
+            }
+
+            guid[0] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            newHighestGUID[7] = packet.ReadBit();
+            newHighestGUID[2] = packet.ReadBit();
+            newHighestGUID[0] = packet.ReadBit();
+            packet.ReadXORByte(newHighestGUID, 7);
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadXORByte(hostileGUID[i], 1);
+                packet.ReadXORByte(hostileGUID[i], 2);
+                packet.ReadXORByte(hostileGUID[i], 3);
+                packet.ReadXORByte(hostileGUID[i], 0);
+                packet.ReadXORByte(hostileGUID[i], 4);
+                packet.ReadXORByte(hostileGUID[i], 7);
+
+                packet.ReadInt32("Threat", i);
+
+                packet.ReadXORByte(hostileGUID[i], 6);
+                packet.ReadXORByte(hostileGUID[i], 5);
+
+                packet.WriteGuid("Hostile", hostileGUID[i], i);
+            }
+
+            packet.ReadXORByte(newHighestGUID, 4);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(newHighestGUID, 3);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(newHighestGUID, 0);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(newHighestGUID, 5);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(newHighestGUID, 2);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(newHighestGUID, 6);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(newHighestGUID, 1);
+
+            packet.WriteGuid("New Highest", newHighestGUID);
+            packet.WriteGuid("Guid", guid);
         }
     }
 }

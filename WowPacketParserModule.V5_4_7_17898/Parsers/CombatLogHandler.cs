@@ -7,97 +7,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
     public static class CombatLogHandler
     {
-        [Parser(Opcode.SMSG_ATTACKSTART)]
-        public static void HandleAttackStartStart(Packet packet)
-        {
-            var AttackerGUID = new byte[8];
-            var VictimGUID = new byte[8];
-
-            AttackerGUID[4] = packet.ReadBit();
-            VictimGUID[4] = packet.ReadBit();
-            AttackerGUID[6] = packet.ReadBit();
-            AttackerGUID[3] = packet.ReadBit();
-            AttackerGUID[5] = packet.ReadBit();
-            VictimGUID[2] = packet.ReadBit();
-            VictimGUID[6] = packet.ReadBit();
-            AttackerGUID[0] = packet.ReadBit();
-            VictimGUID[5] = packet.ReadBit();
-            VictimGUID[0] = packet.ReadBit();
-            VictimGUID[3] = packet.ReadBit();
-            AttackerGUID[2] = packet.ReadBit();
-            VictimGUID[1] = packet.ReadBit();
-            VictimGUID[7] = packet.ReadBit();
-            AttackerGUID[7] = packet.ReadBit();
-            AttackerGUID[1] = packet.ReadBit();
-
-            packet.ReadXORByte(VictimGUID, 5);
-            packet.ReadXORByte(VictimGUID, 7);
-            packet.ReadXORByte(AttackerGUID, 4);
-            packet.ReadXORByte(AttackerGUID, 5);
-            packet.ReadXORByte(AttackerGUID, 3);
-            packet.ReadXORByte(VictimGUID, 1);
-            packet.ReadXORByte(AttackerGUID, 1);
-            packet.ReadXORByte(VictimGUID, 3);
-            packet.ReadXORByte(AttackerGUID, 7);
-            packet.ReadXORByte(VictimGUID, 0);
-            packet.ReadXORByte(VictimGUID, 2);
-            packet.ReadXORByte(VictimGUID, 4);
-            packet.ReadXORByte(AttackerGUID, 6);
-            packet.ReadXORByte(AttackerGUID, 2);
-            packet.ReadXORByte(VictimGUID, 6);
-            packet.ReadXORByte(AttackerGUID, 0);
-
-            packet.WriteGuid("Attacker GUID", AttackerGUID);
-            packet.WriteGuid("Victim GUID", VictimGUID);
-        }
-
-        [Parser(Opcode.SMSG_ATTACKSTOP)]
-        public static void HandleAttackStartStop(Packet packet)
-        {
-            var VictimGUID = new byte[8];
-            var AttackerGUID = new byte[8];
-
-            VictimGUID[5] = packet.ReadBit();
-            AttackerGUID[1] = packet.ReadBit();
-            AttackerGUID[2] = packet.ReadBit();
-            VictimGUID[7] = packet.ReadBit();
-            AttackerGUID[3] = packet.ReadBit();
-            AttackerGUID[7] = packet.ReadBit();
-            AttackerGUID[6] = packet.ReadBit();
-
-            packet.ReadBit("Unk bit");
-
-            VictimGUID[0] = packet.ReadBit();
-            VictimGUID[2] = packet.ReadBit();
-            VictimGUID[3] = packet.ReadBit();
-            VictimGUID[6] = packet.ReadBit();
-            VictimGUID[4] = packet.ReadBit();
-            AttackerGUID[0] = packet.ReadBit();
-            VictimGUID[1] = packet.ReadBit();
-            AttackerGUID[4] = packet.ReadBit();
-            AttackerGUID[5] = packet.ReadBit();
-
-            packet.ReadXORByte(AttackerGUID, 2);
-            packet.ReadXORByte(VictimGUID, 3);
-            packet.ReadXORByte(VictimGUID, 5);
-            packet.ReadXORByte(VictimGUID, 2);
-            packet.ReadXORByte(AttackerGUID, 4);
-            packet.ReadXORByte(AttackerGUID, 1);
-            packet.ReadXORByte(AttackerGUID, 0);
-            packet.ReadXORByte(VictimGUID, 1);
-            packet.ReadXORByte(AttackerGUID, 3);
-            packet.ReadXORByte(AttackerGUID, 7);
-            packet.ReadXORByte(AttackerGUID, 6);
-            packet.ReadXORByte(VictimGUID, 4);
-            packet.ReadXORByte(VictimGUID, 6);
-            packet.ReadXORByte(AttackerGUID, 5);
-            packet.ReadXORByte(VictimGUID, 7);
-            packet.ReadXORByte(VictimGUID, 0);
-
-            packet.WriteGuid("Attacker GUID", AttackerGUID);
-            packet.WriteGuid("Victim GUID", VictimGUID);
-        }
-
         [Parser(Opcode.SMSG_PERIODICAURALOG)]
         public static void HandlePeriodicAuraLog(Packet packet)
         {
@@ -385,6 +294,70 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(casterGUID, 3);
             packet.ReadInt32("Damage");
             packet.ReadXORByte(casterGUID, 4);
+
+            packet.WriteGuid("Caster GUID", casterGUID);
+            packet.WriteGuid("Target GUID", targetGUID);
+        }
+
+        [Parser(Opcode.SMSG_SPELLENERGIZELOG)]
+        public static void HandleSpellEnergizeLog(Packet packet)
+        {
+            var targetGUID = new byte[8];
+            var casterGUID = new byte[8];
+
+            var powerCount = 0;
+
+            var hasPowerData = packet.ReadBit();
+            targetGUID[1] = packet.ReadBit();
+            casterGUID[5] = packet.ReadBit();
+            casterGUID[1] = packet.ReadBit();
+            casterGUID[0] = packet.ReadBit();
+            targetGUID[5] = packet.ReadBit();
+            casterGUID[6] = packet.ReadBit();
+            casterGUID[7] = packet.ReadBit();
+            targetGUID[3] = packet.ReadBit();
+            targetGUID[4] = packet.ReadBit();
+            targetGUID[2] = packet.ReadBit();
+            targetGUID[7] = packet.ReadBit();
+            targetGUID[6] = packet.ReadBit();
+            casterGUID[4] = packet.ReadBit();
+            if (hasPowerData)
+                powerCount = (int)packet.ReadBits(21);
+            casterGUID[3] = packet.ReadBit();
+            casterGUID[2] = packet.ReadBit();
+            targetGUID[0] = packet.ReadBit();
+            packet.ReadXORByte(targetGUID, 5);
+            packet.ReadXORByte(targetGUID, 0);
+            packet.ReadXORByte(casterGUID, 3);
+            packet.ReadXORByte(casterGUID, 5);
+            packet.ReadEnum<PowerType>("Power Type", TypeCode.UInt32);
+            packet.ReadXORByte(casterGUID, 7);
+            packet.ReadXORByte(casterGUID, 1);
+            packet.ReadXORByte(targetGUID, 4);
+            packet.ReadXORByte(targetGUID, 3);
+            packet.ReadXORByte(casterGUID, 2);
+            packet.ReadXORByte(targetGUID, 6);
+            if (hasPowerData)
+            {
+                for (var i = 0; i < powerCount; i++)
+                {
+                    packet.ReadInt32("IntED", i);
+                    packet.ReadInt32("IntED", i);
+                }
+
+                packet.ReadInt32("Int20");
+                packet.ReadInt32("Int1C");
+                packet.ReadInt32("Int24");
+            }
+
+            packet.ReadXORByte(targetGUID, 7);
+            packet.ReadInt32("Amount");
+            packet.ReadXORByte(casterGUID, 6);
+            packet.ReadXORByte(casterGUID, 0);
+            packet.ReadXORByte(casterGUID, 4);
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadXORByte(targetGUID, 2);
+            packet.ReadXORByte(targetGUID, 1);
 
             packet.WriteGuid("Caster GUID", casterGUID);
             packet.WriteGuid("Target GUID", targetGUID);

@@ -120,9 +120,9 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
                 for (var i = 0; i < bits20; ++i)
                 {
-                    packet.ReadInt32("RealmId");
-                    packet.ReadWoWString("Realm", bits0C[i]);
-                    packet.ReadWoWString("Realm", bits0[i]);
+                    packet.ReadInt32("RealmId", i);
+                    packet.ReadWoWString("Realm", bits0C[i], i);
+                    packet.ReadWoWString("Realm", bits0[i], i);
                 }
 
                 if (bit78)

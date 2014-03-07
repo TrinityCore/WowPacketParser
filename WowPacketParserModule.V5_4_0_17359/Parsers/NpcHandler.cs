@@ -157,8 +157,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             Storage.GossipPOIs.Add(LastGossipPOIEntry, gossipPOI, packet.TimeSpan);
         }
 
-        [Parser(Opcode.SMSG_THREAT_UPDATE)]
-        public static void HandleThreatlistUpdate(Packet packet)
+        [Parser(Opcode.SMSG_HIGHEST_THREAT_UPDATE)]
+        public static void HandleHighestThreatlistUpdate(Packet packet)
         {            
             var guid1 = new byte[8];
             var guid2 = new byte[8];
@@ -226,11 +226,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid1", guid1);
             packet.WriteGuid("GUID2", guid2);
-
         }
 
-        [Parser(Opcode.SMSG_HIGHEST_THREAT_UPDATE)]
-        public static void HandleHighestThreatlistUpdate(Packet packet)
+        [Parser(Opcode.SMSG_THREAT_UPDATE)]
+        public static void HandleThreatlistUpdate(Packet packet)
         {
             var guid1 = new byte[8];
 
@@ -242,7 +241,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 guid2[i] = new byte[8];
                 packet.StartBitStream(guid2[i], 7, 4, 3, 2, 6, 1, 0, 5);
             }
-
 
             packet.StartBitStream(guid1, 2, 7, 4, 0, 1, 6, 3, 5);
 

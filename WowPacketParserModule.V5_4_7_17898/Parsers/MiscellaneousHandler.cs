@@ -33,16 +33,44 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_ADDON_REGISTERED_PREFIXES)]
-        public static void MultiplePackets(Packet packet)
+        [Parser(Opcode.SMSG_PLAY_SOUND)]
+        public static void HandlePlaySound(Packet packet)
         {
-            var count = packet.ReadBits("Count", 24);
-            var lengths = new int[count];
-            for (var i = 0; i < count; ++i)
-                lengths[i] = (int)packet.ReadBits(5);
+            var guid = new byte[8];
 
-            for (var i = 0; i < count; ++i)
-                packet.ReadWoWString("Addon", lengths[i], i);
+            packet.StartBitStream(guid, 1, 6, 7, 5, 4, 3, 0, 2);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 4);
+            var sound = packet.ReadUInt32("Sound Id");
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 7);
+
+            packet.WriteGuid("Guid", guid);
+
+            Storage.Sounds.Add(sound, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.CMSG_SET_SELECTION)]
+        public static void HandleSetSelection(Packet packet)
+        {
+            var guid = packet.StartBitStream(3, 5, 6, 7, 2, 4, 1, 0);
+            packet.ParseBitStream(guid, 5, 0, 4, 3, 1, 7, 2, 6);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_INSPECT)]
+        public static void HandleClientInspect(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 3, 7, 0, 4, 1, 6, 5, 2);
+            packet.ParseBitStream(guid, 0, 2, 4, 7, 6, 3, 1, 5);
+
+            packet.WriteGuid("Player GUID: ", guid);
         }
     }
 }
