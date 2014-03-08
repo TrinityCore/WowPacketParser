@@ -205,5 +205,38 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             packet.ReadBoolean("Print in chat");
         }
+
+        [Parser(Opcode.SMSG_POWER_UPDATE)]
+        public static void HandlePowerUpdate(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[3] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            var count = packet.ReadBits("Count", 21);
+            guid[2] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 1);
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadEnum<PowerType>("Power type", TypeCode.Byte); // Actually powertype for class
+                packet.ReadInt32("Value");
+            }
+
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 2);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

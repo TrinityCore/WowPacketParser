@@ -957,9 +957,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             packet.ReadByte("CastCount");
 
             for (var i = 0; i < runeCooldownPassedCount; ++i)
-            {
                 packet.ReadByte("runeCooldownPassedCount", i);
-            }
 
             if (hasDestUnkByte)
                 packet.ReadByte("hasDestUnkByte");
@@ -1120,6 +1118,64 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_COOLDOWN_EVENT)]
+        public static void HandleCooldownEvent(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 4, 7, 1, 6, 5, 3, 0, 2);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadXORByte(guid, 7);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPELL_COOLDOWN)]
+        public static void HandleSpellCooldown(Packet packet)
+        {
+            var guid = new byte[8];
+
+            var bit20 = !packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            var bits10 = packet.ReadBits(21);
+            guid[0] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 7);
+            
+            for (var i = 0; i < bits10; ++i)
+            {
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+                packet.ReadInt32("Time");
+            }
+
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 2);
+
+            if (bit20)
+                packet.ReadByte("Unk mask");
+
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 6);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_SPELL_CATEGORY_COOLDOWN)]
         public static void HandleSpellCategoryCooldown(Packet packet)
         {
@@ -1189,6 +1245,65 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 1);
             packet.ReadByte("Cast count");
             packet.ReadXORByte(guid, 0);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPELLINTERRUPTLOG)] // 4.3.4
+        public static void HandleSpellInterruptLog(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            guid2[5] = packet.ReadBit();
+            guid1[4] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid1[1] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
+            guid1[3] = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid1[5] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Interrupted Spell ID");
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Interrupt Spell ID");
+            packet.ReadXORByte(guid1, 4);
+
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("Guid2", guid2);
+        }
+
+        [Parser(Opcode.SMSG_TOTEM_CREATED)]
+        public static void HandleTotemCreated(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadByte("Slot");
+            packet.ReadInt32("Duration");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.StartBitStream(guid, 5, 2, 4, 7, 6, 1, 3, 0);
+            packet.ParseBitStream(guid, 4, 3, 7, 6, 5, 1, 0, 2);
 
             packet.WriteGuid("Guid", guid);
         }

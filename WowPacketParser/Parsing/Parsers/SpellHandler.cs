@@ -12,7 +12,6 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class SpellHandler
     {
-
         [Parser(Opcode.SMSG_SPELLINTERRUPTLOG)] // 4.3.4
         public static void HandleSpellInterruptLog(Packet packet)
         {
