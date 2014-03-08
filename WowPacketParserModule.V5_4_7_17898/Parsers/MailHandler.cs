@@ -61,7 +61,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(guid, 7);
             packet.ReadWoWString("Subject", len1);
 
-            packet.WriteGuid("Guid2", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_GET_MAIL_LIST)]

@@ -133,5 +133,16 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             packet.ReadBit("Successful");
         }
+
+        [Parser(Opcode.CMSG_ITEM_REFUND_INFO)]
+        public static void HandleItemRefundInfo(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 0, 4, 6, 3, 2, 1, 7, 5);
+            packet.ParseBitStream(guid, 5, 3, 7, 2, 1, 6, 0, 4);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
