@@ -147,6 +147,19 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
         }
 
+        [Parser(Opcode.CMSG_TEXT_EMOTE)]
+        public static void HandleTextEmote(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadEnum<EmoteTextType>("Text Emote ID", TypeCode.Int32);
+            packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
+
+            packet.StartBitStream(guid, 2, 3, 0, 7, 4, 6, 5, 1);
+            packet.ParseBitStream(guid, 0, 6, 5, 7, 3, 4, 1, 2);
+            packet.WriteGuid("GUID", guid);
+        }
+
         [Parser(Opcode.SMSG_TEXT_EMOTE)]
         public static void HandleTextEmoteServer(Packet packet)
         {
