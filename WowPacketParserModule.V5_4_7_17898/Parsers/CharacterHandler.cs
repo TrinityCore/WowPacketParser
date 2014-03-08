@@ -238,5 +238,44 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_LOG_XPGAIN)]
+        public static void HandleLogXPGain(Packet packet)
+        {
+            var guid = new byte[8];
+
+            var hasBaseXP = !packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            packet.ReadBit("Unk Bit");
+            guid[0] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            var hasGroupRate = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 2);
+
+            if (hasGroupRate)
+                packet.ReadSingle("Group rate");
+
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 6);
+
+            if (hasBaseXP)
+                packet.ReadUInt32("Base XP");
+
+            packet.ReadUInt32("Total XP");
+            packet.ReadXORByte(guid, 0);
+            packet.ReadByte("XP type");
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
