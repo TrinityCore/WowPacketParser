@@ -75,6 +75,10 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES, 0x072B | 0x10000},
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x18B2},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x05A0},
+            {Opcode.CMSG_VOID_STORAGE_UNLOCK, 0x13F2},
+            {Opcode.CMSG_VOID_STORAGE_QUERY, 0x01E1},
+            {Opcode.CMSG_VOID_STORAGE_TRANSFER, 0x1F73},
+            {Opcode.CMSG_VOID_SWAP_ITEM, 0x01E2},
             {Opcode.CMSG_WARDEN_DATA, 0x1681},
             
             {Opcode.MSG_MOVE_FALL_LAND, 0x055B},
@@ -249,6 +253,11 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_WARDEN_DATA, 0x14EB},
             {Opcode.SMSG_WEATHER, 0x0F41},
             {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x1D04},
+            {Opcode.SMSG_VOID_ITEM_SWAP_RESPONSE, 0x0E2B},
+            {Opcode.SMSG_VOID_STORAGE_CONTENTS, 0x0C93},
+            {Opcode.SMSG_VOID_STORAGE_FAILED, 0x1569},
+            {Opcode.SMSG_VOID_STORAGE_TRANSFER_CHANGES, 0x05A8},
+            {Opcode.SMSG_VOID_TRANSFER_RESULT, 0x00E3},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x1D01},
         };
     }
