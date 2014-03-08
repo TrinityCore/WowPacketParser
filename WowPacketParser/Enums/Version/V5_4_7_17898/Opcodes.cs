@@ -149,6 +149,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_CHANNEL_NOTIFY, 0x11C5},
             {Opcode.SMSG_CANCEL_AUTO_REPEAT, 0x12B0},
             {Opcode.SMSG_COOLDOWN_EVENT, 0x1C5B},
+            {Opcode.SMSG_CONTACT_LIST, 0x15CF},
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0x1E73},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x00E0},
             {Opcode.SMSG_CRITERIA_UPDATE_ACCOUNT, 0x12F9 | 0x20000},
