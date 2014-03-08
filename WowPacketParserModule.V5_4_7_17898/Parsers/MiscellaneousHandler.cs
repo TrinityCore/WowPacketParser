@@ -79,5 +79,30 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadUInt32("Counter");
             packet.ReadUInt32("Ticks");
         }
+
+        [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
+        public static void HandleWorldServerInfo(Packet packet)
+        {
+            var bit14 = packet.ReadBit();
+            var bit30 = packet.ReadBit();
+            var bit38 = packet.ReadBit();
+            var bit24 = packet.ReadBit();
+
+            if (bit38)
+                packet.ReadInt32("Int34");
+
+            packet.ReadTime("Last Weekly Reset");
+            packet.ReadInt32("Instance Difficulty ID");
+            packet.ReadBoolean("Is On Tournament Realm");
+            
+            if (bit14)
+                packet.ReadInt32("Int10");
+
+            if (bit24)
+                packet.ReadInt32("Int1C");
+
+            if (bit30)
+                packet.ReadInt32("Int2C");
+        }
     }
 }
