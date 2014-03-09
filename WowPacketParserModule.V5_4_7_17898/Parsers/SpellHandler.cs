@@ -74,16 +74,10 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                     }
 
                     for (var j = 0; j < bits48[i]; ++j)
-                    {
                         packet.ReadSingle("FloatEM", i, j);
-                    }
-
-                    
 
                     for (var j = 0; j < effectCount[i]; ++j)
-                    {
                         packet.ReadSingle("Effect Value", i, j);
-                    }
 
                     packet.ReadInt32("Effect Mask", i);
                     aura.AuraFlags = packet.ReadEnum<AuraFlagMoP>("Flags", TypeCode.Byte, i);

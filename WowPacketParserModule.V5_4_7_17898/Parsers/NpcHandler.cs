@@ -479,6 +479,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("New Highest", newHighestGUID);
             packet.WriteGuid("Guid", guid);
         }
+
         [Parser(Opcode.SMSG_THREAT_REMOVE)]
         public static void HandleRemoveThreatlist(Packet packet)
         {
@@ -521,6 +522,17 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Hostile GUID", hostileGUID);
             packet.WriteGuid("GUID", victimGUID);
+        }
+
+        [Parser(Opcode.SMSG_THREAT_CLEAR)]
+        public static void HandleClearThreatlist(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 5, 7, 1, 2, 6, 3, 4, 0);
+            packet.ParseBitStream(guid, 2, 0, 6, 7, 5, 4, 1, 3);
+
+            packet.WriteGuid("Guid", guid);
         }
     }
 }
