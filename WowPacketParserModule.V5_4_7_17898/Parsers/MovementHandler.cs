@@ -799,5 +799,102 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED)]
+        public static void HandleSplineSetRunSpeed(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 2, 7, 3, 5, 4, 1, 6, 0);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadSingle("Speed");
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 5);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_SPEED)]
+        public static void HandleSplineSetFlightSpeed(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 2, 7, 0, 5, 6, 3, 4, 1);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadSingle("Speed");
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 5);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_SWIM_SPEED)]
+        public static void HandleSplineSetSwimSpeed(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 6, 4, 5, 0, 3, 2, 7, 1);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadSingle("Speed");
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 2);
+
+            packet.WriteGuid("Guid", guid);
+
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED)]
+        public static void HandleSplineSetWalkSpeed(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 6, 7, 5, 4, 3, 0, 1, 2);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadSingle("Speed");
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 7);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_BACK_SPEED)]
+        public static void HandleSplineSetRunBackSpeed(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 5, 0, 7, 2, 6, 1, 4, 3);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadSingle("Speed");
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 0);
+
+            packet.WriteGuid("Guid", guid);
+
+        }
     }
 }
