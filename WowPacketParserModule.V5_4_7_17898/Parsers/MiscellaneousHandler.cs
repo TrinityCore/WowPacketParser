@@ -104,5 +104,13 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             if (bit30)
                 packet.ReadInt32("Int2C");
         }
+
+        [Parser(Opcode.CMSG_AREATRIGGER)]
+        public static void HandleClientAreaTrigger(Packet packet)
+        {
+            packet.ReadInt32("Area Trigger Id");
+            packet.ReadBit("Unk bit1");
+            packet.ReadBit("Unk bit2");
+        }
     }
 }

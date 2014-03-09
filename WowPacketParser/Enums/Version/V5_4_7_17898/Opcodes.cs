@@ -14,6 +14,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_ADD_FRIEND, 0x064F},
             {Opcode.CMSG_ADD_IGNORE, 0x126D},
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x1C40},
+            {Opcode.CMSG_AREATRIGGER, 0x155A},
             {Opcode.CMSG_ATTACKSTOP,  0x1777},
             {Opcode.CMSG_ATTACKSWING, 0x1513},
             {Opcode.CMSG_AUTH_SESSION, 0x1A51},
