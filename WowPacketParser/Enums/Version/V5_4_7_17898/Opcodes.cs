@@ -262,6 +262,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SPELLHEALLOG, 0x1BBF},
             {Opcode.SMSG_SPELLLOGEXECUTE, 0x19B4},
             {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x0172 | 0x20000},
+            {Opcode.SMSG_SPLINE_MOVE_ROOT, 0x1EC3},
             {Opcode.SMSG_SUSPEND_COMMS, 0x10B0},
             {Opcode.SMSG_TALENTS_INFO, 0x0C68},
             {Opcode.SMSG_TEXT_EMOTE, 0x0522},
