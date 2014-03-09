@@ -362,5 +362,49 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Caster GUID", casterGUID);
             packet.WriteGuid("Target GUID", targetGUID);
         }
+
+        [Parser(Opcode.SMSG_SPELLINSTAKILLLOG)]
+        public static void HandleSpellInstakillLog(Packet packet)
+        {
+            var targetGUID = new byte[8];
+            var casterGUID = new byte[8];
+
+            casterGUID[1] = packet.ReadBit();
+            targetGUID[0] = packet.ReadBit();
+            targetGUID[2] = packet.ReadBit();
+            casterGUID[7] = packet.ReadBit();
+            casterGUID[2] = packet.ReadBit();
+            targetGUID[3] = packet.ReadBit();
+            targetGUID[1] = packet.ReadBit();
+            casterGUID[3] = packet.ReadBit();
+            casterGUID[6] = packet.ReadBit();
+            casterGUID[4] = packet.ReadBit();
+            targetGUID[5] = packet.ReadBit();
+            casterGUID[0] = packet.ReadBit();
+            casterGUID[5] = packet.ReadBit();
+            targetGUID[7] = packet.ReadBit();
+            targetGUID[6] = packet.ReadBit();
+            targetGUID[4] = packet.ReadBit();
+            packet.ReadXORByte(casterGUID, 2);
+            packet.ReadXORByte(targetGUID, 0);
+            packet.ReadInt32("Int20");
+            packet.ReadXORByte(targetGUID, 1);
+            packet.ReadXORByte(casterGUID, 4);
+            packet.ReadXORByte(targetGUID, 2);
+            packet.ReadXORByte(casterGUID, 6);
+            packet.ReadXORByte(targetGUID, 4);
+            packet.ReadXORByte(casterGUID, 5);
+            packet.ReadXORByte(targetGUID, 7);
+            packet.ReadXORByte(targetGUID, 3);
+            packet.ReadXORByte(casterGUID, 7);
+            packet.ReadXORByte(casterGUID, 0);
+            packet.ReadXORByte(casterGUID, 3);
+            packet.ReadXORByte(targetGUID, 5);
+            packet.ReadXORByte(casterGUID, 1);
+            packet.ReadXORByte(targetGUID, 6);
+
+            packet.WriteGuid("Caster GUID", casterGUID);
+            packet.WriteGuid("Target GUID", targetGUID);
+        }
     }
 }

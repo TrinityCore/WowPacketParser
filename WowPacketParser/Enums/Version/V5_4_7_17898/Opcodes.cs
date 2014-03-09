@@ -270,6 +270,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SET_PROFICIENCY, 0x1E3B},
             {Opcode.SMSG_SPELLENERGIZELOG, 0x0071 | 0x20000},
             {Opcode.SMSG_SPELLINTERRUPTLOG, 0x091A},
+            {Opcode.SMSG_SPELLINSTAKILLLOG, 0x0D7A},
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x053B},
             {Opcode.SMSG_SPELL_COOLDOWN, 0x1B14},
             {Opcode.SMSG_SPELL_FAILED_OTHER, 0x1E7A},
