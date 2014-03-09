@@ -331,5 +331,25 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadWoWString("Guild Info", infoLength);
             packet.ReadWoWString("MOTD", motdLength);
         }
+
+        [Parser(Opcode.CMSG_REQUEST_GUILD_PARTY_STATE)]
+        public static void HandleGuildUpdatePartyState(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 5, 3, 4, 0, 2, 6, 1, 7);
+            packet.ParseBitStream(guid, 5, 4, 3, 1, 7, 0, 2, 6);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE)]
+        public static void HandleGuildPartyStateResponse(Packet packet)
+        {
+            packet.ReadBit("Is guild group");
+            packet.ReadSingle("Guild XP multiplier");
+            packet.ReadUInt32("Needed guild members");
+            packet.ReadUInt32("Current guild members");
+        }
     }
 }

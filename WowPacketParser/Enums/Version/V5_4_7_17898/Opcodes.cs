@@ -72,6 +72,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_SET_SPECIALIZATION, 0x04AA},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x13CB},
             {Opcode.CMSG_REFORGE_ITEM, 0x1632},
+            {Opcode.CMSG_REQUEST_GUILD_PARTY_STATE, 0x14A8},
             {Opcode.CMSG_PAGE_TEXT_QUERY, 0x13B1},
             {Opcode.CMSG_PET_NAME_QUERY, 0x16A3},
             {Opcode.CMSG_PLAYER_LOGIN, 0x17D3},
@@ -188,6 +189,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x1953},
             {Opcode.SMSG_GUILD_RANK, 0x1271},
             {Opcode.SMSG_GUILD_ROSTER, 0x1231 | 0x20000},
+            {Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, 0x1A52},
             {Opcode.SMSG_HIGHEST_THREAT_UPDATE, 0x0761},
             {Opcode.SMSG_HOTFIX_INFO, 0x0C81},
             {Opcode.SMSG_LEARNED_SPELL, 0x0C99},
@@ -291,6 +293,10 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_VOID_STORAGE_TRANSFER_CHANGES, 0x05A8},
             {Opcode.SMSG_VOID_TRANSFER_RESULT, 0x00E3},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x1D01},
+
+            /* Note:
+             0x1231, 0x12FB - CMSG / SMSG - Count opcode
+             */
         };
     }
 }
