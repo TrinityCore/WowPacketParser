@@ -800,6 +800,17 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_SPLINE_MOVE_UNROOT)]
+        public static void HandleSplineMoveUnroot(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 7, 4, 6, 2, 0, 1, 3, 5);
+            packet.ParseBitStream(guid, 4, 2, 6, 0, 5, 3, 7, 1);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED)]
         public static void HandleSplineSetRunSpeed(Packet packet)
         {

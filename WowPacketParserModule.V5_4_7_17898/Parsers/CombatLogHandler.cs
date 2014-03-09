@@ -31,7 +31,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var hasAbsorb = new bool[bits24];
             var hasSpellProto = new bool[bits24];
             var hasOverDamage = new bool[bits24];
-            var bit14 = new bool[bits24];
+            var hasResist = new bool[bits24];
 
             for (var i = 0; i < bits24; ++i)
             {
@@ -39,7 +39,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 hasAbsorb[i] = !packet.ReadBit();
                 hasSpellProto[i] = !packet.ReadBit();
                 hasOverDamage[i] = !packet.ReadBit();
-                bit14[i] = !packet.ReadBit();
+                hasResist[i] = !packet.ReadBit();
             }
 
             targetGUID[7] = packet.ReadBit();
@@ -63,8 +63,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     packet.ReadInt32("Over damage", i);
                 if (hasAbsorb[i])
                     packet.ReadInt32("Absorb", i);
-                if (bit14[i])
-                    packet.ReadInt32("xxxx 2");
+                if (hasResist[i])
+                    packet.ReadInt32("Resist");
             }
 
             packet.ReadXORByte(casterGUID, 4);

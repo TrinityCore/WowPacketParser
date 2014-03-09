@@ -69,6 +69,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x1B5A | 0x10000},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x13CB},
             {Opcode.CMSG_REQUEST_GUILD_PARTY_STATE, 0x14A8},
+            {Opcode.CMSG_REPAIR_ITEM, 0x0577},
             {Opcode.CMSG_PAGE_TEXT_QUERY, 0x13B1},
             {Opcode.CMSG_PET_NAME_QUERY, 0x16A3},
             {Opcode.CMSG_PLAYER_LOGIN, 0x17D3},
@@ -81,6 +82,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_TEXT_EMOTE, 0x037D},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0413},
             {Opcode.CMSG_TRAINER_BUY_SPELL, 0x0274},
+            {Opcode.CMSG_TRAINER_LIST, 0x075E},
             {Opcode.CMSG_TUTORIAL_FLAG, 0x07A4},
             {Opcode.CMSG_UI_TIME_REQUEST, 0x1CA3},
             {Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES, 0x072B | 0x10000},
@@ -181,6 +183,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_INITIAL_SPELLS, 0x1B05},
             {Opcode.SMSG_INIT_CURRENCY, 0x1E3A},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0F03},
+            {Opcode.SMSG_INVENTORY_CHANGE_FAILURE, 0x0F49},
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x0660},
             {Opcode.SMSG_ITEM_UPGRADE_RESULT, 0x0888},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x066A},
@@ -272,6 +275,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SPELLLOGEXECUTE, 0x19B4},
             {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x0172 | 0x20000},
             {Opcode.SMSG_SPLINE_MOVE_ROOT, 0x1EC3},
+            {Opcode.SMSG_SPLINE_MOVE_UNROOT, 0x1698},
             {Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED, 0x1A90},
             {Opcode.SMSG_SPLINE_MOVE_SET_RUN_BACK_SPEED, 0x09B8},
             {Opcode.SMSG_SPLINE_MOVE_SET_SWIM_SPEED, 0x0254},
@@ -300,6 +304,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_VOID_STORAGE_TRANSFER_CHANGES, 0x05A8},
             {Opcode.SMSG_VOID_TRANSFER_RESULT, 0x00E3},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x1D01},
+
             /* Note:
              0x1231, 0x12FB - CMSG / SMSG - Count opcode
              */
