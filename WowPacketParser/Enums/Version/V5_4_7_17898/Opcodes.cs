@@ -278,6 +278,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SPELL_FAILURE, 0x0E03},
             {Opcode.SMSG_SPELL_START, 0x0130},
             {Opcode.SMSG_SPELL_GO, 0x0851},
+            {Opcode.SMSG_SPELLDISPELLOG , 0x0919},
             {Opcode.SMSG_SPELLHEALLOG, 0x1BBF},
             {Opcode.SMSG_SPELLLOGEXECUTE, 0x19B4},
             {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x0172 | 0x20000},

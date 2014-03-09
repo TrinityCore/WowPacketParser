@@ -406,5 +406,78 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Caster GUID", casterGUID);
             packet.WriteGuid("Target GUID", targetGUID);
         }
+
+        [Parser(Opcode.SMSG_SPELLDISPELLOG)]
+        public static void SpellDispelLog(Packet packet)
+        {
+            var casterGUID = new byte[8];
+            var targetGUID = new byte[8];
+
+            targetGUID[1] = packet.ReadBit();
+            casterGUID[5] = packet.ReadBit();
+            targetGUID[5] = packet.ReadBit();
+            casterGUID[4] = packet.ReadBit();
+            targetGUID[6] = packet.ReadBit();
+            casterGUID[2] = packet.ReadBit();
+            casterGUID[6] = packet.ReadBit();
+            targetGUID[4] = packet.ReadBit();
+            casterGUID[0] = packet.ReadBit();
+            targetGUID[2] = packet.ReadBit();
+            var bit39 = packet.ReadBit();
+            casterGUID[1] = packet.ReadBit();
+            var bits1C = (int)packet.ReadBits(22);
+            casterGUID[3] = packet.ReadBit();
+            targetGUID[0] = packet.ReadBit();
+            targetGUID[3] = packet.ReadBit();
+
+            var bit4 = new int[bits1C];
+            var bit14 = new bool[bits1C];
+            var bitC = new bool[bits1C];
+
+            for (var i = 0; i < bits1C; ++i)
+            {
+                bit4[i] = packet.ReadBit();
+                bit14[i] = packet.ReadBit();
+                bitC[i] = packet.ReadBit();
+            }
+
+            targetGUID[7] = packet.ReadBit();
+            casterGUID[7] = packet.ReadBit();
+            var bit38 = packet.ReadBit();
+            packet.ReadXORByte(casterGUID, 6);
+            packet.ReadXORByte(casterGUID, 5);
+            packet.ReadXORByte(targetGUID, 2);
+            packet.ReadXORByte(casterGUID, 4);
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell");
+            packet.ReadXORByte(targetGUID, 4);
+            packet.ReadXORByte(targetGUID, 7);
+            packet.ReadXORByte(targetGUID, 5);
+            packet.ReadXORByte(casterGUID, 7);
+            packet.ReadXORByte(targetGUID, 0);
+            packet.ReadXORByte(targetGUID, 3);
+            packet.ReadXORByte(casterGUID, 3);
+            packet.ReadXORByte(casterGUID, 0);
+            packet.ReadXORByte(casterGUID, 1);
+            packet.ReadXORByte(targetGUID, 6);
+            packet.ReadXORByte(casterGUID, 2);
+
+            for (var i = 0; i < bits1C; ++i)
+            {
+                packet.WriteLine("[{0}] bit4: {1}", i, bit4[i]);
+
+                if (bit14[i])
+                    packet.ReadInt32("Int20", i);
+
+                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell", i);
+
+                if (bitC[i])
+                    packet.ReadInt32("Int20", i);
+            }
+
+            packet.ReadXORByte(targetGUID, 1);
+
+            packet.WriteGuid("Caster GUID", casterGUID);
+            packet.WriteGuid("Target GUID", targetGUID);
+        }
     }
 }
