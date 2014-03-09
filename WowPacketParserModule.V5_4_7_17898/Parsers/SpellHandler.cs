@@ -1483,5 +1483,113 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid1", guid1);
         }
+
+        [Parser(Opcode.MSG_CHANNEL_START)]
+        public static void HandleSpellChannelStart(Packet packet)
+        {
+            var casterGUID = new byte[8];
+            var targetGUID = new byte[8];
+            var unkGUID = new byte[8];
+
+            var bit38 = false;
+            var bit3C = false;
+
+            casterGUID[3] = packet.ReadBit();
+            casterGUID[2] = packet.ReadBit();
+            casterGUID[7] = packet.ReadBit();
+            casterGUID[1] = packet.ReadBit();
+            casterGUID[5] = packet.ReadBit();
+            casterGUID[0] = packet.ReadBit();
+            var bit40 = packet.ReadBit();
+            if (bit40)
+            {
+                targetGUID[3] = packet.ReadBit();
+                targetGUID[7] = packet.ReadBit();
+                packet.ReadBit(); // fake bit
+                unkGUID[3] = packet.ReadBit();
+                unkGUID[7] = packet.ReadBit();
+                unkGUID[5] = packet.ReadBit();
+                unkGUID[1] = packet.ReadBit();
+                unkGUID[0] = packet.ReadBit();
+                unkGUID[4] = packet.ReadBit();
+                unkGUID[2] = packet.ReadBit();
+                unkGUID[6] = packet.ReadBit();
+                targetGUID[6] = packet.ReadBit();
+                bit3C = !packet.ReadBit();
+                targetGUID[4] = packet.ReadBit();
+                targetGUID[1] = packet.ReadBit();
+                bit38 = !packet.ReadBit();
+                targetGUID[2] = packet.ReadBit();
+                targetGUID[0] = packet.ReadBit();
+                targetGUID[5] = packet.ReadBit();
+            }
+
+            casterGUID[4] = packet.ReadBit();
+            casterGUID[6] = packet.ReadBit();
+            var bit1C = packet.ReadBit();
+            if (bit40)
+            {
+                packet.ReadXORByte(targetGUID, 1);
+                packet.ReadXORByte(unkGUID, 7);
+                packet.ReadXORByte(unkGUID, 6);
+                packet.ReadXORByte(unkGUID, 4);
+                packet.ReadXORByte(unkGUID, 3);
+                packet.ReadXORByte(unkGUID, 2);
+                packet.ReadXORByte(unkGUID, 0);
+                packet.ReadXORByte(unkGUID, 1);
+                packet.ReadXORByte(unkGUID, 5);
+                packet.ReadXORByte(targetGUID, 0);
+                packet.ReadXORByte(targetGUID, 3);
+                packet.ReadXORByte(targetGUID, 6);
+                if (bit38)
+                    packet.ReadInt32("Heal Amount");
+                if (bit3C)
+                    packet.ReadByte("Type");
+                packet.ReadXORByte(targetGUID, 5);
+                packet.ReadXORByte(targetGUID, 7);
+                packet.ReadXORByte(targetGUID, 2);
+                packet.ReadXORByte(targetGUID, 4);
+                packet.WriteGuid("Target GUID", targetGUID);
+                packet.WriteGuid("Unk GUID", unkGUID);
+            }
+
+            packet.ReadXORByte(casterGUID, 6);
+            if (bit1C)
+            {
+                packet.ReadInt32("Int18");
+                packet.ReadInt32("Int14");
+            }
+
+            packet.ReadXORByte(casterGUID, 7);
+            packet.ReadXORByte(casterGUID, 0);
+            packet.ReadXORByte(casterGUID, 4);
+            packet.ReadXORByte(casterGUID, 5);
+            packet.ReadXORByte(casterGUID, 3);
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32("Duration");
+            packet.ReadXORByte(casterGUID, 1);
+            packet.ReadXORByte(casterGUID, 2);
+
+            packet.WriteGuid("Caster GUID", casterGUID);
+        }
+
+        [Parser(Opcode.MSG_CHANNEL_UPDATE)]
+        public static void HandleSpellChannelUpdate(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 5, 3, 6, 0, 1, 4, 2, 7);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadInt32("Timestamp");
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 0);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

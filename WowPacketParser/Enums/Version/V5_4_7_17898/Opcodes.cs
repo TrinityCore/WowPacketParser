@@ -88,7 +88,9 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_VOID_STORAGE_TRANSFER, 0x1F73},
             {Opcode.CMSG_VOID_SWAP_ITEM, 0x01E2},
             {Opcode.CMSG_WARDEN_DATA, 0x1681},
-            
+
+            {Opcode.MSG_CHANNEL_START, 0x1B15},
+            {Opcode.MSG_CHANNEL_UPDATE, 0x087B},
             {Opcode.MSG_MOVE_FALL_LAND, 0x055B},
             {Opcode.MSG_MOVE_HEARTBEAT, 0x017B},
             {Opcode.MSG_MOVE_JUMP, 0x0438},
