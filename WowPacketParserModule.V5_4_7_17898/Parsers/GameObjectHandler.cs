@@ -86,5 +86,16 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM)]
+        public static void HandleGODespawnAnim(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 1, 2, 0, 6, 4, 5, 3, 7);
+            packet.ParseBitStream(guid, 0, 5, 1, 7, 2, 3, 4, 6);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
