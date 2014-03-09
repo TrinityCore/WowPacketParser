@@ -234,6 +234,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_REMOVED_SPELL, 0x05E3},
             {Opcode.SMSG_PERIODICAURALOG, 0x051B | 0x20000},
             {Opcode.SMSG_PLAYER_MOVE, 0x1CB2},
+            {Opcode.SMSG_PLAY_SPELL_VISUAL_KIT, 0x0500},
             {Opcode.SMSG_PONG, 0x15B1},
             {Opcode.SMSG_POWER_UPDATE, 0x1441},
             {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 0x0957},
