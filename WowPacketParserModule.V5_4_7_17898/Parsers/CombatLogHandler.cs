@@ -387,7 +387,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             targetGUID[4] = packet.ReadBit();
             packet.ReadXORByte(casterGUID, 2);
             packet.ReadXORByte(targetGUID, 0);
-            packet.ReadInt32("Int20");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id");
             packet.ReadXORByte(targetGUID, 1);
             packet.ReadXORByte(casterGUID, 4);
             packet.ReadXORByte(targetGUID, 2);
