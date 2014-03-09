@@ -131,6 +131,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_ATTACKSTOP,  0x1448},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x14B8},
             {Opcode.SMSG_AUTH_RESPONSE, 0x15A0},
+            {Opcode.SMSG_AURA_POINTS_DEPLETED, 0x0151},
             {Opcode.SMSG_AURA_UPDATE, 0x1B8D},
             {Opcode.SMSG_BATTLEPET_CAGE_DATA_ERROR, 0x14A1},
             {Opcode.SMSG_BATTLE_PET_DELETED, 0x13F1},
