@@ -113,5 +113,48 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.ReadInt32("Count?");
         }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_STATUS)]
+        public static void HandleQuestgiverStatus(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 1, 5, 2, 0, 4, 3, 7, 6);
+            packet.ParseBitStream(guid, 7, 0, 4);
+            packet.ReadEnum<QuestGiverStatus4x>("Status", TypeCode.Int32);
+            packet.ParseBitStream(guid, 2, 1, 6, 3, 5);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE)]
+        public static void HandleQuestgiverStatusMultiple(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 21);
+
+            var guid = new byte[count][];
+
+            for (var i = 0; i < count; ++i)
+            {
+                guid[i] = new byte[8];
+
+                packet.StartBitStream(guid[i], 7, 0, 6, 2, 5, 1, 4, 3);
+            }
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadXORByte(guid[i], 5);
+                packet.ReadEnum<QuestGiverStatus4x>("Status", TypeCode.Int32);
+                packet.ReadXORByte(guid[i], 4);
+                packet.ReadXORByte(guid[i], 2);
+                packet.ReadXORByte(guid[i], 3);
+                packet.ReadXORByte(guid[i], 6);
+                packet.ReadXORByte(guid[i], 1);
+                packet.ReadXORByte(guid[i], 7);
+                packet.ReadXORByte(guid[i], 0);
+
+                packet.WriteGuid("Guid", guid[i], i);
+            }
+        }
     }
 }

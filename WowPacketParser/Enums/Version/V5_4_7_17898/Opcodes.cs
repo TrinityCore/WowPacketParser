@@ -240,6 +240,8 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 0x0957},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x0F5F},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x0F13},
+            {Opcode.SMSG_QUESTGIVER_STATUS, 0x0D7E},
+            {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, 0x0F79},
             {Opcode.SMSG_SEND_SERVER_LOCATION, 0x0C2B},
             {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x1B3E},
             {Opcode.SMSG_SHOW_BANK, 0x060B},
