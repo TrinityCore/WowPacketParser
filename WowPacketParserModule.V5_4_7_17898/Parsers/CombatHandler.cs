@@ -186,5 +186,48 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_PARTYKILLLOG)]
+        public static void HandlePartyKillLog(Packet packet)
+        {
+            var playerGUID = new byte[8];
+            var victimGUID = new byte[8];
+
+            playerGUID[4] = packet.ReadBit();
+            victimGUID[2] = packet.ReadBit();
+            playerGUID[5] = packet.ReadBit();
+            victimGUID[1] = packet.ReadBit();
+            victimGUID[6] = packet.ReadBit();
+            playerGUID[3] = packet.ReadBit();
+            victimGUID[7] = packet.ReadBit();
+            victimGUID[3] = packet.ReadBit();
+            playerGUID[6] = packet.ReadBit();
+            playerGUID[7] = packet.ReadBit();
+            victimGUID[0] = packet.ReadBit();
+            playerGUID[1] = packet.ReadBit();
+            victimGUID[5] = packet.ReadBit();
+            playerGUID[0] = packet.ReadBit();
+            victimGUID[4] = packet.ReadBit();
+            playerGUID[2] = packet.ReadBit();
+            packet.ReadXORByte(victimGUID, 4);
+            packet.ReadXORByte(victimGUID, 3);
+            packet.ReadXORByte(playerGUID, 4);
+            packet.ReadXORByte(playerGUID, 3);
+            packet.ReadXORByte(playerGUID, 6);
+            packet.ReadXORByte(victimGUID, 0);
+            packet.ReadXORByte(playerGUID, 0);
+            packet.ReadXORByte(playerGUID, 5);
+            packet.ReadXORByte(victimGUID, 2);
+            packet.ReadXORByte(playerGUID, 1);
+            packet.ReadXORByte(playerGUID, 7);
+            packet.ReadXORByte(victimGUID, 5);
+            packet.ReadXORByte(victimGUID, 6);
+            packet.ReadXORByte(victimGUID, 7);
+            packet.ReadXORByte(victimGUID, 1);
+            packet.ReadXORByte(playerGUID, 2);
+
+            packet.WriteGuid("Player GUID", playerGUID);
+            packet.WriteGuid("Victim GUID", victimGUID);
+        }
     }
 }
