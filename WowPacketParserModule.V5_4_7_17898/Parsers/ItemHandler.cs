@@ -60,5 +60,89 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Player GUID", playerGuid);
             packet.WriteGuid("Item GUID", itemGuid);
         }
+
+        [Parser(Opcode.CMSG_REFORGE_ITEM)]
+        public static void HandleItemSendReforge(Packet packet)
+        {
+            packet.ReadInt32("Bag");
+            packet.ReadInt32("Reforge Entry");
+            packet.ReadInt32("Slot");
+
+            var guid = packet.StartBitStream(3, 5, 4, 6, 1, 0, 7, 2);
+            packet.ParseBitStream(guid, 2, 0, 6, 4, 3, 5, 1, 7);
+            packet.WriteGuid("Reforger Guid", guid);
+
+        }
+
+        [Parser(Opcode.SMSG_REFORGE_RESULT)]
+        public static void HandleItemReforgeResult(Packet packet)
+        {
+            packet.ReadBit("Successful");
+        }
+
+        [Parser(Opcode.CMSG_ITEM_UPGRADE)]
+        public static void HandleItemSendUpgrade(Packet packet)
+        {
+            var itemGUID = new byte[8];
+            var npcGUID = new byte[8];
+
+            packet.ReadInt32("Bag");
+            packet.ReadInt32("Slot");
+            packet.ReadInt32("Reforge Entry");
+
+            itemGUID[7] = packet.ReadBit();
+            itemGUID[4] = packet.ReadBit();
+            npcGUID[3] = packet.ReadBit();
+            itemGUID[0] = packet.ReadBit();
+            npcGUID[5] = packet.ReadBit();
+            npcGUID[0] = packet.ReadBit();
+            itemGUID[1] = packet.ReadBit();
+            itemGUID[2] = packet.ReadBit();
+            npcGUID[2] = packet.ReadBit();
+            itemGUID[3] = packet.ReadBit();
+            npcGUID[4] = packet.ReadBit();
+            npcGUID[6] = packet.ReadBit();
+            itemGUID[5] = packet.ReadBit();
+            npcGUID[7] = packet.ReadBit();
+            npcGUID[1] = packet.ReadBit();
+            itemGUID[6] = packet.ReadBit();
+
+            packet.ReadXORByte(itemGUID, 6);
+            packet.ReadXORByte(itemGUID, 1);
+            packet.ReadXORByte(npcGUID, 7);
+            packet.ReadXORByte(itemGUID, 5);
+            packet.ReadXORByte(itemGUID, 4);
+            packet.ReadXORByte(npcGUID, 6);
+            packet.ReadXORByte(itemGUID, 0);
+            packet.ReadXORByte(npcGUID, 3);
+            packet.ReadXORByte(itemGUID, 7);
+            packet.ReadXORByte(npcGUID, 2);
+            packet.ReadXORByte(npcGUID, 4);
+            packet.ReadXORByte(npcGUID, 5);
+            packet.ReadXORByte(itemGUID, 3);
+            packet.ReadXORByte(npcGUID, 1);
+            packet.ReadXORByte(npcGUID, 0);
+            packet.ReadXORByte(itemGUID, 2);
+
+            packet.WriteGuid("Item GUID", itemGUID);
+            packet.WriteGuid("NPC GUID", npcGUID);
+        }
+
+        [Parser(Opcode.SMSG_ITEM_UPGRADE_RESULT)]
+        public static void HandleItemUpgradeResult(Packet packet)
+        {
+            packet.ReadBit("Successful");
+        }
+
+        [Parser(Opcode.CMSG_ITEM_REFUND_INFO)]
+        public static void HandleItemRefundInfo(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 0, 4, 6, 3, 2, 1, 7, 5);
+            packet.ParseBitStream(guid, 5, 3, 7, 2, 1, 6, 0, 4);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

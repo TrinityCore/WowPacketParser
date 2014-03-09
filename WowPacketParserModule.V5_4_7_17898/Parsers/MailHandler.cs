@@ -7,7 +7,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {
     public static class MailHandler
     {
-
         [Parser(Opcode.CMSG_SEND_MAIL)]
         public static void HandleSendMail(Packet packet)
         {
@@ -62,7 +61,18 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(guid, 7);
             packet.ReadWoWString("Subject", len1);
 
-            packet.WriteGuid("Guid2", guid);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_GET_MAIL_LIST)]
+        public static void HandleShowMailbox(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 5, 3, 6, 0, 1, 4, 7, 2);
+            packet.ParseBitStream(guid, 4, 7, 3, 5, 6, 0, 1, 2);
+
+            packet.WriteGuid("GUID", guid);
         }
     }
 }

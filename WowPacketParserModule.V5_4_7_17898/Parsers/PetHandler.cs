@@ -71,13 +71,14 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 return;
             }
 
-            var len = packet.ReadBits(8);
             packet.ReadBit("Declined");
 
             const int maxDeclinedNameCases = 5;
             var declinedNameLen = new int[maxDeclinedNameCases];
             for (var i = 0; i < maxDeclinedNameCases; ++i)
                 declinedNameLen[i] = (int)packet.ReadBits(7);
+
+            var len = packet.ReadBits(8);
 
             for (var i = 0; i < maxDeclinedNameCases; ++i)
                 if (declinedNameLen[i] != 0)

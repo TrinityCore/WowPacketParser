@@ -778,5 +778,26 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.CMSG_SET_ACTIVE_MOVER)]
+        public static void HandleSetActiveMover(Packet packet)
+        {
+            packet.ReadBit("unk");
+
+            var guid = packet.StartBitStream(1, 3, 2, 6, 7, 5, 4, 0);
+            packet.ParseBitStream(guid, 5, 1, 7, 2, 6, 3, 4, 0);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_ROOT)]
+        public static void HandleSplineMoveRoot(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 4, 3, 5, 6, 2, 1, 0, 7);
+            packet.ParseBitStream(guid, 2, 0, 3, 7, 4, 1, 5, 6);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
