@@ -264,6 +264,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SUSPEND_COMMS, 0x10B0},
             {Opcode.SMSG_TALENTS_INFO, 0x0C68},
             {Opcode.SMSG_TEXT_EMOTE, 0x0522},
+            {Opcode.SMSG_THREAT_REMOVE, 0x1E29},
             {Opcode.SMSG_THREAT_UPDATE, 0x1708},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x12F1},
             {Opcode.SMSG_TOTEM_CREATED, 0x0608},
