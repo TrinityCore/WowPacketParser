@@ -58,6 +58,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_QUEST_NPC_QUERY, 0x16B8},
             {Opcode.CMSG_QUEST_POI_QUERY, 0x1DA8},
             {Opcode.CMSG_QUEST_QUERY, 0x1F52},
+            {Opcode.CMSG_QUESTGIVER_STATUS_QUERY, 0x05FD},
             {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY, 0x1389},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x1DB9},
             {Opcode.CMSG_REALM_NAME_QUERY, 0x1899},

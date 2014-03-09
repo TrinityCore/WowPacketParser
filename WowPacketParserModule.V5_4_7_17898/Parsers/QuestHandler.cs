@@ -114,6 +114,14 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadInt32("Count?");
         }
 
+        [Parser(Opcode.CMSG_QUESTGIVER_STATUS_QUERY)]
+        public static void HandleQuestgiverStatusQuery(Packet packet)
+        {
+            var guid = packet.StartBitStream(2, 7, 3, 1, 6, 0, 4, 5);
+            packet.ParseBitStream(guid, 2, 3, 6, 5, 4, 1, 0, 7);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_QUESTGIVER_STATUS)]
         public static void HandleQuestgiverStatus(Packet packet)
         {
