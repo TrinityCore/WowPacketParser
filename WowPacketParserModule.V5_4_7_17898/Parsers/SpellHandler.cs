@@ -1626,5 +1626,16 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.CMSG_CANCEL_CAST)]
+        public static void HandlePlayerCancelCast(Packet packet)
+        {
+            var hasCount = !packet.ReadBit();
+            var hasSpellId = !packet.ReadBit();
+            if (hasCount)
+                packet.ReadByte("Count");
+            if (hasSpellId)
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id");
+        }
     }
 }

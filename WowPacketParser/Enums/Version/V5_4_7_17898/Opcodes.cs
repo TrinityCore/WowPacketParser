@@ -19,6 +19,8 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_ATTACKSWING, 0x1513},
             {Opcode.CMSG_AUTH_SESSION, 0x1A51},
             {Opcode.CMSG_AUTOEQUIP_ITEM, 0x166B},
+            {Opcode.CMSG_CANCEL_AURA, 0x16E1},
+            {Opcode.CMSG_CANCEL_CAST, 0x12EB | 0x10000},
             {Opcode.CMSG_CANCEL_TRADE, 0x1D32},
             {Opcode.CMSG_CAST_SPELL, 0x1E5B | 0x10000},
             {Opcode.CMSG_CHANNEL_LIST, 0x1D20},
