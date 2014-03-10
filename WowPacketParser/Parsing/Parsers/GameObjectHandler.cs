@@ -8,14 +8,14 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class GameObjectHandler
     {
-        [Parser(Opcode.CMSG_GAMEOBJECT_QUERY)]
+        [Parser(Opcode.CMSG_GAMEOBJECT_QUERY, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleGameObjectQuery(Packet packet)
         {
             QueryHandler.ReadQueryHeader(ref packet);
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleGameObjectQueryResponse(Packet packet)
         {
             var gameObject = new GameObjectTemplate();

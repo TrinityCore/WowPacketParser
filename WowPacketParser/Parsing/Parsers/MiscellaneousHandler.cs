@@ -11,7 +11,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LOG_DISCONNECT)]
         public static void HandleLogDisconnect(Packet packet)
         {
-            packet.ReadUInt32("Unk");
+            packet.ReadUInt32("Disconnect Reason");
             // 4 is inability for client to decrypt RSA
             // 3 is not receiving "WORLD OF WARCRAFT CONNECTION - SERVER TO CLIENT"
             // 11 is sent on receiving opcode 0x140 with some specific data
@@ -168,11 +168,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
-        [Parser(Opcode.CMSG_SET_SELECTION, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.CMSG_SET_SELECTION, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleSetSelection510(Packet packet)
         {
             var guid = packet.StartBitStream(0, 1, 2, 4, 7, 3, 6, 5);
             packet.ParseBitStream(guid, 4, 1, 5, 2, 6, 7, 0, 3);
+
             packet.WriteGuid("Guid", guid);
         }
 
@@ -362,20 +363,20 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Split Date");
         }
 
-        [Parser(Opcode.CMSG_PING)]
+        [Parser(Opcode.CMSG_PING, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleClientPing(Packet packet)
         {
             packet.ReadInt32("Ping");
             packet.ReadInt32("Ping Count");
         }
 
-        [Parser(Opcode.SMSG_PONG)]
+        [Parser(Opcode.SMSG_PONG, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleServerPong(Packet packet)
         {
             packet.ReadInt32("Ping");
         }
 
-        [Parser(Opcode.SMSG_CLIENTCACHE_VERSION)]
+        [Parser(Opcode.SMSG_CLIENTCACHE_VERSION, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleClientCacheVersion(Packet packet)
         {
             packet.ReadInt32("Version");
@@ -598,7 +599,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_TIME_SYNC_RESP)]
+        [Parser(Opcode.CMSG_TIME_SYNC_RESP, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleTimeSyncResp(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // no idea when this was added exactly
@@ -733,7 +734,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleClientEnterWorld434(Packet packet)
         {
             var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
@@ -1085,37 +1086,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var length = packet.ReadUInt32("Length");
             packet.ReadWoWString("Text", length);
-        }
-
-        [Parser(Opcode.SMSG_SERVER_TIMEZONE, ClientVersionBuild.V5_4_7_17930)]
-        public static void HandleServerTimezone547(Packet packet)
-        {
-            var Location2Lenght = packet.ReadBits(7);
-            var Location1Lenght = packet.ReadBits(7);
-
-            packet.ReadWoWString("Timezone Location1", Location1Lenght);
-            packet.ReadWoWString("Timezone Location2", Location2Lenght);
-        }
-
-        [Parser(Opcode.SMSG_COMPRESSED_PACKET, ClientVersionBuild.V5_4_7_17930)]
-        public static void HandleCompressedPacket547(Packet packet)
-        {
-            var DecompressedSize = packet.ReadInt32();
-            var DecompressedSum = packet.ReadUInt32();
-            var CompressedSum = packet.ReadUInt32();
-
-            //before the decompression happens, the client makes a check using this algorithm http://pastebin.com/Cck9GTb9 with identifier 0x9827D8F1
-            //if the check is sucessful, then it decompressed the packet, and then it check the decompressed data with the same algo and identifier
-            //if everything went fine, it passes the packet to NetClient::ReceivePacket
-
-            using (var pkt = packet.Inflate(DecompressedSize))
-            {
-                var opc = pkt.ReadInt32();
-                var data = pkt.ReadBytes(DecompressedSize - 4);
-
-                using (var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer, packet.FileName))
-                    Handler.Parse(newPacket, true);
-            }
         }
 
         [Parser(Opcode.SMSG_MINIGAME_STATE)]

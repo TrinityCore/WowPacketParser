@@ -300,21 +300,20 @@
     <Compile Include="Enums\UpdateFlag.cs" />
     <Compile Include="Enums\UpdateType.cs" />
     <Compile Include="Enums\VehicleFlags.cs" />
-    <Compile Include="Enums\Version\V5_0_5_16048\Opcodes.cs" />
-    <Compile Include="Enums\Version\V5_0_5_16048\UpdateFields.cs" />
     <Compile Include="Enums\Version\Opcodes.cs" />
-    <Compile Include="Enums\Version\UpdateFields.cs" />
+    <Compile Include="Enums\Version\UpdateFields.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Enums\Version\V3_3_0_10958\UpdateFields.cs" />
     <Compile Include="Enums\Version\V3_3_5a_12340\Opcodes.cs" />
     <Compile Include="Enums\Version\V3_3_5a_12340\UpdateFields.cs" />
     <Compile Include="Enums\Version\V4_0_3_13329\Opcodes.cs" />
-    <Compile Include="Enums\Version\V4_0_6_13596\Opcodes.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Enums\Version\V4_0_6_13596\Opcodes.cs" />
     <Compile Include="Enums\Version\V4_0_6_13596\UpdateFields.cs" />
     <Compile Include="Enums\Version\V4_1_0_13914\Opcodes.cs" />
-    <Compile Include="Enums\Version\V4_2_0_14480\Opcodes.cs" />
-    <Compile Include="Enums\Version\V4_2_0_14480\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V4_1_0_13914\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V4_2_0_14333\Opcodes.cs" />
+    <Compile Include="Enums\Version\V4_2_0_14333\UpdateFields.cs" />
     <Compile Include="Enums\Version\V4_2_2_14545\Opcodes.cs" />
     <Compile Include="Enums\Version\V4_2_2_14545\UpdateFields.cs" />
     <Compile Include="Enums\Version\V4_3_0_15005\Opcodes.cs" />
@@ -327,14 +326,16 @@
     <Compile Include="Enums\Version\V4_3_4_15595\SplineFlag434.cs" />
     <Compile Include="Enums\Version\V5_0_4_16016\Opcodes.cs" />
     <Compile Include="Enums\Version\V5_0_4_16016\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V5_0_5_16048\Opcodes.cs" />
+    <Compile Include="Enums\Version\V5_0_5_16048\UpdateFields.cs" />
     <Compile Include="Enums\Version\V5_1_0_16309\Opcodes.cs" />
     <Compile Include="Enums\Version\V5_1_0_16309\UpdateFields.cs" />
     <Compile Include="Enums\Version\V5_2_0_16650\Opcodes.cs" />
     <Compile Include="Enums\Version\V5_2_0_16650\UpdateFields.cs" />
     <Compile Include="Enums\Version\V5_3_0_16981\Opcodes.cs" />
     <Compile Include="Enums\Version\V5_3_0_16981\UpdateFields.cs" />
-    <Compile Include="Enums\Version\V5_4_7_17930\Opcodes.cs" />
-    <Compile Include="Enums\Version\V5_4_7_17930\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V5_4_7_17956\Opcodes.cs" />
+    <Compile Include="Enums\Version\V5_4_7_17956\UpdateFields.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\VoidTransferError.cs" />
     <Compile Include="Enums\WardenCheckType.cs" />
@@ -371,7 +372,7 @@
     <Compile Include="Parsing\Parsers\AchievementHandler.cs" />
     <Compile Include="Parsing\Parsers\ActionBarHandler.cs" />
     <Compile Include="Parsing\Parsers\AddonHandler.cs" />
-    <Compile Include="Parsing\Parsers\ArchaelogyHandler.cs" />
+    <Compile Include="Parsing\Parsers\ArchaeologyHandler.cs" />
     <Compile Include="Parsing\Parsers\AuctionHouseHandler.cs" />
     <Compile Include="Parsing\Parsers\BattlegroundHandler.cs" />
     <Compile Include="Parsing\Parsers\CalendarHandler.cs" />
