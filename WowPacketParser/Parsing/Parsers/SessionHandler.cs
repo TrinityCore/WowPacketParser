@@ -679,6 +679,16 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt64("Int 64");
         }
 
+        [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_4_7_17930)]
+        public static void HandleRedirectClient547(Packet packet)
+        {
+            packet.ReadUInt64("Unk, send it CMSG_AUTH_SESSION, may be bytes sent and bytes received");
+            byte[] RSABuffer = new byte[256];
+            RSABuffer = packet.ReadBytes(256);
+            packet.ReadByte("Future connection offset in WowConnections array");
+            packet.ReadUInt32("Server Token");
+        }
+
         [Parser(Opcode.CMSG_REDIRECTION_FAILED)]
         public static void HandleRedirectFailed(Packet packet)
         {

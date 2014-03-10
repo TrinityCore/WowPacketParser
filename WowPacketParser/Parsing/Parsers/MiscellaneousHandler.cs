@@ -1097,6 +1097,27 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("Timezone Location2", Location2Lenght);
         }
 
+        [Parser(Opcode.SMSG_COMPRESSED_PACKET, ClientVersionBuild.V5_4_7_17930)]
+        public static void HandleCompressedPacket547(Packet packet)
+        {
+            var DecompressedSize = packet.ReadInt32();
+            var DecompressedSum = packet.ReadUInt32();
+            var CompressedSum = packet.ReadUInt32();
+
+            //before the decompression happens, the client makes a check using this algorithm http://pastebin.com/Cck9GTb9 with identifier 0x9827D8F1
+            //if the check is sucessful, then it decompressed the packet, and then it check the decompressed data with the same algo and identifier
+            //if everything went fine, it passes the packet to NetClient::ReceivePacket
+
+            using (var pkt = packet.Inflate(DecompressedSize))
+            {
+                var opc = pkt.ReadInt32();
+                var data = pkt.ReadBytes(DecompressedSize - 4);
+
+                using (var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer, packet.FileName))
+                    Handler.Parse(newPacket, true);
+            }
+        }
+
         [Parser(Opcode.SMSG_MINIGAME_STATE)]
         [Parser(Opcode.CMSG_KEEP_ALIVE)]
         [Parser(Opcode.CMSG_TUTORIAL_RESET)]
