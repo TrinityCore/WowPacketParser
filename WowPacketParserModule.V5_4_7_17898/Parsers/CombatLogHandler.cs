@@ -256,10 +256,13 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var bit64 = packet.ReadBit();
             targetGUID[7] = packet.ReadBit();
             casterGUID[4] = packet.ReadBit();
+
             packet.ReadXORByte(casterGUID, 5);
             packet.ReadXORByte(targetGUID, 7);
+
             if (bit14)
                 packet.ReadSingle("Float10");
+
             if (hasPowerData)
             {
                 packet.ReadInt32("Int34");
@@ -280,7 +283,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(targetGUID, 2);
             packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
             packet.ReadXORByte(targetGUID, 6);
-            packet.ReadInt32("Int68");
+            packet.ReadInt32("Absorb");
             packet.ReadInt32("Overheal");
             packet.ReadXORByte(casterGUID, 6);
             packet.ReadXORByte(targetGUID, 0);
