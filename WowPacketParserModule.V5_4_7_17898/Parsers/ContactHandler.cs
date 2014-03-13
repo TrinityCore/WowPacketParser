@@ -17,8 +17,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             for (var i = 0; i < count; i++)
             {
                 packet.ReadGuid("GUID");
-                packet.ReadInt32("Unk int1");
-                packet.ReadInt32("Unk int2");
+                packet.ReadInt32("Realm Id");
+                packet.ReadInt32("Realm Id");
                 var flag = packet.ReadEnum<ContactEntryFlag>("Flags", TypeCode.Int32);
                 packet.ReadCString("Note");
 
