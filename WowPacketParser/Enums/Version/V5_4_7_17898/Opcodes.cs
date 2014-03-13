@@ -204,6 +204,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_ITEM_UPGRADE_RESULT, 0x0888},
             {Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM, 0x0609},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x066A},
+            {Opcode.SMSG_GMTICKET_GETTICKET, 0x054B},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x0E52},
             {Opcode.SMSG_GOSSIP_POI, 0x058F},
             {Opcode.SMSG_GROUP_DECLINE, 0x108F},
