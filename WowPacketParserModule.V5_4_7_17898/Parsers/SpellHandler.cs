@@ -1631,5 +1631,18 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             if (hasSpellId)
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id");
         }
+
+        [Parser(Opcode.CMSG_CANCEL_AURA)]
+        public static void HandleCanelAura(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadBit(); // fake bit?
+            packet.StartBitStream(guid, 1, 5, 2, 0, 3, 4, 6, 7);
+            packet.ParseBitStream(guid, 0, 1, 4, 5, 3, 6, 7, 2);
+
+            packet.WriteGuid("GUID", guid);
+        }
     }
 }

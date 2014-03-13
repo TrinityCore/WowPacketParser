@@ -29,6 +29,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_CHAR_DELETE, 0x113B},
             {Opcode.CMSG_CHAR_ENUM, 0x12C2},
             {Opcode.CMSG_CONNECT_TO_FAILED, 0x16C8},
+            {Opcode.CMSG_CORPSE_QUERY, 0x129B},
             {Opcode.CMSG_CREATURE_QUERY, 0x1E72},
             {Opcode.CMSG_DB_QUERY_BULK, 0x16C2},
             {Opcode.CMSG_DEL_IGNORE, 0x0385},
@@ -73,18 +74,21 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_QUERY_TIME, 0x03FD},
             {Opcode.CMSG_QUEST_NPC_QUERY, 0x16B8},
             {Opcode.CMSG_QUEST_POI_QUERY, 0x1DA8},
-            {Opcode.CMSG_QUEST_QUERY, 0x1F52},
+            {Opcode.CMSG_QUEST_QUERY, 0x1F52 | 0x10000},
             {Opcode.CMSG_QUESTGIVER_STATUS_QUERY, 0x05FD},
             {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY, 0x1389},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x1DB9},
             {Opcode.CMSG_REALM_NAME_QUERY, 0x1899},
             {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x1A5B},
             {Opcode.CMSG_REFORGE_ITEM, 0x1632},
+            {Opcode.CMSG_RECLAIM_CORPSE, 0x065C},
             {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x1333},
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x1B5A | 0x10000},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x13CB},
             {Opcode.CMSG_REQUEST_GUILD_PARTY_STATE, 0x14A8},
             {Opcode.CMSG_REPAIR_ITEM, 0x0577},
+            {Opcode.CMSG_REPOP_REQUEST, 0x04FC},
+            {Opcode.CMSG_RETURN_TO_GRAVEYARD, 0x0257},
             {Opcode.CMSG_PAGE_TEXT_QUERY, 0x13B1},
             {Opcode.CMSG_PET_NAME_QUERY, 0x16A3},
             {Opcode.CMSG_PLAYER_LOGIN, 0x17D3},
@@ -137,7 +141,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.MSG_MOVE_STOP_STRAFE, 0x0171}, // 5.4.7 17956
             {Opcode.MSG_MOVE_STOP_SWIM, 0x0578}, // 5.4.7 17956
             {Opcode.MSG_MOVE_STOP_TURN, 0x0530}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_TELEPORT, 0x00D5}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_TELEPORT, 0x00D5 | 0x10000}, // 5.4.7 17956
             {Opcode.MSG_MOVE_TELEPORT_ACK, 0x0978}, // 5.4.7 17956
             {Opcode.MSG_MOVE_WORLDPORT_ACK, 0x18BB},
 
@@ -182,11 +186,15 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_CANCEL_AUTO_REPEAT, 0x12B0},
             {Opcode.SMSG_COOLDOWN_EVENT, 0x1C5B},
             {Opcode.SMSG_CONTACT_LIST, 0x15CF},
+            {Opcode.SMSG_CORPSE_MAP_POSITION_QUERY_RESPONSE, 0x1C73},
+            {Opcode.SMSG_CORPSE_NOT_IN_INSTANCE, 0x1C3B},
+            {Opcode.SMSG_CORPSE_QUERY_RESPONSE, 0x1F32},
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0x1E73},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x00E0},
             {Opcode.SMSG_CRITERIA_UPDATE_ACCOUNT, 0x12F9 | 0x20000},
             {Opcode.SMSG_CRITERIA_UPDATE_PLAYER, 0x13B2},
             {Opcode.SMSG_DB_REPLY, 0x1F01},
+            {Opcode.SMSG_DEATH_RELEASE_LOC, 0x1672},
             {Opcode.SMSG_DESTROY_OBJECT, 0x1D69},
             {Opcode.SMSG_EMOTE, 0x022F},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x1520},
