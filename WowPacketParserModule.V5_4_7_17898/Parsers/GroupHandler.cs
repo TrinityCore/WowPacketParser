@@ -260,6 +260,13 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid24", guid24);
         }
+
+        [Parser(Opcode.SMSG_GROUP_DECLINE)]
+        public static void HandleGroupDecline(Packet packet)
+        {
+            packet.ReadCString();
+        }
+
         [Parser(Opcode.SMSG_GROUP_INVITE)]
         public static void HandleSmsgGroupInvite(Packet packet)
         {
@@ -304,6 +311,159 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
 
             packet.WriteGuid("Guid2F", guid2F);
+        }
+
+        [Parser(Opcode.SMSG_GROUP_LIST)]
+        public static void HandleGroupList(Packet packet)
+        {
+            var groupGUID = new byte[8];
+            var looterGUID = new byte[8];
+            var leaderGUID = new byte[8];
+
+            var bit7C = false;
+            var bit87 = false;
+
+            var memberCounter = 0;
+            
+            packet.ReadInt32("groupPosition");
+            packet.ReadByte("groupType");
+            packet.ReadByte("groupSlot");
+            packet.ReadByte("groupRole");
+            packet.ReadInt32("groupCounter");
+
+            var hasInstanceDifficulty = packet.ReadBit();
+            groupGUID[5] = packet.ReadBit(); //40-47
+            memberCounter = (int)packet.ReadBits(21);
+
+            groupGUID[7] = packet.ReadBit();
+            leaderGUID[1] = packet.ReadBit();
+
+            var memberName = new uint[memberCounter];
+            var memberGUID = new byte[memberCounter][];
+            for (var i = 0; i < memberCounter; ++i)
+            {
+                memberGUID[i] = new byte[8];
+
+                memberGUID[i][1] = packet.ReadBit(); 
+                memberGUID[i][2] = packet.ReadBit();
+                memberGUID[i][4] = packet.ReadBit();
+                memberGUID[i][6] = packet.ReadBit();
+                memberGUID[i][0] = packet.ReadBit();
+                memberGUID[i][3] = packet.ReadBit();
+                memberName[i] = packet.ReadBits(6);
+                memberGUID[i][5] = packet.ReadBit();
+                memberGUID[i][7] = packet.ReadBit();
+            }
+
+            var bit88 = packet.ReadBit();
+            leaderGUID[5] = packet.ReadBit();
+            groupGUID[0] = packet.ReadBit();
+            groupGUID[4] = packet.ReadBit();
+            leaderGUID[2] = packet.ReadBit();
+            groupGUID[3] = packet.ReadBit();
+            leaderGUID[0] = packet.ReadBit();
+            leaderGUID[4] = packet.ReadBit();
+            groupGUID[1] = packet.ReadBit();
+            groupGUID[2] = packet.ReadBit();
+            groupGUID[6] = packet.ReadBit();
+            leaderGUID[3] = packet.ReadBit();
+            leaderGUID[6] = packet.ReadBit();
+            leaderGUID[7] = packet.ReadBit();
+
+            if (bit88)
+            {
+                bit87 = packet.ReadBit();
+                bit7C = packet.ReadBit();
+            }
+
+            var hasLootMode = packet.ReadBit();
+
+            if (hasLootMode)
+            {
+                looterGUID[3] = packet.ReadBit();
+                looterGUID[7] = packet.ReadBit();
+                looterGUID[4] = packet.ReadBit();
+                looterGUID[5] = packet.ReadBit();
+                looterGUID[6] = packet.ReadBit();
+                looterGUID[0] = packet.ReadBit();
+                looterGUID[1] = packet.ReadBit();
+                looterGUID[2] = packet.ReadBit();
+            }
+
+            packet.ResetBitReader();
+
+            if (hasLootMode)
+            {
+                packet.ReadXORByte(looterGUID, 3);
+                packet.ReadXORByte(looterGUID, 5);
+                packet.ReadByte("lootMethod");
+                packet.ReadXORByte(looterGUID, 0);
+                packet.ReadXORByte(looterGUID, 1);
+                packet.ReadXORByte(looterGUID, 2);
+                packet.ReadXORByte(looterGUID, 4);
+                packet.ReadXORByte(looterGUID, 6);
+                packet.ReadByte("lootThreshold");
+                packet.ReadXORByte(looterGUID, 7);
+                packet.WriteGuid("looterGUID", looterGUID);
+            }
+
+            packet.ReadXORByte(leaderGUID, 1);
+
+            if (bit88)
+            {
+                packet.ReadByte("Byte85");
+                packet.ReadByte("Byte7D");
+                packet.ReadByte("Byte70");
+                packet.ReadInt32("Int74");
+                packet.ReadByte("Byte86");
+                packet.ReadInt32("Int78");
+                packet.ReadSingle("Float80");
+                packet.ReadByte("Byte84");
+            }
+
+            packet.ReadXORByte(groupGUID, 3);
+            for (var i = 0; i < memberCounter; ++i)
+            {
+                packet.ReadXORByte(memberGUID[i], 6);
+                packet.ReadXORByte(memberGUID[i], 3);
+                packet.ReadByte("Flags");
+                packet.ReadXORByte(memberGUID[i], 2);
+                packet.ReadXORByte(memberGUID[i], 1);
+                packet.ReadByte("onlineState");
+                packet.ReadXORByte(memberGUID[i], 4);
+                packet.ReadXORByte(memberGUID[i], 5);
+                packet.ReadByte("LFGrole");
+                packet.ReadWoWString("MemberName", memberName[i], i);
+                packet.ReadByte("groupID");
+                packet.ReadXORByte(memberGUID[i], 7);
+                packet.ReadXORByte(memberGUID[i], 0);
+                packet.WriteGuid("memberGUID", memberGUID[i], i);
+            }
+
+            if (hasInstanceDifficulty)
+            {
+                packet.ReadInt32("raidDifficulty");
+                packet.ReadInt32("dungeonDifficulty");
+            }
+
+            packet.ReadXORByte(leaderGUID, 5);
+            packet.ReadXORByte(groupGUID, 2);
+            packet.ReadXORByte(leaderGUID, 0);
+            packet.ReadXORByte(groupGUID, 6);
+            packet.ReadXORByte(groupGUID, 5);
+            packet.ReadXORByte(groupGUID, 4);
+            packet.ReadXORByte(leaderGUID, 2);
+            packet.ReadXORByte(leaderGUID, 3);
+            packet.ReadXORByte(leaderGUID, 6);
+            packet.ReadXORByte(groupGUID, 0);
+            packet.ReadXORByte(leaderGUID, 7);
+            packet.ReadXORByte(groupGUID, 7);
+            packet.ReadXORByte(leaderGUID, 4);
+            packet.ReadXORByte(groupGUID, 1);
+
+            packet.WriteGuid("groupGUID", groupGUID);
+            packet.WriteGuid("leaderGUID", leaderGUID);
+
         }
 
         [Parser(Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS)]
