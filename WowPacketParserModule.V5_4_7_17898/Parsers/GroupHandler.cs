@@ -231,7 +231,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.CMSG_GROUP_INVITE)]
         public static void HandleGroupInvite(Packet packet)
         {
-            var guid24 = new byte[8];
+            var crossRealmGuid = new byte[8];
 
             var bits10 = 0;
             var bits12C = 0;
@@ -239,26 +239,26 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadInt32("Int114");
             packet.ReadInt32("Int128");
             packet.ReadByte("Byte118");
-            guid24[5] = packet.ReadBit();
+            crossRealmGuid[5] = packet.ReadBit();
             bits12C = (int)packet.ReadBits(8);
-            guid24[2] = packet.ReadBit();
-            guid24[1] = packet.ReadBit();
-            guid24[7] = packet.ReadBit();
-            guid24[4] = packet.ReadBit();
-            guid24[3] = packet.ReadBit();
+            crossRealmGuid[2] = packet.ReadBit();
+            crossRealmGuid[1] = packet.ReadBit();
+            crossRealmGuid[7] = packet.ReadBit();
+            crossRealmGuid[4] = packet.ReadBit();
+            crossRealmGuid[3] = packet.ReadBit();
             bits10 = (int)packet.ReadBits(8);
-            guid24[0] = packet.ReadBit();
-            guid24[6] = packet.ReadBit();
-            packet.ReadXORByte(guid24, 0);
-            packet.ReadXORByte(guid24, 4);
-            packet.ReadXORByte(guid24, 5);
-            packet.ReadXORByte(guid24, 6);
-            packet.ReadXORByte(guid24, 1);
-            packet.ReadXORByte(guid24, 7);
-            packet.ReadXORByte(guid24, 3);
-            packet.ReadXORByte(guid24, 2);
+            crossRealmGuid[0] = packet.ReadBit();
+            crossRealmGuid[6] = packet.ReadBit();
+            packet.ReadXORByte(crossRealmGuid, 0);
+            packet.ReadXORByte(crossRealmGuid, 4);
+            packet.ReadXORByte(crossRealmGuid, 5);
+            packet.ReadXORByte(crossRealmGuid, 6);
+            packet.ReadXORByte(crossRealmGuid, 1);
+            packet.ReadXORByte(crossRealmGuid, 7);
+            packet.ReadXORByte(crossRealmGuid, 3);
+            packet.ReadXORByte(crossRealmGuid, 2);
 
-            packet.WriteGuid("Guid24", guid24);
+            packet.WriteGuid("crossRealmGuid", crossRealmGuid);
         }
 
         [Parser(Opcode.SMSG_GROUP_DECLINE)]
@@ -270,47 +270,51 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_GROUP_INVITE)]
         public static void HandleSmsgGroupInvite(Packet packet)
         {
-            var guid2F = new byte[8];
+            var invitedGuid = new byte[8];
 
-            var bits0 = 0;
-            var bits41 = 0;
+            var inviterName = 0;
+            var realmLen = 0;
             var bits164 = 0;
 
             var bit160 = packet.ReadBit();
             var bit150 = packet.ReadBit();
-            guid2F[2] = packet.ReadBit();
+            invitedGuid[2] = packet.ReadBit();
             var bit148 = packet.ReadBit();
-            guid2F[4] = packet.ReadBit();
-            guid2F[0] = packet.ReadBit();
-            guid2F[7] = packet.ReadBit();
-            guid2F[5] = packet.ReadBit();
-            bits41 = (int)packet.ReadBits(9);
-            guid2F[3] = packet.ReadBit();
-            guid2F[1] = packet.ReadBit();
+            invitedGuid[4] = packet.ReadBit();
+            invitedGuid[0] = packet.ReadBit();
+            invitedGuid[7] = packet.ReadBit();
+            invitedGuid[5] = packet.ReadBit();
+            realmLen = (int)packet.ReadBits(9);
+            invitedGuid[3] = packet.ReadBit();
+            invitedGuid[1] = packet.ReadBit();
             var bit149 = packet.ReadBit();
             bits164 = (int)packet.ReadBits(22);
-            bits0 = (int)packet.ReadBits(6);
-            guid2F[6] = packet.ReadBit();
+            inviterName = (int)packet.ReadBits(6);
+            invitedGuid[6] = packet.ReadBit();
+
+            packet.ResetBitReader();
+
             packet.ReadInt32("Int144");
-            packet.ReadXORByte(guid2F, 5);
-            packet.ReadXORByte(guid2F, 3);
-            packet.ReadXORByte(guid2F, 1);
-            packet.ReadWoWString("String41", bits41);
-            packet.ReadXORByte(guid2F, 2);
+            packet.ReadXORByte(invitedGuid, 5);
+            packet.ReadXORByte(invitedGuid, 3);
+            packet.ReadXORByte(invitedGuid, 1);
+            packet.ReadWoWString("realmName", realmLen);
+            packet.ReadXORByte(invitedGuid, 2);
             packet.ReadInt64("Int158");
             packet.ReadInt32("Int14C");
-            packet.ReadXORByte(guid2F, 7);
+            packet.ReadXORByte(invitedGuid, 7);
             packet.ReadInt32("Int180");
-            packet.ReadXORByte(guid2F, 0);
-            packet.ReadXORByte(guid2F, 4);
-            packet.ReadWoWString("String10", bits0);
-            packet.ReadXORByte(guid2F, 6);
+            packet.ReadXORByte(invitedGuid, 0);
+            packet.ReadXORByte(invitedGuid, 4);
+            packet.ReadWoWString("inviterName", inviterName);
+            packet.ReadXORByte(invitedGuid, 6);
+
             for (var i = 0; i < bits164; ++i)
             {
-                packet.ReadInt32("IntEA");
+                packet.ReadInt32("IntEA", i);
             }
 
-            packet.WriteGuid("Guid2F", guid2F);
+            packet.WriteGuid("invitedGuid", invitedGuid);
         }
 
         [Parser(Opcode.SMSG_GROUP_LIST)]
