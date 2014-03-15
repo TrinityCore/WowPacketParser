@@ -218,7 +218,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 }
 
                 packet.WriteLine("[{0}] Spline Waypoint: {1}", i, spot);
-            }   
+            }
 
             packet.ReadXORByte(ownerGUID, 6);
 
@@ -587,9 +587,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var hasTransportTime2 = false;
             var hasTransportTime3 = false;
             var hasFallDirection = false;
-            
+
             pos.Z = packet.ReadSingle();
-            pos.X = packet.ReadSingle();    
+            pos.X = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
 
             guid[4] = packet.ReadBit();
@@ -626,10 +626,10 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 transportGuid[5] = packet.ReadBit();
                 transportGuid[3] = packet.ReadBit();
             }
-            
+
             if (hasMovementFlagExtra)
                 packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
-            
+
             if (hasMovementFlag)
                 packet.ReadEnum<MovementFlag>("Movement Flags", 30);
 

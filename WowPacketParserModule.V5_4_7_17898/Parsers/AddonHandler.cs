@@ -50,7 +50,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                 packet.ReadByte("Addon State", i);
             }
-            
+
             for (var i = 0; i < bits10; i++)
             {
                 for (var j = 0; j < 4; j++)

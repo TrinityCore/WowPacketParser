@@ -94,7 +94,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var bit74 = false;
             var bit78 = false;
             var bit7C = false;
-            var bit7E = false;            
+            var bit7E = false;
 
             var bits20 = 0u;
             var classCount = 0u;

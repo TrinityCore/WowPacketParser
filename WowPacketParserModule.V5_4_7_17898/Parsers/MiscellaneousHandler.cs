@@ -20,7 +20,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
             packet.ReadBit("Unk Bit"); // Type
         }
-        
+
         [Parser(Opcode.SMSG_WEEKLY_SPELL_USAGE)]
         public static void HandleWeeklySpellUsage(Packet packet)
         {
@@ -94,7 +94,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadTime("Last Weekly Reset");
             packet.ReadInt32("Instance Difficulty ID");
             packet.ReadBoolean("Is On Tournament Realm");
-            
+
             if (bit14)
                 packet.ReadInt32("Int10");
 

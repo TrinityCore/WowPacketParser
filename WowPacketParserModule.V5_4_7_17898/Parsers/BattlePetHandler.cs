@@ -22,7 +22,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_PET_BATTLE_ROUND_RESULT)]
         public static void HandleBattlePetRoundResult(Packet packet)
         {
-            
+
             var bits18 = 0;
             var bits28 = 0;
             var bits38 = 0;
@@ -36,7 +36,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.ReadInt32("Int10"); // v3+4
             bits38 = (int)packet.ReadBits(20); // v3+56
-            bits28 = (int)packet.ReadBits(3); // v3+40 
+            bits28 = (int)packet.ReadBits(3); // v3+40
 
             var bit9 = new bool[bits38];
             var bit14 = false;

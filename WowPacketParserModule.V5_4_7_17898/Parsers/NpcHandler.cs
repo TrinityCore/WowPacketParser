@@ -97,7 +97,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadBit("Change Icon", i);
                 titleLen[i] = packet.ReadBits(9);
             }
-            
+
             for (var i = 0; i < questgossips; ++i)
             {
                 packet.ReadEnum<QuestFlags2>("Flags 2", TypeCode.UInt32, i);
@@ -308,7 +308,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var itemCount = packet.ReadBits(18);
             var hasCondition = new bool[itemCount];
             var hasExtendedCost = new bool[itemCount];
-            
+
             for (int i = 0; i < itemCount; ++i)
             {
                 packet.ReadBit("Unk bit", i);

@@ -57,11 +57,11 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             var guid2 = new byte[8];
             var guid1 = new byte[8];
-            
+
             int nameLen = 0;
             int rankCount = 0;
             int[] rankName = null;
-            
+
             var hasData = packet.ReadBit();
             if (hasData)
             {
@@ -267,7 +267,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var nameLength = new uint[size];
             var publicLength = new uint[size];
             var officerLength = new uint[size];
-            
+
             for (var i = 0; i < size; ++i)
             {
                 guid[i] = new byte[8];
@@ -286,7 +286,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 guid[i][3] = packet.ReadBit();
                 guid[i][0] = packet.ReadBit();
             }
-            
+
             for (var i = 0; i < size; ++i)
             {
                 packet.ReadInt32("Guild Reputation", i);
