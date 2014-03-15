@@ -20,6 +20,8 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_AUTH_SESSION, 0x1A51},
             {Opcode.CMSG_AUTOEQUIP_ITEM, 0x166B},
             {Opcode.CMSG_BATTLEFIELD_LIST, 0x1412},
+            {Opcode.CMSG_BANKER_ACTIVATE, 0x02FD},
+            {Opcode.CMSG_BUY_BANK_SLOT, 0x00FE},
             {Opcode.CMSG_CANCEL_AURA, 0x16E1},
             {Opcode.CMSG_CANCEL_CAST, 0x12EB | 0x10000},
             {Opcode.CMSG_CANCEL_TRADE, 0x1D32},

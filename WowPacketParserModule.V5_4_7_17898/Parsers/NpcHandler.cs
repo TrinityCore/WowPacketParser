@@ -366,6 +366,58 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             Storage.NpcVendors.Add(vendorGUID.GetEntry(), npcVendor, packet.TimeSpan);
         }
 
+        [Parser(Opcode.CMSG_BUY_BANK_SLOT)]
+        public static void HandleBuyBankSlot(Packet packet)
+        {
+            var guid2 = new byte[8];
+
+            guid2[7] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid2, 5);
+
+            packet.WriteGuid("Guid2", guid2);
+        }
+
+        [Parser(Opcode.CMSG_BANKER_ACTIVATE)]
+        public static void HandleBankerActivate(Packet packet)
+        {
+            var guid2 = new byte[8];
+
+            guid2[3] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid2, 5);
+
+            packet.WriteGuid("Guid2", guid2);
+        }
+
         [Parser(Opcode.SMSG_SHOW_BANK)]
         public static void HandleShowBank(Packet packet)
         {
