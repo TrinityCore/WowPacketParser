@@ -154,7 +154,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
                 if (bit10[i])
                 {
-                    packet.ParseBitStream(guid[i], 7, 0, 5, 4, 3, 2, 3, 1);
+                    packet.ParseBitStream(guid[i], 7, 0, 6, 5, 4, 2, 3, 1);
                     packet.WriteGuid("Guid", guid[i]);
                 }
 
