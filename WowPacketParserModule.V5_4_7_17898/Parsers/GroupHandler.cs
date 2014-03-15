@@ -12,57 +12,57 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.CMSG_GROUP_ASSIGNMENT)]
         public static void HandleGroupAssignment(Packet packet)
         {
-            var guid3 = new byte[8];
+            var guid = new byte[8];
 
             packet.ReadByte("Byte12");
             packet.ReadByte("Byte10");
-            guid3[0] = packet.ReadBit();
-            guid3[5] = packet.ReadBit();
-            guid3[6] = packet.ReadBit();
-            guid3[7] = packet.ReadBit();
-            guid3[3] = packet.ReadBit();
-            guid3[1] = packet.ReadBit();
-            guid3[2] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
             var bit11 = packet.ReadBit();
-            guid3[4] = packet.ReadBit();
-            packet.ReadXORByte(guid3, 4);
-            packet.ReadXORByte(guid3, 3);
-            packet.ReadXORByte(guid3, 1);
-            packet.ReadXORByte(guid3, 5);
-            packet.ReadXORByte(guid3, 2);
-            packet.ReadXORByte(guid3, 6);
-            packet.ReadXORByte(guid3, 7);
-            packet.ReadXORByte(guid3, 0);
+            guid[4] = packet.ReadBit();
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 0);
 
-            packet.WriteGuid("Guid3", guid3);
-
+            packet.WriteGuid("Guid", guid);
         }
+
         [Parser(Opcode.CMSG_GROUP_ASSISTANT_LEADER)]
         public static void HandleGroupAssistantLeader(Packet packet)
         {
-            var guid3 = new byte[8];
+            var guid = new byte[8];
 
             packet.ReadByte("Byte10");
-            guid3[1] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
             var bit11 = packet.ReadBit();
-            guid3[0] = packet.ReadBit();
-            guid3[7] = packet.ReadBit();
-            guid3[5] = packet.ReadBit();
-            guid3[3] = packet.ReadBit();
-            guid3[4] = packet.ReadBit();
-            guid3[2] = packet.ReadBit();
-            guid3[6] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
 
-            packet.ReadXORByte(guid3, 7);
-            packet.ReadXORByte(guid3, 4);
-            packet.ReadXORByte(guid3, 1);
-            packet.ReadXORByte(guid3, 6);
-            packet.ReadXORByte(guid3, 0);
-            packet.ReadXORByte(guid3, 2);
-            packet.ReadXORByte(guid3, 3);
-            packet.ReadXORByte(guid3, 5);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 5);
 
-            packet.WriteGuid("Guid3", guid3);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_GROUP_RAID_CONVERT)]
@@ -80,150 +80,132 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.CMSG_GROUP_SET_LEADER)]
         public static void HandleGroupSetLeader(Packet packet)
         {
-            var guid2 = new byte[8];
+            var guid = new byte[8];
 
             packet.ReadByte("Byte18");
 
-            guid2[1] = packet.ReadBit();
-            guid2[6] = packet.ReadBit();
-            guid2[5] = packet.ReadBit();
-            guid2[3] = packet.ReadBit();
-            guid2[0] = packet.ReadBit();
-            guid2[4] = packet.ReadBit();
-            guid2[2] = packet.ReadBit();
-            guid2[7] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
 
-            packet.ReadXORByte(guid2, 4);
-            packet.ReadXORByte(guid2, 0);
-            packet.ReadXORByte(guid2, 6);
-            packet.ReadXORByte(guid2, 5);
-            packet.ReadXORByte(guid2, 1);
-            packet.ReadXORByte(guid2, 7);
-            packet.ReadXORByte(guid2, 2);
-            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 3);
 
-            packet.WriteGuid("Guid2", guid2);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_GROUP_SWAP_SUB_GROUP)]
         public static void HandleGroupSwapSubGroup(Packet packet)
         {
+            var guid1 = new byte[8];
             var guid2 = new byte[8];
-            var guid3 = new byte[8];
 
             packet.ReadByte("Byte20");
 
-            guid2[4] = packet.ReadBit();
-            guid2[2] = packet.ReadBit();
-            guid3[7] = packet.ReadBit();
-            guid2[6] = packet.ReadBit();
-            guid3[5] = packet.ReadBit();
-            guid3[2] = packet.ReadBit();
-            guid3[0] = packet.ReadBit();
-            guid3[6] = packet.ReadBit();
+            guid1[4] = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
             guid2[7] = packet.ReadBit();
-            guid3[3] = packet.ReadBit();
-            guid3[1] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
             guid2[5] = packet.ReadBit();
-            guid2[3] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
             guid2[0] = packet.ReadBit();
-            guid3[4] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
             guid2[1] = packet.ReadBit();
+            guid1[5] = packet.ReadBit();
+            guid1[3] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid1[1] = packet.ReadBit();
 
+            packet.ReadXORByte(guid1, 7);
             packet.ReadXORByte(guid2, 7);
-            packet.ReadXORByte(guid3, 7);
-            packet.ReadXORByte(guid2, 3);
-            packet.ReadXORByte(guid3, 5);
-            packet.ReadXORByte(guid2, 6);
-            packet.ReadXORByte(guid3, 6);
-            packet.ReadXORByte(guid3, 4);
-            packet.ReadXORByte(guid3, 0);
+            packet.ReadXORByte(guid1, 3);
             packet.ReadXORByte(guid2, 5);
-            packet.ReadXORByte(guid2, 0);
-            packet.ReadXORByte(guid3, 3);
-            packet.ReadXORByte(guid3, 1);
-            packet.ReadXORByte(guid3, 2);
-            packet.ReadXORByte(guid2, 2);
-            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid2, 6);
             packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid1, 4);
 
+            packet.WriteGuid("Guid1", guid1);
             packet.WriteGuid("Guid2", guid2);
-            packet.WriteGuid("Guid3", guid3);
-
         }
 
         [Parser(Opcode.CMSG_GROUP_UNINVITE_GUID)]
         public static void HandleGroupUninviteGUID(Packet packet)
         {
-            var guid3 = new byte[8];
-
-            var bits1A = 0;
+            var guid = new byte[8];
 
             packet.ReadByte("Byte10");
-            guid3[0] = packet.ReadBit();
-            guid3[7] = packet.ReadBit();
-            guid3[5] = packet.ReadBit();
-            guid3[2] = packet.ReadBit();
-            bits1A = (int)packet.ReadBits(8);
-            guid3[3] = packet.ReadBit();
-            guid3[4] = packet.ReadBit();
-            guid3[6] = packet.ReadBit();
-            guid3[1] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            var reasonLen = packet.ReadBits(8);
+            guid[3] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
 
-            packet.ReadXORByte(guid3, 7);
-            packet.ReadXORByte(guid3, 0);
-            packet.ReadXORByte(guid3, 1);
-            packet.ReadXORByte(guid3, 6);
-            packet.ReadXORByte(guid3, 2);
-            packet.ReadXORByte(guid3, 4);
-            packet.ReadXORByte(guid3, 5);
-            packet.ReadXORByte(guid3, 3);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadWoWString("Reason", reasonLen);
 
-            packet.WriteGuid("Guid3", guid3);
+            packet.WriteGuid("Guid", guid);
         }
-        
+
         [Parser(Opcode.CMSG_GROUP_SET_ROLES)]
         public static void HandleGroupSetRoles(Packet packet)
         {
-            var guid2 = new byte[8];
+            var guid = new byte[8];
 
             packet.ReadByte("Byte1C");
             packet.ReadInt32("Int18");
 
-            guid2[5] = packet.ReadBit();
-            guid2[3] = packet.ReadBit();
-            guid2[1] = packet.ReadBit();
-            guid2[0] = packet.ReadBit();
-            guid2[2] = packet.ReadBit();
-            guid2[6] = packet.ReadBit();
-            guid2[7] = packet.ReadBit();
-            guid2[4] = packet.ReadBit();
+            packet.StartBitStream(guid, 5, 3, 1, 0, 2, 6, 7, 4);
+            packet.ParseBitStream(guid, 4, 6, 1, 3, 0, 7, 5, 2);
 
-            packet.ReadXORByte(guid2, 4);
-            packet.ReadXORByte(guid2, 6);
-            packet.ReadXORByte(guid2, 1);
-            packet.ReadXORByte(guid2, 3);
-            packet.ReadXORByte(guid2, 0);
-            packet.ReadXORByte(guid2, 7);
-            packet.ReadXORByte(guid2, 5);
-            packet.ReadXORByte(guid2, 2);
-
-            packet.WriteGuid("Guid2", guid2);
-
+            packet.WriteGuid("Guid", guid);
         }
-        
+
         [Parser(Opcode.CMSG_GROUP_DISBAND)]
         public static void HandleGroupDisband(Packet packet)
         {
             packet.ReadByte("Byte10");
         }
-        
+
         [Parser(Opcode.CMSG_GROUP_INVITE_RESPONSE)]
         public static void HandleGroupInviteResponse(Packet packet)
         {
             packet.ReadByte("Byte11");
             var bit18 = packet.ReadBit();
-            var bit10 = packet.ReadBit();
+            packet.ReadBit("bit10");
             if (bit18)
                 packet.ReadInt32("Int14");
         }
@@ -233,26 +215,25 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             var crossRealmGuid = new byte[8];
 
-            var bits10 = 0;
-            var bits12C = 0;
-
             packet.ReadInt32("Int114");
             packet.ReadInt32("Int128");
             packet.ReadByte("Byte118");
             crossRealmGuid[5] = packet.ReadBit();
-            bits12C = (int)packet.ReadBits(8);
+            var bits12C = packet.ReadBits(8);
             crossRealmGuid[2] = packet.ReadBit();
             crossRealmGuid[1] = packet.ReadBit();
             crossRealmGuid[7] = packet.ReadBit();
             crossRealmGuid[4] = packet.ReadBit();
             crossRealmGuid[3] = packet.ReadBit();
-            bits10 = (int)packet.ReadBits(8);
+            var bits10 = packet.ReadBits(8);
             crossRealmGuid[0] = packet.ReadBit();
             crossRealmGuid[6] = packet.ReadBit();
             packet.ReadXORByte(crossRealmGuid, 0);
             packet.ReadXORByte(crossRealmGuid, 4);
+            packet.ReadWoWString("string12C", bits12C);
             packet.ReadXORByte(crossRealmGuid, 5);
             packet.ReadXORByte(crossRealmGuid, 6);
+            packet.ReadWoWString("string10", bits10);
             packet.ReadXORByte(crossRealmGuid, 1);
             packet.ReadXORByte(crossRealmGuid, 7);
             packet.ReadXORByte(crossRealmGuid, 3);
@@ -272,10 +253,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             var invitedGuid = new byte[8];
 
-            var inviterName = 0;
-            var realmLen = 0;
-            var bits164 = 0;
-
             var bit160 = packet.ReadBit();
             var bit150 = packet.ReadBit();
             invitedGuid[2] = packet.ReadBit();
@@ -284,12 +261,12 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             invitedGuid[0] = packet.ReadBit();
             invitedGuid[7] = packet.ReadBit();
             invitedGuid[5] = packet.ReadBit();
-            realmLen = (int)packet.ReadBits(9);
+            var realmLen = (int)packet.ReadBits(9);
             invitedGuid[3] = packet.ReadBit();
             invitedGuid[1] = packet.ReadBit();
             var bit149 = packet.ReadBit();
-            bits164 = (int)packet.ReadBits(22);
-            inviterName = (int)packet.ReadBits(6);
+            var bits164 = (int)packet.ReadBits(22);
+            var inviterName = (int)packet.ReadBits(6);
             invitedGuid[6] = packet.ReadBit();
 
             packet.ResetBitReader();
@@ -310,9 +287,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(invitedGuid, 6);
 
             for (var i = 0; i < bits164; ++i)
-            {
                 packet.ReadInt32("IntEA", i);
-            }
 
             packet.WriteGuid("invitedGuid", invitedGuid);
         }
@@ -327,8 +302,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var bit7C = false;
             var bit87 = false;
 
-            var memberCounter = 0;
-            
             packet.ReadInt32("groupPosition");
             packet.ReadByte("groupType");
             packet.ReadByte("groupSlot");
@@ -337,7 +310,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             var hasInstanceDifficulty = packet.ReadBit();
             groupGUID[5] = packet.ReadBit(); //40-47
-            memberCounter = (int)packet.ReadBits(21);
+            var memberCounter = (int)packet.ReadBits(21);
 
             groupGUID[7] = packet.ReadBit();
             leaderGUID[1] = packet.ReadBit();
@@ -348,7 +321,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             {
                 memberGUID[i] = new byte[8];
 
-                memberGUID[i][1] = packet.ReadBit(); 
+                memberGUID[i][1] = packet.ReadBit();
                 memberGUID[i][2] = packet.ReadBit();
                 memberGUID[i][4] = packet.ReadBit();
                 memberGUID[i][6] = packet.ReadBit();
@@ -430,15 +403,15 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             {
                 packet.ReadXORByte(memberGUID[i], 6);
                 packet.ReadXORByte(memberGUID[i], 3);
-                packet.ReadByte("Flags");
+                packet.ReadByte("Flags", i);
                 packet.ReadXORByte(memberGUID[i], 2);
                 packet.ReadXORByte(memberGUID[i], 1);
-                packet.ReadByte("onlineState");
+                packet.ReadByte("onlineState", i);
                 packet.ReadXORByte(memberGUID[i], 4);
                 packet.ReadXORByte(memberGUID[i], 5);
-                packet.ReadByte("LFGrole");
+                packet.ReadByte("LFGrole", i);
                 packet.ReadWoWString("MemberName", memberName[i], i);
-                packet.ReadByte("groupID");
+                packet.ReadByte("groupID", i);
                 packet.ReadXORByte(memberGUID[i], 7);
                 packet.ReadXORByte(memberGUID[i], 0);
                 packet.WriteGuid("memberGUID", memberGUID[i], i);
@@ -467,7 +440,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("groupGUID", groupGUID);
             packet.WriteGuid("leaderGUID", leaderGUID);
-
         }
 
         [Parser(Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS)]

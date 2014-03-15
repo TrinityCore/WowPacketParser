@@ -20,7 +20,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var count = packet.ReadBits(5);
 
             guid[0] = packet.ReadBit();
-            
+
             var ItemGUID = new byte[count][];
             for (var i = 0; i < count; ++i)
                 packet.StartBitStream(ItemGUID[i], 6, 5, 1, 3, 0, 4, 7, 2);
@@ -134,7 +134,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                         packet.ReadInt32("Int14", i, j, k);
                     }
 
-                    packet.ReadInt32("IntED", i, j);                    
+                    packet.ReadInt32("IntED", i, j);
                     packet.ReadInt32("IntED", i, j);
                     packet.ReadInt32("IntED", i, j);
 

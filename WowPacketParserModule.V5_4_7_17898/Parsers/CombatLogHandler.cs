@@ -27,7 +27,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             targetGUID[4] = packet.ReadBit();
 
             var bits24 = packet.ReadBits(21);
-            
+
             var hasAbsorb = new bool[bits24];
             var hasSpellProto = new bool[bits24];
             var hasOverDamage = new bool[bits24];

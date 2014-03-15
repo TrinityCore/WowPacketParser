@@ -95,7 +95,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 creature.SubName = packet.ReadCString("Sub Name");
 
             creature.DisplayIds[3] = packet.ReadUInt32();
-            
+
             for (var i = 0; i < 4; ++i)
                 packet.WriteLine("[{0}] Display ID: {1}", i, creature.DisplayIds[i]);
             for (var i = 0; i < 2; ++i)
@@ -110,7 +110,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 ObjectType = ObjectType.Unit,
                 Name = creature.Name,
             };
-            Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);                
+            Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_DB_QUERY_BULK)]

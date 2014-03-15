@@ -16,8 +16,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var guid1 = new byte[8];
             var guid2 = new byte[8];
 
-            var bit28 = packet.ReadBit();
-            var arenaStrings = packet.ReadBit();
+            var arena = packet.ReadBit("Arena");
+            var arenaStrings = packet.ReadBit("Has Arena Strings");
 
             var name1Length = 0U;
             var name2Length = 0U;
@@ -45,7 +45,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
 
             var count = (int)packet.ReadBits(19);
-            
+
             var guids = new byte[count][];
             var bit1C = new bool[count];
             var bit3C = new bool[count];
@@ -76,7 +76,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
 
             var finished = packet.ReadBit();
-            
+
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadXORByte(guids[i], 5);
@@ -144,9 +144,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
 
             if (finished)
-                packet.ReadByte("Winner");  
+                packet.ReadByte("Winner");
 
-            if (bit28)
+            if (arena)
             {
                 packet.ReadInt32("Int10");
                 packet.ReadInt32("Int24");
@@ -155,7 +155,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadInt32("Int14");
                 packet.ReadInt32("Int20");
             }
-
         }
     }
 }

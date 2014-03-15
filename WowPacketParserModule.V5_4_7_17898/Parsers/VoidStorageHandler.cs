@@ -6,7 +6,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class VoidStorageHandler
     {
-        [Parser(Opcode.SMSG_VOID_ITEM_SWAP_RESPONSE)] 
+        [Parser(Opcode.SMSG_VOID_ITEM_SWAP_RESPONSE)]
         public static void HandleVoidItemSwapResponse(Packet packet)
         {
             packet.ReadBit("Unk Bit 3 (Inv)");
@@ -25,7 +25,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             usedDestSlot = !packet.ReadBit("Used Dest Slot (Inv)");
             usedSrcSlot = !packet.ReadBit("Used Src Slot (Inv)"); // always set?
-            
+
             // flushbits
 
             if (usedDestSlot)
@@ -44,10 +44,10 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (usedSrcSlot)
-                packet.ReadInt32("New Slot for Src Item");    
+                packet.ReadInt32("New Slot for Src Item");
         }
 
-        [Parser(Opcode.SMSG_VOID_STORAGE_CONTENTS)] 
+        [Parser(Opcode.SMSG_VOID_STORAGE_CONTENTS)]
         public static void HandleVoidStorageContents(Packet packet)
         {
             var count = packet.ReadBits("Count", 7);
@@ -113,7 +113,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.SMSG_VOID_STORAGE_TRANSFER_CHANGES)]
         public static void HandleVoidStorageTransferChanges(Packet packet)
-        {           
+        {
             var count2 = packet.ReadBits("Count 2", 4); //32
 
             var id2 = new byte[count2][];
@@ -151,7 +151,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadInt32("New Unk", i); //32
                 packet.ReadInt32("Item Random Property ID", i); //24
-                
+
                 packet.ReadXORByte(guid[i], 3);
                 packet.ReadXORByte(id1[i], 6);
                 packet.ReadXORByte(id1[i], 1);
@@ -171,7 +171,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guid[i], 1);
                 packet.ReadXORByte(id1[i], 4);
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i); //16
-                
+
 
                 packet.WriteLine("[{1}] Item Id 1: {0}", BitConverter.ToUInt64(id1[i], 0), i);
                 packet.WriteGuid("Item Player Creator Guid", guid[i], i);
@@ -189,7 +189,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Unk Byte");
         }
 
-        [Parser(Opcode.CMSG_VOID_STORAGE_UNLOCK)] 
+        [Parser(Opcode.CMSG_VOID_STORAGE_UNLOCK)]
         public static void HandleVoidStorageUnlock(Packet packet)
         {
             var guid = packet.StartBitStream(5, 1, 3, 0, 4, 6, 7, 2);
@@ -197,7 +197,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("NPC Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_VOID_STORAGE_QUERY)] 
+        [Parser(Opcode.CMSG_VOID_STORAGE_QUERY)]
         public static void HandleVoidStorageQuery(Packet packet)
         {
             var guid = packet.StartBitStream(6, 3, 4, 0, 5, 1, 7, 2);
@@ -205,7 +205,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("NPC Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_VOID_STORAGE_TRANSFER)] 
+        [Parser(Opcode.CMSG_VOID_STORAGE_TRANSFER)]
         public static void HandleVoidStorageTransfer(Packet packet)
         {
             var npcGuid = new byte[8];
@@ -213,7 +213,7 @@ namespace WowPacketParser.Parsing.Parsers
             npcGuid[2] = packet.ReadBit();
             npcGuid[7] = packet.ReadBit();
             var count1 = packet.ReadBits("Count 1", 24); // 5 or 20
-            npcGuid[0] = packet.ReadBit(); 
+            npcGuid[0] = packet.ReadBit();
             npcGuid[6] = packet.ReadBit();
             npcGuid[5] = packet.ReadBit();
 
@@ -247,7 +247,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ParseBitStream(itemsGuid[i], 5, 4, 0, 7, 3, 2, 6, 1);
                 packet.WriteGuid("Item Guid", itemsGuid[i], i);
             }
-           
+
             packet.ReadXORByte(npcGuid, 2);
             packet.ReadXORByte(npcGuid, 1);
             packet.ReadXORByte(npcGuid, 6);
@@ -259,7 +259,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("NPC Guid", npcGuid);
         }
 
-        [Parser(Opcode.CMSG_VOID_SWAP_ITEM)] 
+        [Parser(Opcode.CMSG_VOID_SWAP_ITEM)]
         public static void HandleVoidSwapItem(Packet packet)
         {
             packet.ReadInt32("New Slot");
@@ -267,7 +267,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = new byte[8];
             var itemId = new byte[8];
 
-            guid[0] = packet.ReadBit(); 
+            guid[0] = packet.ReadBit();
             itemId[3] = packet.ReadBit();
             itemId[2] = packet.ReadBit();
             guid[7] = packet.ReadBit();
@@ -304,5 +304,5 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("NPC Guid", guid);
             packet.WriteLine("Item Id: {0}", BitConverter.ToUInt64(itemId, 0));
         }
-	}
+    }
 }

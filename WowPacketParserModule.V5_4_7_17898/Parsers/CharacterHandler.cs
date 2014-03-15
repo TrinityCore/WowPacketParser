@@ -65,14 +65,14 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadXORByte(guildGuids[c], 2);
                 packet.ReadXORByte(charGuids[c], 6);
 
-                packet.ReadUInt32("Unk 1", c);
+                packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
                 var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
 
                 packet.ReadXORByte(guildGuids[c], 3);
 
                 packet.ReadInt32("Pet Level", c); // v4+112
                 packet.ReadInt32("Pet Display ID", c); //v4+108
-                packet.ReadEnum<CustomizationFlag>("CustomizationFlag", TypeCode.UInt32, c);
+                packet.ReadUInt32("Unk 1", c);
                 packet.ReadUInt32("Unk 2", c);
 
                 packet.ReadXORByte(charGuids[c], 3);
@@ -115,7 +115,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadXORByte(guildGuids[c], 4);
                 packet.ReadXORByte(charGuids[c], 2);
 
-                packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
+                packet.ReadEnum<CustomizationFlag>("CustomizationFlag", TypeCode.UInt32, c);
 
                 packet.ReadXORByte(charGuids[c], 7);
                 packet.ReadXORByte(guildGuids[c], 6);

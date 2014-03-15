@@ -14,11 +14,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadInt32("Int24"); // Status?
 
             var count = (int)packet.ReadBits(20);
-            
+
             var bits420 = new uint[count];
             var bitsC = new uint[count];
             var bit410 = new bool[count];
-            var hasWaitTime = new bool[count];            
+            var hasWaitTime = new bool[count];
             var unk = new byte[count][];
 
             for (var i = 0; i < count; ++i)
@@ -31,7 +31,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 unk[i] = new byte[8];
                 packet.StartBitStream(unk[i], 4, 2, 0, 5, 6, 3, 1, 7);
             }
-            
+
             for (var i = 0; i < count; ++i)
             {
                 packet.ParseBitStream(unk[i], 1, 0, 2, 7, 5, 6, 3, 4);

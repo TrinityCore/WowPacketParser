@@ -8,7 +8,7 @@ using WowPacketParser.Store.Objects;
 namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
     public static class LfgHandler
-    {  
+    {
         [Parser(Opcode.SMSG_LFG_PLAYER_INFO)]
         public static void HandleLfgPlayerLockInfoResponse(Packet packet)
         {
@@ -19,7 +19,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.StartBitStream(guid, 0, 6, 7, 5, 2, 4, 1, 3);
 
             var bits30 = packet.ReadBits(17);
-            
+
             var bits7C = new uint[bits30];
             var bits6C = new uint[bits30];
             var bits40 = new uint[bits30];

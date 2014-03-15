@@ -147,7 +147,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                 for (var j = 0; j < bits4[i]; ++j)
                 {
-                    bits34[i][j] = packet.ReadBits(21);       
+                    bits34[i][j] = packet.ReadBits(21);
                 }
             }
 
@@ -174,5 +174,5 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadInt32("Int5", i);
             }
         }
-	}
+    }
 }

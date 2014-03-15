@@ -183,7 +183,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.StartBitStream(guid, 6, 3, 0, 1, 4, 2, 7, 5);
             packet.ParseBitStream(guid, 4, 6, 3, 1, 2, 0, 7, 5);
-            
+
             packet.WriteGuid("Guid", guid);
         }
 
