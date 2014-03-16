@@ -59,6 +59,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_GUILD_QUERY, 0x1280},
             {Opcode.CMSG_GUILD_ROSTER, 0x19BC},
             {Opcode.CMSG_GUILD_QUERY_RANKS, 0x1BBC},
+            {Opcode.CMSG_INSPECT, 0x01D4},
             {Opcode.CMSG_ITEM_REFUND_INFO, 0x10DC},
             {Opcode.CMSG_LEARN_TALENT, 0x1F5A},
             {Opcode.CMSG_LIST_INVENTORY, 0x10DD},
