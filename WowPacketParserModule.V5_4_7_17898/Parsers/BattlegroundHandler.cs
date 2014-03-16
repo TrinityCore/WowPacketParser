@@ -9,9 +9,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
     public static class BattlegroundHandler
     {
-
-        [Parser(Opcode.SMSG_PVP_LOG_DATA, ClientVersionBuild.V4_3_4_15595)] // 4.3.4
-        public static void HandlePvPLogData434(Packet packet)
+        [Parser(Opcode.SMSG_PVP_LOG_DATA)]
+        public static void HandlePvPLogData(Packet packet)
         {
             var guid1 = new byte[8];
             var guid2 = new byte[8];

@@ -258,6 +258,7 @@ namespace WowPacketParser.Enums
         CMSG_GAMEOBJ_USE,
         CMSG_GAMESPEED_SET,
         CMSG_GAMETIME_SET,
+        CMSG_GAME_STORE_LIST,
         CMSG_GETDEATHBINDZONE,
         CMSG_GET_CHANNEL_MEMBER_COUNT,
         CMSG_GET_MAIL_LIST,

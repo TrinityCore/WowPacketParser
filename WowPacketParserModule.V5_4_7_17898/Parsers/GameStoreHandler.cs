@@ -7,9 +7,13 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
     public static class GameStoreHandler
     {
+        [Parser(Opcode.CMSG_GAME_STORE_LIST)]
+        public static void HandleGameStoreList(Packet packet)
+        {
+        }
 
         [Parser(Opcode.SMSG_GAME_STORE_LIST)]
-        public static void HandleGameStoreList(Packet packet)
+        public static void HandleGameStoreListResponse(Packet packet)
         {
             var bits10 = packet.ReadBits(19);
             var bits38 = packet.ReadBits(20);
@@ -131,7 +135,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             for (var i = 0; i < bits38; i++)
             {
-                packet.ReadWoWString("String3C", bits3C[i], i);
+                packet.ReadWoWString("Category", bits3C[i], i);
                 packet.ReadInt32("Int3C", i);
                 packet.ReadInt32("Int3C", i);
                 packet.ReadInt32("Int3C", i);
@@ -144,7 +148,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                 if (bit1454[i])
                 {
-                    packet.ReadWoWString("Body", bits48[i], i);
+                    packet.ReadWoWString("Item Name", bits48[i], i);
 
                     if (bit34[i])
                         packet.ReadInt32("Display Id", i);
@@ -152,7 +156,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     if (bit3C[i])
                         packet.ReadInt32("IntED", i);
 
-                    packet.ReadWoWString("Subject", bits44A[i], i);
+                    packet.ReadWoWString("Description", bits44A[i], i);
 
                     if (bit44[i])
 

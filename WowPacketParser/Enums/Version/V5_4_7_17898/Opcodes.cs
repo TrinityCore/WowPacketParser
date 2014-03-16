@@ -40,6 +40,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_EQUIPMENT_SET_USE, 0x1402},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x14EA},
             {Opcode.CMSG_GAMEOBJ_REPORT_USE, 0x06DF},
+            {Opcode.CMSG_GAME_STORE_LIST, 0x1993},
             {Opcode.CMSG_GET_MAIL_LIST, 0x07DD},
             {Opcode.CMSG_GOSSIP_HELLO, 0x05F6},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x02D7},
