@@ -59,7 +59,6 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_GUILD_QUERY, 0x1280},
             {Opcode.CMSG_GUILD_ROSTER, 0x19BC},
             {Opcode.CMSG_GUILD_QUERY_RANKS, 0x1BBC},
-            {Opcode.CMSG_INSPECT, 0x02FD},
             {Opcode.CMSG_ITEM_REFUND_INFO, 0x10DC},
             {Opcode.CMSG_LEARN_TALENT, 0x1F5A},
             {Opcode.CMSG_LIST_INVENTORY, 0x10DD},
@@ -72,6 +71,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_MESSAGECHAT_SAY, 0x0C41},
             {Opcode.CMSG_MESSAGECHAT_WHISPER, 0x0D60 | 0x10000},
             {Opcode.CMSG_MESSAGECHAT_YELL, 0x0C43 | 0x10000},
+            {Opcode.CMSG_MOVE_TIME_SKIPPED, 0x0152},
             {Opcode.CMSG_NAME_QUERY, 0x0DB3 | 0x10000},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x12FA},
             {Opcode.CMSG_OBJECT_UPDATE_FAILED, 0x0882},
@@ -186,6 +186,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_CHAR_DELETE, 0x1529},
             {Opcode.SMSG_CHAR_ENUM, 0x040A},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x1E41},
+            {Opcode.SMSG_CLEAR_COOLDOWN, 0x0C08},
             {Opcode.SMSG_CHANNEL_NOTIFY, 0x11C5},
             {Opcode.SMSG_CANCEL_AUTO_REPEAT, 0x12B0},
             {Opcode.SMSG_COOLDOWN_EVENT, 0x1C5B | 0x20000},
@@ -292,6 +293,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x0F13},
             {Opcode.SMSG_QUESTGIVER_STATUS, 0x0D7E},
             {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, 0x0F79},
+            {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x0E2A},
             {Opcode.SMSG_SCENARIO_POI, 0x10E9},
             {Opcode.SMSG_SCENARIO_PROGRESS_UPDATE, 0x167B},
             {Opcode.SMSG_SCENARIO_STATE, 0x1E20},
@@ -347,6 +349,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_VOID_STORAGE_TRANSFER_CHANGES, 0x05A8},
             {Opcode.SMSG_VOID_TRANSFER_RESULT, 0x00E3},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x1D01},
+
             /* Note:
              0x1231, 0x12FB - CMSG / SMSG - Count opcode
              0x0F43         - SMSG        - Spell opcode

@@ -893,7 +893,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 2);
 
             packet.WriteGuid("Guid", guid);
-
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED)]
@@ -949,6 +948,19 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadInt32("Unk Int32");
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 0);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED)]
+        public static void HandleMoveTimeSkipped(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadInt32("Time");
+
+            packet.StartBitStream(guid, 5, 7, 6, 2, 0, 1, 4, 3);
+            packet.ParseBitStream(guid, 4, 6, 5, 0, 3, 2, 7, 1);
 
             packet.WriteGuid("Guid", guid);
         }
