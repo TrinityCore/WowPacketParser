@@ -214,6 +214,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_GAMEOBJECT_CUSTOM_ANIM, 0x1E52},
             {Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM, 0x0609},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x066A},
+            {Opcode.SMSG_GAME_STORE_LIST, 0x1C29},
             {Opcode.SMSG_GMTICKET_GETTICKET, 0x054B},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x0E52},
             {Opcode.SMSG_GOSSIP_POI, 0x058F},
@@ -342,7 +343,6 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_VOID_STORAGE_TRANSFER_CHANGES, 0x05A8},
             {Opcode.SMSG_VOID_TRANSFER_RESULT, 0x00E3},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x1D01},
-
             /* Note:
              0x1231, 0x12FB - CMSG / SMSG - Count opcode
              0x0F43         - SMSG        - Spell opcode
