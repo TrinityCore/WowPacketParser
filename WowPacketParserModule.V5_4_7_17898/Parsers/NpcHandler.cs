@@ -426,7 +426,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.StartBitStream(guid, 7, 1, 6, 4, 3, 5, 0, 2);
             packet.ParseBitStream(guid, 6, 0, 7, 3, 5, 1, 4, 2);
 
-            packet.WriteGuid("Guid2", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_THREAT_UPDATE)]
