@@ -204,5 +204,13 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid1", guid1);
             packet.WriteGuid("Guid2", guid2);
         }
+
+        [Parser(Opcode.SMSG_DEFENSE_MESSAGE)]
+        public static void HandleDefenseMessage(Packet packet)
+        {
+            var len = packet.ReadBits(12);
+            packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
+            packet.ReadWoWString("Message", len);
+        }
     }
 }

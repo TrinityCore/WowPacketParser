@@ -33,6 +33,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_CONNECT_TO_FAILED, 0x16C8},
             {Opcode.CMSG_CORPSE_QUERY, 0x129B},
             {Opcode.CMSG_CREATURE_QUERY, 0x1E72},
+            {Opcode.CMSG_CUF_PROFILES_SAVE, 0x0C88 | 0x10000},
             {Opcode.CMSG_DB_QUERY_BULK, 0x16C2},
             {Opcode.CMSG_DEL_IGNORE, 0x0385},
             {Opcode.CMSG_DEL_FRIEND, 0x1707},
@@ -203,6 +204,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_CRITERIA_UPDATE_PLAYER, 0x13B2},
             {Opcode.SMSG_DB_REPLY, 0x1F01},
             {Opcode.SMSG_DEATH_RELEASE_LOC, 0x1672},
+            {Opcode.SMSG_DEFENSE_MESSAGE, 0x01E8},
             {Opcode.SMSG_DESTROY_OBJECT, 0x1D69},
             {Opcode.SMSG_EMOTE, 0x022F},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x1520},
@@ -259,6 +261,12 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_MOVE_SET_SWIM_SPEED, 0x01D4 | 0x20000}, // 5.4.7 17956
             {Opcode.SMSG_MOVE_SET_WALK_SPEED, 0x00A0}, // 5.4.7 17956
             {Opcode.SMSG_MOVE_UNSET_CAN_FLY, 0x1D81}, // 5.4.7 17956
+            {Opcode.SMSG_MOVE_UPDATE_COLLISION_HEIGHT, 0x179A},
+            {Opcode.SMSG_MOVE_UPDATE_FLIGHT_SPEED, 0x17D9},
+            {Opcode.SMSG_MOVE_UPDATE_RUN_SPEED, 0x1388},
+            {Opcode.SMSG_MOVE_UPDATE_RUN_BACK_SPEED, 0x1BC2},
+            {Opcode.SMSG_MOVE_UPDATE_SWIM_SPEED, 0x1893},
+            {Opcode.SMSG_MOVE_UPDATE_WALK_SPEED, 0x139A},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x1E5B | 0x20000},
             {Opcode.SMSG_NEW_WORLD, 0x05AB},
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x10E0},
