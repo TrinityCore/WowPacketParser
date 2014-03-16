@@ -296,5 +296,11 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_STANDSTATE_UPDATE)]
+        public static void HandleStandStateUpdate(Packet packet)
+        {
+            packet.ReadByte("Standstate");
+        }
     }
 }

@@ -38,6 +38,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_DEL_FRIEND, 0x1707},
             {Opcode.CMSG_EQUIPMENT_SET_SAVE, 0x115C},
             {Opcode.CMSG_EQUIPMENT_SET_USE, 0x1402},
+            {Opcode.CMSG_FORCE_MOVE_ROOT_ACK, 0x0118},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x14EA},
             {Opcode.CMSG_GAMEOBJ_REPORT_USE, 0x06DF},
             {Opcode.CMSG_GAME_STORE_LIST, 0x1993},
@@ -246,6 +247,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_MESSAGECHAT, 0x0E60},
             {Opcode.SMSG_MONSTER_MOVE, 0x12D8},
             {Opcode.SMSG_MOTD, 0x0E20},
+            {Opcode.SMSG_MOVE_ROOT, 0x198B},
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x01F4}, // 5.4.7 17956
             {Opcode.SMSG_MOVE_SET_FLIGHT_SPEED, 0x02DC}, // 5.4.7 17956
             {Opcode.SMSG_MOVE_SET_RUN_SPEED, 0x1B9B}, // 5.4.7 17956
@@ -320,6 +322,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SPLINE_MOVE_SET_SWIM_SPEED, 0x0254},
             {Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_SPEED, 0x1AD3},
             {Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED, 0x0155},
+            {Opcode.SMSG_STANDSTATE_UPDATE, 0x0C48},
             {Opcode.SMSG_SUSPEND_COMMS, 0x10B0},
             {Opcode.SMSG_TALENTS_INFO, 0x0C68},
             {Opcode.SMSG_TEXT_EMOTE, 0x0522},

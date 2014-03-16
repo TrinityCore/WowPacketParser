@@ -741,6 +741,33 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_MOVE_SET_WALK_SPEED)]
+        public static void HandleMoveSetWalkSpeed(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[1] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            packet.ReadSingle("Speed");
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadInt32("Unk Int32");
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 7);
+
+            packet.WriteGuid("Guid2", guid);
+        }
+
         [Parser(Opcode.SMSG_MOVE_SET_CAN_FLY)]
         public static void HandleSetCanFly(Packet packet)
         {
@@ -905,7 +932,25 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 0);
 
             packet.WriteGuid("Guid", guid);
+        }
 
+        [Parser(Opcode.SMSG_MOVE_ROOT)]
+        public static void HandleMoveRoot434(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 5, 3, 6, 0, 1, 4, 2, 7);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadInt32("Unk Int32");
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 0);
+
+            packet.WriteGuid("Guid", guid);
         }
     }
 }
