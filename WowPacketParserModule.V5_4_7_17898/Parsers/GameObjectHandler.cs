@@ -97,5 +97,34 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_GAMEOBJECT_CUSTOM_ANIM)]
+        public static void HandleGOCustomAnim(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[0] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            var hasAnim = !packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            var bit20 = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            packet.ReadXORByte(guid, 1);
+            if (hasAnim)
+                packet.ReadInt32("Anim");
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 2);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
