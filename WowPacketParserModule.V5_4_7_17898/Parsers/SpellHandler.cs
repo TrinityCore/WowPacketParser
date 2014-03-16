@@ -1183,6 +1183,28 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_CLEAR_COOLDOWN)]
+        public static void HandleClearCooldown(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 3, 6, 2, 5, 1, 0, 7, 4);
+
+            packet.ReadBit("bit10");
+
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 1);
+
+            packet.WriteGuid("Guid3", guid);
+        }
+
         [Parser(Opcode.SMSG_CAST_FAILED)]
         [Parser(Opcode.SMSG_PET_CAST_FAILED)]
         public static void HandleCastFailed(Packet packet)
