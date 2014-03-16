@@ -760,7 +760,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
             var guid7 = new byte[8];
             byte[][] guid8;
             byte[][] guid9;
-            byte[][] guid10;
+            byte[][] hitGuid;
 
             var bits4C = (int)packet.ReadBits(13);
             var bit1A0 = !packet.ReadBit();
@@ -816,7 +816,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
             var bit19C = packet.ReadBit();
             guid2[7] = packet.ReadBit();
             var bit184 = !packet.ReadBit();
-            var bitB8 = packet.ReadBit();
+            var hasSrcLocation = packet.ReadBit();
             packet.ReadBit(); // fake bit
             guid3[1] = packet.ReadBit();
             guid3[3] = packet.ReadBit();
@@ -835,7 +835,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
             guid2[2] = packet.ReadBit();
             guid1[4] = packet.ReadBit();
             guid1[2] = packet.ReadBit();
-            if (bitB8)
+            if (hasSrcLocation)
             {
                 guid5[7] = packet.ReadBit();
                 guid5[2] = packet.ReadBit();
@@ -853,17 +853,17 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
             if (bitE0)
                 bits0 = packet.ReadBits(7);
 
-            var bits54 = (int)packet.ReadBits(24);
-            var bitD8 = packet.ReadBit();
+            var hitCount = (int)packet.ReadBits(24);
+            var hasDestLocation = packet.ReadBit();
 
-            guid10 = new byte[bits54][];
-            for (var i = 0; i < bits54; ++i)
+            hitGuid = new byte[hitCount][];
+            for (var i = 0; i < hitCount; ++i)
             {
-                guid10[i] = new byte[8];
-                packet.StartBitStream(guid10[i], 4, 3, 5, 6, 7, 0, 2, 1);
+                hitGuid[i] = new byte[8];
+                packet.StartBitStream(hitGuid[i], 4, 3, 5, 6, 7, 0, 2, 1);
             }
 
-            if (bitD8)
+            if (hasDestLocation)
             {
                 guid6[7] = packet.ReadBit();
                 guid6[0] = packet.ReadBit();
@@ -909,36 +909,40 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
                 }
             }
 
-            if (bitD8)
+            if (hasDestLocation)
             {
+                Vector3 pos = new Vector3();
                 packet.ReadXORByte(guid6, 0);
-                packet.ReadSingle("FloatD0");
+                pos.Z = packet.ReadSingle();
                 packet.ReadXORByte(guid6, 1);
-                packet.ReadSingle("FloatCC");
-                packet.ReadSingle("FloatC8");
+                pos.Y = packet.ReadSingle();
+                pos.X = packet.ReadSingle();
                 packet.ReadXORByte(guid6, 7);
                 packet.ReadXORByte(guid6, 4);
                 packet.ReadXORByte(guid6, 3);
                 packet.ReadXORByte(guid6, 2);
                 packet.ReadXORByte(guid6, 5);
                 packet.ReadXORByte(guid6, 6);
-                packet.WriteGuid("Guid6", guid6);
+                packet.WriteGuid("Destination Transport GUID", guid6);
+                packet.WriteLine("Destination Position: {0}", pos);
             }
 
-            if (bitB8)
+            if (hasSrcLocation)
             {
+                Vector3 pos = new Vector3();
                 packet.ReadXORByte(guid5, 6);
-                packet.ReadSingle("FloatB0");
+                pos.Z = packet.ReadSingle();
                 packet.ReadXORByte(guid5, 4);
                 packet.ReadXORByte(guid5, 5);
                 packet.ReadXORByte(guid5, 1);
-                packet.ReadSingle("FloatA8");
-                packet.ReadSingle("FloatAC");
+                pos.X = packet.ReadSingle();
+                pos.Y = packet.ReadSingle();
                 packet.ReadXORByte(guid5, 7);
                 packet.ReadXORByte(guid5, 2);
                 packet.ReadXORByte(guid5, 0);
                 packet.ReadXORByte(guid5, 3);
-                packet.WriteGuid("Guid5", guid5);
+                packet.WriteGuid("Source Transport GUID", guid5);
+                packet.WriteLine("Source Position: {0}", pos);
             }
 
             for (var i = 0; i < bits64; ++i)
@@ -950,10 +954,10 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
             if (bit184)
                 packet.ReadInt32("Int184");
 
-            for (var i = 0; i < bits54; ++i)
+            for (var i = 0; i < hitCount; ++i)
             {
-                packet.ParseBitStream(guid10[i], 7, 1, 6, 2, 4, 3, 5, 0);
-                packet.WriteGuid("Guid10", guid10[i], i);
+                packet.ParseBitStream(hitGuid[i], 7, 1, 6, 2, 4, 3, 5, 0);
+                packet.WriteGuid("Hit GUID", hitGuid[i], i);
             }
 
             packet.ReadXORByte(guid2, 4);
@@ -1021,7 +1025,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
             packet.ReadXORByte(guid2, 1);
             packet.ReadByte("Byte40");
             packet.ReadWoWString("StringE0", bits0);
-            packet.ReadInt32("Int50");
+            packet.ReadInt32("Time");
             packet.ReadXORByte(guid1, 2);
             packet.ReadXORByte(guid2, 7);
             packet.ReadXORByte(guid1, 6);
@@ -1061,9 +1065,9 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
             packet.ReadXORByte(guid1, 7);
             packet.ReadXORByte(guid2, 5);
 
-            packet.WriteGuid("Guid1", guid1);
-            packet.WriteGuid("Guid2", guid2);
-            packet.WriteGuid("Guid3", guid3);
+            packet.WriteGuid("Caster GUID", guid1);
+            packet.WriteGuid("Caster Unit GUID", guid2);
+            packet.WriteGuid("Target GUID", guid3);
             packet.WriteGuid("Guid4", guid4);
             packet.WriteGuid("Guid7", guid7);
         }
