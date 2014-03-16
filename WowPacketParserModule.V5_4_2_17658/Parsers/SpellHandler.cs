@@ -241,7 +241,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
             var bit18 = !packet.ReadBit();
             var bit1C = !packet.ReadBit();
 
-            
+
             packet.StartBitStream(guid2, 7, 3, 1, 0, 5, 4, 6, 2);
 
             if (bit50)
@@ -301,7 +301,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
                 if (bit108)
                     packet.ReadBits("bits108", 30);
             }
-            
+
             packet.StartBitStream(guid1, 0, 2, 7, 4, 5, 6, 1, 3);
 
             if (bit70)
@@ -337,7 +337,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
                 packet.ReadXORByte(guid4, 4);
                 packet.WriteGuid("Guid4", guid4);
             }
-            
+
             packet.ParseBitStream(guid1, 4, 2, 1, 0, 5, 3, 6, 7);
 
             if (hasSpellId)
@@ -347,7 +347,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
             {
                 packet.ReadXORByte(guid5, 4);
                 packet.ReadXORByte(guid5, 7);
-                
+
                 for (var i = 0; i < bits188; ++i)
                     packet.ReadInt32("IntEB", i);
 
@@ -455,8 +455,8 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
             packet.WriteGuid("Guid2", guid2);
         }
 
-        [Parser(Opcode.SMSG_SPELL_GO)]
-        public static void HandleSpellGo(Packet packet)
+        [Parser(Opcode.SMSG_SPELL_START)]
+        public static void HandleSpellStart(Packet packet)
         {
             var guid1 = new byte[8];
             var guid2 = new byte[8];
@@ -486,7 +486,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
             var bit17C = packet.ReadBit();
             guid2[4] = packet.ReadBit();
             guid1[0] = packet.ReadBit();
-            
+
             guid9 = new byte[bits184][];
             for (var i = 0; i < bits184; ++i)
             {
@@ -559,7 +559,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
 
             if (hasTargetFlags)
                 packet.ReadEnum<TargetFlag>("Target Flags", 20);
-            
+
             for (var i = 0; i < bits54; ++i)
             {
                 var bits136 = packet.ReadBits(4);
@@ -613,7 +613,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
                 packet.ReadSingle("FloatA8");
                 packet.WriteGuid("Guid7", guid7);
             }
-            
+
             for (var i = 0; i < bits184; ++i)
             {
                 packet.ReadXORByte(guid9[i], 4);
@@ -748,8 +748,8 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_SPELL_START)]
-        public static void HandleSpellStart(Packet packet)
+        [Parser(Opcode.SMSG_SPELL_GO)]
+        public static void HandleSpellGo(Packet packet)
         {
             var guid1 = new byte[8];
             var guid2 = new byte[8];
@@ -855,7 +855,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
 
             var bits54 = (int)packet.ReadBits(24);
             var bitD8 = packet.ReadBit();
-            
+
             guid10 = new byte[bits54][];
             for (var i = 0; i < bits54; ++i)
             {
@@ -940,7 +940,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
                 packet.ReadXORByte(guid5, 3);
                 packet.WriteGuid("Guid5", guid5);
             }
-            
+
             for (var i = 0; i < bits64; ++i)
             {
                 packet.ParseBitStream(guid8[i], 7, 4, 1, 3, 5, 6, 2, 0);
@@ -949,7 +949,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
 
             if (bit184)
                 packet.ReadInt32("Int184");
-            
+
             for (var i = 0; i < bits54; ++i)
             {
                 packet.ParseBitStream(guid10[i], 7, 1, 6, 2, 4, 3, 5, 0);
