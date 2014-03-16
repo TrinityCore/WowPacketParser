@@ -209,6 +209,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_EMOTE, 0x022F},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x1520},
             {Opcode.SMSG_EQUIPMENT_SET_USE_RESULT, 0x12AA},
+            {Opcode.SMSG_FAILED_PLAYER_CONDITION, 0x0F21},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x1560},
             {Opcode.SMSG_FRIEND_STATUS, 0x0707},
             {Opcode.SMSG_FLIGHT_SPLINE_SYNC, 0x0992},

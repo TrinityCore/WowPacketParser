@@ -302,5 +302,11 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             packet.ReadByte("Standstate");
         }
+
+        [Parser(Opcode.SMSG_FAILED_PLAYER_CONDITION)]
+        public static void HandleFailedPlayerCondition(Packet packet)
+        {
+            packet.ReadInt32("Id");
+        }
     }
 }
