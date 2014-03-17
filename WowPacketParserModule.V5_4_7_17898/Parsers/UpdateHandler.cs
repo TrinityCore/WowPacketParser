@@ -143,7 +143,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             var guid1 = new byte[8];
             var transportGuid = new byte[8];
-            var goTransportGuid = new byte[8];
             var attackingTargetGuid = new byte[8];
             var guid5 = new byte[8];
             var guid6 = new byte[8];
@@ -503,27 +502,27 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             if (hasTransportPosition)
             {
-                packet.ReadSByte("GO Transport Seat", index);
+                packet.ReadSByte("Transport Seat", index);
                 moveInfo.TransportOffset.X = packet.ReadSingle();
-                packet.ReadXORBytes(goTransportGuid, 1, 0, 2, 6, 5, 4);
+                packet.ReadXORBytes(transportGuid, 1, 0, 2, 6, 5, 4);
 
                 if (hasTransportTime3)
-                    packet.ReadUInt32("GO Transport Time 3", index)
+                    packet.ReadUInt32("Transport Time 3", index);
 
-                packet.ReadXORByte(goTransportGuid, 7);
+                packet.ReadXORByte(transportGuid, 7);
                 moveInfo.TransportOffset.O = packet.ReadSingle();
                 moveInfo.TransportOffset.Z = packet.ReadSingle();
                 moveInfo.TransportOffset.Y = packet.ReadSingle();
 
                 if (hasTransportTime2)
-                    packet.ReadUInt32("GO Transport Time 2", index);
+                    packet.ReadUInt32("Transport Time 2", index);
 
-                packet.ReadXORByte(goTransportGuid, 3);
-                packet.ReadUInt32("GO Transport Time", index);
+                packet.ReadXORByte(transportGuid, 3);
+                packet.ReadUInt32("Transport Time", index);
 
-                moveInfo.TransportGuid = new Guid(BitConverter.ToUInt64(goTransportGuid, 0));
-                packet.WriteLine("[{0}] GO Transport GUID {1}", index, moveInfo.TransportGuid);
-                packet.WriteLine("[{0}] GO Transport Position: {1}", index, moveInfo.TransportOffset);
+                moveInfo.TransportGuid = new Guid(BitConverter.ToUInt64(transportGuid, 0));
+                packet.WriteLine("[{0}] Transport GUID {1}", index, moveInfo.TransportGuid);
+                packet.WriteLine("[{0}] Transport Position: {1}", index, moveInfo.TransportOffset);
             }
 
             if (bit1DC)
