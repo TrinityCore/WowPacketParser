@@ -26,6 +26,15 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadWoWString("Message", len);
         }
 
+        [Parser(Opcode.CMSG_MESSAGECHAT_DND)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_EMOTE)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_AFK)]
+        public static void HandleMessageChatDND(Packet packet)
+        {
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("Message", len);
+        }
+
         [Parser(Opcode.SMSG_MESSAGECHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
@@ -42,11 +51,13 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.StartBitStream(GuildGUID, 4, 5, 1, 0, 2, 6, 7, 3);
 
             var bit1490 = !packet.ReadBit();
-            var bit11 = !packet.ReadBit();
+            var hasLang = !packet.ReadBit();
 
             packet.StartBitStream(SenderGUID, 2, 7, 0, 3, 4, 6, 1, 5);
 
-            var bit1498 = packet.ReadBit();
+            var bubble = packet.ReadBit(); // 0 Show in chat log, 1 for showing only in bubble
+            if (bubble)
+                packet.WriteLine("Show only in bubble");
             var hasAchi = !packet.ReadBit();
             var hasReceiver = !packet.ReadBit();
             var hasSender = !packet.ReadBit();
@@ -124,8 +135,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             if (hasSender)
                 text.Comment = packet.ReadWoWString("Sender Name", senderNameLen);
 
-            if (bit11)
-                packet.ReadByte("Byte11");
+            if (hasLang)
+                text.Language = packet.ReadEnum<Language>("Language", TypeCode.Byte);
 
             if (hasChannel)
                 packet.ReadWoWString("Channel Name", channelLen);

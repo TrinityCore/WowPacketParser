@@ -125,6 +125,9 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_VOID_STORAGE_TRANSFER, 0x1F73},
             {Opcode.CMSG_VOID_SWAP_ITEM, 0x01E2},
             {Opcode.CMSG_WARDEN_DATA, 0x1681},
+            {Opcode.CMSG_STANDSTATECHANGE, 0x157A},
+            {Opcode.CMSG_MESSAGECHAT_AFK, 0x0422},
+            {Opcode.CMSG_MESSAGECHAT_DND, 0x1E21},
 
             {Opcode.MSG_CHANNEL_START, 0x1B15},
             {Opcode.MSG_CHANNEL_UPDATE, 0x087B},
