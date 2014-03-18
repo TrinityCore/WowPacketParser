@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V5_4_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V5_4_2_17658", "WowPacketParserModule.V5_4_2_17658\WowPacketParserModule.V5_4_2_17658.csproj", "{611E8ABD-9581-4CDC-A98E-FDDD743B7908}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V5_4_2_17658", "WowPacketParserModule.V5_4_7_17898\WowPacketParserModule.V5_4_7_17898.csproj", "{763DC013-0757-4786-A841-934000D0A2B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V5_4_7_17658", "WowPacketParserModule.V5_4_7_17898\WowPacketParserModule.V5_4_7_17898.csproj", "{763DC013-0757-4786-A841-934000D0A2B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
