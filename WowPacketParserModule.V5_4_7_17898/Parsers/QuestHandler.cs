@@ -164,5 +164,11 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.WriteGuid("Guid", guid[i], i);
             }
         }
+
+        [Parser(Opcode.CMSG_QUESTLOG_REMOVE_QUEST)]
+        public static void HandleQuestRemoveQuest(Packet packet)
+        {
+            packet.ReadByte("Slot");
+        }
     }
 }
