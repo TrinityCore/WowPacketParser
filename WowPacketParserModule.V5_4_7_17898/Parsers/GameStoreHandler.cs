@@ -236,5 +236,70 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadInt32("Int30");
             packet.ReadInt32("Int34");
         }
+
+        [Parser(Opcode.CMSG_GAME_STORE_BUY)]
+        public static void HandlGameStoreBuy(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadInt32("Int18");
+            packet.ReadInt32("Int1C");
+
+            packet.StartBitStream(guid, 7, 2, 0, 6, 3, 5, 1, 4);
+            packet.ParseBitStream(guid, 1, 5, 4, 6, 7, 2, 3, 0);
+
+            packet.WriteGuid("Guid", guid);
+
+        }
+
+        [Parser(Opcode.SMSG_GAME_STORE_BUY_RESULT)]
+        public static void HandlGameStoreBuyResult(Packet packet)
+        {
+            packet.ReadInt32("Int1C");
+            packet.ReadInt32("Int18");
+            packet.ReadInt64("Int10");
+
+        }
+
+        [Parser(Opcode.SMSG_GAME_STORE_AUTH_BUY_FAILED)]
+        public static void HandleGameStoreAuthBuyFailed(Packet packet)
+        {
+            var bits10 = packet.ReadBits(19);
+
+            var bits0 = new uint[bits10];
+
+            for (var i = 0; i < bits10; ++i)
+                bits0[i] = packet.ReadBits(8);
+
+            for (var i = 0; i < bits10; ++i)
+            {
+                packet.ReadInt32("IntED", i);
+                packet.ReadWoWString("StringED", bits0[i], i);
+                packet.ReadInt64("IntED", i);
+                packet.ReadInt32("IntED", i);
+                packet.ReadInt32("IntED", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_GAME_STORE_INGAME_BUY_FAILED)]
+        public static void HandleGameStoreIngameBuyFailed(Packet packet)
+        {
+            packet.ReadInt32("Int20");
+            var bits10 = packet.ReadBits(19);
+
+            var bits0 = new uint[bits10];
+
+            for (var i = 0; i < bits10; ++i)
+                bits0[i] = packet.ReadBits(8);
+
+            for (var i = 0; i < bits10; ++i)
+            {
+                packet.ReadWoWString("StringED", bits0[i], i);
+                packet.ReadInt32("IntED", i);
+                packet.ReadInt64("IntED", i);
+                packet.ReadInt32("IntED", i);
+                packet.ReadInt32("IntED", i);
+            }
+        }
     }
 }
