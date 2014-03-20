@@ -337,5 +337,22 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.WriteGuid("Character Guid", guids[i], i);
             }
         }
+
+        [Parser(Opcode.SMSG_XP_GAIN_ABORTED)]
+        public static void HandleXPGainAborted(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 0, 2, 7, 4, 5, 1, 3, 6);
+
+            packet.ReadInt32("Unk Int32 1");
+            packet.ReadInt32("Unk Int32 2");
+
+            packet.ParseBitStream(guid, 6, 0, 3, 7, 2, 5, 1, 4);
+
+            packet.ReadInt32("Unk Int32 3");
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
