@@ -248,5 +248,11 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_CANCEL_COMBAT)]
+        public static void HandleCanelCombat(Packet packet)
+        {
+            packet.ReadBits("bits10", 2);
+        }
     }
 }

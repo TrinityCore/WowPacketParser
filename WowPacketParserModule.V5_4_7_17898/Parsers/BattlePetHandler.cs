@@ -844,6 +844,80 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadInt32("Int10");
         }
 
+        [Parser(Opcode.CMSG_BATTLE_PET_NAME_QUERY)]
+        public static void HandleBattlePetQuery(Packet packet)
+        {
+            var guid = new byte[8];
+            var playerGUID = new byte[8];
+
+            playerGUID[4] = packet.ReadBit();
+            playerGUID[1] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            playerGUID[5] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            playerGUID[0] = packet.ReadBit();
+            playerGUID[7] = packet.ReadBit();
+            playerGUID[2] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            playerGUID[3] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            playerGUID[6] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(playerGUID, 2);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(playerGUID, 1);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(playerGUID, 6);
+            packet.ReadXORByte(playerGUID, 3);
+            packet.ReadXORByte(playerGUID, 0);
+            packet.ReadXORByte(playerGUID, 4);
+            packet.ReadXORByte(playerGUID, 7);
+            packet.ReadXORByte(playerGUID, 5);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 1);
+
+            packet.WriteGuid("Guid", guid);
+            packet.WriteGuid("Player GUID", playerGUID);
+
+        }
+
+        [Parser(Opcode.SMSG_BATTLE_PET_NAME_QUERY_RESPONSE)]
+        public static void HandleBattlePetQueryResponse(Packet packet)
+        {
+            var bits19 = 0u;
+            var count = 5;
+            var bits9B = new uint[count];
+
+            packet.ReadInt64("Int10");
+            packet.ReadInt32("Int280");
+            packet.ReadInt32("Entry");
+
+            var bit18 = packet.ReadBit();
+            if (bit18)
+            {
+                bits19 = packet.ReadBits(8);
+
+                for (var i = 0; i < count; ++i)
+                    bits9B[i] = packet.ReadBits(7);
+            }
+
+            if (bit18)
+            {
+                packet.ReadWoWString("Custom Name", bits19);
+
+                for (var i = 0; i < count; ++i)
+                    packet.ReadWoWString("String9B", bits9B[i]);
+            }
+        }
+
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]
         public static void HandleZeroLengthPackets(Packet packet)
         {

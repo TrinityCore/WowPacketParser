@@ -234,5 +234,18 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.WriteGuid("Looter GUID", guid[i], i);
             }
         }
+
+        [Parser(Opcode.CMSG_BUYBACK_ITEM)]
+        public static void HandleBuyBackItem(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadUInt32("Slot");
+
+            packet.StartBitStream(guid, 3, 5, 0, 7, 2, 6, 1, 4);
+            packet.ParseBitStream(guid, 1, 7, 6, 0, 5, 3, 4, 2);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
