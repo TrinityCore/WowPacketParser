@@ -147,5 +147,33 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadInt32("Int14");
             }
         }
+
+        [Parser(Opcode.CMSG_INSPECT_HONOR_STATS)]
+        public static void HandleInspectHonorStats(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 1, 7, 0, 5, 2, 3, 6, 4);
+            packet.ParseBitStream(guid, 3, 7, 5, 4, 0, 1, 6, 2);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_INSPECT_HONOR_STATS)]
+        public static void HandleInspectHonorStatsResponse(Packet packet)
+        {
+            var guid = new byte[8];
+
+            // Might be swapped, unsure
+            packet.ReadInt16("Yesterday Honorable Kills");
+            packet.ReadByte("Lifetime Max Rank");
+            packet.ReadInt32("Life Time Kills");
+            packet.ReadInt16("Today Honorable Kills");
+
+            packet.StartBitStream(guid, 4, 3, 5, 7, 6, 0, 2, 1);
+            packet.ParseBitStream(guid, 3, 0, 5, 2, 6, 7, 4, 1);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

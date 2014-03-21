@@ -136,5 +136,32 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadInt32("IntED", i);
             }
         }
+
+        [Parser(Opcode.SMSG_LFG_QUEUE_STATUS)]
+        public static void HandleLfgQueueStatusUpdate434(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadInt32("Int30");
+            packet.ReadInt32("Int28");
+            packet.ReadInt32("Int10");
+            packet.ReadInt32("Int1C");
+
+            for (var i = 0; i < 3; ++i)
+            {
+                packet.ReadByte("Byte44", i);
+                packet.ReadInt32("Int2C", i);
+
+            }
+
+            packet.ReadInt32("Int2C");
+            packet.ReadInt32("Int18");
+            packet.ReadInt32("Int14");
+
+            packet.StartBitStream(guid, 2, 0, 6, 5, 1, 4, 7, 3);
+            packet.ParseBitStream(guid, 6, 1, 2, 4, 7, 3, 5, 0);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

@@ -155,5 +155,56 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadInt32("Int20");
             }
         }
+
+        [Parser(Opcode.CMSG_REQUEST_INSPECT_RATED_BG_STATS)]
+        public static void HandleRequestInspectRBGStats(Packet packet)
+        {
+            packet.ReadInt32("Realm Id");
+
+            var guid = packet.StartBitStream(0, 1, 6, 4, 7, 5, 2, 3);
+            packet.ParseBitStream(guid,      2, 0, 1, 3, 4, 7, 5, 6);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_INSPECT_RATED_BG_STATS)]
+        public static void HandleInspectRatedBGStats(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[4] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            var bits10 = (int)packet.ReadBits(3);
+            guid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+
+            for (var i = 0; i < bits10; i++)
+            {
+                packet.ReadInt32("Int14", i);
+                packet.ReadInt32("Int14", i);
+                packet.ReadInt32("Int14", i);
+                packet.ReadInt32("Int14", i);
+                packet.ReadInt32("Int14", i);
+                packet.ReadByte("Byte14", i);
+                packet.ReadInt32("Int14", i);
+                packet.ReadInt32("Int14", i);
+            }
+
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 5);
+
+            packet.WriteGuid("Guid", guid);
+
+        }
     }
 }

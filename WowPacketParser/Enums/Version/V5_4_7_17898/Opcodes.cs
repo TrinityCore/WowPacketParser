@@ -67,6 +67,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_GUILD_ROSTER, 0x19BC},
             {Opcode.CMSG_GUILD_QUERY_RANKS, 0x1BBC},
             {Opcode.CMSG_INSPECT, 0x01D4},
+            {Opcode.CMSG_INSPECT_HONOR_STATS, 0x141A},
             {Opcode.CMSG_ITEM_REFUND_INFO, 0x10DC},
             {Opcode.CMSG_LEARN_TALENT, 0x1F5A},
             {Opcode.CMSG_LIST_INVENTORY, 0x10DD},
@@ -90,6 +91,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_NAME_QUERY, 0x0DB3 | 0x10000},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x12FA},
             {Opcode.CMSG_OBJECT_UPDATE_FAILED, 0x0882},
+            {Opcode.CMSG_QUERY_INSPECT_ACHIEVEMENTS, 0x047E},
             {Opcode.CMSG_QUERY_TIME, 0x03FD},
             {Opcode.CMSG_QUEST_NPC_QUERY, 0x16B8},
             {Opcode.CMSG_QUEST_POI_QUERY, 0x1DA8},
@@ -104,6 +106,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_REFORGE_ITEM, 0x1632},
             {Opcode.CMSG_RECLAIM_CORPSE, 0x065C},
             {Opcode.CMSG_REORDER_CHARACTERS, 0x1892},
+            {Opcode.CMSG_REQUEST_INSPECT_RATED_BG_STATS, 0x1CB3},
             {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x1333},
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x1B5A | 0x10000},
             {Opcode.CMSG_RESET_INSTANCES, 0x169B},
@@ -241,6 +244,8 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_INITIAL_SPELLS, 0x1B05},
             {Opcode.SMSG_INIT_CURRENCY, 0x1E3A},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0F03},
+            {Opcode.SMSG_INSPECT_HONOR_STATS, 0x1429},
+            {Opcode.SMSG_INSPECT_RATED_BG_STATS, 0x046B},
             {Opcode.SMSG_INVENTORY_CHANGE_FAILURE, 0x0F49},
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x0660},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x04A1},
@@ -249,7 +254,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM, 0x0609},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x066A},
             {Opcode.SMSG_GAME_STORE_BUY_RESULT, 0x12AB}, // correct name?
-            {Opcode.SMSG_GAME_STORE_AUTH_BUY_FAILED, 0x0C40}, // correct name?
+            {Opcode.SMSG_GAME_STORE_AUTH_BUY_FAILED, 0x0C40 | 0x20000}, // correct name?
             {Opcode.SMSG_GAME_STORE_INGAME_BUY_FAILED, 0x145A}, // correct name?
             {Opcode.SMSG_GAME_STORE_LIST, 0x1C29},
             {Opcode.SMSG_GMTICKET_GETTICKET, 0x054B},
@@ -269,6 +274,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_HOTFIX_INFO, 0x0C81},
             {Opcode.SMSG_LEARNED_SPELL, 0x0C99},
             {Opcode.SMSG_LEVELUP_INFO, 0x0E6A},
+            {Opcode.SMSG_LFG_QUEUE_STATUS, 0x0D40},
             {Opcode.SMSG_LFG_PLAYER_INFO, 0x13B0},
             {Opcode.SMSG_LIST_INVENTORY, 0x0D2A},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0603},
@@ -330,6 +336,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_REFORGE_RESULT, 0x1601},
             {Opcode.SMSG_REMOVED_SPELL, 0x05E3},
             {Opcode.SMSG_PERIODICAURALOG, 0x051B | 0x20000},
+            {Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, 0x04E1},
             {Opcode.SMSG_PLAYER_MOVE, 0x1CB2},
             {Opcode.SMSG_PLAYER_VEHICLE_DATA, 0x1F29},
             {Opcode.SMSG_PLAY_SPELL_VISUAL_KIT, 0x0500},
