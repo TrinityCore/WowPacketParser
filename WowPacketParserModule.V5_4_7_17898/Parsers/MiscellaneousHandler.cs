@@ -175,5 +175,158 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.CMSG_WHO)]
+        public static void HandleWhoRequest(Packet packet)
+        {
+            packet.ReadInt32("RaceMask");
+            packet.ReadInt32("Max Level");
+            packet.ReadInt32("Min Level");
+            packet.ReadInt32("ClassMask");
+            var guildNameLen = packet.ReadBits(7);
+            packet.ReadBit("bit2C6");
+            var patterns = packet.ReadBits(3);
+            packet.ReadBit("bit2C5");
+            var zones = packet.ReadBits(4);
+
+            var bits2B8 = new uint[patterns];
+
+            for (var i = 0; i < patterns; ++i)
+                bits2B8[i] = packet.ReadBits(7);
+
+            var bits73 = packet.ReadBits(9);
+            var PlayerNameLen = packet.ReadBits(6);
+            packet.ReadBit("bit2C4");
+            var bit2D4 = packet.ReadBit();
+            var bits1AB = packet.ReadBits(9);
+
+            packet.ReadWoWString("string73", bits73);
+
+            for (var i = 0; i < zones; ++i)
+                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
+
+            packet.ReadWoWString("Guild Name", guildNameLen);
+            packet.ReadWoWString("string1AB", bits1AB);
+            packet.ReadWoWString("Player Name", PlayerNameLen);
+
+            for (var i = 0; i < patterns; ++i)
+                packet.ReadWoWString("Pattern", bits2B8[i], i);
+
+            if (bit2D4)
+            {
+                packet.ReadInt32("Int2C8");
+                packet.ReadInt32("Int2D0");
+                packet.ReadInt32("Int2CC");
+            }
+        }
+
+        [Parser(Opcode.SMSG_WHO)]
+        public static void HandleWho(Packet packet)
+        {
+            var counter = (int)packet.ReadBits("List count", 6);
+            
+            var accountId = new byte[counter][];
+            var playerGUID = new byte[counter][];
+            var guildGUID = new byte[counter][];
+
+            var guildNameLength = new uint[counter];
+            var playerNameLength = new uint[counter];
+            var bits14 = new uint[counter][];
+            var bitED = new bool[counter];
+            var bit214 = new bool[counter];
+
+            for (var i = 0; i < counter; ++i)
+            {
+                accountId[i] = new byte[8];
+                playerGUID[i] = new byte[8];
+                guildGUID[i] = new byte[8];
+
+                playerGUID[i][1] = packet.ReadBit();
+                playerGUID[i][2] = packet.ReadBit();
+                guildGUID[i][3] = packet.ReadBit();
+                guildNameLength[i] = packet.ReadBits(7);
+                guildGUID[i][0] = packet.ReadBit();
+                accountId[i][6] = packet.ReadBit();
+                playerGUID[i][6] = packet.ReadBit();
+                playerGUID[i][4] = packet.ReadBit();
+                playerGUID[i][7] = packet.ReadBit();
+                accountId[i][4] = packet.ReadBit();
+                guildGUID[i][1] = packet.ReadBit();
+                accountId[i][0] = packet.ReadBit();
+                guildGUID[i][4] = packet.ReadBit();
+                playerGUID[i][0] = packet.ReadBit();
+                guildGUID[i][5] = packet.ReadBit();
+                bitED[i] = packet.ReadBit();
+                bit214[i] = packet.ReadBit();
+                accountId[i][7] = packet.ReadBit();
+
+                bits14[i] = new uint[5];
+                for (var j = 0; j < 5; ++j)
+                    bits14[i][j] = packet.ReadBits(7);
+
+                guildGUID[i][7] = packet.ReadBit();
+                guildGUID[i][2] = packet.ReadBit();
+                accountId[i][2] = packet.ReadBit();
+                accountId[i][5] = packet.ReadBit();
+                accountId[i][3] = packet.ReadBit();
+                playerNameLength[i] = packet.ReadBits(6);
+                playerGUID[i][3] = packet.ReadBit();
+                accountId[i][1] = packet.ReadBit();
+                playerGUID[i][5] = packet.ReadBit();
+                guildGUID[i][6] = packet.ReadBit();
+            }
+            
+            for (var i = 0; i < counter; ++i)
+            {
+                packet.ReadXORByte(accountId[i], 7);
+                packet.ReadByte("Level", i);
+                packet.ReadXORByte(playerGUID[i], 3);
+                packet.ReadInt32("RealmID", i); 
+                packet.ReadXORByte(playerGUID[i], 5);
+                packet.ReadXORByte(guildGUID[i], 1);
+                packet.ReadEnum<Gender>("Gender", TypeCode.Byte, i);
+                packet.ReadXORByte(playerGUID[i], 7);
+                packet.ReadInt32("Unk1", i);
+                packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
+                packet.ReadXORByte(guildGUID[i], 0);
+                packet.ReadXORByte(guildGUID[i], 4);
+                packet.ReadXORByte(accountId[i], 0);
+                packet.ReadXORByte(playerGUID[i], 4);
+                packet.ReadXORByte(guildGUID[i], 3);
+                packet.ReadXORByte(playerGUID[i], 0);
+                packet.ReadWoWString("Guild Name", guildNameLength[i], i);
+                packet.ReadXORByte(accountId[i], 2);
+                packet.ReadXORByte(playerGUID[i], 2);
+                packet.ReadXORByte(playerGUID[i], 6);
+
+                packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
+
+                packet.ReadXORByte(accountId[i], 5);
+                packet.ReadXORByte(guildGUID[i], 2);
+
+                packet.ReadWoWString("Player Name", playerNameLength[i], i);
+
+                packet.ReadInt32("RealmID", i); 
+
+                packet.ReadXORByte(playerGUID[i], 1);
+                packet.ReadXORByte(accountId[i], 1);
+
+                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", i);
+
+                packet.ReadXORByte(guildGUID[i], 7);
+                packet.ReadXORByte(guildGUID[i], 6);
+                packet.ReadXORByte(accountId[i], 3);
+                packet.ReadXORByte(accountId[i], 4);
+                packet.ReadXORByte(accountId[i], 6);
+                packet.ReadXORByte(guildGUID[i], 5);
+
+                for (var j = 0; j < 5; ++j)
+                    packet.ReadWoWString("String14", bits14[i][j]);
+
+                packet.WriteGuid("Guid1", accountId[i]);
+                packet.WriteGuid("Guid2", playerGUID[i]);
+                packet.WriteGuid("Guid3", guildGUID[i]);
+            }
+        }
     }
 }

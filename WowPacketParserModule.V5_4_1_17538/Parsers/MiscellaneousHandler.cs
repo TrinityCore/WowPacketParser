@@ -9,7 +9,6 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 {
     public static class MiscellaneousHandler
     {
-
         [Parser(Opcode.SMSG_WHO)]
         public static void HandleWho(Packet packet)
         {

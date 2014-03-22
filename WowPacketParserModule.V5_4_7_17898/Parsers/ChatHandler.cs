@@ -35,6 +35,28 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadWoWString("Message", len);
         }
 
+        [Parser(Opcode.CMSG_MESSAGECHAT_WHISPER)]
+        public static void HandleClientChatMessageWhisper(Packet packet)
+        {
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            var msgLen = packet.ReadBits(9);
+            var recvName = packet.ReadBits(8);
+
+            packet.ReadWoWString("Receivers Name", recvName);
+            packet.ReadWoWString("Message", msgLen);
+        }
+
+        [Parser(Opcode.CMSG_MESSAGECHAT_CHANNEL)]
+        public static void HandleClientChatMessageChannel434(Packet packet)
+        {
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            var msgLen = packet.ReadBits(8);
+            var channelNameLen = packet.ReadBits(9);
+
+            packet.ReadWoWString("Channel Name", channelNameLen);
+            packet.ReadWoWString("Message", msgLen);
+        }
+
         [Parser(Opcode.SMSG_MESSAGECHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
@@ -222,17 +244,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var len = packet.ReadBits(12);
             packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
             packet.ReadWoWString("Message", len);
-        }
-
-        [Parser(Opcode.CMSG_MESSAGECHAT_WHISPER)]
-        public static void HandleClientChatMessageWhisper(Packet packet)
-        {
-            packet.ReadEnum<Language>("Language", TypeCode.Int32);
-            var msgLen = packet.ReadBits(9);
-            var recvName = packet.ReadBits(8);
-
-            packet.ReadWoWString("Receivers Name", recvName);
-            packet.ReadWoWString("Message", msgLen);
         }
     }
 }

@@ -84,7 +84,9 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_MESSAGECHAT_AFK, 0x0422 | 0x10000},
             {Opcode.CMSG_MESSAGECHAT_CHANNEL, 0x0904},
             {Opcode.CMSG_MESSAGECHAT_DND, 0x1E21},
+            {Opcode.CMSG_MESSAGECHAT_EMOTE, 0x0520},
             {Opcode.CMSG_MESSAGECHAT_GUILD, 0x070B},
+            {Opcode.CMSG_MESSAGECHAT_OFFICER, 0x1F69},
             {Opcode.CMSG_MESSAGECHAT_PARTY, 0x0F02},
             {Opcode.CMSG_MESSAGECHAT_SAY, 0x0C41},
             {Opcode.CMSG_MESSAGECHAT_WHISPER, 0x0D60 | 0x10000},
@@ -152,6 +154,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_VOID_STORAGE_TRANSFER, 0x1F73},
             {Opcode.CMSG_VOID_SWAP_ITEM, 0x01E2},
             {Opcode.CMSG_WARDEN_DATA, 0x1681},
+            {Opcode.CMSG_WHO, 0x13C1},
 
             {Opcode.MSG_CHANNEL_START, 0x1B15},
             {Opcode.MSG_CHANNEL_UPDATE, 0x087B},
@@ -409,13 +412,14 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_UPDATE_WORLD_STATE, 0x1D13},
             {Opcode.SMSG_WARDEN_DATA, 0x14EB},
             {Opcode.SMSG_WEATHER, 0x0F41},
+            {Opcode.SMSG_WHO, 0x0460},
             {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x1D04},
+            {Opcode.SMSG_WORLD_SERVER_INFO, 0x1D01},
             {Opcode.SMSG_VOID_ITEM_SWAP_RESPONSE, 0x0E2B},
             {Opcode.SMSG_VOID_STORAGE_CONTENTS, 0x0C93},
             {Opcode.SMSG_VOID_STORAGE_FAILED, 0x1569},
             {Opcode.SMSG_VOID_STORAGE_TRANSFER_CHANGES, 0x05A8},
             {Opcode.SMSG_VOID_TRANSFER_RESULT, 0x00E3},
-            {Opcode.SMSG_WORLD_SERVER_INFO, 0x1D01},
             {Opcode.SMSG_XP_GAIN_ABORTED, 0x1E32},
 
             /* Note:
