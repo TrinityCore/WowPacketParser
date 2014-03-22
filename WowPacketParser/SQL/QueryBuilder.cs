@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using WowPacketParser.Misc;
@@ -414,6 +416,7 @@ namespace WowPacketParser.SQL
                 query.Append(InsertHeader);
 
                 var count = 0;
+                HashSet<string> rowStrings = new HashSet<string>();
                 foreach (var row in Rows)
                 {
                     if (count >= MaxRowsPerInsert && !_deleteDuplicates)
@@ -422,20 +425,15 @@ namespace WowPacketParser.SQL
                         query.Append(InsertHeader);
                         count = 0;
                     }
-                    query.Append(row.Build());
+                    string rowString = row.Build();
+                    if (_deleteDuplicates && !rowStrings.Add(rowString))
+                        continue;
+
+                    query.Append(rowString);
                     count++;
                 }
 
                 query.Append(Environment.NewLine);
-
-                // This is easier to implement that comparing raw objects in each row
-                // and certainly faster. Imagine comparing 1k rows of <string, int, int, emote, YouGotIt>
-                if (_deleteDuplicates)
-                {
-                    var str = String.Join("\n", query.ToString().Split('\n').Distinct()); // Do not use Enviroment.NewLine
-                    query.Clear();
-                    query.Append(str);
-                }
 
                 query.ReplaceLast(',', ';');
 
@@ -443,7 +441,7 @@ namespace WowPacketParser.SQL
             }
         }
 
-        public class SQLInsertRow : ISQLQuery
+        public class SQLInsertRow : ISQLQuery, IEqualityComparer<SQLInsertRow>
         {
             public readonly List<string> FieldNames = new List<string>();
             private readonly List<string> _values = new List<string>();
@@ -543,6 +541,20 @@ namespace WowPacketParser.SQL
                 row.Append(Environment.NewLine);
 
                 return row.ToString();
+            }
+
+            public bool Equals(SQLInsertRow x, SQLInsertRow y)
+            {
+                return x._values.SequenceEqual(y._values);
+            }
+
+            public int GetHashCode(SQLInsertRow obj)
+            {
+                int hashCode = 0;
+                foreach (var value in obj._values)
+                    hashCode ^= value.GetHashCode();
+
+                return hashCode;
             }
         }
 
