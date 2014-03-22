@@ -17,5 +17,16 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadTime("[" + (AccountDataType)i + "]" + " Time");
             packet.ReadBit("Unk Bit");
         }
+
+        [Parser(Opcode.CMSG_UPDATE_ACCOUNT_DATA)]
+        public static void HandleClientUpdateAccountData(Packet packet)
+        {
+            var decompCount = packet.ReadInt32();
+            packet.ReadTime("Login Time");
+            var compCount = packet.ReadInt32();
+            var data = packet.Inflate(compCount, decompCount, false).ReadWoWString(decompCount);
+            packet.ReadEnum<AccountDataType>("Data Type", 3);
+            packet.WriteLine("Account Data {0}", data);
+        }
     }
 }
