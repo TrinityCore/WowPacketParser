@@ -101,6 +101,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_QUESTLOG_REMOVE_QUEST, 0x0655},
             {Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST, 0x0356},
             {Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD, 0x075F},
+            {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x115E},
             {Opcode.CMSG_QUESTGIVER_QUERY_QUEST, 0x1056},
             {Opcode.CMSG_QUESTGIVER_REQUEST_REWARD, 0x107E},
             {Opcode.CMSG_QUESTGIVER_STATUS_QUERY, 0x05FD},
