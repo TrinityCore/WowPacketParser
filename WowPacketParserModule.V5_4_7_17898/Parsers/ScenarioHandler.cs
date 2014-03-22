@@ -124,7 +124,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid4, 3);
             packet.ReadInt32("Int50");
             packet.ReadInt32("Int4C");
-            packet.ReadInt32("Int10");
+            packet.ReadInt32("Criteria ID");
             packet.ReadXORByte(guid4, 0);
 
             packet.WriteGuid("Guid3", guid3);
@@ -154,7 +154,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             {
                 for (var j = 0; j < bits4[i]; ++j)
                 {
-                    packet.ReadInt32("Int4", i, j);
+                    packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
                     packet.ReadInt32("Int10", i, j);
                     packet.ReadInt32("Int16", i, j);
                     packet.ReadInt32("Int22", i, j);
@@ -162,15 +162,15 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                     for (var k = 0; k < bits34[i][j]; ++k)
                     {
-                        packet.ReadInt32("Int36", i, j, k);
-                        packet.ReadInt32("Int44", i, j, k);
+                        packet.ReadInt32("Point X", i, j, (int)k);
+                        packet.ReadInt32("Point Y", i, j, (int)k);
                     }
 
                     packet.ReadInt32("Int12", i, j);
                     packet.ReadInt32("Int20", i, j);
-                    packet.ReadInt32("Int8", i, j);
+                    packet.ReadInt32("Player Condition ID", i, j);
                 }
-                packet.ReadInt32("Int5", i);
+                packet.ReadInt32("Criteria Tree ID", i);
             }
         }
     }
