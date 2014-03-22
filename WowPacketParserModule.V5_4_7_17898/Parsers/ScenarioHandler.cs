@@ -157,7 +157,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
                     packet.ReadInt32("Int10", i, j);
                     packet.ReadInt32("Int16", i, j);
-                    packet.ReadInt32("Int22", i, j);
+                    packet.ReadInt32("World Effect ID", i, j);
                     packet.ReadInt32("World Map Area ID", i, j);
 
                     for (var k = 0; k < bits34[i][j]; ++k)

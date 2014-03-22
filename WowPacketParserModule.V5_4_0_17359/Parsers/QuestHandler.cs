@@ -82,7 +82,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     packet.ReadInt32("Unk Int32 2", i, j);
                     packet.ReadInt32("Unk Int32 3", i, j);
                     questPoi.FloorId = packet.ReadUInt32("Floor Id", i, j);
-                    questPoi.WorldMapAreaId = packet.ReadUInt32("World Map Area", i, j);
+                    questPoi.WorldMapAreaId = packet.ReadUInt32("World Map Area ID", i, j);
 
                     for (var k = 0u; k < pointsSize[i][j]; ++k)
                     {
@@ -98,8 +98,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     questPoi.ObjectiveIndex = packet.ReadInt32("Objective Index", i, j);
                     packet.ReadInt32("Points Counter?", i, j);
                     questPoi.Map = (uint)packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map Id", i, j);
-                    packet.ReadInt32("Unk Int32 4", i, j);
-                    packet.ReadInt32("Unk Int32 5", i, j);
+                    packet.ReadInt32("Player Condition ID", i, j);
+                    packet.ReadInt32("World Effect ID", i, j);
                     questPoi.Idx = (uint)packet.ReadInt32("POI Index", i, j);
                     questPOIs.Add(questPoi);
                 }
