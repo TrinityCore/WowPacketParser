@@ -351,5 +351,46 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadUInt32("Needed guild members");
             packet.ReadUInt32("Current guild members");
         }
+
+        [Parser(Opcode.CMSG_GUILD_BANKER_ACTIVATE)]
+        public static void HandleGuildBankerActivate(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[3] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            packet.ReadBit("Full Slot List");
+            guid[1] = packet.ReadBit();
+
+            packet.ParseBitStream(guid, 7, 1, 4, 2, 0, 3, 6, 5);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_QUERY_TAB)]
+        public static void HandleGuildBankQueryTab(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadByte("Tab Id");
+            guid[4] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            packet.ReadBit("Full Slot List");
+            guid[3] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+
+            packet.ParseBitStream(guid, 0, 6, 1, 7, 5, 2, 3, 4);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
