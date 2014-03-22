@@ -79,8 +79,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                     packet.ReadInt32("Unk Int32 1", i, j);
                     packet.ReadInt32("Unk Int32 2", i, j);
+                    packet.ReadInt32("Player Condition ID", i, j);
                     packet.ReadInt32("Unk Int32 3", i, j);
-                    packet.ReadInt32("Unk Int32 4", i, j);
 
                     for (var k = 0u; k < pointsSize[i][j]; ++k)
                     {

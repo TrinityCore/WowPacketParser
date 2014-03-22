@@ -79,7 +79,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     packet.ReadInt32("Unk Int32 4", i, j);
                     packet.ReadInt32("Unk Int32 5", i, j);
                     questPoi.Idx = (uint)packet.ReadInt32("POI Index", i, j);
-                    packet.ReadInt32("Unk Int32 6", i, j);
+                    packet.ReadInt32("Player Condition ID", i, j);
                     questPoi.FloorId = packet.ReadUInt32("Floor Id", i, j);
 
                     questPOIs.Add(questPoi);
