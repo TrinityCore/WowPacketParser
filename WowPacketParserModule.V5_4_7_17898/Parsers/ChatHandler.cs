@@ -223,5 +223,16 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
             packet.ReadWoWString("Message", len);
         }
+
+        [Parser(Opcode.CMSG_MESSAGECHAT_WHISPER)]
+        public static void HandleClientChatMessageWhisper(Packet packet)
+        {
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            var msgLen = packet.ReadBits(9);
+            var recvName = packet.ReadBits(8);
+
+            packet.ReadWoWString("Receivers Name", recvName);
+            packet.ReadWoWString("Message", msgLen);
+        }
     }
 }
