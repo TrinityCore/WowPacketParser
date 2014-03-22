@@ -323,9 +323,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 for (var j = 0; j < 5; ++j)
                     packet.ReadWoWString("String14", bits14[i][j]);
 
-                packet.WriteGuid("Guid1", accountId[i]);
-                packet.WriteGuid("Guid2", playerGUID[i]);
-                packet.WriteGuid("Guid3", guildGUID[i]);
+                packet.WriteGuid("PlayerGUID", playerGUID[i], i);
+                packet.WriteGuid("GuildGUID", guildGUID[i], i);
+                packet.WriteLine("[{0}] Account: {1}", i, BitConverter.ToUInt64(accountId[i], 0));
             }
         }
     }
