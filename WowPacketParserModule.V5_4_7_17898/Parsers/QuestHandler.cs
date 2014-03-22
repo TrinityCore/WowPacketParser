@@ -171,12 +171,12 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadByte("Slot");
         }
 
-        [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST)]
-        public static void HandleQuestCompleteQuest(Packet packet)
+        [Parser(Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD)]
+        public static void HandleQuestChooseReward(Packet packet)
         {
             var guid = new byte[8];
 
-            packet.ReadInt32("Int18");
+            packet.ReadUInt32("Reward");
             packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
             guid[2] = packet.ReadBit();
             guid[0] = packet.ReadBit();
@@ -229,6 +229,19 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 0);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_QUESTGIVER_REQUEST_REWARD)]
+        public static void HandleQuestRequestReward(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
+
+            packet.StartBitStream(guid, 4, 1, 7, 0, 3, 2, 6, 5);
+            packet.ParseBitStream(guid, 7, 2, 6, 4, 3, 1, 5, 0);
 
             packet.WriteGuid("Guid", guid);
         }
