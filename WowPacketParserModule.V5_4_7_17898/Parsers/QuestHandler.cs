@@ -170,5 +170,67 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             packet.ReadByte("Slot");
         }
+
+        [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST)]
+        public static void HandleQuestCompleteQuest(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadInt32("Int18");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
+            guid[2] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+
+            packet.ParseBitStream(guid, 2, 0, 7, 5, 6, 4, 1, 3);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE)]
+        public static void HandleQuestCompleted510(Packet packet)
+        {
+            packet.ReadInt32("RewSkillId");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
+            packet.ReadInt32("Unk Int32 1");
+            packet.ReadInt32("RewSkillPoints");
+            packet.ReadInt32("Money");
+            packet.ReadInt32("XP");
+            packet.ReadBit("Unk Bit 1"); // if true EVENT_QUEST_FINISHED is fired, target cleared and gossip window is open
+            packet.ReadBit("Unk Bit 2");
+        }
+
+        [Parser(Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST)]
+        public static void HandleQuestgiverAcceptQuest(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
+            guid[3] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            packet.ReadBit("bit18");
+            guid[5] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 0);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
