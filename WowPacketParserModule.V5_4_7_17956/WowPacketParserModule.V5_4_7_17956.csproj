@@ -77,6 +77,7 @@
     <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />
     <Compile Include="Parsers\TalentHandler.cs" />
+    <Compile Include="Parsers\TimeHandler.cs" />
     <Compile Include="Parsers\TradeHandler.cs" />
     <Compile Include="Parsers\UpdateHandler.cs" />
     <Compile Include="Parsers\WardenHandler.cs" />
