@@ -454,11 +454,5 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
-
-        [Parser(Opcode.CMSG_GROUP_RAID_CONVERT)]
-        public static void HandleGroupRaidConvert(Packet packet)
-        {
-            packet.ReadBit("ToRaid");
-        }
     }
 }
