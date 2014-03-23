@@ -87,6 +87,17 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.CMSG_GAMEOBJ_USE)]
+        public static void HandleGOUse(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 4, 7, 6, 5, 1, 3, 2, 0);
+            packet.ParseBitStream(guid, 4, 3, 2, 0, 5, 6, 1, 7);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM)]
         public static void HandleGODespawnAnim(Packet packet)
         {

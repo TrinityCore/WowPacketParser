@@ -241,5 +241,137 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.WriteLine("[{0}] Account: {1}", i, BitConverter.ToUInt64(accountId[i], 0));
             }
         }
+
+        [Parser(Opcode.CMSG_QUERY_INSPECT_ACHIEVEMENTS)]
+        public static void HandleInspectAchievementData(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 2, 5, 0, 7, 3, 4, 6, 1);
+            packet.ParseBitStream(guid, 2, 5, 4, 6, 1, 3, 0, 7);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS)]
+        public static void HandleInspectAchievementDataResponse(Packet packet)
+        {
+            var guid = new byte[8];
+
+            var criterias = packet.ReadBits("Criterias", 19);
+            var achievements = packet.ReadBits("Achievements", 20);
+
+            var flags = new uint[criterias];
+            var counter = new byte[criterias][];
+            var guid2 = new byte[criterias][];
+            
+            for (var i = 0; i < criterias; ++i)
+            {
+                counter[i] = new byte[8];
+                guid2[i] = new byte[8];
+
+                counter[i][5] = packet.ReadBit();
+                flags[i] = packet.ReadBits(4);
+                guid2[i][4] = packet.ReadBit();
+                counter[i][6] = packet.ReadBit();
+                guid2[i][6] = packet.ReadBit();
+                guid2[i][1] = packet.ReadBit();
+                counter[i][0] = packet.ReadBit();
+                guid2[i][5] = packet.ReadBit();
+                counter[i][7] = packet.ReadBit();
+                guid2[i][2] = packet.ReadBit();
+                counter[i][1] = packet.ReadBit();
+                guid2[i][7] = packet.ReadBit();
+                counter[i][2] = packet.ReadBit();
+                counter[i][3] = packet.ReadBit();
+                guid2[i][0] = packet.ReadBit();
+                counter[i][4] = packet.ReadBit();
+                guid2[i][3] = packet.ReadBit();
+            }
+
+            guid[1] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            
+            var guid5 = new byte[achievements][];
+
+            for (var i = 0; i < achievements; ++i)
+            {
+                guid5[i] = new byte[8];
+
+                guid5[i][4] = packet.ReadBit();
+                guid5[i][3] = packet.ReadBit();
+                guid5[i][0] = packet.ReadBit();
+                guid5[i][6] = packet.ReadBit();
+                guid5[i][2] = packet.ReadBit();
+                guid5[i][5] = packet.ReadBit();
+                guid5[i][1] = packet.ReadBit();
+                guid5[i][7] = packet.ReadBit();
+            }
+
+            guid[3] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 2);
+            
+            for (var i = 0; i < achievements; ++i)
+            {
+                packet.ReadXORByte(guid5[i], 3);
+                packet.ReadXORByte(guid5[i], 0);
+                packet.ReadInt32("Realm Id", i);
+                packet.ReadInt32("Realm Id", i);
+                packet.ReadXORByte(guid5[i], 4);
+                packet.ReadUInt32("Achievement Id", i);
+                packet.ReadPackedTime("Achievement Time", i);
+                packet.ReadXORByte(guid5[i], 7);
+                packet.ReadXORByte(guid5[i], 5);
+                packet.ReadXORByte(guid5[i], 1);
+                packet.ReadXORByte(guid5[i], 6);
+                packet.ReadXORByte(guid5[i], 2);
+
+                packet.WriteGuid("Player GUID", guid2[i], i);
+            }
+            
+            for (var i = 0; i < criterias; ++i)
+            {
+                packet.ReadUInt32("Criteria Timer 2", i);
+                packet.ReadXORByte(guid2[i], 3);
+                packet.ReadXORByte(counter[i], 5);
+                packet.ReadXORByte(guid2[i], 6);
+                packet.ReadXORByte(guid2[i], 4);
+                packet.ReadXORByte(counter[i], 4);
+                packet.ReadXORByte(counter[i], 7);
+                packet.ReadUInt32("Criteria Id", i);
+                packet.ReadXORByte(counter[i], 0);
+                packet.ReadXORByte(counter[i], 1);
+                packet.ReadXORByte(guid2[i], 0);
+                packet.ReadXORByte(guid2[i], 1);
+                packet.ReadUInt32("Criteria Timer 1", i);
+                packet.ReadXORByte(guid2[i], 2);
+                packet.ReadXORByte(guid2[i], 7);
+                packet.ReadXORByte(guid2[i], 5);
+                packet.ReadXORByte(counter[i], 2);
+                packet.ReadPackedTime("Criteria Time", i);
+                packet.ReadXORByte(counter[i], 6);
+                packet.ReadXORByte(counter[i], 3);
+
+                packet.WriteLine("[{0}] Criteria Flags: {1}", i, flags[i]);
+                packet.WriteLine("[{0}] Criteria Counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
+                packet.WriteGuid("Criteria GUID", guid2[i], i);
+            }
+
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 7);
+
+            packet.WriteGuid("GUID", guid);
+        }
     }
 }
