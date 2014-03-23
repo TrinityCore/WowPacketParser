@@ -18,7 +18,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_ATTACKSTOP,  0x1777},
             {Opcode.CMSG_ATTACKSWING, 0x1513},
             {Opcode.CMSG_AUCTION_HELLO, 0x047F},
-            {Opcode.CMSG_AUTH_SESSION, 0x1A51},
+            {Opcode.CMSG_AUTH_SESSION, 0x1A51 | 0x10000},
             {Opcode.CMSG_AUTOSTORE_LOOT_ITEM, 0x1F7A | 0x10000},
             {Opcode.CMSG_AUTOEQUIP_ITEM, 0x166B},
             {Opcode.CMSG_BATTLE_PET_NAME_QUERY, 0x16E0},
