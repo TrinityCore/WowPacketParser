@@ -6,7 +6,6 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class CombatHandler
     {
-
         [Parser(Opcode.CMSG_ATTACKSWING)]
         public static void HandleAttackSwing(Packet packet)
         {

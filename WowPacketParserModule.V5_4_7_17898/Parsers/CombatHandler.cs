@@ -99,6 +99,17 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Victim GUID", VictimGUID);
         }
 
+        [Parser(Opcode.CMSG_ATTACKSWING)]
+        public static void HandleAttackSwing(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 1, 5, 7, 0, 4, 6, 3, 2);
+            packet.ParseBitStream(guid, 1, 2, 5, 7, 0, 3, 6, 4);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]
         public static void HandleAttackerStateUpdate(Packet packet)
         {

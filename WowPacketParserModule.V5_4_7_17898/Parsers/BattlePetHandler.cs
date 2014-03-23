@@ -85,6 +85,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 bitEB[i] = !packet.ReadBit();//v3+0
                 bits10[i] = packet.ReadBits(25);//v3 + 7 + 16
 
+                //case 0
+                bit28[i] = new bool[bits10[i]];
                 //case 1
                 bitCC[i] = new bool[bits10[i]];
                 bit140[i] = new bool[bits10[i]];
@@ -919,6 +921,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         }
 
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]
+        [Parser(Opcode.SMSG_PET_BATTLE_QUEUE_PROPOSE_MATCH)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }
