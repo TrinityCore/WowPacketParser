@@ -183,7 +183,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.MSG_MOVE_STOP_PITCH, 0x0071 | 0x10000}, // 5.4.7 17956
             {Opcode.MSG_MOVE_STOP_STRAFE, 0x0171}, // 5.4.7 17956
             {Opcode.MSG_MOVE_STOP_SWIM, 0x0578}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_STOP_TURN, 0x0530}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_STOP_TURN, 0x0530 | 0x10000}, // 5.4.7 17956
             {Opcode.MSG_MOVE_TELEPORT, 0x00D5 | 0x10000}, // 5.4.7 17956
             {Opcode.MSG_MOVE_TELEPORT_ACK, 0x0978}, // 5.4.7 17956
             {Opcode.MSG_MOVE_WORLDPORT_ACK, 0x18BB},
