@@ -433,7 +433,24 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                             packet.WriteLine("[{0}] " + v.ToString(), index);
                         }
-                        SplineType spType = packet.ReadEnum<SplineType>("Spline Type", 8, index);
+
+                        var type = packet.ReadByte();
+                        switch (type)
+                        {
+                            case 1:
+                                splineType = SplineType.Normal;
+                                break;
+                            case 2:
+                                splineType = SplineType.FacingSpot;
+                                break;
+                            case 3:
+                                splineType = SplineType.FacingTarget;
+                                break;
+                            case 4:
+                                splineType = SplineType.FacingAngle;
+                                break;
+                        }
+
                         packet.ReadSingle("Duration Mod", index);
 
                         //    NYI block here
