@@ -324,7 +324,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_MOVE_UPDATE_WALK_SPEED, 0x139A},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x1E5B | 0x20000},
             {Opcode.SMSG_NEW_WORLD, 0x05AB},
-            {Opcode.SMSG_NPC_TEXT_UPDATE, 0x10E0},
+            {Opcode.SMSG_NPC_TEXT_UPDATE, 0x10E0 | 0x20000},
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x1653},
             {Opcode.SMSG_PARTYKILLLOG, 0x0F23},
             {Opcode.SMSG_PET_BATTLE_CHAT_RESTRICTED, 0x1F53 | 0x20000},  // 5.4.7 17930 PET_BATTLE NYI
