@@ -134,7 +134,8 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17956
     public enum UnitDynamicField
     {
         UNIT_DYNAMIC_FIELD_PASSIVE_SPELLS                = ObjectField.OBJECT_END + 0x0,
-        UNIT_DYNAMIC_END                                 = ObjectField.OBJECT_END + 0x101
+        UNIT_DYNAMIC_FIELD_WORLD_EFFECTS                 = ObjectField.OBJECT_END + 0x101,
+        UNIT_DYNAMIC_END                                 = ObjectField.OBJECT_END + 0x202
     }
 
     public enum PlayerField
@@ -236,9 +237,9 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17956
 
     public enum PlayerDynamicField
     {
-        PLAYER_DYNAMIC_FIELD_RESEARCH_SITES              = PlayerField.PLAYER_FIELD_END + 0x0,
-        PLAYER_DYNAMIC_FIELD_DAILY_QUESTS_COMPLETED      = PlayerField.PLAYER_FIELD_END + 0x2,
-        PLAYER_DYNAMIC_END                               = PlayerField.PLAYER_FIELD_END + 0x4
+        PLAYER_DYNAMIC_FIELD_RESEARCH_SITES              = UnitDynamicField.UNIT_DYNAMIC_END + 0x0,
+        PLAYER_DYNAMIC_FIELD_DAILY_QUESTS_COMPLETED      = UnitDynamicField.UNIT_DYNAMIC_END + 0x2,
+        PLAYER_DYNAMIC_END                               = UnitDynamicField.UNIT_DYNAMIC_END + 0x4
     }
 
     public enum GameObjectField
