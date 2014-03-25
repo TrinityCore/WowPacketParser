@@ -433,13 +433,23 @@ namespace WowPacketParser.Parsing.Parsers
             LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
         }
 
-        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17930)]
         public static void HandlePlayerLogin510(Packet packet)
         {
             var guid = packet.StartBitStream(1, 5, 0, 2, 7, 6, 3, 4);
             packet.ParseBitStream(guid, 6, 4, 3, 5, 0, 2, 7, 1);
             packet.WriteGuid("Guid", guid);
             packet.ReadSingle("Unk Float");
+            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+        }
+
+        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V5_4_7_17930)]
+        public static void HandlePlayerLogin547(Packet packet)
+        {
+            packet.ReadSingle("Unk Float");
+            var guid = packet.StartBitStream(7, 6, 0, 4, 5, 2, 3, 1);
+            packet.ParseBitStream(guid, 5, 0, 1, 6, 7, 2, 3, 4);
+            packet.WriteGuid("Guid", guid);
             LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
         }
 
@@ -502,6 +512,16 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt16("Int 16");
             packet.ReadEnum<UnknownFlags>("Unknown int32 flag", TypeCode.Int32);
             packet.ReadInt64("Int 64");
+        }
+
+        [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_4_7_17930)]
+        public static void HandleRedirectClient547(Packet packet)
+        {
+            packet.ReadUInt64("Unk, send it CMSG_AUTH_SESSION, may be bytes sent and bytes received");
+            byte[] RSABuffer = new byte[256];
+            RSABuffer = packet.ReadBytes(256);
+            packet.ReadByte("Future connection offset in WowConnections array");
+            packet.ReadUInt32("Server Token");
         }
 
         [Parser(Opcode.CMSG_REDIRECTION_FAILED)]
