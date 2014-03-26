@@ -33,7 +33,6 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17956
         ITEM_END                                         = ObjectField.OBJECT_END + 0x003D,
     };
 
-
     public enum ItemDynamicField
     {
         ITEM_DYNAMIC_FIELD_MODIFIERS                     = ItemField.ITEM_END + 0x0,
@@ -46,7 +45,6 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17956
         CONTAINER_FIELD_NUM_SLOTS                        = ItemField.ITEM_END + 0x0048, // Size =   1, Type: Flags PUBLIC
         CONTAINER_END                                    = ItemField.ITEM_END + 0x0049,
     };
-
 
     public enum UnitField
     {
