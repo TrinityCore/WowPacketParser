@@ -119,5 +119,20 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var channelLength = packet.ReadBits(7);
             packet.ReadWoWString("Channel Name", channelLength);
         }
+
+        [Parser(Opcode.SMSG_CHANNEL_LIST)]
+        public static void HandleChannelSendList(Packet packet)
+        {
+            packet.ReadByte("Type");
+            packet.ReadCString("Channel Name");
+            packet.ReadEnum<ChannelFlag>("Flags", TypeCode.Byte);
+            var count = packet.ReadInt32("Counter");
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadGuid("Player GUID " + i);
+                packet.ReadEnum<ChannelMemberFlag>("Player Flags " + i, TypeCode.Byte);
+                packet.ReadUInt32("unk");
+            }
+        }
     }
 }
