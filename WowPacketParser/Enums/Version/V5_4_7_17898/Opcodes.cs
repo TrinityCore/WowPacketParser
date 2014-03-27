@@ -437,6 +437,8 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_JOIN_CHANNEL, 0x1D20},
             {Opcode.CMSG_LEAVE_CHANNEL, 0x0E0B},
             {Opcode.SMSG_CHANNEL_LIST, 0x06EE},
+            {Opcode.CMSG_CONTACT_LIST, 0x1186},
+            {Opcode.CMSG_SET_CONTACT_NOTES, 0x03A4},
 
             /* Note:
              0x1231, 0x12FB - CMSG / SMSG - Count opcode
