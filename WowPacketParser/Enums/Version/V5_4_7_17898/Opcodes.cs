@@ -32,7 +32,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_CANCEL_CAST, 0x12EB | 0x10000},
             {Opcode.CMSG_CANCEL_TRADE, 0x1D32},
             {Opcode.CMSG_CAST_SPELL, 0x1E5B | 0x10000},
-            {Opcode.CMSG_CHANNEL_LIST, 0x1D20},
+            {Opcode.CMSG_CHANNEL_LIST, 0x1D08},
             {Opcode.CMSG_CHAR_CREATE, 0x09B9},
             {Opcode.CMSG_CHAR_DELETE, 0x113B},
             {Opcode.CMSG_CHAR_ENUM, 0x12C2},
@@ -434,6 +434,8 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_VOID_STORAGE_TRANSFER_CHANGES, 0x05A8},
             {Opcode.SMSG_VOID_TRANSFER_RESULT, 0x00E3},
             {Opcode.SMSG_XP_GAIN_ABORTED, 0x1E32},
+            {Opcode.CMSG_JOIN_CHANNEL, 0x1D20},
+            {Opcode.CMSG_LEAVE_CHANNEL, 0x0E0B},
 
             /* Note:
              0x1231, 0x12FB - CMSG / SMSG - Count opcode

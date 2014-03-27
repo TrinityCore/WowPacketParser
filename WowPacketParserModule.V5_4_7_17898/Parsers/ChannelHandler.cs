@@ -12,14 +12,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.CMSG_CHANNEL_LIST)]
         public static void HandleChannelList(Packet packet)
         {
-            packet.ReadUInt32("Flags");
-            var pwLen = packet.ReadBits(7);
-            packet.ReadBit();
-            var nameLen = packet.ReadBits(7);
-            packet.ReadBit();
-
-            packet.ReadWoWString("Password", pwLen);
-            packet.ReadWoWString("Channel Name", nameLen);
+            var channelLength = packet.ReadBits(7);
+            packet.ReadWoWString("Channel Name", channelLength);
         }
 
         [Parser(Opcode.SMSG_CHANNEL_NOTIFY)]
@@ -104,6 +98,26 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 case ChatNotificationType.NotInLfg:
                     break;
             }
+        }
+
+        [Parser(Opcode.CMSG_JOIN_CHANNEL)]
+        public static void HandleChannelJoin(Packet packet)
+        {
+            packet.ReadInt32("Channel Id");
+            var passwordLength = packet.ReadBits(7);
+            packet.ReadBit("Joined by zone update");
+            var channelLength = packet.ReadBits(7);
+            packet.ReadBit("Has Voice");
+            packet.ReadWoWString("Channel Pass", passwordLength);
+            packet.ReadWoWString("Channel Name", channelLength);
+        }
+
+        [Parser(Opcode.CMSG_LEAVE_CHANNEL)]
+        public static void HandleChannelLeave(Packet packet)
+        {
+            packet.ReadInt32("Channel Id");
+            var channelLength = packet.ReadBits(7);
+            packet.ReadWoWString("Channel Name", channelLength);
         }
     }
 }
