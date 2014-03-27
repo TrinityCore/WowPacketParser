@@ -75,10 +75,8 @@ namespace WowPacketParser.Parsing.Parsers
                 case ChatNotificationType.Left:
                 case ChatNotificationType.VoiceOn:
                 case ChatNotificationType.VoiceOff:
-                case ChatNotificationType.Unknown1:
                 {
                     packet.ReadGuid("GUID");
-                    packet.ReadInt32("RealmId");
                     break;
                 }
                 case ChatNotificationType.YouJoined:
@@ -116,6 +114,11 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     packet.ReadGuid("Bad");
                     packet.ReadGuid("Good");
+                    break;
+                }
+                case ChatNotificationType.Unknown1:
+                {
+                    packet.ReadGuid("GUID");
                     break;
                 }
                 case ChatNotificationType.WrongPassword:
