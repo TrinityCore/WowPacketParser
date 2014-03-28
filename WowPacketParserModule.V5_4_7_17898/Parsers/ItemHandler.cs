@@ -346,5 +346,31 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.WriteGuid("Guid4", guid4);
             }
         }
+
+        [Parser(Opcode.CMSG_AUTOEQUIP_ITEM)]
+        public static void HandleAutoEquipItem(Packet packet)
+        {
+            packet.ReadByte("Bag");
+            packet.ReadByte("Slot");
+
+            var bits14 = (int)packet.ReadBits(2);
+
+            var hasSlot = new bool[bits14];
+            var hasBag = new bool[bits14];
+
+            for (var i = 0; i < bits14; ++i)
+            {
+                hasSlot[i] = !packet.ReadBit();
+                hasBag[i] = !packet.ReadBit();
+            }
+            
+            for (var i = 0; i < bits14; ++i)
+            {
+                if (hasBag[i])
+                    packet.ReadByte("Bag", i);
+                if (hasSlot[i])
+                    packet.ReadByte("Slot", i);
+            }
+        }
     }
 }

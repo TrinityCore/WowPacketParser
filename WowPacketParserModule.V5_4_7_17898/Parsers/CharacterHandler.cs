@@ -247,10 +247,10 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var hasBaseXP = !packet.ReadBit();
             guid[6] = packet.ReadBit();
             guid[3] = packet.ReadBit();
-            packet.ReadBit("Unk Bit");
+            var hasGroupRate = !packet.ReadBit();
             guid[0] = packet.ReadBit();
             guid[7] = packet.ReadBit();
-            var hasGroupRate = packet.ReadBit();
+            packet.ReadBit("Unk Bit");
             guid[2] = packet.ReadBit();
             guid[1] = packet.ReadBit();
             guid[5] = packet.ReadBit();
