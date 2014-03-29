@@ -422,6 +422,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_TIME_SYNC_REQ, 0x12F1},
             {Opcode.SMSG_TOTEM_CREATED, 0x0608},
             {Opcode.SMSG_TRAINER_LIST, 0x1509},
+            {Opcode.SMSG_TRANSFER_ABORTED, 0x0648},
             {Opcode.SMSG_TRANSFER_PENDING, 0x0440},
             {Opcode.SMSG_TRIGGER_CINEMATIC, 0x04CC},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x10A7},
