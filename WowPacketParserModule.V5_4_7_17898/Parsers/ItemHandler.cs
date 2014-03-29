@@ -372,5 +372,96 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     packet.ReadByte("Slot", i);
             }
         }
+
+        [Parser(Opcode.CMSG_REPAIR_ITEM)]
+        public static void HandleRepairItem(Packet packet)
+        {
+            var vendorGUID = new byte[8];
+            var itemGUID = new byte[8];
+
+            vendorGUID[3] = packet.ReadBit();
+            itemGUID[3] = packet.ReadBit();
+            itemGUID[6] = packet.ReadBit();
+            packet.ReadBit("Use guild money");
+            vendorGUID[2] = packet.ReadBit();
+            itemGUID[0] = packet.ReadBit();
+            vendorGUID[7] = packet.ReadBit();
+            vendorGUID[6] = packet.ReadBit();
+            vendorGUID[0] = packet.ReadBit();
+            itemGUID[7] = packet.ReadBit();
+            itemGUID[4] = packet.ReadBit();
+            vendorGUID[5] = packet.ReadBit();
+            itemGUID[5] = packet.ReadBit();
+            vendorGUID[4] = packet.ReadBit();
+            itemGUID[2] = packet.ReadBit();
+            vendorGUID[1] = packet.ReadBit();
+            itemGUID[1] = packet.ReadBit();
+
+            packet.ReadXORByte(itemGUID, 6);
+            packet.ReadXORByte(vendorGUID, 1);
+            packet.ReadXORByte(vendorGUID, 0);
+            packet.ReadXORByte(vendorGUID, 2);
+            packet.ReadXORByte(itemGUID, 2);
+            packet.ReadXORByte(itemGUID, 5);
+            packet.ReadXORByte(itemGUID, 1);
+            packet.ReadXORByte(vendorGUID, 6);
+            packet.ReadXORByte(vendorGUID, 7);
+            packet.ReadXORByte(itemGUID, 3);
+            packet.ReadXORByte(itemGUID, 7);
+            packet.ReadXORByte(vendorGUID, 3);
+            packet.ReadXORByte(vendorGUID, 4);
+            packet.ReadXORByte(vendorGUID, 5);
+            packet.ReadXORByte(itemGUID, 0);
+            packet.ReadXORByte(itemGUID, 4);
+
+            packet.WriteGuid("Vendor GUID", vendorGUID);
+            packet.WriteGuid("Item GUID", itemGUID);
+        }
+
+        [Parser(Opcode.CMSG_SELL_ITEM)]
+        public static void HandleSellItem(Packet packet)
+        {
+            var vendorGUID = new byte[8];
+            var itemGUID = new byte[8];
+
+            packet.ReadInt32("Count");
+
+            itemGUID[7] = packet.ReadBit();
+            vendorGUID[0] = packet.ReadBit();
+            vendorGUID[3] = packet.ReadBit();
+            itemGUID[3] = packet.ReadBit();
+            vendorGUID[7] = packet.ReadBit();
+            vendorGUID[6] = packet.ReadBit();
+            vendorGUID[5] = packet.ReadBit();
+            vendorGUID[2] = packet.ReadBit();
+            itemGUID[4] = packet.ReadBit();
+            itemGUID[6] = packet.ReadBit();
+            itemGUID[5] = packet.ReadBit();
+            itemGUID[2] = packet.ReadBit();
+            vendorGUID[1] = packet.ReadBit();
+            vendorGUID[4] = packet.ReadBit();
+            itemGUID[0] = packet.ReadBit();
+            itemGUID[1] = packet.ReadBit();
+
+            packet.ReadXORByte(vendorGUID, 6);
+            packet.ReadXORByte(vendorGUID, 2);
+            packet.ReadXORByte(itemGUID, 1);
+            packet.ReadXORByte(vendorGUID, 0);
+            packet.ReadXORByte(vendorGUID, 7);
+            packet.ReadXORByte(itemGUID, 6);
+            packet.ReadXORByte(itemGUID, 0);
+            packet.ReadXORByte(itemGUID, 7);
+            packet.ReadXORByte(vendorGUID, 1);
+            packet.ReadXORByte(vendorGUID, 5);
+            packet.ReadXORByte(itemGUID, 5);
+            packet.ReadXORByte(itemGUID, 3);
+            packet.ReadXORByte(itemGUID, 4);
+            packet.ReadXORByte(vendorGUID, 4);
+            packet.ReadXORByte(vendorGUID, 3);
+            packet.ReadXORByte(itemGUID, 2);
+
+            packet.WriteGuid("Vendor GUID", vendorGUID);
+            packet.WriteGuid("Item GUID", itemGUID);
+        }
     }
 }

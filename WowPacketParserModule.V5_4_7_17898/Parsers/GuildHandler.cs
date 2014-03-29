@@ -292,7 +292,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadInt32("Guild Reputation", i);
                 packet.ReadEnum<Class>("Member Class", TypeCode.Byte, i);
                 packet.ReadByte("Member Level", i);
-                packet.ReadInt32("Zone Id", i);
+                packet.ReadInt32("Unk 3", i);
                 packet.ReadInt64("Week activity", i);
                 packet.ReadWoWString("Public note", publicLength[i], i);
 
@@ -300,7 +300,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadSingle("Last online", i);
                 packet.ReadXORByte(guid[i], 2);
                 packet.ReadXORByte(guid[i], 4);
-                packet.ReadInt32("Unk 3", i);
+                packet.ReadInt32("Zone Id", i);
                 packet.ReadEnum<Gender>("Gender", TypeCode.Byte, i);
                 packet.ReadInt32("RealmId", i);
                 packet.ReadXORByte(guid[i], 7);
