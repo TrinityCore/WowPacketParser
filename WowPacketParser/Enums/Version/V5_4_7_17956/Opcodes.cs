@@ -130,6 +130,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17956
             {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0x1F08},
             {Opcode.SMSG_PLAYER_MOVE, 0x1CB2},
             {Opcode.SMSG_PONG, 0x15B1},
+            {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x0F13},
             {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x1652},
             {Opcode.SMSG_SET_PROFICIENCY, 0x1E3B},
             {Opcode.SMSG_SERVER_TIMEZONE, 0x0C2B},
