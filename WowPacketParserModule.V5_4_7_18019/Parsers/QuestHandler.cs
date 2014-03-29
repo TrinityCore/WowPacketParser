@@ -11,6 +11,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 {
     public static class QuestHandler
     {
+        [HasSniffData]
         [Parser(Opcode.SMSG_QUEST_QUERY_RESPONSE)]
         public static void HandleQuestQueryResp(Packet packet)
         {

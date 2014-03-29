@@ -35,8 +35,8 @@ namespace WowPacketParser.Enums.Version.V5_4_7_18019
 
     public enum ItemDynamicField
     {
-        ITEM_DYNAMIC_FIELD_MODIFIERS                     = ItemField.ITEM_END + 0x0,
-        ITEM_DYNAMIC_END                                 = ItemField.ITEM_END + 0x48
+        ITEM_DYNAMIC_FIELD_MODIFIERS                     = 0x0000,
+        ITEM_DYNAMIC_END                                 = 0x0048
     }
 
     public enum ContainerField
@@ -131,9 +131,9 @@ namespace WowPacketParser.Enums.Version.V5_4_7_18019
 
     public enum UnitDynamicField
     {
-        UNIT_DYNAMIC_FIELD_PASSIVE_SPELLS                = ObjectField.OBJECT_END + 0x0,
-        UNIT_DYNAMIC_FIELD_WORLD_EFFECTS                 = ObjectField.OBJECT_END + 0x101,
-        UNIT_DYNAMIC_END                                 = ObjectField.OBJECT_END + 0x202
+        UNIT_DYNAMIC_FIELD_PASSIVE_SPELLS                = 0x0000,
+        UNIT_DYNAMIC_FIELD_WORLD_EFFECTS                 = 0x0101,
+        UNIT_DYNAMIC_END                                 = 0x0202
     }
 
     public enum PlayerField
@@ -235,9 +235,9 @@ namespace WowPacketParser.Enums.Version.V5_4_7_18019
 
     public enum PlayerDynamicField
     {
-        PLAYER_DYNAMIC_FIELD_RESEARCH_SITES              = UnitDynamicField.UNIT_DYNAMIC_END + 0x0,
-        PLAYER_DYNAMIC_FIELD_DAILY_QUESTS_COMPLETED      = UnitDynamicField.UNIT_DYNAMIC_END + 0x2,
-        PLAYER_DYNAMIC_END                               = UnitDynamicField.UNIT_DYNAMIC_END + 0x4
+        PLAYER_DYNAMIC_FIELD_RESEARCH_SITES              = 0x0000,
+        PLAYER_DYNAMIC_FIELD_DAILY_QUESTS_COMPLETED      = 0x0002,
+        PLAYER_DYNAMIC_END                               = 0x0004
     }
 
     public enum GameObjectField
@@ -252,6 +252,12 @@ namespace WowPacketParser.Enums.Version.V5_4_7_18019
         GAMEOBJECT_FIELD_ANIM_PROGRESS                   = ObjectField.OBJECT_END + 0x000B, // Size =   1, Type: Flags PUBLIC | DYNAMIC
         GAMEOBJECT_FIELD_END                             = ObjectField.OBJECT_END + 0x000C
     };
+
+    public enum GameObjectDynamicField
+    {
+        GAMEOBJECT_DYNAMIC_FIELD_UNK                     = 0x0000,
+        GAMEOBJECT_DYNAMIC_END                           = 0x0001
+    }
 
     public enum DynamicObjectField
     {

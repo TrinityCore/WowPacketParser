@@ -388,7 +388,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_QUEST_QUERY_RESPONSE, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_QUEST_QUERY_RESPONSE, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleQuestQueryResponse510(Packet packet)
         {
             var id = packet.ReadEntry("Quest ID");
