@@ -614,14 +614,14 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GAMETIME_SET)]
+        [Parser(Opcode.SMSG_GAMETIME_SET, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleGametimeSet(Packet packet)
         {
             packet.ReadUInt32("Unk time");
             packet.ReadUInt32("Unk int32");
         }
 
-        [Parser(Opcode.SMSG_GAMETIME_UPDATE)]
+        [Parser(Opcode.SMSG_GAMETIME_UPDATE, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleGametimeUpdate(Packet packet)
         {
             packet.ReadUInt32("Unk time"); // Time online?
