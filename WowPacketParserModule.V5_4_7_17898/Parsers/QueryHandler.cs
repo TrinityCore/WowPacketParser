@@ -658,6 +658,162 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [HasSniffData]
+        [Parser(Opcode.SMSG_QUEST_QUERY_RESPONSE)]
+        public static void HandleQuestQueryResponse(Packet packet)
+        {
+            var id = packet.ReadUInt32("Entry");
+            var hasData = packet.ReadBit("hasData");
+            if (!hasData)
+                return; // nothing to do
+
+            var bits1658 = (int)packet.ReadBits(9);
+            var bits30 = (int)packet.ReadBits(9);
+            var bits1793 = (int)packet.ReadBits(10);
+            var bits2369 = (int)packet.ReadBits(8);
+            var bits158 = (int)packet.ReadBits(12);
+            var bits2049 = (int)packet.ReadBits(8);
+            var bits908 = (int)packet.ReadBits(12);
+            var bits2113 = (int)packet.ReadBits(10);
+            var bits2433 = (int)packet.ReadBits(11);
+            var count = (int)packet.ReadBits("Requirement Count", 19);
+
+            var bits2949 = new int[count];
+            var counter = new int[count];
+            for (var i = 0; i < count; ++i)
+            {
+                counter[i] = (int)packet.ReadBits(22);
+                bits2949[i] = (int)packet.ReadBits(8);
+            }
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("byte2949+0", i);
+                packet.ReadWoWString("string2949+20", bits2949[i], i);
+                packet.ReadByte("byte2949+4", i);
+                packet.ReadByte("byte2949+5", i);
+                packet.ReadInt32("int2949+12", i);
+
+                for (var j = 0; j < counter[i]; ++j)
+                    packet.ReadInt32("Unk UInt32", i, j);
+
+                packet.ReadInt32("int2949+16", i);
+                packet.ReadInt32("int2949+8", i);
+            }
+
+            packet.ReadInt32("int2959");
+            packet.ReadInt32("int2964");
+            packet.ReadInt32("int19");
+
+            packet.ReadSingle("float27");
+
+            packet.ReadInt32("int14");
+            packet.ReadInt32("int2970");
+
+            packet.ReadSingle("float22");
+
+            packet.ReadInt32("int2955");
+            packet.ReadInt32("int12");
+            packet.ReadInt32("int2981");
+            packet.ReadInt32("int2957");
+
+            packet.ReadWoWString("string2049", bits2049);
+
+            packet.ReadInt32("int2977");
+            packet.ReadInt32("int15");
+            packet.ReadInt32("int2966");
+            packet.ReadInt32("int2960");
+            packet.ReadInt32("int8");
+            packet.ReadInt32("int1789");
+
+            packet.ReadWoWString("string2433", bits2433);
+            packet.ReadWoWString("string1658", bits1658);
+
+            packet.ReadInt32("int2946");
+            packet.ReadInt32("int2945");
+            packet.ReadInt32("int17");
+            packet.ReadInt32("int2968");
+            packet.ReadInt32("int2947");
+
+            packet.ReadSingle("float28");
+
+            packet.ReadInt32("int18");
+            packet.ReadInt32("int29");
+
+            packet.ReadWoWString("string1793", bits1793);
+
+            for (var i = 0; i < 4; ++i)
+            {
+                packet.ReadInt32("int3001+16");
+                packet.ReadInt32("int3001+0");
+            }
+
+            packet.ReadWoWString("string158", bits158);
+
+            packet.ReadInt32("int2963");
+            packet.ReadInt32("int2965");
+            packet.ReadInt32("int20");
+
+            for (var i = 0; i < 5; ++i)
+            {
+                packet.ReadInt32("int2986+20");
+                packet.ReadInt32("int2986+0");
+                packet.ReadInt32("int2986+40");
+            }
+
+            packet.ReadWoWString("string2369", bits2369);
+
+            packet.ReadInt32("int2974");
+            packet.ReadInt32("int1791");
+            packet.ReadInt32("int1787");
+            packet.ReadInt32("int2952");
+            packet.ReadInt32("int11");
+            packet.ReadInt32("int21");
+            packet.ReadInt32("int2979");
+            packet.ReadInt32("int16");
+            packet.ReadInt32("int2962");
+
+            packet.ReadWoWString("string908", bits908);
+
+            packet.ReadInt32("int1792");
+            packet.ReadInt32("int6");
+            packet.ReadInt32("int2975");
+            packet.ReadInt32("int2984");
+            packet.ReadInt32("int2973");
+            packet.ReadInt32("int25");
+            packet.ReadInt32("int10");
+            packet.ReadInt32("int2961");
+            packet.ReadInt32("int1788");
+            packet.ReadInt32("int9");
+            packet.ReadInt32("int1786");
+            packet.ReadInt32("int2980");
+            packet.ReadInt32("int23");
+            packet.ReadInt32("int2976");
+            packet.ReadInt32("int2956");
+            packet.ReadInt32("int2972");
+            packet.ReadInt32("int13");
+            packet.ReadInt32("int26");
+
+            packet.ReadWoWString("string30", bits30);
+
+            packet.ReadInt32("int2954");
+            packet.ReadInt32("int2982");
+            packet.ReadInt32("int2967");
+            packet.ReadInt32("int2985");
+
+            packet.ReadWoWString("string2113", bits2113);
+
+            packet.ReadInt32("int2983");
+            packet.ReadInt32("int2953");
+            packet.ReadInt32("int2958");
+            packet.ReadInt32("int2969");
+            packet.ReadInt32("int24");
+            packet.ReadInt32("int1790");
+            packet.ReadInt32("int2971");
+            packet.ReadInt32("int7");
+            packet.ReadInt32("int2978");
+        }
+
         [Parser(Opcode.CMSG_PAGE_TEXT_QUERY)]
         public static void HandlePageTextQuery(Packet packet)
         {

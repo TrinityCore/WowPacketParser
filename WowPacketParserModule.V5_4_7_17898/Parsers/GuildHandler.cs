@@ -138,6 +138,28 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadWoWString("Text", (int)packet.ReadBits(10));
         }
 
+        [Parser(Opcode.CMSG_GUILD_NEWS_UPDATE_STICKY)]
+        public static void HandleGuildNewsUpdateSticky(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadInt32("Int1C");
+            guid[3] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            packet.ReadBit("Sticky");
+            guid[5] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+
+            packet.ParseBitStream(guid, 3, 4, 7, 2, 5, 1, 6, 0);
+
+            packet.WriteGuid("Guid2", guid);
+
+        }
+
         [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_DATA)]
         public static void HandleGuildAchievementData(Packet packet)
         {
@@ -391,6 +413,170 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ParseBitStream(guid, 0, 6, 1, 7, 5, 2, 3, 4);
 
             packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_NEWS_UPDATE)]
+        public static void HandleGuildNewsUpdate(Packet packet)
+        {
+            var size = packet.ReadBits("Size", 19);
+
+            var guidOut = new byte[size][];
+            var guidIn = new byte[size][][];
+            var count = new uint[size];
+
+            for (int i = 0; i < size; ++i)
+            {
+                guidOut[i] = new byte[8];
+                packet.StartBitStream(guidOut[i], 1, 5, 0, 7, 3, 4, 6, 2);
+
+                count[i] = packet.ReadBits(24);
+                if (count[i] != 0)
+                    packet.WriteLine("[{0]] Count: {0}", i, count[i]);
+
+                guidIn[i] = new byte[count[i]][];
+                for (var j = 0; j < count[i]; ++j)
+                    guidIn[i][j] = packet.StartBitStream(1, 5, 4, 3, 2, 7, 6, 0);
+            }
+
+            for (int i = 0; i < size; ++i)
+            {
+                for (int j = 0; i < count[i]; ++j)
+                {
+                    packet.ParseBitStream(guidIn[i][j], 3, 2, 4, 6, 5, 0, 1, 7);
+                    packet.WriteGuid("Guid", guidIn[i][j], i, j);
+                }
+
+                packet.ReadXORByte(guidOut[i], 5);
+                packet.ReadXORByte(guidOut[i], 2);
+
+                packet.ReadPackedTime("Time", i);
+
+                packet.ReadXORByte(guidOut[i], 4);
+                packet.ReadXORByte(guidOut[i], 0);
+                packet.ReadXORByte(guidOut[i], 6);
+                packet.ReadXORByte(guidOut[i], 7);
+
+                packet.ReadInt32("Unk", i); // not 0 for playerachievements and raidencounters, 1 - sticky
+
+                packet.ReadXORByte(guidOut[i], 1);
+
+                packet.ReadInt32("Entry (item/achiev/encounter)", i);
+                packet.ReadEnum<GuildNewsType>("News Type", TypeCode.Int32, i);
+
+                packet.ReadXORByte(guidOut[i], 3);
+
+                packet.ReadInt32("News Id", i);
+                packet.ReadInt32("Unk Int32 2", i); // always 0
+
+                packet.WriteGuid("Guid", guidOut[i], i);
+            }
+        }
+
+        [Parser(Opcode.CMSG_QUERY_GUILD_XP)]
+        public static void HandleGuildQueryGuildXP430(Packet packet)
+        {
+            var guid = packet.StartBitStream(3, 2, 7, 5, 6, 0, 1, 4);
+            packet.ParseBitStream(guid, 3, 7, 2, 1, 5, 4, 0, 6);
+            packet.WriteGuid("GUID", guid);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_XP)]
+        public static void HandleGuildXP(Packet packet)
+        {
+            packet.ReadUInt64("Guild Current XP");
+            packet.ReadUInt64("Member Weekly XP");
+            packet.ReadUInt64("Guild XP for next Level");
+            packet.ReadUInt64("Member Total XP");
+        }
+
+        [Parser(Opcode.SMSG_GUILD_REWARDS_LIST)]
+        public static void HandleGuildRewardsList(Packet packet)
+        {
+            packet.ReadTime("Time");
+            var size = packet.ReadBits("Size", 19);
+
+            var bits4 = new uint[size];
+
+            for (var i = 0; i < size; ++i)
+                bits4[i] = packet.ReadBits(22);
+
+            for (var i = 0; i < size; ++i)
+            {
+                for (var j = 0; j < bits4[i]; ++j)
+                    packet.ReadUInt32("Achievement Id", i, j);
+
+                packet.ReadUInt64("Price", i);
+                packet.ReadEnum<ReputationRank>("Faction Standing", TypeCode.UInt32, i);
+                packet.ReadEnum<RaceMask>("Race mask", TypeCode.UInt32, i);
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Id", i);
+                packet.ReadUInt32("Unk UInt32", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_GUILD_COMMAND_RESULT)]
+        public static void HandleGuildCommandResult(Packet packet)
+        {
+            packet.ReadEnum<GuildCommandError>("Command Result", TypeCode.UInt32);
+            packet.ReadEnum<GuildCommandType>("Command Type", TypeCode.UInt32);
+
+            var paramLen = packet.ReadBits(8);
+            packet.ReadWoWString("Param", paramLen);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_SET_GUILD_MASTER)]
+        public static void HandleGuildSetGuildMaster(Packet packet)
+        {
+            var nameLength = packet.ReadBits(9);
+            packet.ReadWoWString("New GuildMaster name", nameLength);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_SET_RANK_PERMISSIONS)]
+        public static void HandleGuildRank(Packet packet)
+        {
+            packet.ReadUInt32("Old Rank Id");
+
+            for (var i = 0; i < 8; ++i)
+            {
+                packet.ReadEnum<GuildBankRightsFlag>("Tab Rights", TypeCode.UInt32, i);
+                packet.ReadUInt32("Tab Slot", i);
+            }
+
+            packet.ReadUInt32("Money Per Day");
+            packet.ReadEnum<GuildRankRightsFlag>("New Rights", TypeCode.UInt32);
+            packet.ReadUInt32("New Rank Id");
+            packet.ReadEnum<GuildRankRightsFlag>("Old Rights", TypeCode.UInt32);
+
+            var length = packet.ReadBits(7);
+            packet.ReadWoWString("Rank Name", length);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_REMOVE)]
+        public static void HandleGuildRemove(Packet packet)
+        {
+            var guid = packet.StartBitStream(3, 1, 6, 0, 7, 2, 5, 4);
+            packet.ParseBitStream(guid, 2, 6, 0, 1, 4, 3, 5, 7);
+            packet.WriteGuid("GUID", guid);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_DEMOTE)]
+        public static void HandleGuildDemote(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 0, 7, 5, 3, 2, 4, 6);
+            packet.ParseBitStream(guid, 3, 4, 1, 0, 7, 2, 5, 6);
+            packet.WriteGuid("GUID", guid);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_PROMOTE)]
+        public static void HandleGuildPromote(Packet packet)
+        {
+            var guid = packet.StartBitStream(4, 0, 3, 5, 7, 1, 2, 6);
+            packet.ParseBitStream(guid, 7, 0, 5, 2, 3, 6, 4, 1);
+            packet.WriteGuid("GUID", guid);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_PERMISSIONS)]
+        public static void HandleGuildPermissions(Packet packet)
+        {
         }
     }
 }
