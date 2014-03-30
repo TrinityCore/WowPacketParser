@@ -76,6 +76,7 @@
     <Compile Include="Parsers\GroupHandler.cs" />
     <Compile Include="Parsers\GuildHandler.cs" />
     <Compile Include="Parsers\HotfixHandler.cs" />
+    <Compile Include="Parsers\InstanceHandler.cs" />
     <Compile Include="Parsers\ItemHandler.cs" />
     <Compile Include="Parsers\LfgHandler.cs" />
     <Compile Include="Parsers\LootHandler.cs" />
