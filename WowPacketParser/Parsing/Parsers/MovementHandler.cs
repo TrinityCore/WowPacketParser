@@ -430,7 +430,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
         }
 
-        [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]
+        [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleLoginSetTimeSpeed(Packet packet)
         {
             packet.ReadPackedTime("Game Time");
@@ -438,12 +438,6 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
                 packet.ReadInt32("Unk Int32");
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_4_7_17898))
-            {
-                packet.ReadInt32("Unk Int32");
-                packet.ReadPackedTime("Game Time");
-            }
         }
 
         [Parser(Opcode.SMSG_BINDPOINTUPDATE)]
