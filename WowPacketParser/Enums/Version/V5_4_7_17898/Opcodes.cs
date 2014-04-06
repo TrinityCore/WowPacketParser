@@ -470,6 +470,9 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_VOID_STORAGE_TRANSFER_CHANGES, 0x05A8},
             {Opcode.SMSG_VOID_TRANSFER_RESULT, 0x00E3},
             {Opcode.SMSG_XP_GAIN_ABORTED, 0x1E32},
+            {Opcode.CMSG_SWAP_INV_ITEM, 0x150A},
+            {Opcode.CMSG_SWAP_ITEM, 0x1403},
+            {Opcode.CMSG_AUTOSTORE_BAG_ITEM, 0x162B},
 
             /* Note:
              0x1231, 0x12FB - CMSG / SMSG - Count opcode

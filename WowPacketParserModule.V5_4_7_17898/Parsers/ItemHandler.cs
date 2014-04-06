@@ -463,5 +463,69 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Vendor GUID", vendorGUID);
             packet.WriteGuid("Item GUID", itemGUID);
         }
+
+        [Parser(Opcode.CMSG_SWAP_INV_ITEM)]
+        public static void HandleSwapItem(Packet packet)
+        {
+            packet.ReadByte("Bag");
+            packet.ReadByte("Destination Bag");
+            packet.ReadByte("Slot");
+            packet.ReadByte("Destination Slot");
+
+            var bits14 = (int)packet.ReadBits(2);
+
+            var hasSlot = new bool[bits14];
+            var hasBag = new bool[bits14];
+
+            for (var i = 0; i < bits14; ++i)
+            {
+                hasSlot[i] = !packet.ReadBit();
+                hasBag[i] = !packet.ReadBit();
+            }
+
+            for (var i = 0; i < bits14; ++i)
+            {
+                if (hasBag[i])
+                    packet.ReadByte("Bag", i);
+                if (hasSlot[i])
+                    packet.ReadByte("Slot", i);
+            }
+        }
+        [Parser(Opcode.CMSG_SWAP_ITEM)]
+        public static void HandleSwapItem2(Packet packet)
+        {
+            packet.ReadByte("Bag");
+            packet.ReadByte("Slot");
+            packet.ReadByte("Destination Bag");
+            packet.ReadByte("Destination Slot");
+
+            var bits14 = (int)packet.ReadBits(2);
+
+            var hasSlot = new bool[bits14];
+            var hasBag = new bool[bits14];
+
+            for (var i = 0; i < bits14; ++i)
+            {
+                hasSlot[i] = !packet.ReadBit();
+                hasBag[i] = !packet.ReadBit();
+            }
+
+            for (var i = 0; i < bits14; ++i)
+            {
+                if (hasSlot[i])
+                    packet.ReadByte("Bag", i);
+                if (hasBag[i])
+                    packet.ReadByte("Slot", i);
+            }
+        }
+
+        [Parser(Opcode.CMSG_AUTOSTORE_BAG_ITEM)]
+        public static void HandleSplitItem(Packet packet)
+        {
+            packet.ReadSByte("Bag");
+            packet.ReadByte("Destination Bag");
+            packet.ReadByte("Slot");
+            packet.ReadByte("Destination Slot");
+        }
     }
 }

@@ -3859,5 +3859,15 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.MSG_MOVE_TELEPORT_ACK)]
+        public static void HandleMoveTeleportAck434(Packet packet)
+        {
+            packet.ReadInt32("Time");
+            packet.ReadInt32("Flags");
+            var guid = packet.StartBitStream(0, 7, 6, 2, 5, 1, 4, 3);
+            packet.ParseBitStream(guid, 5, 4, 0, 1, 3, 7, 6, 2);
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
