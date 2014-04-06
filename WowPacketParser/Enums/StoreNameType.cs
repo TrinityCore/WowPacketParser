@@ -6,6 +6,7 @@
         Spell,
         Map,
         LFGDungeon,
+        CreatureDifficulty,
         BroadcastText,
         Battleground,
         Unit,

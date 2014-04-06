@@ -48,12 +48,18 @@ namespace WowPacketParser.SQL
             if (!Storage.BroadcastTexts.IsEmpty())
                 foreach (var obj in Storage.BroadcastTexts)
                     obj.Value.Item1.WDBVerified = build;
+            if (!Storage.GameObjectTemplateDB2s.IsEmpty())
+                foreach (var obj in Storage.GameObjectTemplateDB2s)
+                    obj.Value.Item1.WDBVerified = build;
+            if (!Storage.GameObjectTemplatePositionDB2s.IsEmpty())
+                foreach (var obj in Storage.GameObjectTemplatePositionDB2s)
+                    obj.Value.Item1.WDBVerified = build;
 
             using (var store = new SQLFile(fileName))
             {
                 // TODO: Rewrite this
                 var i = 0;
-                const int max = 28;
+                const int max = 31;
                 Trace.WriteLine(string.Format("{0}/{1} - Write WDBTemplates.GameObject", ++i, max)); store.WriteData(WDBTemplates.GameObject());
                 Trace.WriteLine(string.Format("{0}/{1} - Write Spawns.GameObject", ++i, max)); if (gameObjects != null) store.WriteData(Spawns.GameObject(gameObjects));
                 Trace.WriteLine(string.Format("{0}/{1} - Write WDBTemplates.Quest", ++i, max)); store.WriteData(WDBTemplates.Quest());
@@ -61,6 +67,9 @@ namespace WowPacketParser.SQL
                 Trace.WriteLine(string.Format("{0}/{1} - Write WDBTemplates.Npc", ++i, max)); store.WriteData(WDBTemplates.Npc());
                 Trace.WriteLine(string.Format("{0}/{1} - Write UnitMisc.NpcTemplateNonWDB", ++i, max)); if (units != null) store.WriteData(UnitMisc.NpcTemplateNonWDB(units));
                 Trace.WriteLine(string.Format("{0}/{1} - Write Miscellaneous.GameObjectTemplateNonWDB", ++i, max)); if (gameObjects != null) store.WriteData(Miscellaneous.GameobjectTemplateNonWDB(gameObjects));
+                Trace.WriteLine(string.Format("{0}/{1} - Write DB2.GameObjectDB2", ++i, max)); store.WriteData(DB2.GameObjectDB2());
+                Trace.WriteLine(string.Format("{0}/{1} - Write DB2.GameObjectDB2Position", ++i, max)); store.WriteData(DB2.GameObjectDB2Position());
+                Trace.WriteLine(string.Format("{0}/{1} - Write DB2.CreatureDifficulty", ++i, max)); store.WriteData(DB2.CreatureDifficulty());
                 Trace.WriteLine(string.Format("{0}/{1} - Write UnitMisc.Addon", ++i, max)); if (units != null) store.WriteData(UnitMisc.Addon(units));
                 Trace.WriteLine(string.Format("{0}/{1} - Write UnitMisc.ModelData", ++i, max)); if (units != null) store.WriteData(UnitMisc.ModelData(units));
                 Trace.WriteLine(string.Format("{0}/{1} - Write UnitMisc.SpellsX", ++i, max)); store.WriteData(UnitMisc.SpellsX());
@@ -81,7 +90,7 @@ namespace WowPacketParser.SQL
                 Trace.WriteLine(string.Format("{0}/{1} - Write QuestOffer.QuestRewards", ++i, max)); store.WriteData(QuestMisc.QuestReward());
                 Trace.WriteLine(string.Format("{0}/{1} - Write WDBTemplates.Item", ++i, max)); store.WriteData(WDBTemplates.Item());
                 Trace.WriteLine(string.Format("{0}/{1} - Write UnitMisc.PointsOfInterest", ++i, max)); store.WriteData(UnitMisc.PointsOfInterest());
-                Trace.WriteLine(string.Format("{0}/{1} - Write UnitMisc.BroadcastText", ++i, max)); store.WriteData(DB2.BroadcastText());
+                Trace.WriteLine(string.Format("{0}/{1} - Write DB2.BroadcastText", ++i, max)); store.WriteData(DB2.BroadcastText());
 
                 Trace.WriteLine(store.WriteToFile(header)
                     ? String.Format("{0}: Saved file to '{1}'", prefix, fileName)

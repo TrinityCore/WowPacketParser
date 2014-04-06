@@ -221,40 +221,55 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     }
                 case DB2Hash.CreatureDifficulty:
                     {
+                        var creatureDifficulty = new CreatureDifficulty();
+
                         db2File.ReadUInt32("Id");
-                        db2File.ReadUInt32("Creature Entry");
-                        db2File.ReadUInt32("Faction Template Id");
-                        db2File.ReadUInt32("Expansion HP");
-                        db2File.ReadUInt32("Min Level");
-                        db2File.ReadUInt32("Max Level");
+                        var Id = db2File.ReadEntry("Creature Entry");
+                        creatureDifficulty.faction = db2File.ReadUInt32("Faction Template Id");
+                        creatureDifficulty.Expansion = db2File.ReadInt32("Expansion HP");
+                        creatureDifficulty.MinLevel = db2File.ReadUInt32("Min Level");
+                        creatureDifficulty.MaxLevel = db2File.ReadUInt32("Max Level");
                         db2File.ReadUInt32("Unk 1");
                         db2File.ReadUInt32("Unk 2");
                         db2File.ReadUInt32("Unk 3");
                         db2File.ReadUInt32("Unk 4");
                         db2File.ReadUInt32("Unk 5");
+
+                        Storage.CreatureDifficultys.Add((uint)Id.Key, creatureDifficulty, packet.TimeSpan);
                         break;
                     }
                 case DB2Hash.GameObjects:
                     {
-                        db2File.ReadUInt32("Gameobject Entry");
-                        db2File.ReadUInt32("Map");
-                        db2File.ReadUInt32("Display Id");
-                        db2File.ReadSingle("Position X");
-                        db2File.ReadSingle("Position Y");
-                        db2File.ReadSingle("Position Z");
-                        db2File.ReadSingle("Rotation 1");
-                        db2File.ReadSingle("Rotation 2");
-                        db2File.ReadSingle("Rotation 3");
-                        db2File.ReadSingle("Rotation 4");
-                        db2File.ReadSingle("Size");
-                        db2File.ReadUInt32("Type");
-                        db2File.ReadUInt32("Data 0");
-                        db2File.ReadUInt32("Data 1");
-                        db2File.ReadUInt32("Data 2");
-                        db2File.ReadUInt32("Data 3");
+                        var gameObjectTemplateDB2 = new GameObjectTemplateDB2();
+                        var gameObjectTemplatePositionDB2 = new GameObjectTemplatePositionDB2();
+
+                        var Id = db2File.ReadEntry("Gameobject Entry");
+
+                        gameObjectTemplatePositionDB2.map = db2File.ReadUInt32("Map");
+
+                        gameObjectTemplateDB2.DisplayId = db2File.ReadUInt32("Display Id");
+
+                        gameObjectTemplatePositionDB2.positionX = db2File.ReadSingle("Position X");
+                        gameObjectTemplatePositionDB2.positionY = db2File.ReadSingle("Position Y");
+                        gameObjectTemplatePositionDB2.positionZ = db2File.ReadSingle("Position Z");
+                        gameObjectTemplatePositionDB2.rotation0 = db2File.ReadSingle("Rotation 0");
+                        gameObjectTemplatePositionDB2.rotation1 = db2File.ReadSingle("Rotation 1");
+                        gameObjectTemplatePositionDB2.rotation2 = db2File.ReadSingle("Rotation 2");
+                        gameObjectTemplatePositionDB2.rotation3 = db2File.ReadSingle("Rotation 3");
+
+                        gameObjectTemplateDB2.Size = db2File.ReadSingle("Size");
+                        gameObjectTemplateDB2.Type = db2File.ReadEnum<GameObjectType>("Type", TypeCode.Int32);
+
+                        gameObjectTemplateDB2.Data = new int[4];
+                        for (var i = 0; i < gameObjectTemplateDB2.Data.Length; i++)
+                            gameObjectTemplateDB2.Data[i] = db2File.ReadInt32("Data", i);
 
                         if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Name");
+                            gameObjectTemplateDB2.Name = db2File.ReadCString("Name");
+
+                        Storage.GameObjectTemplateDB2s.Add((uint)Id.Key, gameObjectTemplateDB2, packet.TimeSpan);
+                        if (gameObjectTemplatePositionDB2.positionX != 0.0f && gameObjectTemplatePositionDB2.positionY != 0.0f && gameObjectTemplatePositionDB2.positionZ != 0.0f)
+                            Storage.GameObjectTemplatePositionDB2s.Add((uint)Id.Key, gameObjectTemplatePositionDB2, packet.TimeSpan);
                         break;
                     }
                 case DB2Hash.Item:

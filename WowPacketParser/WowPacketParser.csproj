@@ -438,11 +438,13 @@
     <Compile Include="SQL\SSHTunnel.cs" />
     <Compile Include="Store\Objects\BroadcastText.cs" />
     <Compile Include="Store\Objects\Aura.cs" />
+    <Compile Include="Store\Objects\CreatureDifficulty.cs" />
     <Compile Include="Store\Objects\CreatureEquipment.cs" />
-    <Compile Include="Store\Objects\GameObjectTemplateNonWDB.cs" />
     <Compile Include="Store\Objects\CreatureText.cs" />
     <Compile Include="Store\Objects\GameObject.cs" />
     <Compile Include="Store\Objects\GameObjectTemplate.cs" />
+    <Compile Include="Store\Objects\GameObjectTemplateDB2.cs" />
+    <Compile Include="Store\Objects\GameObjectTemplateNonWDB.cs" />
     <Compile Include="Store\Objects\Gossip.cs" />
     <Compile Include="Store\Objects\GossipPOI.cs" />
     <Compile Include="Store\Objects\Item.cs" />

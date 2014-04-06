@@ -28,5 +28,50 @@ namespace WowPacketParser.SQL.Builders
 
             return SQLUtil.CompareDicts(Storage.BroadcastTexts, templatesDb, StoreNameType.BroadcastText, "ID");
         }
+
+        public static string CreatureDifficulty()
+        {
+            if (Storage.CreatureDifficultys.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
+                return string.Empty;
+
+            foreach (var creatureDifficulty in Storage.CreatureDifficultys)
+                creatureDifficulty.Value.Item1.ConvertToDBStruct();
+
+            var entries = Storage.CreatureDifficultys.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, CreatureDifficulty>(entries);
+
+            return SQLUtil.CompareDicts(Storage.CreatureDifficultys, templatesDb, StoreNameType.CreatureDifficulty);
+        }
+
+        public static string GameObjectDB2()
+        {
+            if (Storage.GameObjectTemplateDB2s.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_template))
+                return string.Empty;
+
+            var entries = Storage.GameObjectTemplateDB2s.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, GameObjectTemplateDB2>(entries);
+
+            return SQLUtil.CompareDicts(Storage.GameObjectTemplateDB2s, templatesDb, StoreNameType.GameObject);
+        }
+
+        public static string GameObjectDB2Position()
+        {
+            if (Storage.GameObjectTemplatePositionDB2s.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_db2_position))
+                return string.Empty;
+
+            var entries = Storage.GameObjectTemplatePositionDB2s.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, GameObjectTemplatePositionDB2>(entries);
+
+            return SQLUtil.CompareDicts(Storage.GameObjectTemplatePositionDB2s, templatesDb, StoreNameType.GameObject);
+        }
     }
 }
