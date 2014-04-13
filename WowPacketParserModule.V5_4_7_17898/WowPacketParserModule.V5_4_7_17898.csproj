@@ -61,7 +61,7 @@
     <Compile Include="Parsers\AuctionHouseHandler.cs" />
     <Compile Include="Parsers\BattlegroundHandler.cs" />
     <Compile Include="Parsers\BattlePetHandler.cs" />
-	<Compile Include="Parsers\BlackMarketHandlercs" />
+    <Compile Include="Parsers\BlackMarketHandler.cs" />
     <Compile Include="Parsers\CalendarHandler.cs" />
     <Compile Include="Parsers\ChallengeModeHandler.cs" />
     <Compile Include="Parsers\CharacterHandler.cs" />

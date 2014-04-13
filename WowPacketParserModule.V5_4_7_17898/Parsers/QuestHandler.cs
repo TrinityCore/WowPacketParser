@@ -266,5 +266,168 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_DETAILS)]
+        public static void HandleQuestgiverDetails(Packet packet)
+        {
+            packet.ReadInt32("QuestGiver Portrait?");
+            packet.ReadInt32("Reward Item Id?"); // SMSG_ITEM_PUSH_RESULT is sent with this id in sniffs
+
+            for (var i = 0; i < 5; i++)
+            {
+                packet.ReadUInt32("Reputation Value Id", i);
+                packet.ReadUInt32("Reputation Faction", i);
+                packet.ReadInt32("Reputation Value", i);
+            }
+
+            packet.ReadInt32("Quest XP");
+
+            for (var i = 0; i < 4; i++)
+            {
+                packet.ReadUInt32("Currency Id", i);
+                packet.ReadUInt32("Currency Count", i);
+            }
+
+            packet.ReadInt32("unk1");
+            packet.ReadInt32("unk2");
+            packet.ReadInt32("unk3");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
+            packet.ReadInt32("unk5");
+            packet.ReadInt32("unk6");
+            packet.ReadInt32("unk7");
+            packet.ReadInt32("unk8");
+            packet.ReadInt32("unk9");
+            packet.ReadInt32("unk10");
+            packet.ReadEnum<QuestFlags2>("Quest Flags 2", TypeCode.UInt32);
+            packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
+            packet.ReadInt32("unk13");
+            packet.ReadInt32("unk14");
+            packet.ReadInt32("Money");
+            packet.ReadInt32("unk16");
+            packet.ReadInt32("unk17");
+            packet.ReadInt32("unk18");
+            packet.ReadInt32("unk19");
+            packet.ReadInt32("unk20");
+            packet.ReadInt32("unk21");
+            packet.ReadInt32("unk22");
+            packet.ReadInt32("unk23");
+            packet.ReadInt32("unk24");
+            packet.ReadInt32("unk25");
+            packet.ReadInt32("unk26");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell Cast Id");
+            packet.ReadInt32("unk28");
+            packet.ReadInt32("unk29");
+            packet.ReadInt32("unk30");
+            packet.ReadInt32("unk31");
+            packet.ReadInt32("unk32");
+            packet.ReadInt32("unk33");
+            packet.ReadInt32("unk34");
+            packet.ReadInt32("unk35");
+            packet.ReadInt32("unk36");
+            packet.ReadInt32("unk37");
+            packet.ReadInt32("unk38");
+            packet.ReadInt32("unk39");
+            packet.ReadInt32("unk40");
+            packet.ReadInt32("unk41");
+            packet.ReadInt32("unk42");
+            packet.ReadInt32("unk43");
+            packet.ReadInt32("unk44");
+            packet.ReadInt32("unk45");
+
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            guid2[5] = packet.ReadBit();
+
+            var str3len = (int)packet.ReadBits(8);
+            var str1len = (int)packet.ReadBits(8);
+
+            var counter5 = (int)packet.ReadBits(22);
+
+            var bit3454 = !packet.ReadBit("!bit0");
+            guid2[1] = packet.ReadBit();
+
+            var str6len = (int)packet.ReadBits(12);
+            guid2[0] = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+            guid1[1] = packet.ReadBit();
+
+            var str5len = (int)packet.ReadBits(10);
+            var counter3 = (int)packet.ReadBits(21);
+            var counter4 = (int)packet.ReadBits(20);
+
+            guid1[3] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            var bit11234 = !packet.ReadBit("!bit1");
+            guid1[2] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+
+            var str0len = (int)packet.ReadBits(10);//ok
+
+            var str2len = (int)packet.ReadBits(9);//ok
+
+            var str4len = (int)packet.ReadBits(12);//ok was 1
+
+            guid2[4] = packet.ReadBit();
+            guid1[5] = packet.ReadBit();
+            guid1[4] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            var bit34354 = !packet.ReadBit("!bit2");
+            guid2[6] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+
+            for (var i = 0; i < counter3; i++) // 3308
+            {
+                packet.ReadInt32("IntED", i);
+                packet.ReadInt32("IntED", i);
+            }
+
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadWoWString("string0", str0len);
+
+            for (var i = 0; i < counter4; i++)
+            {
+                packet.ReadUInt32("Required Count", i);
+                var entry = packet.ReadUInt32();
+                var type = packet.ReadByte("Type", i);
+                switch (type)
+                {
+                    case 0: packet.WriteLine("[" + i + "] Required NPC: " + entry); break;
+                    case 1: packet.WriteLine("[" + i + "] Required Item: " + entry); break;
+                    default: packet.WriteLine("[" + i + "] Required Entry: " + entry); break;
+                }
+                packet.ReadInt32("unk", i);
+            }
+
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadWoWString("QuestGiver Target Name", str1len);
+            packet.ReadWoWString("Title", str2len);
+            packet.ReadWoWString("string3", str3len);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid2, 5);
+
+            for (int i = 0; i < counter5; i++)
+                packet.ReadInt32("Int", i);
+
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadWoWString("Objectives", str4len);
+            packet.ReadWoWString("string5", str5len);
+            packet.ReadWoWString("Details", str6len);
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid1, 0);
+
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("Guid2", guid2);
+        }
     }
 }
