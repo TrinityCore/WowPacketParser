@@ -227,8 +227,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                         var Id = db2File.ReadEntry("Creature Entry");
                         creatureDifficulty.faction = db2File.ReadUInt32("Faction Template Id");
                         creatureDifficulty.Expansion = db2File.ReadInt32("Expansion HP");
-                        creatureDifficulty.MinLevel = db2File.ReadUInt32("Min Level");
-                        creatureDifficulty.MaxLevel = db2File.ReadUInt32("Max Level");
+                        creatureDifficulty.MinLevel = db2File.ReadInt32("Min Level");
+                        creatureDifficulty.MaxLevel = db2File.ReadInt32("Max Level");
                         db2File.ReadUInt32("Unk 1");
                         db2File.ReadUInt32("Unk 2");
                         db2File.ReadUInt32("Unk 3");

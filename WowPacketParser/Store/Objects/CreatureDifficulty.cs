@@ -14,9 +14,9 @@ namespace WowPacketParser.Store.Objects
         }
 
         [DBFieldName("minlevel")]
-        public uint MinLevel;
+        public int MinLevel;
         [DBFieldName("maxlevel")]
-        public uint MaxLevel;
+        public int MaxLevel;
         [DBFieldName("exp")]
         public int Expansion;
         [DBFieldName("faction_A")]

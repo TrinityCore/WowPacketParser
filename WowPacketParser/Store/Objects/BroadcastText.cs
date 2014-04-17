@@ -21,9 +21,9 @@ namespace WowPacketParser.Store.Objects
             emoteID1 = EmoteID[1];
             emoteID2 = EmoteID[2];
 
-            emoteDelay0 = EmoteID[0];
-            emoteDelay1 = EmoteID[1];
-            emoteDelay2 = EmoteID[2];
+            emoteDelay0 = EmoteDelay[0];
+            emoteDelay1 = EmoteDelay[1];
+            emoteDelay2 = EmoteDelay[2];
 
             maleText = MaleText;
             femaleText = FemaleText;
