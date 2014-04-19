@@ -429,5 +429,197 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid1", guid1);
             packet.WriteGuid("Guid2", guid2);
         }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_OFFER_REWARD)]
+        public static void HandleQuestOfferReward(Packet packet)
+        {
+            var guid1 = new byte[8];
+
+            var strlen = packet.ReadBits(10);
+            guid1[6] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            var len2 = packet.ReadBits(21);
+            var len3 = packet.ReadBits(8);
+            guid1[4] = packet.ReadBit();
+            var len4 = packet.ReadBits(8);
+            var len5 = packet.ReadBits(12);
+            guid1[5] = packet.ReadBit();
+            var bit4312 = !packet.ReadBit();
+            guid1[3] = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
+            guid1[1] = packet.ReadBit();
+            var len6 = packet.ReadBits(9);
+            var len7 = packet.ReadBits(10);
+            guid1[7] = packet.ReadBit();
+
+            packet.ReadInt32("unk1");
+            packet.ReadInt32("unk2");
+            packet.ReadInt32("unk3");
+
+
+            for (var i = 0; i < 4; i++)
+            {
+                packet.ReadUInt32("Currency Id", i);
+                packet.ReadUInt32("Currency Count", i);
+            }
+
+            packet.ReadWoWString("str1", strlen);
+
+            packet.ReadInt32("unk4");
+            packet.ReadUInt32("Money");
+            packet.ReadInt32("unk6");
+            packet.ReadInt32("unk7");
+            packet.ReadInt32("unk8");
+            packet.ReadInt32("unk9");
+            packet.ReadInt32("unk10");
+
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid1, 2);
+
+            packet.ReadInt32("unk11");
+
+            for (var i = 0; i < 5; i++)
+            {
+                packet.ReadUInt32("Reputation Faction", i);
+                packet.ReadUInt32("Reputation Value Id", i);
+                packet.ReadInt32("Reputation Value (x100)", i);
+            }
+
+
+            packet.ReadInt32("unk12");
+            packet.ReadInt32("unk13");
+            packet.ReadWoWString("str2", len3);
+            packet.ReadInt32("unk14");
+            packet.ReadInt32("unk15");
+            packet.ReadWoWString("Completion Text", len5);
+            packet.ReadInt32("unk16");
+            packet.ReadInt32("unk17");
+            packet.ReadInt32("unk18");
+            packet.ReadWoWString("str4", len4);
+            packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
+            packet.ReadInt32("unk20");
+            packet.ReadInt32("unk21");
+            packet.ReadInt32("unk22");
+            packet.ReadInt32("unk23");
+            packet.ReadInt32("unk24");
+            packet.ReadWoWString("str5", len7);
+            packet.ReadInt32("unk25");
+            packet.ReadInt32("unk26");
+            packet.ReadInt32("unk27");
+
+            for (var i = 0; i < len2; i++) // len2 is guessed
+            {
+                packet.ReadEnum<EmoteType>("Emote Id", TypeCode.UInt32, i);
+                packet.ReadUInt32("Emote Delay", i);
+            }
+            packet.ReadInt32("unk28");
+            packet.ReadXORByte(guid1, 1);
+
+            packet.ReadInt32("unk29");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
+            packet.ReadInt32("unk31");
+            packet.ReadInt32("unk32");
+            packet.ReadInt32("unk33");
+            packet.ReadInt32("unk34");
+            packet.ReadInt32("unk35");
+            packet.ReadInt32("unk36");
+            packet.ReadInt32("unk37");
+            packet.ReadInt32("unk38");
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadInt32("unk39");
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadInt32("unk40");
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadInt32("unk41");
+            packet.ReadInt32("unk42");
+            packet.ReadInt32("unk43");
+            packet.ReadWoWString("Title", len6);
+            packet.ReadInt32("unk44");
+            packet.ReadInt32("unk45");
+            packet.ReadUInt32("XP");
+            packet.ReadInt32("unk47");
+            packet.ReadInt32("unk48");
+            packet.ReadInt32("unk49");
+
+
+            packet.WriteGuid("Guid1", guid1);
+
+            /*
+
+
+
+
+            // --------------------
+
+
+            packet.ReadGuid("GUID");
+            var entry = packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
+            packet.ReadCString("Title");
+            var text = packet.ReadCString("Text");
+
+            Storage.QuestOffers.Add((uint)entry, new QuestOffer { OfferRewardText = text }, null);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
+            {
+                packet.ReadCString("QuestGiver Text Window");
+                packet.ReadCString("QuestGiver Target Name");
+                packet.ReadCString("QuestTurn Text Window");
+                packet.ReadCString("QuestTurn Target Name");
+                packet.ReadUInt32("QuestGiverPortrait");
+                packet.ReadUInt32("QuestTurnInPortrait");
+            }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
+                packet.ReadBoolean("Auto Finish");
+            else
+                packet.ReadBoolean("Auto Finish", TypeCode.Int32);
+
+
+            packet.ReadUInt32("Suggested Players");
+
+            var count1 = packet.ReadUInt32("Emote Count");
+            for (var i = 0; i < count1; i++)
+            {
+                packet.ReadUInt32("Emote Delay", i);
+                packet.ReadEnum<EmoteType>("Emote Id", TypeCode.UInt32, i);
+            }
+
+            // extra info
+
+            packet.ReadUInt32("Choice Item Count");
+            for (var i = 0; i < 6; i++)
+            {
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Choice Item Id", i);
+                packet.ReadUInt32("Choice Item Count", i);
+                packet.ReadUInt32("Choice Item Display Id", i);
+            }
+
+            packet.ReadUInt32("Reward Item Count");
+
+            for (var i = 0; i < 4; i++)
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Reward Item Id", i);
+            for (var i = 0; i < 4; i++)
+                packet.ReadUInt32("Reward Item Count", i);
+            for (var i = 0; i < 4; i++)
+                packet.ReadUInt32("Reward Item Display Id", i);
+
+            
+            
+            packet.ReadUInt32("Title Id");
+            packet.ReadUInt32("Bonus Talents");
+            packet.ReadUInt32("Reward Reputation Mask");
+
+
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell Id");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell Cast Id");
+
+
+            packet.ReadUInt32("Reward SkillId");
+            packet.ReadUInt32("Reward Skill Points");*/
+        }
+
+
     }
 }
