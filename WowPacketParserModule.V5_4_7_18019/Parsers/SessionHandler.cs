@@ -213,5 +213,15 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 
             LoginGuid = new Guid(0);
         }
+
+        [Parser(Opcode.SMSG_REDIRECT_CLIENT)]
+        public static void HandleRedirectClient(Packet packet)
+        {
+            packet.ReadUInt64("Unk, send it CMSG_AUTH_SESSION, may be bytes sent and bytes received");
+            byte[] RSABuffer = new byte[256];
+            RSABuffer = packet.ReadBytes(256);
+            packet.ReadByte("Future connection offset in WowConnections array");
+            packet.ReadUInt32("Server Token");
+        }
     }
 }
