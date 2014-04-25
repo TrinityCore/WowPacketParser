@@ -167,7 +167,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 
             uint transportFramesCount = 0;
             uint UnkStringLen = 0;
-            // int IsLivingUnkCountLoop = 0;
+            //int IsLivingUnkCountLoop = 0;
             uint IsLivingUnkCounter = 0;
             var hasOrientation = false;
             var guid2 = new byte[8];
