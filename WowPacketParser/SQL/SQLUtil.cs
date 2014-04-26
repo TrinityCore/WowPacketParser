@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using WowPacketParser.Enums;
@@ -41,9 +42,7 @@ namespace WowPacketParser.SQL
         /// <returns>Modified string</returns>
         public static string EscapeString(string str)
         {
-            str = str.Replace("'", "''");
-            str = str.Replace("\"", "\\\"");
-            return str;
+            return MySqlHelper.DoubleQuoteString(str);
         }
 
         /// <summary>
