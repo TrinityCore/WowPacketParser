@@ -37,9 +37,6 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
                 return string.Empty;
 
-            foreach (var creatureDifficulty in Storage.CreatureDifficultys)
-                creatureDifficulty.Value.Item1.ConvertToDBStruct();
-
             var entries = Storage.CreatureDifficultys.Keys();
             var templatesDb = SQLDatabase.GetDict<uint, CreatureDifficulty>(entries);
 

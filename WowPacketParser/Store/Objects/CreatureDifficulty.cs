@@ -5,24 +5,14 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("creature_template")]
     public class CreatureDifficulty
     {
-        public uint faction;
-
-        public void ConvertToDBStruct()
-        {
-            FactionA = faction;
-            FactionH = faction;
-        }
-
         [DBFieldName("minlevel")]
         public int MinLevel;
         [DBFieldName("maxlevel")]
         public int MaxLevel;
         [DBFieldName("exp")]
         public int Expansion;
-        [DBFieldName("faction_A")]
-        public uint FactionA;
-        [DBFieldName("faction_H")]
-        public uint FactionH;
+        [DBFieldName("faction")]
+        public uint faction;
 
         //[DBFieldName("Unk 1")] public uint unk1;
         //[DBFieldName("Unk 2")] public uint unk2;
