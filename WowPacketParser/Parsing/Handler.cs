@@ -103,7 +103,7 @@ namespace WowPacketParser.Parsing
 
             packet.WriteLine(packet.GetHeader(isMultiple));
 
-            if (packet.Opcode == 0)
+            if (packet.Opcode == 0 && packet.Direction < Direction.BNClientToServer)
                 return;
 
             var key = new KeyValuePair<ClientVersionBuild, Opcode>(ClientVersion.VersionDefiningBuild, opcode);

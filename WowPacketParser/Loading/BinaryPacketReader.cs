@@ -152,7 +152,21 @@ namespace WowPacketParser.Loading
                     case PktVersion.V3_0:
                     case PktVersion.V3_1:
                     {
-                        direction = (_reader.ReadUInt32() == 0x47534d53) ? Direction.ServerToClient : Direction.ClientToServer;
+                        switch (_reader.ReadUInt32())
+                        {
+                            case 0x47534d53:
+                                direction = Direction.ServerToClient;
+                                break;
+                            case 0x47534d43:
+                                direction = Direction.ClientToServer;
+                                break;
+                            case 0x4e425f53:
+                                direction = Direction.BNServerToClient;
+                                break;
+                            default:
+                                direction = Direction.BNClientToServer;
+                                break;
+                        }
 
                         if (_pktVersion == PktVersion.V3_0)
                         {
