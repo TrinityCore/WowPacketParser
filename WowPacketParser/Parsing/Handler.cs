@@ -103,7 +103,7 @@ namespace WowPacketParser.Parsing
 
             packet.WriteLine(packet.GetHeader(isMultiple));
 
-            if (packet.Opcode == 0 && packet.Direction < Direction.BNClientToServer)
+            if (packet.Opcode == 0)
                 return;
 
             var key = new KeyValuePair<ClientVersionBuild, Opcode>(ClientVersion.VersionDefiningBuild, opcode);
@@ -175,6 +175,51 @@ namespace WowPacketParser.Parsing
                     var data = status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode) : status.ToString();
                     packet.AddSniffData(StoreNameType.Opcode, packet.Opcode, data);
                 }
+            }
+        }
+
+        private static Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>> LoadBattlenetHandlers()
+        {
+            var handlers = new Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>>();
+            var currentAsm = Assembly.GetExecutingAssembly();
+
+            foreach (var type in currentAsm.GetTypes())
+                foreach (var methodInfo in type.GetMethods())
+                    foreach (var msgAttr in (BattlenetParserAttribute[])methodInfo.GetCustomAttributes(typeof(BattlenetParserAttribute), false))
+                        handlers.Add(msgAttr.Header, (Action<BattlenetPacket>)Delegate.CreateDelegate(typeof(Action<BattlenetPacket>), methodInfo));
+
+            return handlers;
+        }
+
+        private static Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>> BattlenetHandlers = LoadBattlenetHandlers();
+
+        public static void ParseBattlenet(Packet packet)
+        {
+            var bnetPacket = new BattlenetPacket(packet);
+            Action<BattlenetPacket> handler;
+
+            bnetPacket.Stream.WriteLine(bnetPacket.GetHeader());
+
+            if (BattlenetHandlers.TryGetValue(bnetPacket.Header, out handler))
+            {
+                try
+                {
+                    handler(bnetPacket);
+                    packet.Status = ParsedStatus.Success;
+                }
+                catch (Exception ex)
+                {
+                    packet.WriteLine(ex.GetType().ToString());
+                    packet.WriteLine(ex.Message);
+                    packet.WriteLine(ex.StackTrace);
+
+                    packet.Status = ParsedStatus.WithErrors;
+                }
+            }
+            else
+            {
+                packet.AsHex();
+                packet.Status = ParsedStatus.NotParsed;
             }
         }
     }

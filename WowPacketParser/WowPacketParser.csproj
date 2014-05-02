@@ -123,6 +123,8 @@
     <Compile Include="Enums\BattlegroundListFlags.cs" />
     <Compile Include="Enums\BattlegroundStatus.cs" />
     <Compile Include="Enums\BattlegroundUpdateFlags.cs" />
+    <Compile Include="Enums\Battlenet\BattlenetChannel.cs" />
+    <Compile Include="Enums\Battlenet\BattlenetOpcode.cs" />
     <Compile Include="Enums\BillingFlag.cs" />
     <Compile Include="Enums\CalendarError.cs" />
     <Compile Include="Enums\CalendarEventStatus.cs" />
@@ -348,6 +350,8 @@
     <Compile Include="Loading\BinaryPacketReader.cs" />
     <Compile Include="Loading\IPacketReader.cs" />
     <Compile Include="Loading\Reader.cs" />
+    <Compile Include="Misc\BattlenetPacket.cs" />
+    <Compile Include="Misc\BattlenetPacketHeader.cs" />
     <Compile Include="Misc\BiDictionary.cs" />
     <Compile Include="Misc\Bit.cs" />
     <Compile Include="Misc\ClientVersion.cs" />
@@ -371,6 +375,7 @@
     <Compile Include="Misc\Vector4.cs" />
     <Compile Include="Parsing\Handler.cs" />
     <Compile Include="Parsing\HasSniffDataAttribute.cs" />
+    <Compile Include="Parsing\BattlenetParserAttribute.cs" />
     <Compile Include="Parsing\ParserAttribute.cs" />
     <Compile Include="Parsing\Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsing\Parsers\AchievementHandler.cs" />
@@ -379,6 +384,7 @@
     <Compile Include="Parsing\Parsers\ArchaelogyHandler.cs" />
     <Compile Include="Parsing\Parsers\AuctionHouseHandler.cs" />
     <Compile Include="Parsing\Parsers\BattlegroundHandler.cs" />
+    <Compile Include="Parsing\Parsers\BattlenetHandler.cs" />
     <Compile Include="Parsing\Parsers\CalendarHandler.cs" />
     <Compile Include="Parsing\Parsers\ChannelHandler.cs" />
     <Compile Include="Parsing\Parsers\CharacterHandler.cs" />

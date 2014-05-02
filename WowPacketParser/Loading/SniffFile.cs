@@ -228,7 +228,10 @@ namespace WowPacketParser.Loading
                     ShowPercentProgress("Processing...", i++, packetCount);
 
                     // Parse the packet, adding text to Writer and stuff to the stores
-                    Handler.Parse(packet);
+                    if (packet.Direction == Direction.BNClientToServer || packet.Direction == Direction.BNServerToClient)
+                        Handler.ParseBattlenet(packet);
+                    else
+                        Handler.Parse(packet);
 
                     // Update statistics
                     _stats.AddByStatus(packet.Status);
