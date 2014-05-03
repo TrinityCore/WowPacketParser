@@ -385,6 +385,7 @@
     <Compile Include="Parsing\Parsers\AuctionHouseHandler.cs" />
     <Compile Include="Parsing\Parsers\BattlegroundHandler.cs" />
     <Compile Include="Parsing\Parsers\BattlenetHandler.cs" />
+    <Compile Include="Parsing\Parsers\BattlenetModuleHandler.cs" />
     <Compile Include="Parsing\Parsers\CalendarHandler.cs" />
     <Compile Include="Parsing\Parsers\ChannelHandler.cs" />
     <Compile Include="Parsing\Parsers\CharacterHandler.cs" />
