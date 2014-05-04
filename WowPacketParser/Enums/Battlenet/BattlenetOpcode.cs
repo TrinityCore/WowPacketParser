@@ -54,8 +54,8 @@ namespace WowPacketParser.Enums.Battlenet
             { new OpcodeNameKey(2, 0, Direction.BNServerToClient), "ServerProofRequest" },
             { new OpcodeNameKey(0, 1, Direction.BNClientToServer), "ClientPing" },
             { new OpcodeNameKey(0, 1, Direction.BNServerToClient), "ServerPong" },
-            { new OpcodeNameKey(8, 2, Direction.BNClientToServer), "ClientRealmUpdate" },
-            { new OpcodeNameKey(0, 2, Direction.BNClientToServer), "ClientJoinRequest" },
+            { new OpcodeNameKey(0, 2, Direction.BNClientToServer), "ClientRealmUpdate" },
+            { new OpcodeNameKey(8, 2, Direction.BNClientToServer), "ClientJoinRequest" },
             { new OpcodeNameKey(2, 2, Direction.BNServerToClient), "ServerRealmUpdate" },
             { new OpcodeNameKey(8, 2, Direction.BNServerToClient), "ServerJoinResponse" },
         };

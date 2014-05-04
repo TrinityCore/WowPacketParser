@@ -106,6 +106,9 @@ namespace WowPacketParser.Parsing.Parsers
                     WriteLine("Token key", Utilities.ByteArrayToHexString(reader.ReadBytes(8)), values);
                     WriteLine("Token", reader.ReadUInt32(), values);
                     return true;
+                case 2:
+                    WriteLine("data", Utilities.ByteArrayToHexString(reader.ReadBytes(36)), values);
+                    return true;
                 case 3:
                     WriteLine("Token id", Utilities.ByteArrayToHexString(reader.ReadBytes(8).Reverse().ToArray()), values);
                     WriteLine("Crypt entropy", Utilities.ByteArrayToHexString(reader.ReadBytes(16)), values);

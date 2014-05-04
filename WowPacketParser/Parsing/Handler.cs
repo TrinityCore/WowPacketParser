@@ -195,31 +195,31 @@ namespace WowPacketParser.Parsing
 
         public static void ParseBattlenet(Packet packet)
         {
-            var bnetPacket = new BattlenetPacket(packet);
-            Action<BattlenetPacket> handler;
-
-            bnetPacket.Stream.WriteLine(bnetPacket.GetHeader());
-
-            if (BattlenetHandlers.TryGetValue(bnetPacket.Header, out handler))
+            try
             {
-                try
+                var bnetPacket = new BattlenetPacket(packet);
+                Action<BattlenetPacket> handler;
+
+                bnetPacket.Stream.WriteLine(bnetPacket.GetHeader());
+
+                if (BattlenetHandlers.TryGetValue(bnetPacket.Header, out handler))
                 {
                     handler(bnetPacket);
                     packet.Status = ParsedStatus.Success;
                 }
-                catch (Exception ex)
+                else
                 {
-                    packet.WriteLine(ex.GetType().ToString());
-                    packet.WriteLine(ex.Message);
-                    packet.WriteLine(ex.StackTrace);
-
-                    packet.Status = ParsedStatus.WithErrors;
+                    packet.AsHex();
+                    packet.Status = ParsedStatus.NotParsed;
                 }
             }
-            else
+            catch (Exception ex)
             {
-                packet.AsHex();
-                packet.Status = ParsedStatus.NotParsed;
+                packet.WriteLine(ex.GetType().ToString());
+                packet.WriteLine(ex.Message);
+                packet.WriteLine(ex.StackTrace);
+
+                packet.Status = ParsedStatus.WithErrors;
             }
         }
     }
