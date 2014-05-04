@@ -39,6 +39,34 @@ namespace WowPacketParser.Misc
                 Stream.Number);
         }
 
+        public T Read<T>(string name, int bits, params int[] values)
+        {
+            var value = Read<T>(bits);
+            Stream.WriteLine("{0}{1}: {2}", Packet.GetIndexString(values), name, value);
+            return value;
+        }
+
+        public string ReadString(string name, int length, params int[] values)
+        {
+            var value = ReadString(length);
+            Stream.WriteLine("{0}{1}: {2}", Packet.GetIndexString(values), name, value);
+            return value;
+        }
+
+        public string ReadFourCC(string name, params int[] values)
+        {
+            var value = ReadFourCC();
+            Stream.WriteLine("{0}{1}: {2}", Packet.GetIndexString(values), name, value);
+            return value;
+        }
+
+        public float ReadSingle(string name, params int[] values)
+        {
+            var value = ReadSingle();
+            Stream.WriteLine("{0}{1}: {2}", Packet.GetIndexString(values), name, value);
+            return value;
+        }
+
         public T Read<T>()
         {
             var type = typeof(T).IsEnum ? typeof(T).GetEnumUnderlyingType() : typeof(T);
@@ -140,6 +168,19 @@ namespace WowPacketParser.Misc
             Array.Reverse(data);
 
             return Encoding.UTF8.GetString(data).Trim(new char[] { '\0' });
+        }
+
+        public float ReadSingle()
+        {
+            var intVal = Read<int>(32);
+            using (var mem = new MemoryStream(4))
+            using (var wrt = new BinaryWriter(mem))
+            using (var rdr = new BinaryReader(mem))
+            {
+                wrt.Write(intVal);
+                mem.Position = 0;
+                return rdr.ReadSingle();
+            }
         }
     }
 }
