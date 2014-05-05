@@ -156,6 +156,76 @@ namespace WowPacketParser.Parsing.Parsers
         {
         }
 
+        [BattlenetParser(BattlenetOpcode.ServerRealmUpdateBegin, BattlenetChannel.WoW, Direction.BNServerToClient)]
+        public static void HandleRealmUpdateBegin(BattlenetPacket packet)
+        {
+            if (packet.Read<bool>("Failed", 1))
+            {
+                packet.Read<byte>("Error code", 8);
+                return;
+            }
+
+            var charNumberCount = packet.Read<int>(7);  // number of character count entries, lel
+            for (var i = 0; i < charNumberCount; ++i)
+            {
+                packet.Read<byte>("Region", 8);
+                packet.Read<short>("Unk2", 12);
+                packet.Read<byte>("Battlegroup", 8);
+                packet.Read<uint>("Battlegroup index", 32);
+                packet.Read<short>("Character count", 16);
+            }
+        }
+
+        [BattlenetParser(BattlenetOpcode.ServerRealmUpdate, BattlenetChannel.WoW, Direction.BNServerToClient)]
+        public static void HandleServerRealmUpdate(BattlenetPacket packet)
+        {
+            if (!packet.Read<bool>(1))
+                return;
+
+            packet.Read<uint>("Timezone", 32);
+            packet.ReadSingle("Population");
+            packet.Read<byte>("Lock", 8);
+            packet.Read<uint>("Unk", 19);
+            packet.Stream.WriteLine(string.Format("Type: {0}", packet.Read<uint>(32) + int.MinValue));
+            packet.ReadString("Name", packet.Read<int>(10));
+            if (packet.Read<bool>("Has version", 1))
+            {
+                packet.ReadString("Version", packet.Read<int>(5));
+                packet.Read<uint>("RealmId4", 32);
+
+                var ip = packet.ReadBytes(4);
+                var port = packet.ReadBytes(2);
+
+                Array.Reverse(port);
+
+                packet.Stream.WriteLine("IP address: {0}", new IPAddress(ip));
+                packet.Stream.WriteLine("Port: {0}", BitConverter.ToUInt16(port, 0));
+            }
+
+            packet.Read<byte>("Flags", 8);
+            packet.Read<byte>("Region", 8);
+            packet.Read<short>("Unk2", 12);
+            packet.Read<byte>("Battlegroup", 8);
+            packet.Read<uint>("Battlegroup index", 32);
+        }
+
+        [BattlenetParser(BattlenetOpcode.ServerRealmUpdateEnd, BattlenetChannel.WoW, Direction.BNServerToClient)]
+        public static void HandleRealmUpdateEnd(BattlenetPacket packet)
+        {
+
+        }
+
+        [BattlenetParser(BattlenetOpcode.ClientJoinRequest, BattlenetChannel.WoW, Direction.BNClientToServer)]
+        public static void HandleJoinRequest(BattlenetPacket packet)
+        {
+            packet.Read<uint>("Client seed", 32);
+            var len = packet.Read<uint>("Checksum?", 20);
+            packet.Read<byte>("Region", 8);
+            packet.Read<short>("Unk2", 12);
+            packet.Read<byte>("Battlegroup", 8);
+            packet.Read<uint>("Battlegroup index", 32);
+        }
+
         [BattlenetParser(BattlenetOpcode.ServerJoinResponse, BattlenetChannel.WoW, Direction.BNServerToClient)]
         public static void HandleJoinResponse(BattlenetPacket packet)
         {

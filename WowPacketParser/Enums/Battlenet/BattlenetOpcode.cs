@@ -24,7 +24,9 @@ namespace WowPacketParser.Enums.Battlenet
         ClientRealmUpdate = 0x00,
         ClientJoinRequest = 0x08,
 
+        ServerRealmUpdateBegin = 0x00,
         ServerRealmUpdate = 0x02,
+        ServerRealmUpdateEnd = 0x03,
         ServerJoinResponse = 0x08,
 #endregion
     }
@@ -56,7 +58,9 @@ namespace WowPacketParser.Enums.Battlenet
             { new OpcodeNameKey(0, 1, Direction.BNServerToClient), "ServerPong" },
             { new OpcodeNameKey(0, 2, Direction.BNClientToServer), "ClientRealmUpdate" },
             { new OpcodeNameKey(8, 2, Direction.BNClientToServer), "ClientJoinRequest" },
+            { new OpcodeNameKey(0, 2, Direction.BNServerToClient), "ServerRealmUpdateBegin" },
             { new OpcodeNameKey(2, 2, Direction.BNServerToClient), "ServerRealmUpdate" },
+            { new OpcodeNameKey(3, 2, Direction.BNServerToClient), "ServerRealmUpdateEnd" },
             { new OpcodeNameKey(8, 2, Direction.BNServerToClient), "ServerJoinResponse" },
         };
 

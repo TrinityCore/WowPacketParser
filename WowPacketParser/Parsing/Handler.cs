@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -212,6 +213,14 @@ namespace WowPacketParser.Parsing
                     packet.AsHex();
                     packet.Status = ParsedStatus.NotParsed;
                 }
+            }
+            catch (EndOfStreamException)
+            {
+                // Processes the packet until it has all data to read - packet appears multiple times in the sniff file
+                // but only the last copy is complete
+                packet.Writer.Clear();
+
+                packet.Status = ParsedStatus.WithErrors;
             }
             catch (Exception ex)
             {
