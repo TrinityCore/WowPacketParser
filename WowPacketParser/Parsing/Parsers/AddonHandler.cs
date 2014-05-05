@@ -1,5 +1,6 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using System;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -45,7 +46,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_ADDON_INFO)]
+        [Parser(Opcode.SMSG_ADDON_INFO, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleServerAddonsList(Packet packet)
         {
             // This packet requires _addonCount from CMSG_AUTH_SESSION to be parsed.

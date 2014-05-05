@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandlerQuery", "HandlerQuer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V4_3_4_15595", "WowPacketParserModule.V4_3_4_15595\WowPacketParserModule.V4_3_4_15595.csproj", "{7A909478-8263-498D-9F0C-52480E29825E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V5_3_0_16981", "WowPacketParserModule.V5_3_0_16981\WowPacketParserModule.V5_3_0_16981.csproj", "{422AC0F6-A8DF-4FFF-8A98-A830F4002C53}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V5_4_7_18019", "WowPacketParserModule.V5_4_7_18019\WowPacketParserModule.V5_4_7_18019.csproj", "{422AC0F6-A8DF-4FFF-8A98-A830F4002C53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

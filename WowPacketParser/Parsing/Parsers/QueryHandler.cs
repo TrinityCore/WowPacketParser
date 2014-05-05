@@ -17,7 +17,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Daily Quest Reset");
         }
 
-        [Parser(Opcode.CMSG_NAME_QUERY)]
+        [Parser(Opcode.CMSG_NAME_QUERY, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleNameQuery(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -81,14 +81,14 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.WriteLine("Entry does not match calculated GUID entry");
         }
 
-        [Parser(Opcode.CMSG_CREATURE_QUERY)]
+        [Parser(Opcode.CMSG_CREATURE_QUERY, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleCreatureQuery(Packet packet)
         {
             ReadQueryHeader(ref packet);
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_CREATURE_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_CREATURE_QUERY_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleCreatureQueryResponse(Packet packet)
         {
             var entry = packet.ReadEntry("Entry");
@@ -191,7 +191,7 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
+        [Parser(Opcode.CMSG_NPC_TEXT_QUERY, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleNpcTextQuery(Packet packet)
         {
             ReadQueryHeader(ref packet);

@@ -11,7 +11,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LOG_DISCONNECT)]
         public static void HandleLogDisconnect(Packet packet)
         {
-            packet.ReadUInt32("Unk");
+            packet.ReadUInt32("Disconnect Reason");
             // 4 is inability for client to decrypt RSA
             // 3 is not receiving "WORLD OF WARCRAFT CONNECTION - SERVER TO CLIENT"
             // 11 is sent on receiving opcode 0x140 with some specific data
@@ -168,11 +168,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
-        [Parser(Opcode.CMSG_SET_SELECTION, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.CMSG_SET_SELECTION, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleSetSelection510(Packet packet)
         {
             var guid = packet.StartBitStream(0, 1, 2, 4, 7, 3, 6, 5);
             packet.ParseBitStream(guid, 4, 1, 5, 2, 6, 7, 0, 3);
+
             packet.WriteGuid("Guid", guid);
         }
 
@@ -362,20 +363,20 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Split Date");
         }
 
-        [Parser(Opcode.CMSG_PING)]
+        [Parser(Opcode.CMSG_PING, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleClientPing(Packet packet)
         {
             packet.ReadInt32("Ping");
             packet.ReadInt32("Ping Count");
         }
 
-        [Parser(Opcode.SMSG_PONG)]
+        [Parser(Opcode.SMSG_PONG, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleServerPong(Packet packet)
         {
             packet.ReadInt32("Ping");
         }
 
-        [Parser(Opcode.SMSG_CLIENTCACHE_VERSION)]
+        [Parser(Opcode.SMSG_CLIENTCACHE_VERSION, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleClientCacheVersion(Packet packet)
         {
             packet.ReadInt32("Version");
@@ -598,7 +599,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_TIME_SYNC_RESP)]
+        [Parser(Opcode.CMSG_TIME_SYNC_RESP, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleTimeSyncResp(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // no idea when this was added exactly
@@ -613,14 +614,14 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GAMETIME_SET)]
+        [Parser(Opcode.SMSG_GAMETIME_SET, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleGametimeSet(Packet packet)
         {
             packet.ReadUInt32("Unk time");
             packet.ReadUInt32("Unk int32");
         }
 
-        [Parser(Opcode.SMSG_GAMETIME_UPDATE)]
+        [Parser(Opcode.SMSG_GAMETIME_UPDATE, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleGametimeUpdate(Packet packet)
         {
             packet.ReadUInt32("Unk time"); // Time online?
@@ -733,7 +734,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleClientEnterWorld434(Packet packet)
         {
             var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");

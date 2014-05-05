@@ -206,7 +206,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.CMSG_ITEM_REFUND, 0x09B3},
             {Opcode.CMSG_ITEM_TEXT_QUERY, 0x0B68},
             {Opcode.CMSG_JOIN_CHANNEL, 0x03E7},
-            {Opcode.CMSG_LEARN_TALENTS, 0x0136},
+            {Opcode.CMSG_LEARN_TALENT, 0x0136},
             {Opcode.CMSG_LEAVE_CHANNEL, 0x07F6},
             {Opcode.CMSG_LFG_JOIN, 0x06B3},
             {Opcode.CMSG_LFG_LEAVE, 0x051E},

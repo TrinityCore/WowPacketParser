@@ -74,7 +74,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk8");
         }
 
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V5_0_5_16048)]
+        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleServerAuthChallenge505(Packet packet)
         {
             packet.ReadUInt32("Server Seed");
@@ -257,7 +257,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_0_5_16048)]
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleAuthSession505(Packet packet)
         {
             var sha = new byte[20];
@@ -330,7 +330,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V5_0_5_16048)]
+        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleAuthResponse505(Packet packet)
         {
             var hasAccountData = packet.ReadBit("Has Account Data");
@@ -433,7 +433,7 @@ namespace WowPacketParser.Parsing.Parsers
             LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
         }
 
-        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17898)]
         public static void HandlePlayerLogin510(Packet packet)
         {
             var guid = packet.StartBitStream(1, 5, 0, 2, 7, 6, 3, 4);
@@ -460,7 +460,7 @@ namespace WowPacketParser.Parsing.Parsers
             // Reason 3: Jumping or Falling
         }
 
-        [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
+        [Parser(Opcode.SMSG_LOGOUT_COMPLETE, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleLogoutComplete(Packet packet)
         {
             LoginGuid = new Guid(0);

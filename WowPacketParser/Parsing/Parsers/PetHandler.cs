@@ -7,6 +7,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using Guid=WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -110,7 +111,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<PetTameFailureReason>("Reason", TypeCode.Byte);
         }
 
-        [Parser(Opcode.CMSG_PET_NAME_QUERY)]
+        [Parser(Opcode.CMSG_PET_NAME_QUERY, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandlePetNameQuery(Packet packet)
         {
             var number = packet.ReadInt32("Pet number").ToString(CultureInfo.InvariantCulture);

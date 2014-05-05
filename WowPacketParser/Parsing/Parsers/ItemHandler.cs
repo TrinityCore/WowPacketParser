@@ -319,7 +319,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Use guild money");
         }
 
-        [Parser(Opcode.CMSG_SELL_ITEM)]
+        [Parser(Opcode.CMSG_SELL_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleSellItem(Packet packet)
         {
             packet.ReadGuid("Vendor GUID");
@@ -339,7 +339,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<SellResult>("Sell Result", TypeCode.Byte);
         }
 
-        [Parser(Opcode.CMSG_BUY_ITEM)]
+        [Parser(Opcode.CMSG_BUY_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleBuyItem(Packet packet)
         {
             packet.ReadGuid("Vendor GUID");
@@ -395,7 +395,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_AUTOSTORE_BANK_ITEM)]
-        [Parser(Opcode.CMSG_AUTOEQUIP_ITEM)]
+        [Parser(Opcode.CMSG_AUTOEQUIP_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         [Parser(Opcode.CMSG_AUTOBANK_ITEM)]
         [Parser(Opcode.CMSG_OPEN_ITEM)]
         [Parser(Opcode.CMSG_READ_ITEM)]
@@ -413,7 +413,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Count");
         }
 
-        [Parser(Opcode.CMSG_SWAP_ITEM)]
+        [Parser(Opcode.CMSG_SWAP_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleSwapItem(Packet packet)
         {
             packet.ReadSByte("Bag");
@@ -640,30 +640,17 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.ItemTemplates.Add((uint) entry.Key, item, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleItemRequestHotfix434(Packet packet)
+        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleItemRequestHotFix(Packet packet)
         {
+            var count = packet.ReadUInt32("Count");
             packet.ReadUInt32("Type");
-            var count = packet.ReadBits("Count", 23);
-            var guidBytes = new byte[count][];
-            for (var i = 0; i < count; ++i)
-                guidBytes[i] = packet.StartBitStream(0, 4, 7, 2, 5, 3, 6, 1);
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadXORByte(guidBytes[i], 5);
-                packet.ReadXORByte(guidBytes[i], 6);
-                packet.ReadXORByte(guidBytes[i], 7);
-                packet.ReadXORByte(guidBytes[i], 0);
-                packet.ReadXORByte(guidBytes[i], 1);
-                packet.ReadXORByte(guidBytes[i], 3);
-                packet.ReadXORByte(guidBytes[i], 4);
-
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
-
-                packet.ReadXORByte(guidBytes[i], 2);
-
-                packet.WriteGuid("GUID", guidBytes[i], i);
+                packet.ReadUInt32("Unk UInt32 1", i);
+                packet.ReadUInt32("Unk UInt32 2", i);
             }
         }
 
@@ -684,17 +671,33 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleItemRequestHotFix(Packet packet)
+        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_4_7_17898)]
+        public static void HandleItemRequestHotfix434(Packet packet)
         {
-            var count = packet.ReadUInt32("Count");
             packet.ReadUInt32("Type");
+
+            var count = packet.ReadBits("Count", 23);
+
+            var guidBytes = new byte[count][];
+
+            for (var i = 0; i < count; ++i)
+                guidBytes[i] = packet.StartBitStream(0, 4, 7, 2, 5, 3, 6, 1);
 
             for (var i = 0; i < count; ++i)
             {
+                packet.ReadXORByte(guidBytes[i], 5);
+                packet.ReadXORByte(guidBytes[i], 6);
+                packet.ReadXORByte(guidBytes[i], 7);
+                packet.ReadXORByte(guidBytes[i], 0);
+                packet.ReadXORByte(guidBytes[i], 1);
+                packet.ReadXORByte(guidBytes[i], 3);
+                packet.ReadXORByte(guidBytes[i], 4);
+
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
-                packet.ReadUInt32("Unk UInt32 1", i);
-                packet.ReadUInt32("Unk UInt32 2", i);
+
+                packet.ReadXORByte(guidBytes[i], 2);
+
+                packet.WriteGuid("GUID", guidBytes[i], i);
             }
         }
 
@@ -1004,7 +1007,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleDBReply434(Packet packet)
         {
             var id = packet.ReadInt32("Entry");
@@ -1209,7 +1212,6 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(2,6,3,4,1,0,7,5);
             packet.ParseBitStream(guid,2,3,6,4,1,0,7,5);
             packet.WriteGuid("Reforger Guid", guid);
-
         }
 
         [Parser(Opcode.SMSG_REFORGE_RESULT, ClientVersionBuild.V4_3_4_15595)]
