@@ -82,9 +82,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.CMSG_AREATRIGGER)]
         public static void HandleClientAreaTrigger(Packet packet)
         {
-            packet.ReadInt32("Area Trigger Id");
+            var entry = packet.ReadEntry("Area Trigger Id");
             packet.ReadBit("Unk bit1");
             packet.ReadBit("Unk bit2");
+
+            packet.AddSniffData(StoreNameType.AreaTrigger, entry.Key, "AREATRIGGER");
         }
 
         [Parser(Opcode.SMSG_WEATHER)]

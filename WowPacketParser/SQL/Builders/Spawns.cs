@@ -24,11 +24,15 @@ namespace WowPacketParser.SQL.Builders
             if (!transport.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out entry))
                 return false;
 
-            var transportTemplates = SQLDatabase.GetDict<uint, GameObjectTemplate>(new List<uint>() { entry.UInt32Value });
-            if (transportTemplates.IsEmpty())
-                return false;
+            if (SQLConnector.Enabled)
+            {
+                var transportTemplates = SQLDatabase.GetDict<uint, GameObjectTemplate>(new List<uint>() { entry.UInt32Value });
+                if (transportTemplates.IsEmpty())
+                    return false;
 
-            mapId = transportTemplates[entry.UInt32Value].Item1.Data[6];
+                mapId = transportTemplates[entry.UInt32Value].Item1.Data[6];
+            }
+
             return true;
         }
 

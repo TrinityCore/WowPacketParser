@@ -191,6 +191,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                         broadcastText.unk2 = db2File.ReadUInt32("Unk 2"); // kind of type?
 
                         Storage.BroadcastTexts.Add((uint)Id.Key, broadcastText, packet.TimeSpan);
+                        packet.AddSniffData(StoreNameType.BroadcastText, Id.Key, "BROADCAST_TEXT");
                         break;
                     }
                 case DB2Hash.Creature: // New structure - 5.4
