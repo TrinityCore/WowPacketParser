@@ -13,6 +13,12 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
     public static class MiscellaneousHandler
     {
-        
+        [HasSniffData]
+        [Parser(Opcode.CMSG_LOAD_SCREEN)]
+        public static void HandleClientEnterWorld(Packet packet)
+        {
+            var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
+            packet.ReadBit("Loading");
+        }
     }
 }
