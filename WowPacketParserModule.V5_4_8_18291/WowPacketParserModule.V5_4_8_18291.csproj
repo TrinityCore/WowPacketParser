@@ -8,8 +8,8 @@
     <ProjectGuid>{B53A76DC-BA47-4364-AE96-6BEA96E3DF0F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WowPacketParserModule.V5_4_7_17898</RootNamespace>
-    <AssemblyName>WowPacketParserModule.V5_4_7_17898</AssemblyName>
+    <RootNamespace>WowPacketParserModule.V5_4_8_18291</RootNamespace>
+    <AssemblyName>WowPacketParserModule.V5_4_8_18291</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -24,7 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Debug\WowPacketParserModule.V5_4_7_17898.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisLogFile>bin\Debug\WowPacketParserModule.V5_4_8_18291.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
@@ -39,7 +39,7 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Release\WowPacketParserModule.V5_4_7_17898.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisLogFile>bin\Release\WowPacketParserModule.V5_4_8_18291.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Enums\ChatMessageType.cs" />
     <Compile Include="Enums\UpdateFields.cs" />
+    <Compile Include="Parsers\QueryHandler.cs" /> 
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
