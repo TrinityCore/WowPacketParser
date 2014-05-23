@@ -53,7 +53,50 @@
   <ItemGroup>
     <Compile Include="Enums\ChatMessageType.cs" />
     <Compile Include="Enums\UpdateFields.cs" />
-    <Compile Include="Parsers\QueryHandler.cs" /> 
+    <Compile Include="Parsers\AccountDataHandler.cs" />
+    <Compile Include="Parsers\AchievementHandler.cs" />
+    <Compile Include="Parsers\ActionBarHandler.cs" />
+    <Compile Include="Parsers\AddonHandler.cs" />
+    <Compile Include="Parsers\ArenaHandler.cs" />
+    <Compile Include="Parsers\AuctionHouseHandler.cs" />
+    <Compile Include="Parsers\BattlegroundHandler.cs" />
+    <Compile Include="Parsers\BattlePetHandler.cs" />
+    <Compile Include="Parsers\BlackMarketHandler.cs" />
+    <Compile Include="Parsers\CalendarHandler.cs" />
+    <Compile Include="Parsers\ChallengeModeHandler.cs" />
+    <Compile Include="Parsers\ChannelHandler.cs" />
+    <Compile Include="Parsers\CharacterHandler.cs" />
+    <Compile Include="Parsers\ChatHandler.cs" />
+    <Compile Include="Parsers\CombatHandler.cs" />
+    <Compile Include="Parsers\CombatLogHandler.cs" />
+    <Compile Include="Parsers\ContactHandler.cs" />
+    <Compile Include="Parsers\CorpseHandler.cs" />
+    <Compile Include="Parsers\EquipmentSetHandler.cs" />
+    <Compile Include="Parsers\GameObjectHandler.cs" />
+    <Compile Include="Parsers\GameStoreHandler.cs" />
+    <Compile Include="Parsers\GroupHandler.cs" />
+    <Compile Include="Parsers\GuildHandler.cs" />
+    <Compile Include="Parsers\HotfixHandler.cs" />
+    <Compile Include="Parsers\InstanceHandler.cs" />
+    <Compile Include="Parsers\ItemHandler.cs" />
+    <Compile Include="Parsers\LfgHandler.cs" />
+    <Compile Include="Parsers\LootHandler.cs" />
+    <Compile Include="Parsers\MailHandler.cs" />
+    <Compile Include="Parsers\MiscellaneousHandler.cs" />
+    <Compile Include="Parsers\MovementHandler.cs" />
+    <Compile Include="Parsers\NpcHandler.cs" />
+    <Compile Include="Parsers\PetHandler.cs" />
+    <Compile Include="Parsers\QueryHandler.cs" />
+    <Compile Include="Parsers\QuestHandler.cs" />
+    <Compile Include="Parsers\ReputationHandler.cs" />
+    <Compile Include="Parsers\ScenarioHandler.cs" />
+    <Compile Include="Parsers\SessionHandler.cs" />
+    <Compile Include="Parsers\SpellHandler.cs" />
+    <Compile Include="Parsers\TicketHandler.cs" />
+    <Compile Include="Parsers\UpdateHandler.cs" />
+    <Compile Include="Parsers\VoidStorageHandler.cs" />
+    <Compile Include="Parsers\WardenHandler.cs" />
+    <Compile Include="Parsers\WorldStateHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -66,6 +109,7 @@
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
