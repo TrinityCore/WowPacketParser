@@ -26,34 +26,34 @@ namespace WowPacketParser.SQL
             var build = ClientVersion.BuildInt;
             if (!Storage.GameObjectTemplates.IsEmpty())
                 foreach (var obj in Storage.GameObjectTemplates)
-                    obj.Value.Item1.WDBVerified = build;
+                    obj.Value.Item1.VerifiedBuild = build;
             if (!Storage.NpcTexts.IsEmpty())
                 foreach (var obj in Storage.NpcTexts)
-                    obj.Value.Item1.WDBVerified = build;
+                    obj.Value.Item1.VerifiedBuild = build;
             if (!Storage.NpcTextsMop.IsEmpty())
                 foreach (var obj in Storage.NpcTextsMop)
-                    obj.Value.Item1.WDBVerified = build;
+                    obj.Value.Item1.VerifiedBuild = build;
             if (!Storage.PageTexts.IsEmpty())
                 foreach (var obj in Storage.PageTexts)
-                    obj.Value.Item1.WDBVerified = build;
+                    obj.Value.Item1.VerifiedBuild = build;
             if (!Storage.UnitTemplates.IsEmpty())
                 foreach (var obj in Storage.UnitTemplates)
-                    obj.Value.Item1.WDBVerified = build;
+                    obj.Value.Item1.VerifiedBuild = build;
             if (!Storage.QuestTemplates.IsEmpty())
                 foreach (var obj in Storage.QuestTemplates)
-                    obj.Value.Item1.WDBVerified = build;
+                    obj.Value.Item1.VerifiedBuild = build;
             if (!Storage.ItemTemplates.IsEmpty())
                 foreach (var obj in Storage.ItemTemplates)
-                    obj.Value.Item1.WDBVerified = build;
+                    obj.Value.Item1.VerifiedBuild = build;
             if (!Storage.BroadcastTexts.IsEmpty())
                 foreach (var obj in Storage.BroadcastTexts)
-                    obj.Value.Item1.WDBVerified = build;
+                    obj.Value.Item1.VerifiedBuild = build;
             if (!Storage.GameObjectTemplateDB2s.IsEmpty())
                 foreach (var obj in Storage.GameObjectTemplateDB2s)
-                    obj.Value.Item1.WDBVerified = build;
+                    obj.Value.Item1.VerifiedBuild = build;
             if (!Storage.GameObjectTemplatePositionDB2s.IsEmpty())
                 foreach (var obj in Storage.GameObjectTemplatePositionDB2s)
-                    obj.Value.Item1.WDBVerified = build;
+                    obj.Value.Item1.VerifiedBuild = build;
 
             using (var store = new SQLFile(fileName))
             {
