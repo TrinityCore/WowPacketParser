@@ -87,6 +87,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_UPDATE_OBJECT, 0x1792},
             {Opcode.SMSG_WARDEN_DATA, 0x14EB},
             {Opcode.SMSG_GAME_STORE_INGAME_BUY_FAILED, 0x023A},
+            {Opcode.SMSG_MESSAGECHAT, 0x1A9A},
         };
     }
 }
