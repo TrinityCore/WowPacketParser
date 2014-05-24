@@ -1711,7 +1711,7 @@ namespace WowPacketParser.Parsing.Parsers
             guid2[3] = packet.ReadBit();//51
             guid1[6] = packet.ReadBit();//30
             guid2[5] = packet.ReadBit();//53
-            packet.ReadBit("Unk Bit");//64
+            packet.ReadBit("Is Rated"); //64
             guid1[4] = packet.ReadBit();//28
             guid2[6] = packet.ReadBit();//54
             guid2[4] = packet.ReadBit();//52

@@ -204,7 +204,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 5);
 
             packet.WriteGuid("Guid", guid);
-
         }
     }
 }
