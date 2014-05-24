@@ -19,7 +19,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_PLAYER_LOGIN, 0x158F},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x0B1C},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x031C},
-            {Opcode.CMSG_TUTORIAL_FLAG, 0x1B90},
+            {Opcode.SMSG_TUTORIAL_FLAGS, 0x1B90},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x0040},
             {Opcode.MSG_MOVE_FALL_LAND, 0x08FA},
             {Opcode.MSG_MOVE_HEARTBEAT, 0x01F2},
@@ -60,10 +60,13 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_PLAYER_MOVE, 0x1A32},
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x169F},
             {Opcode.SMSG_UPDATE_OBJECT, 0x1792},
-            {Opcode.SMSG_INITIAL_SPELLS, 0x045A},
-            {Opcode.SMSG_INITIAL_SPELLS, 0x045A},
-            {Opcode.SMSG_INITIAL_SPELLS, 0x045A},
-            {Opcode.SMSG_INITIAL_SPELLS, 0x045A},
+            {Opcode.SMSG_REDIRECT_CLIENT, 0x1149},
+            {Opcode.SMSG_SEND_SERVER_LOCATION, 0x19C1},
+            {Opcode.SMSG_GAME_STORE_INGAME_BUY_FAILED, 0x023A},
+            {Opcode.CMSG_DB_QUERY_BULK, 0x158D},
+            {Opcode.CMSG_MESSAGECHAT_SAY, 0x0A9A},
+            {Opcode.CMSG_MESSAGECHAT_YELL, 0x04AA},
+            {Opcode.CMSG_MESSAGECHAT_WHISPER, 0x123E},
         };
     }
 }
