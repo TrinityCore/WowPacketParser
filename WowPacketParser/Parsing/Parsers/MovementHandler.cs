@@ -397,7 +397,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         [HasSniffData]
         [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
-        [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
+        [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleEnterWorld(Packet packet)
         {
             CurrentMapId = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
@@ -418,7 +418,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleNewWorld510(Packet packet)
         {
             CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
@@ -430,7 +430,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
         }
 
-        [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]
+        [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleLoginSetTimeSpeed(Packet packet)
         {
             packet.ReadPackedTime("Game Time");

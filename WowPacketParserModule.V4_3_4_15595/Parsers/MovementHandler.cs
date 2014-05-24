@@ -131,7 +131,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadSingle("Orientation");
             packet.ReadSingle("Y");
             CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
-            packet.ReadSingle("Z"); // seriously...
+            packet.ReadSingle("Z");
 
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }

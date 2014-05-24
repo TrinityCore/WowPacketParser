@@ -72,7 +72,7 @@ namespace WowPacketParser.Parsing.Parsers
              * */
         }
 
-        [Parser(Opcode.CMSG_TRAINER_BUY_SPELL, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.CMSG_TRAINER_BUY_SPELL, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleTrainerBuySpell(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -298,21 +298,21 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.NpcVendors.Add(guid.GetEntry(), npcVendor, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_GOSSIP_HELLO)]
+        [Parser(Opcode.CMSG_GOSSIP_HELLO, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         [Parser(Opcode.CMSG_TRAINER_LIST)]
-        [Parser(Opcode.CMSG_LIST_INVENTORY)]
+        [Parser(Opcode.CMSG_LIST_INVENTORY, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         [Parser(Opcode.MSG_TABARDVENDOR_ACTIVATE)]
         [Parser(Opcode.CMSG_BANKER_ACTIVATE)]
         [Parser(Opcode.CMSG_SPIRIT_HEALER_ACTIVATE)]
         [Parser(Opcode.CMSG_BINDER_ACTIVATE)]
         [Parser(Opcode.SMSG_BINDER_CONFIRM)]
-        [Parser(Opcode.SMSG_SHOW_BANK)]
+        [Parser(Opcode.SMSG_SHOW_BANK, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleNpcHello(Packet packet)
         {
             packet.ReadGuid("GUID");
         }
 
-        [Parser(Opcode.CMSG_GOSSIP_SELECT_OPTION)]
+        [Parser(Opcode.CMSG_GOSSIP_SELECT_OPTION, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleNpcGossipSelectOption(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -326,7 +326,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
+        [Parser(Opcode.SMSG_GOSSIP_MESSAGE, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
         public static void HandleNpcGossip(Packet packet)
         {
             var gossip = new Gossip();
