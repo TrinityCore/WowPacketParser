@@ -20,5 +20,22 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
             packet.ReadBit("Loading");
         }
+
+        [Parser(Opcode.CMSG_AREATRIGGER)]
+        public static void HandleClientAreaTrigger(Packet packet)
+        {
+            var entry = packet.ReadEntry("Area Trigger Id");
+            packet.ReadBit("Unk bit1");
+            packet.ReadBit("Unk bit2");
+
+            packet.AddSniffData(StoreNameType.AreaTrigger, entry.Key, "AREATRIGGER");
+        }
+
+        [Parser(Opcode.CMSG_TIME_SYNC_RESP)]
+        public static void HandleTimeSyncResp(Packet packet)
+        {
+            packet.ReadUInt32("Counter");
+            packet.ReadUInt32("Ticks");
+        }
     }
 }

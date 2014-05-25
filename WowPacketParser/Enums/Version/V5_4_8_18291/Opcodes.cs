@@ -35,6 +35,10 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_MESSAGECHAT_AFK, 0x0EAB},
             {Opcode.CMSG_MESSAGECHAT_DND, 0x002E},
             {Opcode.CMSG_TEXT_EMOTE, 0x07E9},
+            {Opcode.CMSG_MESSAGECHAT_GUILD, 0x0CAE},
+            {Opcode.CMSG_AREATRIGGER, 0x1C44},
+            {Opcode.CMSG_TIME_SYNC_RESP, 0x01DB},
+            {Opcode.CMSG_PING, 0x0012},
 
             {Opcode.MSG_MOVE_FALL_LAND, 0x08FA},
             {Opcode.MSG_MOVE_HEARTBEAT, 0x01F2},
@@ -60,6 +64,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.MSG_MOVE_STOP_STRAFE, 0x0171},
             {Opcode.MSG_MOVE_STOP_SWIM, 0x0950},
             {Opcode.MSG_MOVE_STOP_TURN, 0x1170},
+            {Opcode.MSG_MOVE_WORLDPORT_ACK, 0x1FAD},
 
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x162B},
             {Opcode.SMSG_ADDON_INFO, 0x160A},
@@ -88,6 +93,12 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_WARDEN_DATA, 0x14EB},
             {Opcode.SMSG_GAME_STORE_INGAME_BUY_FAILED, 0x023A},
             {Opcode.SMSG_MESSAGECHAT, 0x1A9A},
+            {Opcode.SMSG_TRANSFER_PENDING, 0x061B},
+            {Opcode.SMSG_NEW_WORLD, 0x1C3B},
+            {Opcode.SMSG_CHAT_PLAYER_NOT_FOUND, 0x1082},
+            {Opcode.SMSG_EMOTE, 0x0987},
+            {Opcode.SMSG_TIME_SYNC_REQ, 0x1A8F},
+            {Opcode.SMSG_PONG, 0x1969},
         };
     }
 }

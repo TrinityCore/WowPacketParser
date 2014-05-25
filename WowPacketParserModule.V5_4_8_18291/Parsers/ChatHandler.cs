@@ -11,6 +11,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
     public static class ChatHandler
     {
+        [Parser(Opcode.CMSG_MESSAGECHAT_GUILD)]
         [Parser(Opcode.CMSG_MESSAGECHAT_YELL)]
         [Parser(Opcode.CMSG_MESSAGECHAT_SAY)]
         public static void HandleClientChatMessage(Packet packet)
@@ -158,6 +159,13 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             if (entry != 0)
                 Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_CHAT_PLAYER_NOT_FOUND)]
+        public static void HandleChatPlayerNotFound(Packet packet)
+        {
+            var len = packet.ReadBits(9);
+            packet.ReadWoWString("Name", len);
         }
     }
 }
