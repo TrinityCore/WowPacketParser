@@ -40,7 +40,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     {
                         var broadcastText = new BroadcastText();
 
-                        var Id = db2File.ReadEntry("Broadcast Text Entry");
+                        var Id = db2File.ReadEntry("Id");
                         broadcastText.language = db2File.ReadUInt32("Language");
                         if (db2File.ReadUInt16() > 0)
                             broadcastText.MaleText = db2File.ReadCString("Male Text");
@@ -55,19 +55,19 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                             broadcastText.EmoteDelay[i] = (uint)db2File.ReadInt32("Emote Delay", i);
 
                         broadcastText.soundId = db2File.ReadUInt32("Sound Id");
-                        broadcastText.unk1 = db2File.ReadUInt32("Unk 1"); // emote unk
-                        broadcastText.unk2 = db2File.ReadUInt32("Unk 2"); // kind of type?
+                        broadcastText.unk1 = db2File.ReadUInt32("Unk MoP 1"); // unk emote
+                        broadcastText.unk2 = db2File.ReadUInt32("Unk MoP 2"); // kind of type?
 
                         Storage.BroadcastTexts.Add((uint)Id.Key, broadcastText, packet.TimeSpan);
                         packet.AddSniffData(StoreNameType.BroadcastText, Id.Key, "BROADCAST_TEXT");
                         break;
                     }
-                case DB2Hash.Creature: // New structure - 5.4
+                case DB2Hash.Creature: // New structure - 5.4.0
                     {
-                        db2File.ReadUInt32("Creature Entry");
-                        db2File.ReadUInt32("Item Entry 1");
-                        db2File.ReadUInt32("Item Entry 2");
-                        db2File.ReadUInt32("Item Entry 3");
+                        db2File.ReadUInt32("Creature Id");
+                        db2File.ReadUInt32("Item Id 1");
+                        db2File.ReadUInt32("Item Id 2");
+                        db2File.ReadUInt32("Item Id 3");
                         db2File.ReadUInt32("Mount");
                         for (var i = 0; i < 4; ++i)
                             db2File.ReadInt32("Display Id", i);
@@ -79,10 +79,10 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                             db2File.ReadCString("Name");
 
                         if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Sub Name");
+                            db2File.ReadCString("SubName");
 
                         if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Unk String");
+                            db2File.ReadCString("Female SubName");
 
                         db2File.ReadUInt32("Rank");
                         db2File.ReadUInt32("Inhabit Type");
@@ -93,16 +93,16 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         var creatureDifficulty = new CreatureDifficulty();
 
                         db2File.ReadUInt32("Id");
-                        var Id = db2File.ReadEntry("Creature Entry");
+                        var Id = db2File.ReadEntry("Creature Id");
                         creatureDifficulty.faction = db2File.ReadUInt32("Faction Template Id");
-                        creatureDifficulty.Expansion = db2File.ReadInt32("Expansion HP");
+                        creatureDifficulty.Expansion = db2File.ReadInt32("Expansion");
                         creatureDifficulty.MinLevel = db2File.ReadInt32("Min Level");
                         creatureDifficulty.MaxLevel = db2File.ReadInt32("Max Level");
-                        db2File.ReadUInt32("Unk 1");
-                        db2File.ReadUInt32("Unk 2");
-                        db2File.ReadUInt32("Unk 3");
-                        db2File.ReadUInt32("Unk 4");
-                        db2File.ReadUInt32("Unk 5");
+                        db2File.ReadUInt32("Unk MoP 1");
+                        db2File.ReadUInt32("Unk MoP 2");
+                        db2File.ReadUInt32("Unk MoP 3");
+                        db2File.ReadUInt32("Unk MoP 4");
+                        db2File.ReadUInt32("Unk MoP 5");
 
                         Storage.CreatureDifficultys.Add((uint)Id.Key, creatureDifficulty, packet.TimeSpan);
                         break;
@@ -112,7 +112,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         var gameObjectTemplateDB2 = new GameObjectTemplateDB2();
                         var gameObjectTemplatePositionDB2 = new GameObjectTemplatePositionDB2();
 
-                        var Id = db2File.ReadEntry("Gameobject Entry");
+                        var Id = db2File.ReadEntry("GameObject Id");
 
                         gameObjectTemplatePositionDB2.map = db2File.ReadUInt32("Map");
 
@@ -121,10 +121,10 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         gameObjectTemplatePositionDB2.positionX = db2File.ReadSingle("Position X");
                         gameObjectTemplatePositionDB2.positionY = db2File.ReadSingle("Position Y");
                         gameObjectTemplatePositionDB2.positionZ = db2File.ReadSingle("Position Z");
-                        gameObjectTemplatePositionDB2.rotation0 = db2File.ReadSingle("Rotation 0");
-                        gameObjectTemplatePositionDB2.rotation1 = db2File.ReadSingle("Rotation 1");
-                        gameObjectTemplatePositionDB2.rotation2 = db2File.ReadSingle("Rotation 2");
-                        gameObjectTemplatePositionDB2.rotation3 = db2File.ReadSingle("Rotation 3");
+                        gameObjectTemplatePositionDB2.rotationX = db2File.ReadSingle("Rotation X");
+                        gameObjectTemplatePositionDB2.rotationY = db2File.ReadSingle("Rotation Y");
+                        gameObjectTemplatePositionDB2.rotationZ = db2File.ReadSingle("Rotation Z");
+                        gameObjectTemplatePositionDB2.rotationW = db2File.ReadSingle("Rotation W");
 
                         gameObjectTemplateDB2.Size = db2File.ReadSingle("Size");
                         gameObjectTemplateDB2.Type = db2File.ReadEnum<GameObjectType>("Type", TypeCode.Int32);
@@ -329,9 +329,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
                         if (db2File.ReadUInt16() > 0)
                             db2File.ReadCString("Script");
-                        // note they act as a kind of script "relations"; may not be exactly that.
-                        db2File.ReadUInt32("Previous Scene Script");
-                        db2File.ReadUInt32("Next Scene Script");
+                        db2File.ReadUInt32("Previous Scene Script Part");
+                        db2File.ReadUInt32("Next Scene Script Part");
                         break;
                     }
                 case DB2Hash.Vignette:
@@ -353,10 +352,10 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         if (db2File.ReadUInt16() > 0)
                             db2File.ReadCString("Address");
 
-                        db2File.ReadUInt32("UnkMoP1");
-                        db2File.ReadUInt32("UnkMoP1");
-                        db2File.ReadUInt32("UnkMoP1");
-                        db2File.ReadUInt32("UnkMoP1"); // flags?
+                        db2File.ReadUInt32("Unk MoP 1");
+                        db2File.ReadUInt32("Unk MoP 2");
+                        db2File.ReadUInt32("Unk MoP 3");
+                        db2File.ReadUInt32("Unk MoP 4"); // flags?
                         break;
                     }
                 default:

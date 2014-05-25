@@ -21,8 +21,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("size")]
         public float Size;
 
-        [DBFieldName("WDBVerified")]
-        public int WDBVerified;
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild;
     }
 
     [DBTableName("gameobject_db2_position")]
@@ -41,18 +41,18 @@ namespace WowPacketParser.Store.Objects
         public float positionZ;
 
         [DBFieldName("rotation0")]
-        public float rotation0;
+        public float rotationX;
 
         [DBFieldName("rotation1")]
-        public float rotation1;
+        public float rotationY;
 
         [DBFieldName("rotation2")]
-        public float rotation2;
+        public float rotationZ;
 
         [DBFieldName("rotation3")]
-        public float rotation3;
+        public float rotationW;
 
-        [DBFieldName("WDBVerified")]
-        public int WDBVerified;
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild;
     }
 }

@@ -56,7 +56,7 @@ namespace WowPacketParser.Store.Objects
         public uint unk2;
         // ReSharper restore InconsistentNaming
 
-        [DBFieldName("WDBVerified")]
-        public int WDBVerified;
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild;
     }
 }
