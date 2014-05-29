@@ -282,5 +282,29 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             if (hasGlyphIndex)
                 packet.ReadInt32("hasGlyphIndex");
         }
+
+        [Parser(Opcode.SMSG_INITIAL_SPELLS)]
+        public static void HandleInitialSpells(Packet packet)
+        {
+            packet.ReadBit("Unk Bit");
+            var count = packet.ReadBits("Spell Count", 22);
+
+            var spells = new List<uint>((int)count);
+            for (var i = 0; i < count; i++)
+            {
+                var spellId = packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", i);
+                spells.Add((uint)spellId);
+            }
+
+            var startSpell = new StartSpell { Spells = spells };
+
+            WoWObject character;
+            if (Storage.Objects.TryGetValue(CoreParsers.SessionHandler.LoginGuid, out character))
+            {
+                var player = character as Player;
+                if (player != null && player.FirstLogin)
+                    Storage.StartSpells.Add(new Tuple<Race, Class>(player.Race, player.Class), startSpell, packet.TimeSpan);
+            }
+        }
     }
 }
