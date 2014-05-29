@@ -71,6 +71,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_ADDON_INFO, 0x160A},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x0949},
             {Opcode.SMSG_AUTH_RESPONSE, 0x0ABA},
+            {Opcode.SMSG_AURA_UPDATE, 0x0072},
             {Opcode.SMSG_CHAR_CREATE, 0x1CAA},
             {Opcode.SMSG_CHAR_DELETE, 0x0C9F},
             {Opcode.SMSG_CHAR_ENUM, 0x11C3},
