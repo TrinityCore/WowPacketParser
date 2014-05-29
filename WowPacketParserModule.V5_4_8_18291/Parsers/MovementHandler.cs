@@ -8,6 +8,42 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
     public static class MovementHandler
     {
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
+        public static void HandlePhaseShift(Packet packet)
+        {
+            var guid = packet.StartBitStream(0, 3, 1, 4, 6, 2, 7, 5);
+            packet.ParseBitStream(guid, 4, 3, 2);
+
+            var count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Inactive Terrain swap count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
+            
+            packet.ParseBitStream(guid, 0, 6);
+
+            count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Active Terrain swap count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Active Terrain swap", i);
+
+            packet.ParseBitStream(guid, 1, 7);
+
+            count = packet.ReadUInt32() / 2;
+            packet.WriteLine("WorldMapArea swap count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt16("WorldMapArea swap", i);
+
+            count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Phases count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt16("Phase id", i); // Phase.dbc
+
+            packet.ParseBitStream(guid, 5);
+            packet.WriteGuid("GUID", guid);
+
+            packet.ReadUInt32("UInt32 1"); 
+        }
+
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
         public static void HandleTransferPending(Packet packet)
         {
