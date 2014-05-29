@@ -67,8 +67,10 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.MSG_MOVE_STOP_TURN, 0x1170},
             {Opcode.MSG_MOVE_WORLDPORT_ACK, 0x1FAD},
 
+            
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x162B},
             {Opcode.SMSG_ADDON_INFO, 0x160A},
+            {Opcode.SMSG_AURA_UPDATE, 0x0072},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x0949},
             {Opcode.SMSG_AUTH_RESPONSE, 0x0ABA},
             {Opcode.SMSG_CHAR_CREATE, 0x1CAA},
@@ -95,6 +97,9 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_PONG, 0x1969},
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x169F},
             {Opcode.SMSG_SEND_SERVER_LOCATION, 0x19C1},
+            {Opcode.SMSG_SET_PHASE_SHIFT, 0x02A2},
+            {Opcode.SMSG_SPELL_GO, 0x09D8},
+            {Opcode.SMSG_SPELL_START, 0x107A},
             {Opcode.SMSG_SUSPEND_COMMS, 0x1D48},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x1A8F},
             {Opcode.SMSG_TRANSFER_PENDING, 0x061B},
