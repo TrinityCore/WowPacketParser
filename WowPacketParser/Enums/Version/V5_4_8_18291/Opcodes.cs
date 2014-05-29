@@ -87,6 +87,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_INITIAL_SPELLS, 0x045A},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x1C0F},
             {Opcode.SMSG_MESSAGECHAT, 0x1A9A},
+            {Opcode.SMSG_MONSTER_MOVE, 0x1A07},
             {Opcode.SMSG_MOTD, 0x183B},
             {Opcode.SMSG_NEW_WORLD, 0x1C3B},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x1149},
