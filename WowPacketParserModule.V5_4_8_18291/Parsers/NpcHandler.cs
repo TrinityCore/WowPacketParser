@@ -21,13 +21,54 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ParseBitStream(GUID, 4, 7, 1, 0, 5, 3, 6, 2);
             packet.WriteGuid("GUID", GUID);
         }
-		
-		[Parser(Opcode.CMSG_AUCTION_HELLO)]
-        public static void HandleGossipHello(Packet packet)
+
+        [Parser(Opcode.CMSG_BANKER_ACTIVATE)]
+        public static void HandleBankerActivate(Packet packet)
+        {
+            var GUID = new byte[8];
+            GUID = packet.StartBitStream(4, 5, 0, 6, 1, 2, 7, 3);
+            packet.ParseBitStream(GUID, 1, 7, 2, 5, 6, 3, 0, 4);
+            packet.WriteGuid("GUID", GUID);
+        }
+
+        [Parser(Opcode.SMSG_SHOW_BANK)]
+        public static void HandleShowBank(Packet packet)
+        {
+            var GUID = new byte[8];
+            GUID = packet.StartBitStream(2, 4, 3, 6, 5, 1, 7, 0);
+            packet.ParseBitStream(GUID, 7, 0, 5, 3, 6, 1, 4, 2);
+            packet.WriteGuid("GUID", GUID);
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_HELLO)]
+        public static void HandleAuctionHello(Packet packet)
         {
             var GUID = new byte[8];
             GUID = packet.StartBitStream(1, 5, 2, 0, 3, 6, 4, 7);
             packet.ParseBitStream(GUID, 2, 7, 1, 3, 5, 0, 4, 6);
+            packet.WriteGuid("GUID", GUID);
+        }
+
+        [Parser(Opcode.CMSG_SET_SELECTION)]
+        public static void HandleSetSelection(Packet packet)
+        {
+            var GUID = new byte[8];
+            GUID = packet.StartBitStream(7, 6, 5, 4, 3, 2, 1, 0);
+            packet.ParseBitStream(GUID, 0, 7, 3, 5, 1, 4, 6, 2);
+            packet.WriteGuid("GUID", GUID);
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_HELLO)]
+        public static void HandleAuctionHelloResponse(Packet packet)
+        {
+            var GUID = new byte[8];
+            GUID = packet.StartBitStream(6, 7, 3);
+			var inUse = packet.ReadBit("inUse");
+            GUID = packet.StartBitStream(4, 2, 5, 0, 1);
+
+            packet.ReadXORByte(GUID, 3);
+            var AHID = packet.ReadUInt32("Entry: ");
+            packet.ParseBitStream(GUID, 4, 7, 1, 0, 3, 5);
             packet.WriteGuid("GUID", GUID);
         }
     }
