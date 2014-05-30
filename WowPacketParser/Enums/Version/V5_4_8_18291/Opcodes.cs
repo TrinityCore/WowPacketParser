@@ -100,7 +100,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_SEND_SERVER_LOCATION, 0x19C1},
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x02A2},
             {Opcode.SMSG_SPELL_GO, 0x09D8},
-            {Opcode.SMSG_SPELL_START, 0x107A},
+            {Opcode.SMSG_SPELL_START, 0x107A | 0x20000},
             {Opcode.SMSG_SUSPEND_COMMS, 0x1D48},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x1A8F},
             {Opcode.SMSG_TRANSFER_PENDING, 0x061B},
