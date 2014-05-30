@@ -49,7 +49,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.MSG_MOVE_SET_RUN_MODE, 0x0979},
             {Opcode.MSG_MOVE_SET_WALK_MODE, 0x08D1},
             {Opcode.MSG_MOVE_START_ASCEND, 0x11FA},
-            {Opcode.MSG_MOVE_START_BACKWARD, 0x09D8},
+            //{Opcode.MSG_MOVE_START_BACKWARD, 0x09D8},
             {Opcode.MSG_MOVE_START_DESCEND, 0x01D1},
             {Opcode.MSG_MOVE_START_FORWARD, 0x095A},
             {Opcode.MSG_MOVE_START_PITCH_DOWN, 0x08D8},
