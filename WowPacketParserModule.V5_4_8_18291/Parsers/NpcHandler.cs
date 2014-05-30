@@ -62,9 +62,15 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         public static void HandleAuctionHelloResponse(Packet packet)
         {
             var GUID = new byte[8];
-            GUID = packet.StartBitStream(6, 7, 3);
-			var inUse = packet.ReadBit("inUse");
-            GUID = packet.StartBitStream(4, 2, 5, 0, 1);
+            GUID[6] = packet.ReadBit();
+            GUID[7] = packet.ReadBit();
+            GUID[3] = packet.ReadBit();
+            var inUse = packet.ReadBit("inUse");
+            GUID[4] = packet.ReadBit();
+            GUID[2] = packet.ReadBit();
+            GUID[5] = packet.ReadBit();
+            GUID[0] = packet.ReadBit();
+            GUID[1] = packet.ReadBit();
 
             packet.ReadXORByte(GUID, 3);
             var AHID = packet.ReadUInt32("Entry: ");
