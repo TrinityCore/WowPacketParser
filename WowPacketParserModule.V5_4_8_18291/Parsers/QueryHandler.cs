@@ -511,5 +511,131 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     }
             }
         }
+
+        [Parser(Opcode.SMSG_NAME_QUERY_RESPONSE)]
+        public static void HandleNameQueryResponse(Packet packet)
+        {
+            var guid4 = new byte[8];
+            var guid5 = new byte[8];
+            var guid1 = new byte[8];
+
+            var bit18 = false;
+
+            var nameLen = 0;
+
+            guid1[3] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
+            guid1[5] = packet.ReadBit();
+            guid1[4] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            guid1[1] = packet.ReadBit();
+
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid1, 2);
+
+            var hasData = packet.ReadByte("HasData");
+            if (hasData == 0)
+            {
+                packet.ReadInt32("Realm Id");
+                packet.ReadInt32("AccountId");
+                packet.ReadEnum<Class>("Class", TypeCode.Byte);
+                packet.ReadEnum<Race>("Race", TypeCode.Byte);
+                packet.ReadByte("Level");
+                packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
+            }
+
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid1, 3);
+
+            if (hasData == 0)
+            {
+                guid4[2] = packet.ReadBit();
+                guid4[7] = packet.ReadBit();
+                guid5[7] = packet.ReadBit();
+                guid5[2] = packet.ReadBit();
+                guid5[0] = packet.ReadBit();
+                bit18 = packet.ReadBit();
+
+                guid4[4] = packet.ReadBit();
+                guid5[5] = packet.ReadBit();
+                guid4[1] = packet.ReadBit();
+                guid4[3] = packet.ReadBit();
+                guid4[0] = packet.ReadBit();
+
+                var count = new int[5];
+                for (var i = 0; i < 5; ++i)
+                    count[i] = (int)packet.ReadBits(7);
+
+                guid5[6] = packet.ReadBit();
+                guid5[3] = packet.ReadBit();
+                guid4[5] = packet.ReadBit();
+                guid5[1] = packet.ReadBit();
+                guid5[4] = packet.ReadBit();
+
+                nameLen = (int)packet.ReadBits(6);
+
+                guid4[6] = packet.ReadBit();
+
+                packet.ReadXORByte(guid5, 6);
+                packet.ReadXORByte(guid5, 0);
+                packet.ReadWoWString("Name", nameLen);
+                packet.ReadXORByte(guid4, 5);
+                packet.ReadXORByte(guid4, 2);
+                packet.ReadXORByte(guid5, 3);
+                packet.ReadXORByte(guid4, 4);
+                packet.ReadXORByte(guid4, 3);
+                packet.ReadXORByte(guid5, 4);
+                packet.ReadXORByte(guid5, 2);
+                packet.ReadXORByte(guid4, 7);
+
+                for (var i = 0; i < 5; ++i)
+                    packet.ReadWoWString("Name Declined", count[i], i);
+
+
+                packet.ReadXORByte(guid4, 6);
+                packet.ReadXORByte(guid5, 7);
+                packet.ReadXORByte(guid5, 1);
+                packet.ReadXORByte(guid4, 1);
+                packet.ReadXORByte(guid5, 5);
+                packet.ReadXORByte(guid4, 0);
+
+                packet.WriteGuid("Guid4", guid4);
+                packet.WriteGuid("Guid5", guid5);
+            }
+
+            packet.WriteGuid("Guid1", guid1);
+        }
+
+        [Parser(Opcode.CMSG_NAME_QUERY)]
+        public static void HandleNameQuery(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[4] = packet.ReadBit();
+            var hasRealmId2 = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            var hasRealmId1 = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            packet.ParseBitStream(guid, 7, 5, 1, 2, 6, 3, 0, 4);
+
+            if (hasRealmId2)
+                packet.ReadInt32("Realm Id 2");
+
+            if (hasRealmId1)
+                packet.ReadInt32("Realm Id 1");
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

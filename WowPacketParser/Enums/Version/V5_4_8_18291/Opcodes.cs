@@ -40,6 +40,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_TIME_SYNC_RESP, 0x01DB},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x0040},
             {Opcode.CMSG_WARDEN_DATA, 0x1816},
+            {Opcode.CMSG_NAME_QUERY, 0x0328},
 
             {Opcode.MSG_MOVE_FALL_LAND, 0x08FA},
             {Opcode.MSG_MOVE_HEARTBEAT, 0x01F2},
@@ -114,6 +115,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_THREAT_REMOVE, 0x1960},
             {Opcode.SMSG_THREAT_UPDATE, 0x0632},
             {Opcode.SMSG_THREAT_CLEAR, 0x180B},
+            {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x169B},
         };
     }
 }
