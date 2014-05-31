@@ -129,7 +129,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid2, 3);
 
             packet.WriteGuid("Guid2", guid2);
-
         }
 
         [Parser(Opcode.SMSG_GUILD_NEWS_TEXT)]

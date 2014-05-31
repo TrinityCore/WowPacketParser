@@ -63,7 +63,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.MSG_MOVE_START_DESCEND, 0x01D1},
             {Opcode.MSG_MOVE_START_FORWARD, 0x095A},
             {Opcode.MSG_MOVE_START_PITCH_DOWN, 0x08D8},
-            {Opcode.MSG_MOVE_START_PITCH_UP, 0x00D8},
+            {Opcode.MSG_MOVE_START_PITCH_UP, 0x00D8 | 0x10000},
             {Opcode.MSG_MOVE_START_STRAFE_LEFT, 0x01F8},
             {Opcode.MSG_MOVE_START_STRAFE_RIGHT, 0x1058},
             {Opcode.MSG_MOVE_START_SWIM, 0x1858},

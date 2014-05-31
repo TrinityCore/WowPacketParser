@@ -36,5 +36,14 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             CoreParsers.SessionHandler.LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_SEND_SERVER_LOCATION)]
+        public static void HandleSendServerLocation(Packet packet)
+        {
+            var len1 = packet.ReadBits(7);
+            var len2 = packet.ReadBits(7);
+            packet.ReadWoWString("Server Location", len2);
+            packet.ReadWoWString("Server Location", len1);
+        }
     }
 }
