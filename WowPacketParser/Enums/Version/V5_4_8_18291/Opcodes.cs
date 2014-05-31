@@ -49,6 +49,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x0040},
             {Opcode.CMSG_WARDEN_DATA, 0x1816},
             {Opcode.CMSG_WHO, 0x18A3},
+            {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x15AB},
 
             {Opcode.MSG_MOVE_FALL_LAND, 0x08FA},
             {Opcode.MSG_MOVE_HEARTBEAT, 0x01F2},
@@ -130,6 +131,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x1B90},
             {Opcode.SMSG_UPDATE_OBJECT, 0x1792},
             {Opcode.SMSG_WARDEN_DATA, 0x14EB},
+            {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x0027},
             {Opcode.SMSG_WHO, 0x161B},
         };
     }
