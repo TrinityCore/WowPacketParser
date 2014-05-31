@@ -569,7 +569,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var bits124 = (int)packet.ReadBits(22); // +124
 
             ownerGUID[6] = packet.ReadBit();    // +38 - 6
-            var bit28 = !packet.ReadBit();      // +28
+            packet.ReadBit();                   // fake bit
 
             packet.StartBitStream(guid2, 7, 1, 3, 0, 6, 4, 5, 2);
 
@@ -672,6 +672,9 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             }
 
             packet.ReadXORByte(ownerGUID, 0);   // +32 - 0
+
+            if (bit120)
+                packet.ReadByte("Byte120");     // +120
 
             if (bit108)
                 packet.ReadByte("Byte108");     // +108
