@@ -46,6 +46,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x0040},
             {Opcode.CMSG_WARDEN_DATA, 0x1816},
             {Opcode.CMSG_NAME_QUERY, 0x0328},
+            {Opcode.CMSG_WHO, 0x18A3},
 
             {Opcode.MSG_MOVE_FALL_LAND, 0x08FA},
             {Opcode.MSG_MOVE_HEARTBEAT, 0x01F2},
