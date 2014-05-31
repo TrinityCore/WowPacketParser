@@ -13,6 +13,44 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
     public static class NpcHandler
     {
+        public static uint LastGossipPOIEntry = 0;
+
+        [Parser(Opcode.CMSG_GOSSIP_HELLO)]
+        public static void HandleGossipHello(Packet packet)
+        {
+            var guid = new byte[8];
+            packet.StartBitStream(guid, 2, 4, 0, 3, 6, 7, 5, 1);
+            packet.ParseBitStream(guid, 4, 7, 1, 0, 5, 3, 6, 2);
+
+            packet.WriteGuid("GUID", guid);
+        }
+
+        [Parser(Opcode.CMSG_GOSSIP_SELECT_OPTION)]
+        public static void HandleNpcGossipSelectOption(Packet packet)
+        {
+            var guid = new byte[8];
+
+            var menuEntry = packet.ReadUInt32("Menu Id");
+            var gossipId = packet.ReadUInt32("Gossip Id");
+
+            packet.StartBitStream(guid, 3, 0, 1, 4, 7, 5, 6);
+
+            var bits8 = packet.ReadBits(8);
+
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadWoWString("Box Text", bits8);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 1);
+
+            Storage.GossipSelects.Add(Tuple.Create(menuEntry, gossipId), null, packet.TimeSpan);
+            packet.WriteGuid("GUID", guid);
+        }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
         public static void HandleNpcGossip(Packet packet)
@@ -102,6 +140,25 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             Storage.Gossips.Add(Tuple.Create(menuId, textId), gossip, packet.TimeSpan);
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, GUID.GetEntry().ToString(CultureInfo.InvariantCulture));
+        }
+
+        [Parser(Opcode.SMSG_GOSSIP_POI)]
+        public static void HandleGossipPoi(Packet packet)
+        {
+            LastGossipPOIEntry++;
+
+            var gossipPOI = new GossipPOI();
+
+            gossipPOI.Flags = (uint)packet.ReadEnum<UnknownFlags>("Flags", TypeCode.Int32);
+            var pos = packet.ReadVector2("Coordinates");
+            gossipPOI.Icon = packet.ReadEnum<GossipPOIIcon>("Icon", TypeCode.UInt32);
+            gossipPOI.Data = packet.ReadUInt32("Data");
+            gossipPOI.IconName = packet.ReadCString("Icon Name");
+
+            gossipPOI.XPos = pos.X;
+            gossipPOI.YPos = pos.Y;
+
+            Storage.GossipPOIs.Add(LastGossipPOIEntry, gossipPOI, packet.TimeSpan);
         }
 
         [HasSniffData]
