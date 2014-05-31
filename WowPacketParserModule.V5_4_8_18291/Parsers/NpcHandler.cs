@@ -163,6 +163,17 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             Storage.GossipPOIs.Add(LastGossipPOIEntry, gossipPOI, packet.TimeSpan);
         }
 
+        [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
+        public static void HandleNpcTextQuery(Packet packet)
+        {
+            var entry = packet.ReadInt32("Entry");
+
+            var guid = new byte[8];
+            packet.StartBitStream(guid, 4, 5, 1, 7, 0, 2, 6, 3);
+            packet.ParseBitStream(guid, 4, 0, 2, 5, 1, 7, 3, 6);
+            packet.WriteGuid("GUID", guid);
+        }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]
         public static void HandleNpcTextUpdate(Packet packet)
