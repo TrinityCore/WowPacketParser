@@ -112,6 +112,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x081E},
             {Opcode.SMSG_PLAYER_MOVE, 0x1A32},
             {Opcode.SMSG_PONG, 0x1969},
+            {Opcode.SMSG_POWER_UPDATE, 0x109F},
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x169F},
             {Opcode.SMSG_SEND_SERVER_LOCATION, 0x19C1},
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x10F2},
