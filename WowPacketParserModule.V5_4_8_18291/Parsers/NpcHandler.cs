@@ -37,6 +37,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             var bits8 = packet.ReadBits(8);
 
+            guid[2] = packet.ReadBit();
+
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 4);
