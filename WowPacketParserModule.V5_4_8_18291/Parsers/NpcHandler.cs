@@ -103,5 +103,35 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             Storage.Gossips.Add(Tuple.Create(menuId, textId), gossip, packet.TimeSpan);
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, GUID.GetEntry().ToString(CultureInfo.InvariantCulture));
         }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]
+        public static void HandleNpcTextUpdate(Packet packet)
+        {
+            var npcText = new NpcTextMop();
+
+            var entry = packet.ReadEntry("Entry");
+            if (entry.Value) // Can be masked
+                return;
+
+            var size = packet.ReadInt32("Size");
+            var data = packet.ReadBytes(size);
+
+            var pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            npcText.Probabilities = new float[8];
+            npcText.BroadcastTextId = new uint[8];
+            for (var i = 0; i < 8; ++i)
+                npcText.Probabilities[i] = pkt.ReadSingle("Probability", i);
+            for (var i = 0; i < 8; ++i)
+                npcText.BroadcastTextId[i] = pkt.ReadUInt32("Broadcast Text Id", i);
+
+            var hasData = packet.ReadBit();
+            if (!hasData)
+                return; // nothing to do
+
+            packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
+
+            Storage.NpcTextsMop.Add((uint)entry.Key, npcText, packet.TimeSpan);
+        }
     }
 }

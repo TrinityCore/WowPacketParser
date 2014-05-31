@@ -67,7 +67,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.MSG_MOVE_STOP_TURN, 0x1170},
             {Opcode.MSG_MOVE_WORLDPORT_ACK, 0x1FAD},
 
-            
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x162B},
             {Opcode.SMSG_ADDON_INFO, 0x160A},
             {Opcode.SMSG_AURA_UPDATE, 0x0072},
@@ -93,6 +92,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_MONSTER_MOVE, 0x1A07},
             {Opcode.SMSG_MOTD, 0x183B},
             {Opcode.SMSG_NEW_WORLD, 0x1C3B},
+            {Opcode.SMSG_NPC_TEXT_UPDATE, 0x140A},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x1149},
             {Opcode.SMSG_PLAYER_MOVE, 0x1A32},
             {Opcode.SMSG_PONG, 0x1969},
