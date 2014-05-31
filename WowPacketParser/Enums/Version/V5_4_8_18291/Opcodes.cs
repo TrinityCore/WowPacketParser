@@ -36,6 +36,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x0B1C},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x031C},
             {Opcode.CMSG_SET_RAID_DIFFICULTY, 0x1093},
+            {Opcode.CMSG_SET_SELECTION, 0x0740},
             {Opcode.CMSG_TEXT_EMOTE, 0x07E9},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x01DB},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x0040},

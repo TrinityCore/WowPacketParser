@@ -140,5 +140,13 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.WriteLine("[{0}] Account: {1}", i, BitConverter.ToUInt64(accountId[i], 0));
             }
         }
+
+        [Parser(Opcode.CMSG_SET_SELECTION)]
+        public static void HandleSetSelection(Packet packet)
+        {
+            var guid = packet.StartBitStream(7, 6, 5, 4, 3, 2, 1, 0);
+            packet.ParseBitStream(guid, 0, 7, 3, 5, 1, 4, 6, 2);
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
