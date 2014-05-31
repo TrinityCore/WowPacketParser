@@ -133,5 +133,92 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             Storage.NpcTextsMop.Add((uint)entry.Key, npcText, packet.TimeSpan);
         }
+
+        [Parser(Opcode.SMSG_THREAT_REMOVE)]
+        public static void HandleRemoveThreatlist(Packet packet)
+        {
+            var hostileGUID = new byte[8];
+            var victimGUID = new byte[8];
+
+            victimGUID[0] = packet.ReadBit();
+            victimGUID[1] = packet.ReadBit();
+            victimGUID[5] = packet.ReadBit();
+            hostileGUID[4] = packet.ReadBit();
+            hostileGUID[0] = packet.ReadBit();
+            victimGUID[4] = packet.ReadBit();
+            victimGUID[6] = packet.ReadBit();
+            hostileGUID[7] = packet.ReadBit();
+            hostileGUID[6] = packet.ReadBit();
+            hostileGUID[3] = packet.ReadBit();
+            victimGUID[2] = packet.ReadBit();
+            hostileGUID[1] = packet.ReadBit();
+            victimGUID[3] = packet.ReadBit();
+            victimGUID[7] = packet.ReadBit();
+            hostileGUID[5] = packet.ReadBit();
+            hostileGUID[2] = packet.ReadBit();
+
+            packet.ReadXORByte(hostileGUID, 3);
+            packet.ReadXORByte(hostileGUID, 0);
+            packet.ReadXORByte(hostileGUID, 2);
+            packet.ReadXORByte(victimGUID, 5);
+            packet.ReadXORByte(victimGUID, 4);
+            packet.ReadXORByte(victimGUID, 7);
+            packet.ReadXORByte(victimGUID, 3);
+            packet.ReadXORByte(victimGUID, 0);
+            packet.ReadXORByte(hostileGUID, 4);
+            packet.ReadXORByte(victimGUID, 1);
+            packet.ReadXORByte(hostileGUID, 1);
+            packet.ReadXORByte(victimGUID, 6);
+            packet.ReadXORByte(hostileGUID, 7);
+            packet.ReadXORByte(hostileGUID, 6);
+            packet.ReadXORByte(victimGUID, 2);
+            packet.ReadXORByte(hostileGUID, 5);
+
+            packet.WriteGuid("Hostile GUID", hostileGUID);
+            packet.WriteGuid("GUID", victimGUID);
+        }
+
+        [Parser(Opcode.SMSG_THREAT_CLEAR)]
+        public static void HandleClearThreatlist(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 6, 7, 4, 5, 2, 1, 0, 3);
+            packet.ParseBitStream(guid, 7, 0, 4, 3, 2, 1, 6, 5);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_THREAT_UPDATE)]
+        public static void HandleThreatlistUpdate(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 5, 6, 1, 3, 7, 0, 4);
+
+            var count = packet.ReadBits("Size", 21);
+
+            var hostileGUID = new byte[count][];
+
+            for (var i = 0; i < count; ++i)
+            {
+                hostileGUID[i] = new byte[8];
+                packet.StartBitStream(hostileGUID[i], 2, 3, 6, 5, 1, 4, 0, 7);
+            }
+
+            guid[2] = packet.ReadBit();
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ParseBitStream(hostileGUID[i], 6, 7, 0, 1, 2, 5, 3, 4);
+                packet.ReadUInt32("Threat", i);
+                packet.WriteGuid("Hostile", hostileGUID[i], i);
+
+            }
+
+            packet.ParseBitStream(guid, 1, 4, 2, 3, 5, 6, 0, 7);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

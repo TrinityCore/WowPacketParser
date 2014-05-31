@@ -106,7 +106,14 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_TRANSFER_PENDING, 0x061B},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x1B90},
             {Opcode.SMSG_UPDATE_OBJECT, 0x1792},
-            {Opcode.SMSG_WARDEN_DATA, 0x14EB}
+            {Opcode.SMSG_WARDEN_DATA, 0x14EB},
+
+            {Opcode.SMSG_WHO, 0x161B},
+            {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x09D3},
+            {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x10F2},
+            {Opcode.SMSG_THREAT_REMOVE, 0x1960},
+            {Opcode.SMSG_THREAT_UPDATE, 0x0632},
+            {Opcode.SMSG_THREAT_CLEAR, 0x180B},
         };
     }
 }
