@@ -688,7 +688,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             packet.ReadInt32("Int50");
             for (var i = 0; i < bits64; ++i)
             {
-                packet.ParseBitStream(guid6[i], 6, 2, 7, 1, 4, 3, 5, 0, 4);
+                packet.ParseBitStream(guid6[i], 4, 2, 0, 6, 7, 5, 1, 3);
                 packet.WriteGuid("Guid6", guid6[i], i);
             }
 
