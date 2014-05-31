@@ -350,6 +350,19 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             npcTrainer.Type = packet.ReadEnum<TrainerType>("Type", TypeCode.Int32);
 
             packet.WriteGuid("Guid", guid);
+            var GUID = new Guid(BitConverter.ToUInt64(guid, 0));
+
+            if (Storage.NpcTrainers.ContainsKey(GUID.GetEntry()))
+            {
+                var oldTrainer = Storage.NpcTrainers[GUID.GetEntry()];
+                if (oldTrainer != null)
+                {
+                    foreach (var trainerSpell in npcTrainer.TrainerSpells)
+                        oldTrainer.Item1.TrainerSpells.Add(trainerSpell);
+                }
+            }
+            else
+                Storage.NpcTrainers.Add(GUID.GetEntry(), npcTrainer, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_LIST_INVENTORY)]
