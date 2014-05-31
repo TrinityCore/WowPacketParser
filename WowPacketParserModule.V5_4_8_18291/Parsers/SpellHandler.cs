@@ -707,7 +707,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
                 pos.X = packet.ReadSingle();
                 packet.ReadXORByte(destLocationTargetGUID, 0);
                 packet.ReadXORByte(destLocationTargetGUID, 3);
-                packet.WriteLine("Position: {1}", pos);
+                packet.WriteLine("Position: {0}", pos);
                 packet.WriteGuid("DestLocationTargetGUID", destLocationTargetGUID);
             }
 
