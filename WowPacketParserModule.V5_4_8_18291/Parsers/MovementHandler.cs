@@ -3,11 +3,450 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
+using CoreOpcode = WowPacketParser.Enums.Version.Opcodes;
 
 namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
     public static class MovementHandler
     {
+        public static PlayerMovementInfo info = new PlayerMovementInfo();
+
+        public static void ReadPlayerMovementInfo(ref Packet packet, params MovementStatusElements [] movementStatusElemente)
+        {
+            var guid = new byte[8];
+            var transportGUID = new byte[8];
+
+            var pos = new Vector4();
+            var transportPos = new Vector4();
+
+            bool hasMovementFlags = false;
+            bool hasMovementFlags2 = false;
+            bool hasTimestamp = false;
+            bool hasOrientation = false;
+            bool hasTransportData = false;
+            bool hasTransportTime2 = false;
+            bool hasTransportTime3 = false;
+            bool hasPitch = false;
+            bool hasFallData = false;
+            bool hasFallDirection = false;
+            bool hasSplineElevation = false;
+            bool hasUnkTime = false;
+
+            uint count = 0;
+
+            foreach (var movementInfo in movementStatusElemente)
+            {
+                switch (movementInfo)
+                {
+                    case MovementStatusElements.MSEHasGuidByte0:
+                        guid[0] = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasGuidByte1:
+                        guid[1] = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasGuidByte2:
+                        guid[2] = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasGuidByte3:
+                        guid[3] = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasGuidByte4:
+                        guid[4] = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasGuidByte5:
+                        guid[5] = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasGuidByte6:
+                        guid[6] = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasGuidByte7:
+                        guid[7] = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasTransportGuidByte0:
+                        if (hasTransportData)
+                            transportGUID[0] = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasTransportGuidByte1:
+                        if (hasTransportData)
+                            transportGUID[1] = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasTransportGuidByte2:
+                        if (hasTransportData)
+                            transportGUID[2] = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasTransportGuidByte3:
+                        if (hasTransportData)
+                            transportGUID[3] = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasTransportGuidByte4:
+                        if (hasTransportData)
+                            transportGUID[4] = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasTransportGuidByte5:
+                        if (hasTransportData)
+                            transportGUID[5] = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasTransportGuidByte6:
+                        if (hasTransportData)
+                            transportGUID[6] = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasTransportGuidByte7:
+                        if (hasTransportData)
+                            transportGUID[7] = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEGuidByte0:
+                        packet.ReadXORByte(guid, 0);
+                        break;
+                    case MovementStatusElements.MSEGuidByte1:
+                        packet.ReadXORByte(guid, 1);
+                        break;
+                    case MovementStatusElements.MSEGuidByte2:
+                        packet.ReadXORByte(guid, 2);
+                        break;
+                    case MovementStatusElements.MSEGuidByte3:
+                        packet.ReadXORByte(guid, 3);
+                        break;
+                    case MovementStatusElements.MSEGuidByte4:
+                        packet.ReadXORByte(guid, 4);
+                        break;
+                    case MovementStatusElements.MSEGuidByte5:
+                        packet.ReadXORByte(guid, 5);
+                        break;
+                    case MovementStatusElements.MSEGuidByte6:
+                        packet.ReadXORByte(guid, 6);
+                        break;
+                    case MovementStatusElements.MSEGuidByte7:
+                        packet.ReadXORByte(guid, 7);
+                        break;
+                    case MovementStatusElements.MSETransportGuidByte0:
+                        if (hasTransportData)
+                            packet.ReadXORByte(transportGUID, 0);
+                        break;
+                    case MovementStatusElements.MSETransportGuidByte1:
+                        if (hasTransportData)
+                            packet.ReadXORByte(transportGUID, 1);
+                        break;
+                    case MovementStatusElements.MSETransportGuidByte2:
+                        if (hasTransportData)
+                            packet.ReadXORByte(transportGUID, 2);
+                        break;
+                    case MovementStatusElements.MSETransportGuidByte3:
+                        if (hasTransportData)
+                            packet.ReadXORByte(transportGUID, 3);
+                        break;
+                    case MovementStatusElements.MSETransportGuidByte4:
+                        if (hasTransportData)
+                            packet.ReadXORByte(transportGUID, 4);
+                        break;
+                    case MovementStatusElements.MSETransportGuidByte5:
+                        if (hasTransportData)
+                            packet.ReadXORByte(transportGUID, 5);
+                        break;
+                    case MovementStatusElements.MSETransportGuidByte6:
+                        if (hasTransportData)
+                            packet.ReadXORByte(transportGUID, 6);
+                        break;
+                    case MovementStatusElements.MSETransportGuidByte7:
+                        if (hasTransportData)
+                            packet.ReadXORByte(transportGUID, 7);
+                        break;
+                    case MovementStatusElements.MSEHasMovementFlags:
+                        hasMovementFlags = !packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasMovementFlags2:
+                        hasMovementFlags2 = !packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasTimestamp:
+                        hasTimestamp = !packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasOrientation:
+                        hasOrientation = !packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasTransportData:
+                        hasTransportData = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasTransportTime2:
+                        if (hasTransportData)
+                            hasTransportTime2 = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasTransportTime3:
+                        if (hasTransportData)
+                            hasTransportTime3 = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasPitch:
+                        hasPitch = !packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasFallData:
+                        hasFallData = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasFallDirection:
+                        if (hasFallData)
+                            hasFallDirection = packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasSplineElevation:
+                        hasSplineElevation = !packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEHasSpline:
+                        packet.ReadBit("hasSpline");
+                        break;
+                    case MovementStatusElements.MSECounterCount:
+                        count = packet.ReadBits(22);
+                        break;
+                    case MovementStatusElements.MSEMovementFlags:
+                        if (hasMovementFlags)
+                            packet.ReadEnum<MovementFlag>("Movement Flags", 30);
+                        break;
+                    case MovementStatusElements.MSEMovementFlags2:
+                        if (hasMovementFlags2)
+                            packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
+                        break;
+                    case MovementStatusElements.MSETimestamp:
+                        if (hasTimestamp)
+                            packet.ReadInt32("Timestamp");
+                        break;
+                    case MovementStatusElements.MSEPositionX:
+                        pos.X = packet.ReadSingle();
+                        break;
+                    case MovementStatusElements.MSEPositionY:
+                        pos.Y = packet.ReadSingle();
+                        break;
+                    case MovementStatusElements.MSEPositionZ:
+                        pos.Z = packet.ReadSingle();
+                        break;
+                    case MovementStatusElements.MSEOrientation:
+                        if (hasOrientation)
+                            pos.O = packet.ReadSingle();
+                        break;
+                    case MovementStatusElements.MSETransportPositionX:
+                        if (hasTransportData)
+                            transportPos.X = packet.ReadSingle();
+                        break;
+                    case MovementStatusElements.MSETransportPositionY:
+                        if (hasTransportData)
+                            transportPos.Y = packet.ReadSingle();
+                        break;
+                    case MovementStatusElements.MSETransportPositionZ:
+                        if (hasTransportData)
+                            transportPos.Z = packet.ReadSingle();
+                        break;
+                    case MovementStatusElements.MSETransportOrientation:
+                        if (hasTransportData)
+                            transportPos.O = packet.ReadSingle();
+                        break;
+                    case MovementStatusElements.MSETransportSeat:
+                        if (hasTransportData)
+                            packet.ReadByte("Seat");
+                        break;
+                    case MovementStatusElements.MSETransportTime:
+                        if (hasTransportData)
+                            packet.ReadInt32("Transport Time");
+                        break;
+                    case MovementStatusElements.MSETransportTime2:
+                        if (hasTransportData && hasTransportTime2)
+                            packet.ReadInt32("Transport Time 2");
+                        break;
+                    case MovementStatusElements.MSETransportTime3:
+                        if (hasTransportData && hasTransportTime3)
+                            packet.ReadInt32("Transport Time 3");
+                        break;
+                    case MovementStatusElements.MSEPitch:
+                        if (hasPitch)
+                            packet.ReadSingle("Pitch");
+                        break;
+                    case MovementStatusElements.MSEFallTime:
+                        if (hasFallData)
+                            packet.ReadInt32("Fall time");
+                        break;
+                    case MovementStatusElements.MSEFallVerticalSpeed:
+                        if (hasFallData)
+                            packet.ReadSingle("Vertical Speed");
+                        break;
+                    case MovementStatusElements.MSEFallCosAngle:
+                        if (hasFallData && hasFallDirection)
+                            packet.ReadSingle("Fall Angle");
+                        break;
+                    case MovementStatusElements.MSEFallSinAngle:
+                        if (hasFallData && hasFallDirection)
+                            packet.ReadSingle("Fall Sin");
+                        break;
+                    case MovementStatusElements.MSEFallHorizontalSpeed:
+                        if (hasFallData && hasFallDirection)
+                            packet.ReadSingle("Horizontal Speed");
+                        break;
+                    case MovementStatusElements.MSESplineElevation:
+                        if (hasSplineElevation)
+                            packet.ReadSingle("Spline elevation");
+                        break;
+                    case MovementStatusElements.MSEHasUnkTime:
+                        hasUnkTime = !packet.ReadBit();
+                        break;
+                    case MovementStatusElements.MSEUnkTime:
+                        if (hasUnkTime)
+                            packet.ReadInt32("Unk Time");
+                        break;
+                    case MovementStatusElements.MSEZeroBit:
+                    case MovementStatusElements.MSEOneBit:
+                        packet.ReadBit();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            if (hasTransportData)
+            {
+                packet.WriteGuid("Transport Guid", transportGUID);
+                packet.WriteLine("Transport Position {0}", transportPos);
+            }
+            packet.WriteLine("Position: {0}", pos);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.MSG_MOVE_FALL_LAND)]
+        public static void HandleMoveFallLand(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementFallLand);
+        }
+
+        [Parser(Opcode.MSG_MOVE_HEARTBEAT)]
+        public static void HandleMoveHeartbeat(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementHeartBeat);
+        }
+
+        [Parser(Opcode.MSG_MOVE_JUMP)]
+        public static void HandleMoveJump434(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementJump);
+        }
+
+        [Parser(Opcode.MSG_MOVE_SET_FACING)]
+        public static void HandleMoveSetFacing(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementSetFacing);
+        }
+
+        [Parser(Opcode.MSG_MOVE_SET_PITCH)]
+        public static void HandleMoveSetPitch(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementSetPitch);
+        }
+
+        [Parser(Opcode.MSG_MOVE_START_ASCEND)]
+        public static void HandleMoveStartAscend434(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementStartAscend);
+        }
+
+        [Parser(Opcode.MSG_MOVE_START_BACKWARD)]
+        public static void HandleMoveStartBackward(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementStartBackward);
+        }
+
+        [Parser(Opcode.MSG_MOVE_START_DESCEND)]
+        public static void HandleMoveStartDescend(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementStartDescend);
+        }
+
+        [Parser(Opcode.MSG_MOVE_START_FORWARD)]
+        public static void HandleMoveStartForward(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementStartForward);
+        }
+
+        [Parser(Opcode.MSG_MOVE_START_PITCH_DOWN)]
+        public static void HandleMoveStartPitchDown(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementStartPitchDown);
+        }
+
+        [Parser(Opcode.MSG_MOVE_START_PITCH_UP)]
+        public static void HandleMoveStartPitchUp(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementStartPitchUp);
+        }
+
+        [Parser(Opcode.MSG_MOVE_START_STRAFE_LEFT)]
+        public static void HandleMoveStartStrafeLeft(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementStartStrafeLeft);
+        }
+
+        [Parser(Opcode.MSG_MOVE_START_STRAFE_RIGHT)]
+        public static void HandleMoveStartStrafeRight(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementStartStrafeRight);
+        }
+
+        [Parser(Opcode.MSG_MOVE_START_SWIM)]
+        public static void HandleMoveStartSwim(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementStartSwim);
+        }
+
+        [Parser(Opcode.MSG_MOVE_START_TURN_LEFT)]
+        public static void HandleMoveStartTurnLeft(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementStartTurnLeft);
+        }
+
+        [Parser(Opcode.MSG_MOVE_START_TURN_RIGHT)]
+        public static void HandleMoveStartTurnRight(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementStartTurnRight);
+        }
+
+        [Parser(Opcode.MSG_MOVE_STOP)]
+        public static void HandleMoveStop(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementStop);
+        }
+
+        [Parser(Opcode.MSG_MOVE_STOP_ASCEND)]
+        public static void HandleMoveStopAscend(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementStopAscend);
+        }
+
+        [Parser(Opcode.MSG_MOVE_STOP_PITCH)]
+        public static void HandleMoveStopPitch(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementStopPitch);
+        }
+
+        [Parser(Opcode.MSG_MOVE_STOP_STRAFE)]
+        public static void HandleMoveStopStrafe(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementStopStrafe);
+        }
+
+        [Parser(Opcode.MSG_MOVE_STOP_SWIM)]
+        public static void HandleMoveStopSwim(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementStopSwim);
+        }
+
+        [Parser(Opcode.MSG_MOVE_STOP_TURN)]
+        public static void HandleMoveStopTurn(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementStopTurn);
+        }
+
+
+        [Parser(Opcode.SMSG_MOVE_ROOT)]
+        public static void HandleMoveRoot434(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MoveRoot);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_UNROOT)]
+        public static void HandleMoveUnroot434(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MoveUnroot);
+        }
+
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
         public static void HandlePhaseShift(Packet packet)
         {
@@ -75,6 +514,14 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             pos.O = packet.ReadSingle();
 
             packet.WriteLine("Position: {0}", pos);
+        }
+
+        [Parser(Opcode.SMSG_PLAYER_MOVE)]
+        public static void HandlePlayerMove(Packet packet)
+        {
+            var info = new PlayerMovementInfo();
+
+            ReadPlayerMovementInfo(ref packet, info.PlayerMove);
         }
 
         [Parser(Opcode.SMSG_MONSTER_MOVE)]

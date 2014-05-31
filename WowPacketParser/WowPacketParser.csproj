@@ -364,6 +364,7 @@
     <Compile Include="Misc\MovementInfo.cs" />
     <Compile Include="Misc\Packet.cs" />
     <Compile Include="Misc\PacketReads.cs" />
+    <Compile Include="Misc\PlayerMovementInfo.cs" />
     <Compile Include="Loading\SniffFile.cs" />
     <Compile Include="Misc\Statistics.cs" />
     <Compile Include="Misc\Quaternion.cs" />
