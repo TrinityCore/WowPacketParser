@@ -55,6 +55,12 @@ namespace WowPacketParser.Parsing.Parsers
                 case "1AF5418A448F8AD05451E3F7DBB2D9AF9CB13458EEA2368EBFC539476B954F1C":    // Mc64
                     WriteLine("Name", "RiskFingerprint", values);
                     return HandleRiskFingerprint(reader, values);
+                case "BFE4CEB47700AA872E815E007E27DF955D4CD4BC1FE731039EE6498CE209F368":    // Win
+                case "00FFD88A437AFBB88D7D4B74BE2E3B43601605EE229151AA9F4BEBB29EF66280":    // Mac
+                case "898166926805F897804BDBBF40662C9D768590A51A0B26C40DBCDF332BA11974":    // Wn64
+                case "304627D437C38500C0B5CA0C6220EEADE91390E52A2B005FF3F7754AFA1F93CD":    // Mc64
+                    WriteLine("Name", "Resume", values);
+                    return HandleResume(reader, values);
             }
 
             return null;
@@ -163,6 +169,27 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 WriteLine("Data", Encoding.ASCII.GetString(reader.ReadBytes(4).Reverse().ToArray()).Trim(new char[1] { '\0' }), values.Concat(new int[1] { i }).ToArray());
                 WriteLine("Value", reader.ReadUInt32(), values.Concat(new int[1] { i }).ToArray());
+            }
+
+            return true;
+        }
+
+        private bool HandleResume(BinaryReader reader, params int[] values)
+        {
+            var state = reader.ReadByte();
+            WriteLine("State", state, values);
+            switch (state)
+            {
+                case 0:
+                    WriteLine("Server challenge", Utilities.ByteArrayToHexString(reader.ReadBytes(16).Reverse().ToArray()), values);
+                    return false;
+                case 1:
+                    WriteLine("Client challenge", Utilities.ByteArrayToHexString(reader.ReadBytes(16).Reverse().ToArray()), values);
+                    WriteLine("Client proof", Utilities.ByteArrayToHexString(reader.ReadBytes(32).Reverse().ToArray()), values);
+                    break;
+                case 2:
+                    WriteLine("Server proof", Utilities.ByteArrayToHexString(reader.ReadBytes(32).Reverse().ToArray()), values);
+                    break;
             }
 
             return true;
