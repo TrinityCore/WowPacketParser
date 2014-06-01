@@ -444,7 +444,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             ReadPlayerMovementInfo(ref packet, info.MovementStopTurn);
         }
 
-
         [Parser(Opcode.SMSG_MOVE_ROOT)]
         public static void HandleMoveRoot434(Packet packet)
         {
@@ -524,6 +523,21 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             pos.O = packet.ReadSingle();
 
             packet.WriteLine("Position: {0}", pos);
+        }
+
+        [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
+        public static void HandleLoginVerifyWorld(Packet packet)
+        {
+            var pos = new Vector4();
+
+            pos.X = packet.ReadSingle();
+            pos.O = packet.ReadSingle();
+            pos.Y = packet.ReadSingle();
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
+            pos.Z = packet.ReadSingle();
+
+            packet.WriteLine("Position: {0}", pos);
+            packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
 
         [Parser(Opcode.SMSG_PLAYER_MOVE)]

@@ -66,5 +66,17 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.WriteGuid("Guid", guid[i], i);
             }
         }
+
+        [Parser(Opcode.CMSG_QUEST_QUERY)]
+        public static void HandleQuestQuery(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadInt32("Entry");
+            packet.StartBitStream(guid, 0, 5, 2, 7, 6, 4, 1, 3);
+            packet.ParseBitStream(guid, 4, 1, 7, 5, 2, 3, 6, 0);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
