@@ -197,7 +197,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         break;
                     case MovementStatusElements.MSECounter:
                         for (var i = 0; i < count; i++)
-                            packet.ReadInt32("Unk Int");
+                            packet.ReadInt32("Unk Int", i);
                         break;
                     case MovementStatusElements.MSEMovementFlags:
                         if (hasMovementFlags)
@@ -467,7 +467,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteLine("Inactive Terrain swap count: {0}", count);
             for (var i = 0; i < count; ++i)
                 packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
-            
+
             packet.ParseBitStream(guid, 0, 6);
 
             count = packet.ReadUInt32() / 2;
@@ -490,7 +490,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ParseBitStream(guid, 5);
             packet.WriteGuid("GUID", guid);
 
-            packet.ReadUInt32("UInt32 1"); 
+            packet.ReadUInt32("UInt32 1");
         }
 
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
@@ -628,7 +628,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             if (bit18)
                 packet.ReadInt32("Int18");   // +18
-            
+
             if (splineType == 3)
             {
                 packet.ParseBitStream(factingTargetGUID, 5, 7, 0, 4, 3, 2, 6, 1);
