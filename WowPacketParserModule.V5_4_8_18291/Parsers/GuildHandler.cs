@@ -126,6 +126,40 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ParseBitStream(guid2, 2, 6, 4, 0, 7, 3, 5, 1);
 
             packet.WriteGuid("Guid2", guid2);
-        }        
+        }
+
+        [Parser(Opcode.SMSG_GUILD_RANK)]
+        public static void HandleGuildRankServer(Packet packet)
+        {
+            const int guildBankMaxTabs = 8;
+            var count = packet.ReadBits("Count", 17);
+            var length = new uint[count];
+
+            for (var i = 0; i < count; ++i)
+                length[i] = packet.ReadBits(7);
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Creation Order", i);
+                packet.ReadInt32("Gold Per Day", i);
+
+                for (var j = 0; j < guildBankMaxTabs; ++j)
+                {
+                    packet.ReadInt32("Tab Slots", i, j);
+                    packet.ReadEnum<GuildBankRightsFlag>("Tab Rights", TypeCode.Int32, i, j);
+                }
+
+                packet.ReadWoWString("Name", length[i], i);
+
+                packet.ReadInt32("Rights Order", i);
+                packet.ReadInt32("Unk 1", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_GUILD_NEWS_TEXT)]
+        public static void HandleNewText(Packet packet)
+        {
+            packet.ReadWoWString("Text", (int)packet.ReadBits(10));
+        }   
     }
 }

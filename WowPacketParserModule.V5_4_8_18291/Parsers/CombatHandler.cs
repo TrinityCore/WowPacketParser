@@ -8,6 +8,104 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
     public static class CombatHandler
     {
+        [Parser(Opcode.SMSG_ATTACKSTART)]
+        public static void HandleAttackStartStart(Packet packet)
+        {
+            var attackerGUID = new byte[8];
+            var victimGUID = new byte[8];
+
+            victimGUID[7] = packet.ReadBit();
+            attackerGUID[7] = packet.ReadBit();
+            attackerGUID[3] = packet.ReadBit();
+            victimGUID[3] = packet.ReadBit();
+            victimGUID[5] = packet.ReadBit();
+            attackerGUID[4] = packet.ReadBit();
+            attackerGUID[1] = packet.ReadBit();
+            victimGUID[4] = packet.ReadBit();
+            attackerGUID[0] = packet.ReadBit();
+            victimGUID[6] = packet.ReadBit();
+            attackerGUID[5] = packet.ReadBit();
+            victimGUID[2] = packet.ReadBit();
+            attackerGUID[6] = packet.ReadBit();
+            victimGUID[1] = packet.ReadBit();
+            attackerGUID[2] = packet.ReadBit();
+            victimGUID[0] = packet.ReadBit();
+            packet.ReadXORByte(attackerGUID, 5);
+            packet.ReadXORByte(attackerGUID, 0);
+            packet.ReadXORByte(victimGUID, 5);
+            packet.ReadXORByte(attackerGUID, 4);
+            packet.ReadXORByte(attackerGUID, 6);
+            packet.ReadXORByte(victimGUID, 6);
+            packet.ReadXORByte(victimGUID, 1);
+            packet.ReadXORByte(victimGUID, 0);
+            packet.ReadXORByte(attackerGUID, 7);
+            packet.ReadXORByte(victimGUID, 4);
+            packet.ReadXORByte(attackerGUID, 2);
+            packet.ReadXORByte(victimGUID, 3);
+            packet.ReadXORByte(victimGUID, 7);
+            packet.ReadXORByte(victimGUID, 2);
+            packet.ReadXORByte(attackerGUID, 3);
+            packet.ReadXORByte(attackerGUID, 1);
+
+            packet.WriteGuid("Attacker GUID", attackerGUID);
+            packet.WriteGuid("Victim GUID", victimGUID);
+        }
+
+        [Parser(Opcode.SMSG_ATTACKSTOP)]
+        public static void HandleAttackStartStop(Packet packet)
+        {
+            var victimGUID = new byte[8];
+            var attackerGUID = new byte[8];
+
+            victimGUID[5] = packet.ReadBit();
+            victimGUID[6] = packet.ReadBit();
+            attackerGUID[3] = packet.ReadBit();
+            attackerGUID[6] = packet.ReadBit();
+            attackerGUID[7] = packet.ReadBit();
+            attackerGUID[2] = packet.ReadBit();
+            attackerGUID[5] = packet.ReadBit();
+            victimGUID[4] = packet.ReadBit();
+            packet.ReadBit("Unk Bit");
+            victimGUID[3] = packet.ReadBit();
+            victimGUID[0] = packet.ReadBit();
+            victimGUID[2] = packet.ReadBit();
+            victimGUID[7] = packet.ReadBit();
+            attackerGUID[4] = packet.ReadBit();
+            attackerGUID[1] = packet.ReadBit();
+            attackerGUID[0] = packet.ReadBit();
+            victimGUID[1] = packet.ReadBit();
+            packet.ReadXORByte(victimGUID, 0);
+            packet.ReadXORByte(victimGUID, 3);
+            packet.ReadXORByte(victimGUID, 5);
+            packet.ReadXORByte(victimGUID, 2);
+            packet.ReadXORByte(attackerGUID, 0);
+            packet.ReadXORByte(attackerGUID, 6);
+            packet.ReadXORByte(attackerGUID, 3);
+            packet.ReadXORByte(victimGUID, 4);
+            packet.ReadXORByte(attackerGUID, 1);
+            packet.ReadXORByte(attackerGUID, 4);
+            packet.ReadXORByte(victimGUID, 6);
+            packet.ReadXORByte(attackerGUID, 5);
+            packet.ReadXORByte(attackerGUID, 7);
+            packet.ReadXORByte(attackerGUID, 2);
+            packet.ReadXORByte(victimGUID, 1);
+            packet.ReadXORByte(victimGUID, 7);
+
+            packet.WriteGuid("Attacker GUID", attackerGUID);
+            packet.WriteGuid("Victim GUID", victimGUID);
+        }
+
+        [Parser(Opcode.CMSG_ATTACKSWING)]
+        public static void HandleAttackSwing(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 6, 5, 7, 0, 3, 1, 4, 2);
+            packet.ParseBitStream(guid, 6, 7, 1, 3, 2, 0, 4, 5);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]
         public static void HandleAttackerStateUpdate(Packet packet)
         {

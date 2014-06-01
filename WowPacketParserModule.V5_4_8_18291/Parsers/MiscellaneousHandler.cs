@@ -194,5 +194,13 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.ReadInt32("Int2CC");
             }
         }
+
+        [Parser(Opcode.SMSG_WEATHER)]
+        public static void HandleWeatherStatus(Packet packet)
+        {
+            packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
+            packet.ReadSingle("Grade");
+            packet.ReadBit("Unk Bit"); // Type
+        }
     }
 }

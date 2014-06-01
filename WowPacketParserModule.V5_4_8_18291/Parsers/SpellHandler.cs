@@ -938,6 +938,38 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_LEARNED_SPELL)]
+        public static void HandleLearnSpell(Packet packet)
+        {
+            var count = packet.ReadBits("Spell Count", 22);
+            packet.ReadBit("Unk Bits");
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+        }
+
+        [Parser(Opcode.SMSG_REMOVED_SPELL)]
+        public static void HandleRemovedSpell(Packet packet)
+        {
+            var count = packet.ReadBits("Spell Count", 22);
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", i);
+        }
+
+        [Parser(Opcode.SMSG_SEND_UNLEARN_SPELLS)]
+        public static void HandleSendUnlearnSpells(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 21);
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadInt32("Unk Int32", i);
+                packet.ReadByte("Unk Byte", i);
+                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+            }
+        }
+
         [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER)]
         public static void HandleSetSpellModifierFlat(Packet packet)
         {
