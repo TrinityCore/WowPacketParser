@@ -529,8 +529,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_PLAYER_MOVE)]
         public static void HandlePlayerMove(Packet packet)
         {
-            var info = new PlayerMovementInfo();
-
             ReadPlayerMovementInfo(ref packet, info.PlayerMove);
         }
 
@@ -719,6 +717,16 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Owner GUID", ownerGUID);
             packet.WriteGuid("GUID2", guid2);
             packet.WriteLine("Position: {0}", pos);
+        }
+
+        [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]
+        public static void HandleLoginSetTimeSpeed(Packet packet)
+        {
+            packet.ReadInt32("Unk Int32");
+            packet.ReadPackedTime("Game Time");
+            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32");
+            packet.ReadSingle("Game Speed");
         }
     }
 }

@@ -1072,5 +1072,28 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_TALENTS_INFO)]
+        public static void ReadTalentInfo(Packet packet)
+        {
+            packet.ReadByte("Active Spec Group");
+
+            var specCount = packet.ReadBits("Spec Group count", 19);
+            var spentTalents = new uint[specCount];
+
+            for (var i = 0; i < specCount; ++i)
+                spentTalents[i] = packet.ReadBits("Spec Talent Count", 23, i);
+
+            for (var i = 0; i < specCount; ++i)
+            {
+                for (var j = 0; j < spentTalents[i]; ++j)
+                    packet.ReadUInt16("Talent Id", i, j);
+
+                for (var j = 0; j < 6; ++j)
+                    packet.ReadUInt16("Glyph", i, j);
+
+                packet.ReadUInt32("Spec Id", i);
+            }
+        }
     }
 }
