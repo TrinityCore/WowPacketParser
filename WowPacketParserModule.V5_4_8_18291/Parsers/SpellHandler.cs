@@ -1106,5 +1106,11 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             if (hasCount)
                 packet.ReadByte("Count");
         }
+
+        [Parser(Opcode.CMSG_CANCEL_MOUNT_AURA)]
+        public static void HandleCancelMountAura(Packet packet)
+        {
+            packet.ReadUInt32("Unk");
+        }
     }
 }

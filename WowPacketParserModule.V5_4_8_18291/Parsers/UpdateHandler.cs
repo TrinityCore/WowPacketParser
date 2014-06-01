@@ -146,6 +146,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var bit544 = false;
             var bit526 = false;
             var bit552 = false;
+            var bit524 = false;
             var bit572 = false;
             var bit525 = false;
             var bit664 = false;
@@ -186,26 +187,26 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var bits2AA = 0u;
             var splineType = SplineType.Stop;
 
-            var bit676 = packet.ReadBit();
+            var bit676 = packet.ReadBit("bit676", index);
             var hasAnimKits = packet.ReadBit("Has Anim Kits", index); // 498
             var isLiving = packet.ReadBit("Is Living", index); // 368
-            var bit810 = packet.ReadBit();
+            var bit810 = packet.ReadBit("bit810", index);
             packet.ReadBit(); //fake bit
             var transportFrames = packet.ReadBits("Transport Frames Count", 22, index); // 1068
             var hasVehicleData = packet.ReadBit("Has Vehicle Data", index); // 488
-            var bit1044 = packet.ReadBit();
+            var bit1044 = packet.ReadBit("bit1044", index);
             packet.ReadBit(); //fake bit 
-            var bit476 = packet.ReadBit();
+            var bit476 = packet.ReadBit("bit476", index);
             var hasGameObjectRotation = packet.ReadBit("Has GameObject Rotation", index); // 512
             packet.ReadBit(); //fake bit
-            var bit680 = packet.ReadBit();
+            var bit680 = packet.ReadBit("bit680", index);
             var hasAttackingTarget = packet.ReadBit("Has Attacking Target", index); // 464
             var hasSceneObjectData = packet.ReadBit("Has Scene Object Data", index); // 1032
-            var bit1064 = packet.ReadBit();
+            var bit1064 = packet.ReadBit("bit1064", index);
             packet.ReadBit(); //fake bit
-            var bit668 = packet.ReadBit();
+            var bit668 = packet.ReadBit("bit668", index);
             var hasTransportPosition = packet.ReadBit("Has Transport Position", index); // 424
-            var bit681 = packet.ReadBit();
+            var bit681 = packet.ReadBit("bit681", index);
             var hasStationaryPosition = packet.ReadBit("Has Stationary Position", index); // 448
 
             if (isLiving)
@@ -310,15 +311,14 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 bit544 = packet.ReadBit();
                 bit526 = packet.ReadBit();
                 bit552 = packet.ReadBit();
+                bit524 = packet.ReadBit();
                 bit572 = packet.ReadBit();
                 bit525 = packet.ReadBit();
                 bit664 = packet.ReadBit();
                 bit527 = packet.ReadBit();
 
                 if (bit664)
-                {
                     bits288 = packet.ReadBits(20);
-                }
 
                 bit536 = packet.ReadBit();
                 bit644 = packet.ReadBit();
@@ -521,6 +521,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         packet.ReadSingle("Float652+8", index, i);
                     }
                 }
+
                 if (bit600)
                 {
                     packet.ReadSingle("Float584", index);
@@ -544,23 +545,24 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         packet.ReadSingle("Float260+0", index, i);
                         packet.ReadSingle("Float260+1", index, i);
                     }
+
                     packet.ReadSingle("Float624", index);
                     packet.ReadSingle("Float624+4", index);
                 }
 
-                packet.ReadUInt32("unk520");
+                packet.ReadUInt32("unk520", index);
 
                 if (bit544)
-                    packet.ReadUInt32("unk544");
+                    packet.ReadUInt32("unk544", index);
 
                 if (bit552)
-                    packet.ReadUInt32("unk548");
+                    packet.ReadUInt32("unk548", index);
 
                 if (bit536)
-                    packet.ReadUInt32("unk532");
+                    packet.ReadUInt32("unk532", index);
 
                 if (bit560)
-                    packet.ReadUInt32("unk556");
+                    packet.ReadUInt32("unk556", index);
 
                 if (bit572)
                 {
@@ -612,6 +614,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 moveInfo.Position.Z = packet.ReadSingle();
                 moveInfo.Orientation = packet.ReadSingle("Stationary Orientation", index);
                 moveInfo.Position.X = packet.ReadSingle();
+
+                packet.WriteLine("[{0}] Stationary Position: {1}", index, moveInfo.Position);
             }
 
             if (bit676)

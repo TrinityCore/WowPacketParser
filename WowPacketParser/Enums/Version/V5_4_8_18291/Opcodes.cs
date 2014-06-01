@@ -190,7 +190,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x09D3},
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x02A2},
             {Opcode.SMSG_SET_VIGNETTE, 0x0CBE},
-            {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x1450},
+            {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x1450 | 0x20000},
             {Opcode.SMSG_SPELL_FAILED_OTHER, 0x040B},
             {Opcode.SMSG_SPELL_FAILURE, 0x04AF},
             {Opcode.SMSG_SPELL_GO, 0x09D8},
