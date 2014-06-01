@@ -140,7 +140,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var guid6 = new byte[8];
             var guid7 = new byte[8];
 
-            var bit24 = false;
             var bit160 = false;
             var bit528 = false;
             var bit600 = false;
@@ -230,11 +229,11 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     hasTransportTime2 = packet.ReadBit();
                     transportGuid[5] = packet.ReadBit();                    
                 }
-                bit24 = !packet.ReadBit();
+                hasTimestamp = !packet.ReadBit();
                 guid1[6] = packet.ReadBit();
                 guid1[4] = packet.ReadBit();
                 guid1[3] = packet.ReadBit();
-                hasOrientation = !packet.ReadBit();
+                hasOrientation = !packet.ReadBit(); //40
                 bit160 = !packet.ReadBit();
                 guid1[5] = packet.ReadBit();
                 bits98 = packet.ReadBits("bits98", 22, index); //144
@@ -253,7 +252,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     moveInfo.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
 
                 hasSplineElevation = !packet.ReadBit("Has SplineElevation", index);//136
-                var bit344 = packet.ReadBit();
+                moveInfo.HasSplineData = packet.ReadBit("Has SplineData", index);
                 var bit141 = packet.ReadBit();
                 guid1[0] = packet.ReadBit();
                 guid1[7] = packet.ReadBit();
@@ -476,8 +475,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.ReadXORByte(guid1, 1);
                 packet.ReadSingle("Turn Speed", index);
 
-                if (bit24)
-                    packet.ReadUInt32("unk24");
+                if (hasTimestamp)
+                    packet.ReadUInt32("Time?", index);
 
                 packet.ReadSingle("Swim Speed", index); //176
 
