@@ -127,6 +127,103 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.WriteGuid("GuidA", guidA);
             packet.WriteGuid("Guid12", guid12);
-        }        
+        }
+
+        [Parser(Opcode.SMSG_PERIODICAURALOG)]
+        public static void HandlePeriodicAuraLog(Packet packet)
+        {
+            var guid2 = new byte[8];
+            var guidA = new byte[8];
+            
+            guid2[7] = packet.ReadBit();
+            guidA[0] = packet.ReadBit();
+            guidA[7] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            var bits3C = (int)packet.ReadBits(21);
+            guid2[0] = packet.ReadBit();
+
+            var hasOverDamage = new bool[bits3C];
+            var bit10 = new bool[bits3C];
+            var bit14 = new bool[bits3C];
+            var hasSpellProto = new bool[bits3C];
+
+            for (var i = 0; i < bits3C; ++i)
+            {
+                hasOverDamage[i] = !packet.ReadBit(); // +8
+                bit10[i] = !packet.ReadBit(); // +16
+                packet.ReadBit("Unk bit", i); // +24
+                bit14[i] = !packet.ReadBit(); // +20
+                hasSpellProto[i] = !packet.ReadBit(); // +12
+            }
+
+            guid2[5] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guidA[1] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guidA[6] = packet.ReadBit();
+            guidA[3] = packet.ReadBit();
+            guidA[4] = packet.ReadBit();
+            var hasPowerData = packet.ReadBit();
+            guidA[2] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guidA[5] = packet.ReadBit();
+
+            var bits24 = 0u;
+            if (hasPowerData)
+                bits24 = packet.ReadBits(21);
+
+            guid2[4] = packet.ReadBit();
+            for (var i = 0; i < bits3C; ++i)
+            {
+                if (hasOverDamage[i])
+                    packet.ReadInt32("Over damage", i); // +8
+
+                packet.ReadInt32("Damage", i);
+                packet.ReadEnum<AuraType>("Aura Type", TypeCode.Int32, i);
+
+                if (bit14[i])
+                    packet.ReadInt32("Int14", i); // +20
+
+                if (bit10[i])
+                    packet.ReadInt32("Int10"); // +16
+
+                if (hasSpellProto[i])
+                    packet.ReadUInt32("Spell Proto", i); // +12
+            }
+
+            packet.ReadXORByte(guidA, 5);
+            packet.ReadXORByte(guidA, 3);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guidA, 7);
+            packet.ReadXORByte(guidA, 1);
+            if (hasPowerData)
+            {
+                for (var i = 0; i < bits24; ++i)
+                {
+                    packet.ReadInt32("IntED", i);
+                    packet.ReadInt32("IntED", i);
+                }
+                
+                packet.ReadInt32("Int34");
+                packet.ReadInt32("Int3C");
+                packet.ReadInt32("Int38");
+            }
+
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guidA, 0);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guidA, 4);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guidA, 2);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guidA, 6);
+
+            packet.WriteGuid("Guid2", guid2);
+            packet.WriteGuid("GuidA", guidA);
+        }
     }
 }
