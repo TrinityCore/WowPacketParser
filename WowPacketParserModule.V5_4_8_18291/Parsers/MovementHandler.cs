@@ -192,6 +192,13 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     case MovementStatusElements.MSECounterCount:
                         count = packet.ReadBits(22);
                         break;
+                    case MovementStatusElements.MSECount:
+                        packet.ReadInt32("Counter");
+                        break;
+                    case MovementStatusElements.MSECounter:
+                        for (var i = 0; i < count; i++)
+                            packet.ReadInt32("Unk Int");
+                        break;
                     case MovementStatusElements.MSEMovementFlags:
                         if (hasMovementFlags)
                             packet.ReadEnum<MovementFlag>("Movement Flags", 30);
@@ -298,7 +305,10 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.WriteGuid("Transport Guid", transportGUID);
                 packet.WriteLine("Transport Position {0}", transportPos);
             }
-            packet.WriteLine("Position: {0}", pos);
+
+            if (pos.X != 0 && pos.Y != 0 && pos.Z != 0)
+                packet.WriteLine("Position: {0}", pos);
+
             packet.WriteGuid("Guid", guid);
         }
 

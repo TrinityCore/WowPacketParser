@@ -76,6 +76,7 @@ namespace WowPacketParser.Misc
 		MSEPitch,
 		MSESplineElevation,
 
+        MSECount,
 		MSECounter,
 
 		// Special
