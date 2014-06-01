@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -14,6 +15,9 @@ namespace WowPacketParser.Parsing.Parsers
         public static uint CurrentMapId;
 
         public static int CurrentPhaseMask = 1;
+
+        [ThreadStatic]
+        public static HashSet<ushort> ActivePhases = new HashSet<ushort>();
 
         public static MovementInfo ReadMovementInfo(ref Packet packet, Guid guid, int index = -1)
         {

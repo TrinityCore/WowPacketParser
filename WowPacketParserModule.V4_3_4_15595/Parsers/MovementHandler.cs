@@ -2714,6 +2714,8 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
         public static void HandlePhaseShift434(Packet packet)
         {
+            CoreParsers.MovementHandler.ActivePhases.Clear();
+
             var guid = packet.StartBitStream(2, 3, 1, 6, 4, 5, 0, 7);
 
             packet.ReadXORByte(guid, 7);
@@ -2739,7 +2741,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             count = packet.ReadUInt32() / 2;
             packet.WriteLine("Phases count: {0}", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadUInt16("Phase id", i); // Phase.dbc
+                CoreParsers.MovementHandler.ActivePhases.Add(packet.ReadUInt16("Phase id", i)); // Phase.dbc
 
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 0);

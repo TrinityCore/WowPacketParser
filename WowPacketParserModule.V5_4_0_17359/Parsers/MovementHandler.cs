@@ -223,6 +223,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
         public static void HandlePhaseShift(Packet packet)
         {
+            CoreParsers.MovementHandler.ActivePhases.Clear();
             packet.ReadUInt32("UInt32 1");
             //packet.ReadUInt32("UInt32 2");
 
@@ -234,7 +235,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             count = packet.ReadUInt32() / 2;
             packet.WriteLine("Phases count: {0}", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadUInt16("Phase id", i); // Phase.dbc
+                CoreParsers.MovementHandler.ActivePhases.Add(packet.ReadUInt16("Phase id", i)); // Phase.dbc
 
             count = packet.ReadUInt32() / 2;
             packet.WriteLine("Inactive Terrain swap count: {0}", count);

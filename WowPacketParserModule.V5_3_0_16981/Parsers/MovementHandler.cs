@@ -2,6 +2,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
@@ -437,6 +438,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
         public static void HandlePhaseShift(Packet packet)
         {
+            CoreParsers.MovementHandler.ActivePhases.Clear();
+
             var guid = packet.StartBitStream(2, 6, 3, 1, 5, 7, 0, 4);
             packet.ReadXORBytes(guid, 5, 3, 0);
 
@@ -456,7 +459,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             count = packet.ReadUInt32() / 2;
             packet.WriteLine("Phases count: {0}", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadUInt16("Phase id", i); // Phase.dbc
+                CoreParsers.MovementHandler.ActivePhases.Add(packet.ReadUInt16("Phase id", i)); // Phase.dbc
 
             packet.ReadXORByte(guid, 7);
             count = packet.ReadUInt32() / 2;

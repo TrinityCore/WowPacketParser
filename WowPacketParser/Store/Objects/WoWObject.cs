@@ -20,6 +20,8 @@ namespace WowPacketParser.Store.Objects
 
         public uint PhaseMask;
 
+        public HashSet<ushort> Phases; // Possible phases
+
         public bool ForceTemporarySpawn;
 
         public virtual bool IsTemporarySpawn()
