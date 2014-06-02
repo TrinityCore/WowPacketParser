@@ -896,15 +896,16 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
                         aura.Duration = 0;
 
                     for (var j = 0; j < bits48[i]; ++j)
-                    {
                         packet.ReadSingle("FloatEM", i, j);
-                    }
 
                     aura.Charges = packet.ReadByte("Charges", i);
                     packet.ReadInt32("Effect Mask", i);
 
                     for (var j = 0; j < effectCount[i]; ++j)
                         packet.ReadSingle("Effect Value", i, j);
+
+                    auras.Add(aura);
+                    packet.AddSniffData(StoreNameType.Spell, (int)aura.SpellId, "AURA_UPDATE");
                 }
 
                 packet.ReadByte("Slot", i);
@@ -912,6 +913,26 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
 
             packet.ParseBitStream(guid, 2, 6, 7, 1, 3, 4, 0, 5);
             packet.WriteGuid("Guid", guid);
+
+            var GUID = new Guid(BitConverter.ToUInt64(guid, 0));
+            if (Storage.Objects.ContainsKey(GUID))
+            {
+                var unit = Storage.Objects[GUID].Item1 as Unit;
+                if (unit != null)
+                {
+                    // If this is the first packet that sends auras
+                    // (hopefully at spawn time) add it to the "Auras" field,
+                    // if not create another row of auras in AddedAuras
+                    // (similar to ChangedUpdateFields)
+
+                    if (unit.Auras == null)
+                        unit.Auras = auras;
+                    else if (unit.AddedAuras == null)
+                        unit.AddedAuras = new List<List<Aura>> { auras };
+                    else
+                        unit.AddedAuras.Add(auras);
+                }
+            }
         }
 
         [Parser(Opcode.SMSG_INITIAL_SPELLS)]
