@@ -403,6 +403,11 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadUInt32("UInt32 1");
 
             var count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Inactive Terrain swap count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
+
+            count = packet.ReadUInt32() / 2;
             packet.WriteLine("WorldMapArea swap count: {0}", count);
             for (var i = 0; i < count; ++i)
                 packet.ReadUInt16("WorldMapArea swap", i);
@@ -416,11 +421,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteLine("Active Terrain swap count: {0}", count);
             for (var i = 0; i < count; ++i)
                 packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Active Terrain swap", i);
-
-            count = packet.ReadUInt32() / 2;
-            packet.WriteLine("Inactive Terrain swap count: {0}", count);
-            for (var i = 0; i < count; ++i)
-                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
 
             var guid = packet.StartBitStream(4, 6, 1, 7, 2, 0, 5, 3);
             packet.ParseBitStream(guid, 0, 4, 7, 6, 3, 5, 1, 2);
