@@ -158,8 +158,12 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_MONSTER_MOVE, 0x1A07},
             {Opcode.SMSG_MOTD, 0x183B},
             {Opcode.SMSG_MOVE_ROOT, 0x15AE},
-            {Opcode.SMSG_MOVE_SET_ACTIVE_MOVER, 0x0C6D},
             {Opcode.SMSG_MOVE_UNROOT, 0x1FAE},
+            {Opcode.SMSG_MOVE_SET_ACTIVE_MOVER, 0x0C6D},
+            {Opcode.SMSG_MOVE_SET_FLIGHT_BACK_SPEED, 0x0319},
+            {Opcode.SMSG_MOVE_SET_RUN_BACK_SPEED, 0x0A83},
+            {Opcode.SMSG_MOVE_SET_SWIM_BACK_SPEED, 0x0962},
+            {Opcode.SMSG_MOVE_SET_SWIM_SPEED, 0x0817},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x169B},
             {Opcode.SMSG_NEW_WORLD, 0x1C3B},
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x140A},
@@ -215,6 +219,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_WHO, 0x161B},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x0082},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x0027},
+            
         };
     }
 }
