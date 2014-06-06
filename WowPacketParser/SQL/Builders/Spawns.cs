@@ -59,6 +59,10 @@ namespace WowPacketParser.SQL.Builders
                     if (!(creature.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
                         continue;
 
+                if (Settings.MapFilters.Length > 0)
+                    if (!(creature.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                        continue;
+
                 UpdateField uf;
                 if (!creature.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out uf))
                     continue;   // broken entry, nothing to spawn
@@ -168,6 +172,10 @@ namespace WowPacketParser.SQL.Builders
 
                 if (Settings.AreaFilters.Length > 0)
                     if (!(go.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                        continue;
+
+                if (Settings.MapFilters.Length > 0)
+                    if (!(go.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
                         continue;
 
                 uint animprogress = 0;

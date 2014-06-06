@@ -13,6 +13,7 @@ namespace WowPacketParser.Misc
         public static readonly string[] Filters = GetStringList("Filters", new string[0]);
         public static readonly string[] IgnoreFilters = GetStringList("IgnoreFilters", new string[0]);
         public static readonly string[] IgnoreByEntryFilters = GetStringList("IgnoreByEntryFilters", new string[0]);
+        public static readonly string[] MapFilters = GetStringList("MapFilters", new string[0]);
         public static readonly string[] AreaFilters = GetStringList("AreaFilters", new string[0]);
         public static readonly int FilterPacketNumLow = GetInt32("FilterPacketNumLow", 0);
         public static readonly int FilterPacketNumHigh = GetInt32("FilterPacketNumHigh", 0);
