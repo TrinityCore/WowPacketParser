@@ -194,7 +194,7 @@ namespace WowPacketParser.Loading
 
         private string GetHeader()
         {
-            return "# TrinityCore - WowPacketParser" + Environment.NewLine +
+            return "# ChipLeo - WowPacketParser" + Environment.NewLine +
                    "# File name: " + Path.GetFileName(_fileName) + Environment.NewLine +
                    "# Detected build: " + ClientVersion.Build + Environment.NewLine +
                    "# Parsing date: " + DateTime.Now.ToString(CultureInfo.InvariantCulture) +

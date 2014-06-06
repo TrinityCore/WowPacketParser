@@ -161,7 +161,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_18019
             {Opcode.SMSG_AURACASTLOG, 0x0919},
             {Opcode.SMSG_AURA_UPDATE, 0x1B8D},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x14B8},
-            {Opcode.SMSG_AUTH_RESPONSE, 0x15A0},
+            //{Opcode.SMSG_AUTH_RESPONSE, 0x15A0},
             {Opcode.SMSG_BINDER_CONFIRM, 0x0F22},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x11E2},
             {Opcode.SMSG_BUY_ITEM, 0x0763},
@@ -230,11 +230,11 @@ namespace WowPacketParser.Enums.Version.V5_4_7_18019
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x01F4},
             {Opcode.SMSG_MOVE_SET_FLIGHT_SPEED, 0x02DC},
             {Opcode.SMSG_MOVE_SET_RUN_SPEED, 0x1B9B},
-            {Opcode.SMSG_MOVE_SET_SWIM_SPEED, 0x01D4},
+            //{Opcode.SMSG_MOVE_SET_SWIM_SPEED, 0x01D4},
             {Opcode.SMSG_MOVE_SET_WALK_SPEED, 0x00A0},
             {Opcode.SMSG_MOVE_UNSET_CAN_FLY, 0x1D81},
             {Opcode.SMSG_MULTIPLE_PACKETS_2, 0x05B1},
-            {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x1E5B},
+            //{Opcode.SMSG_NAME_QUERY_RESPONSE, 0x1E5B},
             {Opcode.SMSG_NEW_WORLD, 0x05AB},
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x10E0},
             {Opcode.SMSG_PARTY_COMMAND_RESULT, 0x1787},
@@ -257,7 +257,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_18019
             {Opcode.SMSG_SERVER_MESSAGE, 0x026E},
             {Opcode.SMSG_SET_PROFICIENCY, 0x1E3B},
             {Opcode.SMSG_SERVER_TIMEZONE, 0x0C2B},
-            {Opcode.SMSG_SERVERTIME, 0x047E},
+            //{Opcode.SMSG_SERVERTIME, 0x047E},
             {Opcode.SMSG_SHOW_BANK, 0x060B},
             {Opcode.SMSG_SPELLHEALLOG, 0x1BBF},
             {Opcode.SMSG_SPELLLOGEXECUTE, 0x19B4},
@@ -277,7 +277,10 @@ namespace WowPacketParser.Enums.Version.V5_4_7_18019
             {Opcode.SMSG_UPDATE_OBJECT, 0x1725},
             {Opcode.SMSG_WARDEN_DATA, 0x14EB},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x1D01},
-            {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x0C22}
+            {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x0C22},
+            {Opcode.SMSG_UNK_04AB, 0x04AB},
+            {Opcode.SMSG_UNK_10E3, 0x10E3},
+            {Opcode.SMSG_UNK_1609, 0x1609}
         };
     }
 }
