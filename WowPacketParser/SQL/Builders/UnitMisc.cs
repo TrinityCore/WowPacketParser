@@ -85,6 +85,14 @@ namespace WowPacketParser.SQL.Builders
             var models = new StoreDictionary<uint, ModelData>();
             foreach (var npc in units.Select(unit => unit.Value))
             {
+                if (Settings.AreaFilters.Length > 0)
+                    if (!(npc.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                        continue;
+
+                if (Settings.MapFilters.Length > 0)
+                    if (!(npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                        continue;
+
                 uint modelId;
                 if (npc.Model.HasValue)
                     modelId = npc.Model.Value;
@@ -194,6 +202,14 @@ namespace WowPacketParser.SQL.Builders
                 var equip = new CreatureEquipment();
                 var npc = unit.Value;
                 var entry = unit.Key.GetEntry();
+
+                if (Settings.AreaFilters.Length > 0)
+                    if (!(npc.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                        continue;
+
+                if (Settings.MapFilters.Length > 0)
+                    if (!(npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                        continue;
 
                 if (npc.Equipment == null || npc.Equipment.Length != 3)
                     continue;
