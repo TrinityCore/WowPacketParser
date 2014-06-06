@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using WowPacketParser.Enums;
@@ -26,6 +27,14 @@ namespace WowPacketParser.SQL.Builders
             foreach (var unit in units)
             {
                 var npc = unit.Value;
+
+                if (Settings.AreaFilters.Length > 0)
+                    if (!(npc.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                        continue;
+
+                if (Settings.MapFilters.Length > 0)
+                    if (!(npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                        continue;
 
                 var row = new QueryBuilder.SQLInsertRow();
                 row.AddValue("entry", unit.Key.GetEntry());
