@@ -32,6 +32,27 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadWoWString("Timezone Location2", Location2Lenght);
         }
 
+        [Parser(Opcode.SMSG_UNK_00A3)]
+        public static void HandleUnk00A3(Packet packet)
+        {
+            packet.ReadInt32("Dword4");
+        }
+
+        [Parser(Opcode.SMSG_UNK_043F)]
+        public static void HandleUnk043F(Packet packet)
+        {
+            packet.ReadInt32("Dword8");
+            packet.ReadBits("unk", 19);
+        }
+
+        [Parser(Opcode.SMSG_UNK_121E)]
+        public static void HandleUnk121E(Packet packet)
+        {
+            packet.ReadBit("Bit in Byte16");
+            packet.ReadBit("Bit in Byte18");
+            packet.ReadBit("Bit in Byte17");
+        }
+
         [Parser(Opcode.SMSG_UNK_1E9B)]
         public static void HandleUnk1E9B(Packet packet)
         {
