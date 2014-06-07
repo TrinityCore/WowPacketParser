@@ -94,8 +94,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     }
 
                     questPoi.Map = (uint)packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map Id", i, j);
+                    packet.ReadInt32("Unk Int32 3", i, j);
                     packet.ReadInt32("Unk Int32 4", i, j);
-                    packet.ReadInt32("Unk Int32 5", i, j);
                     questPoi.FloorId = packet.ReadUInt32("Floor Id", i, j);
                     questPoi.WorldMapAreaId = packet.ReadUInt32("World Map Area ID", i, j);
                     questPoi.Idx = (uint)packet.ReadInt32("POI Index", i, j);

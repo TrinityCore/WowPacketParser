@@ -176,6 +176,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_PONG, 0x1969},
             {Opcode.SMSG_POWER_UPDATE, 0x109F},
             {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x100F},
+            {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x067F},
             {Opcode.SMSG_QUESTGIVER_OFFER_REWARD, 0x074F},
             {Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, 0x0346},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x134C},
