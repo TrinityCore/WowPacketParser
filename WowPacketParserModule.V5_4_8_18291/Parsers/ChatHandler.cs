@@ -63,6 +63,52 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
+        [Parser(Opcode.SMSG_TEXT_EMOTE)]
+        public static void HandleTextEmoteServer(Packet packet)
+        {
+            var guid = new byte[8];
+            var targetGuid = new byte[8];
+
+            guid[1] = packet.ReadBit();
+            targetGuid[7] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            targetGuid[5] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            targetGuid[6] = packet.ReadBit();
+            targetGuid[2] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            targetGuid[0] = packet.ReadBit();
+            targetGuid[1] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            targetGuid[3] = packet.ReadBit();
+            targetGuid[4] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+
+            packet.ReadXORByte(targetGuid, 2);
+            packet.ReadXORByte(targetGuid, 1);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(targetGuid, 7);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadEnum<EmoteTextType>("Text Emote ID", TypeCode.Int32);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(targetGuid, 0);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(targetGuid, 6);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(targetGuid, 3);
+            packet.ReadXORByte(targetGuid, 5);
+            packet.ReadXORByte(targetGuid, 4);
+            packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
+
+            packet.WriteGuid("Guid", guid);
+            packet.WriteGuid("TargetGuid", targetGuid);
+        }
+
         [Parser(Opcode.SMSG_MESSAGECHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
