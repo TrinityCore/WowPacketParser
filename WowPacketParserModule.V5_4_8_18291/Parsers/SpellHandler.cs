@@ -25,5 +25,14 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.ReadUInt32("Spell", i);
             }
         }
+
+        [Parser(Opcode.SMSG_LEARNED_SPELL)]
+        public static void HandleLearnedSpell(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 22);
+            packet.ReadBit("Byte16");
+            for (var i = 0; i < count; i++)
+                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+        }
     }
 }

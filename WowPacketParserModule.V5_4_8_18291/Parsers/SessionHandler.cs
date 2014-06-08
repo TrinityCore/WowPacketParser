@@ -66,6 +66,19 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
         }
 
+        [Parser(Opcode.CMSG_PLAYER_LOGIN)]
+        public static void HandlePlayerLogin(Packet packet)
+        {
+            packet.ReadSingle("Unk Float");
+
+            var guid = packet.StartBitStream(7, 6, 3, 2, 1, 5, 4, 0); //???
+            packet.ParseBitStream(guid, 1, 4, 0, 2, 7, 5, 6, 3); //???
+
+            packet.WriteGuid("Guid", guid);
+
+            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+        }
+
         [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
         public static void HandleServerAuthChallenge(Packet packet)
         {

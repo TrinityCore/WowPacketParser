@@ -10,6 +10,32 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
     public static class MiscellaneousHandler
     {
+        [Parser(Opcode.CMSG_TIME_SYNC_RESP)]
+        public static void HandleTimeSyncResp(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                packet.ReadUInt32("Counter");
+                packet.ReadUInt32("Client Ticks");
+            }
+            else
+            {
+                packet.WriteLine("              : SMSG_???");
+                packet.ReadToEnd();
+            }
+
+        }
+
+        [Parser(Opcode.CMSG_LOAD_SCREEN)]
+        public static void HandleClientEnterWorld(Packet packet)
+        {
+            var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map Id");
+            packet.ReadBit("Loading");
+
+            CoreParsers.MovementHandler.CurrentMapId = (uint)mapId;
+
+            packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
+        }
 
         [Parser(Opcode.CMSG_REALM_SPLIT)]
         [Parser(Opcode.CMSG_UNK_1A87)]
