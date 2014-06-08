@@ -196,6 +196,24 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadSingle("Z");
         }
 
+        [Parser(Opcode.SMSG_MOTD)]
+        public static void HandleMessageOfTheDay(Packet packet)
+        {
+            var count = packet.ReadBits("Line Count", 4);
+            var counts = new uint[count];
+            for (var i = 0; i < count; ++i)
+            {
+                counts[i] = packet.ReadBits(7); //20
+                //v16+=100;
+            }
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadWoWString("", counts[i], i);
+                //v16+=100;
+            }
+        }
+
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
         public static void HandleTransferPending(Packet packet)
         {
