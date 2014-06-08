@@ -63,5 +63,11 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             // Store temporary name from Pet Number GUID (will be retrieved as uint64 in SMSG_PET_NAME_QUERY_RESPONSE)
             StoreGetters.AddName(PetGuid, PetNumber);
         }
+
+        [Parser(Opcode.SMSG_PET_NAME_QUERY_RESPONSE)]
+        public static void HandlePetNameQueryResponse(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
     }
 }

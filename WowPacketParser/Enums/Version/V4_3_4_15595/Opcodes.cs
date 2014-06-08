@@ -819,7 +819,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_GUILD_CRITERIA_DELETED, 0x55B1},
             {Opcode.SMSG_GUILD_DECLINE, 0x2C07},
             {Opcode.SMSG_GUILD_EVENT, 0x0705},
-            {Opcode.SMSG_GUILD_EVENT_LOG_QUERY, 0x10B2},
+            {Opcode.SMSG_GUILD_EVENT_LOG_QUERY_RESULT, 0x10B2},
             {Opcode.SMSG_GUILD_FLAGGED_FOR_RENAME, 0x30B6},
             {Opcode.SMSG_GUILD_INVITE, 0x14A2},
             {Opcode.SMSG_GUILD_INVITE_CANCEL, 0x0606},

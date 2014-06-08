@@ -53,7 +53,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             //{Opcode.SMSG_NAME_QUERY_RESPONSE, 0x169B}, // 18291?
             {Opcode.SMSG_PLAYER_MOVE, 0x1A32}, // 18291?
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x169F}, // 18291?
-            {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x063E}, // 18291?
+            {Opcode.SMSG_REALM_NAME_QUERY_RESPONSE, 0x063E}, // 18291?
             {Opcode.SMSG_SHOW_BANK, 0x0007}, // 18291
             {Opcode.SMSG_TIME_SYNC_REQ, 0x1A8F}, // 18291+-
             {Opcode.SMSG_NEW_WORLD, 0x1C3B},  // 18291

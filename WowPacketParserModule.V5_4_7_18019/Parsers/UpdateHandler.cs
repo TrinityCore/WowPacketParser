@@ -148,19 +148,20 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             var hasVehicleData = packet.ReadBit("Has Vehicle Data", index);
             var hasUnkDword1044 = packet.ReadBit();
             var hasGameObjectRotation = packet.ReadBit("Has GameObject Rotation", index);
-            packet.ReadBit("unk byte0", index);
+       var b0 = packet.ReadBit("unk byte0", index);
             var living = packet.ReadBit("Living", index);
             var hasUnkLargeBlock = packet.ReadBit("Has Unk Large Block", index);
             packet.ReadBit("Unk Byte2", index);
             var hasUnkLargeBlock2 = packet.ReadBit("Has Unk Large Block2", index);
             packet.ReadBit("Self", index);
             packet.ReadBit("Unk Byte681", index);
-            packet.ReadBit("Unk Byte1", index);
             var hasGameObjectPosition = packet.ReadBit("Has GameObject Position", index);
             var transport = packet.ReadBit("Has Transport Data", index);
+            packet.ReadBit("Unk Byte3", index);
             var hasAnimKits = packet.ReadBit("Has AnimKits", index);
             var hasStationaryPosition = packet.ReadBit("Has Stationary Position", index);
             var hasAttackingTarget = packet.ReadBit("Has Attacking Target", index);
+            packet.ReadBit("Unk Byte4", index);
             var unkLoopCounter = packet.ReadBits("Unknown array size", 22, index);
             var hasUnkString = packet.ReadBit("Has Unknown String", index);
             var hasTransportFrames = packet.ReadBit("Has Transport Frames", index);
@@ -201,7 +202,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 
             if(hasTransportFrames)
             {
-                transportFramesCount = packet.ReadBits("Transport Frames Count",22,index);
+                transportFramesCount = packet.ReadBits("Transport Frames Count", 22, index);
             }
 
             if (hasGameObjectPosition)

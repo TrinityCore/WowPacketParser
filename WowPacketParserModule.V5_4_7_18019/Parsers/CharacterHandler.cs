@@ -11,6 +11,12 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 {
     public static class CharacterHandler
     {
+        [Parser(Opcode.CMSG_AUTO_DECLINE_GUILD_INVITES)]
+        public static void HandleAutoDeclineGuildInvites434(Packet packet)
+        {
+            packet.ReadBoolean("Auto decline");
+        }
+
         [Parser(Opcode.CMSG_CHAR_CREATE)]
         public static void HandleClientCharCreate(Packet packet)
         {
@@ -31,6 +37,30 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 
             if (hasDword)
                 packet.ReadUInt32("dword4C");
+        }
+
+        [Parser(Opcode.CMSG_CHAR_DELETE)]
+        public static void HandleClientCharDelete(Packet packet)
+        {
+            var guid = packet.StartBitStream(6, 4, 5, 1, 7, 3, 2, 0);
+            packet.ParseBitStream(guid, 1, 2, 3, 4, 0, 7, 6, 5);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_DUEL_PROPOSED)]
+        public static void DuelProposed(Packet packet)
+        {
+            var guid = packet.StartBitStream(2, 0, 4, 3, 7, 1, 5, 6);
+            packet.ParseBitStream(guid, 0, 3, 2, 6, 5, 4, 1, 7);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_EMOTE)]
+        public static void HandleEmote(Packet packet)
+        {
+            packet.ReadInt32("Emote");
         }
 
         [Parser(Opcode.SMSG_CHAR_ENUM)]
@@ -170,6 +200,114 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
                 packet.ReadUInt32("Unk int", i);
                 packet.ReadByte("Unk byte", i);              
             }
+        }
+
+        [Parser(Opcode.SMSG_INIT_CURRENCY)]
+        public static void HandleInitCurrency(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 21);
+            if (count == 0)
+                return;
+
+            var hasWeekCount = new bool[count];
+            var hasWeekCap = new bool[count];
+            var hasSeasonTotal = new bool[count];
+            var flags = new uint[count];
+            for (var i = 0; i < count; ++i)
+            {
+                flags[i] = packet.ReadBits(5);
+                hasWeekCap[i] = packet.ReadBit();
+                hasWeekCount[i] = packet.ReadBit();
+                hasSeasonTotal[i] = packet.ReadBit();
+            }
+
+            for (var i = 0; i < count; ++i)
+            {
+                //packet.WriteLine("[{0}] Flags {1}", i, flags[i]);
+                packet.ReadUInt32("Currency count", i);
+                packet.ReadUInt32("Entry", i);
+
+                if (hasWeekCap[i])
+                    packet.ReadUInt32("Weekly cap", i);
+
+                if (hasWeekCount[i])
+                    packet.ReadUInt32("Weekly count", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_LOG_XPGAIN)]
+        public static void HandleLogXPGain(Packet packet)
+        {
+            var guid = new byte[8];
+
+            var xpnoBonus = packet.ReadBit("hasnoXPBonus");
+
+            guid[6] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+
+            var grnoBonus = packet.ReadBit("hasnoGroupBonus");
+
+            guid[0] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            var unkb = packet.ReadBit("unk1");
+            guid[1] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 2);
+
+            //packet.ReadSingle("unk2");
+
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 6);
+
+            packet.ReadXORByte(guid, 0);
+
+            packet.ReadInt32("XP");
+            if (!xpnoBonus) packet.ReadInt32("XP+bonus");
+            if (unkb) packet.ReadByte("unk2");
+            packet.ReadBoolean("RAF Bonus");
+
+            packet.WriteGuid("GUID", guid);
+        }
+
+        [Parser(Opcode.SMSG_POWER_UPDATE)]
+        public static void HandlePowerUpdate(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[3] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+
+            var count = packet.ReadBits("Count", 21);
+
+            guid[2] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 1);
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadEnum<PowerType>("Power type", TypeCode.Byte, i); // Actually powertype for class
+                packet.ReadInt32("Value", i);
+            }
+
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 2);
         }
     }
 }

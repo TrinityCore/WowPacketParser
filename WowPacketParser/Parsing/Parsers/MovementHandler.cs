@@ -1369,17 +1369,17 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("New Speed");
         }
 
-        [Parser(Opcode.MSG_MOVE_SET_COLLISION_HGT)]
+        [Parser(Opcode.MSG_MOVE_SET_COLLISION_HEIGHT)]
         [Parser(Opcode.SMSG_MOVE_SET_COLLISION_HGT)]
-        [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HGT_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HEIGHT_ACK)]
         public static void HandleCollisionMovements(Packet packet)
         {
             var guid = packet.ReadPackedGuid("Guid");
 
-            if (packet.Opcode != Opcodes.GetOpcode(Opcode.MSG_MOVE_SET_COLLISION_HGT))
+            if (packet.Opcode != Opcodes.GetOpcode(Opcode.MSG_MOVE_SET_COLLISION_HEIGHT))
                 packet.ReadInt32("Movement Counter");
 
-            if (packet.Opcode != Opcodes.GetOpcode(Opcode.SMSG_MOVE_SET_COLLISION_HGT))
+            if (packet.Opcode != Opcodes.GetOpcode(Opcode.SMSG_MOVE_SET_COLLISION_HEIGHT))
                 ReadMovementInfo(ref packet, guid);
 
             packet.ReadSingle("Collision Height");

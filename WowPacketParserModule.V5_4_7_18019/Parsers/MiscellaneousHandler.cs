@@ -10,6 +10,19 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 {
     public static class MiscellaneousHandler
     {
+        [Parser(Opcode.CMSG_INSPECT)]
+        public static void HandleInspect(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                var guid = packet.StartBitStream(5, 0, 7, 4, 6, 2, 1, 3);
+                packet.ParseBitStream(guid, 5, 6, 3, 4, 0, 1, 7, 2);
+
+                packet.WriteGuid("Guid", guid);
+            }
+            else packet.Opcode = (int)Opcode.CMSG_INSPECT;
+        }
+
         [Parser(Opcode.CMSG_LOAD_SCREEN)]
         public static void HandleClientEnterWorld(Packet packet)
         {
@@ -21,11 +34,34 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
         }
 
+        [Parser(Opcode.CMSG_LOG_DISCONNECT)]
+        public static void HandleLogDisconnect(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                packet.ReadUInt32("Disconnect Reason");
+                // 4 is inability for client to decrypt RSA
+                // 3 is not receiving "WORLD OF WARCRAFT CONNECTION - SERVER TO CLIENT"
+                // 11 is sent on receiving opcode 0x140 with some specific data
+            }
+            else
+            {
+                packet.WriteLine("              : SMSG_GUILD_COMMAND_RESULT");
+                packet.Opcode = (int)Opcode.SMSG_GUILD_COMMAND_RESULT;
+                packet.ReadToEnd();
+            }
+        }
+
         [Parser(Opcode.CMSG_PING)]
         public static void HandleClientPing(Packet packet)
         {
             packet.ReadUInt32("Latency");
             packet.ReadUInt32("Ping");
+        }
+
+        [Parser(Opcode.CMSG_REALM_SPLIT)]
+        public static void HandleClientRealmSplit(Packet packet)
+        {
         }
 
         [Parser(Opcode.CMSG_TIME_SYNC_RESP)]
@@ -42,6 +78,12 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.ParseBitStream(guid, 5, 0, 4, 3, 1, 7, 2, 6);
 
             packet.WriteGuid("Target Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_SET_TITLE)]
+        public static void HandleSetTitle(Packet packet)
+        {
+            packet.ReadInt32("TitleID");
         }
 
         [Parser(Opcode.SMSG_CLIENTCACHE_VERSION)]
@@ -64,6 +106,41 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 
             packet.ReadWoWString("Timezone Location1", Location1Lenght);
             packet.ReadWoWString("Timezone Location2", Location2Lenght);
+        }
+
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
+        public static void HandleFeatureSystemStatus434(Packet packet)
+        {
+            packet.ReadByte("Complain System Status");
+            packet.ReadInt32("Scroll of Resurrections Remaining");
+            packet.ReadInt32("Scroll of Resurrections Per Day");
+            packet.ReadInt32("Unused Int32");
+            packet.ReadInt32("Unused Int32");
+            packet.ReadBit("HasTravelPass");
+            var parentalControl = packet.ReadBit("ParentalControl");
+            packet.ReadBit("InGameShop");
+            packet.ReadBit("RecruitAFrend");
+            var feedback = packet.ReadBit("FeedbackSystem");
+            packet.ReadBit("unk1");
+            packet.ReadBit("IsVoiceChatAllowedByServer");
+            packet.ReadBit("InGameShopStatus");
+            packet.ReadBit("Scroll of Resurrection Enabled");
+            packet.ReadBit("InGameShopParentalControl");
+
+            if (feedback)
+            {
+                packet.ReadInt32("Unk5");
+                packet.ReadInt32("Unk6");
+                packet.ReadInt32("Unk7");
+                packet.ReadInt32("Unk8");
+            }
+
+            if (parentalControl)
+            {
+                packet.ReadInt32("Unk9");
+                packet.ReadInt32("Unk10");
+                packet.ReadInt32("Unk11");
+            }
         }
 
         [Parser(Opcode.SMSG_UNK_10E3)]

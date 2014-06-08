@@ -1672,7 +1672,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GUILD_EVENT_LOG_QUERY)]
+        [Parser(Opcode.SMSG_GUILD_EVENT_LOG_QUERY_RESULT)]
         public static void HandleGuildEventLogQuery434(Packet packet)
         {
             var count = packet.ReadBits(23);
