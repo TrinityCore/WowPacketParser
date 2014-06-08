@@ -17,10 +17,12 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_BANKER_ACTIVATE, 0x02E9}, // 18291
             {Opcode.CMSG_CANCEL_TRADE, 0x1941}, // 18291+-
             {Opcode.CMSG_CHAR_ENUM, 0x00E0}, // 18291++
+            {Opcode.CMSG_CREATURE_QUERY, 0x0842}, // 18291+-
             {Opcode.CMSG_GOSSIP_HELLO, 0x12F3}, // 18291
             {Opcode.CMSG_LIST_INVENTORY, 0x02D8}, // 18291
             {Opcode.CMSG_LOAD_SCREEN, 0x1DBD}, // 18291+-
             {Opcode.CMSG_LOGOUT_REQUEST, 0x1349}, // 18291+-
+            {Opcode.CMSG_PLAYED_TIME, 0x03F6}, // 18291+-
             {Opcode.CMSG_PLAYER_LOGIN, 0x158F}, // 18291+-
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x031C}, // 18291++
             {Opcode.CMSG_REALM_SPLIT, 0x18B2}, // 18291+-
