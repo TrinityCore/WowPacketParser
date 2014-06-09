@@ -16,11 +16,18 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         }
 
         [Parser(Opcode.SMSG_SHOW_MAILBOX)]
-        [Parser(Opcode.CMSG_GET_MAIL_LIST)]
         public static void HandleShowMailbox(Packet packet)
         {
             packet.ReadGuid("GUID");
         }
+
+        [Parser(Opcode.CMSG_GET_MAIL_LIST)]
+        public static void HandleGetMailList(Packet packet)
+        {
+            packet.AsHex();
+            packet.ReadToEnd();
+        }
+
 
         [Parser(Opcode.CMSG_MAIL_TAKE_MONEY)]
         public static void HandleTakeMoney(Packet packet)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -14,6 +14,13 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         [Parser(Opcode.CMSG_MOUNTSPECIAL_ANIM)]
         public static void HandleMountSpecialAnim(Packet packet)
         {
+        }
+
+        [Parser(Opcode.MSG_MOVE_SET_FACING)]
+        public static void HandleMoveSetFacing434(Packet packet)
+        {
+            packet.AsHex();
+            packet.ReadToEnd();
         }
 
         [Parser(Opcode.SMSG_CLIENT_CONTROL_UPDATE)]
@@ -127,6 +134,13 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.ReadSingle("X");
 
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
+        }
+
+        [Parser(Opcode.SMSG_PLAYER_MOVE)]
+        public static void HandlePlayerMove(Packet packet)
+        {
+            packet.AsHex();
+            packet.ReadToEnd();
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_PITCH_RATE)] //??? maybe other name

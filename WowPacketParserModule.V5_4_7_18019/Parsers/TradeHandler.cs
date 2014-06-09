@@ -27,5 +27,20 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         {
             packet.ReadUInt64("Gold");
         }
+
+        [Parser(Opcode.SMSG_GAME_STORE_INGAME_BUY_FAILED)]
+        public static void HandleGameStoreIngameBuyFailed(Packet packet)
+        {
+            packet.AsHex();
+            packet.ReadToEnd();
+        }
+
+
+        [Parser(Opcode.SMSG_TRADE_STATUS)]
+        public static void HandleTradeStatus(Packet packet)
+        {
+            packet.AsHex();
+            packet.ReadToEnd();
+        }
     }
 }

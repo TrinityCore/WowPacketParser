@@ -11,6 +11,12 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 {
     public static class QuestHandler
     {
+        [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
+        public static void HandleQuestPoiQuery(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST)]
         public static void HandleQuestgiverAcceptQuest(Packet packet)
         {
@@ -96,6 +102,20 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.ParseBitStream(guid, 5, 6, 2, 0, 1, 4, 3, 7);
 
             packet.WriteGuid("NPC Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE)]
+        public static void HandleQuestCompleted(Packet packet)
+        {
+            packet.AsHex();
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_DETAILS)]
+        public static void HandleQuestgiverDetails510(Packet packet)
+        {
+            packet.AsHex();
+            packet.ReadToEnd();
         }
 
         [Parser(Opcode.CMSG_QUESTGIVER_REQUEST_REWARD)]

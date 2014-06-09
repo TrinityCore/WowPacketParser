@@ -206,5 +206,49 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_GUILD_QUERY_RESPONSE)]
+        public static void HandleGuildQueryResponse(Packet packet)
+        {
+            //bad
+            packet.ReadToEnd();
+            /*
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596)) // Not sure when it was changed
+                packet.ReadGuid("Guild GUID");
+            else
+                packet.ReadUInt32("Guild Id");
+
+            packet.ReadCString("Guild Name");
+            for (var i = 0; i < 10; i++)
+                packet.ReadCString("Rank Name", i);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596)) // Not sure when it was changed
+            {
+                for (var i = 0; i < 10; i++)
+                    packet.ReadUInt32("Creation Order", i);
+
+                for (var i = 0; i < 10; i++)
+                    packet.ReadUInt32("Rights Order", i);
+            }
+
+            ReadEmblemInfo(ref packet);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
+                packet.ReadUInt32("Ranks");*/
+        }
+
+        [Parser(Opcode.SMSG_GUILD_ROSTER)]
+        public static void HandleGuildRoster(Packet packet)
+        {
+            if (packet.Direction == Direction.ServerToClient)
+            {
+                packet.ReadToEnd();
+            }
+            else
+            {
+                packet.WriteLine("              : CMSG_???");
+                packet.ReadToEnd();
+            }
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -143,6 +143,39 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_GOSSIP_COMPLETE)]
+        public static void HandleGossipComplete(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_UNK_0130)]
+        public static void HandleUnk0130(Packet packet)
+        {
+            packet.AsHex();
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_UNK_022F)]
+        public static void HandleUnk022F(Packet packet)
+        {
+            packet.AsHex();
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_UNK_04AB)]
+        public static void HandleUnk04AB(Packet packet)
+        {
+            packet.ReadUInt32("Dword");
+        }
+
+        [Parser(Opcode.SMSG_UNK_0851)]
+        public static void HandleUnk0851(Packet packet)
+        {
+            packet.AsHex();
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.SMSG_UNK_10E3)]
         public static void HandleUnk10E3(Packet packet)
         {
@@ -153,6 +186,20 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.ReadBit("Bit in Byte16");
         }
 
+        [Parser(Opcode.SMSG_UNK_12D8)]
+        public static void HandleUnk12D8(Packet packet)
+        {
+            packet.AsHex();
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_UNK_12F9)]
+        public static void HandleUnk12F9(Packet packet)
+        {
+            packet.AsHex();
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.SMSG_UNK_1609)]
         public static void HandleUnk1609(Packet packet)
         {
@@ -161,10 +208,19 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.ReadBit("Bit in Byte16");
         }
 
-        [Parser(Opcode.SMSG_UNK_04AB)]
-        public static void HandleUnk04AB(Packet packet)
+        [Parser(Opcode.SMSG_UNK_1725)]
+        public static void HandleUnk1725(Packet packet)
         {
-            packet.ReadUInt32("Dword");
+            packet.AsHex();
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_UNK_1D13)]
+        public static void HandleUnk1D13(Packet packet)
+        {
+            packet.ReadBit("Bit in Byte20");
+            packet.ReadUInt32("Dword24");
+            packet.ReadUInt32("Dword16");
         }
     }
 }

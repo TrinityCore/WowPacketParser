@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -204,6 +204,7 @@ namespace WowPacketParser.Loading
         private void ParsePackets()
         {
             var packetCount = _packets.Count;
+            var pc = new UInt32[65536];
 
             File.Delete(_outFileName);
 
@@ -232,6 +233,8 @@ namespace WowPacketParser.Loading
 
                     // Update statistics
                     _stats.AddByStatus(packet.Status);
+                    if (packet.Status == ParsedStatus.NotParsed)
+                        pc[packet.Opcode]++;
 
                     // get packet header if necessary
                     if (Settings.LogPacketErrors)
@@ -259,6 +262,11 @@ namespace WowPacketParser.Loading
             _packets = null;
             Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", _logPrefix, _outFileName));
             Trace.WriteLine(string.Format("{0}: {1}", _logPrefix, _stats));
+
+            Trace.WriteLine("Packet(s) not decoded:");
+            for (var i = 0; i < 65536; ++i)
+                if (pc[i] > 0)
+                    Trace.WriteLine(string.Format("{0}: {1}", i, pc[i]));
         }
 
         private static int _lastPercent;

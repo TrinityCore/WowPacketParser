@@ -78,7 +78,6 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             }
         }
 
-
         [Parser(Opcode.CMSG_TEXT_EMOTE)]
         public static void HandleTextEmote(Packet packet)
         {
@@ -86,5 +85,13 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.ReadInt32("EmoteNum");
             packet.ReadPackedGuid("Guid");
         }
+
+        [Parser(Opcode.SMSG_TEXT_EMOTE)]
+        public static void HandleTextEmoteServer(Packet packet)
+        {
+            packet.AsHex();
+            packet.ReadToEnd();
+        }
+
     }
 }

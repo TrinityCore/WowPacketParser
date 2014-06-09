@@ -9,10 +9,11 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 {
     public static class GroupHandler
     {
-        [Parser(Opcode.CMSG_SET_EVERYONE_IS_ASSISTANT)]
-        public static void HandleEveryoneIsAssistant(Packet packet)
+        [Parser(Opcode.CMSG_GROUP_INVITE_RESPONSE)]
+        public static void HandleGroupInviteResponse(Packet packet)
         {
-            packet.ReadBit("Active");
+            packet.AsHex();
+            packet.ReadToEnd();
         }
 
         [Parser(Opcode.CMSG_GROUP_SET_ROLES, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -30,6 +31,12 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.ParseBitStream(guid, 6, 4, 1, 3, 0, 5, 2, 7);
             packet.WriteGuid("Guid", guid);
 
+        }
+
+        [Parser(Opcode.CMSG_SET_EVERYONE_IS_ASSISTANT)]
+        public static void HandleEveryoneIsAssistant(Packet packet)
+        {
+            packet.ReadBit("Active");
         }
 
         [Parser(Opcode.SMSG_GROUP_LIST)]
@@ -359,40 +366,8 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.ReadCString("Name");
         }
 
-        [Parser(Opcode.CMSG_GROUP_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleGroupInvite(Packet packet)
-        {
-            packet.ReadCString("Name");
-            packet.ReadInt32("Unk Int32");
-        }
-
-        [Parser(Opcode.CMSG_GROUP_INVITE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
-        public static void HandleGroupInvite422(Packet packet)
-        {
-            // note: this handler is different in 4.3.0, it got a bit fancy.
-            var guidBytes = packet.StartBitStream(6, 5, 0, 3, 4, 7, 1, 2);
-
-            packet.ReadInt32("Unk0"); // Always 0
-            packet.ReadInt32("Unk1"); // Non-zero in cross realm parties (1383)
-            packet.ReadCString("Name");
-
-            packet.ReadXORByte(guidBytes, 0);
-            packet.ReadXORByte(guidBytes, 7);
-            packet.ReadXORByte(guidBytes, 4);
-            packet.ReadXORByte(guidBytes, 1);
-            packet.ReadXORByte(guidBytes, 2);
-            packet.ReadXORByte(guidBytes, 6);
-            packet.ReadXORByte(guidBytes, 5);
-
-            packet.ReadCString("Realm Name"); // Non-empty in cross realm parties
-
-            packet.ReadXORByte(guidBytes, 3);
-
-            packet.WriteGuid("Guid", guidBytes); // Non-zero in cross realm parties
-        }
-
-        [Parser(Opcode.CMSG_GROUP_INVITE, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGroupInvite434(Packet packet)
+        [Parser(Opcode.CMSG_GROUP_INVITE)]
+        public static void HandleCGroupInvite(Packet packet)
         {
             packet.ReadInt32("Unk Int32"); // Non-zero in cross realm parties (1383)
             packet.ReadInt32("Unk Int32"); // Always 0
@@ -423,8 +398,8 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.WriteGuid("Guid", guid); // Non-zero in cross realm parties
         }
 
-        [Parser(Opcode.SMSG_GROUP_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGroupInviteResponse(Packet packet)
+        [Parser(Opcode.SMSG_GROUP_INVITE)]
+        public static void HandleSGroupInvite(Packet packet)
         {
             packet.ReadBoolean("invited/already in group flag?");
             packet.ReadCString("Name");
@@ -434,65 +409,6 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
                 packet.ReadUInt32("Unk Uint32", i);
 
             packet.ReadInt32("Unk Int32 2");
-        }
-
-        [Parser(Opcode.SMSG_GROUP_INVITE, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGroupInviteSmsg434(Packet packet)
-        {
-            var guid = new byte[8];
-            packet.ReadBit("Replied");
-            guid[0] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            packet.ReadBit("Not Already In Group");
-            guid[6] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            var count = packet.ReadBits(9);
-            guid[4] = packet.ReadBit();
-            var count2 = packet.ReadBits(7);
-            var count3 = packet.ReadBits("int32 count", 24);
-            packet.ReadBit("Print Something?");
-            guid[1] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 4);
-
-            packet.ReadInt32("Timestamp?");
-            packet.ReadInt32("Unk Int 32");
-            packet.ReadInt32("Unk Int 32");
-
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 3);
-
-            for (var i = 0; i < count3; i++)
-                packet.ReadInt32("Unk Int 32", i);
-
-            packet.ReadXORByte(guid, 5);
-
-            packet.ReadWoWString("Realm Name", count);
-
-            packet.ReadXORByte(guid, 7);
-
-            packet.ReadWoWString("Invited", count2);
-
-            packet.ReadInt32("Unk Int 32");
-
-            packet.WriteGuid("Guid", guid);
-
-        }
-
-        [Parser(Opcode.CMSG_GROUP_INVITE_RESPONSE)]
-        public static void HandleCGroupInviteResponse(Packet packet)
-        {
-            packet.ReadByte("unk1");
-            packet.ReadBit("unk2");
-            packet.ReadBit("Accepted");
-
-            /*if (packet.ReadBit("Accepted"))
-                packet.ReadUInt32("Unk Uint32");*/
         }
 
         [Parser(Opcode.CMSG_GROUP_UNINVITE_GUID)]
