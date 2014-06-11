@@ -63,7 +63,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.ReadXORByte(GUID, 3);
             var AHID = packet.ReadUInt32("Entry: ");
-            packet.ParseBitStream(GUID, 4, 7, 1, 0, 3, 5);
+            packet.ParseBitStream(GUID, 4, 2, 7, 1, 0, 6, 5);
             packet.WriteGuid("GUID", GUID);
         }
 
