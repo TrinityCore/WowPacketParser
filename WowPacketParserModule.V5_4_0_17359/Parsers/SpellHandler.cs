@@ -299,7 +299,7 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
                 packet.StartBitStream(guid7[i], 0, 2, 7, 4, 6, 3, 5, 1);
             }
 
-            var hasTargetFlags = !packet.ReadBit();
+            var hasTargetMask = !packet.ReadBit();
             var bit1C8 = !packet.ReadBit();
 
             var counter3 = packet.ReadBits(21);
@@ -327,7 +327,7 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
             var bit198 = !packet.ReadBit();
             var bit194 = !packet.ReadBit();
 
-            if (hasTargetFlags)
+            if (hasTargetMask)
                 packet.ReadEnum<TargetFlag>("Target Flags", 20);
 
             var bits5C = packet.ReadBits(13);
@@ -856,8 +856,8 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
 
             for (var i = 0; i < bits140; ++i)
             {
-                packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Int32, i);
-                packet.ReadByte("ByteED", i);
+                packet.ReadEnum<PowerType>("Power type", TypeCode.Byte, i);
+                packet.ReadInt32("Value", i);
             }
 
             for (var i = 0; i < bits154; ++i)
@@ -1072,7 +1072,7 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
             var bit198 = false;
             var bit160 = false;
 
-            var hasCastFlags = !packet.ReadBit();
+            var hasTargetMask = !packet.ReadBit();
             var hasCastCount = !packet.ReadBit();
             var bit18 = !packet.ReadBit();
             var hasSpellId = !packet.ReadBit();
@@ -1141,8 +1141,8 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
                 bit110 = !packet.ReadBit();
             }
 
-            if (hasCastFlags)
-                packet.ReadEnum<CastFlag>("Cast Flags", 20);
+            if (hasTargetMask)
+                packet.ReadEnum<TargetFlag>("Target Flags", 20);
 
             packet.StartBitStream(guid3, 2, 1, 3, 6, 5, 4, 7, 0);
 

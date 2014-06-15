@@ -218,7 +218,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                 packet.ReadBits("hasTargetString", 7);
 
             if (hasTargetMask)
-                packet.ReadEnum<CastFlag>("Cast Flags", 20);
+                packet.ReadEnum<TargetFlag>("Target Flags", 20);
 
             for (var i = 0; i < archeologyCounter; ++i)
             {
@@ -584,12 +584,12 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
 
             for (var i = 0; i < predictedPowerCount; ++i)
             {
-                packet.ReadInt32("IntED", i);
-                packet.ReadByte("ByteED", i);
+                packet.ReadInt32("Value", i);
+                packet.ReadEnum<PowerType>("Power type", TypeCode.Byte, i);
             }
 
             packet.ReadByte("CastCount");
-            packet.ReadInt32("CastFlags");
+            packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Int32);
 
             if (hasPredictedType)
                 packet.ReadByte("hasPredictedType");
@@ -936,8 +936,8 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
 
             for (var i = 0; i < predictedPowerCount; ++i)
             {
-                packet.ReadByte("ByteED", i);
-                packet.ReadInt32("IntED", i);
+                packet.ReadEnum<PowerType>("Power type", TypeCode.Byte, i);
+                packet.ReadInt32("Value", i);
             }
 
             if (hasVisualChain)
@@ -946,7 +946,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                 packet.ReadInt32("Int174");
             }
 
-            packet.ReadInt32("CastFlags");
+            packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Int32);
             packet.ReadInt32("getMSTime");
             packet.ReadXORByte(guid2, 7);
             packet.ReadByte("CastCount");

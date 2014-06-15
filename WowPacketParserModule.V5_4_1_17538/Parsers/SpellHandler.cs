@@ -482,7 +482,7 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
             var bit80 = packet.ReadBit();
             var hasSpellId = !packet.ReadBit();
             var hasCastCount = !packet.ReadBit();
-            var hasCastFlags = !packet.ReadBit();
+            var hasTargetMask = !packet.ReadBit();
 
             packet.ReadBit(); // fake bit
             var bit48 = packet.ReadBit();
@@ -574,8 +574,8 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
             if (bit28)
                 packet.ReadBits(5);
 
-            if (hasCastFlags)
-                packet.ReadEnum<CastFlag>("Cast Flags", 20);
+            if (hasTargetMask)
+                packet.ReadEnum<TargetFlag>("Target Flags", 20);
 
             packet.ResetBitReader(); //?
 
