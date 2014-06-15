@@ -395,7 +395,9 @@ namespace WowPacketParser.SQL.Builders
 
                     foreach (var gossip in Storage.Gossips)
                     {
-                        if (gossip.Value.Item1.GossipOptions == null) continue;
+                        if (gossip.Value.Item1.GossipOptions == null)
+                            continue;
+
                         foreach (var gossipOption in gossip.Value.Item1.GossipOptions)
                         {
                             var query = //         0     1       2         3         4        5         6
@@ -403,6 +405,7 @@ namespace WowPacketParser.SQL.Builders
                                     "SELECT menu_id,id,option_icon,box_coded,box_money,box_text,option_text " +
                                     "FROM {2}.gossip_menu_option WHERE menu_id={0} AND id={1};", gossip.Key.Item1,
                                     gossipOption.Index, Settings.TDBDatabase);
+
                             using (var reader = SQLConnector.ExecuteQuery(query))
                             {
                                 if (reader.HasRows) // possible update

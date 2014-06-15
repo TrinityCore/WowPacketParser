@@ -370,7 +370,19 @@ namespace WowPacketParser.Parsing.Parsers
 
                 gossip.GossipOptions.Add(gossipOption);
             }
-            Storage.Gossips.Add(Tuple.Create(menuId, textId), gossip, packet.TimeSpan);
+
+            if (Storage.Gossips.ContainsKey(Tuple.Create(menuId, textId)))
+            {
+                var oldGossipOptions = Storage.Gossips[Tuple.Create(menuId, textId)];
+                if (oldGossipOptions != null)
+                {
+                    foreach (var gossipOptions in gossip.GossipOptions)
+                        oldGossipOptions.Item1.GossipOptions.Add(gossipOptions);
+                }
+            }
+            else
+                Storage.Gossips.Add(Tuple.Create(menuId, textId), gossip, packet.TimeSpan);
+
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
 
             var questgossips = packet.ReadUInt32("Amount of Quest gossips");
