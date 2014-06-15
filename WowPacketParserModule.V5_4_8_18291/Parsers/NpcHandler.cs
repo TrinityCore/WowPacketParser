@@ -140,7 +140,18 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             gossip.ObjectType = GUID.GetObjectType();
             gossip.ObjectEntry = GUID.GetEntry();
 
-            Storage.Gossips.Add(Tuple.Create(menuId, textId), gossip, packet.TimeSpan);
+            if (Storage.Gossips.ContainsKey(Tuple.Create(menuId, textId)))
+            {
+                var oldGossipOptions = Storage.Gossips[Tuple.Create(menuId, textId)];
+                if (oldGossipOptions != null)
+                {
+                    foreach (var gossipOptions in gossip.GossipOptions)
+                        oldGossipOptions.Item1.GossipOptions.Add(gossipOptions);
+                }
+            }
+            else
+                Storage.Gossips.Add(Tuple.Create(menuId, textId), gossip, packet.TimeSpan);
+
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, GUID.GetEntry().ToString(CultureInfo.InvariantCulture));
         }
 

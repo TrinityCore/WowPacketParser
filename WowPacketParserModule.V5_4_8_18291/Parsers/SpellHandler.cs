@@ -129,7 +129,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
                 packet.StartBitStream(guid4, 4, 5, 3, 0, 7, 1, 6, 2);
 
             if (hasTargetMask)
-                packet.ReadEnum<CastFlag>("Cast Flags", 20);
+                packet.ReadEnum<TargetFlag>("Target Flags", 20);
 
             if (hasCastFlags)
                 packet.ReadBits("hasCastFlags", 5);
@@ -476,14 +476,14 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
 
             for (var i = 0; i < predictedPowerCount; ++i)
             {
-                packet.ReadInt32("IntED", i);
-                packet.ReadByte("ByteED", i);
+                packet.ReadInt32("Value", i);
+                packet.ReadEnum<PowerType>("Power type", TypeCode.Byte, i);
             }
 
             if (hasRunesStateBefore) //336
                 packet.ReadByte("hasRunesStateBefore");
 
-            packet.ReadInt32("CastFlags"); //10
+            packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Int32); //10
 
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 7);
@@ -624,7 +624,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             }
 
             if (hasTargetMask)
-                packet.ReadEnum<CastFlag>("Cast Flags", 20);
+                packet.ReadEnum<TargetFlag>("Target Flags", 20);
 
             var hasElevation = !packet.ReadBit();
             var hasRunesStateAfter = !packet.ReadBit();
@@ -734,7 +734,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
                 packet.ReadInt32("Int194");
             }
 
-            packet.ReadInt32("CastFlags");
+            packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Int32);
 
             if (hasSourceLocation)
             {
