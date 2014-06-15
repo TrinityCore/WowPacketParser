@@ -202,5 +202,46 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadSingle("Grade");
             packet.ReadBit("Unk Bit"); // Type
         }
+
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
+        public static void HandleFeatureSystemStatus(Packet packet)
+        {
+            packet.ReadInt32("Scroll of Resurrections Per Day");
+            packet.ReadInt32("Scroll of Resurrections Remaining");
+
+            packet.ReadInt32("Realm Id?");
+            packet.ReadByte("Complain System Status");
+            packet.ReadInt32("Unused Int32");
+
+            packet.ReadBit("bit26");
+            packet.ReadBit("Shop Enabled");
+
+            packet.ReadBit("bit54");
+            packet.ReadBit("bit30");
+            packet.ReadBit("bit38");
+            packet.ReadBit("bit25");
+            packet.ReadBit("bit24");
+
+            var sessionTimeAlert = packet.ReadBit("Session Time Alert");
+
+            packet.ReadBit("bit28");
+
+            var quickTicket = packet.ReadBit("EuropaTicketSystemEnabled");
+
+            if (sessionTimeAlert)
+            {
+                packet.ReadInt32("Int10");
+                packet.ReadInt32("Int18");
+                packet.ReadInt32("Int14");
+            }
+
+            if (quickTicket)
+            {
+                packet.ReadInt32("Unk5");
+                packet.ReadInt32("Unk6");
+                packet.ReadInt32("Unk7");
+                packet.ReadInt32("Unk8");
+            }
+        }
     }
 }
