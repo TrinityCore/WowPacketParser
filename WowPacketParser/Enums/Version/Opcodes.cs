@@ -159,6 +159,7 @@ namespace WowPacketParser.Enums.Version
                     return Opcodes_5_4_7.Opcodes();
                 }
                 case ClientVersionBuild.V5_4_8_18291:
+                case ClientVersionBuild.V5_4_8_18414:
                 {
                     return Opcodes_5_4_8.Opcodes();
                 }
