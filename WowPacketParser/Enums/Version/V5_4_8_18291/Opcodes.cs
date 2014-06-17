@@ -188,6 +188,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_PARTY_MEMBER_STATS, 0x0A9A},
             {Opcode.SMSG_PERIODICAURALOG, 0x0CF2},
             {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0x0ABE},
+            {Opcode.SMSG_PET_SPELLS, 0x095A | 0x20000},
             {Opcode.SMSG_PLAYER_MOVE, 0x1A32},
             {Opcode.SMSG_PLAYERBOUND, 0x1B60},
             {Opcode.SMSG_PONG, 0x1969},
