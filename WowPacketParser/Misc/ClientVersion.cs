@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -102,7 +102,8 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_4_7_17930,  new DateTime(2014, 02, 20)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_4_7_17956,  new DateTime(2014, 02, 27)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_4_7_18019,  new DateTime(2014, 03, 12)),
-            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_4_8_18291,  new DateTime(2014, 05, 20))
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_4_8_18291,  new DateTime(2014, 05, 20)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_4_8_18414,  new DateTime(2014, 06, 16)),
         };
 
         private static ClientType _expansion;
@@ -201,7 +202,8 @@ namespace WowPacketParser.Misc
                     case ClientVersionBuild.V5_4_7_18019:
                         return ClientVersionBuild.V5_4_7_18019;
                     case ClientVersionBuild.V5_4_8_18291:
-                        return ClientVersionBuild.V5_4_8_18291;
+                    case ClientVersionBuild.V5_4_8_18414:
+                        return ClientVersionBuild.V5_4_8_18414;
                     default:
                         return Build;
                 }
