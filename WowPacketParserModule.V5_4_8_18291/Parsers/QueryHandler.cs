@@ -65,14 +65,16 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             creature.MovementId = packet.ReadUInt32("Movement ID"); //+23
 
             var name = new string[4];
+            var femaleName = new string[4];
             for (var i = 0; i < 4; ++i)
             {
                 if (stringLens[i][1] > 1)
-                    packet.ReadCString("Female Name", i);
+                    femaleName[i] = packet.ReadCString("Female Name", i);
                 if (stringLens[i][0] > 1)
                     name[i] = packet.ReadCString("Name", i);
             }
             creature.Name = name[0];
+            creature.femaleName = femaleName[0];
 
             if (bits24 > 1)
                 creature.SubName = packet.ReadCString("Sub Name");

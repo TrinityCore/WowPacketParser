@@ -59,12 +59,13 @@ namespace WowPacketParser.SQL
             {
                 // TODO: Rewrite this
                 var i = 0;
-                const int max = 31;
+                const int max = 32;
                 Trace.WriteLine(string.Format("{0}/{1} - Write WDBTemplates.GameObject", ++i, max)); store.WriteData(WDBTemplates.GameObject());
                 Trace.WriteLine(string.Format("{0}/{1} - Write Spawns.GameObject", ++i, max)); if (gameObjects != null) store.WriteData(Spawns.GameObject(gameObjects));
                 Trace.WriteLine(string.Format("{0}/{1} - Write WDBTemplates.Quest", ++i, max)); store.WriteData(WDBTemplates.Quest());
                 Trace.WriteLine(string.Format("{0}/{1} - Write QuestOffer.QuestPOI", ++i, max)); store.WriteData(QuestMisc.QuestPOI());
                 Trace.WriteLine(string.Format("{0}/{1} - Write WDBTemplates.Npc", ++i, max)); store.WriteData(WDBTemplates.Npc());
+                Trace.WriteLine(string.Format("{0}/{1} - Write WDBTemplates.NpcName", ++i, max)); store.WriteData(WDBTemplates.NpcName());
                 Trace.WriteLine(string.Format("{0}/{1} - Write UnitMisc.NpcTemplateNonWDB", ++i, max)); if (units != null) store.WriteData(UnitMisc.NpcTemplateNonWDB(units));
                 Trace.WriteLine(string.Format("{0}/{1} - Write Miscellaneous.GameObjectTemplateNonWDB", ++i, max)); if (gameObjects != null) store.WriteData(Miscellaneous.GameobjectTemplateNonWDB(gameObjects));
                 Trace.WriteLine(string.Format("{0}/{1} - Write DB2.GameObjectDB2", ++i, max)); store.WriteData(DB2.GameObjectDB2());

@@ -38,8 +38,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             for (var i = 0; i < 4; i++)
             {
                 stringLens[i] = new int[2];
-                stringLens[i][0] = (int)packet.ReadBits(11);
                 stringLens[i][1] = (int)packet.ReadBits(11);
+                stringLens[i][0] = (int)packet.ReadBits(11);
             }
 
             var qItemCount = packet.ReadBits(22);
@@ -49,14 +49,17 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             creature.Modifier2 = packet.ReadSingle("Modifier 2");
 
             var name = new string[4];
+            var femaleName = new string[4];
             for (var i = 0; i < 4; ++i)
             {
                 if (stringLens[i][0] > 1)
-                    packet.ReadCString("Female Name", i);
-                if (stringLens[i][1] > 1)
                     name[i] = packet.ReadCString("Name", i);
+                if (stringLens[i][1] > 1)
+                    femaleName[i] = packet.ReadCString("Female Name", i);
             }
+
             creature.Name = name[0];
+            creature.femaleName = femaleName[0];
 
             creature.Modifier1 = packet.ReadSingle("Modifier 1");
 

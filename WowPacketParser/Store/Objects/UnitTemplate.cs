@@ -9,6 +9,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("name")]
         public string Name;
 
+        [DBFieldName("femaleName")]
+        public string femaleName;
+
         [DBFieldName("subname")]
         public string SubName;
 

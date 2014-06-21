@@ -98,10 +98,18 @@ namespace WowPacketParser.Parsing.Parsers
             var creature = new UnitTemplate();
 
             var nameCount = ClientVersion.AddedInVersion(ClientVersionBuild.V4_1_0_13914) ? 8 : 4; // Might be earlier or later
-            var name = new string[nameCount];
+            var name = new string[4];
             for (var i = 0; i < name.Length; i++)
                 name[i] = packet.ReadCString("Name", i);
             creature.Name = name[0];
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_1_0_13914))
+            {
+                var femaleName = new string[4];
+                for (var i = 0; i < name.Length; i++)
+                    femaleName[i] = packet.ReadCString("Female mame", i);
+                creature.femaleName = femaleName[0];
+            }
 
             creature.SubName = packet.ReadCString("Sub Name");
 

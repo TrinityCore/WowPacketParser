@@ -82,14 +82,16 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             creature.Expansion = packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);
 
             var name = new string[8];
+            var femaleName = new string[4];
             for (var i = 0; i < 4; ++i)
             {
                 if (stringLens[i][0] > 1)
                     name[i] = packet.ReadCString("Name", i);
                 if (stringLens[i][1] > 1)
-                    packet.ReadCString("Female Name", i);
+                    femaleName[i] = packet.ReadCString("Female Name", i);
             }
             creature.Name = name[0];
+            creature.femaleName = femaleName[0];
 
             if (lenS5 > 1)
                 packet.ReadCString("string5");

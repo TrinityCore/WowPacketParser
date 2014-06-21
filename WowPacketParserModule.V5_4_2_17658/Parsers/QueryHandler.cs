@@ -49,14 +49,16 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             creature.Type = packet.ReadEnum<CreatureType>("Type", TypeCode.Int32);
 
             var name = new string[4];
+            var femaleName = new string[4];
             for (var i = 0; i < 4; ++i)
             {
                 if (stringLens[i][0] > 1)
                     name[i] = packet.ReadCString("Name", i);
                 if (stringLens[i][1] > 1)
-                    packet.ReadCString("Female Name", i);
+                    femaleName[i] = packet.ReadCString("Female Name", i);
             }
             creature.Name = name[0];
+            creature.femaleName = femaleName[0];
 
             creature.Modifier2 = packet.ReadSingle("Modifier 2");
 
