@@ -1550,6 +1550,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_1_0_16309)]
         public static void HandlePhaseShift505(Packet packet)
         {
+            MovementHandler.ActivePhases.Clear();
+
             var count = packet.ReadUInt32() / 2;
             packet.WriteLine("Inactive Terrain swap count: {0}", count);
             for (var i = 0; i < count; ++i)
@@ -1565,7 +1567,7 @@ namespace WowPacketParser.Parsing.Parsers
             count = packet.ReadUInt32() / 2;
             packet.WriteLine("Phases count: {0}", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadUInt16("Phase id", i); // Phase.dbc
+                MovementHandler.ActivePhases.Add(packet.ReadUInt16("Phase id", i)); // Phase.dbc
 
             count = packet.ReadUInt32() / 2;
             packet.WriteLine("WorldMapArea swap count: {0}", count);
@@ -1581,6 +1583,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V5_1_0_16309)]
         public static void HandlePhaseShift510(Packet packet)
         {
+            MovementHandler.ActivePhases.Clear();
+
             var guid = packet.StartBitStream(6, 4, 7, 2, 0, 1, 3, 5);
             packet.ReadXORByte(guid, 4);
 
@@ -1595,7 +1599,7 @@ namespace WowPacketParser.Parsing.Parsers
             count = packet.ReadUInt32() / 2;
             packet.WriteLine("Phases count: {0}", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadUInt16("Phase id", i); // Phase.dbc
+                MovementHandler.ActivePhases.Add(packet.ReadUInt16("Phase id", i)); // Phase.dbc
 
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 6);
