@@ -312,6 +312,20 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         db2File.ReadUInt32("Required Achievement");
                         break;
                     }
+                case DB2Hash.ItemCurrencyCost:
+                    {
+                        db2File.ReadUInt32("Id");
+                        db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry");
+                        break;
+                    }
+                case DB2Hash.RulesetItemUpgrade:
+                    {
+                        db2File.ReadUInt32("Id");
+                        db2File.ReadUInt32("Item Upgrade Level");
+                        db2File.ReadUInt32("Item Upgrade Id");
+                        db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry");
+                        break;
+                    }
                 case DB2Hash.Item_sparse:
                     {
                         var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
