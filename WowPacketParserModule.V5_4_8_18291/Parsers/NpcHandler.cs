@@ -30,7 +30,16 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ParseBitStream(GUID, 1, 7, 2, 5, 6, 3, 0, 4);
             packet.WriteGuid("GUID", GUID);
         }
-
+		
+		[Parser(Opcode.CMSG_BUY_BANK_SLOT)]
+        public static void HandleBuyBankSlot(Packet packet)
+        {
+            var GUID = new byte[8];
+            GUID = packet.StartBitStream(7, 6, 1, 3, 2, 0, 4, 5);
+            packet.ParseBitStream(GUID, 3, 5, 1, 6, 7, 2, 0, 4);
+            packet.WriteGuid("GUID", GUID);
+        }
+		
         [Parser(Opcode.SMSG_SHOW_BANK)]
         public static void HandleShowBank(Packet packet)
         {
@@ -76,6 +85,17 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var AHID = packet.ReadUInt32("Entry: ");
             packet.ParseBitStream(GUID, 4, 7, 1, 0, 3, 5);
             packet.WriteGuid("GUID", GUID);
+        }
+
+        [Parser(Opcode.SMSG_GOSSIP_POI)]
+        public static void HandleGossipPoi(Packet packet)
+        {
+            var Flags = packet.ReadUInt32("Flags: ");
+            var x = packet.ReadSingle("X: ");
+            var y = packet.ReadSingle("Y: ");
+            var Icon = packet.ReadUInt32("Icon: ");
+            var Data = packet.ReadUInt32("Data: ");
+            var Text = packet.ReadCString("Text: ");
         }
     }
 }

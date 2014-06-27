@@ -225,7 +225,7 @@ namespace WowPacketParserModule.V5_4_2_17688.Parsers
                         hasParabolicOrAnimation = packet.ReadBit("Has Parabolic Or Animation", index);
                         splineCount = packet.ReadBits("SplineWaypointsCount", 20, index);
                         hasUnkSpline = packet.ReadBit();
-                        if (hasFullSpline)
+                        if (hasUnkSpline)
                         {
                             UnkSpline_21BitsCounter = packet.ReadBits(21);
                             packet.ReadBits("UnkSpline_2BitsFlags", 2, index);
