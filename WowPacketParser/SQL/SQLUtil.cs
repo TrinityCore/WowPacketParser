@@ -217,7 +217,7 @@ namespace WowPacketParser.SQL
                 {
                     var row = new QueryBuilder.SQLInsertRow();
                     row.AddValue(primaryKeyName, elem1.Key);
-                    row.Comment = StoreGetters.GetName(storeType, Convert.ToInt32(elem1.Key), false);
+                    row.Comment = null/*StoreGetters.GetName(storeType, Convert.ToInt32(elem1.Key), false)*/; // hackfix to prevent Int32 overflow errors
 
                     foreach (var field in fields)
                     {
