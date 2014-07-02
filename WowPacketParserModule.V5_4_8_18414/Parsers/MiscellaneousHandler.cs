@@ -50,7 +50,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadUInt32("Version");
         }
 
-        [Parser(Opcode.SMSG_SERVER_TIMEZONE)]
+        [Parser(Opcode.SMSG_SET_TIMEZONE_INFORMATION)]
         public static void HandleServerTimezone(Packet packet)
         {
             var Location2Lenght = packet.ReadBits(7);

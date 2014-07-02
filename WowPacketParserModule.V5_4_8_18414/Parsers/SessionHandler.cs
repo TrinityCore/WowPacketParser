@@ -240,5 +240,15 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadUInt32("TransportID");
             }
         }
+
+        // This is not opcode. This is string:
+        // WORLD OF WARCRAFT CONNECTION - SERVER TO CLIENT
+        // or
+        // WORLD OF WARCRAFT CONNECTION - CLIENT TO SERVER
+        [Parser(Opcode.MSG_VERIFY_CONNECTIVITY)]
+        public static void HandleVerifyConnectivity(Packet packet)
+        {
+            packet.ReadCString("MSG: ");
+        }
     }
 }

@@ -18,21 +18,23 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_CANCEL_TRADE,                             0x1941}, //+-
             {Opcode.CMSG_CHAR_CREATE,                              0x0F1D}, //--
             {Opcode.CMSG_CHAR_DELETE,                              0x04E2}, //--
-            {Opcode.CMSG_CHAR_ENUM,                                0x00E0}, //++
+            {Opcode.CMSG_CHAR_ENUM,                                0x18B2}, //++
             {Opcode.CMSG_CREATURE_QUERY,                           0x0842}, //+-
             {Opcode.CMSG_GAMEOBJECT_QUERY,                         0x1461}, //--
+            {Opcode.CMSG_GET_TIMEZONE_INFORMATION,                 0x00E0}, //++
             {Opcode.CMSG_GOSSIP_HELLO,                             0x12F3}, //
             {Opcode.CMSG_LIST_INVENTORY,                           0x02D8}, //
             {Opcode.CMSG_LOAD_SCREEN,                              0x1DBD}, //+-
             {Opcode.CMSG_LOG_DISCONNECT,                           0x10B3}, //--
             {Opcode.CMSG_LOGOUT_REQUEST,                           0x1349}, //+-
             {Opcode.CMSG_NAME_QUERY,                               0x0328}, //--
+            {Opcode.CMSG_PING,                                     0x0012}, //--
             {Opcode.CMSG_PLAYED_TIME,                              0x03F6}, //+-
             {Opcode.CMSG_PLAYER_LOGIN,                             0x158F}, //+-
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME,                      0x0B1C}, //--
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES,             0x031C}, //++
             {Opcode.CMSG_REALM_NAME_QUERY,                         0x1A16}, //--
-            {Opcode.CMSG_REALM_SPLIT,                              0x18B2}, //+-
+            //{Opcode.CMSG_REALM_SPLIT,                              0x18B2}, //+-
             {Opcode.CMSG_REQUEST_HOTFIX,                           0x158D}, //+-
             {Opcode.CMSG_TIME_SYNC_RESP,                           0x01DB}, //+-
             {Opcode.CMSG_VIOLENCE_LEVEL,                           0x0040}, //+-
@@ -68,7 +70,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_ACCOUNT_DATA_TIMES,                       0x162B}, //++
             {Opcode.SMSG_ADDON_INFO,                               0x160A}, //+-
             {Opcode.SMSG_AUCTION_HELLO,                            0x10A7}, //-+
-            {Opcode.SMSG_AUTH_CHALLENGE,                           0x0949}, //
+            {Opcode.SMSG_AUTH_CHALLENGE,                           0x0949}, //--+
             {Opcode.SMSG_AUTH_RESPONSE,                            0x0ABA}, //++
             {Opcode.SMSG_CHAR_CREATE,                              0x1CAA}, // ?
             {Opcode.SMSG_CHAR_DELETE,                              0x0C9F}, // ?
@@ -86,11 +88,12 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             //{Opcode.SMSG_NAME_QUERY_RESPONSE,                      0x169B}, //?
             {Opcode.SMSG_NEW_WORLD,                                0x1C3B}, //
             {Opcode.SMSG_PLAYER_MOVE,                              0x1A32}, //?
+            {Opcode.SMSG_PONG,                                     0x1969}, //--
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME,                      0x169F}, //?
             {Opcode.SMSG_REALM_NAME_QUERY_RESPONSE,                0x063E}, //?
             {Opcode.SMSG_SHOW_BANK,                                0x0007}, //-+
             {Opcode.SMSG_TIME_SYNC_REQ,                            0x1A8F}, //+-
-            {Opcode.SMSG_SERVER_TIMEZONE,                          0x19C1}, //+-
+            {Opcode.SMSG_SET_TIMEZONE_INFORMATION,                 0x19C1}, //+-
             {Opcode.SMSG_TUTORIAL_FLAGS,                           0x1B90}, //+-
             {Opcode.SMSG_TRANSFER_PENDING,                         0x061B}, //
             //{Opcode.SMSG_UPDATE_OBJECT,                            0x1792}, //

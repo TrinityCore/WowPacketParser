@@ -98,7 +98,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.ReadUInt32("Ping");
         }
 
-        [Parser(Opcode.SMSG_SERVER_TIMEZONE)]
+        [Parser(Opcode.SMSG_SET_TIMEZONE_INFORMATION)]
         public static void HandleServerTimezone(Packet packet)
         {
             var Location2Lenght = packet.ReadBits(7);
