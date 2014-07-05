@@ -41,15 +41,15 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_WARDEN_DATA,                              0x1816}, //+-
             {Opcode.CMSG_UNK_1A87,                                 0x1A87}, //+-
 
-            {Opcode.MSG_MOVE_FALL_LAND,                            0x08FA}, //--
-            {Opcode.MSG_MOVE_HEARTBEAT,                            0x01F2}, //--
-            {Opcode.MSG_MOVE_JUMP,                                 0x1153}, //--
-            {Opcode.MSG_MOVE_SET_FACING,                           0x1050}, //--
-            {Opcode.MSG_MOVE_SET_PITCH,                            0x017A}, //--
+            {Opcode.MSG_MOVE_FALL_LAND,                            0x08FA}, //++
+            {Opcode.MSG_MOVE_HEARTBEAT,                            0x01F2}, //+-
+            {Opcode.MSG_MOVE_JUMP,                                 0x1153}, //+-
+            {Opcode.MSG_MOVE_SET_FACING,                           0x1050}, //+-
+            {Opcode.MSG_MOVE_SET_PITCH,                            0x017A}, //+-
             {Opcode.MSG_MOVE_SET_RUN_MODE,                         0x0979}, //--
             {Opcode.MSG_MOVE_SET_WALK_MODE,                        0x08D1}, //--
             {Opcode.MSG_MOVE_START_ASCEND,                         0x11FA}, //--
-            {Opcode.MSG_MOVE_START_BACKWARD,                       0x09D8}, //--
+            {Opcode.MSG_MOVE_START_BACKWARD,                       0x09D8}, //++
             {Opcode.MSG_MOVE_START_DESCEND,                        0x01D1}, //--
             {Opcode.MSG_MOVE_START_FORWARD,                        0x095A}, //--
             {Opcode.MSG_MOVE_START_PITCH_DOWN,                     0x08D8}, //--
