@@ -14,6 +14,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
+        [Parser(Opcode.CMSG_TOGGLE_PVP)]
         [Parser(Opcode.SMSG_AI_REACTION)]
         [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]
         [Parser(Opcode.SMSG_ATTACKSTART)]

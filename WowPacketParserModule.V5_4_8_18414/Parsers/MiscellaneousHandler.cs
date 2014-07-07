@@ -48,8 +48,90 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadGuid("GUID");
         }
 
+        [Parser(Opcode.CMSG_LOAD_SCREEN)]
+        public static void HandleClientEnterWorld(Packet packet)
+        {
+            var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map Id");
+            packet.ReadBit("Loading");
+
+            CoreParsers.MovementHandler.CurrentMapId = (uint)mapId;
+
+            packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
+        }
+
+        [Parser(Opcode.CMSG_LOG_DISCONNECT)]
+        public static void HandleLogDisconnect(Packet packet)
+        {
+            packet.ReadUInt32("Disconnect Reason");
+            // 4 is inability for client to decrypt RSA
+            // 3 is not receiving "WORLD OF WARCRAFT CONNECTION - SERVER TO CLIENT"
+            // 11 is sent on receiving opcode 0x140 with some specific data
+        }
+
+        [Parser(Opcode.CMSG_MINIMAP_PING)]
+        public static void HandleMinimapPing(Packet packet)
+        {
+            packet.ReadSingle("Y");
+            packet.ReadSingle("X");
+            packet.ReadByte("byte24");
+        }
+
         [Parser(Opcode.CMSG_OPENING_CINEMATIC)]
         public static void HandleOpeningCinematic(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_PING)]
+        public static void HandleClientPing(Packet packet)
+        {
+            packet.ReadUInt32("Latency");
+            packet.ReadUInt32("Ping");
+        }
+
+        [Parser(Opcode.CMSG_RAID_READY_CHECK)]
+        [Parser(Opcode.CMSG_RAID_READY_CHECK_CONFIRM)]
+        public static void HandleRaidReadyCheck(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_RANDOM_ROLL)]
+
+        public static void HandleRandomRoll(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                packet.ReadToEnd();
+            }
+            else
+            {
+                packet.WriteLine("              : SMSG_???");
+                packet.ReadToEnd();
+            }
+        }
+
+        [Parser(Opcode.CMSG_REALM_SPLIT)]
+        [Parser(Opcode.CMSG_UNK_1A87)]
+
+        public static void HandleClientRealmSplit(Packet packet)
+        {
+        }
+
+        [Parser(Opcode.CMSG_SET_CONTACT_NOTES)]
+        public static void HandleSetContactNotes(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_SET_DUNGEON_DIFFICULTY)]
+        public static void HandleSetDungeonDifficulty(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_SET_SELECTION)]
+        public static void HandleSetSelection(Packet packet)
         {
             packet.ReadToEnd();
         }
@@ -70,22 +152,10 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
         }
 
-        [Parser(Opcode.CMSG_LOAD_SCREEN)]
-        public static void HandleClientEnterWorld(Packet packet)
+        [Parser(Opcode.CMSG_TIME_SYNC_RESP_FAILED)]
+        public static void HandleTimeSyncRespFailed(Packet packet)
         {
-            var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map Id");
-            packet.ReadBit("Loading");
-
-            CoreParsers.MovementHandler.CurrentMapId = (uint)mapId;
-
-            packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
-        }
-
-        [Parser(Opcode.CMSG_REALM_SPLIT)]
-        [Parser(Opcode.CMSG_UNK_1A87)]
-
-        public static void HandleClientRealmSplit(Packet packet)
-        {
+            packet.ReadUInt32("Unk Uint32");
         }
 
         [Parser(Opcode.SMSG_CLIENTCACHE_VERSION)]
@@ -277,10 +347,10 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
         [Parser(Opcode.CMSG_ATTACKSTOP)]
         [Parser(Opcode.CMSG_GET_TIMEZONE_INFORMATION)]
-        [Parser(Opcode.CMSG_LOOT_MONEY)]
         [Parser(Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY)]
         [Parser(Opcode.CMSG_SPELLCLICK)]
         [Parser(Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE)]
+        [Parser(Opcode.MSG_MOVE_WORLDPORT_ACK)]
         public static void HandleNullMisc(Packet packet)
         {
             if (packet.Direction == Direction.ServerToClient)

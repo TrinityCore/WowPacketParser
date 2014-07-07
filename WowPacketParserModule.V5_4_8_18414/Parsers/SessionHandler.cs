@@ -227,10 +227,34 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_NEW_WORLD)]
+        public static void HandleNewWorld(Packet packet)
+        {
+            packet.ReadSingle("X");
+            packet.ReadUInt32("Map");
+            packet.ReadSingle("Y");
+            packet.ReadSingle("Z");
+            packet.ReadSingle("O");
+        }
+
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
         public static void HandleTransferPending(Packet packet)
         {
-            packet.ReadToEnd();
+            var unkbit = packet.ReadBit("unk20"); // 20
+            var isTransport = packet.ReadBit("IsTransport"); // 32
+
+            if (isTransport)
+            {
+                packet.ReadUInt32("MapID"); // 28
+                packet.ReadUInt32("TransportID"); // 24
+            }
+
+            packet.ReadUInt32("Map"); // 36
+
+            if (unkbit)
+            {
+                packet.ReadInt32("unk16"); // 16
+            }
         }
 
         // This is not opcode. This is string:

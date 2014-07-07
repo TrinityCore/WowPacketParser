@@ -343,6 +343,5 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleInstanceNull(Packet packet)
         {
         }
-
     }
 }

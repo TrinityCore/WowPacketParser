@@ -13,6 +13,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class PetHandler
     {
+        [Parser(Opcode.CMSG_PET_NAME_QUERY)]
+        public static void HandlePetNameQuery(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.SMSG_PET_NAME_QUERY_RESPONSE)]
         public static void HandlePetNameQueryResponse(Packet packet)
         {

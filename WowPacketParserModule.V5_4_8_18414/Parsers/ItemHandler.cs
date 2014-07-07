@@ -139,8 +139,26 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_SELL_ITEM)]
+        public static void HandleSellItem(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_SPLIT_ITEM)]
+        public static void HandleSplitItem(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.CMSG_SWAP_INV_ITEM)]
         public static void HandleSwapInventoryItem(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_SWAP_ITEM)]
+        public static void HandleSwapItem(Packet packet)
         {
             packet.ReadToEnd();
         }

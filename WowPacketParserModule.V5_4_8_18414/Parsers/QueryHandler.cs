@@ -21,7 +21,25 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_NAME_QUERY)]
         public static void HandleNameQuery(Packet packet)
         {
-            packet.ReadToEnd();
+            var guid = new byte[8];
+            guid[4] = packet.ReadBit();
+            var byte20 = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            var byte28 = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            packet.ParseBitStream(guid, 7, 5, 1, 2, 6, 3, 0, 4);
+            packet.WriteGuid("Guid", guid);
+
+            if (byte20)
+                packet.ReadInt32("int16");
+
+            if (byte28)
+                packet.ReadInt32("int24");
         }
 
         [HasSniffData]

@@ -11,6 +11,18 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class ActionBarHandler
     {
+        [Parser(Opcode.CMSG_SET_ACTIONBAR_TOGGLES)]
+        public static void HandleSetActionBarToggles(Packet packet)
+        {
+            packet.ReadByte("Action Bar");
+        }
+
+        [Parser(Opcode.CMSG_SET_ACTION_BUTTON)]
+        public static void HandleSetActionButton(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.SMSG_ACTION_BUTTONS)]
         public static void HandleActionButtons(Packet packet)
         {

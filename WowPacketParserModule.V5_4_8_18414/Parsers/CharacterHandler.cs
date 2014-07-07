@@ -25,6 +25,25 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.CMSG_REORDER_CHARACTERS)]
+        public static void HandleReorderCharacters(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_SHOWING_CLOAK)]
+        [Parser(Opcode.CMSG_SHOWING_HELM)]
+        public static void HandleShowingCloakAndHelm(Packet packet)
+        {
+            packet.ReadBoolean("Showing");
+        }
+
+        [Parser(Opcode.CMSG_STANDSTATECHANGE)]
+        public static void HandleStandStateChange(Packet packet)
+        {
+            packet.ReadInt32("Standstate");
+        }
+
         [Parser(Opcode.SMSG_CHAR_ENUM)]
         public static void HandleCharEnum(Packet packet)
         {

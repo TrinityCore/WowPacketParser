@@ -897,6 +897,17 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_MOVE_TELEPORT_ACK)]
+        public static void HandleMoveTeleportAck(Packet packet)
+        {
+            packet.ReadInt32("Time");
+            packet.ReadInt32("Flags");
+
+            var guid = packet.StartBitStream(0, 7, 3, 5, 4, 6, 1, 2);
+            packet.ParseBitStream(guid, 4, 1, 6, 7, 0, 2, 5, 3);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_CLIENT_CONTROL_UPDATE)]
         public static void HandleClientControlUpdate(Packet packet)
         {

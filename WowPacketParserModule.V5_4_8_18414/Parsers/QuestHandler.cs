@@ -23,6 +23,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
+        [Parser(Opcode.CMSG_QUESTLOG_REMOVE_QUEST)]
+        public static void HandleQuestlogRemoveQuest(Packet packet)
+        {
+            packet.ReadByte("Slot");
+        }
+
         [Parser(Opcode.CMSG_QUESTGIVER_STATUS_QUERY)]
         public static void HandleQuestgiverStatusQuery(Packet packet)
         {
