@@ -1133,5 +1133,114 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
         {
             packet.ReadUInt32("Unk");
         }
+
+        [Parser(Opcode.SMSG_CHANNEL_START)]
+        public static void HandleSpellChannelStart(Packet packet)
+        {
+            var targetGUD = new byte[8];
+            var guid2 = new byte[8];
+            var casterGUID = new byte[8];
+
+            var hasHealAmount = false;
+            var hasType = false;
+
+            casterGUID[7] = packet.ReadBit();
+            casterGUID[5] = packet.ReadBit();
+            casterGUID[4] = packet.ReadBit();
+            casterGUID[1] = packet.ReadBit();
+
+            var healPrediction = packet.ReadBit();
+            if (healPrediction)
+            {
+                targetGUD[2] = packet.ReadBit();
+                targetGUD[6] = packet.ReadBit();
+                targetGUD[4] = packet.ReadBit();
+
+                hasType = !packet.ReadBit();
+
+                targetGUD[3] = packet.ReadBit();
+                targetGUD[7] = packet.ReadBit();
+                targetGUD[5] = packet.ReadBit();
+                targetGUD[1] = packet.ReadBit();
+                targetGUD[2] = packet.ReadBit();
+
+                hasHealAmount = !packet.ReadBit();
+                packet.ReadBit(); // fake bit
+
+                packet.StartBitStream(guid2, 4, 5, 1, 7, 0, 2, 3, 6);
+
+            }
+
+            casterGUID[3] = packet.ReadBit();
+            casterGUID[2] = packet.ReadBit();
+            casterGUID[0] = packet.ReadBit();
+            casterGUID[6] = packet.ReadBit();
+
+            var hasImmunity = packet.ReadBit();
+            if (healPrediction)
+            {
+                packet.ParseBitStream(guid2, 4, 6, 1, 0, 7, 3, 2, 5);
+
+                if (hasType)
+                    packet.ReadByte("Type");
+
+                packet.ReadXORByte(targetGUD, 4);
+                packet.ReadXORByte(targetGUD, 5);
+                packet.ReadXORByte(targetGUD, 1);
+                packet.ReadXORByte(targetGUD, 3);
+
+                if (hasHealAmount)
+                    packet.ReadInt32("Heal Amount");
+
+                packet.ReadXORByte(targetGUD, 6);
+                packet.ReadXORByte(targetGUD, 7);
+                packet.ReadXORByte(targetGUD, 2);
+                packet.ReadXORByte(targetGUD, 0);
+
+                packet.WriteGuid("TargetGUD", targetGUD);
+                packet.WriteGuid("Guid2", guid2);
+            }
+
+            if (hasImmunity)
+            {
+                packet.ReadInt32("CastSchoolImmunities");
+                packet.ReadInt32("CastImmunities");
+            }
+
+            packet.ReadXORByte(casterGUID, 6);
+            packet.ReadXORByte(casterGUID, 7);
+            packet.ReadXORByte(casterGUID, 3);
+            packet.ReadXORByte(casterGUID, 1);
+            packet.ReadXORByte(casterGUID, 0);
+
+            packet.ReadInt32("Duration");
+
+            packet.ReadXORByte(casterGUID, 5);
+            packet.ReadXORByte(casterGUID, 4);
+            packet.ReadXORByte(casterGUID, 2);
+
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+
+            packet.WriteGuid("CasterGUID", casterGUID);
+        }
+
+        [Parser(Opcode.SMSG_CHANNEL_UPDATE)]
+        public static void HandleSpellChannelUpdate(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 0, 3, 4, 1, 5, 2, 6, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadInt32("Timestamp");
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 3);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
