@@ -11,6 +11,20 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class CharacterHandler
     {
+        [Parser(Opcode.CMSG_CHAR_CREATE)]
+        public static void HandleClientCharCreate(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_CHAR_DELETE)]
+        public static void HandleClientCharDelete(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 3, 2, 7, 4, 6, 0, 5);
+            packet.ParseBitStream(guid, 7, 1, 6, 0, 3, 4, 2, 5);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_CHAR_ENUM)]
         public static void HandleCharEnum(Packet packet)
         {
@@ -131,6 +145,13 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadByte("Unk byte", i); // char_table+28+i*8
                 packet.ReadUInt32("Unk int", i); // char_table+24+i*8
             }
+        }
+
+        [Parser(Opcode.SMSG_INIT_CURRENCY)]
+        [Parser(Opcode.SMSG_POWER_UPDATE)]
+        public static void HandleInitCurrency(Packet packet)
+        {
+            packet.ReadToEnd();
         }
     }
 }

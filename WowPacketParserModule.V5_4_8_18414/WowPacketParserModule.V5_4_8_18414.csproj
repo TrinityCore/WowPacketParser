@@ -59,15 +59,19 @@
     <Compile Include="Parsers\AchievementHandler.cs" />
     <Compile Include="Parsers\ActionBarHandler.cs" />
     <Compile Include="Parsers\AddonHandler.cs" />
+    <Compile Include="Parsers\BattlegroundHandler.cs" />
     <Compile Include="Parsers\CharacterHandler.cs" />
     <Compile Include="Parsers\ChatHandler.cs" />
     <Compile Include="Parsers\CombatHandler.cs" />
     <Compile Include="Parsers\ContactHandler.cs" />
     <Compile Include="Parsers\CorpseHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
+    <Compile Include="Parsers\GroupHandler.cs" />
     <Compile Include="Parsers\GuildHandler.cs" />
     <Compile Include="Parsers\InstanceHandler.cs" />
     <Compile Include="Parsers\ItemHandler.cs" />
+    <Compile Include="Parsers\LootHandler.cs" />
+    <Compile Include="Parsers\MailHandler.cs" />
     <Compile Include="Parsers\MiscellaneousHandler.cs" />
     <Compile Include="Parsers\MovementHandler.cs" />
     <Compile Include="Parsers\NpcHandler.cs" />
@@ -78,6 +82,7 @@
     <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />
     <Compile Include="Parsers\TalentHandler.cs" />
+    <Compile Include="Parsers\TaxiHandler.cs" />
     <Compile Include="Parsers\TimeHandler.cs" />
     <Compile Include="Parsers\TradeHandler.cs" />
     <Compile Include="Parsers\UpdateHandler.cs" />

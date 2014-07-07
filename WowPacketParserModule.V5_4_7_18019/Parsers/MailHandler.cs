@@ -28,7 +28,6 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.ReadToEnd();
         }
 
-
         [Parser(Opcode.CMSG_MAIL_TAKE_MONEY)]
         public static void HandleTakeMoney(Packet packet)
         {

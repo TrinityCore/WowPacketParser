@@ -29,6 +29,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("GUID", GUID);
         }
 
+        [Parser(Opcode.CMSG_BINDER_ACTIVATE)]
+        public static void HandleBinderActivate(Packet packet)
+        {
+            var GUID = packet.StartBitStream(0, 5, 4, 7, 6, 2, 1, 3);
+            packet.ParseBitStream(GUID, 0, 4, 2, 3, 7, 1, 5, 6);
+            packet.WriteGuid("GUID", GUID);
+        }
+
         [Parser(Opcode.CMSG_GOSSIP_HELLO)]
         public static void HandleNpcHello(Packet packet)
         {
@@ -45,6 +53,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ParseBitStream(guid, 0, 5, 6, 7, 1, 3, 4, 2);
 
             packet.WriteGuid("NPC Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_TRAINER_LIST)]
+        public static void HandleTrainerList(Packet packet)
+        {
+            packet.ReadToEnd();
         }
 
         [Parser(Opcode.SMSG_AUCTION_HELLO)]
@@ -67,12 +81,24 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("GUID", GUID);
         }
 
+        [Parser(Opcode.SMSG_LIST_INVENTORY)]
+        public static void HandleVendorInventoryList(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.SMSG_SHOW_BANK)]
         public static void HandleShowBank(Packet packet)
         {
             var GUID = packet.StartBitStream(2, 4, 3, 6, 5, 1, 7, 0);
             packet.ParseBitStream(GUID, 7, 0, 5, 3, 6, 1, 4, 2);
             packet.WriteGuid("GUID", GUID);
+        }
+
+        [Parser(Opcode.SMSG_TRAINER_LIST)]
+        public static void HandleServerTrainerList(Packet packet)
+        {
+            packet.ReadToEnd();
         }
     }
 }

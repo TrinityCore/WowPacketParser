@@ -230,15 +230,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
         public static void HandleTransferPending(Packet packet)
         {
-            var unkbit = packet.ReadBit("unk");
-            var isTransport = packet.ReadBit("IsTransport");
-            packet.ReadUInt32("Map");
-
-            if (isTransport)
-            {
-                packet.ReadUInt32("MapID");
-                packet.ReadUInt32("TransportID");
-            }
+            packet.ReadToEnd();
         }
 
         // This is not opcode. This is string:

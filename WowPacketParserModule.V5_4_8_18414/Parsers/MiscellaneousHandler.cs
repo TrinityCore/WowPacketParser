@@ -10,6 +10,50 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class MiscellaneousHandler
     {
+        [Parser(Opcode.CMSG_ADD_FRIEND)]
+        public static void HandleAddFriend(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_ADD_IGNORE)]
+        public static void HandleAddIgnore(Packet packet)
+        {
+            packet.ReadCString("Str");
+        }
+
+        [Parser(Opcode.CMSG_AREATRIGGER)]
+        public static void HandleClientAreaTrigger(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_BUY_BANK_SLOT)]
+        public static void HandleBuyBankSlot(Packet packet)
+        {
+            var guid = packet.StartBitStream(7, 6, 1, 3, 2, 0, 4, 5);
+            packet.ParseBitStream(guid, 3, 5, 1, 6, 7, 2, 0, 4);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_DEL_FRIEND)]
+        public static void HandleDelFriend(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_DEL_IGNORE)]
+        public static void HandleDelIgnore(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+        }
+
+        [Parser(Opcode.CMSG_OPENING_CINEMATIC)]
+        public static void HandleOpeningCinematic(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.CMSG_TIME_SYNC_RESP)]
         public static void HandleTimeSyncResp(Packet packet)
         {
@@ -50,6 +94,21 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadUInt32("Version");
         }
 
+        [Parser(Opcode.SMSG_HOTFIX_INFO)]
+        public static void HandleHotfixInfo(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_PLAY_SOUND)]
+        public static void HandlePlaySound(Packet packet)
+        {
+            var guid = packet.StartBitStream(2, 3, 7, 6, 0, 5, 4, 1);
+            packet.ReadInt32("Sound");
+            packet.ParseBitStream(guid, 3, 2, 4, 7, 5, 0, 6, 1);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_SET_TIMEZONE_INFORMATION)]
         public static void HandleServerTimezone(Packet packet)
         {
@@ -58,6 +117,20 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
             packet.ReadWoWString("Timezone Location1", Location1Lenght);
             packet.ReadWoWString("Timezone Location2", Location2Lenght);
+        }
+
+        [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
+        public static void HandleWorldServerInfo(Packet packet)
+        {
+            if (packet.Direction == Direction.ServerToClient)
+            {
+                packet.ReadToEnd();
+            }
+            else
+            {
+                packet.WriteLine("              : CMSG_???");
+                packet.ReadToEnd();
+            }
         }
 
         [Parser(Opcode.SMSG_UNK_001F)]
@@ -95,6 +168,37 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadBits("unk", 19);
         }
 
+        [Parser(Opcode.SMSG_UNK_0632)]
+        public static void HandleUnk0632(Packet packet)
+        {
+            var guid = new byte[8];
+            guid[5] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            var count = packet.ReadBits("Count", 21);
+            var guid1 = new byte[count][];
+            for (var i = 0; i < count; i++)
+            {
+                guid1[i] = packet.StartBitStream(2, 3, 6, 5, 1, 4, 0, 7);
+            }
+
+            guid[2] = packet.ReadBit();
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ParseBitStream(guid1[i], 6, 7, 0, 1, 2, 5, 3, 4);
+                packet.WriteGuid("Guid", guid1[i], i);
+                packet.ReadInt32("Int20", i);
+            }
+
+            packet.ParseBitStream(guid, 1, 4, 2, 3, 5, 6, 0, 7);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_UNK_069B)]
         public static void HandleUnk069B(Packet packet)
         {
@@ -109,6 +213,23 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadBit("Byte16", i);
         }
 
+        [Parser(Opcode.SMSG_UNK_0E9B)]
+        public static void HandleUnk0E9B(Packet packet)
+        {
+            var guid = packet.StartBitStream(4, 6, 2, 3, 7, 1, 5, 0);
+            packet.ParseBitStream(guid, 3, 6, 2);
+            packet.ReadUInt32("Int72");
+            packet.ReadUInt32("Int76");
+            packet.ParseBitStream(guid, 5, 1);
+            packet.ReadInt32("Int28");
+            packet.ParseBitStream(guid, 4);
+            packet.ReadUInt32("Int24");
+            packet.ReadUInt32("Int80");
+            packet.ParseBitStream(guid, 7, 0);
+            packet.WriteGuid("Guid", guid);
+            packet.ReadUInt64("QW16");
+        }
+
         [Parser(Opcode.SMSG_UNK_103B)]
         public static void HandleUnk103B(Packet packet)
         {
@@ -118,14 +239,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             var count = packet.ReadInt32("Count");
             var bytes = new byte[count];
             bytes = packet.ReadBytes(count);
-        }
-
-        [Parser(Opcode.SMSG_UNK_121B)]
-        public static void HandleUnk121B(Packet packet)
-        {
-            packet.ReadBit("Bit in Byte16");
-            packet.ReadUInt32("Dword24");
-            packet.ReadUInt32("Dword20");
         }
 
         [Parser(Opcode.SMSG_UNK_121E)]
@@ -160,6 +273,25 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadUInt32("Dword6");
             packet.ReadUInt32("Dword7");
             packet.ReadBit("Bit in Byte16");
+        }
+
+        [Parser(Opcode.CMSG_ATTACKSTOP)]
+        [Parser(Opcode.CMSG_GET_TIMEZONE_INFORMATION)]
+        [Parser(Opcode.CMSG_LOOT_MONEY)]
+        [Parser(Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY)]
+        [Parser(Opcode.CMSG_SPELLCLICK)]
+        [Parser(Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE)]
+        public static void HandleNullMisc(Packet packet)
+        {
+            if (packet.Direction == Direction.ServerToClient)
+            {
+                packet.WriteLine("              : SMSG_???");
+                packet.ReadToEnd();
+            }
+            else
+            {
+                packet.ReadToEnd();
+            }
         }
     }
 }

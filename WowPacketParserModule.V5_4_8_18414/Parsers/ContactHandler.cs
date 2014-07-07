@@ -8,6 +8,16 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class ContactHandler
     {
-        // Add handlers here.
+        [Parser(Opcode.CMSG_CONTACT_LIST)]
+        public static void HandleContactListClient(Packet packet)
+        {
+            packet.ReadEnum<ContactListFlag>("List Flags?", TypeCode.Int32);
+        }
+
+        [Parser(Opcode.SMSG_CONTACT_LIST)]
+        public static void HandleContactList(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
     }
 }

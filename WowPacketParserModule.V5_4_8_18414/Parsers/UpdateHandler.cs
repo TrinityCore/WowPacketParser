@@ -15,6 +15,35 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class UpdateHandler
     {
+        [Parser(Opcode.SMSG_DESTROY_OBJECT)]
+        public static void HandleDestroyObject(Packet packet)
+        {
+            if (packet.Direction == Direction.ServerToClient)
+            {
+                var guid = new byte[8];
+
+                guid[3] = packet.ReadBit();
+                guid[2] = packet.ReadBit();
+                guid[4] = packet.ReadBit();
+                guid[1] = packet.ReadBit();
+
+                packet.ReadBit("Despawn Animation");
+
+                guid[7] = packet.ReadBit();
+                guid[0] = packet.ReadBit();
+                guid[6] = packet.ReadBit();
+                guid[5] = packet.ReadBit();
+
+                packet.ParseBitStream(guid, 0, 4, 7, 2, 6, 3, 1, 5);
+
+                packet.WriteGuid("Object Guid", guid);
+            }
+            else
+            {
+                packet.WriteLine("              : CMSG_PVP_LOG_DATA");
+            }
+        }
+
         [HasSniffData] // in ReadCreateObjectBlock
         [Parser(Opcode.SMSG_UPDATE_OBJECT)]
         public static void HandleUpdateObject(Packet packet)

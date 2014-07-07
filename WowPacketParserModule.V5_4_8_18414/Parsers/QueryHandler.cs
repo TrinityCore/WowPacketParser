@@ -18,6 +18,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadUInt32("Entry");
         }
 
+        [Parser(Opcode.CMSG_NAME_QUERY)]
+        public static void HandleNameQuery(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_CREATURE_QUERY_RESPONSE)]
         public static void HandleCreatureQueryResponse(Packet packet)
@@ -110,6 +116,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 Name = creature.Name,
             };
             Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]
+        public static void HandleNpcTextUpdate(Packet packet)
+        {
+            packet.ReadToEnd();
         }
     }
 }
