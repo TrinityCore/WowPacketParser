@@ -55,6 +55,9 @@
     <Compile Include="Enums\DB2Hash.cs" />
     <Compile Include="Enums\TradeStatus.cs" />
     <Compile Include="Enums\MapDifficulty.cs" />
+    <Compile Include="Enums\UpdateFields.cs" />
+    <Compile Include="Enums\UpdateFlag.cs" />
+    <Compile Include="Enums\UpdateType.cs" />
     <Compile Include="Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsers\AchievementHandler.cs" />
     <Compile Include="Parsers\ActionBarHandler.cs" />

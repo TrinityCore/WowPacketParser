@@ -136,7 +136,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static Dictionary<int, UpdateField> ReadValuesUpdateBlock(ref Packet packet, ObjectType type, int index, bool isCreating)
         {
-            var maskSize = packet.ReadByte();
+            var maskSize = packet.ReadByte("mask size");
 
             var updateMask = new int[maskSize];
             for (var i = 0; i < maskSize; i++)
@@ -146,6 +146,7 @@ namespace WowPacketParser.Parsing.Parsers
             var dict = new Dictionary<int, UpdateField>();
 
             int objectEnd = UpdateFields.GetUpdateField(ObjectField.OBJECT_END);
+            packet.WriteLine("mask count: " + mask.Count);
             for (var i = 0; i < mask.Count; ++i)
             {
                 if (!mask[i])
@@ -223,10 +224,12 @@ namespace WowPacketParser.Parsing.Parsers
                 dict.Add(i, blockVal);
             }
 
+            packet.WriteLine("Pos: " + packet.Position);
+
             // Dynamic fields - NYI
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_4_16016))
             {
-                maskSize = packet.ReadByte();
+                maskSize = packet.ReadByte("dyn mask size2");
                 updateMask = new int[maskSize];
                 for (var i = 0; i < maskSize; i++)
                     updateMask[i] = packet.ReadInt32();
@@ -265,7 +268,6 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                 }
             }
-
             return dict;
         }
 

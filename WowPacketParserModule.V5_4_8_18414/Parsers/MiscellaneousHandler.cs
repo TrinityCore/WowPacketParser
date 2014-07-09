@@ -90,8 +90,26 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         }
 
         [Parser(Opcode.CMSG_RAID_READY_CHECK)]
+       public static void HandleRaidReadyCheck(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                packet.ReadToEnd();
+            }
+            else
+            {
+                packet.WriteLine("              : SMSG_UNK_0817"); // sub_C8CBBE
+                var guid = packet.StartBitStream(5, 0, 6, 3, 7, 2, 4, 1);
+                packet.ReadInt32("Counter"); // 28
+                packet.ParseBitStream(guid, 1, 3);
+                packet.ReadSingle("Speed"); // 24
+                packet.ParseBitStream(guid, 6, 7, 0, 5, 2, 4);
+                packet.WriteGuid("Guid", guid);
+            }
+        }
+
         [Parser(Opcode.CMSG_RAID_READY_CHECK_CONFIRM)]
-        public static void HandleRaidReadyCheck(Packet packet)
+        public static void HandleRaidReadyCheckConfirm(Packet packet)
         {
             packet.ReadToEnd();
         }

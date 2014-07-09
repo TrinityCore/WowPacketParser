@@ -175,8 +175,8 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.MSG_MOVE_JUMP,                                 0x1153}, //+-
             {Opcode.MSG_MOVE_SET_FACING,                           0x1050}, //+-
             {Opcode.MSG_MOVE_SET_PITCH,                            0x017A}, //+-
-            {Opcode.MSG_MOVE_SET_RUN_MODE,                         0x0979}, //--
-            {Opcode.MSG_MOVE_SET_WALK_MODE,                        0x08D1}, //--
+            {Opcode.MSG_MOVE_SET_RUN_MODE,                         0x0979}, //-+
+            {Opcode.MSG_MOVE_SET_WALK_MODE,                        0x08D1}, //-+
             {Opcode.MSG_MOVE_START_ASCEND,                         0x11FA}, //--
             {Opcode.MSG_MOVE_START_BACKWARD,                       0x09D8}, //++
             {Opcode.MSG_MOVE_START_DESCEND,                        0x01D1}, //--
@@ -285,7 +285,10 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_MOVE_ROOT,                                0x15AE}, //
             {Opcode.SMSG_MOVE_SET_ACTIVE_MOVER,                    0x0C6D}, //
             {Opcode.SMSG_MOVE_SET_CAN_FLY,                         0x178D}, //
-            {Opcode.SMSG_MOVE_SET_RUN_SPEED,                       0x184C}, //
+            {Opcode.SMSG_MOVE_SET_FLIGHT_SPEED,                    0x006E}, //++
+            {Opcode.SMSG_MOVE_SET_RUN_SPEED,                       0x184C}, //++
+            {Opcode.SMSG_MOVE_SET_RUN_BACK_SPEED,                  0x0A83}, //++
+            {Opcode.SMSG_MOVE_SET_WALK_SPEED,                      0x0469}, //++
             {Opcode.SMSG_MOVE_TELEPORT,                            0x0B39}, //
             {Opcode.SMSG_MOVE_UNROOT,                              0x1FAE}, //
             {Opcode.SMSG_MOVE_UNSET_CAN_FLY,                       0x0162}, //
@@ -353,7 +356,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_TURN_IN_PETITION_RESULTS,                 0x0E13}, //
             {Opcode.SMSG_TUTORIAL_FLAGS,                           0x1B90}, //+-
             {Opcode.SMSG_UPDATE_LAST_INSTANCE,                     0x189B}, //
-            //{Opcode.SMSG_UPDATE_OBJECT,                            0x1792}, //
+            {Opcode.SMSG_UPDATE_OBJECT,                            0x1792}, //--
             {Opcode.SMSG_UPDATE_WORLD_STATE,                       0x121B}, //++
             {Opcode.SMSG_WARDEN_DATA,                              0x0C0A}, //+-
             {Opcode.SMSG_WORLD_SERVER_INFO,                        0x0082}, //
@@ -365,6 +368,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             //{Opcode.SMSG_UNK_04AA,                                 0x04AA}, //-+
             {Opcode.SMSG_UNK_0632,                                 0x0632}, //++
             {Opcode.SMSG_UNK_069B,                                 0x069B}, //++
+            //{Opcode.SMSG_UNK_0817,                                 0x0817}, //--
             {Opcode.SMSG_UNK_0E9B,                                 0x0E9B}, //++
             {Opcode.SMSG_UNK_0A0B,                                 0x0A0B}, //++
             //{Opcode.SMSG_UNK_0CAE,                                 0x0CAE}, //-+
