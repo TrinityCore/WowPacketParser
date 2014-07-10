@@ -386,7 +386,11 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             //{Opcode.SMSG_UNK_123E,                                 0x123E}, //--
             //{Opcode.SMSG_UNK_129A,                                 0x129A}, //++
             {Opcode.SMSG_UNK_1440,                                 0x1440}, //++
+            {Opcode.SMSG_UNK_16BF,                                 0x16BF}, //++
+            {Opcode.SMSG_UNK_1D8E,                                 0x1D8E}, //++
+            {Opcode.SMSG_UNK_1DAB,                                 0x1DAB}, //++
             {Opcode.SMSG_UNK_1E9B,                                 0x1E9B}, //+-
+            {Opcode.SMSG_UNK_1F9F,                                 0x1F9F}, //++
         };
     }
 }
