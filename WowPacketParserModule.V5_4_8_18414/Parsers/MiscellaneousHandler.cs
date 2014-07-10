@@ -176,6 +176,13 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadUInt32("Unk Uint32");
         }
 
+        [Parser(Opcode.CMSG_UNK_0249)]
+        public static void HandleUnk249(Packet packet)
+        {
+            packet.ReadUInt32("unk1");
+            packet.ReadBit("unkb");
+        }
+
         [Parser(Opcode.SMSG_CLIENTCACHE_VERSION)]
         public static void HandleClientCacheVersion(Packet packet)
         {
@@ -243,10 +250,27 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_UNK_0063)] // sub_C89A3D
+        public static void HandleUnk0063(Packet packet)
+        {
+            var guid = packet.StartBitStream(6, 4, 2, 7, 1, 3, 0, 5);
+            packet.ParseBitStream(guid, 2, 7, 5, 1, 4, 6, 0, 3);
+            packet.WriteGuid("Guid", guid);
+            packet.ReadSingle("unk");
+        }
+
         [Parser(Opcode.SMSG_UNK_00A3)]
         public static void HandleUnk00A3(Packet packet)
         {
             packet.ReadInt32("Dword4");
+        }
+
+        [Parser(Opcode.SMSG_UNK_01E1)] // sub_C8B308
+        public static void HandleUnk01E1(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 5, 2, 0, 3, 6, 4, 7);
+            packet.ParseBitStream(guid, 2, 7, 1, 3, 5, 0, 4, 6);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_UNK_043F)]
@@ -292,6 +316,20 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             packet.ReadInt32("Dword20");
             packet.ReadInt32("Dword16");
+        }
+
+        [Parser(Opcode.SMSG_UNK_0728)] // sub_C8CED2
+        public static void HandleUnk0728(Packet packet)
+        {
+            var guid = packet.StartBitStream(3, 7, 2, 4, 5, 6, 0, 1);
+            packet.ParseBitStream(guid, 2, 4, 5, 7, 1, 0, 3, 6);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_UNK_0987)]
+        public static void HandleUnk0987(Packet packet)
+        {
+            packet.ReadToEnd();
         }
 
         [Parser(Opcode.SMSG_UNK_0A0B)]

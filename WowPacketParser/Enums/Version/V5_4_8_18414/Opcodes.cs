@@ -168,6 +168,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_VIOLENCE_LEVEL,                           0x0040}, //+-
             {Opcode.CMSG_WARDEN_DATA,                              0x1816}, //+-
             {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE,              0x15AB}, //--
+            {Opcode.CMSG_UNK_0249,                                 0x0249}, //++?? //some load screen
             {Opcode.CMSG_UNK_1A87,                                 0x1A87}, //+-
 
             {Opcode.MSG_MOVE_FALL_LAND,                            0x08FA}, //++
@@ -362,13 +363,17 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_WORLD_SERVER_INFO,                        0x0082}, //
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE,              0x0027}, //
             {Opcode.SMSG_UNK_001F,                                 0x001F}, //++
+            {Opcode.SMSG_UNK_0063,                                 0x0063}, //++
             {Opcode.SMSG_UNK_00A3,                                 0x00A3}, //++
+            {Opcode.SMSG_UNK_01E1,                                 0x01E1}, //++
             //{Opcode.SMSG_UNK_0287,                                 0x0287}, //--
             {Opcode.SMSG_UNK_043F,                                 0x043F}, //+-
             //{Opcode.SMSG_UNK_04AA,                                 0x04AA}, //-+
             {Opcode.SMSG_UNK_0632,                                 0x0632}, //++
             {Opcode.SMSG_UNK_069B,                                 0x069B}, //++
+            {Opcode.SMSG_UNK_0728,                                 0x0728}, //++
             //{Opcode.SMSG_UNK_0817,                                 0x0817}, //--
+            {Opcode.SMSG_UNK_0987,                                 0x0987}, //--
             {Opcode.SMSG_UNK_0E9B,                                 0x0E9B}, //++
             {Opcode.SMSG_UNK_0A0B,                                 0x0A0B}, //++
             //{Opcode.SMSG_UNK_0CAE,                                 0x0CAE}, //-+
