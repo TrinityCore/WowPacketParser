@@ -521,12 +521,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     packet.ReadSingle("unk136", index); // 136
 
                 packet.ReadXORByte(guid1, 7); // 15
-                moveInfo.Position.X = packet.ReadSingle(); // 200
+                packet.ReadSingle("unk200", index); // 200
 
                 for (var i = 0u; i < unk144count; i++ ) // 144
                     packet.ReadInt32("unk148", index); // 148
 
-                packet.ReadSingle("unk28", index); // 28
+                moveInfo.Position.X = packet.ReadSingle(); // 28
 
                 if (!skipFloat) // 104
                     packet.ReadSingle("unk104", index); // 104
