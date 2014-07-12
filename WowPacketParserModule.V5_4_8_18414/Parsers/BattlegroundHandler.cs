@@ -53,7 +53,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BATTLEFIELD_LIST)]
         public static void HandleBattlefieldListClient(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadInt32("unk");
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_MGR_ENTRY_INVITE_RESPONSE)]

@@ -44,6 +44,20 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
+        [Parser(Opcode.SMSG_QUEST_QUERY_RESPONSE)]
+        public static void HandleQuestQueryResp(Packet packet)
+        {
+            if (packet.Direction == Direction.ServerToClient)
+            {
+                packet.ReadToEnd();
+            }
+            else
+            {
+                packet.WriteLine("              : CMSG_NULL_0276");
+            }
+        }
+
+
         [Parser(Opcode.CMSG_QUEST_QUERY)]
         [Parser(Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST)]
         [Parser(Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD)]

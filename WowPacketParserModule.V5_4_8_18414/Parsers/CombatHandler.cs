@@ -15,6 +15,11 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         }
 
         [Parser(Opcode.CMSG_TOGGLE_PVP)]
+        public static void HandleCTogglePvp(Packet packet)
+        {
+            packet.ReadBit("Value");
+        }
+
         [Parser(Opcode.SMSG_AI_REACTION)]
         [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]
         [Parser(Opcode.SMSG_ATTACKSTART)]

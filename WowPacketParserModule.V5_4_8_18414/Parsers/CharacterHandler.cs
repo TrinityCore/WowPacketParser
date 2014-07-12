@@ -25,6 +25,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.CMSG_PLAYED_TIME)]
+        public static void HandleCPlayedTime(Packet packet)
+        {
+            packet.ReadBoolean("Print in chat");
+        }
+
         [Parser(Opcode.CMSG_REORDER_CHARACTERS)]
         public static void HandleReorderCharacters(Packet packet)
         {

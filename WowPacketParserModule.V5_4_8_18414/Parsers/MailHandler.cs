@@ -24,7 +24,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_MAIL_DELETE)]
         public static void HandleMailDelete(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadUInt32("Template Id");
+            packet.ReadUInt32("Mail Id");
         }
 
         [Parser(Opcode.CMSG_MAIL_MARK_AS_READ)]

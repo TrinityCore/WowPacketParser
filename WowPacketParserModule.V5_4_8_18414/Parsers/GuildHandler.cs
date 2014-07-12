@@ -142,7 +142,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_QUERY_GUILD_REWARDS)]
         public static void HandleQueryGuildRewards(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadInt32("unk");
         }
 
         [Parser(Opcode.CMSG_QUERY_GUILD_XP)]

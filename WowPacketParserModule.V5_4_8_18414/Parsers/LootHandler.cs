@@ -34,7 +34,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             if (packet.Direction == Direction.ClientToServer)
             {
-                packet.ReadToEnd();
             }
             else
             {
@@ -75,7 +74,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         }
 
         [Parser(Opcode.SMSG_LOOT_CLEAR_MONEY)]
-        //[Parser(Opcode.CMSG_LOOT_MONEY)]
         public static void HandleLootClearMoney(Packet packet)
         {
             packet.ReadToEnd();
