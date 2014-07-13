@@ -136,6 +136,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("GUID", GUID);
         }
 
+        [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
+        public static void HandleNpcGossip(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.SMSG_GOSSIP_POI)]
         public static void HandleGossipPoi(Packet packet)
         {

@@ -19,5 +19,11 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             packet.ReadToEnd();
         }
+
+        [Parser(Opcode.SMSG_FRIEND_STATUS)]
+        public static void HandleFriendStatus(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
     }
 }

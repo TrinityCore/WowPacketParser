@@ -34,5 +34,11 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ParseBitStream(guid, 0, 1, 6, 2, 3, 4, 5, 7);
             packet.WriteGuid("GameObject Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE)]
+        public static void HandleGameObjectQueryResponse(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
     }
 }

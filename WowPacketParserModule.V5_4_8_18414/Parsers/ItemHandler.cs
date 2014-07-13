@@ -169,6 +169,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
+        [Parser(Opcode.SMSG_BUY_FAILED)]
+        public static void HandleBuyFailed(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.SMSG_BUY_ITEM)]
         public static void HandleBuyItemResponse(Packet packet)
         {
@@ -355,6 +361,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
         [Parser(Opcode.SMSG_INVENTORY_CHANGE_FAILURE)]
         public static void HandleInventoryChangeFailure(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_ITEM_TIME_UPDATE)]
+        public static void HandleItemTimeUpdate(Packet packet)
         {
             packet.ReadToEnd();
         }

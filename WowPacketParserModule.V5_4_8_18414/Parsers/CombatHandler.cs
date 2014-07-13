@@ -24,6 +24,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]
         [Parser(Opcode.SMSG_ATTACKSTART)]
         [Parser(Opcode.SMSG_ATTACKSTOP)]
+        [Parser(Opcode.SMSG_CANCEL_COMBAT)]
         [Parser(Opcode.SMSG_SPELLHEALLOG)]
         [Parser(Opcode.SMSG_SPELLNONMELEEDAMAGELOG)]
         public static void HandleAttackerStateUpdate(Packet packet)

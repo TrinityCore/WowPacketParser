@@ -141,5 +141,17 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             packet.ReadToEnd();
         }
+
+        [Parser(Opcode.SMSG_QUERY_TIME_RESPONSE)]
+        public static void HandleQueryTimeResponse(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_REALM_NAME_QUERY_RESPONSE)]
+        public static void HandleQueryRealmNameResponse(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
     }
 }

@@ -33,12 +33,12 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_INVITE_RESPONSE,    0x0A97}, //--
             {Opcode.CMSG_BATTLEFIELD_PORT,                         0x1379}, //--
             {Opcode.CMSG_BATTLEMASTER_JOIN,                        0x0769}, //--
-            {Opcode.CMSG_BATTLE_PET_DELETE_PET,                    0x18B6}, //
-            {Opcode.CMSG_BATTLE_PET_MODIFY_NAME,                   0x1887}, //
-            {Opcode.CMSG_BATTLE_PET_NAME_QUERY,                    0x1CE0}, //
-            {Opcode.CMSG_BATTLE_PET_SET_BATTLE_SLOT,               0x0163}, //
-            {Opcode.CMSG_BATTLE_PET_SET_FLAGS,                     0x17AC}, //
-            {Opcode.CMSG_BATTLE_PET_SUMMON_COMPANION,              0x1896}, //
+            {Opcode.CMSG_BATTLE_PET_DELETE_PET,                    0x18B6}, //+-
+            {Opcode.CMSG_BATTLE_PET_MODIFY_NAME,                   0x1887}, //+-
+            {Opcode.CMSG_BATTLE_PET_NAME_QUERY,                    0x1CE0}, //+-
+            {Opcode.CMSG_BATTLE_PET_SET_BATTLE_SLOT,               0x0163}, //+-
+            {Opcode.CMSG_BATTLE_PET_SET_FLAGS,                     0x17AC}, //+-
+            {Opcode.CMSG_BATTLE_PET_SUMMON_COMPANION,              0x1896}, //+-
             {Opcode.CMSG_BINDER_ACTIVATE,                          0x1248}, //-+
             {Opcode.CMSG_BUYBACK_ITEM,                             0x0661}, //-+
             {Opcode.CMSG_BUY_BANK_SLOT,                            0x12F2}, //-+
@@ -264,163 +264,170 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.MSG_VERIFY_CONNECTIVITY,                       0x4F57}, //--
 
             {Opcode.SMSG_ACCOUNT_DATA_TIMES,                       0x162B}, //++
-            {Opcode.SMSG_ACTION_BUTTONS,                           0x081A}, //
+            {Opcode.SMSG_ACTION_BUTTONS,                           0x081A}, //--
             {Opcode.SMSG_ADDON_INFO,                               0x160A}, //--
-            {Opcode.SMSG_AI_REACTION,                              0x06AF}, //
-            {Opcode.SMSG_ATTACKERSTATEUPDATE,                      0x06AA}, //
-            {Opcode.SMSG_ATTACKSTART,                              0x1A9E}, //
-            {Opcode.SMSG_ATTACKSTOP,                               0x12AF}, //
+            {Opcode.SMSG_AI_REACTION,                              0x06AF}, //--
+            {Opcode.SMSG_ATTACKERSTATEUPDATE,                      0x06AA}, //--
+            {Opcode.SMSG_ATTACKSTART,                              0x1A9E}, //--
+            {Opcode.SMSG_ATTACKSTOP,                               0x12AF}, //--
             {Opcode.SMSG_AUCTION_HELLO,                            0x10A7}, //-+
-            {Opcode.SMSG_AURA_UPDATE,                              0x0072}, //
+            {Opcode.SMSG_AURA_UPDATE,                              0x0072}, //--
             {Opcode.SMSG_AUTH_CHALLENGE,                           0x0949}, //--+
             {Opcode.SMSG_AUTH_RESPONSE,                            0x0ABA}, //++
-            {Opcode.SMSG_BATTLEFIELD_LIST,                         0x160E}, //
-            {Opcode.SMSG_BATTLEFIELD_MGR_EJECTED,                  0x18C2}, //
-            {Opcode.SMSG_BATTLEFIELD_MGR_ENTERED,                  0x081B}, //
-            {Opcode.SMSG_BATTLEFIELD_STATUS,                       0x0433}, //
-            {Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED,                0x122E}, //
-            {Opcode.SMSG_BATTLEFIELD_STATUS_ACTIVE,                0x1AAF}, //
-            {Opcode.SMSG_BATTLEFIELD_STATUS_NEEDCONFIRMATION,      0x1EAF}, //
-            {Opcode.SMSG_BATTLEFIELD_STATUS_FAILED,                0x1140}, //
-            {Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED,               0x1E2F}, //
+            {Opcode.SMSG_BATTLEFIELD_LIST,                         0x160E}, //--
+            {Opcode.SMSG_BATTLEFIELD_MGR_EJECTED,                  0x18C2}, //--
+            {Opcode.SMSG_BATTLEFIELD_MGR_ENTERED,                  0x081B}, //--
+            {Opcode.SMSG_BATTLEFIELD_STATUS,                       0x0433}, //--
+            {Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED,                0x122E}, //--
+            {Opcode.SMSG_BATTLEFIELD_STATUS_ACTIVE,                0x1AAF}, //--
+            {Opcode.SMSG_BATTLEFIELD_STATUS_NEEDCONFIRMATION,      0x1EAF}, //--
+            {Opcode.SMSG_BATTLEFIELD_STATUS_FAILED,                0x1140}, //--
+            {Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED,               0x1E2F}, //--
             {Opcode.SMSG_BATTLEGROUND_PLAYER_LEFT,                 0x0206}, //-+
-            {Opcode.SMSG_BINDPOINTUPDATE,                          0x0E3B}, //
-            {Opcode.SMSG_BUY_FAILED,                               0x1563}, //
-            {Opcode.SMSG_BUY_ITEM,                                 0x101A}, //
-            {Opcode.SMSG_CANCEL_COMBAT,                            0x0534}, //
-            {Opcode.SMSG_CAST_FAILED,                              0x143A}, //
-            {Opcode.SMSG_CHAR_CREATE,                              0x1CAA}, // ?
-            {Opcode.SMSG_CHAR_DELETE,                              0x0C9F}, // ?
+            {Opcode.SMSG_BATTLE_PET_DELETED,                       0x18AB}, //+-
+            {Opcode.SMSG_BATTLE_PET_JOURNAL,                       0x1542}, //--
+            {Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED,         0x1A0F}, //--
+            {Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_DENIED,           0x0203}, //--
+            {Opcode.SMSG_BATTLE_PET_QUERY_NAME_RESPONSE,           0x1540}, //+-
+            {Opcode.SMSG_BATTLE_PET_SLOT_UPDATE,                   0x16AF}, //--
+            {Opcode.SMSG_BATTLE_PET_UPDATES,                       0x041A}, //--
+            {Opcode.SMSG_BINDPOINTUPDATE,                          0x0E3B}, //--
+            {Opcode.SMSG_BUY_FAILED,                               0x1563}, //--
+            {Opcode.SMSG_BUY_ITEM,                                 0x101A}, //--
+            {Opcode.SMSG_CANCEL_COMBAT,                            0x0534}, //--
+            {Opcode.SMSG_CAST_FAILED,                              0x143A}, //--
+            {Opcode.SMSG_CHAR_CREATE,                              0x1CAA}, //--
+            {Opcode.SMSG_CHAR_DELETE,                              0x0C9F}, //--
             {Opcode.SMSG_CHAR_ENUM,                                0x11C3}, //+-
             {Opcode.SMSG_CLIENTCACHE_VERSION,                      0x002A}, //++
             {Opcode.SMSG_CLIENT_CONTROL_UPDATE,                    0x1043}, //++
             {Opcode.SMSG_CONTACT_LIST,                             0x1F22}, //--
-            {Opcode.SMSG_CREATURE_QUERY_RESPONSE,                  0x048B}, //
+            {Opcode.SMSG_CREATURE_QUERY_RESPONSE,                  0x048B}, //--
             {Opcode.SMSG_DB_REPLY,                                 0x189E}, //+-
             {Opcode.SMSG_DESTROY_OBJECT,                           0x14C2}, //-+
             //{Opcode.SMSG_FEATURE_SYSTEM_STATUS,                    0x16BB}, //?
-            {Opcode.SMSG_FRIEND_STATUS,                            0x0532}, //
-            {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE,                0x06BF}, //?
-            {Opcode.SMSG_GOSSIP_COMPLETE,                          0x034E}, //
-            {Opcode.SMSG_GOSSIP_MESSAGE,                           0x0244}, //
+            {Opcode.SMSG_FRIEND_STATUS,                            0x0532}, //--
+            {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE,                0x06BF}, //--
+            {Opcode.SMSG_GOSSIP_COMPLETE,                          0x034E}, //--
+            {Opcode.SMSG_GOSSIP_MESSAGE,                           0x0244}, //--
             {Opcode.SMSG_GOSSIP_POI,                               0x0785}, //-- +
-            {Opcode.SMSG_GROUP_DECLINE,                            0x17A3}, //
-            {Opcode.SMSG_GROUP_DESTROYED,                          0x1B27}, //
-            {Opcode.SMSG_GROUP_INVITE,                             0x0A8F}, //
-            {Opcode.SMSG_GROUP_LIST,                               0x0CBB}, //
-            {Opcode.SMSG_GROUP_SET_LEADER,                         0x18BF}, //
-            {Opcode.SMSG_GROUP_SET_ROLE,                           0x1E1F}, //
-            {Opcode.SMSG_GUILD_CHALLENGE_UPDATED,                  0x0AE9}, //
-            {Opcode.SMSG_GUILD_COMMAND_RESULT,                     0x0EF1}, //
-            {Opcode.SMSG_GUILD_MEMBER_DAILY_RESET,                 0x1BE8}, //
-            {Opcode.SMSG_GUILD_NEWS_UPDATE,                        0x0AE8}, //
-            {Opcode.SMSG_GUILD_QUERY_RESPONSE,                     0x1B79}, //
-            {Opcode.SMSG_GUILD_RANK,                               0x0A79}, //
-            {Opcode.SMSG_GUILD_RANKS_UPDATE,                       0x0A60}, //
-            {Opcode.SMSG_GUILD_REPUTATION_WEEKLY_CAP,              0x1A71}, //
-            {Opcode.SMSG_GUILD_REWARDS_LIST,                       0x1A69}, //
-            {Opcode.SMSG_GUILD_ROSTER,                             0x0BE0}, //
-            {Opcode.SMSG_GUILD_XP,                                 0x0AF0}, //
-            {Opcode.SMSG_GUILD_XP_GAIN,                            0x0FE0}, //
-            {Opcode.SMSG_HOTFIX_INFO,                              0x1EBA}, //
-            {Opcode.SMSG_INIT_CURRENCY,                            0x1A8B}, //
-            {Opcode.SMSG_INIT_WORLD_STATES,                        0x1560}, //
-            {Opcode.SMSG_INITIAL_SPELLS,                           0x045A}, //
-            {Opcode.SMSG_INITIALIZE_FACTIONS,                      0x0AAA}, //
-            {Opcode.SMSG_INSTANCE_RESET,                           0x160F}, //
-            {Opcode.SMSG_INVENTORY_CHANGE_FAILURE,                 0x0C1E}, //
-            {Opcode.SMSG_ITEM_TIME_UPDATE,                         0x18C1}, //
+            {Opcode.SMSG_GROUP_DECLINE,                            0x17A3}, //--
+            {Opcode.SMSG_GROUP_DESTROYED,                          0x1B27}, //--
+            {Opcode.SMSG_GROUP_INVITE,                             0x0A8F}, //--
+            {Opcode.SMSG_GROUP_LIST,                               0x0CBB}, //--
+            {Opcode.SMSG_GROUP_SET_LEADER,                         0x18BF}, //--
+            {Opcode.SMSG_GROUP_SET_ROLE,                           0x1E1F}, //--
+            {Opcode.SMSG_GUILD_CHALLENGE_UPDATED,                  0x0AE9}, //--
+            {Opcode.SMSG_GUILD_COMMAND_RESULT,                     0x0EF1}, //--
+            {Opcode.SMSG_GUILD_MEMBER_DAILY_RESET,                 0x1BE8}, //--
+            {Opcode.SMSG_GUILD_NEWS_UPDATE,                        0x0AE8}, //--
+            {Opcode.SMSG_GUILD_QUERY_RESPONSE,                     0x1B79}, //--
+            {Opcode.SMSG_GUILD_RANK,                               0x0A79}, //--
+            {Opcode.SMSG_GUILD_RANKS_UPDATE,                       0x0A60}, //--
+            {Opcode.SMSG_GUILD_REPUTATION_WEEKLY_CAP,              0x1A71}, //--
+            {Opcode.SMSG_GUILD_REWARDS_LIST,                       0x1A69}, //--
+            {Opcode.SMSG_GUILD_ROSTER,                             0x0BE0}, //--
+            {Opcode.SMSG_GUILD_XP,                                 0x0AF0}, //--
+            {Opcode.SMSG_GUILD_XP_GAIN,                            0x0FE0}, //--
+            {Opcode.SMSG_HOTFIX_INFO,                              0x1EBA}, //--
+            {Opcode.SMSG_INIT_CURRENCY,                            0x1A8B}, //--
+            {Opcode.SMSG_INIT_WORLD_STATES,                        0x1560}, //--
+            {Opcode.SMSG_INITIAL_SPELLS,                           0x045A}, //--
+            {Opcode.SMSG_INITIALIZE_FACTIONS,                      0x0AAA}, //--
+            {Opcode.SMSG_INSTANCE_RESET,                           0x160F}, //--
+            {Opcode.SMSG_INVENTORY_CHANGE_FAILURE,                 0x0C1E}, //--
+            {Opcode.SMSG_ITEM_TIME_UPDATE,                         0x18C1}, //--
             {Opcode.SMSG_LEARNED_SPELL,                            0x129A}, //++
-            {Opcode.SMSG_LIST_INVENTORY,                           0x1AAE}, //
-            {Opcode.SMSG_LOGIN_SETTIMESPEED,                       0x082B}, //
-            {Opcode.SMSG_LOGIN_VERIFY_WORLD,                       0x1C0F}, //
-            {Opcode.SMSG_LOGOUT_CANCEL_ACK,                        0x0AAF}, //
-            {Opcode.SMSG_LOGOUT_COMPLETE,                          0x142F}, //
+            {Opcode.SMSG_LIST_INVENTORY,                           0x1AAE}, //--
+            {Opcode.SMSG_LOGIN_SETTIMESPEED,                       0x082B}, //--
+            {Opcode.SMSG_LOGIN_VERIFY_WORLD,                       0x1C0F}, //--
+            {Opcode.SMSG_LOGOUT_CANCEL_ACK,                        0x0AAF}, //--
+            {Opcode.SMSG_LOGOUT_COMPLETE,                          0x142F}, //--
             {Opcode.SMSG_LOGOUT_RESPONSE,                          0x008F}, //+-
-            {Opcode.SMSG_LOOT_CLEAR_MONEY,                         0x1632}, //
-            {Opcode.SMSG_LOOT_MONEY_NOTIFY,                        0x14C0}, //
-            {Opcode.SMSG_LOOT_RELEASE_RESPONSE,                    0x123F}, //
-            {Opcode.SMSG_LOOT_REMOVED,                             0x0C3E}, //
-            {Opcode.SMSG_LOOT_RESPONSE,                            0x128A}, //
-            {Opcode.SMSG_MAIL_LIST_RESULT,                         0x1C0B}, //
-            {Opcode.SMSG_MESSAGECHAT,                              0x1A9A}, //
-            {Opcode.SMSG_MINIMAP_PING,                             0x168F}, //
-            {Opcode.SMSG_MONSTER_MOVE,                             0x1A07}, //
+            {Opcode.SMSG_LOOT_CLEAR_MONEY,                         0x1632}, //--
+            {Opcode.SMSG_LOOT_MONEY_NOTIFY,                        0x14C0}, //--
+            {Opcode.SMSG_LOOT_RELEASE_RESPONSE,                    0x123F}, //--
+            {Opcode.SMSG_LOOT_REMOVED,                             0x0C3E}, //--
+            {Opcode.SMSG_LOOT_RESPONSE,                            0x128A}, //--
+            {Opcode.SMSG_MAIL_LIST_RESULT,                         0x1C0B}, //--
+            {Opcode.SMSG_MESSAGECHAT,                              0x1A9A}, //--
+            {Opcode.SMSG_MINIMAP_PING,                             0x168F}, //--
+            {Opcode.SMSG_MONSTER_MOVE,                             0x1A07}, //--
             {Opcode.SMSG_MOTD,                                     0x183B}, //++
-            {Opcode.SMSG_MOVE_ROOT,                                0x15AE}, //
-            {Opcode.SMSG_MOVE_SET_ACTIVE_MOVER,                    0x0C6D}, //
-            {Opcode.SMSG_MOVE_SET_CAN_FLY,                         0x178D}, //
+            {Opcode.SMSG_MOVE_ROOT,                                0x15AE}, //--
+            {Opcode.SMSG_MOVE_SET_ACTIVE_MOVER,                    0x0C6D}, //--
+            {Opcode.SMSG_MOVE_SET_CAN_FLY,                         0x178D}, //--
             {Opcode.SMSG_MOVE_SET_FLIGHT_SPEED,                    0x006E}, //++
             {Opcode.SMSG_MOVE_SET_RUN_SPEED,                       0x184C}, //++
             {Opcode.SMSG_MOVE_SET_RUN_BACK_SPEED,                  0x0A83}, //++
             {Opcode.SMSG_MOVE_SET_WALK_SPEED,                      0x0469}, //++
-            {Opcode.SMSG_MOVE_TELEPORT,                            0x0B39}, //
-            {Opcode.SMSG_MOVE_UNROOT,                              0x1FAE}, //
-            {Opcode.SMSG_MOVE_UNSET_CAN_FLY,                       0x0162}, //
+            {Opcode.SMSG_MOVE_TELEPORT,                            0x0B39}, //--
+            {Opcode.SMSG_MOVE_UNROOT,                              0x1FAE}, //--
+            {Opcode.SMSG_MOVE_UNSET_CAN_FLY,                       0x0162}, //--
             //{Opcode.SMSG_NAME_QUERY_RESPONSE,                      0x169B}, //?
             {Opcode.SMSG_NEW_WORLD,                                0x1C3B}, //-+
-            {Opcode.SMSG_NPC_TEXT_UPDATE,                          0x140A}, //
-            {Opcode.SMSG_PARTY_COMMAND_RESULT,                     0x0F86}, //
+            {Opcode.SMSG_NPC_TEXT_UPDATE,                          0x140A}, //--
+            {Opcode.SMSG_PARTY_COMMAND_RESULT,                     0x0F86}, //--
             //{Opcode.SMSG_PARTY_MEMBER_STATS,                       0x0A9A}, //-+
-            {Opcode.SMSG_PET_NAME_QUERY_RESPONSE,                  0x0ABE}, //
-            {Opcode.SMSG_PETITION_ALREADY_SIGNED,                  0x0286}, //
-            {Opcode.SMSG_PETITION_QUERY_RESPONSE,                  0x1083}, //
-            {Opcode.SMSG_PETITION_RENAME_RESULT,                   0x082A}, //
-            {Opcode.SMSG_PETITION_SHOWLIST,                        0x10A3}, //
-            {Opcode.SMSG_PETITION_SHOW_SIGNATURES,                 0x00AA}, //
-            {Opcode.SMSG_PETITION_SIGN_RESULTS,                    0x06AE}, //
+            {Opcode.SMSG_PET_NAME_QUERY_RESPONSE,                  0x0ABE}, //--
+            {Opcode.SMSG_PETITION_ALREADY_SIGNED,                  0x0286}, //--
+            {Opcode.SMSG_PETITION_QUERY_RESPONSE,                  0x1083}, //--
+            {Opcode.SMSG_PETITION_RENAME_RESULT,                   0x082A}, //--
+            {Opcode.SMSG_PETITION_SHOWLIST,                        0x10A3}, //--
+            {Opcode.SMSG_PETITION_SHOW_SIGNATURES,                 0x00AA}, //--
+            {Opcode.SMSG_PETITION_SIGN_RESULTS,                    0x06AE}, //--
             {Opcode.SMSG_PLAY_SOUND,                               0x102A}, //-+
-            {Opcode.SMSG_PLAYER_MOVE,                              0x1A32}, //
-            {Opcode.SMSG_PLAYERBOUND,                              0x1B60}, //
+            {Opcode.SMSG_PLAYER_MOVE,                              0x1A32}, //--
+            {Opcode.SMSG_PLAYERBOUND,                              0x1B60}, //--
             {Opcode.SMSG_PONG,                                     0x1969}, //--
-            {Opcode.SMSG_POWER_UPDATE,                             0x109F}, //
-            {Opcode.SMSG_PVP_LOG_DATA,                             0x1E8F}, //
-            {Opcode.SMSG_QUERY_TIME_RESPONSE,                      0x100F}, //
-            {Opcode.SMSG_QUESTGIVER_OFFER_REWARD,                  0x074F}, //
-            {Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE,                0x0346}, //
-            {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS,                 0x134C}, //
-            {Opcode.SMSG_QUESTGIVER_QUEST_LIST,                    0x02D4}, //
-            {Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS,                 0x0277}, //
-            {Opcode.SMSG_QUESTGIVER_STATUS,                        0x1275}, //
-            {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE,               0x06CE}, //
-            {Opcode.SMSG_QUESTLOG_FULL,                            0x07FD}, //
-            {Opcode.SMSG_QUESTUPDATE_ADD_KILL,                     0x1645}, //
-            {Opcode.SMSG_QUESTUPDATE_COMPLETE,                     0x0776}, //
-            {Opcode.SMSG_QUEST_CONFIRM_ACCEPT,                     0x13C7}, //
-            {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE,                 0x067F}, //
+            {Opcode.SMSG_POWER_UPDATE,                             0x109F}, //--
+            {Opcode.SMSG_PVP_LOG_DATA,                             0x1E8F}, //--
+            {Opcode.SMSG_QUERY_TIME_RESPONSE,                      0x100F}, //--
+            {Opcode.SMSG_QUESTGIVER_OFFER_REWARD,                  0x074F}, //--
+            {Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE,                0x0346}, //--
+            {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS,                 0x134C}, //--
+            {Opcode.SMSG_QUESTGIVER_QUEST_LIST,                    0x02D4}, //--
+            {Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS,                 0x0277}, //--
+            {Opcode.SMSG_QUESTGIVER_STATUS,                        0x1275}, //--
+            {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE,               0x06CE}, //--
+            {Opcode.SMSG_QUESTLOG_FULL,                            0x07FD}, //--
+            {Opcode.SMSG_QUESTUPDATE_ADD_KILL,                     0x1645}, //--
+            {Opcode.SMSG_QUESTUPDATE_COMPLETE,                     0x0776}, //--
+            {Opcode.SMSG_QUEST_CONFIRM_ACCEPT,                     0x13C7}, //--
+            {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE,                 0x067F}, //--
             {Opcode.SMSG_QUEST_QUERY_RESPONSE,                     0x0276}, //--
-            {Opcode.SMSG_RAID_READY_CHECK,                         0x1C8E}, //
-            {Opcode.SMSG_RAID_READY_CHECK_COMPLETED,               0x15C2}, //
-            {Opcode.SMSG_RAID_READY_CHECK_CONFIRM,                 0x02AF}, //
-            {Opcode.SMSG_RANDOM_ROLL,                              0x141A}, //
-            {Opcode.SMSG_RANDOMIZE_CHAR_NAME,                      0x169F}, //?
-            {Opcode.SMSG_REALM_NAME_QUERY_RESPONSE,                0x063E}, //?
-            {Opcode.SMSG_RECEIVED_MAIL,                            0x182B}, //
-            {Opcode.SMSG_SELL_ITEM,                                0x048E}, //
-            {Opcode.SMSG_SEND_MAIL_RESULT,                         0x1A9B}, //
-            {Opcode.SMSG_SEND_UNLEARN_SPELLS,                      0x0CE1}, //
-            {Opcode.SMSG_SET_DUNGEON_DIFFICULTY,                   0x1283}, //
-            {Opcode.SMSG_SET_FORCED_REACTIONS,                     0x068F}, //
-            {Opcode.SMSG_SET_PHASE_SHIFT,                          0x02A2}, //
+            {Opcode.SMSG_RAID_READY_CHECK,                         0x1C8E}, //--
+            {Opcode.SMSG_RAID_READY_CHECK_COMPLETED,               0x15C2}, //--
+            {Opcode.SMSG_RAID_READY_CHECK_CONFIRM,                 0x02AF}, //--
+            {Opcode.SMSG_RANDOM_ROLL,                              0x141A}, //--
+            {Opcode.SMSG_RANDOMIZE_CHAR_NAME,                      0x169F}, //--
+            {Opcode.SMSG_REALM_NAME_QUERY_RESPONSE,                0x063E}, //--
+            {Opcode.SMSG_RECEIVED_MAIL,                            0x182B}, //--
+            {Opcode.SMSG_SELL_ITEM,                                0x048E}, //--
+            {Opcode.SMSG_SEND_MAIL_RESULT,                         0x1A9B}, //--
+            {Opcode.SMSG_SEND_UNLEARN_SPELLS,                      0x0CE1}, //--
+            {Opcode.SMSG_SET_DUNGEON_DIFFICULTY,                   0x1283}, //--
+            {Opcode.SMSG_SET_FORCED_REACTIONS,                     0x068F}, //--
+            {Opcode.SMSG_SET_PHASE_SHIFT,                          0x02A2}, //--
             {Opcode.SMSG_SET_TIMEZONE_INFORMATION,                 0x19C1}, //+-
             {Opcode.SMSG_SHOW_BANK,                                0x0007}, //-+
-            {Opcode.SMSG_SPELL_FAILED_OTHER,                       0x040B}, //
-            {Opcode.SMSG_SPELL_FAILURE,                            0x04AF}, //
+            {Opcode.SMSG_SPELL_FAILED_OTHER,                       0x040B}, //--
+            {Opcode.SMSG_SPELL_FAILURE,                            0x04AF}, //--
             //{Opcode.SMSG_SPELL_GO,                                 0x09D8}, //
-            {Opcode.SMSG_SPELL_START,                              0x107A}, //
-            {Opcode.SMSG_SPELLHEALLOG,                             0x09FB}, //
-            {Opcode.SMSG_SPELLNONMELEEDAMAGELOG,                   0x1450}, //
-            {Opcode.SMSG_STANDSTATE_UPDATE,                        0x1C12}, //
-            {Opcode.SMSG_START_TIMER,                              0x0E3F}, //
-            {Opcode.SMSG_TALENTS_INFO,                             0x0A9B}, //
+            {Opcode.SMSG_SPELL_START,                              0x107A}, //--
+            {Opcode.SMSG_SPELLHEALLOG,                             0x09FB}, //--
+            {Opcode.SMSG_SPELLNONMELEEDAMAGELOG,                   0x1450}, //--
+            {Opcode.SMSG_STANDSTATE_UPDATE,                        0x1C12}, //--
+            {Opcode.SMSG_START_TIMER,                              0x0E3F}, //--
+            {Opcode.SMSG_TALENTS_INFO,                             0x0A9B}, //--
             {Opcode.SMSG_TIME_SYNC_REQ,                            0x1A8F}, //+-
-            {Opcode.SMSG_TRAINER_LIST,                             0x189F}, //
+            {Opcode.SMSG_TRAINER_LIST,                             0x189F}, //--
             {Opcode.SMSG_TRANSFER_PENDING,                         0x061B}, //-+
-            {Opcode.SMSG_TRIGGER_CINEMATIC,                        0x0B01}, //
-            {Opcode.SMSG_TRIGGER_MOVIE,                            0x1C2E}, //
-            {Opcode.SMSG_TURN_IN_PETITION_RESULTS,                 0x0E13}, //
+            {Opcode.SMSG_TRIGGER_CINEMATIC,                        0x0B01}, //--
+            {Opcode.SMSG_TRIGGER_MOVIE,                            0x1C2E}, //--
+            {Opcode.SMSG_TURN_IN_PETITION_RESULTS,                 0x0E13}, //--
             {Opcode.SMSG_TUTORIAL_FLAGS,                           0x1B90}, //+-
-            {Opcode.SMSG_UPDATE_LAST_INSTANCE,                     0x189B}, //
+            {Opcode.SMSG_UPDATE_LAST_INSTANCE,                     0x189B}, //--
             {Opcode.SMSG_UPDATE_OBJECT,                            0x1792}, //--
             {Opcode.SMSG_UPDATE_WORLD_STATE,                       0x121B}, //++
             {Opcode.SMSG_WARDEN_DATA,                              0x0C0A}, //+-
@@ -443,14 +450,18 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_0E9B,                                 0x0E9B}, //++
             {Opcode.SMSG_UNK_0A0B,                                 0x0A0B}, //++
             {Opcode.SMSG_UNK_0C44,                                 0x0C44}, //+-
+            {Opcode.SMSG_UNK_0CF2,                                 0x0CF2}, //++
             //{Opcode.SMSG_UNK_0CAE,                                 0x0CAE}, //-+
+            {Opcode.SMSG_UNK_0D79,                                 0x0D79}, //++
             {Opcode.SMSG_UNK_103B,                                 0x103B}, //+-
             //{Opcode.SMSG_UNK_103E,                                 0x103E}, //-+
             //{Opcode.SMSG_UNK_109A,                                 0x109A}, //-+
+            {Opcode.SMSG_UNK_11E3,                                 0x11E3}, //+-
             {Opcode.SMSG_UNK_121E,                                 0x121E}, //++
             //{Opcode.SMSG_UNK_123E,                                 0x123E}, //--
             //{Opcode.SMSG_UNK_129A,                                 0x129A}, //++
             {Opcode.SMSG_UNK_1440,                                 0x1440}, //++
+            {Opcode.SMSG_UNK_14AE,                                 0x14AE}, //++
             {Opcode.SMSG_UNK_1570,                                 0x1570}, //--
             {Opcode.SMSG_UNK_16BF,                                 0x16BF}, //++
             {Opcode.SMSG_UNK_1D8E,                                 0x1D8E}, //++

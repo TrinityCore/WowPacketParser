@@ -18,5 +18,11 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             packet.ReadToEnd();
         }
+
+        [Parser(Opcode.SMSG_START_TIMER)]
+        public static void HandleStartTimer(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
     }
 }
