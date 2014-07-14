@@ -513,7 +513,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadSingle("Turn Speed", index); // 196
 
                 if (readUint32) // 24
-                    packet.ReadUInt32("unk24", index); // 24
+                    packet.ReadInt32("unk24", index); // 24
 
                 packet.ReadSingle("Flight Back Speed", index); // 176
 
@@ -521,7 +521,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     packet.ReadSingle("unk136", index); // 136
 
                 packet.ReadXORByte(guid1, 7); // 15
-                packet.ReadSingle("unk200", index); // 200
+                packet.ReadSingle("Pitch Rate", index); // 200
 
                 for (var i = 0u; i < unk144count; i++ ) // 144
                     packet.ReadInt32("unk148", index); // 148

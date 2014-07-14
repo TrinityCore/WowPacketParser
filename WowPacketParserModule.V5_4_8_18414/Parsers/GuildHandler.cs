@@ -28,7 +28,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_GUILD_COMMAND_RESULT)]
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
         [Parser(Opcode.SMSG_GUILD_NEWS_UPDATE)]
-        [Parser(Opcode.SMSG_GUILD_QUERY_RESPONSE)]
         [Parser(Opcode.SMSG_GUILD_RANK)]
         [Parser(Opcode.SMSG_GUILD_RANKS_UPDATE)]
         [Parser(Opcode.SMSG_GUILD_REPUTATION_WEEKLY_CAP)]
@@ -172,6 +171,69 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandlePetitionTurnIn(Packet packet)
         {
             packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_GUILD_QUERY_RESPONSE)]
+        public static void HandleGuildQueryResponse(Packet packet)
+        {
+            var guid = new byte[8];
+            var guid2 = new byte[8];
+
+            var len = new uint[255];
+            var count = 0u;
+            var len2 = 0u;
+
+
+            guid[5] = packet.ReadBit();
+            var unk16 = packet.ReadBit("unk16");
+            if (unk16)
+            {
+                count = packet.ReadBits("cnt", 21);
+                guid2[5] = packet.ReadBit();
+                guid2[1] = packet.ReadBit();
+                guid2[4] = packet.ReadBit();
+                guid2[7] = packet.ReadBit();
+                for (var i = 0; i < count; i++)
+                {
+                    len[i] = packet.ReadBits(7);
+                }
+                guid2[3] = packet.ReadBit();
+                guid2[2] = packet.ReadBit();
+                guid2[0] = packet.ReadBit();
+                guid2[6] = packet.ReadBit();
+
+                len2 = packet.ReadBits("unk36", 7);
+            }
+            guid[3] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            if (unk16)
+            {
+                packet.ReadInt32("unk160");
+                packet.ReadInt32("unk152");
+                packet.ParseBitStream(guid2, 2, 7);
+                packet.ReadInt32("unk156");
+                packet.ReadInt32("unk32");
+                for (var i = 0; i < count; i++)
+                {
+                    packet.ReadInt32("unk144", i);
+                    packet.ReadInt32("unk140", i);
+                    packet.ReadWoWString("str", len[i], i);
+                }
+                packet.ReadWoWString("str", len2);
+                packet.ReadInt32("unk168");
+                packet.ParseBitStream(guid2, 5, 4);
+                packet.ReadInt32("unk164");
+                packet.ParseBitStream(guid2, 1, 6, 0, 3);
+                packet.WriteGuid("Guid2", guid2);
+            }
+            packet.ParseBitStream(guid, 2, 6, 4, 0, 7, 3, 5, 1);
+
+            packet.WriteGuid("Guid", guid);
         }
     }
 }

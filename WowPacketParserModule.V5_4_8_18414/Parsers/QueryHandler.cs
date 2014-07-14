@@ -136,6 +136,95 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
         }
 
+        [Parser(Opcode.SMSG_NAME_QUERY_RESPONSE)]
+        public static void HandleNameQueryResponse(Packet packet)
+        {
+            var guid = packet.StartBitStream(3, 6, 7, 2, 5, 4, 0, 1);
+            packet.ParseBitStream(guid, 5, 4, 7, 6, 1, 2);
+
+            var nameData = !packet.ReadBoolean("not nameData");
+            if (nameData)
+            {
+                packet.ReadInt32("unk108");
+                packet.ReadInt32("unk36");
+                packet.ReadEnum<Class>("Class", TypeCode.Byte);
+                packet.ReadEnum<Race>("Race", TypeCode.Byte);
+                packet.ReadByte("Level");
+                packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
+            }
+            packet.ParseBitStream(guid, 0, 3);
+
+            packet.WriteGuid("Guid", guid);
+
+            if (!nameData)
+                return;
+
+            var guid2 = new byte[8];
+            var guid3 = new byte[8];
+
+            guid2[2] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid3[7] = packet.ReadBit();
+            guid3[2] = packet.ReadBit();
+            guid3[0] = packet.ReadBit();
+            var unk32 = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid3[5] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+
+            var len = new uint[5];
+            for (var i = 5; i > 0; i--)
+                len[i - 1] = packet.ReadBits(7);
+
+            guid3[6] = packet.ReadBit();
+            guid3[3] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid3[1] = packet.ReadBit();
+            guid3[4] = packet.ReadBit();
+
+            var len56 = packet.ReadBits(6);
+
+            guid2[6] = packet.ReadBit();
+
+            packet.ReadXORByte(guid3, 6);
+            packet.ReadXORByte(guid3, 0);
+
+            var name = packet.ReadWoWString("Name", len56);
+            var playerGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+            StoreGetters.AddName(playerGuid, name);
+
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid3, 3);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid3, 4);
+            packet.ReadXORByte(guid3, 2);
+            packet.ReadXORByte(guid2, 7);
+
+            for (var i = 5; i > 0; i--)
+                packet.ReadWoWString("str", len[i - 1], i);
+
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid3, 7);
+            packet.ReadXORByte(guid3, 1);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid3, 5);
+            packet.ReadXORByte(guid2, 0);
+
+            packet.WriteGuid("Guid2", guid2);
+            packet.WriteGuid("Guid3", guid3);
+
+            var objectName = new ObjectName
+            {
+                ObjectType = ObjectType.Player,
+                Name = name,
+            };
+            Storage.ObjectNames.Add((uint)playerGuid.GetLow(), objectName, packet.TimeSpan);
+        }
+
         [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]
         public static void HandleNpcTextUpdate(Packet packet)
         {

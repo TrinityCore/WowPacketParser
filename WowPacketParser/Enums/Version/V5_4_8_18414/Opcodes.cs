@@ -176,6 +176,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE,              0x15AB}, //+-
             {Opcode.CMSG_UNK_0087,                                 0x0087}, //+-
             {Opcode.CMSG_UNK_00A7,                                 0x00A7}, //+-
+            {Opcode.CMSG_UNK_00F2,                                 0x00F2}, //++
             {Opcode.CMSG_UNK_0247,                                 0x0247}, //+-
             {Opcode.CMSG_UNK_0249,                                 0x0249}, //++?? //some load screen
             {Opcode.CMSG_UNK_0264,                                 0x0264}, //+-
@@ -186,7 +187,9 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_UNK_044E,                                 0x044E}, //+-
             {Opcode.CMSG_UNK_0656,                                 0x0656}, //+-
             {Opcode.CMSG_UNK_08C0,                                 0x08C0}, //+-
+            {Opcode.CMSG_UNK_09FB,                                 0x09FB}, //--
             {Opcode.CMSG_UNK_10A2,                                 0x10A2}, //+-
+            {Opcode.CMSG_UNK_10F3,                                 0x10F3}, //+-
             {Opcode.CMSG_UNK_1258,                                 0x1258}, //+-
             {Opcode.CMSG_UNK_1446,                                 0x1446}, //+-
             {Opcode.CMSG_UNK_144D,                                 0x144D}, //+-
@@ -321,7 +324,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_GUILD_COMMAND_RESULT,                     0x0EF1}, //--
             {Opcode.SMSG_GUILD_MEMBER_DAILY_RESET,                 0x1BE8}, //--
             {Opcode.SMSG_GUILD_NEWS_UPDATE,                        0x0AE8}, //--
-            {Opcode.SMSG_GUILD_QUERY_RESPONSE,                     0x1B79}, //--
+            {Opcode.SMSG_GUILD_QUERY_RESPONSE,                     0x1B79}, //++
             {Opcode.SMSG_GUILD_RANK,                               0x0A79}, //--
             {Opcode.SMSG_GUILD_RANKS_UPDATE,                       0x0A60}, //--
             {Opcode.SMSG_GUILD_REPUTATION_WEEKLY_CAP,              0x1A71}, //--
@@ -364,7 +367,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_MOVE_TELEPORT,                            0x0B39}, //--
             {Opcode.SMSG_MOVE_UNROOT,                              0x1FAE}, //--
             {Opcode.SMSG_MOVE_UNSET_CAN_FLY,                       0x0162}, //--
-            //{Opcode.SMSG_NAME_QUERY_RESPONSE,                      0x169B}, //?
+            {Opcode.SMSG_NAME_QUERY_RESPONSE,                      0x169B}, //+-
             {Opcode.SMSG_NEW_WORLD,                                0x1C3B}, //-+
             {Opcode.SMSG_NPC_TEXT_UPDATE,                          0x140A}, //--
             {Opcode.SMSG_PARTY_COMMAND_RESULT,                     0x0F86}, //--
@@ -415,7 +418,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_SPELL_FAILURE,                            0x04AF}, //--
             //{Opcode.SMSG_SPELL_GO,                                 0x09D8}, //
             {Opcode.SMSG_SPELL_START,                              0x107A}, //--
-            {Opcode.SMSG_SPELLHEALLOG,                             0x09FB}, //--
+            //{Opcode.SMSG_SPELLHEALLOG,                             0x09FB}, //--
             {Opcode.SMSG_SPELLNONMELEEDAMAGELOG,                   0x1450}, //--
             {Opcode.SMSG_STANDSTATE_UPDATE,                        0x1C12}, //--
             {Opcode.SMSG_START_TIMER,                              0x0E3F}, //--
@@ -436,26 +439,31 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_001F,                                 0x001F}, //++
             {Opcode.SMSG_UNK_0063,                                 0x0063}, //++
             {Opcode.SMSG_UNK_00A3,                                 0x00A3}, //++
+            {Opcode.SMSG_UNK_01D2,                                 0x01D2}, //++
             {Opcode.SMSG_UNK_01E1,                                 0x01E1}, //++
+            {Opcode.SMSG_UNK_0250,                                 0x0250}, //++
             //{Opcode.SMSG_UNK_0287,                                 0x0287}, //--
             {Opcode.SMSG_UNK_043F,                                 0x043F}, //+-
             //{Opcode.SMSG_UNK_04AA,                                 0x04AA}, //-+
+            {Opcode.SMSG_UNK_0562,                                 0x0562}, //+-
             {Opcode.SMSG_UNK_05F3,                                 0x05F3}, //++
             {Opcode.SMSG_UNK_0632,                                 0x0632}, //++
             {Opcode.SMSG_UNK_069B,                                 0x069B}, //++
             {Opcode.SMSG_UNK_0728,                                 0x0728}, //++
-            //{Opcode.SMSG_UNK_0817,                                 0x0817}, //--
+            //{Opcode.SMSG_MOVE_SET_SWIM_SPEED,                      0x0817}, //+-
             {Opcode.SMSG_UNK_08B2,                                 0x08B2}, //++
             {Opcode.SMSG_UNK_0987,                                 0x0987}, //--
-            {Opcode.SMSG_UNK_0E9B,                                 0x0E9B}, //++
             {Opcode.SMSG_UNK_0A0B,                                 0x0A0B}, //++
             {Opcode.SMSG_UNK_0C44,                                 0x0C44}, //+-
             {Opcode.SMSG_UNK_0CF2,                                 0x0CF2}, //++
             //{Opcode.SMSG_UNK_0CAE,                                 0x0CAE}, //-+
             {Opcode.SMSG_UNK_0D79,                                 0x0D79}, //++
+            {Opcode.SMSG_UNK_0E32,                                 0x0E32}, //+-
+            {Opcode.SMSG_UNK_0E9B,                                 0x0E9B}, //++
             {Opcode.SMSG_UNK_103B,                                 0x103B}, //+-
             //{Opcode.SMSG_UNK_103E,                                 0x103E}, //-+
             //{Opcode.SMSG_UNK_109A,                                 0x109A}, //-+
+            {Opcode.SMSG_UNK_11E2,                                 0x11E2}, //+-
             {Opcode.SMSG_UNK_11E3,                                 0x11E3}, //+-
             {Opcode.SMSG_UNK_121E,                                 0x121E}, //++
             //{Opcode.SMSG_UNK_123E,                                 0x123E}, //--
@@ -466,6 +474,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_16BF,                                 0x16BF}, //++
             {Opcode.SMSG_UNK_1D8E,                                 0x1D8E}, //++
             {Opcode.SMSG_UNK_1DAB,                                 0x1DAB}, //++
+            {Opcode.SMSG_UNK_1E0F,                                 0x1E0F}, //+-
             {Opcode.SMSG_UNK_1E9B,                                 0x1E9B}, //+-
             {Opcode.SMSG_UNK_1F9F,                                 0x1F9F}, //++
         };
