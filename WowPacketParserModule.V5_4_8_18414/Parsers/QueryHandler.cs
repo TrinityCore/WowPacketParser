@@ -93,7 +93,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             creature.MovementId = packet.ReadUInt32("Movement Id");
 
             var name = new string[8];
-            for (var i = 0; i < 4; ++i)
+            for (var i = 0; i < 4; i++)
             {
                 if (lengthName[i][1] > 1)
                     packet.ReadCString("Male Name", i);
@@ -115,7 +115,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 creature.IconName = packet.ReadCString("Icon Name");
 			
             creature.QuestItems = new uint[qItemCount];
-            for (var i = 0; i < qItemCount; ++i)
+            for (var i = 0; i < qItemCount; i++)
                 creature.QuestItems[i] = (uint)packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Quest Item", i);			
 			
             creature.KillCredits[1] = packet.ReadUInt32("Kill Credit 2");

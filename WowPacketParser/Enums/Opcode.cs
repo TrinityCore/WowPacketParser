@@ -837,6 +837,7 @@ namespace WowPacketParser.Enums
         CMSG_XP_CHEAT,
         CMSG_ZONEUPDATE,
         CMSG_ZONE_MAP,
+        CMSG_UNK_0068,
         CMSG_UNK_0087,
         CMSG_UNK_00A7,
         CMSG_UNK_00F2,

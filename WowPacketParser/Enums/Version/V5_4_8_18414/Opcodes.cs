@@ -156,6 +156,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_SET_DUNGEON_DIFFICULTY,                   0x1A36}, //--
             {Opcode.CMSG_SET_PRIMARY_TALENT_TREE,                  0x06C6}, //+-
             {Opcode.CMSG_SET_SELECTION,                            0x0740}, //--
+            {Opcode.CMSG_SETSHEATHED,                              0x0249}, //++ //some load screen
             {Opcode.CMSG_SHOWING_CLOAK,                            0x02F2}, //--
             {Opcode.CMSG_SHOWING_HELM,                             0x126B}, //--
             {Opcode.CMSG_SPELLCLICK,                               0x067A}, //--
@@ -174,11 +175,11 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_VIOLENCE_LEVEL,                           0x0040}, //+-
             {Opcode.CMSG_WARDEN_DATA,                              0x1816}, //+-
             {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE,              0x15AB}, //+-
+            {Opcode.CMSG_UNK_0068,                                 0x0068}, //++
             {Opcode.CMSG_UNK_0087,                                 0x0087}, //+-
             {Opcode.CMSG_UNK_00A7,                                 0x00A7}, //+-
             {Opcode.CMSG_UNK_00F2,                                 0x00F2}, //++
             {Opcode.CMSG_UNK_0247,                                 0x0247}, //+-
-            {Opcode.CMSG_UNK_0249,                                 0x0249}, //++?? //some load screen
             {Opcode.CMSG_UNK_0264,                                 0x0264}, //+-
             {Opcode.CMSG_UNK_0265,                                 0x0265}, //+-
             {Opcode.CMSG_UNK_02C4,                                 0x02C4}, //+-
@@ -353,7 +354,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_LOOT_REMOVED,                             0x0C3E}, //--
             {Opcode.SMSG_LOOT_RESPONSE,                            0x128A}, //--
             {Opcode.SMSG_MAIL_LIST_RESULT,                         0x1C0B}, //--
-            {Opcode.SMSG_MESSAGECHAT,                              0x1A9A}, //--
+            {Opcode.SMSG_MESSAGECHAT,                              0x1A9A}, //++
             {Opcode.SMSG_MINIMAP_PING,                             0x168F}, //--
             {Opcode.SMSG_MONSTER_MOVE,                             0x1A07}, //--
             {Opcode.SMSG_MOTD,                                     0x183B}, //++

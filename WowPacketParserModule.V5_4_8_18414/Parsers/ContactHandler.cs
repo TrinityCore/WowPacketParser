@@ -14,6 +14,13 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadEnum<ContactListFlag>("List Flags?", TypeCode.Int32);
         }
 
+        [Parser(Opcode.CMSG_SETSHEATHED)]
+        public static void HandleSetSheathed(Packet packet)
+        {
+            packet.ReadEnum<SheathState>("Sheath", TypeCode.Int32);
+            packet.ReadBit("hasData");
+        }
+
         [Parser(Opcode.SMSG_CONTACT_LIST)]
         public static void HandleContactList(Packet packet)
         {

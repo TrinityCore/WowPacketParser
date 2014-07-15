@@ -68,7 +68,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
             if (hasMovementFlags)
                 packet.ReadEnum<MovementFlag>("Movement Flags", 30); // 24
-            // flush bits
+
+            packet.ResetBitReader();
             packet.ParseBitStream(guid, 4, 3, 7, 0, 2, 5, 1, 6);
 
             if (Count > 0)
@@ -191,7 +192,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             if (hasMovementFlags2) // 28
                 packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13); // 28
 
-            // flush bits
+            packet.ResetBitReader();
             packet.ParseBitStream(guid, 2, 3, 6, 1, 4, 7);
 
             if (Count > 0) // 152
@@ -316,7 +317,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             if (hasFallData) // 140
                 hasFallDirection = packet.ReadBit("Has Fall Direction"); // 136
 
-            // flush bits
+            packet.ResetBitReader();
             packet.ParseBitStream(guid, 7, 1, 0);
 
             if (Count > 0) // 152
@@ -441,7 +442,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             if (hasMovementFlags) // 24
                 packet.ReadEnum<MovementFlag>("Movement Flags", 30); // 24
 
-            // flush bits
+            packet.ResetBitReader();
             if (Count > 0) // 152
                 for (var cnt = 0; cnt < Count; cnt++)
                 {
@@ -564,7 +565,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             if (hasMovementFlags2) // 28
                 packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13); // 28
 
-            // flush bits
+            packet.ResetBitReader();
             packet.ParseBitStream(guid, 2, 4, 5, 6, 0);
 
             if (Count > 0) // 152
@@ -689,7 +690,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             if (hasMovementFlags2) // 28
                 packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13); // 28
 
-            // flush bits
+            packet.ResetBitReader();
             packet.ParseBitStream(guid, 5, 6, 3, 7, 1, 0);
 
             if (Count > 0) // 152
@@ -814,7 +815,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             if (hasFallData) // 140
                 hasFallDirection = packet.ReadBit("Has Fall Direction"); // 136
 
-            // flush bits
+            packet.ResetBitReader();
             packet.ParseBitStream(guid, 4, 3, 7, 2, 1, 0, 6);
 
             if (Count > 0) // 152
@@ -941,7 +942,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 if (hasFallData) // 140
                     hasFallDirection = packet.ReadBit("Has Fall Direction"); // 136
 
-                // flush bits
+                packet.ResetBitReader();
                 if (Count > 0) // 152
                     for (var cnt = 0; cnt < Count; cnt++)
                     {
@@ -1008,7 +1009,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             else
             {
                 packet.WriteLine("              : SMSG_SPELL_GO");
-                //packet.AsHex();
                 packet.ReadToEnd();
             }
         }
@@ -1073,7 +1073,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 if (hasMovementFlags) // 24
                     packet.ReadEnum<MovementFlag>("Movement Flags", 30); // 24
 
-                // flush bits
+                packet.ResetBitReader();
                 packet.ParseBitStream(guid, 1, 6, 7);
 
                 if (Count > 0) // 152
@@ -1207,7 +1207,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 if (hasFallData) // 140
                     hasFallDirection = packet.ReadBit("Has Fall Direction"); // 136
 
-                packet.ResetBitReader(); // flush bits
+                packet.ResetBitReader();
                 packet.ParseBitStream(guid, 6);
 
                 if (Count > 0) // 152
@@ -1549,6 +1549,79 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
         }
 
+        [Parser(Opcode.MSG_MOVE_START_ASCEND)]
+        public static void HandleMoveStartAscend(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.MSG_MOVE_START_DESCEND)]
+        public static void HandleMoveStartDescend(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.MSG_MOVE_START_PITCH_DOWN)]
+        public static void HandleMoveStartPitchDown(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.MSG_MOVE_START_STRAFE_LEFT)]
+        public static void HandleMoveStartStrafeLeft(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.MSG_MOVE_START_STRAFE_RIGHT)]
+        public static void HandleMoveStartStrafeRight(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.MSG_MOVE_START_SWIM)]
+        public static void HandleMoveStartSwim(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.MSG_MOVE_START_TURN_LEFT)]
+        public static void HandleMoveStartTurnLeft(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.MSG_MOVE_START_TURN_RIGHT)]
+        public static void HandleMoveStartTurnRight(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.MSG_MOVE_STOP_ASCEND)]
+        public static void HandleMoveStopAscend(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.MSG_MOVE_STOP_PITCH)]
+        public static void HandleMoveStopPitch(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.MSG_MOVE_STOP_SWIM)]
+        public static void HandleMoveStopSwim(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.MSG_MOVE_STOP_TURN)]
+        public static void HandleMoveStopTurn(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+
         [Parser(Opcode.CMSG_MOVE_TELEPORT_ACK)]
         public static void HandleMoveTeleportAck(Packet packet)
         {
@@ -1702,10 +1775,10 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             {
                 var guid = new byte[8];
                 var transportGuid = new byte[8];
-                var hasTransTime2 = false;
-                var hasTransTime3 = false;
-                var hasFallDirection = false;
-                var pos = new Vector4();
+                //var hasTransTime2 = false;
+                //var hasTransTime3 = false;
+                //var hasFallDirection = false;
+                //var pos = new Vector4();
 
                 packet.ReadInt32();
                 packet.ReadSingle();

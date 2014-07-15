@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using WowPacketParser.Enums;
+using WowPacketParserModule.V5_4_8_18414.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;

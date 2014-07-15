@@ -1,10 +1,11 @@
 namespace WowPacketParserModule.V5_4_8_18414.Enums
 {
-    // ReSharper disable InconsistentNaming, UnusedMember.Global
     public enum ObjectField
     {
         OBJECT_FIELD_GUID                                        = 0x0, // Size: 2, Flags: UF_FLAG_PUBLIC
+        OBJECT_FIELD_GUID2,
         OBJECT_FIELD_DATA                                        = 0x2, // Size: 2, Flags: UF_FLAG_PUBLIC
+        OBJECT_FIELD_DATA2,
         OBJECT_FIELD_TYPE                                        = 0x4, // Size: 1, Flags: UF_FLAG_PUBLIC
         OBJECT_FIELD_ENTRY_ID                                    = 0x5, // Size: 1, Flags: UF_FLAG_VIEWER_DEPENDENT
         OBJECT_FIELD_DYNAMIC_FLAGS                               = 0x6, // Size: 1, Flags: UF_FLAG_VIEWER_DEPENDENT, UF_FLAG_URGENT
@@ -14,206 +15,303 @@ namespace WowPacketParserModule.V5_4_8_18414.Enums
 
     public enum ItemField
     {
-        ITEM_END,
-        ITEM_FIELD_CONTAINED,
-        ITEM_FIELD_CREATE_PLAYED_TIME,
-        ITEM_FIELD_CREATOR,
-        ITEM_FIELD_DURABILITY,
-        ITEM_FIELD_DURATION,
-        ITEM_FIELD_ENCHANTMENT_10_1,
-        ITEM_FIELD_ENCHANTMENT_10_3,
-        ITEM_FIELD_ENCHANTMENT_11_1,
-        ITEM_FIELD_ENCHANTMENT_11_3,
-        ITEM_FIELD_ENCHANTMENT_12_1,
-        ITEM_FIELD_ENCHANTMENT_12_3,
-        ITEM_FIELD_ENCHANTMENT_13_1,
-        ITEM_FIELD_ENCHANTMENT_13_3,
-        ITEM_FIELD_ENCHANTMENT_14_1,
-        ITEM_FIELD_ENCHANTMENT_14_3,
-        ITEM_FIELD_ENCHANTMENT_15_1,
-        ITEM_FIELD_ENCHANTMENT_15_3,
-        ITEM_FIELD_ENCHANTMENT_1_1,
-        ITEM_FIELD_ENCHANTMENT_1_3,
-        ITEM_FIELD_ENCHANTMENT_2_1,
-        ITEM_FIELD_ENCHANTMENT_2_3,
-        ITEM_FIELD_ENCHANTMENT_3_1,
-        ITEM_FIELD_ENCHANTMENT_3_3,
-        ITEM_FIELD_ENCHANTMENT_4_1,
-        ITEM_FIELD_ENCHANTMENT_4_3,
-        ITEM_FIELD_ENCHANTMENT_5_1,
-        ITEM_FIELD_ENCHANTMENT_5_3,
-        ITEM_FIELD_ENCHANTMENT_6_1,
-        ITEM_FIELD_ENCHANTMENT_6_3,
-        ITEM_FIELD_ENCHANTMENT_7_1,
-        ITEM_FIELD_ENCHANTMENT_7_3,
-        ITEM_FIELD_ENCHANTMENT_8_1,
-        ITEM_FIELD_ENCHANTMENT_8_3,
-        ITEM_FIELD_ENCHANTMENT_9_1,
-        ITEM_FIELD_ENCHANTMENT_9_3,
-        ITEM_FIELD_FLAGS,
-        ITEM_FIELD_GIFTCREATOR,
-        ITEM_FIELD_ITEM_TEXT_ID,
-        ITEM_FIELD_MAXDURABILITY,
-        ITEM_FIELD_OWNER,
-        ITEM_FIELD_PAD,
-        ITEM_FIELD_PROPERTY_SEED,
-        ITEM_FIELD_RANDOM_PROPERTIES_ID,
-        ITEM_FIELD_SPELL_CHARGES,
-        ITEM_FIELD_STACK_COUNT,
+        ITEM_FIELD_OWNER                                         = ObjectField.OBJECT_END + 0x00, // Size: 2, Flags: UF_FLAG_PUBLIC
+        ITEM_FIELD_OWNER2,
+        ITEM_FIELD_CONTAINED_IN                                  = ObjectField.OBJECT_END + 0x02, // Size: 2, Flags: UF_FLAG_PUBLIC
+        ITEM_FIELD_CONTAINED_IN2,
+        ITEM_FIELD_CREATOR                                       = ObjectField.OBJECT_END + 0x04, // Size: 2, Flags: UF_FLAG_PUBLIC
+        ITEM_FIELD_CREATOR2,
+        ITEM_FIELD_GIFT_CREATOR                                  = ObjectField.OBJECT_END + 0x06, // Size: 2, Flags: UF_FLAG_PUBLIC
+        ITEM_FIELD_GIFT_CREATOR2,
+        ITEM_FIELD_STACK_COUNT                                   = ObjectField.OBJECT_END + 0x08, // Size: 1, Flags: UF_FLAG_OWNER
+        ITEM_FIELD_EXPIRATION                                    = ObjectField.OBJECT_END + 0x09, // Size: 1, Flags: UF_FLAG_OWNER
+        ITEM_FIELD_SPELL_CHARGES                                 = ObjectField.OBJECT_END + 0x0A, // Size: 5, Flags: UF_FLAG_OWNER
+        ITEM_FIELD_SPELL_CHARGES2,
+        ITEM_FIELD_SPELL_CHARGES3,
+        ITEM_FIELD_SPELL_CHARGES4,
+        ITEM_FIELD_SPELL_CHARGES5,
+        ITEM_FIELD_DYNAMIC_FLAGS                                 = ObjectField.OBJECT_END + 0x0F, // Size: 1, Flags: UF_FLAG_PUBLIC
+        ITEM_FIELD_ENCHANTMENT                                   = ObjectField.OBJECT_END + 0x10, // Size: 39, Flags: UF_FLAG_PUBLIC
+        ITEM_FIELD_ENCHANTMENT1_2,
+        ITEM_FIELD_ENCHANTMENT1_3,
+        ITEM_FIELD_ENCHANTMENT2_1,
+        ITEM_FIELD_ENCHANTMENT2_2,
+        ITEM_FIELD_ENCHANTMENT2_3,
+        ITEM_FIELD_ENCHANTMENT3_1,
+        ITEM_FIELD_ENCHANTMENT3_2,
+        ITEM_FIELD_ENCHANTMENT3_3,
+        ITEM_FIELD_ENCHANTMENT4_1,
+        ITEM_FIELD_ENCHANTMENT4_2,
+        ITEM_FIELD_ENCHANTMENT4_3,
+        ITEM_FIELD_ENCHANTMENT5_1,
+        ITEM_FIELD_ENCHANTMENT5_2,
+        ITEM_FIELD_ENCHANTMENT5_3,
+        ITEM_FIELD_ENCHANTMENT6_1,
+        ITEM_FIELD_ENCHANTMENT6_2,
+        ITEM_FIELD_ENCHANTMENT6_3,
+        ITEM_FIELD_ENCHANTMENT7_1,
+        ITEM_FIELD_ENCHANTMENT7_2,
+        ITEM_FIELD_ENCHANTMENT7_3,
+        ITEM_FIELD_ENCHANTMENT8_1,
+        ITEM_FIELD_ENCHANTMENT8_2,
+        ITEM_FIELD_ENCHANTMENT8_3,
+        ITEM_FIELD_ENCHANTMENT9_1,
+        ITEM_FIELD_ENCHANTMENT9_2,
+        ITEM_FIELD_ENCHANTMENT9_3,
+        ITEM_FIELD_ENCHANTMENT10_1,
+        ITEM_FIELD_ENCHANTMENT10_2,
+        ITEM_FIELD_ENCHANTMENT10_3,
+        ITEM_FIELD_ENCHANTMENT11_1,
+        ITEM_FIELD_ENCHANTMENT11_2,
+        ITEM_FIELD_ENCHANTMENT11_3,
+        ITEM_FIELD_ENCHANTMENT12_1,
+        ITEM_FIELD_ENCHANTMENT12_2,
+        ITEM_FIELD_ENCHANTMENT12_3,
+        ITEM_FIELD_ENCHANTMENT13_1,
+        ITEM_FIELD_ENCHANTMENT13_2,
+        ITEM_FIELD_ENCHANTMENT13_3,
+        ITEM_FIELD_PROPERTY_SEED                                 = ObjectField.OBJECT_END + 0x37, // Size: 1, Flags: UF_FLAG_PUBLIC
+        ITEM_FIELD_RANDOM_PROPERTIES_ID                          = ObjectField.OBJECT_END + 0x38, // Size: 1, Flags: UF_FLAG_PUBLIC
+        ITEM_FIELD_DURABILITY                                    = ObjectField.OBJECT_END + 0x39, // Size: 1, Flags: UF_FLAG_OWNER
+        ITEM_FIELD_MAX_DURABILITY                                = ObjectField.OBJECT_END + 0x3A, // Size: 1, Flags: UF_FLAG_OWNER
+        ITEM_FIELD_CREATE_PLAYED_TIME                            = ObjectField.OBJECT_END + 0x3B, // Size: 1, Flags: UF_FLAG_PUBLIC
+        ITEM_FIELD_MODIFIERS_MASK                                = ObjectField.OBJECT_END + 0x3C, // Size: 1, Flags: UF_FLAG_OWNER
+        ITEM_END                                                 = ObjectField.OBJECT_END + 0x3D,
     }
 
     public enum ContainerField
     {
-        CONTAINER_ALIGN_PAD,
-        CONTAINER_END,
-        CONTAINER_FIELD_NUM_SLOTS,
-        CONTAINER_FIELD_SLOT_1,
+        CONTAINER_FIELD_SLOT                                    = ItemField.ITEM_END + 0x00, // Size: 72, Flags: UF_FLAG_PUBLIC
+        CONTAINER_FIELD_SLOTh,
+        CONTAINER_FIELD_SLOT2,
+        CONTAINER_FIELD_SLOT2h,
+        CONTAINER_FIELD_SLOT3,
+        CONTAINER_FIELD_SLOT3h,
+        CONTAINER_FIELD_SLOT4,
+        CONTAINER_FIELD_SLOT4h,
+        CONTAINER_FIELD_SLOT5,
+        CONTAINER_FIELD_SLOT5h,
+        CONTAINER_FIELD_SLOT6,
+        CONTAINER_FIELD_SLOT6h,
+        CONTAINER_FIELD_SLOT7,
+        CONTAINER_FIELD_SLOT7h,
+        CONTAINER_FIELD_SLOT8,
+        CONTAINER_FIELD_SLOT8h,
+        CONTAINER_FIELD_SLOT9,
+        CONTAINER_FIELD_SLOT9h,
+        CONTAINER_FIELD_SLOT10,
+        CONTAINER_FIELD_SLOT10h,
+        CONTAINER_FIELD_SLOT11,
+        CONTAINER_FIELD_SLOT11h,
+        CONTAINER_FIELD_SLOT12,
+        CONTAINER_FIELD_SLOT12h,
+        CONTAINER_FIELD_SLOT13,
+        CONTAINER_FIELD_SLOT13h,
+        CONTAINER_FIELD_SLOT14,
+        CONTAINER_FIELD_SLOT14h,
+        CONTAINER_FIELD_SLOT15,
+        CONTAINER_FIELD_SLOT15h,
+        CONTAINER_FIELD_SLOT16,
+        CONTAINER_FIELD_SLOT16h,
+        CONTAINER_FIELD_SLOT17,
+        CONTAINER_FIELD_SLOT17h,
+        CONTAINER_FIELD_SLOT18,
+        CONTAINER_FIELD_SLOT18h,
+        CONTAINER_FIELD_SLOT19,
+        CONTAINER_FIELD_SLOT19h,
+        CONTAINER_FIELD_SLOT20,
+        CONTAINER_FIELD_SLOT20h,
+        CONTAINER_FIELD_SLOT21,
+        CONTAINER_FIELD_SLOT21h,
+        CONTAINER_FIELD_SLOT22,
+        CONTAINER_FIELD_SLOT22h,
+        CONTAINER_FIELD_SLOT23,
+        CONTAINER_FIELD_SLOT23h,
+        CONTAINER_FIELD_SLOT24,
+        CONTAINER_FIELD_SLOT24h,
+        CONTAINER_FIELD_SLOT25,
+        CONTAINER_FIELD_SLOT25h,
+        CONTAINER_FIELD_SLOT26,
+        CONTAINER_FIELD_SLOT26h,
+        CONTAINER_FIELD_SLOT27,
+        CONTAINER_FIELD_SLOT27h,
+        CONTAINER_FIELD_SLOT28,
+        CONTAINER_FIELD_SLOT28h,
+        CONTAINER_FIELD_SLOT29,
+        CONTAINER_FIELD_SLOT29h,
+        CONTAINER_FIELD_SLOT30,
+        CONTAINER_FIELD_SLOT30h,
+        CONTAINER_FIELD_SLOT31,
+        CONTAINER_FIELD_SLOT31h,
+        CONTAINER_FIELD_SLOT32,
+        CONTAINER_FIELD_SLOT32h,
+        CONTAINER_FIELD_SLOT33,
+        CONTAINER_FIELD_SLOT33h,
+        CONTAINER_FIELD_SLOT34,
+        CONTAINER_FIELD_SLOT34h,
+        CONTAINER_FIELD_SLOT35,
+        CONTAINER_FIELD_SLOT35h,
+        CONTAINER_FIELD_SLOT36,
+        CONTAINER_FIELD_SLOT36h,
+        CONTAINER_FIELD_NUM_SLOTS                                = ItemField.ITEM_END + 0x48, // Size: 1, Flags: UF_FLAG_PUBLIC
+        CONTAINER_END                                            = ItemField.ITEM_END + 0x49
     }
 
     public enum UnitField
     {
-        UNIT_CHANNEL_SPELL,
-        UNIT_CREATED_BY_SPELL,
-        UNIT_DYNAMIC_FLAGS,
-        UNIT_END,
-        UNIT_FIELD_ATTACK_POWER,
-        UNIT_FIELD_ATTACK_POWER_MODS,
-        UNIT_FIELD_ATTACK_POWER_MOD_NEG,
-        UNIT_FIELD_ATTACK_POWER_MOD_POS,
-        UNIT_FIELD_ATTACK_POWER_MULTIPLIER,
-        UNIT_FIELD_AURASTATE,
-        UNIT_FIELD_BASEATTACKTIME,
-        UNIT_FIELD_BASE_HEALTH,
-        UNIT_FIELD_BASE_MANA,
-        UNIT_FIELD_BOUNDINGRADIUS,
-        UNIT_FIELD_BYTES_0,
-        UNIT_FIELD_BYTES_1,
-        UNIT_FIELD_BYTES_2,
-        UNIT_FIELD_CHANNEL_OBJECT,
-        UNIT_FIELD_CHARM,
-        UNIT_FIELD_CHARMEDBY,
-        UNIT_FIELD_COMBATREACH,
-        UNIT_FIELD_CREATEDBY,
-        UNIT_FIELD_CRITTER,
-        UNIT_FIELD_DISPLAYID,
-        UNIT_FIELD_FACTIONTEMPLATE,
-        UNIT_FIELD_FLAGS,
-        UNIT_FIELD_FLAGS_2,
-        UNIT_FIELD_HEALTH,
-        UNIT_FIELD_HOVERHEIGHT,
-        UNIT_FIELD_VIRTUAL_ITEM_ID1,
-        UNIT_FIELD_VIRTUAL_ITEM_ID2,
-        UNIT_FIELD_VIRTUAL_ITEM_ID3,
-        UNIT_FIELD_LEVEL,
-        UNIT_FIELD_MAXDAMAGE,
-        UNIT_FIELD_MAXHEALTH,
-        UNIT_FIELD_MAXHEALTHMODIFIER,
-        UNIT_FIELD_MAXITEMLEVEL,
-        UNIT_FIELD_MAXOFFHANDDAMAGE,
-        UNIT_FIELD_MAXPOWER1,
-        UNIT_FIELD_MAXPOWER10,
-        UNIT_FIELD_MAXPOWER11,
-        UNIT_FIELD_MAXPOWER2,
-        UNIT_FIELD_MAXPOWER3,
-        UNIT_FIELD_MAXPOWER4,
-        UNIT_FIELD_MAXPOWER5,
-        UNIT_FIELD_MAXPOWER6,
-        UNIT_FIELD_MAXPOWER7,
-        UNIT_FIELD_MAXPOWER8,
-        UNIT_FIELD_MAXPOWER9,
-        UNIT_FIELD_MAXRANGEDDAMAGE,
-        UNIT_FIELD_MINDAMAGE,
-        UNIT_FIELD_MINOFFHANDDAMAGE,
-        UNIT_FIELD_MINRANGEDDAMAGE,
-        UNIT_FIELD_MOUNTDISPLAYID,
-        UNIT_FIELD_NATIVEDISPLAYID,
-        UNIT_FIELD_NEGSTAT0,
-        UNIT_FIELD_NEGSTAT1,
-        UNIT_FIELD_NEGSTAT2,
-        UNIT_FIELD_NEGSTAT3,
-        UNIT_FIELD_NEGSTAT4,
-        UNIT_FIELD_PADDING,
-        UNIT_FIELD_PETEXPERIENCE,
-        UNIT_FIELD_PETNEXTLEVELEXP,
-        UNIT_FIELD_PETNUMBER,
-        UNIT_FIELD_PET_NAME_TIMESTAMP,
-        UNIT_FIELD_POSSTAT0,
-        UNIT_FIELD_POSSTAT1,
-        UNIT_FIELD_POSSTAT2,
-        UNIT_FIELD_POSSTAT3,
-        UNIT_FIELD_POSSTAT4,
-        UNIT_FIELD_POWER1,
-        UNIT_FIELD_POWER10,
-        UNIT_FIELD_POWER11,
+        UNIT_FIELD_CHARM                                         = ObjectField.OBJECT_END + 0x00, // Size: 2, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_CHARM2,
+        UNIT_FIELD_SUMMON                                        = ObjectField.OBJECT_END + 0x02, // Size: 2, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_SUMMON2,
+        UNIT_FIELD_CRITTER                                       = ObjectField.OBJECT_END + 0x04, // Size: 2, Flags: UF_FLAG_PRIVATE
+        UNIT_FIELD_CRITTER2,
+        UNIT_FIELD_CHARMED_BY                                    = ObjectField.OBJECT_END + 0x06, // Size: 2, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_CHARMED_BY2,
+        UNIT_FIELD_SUMMONED_BY                                   = ObjectField.OBJECT_END + 0x08, // Size: 2, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_SUMMONED_BY2,
+        UNIT_FIELD_CREATED_BY                                    = ObjectField.OBJECT_END + 0x0A, // Size: 2, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_CREATED_BY2,
+        UNIT_FIELD_DEMON_CREATOR                                 = ObjectField.OBJECT_END + 0x0C, // Size: 2, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_DEMON_CREATOR2,
+        UNIT_FIELD_TARGET                                        = ObjectField.OBJECT_END + 0x0E, // Size: 2, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_TARGET2,
+        UNIT_FIELD_BATTLE_PET_COMPANION_GUID                     = ObjectField.OBJECT_END + 0x10, // Size: 2, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_BATTLE_PET_COMPANION_GUID2,
+        UNIT_FIELD_CHANNEL_OBJECT                                = ObjectField.OBJECT_END + 0x12, // Size: 2, Flags: UF_FLAG_PUBLIC, UF_FLAG_URGENT
+        UNIT_FIELD_CHANNEL_OBJECT2,
+        UNIT_FIELD_CHANNEL_SPELL                                 = ObjectField.OBJECT_END + 0x14, // Size: 1, Flags: UF_FLAG_PUBLIC, UF_FLAG_URGENT
+        UNIT_FIELD_SUMMONED_BY_HOME_REALM                        = ObjectField.OBJECT_END + 0x15, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_SEX                                           = ObjectField.OBJECT_END + 0x16, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_DISPLAY_POWER                                 = ObjectField.OBJECT_END + 0x17, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_OVERRIDE_DISPLAY_POWER_ID                     = ObjectField.OBJECT_END + 0x18, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_HEALTH                                        = ObjectField.OBJECT_END + 0x19, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_POWER                                         = ObjectField.OBJECT_END + 0x1A, // Size: 5, Flags: UF_FLAG_PUBLIC
         UNIT_FIELD_POWER2,
         UNIT_FIELD_POWER3,
         UNIT_FIELD_POWER4,
         UNIT_FIELD_POWER5,
-        UNIT_FIELD_POWER6,
-        UNIT_FIELD_POWER7,
-        UNIT_FIELD_POWER8,
-        UNIT_FIELD_POWER9,
-        UNIT_FIELD_POWER_COST_MODIFIER,
-        UNIT_FIELD_POWER_COST_MULTIPLIER,
-        UNIT_FIELD_POWER_COST_MULTIPLIER1,
+        UNIT_FIELD_MAX_HEALTH                                    = ObjectField.OBJECT_END + 0x1F, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_MAX_POWER                                     = ObjectField.OBJECT_END + 0x20, // Size: 5, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_MAX_POWER2,
+        UNIT_FIELD_MAX_POWER3,
+        UNIT_FIELD_MAX_POWER4,
+        UNIT_FIELD_MAX_POWER5,
+        UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER                     = ObjectField.OBJECT_END + 0x25, // Size: 5, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER, UF_FLAG_UNIT_ALL
+        UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER2,
+        UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER3,
+        UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER4,
+        UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER5,
+        UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER         = ObjectField.OBJECT_END + 0x2A, // Size: 5, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER, UF_FLAG_UNIT_ALL
+        UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER2,
+        UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER3,
+        UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER4,
+        UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER5,
+        UNIT_FIELD_LEVEL                                         = ObjectField.OBJECT_END + 0x2F, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_EFFECTIVE_LEVEL                               = ObjectField.OBJECT_END + 0x30, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_FACTION_TEMPLATE                              = ObjectField.OBJECT_END + 0x31, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_VIRTUAL_ITEM_ID                               = ObjectField.OBJECT_END + 0x32, // Size: 3, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_VIRTUAL_ITEM_ID2,
+        UNIT_FIELD_VIRTUAL_ITEM_ID3,
+        UNIT_FIELD_FLAGS                                         = ObjectField.OBJECT_END + 0x35, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_FLAGS2                                        = ObjectField.OBJECT_END + 0x36, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_AURA_STATE                                    = ObjectField.OBJECT_END + 0x37, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_ATTACK_ROUND_BASE_TIME                        = ObjectField.OBJECT_END + 0x38, // Size: 2, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_ATTACK_ROUND_BASE_TIME2,
+        UNIT_FIELD_RANGED_ATTACK_ROUND_BASE_TIME                 = ObjectField.OBJECT_END + 0x3A, // Size: 1, Flags: UF_FLAG_PRIVATE
+        UNIT_FIELD_BOUNDING_RADIUS                               = ObjectField.OBJECT_END + 0x3B, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_COMBAT_REACH                                  = ObjectField.OBJECT_END + 0x3C, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_DISPLAY_ID                                    = ObjectField.OBJECT_END + 0x3D, // Size: 1, Flags: UF_FLAG_VIEWER_DEPENDENT, UF_FLAG_URGENT
+        UNIT_FIELD_NATIVE_DISPLAY_ID                             = ObjectField.OBJECT_END + 0x3E, // Size: 1, Flags: UF_FLAG_PUBLIC, UF_FLAG_URGENT
+        UNIT_FIELD_MOUNT_DISPLAY_ID                              = ObjectField.OBJECT_END + 0x3F, // Size: 1, Flags: UF_FLAG_PUBLIC, UF_FLAG_URGENT
+        UNIT_FIELD_MIN_DAMAGE                                    = ObjectField.OBJECT_END + 0x40, // Size: 1, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER, UF_FLAG_EMPATH
+        UNIT_FIELD_MAX_DAMAGE                                    = ObjectField.OBJECT_END + 0x41, // Size: 1, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER, UF_FLAG_EMPATH
+        UNIT_FIELD_MIN_OFF_HAND_DAMAGE                           = ObjectField.OBJECT_END + 0x42, // Size: 1, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER, UF_FLAG_EMPATH
+        UNIT_FIELD_MAX_OFF_HAND_DAMAGE                           = ObjectField.OBJECT_END + 0x43, // Size: 1, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER, UF_FLAG_EMPATH
+        UNIT_FIELD_ANIM_TIER                                     = ObjectField.OBJECT_END + 0x44, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_PET_NUMBER                                    = ObjectField.OBJECT_END + 0x45, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_PET_NAME_TIMESTAMP                            = ObjectField.OBJECT_END + 0x46, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_PET_EXPERIENCE                                = ObjectField.OBJECT_END + 0x47, // Size: 1, Flags: UF_FLAG_OWNER
+        UNIT_FIELD_PET_NEXT_LEVEL_EXPERIENCE                     = ObjectField.OBJECT_END + 0x48, // Size: 1, Flags: UF_FLAG_OWNER
+        UNIT_FIELD_MOD_CASTING_SPEED                             = ObjectField.OBJECT_END + 0x49, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_MOD_SPELL_HASTE                               = ObjectField.OBJECT_END + 0x4A, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_MOD_HASTE                                     = ObjectField.OBJECT_END + 0x4B, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_MOD_RANGED_HASTE                              = ObjectField.OBJECT_END + 0x4C, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_MOD_HASTE_REGEN                               = ObjectField.OBJECT_END + 0x4D, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_CREATED_BY_SPELL                              = ObjectField.OBJECT_END + 0x4E, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_NPC_FLAGS                                     = ObjectField.OBJECT_END + 0x4F, // Size: 1, Flags: UF_FLAG_PUBLIC, UF_FLAG_VIEWER_DEPENDENT
+        UNIT_FIELD_NPC_EMOTESTATE                                = ObjectField.OBJECT_END + 0x50, // Size: 2, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_NPC_EMOTESTATE2,
+        UNIT_FIELD_STATS                                         = ObjectField.OBJECT_END + 0x52, // Size: 5, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
+        UNIT_FIELD_STATS2,
+        UNIT_FIELD_STATS3,
+        UNIT_FIELD_STATS4,
+        UNIT_FIELD_STATS5,
+        UNIT_FIELD_STAT_POS_BUFF                                 = ObjectField.OBJECT_END + 0x57, // Size: 5, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
+        UNIT_FIELD_STAT_POS_BUFF2,
+        UNIT_FIELD_STAT_POS_BUFF3,
+        UNIT_FIELD_STAT_POS_BUFF4,
+        UNIT_FIELD_STAT_POS_BUFF5,
+        UNIT_FIELD_STAT_NEG_BUFF                                 = ObjectField.OBJECT_END + 0x5C, // Size: 5, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
+        UNIT_FIELD_STAT_NEG_BUFF2,
+        UNIT_FIELD_STAT_NEG_BUFF3,
+        UNIT_FIELD_STAT_NEG_BUFF4,
+        UNIT_FIELD_STAT_NEG_BUFF5,
+        UNIT_FIELD_RESISTANCES                                   = ObjectField.OBJECT_END + 0x61, // Size: 7, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER, UF_FLAG_EMPATH
+        UNIT_FIELD_RESISTANCES2,
+        UNIT_FIELD_RESISTANCES3,
+        UNIT_FIELD_RESISTANCES4,
+        UNIT_FIELD_RESISTANCES5,
+        UNIT_FIELD_RESISTANCES6,
+        UNIT_FIELD_RESISTANCES7,
+        UNIT_FIELD_RESISTANCE_BUFF_MODS_POSITIVE                 = ObjectField.OBJECT_END + 0x68, // Size: 7, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
+        UNIT_FIELD_RESISTANCE_BUFF_MODS_POSITIVE2,
+        UNIT_FIELD_RESISTANCE_BUFF_MODS_POSITIVE3,
+        UNIT_FIELD_RESISTANCE_BUFF_MODS_POSITIVE4,
+        UNIT_FIELD_RESISTANCE_BUFF_MODS_POSITIVE5,
+        UNIT_FIELD_RESISTANCE_BUFF_MODS_POSITIVE6,
+        UNIT_FIELD_RESISTANCE_BUFF_MODS_POSITIVE7,
+        UNIT_FIELD_RESISTANCE_BUFF_MODS_NEGATIVE                 = ObjectField.OBJECT_END + 0x6F, // Size: 7, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
+        UNIT_FIELD_RESISTANCE_BUFF_MODS_NEGATIVE2,
+        UNIT_FIELD_RESISTANCE_BUFF_MODS_NEGATIVE3,
+        UNIT_FIELD_RESISTANCE_BUFF_MODS_NEGATIVE4,
+        UNIT_FIELD_RESISTANCE_BUFF_MODS_NEGATIVE5,
+        UNIT_FIELD_RESISTANCE_BUFF_MODS_NEGATIVE6,
+        UNIT_FIELD_RESISTANCE_BUFF_MODS_NEGATIVE7,
+        UNIT_FIELD_BASE_MANA                                     = ObjectField.OBJECT_END + 0x76, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_BASE_HEALTH                                   = ObjectField.OBJECT_END + 0x77, // Size: 1, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
+        UNIT_FIELD_SHAPESHIFT_FORM                               = ObjectField.OBJECT_END + 0x78, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_ATTACK_POWER                                  = ObjectField.OBJECT_END + 0x79, // Size: 1, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
+        UNIT_FIELD_ATTACK_POWER_MOD_POS                          = ObjectField.OBJECT_END + 0x7A, // Size: 1, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
+        UNIT_FIELD_ATTACK_POWER_MOD_NEG                          = ObjectField.OBJECT_END + 0x7B, // Size: 1, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
+        UNIT_FIELD_ATTACK_POWER_MULTIPLIER                       = ObjectField.OBJECT_END + 0x7C, // Size: 1, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
+        UNIT_FIELD_RANGED_ATTACK_POWER                           = ObjectField.OBJECT_END + 0x7D, // Size: 1, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
+        UNIT_FIELD_RANGED_ATTACK_POWER_MOD_POS                   = ObjectField.OBJECT_END + 0x7E, // Size: 1, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
+        UNIT_FIELD_RANGED_ATTACK_POWER_MOD_NEG                   = ObjectField.OBJECT_END + 0x7F, // Size: 1, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
+        UNIT_FIELD_RANGED_ATTACK_POWER_MULTIPLIER                = ObjectField.OBJECT_END + 0x80, // Size: 1, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
+        UNIT_FIELD_MIN_RANGED_DAMAGE                             = ObjectField.OBJECT_END + 0x81, // Size: 1, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
+        UNIT_FIELD_MAX_RANGED_DAMAGE                             = ObjectField.OBJECT_END + 0x82, // Size: 1, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
+        UNIT_FIELD_POWER_COST_MODIFIER                           = ObjectField.OBJECT_END + 0x83, // Size: 7, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
+        UNIT_FIELD_POWER_COST_MODIFIER2,
+        UNIT_FIELD_POWER_COST_MODIFIER3,
+        UNIT_FIELD_POWER_COST_MODIFIER4,
+        UNIT_FIELD_POWER_COST_MODIFIER5,
+        UNIT_FIELD_POWER_COST_MODIFIER6,
+        UNIT_FIELD_POWER_COST_MODIFIER7,
+        UNIT_FIELD_POWER_COST_MULTIPLIER                         = ObjectField.OBJECT_END + 0x8A, // Size: 7, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
         UNIT_FIELD_POWER_COST_MULTIPLIER2,
         UNIT_FIELD_POWER_COST_MULTIPLIER3,
         UNIT_FIELD_POWER_COST_MULTIPLIER4,
         UNIT_FIELD_POWER_COST_MULTIPLIER5,
         UNIT_FIELD_POWER_COST_MULTIPLIER6,
         UNIT_FIELD_POWER_COST_MULTIPLIER7,
-        UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER,
-        UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER,
-        UNIT_FIELD_RANGEDATTACKTIME,
-        UNIT_FIELD_RANGED_ATTACK_POWER,
-        UNIT_FIELD_RANGED_ATTACK_POWER_MODS,
-        UNIT_FIELD_RANGED_ATTACK_POWER_MOD_NEG,
-        UNIT_FIELD_RANGED_ATTACK_POWER_MOD_POS,
-        UNIT_FIELD_RANGED_ATTACK_POWER_MULTIPLIER,
-        UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE,
-        UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_ARCANE,
-        UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_ARMOR,
-        UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_FIRE,
-        UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_FROST,
-        UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_HOLY,
-        UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_NATURE,
-        UNIT_FIELD_RESISTANCEBUFFMODSNEGATIVE_SHADOW,
-        UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE,
-        UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_ARCANE,
-        UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_ARMOR,
-        UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_FIRE,
-        UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_FROST,
-        UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_HOLY,
-        UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_NATURE,
-        UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_SHADOW,
-        UNIT_FIELD_RESISTANCES,
-        UNIT_FIELD_RESISTANCES_ARCANE,
-        UNIT_FIELD_RESISTANCES_ARMOR,
-        UNIT_FIELD_RESISTANCES_FIRE,
-        UNIT_FIELD_RESISTANCES_FROST,
-        UNIT_FIELD_RESISTANCES_HOLY,
-        UNIT_FIELD_RESISTANCES_NATURE,
-        UNIT_FIELD_RESISTANCES_SHADOW,
-        UNIT_FIELD_STAT0,
-        UNIT_FIELD_STAT1,
-        UNIT_FIELD_STAT2,
-        UNIT_FIELD_STAT3,
-        UNIT_FIELD_STAT4,
-        UNIT_FIELD_SUMMON,
-        UNIT_FIELD_SUMMONEDBY,
-        UNIT_FIELD_TARGET,
-        UNIT_FIELD_UNK63,
-        UNIT_MOD_CAST_HASTE,
-        UNIT_MOD_CAST_SPEED,
-        UNIT_NPC_EMOTESTATE,
-        UNIT_NPC_FLAGS,
-        UNIT_FIELD_DISPLAY_POWER,
-        UNIT_FIELD_ANIMTIER,
-        UNIT_FIELD_SHAPESHIFT_FORM,
-        UNIT_VIRTUAL_ITEM_SLOT_ID1,
-        UNIT_VIRTUAL_ITEM_SLOT_ID2,
-        UNIT_VIRTUAL_ITEM_SLOT_ID3,
-        UNIT_FIELD_END,
+        UNIT_FIELD_MAX_HEALTH_MODIFIER                           = ObjectField.OBJECT_END + 0x91, // Size: 1, Flags: UF_FLAG_PRIVATE, UF_FLAG_OWNER
+        UNIT_FIELD_HOVER_HEIGHT                                  = ObjectField.OBJECT_END + 0x92, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_MIN_ITEM_LEVEL                                = ObjectField.OBJECT_END + 0x93, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_MAX_ITEM_LEVEL                                = ObjectField.OBJECT_END + 0x94, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_WILD_BATTLE_PET_LEVEL                         = ObjectField.OBJECT_END + 0x95, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_BATTLE_PET_COMPANION_NAME_TIMESTAMP           = ObjectField.OBJECT_END + 0x96, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_FIELD_INTERACT_SPELL_ID                             = ObjectField.OBJECT_END + 0x97, // Size: 1, Flags: UF_FLAG_PUBLIC
+        UNIT_END                                                 = ObjectField.OBJECT_END + 0x98
     }
 
     public enum PlayerField
@@ -630,59 +728,83 @@ namespace WowPacketParserModule.V5_4_8_18414.Enums
 
     public enum GameObjectField
     {
-        GAMEOBJECT_BYTES_1,
-        GAMEOBJECT_DISPLAYID,           // 5.x: GAMEOBJECT_FIELD_DISPLAYID
-        GAMEOBJECT_DYNAMIC,
-        GAMEOBJECT_END,
-        GAMEOBJECT_FACTION,             // 5.x: GAMEOBJECT_FIELD_FACTION_TEMPLATE
-        GAMEOBJECT_FIELD_CREATED_BY,    // 5.x: GAMEOBJECT_FIELD_CREATEDBY
-        GAMEOBJECT_FLAGS,               // 5.x: GAMEOBJECT_FIELD_FLAGS
-        GAMEOBJECT_LEVEL,               // 5.x: GAMEOBJECT_FIELD_LEVEL
-        GAMEOBJECT_PARENTROTATION,      // 5.x: GAMEOBJECT_FIELD_PARENT_ROTATION
-        GAMEOBJECT_FIELD_ANIM_PROGRESS, // 5.x only
+        GAMEOBJECT_FIELD_CREATED_BY                              = ObjectField.OBJECT_END + 0x0, // Size: 2, Flags: UF_FLAG_PUBLIC
+        GAMEOBJECT_FIELD_CREATED_BY2,
+        GAMEOBJECT_FIELD_DISPLAY_ID                              = ObjectField.OBJECT_END + 0x2, // Size: 1, Flags: UF_FLAG_PUBLIC
+        GAMEOBJECT_FIELD_FLAGS                                   = ObjectField.OBJECT_END + 0x3, // Size: 1, Flags: UF_FLAG_PUBLIC, UF_FLAG_URGENT
+        GAMEOBJECT_FIELD_PARENT_ROTATION                         = ObjectField.OBJECT_END + 0x4, // Size: 4, Flags: UF_FLAG_PUBLIC
+        GAMEOBJECT_FIELD_PARENT_ROTATION2,
+        GAMEOBJECT_FIELD_PARENT_ROTATION3,
+        GAMEOBJECT_FIELD_PARENT_ROTATION4,
+        GAMEOBJECT_FIELD_FACTION_TEMPLATE                        = ObjectField.OBJECT_END + 0x8, // Size: 1, Flags: UF_FLAG_PUBLIC
+        GAMEOBJECT_FIELD_LEVEL                                   = ObjectField.OBJECT_END + 0x9, // Size: 1, Flags: UF_FLAG_PUBLIC
+        GAMEOBJECT_FIELD_PERCENT_HEALTH                          = ObjectField.OBJECT_END + 0xA, // Size: 1, Flags: UF_FLAG_PUBLIC, UF_FLAG_URGENT
+        GAMEOBJECT_FIELD_STATE_SPELL_VISUAL_ID                   = ObjectField.OBJECT_END + 0xB, // Size: 1, Flags: UF_FLAG_PUBLIC, UF_FLAG_URGENT
+        GAMEOBJECT_END                                           = ObjectField.OBJECT_END + 0xC
     }
 
     public enum DynamicObjectField
     {
-        DYNAMICOBJECT_BYTES,
-        DYNAMICOBJECT_CASTER,
-        DYNAMICOBJECT_CASTTIME,
-        DYNAMICOBJECT_END,
-        DYNAMICOBJECT_RADIUS,
-        DYNAMICOBJECT_SPELLID,
+        DYNAMICOBJECT_FIELD_CASTER                               = ObjectField.OBJECT_END + 0x0, // Size: 2, Flags: UF_FLAGý_PUBLIC
+        DYNAMICOBJECT_FIELD_CASTER2,
+        DYNAMICOBJECT_FIELD_TYPE_AND_VISUAL_ID                   = ObjectField.OBJECT_END + 0x2, // Size: 1, Flags: UF_FLAG_VIEWER_DEPENDENT
+        DYNAMICOBJECT_FIELD_SPELL_ID                             = ObjectField.OBJECT_END + 0x3, // Size: 1, Flags: UF_FLAG_PUBLIC
+        DYNAMICOBJECT_FIELD_RADIUS                               = ObjectField.OBJECT_END + 0x4, // Size: 1, Flags: UF_FLAG_PUBLIC
+        DYNAMICOBJECT_FIELD_CAST_TIME                            = ObjectField.OBJECT_END + 0x5, // Size: 1, Flags: UF_FLAG_PUBLIC
+        DYNAMICOBJECT_END                                        = ObjectField.OBJECT_END + 0x6
     }
 
     public enum CorpseField
     {
-        CORPSE_END,
-        CORPSE_FIELD_BYTES_1,
-        CORPSE_FIELD_BYTES_2,
-        CORPSE_FIELD_DISPLAY_ID,
-        CORPSE_FIELD_DYNAMIC_FLAGS,
-        CORPSE_FIELD_FLAGS,
-        CORPSE_FIELD_GUILD,
-        CORPSE_FIELD_ITEM,
-        CORPSE_FIELD_OWNER,
-        CORPSE_FIELD_PAD,
-        CORPSE_FIELD_PARTY,
+        CORPSE_FIELD_OWNER                                       = ObjectField.OBJECT_END + 0x00, // Size: 2, Flags: UF_FLAG_PUBLIC
+        CORPSE_FIELD_OWNER2,
+        CORPSE_FIELD_PARTY_GUID                                  = ObjectField.OBJECT_END + 0x02, // Size: 2, Flags: UF_FLAG_PUBLIC
+        CORPSE_FIELD_PARTY_GUID2,
+        CORPSE_FIELD_DISPLAY_ID                                  = ObjectField.OBJECT_END + 0x04, // Size: 1, Flags: UF_FLAG_PUBLIC
+        CORPSE_FIELD_ITEM                                        = ObjectField.OBJECT_END + 0x05, // Size: 19, Flags: UF_FLAG_PUBLIC
+        CORPSE_FIELD_ITEM2,
+        CORPSE_FIELD_ITEM3,
+        CORPSE_FIELD_ITEM4,
+        CORPSE_FIELD_ITEM5,
+        CORPSE_FIELD_ITEM6,
+        CORPSE_FIELD_ITEM7,
+        CORPSE_FIELD_ITEM8,
+        CORPSE_FIELD_ITEM9,
+        CORPSE_FIELD_ITEM10,
+        CORPSE_FIELD_ITEM11,
+        CORPSE_FIELD_ITEM12,
+        CORPSE_FIELD_ITEM13,
+        CORPSE_FIELD_ITEM14,
+        CORPSE_FIELD_ITEM15,
+        CORPSE_FIELD_ITEM16,
+        CORPSE_FIELD_ITEM17,
+        CORPSE_FIELD_ITEM18,
+        CORPSE_FIELD_ITEM19,
+        CORPSE_FIELD_SKIN_ID                                     = ObjectField.OBJECT_END + 0x18, // Size: 1, Flags: UF_FLAG_PUBLIC
+        CORPSE_FIELD_FACIAL_HAIR_STYLE_ID                        = ObjectField.OBJECT_END + 0x19, // Size: 1, Flags: UF_FLAG_PUBLIC
+        CORPSE_FIELD_FLAGS                                       = ObjectField.OBJECT_END + 0x1A, // Size: 1, Flags: UF_FLAG_PUBLIC
+        CORPSE_FIELD_DYNAMIC_FLAGS                               = ObjectField.OBJECT_END + 0x1B, // Size: 1, Flags: UF_FLAG_VIEWER_DEPENDENT
+        CORPSE_END                                               = ObjectField.OBJECT_END + 0x1C
     }
 
     public enum AreaTriggerField
     {
-        AREATRIGGER_DURATION,
-        AREATRIGGER_END,
-        AREATRIGGER_FINAL_POS,
-        AREATRIGGER_SPELLID,
-        AREATRIGGER_SPELLVISUALID,
+        AREATRIGGER_FIELD_CASTER                                 = ObjectField.OBJECT_END + 0x0, // Size: 2, Flags: UF_FLAG_PUBLIC
+        AREATRIGGER_FIELD_CASTER2,
+        AREATRIGGER_FIELD_DURATION                               = ObjectField.OBJECT_END + 0x2, // Size: 1, Flags: UF_FLAG_PUBLIC
+        AREATRIGGER_FIELD_SPELL_ID                               = ObjectField.OBJECT_END + 0x3, // Size: 1, Flags: UF_FLAG_PUBLIC
+        AREATRIGGER_FIELD_SPELL_VISUAL_ID                        = ObjectField.OBJECT_END + 0x4, // Size: 1, Flags: UF_FLAG_VIEWER_DEPENDENT
+        AREATRIGGER_FIELD_EXPLICIT_SCALE                         = ObjectField.OBJECT_END + 0x5, // Size: 1, Flags: UF_FLAG_PUBLIC, UF_FLAG_URGENT
+        AREATRIGGER_END                                          = ObjectField.OBJECT_END + 0x6
     }
 
     public enum SceneObjectField
     {
-        SCENEOBJECT_FIELD_CREATEDBY,
-        SCENEOBJECT_FIELD_END,
-        SCENEOBJECT_FIELD_RND_SEED_VAL,
-        SCENEOBJECT_FIELD_SCENE_TYPE,
-        SCENEOBJECT_FIELD_SCRIPT_PACKAGE_ID,
+        SCENEOBJECT_FIELD_SCRIPT_PACKAGE_ID                      = ObjectField.OBJECT_END + 0x0, // Size: 1, Flags: UF_FLAG_PUBLIC
+        SCENEOBJECT_FIELD_RND_SEED_VAL                           = ObjectField.OBJECT_END + 0x1, // Size: 1, Flags: UF_FLAG_PUBLIC
+        SCENEOBJECT_FIELD_CREATED_BY                             = ObjectField.OBJECT_END + 0x2, // Size: 2, Flags: UF_FLAG_PUBLIC
+        SCENEOBJECT_FIELD_CREATED_BY2,
+        SCENEOBJECT_FIELD_SCENE_TYPE                             = ObjectField.OBJECT_END + 0x4, // Size: 1, Flags: UF_FLAG_PUBLIC
+        SCENEOBJECT_FIELD_END                                    = ObjectField.OBJECT_END + 0x5
     };
-    // ReSharper restore InconsistentNaming, UnusedMember.Global
 }

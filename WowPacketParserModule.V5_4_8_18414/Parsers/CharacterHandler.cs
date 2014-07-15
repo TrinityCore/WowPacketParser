@@ -108,7 +108,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 var Class = packet.ReadEnum<Class>("Class", TypeCode.Byte, c); //59
                 packet.ReadXORByte(guildGuids[c], 5); //93
              
-                for (var itm = 0; itm < 23; ++itm)
+                for (var itm = 0; itm < 23; itm++)
                 {
                     packet.ReadInt32("Item EnchantID", c, itm); //140 prolly need to replace those 2
                     packet.ReadEnum<InventoryType>("Item InventoryType", TypeCode.Byte, c, itm); //144
@@ -165,7 +165,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 StoreGetters.AddName(playerGuid, name);
             }
 
-            for (var i = 0; i < unkCounter; ++i)
+            for (var i = 0; i < unkCounter; i++)
             {
                 packet.ReadByte("Unk byte", i); // char_table+28+i*8
                 packet.ReadUInt32("Unk int", i); // char_table+24+i*8

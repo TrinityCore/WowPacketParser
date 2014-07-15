@@ -7,12 +7,18 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class AccountDataHandler
     {
+        [Parser(Opcode.CMSG_REALM_NAME_QUERY)]
+        public static void HandleRealmNameQuery(Packet packet)
+        {
+            packet.ReadUInt32("RealmID");
+        }
+
         [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES)]
         public static void HandleAccountDataTimes(Packet packet)
         {
             packet.ReadBit("byte20");
 
-            for (var i = 0; i < 8; ++i)
+            for (var i = 0; i < 8; i++)
                 packet.ReadTime("[" + (AccountDataType)i + "]" + " Time");
 
             packet.ReadUInt32("dword16");

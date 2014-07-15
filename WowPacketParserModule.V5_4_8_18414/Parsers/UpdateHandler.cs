@@ -60,6 +60,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 var type = packet.ReadByte();
                 var typeString = ((UpdateTypeCataclysm)type).ToString();
 
+                packet.ResetBitReader();
+
                 packet.WriteLine("[" + i + "] UpdateType: " + typeString);
                 switch (typeString)
                 {
@@ -365,7 +367,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
 
             // Reading data
-            for (var i = 0u; i < unkLoopCounter; ++i) // 1068*4
+            for (var i = 0u; i < unkLoopCounter; i++) // 1068*4
                 packet.ReadUInt32("Unk UInt32", index, (int)i); // 1072*4
 
             packet.ResetBitReader(); //???
@@ -441,7 +443,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
                         packet.ReadSingle("Spline Duration Multiplier", index); // 240
 
-                        for (var i = 0u; i < splineCount; ++i) // 264
+                        for (var i = 0u; i < splineCount; i++) // 264
                         {
                             var wp = new Vector3
                             {

@@ -106,7 +106,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 count = packet.ReadBits("unk count", 21); //20
                 count_1 = new uint[count, 2];
 
-                for (uint i = 0; i < count; ++i)
+                for (uint i = 0; i < count; i++)
                 {
                     count_1[i, 0] = packet.ReadBits("unk count bytes lenght1", 8); //+29
                     count_1[i, 1] = packet.ReadBits("unk count bytes lenght2", 8); //+285
@@ -123,7 +123,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
                 count1_1 = new uint[count1, 3];
 
-                for (uint i = 0; i < count1; ++i)
+                for (uint i = 0; i < count1; i++)
                 {
                     count1_1[i, 0] = packet.ReadBits("count1 Unk shit", 23); //23*4+1096
                     count1_1[i, 1] = packet.ReadBits("count1 unk bits", 7);  //23*4+4
@@ -144,7 +144,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
             if (hasAccountData)
             {
-                for (uint i = 0; i < count; ++i)
+                for (uint i = 0; i < count; i++)
                 {
                     packet.ReadUInt32("Unk stuff"); //+24
                     packet.ReadWoWString("Realm name ?", count_1[i, 0]);
@@ -152,17 +152,17 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     //v18+=520
                 }
 
-                for (int i = 0; i < RaceCount; ++i)
+                for (int i = 0; i < RaceCount; i++)
                 {
                     packet.ReadEnum<Race>("Race", TypeCode.Byte, i); //+61+i*2
                     packet.ReadEnum<ClientType>("Race Expansion", TypeCode.Byte, i); //+62+i*2
                 }
 
-                for (uint i = 0; i < count1; ++i)
+                for (uint i = 0; i < count1; i++)
                 {
                     packet.ReadWoWString("String ?", count1_1[i, 2]);
                     packet.ReadWoWString("String ?", count1_1[i, 1]);
-                    for (uint j = 0; j < count1_1[i, 0]; ++j)
+                    for (uint j = 0; j < count1_1[i, 0]; j++)
                     {
                         packet.ReadByte("Class or Race"); //+23*4+1100+v24+j*2
                         packet.ReadByte("Class or Race"); //+23*4+1101+v24+j*2
@@ -172,7 +172,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     //v24+=1112
                 }
 
-                for (int i = 0; i < ClassCount; ++i)
+                for (int i = 0; i < ClassCount; i++)
                 {
                     packet.ReadEnum<Class>("Class", TypeCode.Byte, i); //+19*4+1+i*2
                     packet.ReadEnum<ClientType>("Class Expansion", TypeCode.Byte, i); //+19*4+2+i*2
@@ -214,13 +214,13 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             var count = packet.ReadBits("Line Count", 4);
             var counts = new uint[count];
-            for (var i = 0; i < count; ++i)
+            for (var i = 0; i < count; i++)
             {
                 counts[i] = packet.ReadBits(7); //20
                 //v16+=100;
             }
 
-            for (var i = 0; i < count; ++i)
+            for (var i = 0; i < count; i++)
             {
                 packet.ReadWoWString("", counts[i], i);
                 //v16+=100;

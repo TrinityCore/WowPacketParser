@@ -118,10 +118,10 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
             var guidBytes = new byte[count][];
 
-            for (var i = 0; i < count; ++i)
+            for (var i = 0; i < count; i++)
                 guidBytes[i] = packet.StartBitStream(2, 4, 3, 6, 7, 1, 5, 0); //??
 
-            for (var i = 0; i < count; ++i)
+            for (var i = 0; i < count; i++)
             {
                 packet.ReadXORByte(guidBytes[i], 5); //?...
                 packet.ReadXORByte(guidBytes[i], 4);
@@ -296,7 +296,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     if (packet.ReadUInt16() > 0)
                         item.Name = packet.ReadCString("Name", 0);
 
-                    for (var i = 1; i < 4; ++i)
+                    for (var i = 1; i < 4; i++)
                         if (packet.ReadUInt16() > 0)
                             packet.ReadCString("Name", i);
 

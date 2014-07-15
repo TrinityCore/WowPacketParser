@@ -195,6 +195,17 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadUInt32("Unk Uint32");
         }
 
+        [Parser(Opcode.CMSG_UNK_0068)] // sub_669815
+        public static void HandleUnk0068(Packet packet)
+        {
+            packet.ReadInt32("unk16");
+            packet.ReadInt32("unk20");
+            var len = packet.ReadInt32("Len");
+            packet.ReadWoWString(len);
+            packet.ReadBits("unk24", 3);
+            packet.ResetBitReader();
+        }
+
         [Parser(Opcode.CMSG_UNK_0087)]
         public static void HandleUnk0087(Packet packet)
         {
@@ -207,13 +218,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleUnk00A7(Packet packet)
         {
             packet.ReadByte("unk");
-        }
-
-        [Parser(Opcode.CMSG_UNK_0249)]
-        public static void HandleUnk249(Packet packet)
-        {
-            packet.ReadUInt32("unk1");
-            packet.ReadBit("unkb");
         }
 
         [Parser(Opcode.CMSG_UNK_0264)]
