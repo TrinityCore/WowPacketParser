@@ -597,6 +597,8 @@ namespace WowPacketParser.SQL.Builders
                     NpcFlag = (uint) npc.NpcFlags.GetValueOrDefault(NPCFlags.None),
                     SpeedRun = npc.Movement.RunSpeed,
                     SpeedWalk = npc.Movement.WalkSpeed,
+                    MaxDamage = npc.MaxDamage.GetValueOrDefault(1),
+                    MinDamage = npc.MinDamage.GetValueOrDefault(npc.MaxDamage.GetValueOrDefault(1) / 7),
                     BaseAttackTime = npc.MeleeTime.GetValueOrDefault(2000),
                     RangedAttackTime = npc.RangedTime.GetValueOrDefault(2000),
                     UnitClass = (uint) npc.Class.GetValueOrDefault(Class.Warrior),

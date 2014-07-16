@@ -49,6 +49,8 @@ namespace WowPacketParser.Store.Objects
         public EmoteType? EmoteState;
         public uint? ManaMod;
         public uint? HealthMod;
+        public uint? MinDamage;
+        public uint? MaxDamage;
         public uint? Bytes2;
         public float? BoundingRadius;
         public float? CombatReach;
@@ -100,6 +102,8 @@ namespace WowPacketParser.Store.Objects
             //Resistances   = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_FIELD_RESISTANCES_ARMOR, 7);
             ManaMod       = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASE_MANA);
             HealthMod     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASE_HEALTH);
+            MinDamage     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_MINDAMAGE);
+            MaxDamage     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_MAXDAMAGE);
             BoundingRadius= UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_BOUNDINGRADIUS);
             CombatReach   = UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_COMBATREACH);
             HoverHeight   = UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_HOVERHEIGHT);

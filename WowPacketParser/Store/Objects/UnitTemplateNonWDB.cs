@@ -13,6 +13,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("npcflag")] public uint NpcFlag;
         [DBFieldName("speed_walk")] public float SpeedWalk;
         [DBFieldName("speed_run")] public float SpeedRun;
+        [DBFieldName("mindmg")] public uint MinDamage;
+        [DBFieldName("maxdmg")] public uint MaxDamage;
         [DBFieldName("baseattacktime")] public uint BaseAttackTime;
         [DBFieldName("rangeattacktime")] public uint RangedAttackTime;
         [DBFieldName("unit_class")] public uint UnitClass;
