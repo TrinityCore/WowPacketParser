@@ -296,12 +296,85 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
             packet.WriteLine("Pos20: " + packet.Position);
 
-            /*
+            var guid856 = new byte[2][];
+
+            var guid840 = new byte[8];
+
             if (hasUnk8) // 1032
             {
-               ... // not completed
+                for (var i = 2; i > 0; i--)
+                {
+                    guid856[i - 1] = new byte[8];
+
+                    guid856[i - 1][5] = packet.ReadBit();
+                    guid856[i - 1][2] = packet.ReadBit();
+                    guid856[i - 1][3] = packet.ReadBit();
+                    guid856[i - 1][1] = packet.ReadBit();
+                    guid856[i - 1][6] = packet.ReadBit();
+                    guid856[i - 1][7] = packet.ReadBit();
+                    packet.ReadBit("unk868", i);
+                    packet.ReadBit("unk892", i);
+                    var count876 = packet.ReadBits(2);
+                    for (var j = 0; j < count876; j++)
+                    {
+                        var v27 = packet.ReadBits("v27", 21);
+                        //sub_70FC09;
+                        packet.ReadBit();
+                        packet.ReadBit("unk48");
+                        packet.ReadBit();
+                        packet.ReadBit();
+                        packet.ReadBit();
+                        packet.ReadBit();
+                        packet.ReadBit();
+                        packet.ReadBit();
+                        packet.ReadBit();
+                        packet.ReadBits(7);
+                        var v31 = packet.ReadBits(21);
+                        //sub_70fb9c
+                        for ( var k = 0; k < v31; k++)
+                        {
+                            packet.ReadBit();
+                            packet.ReadBit();
+                            packet.ReadBit();
+                        }
+                        packet.ReadBit();
+                        var v44 = packet.ReadBits(20);
+                        for (var k = 0; k < v44; k++)
+                        {
+                            packet.ReadBit();
+                        }
+                    }
+                    guid856[i - 1][4] = packet.ReadBit();
+                    packet.ReadBit("!unk14*2");
+                    guid856[i - 1][0] = packet.ReadBit();
+
+                }
+                packet.ReadBit("unk832");
+
+                for (var i = 3; i > 0; i--)
+                {
+                    var count16 = packet.ReadBits(21);
+                    var v54 = packet.ReadBits(21);
+                    for (var j = 0; j < v54; j++)
+                    {
+                        packet.ReadBit();
+                        packet.ReadBit();
+                        packet.ReadBit();
+                    }
+                }
+
+                packet.ReadBit("!unk828*4");
+                packet.ReadBit("unk848");
+                packet.ReadBit("!unk816*2");
+                packet.ReadBit("!unk824*4");
+                var unk844 = packet.ReadBit("!unk844") ? 0u : 1u;
+
+                guid840 = packet.StartBitStream(6, 2, 4, 5, 1, 0, 3, 7);
+
+                var unk818 = !packet.ReadBit("!unk818*2");
+                var unk833 = !packet.ReadBit("!unk833");
+                var unk849 = packet.ReadBit("unk849");
             }
-            */
 
             if (hasGOPosition) // 424
             {
@@ -317,32 +390,49 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 hasGOTransportTime2 = packet.ReadBit("goTransport Time2", index); // 412
             }
 
+            var unkBlock1bit664 = false;
+            var count648 = 0u;
+            var unkBlock1bit644 = false;
+            var unkBlock1bit528 = false;
+            var unkBlock1bit600 = false;
+            var unkBlock1bit544 = false;
+            var unkblock1bit526 = false;
+            var unkBlock1bit552 = false;
+            var unkBlock1bit524 = false;
+            var unkBlock1bit572 = false;
+            var unkBlock1bit525 = false;
+            var unkBlock1bit527 = false;
+            var unkBlock1bit536 = false;
+            var unkBlock1bit560 = false;
+            var count604 = 0u;
+            var count620 = 0u;
+
             if (hasUnk11) // 668
             {
-                var unkBlock1bit528 = packet.ReadBit(); // 528
-                var unkBlock1bit600 = packet.ReadBit(); // 600
-                var unkBlock1bit544 = packet.ReadBit(); // 544
-                var unkblock1bit526 = packet.ReadBit(); // 526
-                var unkBlock1bit552 = packet.ReadBit(); // 552
-                var unkBlock1bit524 = packet.ReadBit(); // 524
-                var unkBlock1bit572 = packet.ReadBit(); // 572
-                var unkBlock1bit525 = packet.ReadBit(); // 525
-                var unkBlock1bit664 = packet.ReadBit(); // 664
-                var unkBlock1bit527 = packet.ReadBit(); // 527
+                unkBlock1bit528 = packet.ReadBit(); // 528
+                unkBlock1bit600 = packet.ReadBit(); // 600
+                unkBlock1bit544 = packet.ReadBit(); // 544
+                unkblock1bit526 = packet.ReadBit(); // 526
+                unkBlock1bit552 = packet.ReadBit(); // 552
+                unkBlock1bit524 = packet.ReadBit(); // 524
+                unkBlock1bit572 = packet.ReadBit(); // 572
+                unkBlock1bit525 = packet.ReadBit(); // 525
+                unkBlock1bit664 = packet.ReadBit(); // 664
+                unkBlock1bit527 = packet.ReadBit(); // 527
 
                 if (unkBlock1bit664) // 664
                 {
-                    packet.ReadBits("Block1 unk648", 20, index); // 648
+                    count648 = packet.ReadBits("Block1 unk648", 20, index); // 648
                 }
 
-                var unkBlock1bit536 = packet.ReadBit(); // 536
-                var unkBlock1bit644 = packet.ReadBit(); // 644
-                var unkBlock1bit560 = packet.ReadBit(); // 560
+                unkBlock1bit536 = packet.ReadBit(); // 536
+                unkBlock1bit644 = packet.ReadBit(); // 644
+                unkBlock1bit560 = packet.ReadBit(); // 560
 
                 if (unkBlock1bit644) // 644
                 {
-                    packet.ReadBits("Block1 unk604", 21, index); // 604
-                    packet.ReadBits("Block1 unk620", 21, index); // 620
+                    count604 = packet.ReadBits("Block1 unk604", 21, index); // 604
+                    count620 = packet.ReadBits("Block1 unk620", 21, index); // 620
                 }
             }
 
@@ -555,12 +645,56 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.WriteLine("[{0}] Orientation: {1}", index, moveInfo.Orientation);
             }
 
-            /*
             if (hasUnk11) // 668
             {
-               ... // not completed
+                if (unkBlock1bit664) // 664
+                {
+                    for (var i = 0; i < count648; i++)
+                    {
+                        packet.ReadSingle("unk652*4+4", i);
+                        packet.ReadSingle("unk652*4", i);
+                        packet.ReadSingle("unk652*4+8", i);
+                    }
+                }
+                if (unkBlock1bit600)
+                {
+                    packet.ReadSingle("unk584");
+                    packet.ReadSingle("unk580");
+                    packet.ReadSingle("unk596");
+                    packet.ReadSingle("unk592");
+                    packet.ReadSingle("unk576");
+                    packet.ReadSingle("unk588");
+                }
+                if (unkBlock1bit644)
+                {
+                    for (var i = 0; i < count604; i++)
+                    {
+                        packet.ReadSingle("unk608*4", i);
+                        packet.ReadSingle("unk608*4+4", i);
+                    }
+                    for (var i = 0; i < count620; i++)
+                    {
+                        packet.ReadSingle("unk624*4", i);
+                        packet.ReadSingle("unk624*4+4", i);
+                    }
+                    packet.ReadSingle("unk640");
+                    packet.ReadSingle("unk636");
+                }
+                packet.ReadInt32("unk520");
+                if (unkBlock1bit544)
+                    packet.ReadInt32("unk540");
+                if (unkBlock1bit552)
+                    packet.ReadInt32("unk548");
+                if (unkBlock1bit536)
+                    packet.ReadInt32("unk532");
+                if (unkBlock1bit560)
+                    packet.ReadInt32("unk556");
+                if (unkBlock1bit572)
+                {
+                    packet.ReadSingle("unk564");
+                    packet.ReadSingle("unk568");
+                }
             }
-            */
 
             if (hasGOPosition) // 424
             {

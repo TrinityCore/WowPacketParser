@@ -201,18 +201,23 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_NULL_0060,                                0x0060}, //+-
             {Opcode.CMSG_NULL_0141,                                0x0141}, //+-
             {Opcode.CMSG_NULL_01C0,                                0x01C0}, //+-
+            {Opcode.CMSG_NULL_029F,                                0x029F}, //+-
             {Opcode.CMSG_NULL_02D6,                                0x02D6}, //+-
+            {Opcode.CMSG_NULL_02DA,                                0x02DA}, //+-
             {Opcode.CMSG_NULL_032D,                                0x032D}, //+-
             {Opcode.CMSG_NULL_033D,                                0x033D}, //+-
             {Opcode.CMSG_NULL_0365,                                0x0365}, //+-
             {Opcode.CMSG_NULL_0374,                                0x0374}, //+-
             {Opcode.CMSG_NULL_0375,                                0x0375}, //+-
             {Opcode.CMSG_NULL_03C4,                                0x03C4}, //+-
+            {Opcode.CMSG_NULL_0558,                                0x0558}, //+-
             {Opcode.CMSG_NULL_05E1,                                0x05E1}, //+-
+            {Opcode.CMSG_NULL_0640,                                0x0640}, //+-
             {Opcode.CMSG_NULL_0644,                                0x0644}, //+-
             {Opcode.CMSG_NULL_06D4,                                0x06D4}, //+-
             {Opcode.CMSG_NULL_06E4,                                0x06E4}, //+-
             {Opcode.CMSG_NULL_06F5,                                0x06F5}, //+-
+            {Opcode.CMSG_NULL_077B,                                0x077B}, //+-
             {Opcode.CMSG_NULL_0813,                                0x0813}, //+-
             {Opcode.CMSG_NULL_0826,                                0x0826}, //+-
             {Opcode.CMSG_NULL_0A22,                                0x0A22}, //+-
@@ -222,8 +227,14 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_NULL_0C62,                                0x0C62}, //+-
             {Opcode.CMSG_NULL_0DE0,                                0x0DE0}, //+-
             {Opcode.CMSG_NULL_1063,                                0x1063}, //+-
+            {Opcode.CMSG_NULL_1124,                                0x1124}, //+-
             {Opcode.CMSG_NULL_1203,                                0x1203}, //+-
             {Opcode.CMSG_NULL_1207,                                0x1207}, //+-
+            {Opcode.CMSG_NULL_1272,                                0x1272}, //+-
+            {Opcode.CMSG_NULL_135B,                                0x135B}, //+-
+            {Opcode.CMSG_NULL_1452,                                0x1452}, //+-
+            {Opcode.CMSG_NULL_147B,                                0x147B}, //+-
+            {Opcode.CMSG_NULL_14DB,                                0x14DB}, //+-
             {Opcode.CMSG_NULL_14E0,                                0x14E0}, //+-
             {Opcode.CMSG_NULL_15A8,                                0x15A8}, //+-
             {Opcode.CMSG_NULL_15E2,                                0x15E2}, //+-
@@ -231,9 +242,11 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_NULL_1A23,                                0x1A23}, //+-
             {Opcode.CMSG_NULL_1A87,                                0x1A87}, //+-
             {Opcode.CMSG_NULL_1C45,                                0x1C45}, //+-
+            {Opcode.CMSG_NULL_1C5A,                                0x1C5A}, //+-
             {Opcode.CMSG_NULL_1CE3,                                0x1CE3}, //+-
             {Opcode.CMSG_NULL_1D61,                                0x1D61}, //+-
             {Opcode.CMSG_NULL_1DC3,                                0x1DC3}, //+-
+            {Opcode.CMSG_NULL_1F34,                                0x1F34}, //+-
             {Opcode.CMSG_NULL_1F89,                                0x1F89}, //+-
             {Opcode.CMSG_NULL_1F8E,                                0x1F8E}, //+-
             {Opcode.CMSG_NULL_1F9E,                                0x1F9E}, //+-
@@ -478,6 +491,14 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_1E0F,                                 0x1E0F}, //+-
             {Opcode.SMSG_UNK_1E9B,                                 0x1E9B}, //+-
             {Opcode.SMSG_UNK_1F9F,                                 0x1F9F}, //++
+            {Opcode.SMSG_NULL_04BB,                                0x04BB}, //++
+            {Opcode.SMSG_NULL_0C59,                                0x0C59}, //++
+            {Opcode.SMSG_NULL_0C9A,                                0x0C9A}, //++
+            {Opcode.SMSG_NULL_0E2B,                                0x0E2B}, //++
+            {Opcode.SMSG_NULL_0E8B,                                0x0E8B}, //++
+            {Opcode.SMSG_NULL_0FE1,                                0x0FE1}, //++
+            {Opcode.SMSG_NULL_141B,                                0x141B}, //++
+            {Opcode.SMSG_NULL_1A2A,                                0x1A2A}, //++
         };
     }
 }

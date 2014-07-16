@@ -173,6 +173,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
+        [Parser(Opcode.CMSG_SPELLCLICK)]
+        public static void HandleSpellClick(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.CMSG_TIME_SYNC_RESP)]
         public static void HandleTimeSyncResp(Packet packet)
         {
@@ -1220,26 +1226,31 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
         [Parser(Opcode.CMSG_ATTACKSTOP)]
         [Parser(Opcode.CMSG_GET_TIMEZONE_INFORMATION)]
-        [Parser(Opcode.CMSG_SPELLCLICK)]
         [Parser(Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE)]
         [Parser(Opcode.MSG_MOVE_WORLDPORT_ACK)]  //0
         [Parser(Opcode.CMSG_NULL_0023)]
         [Parser(Opcode.CMSG_NULL_0060)]
         [Parser(Opcode.CMSG_NULL_0141)]
         [Parser(Opcode.CMSG_NULL_01C0)]
+        [Parser(Opcode.CMSG_NULL_029F)]
         [Parser(Opcode.CMSG_NULL_02D6)]
+        [Parser(Opcode.CMSG_NULL_02DA)]
         [Parser(Opcode.CMSG_NULL_032D)]
         [Parser(Opcode.CMSG_NULL_033D)]
         [Parser(Opcode.CMSG_NULL_0365)]
         [Parser(Opcode.CMSG_NULL_0374)]
         [Parser(Opcode.CMSG_NULL_0375)]
         [Parser(Opcode.CMSG_NULL_03C4)]
+        [Parser(Opcode.CMSG_NULL_0558)]
         [Parser(Opcode.CMSG_NULL_05E1)]
+        [Parser(Opcode.CMSG_NULL_0640)]
         [Parser(Opcode.CMSG_NULL_0644)]
         [Parser(Opcode.CMSG_NULL_06D4)]
         [Parser(Opcode.CMSG_NULL_06E4)]
         [Parser(Opcode.CMSG_NULL_06F5)]
+        [Parser(Opcode.CMSG_NULL_077B)]
         [Parser(Opcode.CMSG_NULL_0813)]
+        [Parser(Opcode.CMSG_NULL_0826)]
         [Parser(Opcode.CMSG_NULL_0A22)]
         [Parser(Opcode.CMSG_NULL_0A23)]
         [Parser(Opcode.CMSG_NULL_0A82)]
@@ -1247,8 +1258,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_NULL_0C62)]
         [Parser(Opcode.CMSG_NULL_0DE0)]
         [Parser(Opcode.CMSG_NULL_1063)]
+        [Parser(Opcode.CMSG_NULL_1124)]
         [Parser(Opcode.CMSG_NULL_1203)]
         [Parser(Opcode.CMSG_NULL_1207)]
+        [Parser(Opcode.CMSG_NULL_1272)]
+        [Parser(Opcode.CMSG_NULL_135B)]
+        [Parser(Opcode.CMSG_NULL_1452)]
+        [Parser(Opcode.CMSG_NULL_147B)]
+        [Parser(Opcode.CMSG_NULL_14DB)]
         [Parser(Opcode.CMSG_NULL_14E0)]
         [Parser(Opcode.CMSG_NULL_15A8)]
         [Parser(Opcode.CMSG_NULL_15E2)]
@@ -1256,18 +1273,41 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_NULL_1A23)]
         [Parser(Opcode.CMSG_NULL_1A87)]
         [Parser(Opcode.CMSG_NULL_1C45)]
+        [Parser(Opcode.CMSG_NULL_1C5A)]
         [Parser(Opcode.CMSG_NULL_1CE3)]
         [Parser(Opcode.CMSG_NULL_1D61)]
         [Parser(Opcode.CMSG_NULL_1DC3)]
+        [Parser(Opcode.CMSG_NULL_1F34)]
         [Parser(Opcode.CMSG_NULL_1F89)]
         [Parser(Opcode.CMSG_NULL_1F8E)]
         [Parser(Opcode.CMSG_NULL_1F9E)]
         [Parser(Opcode.CMSG_NULL_1FBE)]
-        public static void HandleNullMisc(Packet packet)
+        public static void HandleCNullMisc(Packet packet)
         {
             if (packet.Direction == Direction.ServerToClient)
             {
                 packet.WriteLine("              : SMSG_???");
+                packet.ReadToEnd();
+            }
+            else
+            {
+                //packet.ReadToEnd();
+            }
+        }
+
+        [Parser(Opcode.SMSG_NULL_04BB)]
+        [Parser(Opcode.SMSG_NULL_0C59)]
+        [Parser(Opcode.SMSG_NULL_0C9A)]
+        [Parser(Opcode.SMSG_NULL_0E2B)]
+        [Parser(Opcode.SMSG_NULL_0E8B)]
+        [Parser(Opcode.SMSG_NULL_0FE1)]
+        [Parser(Opcode.SMSG_NULL_141B)]
+        [Parser(Opcode.SMSG_NULL_1A2A)]
+        public static void HandleSNullMisc(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                packet.WriteLine("              : CMSG_???");
                 packet.ReadToEnd();
             }
             else
