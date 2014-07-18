@@ -47,7 +47,27 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         [Parser(Opcode.SMSG_SHOWTAXINODES)]
         public static void HandleShowTaxiNodes(Packet packet)
         {
-            packet.ReadToEnd();
+            var guid = new byte[8];
+
+            var u = packet.ReadBit("Unk 1");
+
+            if (u != 0)
+            {
+                guid = packet.StartBitStream(3, 0, 4, 2, 1, 7, 6, 5);
+            }
+
+            var count = packet.ReadBits("count", 24);
+
+            if (u != 0)
+            {
+                packet.ParseBitStream(guid, 0, 3);
+                packet.ReadInt32("unk6");
+                packet.ParseBitStream(guid, 5, 2, 6, 1, 7, 4);
+                packet.WriteGuid("Guid", guid);
+            }
+
+            for (int i = 0; i < count; i++)
+                packet.ReadByte("NodeMask", i);
         }
 
         [Parser(Opcode.SMSG_TAXINODE_STATUS)]

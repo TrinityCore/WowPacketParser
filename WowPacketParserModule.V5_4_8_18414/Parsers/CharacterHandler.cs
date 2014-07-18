@@ -25,6 +25,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.CMSG_EMOTE)]
+        public static void HandleEmote(Packet packet)
+        {
+            packet.ReadInt32("Emote");
+        }
+
         [Parser(Opcode.CMSG_PLAYED_TIME)]
         public static void HandleCPlayedTime(Packet packet)
         {
@@ -48,6 +54,17 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleStandStateChange(Packet packet)
         {
             packet.ReadInt32("Standstate");
+        }
+
+        [Parser(Opcode.CMSG_TEXT_EMOTE)]
+        public static void HandleTextEmote(Packet packet)
+        {
+            packet.ReadEnum<EmoteTextType>("Text Emote ID", TypeCode.Int32);
+            packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
+            var guid = packet.StartBitStream(6, 7, 3, 2, 0, 5, 1, 4);
+            packet.ResetBitReader();
+            packet.ParseBitStream(guid, 0, 5, 1, 4, 2, 3, 7, 6);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_CHAR_ENUM)]
@@ -170,6 +187,51 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadByte("Unk byte", i); // char_table+28+i*8
                 packet.ReadUInt32("Unk int", i); // char_table+24+i*8
             }
+        }
+
+        [Parser(Opcode.SMSG_EMOTE)]
+        public static void HandleSEmote(Packet packet)
+        {
+            var guid = new byte[8];
+            var guid2 = new byte[8];
+
+            guid[1] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadEnum<EmoteTextType>("Text Emote ID", TypeCode.Int32);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
+            packet.WriteGuid("Caster", guid);
+            packet.WriteGuid("Target", guid2);
         }
 
         [Parser(Opcode.SMSG_CHAR_CREATE)]

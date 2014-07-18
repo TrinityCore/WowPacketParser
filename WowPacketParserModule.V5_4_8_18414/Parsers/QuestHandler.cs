@@ -14,7 +14,15 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
         public static void HandleQuestPoiQuery(Packet packet)
         {
-            packet.ReadToEnd();
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                packet.ReadToEnd();
+            }
+            else
+            {
+                packet.WriteLine("              : SMSG_UNK_10C2");
+                packet.ReadToEnd();
+            }
         }
 
         [Parser(Opcode.CMSG_QUESTGIVER_QUERY_QUEST)]
