@@ -55,9 +55,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map Id");
             packet.ReadBit("Loading");
-
             CoreParsers.MovementHandler.CurrentMapId = (uint)mapId;
-
             packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
         }
 

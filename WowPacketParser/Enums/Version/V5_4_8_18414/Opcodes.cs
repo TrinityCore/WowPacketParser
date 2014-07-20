@@ -383,7 +383,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_MAIL_LIST_RESULT,                         0x1C0B}, //--
             {Opcode.SMSG_MESSAGECHAT,                              0x1A9A}, //++
             {Opcode.SMSG_MINIMAP_PING,                             0x168F}, //--
-            {Opcode.SMSG_MONSTER_MOVE,                             0x1A07}, //--
+            {Opcode.SMSG_MONSTER_MOVE,                             0x1A07}, //++
             {Opcode.SMSG_MOTD,                                     0x183B}, //++
             {Opcode.SMSG_MOVE_ROOT,                                0x15AE}, //--
             {Opcode.SMSG_MOVE_SET_ACTIVE_MOVER,                    0x0C6D}, //--
