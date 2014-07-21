@@ -123,5 +123,5 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadInt32("Int14");
             packet.ReadInt32("Item Entry");
         }
-	}
+    }
 }

@@ -68,11 +68,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             sha[16] = packet.ReadByte();
             sha[2] = packet.ReadByte();
             packet.ReadUInt32("UInt32 3");
-            using (var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
-            {
-                var pkt2 = addons;
-                CoreParsers.AddonHandler.ReadClientAddonsList(ref pkt2);
-            }
+
+            var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
+                packet.Number, packet.Writer, packet.FileName);
+            CoreParsers.AddonHandler.ReadClientAddonsList(ref addons);
+            addons.ClosePacket(false);
 
             var size = (int)packet.ReadBits(11);
             packet.ReadBit("Unk bit");

@@ -22,6 +22,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.ReadInt32("Hotfixed entry", i);
                 packet.ReadEnum<DB2Hash>("Hotfix DB2 File", TypeCode.Int32, i);
             }
-        }        
+        }
     }
 }

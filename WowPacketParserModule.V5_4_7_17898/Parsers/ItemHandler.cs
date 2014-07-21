@@ -363,7 +363,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 hasSlot[i] = !packet.ReadBit();
                 hasBag[i] = !packet.ReadBit();
             }
-            
+
             for (var i = 0; i < bits14; ++i)
             {
                 if (hasBag[i])

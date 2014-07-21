@@ -67,7 +67,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadEnum<MovementFlag>("Movement Flags", 30);
 
             var hasFallData = packet.ReadBit();
-            
+
             var hasFallDirection = false;
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
@@ -115,7 +115,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadXORByte(transportGUID, 4);
                 packet.ReadXORByte(transportGUID, 2);
                 packet.ReadXORByte(transportGUID, 0);
-                
+
                 packet.WriteGuid("Transport Guid", transportGUID);
                 packet.WriteLine("Transport Position {0}", transPos);
             }
@@ -183,7 +183,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var splineCount = (int)packet.ReadBits(20);
             var bit98 = packet.ReadBit();
             var splineType = (int)packet.ReadBits(3);
-            
+
             if (splineType == 3)
                 packet.StartBitStream(factingTargetGUID, 0, 7, 3, 4, 5, 6, 1, 2);
 
@@ -215,7 +215,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var bits64 = (int)packet.ReadBits(22);
             var bit0 = !packet.ReadBit();
             packet.ReadSingle("Float14");
-            
+
             if (splineType == 3)
             {
                 packet.ParseBitStream(factingTargetGUID, 1, 6, 4, 3, 5, 0, 2, 7);
@@ -344,7 +344,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteGuid("GUID2", guid2);
             packet.WriteLine("Position: {0}", pos);
         }
-        
+
 
         [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
         public static void HandleLoginVerifyWorld(Packet packet)
@@ -407,7 +407,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         {
             var customLoadScreenSpell = packet.ReadBit();
             var hasTransport = packet.ReadBit();
-            
+
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
 
             if (hasTransport)
@@ -747,14 +747,14 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         {
             var guid = new byte[8];
             var transportGuid = new byte[8];
-            
+
             var pos = new Vector4();
 
             var hasTransportTime2 = false;
             var hasTransportTime3 = false;
             var hasFallDirection = false;
 
-            pos.X = packet.ReadSingle();    
+            pos.X = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
 

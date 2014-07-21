@@ -13,6 +13,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var hasDelay = !packet.ReadBit("hasDelay");
             if (hasDelay)
                 packet.ReadInt32("Delay");
-        }        
+        }
     }
 }

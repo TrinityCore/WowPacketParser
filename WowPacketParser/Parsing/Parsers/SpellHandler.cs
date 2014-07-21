@@ -1108,7 +1108,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Caster GUID");
             packet.ReadGuid("Target GUID");
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadBoolean("Unk bool");
+            packet.ReadBoolean("Debug Log");
 
             // not found in 3.3.5a sniff nor 3.3.3a
             //if (ClientVersion.Build == ClientVersionBuild.V3_3_5a_12340) // blizzard retardness, client doesn't even read this

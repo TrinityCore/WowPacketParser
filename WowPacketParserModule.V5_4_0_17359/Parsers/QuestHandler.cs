@@ -37,10 +37,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var bits10 = (int)packet.ReadBits(21);
 
             var bits4 = new uint[bits10];
-            
+
             for (var i = 0; i < bits10; ++i)
                 bits4[i] = packet.ReadBits(22);
-            
+
             for (var i = 0; i < bits10; ++i)
             {
                 for (var j = 0; j < bits4[i]; ++j)

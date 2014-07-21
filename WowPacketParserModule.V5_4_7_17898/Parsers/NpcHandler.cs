@@ -190,6 +190,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             for (var i = 0; i < 8; ++i)
                 npcText.BroadcastTextId[i] = pkt.ReadUInt32("Broadcast Text Id", i);
 
+            pkt.ClosePacket(false);
+
             var entry = packet.ReadEntry("Entry");
             if (entry.Value) // Can be masked
                 return;

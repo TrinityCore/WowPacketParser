@@ -565,14 +565,14 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             casterGUID[1] = packet.ReadBit();
             casterUnitGUID[0] = packet.ReadBit();
             var bits4C = (int)packet.ReadBits(13);
-            
+
             var guid6 = new byte[bits64][];
             for (var i = 0; i < bits64; ++i)
             {
                 guid6[i] = new byte[8];
                 packet.StartBitStream(guid6[i], 1, 3, 6, 4, 5, 2, 0, 7);
             }
-            
+
             var guid7 = new byte[bits1A4][];
             for (var i = 0; i < bits1A4; ++i)
             {
@@ -643,7 +643,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
                 packet.StartBitStream(destLocationTargetGUID, 0, 3, 2, 1, 4, 5, 6, 7);
 
             casterGUID[4] = packet.ReadBit();
-            
+
             var guid8 = new byte[bits54][];
             for (var i = 0; i < bits54; ++i)
             {
@@ -657,7 +657,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             packet.ParseBitStream(itemTargetGUID, 5, 2, 0, 6, 7, 3, 1, 4);
 
             packet.ReadXORByte(casterUnitGUID, 2);
-            
+
             for (var i = 0; i < bits1A4; ++i)
             {
                 packet.ReadXORByte(guid7[i], 3);
@@ -674,7 +674,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
 
                 packet.WriteGuid("Guid7", guid7[i], i);
             }
-            
+
             for (var i = 0; i < bits54; ++i)
             {
                 packet.ParseBitStream(guid8[i], 0, 6, 2, 7, 5, 4, 3, 1);
@@ -794,7 +794,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
 
             if (hasPredictedHeal)
                 packet.ReadUInt32("PredictedHeal");
-            
+
             packet.ReadByte("CastCount");
             packet.ReadXORByte(casterUnitGUID, 5);
             packet.ReadXORByte(casterGUID, 2);

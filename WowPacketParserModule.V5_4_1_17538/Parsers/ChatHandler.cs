@@ -89,7 +89,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
             packet.ParseBitStream(ReceiverGUID, 7, 4, 1, 3, 0, 6, 5, 2);
             packet.ParseBitStream(GuildGUID, 5, 7, 3, 0, 4, 6, 1, 2);
-            
+
             if (hasLang)
                 text.Language = packet.ReadEnum<Language>("Language", TypeCode.Byte);
 
@@ -99,7 +99,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                 packet.ReadWoWString("Channel Name", channelLen);
 
             text.Text = packet.ReadWoWString("Text", textLen);
-            
+
             text.Type = (ChatMessageType)packet.ReadEnum<ChatMessageType540>("Chat type", TypeCode.Byte);
 
             if (hasAchi)

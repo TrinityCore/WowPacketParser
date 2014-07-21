@@ -442,6 +442,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         break;
                     }
             }
+
+            db2File.ClosePacket(false);
         }
 
         [HasSniffData]
@@ -632,6 +634,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 npcText.Probabilities[i] = pkt.ReadSingle("Probability", i);
             for (var i = 0; i < 8; ++i)
                 npcText.BroadcastTextId[i] = pkt.ReadUInt32("Broadcast Text Id", i);
+
+            pkt.ClosePacket(false);
 
             packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
 

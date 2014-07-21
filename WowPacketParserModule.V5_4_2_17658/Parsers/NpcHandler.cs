@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var gossip = new Gossip();
 
             var guid = new byte[8];
-            
+
             uint[] titleLen;
             uint[] BoxTextLen;
             uint[] OptionTextLen;
@@ -44,7 +44,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var questgossips = (int)packet.ReadBits(19);
 
             guid[4] = packet.ReadBit();
-            
+
             titleLen = new uint[questgossips];
             for (var i = 0; i < questgossips; ++i)
             {
@@ -56,7 +56,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             guid[2] = packet.ReadBit();
 
             var AmountOfOptions = packet.ReadBits(20);
-            
+
             BoxTextLen = new uint[AmountOfOptions];
             OptionTextLen = new uint[AmountOfOptions];
             for (var i = 0; i < AmountOfOptions; ++i)
@@ -69,7 +69,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             guid[5] = packet.ReadBit();
 
             packet.ReadXORByte(guid, 2);
-            
+
             gossip.GossipOptions = new List<GossipOption>((int)AmountOfOptions);
             for (var i = 0; i < AmountOfOptions; ++i)
             {
@@ -85,7 +85,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
                 gossip.GossipOptions.Add(gossipOption);
             }
-            
+
             for (var i = 0; i < questgossips; ++i)
             {
                 packet.ReadInt32("Level", i);
@@ -102,11 +102,11 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 1);
-            
+
             var textId = packet.ReadUInt32("Text Id");
 
             packet.ReadXORByte(guid, 5);
-            
+
             var menuId = packet.ReadUInt32("Menu Id");
 
             packet.ReadXORByte(guid, 6);
@@ -221,6 +221,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             for (var i = 0; i < 8; ++i)
                 npcText.BroadcastTextId[i] = pkt.ReadUInt32("Broadcast Text Id", i);
 
+            pkt.ClosePacket(false);
+
             packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
 
             Storage.NpcTextsMop.Add((uint)entry.Key, npcText, packet.TimeSpan);
@@ -236,10 +238,10 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var itemCount = (int)packet.ReadBits(18);
 
             guid[0] = packet.ReadBit();
-            
+
             var hasExtendedCost = new bool[itemCount];
             var hasCondition = new bool[itemCount];
-            
+
             for (int i = 0; i < itemCount; ++i)
             {
                 packet.ReadBit("Unk bit", i);

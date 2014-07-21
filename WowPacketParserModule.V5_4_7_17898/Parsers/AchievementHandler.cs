@@ -264,7 +264,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var flags = new uint[criterias];
             var counter = new byte[criterias][];
             var guid2 = new byte[criterias][];
-            
+
             for (var i = 0; i < criterias; ++i)
             {
                 counter[i] = new byte[8];
@@ -291,7 +291,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             guid[1] = packet.ReadBit();
             guid[7] = packet.ReadBit();
-            
+
             var guid5 = new byte[achievements][];
 
             for (var i = 0; i < achievements; ++i)
@@ -316,7 +316,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             guid[2] = packet.ReadBit();
 
             packet.ReadXORByte(guid, 2);
-            
+
             for (var i = 0; i < achievements; ++i)
             {
                 packet.ReadXORByte(guid5[i], 3);
@@ -334,7 +334,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                 packet.WriteGuid("Player GUID", guid2[i], i);
             }
-            
+
             for (var i = 0; i < criterias; ++i)
             {
                 packet.ReadUInt32("Criteria Timer 2", i);

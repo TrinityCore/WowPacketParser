@@ -13,7 +13,7 @@ namespace WowPacketParserModule.V5_4_2_17568.Parsers
         public static void HandleEquipmentSetList(Packet packet)
         {
             var count = packet.ReadBits(19);
-            
+
             var guid1 = new byte[count][][];
             var guid2 = new byte[count][];
 
@@ -43,7 +43,7 @@ namespace WowPacketParserModule.V5_4_2_17568.Parsers
                 guid2[i][2] = packet.ReadBit();
                 guid2[i][4] = packet.ReadBit();
             }
-            
+
             for (var i = 0; i < count; i++)
             {
                 for (var j = 0; j < NumSlots; j++)

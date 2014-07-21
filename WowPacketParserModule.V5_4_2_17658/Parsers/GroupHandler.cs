@@ -39,7 +39,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var memberCount = packet.ReadBits("Member Count", 21);
 
             groupGUID[0] = packet.ReadBit();
-            
+
             var bitsED = new uint[memberCount];
             var memberGUID = new byte[memberCount][];
 
@@ -100,7 +100,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
                 packet.WriteGuid("Looter GUID", looterGUID);
             }
-            
+
             for (var i = 0; i < memberCount; i++)
             {
                 packet.ReadXORByte(memberGUID[i], 4);

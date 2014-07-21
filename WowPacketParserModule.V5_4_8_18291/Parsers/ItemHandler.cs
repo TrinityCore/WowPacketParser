@@ -50,6 +50,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.WriteGuid("Player GUID", playerGUID);
             packet.WriteGuid("Item GUID", itemGUID);
-        }        
+        }
     }
 }

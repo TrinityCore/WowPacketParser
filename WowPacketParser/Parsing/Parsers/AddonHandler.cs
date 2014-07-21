@@ -10,39 +10,41 @@ namespace WowPacketParser.Parsing.Parsers
         public static void ReadClientAddonsList(ref Packet packet)
         {
             var decompCount = packet.ReadInt32();
-            packet = packet.Inflate(decompCount, false);
+            var newPacket = packet.Inflate(decompCount, false);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
             {
-                var count = packet.ReadInt32("Addons Count");
+                var count = newPacket.ReadInt32("Addons Count");
                 _addonCount = count;
 
                 for (var i = 0; i < count; i++)
                 {
-                    packet.ReadCString("Name", i);
-                    packet.ReadBoolean("Uses public key", i);
-                    packet.ReadInt32("Public key CRC", i);
-                    packet.ReadInt32("URL file CRC", i);
+                    newPacket.ReadCString("Name", i);
+                    newPacket.ReadBoolean("Uses public key", i);
+                    newPacket.ReadInt32("Public key CRC", i);
+                    newPacket.ReadInt32("URL file CRC", i);
                 }
 
-                packet.ReadTime("Time");
+                newPacket.ReadTime("Time");
             }
             else
             {
                 int count = 0;
 
-                while (packet.Position != packet.Length)
+                while (newPacket.Position != newPacket.Length)
                 {
-                    packet.ReadCString("Name");
-                    packet.ReadBoolean("Enabled");
-                    packet.ReadInt32("CRC");
-                    packet.ReadInt32("Unk Int32");
+                    newPacket.ReadCString("Name");
+                    newPacket.ReadBoolean("Enabled");
+                    newPacket.ReadInt32("CRC");
+                    newPacket.ReadInt32("Unk Int32");
 
                     count++;
                 }
 
                 _addonCount = count;
             }
+
+            newPacket.ClosePacket(false);
         }
 
         [Parser(Opcode.SMSG_ADDON_INFO)]

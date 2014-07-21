@@ -20,7 +20,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             guid2[7] = packet.ReadBit();
 
             var memberCount = packet.ReadBits("Member Count", 21);
-            
+
             var bitsED = new uint[memberCount];
             var guid4 = new byte[memberCount][];
             for (var i = 0; i < memberCount; i++)
@@ -67,7 +67,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadByte("Byte29");
                 packet.ReadInt32("Int1C");
             }
-            
+
             for (var i = 0; i < memberCount; i++)
             {
                 packet.ReadXORByte(guid4[i], 5);

@@ -66,6 +66,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
                 packet.WriteGuid("GUID", guid2[i], i);
             }
-        }        
+        }
     }
 }

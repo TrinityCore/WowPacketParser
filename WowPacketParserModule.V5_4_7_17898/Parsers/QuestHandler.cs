@@ -605,8 +605,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             for (var i = 0; i < 4; i++)
                 packet.ReadUInt32("Reward Item Display Id", i);
 
-            
-            
+
+
             packet.ReadUInt32("Title Id");
             packet.ReadUInt32("Bonus Talents");
             packet.ReadUInt32("Reward Reputation Mask");

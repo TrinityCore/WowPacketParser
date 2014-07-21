@@ -42,7 +42,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                 hasAura[i] = packet.ReadBit();
                 if (hasAura[i])
                 {
-                    hasMaxDuration[i] = packet.ReadBit(); 
+                    hasMaxDuration[i] = packet.ReadBit();
                     bits48[i] = packet.ReadBits(22);
                     hasDuration[i] = packet.ReadBit();
                     hasCasterGUID[i] = packet.ReadBit();
@@ -383,7 +383,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             guid3[2] = packet.ReadBit();
             var hasPredictedHeal = !packet.ReadBit();
             var hasRunesStateBefore = !packet.ReadBit();
-            
+
             var guid9 = new byte[bits44][];
             for (var i = 0; i < bits44; ++i)
             {
@@ -644,11 +644,11 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             var extraTargetCount = 0;
             var bits1BC = 0;
 
-            
+
             var guid2 = new byte[8];
             var guid3 = new byte[8];
-            
-            
+
+
             var guid6 = new byte[8];
             var guid7 = new byte[8];
             var guid8 = new byte[8];
@@ -1151,7 +1151,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 7);
-            
+
             for (var i = 0; i < bits10; ++i)
             {
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");

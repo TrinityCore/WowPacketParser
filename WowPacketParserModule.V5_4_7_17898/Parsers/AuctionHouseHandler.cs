@@ -20,7 +20,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
 
         }
-        
+
         [Parser(Opcode.SMSG_AUCTION_HELLO)]
         public static void HandleServerAuctionHello(Packet packet)
         {

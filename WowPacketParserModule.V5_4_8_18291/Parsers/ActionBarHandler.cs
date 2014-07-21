@@ -86,6 +86,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 if (player != null && player.FirstLogin)
                     Storage.StartActions.Add(new Tuple<Race, Class>(player.Race, player.Class), startAction, packet.TimeSpan);
             }
-        }        
+        }
     }
 }

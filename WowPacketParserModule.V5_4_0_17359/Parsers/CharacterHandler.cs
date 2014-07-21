@@ -133,7 +133,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         public static void HandleLevelUp(Packet packet)
         {
             packet.ReadInt32("Health");
-            
+
             for (var i = 0; i < 5; i++)
                 packet.WriteLine("Stat " + (StatType)i + ": " + packet.ReadInt32());
 
@@ -171,7 +171,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 hasSeasonTotal[i] = packet.ReadBit();   // 14h
                 flags[i] = packet.ReadBits(5);          // 20h
             }
-            
+
             for (var i = 0; i < count; ++i)
             {
                 packet.WriteLine("[{0}] Flags {1}", i, flags[i]); // 20h

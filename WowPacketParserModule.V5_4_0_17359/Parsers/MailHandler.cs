@@ -10,11 +10,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
         [Parser(Opcode.SMSG_MAIL_LIST_RESULT)]
         public static void HandleMailListResult(Packet packet)
-        {            
+        {
             var bits0 = packet.ReadBits(18);
-            
+
             var guid = new byte[bits0][];
-            
+
             var bits2084 = new uint[bits0];
             var bit10 = new bool[bits0];
             var bit1C = new bool[bits0];

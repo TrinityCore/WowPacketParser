@@ -180,6 +180,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK | SpellHitInfo.HITINFO_UNK12))
                 packet.ReadSingle("Unk Float");
-        }        
+        }
     }
 }

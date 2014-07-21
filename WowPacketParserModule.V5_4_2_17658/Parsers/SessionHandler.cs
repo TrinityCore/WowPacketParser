@@ -61,7 +61,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             {
                 bits20 = packet.ReadBits(21);
                 bit78 = packet.ReadBit();
-                
+
                 bits0 = new uint[bits20];
                 bits0C = new uint[bits20];
 
@@ -79,7 +79,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 bit7C = packet.ReadBit();
                 packet.ReadBit();
                 bits64 = packet.ReadBits(21);
-                
+
                 bits45 = new uint[bits64];
                 bits68 = new uint[bits64];
                 bits448 = new uint[bits64];

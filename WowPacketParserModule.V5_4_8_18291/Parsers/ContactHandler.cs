@@ -37,6 +37,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             // still needed?
             if (packet.CanRead())
                 CoreParsers.WardenHandler.ReadCheatCheckDecryptionBlock(ref packet);
-        }        
+        }
     }
 }

@@ -128,7 +128,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_AUTH_RESPONSE, 0x0ABA},
             {Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED, 0x1A0F},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x0E3B},
-            {Opcode.SMSG_CAST_FAILED, 0x143A}, 
+            {Opcode.SMSG_CAST_FAILED, 0x143A},
             {Opcode.SMSG_CHANNEL_START, 0x10F9},
             {Opcode.SMSG_CHANNEL_UPDATE, 0x11D9 | 0x20000},
             {Opcode.SMSG_CHAR_CREATE, 0x1CAA},

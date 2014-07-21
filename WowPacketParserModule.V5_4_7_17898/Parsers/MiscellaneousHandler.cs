@@ -226,7 +226,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         public static void HandleWho(Packet packet)
         {
             var counter = (int)packet.ReadBits("List count", 6);
-            
+
             var accountId = new byte[counter][];
             var playerGUID = new byte[counter][];
             var guildGUID = new byte[counter][];
@@ -277,13 +277,13 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 playerGUID[i][5] = packet.ReadBit();
                 guildGUID[i][6] = packet.ReadBit();
             }
-            
+
             for (var i = 0; i < counter; ++i)
             {
                 packet.ReadXORByte(accountId[i], 7);
                 packet.ReadByte("Level", i);
                 packet.ReadXORByte(playerGUID[i], 3);
-                packet.ReadInt32("RealmID", i); 
+                packet.ReadInt32("RealmID", i);
                 packet.ReadXORByte(playerGUID[i], 5);
                 packet.ReadXORByte(guildGUID[i], 1);
                 packet.ReadEnum<Gender>("Gender", TypeCode.Byte, i);
@@ -308,7 +308,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                 packet.ReadWoWString("Player Name", playerNameLength[i], i);
 
-                packet.ReadInt32("RealmID", i); 
+                packet.ReadInt32("RealmID", i);
 
                 packet.ReadXORByte(playerGUID[i], 1);
                 packet.ReadXORByte(accountId[i], 1);

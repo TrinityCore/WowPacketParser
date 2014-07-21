@@ -75,10 +75,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var menuId = packet.ReadUInt32("Menu Id");
             packet.ReadUInt32("Friendship Faction");
             var textId = packet.ReadUInt32("Text Id");
-            packet.StartBitStream(guid, 0, 1);         
+            packet.StartBitStream(guid, 0, 1);
             var AmountOfOptions = packet.ReadBits("Amount of Options", 20);
             packet.StartBitStream(guid, 6, 7);
-            
+
             OptionTextLen = new uint[AmountOfOptions];
             BoxTextLen = new uint[AmountOfOptions];
             for (var i = 0; i < AmountOfOptions; ++i)
@@ -87,9 +87,9 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 BoxTextLen[i] = packet.ReadBits(12);
             }
             packet.StartBitStream(guid, 4, 3, 2);
-                      
+
             var questgossips = packet.ReadBits("Amount of Quest gossips", 19);
-            
+
             titleLen = new uint[questgossips];
             for (var i = 0; i < questgossips; ++i)
             {
@@ -98,17 +98,17 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             }
             guid[5] = packet.ReadBit();
             packet.ResetBitReader();
-            
+
             for (var i = 0; i < questgossips; i++)
             {
                 packet.ReadEnum<QuestFlags2>("Flags 2", TypeCode.UInt32, i);
-                packet.ReadUInt32("Icon", i);    
+                packet.ReadUInt32("Icon", i);
                 packet.ReadWoWString("Title", titleLen[i], i);
                 packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32, i);
                 packet.ReadInt32("Level", i);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID", i);                      
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID", i);
             }
-            
+
             var gossip = new Gossip();
 
             gossip.GossipOptions = new List<GossipOption>((int)AmountOfOptions);
@@ -126,7 +126,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
                 gossip.GossipOptions.Add(gossipOption);
             }
-            
+
             packet.ParseBitStream(guid, 3, 4, 7, 2, 1, 6, 0, 5);
             packet.WriteGuid("GUID", guid);
 
@@ -170,7 +170,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
         [Parser(Opcode.SMSG_HIGHEST_THREAT_UPDATE)]
         public static void HandleHighestThreatlistUpdate(Packet packet)
-        {            
+        {
             var guid1 = new byte[8];
             var guid2 = new byte[8];
 
@@ -280,7 +280,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var itemCount = packet.ReadBits(18);
             guid[0] = packet.ReadBit();
             guid[2] = packet.ReadBit();
-            
+
             var hasExtendedCost = new bool[itemCount];
             var hasCondition = new bool[itemCount];
 
@@ -299,7 +299,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             for (int i = 0; i < itemCount; ++i)
             {
                 var vendorItem = new VendorItem();
-                
+
                 var maxCount = packet.ReadInt32("Max Count", i);
                 vendorItem.Type = packet.ReadUInt32("Type", i); // 1 - item, 2 - currency
 

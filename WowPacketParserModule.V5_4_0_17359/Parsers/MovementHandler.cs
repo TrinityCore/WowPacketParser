@@ -231,7 +231,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteLine("WorldMapArea swap count: {0}", count);
             for (var i = 0; i < count; ++i)
                 packet.ReadUInt16("WorldMapArea swap", i);
-            
+
             count = packet.ReadUInt32() / 2;
             packet.WriteLine("Phases count: {0}", count);
             for (var i = 0; i < count; ++i)
@@ -259,7 +259,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var guid = new byte[8];
             var transportGUID = new byte[8];
             var pos = new Vector4();
- 
+
             var bit95 = packet.ReadBit();
             var hasPitch = !packet.ReadBit();
             guid[4] = packet.ReadBit();
@@ -282,18 +282,18 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 hasTransportTime2 = packet.ReadBit();
                 packet.StartBitStream(transportGUID, 0, 7, 6);
             }
- 
+
             var hasMovementFlags = !packet.ReadBit();
 
             if (hasMovementFlags)
                 packet.ReadEnum<MovementFlag>("Movement Flags", 30);
- 
+
             var hasOrientation = !packet.ReadBit();
             var isAlive = !packet.ReadBit();
             var hasFallDirection = false;
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
- 
+
             var hasExtraMovementFlags = !packet.ReadBit();
             guid[6] = packet.ReadBit();
             guid[0] = packet.ReadBit();
@@ -302,7 +302,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             if (hasExtraMovementFlags)
                 packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
- 
+
             var hasSplineElevation = !packet.ReadBit();
 
             pos.X = packet.ReadSingle();
@@ -319,7 +319,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadInt32("Fall Time");
                 packet.ReadSingle("Velocity Speed");
             }
- 
+
             packet.ReadXORByte(guid, 3);
 
             if (hasTransportData)
@@ -334,7 +334,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadXORByte(transportGUID, 3);
                 if (hasTransportTime2)
                     packet.ReadInt32("Transport Time 2");
- 
+
                 packet.ReadXORByte(transportGUID, 6);
                 packet.ReadXORByte(transportGUID, 7);
                 transPos.X = packet.ReadSingle();
@@ -350,13 +350,13 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.WriteGuid("Transport Guid", transportGUID);
                 packet.WriteLine("Transport Position {0}", transPos);
             }
- 
+
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 6);
 
             for (var i = 0; i < counter2; ++i)
                 packet.ReadInt32("Int9C", i);
- 
+
             packet.ReadXORByte(guid, 1);
 
             if (hasPitch)
@@ -369,13 +369,13 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             if (isAlive)
                 packet.ReadInt32("time(isAlive)");
- 
+
             if (hasSplineElevation)
                 packet.ReadSingle("Spline Elevation");
- 
+
             if (hasTimeStamp)
                 packet.ReadInt32("Timestamp");
- 
+
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 7);
@@ -797,7 +797,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var bits18 = 0u;
             if (bit18)
                 bits18 = packet.ReadBits(30);
-            
+
             var bits1C = 0u;
             if (bit1C)
                 bits1C = packet.ReadBits(13);
@@ -1144,7 +1144,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             var guid1 = new byte[8];
             var guid2 = new byte[8];
-            
+
             var bit5C = false;
             var bit64 = false;
             var bit88 = false;
@@ -1579,7 +1579,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadSingle("FloatB0");
                 packet.ReadInt32("IntAC");
             }
-            
+
             for (var i = 0; i < bits18; ++i)
             {
                 packet.ReadSingle("FloatED", i);

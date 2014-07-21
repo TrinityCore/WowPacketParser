@@ -46,7 +46,7 @@ namespace WowPacketParser.Misc
 
             Contract.Assert(uBit >= 0 && uBit <= 63);
 
-            var uFlag = (UInt64)(1 << uBit);
+            var uFlag = 1UL << uBit;
             var uThis = value.ToUInt64(null);
 
             return (uThis & uFlag) != 0;

@@ -140,13 +140,16 @@ namespace WowPacketParser.Misc
                     inflater.SetInput(arr, 0, arr.Length);
                     inflater.Inflate(newarr, 0, inflatedSize);
                 }*/
-                ZlibCodec stream = new ZlibCodec(CompressionMode.Decompress);
-                stream.InputBuffer = arr;
-                stream.NextIn = 0;
-                stream.AvailableBytesIn = arr.Length;
-                stream.OutputBuffer = newarr;
-                stream.NextOut = 0;
-                stream.AvailableBytesOut = inflatedSize;
+                var stream = new ZlibCodec(CompressionMode.Decompress)
+                {
+                    InputBuffer = arr,
+                    NextIn = 0,
+                    AvailableBytesIn = arr.Length,
+                    OutputBuffer = newarr,
+                    NextOut = 0,
+                    AvailableBytesOut = inflatedSize
+                };
+
                 stream.Inflate(FlushType.None);
                 stream.Inflate(FlushType.Finish);
                 stream.EndInflate();
@@ -296,9 +299,9 @@ namespace WowPacketParser.Misc
             Writer.AppendLine(string.Format(format, args));
         }
 
-        public void ClosePacket()
+        public void ClosePacket(bool clearWriter = true)
         {
-            if (Writer != null)
+            if (clearWriter && Writer != null)
             {
                 if (Settings.DumpFormatWithText())
                     Writer.Clear();

@@ -28,7 +28,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadBit(); // fake bit
 
                 packet.ReadBit("Unk bit");
-                
+
                 packet.StartBitStream(guid1[i], 7, 5, 3, 0, 4, 1, 6, 2);
 
                 bit8[i] = !packet.ReadBit();
@@ -74,7 +74,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 guid3[i][6] = packet.ReadBit();
                 guid3[i][2] = packet.ReadBit();
             }
-            
+
             for (var i = 0; i < bits10; ++i)
             {
                 packet.ReadXORByte(guid3[i], 6);
@@ -134,7 +134,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
                 packet.WriteGuid("Guid3", guid3[i], i);
             }
-            
+
             for (var i = 0; i < bits24; ++i)
             {
                 packet.ParseBitStream(guid1[i], 4, 3, 0, 1, 5, 7, 2, 6);

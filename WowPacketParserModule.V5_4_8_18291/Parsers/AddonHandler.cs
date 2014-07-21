@@ -12,7 +12,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_ADDON_INFO)]
         public static void HandleServerAddonsList(Packet packet)
         {
-            
+
         }
     }
 }

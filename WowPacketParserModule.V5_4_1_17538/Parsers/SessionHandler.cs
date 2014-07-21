@@ -71,11 +71,10 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             sha[15] = packet.ReadByte();
             //packet.ReadUInt32("UInt32 5");
 
-            using (var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
-            {
-                var pkt2 = addons;
-                CoreParsers.AddonHandler.ReadClientAddonsList(ref pkt2);
-            }
+            var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
+                packet.Number, packet.Writer, packet.FileName);
+            CoreParsers.AddonHandler.ReadClientAddonsList(ref addons);
+            addons.ClosePacket(false);
 
             var size = (int)packet.ReadBits(11);
             packet.ReadBit("Unk bit");
@@ -122,6 +121,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
             if (bit7C)
                 bit7C = packet.ReadBit();
+
             var hasAccountData = packet.ReadBit("Has Account Data");
 
             if (hasAccountData)
@@ -183,7 +183,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                 for (var i = 0; i < raceCount; ++i)
                 {
                     packet.ReadEnum<ClientType>("Race Expansion", TypeCode.Byte, i);
-                    packet.ReadEnum<Race>("Race", TypeCode.Byte, i);            
+                    packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
                 }
 
                 packet.ReadByte("Byte30");

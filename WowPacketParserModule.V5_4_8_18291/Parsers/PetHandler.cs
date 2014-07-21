@@ -147,7 +147,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 3);
             packet.ReadInt16("Int42");
-            
+
             for (var i = 0; i < bits44; ++i)
             {
                 packet.ReadInt32("Int48", i);

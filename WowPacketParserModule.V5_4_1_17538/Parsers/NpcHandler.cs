@@ -130,6 +130,8 @@ namespace WowPacketParserModule.V5_4_1_17358.Parsers
             for (var i = 0; i < 8; ++i)
                 npcText.BroadcastTextId[i] = pkt.ReadUInt32("Broadcast Text Id", i);
 
+            pkt.ClosePacket(false);
+
             packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
 
             Storage.NpcTextsMop.Add((uint)entry.Key, npcText, packet.TimeSpan);

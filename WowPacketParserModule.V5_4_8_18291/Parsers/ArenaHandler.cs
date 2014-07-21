@@ -12,6 +12,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         {
             packet.ReadUInt32("Last Season");
             packet.ReadUInt32("Active Season");
-        }        
+        }
     }
 }
