@@ -220,6 +220,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_SET_VIGNETTE, 0x0CBE},
             {Opcode.SMSG_SPELLDISPELLOG, 0x0DF9},
             {Opcode.SMSG_SPELLENERGIZELOG, 0x0D79},
+            {Opcode.SMSG_SPELLLOGEXECUTE, 0x00D8},
             {Opcode.SMSG_SPELLHEALLOG, 0x09FB | 0x20000},
             {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x1450 | 0x20000},
             {Opcode.SMSG_SPELL_FAILED_OTHER, 0x040B},
@@ -237,13 +238,16 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_TRANSFER_PENDING, 0x061B},
             {Opcode.SMSG_TRAINER_LIST, 0x189F},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x1B90},
+            {Opcode.SMSG_UPDATE_ACCOUNT_DATA, 0x0AAE},
             {Opcode.SMSG_UPDATE_OBJECT, 0x1792},
             {Opcode.SMSG_WARDEN_DATA, 0x14EB},
             {Opcode.SMSG_WEATHER, 0x06AB},
             {Opcode.SMSG_WHO, 0x161B},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x0082},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x0027},
-            
+            {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x1D8A},
+            {Opcode.CMSG_SET_ACTION_BUTTON, 0x1F8C},
+            {Opcode.SMSG_LOG_XPGAIN, 0x1E9A}
         };
     }
 }

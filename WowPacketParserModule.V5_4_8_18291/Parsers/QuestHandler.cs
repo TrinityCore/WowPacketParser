@@ -336,5 +336,14 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.ReadInt32("Count");
         }
+
+        [Parser(Opcode.CMSG_QUESTGIVER_HELLO)]
+        public static void HandleQuestgiverHello(Packet packet)
+        {
+            var guid = new byte[8];
+            packet.StartBitStream(guid, 5, 6, 7, 3, 4, 2, 1, 0);
+            packet.ParseBitStream(guid, 4, 1, 7, 3, 6, 0, 5, 2);
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
