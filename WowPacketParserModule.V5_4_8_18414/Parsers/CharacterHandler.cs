@@ -234,6 +234,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Target", guid2);
         }
 
+        [Parser(Opcode.SMSG_STANDSTATE_UPDATE)]
+        public static void HandleStandStateUpdate(Packet packet)
+        {
+            packet.ReadByte("Standstate");
+        }
+
         [Parser(Opcode.SMSG_CHAR_CREATE)]
         [Parser(Opcode.SMSG_CHAR_DELETE)]
         [Parser(Opcode.SMSG_INIT_CURRENCY)]

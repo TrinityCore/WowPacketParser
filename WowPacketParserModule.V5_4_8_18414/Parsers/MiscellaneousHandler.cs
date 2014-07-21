@@ -306,9 +306,17 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_UNK_15A9)]
         public static void HandleUnk15A9(Packet packet)
         {
-            packet.ReadBit("unk16");
-            packet.ReadBit("unk17");
-            packet.ResetBitReader();
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                packet.ReadBit("unk16");
+                packet.ReadBit("unk17");
+                packet.ResetBitReader();
+            }
+            else
+            {
+                packet.WriteLine("              : SMSG_UNK_15A9");
+                packet.ReadToEnd();
+            }
         }
 
         [Parser(Opcode.CMSG_UNK_1841)]
@@ -415,7 +423,26 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             if (packet.Direction == Direction.ServerToClient)
             {
-                packet.ReadToEnd();
+                var unk52 = packet.ReadBit("unk52");
+                var unk40 = packet.ReadBit("unk40");
+                var unk20 = packet.ReadBit("unk20");
+                var unk28 = packet.ReadBit("unk28");
+
+                if (unk40)
+                    packet.ReadInt32("unk36");
+
+                packet.ReadByte("unk32");
+                packet.ReadInt32("unk176");
+                packet.ReadInt32("unk224");
+
+                if (unk20)
+                    packet.ReadInt32("unk64");
+
+                if (unk52)
+                    packet.ReadInt32("unk192");
+
+                if (unk28)
+                    packet.ReadInt32("unk96");
             }
             else
             {

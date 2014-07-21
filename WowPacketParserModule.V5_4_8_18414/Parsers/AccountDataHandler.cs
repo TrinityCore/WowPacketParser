@@ -25,20 +25,9 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadTime("Server Time"); //24*4
         }
 
-        [Parser(Opcode.SMSG_LOGOUT_CANCEL_ACK)]
-        public static void HandleLogoutCancelAck(Packet packet)
-        {
-            packet.ReadToEnd();
-        }
-
-        [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
-        public static void HandleLogoutCompletek(Packet packet)
-        {
-            packet.ReadToEnd();
-        }
-
         [Parser(Opcode.CMSG_LOGOUT_CANCEL)]
         [Parser(Opcode.CMSG_LOGOUT_REQUEST)]
+        [Parser(Opcode.SMSG_LOGOUT_CANCEL_ACK)]
         public static void HandleAccountNull(Packet packet)
         {
         }

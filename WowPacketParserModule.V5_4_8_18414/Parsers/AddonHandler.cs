@@ -13,7 +13,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             var BannedAddonsCount = packet.ReadBits("Banned Addons Count", 18);
             var AddonsCount = packet.ReadBits("Addons Count", 23);
             uint[,] AddonsInfo = new uint[AddonsCount, 4];
-
             packet.ReadToEnd();
         }
     }

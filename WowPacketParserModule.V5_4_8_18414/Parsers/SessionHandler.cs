@@ -209,6 +209,18 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadSingle("Z");
         }
 
+        [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
+        public static void HandleLogoutCompletek(Packet packet)
+        {
+            packet.ReadBit("Unk 1");
+
+            var guid = packet.StartBitStream(3, 2, 1, 4, 6, 7, 5, 0);
+            packet.ParseBitStream(guid, 6, 4, 1, 2, 7, 3, 0, 5);
+
+            packet.WriteGuid("Guid", guid);
+            LoginGuid = new Guid(0);
+        }
+
         [Parser(Opcode.SMSG_MOTD)]
         public static void HandleMessageOfTheDay(Packet packet)
         {
