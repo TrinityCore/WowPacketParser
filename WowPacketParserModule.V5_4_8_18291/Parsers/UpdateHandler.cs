@@ -117,6 +117,25 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var goTransportGuid = new byte[8];
             var attackingTargetGuid = new byte[8];
 
+            var bit160 = false;
+            var bit528 = false;
+            var bit600 = false;
+            var bit544 = false;
+            var bit526 = false;
+            var bit552 = false;
+            var bit524 = false;
+            var bit572 = false;
+            var bit525 = false;
+            var bit664 = false;
+            var bit527 = false;
+            var bit536 = false;
+            var bit644 = false;
+            var bit560 = false;
+
+            var hasAnimKit1 = false;
+            var hasAnimKit2 = false;
+            var hasAnimKit3 = false;
+
             var hasFallData = false;
             var hasFallDirection = false;
             var hasFullSpline = false;
@@ -145,6 +164,12 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var Unk19BitsCounter = 0u;
             var UnkSpline_21BitsCounter = 0u;
             var Unk22BitsCounter = 0u;
+            var bits25C = 0u;
+            var bits26C = 0u;
+            var bits288 = 0u;
+            var bits418 = 0u;
+            var bits2AA = 0u;
+
             var splineType = SplineType.Stop;
 
 
@@ -221,11 +246,11 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 hasMovementFlags = !packet.ReadBit("Has MovementFlags");
 
                 Unk19BitsCounter = packet.ReadBits(19);
-
+                /*
                 if (Unk19BitsCounter != 0)
                     for (var i = 0; i < Unk19BitsCounter; ++i)
                         packet.ReadBits("Unk19BitsCounter", 2, index);
-
+                */
                 hasFallData = packet.ReadBit("Has Fall Data", index);
 
                 if (hasMovementFlags)
@@ -268,32 +293,69 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     moveInfo.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13, index);
             }
 
+            if (isSceneObject)
+            {
+                // need update
+            }
+			
             if (hasGOTransportPosition)
             {
                 packet.StartBitStream(goTransportGuid, 4, 1, 0);
-                hasGOTransportTime3 = packet.ReadBit();
-                packet.StartBitStream(goTransportGuid, 6, 5, 3, 2, 7);
                 hasGOTransportTime2 = packet.ReadBit();
+                packet.StartBitStream(goTransportGuid, 6, 5, 3, 2, 7);
+                hasGOTransportTime3 = packet.ReadBit();
             }
 
+             if (isAreaTrigger)
+            {
+                bit528 = packet.ReadBit();
+                bit600 = packet.ReadBit();
+                bit544 = packet.ReadBit();
+                bit526 = packet.ReadBit();
+                bit552 = packet.ReadBit();
+                bit524 = packet.ReadBit();
+                bit572 = packet.ReadBit();
+                bit525 = packet.ReadBit();
+                bit664 = packet.ReadBit();
+                bit527 = packet.ReadBit();
+                 
+                if (bit664)
+					bits288 = packet.ReadBits(20);
+                 
+                bit536 = packet.ReadBit();
+				bit644 = packet.ReadBit();
+				bit560 = packet.ReadBit();
+                 
+                if (bit664)
+                {
+					bits25C = packet.ReadBits(21);
+					bits26C = packet.ReadBits(21);
+				}
+			}
+            
             if (hasAnimKits)
             {
-                // need update
+                hasAnimKit2 = !packet.ReadBit();
+                hasAnimKit3 = !packet.ReadBit();
+                hasAnimKit1 = !packet.ReadBit();
             }
 
             if (hasAttackingTarget)
             {
                 attackingTargetGuid = packet.StartBitStream(4, 6, 5, 2, 0, 1, 3, 7);
-
             }
 
-            if (isSceneObject)
-            {
-                // need update
-            }
-
+            if (byte428)
+                bits418 = packet.ReadBits(22);
+            
+            if (byte32A)
+                bits2AA = packet.ReadBits(7);
+            
             packet.ResetBitReader();
-
+            
+            for (var i = 0; i < transportFrames; ++i)
+                packet.ReadInt32("Transport frame", index, i);
+                
             if (living)
             {
                 if (hasTransportData)
@@ -304,12 +366,12 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     if (hasTransportTime3)
                         packet.ReadUInt32("Transport Time 3", index);
 
-                    moveInfo.TransportOffset.Z = packet.ReadSingle();
+                    moveInfo.TransportOffset.O = packet.ReadSingle();
                     moveInfo.TransportOffset.Y = packet.ReadSingle();
                     packet.ReadXORByte(transportGuid, 4);
                     packet.ReadXORByte(transportGuid, 1);
                     packet.ReadXORByte(transportGuid, 3);
-                    moveInfo.TransportOffset.O = packet.ReadSingle();
+                    moveInfo.TransportOffset.Z = packet.ReadSingle();
                     packet.ReadXORByte(transportGuid, 5);
 
                     if (hasTransportTime2)
@@ -323,7 +385,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 }
 
                 packet.ReadXORByte(guid1, 4);
-
+                /*
                 for (var i = 0; i < Unk19BitsCounter; ++i)
                 {
                     packet.ReadSingle();
@@ -332,14 +394,14 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     packet.ReadInt32();
                     packet.ReadInt32();
                     packet.ReadSingle();
-                }
+                }*/
 
                 if (moveInfo.HasSplineData)
                 {
                     if (hasFullSpline)
                     {
                         packet.ReadInt32("Spline Time", index);
-                        packet.ReadSingle("UnkFloat", index);
+                        packet.ReadSingle("Duration", index);
 
                         if (hasUnkSpline)
                         {
@@ -350,7 +412,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                             }
                         }
 
-                        packet.ReadSingle("UnkSingle");
+                        packet.ReadSingle("Modify Duration");
 
                         if (splineCount != 0)
                         {
@@ -408,10 +470,10 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         packet.ReadInt32("Spline Full Time", index);
                     }
 
-                    packet.ReadSingle();
-                    packet.ReadSingle();
+                    moveInfo.Position.X = packet.ReadSingle();
+                    moveInfo.Position.Z = packet.ReadSingle();
                     packet.ReadInt32("Spline Id", index);
-                    packet.ReadSingle();
+                    moveInfo.Position.Y = packet.ReadSingle();
                 }
 
                 packet.ReadSingle("Fly Speed", index);
@@ -425,9 +487,9 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 {
                     if (hasFallDirection)
                     {
+                        packet.ReadSingle("sinAngle:", index);
                         packet.ReadSingle("XY SPEED:", index);
                         packet.ReadSingle("cosAngle:", index);
-                        packet.ReadSingle("sinAngle:", index);
                     }
 
                     packet.ReadInt32("FallTime: ", index);
@@ -492,10 +554,71 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 // need update
             }
 
+            if (isAreaTrigger)
+            {
+                if (bit664)
+                {
+                    for (var i = 0; i < bits288; ++i)
+                    {
+                        packet.ReadSingle("Float652+4", index, i);
+                        packet.ReadSingle("Float652", index, i);
+                        packet.ReadSingle("Float652+8", index, i);
+                    }
+                }
+                 
+                if (bit600)
+                {
+                    packet.ReadSingle("Float584", index);
+                    packet.ReadSingle("Float580", index);
+                    packet.ReadSingle("Float596", index);
+                    packet.ReadSingle("Float592", index);
+                    packet.ReadSingle("Float576", index);
+                    packet.ReadSingle("Float588", index);
+                }
+                 
+                if (bit644)
+                {
+                    for (var i = 0; i < bits25C; ++i)
+                    {
+                        packet.ReadSingle("Float608", index, i);
+                        packet.ReadSingle("Float608+4", index, i);
+                    }
+                     
+                    for (var i = 0; i < bits26C; ++i)
+                    {
+                        packet.ReadSingle("Float260+0", index, i);
+                        packet.ReadSingle("Float260+1", index, i);
+                    }
+                     
+                    packet.ReadSingle("Float624", index);
+                    packet.ReadSingle("Float624+4", index);
+                }
+                 
+                packet.ReadUInt32("unk520", index);
+                 
+                if (bit544)
+                    packet.ReadUInt32("unk544", index);
+                 
+                if (bit552)
+                    packet.ReadUInt32("unk548", index);
+                 
+                if (bit536)
+                    packet.ReadUInt32("unk532", index);
+                 
+                if (bit560)
+                    packet.ReadUInt32("unk556", index);
+                 
+                if (bit572)
+                {
+                    packet.ReadSingle("Float564", index);
+                    packet.ReadSingle("Float568", index);
+                }
+            }
+            
             if (hasGOTransportPosition)
             {
-                if (hasGOTransportTime3)
-                    packet.ReadUInt32("GO Transport Time 3", index);
+                if (hasGOTransportTime2)
+                    packet.ReadUInt32("GO Transport Time 2", index);
 
                 moveInfo.TransportOffset.Y = packet.ReadSingle();
 
@@ -505,8 +628,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
                 packet.ParseBitStream(goTransportGuid, 2, 4, 1);
 
-                if (hasGOTransportTime2)
-                    packet.ReadUInt32("GO Transport Time 2", index);
+                if (hasGOTransportTime3)
+                    packet.ReadUInt32("GO Transport Time 3", index);
 
                 packet.ReadUInt32("GO Transport Time", index);
 
@@ -521,43 +644,68 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             }
 
-            if (hasVehicleData)
-            {
-                moveInfo.VehicleId = packet.ReadUInt32("Vehicle Id", index);
-                packet.ReadSingle("Vehicle Orientation", index);
-            }
-
             if (hasAttackingTarget)
             {
                 packet.ParseBitStream(attackingTargetGuid, 7, 1, 5, 2, 6, 3, 0, 4);
                 packet.WriteGuid("Attacking GUID", attackingTargetGuid, index);
             }
 
+            if (hasVehicleData)
+            {
+                moveInfo.VehicleId = packet.ReadUInt32("Vehicle Id", index);
+                packet.ReadSingle("Vehicle Orientation", index);
+            }
+            
+            if (hasStationaryPosition)
+            {
+                moveInfo.Position.Y = packet.ReadSingle();
+                moveInfo.Position.Z = packet.ReadSingle(); 
+                moveInfo.Orientation = packet.ReadSingle("Stationary Orientation", index);
+                moveInfo.Position.X = packet.ReadSingle();
+
+                packet.WriteLine("[{0}] Stationary Position: {1}", index, moveInfo.Position);
+            }
+
+            if (byte2A4)
+                packet.ReadInt32("unk672");
+
+            if (hasAnimKits)
+            {
+                if (hasAnimKit1)
+                    packet.ReadUInt16("Anim Kit 1", index);
+                if (hasAnimKit3)
+                    packet.ReadUInt16("Anim Kit 3", index);
+                if (hasAnimKit2)
+                    packet.ReadUInt16("Anim Kit 2", index);
+            }
+            
+            if (byte32A)
+            {
+                var bytes = packet.ReadBytes((int)bits2AA);
+                packet.WriteLine("Bytes {0}", Utilities.ByteArrayToHexString(bytes), index);
+            }
+                
+            if (transport)
+            {
+                packet.ReadUInt32("unk472");
+            }
+            
+            if (byte428)
+            {
+                for (var i = 0; i < bits418; ++i)
+                    packet.ReadInt32("unk1052+4", index, i);
+            }
+            
             if (hasGameObjectRotation)
             {
                 packet.ReadPackedQuaternion("GameObject Rotation", index);
             }
-
-            if (hasAnimKits)
+            
+            if (byte414)
             {
-                // need update
+                packet.ReadInt32();
             }
-
-            if (hasStationaryPosition)
-            {
-                moveInfo.Orientation = packet.ReadSingle("Stationary Orientation", index);
-                moveInfo.Position.X = packet.ReadSingle();
-
-                moveInfo.Position.Z = packet.ReadSingle(); 
-                moveInfo.Position.Y = packet.ReadSingle();
-                packet.WriteLine("[{0}] Stationary Position: {1}", index, moveInfo.Position);
-            }
-
-            if (transport)
-            {
-                // need update
-            }
-
+                
             if (living && moveInfo.HasSplineData && hasFullSpline && splineType == SplineType.FacingTarget)
             {
 
@@ -565,19 +713,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 facingTargetGuid = packet.StartBitStream(4, 7, 0, 5, 1, 2, 3, 6);
                 packet.ParseBitStream(facingTargetGuid, 4, 2, 0, 5, 6, 3, 1, 7);
                 packet.WriteGuid("Facing Target GUID", facingTargetGuid, index);
-            }
-
-            if (byte32A)
-                packet.ReadString();
-
-            if (byte414)
-                packet.ReadInt32();
-
-            if (byte2A4)
-                packet.ReadInt32();
-
-            if (byte428)
-            {
             }
 
             return moveInfo;
