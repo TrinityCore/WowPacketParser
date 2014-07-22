@@ -113,7 +113,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_MINIMAP_PING,                             0x0837}, //-+
             {Opcode.CMSG_MOVE_TELEPORT_ACK,                        0x0078}, //-+
             {Opcode.CMSG_NAME_QUERY,                               0x0328}, //-+
-            {Opcode.CMSG_NPC_TEXT_QUERY,                           0x0287}, //-+
+            {Opcode.CMSG_NPC_TEXT_QUERY,                           0x0287}, //++
             {Opcode.CMSG_OFFER_PETITION,                           0x15BE}, //-+
             {Opcode.CMSG_OPENING_CINEMATIC,                        0x0130}, //--
             {Opcode.CMSG_PET_NAME_QUERY,                           0x1C62}, //--
@@ -124,9 +124,9 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_PETITION_SHOW_SIGNATURES,                 0x136B}, //--
             {Opcode.CMSG_PETITION_SHOWLIST,                        0x037B}, //-+
             {Opcode.CMSG_PETITION_SIGN,                            0x06DA}, //
-            {Opcode.CMSG_PING,                                     0x0012}, //-+
-            {Opcode.CMSG_PLAYED_TIME,                              0x03F6}, //+-
-            {Opcode.CMSG_PLAYER_LOGIN,                             0x158F}, //+-
+            {Opcode.CMSG_PING,                                     0x0012}, //++
+            {Opcode.CMSG_PLAYED_TIME,                              0x03F6}, //++
+            {Opcode.CMSG_PLAYER_LOGIN,                             0x158F}, //++
             //{Opcode.CMSG_PVP_LOG_DATA,                             0x14C2}, //-+
             {Opcode.CMSG_QUERY_GUILD_REWARDS,                      0x06C4}, //+-
             {Opcode.CMSG_QUERY_GUILD_XP,                           0x05F8}, //--
@@ -137,7 +137,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_QUESTGIVER_QUERY_QUEST,                   0x12F0}, //--
             {Opcode.CMSG_QUESTGIVER_REQUEST_REWARD,                0x0378}, //--
             {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY,         0x02F1}, //--
-            {Opcode.CMSG_QUESTGIVER_STATUS_QUERY,                  0x036A}, //-+
+            {Opcode.CMSG_QUESTGIVER_STATUS_QUERY,                  0x036A}, //++
             {Opcode.CMSG_QUEST_POI_QUERY,                          0x10C2}, //--
             {Opcode.CMSG_QUEST_QUERY,                              0x02D5}, //--
             {Opcode.CMSG_QUESTLOG_REMOVE_QUEST,                    0x0779}, //--
@@ -150,7 +150,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             //{Opcode.CMSG_REALM_SPLIT,                              0x18B2}, //+-
             {Opcode.CMSG_REORDER_CHARACTERS,                       0x08A7}, //--
             {Opcode.CMSG_REPAIR_ITEM,                              0x02C1}, //--
-            {Opcode.CMSG_REQUEST_HOTFIX,                           0x158D}, //+-
+            {Opcode.CMSG_REQUEST_HOTFIX,                           0x158D}, //++
             {Opcode.CMSG_RESET_INSTANCES,                          0x0C69}, //+-
             {Opcode.CMSG_SELL_ITEM,                                0x1358}, //--
             {Opcode.CMSG_SEND_MAIL,                                0x1DBA}, //--
@@ -268,30 +268,30 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_NULL_1FBE,                                0x1FBE}, //+-
 
             {Opcode.MSG_MOVE_FALL_LAND,                            0x08FA}, //++
-            {Opcode.MSG_MOVE_HEARTBEAT,                            0x01F2}, //+-
+            {Opcode.MSG_MOVE_HEARTBEAT,                            0x01F2}, //++
             {Opcode.MSG_MOVE_JUMP,                                 0x1153}, //+-
             {Opcode.MSG_MOVE_SET_FACING,                           0x1050}, //+-
             {Opcode.MSG_MOVE_SET_PITCH,                            0x017A}, //+-
-            {Opcode.MSG_MOVE_SET_RUN_MODE,                         0x0979}, //-+
-            {Opcode.MSG_MOVE_SET_WALK_MODE,                        0x08D1}, //-+
-            {Opcode.MSG_MOVE_START_ASCEND,                         0x11FA}, //--
+            {Opcode.MSG_MOVE_SET_RUN_MODE,                         0x0979}, //++
+            {Opcode.MSG_MOVE_SET_WALK_MODE,                        0x08D1}, //++
+            {Opcode.MSG_MOVE_START_ASCEND,                         0x11FA}, //+-
             {Opcode.MSG_MOVE_START_BACKWARD,                       0x09D8}, //++
-            {Opcode.MSG_MOVE_START_DESCEND,                        0x01D1}, //--
-            {Opcode.MSG_MOVE_START_FORWARD,                        0x095A}, //--
-            {Opcode.MSG_MOVE_START_PITCH_DOWN,                     0x08D8}, //--
-            {Opcode.MSG_MOVE_START_PITCH_UP,                       0x00D8}, //--
-            {Opcode.MSG_MOVE_START_STRAFE_LEFT,                    0x01F8}, //--
-            {Opcode.MSG_MOVE_START_STRAFE_RIGHT,                   0x1058}, //--
+            {Opcode.MSG_MOVE_START_DESCEND,                        0x01D1}, //+-
+            {Opcode.MSG_MOVE_START_FORWARD,                        0x095A}, //++
+            {Opcode.MSG_MOVE_START_PITCH_DOWN,                     0x08D8}, //+-
+            {Opcode.MSG_MOVE_START_PITCH_UP,                       0x00D8}, //+-
+            {Opcode.MSG_MOVE_START_STRAFE_LEFT,                    0x01F8}, //++
+            {Opcode.MSG_MOVE_START_STRAFE_RIGHT,                   0x1058}, //++
             {Opcode.MSG_MOVE_START_SWIM,                           0x1858}, //--
             {Opcode.MSG_MOVE_START_TURN_LEFT,                      0x01D0}, //++
             {Opcode.MSG_MOVE_START_TURN_RIGHT,                     0x107B}, //--
-            {Opcode.MSG_MOVE_STOP,                                 0x08F1}, //--
+            {Opcode.MSG_MOVE_STOP,                                 0x08F1}, //++
             {Opcode.MSG_MOVE_STOP_ASCEND,                          0x115A}, //--
             {Opcode.MSG_MOVE_STOP_PITCH,                           0x007A}, //--
-            {Opcode.MSG_MOVE_STOP_STRAFE,                          0x0171}, //--
+            {Opcode.MSG_MOVE_STOP_STRAFE,                          0x0171}, //++
             {Opcode.MSG_MOVE_STOP_SWIM,                            0x0950}, //--
             {Opcode.MSG_MOVE_STOP_TURN,                            0x1170}, //++
-            {Opcode.MSG_MOVE_WORLDPORT_ACK,                        0x1FAD}, //+-
+            {Opcode.MSG_MOVE_WORLDPORT_ACK,                        0x1FAD}, //++
             {Opcode.MSG_SET_RAID_DIFFICULTY,                       0x0591}, //--
             {Opcode.MSG_VERIFY_CONNECTIVITY,                       0x4F57}, //--
 
@@ -335,10 +335,10 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_CLIENT_CONTROL_UPDATE,                    0x1043}, //++
             {Opcode.SMSG_CONTACT_LIST,                             0x1F22}, //--
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE,                  0x048B}, //--
-            {Opcode.SMSG_DB_REPLY,                                 0x103B}, //+-
-            {Opcode.SMSG_DESTROY_OBJECT,                           0x14C2}, //-+
-            {Opcode.SMSG_EMOTE,                                    0x002E}, //+-
-            //{Opcode.SMSG_FEATURE_SYSTEM_STATUS,                    0x16BB}, //?
+            {Opcode.SMSG_DB_REPLY,                                 0x103B}, //++
+            {Opcode.SMSG_DESTROY_OBJECT,                           0x14C2}, //++
+            {Opcode.SMSG_EMOTE,                                    0x002E}, //++
+            {Opcode.SMSG_FEATURE_SYSTEM_STATUS,                    0x16BB}, //++
             {Opcode.SMSG_FRIEND_STATUS,                            0x0532}, //--
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE,                0x06BF}, //--
             //{Opcode.SMSG_GMRESPONSE_RECEIVED,                      0x148E}, //++
@@ -373,6 +373,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_ITEM_TIME_UPDATE,                         0x18C1}, //--
             {Opcode.SMSG_LEARNED_SPELL,                            0x129A}, //++
             {Opcode.SMSG_LIST_INVENTORY,                           0x1AAE}, //--
+            {Opcode.SMSG_LOAD_CUF_PROFILES,                        0x0E32}, //++
             {Opcode.SMSG_LOGIN_SETTIMESPEED,                       0x082B}, //++
             {Opcode.SMSG_LOGIN_VERIFY_WORLD,                       0x1C0F}, //--
             {Opcode.SMSG_LOGOUT_CANCEL_ACK,                        0x0AAF}, //++
@@ -390,16 +391,17 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_MOTD,                                     0x183B}, //++
             {Opcode.SMSG_MOVE_ROOT,                                0x15AE}, //++
             {Opcode.SMSG_MOVE_SET_ACTIVE_MOVER,                    0x0C6D}, //+-
-            {Opcode.SMSG_MOVE_SET_CAN_FLY,                         0x178D}, //+-
+            {Opcode.SMSG_MOVE_SET_CAN_FLY,                         0x178D}, //++
             {Opcode.SMSG_MOVE_SET_FLIGHT_SPEED,                    0x006E}, //++
             {Opcode.SMSG_MOVE_SET_RUN_SPEED,                       0x184C}, //++
             {Opcode.SMSG_MOVE_SET_RUN_BACK_SPEED,                  0x0A83}, //++
+            //{Opcode.SMSG_MOVE_SET_SWIM_SPEED,                      0x0817}, //++
             {Opcode.SMSG_MOVE_SET_WALK_SPEED,                      0x0469}, //++
-            {Opcode.SMSG_MOVE_TELEPORT,                            0x0B39}, //+-
-            {Opcode.SMSG_MOVE_UNROOT,                              0x1FAE}, //+-
-            {Opcode.SMSG_MOVE_UNSET_CAN_FLY,                       0x0162}, //+-
-            {Opcode.SMSG_NAME_QUERY_RESPONSE,                      0x169B}, //+-
-            {Opcode.SMSG_NEW_WORLD,                                0x1C3B}, //-+
+            {Opcode.SMSG_MOVE_TELEPORT,                            0x0B39}, //++
+            {Opcode.SMSG_MOVE_UNROOT,                              0x1FAE}, //++
+            {Opcode.SMSG_MOVE_UNSET_CAN_FLY,                       0x0162}, //++
+            {Opcode.SMSG_NAME_QUERY_RESPONSE,                      0x169B}, //++
+            {Opcode.SMSG_NEW_WORLD,                                0x1C3B}, //++
             {Opcode.SMSG_NPC_TEXT_UPDATE,                          0x140A}, //--
             {Opcode.SMSG_PARTY_COMMAND_RESULT,                     0x0F86}, //--
             //{Opcode.SMSG_PARTY_MEMBER_STATS,                       0x0A9A}, //-+
@@ -410,7 +412,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_PETITION_SHOWLIST,                        0x10A3}, //--
             {Opcode.SMSG_PETITION_SHOW_SIGNATURES,                 0x00AA}, //--
             {Opcode.SMSG_PETITION_SIGN_RESULTS,                    0x06AE}, //--
-            {Opcode.SMSG_PLAY_SOUND,                               0x102A}, //-+
+            {Opcode.SMSG_PLAY_SOUND,                               0x102A}, //++
             {Opcode.SMSG_PLAYER_MOVE,                              0x1A32}, //++
             {Opcode.SMSG_PLAYERBOUND,                              0x1B60}, //--
             {Opcode.SMSG_PONG,                                     0x1969}, //--
@@ -443,8 +445,8 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_SET_DUNGEON_DIFFICULTY,                   0x1283}, //--
             {Opcode.SMSG_SET_FORCED_REACTIONS,                     0x068F}, //++
             {Opcode.SMSG_SET_PHASE_SHIFT,                          0x02A2}, //++
-            {Opcode.SMSG_SET_TIMEZONE_INFORMATION,                 0x19C1}, //+-
-            {Opcode.SMSG_SHOW_BANK,                                0x0007}, //-+
+            {Opcode.SMSG_SET_TIMEZONE_INFORMATION,                 0x19C1}, //++
+            {Opcode.SMSG_SHOW_BANK,                                0x0007}, //++
             {Opcode.SMSG_SHOWTAXINODES,                            0x1E1A}, //++
             {Opcode.SMSG_SPELL_FAILED_OTHER,                       0x040B}, //--
             {Opcode.SMSG_SPELL_FAILURE,                            0x04AF}, //--
@@ -455,17 +457,18 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_STANDSTATE_UPDATE,                        0x1C12}, //++
             {Opcode.SMSG_START_TIMER,                              0x0E3F}, //+-
             {Opcode.SMSG_TALENTS_INFO,                             0x0A9B}, //--
-            {Opcode.SMSG_TIME_SYNC_REQ,                            0x1A8F}, //+-
+            {Opcode.SMSG_TIME_SYNC_REQ,                            0x1A8F}, //++
             {Opcode.SMSG_TRAINER_LIST,                             0x189F}, //--
-            {Opcode.SMSG_TRANSFER_PENDING,                         0x061B}, //-+
+            {Opcode.SMSG_TRANSFER_PENDING,                         0x061B}, //++
             {Opcode.SMSG_TRIGGER_CINEMATIC,                        0x0B01}, //--
             {Opcode.SMSG_TRIGGER_MOVIE,                            0x1C2E}, //--
             {Opcode.SMSG_TURN_IN_PETITION_RESULTS,                 0x0E13}, //--
-            {Opcode.SMSG_TUTORIAL_FLAGS,                           0x1B90}, //+-
+            {Opcode.SMSG_TUTORIAL_FLAGS,                           0x1B90}, //++
+            {Opcode.SMSG_UPDATE_COMBO_POINTS,                      0x082F}, //++
             {Opcode.SMSG_UPDATE_LAST_INSTANCE,                     0x189B}, //--
             {Opcode.SMSG_UPDATE_OBJECT,                            0x1792}, //--
             {Opcode.SMSG_UPDATE_WORLD_STATE,                       0x121B}, //++
-            {Opcode.SMSG_WARDEN_DATA,                              0x0C0A}, //+-
+            {Opcode.SMSG_WARDEN_DATA,                              0x0C0A}, //--
             {Opcode.SMSG_WORLD_SERVER_INFO,                        0x0082}, //++
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE,              0x0027}, //--
             {Opcode.SMSG_UNK_001F,                                 0x001F}, //++
@@ -480,63 +483,62 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_0250,                                 0x0250}, //++
             //{Opcode.SMSG_UNK_0287,                                 0x0287}, //--
             {Opcode.SMSG_UNK_036D,                                 0x036D}, //++
-            {Opcode.SMSG_UNK_042A,                                 0x042A}, //+-
-            {Opcode.SMSG_UNK_043F,                                 0x043F}, //+-
+            {Opcode.SMSG_UNK_042A,                                 0x042A}, //++
+            {Opcode.SMSG_UNK_043F,                                 0x043F}, //++
             {Opcode.SMSG_UNK_0452,                                 0x0452}, //++
-            //{Opcode.SMSG_UNK_04AA,                                 0x04AA}, //-+
-            {Opcode.SMSG_UNK_0562,                                 0x0562}, //+-
+            //{Opcode.SMSG_UNK_04AA,                                 0x04AA}, //+-
+            {Opcode.SMSG_UNK_0562,                                 0x0562}, //++
             {Opcode.SMSG_UNK_05F3,                                 0x05F3}, //++
             {Opcode.SMSG_UNK_0632,                                 0x0632}, //++
             {Opcode.SMSG_UNK_069B,                                 0x069B}, //++
             {Opcode.SMSG_UNK_06AB,                                 0x06AB}, //++
             {Opcode.SMSG_UNK_0728,                                 0x0728}, //++
-            //{Opcode.SMSG_MOVE_SET_SWIM_SPEED,                      0x0817}, //+-
+            {Opcode.SMSG_UNK_0868,                                 0x0868}, //++
             {Opcode.SMSG_UNK_089B,                                 0x089B}, //++
             {Opcode.SMSG_UNK_08B2,                                 0x08B2}, //++
             {Opcode.SMSG_UNK_0987,                                 0x0987}, //--
-            {Opcode.SMSG_UNK_09D3,                                 0x09D3}, //+-
+            {Opcode.SMSG_UNK_09D3,                                 0x09D3}, //++
+            {Opcode.SMSG_UNK_0A03,                                 0x0A03}, //++
             {Opcode.SMSG_UNK_0A0B,                                 0x0A0B}, //++
             {Opcode.SMSG_UNK_0A3F,                                 0x0A3F}, //++
             {Opcode.SMSG_UNK_0A8B,                                 0x0A8B}, //++
             {Opcode.SMSG_UNK_0A9E,                                 0x0A9E}, //++
             {Opcode.SMSG_UNK_0AAE,                                 0x0AAE}, //++
             {Opcode.SMSG_UNK_0C44,                                 0x0C44}, //+-
+            //{Opcode.SMSG_UNK_0CAE,                                 0x0CAE}, //++
             {Opcode.SMSG_UNK_0CBE,                                 0x0CBE}, //--
             {Opcode.SMSG_UNK_0CF2,                                 0x0CF2}, //++
-            //{Opcode.SMSG_UNK_0CAE,                                 0x0CAE}, //-+
             {Opcode.SMSG_UNK_0D51,                                 0x0D51}, //++
             {Opcode.SMSG_UNK_0D79,                                 0x0D79}, //++
-            {Opcode.SMSG_UNK_0E32,                                 0x0E32}, //+-
             {Opcode.SMSG_UNK_0E9B,                                 0x0E9B}, //++
             {Opcode.SMSG_UNK_0EAB,                                 0x0EAB}, //++
             {Opcode.SMSG_UNK_0F06,                                 0x0F06}, //--
             //{Opcode.SMSG_UNK_103B,                                 0x103B}, //+-
-            //{Opcode.SMSG_UNK_103E,                                 0x103E}, //-+
-            //{Opcode.SMSG_UNK_109A,                                 0x109A}, //-+
-            {Opcode.SMSG_UNK_10F2,                                 0x10F2}, //++
+            //{Opcode.SMSG_UNK_103E,                                 0x103E}, //++
+            //{Opcode.SMSG_UNK_109A,                                 0x109A}, //++
             {Opcode.SMSG_UNK_10F1,                                 0x10F1}, //++
+            {Opcode.SMSG_UNK_10F2,                                 0x10F2}, //++
             {Opcode.SMSG_UNK_11E2,                                 0x11E2}, //+-
             {Opcode.SMSG_UNK_11E3,                                 0x11E3}, //+-
             {Opcode.SMSG_UNK_121E,                                 0x121E}, //++
             {Opcode.SMSG_UNK_1227,                                 0x1227}, //++
-            {Opcode.SMSG_UNK_129B,                                 0x129B}, //++
             //{Opcode.SMSG_UNK_123E,                                 0x123E}, //--
             //{Opcode.SMSG_UNK_129A,                                 0x129A}, //++
+            {Opcode.SMSG_UNK_129B,                                 0x129B}, //++
             {Opcode.SMSG_UNK_1440,                                 0x1440}, //++
             {Opcode.SMSG_UNK_14AE,                                 0x14AE}, //++
-            {Opcode.SMSG_UNK_1570,                                 0x1570}, //--
+            {Opcode.SMSG_UNK_1570,                                 0x1570}, //+-
             {Opcode.SMSG_UNK_1613,                                 0x1613}, //++
-            {Opcode.SMSG_UNK_16BB,                                 0x16BB}, //++
             {Opcode.SMSG_UNK_16BF,                                 0x16BF}, //++
             {Opcode.SMSG_UNK_180A,                                 0x180A}, //++
             {Opcode.SMSG_UNK_188F,                                 0x188F}, //++
-            {Opcode.SMSG_UNK_189E,                                 0x189E}, //+-
+            {Opcode.SMSG_UNK_189E,                                 0x189E}, //++
             {Opcode.SMSG_UNK_18BA,                                 0x18BA}, //++
             {Opcode.SMSG_UNK_18E2,                                 0x18E2}, //++
             {Opcode.SMSG_UNK_1D8E,                                 0x1D8E}, //++
             {Opcode.SMSG_UNK_1DAB,                                 0x1DAB}, //++
-            {Opcode.SMSG_UNK_1E0F,                                 0x1E0F}, //+-
-            {Opcode.SMSG_UNK_1E9B,                                 0x1E9B}, //+-
+            {Opcode.SMSG_UNK_1E0F,                                 0x1E0F}, //++
+            {Opcode.SMSG_UNK_1E9B,                                 0x1E9B}, //++
             {Opcode.SMSG_UNK_1F9F,                                 0x1F9F}, //++
             {Opcode.SMSG_NULL_04BB,                                0x04BB}, //++
             {Opcode.SMSG_NULL_0C59,                                0x0C59}, //++

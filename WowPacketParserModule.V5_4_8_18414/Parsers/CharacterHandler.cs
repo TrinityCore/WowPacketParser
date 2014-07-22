@@ -243,7 +243,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_CHAR_CREATE)]
         [Parser(Opcode.SMSG_CHAR_DELETE)]
         [Parser(Opcode.SMSG_INIT_CURRENCY)]
-        [Parser(Opcode.SMSG_STANDSTATE_UPDATE)]
         [Parser(Opcode.SMSG_POWER_UPDATE)]
         public static void HandleInitCurrency(Packet packet)
         {

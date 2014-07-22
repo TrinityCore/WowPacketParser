@@ -228,7 +228,23 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]
         public static void HandleNpcTextUpdate(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadInt32("TextID");
+
+            var txtSize = packet.ReadInt32("Size");
+            var Probability = new float[8];
+            var TextID = new Int32[8];
+
+            for (var i = 0; i < 8; i++)
+                Probability[i] = packet.ReadSingle("Probability", i);
+
+            for (var i = 0; i < 8; i++)
+                TextID[i] = packet.ReadInt32("Broadcast Text Id", i);
+
+            packet.ReadBit("hasData");
+
+            //packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
+
+            //Storage.NpcTexts.Add((uint)entry.Key, npcText, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_QUERY_TIME_RESPONSE)]
