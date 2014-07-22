@@ -26,6 +26,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_AUTH_RESPONSE, 0x0ABA}, // 18291
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x048B}, // 18291
             {Opcode.SMSG_DESTROY_OBJECT, 0x14C2}, // 18291
+            {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x06BF}, // 18291
             {Opcode.SMSG_GOSSIP_POI, 0x0785}, // 18291
             {Opcode.SMSG_INITIAL_SPELLS, 0x045A}, // 18291
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x1C0F}, // 18291

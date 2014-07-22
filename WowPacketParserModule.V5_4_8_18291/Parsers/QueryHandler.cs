@@ -12,8 +12,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
     public static class QueryHandler
     {
-         [HasSniffData]
-[Parser(Opcode.SMSG_CREATURE_QUERY_RESPONSE)]
+        [HasSniffData]
+        [Parser(Opcode.SMSG_CREATURE_QUERY_RESPONSE)]
         public static void HandleCreatureQueryResponse(Packet packet)
         {
             var entry = packet.ReadEntry("Entry");
