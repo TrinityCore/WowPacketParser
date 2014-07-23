@@ -28,6 +28,8 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_REQUEST_HOTFIX, 0x158D}, // 18414
             {Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD, 0x07CB}, // 18414
             {Opcode.CMSG_AUTOSTORE_LOOT_ITEM, 0x0354}, // 18414
+            {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY, 0x02F1}, // 18414
+            {Opcode.CMSG_QUEST_POI_QUERY, 0x10C2}, // 18414
 			
             {Opcode.SMSG_AUCTION_HELLO, 0x10A7}, // 18291
             {Opcode.SMSG_AUTH_CHALLENGE, 0x0949}, // 18291
@@ -53,6 +55,26 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_VOID_TRANSFER_RESULT, 0x18BA}, // 18414
             {Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, 0x0346}, // 18414
             {Opcode.SMSG_SET_FACTION_STANDING, 0x10AA}, // 18414
+            {Opcode.SMSG_SPELL_GO, 0x09D8}, // 18414
+            {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x1450}, // 18414
+            {Opcode.SMSG_PLAYER_MOVE, 0x1A32}, // 18414
+            {Opcode.SMSG_PLAYED_TIME, 0x11E2}, // 18414
+            {Opcode.SMSG_POWER_UPDATE, 0x109F}, // 18414
+            {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x100F}, // 18414
+            {Opcode.SMSG_QUESTGIVER_OFFER_REWARD, 0x074F}, // 18414
+            {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x134C}, //18414
+            {Opcode.SMSG_QUESTGIVER_STATUS, 0x1275}, // 18414
+            {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, 0x06CE}, // 18414
+            {Opcode.SMSG_QUESTUPDATE_ADD_KILL, 0x1645}, // 18414
+            {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x067F}, // 18414
+            {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x0276}, // 18414
+            {Opcode.SMSG_PVP_SEASON, 0x069B}, // 18414
+            {Opcode.SMSG_HOTFIX_INFO, 0x1EBA}, // 18414
+            {Opcode.SMSG_CONTACT_LIST, 0x1F22}, // 18414
+            {Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED, 0x1A0F}, // 18414
+            {Opcode.SMSG_TALENTS_INFO, 0x0A9B}, // 18414
+            {Opcode.SMSG_BINDPOINTUPDATE, 0x0E3B}, // 18414
+            {Opcode.SMSG_SET_PROFICIENCY, 0x1440}, // 18414
 			
         };
     }
