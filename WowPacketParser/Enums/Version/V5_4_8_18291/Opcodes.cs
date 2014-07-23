@@ -24,6 +24,10 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_CHAR_CREATE, 0x0F1D}, // 18414
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x031C}, // 18414
             {Opcode.CMSG_CHAR_ENUM, 0x00E0}, // 18414
+            {Opcode.CMSG_MOVE_TIME_SKIPPED, 0x0150}, // 18414
+            {Opcode.CMSG_REQUEST_HOTFIX, 0x158D}, // 18414
+            {Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD, 0x07CB}, // 18414
+            {Opcode.CMSG_AUTOSTORE_LOOT_ITEM, 0x0354}, // 18414
 			
             {Opcode.SMSG_AUCTION_HELLO, 0x10A7}, // 18291
             {Opcode.SMSG_AUTH_CHALLENGE, 0x0949}, // 18291
@@ -43,6 +47,12 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x162B}, //18414
             {Opcode.SMSG_SET_TIMEZONE_INFORMATION, 0x19C1}, // 18414
             {Opcode.SMSG_CHAR_ENUM, 0x11C3}, // 18414
+            {Opcode.SMSG_DB_REPLY, 0x103B}, // 18414
+            {Opcode.SMSG_SPELL_START, 0x107A}, // 18414
+            {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x169B}, // 18414
+            {Opcode.SMSG_VOID_TRANSFER_RESULT, 0x18BA}, // 18414
+            {Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, 0x0346}, // 18414
+            {Opcode.SMSG_SET_FACTION_STANDING, 0x10AA}, // 18414
 			
         };
     }
