@@ -20,6 +20,10 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_GAMEOBJ_USE, 0x6D8}, // 18291
             {Opcode.CMSG_GOSSIP_HELLO, 0x12F3}, // 18291
             {Opcode.CMSG_LIST_INVENTORY, 0x02D8}, // 18291
+            {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x0B1C}, // 18414
+            {Opcode.CMSG_CHAR_CREATE, 0x0F1D}, // 18414
+            {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x031C}, // 18414
+            {Opcode.CMSG_CHAR_ENUM, 0x00E0}, // 18414
 			
             {Opcode.SMSG_AUCTION_HELLO, 0x10A7}, // 18291
             {Opcode.SMSG_AUTH_CHALLENGE, 0x0949}, // 18291
@@ -34,6 +38,11 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_NEW_WORLD, 0x1C3B},  // 18291
             {Opcode.SMSG_TRANSFER_PENDING, 0x061B}, // 18291
             {Opcode.SMSG_UPDATE_OBJECT, 0x1792}, // 18291
+            {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x169F}, // 18414
+            {Opcode.SMSG_CHAR_CREATE, 0x1CAA}, // 18414
+            {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x162B}, //18414
+            {Opcode.SMSG_SET_TIMEZONE_INFORMATION, 0x19C1}, // 18414
+            {Opcode.SMSG_CHAR_ENUM, 0x11C3}, // 18414
 			
         };
     }
