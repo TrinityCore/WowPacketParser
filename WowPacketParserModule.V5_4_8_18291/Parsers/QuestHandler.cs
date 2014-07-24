@@ -401,8 +401,120 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             var guid = new byte[8];
 
-            packet.StartBitStream(guid, 0,4,2,6,1,5,7,3);
+            packet.StartBitStream(guid, 0, 4, 2, 6, 1, 5, 7, 3);
             packet.ParseBitStream(guid, 2, 7, 3, 0, 4, 5, 1, 6);
+            packet.WriteGuid("Guid", guid);
+        }
+
+
+        [Parser(Opcode.SMSG_QUESTGIVER_OFFER_REWARD)]
+        public static void HandleQuestOfferReward(Packet packet)
+        {
+            packet.ReadUInt32("RewardItemIdCount[2]");
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
+            packet.ReadUInt32("RewardItemId[3]");
+            packet.ReadUInt32("RewardChoiceItemDisplayId(2)");
+
+            for (var i = 0; i < 5; i++)
+            {
+                packet.ReadUInt32("RewardFactionId", i);
+                packet.ReadUInt32("RewardFactionValueId", i);
+                packet.ReadUInt32("RewardFactionValueIdOverride", i);
+            }
+
+            packet.ReadUInt32("RewardItemIdCount[0]");
+            packet.ReadUInt32("RewardItemIdCount[3]");
+            packet.ReadUInt32("RewardItemDisplayId(3)");
+            packet.ReadUInt32("RewardItemId[1]");
+            packet.ReadUInt32("RewardChoiceItemId[3]");
+            packet.ReadUInt32("RewardChoiceItemDisplayId(3)");
+            packet.ReadUInt32("GetRewChoiceItemsCount()");
+            packet.ReadUInt32("RewSpellCast");
+            packet.ReadUInt32("RewardItemDisplayId(1)");
+            packet.ReadUInt32("RewardChoiceItemCount[5]");
+            packet.ReadUInt32("RewardChoiceItemDisplayId(4)");
+            packet.ReadUInt32("RewardChoiceItemCount[1]");
+            packet.ReadUInt32("RewardChoiceItemDisplayId(0)");
+            packet.ReadUInt32("RewardItemDisplayId(0)");
+            packet.ReadUInt32("ClassRewardId");
+            packet.ReadUInt32("QuestTurnInPortrait");                                      // model Id, usually used in wanted or boss quests
+            packet.ReadUInt32("RewardItemIdCount[1]");
+            packet.ReadUInt32("unk");                                      // unknown
+            packet.ReadUInt32("RewardChoiceItemId[0]");
+            packet.ReadUInt32("RewardChoiceItemCount[3]");
+            packet.ReadUInt32("RewardChoiceItemCount[4]");
+            packet.ReadUInt32("RewardChoiceItemId[1]");
+            packet.ReadUInt32("BonusTalents");
+            packet.ReadUInt32("RewardSkillId");
+
+            for (var i = 0; i < 4; i++)
+            {
+                packet.ReadUInt32("CurrencyId", i);
+                packet.ReadUInt32("CurrencyCount", i);
+            }
+
+            packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
+            packet.ReadEnum<QuestFlags2>("Quest Flags2", TypeCode.UInt32);
+            packet.ReadUInt32("XPValue");
+            packet.ReadUInt32("CharTitleId");
+            packet.ReadUInt32("RewardChoiceItemId[2]");
+            packet.ReadUInt32("RewItemsCount()");
+            packet.ReadUInt32("unk");                                      // unknown
+            packet.ReadUInt32("RewardChoiceItemId[4]");
+
+            packet.ReadUInt32("Ender NPC or GO Entry");// ender NPC or GO entry                              
+
+            packet.ReadUInt32("RewardItemId[2]");
+            packet.ReadUInt32("RewardChoiceItemCount[0]");
+            packet.ReadUInt32("RewardSkillPoints");
+            packet.ReadUInt32("unk");                                      // unknown
+            packet.ReadUInt32("RewMoney");
+            packet.ReadUInt32("RewardChoiceItemId[5]");
+            packet.ReadUInt32("RewardChoiceItemDisplayId(1)");
+            packet.ReadUInt32("RewardChoiceItemCount[2]");
+            packet.ReadUInt32("RewardItemDisplayId(2)");
+            packet.ReadUInt32("unk");                                      // unknown
+            packet.ReadUInt32("RewardItemId[0]");
+            packet.ReadUInt32("RewardChoiceItemDisplayId(5)");
+
+            var guid = new byte[8];
+
+
+
+            var questTurnTextWindow = packet.ReadBits(10);
+            var questGiverTargetName = packet.ReadBits(8);
+            guid[6] = packet.ReadBit();
+            var emoteCount = packet.ReadBits(21);
+            guid[3] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            var questTitle = packet.ReadBits(9);
+            guid[4] = packet.ReadBit();
+            var questTurnTargetName = packet.ReadBits(8);
+            var questGiverTextWindow = packet.ReadBits(10);
+            var questOfferRewardText = packet.ReadBits(12);
+            guid[1] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            packet.ReadBit("EnableNext");
+
+            packet.ReadWoWString("questGiverTargetName", questGiverTargetName);
+            packet.ReadWoWString("questTitle", questTitle);
+
+            for (var i = 0; i < emoteCount; i++)
+            {
+                packet.ReadUInt32("OfferRewardEmoteDelay", i);
+                packet.ReadUInt32("OfferRewardEmote", i);
+            }
+
+            packet.ParseBitStream(guid, 2);
+            packet.ReadWoWString("questOfferRewardText", questOfferRewardText);
+            packet.ReadWoWString("questTurnTextWindow", questTurnTextWindow);
+            packet.ReadWoWString("questTurnTargetName", questTurnTargetName);
+            packet.ParseBitStream(guid, 5, 1);
+            packet.ReadWoWString("questGiverTextWindow", questGiverTextWindow);
+            packet.ParseBitStream(guid, 0, 7, 6, 4, 3);
+
             packet.WriteGuid("Guid", guid);
         }
     }
