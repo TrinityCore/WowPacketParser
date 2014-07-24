@@ -517,5 +517,56 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS)]
+        public static void HandleQuestRequestItems(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadInt32("unk");
+            packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32);
+            packet.ReadInt32("unk");
+            packet.ReadInt32("canComplete?");
+            packet.ReadInt32("Money");
+            packet.ReadEntry("Quest Giver Entry");
+            packet.ReadInt32("unk");
+            packet.ReadInt32("Emote");
+            var entry = packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
+            var countCurrencies = packet.ReadBits("Number of Required Currencies", 21);
+            packet.ReadBit("CloseOnCancel?");
+            packet.StartBitStream(guid, 2, 5, 1);
+            var titleLen = packet.ReadBits(9);
+            var textLen = packet.ReadBits(12);
+            packet.StartBitStream(guid, 6, 0);
+            var countItems = packet.ReadBits("Number of Required Items", 20);
+            packet.StartBitStream(guid, 4, 7, 3);
+
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadWoWString("Title", titleLen);
+
+            for (var i = 0; i < countCurrencies; i++)
+            {
+                packet.ReadUInt32("Required Currency Id", i);
+                packet.ReadUInt32("Required Currency Count", i);
+            }
+
+            for (var i = 0; i < countItems; ++i)
+            {
+                packet.ReadUInt32("Required Item Display Id", i);
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Required Item Id", i);
+                packet.ReadUInt32("Required Item Count", i);
+            }
+
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadWoWString("Text", textLen);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 6);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
