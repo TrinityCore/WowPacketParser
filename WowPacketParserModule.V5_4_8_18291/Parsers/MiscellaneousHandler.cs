@@ -243,5 +243,17 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.ReadInt32("Unk8");
             }
         }
+
+        [Parser(Opcode.CMSG_SPELLCLICK)]
+        public static void HandleSpellClick(Packet packet)
+        {
+            var guid = new byte[8];
+            packet.StartBitStream(guid, 7, 4, 0, 3, 6, 5);
+            packet.ReadBit("unk");
+            packet.StartBitStream(guid, 1, 2);
+            packet.ParseBitStream(guid, 6, 1, 5, 4, 7, 2, 3, 0);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

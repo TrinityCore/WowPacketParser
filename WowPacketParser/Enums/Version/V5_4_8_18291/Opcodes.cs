@@ -78,6 +78,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_SEND_MAIL, 0x1DBA},
             {Opcode.CMSG_SET_RAID_DIFFICULTY, 0x1093},
             {Opcode.CMSG_SET_SELECTION, 0x0740},
+            {Opcode.CMSG_SPELLCLICK, 0x067A},
             {Opcode.CMSG_TEXT_EMOTE, 0x07E9},
             {Opcode.CMSG_TRAINER_LIST, 0x034B},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x01DB | 0x10000},
