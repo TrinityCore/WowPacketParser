@@ -581,5 +581,26 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD)]
+        public static void HandleQuestChooseReward(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadUInt32("Reward Item ID");
+            packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
+            guid[2] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+
+            packet.ParseBitStream(guid, 1, 2, 5, 7, 0, 3, 6, 4);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
