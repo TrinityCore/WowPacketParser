@@ -149,6 +149,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 0x0969},
             {Opcode.SMSG_GAME_STORE_INGAME_BUY_FAILED, 0x023A},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x06BF},
+            {Opcode.SMSG_GOSSIP_COMPLETE, 0x034E},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x0244},
             {Opcode.SMSG_GOSSIP_POI, 0x0785},
             {Opcode.SMSG_GROUP_DECLINE, 0x17A3},
