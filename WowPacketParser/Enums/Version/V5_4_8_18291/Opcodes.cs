@@ -53,6 +53,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_MESSAGECHAT_WHISPER, 0x123E},
             {Opcode.CMSG_MESSAGECHAT_YELL, 0x04AA},
             {Opcode.CMSG_NAME_QUERY, 0x0328},
+            {Opcode.CMSG_NEUTRALPLAYERFACTIONSELECTRESULT, 0x0027 | 0x10000},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x0287},
             {Opcode.CMSG_PAGE_TEXT_QUERY, 0x1022},
             {Opcode.CMSG_PET_NAME_QUERY, 0x1C62},
