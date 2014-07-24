@@ -36,7 +36,67 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_AURA_UPDATE)]
         public static void HandleAuraUpdate(Packet packet)
         {
-            packet.ReadToEnd();
+            var guid = new byte[8];
+            guid[7] = packet.ReadBit();
+            var unk40 = packet.ReadBit("unk40");
+            var count = packet.ReadBits("count", 24);
+            guid[6] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+
+            var guid2 = new byte[count][];
+            var unk164 = new byte[count];
+            var unk156 = new byte[count];
+            var unk336 = new uint[count];
+            var unk144 = new byte[count];
+            var unk400 = new uint[count];
+            var unk200 = new byte[count];
+            for (var i = 0 ; i < count; i++)
+            {
+                unk200[i] = packet.ReadBit("unk200", i);
+                if (unk200[i] > 0)
+                {
+                    unk336[i] = packet.ReadBits("unk336", 22, i);
+                    unk144[i] = packet.ReadBit("unk144", i);
+                    if (unk144[i] > 0)
+                        guid2[i] = packet.StartBitStream(3, 4, 6, 1, 5, 2, 0, 7);
+
+                    unk400[i] = packet.ReadBits("unk400", 22, i);
+                    unk164[i] = packet.ReadBit("unk164", i);
+                    unk156[i] = packet.ReadBit("unk156", i);
+                }
+            }
+            for (var i = 0; i < count; i++)
+            {
+                if (unk200[i] > 0)
+                {
+                    if (unk144[i] > 0)
+                    {
+                        packet.ParseBitStream(guid2[i], 3, 2, 1, 6, 4, 0, 5, 7);
+                        packet.WriteGuid("Guid2", guid2[i], i);
+                    }
+                    packet.ReadByte("unk124", i);
+                    packet.ReadInt16("unk152", i);
+                    packet.ReadInt32("unk144", i);
+                    if (unk156[i] > 0)
+                        packet.ReadInt32("unk272", i);
+                    if (unk164[i] > 0)
+                        packet.ReadInt32("unk304", i);
+                    for (var j = 0; j < unk400[i]; j++)
+                        packet.ReadSingle("unk416", i, j);
+                    packet.ReadByte("unk134", i);
+                    packet.ReadInt32("unk176", i);
+                    for (var j = 0; j < unk336[i]; j++)
+                        packet.ReadSingle("unk352", i, j);
+                }
+                packet.ReadByte("unk112", i);
+            }
+            packet.ParseBitStream(guid, 2, 6, 7, 1, 3, 4, 0, 5);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_INITIAL_SPELLS)]

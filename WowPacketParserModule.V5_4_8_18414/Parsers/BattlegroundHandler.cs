@@ -102,7 +102,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_ARENA)]
         public static void HandleBattlemasterJoinArena(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadByte("Slot");
         }
 
         [Parser(Opcode.CMSG_LEAVE_BATTLEFIELD)]

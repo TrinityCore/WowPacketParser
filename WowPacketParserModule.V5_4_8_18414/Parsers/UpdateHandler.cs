@@ -182,7 +182,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             var unk144count = 0u;
             var skipFloat = false;
             var skipInt = false;
-            var skipFloat3 = false;
+            var hasFloat3 = false;
 
             packet.ResetBitReader();
 
@@ -238,7 +238,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 guid1[4] = packet.ReadBit(); // 12
                 guid1[3] = packet.ReadBit(); // 11
 
-                hasOrientation = packet.ReadBit("no has Orient", index); // 40+ if (hasOrientation) dword ptr [esi+28h] = 0 else dword ptr [esi+28h] = ds:dword_D26EA8
+                hasOrientation = !packet.ReadBit("skip Orient", index); // 40+ if (hasOrientation) dword ptr [esi+28h] = 0 else dword ptr [esi+28h] = ds:dword_D26EA8
                 
                 skipInt = !packet.ReadBit("no has Int", index); // 160*4 +
                 
@@ -249,7 +249,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
                 for (var i = 0; i < loopcnt; i++ ) // 352
                 {
-                    packet.ReadBits("unk356", 2, index);  // 356
+                    packet.ReadBits("unk356", 2, index, i);  // 356
                 }
 
                 hasFallData = packet.ReadBit("has fall data", index); // 132+
@@ -257,7 +257,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 if (hasMovementFlags) // 16*4
                     moveInfo.Flags = (WowPacketParser.Enums.MovementFlag)packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
 
-                skipFloat3 = packet.ReadBit("skip float3", index); // 136+ if (skipFloat3) dword ptr [esi+88h] = 0 else dword ptr [esi+88h] = ds:dword_D26EA8
+                hasFloat3 = !packet.ReadBit("skip float3", index); // 136+ if (skipFloat3) dword ptr [esi+88h] = 0 else dword ptr [esi+88h] = ds:dword_D26EA8
                 moveInfo.HasSplineData = packet.ReadBit("has Spline", index); // 344+
                 packet.ReadBit(); // 141-
                 guid1[0] = packet.ReadBit(); // 8
@@ -438,9 +438,9 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
             if (hasAnimKits) // 498
             {
-                hasAnimKit2 = packet.ReadBit("Has AnimKit2", index); // 494*2
-                hasAnimKit3 = packet.ReadBit("Has AnimKit3", index); // 496*2
-                hasAnimKit1 = packet.ReadBit("Has AnimKit1", index); // 492*2
+                hasAnimKit2 = !packet.ReadBit("skip AnimKit2", index); // 494*2
+                hasAnimKit3 = !packet.ReadBit("skip AnimKit3", index); // 496*2
+                hasAnimKit1 = !packet.ReadBit("skip AnimKit1", index); // 492*2
             }
 
             if (hasTarget) // 464
@@ -609,7 +609,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
                 packet.ReadSingle("Flight Back Speed", index); // 176
 
-                if (!skipFloat3) // 136
+                if (hasFloat3) // 136
                     packet.ReadSingle("unk136", index); // 136
 
                 packet.ReadXORByte(guid1, 7); // 15
@@ -623,7 +623,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 if (!skipFloat) // 104
                     packet.ReadSingle("unk104", index); // 104
 
-                if (!hasOrientation) // 40
+                if (hasOrientation) // 40
                     moveInfo.Orientation = packet.ReadSingle("Orientation", index); // 40
 
                 moveInfo.WalkSpeed = packet.ReadSingle("Walk Speed", index); // 168

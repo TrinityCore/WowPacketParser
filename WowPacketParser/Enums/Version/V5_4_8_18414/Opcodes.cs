@@ -35,6 +35,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_INVITE_RESPONSE,    0x0A97}, //--
             {Opcode.CMSG_BATTLEFIELD_PORT,                         0x1379}, //--
             {Opcode.CMSG_BATTLEMASTER_JOIN,                        0x0769}, //--
+            {Opcode.CMSG_BATTLEMASTER_JOIN_ARENA,                  0x02D2}, //+-
             {Opcode.CMSG_BATTLE_PET_DELETE_PET,                    0x18B6}, //+-
             {Opcode.CMSG_BATTLE_PET_MODIFY_NAME,                   0x1887}, //+-
             {Opcode.CMSG_BATTLE_PET_NAME_QUERY,                    0x1CE0}, //+-
@@ -303,7 +304,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_ATTACKSTART,                              0x1A9E}, //--
             {Opcode.SMSG_ATTACKSTOP,                               0x12AF}, //--
             {Opcode.SMSG_AUCTION_HELLO,                            0x10A7}, //-+
-            {Opcode.SMSG_AURA_UPDATE,                              0x0072}, //--
+            {Opcode.SMSG_AURA_UPDATE,                              0x0072}, //++
             {Opcode.SMSG_AUTH_CHALLENGE,                           0x0949}, //--+
             {Opcode.SMSG_AUTH_RESPONSE,                            0x0ABA}, //++
             {Opcode.SMSG_BATTLEFIELD_LIST,                         0x160E}, //--
@@ -515,9 +516,11 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_0F06,                                 0x0F06}, //--
             //{Opcode.SMSG_UNK_103B,                                 0x103B}, //+-
             //{Opcode.SMSG_UNK_103E,                                 0x103E}, //++
+            {Opcode.SMSG_UNK_108B,                                 0x108B}, //++
             //{Opcode.SMSG_UNK_109A,                                 0x109A}, //++
             {Opcode.SMSG_UNK_10F1,                                 0x10F1}, //++
             {Opcode.SMSG_UNK_10F2,                                 0x10F2}, //++
+            {Opcode.SMSG_UNK_10F9,                                 0x10F9}, //++
             {Opcode.SMSG_UNK_11E2,                                 0x11E2}, //+-
             {Opcode.SMSG_UNK_11E3,                                 0x11E3}, //+-
             {Opcode.SMSG_UNK_121E,                                 0x121E}, //++
@@ -534,10 +537,12 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_188F,                                 0x188F}, //++
             {Opcode.SMSG_UNK_189E,                                 0x189E}, //++
             {Opcode.SMSG_UNK_18BA,                                 0x18BA}, //++
+            {Opcode.SMSG_UNK_18C3,                                 0x18C3}, //++
             {Opcode.SMSG_UNK_18E2,                                 0x18E2}, //++
             {Opcode.SMSG_UNK_1D8E,                                 0x1D8E}, //++
             {Opcode.SMSG_UNK_1DAB,                                 0x1DAB}, //++
             {Opcode.SMSG_UNK_1E0F,                                 0x1E0F}, //++
+            {Opcode.SMSG_UNK_1E12,                                 0x1E12}, //++
             {Opcode.SMSG_UNK_1E9B,                                 0x1E9B}, //++
             {Opcode.SMSG_UNK_1F9F,                                 0x1F9F}, //++
             {Opcode.SMSG_NULL_04BB,                                0x04BB}, //++
