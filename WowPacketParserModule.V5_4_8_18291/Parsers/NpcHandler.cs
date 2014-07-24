@@ -114,7 +114,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 var gossipOption = new GossipOption
                 {
                     RequiredMoney = packet.ReadUInt32("Required money", i),//3012
-                    BoxText = packet.ReadWoWString("Box Text", BoxTextLen[i], i),//12 
+                    BoxText = packet.ReadWoWString("Box Text", BoxTextLen[i], i),//12
                     Index = packet.ReadUInt32("Index", i),//0
                     Box = packet.ReadBoolean("Box", i),
                     OptionText = packet.ReadWoWString("Text", OptionTextLen[i], i),
@@ -126,7 +126,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 3);
-            var menuId = packet.ReadUInt32("Menu Id"); 
+            var menuId = packet.ReadUInt32("Menu Id");
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 4);
@@ -205,6 +205,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 npcText.Probabilities[i] = pkt.ReadSingle("Probability", i);
             for (var i = 0; i < 8; ++i)
                 npcText.BroadcastTextId[i] = pkt.ReadUInt32("Broadcast Text Id", i);
+
+            pkt.ClosePacket(false);
 
             var hasData = packet.ReadBit();
             if (!hasData)

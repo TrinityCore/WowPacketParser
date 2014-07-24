@@ -237,14 +237,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             byte[][] guid2;
 
             var counter = packet.ReadBits(19);
-            
+
             guid1 = new byte[counter][];
             guid2 = new byte[counter][];
             for (var i = 0; i < counter; ++i)
             {
                 guid1[i] = new byte[8];
                 guid2[i] = new byte[8];
-                
+
                 packet.StartBitStream(guid2[i], 6, 3);
                 packet.StartBitStream(guid1[i], 6, 1, 2, 3);
                 packet.ReadBits(4);
@@ -253,7 +253,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 guid1[i][4] = packet.ReadBit();
                 packet.StartBitStream(guid2[i], 1, 4, 2);
             }
-            
+
             for (var i = 0; i < counter; ++i)
             {
                 packet.ReadXORByte(guid1[i], 1);
@@ -905,16 +905,16 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var guid1 = new byte[8];
 
             var bits1C =  packet.ReadBits(24);
-            
+
             var guid2 = new byte[bits1C][];
             for (var i = 0; i < bits1C; ++i)
             {
                 guid2[i] = new byte[8];
                 packet.StartBitStream(guid2[i], 2, 3, 4, 6, 7, 5, 1, 0);
             }
-            
+
             packet.StartBitStream(guid1, 6, 5, 4, 0, 3, 7, 1, 2);
-            
+
             for (var i = 0; i < bits1C; ++i)
             {
                 packet.ParseBitStream(guid2[i], 5, 0, 4, 1, 3, 2, 7, 6);
@@ -1305,14 +1305,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var guid2 = new byte[8];
             var guid3 = new byte[8];
             var guid4 = new byte[8];
-            
+
             var bit38 = packet.ReadBit();
 
             guid4[6] = packet.ReadBit();
             guid2[6] = packet.ReadBit();
             guid4[5] = packet.ReadBit();
             guid2[0] = packet.ReadBit();
-            
+
             var bits24 = 0u;
             if (bit38)
             {
@@ -1469,7 +1469,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             guid2[2] = packet.ReadBit();
             guid1[6] = packet.ReadBit();
-            packet.StartBitStream(guid2, 7, 0, 5);            
+            packet.StartBitStream(guid2, 7, 0, 5);
             packet.StartBitStream(guid1, 7, 4);
             packet.StartBitStream(guid2, 3, 1, 4);
             guid1[0] = packet.ReadBit();
@@ -1922,7 +1922,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         public static void HandleUnknown6285(Packet packet)
         {
             var count = packet.ReadBits("Count", 21);
-            
+
             var guid = new byte[count][];
 
             for (var i = 0; i < count; ++i)
@@ -1930,7 +1930,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 guid[i] = new byte[8];
                 packet.StartBitStream(guid[i], 6, 3, 4, 2, 5, 1, 7, 0);
             }
-            
+
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadXORByte(guid[i], 7);
@@ -1951,15 +1951,15 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         public static void HandleUnknown1358(Packet packet)
         {
             var bits10 = packet.ReadBits(19);
-            
+
             var bits38 = new uint[bits10];
             var guid1 = new byte[bits10][];
             var guid2 = new byte[bits10][][];
-            
+
             for (var i = 0; i < bits10; ++i)
             {
                 bits38[i] = packet.ReadBits(24);
-                
+
                 guid1[i] = new byte[8];
                 guid2[i] = new byte[bits38[i]][];
 
@@ -1971,11 +1971,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
                 packet.StartBitStream(guid1[i], 2, 0, 4, 1, 7, 3, 5, 6);
             }
-            
+
             for (var i = 0; i < bits10; ++i)
             {
                 packet.ReadXORByte(guid1[i], 2);
-                
+
                 for (var j = 0; j < bits38[i]; ++j)
                 {
                     packet.ParseBitStream(guid2[i][j], 4, 0, 1, 5, 3, 7, 2, 6);
@@ -2054,7 +2054,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 guid5[i] = new byte[8];
                 packet.StartBitStream(guid5[i], 3, 2, 7, 5, 6, 0, 1, 4);
             }
-            
+
             for (var i = 0; i < bits54; ++i)
             {
                 packet.ReadXORByte(guid5[i], 1);
@@ -2072,7 +2072,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
                 packet.WriteGuid("Guid5", guid5[i]);
             }
-            
+
             for (var i = 0; i < bits34; ++i)
             {
                 packet.ReadSingle("Y");
@@ -2090,19 +2090,19 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
                 packet.WriteGuid("Guid2", guid2[i]);
             }
-            
+
             for (var i = 0; i < bits24; ++i)
             {
                 packet.ParseBitStream(guid4[i], 5, 1, 3, 4, 2, 7, 0, 6);
                 packet.WriteGuid("Guid4", guid4[i]);
             }
-            
+
             for (var i = 0; i < bits10; ++i)
             {
                 packet.ParseBitStream(guid1[i], 0, 1, 4, 7, 5, 6, 2, 3);
                 packet.WriteGuid("Guid1", guid1[i]);
             }
-            
+
             for (var i = 0; i < bits44; ++i)
             {
                 packet.ParseBitStream(guid3[i], 2, 4, 3, 0, 6, 7, 1, 5);
@@ -2184,7 +2184,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         public static void HandleUnknown1119(Packet packet)
         {
             var bits10 = packet.ReadBits(17);
-            
+
             var guid = new byte[bits10][];
             var bits30 = new uint[bits10];
             var bit16E = new bool[bits10];
@@ -2205,7 +2205,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.StartBitStream(guid[i], 6, 5);
                 bit16F[i] = packet.ReadBit();
             }
-            
+
             for (var i = 0; i < bits10; ++i)
             {
                 packet.ReadByte("Byte14", i);
@@ -2284,7 +2284,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
         [Parser(Opcode.SMSG_UNKNOWN_23)]
         public static void HandleUnknown23(Packet packet)
-        {            
+        {
             var guid1 = new byte[8];
 
             packet.StartBitStream(guid1, 4, 5, 0, 2);
@@ -2293,7 +2293,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             var guid2 = new byte[bits2C][];
             var bits8 = new uint[bits2C];
-            
+
             for (var i = 0; i < bits2C; ++i)
             {
                 guid2[i] = new byte[8];
@@ -2301,12 +2301,12 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 bits8[i] = packet.ReadBits(20);
                 packet.StartBitStream(guid2[i], 7, 3, 2, 1);
             }
-            
+
             packet.StartBitStream(guid1, 1, 3, 6, 7);
-            
+
             for (var i = 0; i < bits2C; ++i)
             {
-                
+
                 for (var j = 0; j < bits8[i]; ++j)
                 {
                     packet.ReadInt32("Int30", i);
@@ -2378,7 +2378,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadBit("bit24");
             var bits12C = packet.ReadBits(22);
             packet.ReadBit("bit159");
-            
+
             for (var i = 0; i < bits14; ++i)
             {
                 packet.ParseBitStream(guid1[i], 3, 0, 7, 4, 2, 6, 1, 5);
@@ -2427,7 +2427,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 bit820[i] = !packet.ReadBit();
                 bits420[i] = packet.ReadBits(10);
             }
-            
+
             for (var i = 0; i < bits18; ++i)
             {
                 packet.ParseBitStream(guid[i], 6, 0, 7, 3, 5, 1, 4, 2);
@@ -2464,13 +2464,13 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var bits60 = packet.ReadBits(23);
             packet.StartBitStream(guid2, 5, 2, 6);
             var bits34 = packet.ReadBits(20);
-            
-            var guid3 = new byte[bits34][];          
+
+            var guid3 = new byte[bits34][];
             var bit14 = new bool[bits34];
             var bitE = new bool[bits34];
             var bits1C = new uint[bits34];
             var bit2C = new bool[bits34];
-            
+
             for (var i = 0; i < bits34; ++i)
             {
                 guid3[i] = new byte[8];
@@ -2483,9 +2483,9 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 bit2C[i] = packet.ReadBit();
                 packet.StartBitStream(guid3[i], 5, 4);
             }
-            
+
             packet.StartBitStream(guid2, 4, 1, 0);
-            
+
             for (var i = 0; i < bits34; ++i)
             {
                 if (bitE[i])
@@ -2493,7 +2493,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
                 packet.ReadXORByte(guid3[i], 3);
                 packet.ReadXORByte(guid3[i], 4);
-                
+
                 for (var j = 0; j < bits1C[i]; ++j)
                 {
                     packet.ReadByte("ByteED", i, j);
@@ -2551,7 +2551,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             for (var i = 0; i < bits44; ++i)
                 packet.ReadInt16("Int44", i);
-            
+
             for (var i = 0; i < bits60; ++i)
             packet.ReadInt16("Int66", i);
 
@@ -2584,7 +2584,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var bits10 = packet.ReadBits(20);
 
             var guid = new byte[bits10][];
-            
+
             for (var i = 0; i < bits10; ++i)
             {
                 guid[i] = new byte[8];
@@ -2594,7 +2594,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadBit();
                 packet.StartBitStream(guid[i], 3, 4, 6);
             }
-            
+
             for (var i = 0; i < bits10; ++i)
             {
                 packet.ReadInt32("IntED", i);
@@ -2631,7 +2631,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var guid1 = new byte[8];
             var guid2 = new byte[8];
             var powerGUID = new byte[8];
-            
+
             guid1[5] = packet.ReadBit();
             packet.StartBitStream(guid2, 5, 4);
             guid1[2] = packet.ReadBit();
@@ -2647,7 +2647,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 powerCount = packet.ReadBits(21);
                 packet.StartBitStream(powerGUID, 2, 0, 7, 4, 5);
             }
-            
+
             packet.StartBitStream(guid1, 4, 1);
             guid2[2] = packet.ReadBit();
             guid1[0] = packet.ReadBit();
@@ -2846,7 +2846,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadBit("bit8", i);
                 packet.ReadBit("bit6", i);
             }
-            
+
             packet.StartBitStream(guid2, 5, 7, 3);
             packet.StartBitStream(guid1, 2, 6);
             guid2[0] = packet.ReadBit();
@@ -3110,7 +3110,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         public static void HandleUnknown1406(Packet packet)
         {
             var bits10 = packet.ReadBits(19);
-            
+
             var guid1 = new byte[bits10][];
             var guid2 = new byte[bits10][];
 
@@ -3120,17 +3120,17 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 guid2[i] = new byte[8];
 
                 packet.StartBitStream(guid1[i], 3, 6);
-                packet.StartBitStream(guid2[i], 5, 4);               
+                packet.StartBitStream(guid2[i], 5, 4);
                 guid1[i][2] = packet.ReadBit();
                 guid2[i][0] = packet.ReadBit();
-                guid1[i][7] = packet.ReadBit();                
+                guid1[i][7] = packet.ReadBit();
                 packet.StartBitStream(guid2[i], 6, 7, 3);
                 packet.StartBitStream(guid1[i], 5, 0);
                 guid2[i][2] = packet.ReadBit();
                 packet.StartBitStream(guid1[i], 2, 4);
                 guid2[i][1] = packet.ReadBit();
             }
-            
+
             for (var i = 0; i < bits10; ++i)
             {
                 packet.ReadXORByte(guid2[i], 4);
@@ -3344,7 +3344,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var bits10 = packet.ReadBits(19);
             for (var i = 0; i < bits10; ++i)
                 packet.ReadBit("bit14", i);
-            
+
             for (var i = 0; i < bits10; ++i)
             {
                 packet.ReadInt32("Int14", i);
@@ -3977,7 +3977,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var guid1 = new byte[8];
             var guid2 = new byte[8];
             var powerGUID = new byte[8];
-            
+
             packet.ReadInt32("Int50"); // SpellId?
 
             packet.StartBitStream(guid1, 4, 1, 5);
@@ -4006,7 +4006,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             if (hasPowerData)
             {
                 packet.ReadXORByte(powerGUID, 6);
-                
+
                 for (var i = 0; i < powerCount; ++i)
                 {
                     packet.ReadEnum<PowerType>("Power type", TypeCode.UInt32, i);
@@ -4141,13 +4141,13 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         public static void HandleUnknown1355(Packet packet)
         {
             uint count = 6;
-            
+
             for (var i = 0; i < count; ++i)
                 packet.ReadInt32("Int10", i);
-            
+
             for (var i = 0; i < count; ++i)
                 packet.ReadInt32("Int28", i);
-            
+
             for (var i = 0; i < count; ++i)
                 packet.ReadInt32("Int40", i);
 
@@ -4605,7 +4605,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             for (var i = 0; i < bits10; ++i)
                 packet.ReadBit("bit10", i);
-            
+
             for (var i = 0; i < bits10; ++i)
             {
                 packet.ReadInt32("Int14", i);

@@ -48,7 +48,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 gameObject.QuestItems[i] = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item", i);
 
             packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);
-            
+
             Storage.GameObjectTemplates.Add((uint)entry.Key, gameObject, packet.TimeSpan);
 
             var objectName = new ObjectName

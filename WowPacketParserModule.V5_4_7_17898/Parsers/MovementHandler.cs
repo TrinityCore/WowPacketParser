@@ -644,7 +644,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 2);
-            
+
             for (var i = 0; i < bits98; ++i)
                 packet.ReadInt32("IntED", i);
 
@@ -713,7 +713,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
             packet.WriteLine("Position: {0}", pos);
         }
-        
+
         [Parser(Opcode.MSG_MOVE_START_FORWARD)]
         public static void HandleMoveStartForward(Packet packet)
         {
@@ -2040,7 +2040,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         public static void HandleMoveStartAscend434(Packet packet)
         {
             var pos = new Vector4();
-            
+
             var guid = new byte[8];
             var transportGuid = new byte[8];
 
@@ -2175,7 +2175,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         public static void HandleMoveStopAscend434(Packet packet)
         {
             var pos = new Vector4();
-            
+
             var guid = new byte[8];
             var transportGuid = new byte[8];
 
@@ -3360,7 +3360,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var bit5C = false;
             var bit64 = false;
             var hasFallDirection = false;
-            
+
             guid[3] = packet.ReadBit();
             guid[2] = packet.ReadBit();
             var hasTime = !packet.ReadBit();
@@ -3529,7 +3529,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             if (hasMovementFlagsExtra)
                 packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
-            
+
             if (hasMovementFlags)
                 packet.ReadEnum<MovementFlag>("Movement flags", 30);
 
@@ -3576,7 +3576,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadSingle("Vertical speed");
                 packet.ReadUInt32("Fall time");
             }
-            
+
             for (int i = 0; i < bits98; ++i)
                 packet.ReadInt32("IntEA", i);
 

@@ -113,7 +113,7 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
             var bit1AC = !packet.ReadBit();
             var bit164 = !packet.ReadBit();
             var bit150 = !packet.ReadBit();
-            
+
             guid8 = new byte[bits184][];
             for (var i = 0; i < bits184; ++i)
             {
@@ -126,7 +126,7 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
             guid1[2] = packet.ReadBit();
 
             var bits34 = (int)packet.ReadBits(24);
-            
+
             for (var i = 0; i < bits54; ++i)
             {
                 if (packet.ReadBits("bits22[0]", 4, i) == 11)
@@ -197,7 +197,7 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
 
             var bit68 = !packet.ReadBit();
             var bits44 = (int)packet.ReadBits(24);
-            
+
             guid10 = new byte[bits44][];
             for (var i = 0; i < bits44; ++i)
             {
@@ -255,13 +255,13 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
                 packet.ReadXORByte(guid5, 6);
                 packet.WriteGuid("Guid10", guid5);
             }
-            
+
             for (var i = 0; i < bits44; ++i)
             {
                 packet.ParseBitStream(guid10[i], 7, 1, 6, 4, 5, 2, 0, 3);
                 packet.WriteGuid("Guid9", guid10[9]);
             }
-            
+
             for (var i = 0; i < bits184; ++i)
             {
                 packet.ReadXORByte(guid8[i], 5);
@@ -293,7 +293,7 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
             packet.ReadXORByte(guid3, 1);
             packet.ReadXORByte(guid3, 7);
             packet.ReadXORByte(guid3, 0);
-            
+
             for (var i = 0; i < bits34; ++i)
             {
                 packet.ParseBitStream(guid9[i], 2, 4, 5, 3, 6, 7, 1);

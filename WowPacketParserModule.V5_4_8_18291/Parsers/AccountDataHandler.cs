@@ -36,7 +36,10 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var decompCount = packet.ReadInt32();
             var compCount = packet.ReadInt32();
 
-            var data = packet.Inflate(compCount, decompCount, false).ReadWoWString(decompCount);
+            var pkt = packet.Inflate(compCount, decompCount, false);
+            var data = pkt.ReadWoWString(decompCount);
+            packet.ClosePacket(false);
+
             packet.WriteLine("Account Data {0}", data);
 
             packet.ReadXORBytes(guid, 7, 4, 0, 6, 2);
@@ -52,6 +55,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var t = packet.ReadBits(3);
             packet.WriteLine("Data Type: " + (AccountDataType)t);
         }
-        
+
     }
 }

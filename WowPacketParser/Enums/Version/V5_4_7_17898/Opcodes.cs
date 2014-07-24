@@ -27,7 +27,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_BANKER_ACTIVATE, 0x02FD},
             {Opcode.CMSG_BINDER_ACTIVATE, 0x0477},
             {Opcode.SMSG_BINDER_CONFIRM, 0x0F22},
-			{Opcode.CMSG_BLACK_MARKET_HELLO, 0x0374},
+            {Opcode.CMSG_BLACK_MARKET_HELLO, 0x0374},
             {Opcode.CMSG_BLACK_MARKET_BID, 0x03FE},
             {Opcode.CMSG_BLACK_MARKET_REQUEST_ITEMS, 0x06D4},
             {Opcode.CMSG_BUY_BANK_SLOT, 0x00FE},
@@ -65,7 +65,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_GROUP_ASSIGNMENT, 0x18A2},
             {Opcode.CMSG_GROUP_DISBAND, 0x0DB2},
             {Opcode.CMSG_GROUP_INVITE, 0x1990},
-            {Opcode.CMSG_GROUP_INVITE_RESPONSE, 0x1C51}, 
+            {Opcode.CMSG_GROUP_INVITE_RESPONSE, 0x1C51},
             {Opcode.CMSG_GROUP_RAID_CONVERT, 0x19A0},
             {Opcode.CMSG_GROUP_REQUEST_JOIN_UPDATES, 0x1792},
             {Opcode.CMSG_GROUP_SET_LEADER, 0x1383},
@@ -249,7 +249,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_BATTLE_PET_TRAP_LEVEL, 0x13AA},
             {Opcode.SMSG_BATTLE_PET_UPDATES, 0x04E3},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x11E2 | 0x20000},
-			{Opcode.SMSG_BLACKMARKET_OPEN_RESULT, 0x15E2},
+            {Opcode.SMSG_BLACKMARKET_OPEN_RESULT, 0x15E2},
             {Opcode.SMSG_BLACKMARKET_OUT_BID, 0x12A3},
             {Opcode.SMSG_BLACKMARKET_ITEM_RESULT, 0x165A},
             {Opcode.SMSG_BLACKMARKET_BID_ON_ITEM_RESULT, 0x64B},
@@ -313,7 +313,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x0E52},
             {Opcode.SMSG_GOSSIP_POI, 0x058F},
             {Opcode.SMSG_GROUP_DECLINE, 0x108F},
-            {Opcode.SMSG_GROUP_DESTROYED, 0x1564}, 
+            {Opcode.SMSG_GROUP_DESTROYED, 0x1564},
             {Opcode.SMSG_GROUP_INVITE, 0x1472},
             {Opcode.SMSG_GROUP_LIST, 0x1E61},
             {Opcode.SMSG_GUILD_ACHIEVEMENT_DATA, 0x1B5A},
@@ -373,7 +373,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_PARTYKILLLOG, 0x0F23},
             {Opcode.SMSG_PET_BATTLE_CHAT_RESTRICTED, 0x1F53 | 0x20000},  // 5.4.7 17930 PET_BATTLE NYI
             {Opcode.SMSG_PET_BATTLE_DEBUG_QUEUE_DUMP_RESPONSE, 0x13E9},  // 5.4.7 17930 PET_BATTLE NYI
-            {Opcode.SMSG_PET_BATTLE_FULL_UPDATE, 0x01E3},  // 5.4.7 17930 PET_BATTLE NYI 
+            {Opcode.SMSG_PET_BATTLE_FULL_UPDATE, 0x01E3},  // 5.4.7 17930 PET_BATTLE NYI
             {Opcode.SMSG_PET_BATTLE_FINAL_ROUND, 0x12F0 | 0x20000},  // 5.4.7 17930 PET_BATTLE NYI // done
             {Opcode.SMSG_PET_BATTLE_FINISHED, 0x1E33},  // 5.4.7 17930 PET_BATTLE NYI
             {Opcode.SMSG_PET_BATTLE_FIRST_ROUND, 0x1612},  // 5.4.7 17930 PET_BATTLE NYI //done

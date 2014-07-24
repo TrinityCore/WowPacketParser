@@ -262,7 +262,7 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
             casterGUID[4] = packet.ReadBit();
 
             var bits20 = (int)packet.ReadBits(21);
-            
+
             var bit14 = new bool[bits20];
             var hasSpellProto = new bool[bits20];
             var bit18 = new bool[bits20];
@@ -277,7 +277,7 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
                 hasOverDamage[i] = !packet.ReadBit();
                 hasAbsorb[i] = !packet.ReadBit();
             }
-            
+
             for (var i = 0; i < bits20; ++i)
             {
                 var aura = packet.ReadEnum<AuraType>("Aura Type", TypeCode.UInt32, i);

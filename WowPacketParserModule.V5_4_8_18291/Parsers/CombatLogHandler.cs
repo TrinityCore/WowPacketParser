@@ -134,7 +134,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         {
             var targetGUID = new byte[8];
             var casterGUID = new byte[8];
-            
+
             targetGUID[7] = packet.ReadBit();
             casterGUID[0] = packet.ReadBit();
             casterGUID[7] = packet.ReadBit();
@@ -205,7 +205,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     packet.ReadInt32("IntED", i);
                     packet.ReadInt32("IntED", i);
                 }
-                
+
                 packet.ReadInt32("Int34");
                 packet.ReadInt32("Int3C");
                 packet.ReadInt32("Int38");

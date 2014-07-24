@@ -24,7 +24,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var subjectLength = new uint[count];
             var itemCount = new uint[count];
             var bodyLength = new uint[count];
-            
+
             for (var i = 0; i < count; ++i)
             {
                 bit1C[i] = packet.ReadBit();
@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 subjectLength[i] = packet.ReadBits(8);
                 itemCount[i] = packet.ReadBits(17);
                 bodyLength[i] = packet.ReadBits(13);
-                
+
                 for (var j = 0; j < itemCount[i]; ++j)
                     packet.ReadBit("bit84", i, j);
 
@@ -46,7 +46,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
                 bit2C[i] = packet.ReadBit();
             }
-            
+
             for (var i = 0; i < count; ++i)
             {
                 if (bit10[i])
@@ -54,7 +54,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     packet.ParseBitStream(guid[i], 6, 4, 2, 7, 3, 1, 0, 5);
                     packet.WriteGuid("Guid", guid[i]);
                 }
-                
+
                 for (var j = 0; j < itemCount[i]; ++j)
                 {
                     packet.ReadInt32("Int14", i, j);

@@ -35,13 +35,13 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var bit1495 = packet.ReadBit();
             var bit11 = !packet.ReadBit();
             var hasChannel = !packet.ReadBit();
-            
+
             packet.StartBitStream(GuildGUID, 0, 7, 6, 4, 1, 3, 2, 5);
 
             var senderNameLen = 0u;
             if (hasSender)
                 senderNameLen = packet.ReadBits(11);
-            
+
             var textLen = 0u;
             if (hasText)
                 textLen = packet.ReadBits(12);
@@ -49,16 +49,16 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadBit(); // fake bit
 
             var hasAchi = !packet.ReadBit();
-            
+
             packet.StartBitStream(SenderGUID, 4, 2, 7, 5, 1, 3, 0, 6);
 
             var bit148C = !packet.ReadBit();
             var hasPrefix = !packet.ReadBit();
-            
+
             var prefixLen = 0u;
             if (hasPrefix)
                 prefixLen = packet.ReadBits(5);
-            
+
             var channelLen = 0u;
             if (hasChannel)
                 channelLen = packet.ReadBits(7);
@@ -67,7 +67,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var bit1490 = !packet.ReadBit();
 
             packet.ReadBit(); // fake bit
-            
+
             var bits148C = 0u;
 
             if (bit148C)
@@ -81,7 +81,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             if (bit43D)
                 packet.ReadWoWString("String43D", bits43D);
-            
+
             if (hasRealmId)
                 packet.ReadInt32("Realm Id");
 
@@ -89,7 +89,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ParseBitStream(ReceiverGUID, 2, 7, 5, 0, 3, 4, 1, 6);
             packet.ParseBitStream(SenderGUID, 5, 7, 3, 1, 6, 2, 4, 0);
             packet.ParseBitStream(GuildGUID, 5, 7, 4, 1, 2, 0, 6, 3);
-            
+
             if (hasChannel)
                 packet.ReadWoWString("Channel Name", channelLen);
 

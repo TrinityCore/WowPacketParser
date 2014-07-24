@@ -61,7 +61,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             uint nameLen = 0;
             uint rankCount = 0;
             uint[] rankName = null;
-            
+
             guid2[5] = packet.ReadBit();
             var hasData = packet.ReadBit();
             if (hasData)
@@ -160,6 +160,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         public static void HandleNewText(Packet packet)
         {
             packet.ReadWoWString("Text", (int)packet.ReadBits(10));
-        }   
+        }
     }
 }

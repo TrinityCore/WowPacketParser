@@ -13,6 +13,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
-        }        
+        }
     }
 }

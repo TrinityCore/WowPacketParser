@@ -45,7 +45,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                 charGuids[c] = new byte[8];
                 guildGuids[c] = new byte[8];
 
-                
+
                 guildGuids[c][3] = packet.ReadBit();
                 firstLogins[c] = packet.ReadBit();
                 charGuids[c][6] = packet.ReadBit();
@@ -58,15 +58,15 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                 guildGuids[c][5] = packet.ReadBit();
                 charGuids[c][2] = packet.ReadBit();
                 nameLenghts[c] = packet.ReadBits(6);
-                charGuids[c][4] = packet.ReadBit();             
+                charGuids[c][4] = packet.ReadBit();
                 guildGuids[c][4] = packet.ReadBit();
                 guildGuids[c][2] = packet.ReadBit();
                 charGuids[c][3] = packet.ReadBit();
                 guildGuids[c][0] = packet.ReadBit();
                 guildGuids[c][7] = packet.ReadBit();
-                
+
             }
-            
+
             packet.ReadBit("Unk bit");
             var count2 = packet.ReadBits("RIDBIT21", 21);
 
@@ -79,17 +79,17 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                 packet.ReadXORByte(charGuids[c], 7);
                 packet.ReadInt32("Pet Display ID", c); //v4+108
                 var name = packet.ReadWoWString("Name", (int)nameLenghts[c], c); // v4 + 8
-                
+
                 for (int j = 0; j < 23; ++j)
                 {
                     packet.ReadInt32("Item DisplayID", c, j);
                     packet.ReadInt32("Item EnchantID", c, j);
                     packet.ReadEnum<InventoryType>("Item InventoryType", TypeCode.Byte, c, j);
                 }
-                
+
                 packet.ReadXORByte(charGuids[c], 4);
                 packet.ReadXORByte(charGuids[c], 6);
-                
+
                 var level = packet.ReadByte("Level", c); // v4+66
                 var y = packet.ReadSingle("Position Y", c); // v4+80
                 var x = packet.ReadSingle("Position X", c); //v4+76
@@ -124,7 +124,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                 for (var i = 0; i < count2; ++i)
                 {
                     packet.ReadByte("unk2");
-                    packet.ReadUInt32("unk1");  
+                    packet.ReadUInt32("unk1");
                 }
 
                 var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));

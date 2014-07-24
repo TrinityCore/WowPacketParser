@@ -37,7 +37,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 bits4[i] = packet.ReadBits(9);
                 packet.StartBitStream(guid2[i], 4, 7, 1);
             }
-            
+
             for (var i = 0; i < count; i++)
             {
                 for (var j = 0; j < NumSlots; j++)

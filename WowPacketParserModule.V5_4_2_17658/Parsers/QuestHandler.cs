@@ -37,7 +37,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadInt32("Count?");
 
             var count = packet.ReadBits("Count", 20);
-            
+
             var POIcounter = new uint[count];
             var pointsSize = new uint[count][];
 
@@ -49,7 +49,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 for (var j = 0; j < POIcounter[i]; ++j)
                     pointsSize[i][j] = packet.ReadBits("Points Counter", 21, i, j);
             }
-            
+
             for (var i = 0; i < count; ++i)
             {
                 var questPOIs = new List<QuestPOI>();
@@ -69,7 +69,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                         };
                         questPoi.Points.Add(questPoiPoint);
                     }
-                    
+
                     packet.ReadInt32("Unk Int32 1", i, j);
                     packet.ReadInt32("Unk Int32 2", i, j);
                     packet.ReadInt32("Unk Int32 3", i, j);
@@ -117,7 +117,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             }
 
             var quest = new QuestTemplate();
-            
+
             var bits19E8 = (int)packet.ReadBits(9);
             var bits2604 = (int)packet.ReadBits(11);
             var bits278 = (int)packet.ReadBits(12);
@@ -127,7 +127,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var bits78 = (int)packet.ReadBits(9);
             var bitsE30 = (int)packet.ReadBits(12);
             var bits2E10 = (int)packet.ReadBits(19);
-            
+
             var len2949_20 = new uint[bits2E10];
             var bits114 = new uint[bits2E10];
 
@@ -142,7 +142,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
            packet.ReadInt32("Int2E34");
            packet.ReadInt32("Int2E44");
            packet.ReadInt32("Int2E9C");
-            
+
            for (var i = 0; i < bits2E10; ++i)
            {
                 packet.ReadInt32("Int2E14", i);

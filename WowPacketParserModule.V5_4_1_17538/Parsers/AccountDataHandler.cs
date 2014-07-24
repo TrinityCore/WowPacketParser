@@ -15,7 +15,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             for (var i = 0; i < 8; ++i)
             {
                 packet.ReadTime("[" + (AccountDataType)i + "]" + " Time");
-            }            
+            }
             packet.ReadBit("Unk Byte");
         }
     }

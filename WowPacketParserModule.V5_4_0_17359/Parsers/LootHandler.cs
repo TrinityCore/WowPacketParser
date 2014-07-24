@@ -44,7 +44,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var bit50 = !packet.ReadBit();
             guid2[4] = packet.ReadBit();
             var bits10 = (int)packet.ReadBits(19);
-            
+
             var bit14 = new bool[bits10];
             var bit15 = new bool[bits10];
             var bits18 = new int[bits10];
@@ -65,7 +65,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             if (bit46)
                 packet.ReadByte("Byte46");
-            
+
             for (var i = 0; i < bits34; ++i)
             {
                 packet.ReadByte("ByteED", i);

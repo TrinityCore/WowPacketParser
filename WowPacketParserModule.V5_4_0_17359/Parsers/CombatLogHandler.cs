@@ -230,7 +230,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.StartBitStream(casterGUID, 2, 1);
             packet.StartBitStream(targetGUID, 2, 4);
             casterGUID[4] = packet.ReadBit();
-            
+
             var bit8 = new bool[bits58];
             var hasSpellProto = new bool[bits58];
             var hasAbsorb = new bool[bits58];

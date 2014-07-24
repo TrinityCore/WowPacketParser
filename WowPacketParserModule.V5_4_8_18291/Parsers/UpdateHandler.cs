@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ParseBitStream(guid, 0, 4, 7, 2, 6, 3, 1, 5);
 
             packet.WriteGuid("GUID", guid);
-        }      
+        }
 
         [HasSniffData] // in ReadCreateObjectBlock
         [Parser(Opcode.SMSG_UPDATE_OBJECT)]
@@ -177,7 +177,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var hasSplineElevation = false;
 
             var bits168 = 0u;
-            
+
             var splineCount = 0u;
             var bits138 = 0u;
             var bits98 = 0u;
@@ -196,7 +196,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var transportFrames = packet.ReadBits("Transport Frames Count", 22, index); // 1068
             var hasVehicleData = packet.ReadBit("Has Vehicle Data", index); // 488
             var bit1044 = packet.ReadBit("bit1044", index);
-            packet.ReadBit(); //fake bit 
+            packet.ReadBit(); //fake bit
             var bit476 = packet.ReadBit("bit476", index);
             var hasGameObjectRotation = packet.ReadBit("Has GameObject Rotation", index); // 512
             packet.ReadBit(); //fake bit
@@ -229,7 +229,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     transportGuid[6] = packet.ReadBit();
                     transportGuid[7] = packet.ReadBit();
                     hasTransportTime2 = packet.ReadBit();
-                    transportGuid[5] = packet.ReadBit();                    
+                    transportGuid[5] = packet.ReadBit();
                 }
                 hasTimestamp = !packet.ReadBit();
                 guid1[6] = packet.ReadBit();
@@ -302,7 +302,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 hasGOTransportTime2 = packet.ReadBit(); // 420
                 packet.StartBitStream(goTransportGuid, 6, 5, 3, 2, 7);
                 hasGOTransportTime3 = packet.ReadBit(); // 412
-                
+
             }
 
             if (bit668)
@@ -446,9 +446,9 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                             packet.ReadSingle("Spline Vertical Acceleration", index);
 
                         packet.ReadUInt32("Spline FULL Time", index); //236
-                        
+
                     }
-                  
+
                     moveInfo.Position.X = packet.ReadSingle(); //212
                     moveInfo.Position.Z = packet.ReadSingle(); //220
                     packet.ReadUInt32("Spline ID", index); //208
@@ -468,7 +468,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         packet.ReadSingle("Jump Sin Angle", index); //124
                         packet.ReadSingle("Jump XY Speed", index); //116
                         packet.ReadSingle("Jump Cos Angle", index); //120
-                        
+
                     }
                     packet.ReadUInt32("Jump Fall Time", index); //108
                     packet.ReadSingle("Jump Z Speed", index); //112
@@ -489,7 +489,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
                 for (var i = 0; i < bits98; ++i)
                     packet.ReadInt32("UNK counter", index, i);
-                 
+
                 moveInfo.Position.X = packet.ReadSingle(); //28
 
                 if (hasPitch)
@@ -662,6 +662,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.WriteGuid("Facing Target GUID", facingTargetGuid, index);
             }
             return moveInfo;
-        } 
+        }
     }
 }

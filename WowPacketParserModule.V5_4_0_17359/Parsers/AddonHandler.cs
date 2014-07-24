@@ -14,7 +14,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         public static void HandleServerAddonsList(Packet packet)
         {
             var bits20 = (int)packet.ReadBits(23);
-            
+
             var bit3 = new bool[bits20];
             var usePublicKey = new bool[bits20];
             var bits0 = new uint[bits20];
@@ -52,7 +52,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
                 packet.ReadByte("Addon State", i);
             }
-            
+
             for (var i = 0; i < bits10; i++)
             {
                 packet.ReadInt32("Int14", i);

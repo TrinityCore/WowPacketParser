@@ -911,7 +911,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         public static void HandleDestroyObject(Packet packet)
         {
             var guid = new byte[8];
-            
+
             guid[5] = packet.ReadBit();
             guid[6] = packet.ReadBit();
             guid[1] = packet.ReadBit();

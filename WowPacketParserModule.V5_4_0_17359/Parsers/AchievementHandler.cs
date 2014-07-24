@@ -93,7 +93,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         public static void HandleAllAchievementData(Packet packet)
         {
             var bits10 = packet.ReadBits("Achievement count", 20);
-            
+
             var guid1 = new byte[bits10][];
             for (var i = 0; i < bits10; ++i)
             {
@@ -102,7 +102,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             }
 
             var bits20 = packet.ReadBits("Criteria count", 19);
-            
+
             var counter = new byte[bits20][];
             var guid2 = new byte[bits20][];
             var flags = new byte[bits20];
@@ -125,7 +125,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
                 counter[i][2] = packet.ReadBit();
             }
-            
+
             for (var i = 0; i < bits20; ++i)
             {
                 packet.ReadXORByte(guid2[i], 1);

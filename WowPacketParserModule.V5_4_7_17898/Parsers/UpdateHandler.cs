@@ -482,7 +482,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     packet.ReadBits((int)bits98);*/
                 //for (var i = 0; i < bits98; ++i)
                 //    packet.ReadInt32("Int9C", index, i);
-                
+
 
                 moveInfo.Position.Z = packet.ReadSingle();
                 moveInfo.Position.Y = packet.ReadSingle();

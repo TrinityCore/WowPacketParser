@@ -61,7 +61,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             for (var i = 0; i < count; ++i)
             {
                 packet.WriteLine("[{0}] Flags {1}", i, flags[i]); // +32
-                
+
                 if (hasSeasonTotal[i])
                     packet.ReadUInt32("Season total earned", i);    // +12
 

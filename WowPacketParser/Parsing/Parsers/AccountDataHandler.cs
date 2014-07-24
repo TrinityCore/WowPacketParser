@@ -46,9 +46,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadTime("Login Time");
 
             var decompCount = packet.ReadInt32();
-            packet = packet.Inflate(decompCount, false);
-
-            packet.ReadWoWString("Account Data", decompCount);
+            var pkt = packet.Inflate(decompCount, false);
+            pkt.ReadWoWString("Account Data", decompCount);
+            pkt.ClosePacket(false);
         }
 
         [Parser(Opcode.CMSG_UPDATE_ACCOUNT_DATA)]

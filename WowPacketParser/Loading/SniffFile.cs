@@ -219,7 +219,7 @@ namespace WowPacketParser.Loading
             using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(_outFileName, true) : null))
             {
                 var i = 1;
-                if (Settings.DumpFormatWithText())
+                if (writer != null)
                     writer.WriteLine(GetHeader());
 
                 _stats.SetStartTime(DateTime.Now);
@@ -245,7 +245,7 @@ namespace WowPacketParser.Loading
                             _skippedHeaders.AddLast(packet.GetHeader());
                     }
 
-                    if (Settings.DumpFormatWithText())
+                    if (writer != null)
                     {
                         // Write to file
                         writer.WriteLine(packet.Writer);
