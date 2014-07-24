@@ -568,5 +568,18 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.CMSG_QUESTGIVER_REQUEST_REWARD)]
+        public static void HandleQuestRequestReward(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID");
+
+            packet.StartBitStream(guid, 6, 3, 1, 2, 4, 0, 5, 7);
+            packet.ParseBitStream(guid, 3, 0, 7, 6, 2, 1, 5, 4);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
