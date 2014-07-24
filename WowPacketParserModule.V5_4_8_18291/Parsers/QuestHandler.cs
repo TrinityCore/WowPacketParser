@@ -345,5 +345,46 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ParseBitStream(guid, 4, 1, 7, 3, 6, 0, 5, 2);
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_LIST)]
+        public static void HandleQuestgiverQuestList(Packet packet)
+        {
+            packet.ReadUInt32("Emote");
+            packet.ReadUInt32("Delay");
+
+            var guid = new byte[8];
+
+            guid[2] = packet.ReadBit();
+            var titleLen = packet.ReadBits(11);
+            guid[6] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            var count = packet.ReadBits(19);
+
+            var questTitleLen = new uint[count];
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadBit("marker", i); // 0: yellow ! mark   1: blue ? mark
+                questTitleLen[i] = packet.ReadBits(9);
+            }
+
+            packet.StartBitStream(guid, 1, 3, 4, 5, 7);
+            packet.ReadXORBytes(guid, 1, 0, 6, 7);
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32, i);
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID", i);
+                packet.ReadWoWString("Quest Title", questTitleLen[i], i);
+                packet.ReadUInt32("Flags2", i);
+                packet.ReadUInt32("Quest Icon", i);
+                packet.ReadInt32("Quest Level", i);
+            }
+            packet.ReadXORBytes(guid, 5, 3, 2);
+            packet.ReadWoWString("NPC Title", titleLen);
+            packet.ReadXORByte(guid, 4);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
