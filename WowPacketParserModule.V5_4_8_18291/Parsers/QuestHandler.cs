@@ -602,5 +602,26 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST)]
+        public static void HandleQuestCompleteQuest(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
+            guid[4] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            packet.ReadBit("autoCompleteMode");
+            guid[0] = packet.ReadBit();
+
+            packet.ParseBitStream(guid, 0, 2, 1, 4, 3, 6, 7, 5);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
