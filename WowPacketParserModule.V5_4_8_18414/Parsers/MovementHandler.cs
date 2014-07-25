@@ -2837,7 +2837,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 var hasFallDirection = false;
                 var pos = new Vector4();
 
-                packet.ReadInt32("MCounter"); // 176*4
+                packet.ReadInt32("Count"); // 176*4
                 pos.Z = packet.ReadSingle(); // 44
                 pos.Y = packet.ReadSingle(); // 40
                 pos.X = packet.ReadSingle(); // 36
@@ -2995,7 +2995,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             var guid = packet.StartBitStream(0, 3, 4, 1, 5, 2, 6, 7);
             packet.ParseBitStream(guid, 4, 7, 1, 2, 6, 5);
-            packet.ReadInt32("Count");
+            packet.ReadInt32("MCounter");
             packet.ParseBitStream(guid, 0, 3);
             packet.WriteGuid("Guid", guid);
         }

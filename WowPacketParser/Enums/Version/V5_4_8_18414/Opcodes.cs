@@ -117,7 +117,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_NPC_TEXT_QUERY,                           0x0287}, //++
             {Opcode.CMSG_OFFER_PETITION,                           0x15BE}, //-+
             {Opcode.CMSG_OPENING_CINEMATIC,                        0x0130}, //--
-            {Opcode.CMSG_PET_NAME_QUERY,                           0x1C62}, //--
+            {Opcode.CMSG_PET_NAME_QUERY,                           0x1C62}, //++
             {Opcode.CMSG_PETITION_BUY,                             0x12D9}, //--
             {Opcode.CMSG_PETITION_DECLINE,                         0x1279}, //--
             {Opcode.CMSG_PETITION_QUERY,                           0x0255}, //--
@@ -139,7 +139,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_QUESTGIVER_REQUEST_REWARD,                0x0378}, //--
             {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY,         0x02F1}, //--
             {Opcode.CMSG_QUESTGIVER_STATUS_QUERY,                  0x036A}, //++
-            {Opcode.CMSG_QUEST_POI_QUERY,                          0x10C2}, //--
+            {Opcode.CMSG_QUEST_POI_QUERY,                          0x10C2}, //++
             {Opcode.CMSG_QUEST_QUERY,                              0x02D5}, //--
             {Opcode.CMSG_QUESTLOG_REMOVE_QUEST,                    0x0779}, //--
             {Opcode.CMSG_RAID_READY_CHECK,                         0x0817}, //--
@@ -365,7 +365,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_GUILD_XP,                                 0x0AF0}, //--
             {Opcode.SMSG_GUILD_XP_GAIN,                            0x0FE0}, //--
             {Opcode.SMSG_HOTFIX_INFO,                              0x1EBA}, //--
-            {Opcode.SMSG_INIT_CURRENCY,                            0x1A8B}, //--
+            {Opcode.SMSG_INIT_CURRENCY,                            0x1A8B}, //++
             {Opcode.SMSG_INIT_WORLD_STATES,                        0x1560}, //--
             {Opcode.SMSG_INITIAL_SPELLS,                           0x045A}, //--
             {Opcode.SMSG_INITIALIZE_FACTIONS,                      0x0AAA}, //++
@@ -417,21 +417,21 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_PLAYER_MOVE,                              0x1A32}, //++
             {Opcode.SMSG_PLAYERBOUND,                              0x1B60}, //--
             {Opcode.SMSG_PONG,                                     0x1969}, //--
-            {Opcode.SMSG_POWER_UPDATE,                             0x109F}, //--
+            {Opcode.SMSG_POWER_UPDATE,                             0x109F}, //++
             {Opcode.SMSG_PVP_LOG_DATA,                             0x1E8F}, //--
-            {Opcode.SMSG_QUERY_TIME_RESPONSE,                      0x100F}, //--
+            {Opcode.SMSG_QUERY_TIME_RESPONSE,                      0x100F}, //++
             {Opcode.SMSG_QUESTGIVER_OFFER_REWARD,                  0x074F}, //--
             {Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE,                0x0346}, //--
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS,                 0x134C}, //--
             {Opcode.SMSG_QUESTGIVER_QUEST_LIST,                    0x02D4}, //--
             {Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS,                 0x0277}, //--
-            {Opcode.SMSG_QUESTGIVER_STATUS,                        0x1275}, //--
-            {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE,               0x06CE}, //--
+            {Opcode.SMSG_QUESTGIVER_STATUS,                        0x1275}, //++
+            {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE,               0x06CE}, //++
             {Opcode.SMSG_QUESTLOG_FULL,                            0x07FD}, //--
             {Opcode.SMSG_QUESTUPDATE_ADD_KILL,                     0x1645}, //--
             {Opcode.SMSG_QUESTUPDATE_COMPLETE,                     0x0776}, //--
             {Opcode.SMSG_QUEST_CONFIRM_ACCEPT,                     0x13C7}, //--
-            {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE,                 0x067F}, //--
+            {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE,                 0x067F}, //++
             {Opcode.SMSG_QUEST_QUERY_RESPONSE,                     0x0276}, //--
             {Opcode.SMSG_RAID_READY_CHECK,                         0x1C8E}, //--
             {Opcode.SMSG_RAID_READY_CHECK_COMPLETED,               0x15C2}, //--
@@ -507,7 +507,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_0AAE,                                 0x0AAE}, //++
             {Opcode.SMSG_UNK_0C44,                                 0x0C44}, //+-
             //{Opcode.SMSG_UNK_0CAE,                                 0x0CAE}, //++
-            {Opcode.SMSG_UNK_0CBE,                                 0x0CBE}, //--
+            {Opcode.SMSG_UNK_0CBE,                                 0x0CBE}, //++
             {Opcode.SMSG_UNK_0CF2,                                 0x0CF2}, //++
             {Opcode.SMSG_UNK_0D51,                                 0x0D51}, //++
             {Opcode.SMSG_UNK_0D79,                                 0x0D79}, //++

@@ -250,7 +250,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_QUERY_TIME_RESPONSE)]
         public static void HandleQueryTimeResponse(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadTime("Current Time");
+            packet.ReadInt32("Daily Quest Reset");
         }
 
         [Parser(Opcode.SMSG_REALM_NAME_QUERY_RESPONSE)]

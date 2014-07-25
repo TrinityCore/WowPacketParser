@@ -185,8 +185,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_DB_REPLY)]
         public static void HandleDBReply(Packet packet)
         {
-            var id = packet.ReadUInt32("Entry");
-            var type = packet.ReadUInt32("Type"); // See DB2Hash enum. Left like this for now to see some numbers pop. ^^
+            var id = packet.ReadInt32("Entry");
+            var type = packet.ReadInt32("Type"); // See DB2Hash enum. Left like this for now to see some numbers pop. ^^
             packet.ReadTime("Hotfix date");
             var size = packet.ReadUInt32("Size");
 

@@ -67,6 +67,18 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_CHAR_CREATE)]
+        public static void HandleCharCreate(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_CHAR_DELETE)]
+        public static void HandleCharDelete(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.SMSG_CHAR_ENUM)]
         public static void HandleCharEnum(Packet packet)
         {
@@ -234,19 +246,65 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Target", guid2);
         }
 
+        [Parser(Opcode.SMSG_INIT_CURRENCY)]
+        public static void HandleInitCurrency(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 21);
+            if (count == 0)
+                return;
+
+            var hasWeekCount = new bool[count];
+            var hasWeekCap = new bool[count];
+            var hasSeasonTotal = new bool[count];
+            var flags = new uint[count];
+            for (var i = 0; i < count; ++i)
+            {
+                hasSeasonTotal[i] = packet.ReadBit("hasSeasonTotal", i);
+                flags[i] = packet.ReadBits("flags", 5, i);
+                hasWeekCap[i] = packet.ReadBit("hasWeekCap", i);
+                hasWeekCount[i] = packet.ReadBit("hasWeekCount", i);
+            }
+
+            for (var i = 0; i < count; ++i)
+            {
+                if (hasWeekCount[i])
+                    packet.ReadUInt32("Weekly count", i);
+
+                packet.ReadUInt32("Entry", i);
+
+                if (hasSeasonTotal[i])
+                    packet.ReadUInt32("Season count", i);
+
+                packet.ReadUInt32("Currency count", i);
+
+                if (hasWeekCap[i])
+                    packet.ReadUInt32("Weekly cap", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_POWER_UPDATE)]
+        public static void HandlePowerUpdate(Packet packet)
+        {
+            var guid = packet.StartBitStream(4, 6, 7, 5, 2, 3, 0, 1);
+
+            var count = packet.ReadBits("Count", 21);
+
+            packet.ParseBitStream(guid, 7, 0, 5, 3, 1, 2, 4);
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadEnum<PowerType>("Power type", TypeCode.Byte, i); // Actually powertype for class
+                packet.ReadInt32("Value", i);
+            }
+
+            packet.ReadXORByte(guid, 6);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_STANDSTATE_UPDATE)]
         public static void HandleStandStateUpdate(Packet packet)
         {
             packet.ReadByte("Standstate");
-        }
-
-        [Parser(Opcode.SMSG_CHAR_CREATE)]
-        [Parser(Opcode.SMSG_CHAR_DELETE)]
-        [Parser(Opcode.SMSG_INIT_CURRENCY)]
-        [Parser(Opcode.SMSG_POWER_UPDATE)]
-        public static void HandleInitCurrency(Packet packet)
-        {
-            packet.ReadToEnd();
         }
     }
 }

@@ -1064,7 +1064,79 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_UNK_0CBE)] // sub_714C42
         public static void HandleUnk0CBE(Packet packet)
         {
-            packet.ReadToEnd();
+            var count1 = packet.ReadBits("count1", 24);
+            packet.ReadBit("unk16");
+            var count2 = packet.ReadBits("count36", 24);
+            var guid2 = new byte[count2][];
+            for (var i = 0; i < count2; i++)
+            {
+                guid2[i] = new byte[8];
+                guid2[i] = packet.StartBitStream(4, 7, 3, 2, 6, 0, 5, 1);
+            }
+            var guid3 = new byte[count1][];
+            for (var i = 0; i < count1; i++)
+            {
+                guid3[i] = new byte[8];
+                guid3[i] = packet.StartBitStream(5, 4, 1, 7, 0, 6, 2, 3);
+            }
+            var count3 = packet.ReadBits("count3", 24);
+            var guid4 = new byte[count3][];
+            for (var i = 0; i < count3; i++)
+            {
+                guid4[i] = new byte[8];
+                guid4[i] = packet.StartBitStream(1, 4, 3, 6, 2, 0, 7, 5);
+            }
+            var count4 = packet.ReadBits("count4", 20);
+            var guid5 = new byte[count4][];
+            for (var i = 0; i < count4; i++)
+            {
+                guid5[i] = new byte[8];
+                guid5[i] = packet.StartBitStream(5, 3, 7, 4, 2, 0, 6, 1);
+            }
+            var count5 = packet.ReadBits("count5", 20);
+            var guid6 = new byte[count5][];
+            for (var i = 0; i < count5; i++)
+            {
+                guid6[i] = new byte[8];
+                guid6[i] = packet.StartBitStream(3, 5, 2, 6, 4, 0, 1, 7);
+            }
+            for (var i = 0; i < count5; i++)
+            {
+                packet.ParseBitStream(guid6[i], 5, 2);
+                packet.ReadSingle("unk72", i);
+                packet.ReadSingle("unk64", i);
+                packet.ParseBitStream(guid6[i], 1, 4, 6, 0);
+                packet.ReadInt32("unk136", i);
+                packet.ReadSingle("unk68", i);
+                packet.ParseBitStream(guid6[i], 3, 7);
+                packet.WriteGuid("Guid6", guid6[i], i);
+            }
+            for (var i = 0; i < count1; i++)
+            {
+                packet.ParseBitStream(guid3[i], 4, 0, 6, 7, 5, 3, 1, 2);
+                packet.WriteGuid("Guid3", guid3[i], i);
+            }
+            for (var i = 0; i < count4; i++)
+            {
+                packet.ParseBitStream(guid5[i], 2, 5);
+                packet.ReadSingle("unk104", i);
+                packet.ReadInt32("unk108", i);
+                packet.ReadSingle("unk100", i);
+                packet.ParseBitStream(guid5[i], 1);
+                packet.ReadSingle("unk96", i);
+                packet.ParseBitStream(guid5[i], 6, 7, 4, 3, 0);
+                packet.WriteGuid("Guid5", guid5[i], i);
+            }
+            for (var i = 0; i < count3; i++)
+            {
+                packet.ParseBitStream(guid4[i], 7, 1, 0, 6, 2, 3, 4, 5);
+                packet.WriteGuid("Guid4", guid4[i], i);
+            }
+            for (var i = 0; i < count2; i++)
+            {
+                packet.ParseBitStream(guid2[i], 6, 2, 5, 0, 3, 4, 1, 7);
+                packet.WriteGuid("Guid2", guid2[i], i);
+            }
         }
 
         [Parser(Opcode.SMSG_UNK_0CF2)]
