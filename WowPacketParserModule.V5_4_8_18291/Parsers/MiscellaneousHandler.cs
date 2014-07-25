@@ -261,5 +261,61 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         {
             packet.ReadUInt32("Option");
         }
+
+        [Parser(Opcode.SMSG_PLAY_SOUND)]
+        public static void HandlePlaySound(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 2, 3, 7, 6, 0, 5, 4, 1);
+
+            var sound = packet.ReadUInt32("Sound Id");
+
+            packet.ParseBitStream(guid, 3, 2, 4, 7, 5, 0, 6, 1);
+
+            packet.WriteGuid("Guid", guid);
+
+            Storage.Sounds.Add(sound, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_PLAY_OBJECT_SOUND)]
+        public static void HandlePlayObjectSound(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            guid2[5] = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            guid1[3] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid1[4] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid1[5] = packet.ReadBit();
+            guid1[1] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+
+            packet.ReadXORBytes(guid1, 6, 2);
+            packet.ReadXORBytes(guid2, 2, 5);
+            packet.ReadXORBytes(guid1, 7, 5, 3, 1);
+            packet.ReadXORBytes(guid2, 3, 1);
+
+            var sound = packet.ReadUInt32("Sound Id");
+
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadXORBytes(guid2, 4, 7, 0, 6);
+            packet.ReadXORByte(guid1, 0);
+
+            packet.WriteGuid("Guid 1", guid1);
+            packet.WriteGuid("Guid 2", guid2);
+
+            Storage.Sounds.Add(sound, packet.TimeSpan);
+        }
     }
 }
