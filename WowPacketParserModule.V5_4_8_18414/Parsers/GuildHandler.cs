@@ -7,42 +7,66 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class GuildHandler
     {
+        [Parser(Opcode.CMSG_AUTO_DECLINE_GUILD_INVITES)]
+        public static void HandleAutodeclineGuildInvites(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_GUILD_ACCEPT)]
+        public static void HandleGuildAccept(Packet packet)
+        {
+        }
+
+        [Parser(Opcode.CMSG_GUILD_ADD_RANK)]
+        public static void HandleGuildAddRank(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.CMSG_GUILD_ASSIGN_MEMBER_RANK)]
         public static void HandleGuildAssignMemberRank(Packet packet)
         {
             packet.ReadToEnd();
         }
 
-        [Parser(Opcode.CMSG_GUILD_DISBAND)]
-        [Parser(Opcode.CMSG_GUILD_INFO_TEXT)]
-        [Parser(Opcode.CMSG_GUILD_NEWS_UPDATE_STICKY)]
-        [Parser(Opcode.CMSG_GUILD_PROMOTE)]
-        [Parser(Opcode.CMSG_GUILD_QUERY)]
-        [Parser(Opcode.CMSG_GUILD_QUERY_NEWS)]
-        [Parser(Opcode.CMSG_GUILD_QUERY_RANKS)]
-        [Parser(Opcode.CMSG_GUILD_REMOVE)]
-        [Parser(Opcode.CMSG_GUILD_REQUEST_CHALLENGE_UPDATE)]
-        [Parser(Opcode.CMSG_GUILD_ROSTER)]
-        [Parser(Opcode.CMSG_GUILD_SET_GUILD_MASTER)]
-        [Parser(Opcode.SMSG_GUILD_CHALLENGE_UPDATED)]
-        [Parser(Opcode.SMSG_GUILD_COMMAND_RESULT)]
-        [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
-        [Parser(Opcode.SMSG_GUILD_NEWS_UPDATE)]
-        [Parser(Opcode.SMSG_GUILD_RANK)]
-        [Parser(Opcode.SMSG_GUILD_RANKS_UPDATE)]
-        [Parser(Opcode.SMSG_GUILD_REPUTATION_WEEKLY_CAP)]
-        [Parser(Opcode.SMSG_GUILD_REWARDS_LIST)]
-        [Parser(Opcode.SMSG_GUILD_ROSTER)]
-        [Parser(Opcode.SMSG_GUILD_XP)]
-        [Parser(Opcode.SMSG_GUILD_XP_GAIN)]
-        [Parser(Opcode.SMSG_PETITION_ALREADY_SIGNED)]
-        [Parser(Opcode.SMSG_PETITION_QUERY_RESPONSE)]
-        [Parser(Opcode.SMSG_PETITION_RENAME_RESULT)]
-        [Parser(Opcode.SMSG_PETITION_SHOWLIST)]
-        [Parser(Opcode.SMSG_PETITION_SHOW_SIGNATURES)]
-        [Parser(Opcode.SMSG_PETITION_SIGN_RESULTS)]
-        [Parser(Opcode.SMSG_TURN_IN_PETITION_RESULTS)]
-        public static void HandleGuildQuery(Packet packet)
+        [Parser(Opcode.CMSG_GUILD_BANK_BUY_TAB)]
+        public static void HandleGuildBankBuyTab(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_DEPOSIT_MONEY)]
+        public static void HandleGuildBankDepositMoney(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_LOG_QUERY)]
+        public static void HandleGuildBankLogQuery(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_UPDATE_TAB)]
+        public static void HandleGuildBankUpdateTab(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_GUILD_BANKER_ACTIVATE)]
+        public static void HandleGuildBankerActivate(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_GUILD_DECLINE)]
+        public static void HandleGuildDecline(Packet packet)
+        {
+        }
+
+        [Parser(Opcode.CMSG_GUILD_DEL_RANK)]
+        public static void HandleGuildDelRank(Packet packet)
         {
             packet.ReadToEnd();
         }
@@ -61,11 +85,71 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_GUILD_DISBAND)]
+        public static void HandleGuildDisband(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_GUILD_EVENT_LOG_QUERY)]
+        public static void HandleGuildEventLogQuery(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_GUILD_INFO_TEXT)]
+        public static void HandleGuildInfoText(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_GUILD_INVITE)]
+        public static void HandleGuildInvite(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_GUILD_LEAVE)]
+        public static void HandleGuildLeave(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.CMSG_GUILD_MOTD)]
         public static void HandleGuildMotd(Packet packet)
         {
             var len = packet.ReadBits("Len", 10);
             packet.ReadWoWString("Motd", len);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_NEWS_UPDATE_STICKY)]
+        [Parser(Opcode.CMSG_GUILD_PROMOTE)]
+        [Parser(Opcode.CMSG_GUILD_QUERY)]
+        [Parser(Opcode.CMSG_GUILD_QUERY_NEWS)]
+        [Parser(Opcode.CMSG_GUILD_QUERY_RANKS)]
+        [Parser(Opcode.CMSG_GUILD_REMOVE)]
+        [Parser(Opcode.CMSG_GUILD_REQUEST_CHALLENGE_UPDATE)]
+        [Parser(Opcode.CMSG_GUILD_ROSTER)]
+        [Parser(Opcode.CMSG_GUILD_SET_GUILD_MASTER)]
+        [Parser(Opcode.SMSG_GUILD_COMMAND_RESULT)]
+        [Parser(Opcode.SMSG_GUILD_NEWS_UPDATE)]
+        [Parser(Opcode.SMSG_GUILD_RANK)]
+        [Parser(Opcode.SMSG_GUILD_RANKS_UPDATE)]
+        [Parser(Opcode.SMSG_GUILD_REPUTATION_WEEKLY_CAP)]
+        [Parser(Opcode.SMSG_GUILD_REWARDS_LIST)]
+        [Parser(Opcode.SMSG_GUILD_ROSTER)]
+        [Parser(Opcode.SMSG_GUILD_XP)]
+        [Parser(Opcode.SMSG_GUILD_XP_GAIN)]
+        [Parser(Opcode.SMSG_PETITION_ALREADY_SIGNED)]
+        [Parser(Opcode.SMSG_PETITION_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_PETITION_RENAME_RESULT)]
+        [Parser(Opcode.SMSG_PETITION_SHOWLIST)]
+        [Parser(Opcode.SMSG_PETITION_SHOW_SIGNATURES)]
+        [Parser(Opcode.SMSG_PETITION_SIGN_RESULTS)]
+        [Parser(Opcode.SMSG_TURN_IN_PETITION_RESULTS)]
+        public static void HandleGuildQuery(Packet packet)
+        {
+            packet.ReadToEnd();
         }
 
         [Parser(Opcode.CMSG_OFFER_PETITION)]
@@ -169,6 +253,47 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
         [Parser(Opcode.CMSG_TURN_IN_PETITION)]
         public static void HandlePetitionTurnIn(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_GUILD_BANK_LIST)]
+        public static void HandleServerGuildBankList(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_GUILD_BANK_LOG_QUERY_RESULT)]
+        public static void HandleServerGuildBankLogQueryResult(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_GUILD_CHALLENGE_UPDATED)]
+        public static void HandleServerGuildChallengeUpdated(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_GUILD_EVENT_LOG_QUERY_RESULT)]
+        public static void HandleServerGuildEventLogQueryResult(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_GUILD_INVITE)]
+        public static void HandleServerGuildInvite(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_GUILD_INVITE_CANCEL)]
+        public static void HandleServerGuildInviteCancel(Packet packet)
+        {
+        }
+
+        [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
+        public static void HandleServerGuildMemberDailyReset(Packet packet)
         {
             packet.ReadToEnd();
         }

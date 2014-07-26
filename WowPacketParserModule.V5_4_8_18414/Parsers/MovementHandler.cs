@@ -11,6 +11,16 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class MovementHandler
     {
+        [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED)]
+        public static void HandleMovetimeSkipped(Packet packet)
+        {
+            packet.ReadInt32("unk24");
+            var guid = packet.StartBitStream(5, 0, 7, 4, 1, 2, 6, 3);
+            packet.ResetBitReader();
+            packet.ParseBitStream(guid, 7, 2, 0, 6, 1, 5, 3, 4);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.MSG_MOVE_FALL_LAND)]
         public static void HandleMoveFallLand(Packet packet)
         {
@@ -2972,24 +2982,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
         }
 
-        [Parser(Opcode.SMSG_CLIENT_CONTROL_UPDATE)]
-        public static void HandleClientControlUpdate(Packet packet)
-        {
-            var guid = new byte[8];
-            guid[2] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            packet.ReadBit("AllowMove");
-            guid[0] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            packet.ParseBitStream(guid, 1, 5, 7, 4, 2, 6, 3, 0);
-
-            packet.WriteGuid("Guid", guid);
-        }
-
         [Parser(Opcode.SMSG_MOVE_ROOT)]
         public static void HandleMoveRoot(Packet packet)
         {
@@ -3459,6 +3451,54 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ParseBitStream(guid, 5);
             packet.ReadInt32("unk");
             packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_SPEED)]
+        public static void HandleSplineMoveSetFlightSpeed(Packet packet)
+        {
+            packet.ReadSingle("Speed"); // 24
+            var guid = packet.StartBitStream(1, 4, 7, 3, 2, 6, 5, 0);
+            packet.ParseBitStream(guid, 5, 1, 0, 6, 2, 4, 7, 3);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_BACK_SPEED)]
+        public static void HandleUnk1F9F(Packet packet)
+        {
+            if (packet.Direction == Direction.ServerToClient)
+            {
+                var guid = packet.StartBitStream(7, 4, 0, 3, 2, 5, 6, 1);
+                packet.ParseBitStream(guid, 6, 4, 1, 5, 2, 3, 7);
+                packet.ReadSingle("Speed"); // 24
+                packet.ParseBitStream(guid, 0);
+
+                packet.WriteGuid("Guid", guid);
+            }
+            else
+            {
+                packet.WriteLine("              : CMSG_NULL_1F9F");
+            }
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_SWIM_SPEED)]
+        public static void HandleSplinemoveSetSwimSpeed(Packet packet)
+        {
+            var guid = packet.StartBitStream(5, 6, 7, 3, 4, 2, 1, 0);
+            packet.ParseBitStream(guid, 4, 1, 6, 7, 3);
+            packet.ReadSingle("Speed"); // 24
+            packet.ParseBitStream(guid, 5, 0, 2);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED)]
+        public static void HandleSplineMoveSetWalkSpeed(Packet packet)
+        {
+            var guid = packet.StartBitStream(4, 1, 7, 6, 3, 2, 5, 0);
+            packet.ParseBitStream(guid, 2, 3, 1, 0, 6, 5, 4, 7);
+            packet.WriteGuid("Guid", guid);
+            packet.ReadSingle("Speed");
         }
     }
 }

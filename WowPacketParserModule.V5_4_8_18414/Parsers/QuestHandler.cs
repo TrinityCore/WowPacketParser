@@ -23,7 +23,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
             else
             {
-                packet.WriteLine("              : SMSG_UNK_10C2");
+                packet.WriteLine("              : SMSG_ZONE_UNDER_ATTACK");
                 packet.ReadToEnd();
             }
         }

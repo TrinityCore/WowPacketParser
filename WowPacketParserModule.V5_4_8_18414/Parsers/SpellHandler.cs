@@ -13,7 +13,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class SpellHandler
     {
-
         [Parser(Opcode.CMSG_CANCEL_AURA)]
         public static void HandleCancelAura(Packet packet)
         {
@@ -31,6 +30,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.WriteLine("              : SMSG_???");
                 packet.ReadToEnd();
             }
+        }
+
+        [Parser(Opcode.CMSG_UNLEARN_SKILL)]
+        public static void HandleUnlearnSkill(Packet packet)
+        {
+            packet.ReadToEnd();
         }
 
         [Parser(Opcode.SMSG_AURA_UPDATE)]
@@ -120,6 +125,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
         }
 
+        [Parser(Opcode.SMSG_REMOVED_SPELL)]
+        public static void HandleRemovedSpell(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.SMSG_SEND_UNLEARN_SPELLS)]
         public static void HandleSendUnlearnSpells(Packet packet)
         {
@@ -132,6 +143,45 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.WriteLine("              : CMSG_GROUP_UNINVITE_GUID");
                 packet.ReadToEnd();
             }
+        }
+
+        [Parser(Opcode.SMSG_SPELL_CATEGORY_COOLDOWN)]
+        public static void HandleSpellCategoryCooldown(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_SPELL_COOLDOWN)]
+        public static void HandleSpellCooldown(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[0] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            var unk40 = !packet.ReadBit("!unk40");
+            guid[7] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            var count = packet.ReadBits("count", 21);
+            guid[2] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadInt32("unk80", i);
+                packet.ReadInt32("unk84", i);
+            }
+            packet.ParseBitStream(guid, 5, 3, 7);
+            if (unk40)
+                packet.ReadByte("unk40");
+            packet.ParseBitStream(guid, 4, 1, 0, 2, 6);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPELL_DELAYED)]
+        public static void HandleSpellDelayed(Packet packet)
+        {
+            packet.ReadToEnd();
         }
 
         [HasSniffData]

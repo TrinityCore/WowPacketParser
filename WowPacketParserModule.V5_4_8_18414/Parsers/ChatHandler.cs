@@ -11,6 +11,18 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class ChatHandler
     {
+        [Parser(Opcode.CMSG_CHAT_IGNORED)]
+        public static void HandleClientChatIgnored(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_MESSAGECHAT_AFK)]
+        public static void HandleClientChatAFK(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.CMSG_MESSAGECHAT_EMOTE)]
         public static void HandleClientChatMessageEmote(Packet packet)
         {
@@ -46,6 +58,20 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_MESSAGECHAT_OFFICER)]
+        public static void HandleClientChatMessageOfficer(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                packet.ReadToEnd();
+            }
+            else
+            {
+                packet.WriteLine("              : SMSG_UNK_???");
+                packet.ReadToEnd();
+            }
+        }
+
         [Parser(Opcode.CMSG_MESSAGECHAT_PARTY)]
         public static void HandleMessageChatParty(Packet packet)
         {
@@ -60,6 +86,34 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 var guid = packet.StartBitStream(6, 7, 2, 5, 3, 0, 1, 4);
                 packet.ParseBitStream(guid, 2, 5, 6, 7, 1, 4, 3, 0);
                 packet.WriteGuid("Guid", guid);
+            }
+        }
+
+        [Parser(Opcode.CMSG_MESSAGECHAT_RAID)]
+        public static void HandleClientChatMessageRaid(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                packet.ReadToEnd();
+            }
+            else
+            {
+                packet.WriteLine("              : SMSG_UNK_???");
+                packet.ReadToEnd();
+            }
+        }
+
+        [Parser(Opcode.CMSG_MESSAGECHAT_RAID_WARNING)]
+        public static void HandleClientChatMessageRaidWarning(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                packet.ReadToEnd();
+            }
+            else
+            {
+                packet.WriteLine("              : SMSG_UNK_???");
+                packet.ReadToEnd();
             }
         }
 
@@ -252,6 +306,18 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
             if (entry != 0)
                 Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_TEXT_EMOTE)]
+        public static void HandleServerTextEmote(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_ZONE_UNDER_ATTACK)]
+        public static void HandleZoneUnderAttack(Packet packet)
+        {
+            packet.ReadToEnd();
         }
     }
 }

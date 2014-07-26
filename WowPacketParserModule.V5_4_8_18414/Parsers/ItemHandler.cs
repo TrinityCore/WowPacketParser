@@ -103,6 +103,24 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadByte("Slot"); // 20
         }
 
+        [Parser(Opcode.CMSG_OPEN_ITEM)]
+        public static void HandleOpenItem(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_READ_ITEM)]
+        public static void HandleReadItem(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_REFORGE_ITEM)]
+        public static void HandleReforgeItem(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.CMSG_REPAIR_ITEM)]
         public static void HandleRepairItem(Packet packet)
         {
@@ -163,8 +181,32 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
+        [Parser(Opcode.CMSG_TRANSMOGRIFY_ITEMS)]
+        public static void HandleTransmogrifyItems(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.CMSG_USE_ITEM)]
         public static void HandleUseItem2(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_VOID_STORAGE_QUERY)]
+        public static void HandleVoidStorageQuery(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_VOID_STORAGE_TRANSFER)]
+        public static void HandleVoidStorageTransfer(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_VOID_STORAGE_UNLOCK)]
+        public static void HandleVoidStorageUnlock(Packet packet)
         {
             packet.ReadToEnd();
         }
@@ -365,8 +407,20 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
+        [Parser(Opcode.SMSG_ITEM_PUSH_RESULT)]
+        public static void HandleItemPushResult(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.SMSG_ITEM_TIME_UPDATE)]
         public static void HandleItemTimeUpdate(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_REFORGE_RESULT)]
+        public static void HandleReforgeResult(Packet packet)
         {
             packet.ReadToEnd();
         }
@@ -375,6 +429,23 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleSellItemResponse(Packet packet)
         {
             packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_SET_PROFICIENCY)]
+        public static void HandleSetProficiency(Packet packet)
+        {
+
+            if (packet.Direction == Direction.ServerToClient)
+            {
+                packet.ReadEnum<UnknownFlags>("Mask", TypeCode.UInt32);
+                packet.ReadEnum<ItemClass>("Class", TypeCode.Byte);
+            }
+            else
+            {
+                packet.WriteLine("              : CMSG_VOID_STORAGE_TRANSFER");
+                packet.ReadToEnd();
+            }
+
         }
     }
 }

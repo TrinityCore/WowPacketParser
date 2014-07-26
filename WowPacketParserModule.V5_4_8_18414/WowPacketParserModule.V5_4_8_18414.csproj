@@ -64,12 +64,14 @@
     <Compile Include="Parsers\AddonHandler.cs" />
     <Compile Include="Parsers\BattlegroundHandler.cs" />
     <Compile Include="Parsers\BattlePetHandlers.cs" />
+    <Compile Include="Parsers\BlackMarketHandler.cs" />
     <Compile Include="Parsers\ChannelHandler.cs" />
     <Compile Include="Parsers\CharacterHandler.cs" />
     <Compile Include="Parsers\ChatHandler.cs" />
     <Compile Include="Parsers\CombatHandler.cs" />
     <Compile Include="Parsers\ContactHandler.cs" />
     <Compile Include="Parsers\CorpseHandler.cs" />
+    <Compile Include="Parsers\DuelHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
     <Compile Include="Parsers\GroupHandler.cs" />
     <Compile Include="Parsers\GuildHandler.cs" />

@@ -11,8 +11,20 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class CharacterHandler
     {
+        [Parser(Opcode.CMSG_ALTER_APPEARANCE)]
+        public static void HandleAlterAppearance(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.CMSG_CHAR_CREATE)]
         public static void HandleClientCharCreate(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_CHAR_CUSTOMIZE)]
+        public static void HandleClientCharCustomize(Packet packet)
         {
             packet.ReadToEnd();
         }
@@ -23,6 +35,18 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             var guid = packet.StartBitStream(1, 3, 2, 7, 4, 6, 0, 5);
             packet.ParseBitStream(guid, 7, 1, 6, 0, 3, 4, 2, 5);
             packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_CHAR_FACTION_CHANGE)]
+        public static void HandleClientCharFactionChange(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_CHAR_RENAME)]
+        public static void HandleClientCharRename(Packet packet)
+        {
+            packet.ReadToEnd();
         }
 
         [Parser(Opcode.CMSG_EMOTE)]
@@ -65,6 +89,18 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ResetBitReader();
             packet.ParseBitStream(guid, 0, 5, 1, 4, 2, 3, 7, 6);
             packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_BARBER_SHOP_RESULT)]
+        public static void HandleBarberShopResult(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_BINDER_CONFIRM)]
+        public static void HandleBinderConfirm(Packet packet)
+        {
+            packet.ReadToEnd();
         }
 
         [Parser(Opcode.SMSG_CHAR_CREATE)]
@@ -201,6 +237,11 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_DEATH_RELEASE_LOC)]
+        public static void HandleDeathReleaseLoc(Packet packet)
+        {
+        }
+
         [Parser(Opcode.SMSG_EMOTE)]
         public static void HandleSEmote(Packet packet)
         {
@@ -246,6 +287,18 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Target", guid2);
         }
 
+        [Parser(Opcode.SMSG_ENVIRONMENTALDAMAGELOG)]
+        public static void HandleEnvironmentalDamageLog(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_EXPLORATION_EXPERIENCE)]
+        public static void HandleExplorationExpirience(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.SMSG_INIT_CURRENCY)]
         public static void HandleInitCurrency(Packet packet)
         {
@@ -280,6 +333,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 if (hasWeekCap[i])
                     packet.ReadUInt32("Weekly cap", i);
             }
+        }
+
+        [Parser(Opcode.SMSG_LEVELUP_INFO)]
+        public static void HandleLevelUpInfo(Packet packet)
+        {
+            packet.ReadToEnd();
         }
 
         [Parser(Opcode.SMSG_POWER_UPDATE)]

@@ -74,6 +74,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
+        [Parser(Opcode.CMSG_LFG_TELEPORT)]
+        public static void HandleLFGTeleport(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS)]
         public static void HandleRequestPartyMemberStats(Packet packet)
         {

@@ -42,6 +42,18 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadInt32("int24");
         }
 
+        [Parser(Opcode.SMSG_CORPSE_MAP_POSITION_QUERY_RESPONSE)]
+        public static void HandleCorpseMapPositionQueryResponce(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_CORPSE_QUERY)]
+        public static void HandleCorpseQuery(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_CREATURE_QUERY_RESPONSE)]
         public static void HandleCreatureQueryResponse(Packet packet)

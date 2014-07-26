@@ -20,6 +20,12 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.ReadToEnd();
         }
 
+        [Parser(Opcode.CMSG_ENABLETAXI)]
+        public static void HandleEnabletaxi(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.CMSG_TAXINODE_STATUS_QUERY)]
         public static void HandleTaxiStatusQuery(Packet packet)
         {
@@ -41,7 +47,19 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         [Parser(Opcode.SMSG_ACTIVATETAXIREPLY)]
         public static void HandleActivateTaxiReply(Packet packet)
         {
-            packet.ReadToEnd();
+            var guid = new byte[8];
+            guid[2] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            packet.ReadBit("unk");
+            guid[0] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            packet.ParseBitStream(guid, 1, 5, 7, 4, 2, 6, 3, 0);
+
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SHOWTAXINODES)]

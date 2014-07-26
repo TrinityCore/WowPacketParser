@@ -367,6 +367,13 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
+        [Parser(Opcode.SMSG_PVP_SEASON)]
+        public static void HandlePVPSeason(Packet packet)
+        {
+            packet.ReadInt32("Dword20");
+            packet.ReadInt32("Dword16");
+        }
+
         [Parser(Opcode.SMSG_RATED_BG_STATS)]
         public static void HandleRatedBGStats(Packet packet)
         {

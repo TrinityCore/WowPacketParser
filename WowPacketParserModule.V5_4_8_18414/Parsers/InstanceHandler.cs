@@ -7,6 +7,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class InstanceHandler
     {
+        [Parser(Opcode.SMSG_CORPSE_NOT_IN_INSTANCE)]
+        public static void HandleCorpseNotInInstance(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.SMSG_LOAD_CUF_PROFILES)]
         public static void HandleLoadCUFProfiles(Packet packet)
         {
