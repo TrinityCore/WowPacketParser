@@ -219,7 +219,7 @@ namespace WowPacketParser.Parsing
                 // Processes the packet until it has all data to read - packet appears multiple times in the sniff file
                 // but only the last copy is complete
                 packet.Writer.Clear();
-
+                packet.AsHex();
                 packet.Status = ParsedStatus.WithErrors;
             }
             catch (Exception ex)
