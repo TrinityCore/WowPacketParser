@@ -38,7 +38,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             var pkt = packet.Inflate(compCount, decompCount, false);
             var data = pkt.ReadWoWString(decompCount);
-            packet.ClosePacket(false);
+            pkt.ClosePacket(false);
 
             packet.WriteLine("Account Data {0}", data);
 
