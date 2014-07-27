@@ -105,6 +105,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteGuid("Item Player Creator Guid", guid[i], i);
             }
         }
+
         [Parser(Opcode.SMSG_VOID_TRANSFER_RESULT)]
         public static void HandleVoidTransferResults(Packet packet)
         {

@@ -490,7 +490,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_UPDATE_OBJECT, 0x1792},
             {Opcode.SMSG_UPDATE_WORLD_STATE, 0x121B},
             {Opcode.SMSG_VOID_STORAGE_CONTENTS, 0x008B},
-            {Opcode.SMSG_VOID_TRANSFER_RESULT, 0x18BA},
+            {Opcode.SMSG_VOID_TRANSFER_RESULT, 0x1C9E},
             {Opcode.SMSG_WARDEN_DATA, 0x14EB},
             {Opcode.SMSG_WEATHER, 0x06AB},
             {Opcode.SMSG_WHO, 0x161B},

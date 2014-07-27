@@ -1417,5 +1417,17 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_SPELL_CATEGORY_COOLDOWN)]
+        public static void HandleSpellCategoryCooldown(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 21);
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Cooldown", i);
+                packet.ReadInt32("Category Cooldown", i);
+            }
+        }
     }
 }
