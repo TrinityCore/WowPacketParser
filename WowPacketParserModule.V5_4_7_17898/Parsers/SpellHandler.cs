@@ -1410,7 +1410,6 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
 
             for (var i = 0; i < bits10; ++i)
             {
-
                 for (var j = 0; j < bits24[i]; ++j)
                 {
                     packet.ReadInt32("Int24+0", i, j);
