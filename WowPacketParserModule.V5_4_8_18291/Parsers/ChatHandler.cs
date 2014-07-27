@@ -213,5 +213,20 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var len = packet.ReadBits(9);
             packet.ReadWoWString("Name", len);
         }
+
+        [Parser(Opcode.SMSG_DEFENSE_MESSAGE)]
+        public static void HandleDefenseMessage(Packet packet)
+        {
+            packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
+            var length = packet.ReadBits("Message Length", 12);
+            packet.ReadWoWString("Message", length);
+        }
+
+        [Parser(Opcode.SMSG_NOTIFICATION)]
+        public static void HandleNotification(Packet packet)
+        {
+            var length = packet.ReadBits(12);
+            packet.ReadWoWString("Message", length);
+        }
     }
 }
