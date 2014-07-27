@@ -28,7 +28,6 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             var bit389 = false;
             var bit412 = false;
             var hasUnkMovementField = false;
-            var bit272 = false;
             var hasTransport = false;
             var hasTransportTime2 = false;
             var hasTransportTime3 = false;
@@ -103,7 +102,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
                 guid20[0] = packet.ReadBit();               // v2 + 263
                 bit412 = packet.ReadBit();                  // v2 + 412
                 hasMovementFlags = !packet.ReadBit();       // v2 + 264
-                bit272 = !packet.ReadBit();                 // v2 + bit272
+                hasTimestamp = !packet.ReadBit();           // v2 + bit272
                 hasUnkMovementField = !packet.ReadBit();    // v2 + 264
 
                 if (hasMovementFlags)
@@ -145,8 +144,8 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
 
             if (hasMovement)
             {
-                packet.ReadSingle("float276");      // v2 + 276
-                packet.ReadXORByte(guid20, 6);      // v2 + 256
+                packet.ReadSingle("Position X");      // v2 + 276
+                packet.ReadXORByte(guid20, 0);      // v2 + 256
 
                 if (hasTransport)
                 {
@@ -224,6 +223,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
                 packet.ReadSingle("Position Z");    // v2 + 284
                 packet.ReadXORByte(guid20, 2);      // v2 + 258
 
+                packet.WriteGuid("Guid20", guid20);
             }
 
             packet.ParseBitStream(guid3, 4, 2, 1, 5, 7, 3, 6, 0);
@@ -1241,6 +1241,19 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             packet.ReadXORByte(guid, 3);
 
             packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_CANCEL_AURA)]
+        public static void HandleCanelAura(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadBit(); // fake bit?
+            packet.StartBitStream(guid, 6, 5, 1, 0, 4, 3, 2, 7);
+            packet.ParseBitStream(guid, 3, 2, 1, 0, 4, 7, 5, 6);
+
+            packet.WriteGuid("GUID", guid);
         }
     }
 }

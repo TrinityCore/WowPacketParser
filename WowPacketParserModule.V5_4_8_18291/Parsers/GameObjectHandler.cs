@@ -76,5 +76,16 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             };
             Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
         }
+
+        [Parser(Opcode.CMSG_GAMEOBJ_USE)]
+        public static void HandleGOUse(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 4, 7, 5, 3, 6, 1, 2, 0);
+            packet.ParseBitStream(guid, 7, 1, 6, 5, 0, 3, 2, 4);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
