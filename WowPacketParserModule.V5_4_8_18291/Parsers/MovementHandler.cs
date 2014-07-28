@@ -824,5 +824,18 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.WriteGuid("Guid2", guid);
         }
+
+        [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED)]
+        public static void HandleMoveTimeSkipped(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadInt32("Time");
+
+            packet.StartBitStream(guid, 5, 0, 7, 4, 1, 2, 6, 3);
+            packet.ParseBitStream(guid, 5, 0, 7, 4, 1, 2, 6, 3);
+
+            packet.WriteGuid("Guid2", guid);
+        }
     }
 }
