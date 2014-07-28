@@ -199,7 +199,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_SET_CONTACT_NOTES,                        0x0937}, //--
             {Opcode.CMSG_SET_DUNGEON_DIFFICULTY,                   0x1A36}, //--
             {Opcode.CMSG_SET_PRIMARY_TALENT_TREE,                  0x06C6}, //+-
-            {Opcode.CMSG_SET_SELECTION,                            0x0740}, //--
+            {Opcode.CMSG_SET_SELECTION,                            0x0740}, //++
             {Opcode.CMSG_SET_TITLE,                                0x03C7}, //+-
             {Opcode.CMSG_SETSHEATHED,                              0x0249}, //++ //some load screen
             {Opcode.CMSG_SHOWING_CLOAK,                            0x02F2}, //--
@@ -318,7 +318,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.MSG_MOVE_SET_RUN_MODE,                         0x0979}, //++
             {Opcode.MSG_MOVE_SET_WALK_MODE,                        0x08D1}, //++
             {Opcode.MSG_MOVE_START_ASCEND,                         0x11FA}, //+-
-            {Opcode.MSG_MOVE_START_BACKWARD,                       0x09D8}, //++
+            //{Opcode.MSG_MOVE_START_BACKWARD,                       0x09D8}, //++
             {Opcode.MSG_MOVE_START_DESCEND,                        0x01D1}, //+-
             {Opcode.MSG_MOVE_START_FORWARD,                        0x095A}, //++
             {Opcode.MSG_MOVE_START_PITCH_DOWN,                     0x08D8}, //+-
@@ -526,10 +526,10 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_SPELL_DELAYED,                            0x087A}, //--
             {Opcode.SMSG_SPELL_FAILED_OTHER,                       0x040B}, //--
             {Opcode.SMSG_SPELL_FAILURE,                            0x04AF}, //--
-            //{Opcode.SMSG_SPELL_GO,                                 0x09D8}, //
+            {Opcode.SMSG_SPELL_GO,                                 0x09D8}, //--
             {Opcode.SMSG_SPELL_START,                              0x107A}, //--
             //{Opcode.SMSG_SPELLHEALLOG,                             0x09FB}, //--
-            {Opcode.SMSG_SPELLNONMELEEDAMAGELOG,                   0x1450}, //--
+            {Opcode.SMSG_SPELLNONMELEEDAMAGELOG,                   0x1450}, //++
             {Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_SPEED,             0x1DAB}, //++
             {Opcode.SMSG_SPLINE_MOVE_SET_RUN_BACK_SPEED,           0x1F9F}, //++
             //{Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED,                0x02F1}, //--

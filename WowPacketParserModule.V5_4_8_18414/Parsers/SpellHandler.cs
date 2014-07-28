@@ -8,6 +8,7 @@ using WowPacketParser.Store.Objects;
 using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using Guid = WowPacketParser.Misc.Guid;
+using WowPacketParserModule.V5_4_8_18414.Parsers;
 
 namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
@@ -192,15 +193,23 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
-        [HasSniffData]
         [Parser(Opcode.SMSG_CAST_FAILED)]
         [Parser(Opcode.SMSG_SPELL_FAILED_OTHER)]
         [Parser(Opcode.SMSG_SPELL_FAILURE)]
         [Parser(Opcode.SMSG_SPELL_START)]
-        [Parser(Opcode.SMSG_SPELL_GO)]
         public static void HandleSpellStart(Packet packet)
         {
             packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_SPELL_GO)]
+        public static void HandleSpellGo(Packet packet)
+        {
+            if (packet.Direction == Direction.ServerToClient)
+            {
+                packet.ReadToEnd();
+            }
+            else MovementHandler.HandleMoveStartBackWard(packet);
         }
     }
 }

@@ -1019,132 +1019,125 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.MSG_MOVE_START_BACKWARD)]
         public static void HandleMoveStartBackWard(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
+            packet.WriteLine("              : MSG_MOVE_START_BACKWARD");
+            var guid = new byte[8];
+            var transportGuid = new byte[8];
+            var hasTransTime2 = false;
+            var hasTransTime3 = false;
+            var hasFallDirection = false;
+            var pos = new Vector4();
+
+            pos.Y = packet.ReadSingle(); // 40
+            pos.Z = packet.ReadSingle(); // 44
+            pos.X = packet.ReadSingle(); // 36
+            var hasTime = !packet.ReadBit("Has no timestamp"); // 32
+            var hasO = !packet.ReadBit("Has no Orient"); // 48
+            guid[7] = packet.ReadBit(); // 23
+            guid[2] = packet.ReadBit(); // 18
+            var Count = packet.ReadBits("Counter", 22); // 152
+            var hasFallData = packet.ReadBit("Has fall data"); // 140
+            packet.ReadBit("bit 172"); // 172
+            guid[5] = packet.ReadBit(); // 21
+            guid[3] = packet.ReadBit(); // 19
+            guid[6] = packet.ReadBit(); // 22
+            var hasSplineElev = !packet.ReadBit("Has no Spline Elevation"); // 144
+            guid[4] = packet.ReadBit(); // 20
+            var hasTrans = packet.ReadBit("Has transport"); // 104
+            guid[0] = packet.ReadBit(); // 16
+            var hasMovementFlags = !packet.ReadBit("has no MovementFlags"); // 24
+            var hasPitch = !packet.ReadBit("Has no pitch"); // 112
+            var hasSpline = !packet.ReadBit("has no Spline"); // 168
+            var hasMovementFlags2 = !packet.ReadBit("has no MovementFlags2"); // 28
+            packet.ReadBit("bit 148"); // 148
+            guid[1] = packet.ReadBit(); // 17
+            packet.ReadBit("bit 149"); // 149
+
+            if (hasTrans) // 104
             {
-                var guid = new byte[8];
-                var transportGuid = new byte[8];
-                var hasTransTime2 = false;
-                var hasTransTime3 = false;
-                var hasFallDirection = false;
-                var pos = new Vector4();
-
-                pos.Y = packet.ReadSingle(); // 40
-                pos.Z = packet.ReadSingle(); // 44
-                pos.X = packet.ReadSingle(); // 36
-                var hasTime = !packet.ReadBit("Has no timestamp"); // 32
-                var hasO = !packet.ReadBit("Has no Orient"); // 48
-                guid[7] = packet.ReadBit(); // 23
-                guid[2] = packet.ReadBit(); // 18
-                var Count = packet.ReadBits("Counter", 22); // 152
-                var hasFallData = packet.ReadBit("Has fall data"); // 140
-                packet.ReadBit("bit 172"); // 172
-                guid[5] = packet.ReadBit(); // 21
-                guid[3] = packet.ReadBit(); // 19
-                guid[6] = packet.ReadBit(); // 22
-                var hasSplineElev = !packet.ReadBit("Has no Spline Elevation"); // 144
-                guid[4] = packet.ReadBit(); // 20
-                var hasTrans = packet.ReadBit("Has transport"); // 104
-                guid[0] = packet.ReadBit(); // 16
-                var hasMovementFlags = !packet.ReadBit("has no MovementFlags"); // 24
-                var hasPitch = !packet.ReadBit("Has no pitch"); // 112
-                var hasSpline = !packet.ReadBit("has no Spline"); // 168
-                var hasMovementFlags2 = !packet.ReadBit("has no MovementFlags2"); // 28
-                packet.ReadBit("bit 148"); // 148
-                guid[1] = packet.ReadBit(); // 17
-                packet.ReadBit("bit 149"); // 149
-
-                if (hasTrans) // 104
-                {
-                    transportGuid[1] = packet.ReadBit(); // 57
-                    hasTransTime2 = packet.ReadBit("hasTransTime2"); // 92
-                    transportGuid[0] = packet.ReadBit(); // 56
-                    transportGuid[7] = packet.ReadBit(); // 63
-                    hasTransTime3 = packet.ReadBit("hasTransTime3"); // 100
-                    transportGuid[3] = packet.ReadBit(); // 59
-                    transportGuid[5] = packet.ReadBit(); // 61
-                    transportGuid[6] = packet.ReadBit(); // 62
-                    transportGuid[2] = packet.ReadBit(); // 58
-                    transportGuid[4] = packet.ReadBit(); // 60
-                }
-
-                if (hasMovementFlags2) // 28
-                    packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13); // 28
-
-                if (hasMovementFlags) // 24
-                    packet.ReadEnum<MovementFlag>("Movement Flags", 30); // 24
-
-                if (hasFallData) // 140
-                    hasFallDirection = packet.ReadBit("Has Fall Direction"); // 136
-
-                packet.ResetBitReader();
-                if (Count > 0) // 152
-                    for (var cnt = 0; cnt < Count; cnt++)
-                    {
-                        packet.ReadInt32("Dword 156", cnt); // 156
-                    }
-
-                packet.ParseBitStream(guid, 1, 3, 5, 2, 0, 4, 7, 6);
-
-                if (hasSpline) // 168
-                    packet.ReadInt32("Spline"); // 168
-
-                if (hasTrans) // 104
-                {
-                    var tpos = new Vector4();
-                    packet.ReadUInt32("Transport Time"); // 84
-                    packet.ReadXORByte(transportGuid, 4); // 60
-                    packet.ReadXORByte(transportGuid, 1); // 57
-                    packet.ReadXORByte(transportGuid, 5); // 61
-                    packet.ReadXORByte(transportGuid, 3); // 59
-                    packet.ReadXORByte(transportGuid, 6); // 62
-                    packet.ReadSByte("Transport Seat"); // 80
-                    tpos.O = packet.ReadSingle(); // 76
-                    tpos.X = packet.ReadSingle(); // 64
-                    packet.ReadXORByte(transportGuid, 0); // 56
-                    tpos.Y = packet.ReadSingle(); // 68
-                    if (hasTransTime3) // 100
-                        packet.ReadUInt32("Transport Time 3"); // 96
-                    packet.ReadXORByte(transportGuid, 7); // 63
-                    if (hasTransTime2) // 92
-                        packet.ReadUInt32("Transport Time 2"); // 88
-                    tpos.Z = packet.ReadSingle(); // 72
-                    packet.ReadXORByte(transportGuid, 2); // 58
-                    packet.WriteGuid("Transport Guid", transportGuid);
-                    packet.WriteLine("Transport Position: {0}", tpos);
-                }
-
-                if (hasO)
-                    pos.O = packet.ReadSingle(); // 48
-
-                if (hasFallData) // 140
-                {
-                    packet.ReadUInt32("Fall time"); // 116
-                    if (hasFallDirection) // 136
-                    {
-                        packet.ReadSingle("Fall Cos"); // 128
-                        packet.ReadSingle("Fall Sin"); // 124
-                        packet.ReadSingle("Horizontal Speed"); // 132
-                    }
-                    packet.ReadSingle("Vertical Speed"); // 120
-                }
-
-                if (hasPitch)
-                    packet.ReadSingle("Pitch"); // 112
-
-                if (hasTime)
-                    packet.ReadUInt32("Timestamp"); // 32
-
-                if (hasSplineElev)
-                    packet.ReadSingle("Spline elevation"); // 144
-
-                packet.WriteGuid("Guid", guid);
-                packet.WriteLine("Position: {0}", pos);
+                transportGuid[1] = packet.ReadBit(); // 57
+                hasTransTime2 = packet.ReadBit("hasTransTime2"); // 92
+                transportGuid[0] = packet.ReadBit(); // 56
+                transportGuid[7] = packet.ReadBit(); // 63
+                hasTransTime3 = packet.ReadBit("hasTransTime3"); // 100
+                transportGuid[3] = packet.ReadBit(); // 59
+                transportGuid[5] = packet.ReadBit(); // 61
+                transportGuid[6] = packet.ReadBit(); // 62
+                transportGuid[2] = packet.ReadBit(); // 58
+                transportGuid[4] = packet.ReadBit(); // 60
             }
-            else
+
+            if (hasMovementFlags2) // 28
+                packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13); // 28
+
+            if (hasMovementFlags) // 24
+                packet.ReadEnum<MovementFlag>("Movement Flags", 30); // 24
+
+            if (hasFallData) // 140
+                hasFallDirection = packet.ReadBit("Has Fall Direction"); // 136
+
+            packet.ResetBitReader();
+            if (Count > 0) // 152
+                for (var cnt = 0; cnt < Count; cnt++)
+                {
+                    packet.ReadInt32("Dword 156", cnt); // 156
+                }
+
+            packet.ParseBitStream(guid, 1, 3, 5, 2, 0, 4, 7, 6);
+
+            if (hasSpline) // 168
+                packet.ReadInt32("Spline"); // 168
+
+            if (hasTrans) // 104
             {
-                packet.WriteLine("              : SMSG_SPELL_GO");
-                packet.ReadToEnd();
+                var tpos = new Vector4();
+                packet.ReadUInt32("Transport Time"); // 84
+                packet.ReadXORByte(transportGuid, 4); // 60
+                packet.ReadXORByte(transportGuid, 1); // 57
+                packet.ReadXORByte(transportGuid, 5); // 61
+                packet.ReadXORByte(transportGuid, 3); // 59
+                packet.ReadXORByte(transportGuid, 6); // 62
+                packet.ReadSByte("Transport Seat"); // 80
+                tpos.O = packet.ReadSingle(); // 76
+                tpos.X = packet.ReadSingle(); // 64
+                packet.ReadXORByte(transportGuid, 0); // 56
+                tpos.Y = packet.ReadSingle(); // 68
+                if (hasTransTime3) // 100
+                    packet.ReadUInt32("Transport Time 3"); // 96
+                packet.ReadXORByte(transportGuid, 7); // 63
+                if (hasTransTime2) // 92
+                    packet.ReadUInt32("Transport Time 2"); // 88
+                tpos.Z = packet.ReadSingle(); // 72
+                packet.ReadXORByte(transportGuid, 2); // 58
+                packet.WriteGuid("Transport Guid", transportGuid);
+                packet.WriteLine("Transport Position: {0}", tpos);
             }
+
+            if (hasO)
+                pos.O = packet.ReadSingle(); // 48
+
+            if (hasFallData) // 140
+            {
+                packet.ReadUInt32("Fall time"); // 116
+                if (hasFallDirection) // 136
+                {
+                    packet.ReadSingle("Fall Cos"); // 128
+                    packet.ReadSingle("Fall Sin"); // 124
+                    packet.ReadSingle("Horizontal Speed"); // 132
+                }
+                packet.ReadSingle("Vertical Speed"); // 120
+            }
+
+            if (hasPitch)
+                packet.ReadSingle("Pitch"); // 112
+
+            if (hasTime)
+                packet.ReadUInt32("Timestamp"); // 32
+
+            if (hasSplineElev)
+                packet.ReadSingle("Spline elevation"); // 144
+
+            packet.WriteGuid("Guid", guid);
+            packet.WriteLine("Position: {0}", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_START_DESCEND)]
