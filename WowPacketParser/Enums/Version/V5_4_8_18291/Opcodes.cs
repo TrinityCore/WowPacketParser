@@ -326,6 +326,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_ENVIRONMENTALDAMAGELOG, 0x0DF1},
             {Opcode.SMSG_EXPLORATION_EXPERIENCE, 0x189A},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x16BB},
+            {Opcode.SMSG_FLIGHT_SPLINE_SYNC, 0x0063},
             {Opcode.SMSG_FRIEND_STATUS, 0x0532},
             {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 0x0969},
             {Opcode.SMSG_GAME_STORE_INGAME_BUY_FAILED, 0x023A},
