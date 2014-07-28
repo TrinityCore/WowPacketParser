@@ -22,6 +22,7 @@
         AreaTrigger,
         Phase,
         Player,
-        Currency
+        Currency,
+        DefenseMessage
     }
 }

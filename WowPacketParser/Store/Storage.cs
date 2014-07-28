@@ -73,6 +73,9 @@ namespace WowPacketParser.Store
         // Names
         public static readonly StoreDictionary<uint, ObjectName> ObjectNames = new StoreDictionary<uint, ObjectName>(new List<SQLOutput> { SQLOutput.ObjectNames });
 
+        // Defense Message
+        public static readonly StoreMulti<uint, DefenseMessage> DefenseMessages = new StoreMulti<uint, DefenseMessage>(new List<SQLOutput> { SQLOutput.defense_message });
+
         public static void ClearContainers()
         {
             SniffData.Clear();
