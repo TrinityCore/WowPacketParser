@@ -115,7 +115,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_INSPECT, 0x1259},
             {Opcode.CMSG_ITEM_REFUND_INFO, 0x1258},
             {Opcode.CMSG_JOIN_CHANNEL, 0x148E | 0x10000},
-            {Opcode.CMSG_LEARN_TALENT, 0x02A7},
+            {Opcode.CMSG_LEARN_TALENT, 0x02A7 | 0x10000},
             {Opcode.CMSG_LEAVE_CHANNEL, 0x042A | 0x10000},
             {Opcode.CMSG_LFG_TELEPORT, 0x1AA6},
             {Opcode.CMSG_LIST_INVENTORY, 0x02D8},
@@ -468,7 +468,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x02A2},
             {Opcode.SMSG_SET_PROFICIENCY, 0x1440},
             {Opcode.SMSG_SET_RAID_DIFFICULTY, 0x0591},
-            {Opcode.SMSG_SHOWTAXINODES, 0x1E1A},
             {Opcode.SMSG_SET_VIGNETTE, 0x0CBE},
             {Opcode.SMSG_SHOWTAXINODES, 0x1E1A},
             {Opcode.SMSG_SHOW_BANK, 0x0007},
@@ -516,19 +515,11 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x0082},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x0027},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x10C2 | 0x20000},
-            {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x1D8A},
-            {Opcode.CMSG_SET_ACTION_BUTTON, 0x1F8C},
-            {Opcode.SMSG_LOG_XPGAIN, 0x1E9A},
 
-            {Opcode.CMSG_VOID_STORAGE_QUERY, 0x0140},
-            {Opcode.CMSG_VOID_STORAGE_TRANSFER, 0x1440 | 0x10000},
-            {Opcode.CMSG_VOID_STORAGE_UNLOCK, 0x0444},
             {Opcode.CMSG_VOID_SWAP_ITEM, 0x0655},
             {Opcode.SMSG_VOID_ITEM_SWAP_RESPONSE, 0x1EBF},
-            {Opcode.SMSG_VOID_STORAGE_CONTENTS, 0x008B},
             {Opcode.SMSG_VOID_STORAGE_FAILED, 0x1569},
             {Opcode.SMSG_VOID_STORAGE_TRANSFER_CHANGES, 0x14BA},
-            {Opcode.SMSG_VOID_TRANSFER_RESULT, 0x1C9E},
         };
     }
 }
