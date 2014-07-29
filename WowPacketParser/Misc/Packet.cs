@@ -65,6 +65,7 @@ namespace WowPacketParser.Misc
         public ParsedStatus Status { get; set; }
         public bool WriteToFile { get; private set; }
         public int ConnectionIndex { get; set; }
+        public byte[] SocketIdentifier { get; set; }
 
         public void AddSniffData(StoreNameType type, int id, string data)
         {
