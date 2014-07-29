@@ -663,5 +663,14 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             }
             return moveInfo;
         }
+
+        [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED)]
+        public static void HandleObjectUpdateFailed(Packet packet)
+        {
+            var guid = packet.StartBitStream(3, 5, 6, 0, 1, 2, 7, 4);
+            packet.ParseBitStream(guid, 0, 6, 5, 7, 2, 1, 3, 4);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

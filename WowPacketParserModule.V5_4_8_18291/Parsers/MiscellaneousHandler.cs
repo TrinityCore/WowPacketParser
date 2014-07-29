@@ -261,5 +261,69 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         {
             packet.ReadUInt32("Option");
         }
+
+        [Parser(Opcode.SMSG_NOTIFICATION)]
+        public static void HandleNotification2(Packet packet)
+        {
+            var len = packet.ReadBits(11);
+            packet.ReadWoWString("Text", len);
+        }
+
+        [Parser(Opcode.SMSG_ACTIVATETAXIREPLY)]
+        public static void HandleActivateTaxiReply(Packet packet)
+        {
+            packet.ReadEnum<TaxiError>("Result", 4);
+        }
+
+        [Parser(Opcode.CMSG_ACTIVATETAXI)]
+        public static void HandleActivateTaxi(Packet packet)
+        {
+            packet.ReadUInt32("Node 2 ID");
+            packet.ReadUInt32("Node 1y ID");
+            var guid = new byte[8];
+            packet.StartBitStream(guid, 4, 0, 1, 2, 5, 6, 7, 3);
+            packet.ReadXORBytes(guid, 1, 0, 6, 5, 2, 4, 3, 7);
+            packet.WriteGuid("Guid", guid);
+
+        }
+        [Parser(Opcode.CMSG_TAXIQUERYAVAILABLENODES)]
+        public static void HandleTaxiStatusQuery(Packet packet)
+        {
+            var guid = packet.StartBitStream(7, 1, 0, 4, 2, 5, 6, 3);
+            packet.ParseBitStream(guid, 0, 3, 7, 5, 2, 6, 4, 1);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SHOWTAXINODES)]
+        public static void HandleShowTaxiNodes434(Packet packet)
+        {
+            packet.ReadBit("unk");
+            var guid = packet.StartBitStream(3, 0, 4, 2, 1, 7, 6, 5);
+            var count = packet.ReadBits("Count", 24);
+            packet.ParseBitStream(guid, 0, 3);
+            packet.ReadUInt32("Current Node ID");
+            packet.ParseBitStream(guid, 5, 2, 6, 1, 7, 4);
+
+            for (int i = 0; i < count; ++i)
+                packet.ReadByte("NodeMask", i);
+
+            packet.WriteGuid("Guid", guid);
+        }
+        [Parser(Opcode.CMSG_ACTIVATETAXIEXPRESS)]
+        public static void HandleActiaveTaxiExpress(Packet packet)
+        {
+            var guid = new byte[8];
+            packet.StartBitStream(guid, 6, 7);
+            var count = packet.ReadBits("Count", 22);
+            packet.StartBitStream(guid, 2, 0, 4, 3, 1, 5);
+
+            packet.ParseBitStream(guid, 2, 7, 1);
+            for (int i = 0; i < count; ++i)
+                packet.ReadUInt32("Node", i);
+
+            packet.ParseBitStream(guid, 0, 5, 3, 6, 4);
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
+

@@ -181,5 +181,71 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK | SpellHitInfo.HITINFO_UNK12))
                 packet.ReadSingle("Unk Float");
         }
+
+        [Parser(Opcode.SMSG_CANCEL_AUTO_REPEAT)]
+        public static void HandleCancelAutoRepeat(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 1, 3, 0, 4, 6, 7, 5, 2);
+            packet.ParseBitStream(guid, 7, 6, 2, 5, 0, 4, 1, 3);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_DUEL_REQUESTED)]
+        public static void HandleDuelRequested(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+            
+            guid1[5] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid1[4] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+            guid1[3] = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
+            guid1[1] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid2, 5);
+
+            packet.WriteGuid("Flag GUID", guid1);
+            packet.WriteGuid("Opponent GUID", guid2);
+        }
+
+        [Parser(Opcode.CMSG_DUEL_PROPOSED)]
+        public static void HandleDuelProposed(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 1, 5, 4, 6, 3, 2, 7, 0);
+            packet.ParseBitStream(guid, 4, 2, 5, 7, 1, 3, 6, 0);
+
+            packet.WriteGuid("Opponent GUID", guid);
+        }
     }
 }
