@@ -837,5 +837,53 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.WriteGuid("Guid2", guid);
         }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_SPEED)]
+        public static void HandleSplineSetFlightSpeed(Packet packet)
+        {
+            packet.ReadSingle("Speed");
+            var guid = packet.StartBitStream(7, 4, 0, 1, 3, 6, 5, 2);
+            packet.ParseBitStream(guid, 0, 5, 4, 7, 3, 2, 1, 6);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED)]
+        public static void HandleSplineSetRunSpeed(Packet packet)
+        {
+            var guid = packet.StartBitStream(3, 0, 1, 4, 7, 5, 6, 2);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadSingle("Speed");
+            packet.ReadXORBytes(guid, 1, 5, 3, 7, 6, 2, 0);
+            packet.WriteGuid("GUID", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_BACK_SPEED)]
+        public static void HandleSplineSetRunBackSpeed(Packet packet)
+        {
+            var guid = packet.StartBitStream(7, 4, 0, 3, 2, 5, 6, 1);
+            packet.ReadXORBytes(guid, 6, 4, 1, 5, 2, 3, 7);
+            packet.ReadSingle("Speed");
+            packet.ReadXORByte(guid, 0);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_SWIM_SPEED)]
+        public static void HandleSplineSetSwimSpeed(Packet packet)
+        {
+            var guid = packet.StartBitStream(5, 6, 7, 3, 4, 2, 1, 0);
+            packet.ReadXORBytes(guid, 4, 1, 6, 7, 3);
+            packet.ReadSingle("Speed");
+            packet.ReadXORBytes(guid, 5, 0, 2);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED)]
+        public static void HandleSplineSetWalkSpeed(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 4, 7, 3, 2, 6, 5, 0);
+            packet.ParseBitStream(guid, 5, 1, 0, 6, 2, 4, 7, 3);
+            packet.ReadSingle("Speed");
+            packet.WriteGuid("GUID", guid);
+        }
     }
 }
