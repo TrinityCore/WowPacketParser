@@ -445,11 +445,12 @@
     <Compile Include="SQL\SQLFile.cs" />
     <Compile Include="SQL\SQLUtil.cs" />
     <Compile Include="SQL\SSHTunnel.cs" />
-    <Compile Include="Store\Objects\BroadcastText.cs" />
     <Compile Include="Store\Objects\Aura.cs" />
+    <Compile Include="Store\Objects\BroadcastText.cs" />
     <Compile Include="Store\Objects\CreatureDifficulty.cs" />
     <Compile Include="Store\Objects\CreatureEquipment.cs" />
     <Compile Include="Store\Objects\CreatureText.cs" />
+    <Compile Include="Store\Objects\DefenseMessage.cs" />
     <Compile Include="Store\Objects\GameObject.cs" />
     <Compile Include="Store\Objects\GameObjectTemplate.cs" />
     <Compile Include="Store\Objects\GameObjectTemplateDB2.cs" />

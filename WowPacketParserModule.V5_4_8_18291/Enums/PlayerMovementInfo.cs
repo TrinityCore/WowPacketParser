@@ -137,6 +137,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSETransportPositionY,     // 68
             MovementStatusElements.MSETransportOrientation,   // 76
             MovementStatusElements.MSETransportPositionZ,     // 72
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportGuidByte3,     // 59
             MovementStatusElements.MSETransportGuidByte6,     // 62
             MovementStatusElements.MSETransportTime2,         // 88
@@ -214,6 +215,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSETransportGuidByte2,     // 58
             MovementStatusElements.MSETransportGuidByte0,     // 56
             MovementStatusElements.MSETransportTime3,         // 96
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportGuidByte7,     // 63
             MovementStatusElements.MSETransportPositionX,     // 64
             MovementStatusElements.MSETransportGuidByte4,     // 60
@@ -287,6 +289,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSEFallTime,               // 116
             MovementStatusElements.MSETransportGuidByte5,     // 61
             MovementStatusElements.MSETransportGuidByte7,     // 63
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportGuidByte4,     // 60
             MovementStatusElements.MSETransportGuidByte0,     // 56
             MovementStatusElements.MSETransportPositionZ,     // 72
@@ -366,6 +369,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSETransportPositionX,     // 64
             MovementStatusElements.MSETransportTime2,         // 88
             MovementStatusElements.MSETransportPositionZ,     // 72
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportPositionY,     // 68
             MovementStatusElements.MSETransportGuidByte4,     // 60
             MovementStatusElements.MSETransportGuidByte3,     // 59
@@ -442,6 +446,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSETransportGuidByte6,     // 62
             MovementStatusElements.MSETransportTime,          // 84
             MovementStatusElements.MSETransportGuidByte4,     // 60
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportOrientation,   // 76
             MovementStatusElements.MSETransportPositionY,     // 68
             MovementStatusElements.MSETransportGuidByte1,     // 57
@@ -515,6 +520,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSETransportGuidByte5,     // 61
             MovementStatusElements.MSETransportGuidByte3,     // 59
             MovementStatusElements.MSETransportGuidByte6,     // 62
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportOrientation,   // 76
             MovementStatusElements.MSETransportPositionX,     // 64
             MovementStatusElements.MSETransportGuidByte0,     // 56
@@ -590,6 +596,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSETransportPositionZ,     // 72
             MovementStatusElements.MSETransportGuidByte4,     // 60
             MovementStatusElements.MSETransportTime3,         // 96
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportGuidByte7,     // 63
             MovementStatusElements.MSETransportOrientation,   // 76
             MovementStatusElements.MSETransportTime2,         // 88
@@ -672,6 +679,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSETransportPositionY,     // 68
             MovementStatusElements.MSETransportGuidByte4,     // 60
             MovementStatusElements.MSETransportTime,          // 84
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportPositionX,     // 64
             MovementStatusElements.MSETransportGuidByte0,     // 56
             MovementStatusElements.MSETransportGuidByte7,     // 63
@@ -738,6 +746,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSEGuidByte5,              // 21
             MovementStatusElements.MSEPitch,                  // 112
             MovementStatusElements.MSETransportGuidByte1,     // 57
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportGuidByte3,     // 59
             MovementStatusElements.MSETransportTime2,         // 88
             MovementStatusElements.MSETransportGuidByte7,     // 63
@@ -831,6 +840,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSETransportGuidByte4,     // 60
             MovementStatusElements.MSETransportGuidByte0,     // 56
             MovementStatusElements.MSETransportTime3,         // 96
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportGuidByte6,     // 62
             MovementStatusElements.MSETransportTime,          // 84
             MovementStatusElements.MSEOrientation,            // 48
@@ -900,6 +910,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSETransportGuidByte7,     // 63
             MovementStatusElements.MSETransportGuidByte1,     // 57
             MovementStatusElements.MSETransportPositionX,     // 64
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportGuidByte5,     // 61
             MovementStatusElements.MSETransportGuidByte4,     // 60
             MovementStatusElements.MSETransportGuidByte2,     // 58
@@ -983,6 +994,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSETransportGuidByte4,     // 60
             MovementStatusElements.MSETransportTime3,         // 96
             MovementStatusElements.MSETransportGuidByte0,     // 56
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportPositionZ,     // 72
             MovementStatusElements.MSETransportGuidByte5,     // 61
             MovementStatusElements.MSETransportTime2,         // 88
@@ -1050,6 +1062,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSETransportGuidByte4,     // 60
             MovementStatusElements.MSETransportTime2,         // 88
             MovementStatusElements.MSETransportGuidByte3,     // 59
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportPositionX,     // 64
             MovementStatusElements.MSETransportGuidByte2,     // 58
             MovementStatusElements.MSETransportGuidByte7,     // 63
@@ -1118,6 +1131,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSEGuidByte1,              // 17
             MovementStatusElements.MSETransportTime,          // 84
             MovementStatusElements.MSETransportTime3,         // 96
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportPositionY,     // 68
             MovementStatusElements.MSETransportPositionX,     // 64
             MovementStatusElements.MSETransportTime2,         // 88
@@ -1273,6 +1287,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSETransportGuidByte0,     // 56
             MovementStatusElements.MSETransportGuidByte3,     // 59
             MovementStatusElements.MSETransportGuidByte7,     // 63
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportGuidByte5,     // 61
             MovementStatusElements.MSETransportGuidByte1,     // 57
             MovementStatusElements.MSETransportPositionY,     // 68
@@ -1350,6 +1365,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSETransportGuidByte7,     // 63
             MovementStatusElements.MSETransportGuidByte0,     // 56
             MovementStatusElements.MSETransportPositionY,     // 68
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportTime2,         // 88
             MovementStatusElements.MSETransportGuidByte6,     // 62
             MovementStatusElements.MSETransportGuidByte4,     // 60
@@ -1430,6 +1446,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSETransportGuidByte0,     // 56
             MovementStatusElements.MSETransportGuidByte6,     // 62
             MovementStatusElements.MSETransportGuidByte3,     // 59
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportOrientation,   // 76
             MovementStatusElements.MSETransportGuidByte7,     // 63
             MovementStatusElements.MSETransportGuidByte4,     // 60
@@ -1511,6 +1528,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSETransportPositionZ,     // 72
             MovementStatusElements.MSETransportTime3,         // 96
             MovementStatusElements.MSETransportTime,          // 84
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportGuidByte6,     // 62
             MovementStatusElements.MSEFallCosAngle,           // 124
             MovementStatusElements.MSEFallHorizontalSpeed,    // 132
@@ -1588,6 +1606,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSETransportGuidByte6,     // 62
             MovementStatusElements.MSETransportGuidByte2,     // 58
             MovementStatusElements.MSETransportGuidByte3,     // 59
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportTime3,         // 96
             MovementStatusElements.MSETransportTime,          // 84
             MovementStatusElements.MSETransportGuidByte4,     // 60
@@ -1662,6 +1681,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSETransportTime,          // 84
             MovementStatusElements.MSETransportGuidByte6,     // 62
             MovementStatusElements.MSETransportGuidByte1,     // 57
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportGuidByte2,     // 58
             MovementStatusElements.MSETransportGuidByte5,     // 61
             MovementStatusElements.MSETransportPositionX,     // 64
@@ -1725,6 +1745,7 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSEGuidByte3,              // 19
             MovementStatusElements.MSEGuidByte4,              // 20
             MovementStatusElements.MSEGuidByte2,              // 18
+            MovementStatusElements.MSETransportSeat,          // 80
             MovementStatusElements.MSETransportGuidByte3,     // 59
             MovementStatusElements.MSETransportTime3,         // 96
             MovementStatusElements.MSETransportGuidByte2,     // 58

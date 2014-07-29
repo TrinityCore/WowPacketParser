@@ -7,8 +7,6 @@ namespace WowPacketParser.Misc
 {
     public sealed class BattlenetPacket
     {
-        private static BattlenetChannel lastChannel = BattlenetChannel.Auth;
-
         public BattlenetPacketHeader Header { get; set; }
         public int ProcessedBytes { get; set; }
         public Packet Stream;
@@ -24,9 +22,7 @@ namespace WowPacketParser.Misc
             Header.Opcode = Read<byte>(6);
 
             if (Read<bool>(1))
-                lastChannel = Header.Channel = (BattlenetChannel)Read<byte>(4);
-            else
-                Header.Channel = lastChannel;
+                Header.Channel = (BattlenetChannel)Read<byte>(4);
 
             Header.Direction = packet.Direction;
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -723,6 +724,30 @@ namespace WowPacketParser.SQL.Builders
                 {
                     var row = new QueryBuilder.SQLInsertRow();
 
+                    var query = new StringBuilder(string.Format("SELECT Id FROM {1}.broadcast_text WHERE MaleText='{0}' OR FemaleText='{0}';", MySqlHelper.DoubleQuoteString(textValue.Item1.Text), Settings.TDBDatabase));
+
+                    string broadcastTextId = "";
+                    if (Settings.DevMode)
+                    {
+                        using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
+                        {
+                            if (reader != null)
+                                while (reader.Read())
+                                {
+                                    var values = new object[1];
+                                    var count = reader.GetValues(values);
+                                    if (count != 1)
+                                        break; // error in query
+
+                                    if (!String.IsNullOrWhiteSpace(broadcastTextId))
+                                        broadcastTextId += " - " + Convert.ToInt32(values[0]);
+                                    else
+                                        broadcastTextId += Convert.ToInt32(values[0]);
+                                }
+                        }
+
+                    }
+
                     row.AddValue("entry", text.Key);
                     row.AddValue("groupid", "x", false, true);
                     row.AddValue("id", "x", false, true);
@@ -733,6 +758,8 @@ namespace WowPacketParser.SQL.Builders
                     row.AddValue("emote", textValue.Item1.Emote);
                     row.AddValue("duration", 0);
                     row.AddValue("sound", textValue.Item1.Sound);
+                    if (Settings.DevMode)
+                        row.AddValue("BroadcastTextID", broadcastTextId);
                     row.AddValue("comment", textValue.Item1.Comment);
 
                     rows.Add(row);

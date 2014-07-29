@@ -182,6 +182,70 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.ReadSingle("Unk Float");
         }
 
+        [Parser(Opcode.SMSG_AI_REACTION)]
+        public static void HandleAIReaction(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 5, 7, 0, 4, 6, 2, 3, 1);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadEnum<AIReaction>("Reaction", TypeCode.Int32);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 3);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_ENVIRONMENTALDAMAGELOG)]
+        public static void HandleEnvirenmentalDamageLog(Packet packet)
+        {
+            var guid = new byte[8];
+
+            guid[5] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            var bit30 = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            if (bit30)
+            {
+                var bits20 = packet.ReadBits(21);
+
+                packet.ReadInt32("Int14");
+                for (var i = 0; i < bits20; ++i)
+                {
+                    packet.ReadInt32("IntED", i);
+                    packet.ReadInt32("IntED", i);
+                }
+
+                packet.ReadInt32("Int1C");
+                packet.ReadInt32("Int18");
+            }
+
+            packet.ReadInt32("Int3C");
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadEnum<EnvironmentDamage>("Type", TypeCode.Byte);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadInt32("Int38");
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadInt32("Damage");
+
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_CANCEL_AUTO_REPEAT)]
         public static void HandleCancelAutoRepeat(Packet packet)
         {

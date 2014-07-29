@@ -161,5 +161,13 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         {
             packet.ReadWoWString("Text", (int)packet.ReadBits(10));
         }
+
+        [Parser(Opcode.CMSG_GUILD_DEMOTE)]
+        public static void HandleGuildDemote(Packet packet)
+        {
+            var guid = packet.StartBitStream(3, 6, 0, 2, 7, 5, 4, 1);
+            packet.ParseBitStream(guid, 7, 4, 2, 5, 1, 3, 0, 6);
+            packet.WriteGuid("GUID", guid);
+        }
     }
 }

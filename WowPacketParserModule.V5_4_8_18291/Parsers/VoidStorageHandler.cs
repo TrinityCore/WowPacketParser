@@ -1,13 +1,7 @@
 using System;
-using System.Text;
-using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
 using WowPacketParser.Parsing;
-using CoreParsers = WowPacketParser.Parsing.Parsers;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
@@ -165,15 +159,15 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             npcGuid[7] = packet.ReadBit();
             npcGuid[4] = packet.ReadBit();
 
-            var depositCount = packet.ReadBits("Deposit Count", 24); //9 or 36
-            var ItemsGuid = new byte[depositCount][];
-            for (int i = 0; i < depositCount; ++i)
-                ItemsGuid[i] = packet.StartBitStream(0, 3, 6, 5, 4, 2, 1, 7); //v2+10
+            var count1 = packet.ReadBits("Deposit Count", 24); // 5 or 20
+            var itemsGuid = new byte[count1][];
+            for (int i = 0; i < count1; ++i)
+                itemsGuid[i] = packet.StartBitStream(0, 3, 6, 5, 4, 2, 1, 7); // v2+6 0-7
 
-            var withdrawCount = packet.ReadBits("Withdraw Count", 24); // 5 or 20
-            var itemIds = new byte[withdrawCount][];
-            for (int i = 0; i < withdrawCount; ++i)
-                itemIds[i] = packet.StartBitStream(4, 0, 5, 7, 6, 1, 2, 3); // v2+6 0-7
+            var count2 = packet.ReadBits("Withdraw Count", 24); //9 or 36
+            var itemsId = new byte[count2][];
+            for (int i = 0; i < count2; ++i)
+                itemsId[i] = packet.StartBitStream(4, 0, 5, 7, 6, 1, 2, 3); //v2+10
 
             npcGuid[6] = packet.ReadBit();
             npcGuid[0] = packet.ReadBit();
@@ -184,20 +178,20 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             // FlushBits
 
-            for (int i = 0; i < depositCount; ++i)
+            for (int i = 0; i < count1; ++i)
             {
-                packet.ParseBitStream(ItemsGuid[i], 5, 6, 3, 4, 1, 7, 2, 0);
-                packet.WriteGuid("Item Guid", ItemsGuid[i], i);
+                packet.ParseBitStream(itemsGuid[i], 5, 6, 3, 4, 1, 7, 2, 0);
+                packet.WriteGuid("Item Guid", itemsGuid[i], i);
             }
 
             packet.ReadXORByte(npcGuid, 5);
 
-            for (int i = 0; i < withdrawCount; ++i)
+            for (int i = 0; i < count2; ++i)
             {
-                packet.ParseBitStream(itemIds[i], 0, 4, 1, 2, 6, 3, 7, 5);
-                packet.WriteLine("[{1}] Item Id: {0}", BitConverter.ToUInt64(itemIds[i], 0), i);
+                packet.ParseBitStream(itemsId[i], 0, 4, 1, 2, 6, 3, 7, 5);
+                packet.WriteLine("[{1}] Item Id: {0}", BitConverter.ToUInt64(itemsId[i], 0), i);
             }
-
+            
             packet.ReadXORByte(npcGuid, 1);
             packet.ReadXORByte(npcGuid, 7);
             packet.ReadXORByte(npcGuid, 4);
@@ -209,63 +203,69 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("NPC Guid", npcGuid);
         }
 
+        [Parser(Opcode.SMSG_VOID_TRANSFER_RESULT)]
+        public static void HandleVoidTransferResults(Packet packet)
+        {
+            packet.ReadEnum<VoidTransferError>("Error", TypeCode.UInt32);
+        }
+
         [Parser(Opcode.SMSG_VOID_STORAGE_CONTENTS)]
         public static void HandleVoidStorageContents(Packet packet)
         {
             var count = packet.ReadBits("Count", 7);
 
-            var id = new byte[count][];
-            var guid = new byte[count][];
+            var itemId = new byte[count][];
+            var creatorGuid = new byte[count][];
 
             for (int i = 0; i < count; ++i)
             {
-                id[i] = new byte[8];
-                guid[i] = new byte[8];
+                itemId[i] = new byte[8];
+                creatorGuid[i] = new byte[8];
 
-                guid[i][1] = packet.ReadBit();
-                guid[i][3] = packet.ReadBit();
-                id[i][1] = packet.ReadBit();
-                guid[i][2] = packet.ReadBit();
-                id[i][2] = packet.ReadBit();
-                guid[i][5] = packet.ReadBit();
-                guid[i][0] = packet.ReadBit();
-                id[i][6] = packet.ReadBit();
-                id[i][5] = packet.ReadBit();
-                guid[i][4] = packet.ReadBit();
-                id[i][7] = packet.ReadBit();
-                id[i][3] = packet.ReadBit();
-                id[i][4] = packet.ReadBit();
-                id[i][0] = packet.ReadBit();
-                guid[i][6] = packet.ReadBit();
-                guid[i][7] = packet.ReadBit();
+                creatorGuid[i][1] = packet.ReadBit();
+                creatorGuid[i][3] = packet.ReadBit();
+                itemId[i][1] = packet.ReadBit();
+                creatorGuid[i][2] = packet.ReadBit();
+                itemId[i][2] = packet.ReadBit();
+                creatorGuid[i][5] = packet.ReadBit();
+                creatorGuid[i][0] = packet.ReadBit();
+                itemId[i][6] = packet.ReadBit();
+                itemId[i][5] = packet.ReadBit();
+                creatorGuid[i][4] = packet.ReadBit();
+                itemId[i][7] = packet.ReadBit();
+                itemId[i][3] = packet.ReadBit();
+                itemId[i][4] = packet.ReadBit();
+                itemId[i][0] = packet.ReadBit();
+                creatorGuid[i][6] = packet.ReadBit();
+                creatorGuid[i][7] = packet.ReadBit();
             }
 
             for (int i = 0; i < count; ++i)
             {
-                packet.ReadXORByte(guid[i], 4);
-                packet.ReadXORByte(guid[i], 7);
-                packet.ReadXORByte(id[i], 6);
-                packet.ReadXORByte(guid[i], 6);
-                packet.ReadXORByte(id[i], 2);
-                packet.ReadInt32("Item Random Property ID", i);
-                packet.ReadXORByte(id[i], 7);
-                packet.ReadXORByte(id[i], 3);
-                packet.ReadXORByte(guid[i], 0);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
-                packet.ReadXORByte(id[i], 0);
-                packet.ReadInt32("New Unk", i);
-                packet.ReadXORByte(guid[i], 2);
-                packet.ReadXORByte(guid[i], 5);
-                packet.ReadXORByte(guid[i], 3);
-                packet.ReadInt32("Item Slot", i);
-                packet.ReadXORByte(id[i], 5);
-                packet.ReadXORByte(id[i], 1);
+                packet.ReadXORByte(creatorGuid[i], 4);
+                packet.ReadXORByte(creatorGuid[i], 7);
+                packet.ReadXORByte(itemId[i], 6);
+                packet.ReadXORByte(creatorGuid[i], 6);
+                packet.ReadXORByte(itemId[i], 2);
                 packet.ReadInt32("Item Suffix Factor", i);
-                packet.ReadXORByte(id[i], 4);
-                packet.ReadXORByte(guid[i], 1);
+                packet.ReadXORByte(itemId[i], 7);
+                packet.ReadXORByte(itemId[i], 3);
+                packet.ReadXORByte(creatorGuid[i], 0);
+                packet.ReadInt32("Unk UInt32", i);
+                packet.ReadXORByte(itemId[i], 0);
+                packet.ReadInt32("Item Random Property ID", i);
+                packet.ReadXORByte(creatorGuid[i], 2);
+                packet.ReadXORByte(creatorGuid[i], 5);
+                packet.ReadXORByte(creatorGuid[i], 3);
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
+                packet.ReadXORByte(itemId[i], 5);
+                packet.ReadXORByte(itemId[i], 1);
+                packet.ReadInt32("Item Slot", i);
+                packet.ReadXORByte(itemId[i], 4);
+                packet.ReadXORByte(creatorGuid[i], 1);
 
-                packet.WriteLine("[{1}] Item Id: {0}", BitConverter.ToUInt64(id[i], 0), i);
-                packet.WriteGuid("Item Player Creator Guid", guid[i], i);
+                packet.WriteLine("[{1}] Item Id: {0}", BitConverter.ToUInt64(itemId[i], 0), i);
+                packet.WriteGuid("Item Player Creator Guid", creatorGuid[i], i);
             }
         }
     }

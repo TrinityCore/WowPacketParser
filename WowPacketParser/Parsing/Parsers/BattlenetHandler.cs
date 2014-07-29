@@ -132,7 +132,6 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                 }
 
-                packet.Read<bool>("Unk bool", 1);
                 packet.ReadString("First name", packet.Read<int>(8));
                 packet.ReadString("Last name", packet.Read<int>(8));
 
@@ -146,13 +145,17 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.Read<ulong>("Unk64", 64);
                 packet.Read<uint>("Unk32", 32);
-                packet.Read<byte>("Unk8", 8);
+                if (packet.Read<bool>("Unk1", 1))
+                    packet.Stream.WriteLine(string.Format("Data: {0}", Utilities.ByteArrayToHexString(packet.ReadBytes(packet.Read<int>(10)))));
             }
         }
 
-        [BattlenetParser(BattlenetOpcode.ClientPing, BattlenetChannel.Creep, Direction.BNClientToServer)]
-        [BattlenetParser(BattlenetOpcode.ServerPong, BattlenetChannel.Creep, Direction.BNServerToClient)]
-        public static void HandlePong(BattlenetPacket packet)
+        [BattlenetParser(BattlenetOpcode.ClientPing, BattlenetChannel.Connection, Direction.BNClientToServer)]
+        [BattlenetParser(BattlenetOpcode.ServerPong, BattlenetChannel.Connection, Direction.BNServerToClient)]
+        [BattlenetParser(BattlenetOpcode.ClientEnableEncyption, BattlenetChannel.Connection, Direction.BNClientToServer)]
+        [BattlenetParser(BattlenetOpcode.ClientRealmUpdateSubscribe, BattlenetChannel.WoW, Direction.BNClientToServer)]
+        [BattlenetParser(BattlenetOpcode.ServerRealmUpdateEnd, BattlenetChannel.WoW, Direction.BNServerToClient)]
+        public static void HandleEmpty(BattlenetPacket packet)
         {
         }
 
@@ -207,12 +210,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.Read<short>("Unk2", 12);
             packet.Read<byte>("Battlegroup", 8);
             packet.Read<uint>("Battlegroup index", 32);
-        }
-
-        [BattlenetParser(BattlenetOpcode.ServerRealmUpdateEnd, BattlenetChannel.WoW, Direction.BNServerToClient)]
-        public static void HandleRealmUpdateEnd(BattlenetPacket packet)
-        {
-
         }
 
         [BattlenetParser(BattlenetOpcode.ClientJoinRequest, BattlenetChannel.WoW, Direction.BNClientToServer)]

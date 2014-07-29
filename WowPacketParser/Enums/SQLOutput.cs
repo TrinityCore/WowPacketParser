@@ -11,6 +11,7 @@
         creature_template,
         creature_template_addon,
         creature_text,
+        defense_message,
         gameobject,
         gameobject_db2_position,
         gameobject_template,

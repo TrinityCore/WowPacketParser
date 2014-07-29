@@ -1,5 +1,9 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
@@ -191,6 +195,61 @@ namespace WowPacketParser.SQL.Builders
 
             var templatesDb = SQLDatabase.GetDict<uint, GameObjectTemplateNonWDB>(templates.Keys());
             return SQLUtil.CompareDicts(templates, templatesDb, StoreNameType.GameObject);
+        }
+
+        public static string DefenseMessage()
+        {
+            if (Storage.DefenseMessages.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.defense_message))
+                return string.Empty;
+
+            const string tableName = "defense_message";
+
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var message in Storage.DefenseMessages)
+            {
+                foreach (var messageValue in message.Value)
+                {
+                    var row = new QueryBuilder.SQLInsertRow();
+
+                    var query = new StringBuilder(string.Format("SELECT Id FROM {1}.broadcast_text WHERE MaleText='{0}' OR FemaleText='{0}';", MySqlHelper.DoubleQuoteString(messageValue.Item1.text), Settings.TDBDatabase));
+
+                    string broadcastTextId = "";
+
+                    if (Settings.DevMode)
+                    {
+                        using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
+                        {
+                            if (reader != null)
+                                while (reader.Read())
+                                {
+                                    var values = new object[1];
+                                    var count = reader.GetValues(values);
+                                    if (count != 1)
+                                        break; // error in query
+
+                                    if (!String.IsNullOrWhiteSpace(broadcastTextId))
+                                        broadcastTextId += " - " + Convert.ToInt32(values[0]);
+                                    else
+                                        broadcastTextId += Convert.ToInt32(values[0]);
+                                }
+                        }
+
+                    }
+
+                    row.AddValue("ZoneId", message.Key);
+                    row.AddValue("Id", "x", false, true);
+                    row.AddValue("Text", messageValue.Item1.text);
+                    if (Settings.DevMode)
+                        row.AddValue("BroadcastTextId", broadcastTextId);
+
+                    rows.Add(row);
+                }
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
         }
     }
 }

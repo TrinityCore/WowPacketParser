@@ -45,5 +45,20 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadWoWString("Server Location", len2);
             packet.ReadWoWString("Server Location", len1);
         }
+
+        [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
+        public static void HandleLogoutComplete(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadBit(); // fake bit
+
+            packet.StartBitStream(guid, 3, 2, 1, 4, 6, 7, 5, 0);
+            packet.ParseBitStream(guid, 6, 4, 1, 2, 7, 3, 0, 5);
+
+            packet.WriteGuid("Guid", guid);
+
+            CoreParsers.SessionHandler.LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+        }
     }
 }

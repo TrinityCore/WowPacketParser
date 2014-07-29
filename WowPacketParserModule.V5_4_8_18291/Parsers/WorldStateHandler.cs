@@ -25,5 +25,14 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.WriteLine("[{0}] - Field: {1} - Value: {2}", i, field, val);
             }
         }
+
+        [Parser(Opcode.SMSG_UPDATE_WORLD_STATE)]
+        public static void HandleUpdateWorldState(Packet packet)
+        {
+            packet.ReadBit("bit18");
+            var val = packet.ReadInt32();
+            var field = packet.ReadInt32();
+            packet.WriteLine("Field: {0} - Value: {1}", field, val);
+        }
     }
 }

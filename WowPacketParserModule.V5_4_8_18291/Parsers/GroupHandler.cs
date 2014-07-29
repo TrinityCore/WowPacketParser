@@ -441,5 +441,52 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             updateFlagPacket.ClosePacket(false);
         }
+
+        [Parser(Opcode.SMSG_GROUP_SET_ROLE)]
+        public static void HandleGroupSetRole(Packet packet)
+        {
+            var assignerGuid = new byte[8];
+            var targetGuid = new byte[8];
+
+            assignerGuid[1] = packet.ReadBit();
+            targetGuid[7] = packet.ReadBit();
+            targetGuid[6] = packet.ReadBit();
+            targetGuid[4] = packet.ReadBit();
+            targetGuid[1] = packet.ReadBit();
+            targetGuid[0] = packet.ReadBit();
+            assignerGuid[0] = packet.ReadBit();
+            assignerGuid[7] = packet.ReadBit();
+            targetGuid[3] = packet.ReadBit();
+            assignerGuid[6] = packet.ReadBit();
+            targetGuid[2] = packet.ReadBit();
+            assignerGuid[4] = packet.ReadBit();
+            assignerGuid[5] = packet.ReadBit();
+            assignerGuid[2] = packet.ReadBit();
+            targetGuid[5] = packet.ReadBit();
+            assignerGuid[3] = packet.ReadBit();
+            packet.ReadXORByte(assignerGuid, 1);
+            packet.ReadXORByte(assignerGuid, 6);
+            packet.ReadXORByte(assignerGuid, 2);
+            packet.ReadXORByte(targetGuid, 3);
+            packet.ReadEnum<LfgRoleFlag>("Old Roles", TypeCode.Int32);
+            packet.ReadXORByte(assignerGuid, 7);
+            packet.ReadXORByte(targetGuid, 5);
+            packet.ReadXORByte(assignerGuid, 3);
+            packet.ReadXORByte(targetGuid, 4);
+            packet.ReadXORByte(targetGuid, 7);
+            packet.ReadXORByte(assignerGuid, 5);
+            packet.ReadXORByte(targetGuid, 6);
+            packet.ReadXORByte(targetGuid, 2);
+            packet.ReadXORByte(targetGuid, 1);
+            packet.ReadXORByte(targetGuid, 0);
+            packet.ReadXORByte(assignerGuid, 4);
+            packet.ReadByte("Byte28");
+            packet.ReadXORByte(assignerGuid, 0);
+            packet.ReadEnum<LfgRoleFlag>("New Roles", TypeCode.Int32);
+
+            packet.WriteGuid("Guid2", assignerGuid);
+            packet.WriteGuid("Guid3", targetGuid);
+
+        }
     }
 }

@@ -59,7 +59,7 @@ namespace WowPacketParser.SQL
             {
                 // TODO: Rewrite this
                 var i = 0;
-                const int max = 32;
+                const int max = 33;
                 Trace.WriteLine(string.Format("{0}/{1} - Write WDBTemplates.GameObject", ++i, max)); store.WriteData(WDBTemplates.GameObject());
                 Trace.WriteLine(string.Format("{0}/{1} - Write Spawns.GameObject", ++i, max)); if (gameObjects != null) store.WriteData(Spawns.GameObject(gameObjects));
                 Trace.WriteLine(string.Format("{0}/{1} - Write WDBTemplates.Quest", ++i, max)); store.WriteData(WDBTemplates.Quest());
@@ -92,6 +92,7 @@ namespace WowPacketParser.SQL
                 Trace.WriteLine(string.Format("{0}/{1} - Write WDBTemplates.Item", ++i, max)); store.WriteData(WDBTemplates.Item());
                 Trace.WriteLine(string.Format("{0}/{1} - Write UnitMisc.PointsOfInterest", ++i, max)); store.WriteData(UnitMisc.PointsOfInterest());
                 Trace.WriteLine(string.Format("{0}/{1} - Write DB2.BroadcastText", ++i, max)); store.WriteData(DB2.BroadcastText());
+                Trace.WriteLine(string.Format("{0}/{1} - Write Miscellaneous.DefenseMessage", ++i, max)); store.WriteData(Miscellaneous.DefenseMessage());
 
                 Trace.WriteLine(store.WriteToFile(header)
                     ? String.Format("{0}: Saved file to '{1}'", prefix, fileName)

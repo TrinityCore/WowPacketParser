@@ -511,6 +511,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 moveInfo.Position.Z = packet.ReadSingle(); //36
             }
 
+            packet.WriteLine("[{0}] Position: {1}", index, moveInfo.Position);
+
             if (bit668)
             {
                 if (bit664)
