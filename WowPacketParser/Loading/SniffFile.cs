@@ -216,15 +216,23 @@ namespace WowPacketParser.Loading
             Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Assumed version {2}",
                     _logPrefix, packetCount, ClientVersion.VersionString));
 
-            using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(_outFileName, true) : null))
-            {
-                var i = 1;
-                if (Settings.DumpFormatWithText())
-                    writer.WriteLine(GetHeader());
+            var writers = new Dictionary<byte[], StreamWriter>(); // Can't using
+            var i = 1;
 
-                _stats.SetStartTime(DateTime.Now);
-                foreach (var packet in _packets)
+            _stats.SetStartTime(DateTime.Now);
+            foreach (var packet in _packets)
+            {
+                bool useOutFilename = packet.SocketIdentifier.Count(b => b != 0) == 0;
+
+                var writeHeader = !writers.ContainsKey(packet.SocketIdentifier);
+                if (writeHeader)
+                    writers.Add(packet.SocketIdentifier, new StreamWriter(useOutFilename ? _outFileName : (_fileName + "_uuid_" + string.Concat(packet.SocketIdentifier.Select(b => b.ToString("X2")).ToArray()) + ".pkt")));
+
+                using (var writer = (Settings.DumpFormatWithText() ? writers[packet.SocketIdentifier] : null))
                 {
+                    if (writeHeader && Settings.DumpFormatWithText())
+                        writer.WriteLine(GetHeader());
+
                     ShowPercentProgress("Processing...", i++, packetCount);
 
                     // Parse the packet, adding text to Writer and stuff to the stores
@@ -252,8 +260,8 @@ namespace WowPacketParser.Loading
                     // Close Writer, Stream - Dispose
                     packet.ClosePacket();
                 }
-                _stats.SetEndTime(DateTime.Now);
             }
+            _stats.SetEndTime(DateTime.Now);
 
             _packets.Clear();
             _packets = null;
