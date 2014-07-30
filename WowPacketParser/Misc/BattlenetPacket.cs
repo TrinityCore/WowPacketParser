@@ -11,15 +11,14 @@ namespace WowPacketParser.Misc
         public int ProcessedBytes { get; set; }
         public Packet Stream;
 
-        byte bytePart;
-        int count;
+        private byte _bytePart;
+        private int _count;
 
         public BattlenetPacket(Packet packet)
         {
             Stream = packet;
 
-            Header = new BattlenetPacketHeader();
-            Header.Opcode = Read<byte>(6);
+            Header = new BattlenetPacketHeader {Opcode = Read<byte>(6)};
 
             if (Read<bool>(1))
                 Header.Channel = (BattlenetChannel)Read<byte>(4);
@@ -114,7 +113,7 @@ namespace WowPacketParser.Misc
 
         public byte[] ReadBytes(int count)
         {
-            this.count = 0;
+            _count = 0;
 
             ProcessedBytes += count;
 
@@ -129,19 +128,18 @@ namespace WowPacketParser.Misc
         public T Read<T>(int bits)
         {
             ulong value = 0;
-            var bitsToRead = 0;
 
             while (bits != 0)
             {
-                if ((count % 8) == 0)
+                if ((_count % 8) == 0)
                 {
-                    bytePart = Read<byte>();
+                    _bytePart = Read<byte>();
 
                     ProcessedBytes += 1;
                 }
 
-                var shiftedBits = count & 7;
-                bitsToRead = 8 - shiftedBits;
+                var shiftedBits = _count & 7;
+                int bitsToRead = 8 - shiftedBits;
 
                 if (bitsToRead >= bits)
                     bitsToRead = bits;
@@ -149,9 +147,9 @@ namespace WowPacketParser.Misc
                 bits -= bitsToRead;
                 unchecked
                 {
-                    value |= (ulong)(bytePart >> shiftedBits & (uint)((byte)(1 << bitsToRead) - 1)) << bits;
+                    value |= (ulong)(_bytePart >> shiftedBits & (uint)((byte)(1 << bitsToRead) - 1)) << bits;
                 }
-                count += bitsToRead;
+                _count += bitsToRead;
             }
 
             return (T)Convert.ChangeType(value, typeof(T));
@@ -163,7 +161,7 @@ namespace WowPacketParser.Misc
 
             Array.Reverse(data);
 
-            return Encoding.UTF8.GetString(data).Trim(new char[] { '\0' });
+            return Encoding.UTF8.GetString(data).Trim(new[] { '\0' });
         }
 
         public float ReadSingle()

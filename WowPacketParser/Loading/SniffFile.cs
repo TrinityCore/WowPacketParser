@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -216,47 +217,70 @@ namespace WowPacketParser.Loading
             Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Assumed version {2}",
                     _logPrefix, packetCount, ClientVersion.VersionString));
 
-            using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(_outFileName, true) : null))
+            var writers = new Dictionary<IPEndPoint, StreamWriter>();
+            var i = 1;
+
+            var text = Settings.DumpFormatWithText();
+
+            _stats.SetStartTime(DateTime.Now);
+            foreach (var packet in _packets)
             {
-                var i = 1;
-                if (writer != null)
+                var ep = packet.EndPoint ?? new IPEndPoint(0, 0);
+
+                StreamWriter writer = null;
+                var writeHeader = false;
+
+                if (text && !writers.TryGetValue(ep, out writer))
+                {
+                    writeHeader = true;
+
+                    writer = packet.EndPoint == null ?
+                        new StreamWriter(_outFileName) :
+                        new StreamWriter(_fileName + "_" + packet.EndPoint.GetHashCode() + ".txt");
+
+                    writers.Add(ep, writer);
+                }
+
+                if (writeHeader)
                     writer.WriteLine(GetHeader());
 
-                _stats.SetStartTime(DateTime.Now);
-                foreach (var packet in _packets)
+                ShowPercentProgress("Processing...", i++, packetCount);
+
+                // Parse the packet, adding text to Writer and stuff to the stores
+                if (packet.Direction == Direction.BNClientToServer || packet.Direction == Direction.BNServerToClient)
+                    Handler.ParseBattlenet(packet);
+                else
+                    Handler.Parse(packet);
+
+                // Update statistics
+                _stats.AddByStatus(packet.Status);
+
+                // get packet header if necessary
+                if (Settings.LogPacketErrors)
                 {
-                    ShowPercentProgress("Processing...", i++, packetCount);
-
-                    // Parse the packet, adding text to Writer and stuff to the stores
-                    if (packet.Direction == Direction.BNClientToServer || packet.Direction == Direction.BNServerToClient)
-                        Handler.ParseBattlenet(packet);
-                    else
-                        Handler.Parse(packet);
-
-                    // Update statistics
-                    _stats.AddByStatus(packet.Status);
-
-                    // get packet header if necessary
-                    if (Settings.LogPacketErrors)
-                    {
-                        if (packet.Status == ParsedStatus.WithErrors)
-                            _withErrorHeaders.AddLast(packet.GetHeader());
-                        else if (packet.Status == ParsedStatus.NotParsed)
-                            _skippedHeaders.AddLast(packet.GetHeader());
-                    }
-
-                    if (writer != null)
-                    {
-                        // Write to file
-                        writer.WriteLine(packet.Writer);
-                        writer.Flush();
-                    }
-
-                    // Close Writer, Stream - Dispose
-                    packet.ClosePacket();
+                    if (packet.Status == ParsedStatus.WithErrors)
+                        _withErrorHeaders.AddLast(packet.GetHeader());
+                    else if (packet.Status == ParsedStatus.NotParsed)
+                        _skippedHeaders.AddLast(packet.GetHeader());
                 }
-                _stats.SetEndTime(DateTime.Now);
+
+                if (writer != null)
+                {
+                    // Write to file
+                    writer.WriteLine(packet.Writer);
+                    writer.Flush();
+                }
+
+                // Close Writer, Stream - Dispose
+                packet.ClosePacket();
             }
+
+            foreach (var streamWriter in writers)
+            {
+                streamWriter.Value.Dispose();
+            }
+
+            _stats.SetEndTime(DateTime.Now);
 
             _packets.Clear();
             _packets = null;

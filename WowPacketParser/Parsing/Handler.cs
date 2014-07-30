@@ -92,7 +92,7 @@ namespace WowPacketParser.Parsing
             }
         }
 
-        private static Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>> VersionHandlers = LoadDefaultHandlers();
+        private static readonly Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>> VersionHandlers = LoadDefaultHandlers();
 
         public static void Parse(Packet packet, bool isMultiple = false)
         {
@@ -192,7 +192,7 @@ namespace WowPacketParser.Parsing
             return handlers;
         }
 
-        private static Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>> BattlenetHandlers = LoadBattlenetHandlers();
+        private static readonly Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>> BattlenetHandlers = LoadBattlenetHandlers();
 
         public static void ParseBattlenet(Packet packet)
         {
