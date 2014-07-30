@@ -911,14 +911,14 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Unk Int32 15", i);
 
                 packet.ReadXORByte(guids[i], 1);
-                packet.ReadXORByte(guids[i], 0);
+                packet.ReadXORByte(guids[i], 6);
 
                 packet.ReadInt32("Unk Int32 16", i);
 
                 for (int j = 0; j < valuesCount[i]; ++j)
                     packet.ReadUInt32("Value", i, j);
 
-                packet.ReadXORByte(guids[i], 6);
+                packet.ReadXORByte(guids[i], 0);
                 packet.ReadXORByte(guids[i], 3);
 
                 if (unkBits4[i])
