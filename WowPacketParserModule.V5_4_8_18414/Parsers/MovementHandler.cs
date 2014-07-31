@@ -3036,6 +3036,26 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+
+        [Parser(Opcode.SMSG_MOVE_SET_SWIM_SPEED)]
+        public static void HandleMoveSetswimSpeed(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                packet.WriteLine("              : CMSG_RAID_READY_CHECK");
+                packet.ReadToEnd();
+            }
+            else
+            {
+                var guid = packet.StartBitStream(5, 0, 6, 3, 7, 2, 4, 1);
+                packet.ReadInt32("MCounter"); // 28
+                packet.ParseBitStream(guid, 1, 3);
+                packet.ReadSingle("Speed"); // 24
+                packet.ParseBitStream(guid, 6, 7, 0, 5, 2, 4);
+                packet.WriteGuid("Guid", guid);
+            }
+        }
+
         [Parser(Opcode.SMSG_MOVE_SET_WALK_SPEED)] // sub_C8F849
         public static void HandleMoveSetWalkSpeed(Packet packet)
         {

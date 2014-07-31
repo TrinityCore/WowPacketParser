@@ -8,7 +8,6 @@ using WowPacketParser.Store.Objects;
 using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using Guid = WowPacketParser.Misc.Guid;
-using WowPacketParserModule.V5_4_8_18414.Parsers;
 
 namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
@@ -135,15 +134,9 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_SEND_UNLEARN_SPELLS)]
         public static void HandleSendUnlearnSpells(Packet packet)
         {
-            if (packet.Direction == Direction.ServerToClient)
-            {
-                packet.ReadToEnd();
-            }
-            else
-            {
-                packet.WriteLine("              : CMSG_GROUP_UNINVITE_GUID");
-                packet.ReadToEnd();
-            }
+            var count = packet.ReadBits("count", 22);
+            for (var i = 0; i < count; i++)
+                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
         }
 
         [Parser(Opcode.SMSG_SPELL_CATEGORY_COOLDOWN)]

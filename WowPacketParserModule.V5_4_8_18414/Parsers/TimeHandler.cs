@@ -17,9 +17,9 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleLoginSetTimeSpeed(Packet packet)
         {
             packet.ReadInt32("unk32");
-            packet.ReadInt32("unk16");
+            packet.ReadPackedTime("Time1");
             packet.ReadInt32("unk20");
-            packet.ReadInt32("unk24");
+            packet.ReadPackedTime("Time2");
             packet.ReadSingle("unk28");
         }
 

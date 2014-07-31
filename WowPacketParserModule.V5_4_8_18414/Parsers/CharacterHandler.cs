@@ -240,6 +240,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_DEATH_RELEASE_LOC)]
         public static void HandleDeathReleaseLoc(Packet packet)
         {
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadVector3("Position");
         }
 
         [Parser(Opcode.SMSG_EMOTE)]

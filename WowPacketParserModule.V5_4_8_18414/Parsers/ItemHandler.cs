@@ -130,7 +130,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_REQUEST_HOTFIX)]
         public static void HandleItemRequestHotfix(Packet packet)
         {
-            packet.ReadUInt32("Type");
+            packet.ReadEnum<DB2Hash>("Type", TypeCode.UInt32);
 
             var count = packet.ReadBits("Count", 21);
 
@@ -228,14 +228,13 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleDBReply(Packet packet)
         {
             var id = packet.ReadInt32("Entry");
-            var type = packet.ReadInt32("Type"); // See DB2Hash enum. Left like this for now to see some numbers pop. ^^
             packet.ReadTime("Hotfix date");
+            var HashType = packet.ReadEnum<DB2Hash>("Type", TypeCode.UInt32); // See DB2Hash enum. Left like this for now to see some numbers pop. ^^
             var size = packet.ReadUInt32("Size");
 
             if (size == 0 || id < 0)
                 return;
 
-            var HashType = (DB2Hash)type;
             var itemId = (uint)id;
 
             switch (HashType)
@@ -266,6 +265,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     item.ExtraFlags = packet.ReadEnum<ItemFlagExtra>("Extra Flags", TypeCode.Int32);
                     item.Unk430_1 = packet.ReadSingle("Unk430_1");
                     item.Unk430_2 = packet.ReadSingle("Unk430_2");
+                    packet.ReadSingle("unk");
                     item.BuyCount = packet.ReadUInt32("Buy count");
                     item.BuyPrice = packet.ReadUInt32("Buy Price");
                     item.SellPrice = packet.ReadUInt32("Sell Price");
@@ -390,9 +390,24 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     packet.WriteLine("Key: {0}", Utilities.ByteArrayToHexString(packet.ReadBytes(32)));
                     break;
                 }
+                case DB2Hash.Creature:
+                {
+                    var unit = Storage.UnitTemplates.ContainsKey(itemId) ? Storage.UnitTemplates[itemId].Item1 : new UnitTemplate();
+
+                    packet.ReadEntryWithName<UInt32>(StoreNameType.Unit, "Entry");
+                    packet.ReadBytes(48);
+                    packet.ReadInt16("NameLen");
+                    unit.Name = packet.ReadCString("Name");
+                    packet.ReadInt16("SubNameLen");
+                    unit.SubName = packet.ReadCString("SubName");
+                    packet.ReadBytes(10);
+
+                    Storage.UnitTemplates.Add(itemId, unit, packet.TimeSpan);
+                    break;
+                }
 
                 // Cases need correction, the other DB2's need implementation etc.
-                default: break;
+                default: packet.AsHex(); break;
             }
 
             if (HashType == DB2Hash.Item || HashType == DB2Hash.Item_sparse) // Add item data.
