@@ -1410,6 +1410,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_UNK_102E)]
+        public static void HandleUnk102E(Packet packet)
+        {
+            var guid = packet.StartBitStream(6, 3, 1, 2, 7, 5, 0, 4);
+            packet.ParseBitStream(guid, 7, 1, 2, 3, 6, 0, 4, 5);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_UNK_108B)]
         public static void HandleUnk108B(Packet packet)
         {

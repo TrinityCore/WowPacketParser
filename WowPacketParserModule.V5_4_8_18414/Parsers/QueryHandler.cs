@@ -23,12 +23,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             var guid = new byte[8];
             guid[4] = packet.ReadBit();
-            var byte20 = packet.ReadBit();
+            var byte20 = packet.ReadBit("has byte20");
             guid[6] = packet.ReadBit();
             guid[0] = packet.ReadBit();
             guid[7] = packet.ReadBit();
             guid[1] = packet.ReadBit();
-            var byte28 = packet.ReadBit();
+            var byte28 = packet.ReadBit("has byte28");
             guid[5] = packet.ReadBit();
             guid[2] = packet.ReadBit();
             guid[3] = packet.ReadBit();

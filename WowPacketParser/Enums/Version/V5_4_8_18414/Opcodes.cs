@@ -380,7 +380,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_CHANNEL_NOTIFY,                           0x0F06}, //--
             {Opcode.SMSG_CHAR_CREATE,                              0x1CAA}, //--
             {Opcode.SMSG_CHAR_DELETE,                              0x0C9F}, //--
-            {Opcode.SMSG_CHAR_ENUM,                                0x11C3}, //+-
+            {Opcode.SMSG_CHAR_ENUM,                                0x11C3}, //++
             {Opcode.SMSG_CLIENTCACHE_VERSION,                      0x002A}, //++
             {Opcode.SMSG_CONTACT_LIST,                             0x1F22}, //--
             {Opcode.SMSG_CORPSE_MAP_POSITION_QUERY_RESPONSE,       0x1A3A}, //--
@@ -596,6 +596,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_0D79,                                 0x0D79}, //++
             {Opcode.SMSG_UNK_0E9B,                                 0x0E9B}, //++
             {Opcode.SMSG_UNK_0EAB,                                 0x0EAB}, //++
+            {Opcode.SMSG_UNK_102E,                                 0x102E}, //++
             //{Opcode.SMSG_UNK_103B,                                 0x103B}, //+-
             //{Opcode.SMSG_UNK_103E,                                 0x103E}, //++
             {Opcode.SMSG_UNK_108B,                                 0x108B}, //++
