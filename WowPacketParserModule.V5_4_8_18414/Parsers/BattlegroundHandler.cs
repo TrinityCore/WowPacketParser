@@ -312,17 +312,9 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_LEFT)]
         public static void HandleBattleGroundPlayerLeft(Packet packet)
         {
-            if (packet.Direction == Direction.ServerToClient)
-            {
-                var guid = packet.StartBitStream(3, 5, 6, 0, 1, 2, 7, 4);
-                packet.ParseBitStream(guid, 0, 6, 5, 7, 2, 1, 3, 4);
-                packet.WriteGuid("Guid", guid);
-            }
-            else
-            {
-                packet.WriteLine("              : CMSG_CAST_SPELL");
-                packet.ReadToEnd();
-            }
+            var guid = packet.StartBitStream(3, 5, 6, 0, 1, 2, 7, 4);
+            packet.ParseBitStream(guid, 0, 6, 5, 7, 2, 1, 3, 4);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_POSITIONS)]

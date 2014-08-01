@@ -360,7 +360,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_BATTLEFIELD_STATUS_NEEDCONFIRMATION,      0x1EAF}, //--
             {Opcode.SMSG_BATTLEFIELD_STATUS_FAILED,                0x1140}, //--
             {Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED,               0x1E2F}, //--
-            {Opcode.SMSG_BATTLEGROUND_PLAYER_LEFT,                 0x0206}, //-+
+            //{Opcode.SMSG_BATTLEGROUND_PLAYER_LEFT,                 0x0206}, //+-
             {Opcode.SMSG_BATTLE_PET_DELETED,                       0x18AB}, //+-
             {Opcode.SMSG_BATTLE_PET_JOURNAL,                       0x1542}, //--
             {Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED,         0x1A0F}, //--
