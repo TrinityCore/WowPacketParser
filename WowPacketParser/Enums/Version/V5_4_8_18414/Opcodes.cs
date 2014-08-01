@@ -48,7 +48,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_BLACKMARKET_BID,                          0x12C8}, //--
             {Opcode.CMSG_BLACKMARKET_HELLO,                        0x075A}, //--
             {Opcode.CMSG_BLACKMARKET_REQUEST_ITEMS,                0x127A}, //--
-            {Opcode.CMSG_BUYBACK_ITEM,                             0x0661}, //-+
+            {Opcode.CMSG_BUYBACK_ITEM,                             0x0661}, //+-
             {Opcode.CMSG_BUY_BANK_SLOT,                            0x12F2}, //-+
             {Opcode.CMSG_BUY_ITEM,                                 0x02E2}, //--
             {Opcode.CMSG_CANCEL_AURA,                              0x1861}, //-+
@@ -576,7 +576,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_036D,                                 0x036D}, //++
             {Opcode.SMSG_UNK_042A,                                 0x042A}, //++
             {Opcode.SMSG_UNK_043F,                                 0x043F}, //++
-            //{Opcode.SMSG_UNK_04AA,                                 0x04AA}, //+-
             {Opcode.SMSG_UNK_0562,                                 0x0562}, //++
             {Opcode.SMSG_UNK_05F3,                                 0x05F3}, //++
             {Opcode.SMSG_UNK_0728,                                 0x0728}, //++
