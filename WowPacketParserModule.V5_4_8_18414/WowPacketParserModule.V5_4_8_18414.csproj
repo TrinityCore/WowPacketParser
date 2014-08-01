@@ -94,6 +94,7 @@
     <Compile Include="Parsers\TimeHandler.cs" />
     <Compile Include="Parsers\TradeHandler.cs" />
     <Compile Include="Parsers\UpdateHandler.cs" />
+    <Compile Include="Parsers\VoidStorageHandler.cs" />
     <Compile Include="Parsers\WardenHandler.cs" />
     <Compile Include="Parsers\WorldStateHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -27,7 +27,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_AUTOEQUIP_ITEM,                           0x025F}, //--
             {Opcode.CMSG_AUTOSTORE_BAG_ITEM,                       0x067C}, //--
             {Opcode.CMSG_AUTOSTORE_BANK_ITEM,                      0x02CF}, //++
-            {Opcode.CMSG_AUTOSTORE_LOOT_ITEM,                      0x0354}, //--
+            {Opcode.CMSG_AUTOSTORE_LOOT_ITEM,                      0x0354}, //+-
             {Opcode.CMSG_AUTO_DECLINE_GUILD_INVITES,               0x06CB}, //--
             {Opcode.CMSG_BANKER_ACTIVATE,                          0x02E9}, //-+
             {Opcode.CMSG_BATTLEFIELD_LEAVE,                        0x0257}, //+-
@@ -225,7 +225,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_USE_ITEM,                                 0x1CC1}, //--
             {Opcode.CMSG_VIOLENCE_LEVEL,                           0x0040}, //+-
             {Opcode.CMSG_VOID_STORAGE_QUERY,                       0x0140}, //--
-            //{Opcode.CMSG_VOID_STORAGE_TRANSFER,                    0x1440}, //--
+            //{Opcode.CMSG_VOID_STORAGE_TRANSFER,                    0x1440}, //+-
             {Opcode.CMSG_VOID_STORAGE_UNLOCK,                      0x0444}, //--
             {Opcode.CMSG_WARDEN_DATA,                              0x1816}, //+-
             {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE,              0x15AB}, //+-
@@ -556,7 +556,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UPDATE_LAST_INSTANCE,                     0x189B}, //--
             {Opcode.SMSG_UPDATE_OBJECT,                            0x1792}, //--
             {Opcode.SMSG_UPDATE_WORLD_STATE,                       0x121B}, //++
-            //{Opcode.SMSG_VOID_TRANSFER_RESULT,                     0x18BA}, //--
+            {Opcode.SMSG_VOID_TRANSFER_RESULT,                     0x1C9E}, //+-
             {Opcode.SMSG_WARDEN_DATA,                              0x0C0A}, //--
             {Opcode.SMSG_WEATHER,                                  0x06AB}, //++
             {Opcode.SMSG_WORLD_SERVER_INFO,                        0x0082}, //++

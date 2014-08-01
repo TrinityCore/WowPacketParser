@@ -5,6 +5,7 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using WowPacketParserModule.V5_4_8_18414.Enums;
+using WowPacketParser.V5_4_8_18414.Parsers;
 
 namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
@@ -47,22 +48,22 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_AUTOSTORE_BANK_ITEM)]
         public static void HandleAutostoreBankItem(Packet packet)
         {
-            var unk1 = new byte[4];
-            var unk2 = new byte[4];
+            var hasByte1 = new bool[4];
+            var hasByte2 = new bool[4];
             packet.ReadByte("Slot");
             packet.ReadSByte("Bag");
             var cnt = packet.ReadBits("Count", 2);
             for (var i = 0; i < cnt; i++)
             {
-                unk1[i] = packet.ReadBit("unk1", i);
-                unk2[i] = packet.ReadBit("unk2", i);
+                hasByte1[i] = packet.ReadBit("has byte1", i);
+                hasByte2[i] = packet.ReadBit("has byte2", i);
             }
-            for (var j = 0; j < cnt; j++)
+            for (var i = 0; i < cnt; i++)
             {
-                if (unk1[j] > 0)
-                    packet.ReadByte("Byte1", j);
-                if (unk2[j] > 0)
-                    packet.ReadByte("Byte2", j);
+                if (hasByte1[i])
+                    packet.ReadByte("Byte1", i);
+                if (hasByte2[i])
+                    packet.ReadByte("Byte2", i);
             }
         }
 
@@ -71,7 +72,22 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             if (packet.Direction == Direction.ClientToServer)
             {
-                packet.ReadToEnd();
+                var counter = packet.ReadBits("Count", 25);
+
+                var guid = new byte[counter][];
+
+                for (var i = 0; i < counter; i++)
+                    guid[i] = packet.StartBitStream(2, 7, 0, 6, 5, 3, 1, 4);
+
+                packet.ResetBitReader();
+
+                for (var i = 0; i < counter; i++)
+                {
+                    packet.ParseBitStream(guid[i], 0, 4, 1, 7, 6, 5, 3, 2);
+                    packet.ReadByte("Slot", i);
+
+                    packet.WriteGuid("Lootee GUID", guid[i], i);
+                }
             }
             else
             {
@@ -134,26 +150,19 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
             var count = packet.ReadBits("Count", 21);
 
-            var guidBytes = new byte[count][];
+            var guid = new byte[count][];
 
             for (var i = 0; i < count; i++)
-                guidBytes[i] = packet.StartBitStream(2, 4, 3, 6, 7, 1, 5, 0); //??
+                guid[i] = packet.StartBitStream(6, 3, 0, 1, 4, 5, 7, 2);
+
+            packet.ResetBitReader();
 
             for (var i = 0; i < count; i++)
             {
-                packet.ReadXORByte(guidBytes[i], 5); //?...
-                packet.ReadXORByte(guidBytes[i], 4);
-                packet.ReadXORByte(guidBytes[i], 3);
-
+                packet.ParseBitStream(guid[i], 1);
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
-
-                packet.ReadXORByte(guidBytes[i], 7);
-                packet.ReadXORByte(guidBytes[i], 0);
-                packet.ReadXORByte(guidBytes[i], 2);
-                packet.ReadXORByte(guidBytes[i], 1);
-                packet.ReadXORByte(guidBytes[i], 6);
-
-                packet.WriteGuid("GUID", guidBytes[i], i);
+                packet.ParseBitStream(guid[i], 0, 5, 6, 4, 7, 2, 3);
+                packet.WriteGuid("GUID", guid[i], i);
             }
         }
 
@@ -189,24 +198,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
         [Parser(Opcode.CMSG_USE_ITEM)]
         public static void HandleUseItem2(Packet packet)
-        {
-            packet.ReadToEnd();
-        }
-
-        [Parser(Opcode.CMSG_VOID_STORAGE_QUERY)]
-        public static void HandleVoidStorageQuery(Packet packet)
-        {
-            packet.ReadToEnd();
-        }
-
-        [Parser(Opcode.CMSG_VOID_STORAGE_TRANSFER)]
-        public static void HandleVoidStorageTransfer(Packet packet)
-        {
-            packet.ReadToEnd();
-        }
-
-        [Parser(Opcode.CMSG_VOID_STORAGE_UNLOCK)]
-        public static void HandleVoidStorageUnlock(Packet packet)
         {
             packet.ReadToEnd();
         }
@@ -458,9 +449,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             else
             {
                 packet.WriteLine("              : CMSG_VOID_STORAGE_TRANSFER");
-                packet.ReadToEnd();
+                VoidStorageHandler.HandleVoidStorageTransfer(packet);
             }
-
         }
     }
 }
