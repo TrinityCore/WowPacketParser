@@ -364,7 +364,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_18019
             {Opcode.SMSG_REMOVED_SPELL,                            0x05E3},
             {Opcode.SMSG_SERVER_MESSAGE,                           0x026E},
             {Opcode.SMSG_SET_PROFICIENCY,                          0x1E3B},
-            {Opcode.SMSG_SERVER_TIMEZONE,                          0x0C2B},
+            {Opcode.SMSG_SET_TIMEZONE_INFORMATION,                 0x0C2B},
             //{Opcode.SMSG_SERVERTIME,                               0x047E},
             {Opcode.SMSG_SHOW_BANK,                                0x060B},
             {Opcode.SMSG_SPELLHEALLOG,                             0x1BBF},

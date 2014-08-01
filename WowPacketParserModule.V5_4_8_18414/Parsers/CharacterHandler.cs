@@ -11,6 +11,110 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class CharacterHandler
     {
+        [Parser(Opcode.CMSG_ALTER_APPEARANCE)]
+        public static void HandleAlterAppearance(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_CHAR_CREATE)]
+        public static void HandleClientCharCreate(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_CHAR_CUSTOMIZE)]
+        public static void HandleClientCharCustomize(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_CHAR_DELETE)]
+        public static void HandleClientCharDelete(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 3, 2, 7, 4, 6, 0, 5);
+            packet.ParseBitStream(guid, 7, 1, 6, 0, 3, 4, 2, 5);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_CHAR_FACTION_CHANGE)]
+        public static void HandleClientCharFactionChange(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_CHAR_RENAME)]
+        public static void HandleClientCharRename(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_EMOTE)]
+        public static void HandleEmote(Packet packet)
+        {
+            packet.ReadInt32("Emote");
+        }
+
+        [Parser(Opcode.CMSG_PLAYED_TIME)]
+        public static void HandleCPlayedTime(Packet packet)
+        {
+            packet.ReadBoolean("Print in chat");
+        }
+
+        [Parser(Opcode.CMSG_REORDER_CHARACTERS)]
+        public static void HandleReorderCharacters(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_SHOWING_CLOAK)]
+        [Parser(Opcode.CMSG_SHOWING_HELM)]
+        public static void HandleShowingCloakAndHelm(Packet packet)
+        {
+            packet.ReadBoolean("Showing");
+        }
+
+        [Parser(Opcode.CMSG_STANDSTATECHANGE)]
+        public static void HandleStandStateChange(Packet packet)
+        {
+            packet.ReadInt32("Standstate");
+        }
+
+        [Parser(Opcode.CMSG_TEXT_EMOTE)]
+        public static void HandleTextEmote(Packet packet)
+        {
+            packet.ReadEnum<EmoteTextType>("Text Emote ID", TypeCode.Int32);
+            packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
+            var guid = packet.StartBitStream(6, 7, 3, 2, 0, 5, 1, 4);
+            packet.ResetBitReader();
+            packet.ParseBitStream(guid, 0, 5, 1, 4, 2, 3, 7, 6);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_BARBER_SHOP_RESULT)]
+        public static void HandleBarberShopResult(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_BINDER_CONFIRM)]
+        public static void HandleBinderConfirm(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_CHAR_CREATE)]
+        public static void HandleCharCreate(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_CHAR_DELETE)]
+        public static void HandleCharDelete(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.SMSG_CHAR_ENUM)]
         public static void HandleCharEnum(Packet packet)
         {
@@ -69,7 +173,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 var Class = packet.ReadEnum<Class>("Class", TypeCode.Byte, c); //59
                 packet.ReadXORByte(guildGuids[c], 5); //93
              
-                for (var itm = 0; itm < 23; ++itm)
+                for (var itm = 0; itm < 23; itm++)
                 {
                     packet.ReadInt32("Item EnchantID", c, itm); //140 prolly need to replace those 2
                     packet.ReadEnum<InventoryType>("Item InventoryType", TypeCode.Byte, c, itm); //144
@@ -126,11 +230,142 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 StoreGetters.AddName(playerGuid, name);
             }
 
-            for (var i = 0; i < unkCounter; ++i)
+            for (var i = 0; i < unkCounter; i++)
             {
                 packet.ReadByte("Unk byte", i); // char_table+28+i*8
                 packet.ReadUInt32("Unk int", i); // char_table+24+i*8
             }
+        }
+
+        [Parser(Opcode.SMSG_DEATH_RELEASE_LOC)]
+        public static void HandleDeathReleaseLoc(Packet packet)
+        {
+            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadVector3("Position");
+        }
+
+        [Parser(Opcode.SMSG_EMOTE)]
+        public static void HandleSEmote(Packet packet)
+        {
+            var guid = new byte[8];
+            var guid2 = new byte[8];
+
+            guid[1] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadEnum<EmoteTextType>("Text Emote ID", TypeCode.Int32);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
+            packet.WriteGuid("Caster", guid);
+            packet.WriteGuid("Target", guid2);
+        }
+
+        [Parser(Opcode.SMSG_ENVIRONMENTALDAMAGELOG)]
+        public static void HandleEnvironmentalDamageLog(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_EXPLORATION_EXPERIENCE)]
+        public static void HandleExplorationExpirience(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_INIT_CURRENCY)]
+        public static void HandleInitCurrency(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 21);
+            if (count == 0)
+                return;
+
+            var hasWeekCount = new bool[count];
+            var hasWeekCap = new bool[count];
+            var hasSeasonTotal = new bool[count];
+            var flags = new uint[count];
+            for (var i = 0; i < count; ++i)
+            {
+                hasSeasonTotal[i] = packet.ReadBit("hasSeasonTotal", i);
+                flags[i] = packet.ReadBits("flags", 5, i);
+                hasWeekCap[i] = packet.ReadBit("hasWeekCap", i);
+                hasWeekCount[i] = packet.ReadBit("hasWeekCount", i);
+            }
+
+            for (var i = 0; i < count; ++i)
+            {
+                if (hasWeekCount[i])
+                    packet.ReadUInt32("Weekly count", i);
+
+                packet.ReadUInt32("Entry", i);
+
+                if (hasSeasonTotal[i])
+                    packet.ReadUInt32("Season count", i);
+
+                packet.ReadUInt32("Currency count", i);
+
+                if (hasWeekCap[i])
+                    packet.ReadUInt32("Weekly cap", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_LEVELUP_INFO)]
+        public static void HandleLevelUpInfo(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_POWER_UPDATE)]
+        public static void HandlePowerUpdate(Packet packet)
+        {
+            var guid = packet.StartBitStream(4, 6, 7, 5, 2, 3, 0, 1);
+
+            var count = packet.ReadBits("Count", 21);
+
+            packet.ParseBitStream(guid, 7, 0, 5, 3, 1, 2, 4);
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadEnum<PowerType>("Power type", TypeCode.Byte, i); // Actually powertype for class
+                packet.ReadInt32("Value", i);
+            }
+
+            packet.ReadXORByte(guid, 6);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_STANDSTATE_UPDATE)]
+        public static void HandleStandStateUpdate(Packet packet)
+        {
+            packet.ReadByte("Standstate");
         }
     }
 }

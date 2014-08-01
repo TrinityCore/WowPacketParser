@@ -10,19 +10,136 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class ItemHandler
     {
+        [Parser(Opcode.CMSG_AUTOBANK_ITEM)]
+        public static void HandleAutoBankItem(Packet packet)
+        {
+            var unk1 = new byte[4];
+            var unk2 = new byte[4];
+            packet.ReadByte("Slot");
+            packet.ReadSByte("Bag");
+            var cnt = packet.ReadBits("Count", 2);
+            for (var i = 0; i < cnt; i++)
+            {
+                unk1[i] = packet.ReadBit("unk1", i);
+                unk2[i] = packet.ReadBit("unk2", i);
+            }
+            for (var j = 0; j < cnt; j++)
+            {
+                if (unk1[j]>0)
+                    packet.ReadByte("Byte1", j);
+                if (unk2[j]>0)
+                    packet.ReadByte("Byte2", j);
+            }
+        }
+
+        [Parser(Opcode.CMSG_AUTOEQUIP_ITEM)]
+        public static void HandleAutoEquipItem(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_AUTOSTORE_BAG_ITEM)]
+        public static void HandleAutoStoreBagItem(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_AUTOSTORE_BANK_ITEM)]
+        public static void HandleAutostoreBankItem(Packet packet)
+        {
+            var unk1 = new byte[4];
+            var unk2 = new byte[4];
+            packet.ReadByte("Slot");
+            packet.ReadSByte("Bag");
+            var cnt = packet.ReadBits("Count", 2);
+            for (var i = 0; i < cnt; i++)
+            {
+                unk1[i] = packet.ReadBit("unk1", i);
+                unk2[i] = packet.ReadBit("unk2", i);
+            }
+            for (var j = 0; j < cnt; j++)
+            {
+                if (unk1[j] > 0)
+                    packet.ReadByte("Byte1", j);
+                if (unk2[j] > 0)
+                    packet.ReadByte("Byte2", j);
+            }
+        }
+
+        [Parser(Opcode.CMSG_AUTOSTORE_LOOT_ITEM)]
+        public static void HandleAutoStoreLootItem(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                packet.ReadToEnd();
+            }
+            else
+            {
+                packet.WriteLine("              : SMSG_???");
+                packet.ReadToEnd();
+            }
+        }
+
+        [Parser(Opcode.CMSG_BUY_ITEM)]
+        public static void HandleBuyItem(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_BUYBACK_ITEM)]
+        public static void HandleBuyBackItem(Packet packet)
+        {
+            packet.ReadUInt32("Slot");
+            var guid = packet.StartBitStream(2, 3, 0, 4, 1, 7, 5, 6);
+            packet.ParseBitStream(guid, 0, 6, 1, 7, 5, 2, 3, 4);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_DESTROY_ITEM)]
+        public static void HandleDestroyItem(Packet packet)
+        {
+            packet.ReadUInt32("Count"); // 16
+            packet.ReadSByte("Bag"); // 21
+            packet.ReadByte("Slot"); // 20
+        }
+
+        [Parser(Opcode.CMSG_OPEN_ITEM)]
+        public static void HandleOpenItem(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_READ_ITEM)]
+        public static void HandleReadItem(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_REFORGE_ITEM)]
+        public static void HandleReforgeItem(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_REPAIR_ITEM)]
+        public static void HandleRepairItem(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [Parser(Opcode.CMSG_REQUEST_HOTFIX)]
         public static void HandleItemRequestHotfix(Packet packet)
         {
-            packet.ReadUInt32("Type");
+            packet.ReadEnum<DB2Hash>("Type", TypeCode.UInt32);
 
             var count = packet.ReadBits("Count", 21);
 
             var guidBytes = new byte[count][];
 
-            for (var i = 0; i < count; ++i)
+            for (var i = 0; i < count; i++)
                 guidBytes[i] = packet.StartBitStream(2, 4, 3, 6, 7, 1, 5, 0); //??
 
-            for (var i = 0; i < count; ++i)
+            for (var i = 0; i < count; i++)
             {
                 packet.ReadXORByte(guidBytes[i], 5); //?...
                 packet.ReadXORByte(guidBytes[i], 4);
@@ -40,19 +157,84 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_SELL_ITEM)]
+        public static void HandleSellItem(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_SPLIT_ITEM)]
+        public static void HandleSplitItem(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_SWAP_INV_ITEM)]
+        public static void HandleSwapInventoryItem(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_SWAP_ITEM)]
+        public static void HandleSwapItem(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_TRANSMOGRIFY_ITEMS)]
+        public static void HandleTransmogrifyItems(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_USE_ITEM)]
+        public static void HandleUseItem2(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_VOID_STORAGE_QUERY)]
+        public static void HandleVoidStorageQuery(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_VOID_STORAGE_TRANSFER)]
+        public static void HandleVoidStorageTransfer(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.CMSG_VOID_STORAGE_UNLOCK)]
+        public static void HandleVoidStorageUnlock(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_BUY_FAILED)]
+        public static void HandleBuyFailed(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_BUY_ITEM)]
+        public static void HandleBuyItemResponse(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_DB_REPLY)]
         public static void HandleDBReply(Packet packet)
         {
-            var id = packet.ReadUInt32("Entry");
-            var type = packet.ReadUInt32("Type"); // See DB2Hash enum. Left like this for now to see some numbers pop. ^^
+            var id = packet.ReadInt32("Entry");
             packet.ReadTime("Hotfix date");
+            var HashType = packet.ReadEnum<DB2Hash>("Type", TypeCode.UInt32); // See DB2Hash enum. Left like this for now to see some numbers pop. ^^
             var size = packet.ReadUInt32("Size");
 
             if (size == 0 || id < 0)
                 return;
 
-            var HashType = (DB2Hash)type;
             var itemId = (uint)id;
 
             switch (HashType)
@@ -83,6 +265,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     item.ExtraFlags = packet.ReadEnum<ItemFlagExtra>("Extra Flags", TypeCode.Int32);
                     item.Unk430_1 = packet.ReadSingle("Unk430_1");
                     item.Unk430_2 = packet.ReadSingle("Unk430_2");
+                    packet.ReadSingle("unk");
                     item.BuyCount = packet.ReadUInt32("Buy count");
                     item.BuyPrice = packet.ReadUInt32("Buy Price");
                     item.SellPrice = packet.ReadUInt32("Sell Price");
@@ -155,7 +338,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     if (packet.ReadUInt16() > 0)
                         item.Name = packet.ReadCString("Name", 0);
 
-                    for (var i = 1; i < 4; ++i)
+                    for (var i = 1; i < 4; i++)
                         if (packet.ReadUInt16() > 0)
                             packet.ReadCString("Name", i);
 
@@ -207,15 +390,77 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     packet.WriteLine("Key: {0}", Utilities.ByteArrayToHexString(packet.ReadBytes(32)));
                     break;
                 }
+                case DB2Hash.Creature:
+                {
+                    var unit = Storage.UnitTemplates.ContainsKey(itemId) ? Storage.UnitTemplates[itemId].Item1 : new UnitTemplate();
+
+                    packet.ReadEntryWithName<UInt32>(StoreNameType.Unit, "Entry");
+                    packet.ReadBytes(48);
+                    packet.ReadInt16("NameLen");
+                    unit.Name = packet.ReadCString("Name");
+                    packet.ReadInt16("SubNameLen");
+                    unit.SubName = packet.ReadCString("SubName");
+                    packet.ReadBytes(10);
+
+                    Storage.UnitTemplates.Add(itemId, unit, packet.TimeSpan);
+                    break;
+                }
 
                 // Cases need correction, the other DB2's need implementation etc.
-                default: break;
+                default: packet.AsHex(); break;
             }
 
             if (HashType == DB2Hash.Item || HashType == DB2Hash.Item_sparse) // Add item data.
                 packet.AddSniffData(StoreNameType.Item, (int)itemId, "DB_REPLY");
 
             packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_INVENTORY_CHANGE_FAILURE)]
+        public static void HandleInventoryChangeFailure(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_ITEM_PUSH_RESULT)]
+        public static void HandleItemPushResult(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_ITEM_TIME_UPDATE)]
+        public static void HandleItemTimeUpdate(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_REFORGE_RESULT)]
+        public static void HandleReforgeResult(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_SELL_ITEM)]
+        public static void HandleSellItemResponse(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_SET_PROFICIENCY)]
+        public static void HandleSetProficiency(Packet packet)
+        {
+
+            if (packet.Direction == Direction.ServerToClient)
+            {
+                packet.ReadEnum<UnknownFlags>("Mask", TypeCode.UInt32);
+                packet.ReadEnum<ItemClass>("Class", TypeCode.Byte);
+            }
+            else
+            {
+                packet.WriteLine("              : CMSG_VOID_STORAGE_TRANSFER");
+                packet.ReadToEnd();
+            }
+
         }
     }
 }

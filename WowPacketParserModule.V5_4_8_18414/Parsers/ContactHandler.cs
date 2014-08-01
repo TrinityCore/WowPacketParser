@@ -8,6 +8,29 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class ContactHandler
     {
-        // Add handlers here.
+        [Parser(Opcode.CMSG_CONTACT_LIST)]
+        public static void HandleContactListClient(Packet packet)
+        {
+            packet.ReadEnum<ContactListFlag>("List Flags?", TypeCode.Int32);
+        }
+
+        [Parser(Opcode.CMSG_SETSHEATHED)]
+        public static void HandleSetSheathed(Packet packet)
+        {
+            packet.ReadEnum<SheathState>("Sheath", TypeCode.Int32);
+            packet.ReadBit("hasData");
+        }
+
+        [Parser(Opcode.SMSG_CONTACT_LIST)]
+        public static void HandleContactList(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_FRIEND_STATUS)]
+        public static void HandleFriendStatus(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
     }
 }

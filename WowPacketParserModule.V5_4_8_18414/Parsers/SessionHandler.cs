@@ -106,7 +106,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 count = packet.ReadBits("unk count", 21); //20
                 count_1 = new uint[count, 2];
 
-                for (uint i = 0; i < count; ++i)
+                for (uint i = 0; i < count; i++)
                 {
                     count_1[i, 0] = packet.ReadBits("unk count bytes lenght1", 8); //+29
                     count_1[i, 1] = packet.ReadBits("unk count bytes lenght2", 8); //+285
@@ -123,7 +123,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
                 count1_1 = new uint[count1, 3];
 
-                for (uint i = 0; i < count1; ++i)
+                for (uint i = 0; i < count1; i++)
                 {
                     count1_1[i, 0] = packet.ReadBits("count1 Unk shit", 23); //23*4+1096
                     count1_1[i, 1] = packet.ReadBits("count1 unk bits", 7);  //23*4+4
@@ -144,7 +144,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
             if (hasAccountData)
             {
-                for (uint i = 0; i < count; ++i)
+                for (uint i = 0; i < count; i++)
                 {
                     packet.ReadUInt32("Unk stuff"); //+24
                     packet.ReadWoWString("Realm name ?", count_1[i, 0]);
@@ -152,17 +152,17 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     //v18+=520
                 }
 
-                for (int i = 0; i < RaceCount; ++i)
+                for (int i = 0; i < RaceCount; i++)
                 {
                     packet.ReadEnum<Race>("Race", TypeCode.Byte, i); //+61+i*2
                     packet.ReadEnum<ClientType>("Race Expansion", TypeCode.Byte, i); //+62+i*2
                 }
 
-                for (uint i = 0; i < count1; ++i)
+                for (uint i = 0; i < count1; i++)
                 {
                     packet.ReadWoWString("String ?", count1_1[i, 2]);
                     packet.ReadWoWString("String ?", count1_1[i, 1]);
-                    for (uint j = 0; j < count1_1[i, 0]; ++j)
+                    for (uint j = 0; j < count1_1[i, 0]; j++)
                     {
                         packet.ReadByte("Class or Race"); //+23*4+1100+v24+j*2
                         packet.ReadByte("Class or Race"); //+23*4+1101+v24+j*2
@@ -172,7 +172,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     //v24+=1112
                 }
 
-                for (int i = 0; i < ClassCount; ++i)
+                for (int i = 0; i < ClassCount; i++)
                 {
                     packet.ReadEnum<Class>("Class", TypeCode.Byte, i); //+19*4+1+i*2
                     packet.ReadEnum<ClientType>("Class Expansion", TypeCode.Byte, i); //+19*4+2+i*2
@@ -209,36 +209,74 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadSingle("Z");
         }
 
+        [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
+        public static void HandleLogoutCompletek(Packet packet)
+        {
+            packet.ReadBit("Unk 1");
+
+            var guid = packet.StartBitStream(3, 2, 1, 4, 6, 7, 5, 0);
+            packet.ParseBitStream(guid, 6, 4, 1, 2, 7, 3, 0, 5);
+
+            packet.WriteGuid("Guid", guid);
+            LoginGuid = new Guid(0);
+        }
+
         [Parser(Opcode.SMSG_MOTD)]
         public static void HandleMessageOfTheDay(Packet packet)
         {
             var count = packet.ReadBits("Line Count", 4);
             var counts = new uint[count];
-            for (var i = 0; i < count; ++i)
+            for (var i = 0; i < count; i++)
             {
                 counts[i] = packet.ReadBits(7); //20
                 //v16+=100;
             }
 
-            for (var i = 0; i < count; ++i)
+            for (var i = 0; i < count; i++)
             {
                 packet.ReadWoWString("", counts[i], i);
                 //v16+=100;
             }
         }
 
+        [Parser(Opcode.SMSG_NEW_WORLD)]
+        public static void HandleNewWorld(Packet packet)
+        {
+            packet.ReadSingle("X");
+            packet.ReadUInt32("Map");
+            packet.ReadSingle("Y");
+            packet.ReadSingle("Z");
+            packet.ReadSingle("O");
+        }
+
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
         public static void HandleTransferPending(Packet packet)
         {
-            var unkbit = packet.ReadBit("unk");
-            var isTransport = packet.ReadBit("IsTransport");
-            packet.ReadUInt32("Map");
+            var unkbit = packet.ReadBit("unk20"); // 20
+            var isTransport = packet.ReadBit("IsTransport"); // 32
 
             if (isTransport)
             {
-                packet.ReadUInt32("MapID");
-                packet.ReadUInt32("TransportID");
+                packet.ReadUInt32("MapID"); // 28
+                packet.ReadUInt32("TransportID"); // 24
             }
+
+            packet.ReadUInt32("Map"); // 36
+
+            if (unkbit)
+            {
+                packet.ReadInt32("unk16"); // 16
+            }
+        }
+
+        // This is not opcode. This is string:
+        // WORLD OF WARCRAFT CONNECTION - SERVER TO CLIENT
+        // or
+        // WORLD OF WARCRAFT CONNECTION - CLIENT TO SERVER
+        [Parser(Opcode.MSG_VERIFY_CONNECTIVITY)]
+        public static void HandleVerifyConnectivity(Packet packet)
+        {
+            packet.ReadCString("MSG: ");
         }
     }
 }
