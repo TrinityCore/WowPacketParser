@@ -55,7 +55,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_CANCEL_CAST,                              0x18C0}, //--
             {Opcode.CMSG_CANCEL_MOUNT_AURA,                        0x10E3}, //+-
             {Opcode.CMSG_CANCEL_TRADE,                             0x1941}, //+-
-            {Opcode.CMSG_CAST_SPELL,                               0x0206}, //++
+            //{Opcode.CMSG_CAST_SPELL,                               0x0206}, //--
             {Opcode.CMSG_CHAR_CREATE,                              0x0F1D}, //--
             {Opcode.CMSG_CHAR_CUSTOMIZE,                           0x0A13}, //--
             {Opcode.CMSG_CHAR_DELETE,                              0x04E2}, //-+
