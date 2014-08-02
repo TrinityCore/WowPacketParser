@@ -17,9 +17,9 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_ACTIVATETAXIEXPRESS,                      0x06FB}, //--
             {Opcode.CMSG_ADD_FRIEND,                               0x09A6}, //--
             {Opcode.CMSG_ADD_IGNORE,                               0x0D20}, //-+
-            {Opcode.CMSG_ALTER_APPEARANCE,                         0x07F0}, //--
-            {Opcode.CMSG_AREATRIGGER,                              0x1C44}, //+-
-            {Opcode.CMSG_ATTACKSTOP,                               0x0345}, //+-
+            {Opcode.CMSG_ALTER_APPEARANCE,                         0x07F0}, //+-
+            {Opcode.CMSG_AREATRIGGER,                              0x1C44}, //++
+            {Opcode.CMSG_ATTACKSTOP,                               0x0345}, //++
             {Opcode.CMSG_ATTACKSWING,                              0x02E7}, //--
             {Opcode.CMSG_AUCTION_HELLO,                            0x0379}, //-+
             {Opcode.CMSG_AUTH_SESSION,                             0x00B2}, //+-

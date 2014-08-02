@@ -824,7 +824,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 if (len224 > 0)
                     packet.ReadWoWString("str224", len224);
 
-                packet.ReadInt32("unk68");
+                var spellId = packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID"); // 68
 
                 if (unk188h)
                     packet.ReadSingle("unk188h");
@@ -835,6 +835,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
                 packet.WriteGuid("Guid48", guid48);
                 packet.WriteGuid("Guid56", guid56);
+                packet.AddSniffData(StoreNameType.Spell, spellId, "SPELL_GO");
             }
             else
             {
@@ -1066,7 +1067,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 if (unk89)
                     packet.ReadInt32("unk356");
 
-                packet.ReadInt32("unk36");
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID"); // 36
 
                 if (unk91)
                     packet.ReadInt32("unk364");

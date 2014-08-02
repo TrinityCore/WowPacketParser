@@ -25,7 +25,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_AREATRIGGER)]
         public static void HandleClientAreaTrigger(Packet packet)
         {
-            packet.ReadInt32("unk");
+            packet.ReadInt32("AreaTrigger");
             packet.ReadBit("unkb");
             packet.ReadBit("unkb2");
         }

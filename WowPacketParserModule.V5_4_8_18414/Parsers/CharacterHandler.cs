@@ -14,7 +14,10 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_ALTER_APPEARANCE)]
         public static void HandleAlterAppearance(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadInt32("Hair Style");
+            packet.ReadInt32("Hair Color");
+            packet.ReadInt32("Facial Hair");
+            packet.ReadInt32("Skin Color");
         }
 
         [Parser(Opcode.CMSG_CHAR_CREATE)]
