@@ -525,9 +525,9 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_SHOWTAXINODES,                            0x1E1A}, //++
             //{Opcode.SMSG_SPELL_CATEGORY_COOLDOWN,                  0x01DB}, //--
             {Opcode.SMSG_SPELL_COOLDOWN,                           0x0452}, //++
-            {Opcode.SMSG_SPELL_DELAYED,                            0x087A}, //--
-            {Opcode.SMSG_SPELL_FAILED_OTHER,                       0x040B}, //--
-            {Opcode.SMSG_SPELL_FAILURE,                            0x04AF}, //--
+            {Opcode.SMSG_SPELL_DELAYED,                            0x087A}, //++
+            {Opcode.SMSG_SPELL_FAILED_OTHER,                       0x040B}, //++
+            {Opcode.SMSG_SPELL_FAILURE,                            0x04AF}, //++
             {Opcode.SMSG_SPELL_GO,                                 0x09D8}, //++
             {Opcode.SMSG_SPELL_START,                              0x107A}, //++
             //{Opcode.SMSG_SPELLHEALLOG,                             0x09FB}, //--

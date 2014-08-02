@@ -494,7 +494,39 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_SPELL_DELAYED)]
         public static void HandleSpellDelayed(Packet packet)
         {
-            packet.ReadToEnd();
+            var guid = new byte[8];
+            guid = packet.StartBitStream(6, 7, 2, 0, 4, 3, 1, 5);
+            packet.ParseBitStream(guid, 2, 6, 1, 7, 0, 5, 3);
+            packet.ReadInt32("Delay");
+            packet.ParseBitStream(guid, 4);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPELL_FAILED_OTHER)]
+        public static void HandleSpellFailedOther(Packet packet)
+        {
+            var guid = new byte[8];
+            guid = packet.StartBitStream(7, 0, 5, 6, 1, 4, 3, 2);
+            packet.ParseBitStream(guid, 0, 1);
+            packet.ReadEnum<SpellCastFailureReason>("Reason", TypeCode.Byte); // 29
+            packet.ParseBitStream(guid, 7, 5, 6);
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID"); // 24
+            packet.ReadByte("Cast count"); // 28
+            packet.ParseBitStream(guid, 4, 2, 3);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPELL_FAILURE)]
+        public static void HandleSpellFailure(Packet packet)
+        {
+            var guid = new byte[8];
+            guid = packet.StartBitStream(7, 3, 6, 2, 1, 5, 0, 4);
+            packet.ParseBitStream(guid, 2, 6, 7, 0, 3, 1);
+            packet.ReadEnum<SpellCastFailureReason>("Reason", TypeCode.Byte); // 29
+            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID"); // 24
+            packet.ReadByte("Cast count"); // 28
+            packet.ParseBitStream(guid, 4, 5);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPELL_GO)]
