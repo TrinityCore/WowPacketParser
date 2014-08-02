@@ -61,12 +61,12 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     questPoi.FloorId = packet.ReadUInt32("Floor Id", i, j);
                     questPoi.Idx = (uint)packet.ReadInt32("POI Index", i, j);
                     questPoi.ObjectiveIndex = packet.ReadInt32("Objective Index", i, j);
-                    questPoi.WorldMapAreaId = packet.ReadUInt32("World Map Area", i, j);
-                    packet.ReadUInt32("Unk Int32 6", i, j);
-                    packet.ReadUInt32("Unk Int32 5", i, j);
-                    questPoi.UnkInt2 = packet.ReadUInt32("Unk Int32 3", i, j);
-                    packet.ReadUInt32("Unk Int32 4", i, j);
-                    questPoi.UnkInt1 = packet.ReadUInt32("Unk Int32 2", i, j);
+                    questPoi.WorldMapAreaId = packet.ReadUInt32("World Map Area ID", i, j);
+                    packet.ReadUInt32("Player Condition ID", i, j);
+                    packet.ReadUInt32("World Effect ID", i, j);
+                    questPoi.UnkInt2 = packet.ReadUInt32("Unk Int32 1", i, j);
+                    packet.ReadUInt32("Unk Int32 2", i, j);
+                    questPoi.UnkInt1 = packet.ReadUInt32("Unk Int32 3", i, j);
                     packet.ReadUInt32("Points Counter?", i, j);
                     questPoi.Map = (uint)packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map Id", i, j);
                     questPOIs.Add(questPoi);

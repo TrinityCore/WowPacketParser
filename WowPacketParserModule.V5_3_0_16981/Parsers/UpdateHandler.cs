@@ -93,6 +93,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             obj.Map = map;
             obj.Area = CoreParsers.WorldStateHandler.CurrentAreaId;
             obj.PhaseMask = (uint)CoreParsers.MovementHandler.CurrentPhaseMask;
+            obj.Phases = new HashSet<ushort>(CoreParsers.MovementHandler.ActivePhases);
 
             // If this is the second time we see the same object (same guid,
             // same position) update its phasemask
@@ -639,7 +640,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         }
 
                         var bytes = packet.ReadBytes((int)bits34C_4_31[i][j]);
-                        packet.WriteLine("[{0}] [{1}] [{2}] Bytes34C+4+31", index, i, j);
+                        packet.WriteLine("[{0}] [{1}] [{2}] Bytes34C+4+31: {3}", index, i, j, Utilities.ByteArrayToHexString(bytes));
                         packet.ReadXORByte(guid34C_4[i][j], 6);
 
                         for (var k = 0; k < bits34C_4_74[i][j]; ++k)
@@ -653,10 +654,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         }
 
                         if (bit34C_4_2E[i][j])
-                        {
-                            packet.WriteLine("bit34C_4_2E");
                             packet.ReadInt16("short34C+4+2E", index, i, j);
-                        }
 
                         packet.ReadXORByte(guid34C_4[i][j], 4);
                         packet.ReadInt32("int34C+4+24", index, i, j);
@@ -672,6 +670,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         packet.ReadInt32("int34C+4+1C", index, i, j);
                         packet.ReadInt16("short34C+4+14", index, i, j);
                         packet.ReadInt16("short34C+4+2C", index, i, j);
+                        packet.WriteGuid("Guid 34C_4", guid34C_4[i][j]);
                     }
 
                     if (!bit34C_4[i])

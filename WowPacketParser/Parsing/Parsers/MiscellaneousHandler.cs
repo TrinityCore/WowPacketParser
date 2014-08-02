@@ -38,7 +38,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadInt32("Hotfix type", i); // Also time?
+                packet.ReadEnum<DB2Hash>("Hotfix DB2 File", TypeCode.UInt32, i);
                 packet.ReadTime("Hotfix date", i);
                 packet.ReadInt32("Hotfixed entry", i);
             }
@@ -442,9 +442,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_AREATRIGGER)]
         public static void HandleClientAreaTrigger(Packet packet)
         {
-            packet.ReadInt32("Area Trigger Id");
+            var entry = packet.ReadEntry("Area Trigger Id");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
                 packet.ReadByte("Unk Byte");
+
+            packet.AddSniffData(StoreNameType.AreaTrigger, entry.Key, "AREATRIGGER");
         }
 
         [Parser(Opcode.SMSG_PRE_RESURRECT)]

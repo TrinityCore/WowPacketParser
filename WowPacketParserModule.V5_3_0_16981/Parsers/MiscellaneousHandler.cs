@@ -2,7 +2,6 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParserModule.V5_3_0_16981.Enums;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers
@@ -31,8 +30,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         {
             var len = packet.ReadBits(7);
             packet.ReadWoWString("Split Date", len);
-            packet.ReadUInt32("Client State");
-            packet.ReadUInt32("Split State");
+            packet.ReadEnum<ClientSplitState>("Client State", TypeCode.Int32);
+            packet.ReadEnum<PendingSplitState>("Split State", TypeCode.Int32);
         }
 
         [Parser(Opcode.CMSG_INSPECT)]
@@ -98,9 +97,11 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.CMSG_AREATRIGGER)]
         public static void HandleClientAreaTrigger(Packet packet)
         {
-            packet.ReadInt32("Area Trigger Id");
+            var entry = packet.ReadEntry("Area Trigger Id");
             packet.ReadBit("Unk bit1");
             packet.ReadBit("Unk bit2");
+
+            packet.AddSniffData(StoreNameType.AreaTrigger, entry.Key, "AREATRIGGER");
         }
 
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]

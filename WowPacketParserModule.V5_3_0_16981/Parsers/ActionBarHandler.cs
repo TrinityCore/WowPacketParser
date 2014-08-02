@@ -6,6 +6,7 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreObjects = WowPacketParser.Store.Objects;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
@@ -79,7 +80,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             }
 
             WoWObject character;
-            if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
+            if (Storage.Objects.TryGetValue(CoreParsers.SessionHandler.LoginGuid, out character))
             {
                 var player = character as Player;
                 if (player != null && player.FirstLogin)

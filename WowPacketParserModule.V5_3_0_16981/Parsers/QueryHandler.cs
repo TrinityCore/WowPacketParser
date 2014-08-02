@@ -5,7 +5,6 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using WowPacketParserModule.V5_3_0_16981.Enums;
 using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers
@@ -15,7 +14,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.CMSG_CREATURE_QUERY)]
         public static void HandleCreatureQuery(Packet packet)
         {
-            var entry = packet.ReadInt32("Entry");
+            packet.ReadInt32("Entry");
         }
 
         [HasSniffData]
@@ -164,26 +163,20 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var guid = new byte[8];
 
             var bit16 = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
+            packet.StartBitStream(guid, 1, 3, 2);
 
             if (bit16)
                 for (var i = 0; i < 5; ++i)
                     packet.ReadBits("bits", 7);
 
             var bits32 = packet.ReadBits(6);
-            guid[6] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
+            packet.StartBitStream(guid, 6, 4, 0);
             var bit83 = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
+            packet.StartBitStream(guid, 5, 7);
 
             packet.ReadXORByte(guid, 1);
             packet.ReadWoWString("Name: ", bits32);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 7);
+            packet.ReadXORBytes(guid, 0, 7);
 
             packet.ReadByte("Race");
             packet.ReadByte("unk81");
@@ -194,12 +187,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     packet.ReadCString("Declined Name");
 
             packet.ReadByte("Class");
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadUInt32("unk84");
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 2);
+            packet.ReadXORBytes(guid, 4, 6, 5);
+            packet.ReadUInt32("Realm Id");
+            packet.ReadXORBytes(guid, 3, 2);
 
             packet.WriteGuid("Guid", guid);
         }
@@ -223,11 +213,60 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             switch (type)
             {
-                case DB2Hash.Item:    // Item.db2
+                case DB2Hash.BroadcastText:
+                    {
+                        var broadcastText = new BroadcastText();
+
+                        var Id = db2File.ReadEntry("Broadcast Text Entry");
+                        broadcastText.language = db2File.ReadUInt32("Language");
+                        if (db2File.ReadUInt16() > 0)
+                            broadcastText.MaleText = db2File.ReadCString("Male Text");
+                        if (db2File.ReadUInt16() > 0)
+                            broadcastText.FemaleText = db2File.ReadCString("Female Text");
+
+                        broadcastText.EmoteID = new uint[3];
+                        broadcastText.EmoteDelay = new uint[3];
+                        for (var i = 0; i < 3; ++i)
+                            broadcastText.EmoteID[i] = (uint)db2File.ReadInt32("Emote ID", i);
+                        for (var i = 0; i < 3; ++i)
+                            broadcastText.EmoteDelay[i] = (uint)db2File.ReadInt32("Emote Delay", i);
+
+                        broadcastText.soundId = db2File.ReadUInt32("Sound Id");
+                        broadcastText.unk1 = db2File.ReadUInt32("Unk 1"); // emote unk
+                        broadcastText.unk2 = db2File.ReadUInt32("Unk 2"); // kind of type?
+
+                        Storage.BroadcastTexts.Add((uint)Id.Key, broadcastText, packet.TimeSpan);
+                        packet.AddSniffData(StoreNameType.BroadcastText, Id.Key, "BROADCAST_TEXT");
+                        break;
+                    }
+                case DB2Hash.Creature:
+                    {
+                        db2File.ReadUInt32("Creature Entry");
+                        db2File.ReadUInt32("Item Entry 1");
+                        db2File.ReadUInt32("Item Entry 2");
+                        db2File.ReadUInt32("Item Entry 3");
+                        db2File.ReadUInt32("Projectile Entry 1");
+                        db2File.ReadUInt32("Projectile Entry 2");
+                        db2File.ReadUInt32("Mount");
+                        db2File.ReadUInt32("Display Id 1");
+                        db2File.ReadUInt32("Display Id 2");
+                        db2File.ReadUInt32("Display Id 3");
+                        db2File.ReadUInt32("Display Id 4");
+                        db2File.ReadSingle("Unk Float 1");
+                        db2File.ReadSingle("Unk Float 2");
+                        db2File.ReadSingle("Unk Float 3");
+                        db2File.ReadSingle("Unk Float 4");
+                        if (db2File.ReadUInt16() > 0)
+                            db2File.ReadCString("Name");
+
+                        db2File.ReadUInt32("Inhabit Type");
+                        break;
+                    }
+                case DB2Hash.Item:
                     {
                         var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
 
-                        db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+                        db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry");
                         item.Class = db2File.ReadEnum<ItemClass>("Class", TypeCode.Int32);
                         item.SubClass = db2File.ReadUInt32("Sub Class");
                         item.SoundOverrideSubclass = db2File.ReadInt32("Sound Override Subclass");
@@ -240,17 +279,17 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         packet.AddSniffData(StoreNameType.Item, (int)entry, "DB_REPLY");
                         break;
                     }
-                case DB2Hash.Item_sparse:    // Item-sparse.db2
+                case DB2Hash.Item_sparse:
                     {
                         var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
 
-                        db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+                        db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Sparse Entry");
                         item.Quality = db2File.ReadEnum<ItemQuality>("Quality", TypeCode.Int32);
-                        item.Flags = db2File.ReadEnum<ItemProtoFlags>("Flags", TypeCode.UInt32);
-                        item.ExtraFlags = db2File.ReadEnum<ItemFlagExtra>("Extra Flags", TypeCode.Int32);
+                        item.Flags1 = db2File.ReadEnum<ItemProtoFlags>("Flags 1", TypeCode.UInt32);
+                        item.Flags2 = db2File.ReadEnum<ItemFlagExtra>("Flags 2", TypeCode.Int32);
+                        item.Flags3 = db2File.ReadUInt32("Flags 3");
                         item.Unk430_1 = db2File.ReadSingle("Unk430_1");
                         item.Unk430_2 = db2File.ReadSingle("Unk430_2");
-                        item.Unk530_1 = db2File.ReadSingle("Unk530_1");
                         item.BuyCount = db2File.ReadUInt32("Buy count");
                         item.BuyPrice = db2File.ReadUInt32("Buy Price");
                         item.SellPrice = db2File.ReadUInt32("Sell Price");
@@ -370,52 +409,10 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         packet.AddSniffData(StoreNameType.Item, (int)entry, "DB_REPLY");
                         break;
                     }
-                case DB2Hash.KeyChain: // KeyChain.db2
+                case DB2Hash.KeyChain:
                     {
                         db2File.ReadUInt32("Key Chain Id");
                         db2File.WriteLine("Key: {0}", Utilities.ByteArrayToHexString(db2File.ReadBytes(32)));
-                        break;
-                    }
-                case DB2Hash.Creature: // Creature.db2
-                    {
-                        db2File.ReadUInt32("Npc Entry");
-                        db2File.ReadUInt32("Item Entry 1");
-                        db2File.ReadUInt32("Item Entry 2");
-                        db2File.ReadUInt32("Item Entry 3");
-                        db2File.ReadUInt32("Projectile Entry 1");
-                        db2File.ReadUInt32("Projectile Entry 2");
-                        db2File.ReadUInt32("Mount");
-                        db2File.ReadUInt32("Display Id 1");
-                        db2File.ReadUInt32("Display Id 2");
-                        db2File.ReadUInt32("Display Id 3");
-                        db2File.ReadUInt32("Display Id 4");
-                        db2File.ReadSingle("Float1");
-                        db2File.ReadSingle("Float2");
-                        db2File.ReadSingle("Float3");
-                        db2File.ReadSingle("Float4");
-                        if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Name");
-
-                        db2File.ReadUInt32("InhabitType");
-                        break;
-                    }
-                case DB2Hash.BroadcastText:
-                    {
-                        db2File.ReadUInt32("Broadcast Text Entry");
-                        db2File.ReadUInt32("Language");
-                        if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Male Text");
-                        if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Female Text");
- 
-                        for (var i = 0; i < 3; ++i)
-                            db2File.ReadInt32("Emote ID", i);
-                        for (var i = 0; i < 3; ++i)
-                            db2File.ReadInt32("Emote Delay", i);
- 
-                        db2File.ReadUInt32("Sound Id");
-                        db2File.ReadUInt32("Unk0");
-                        db2File.ReadUInt32("Unk1"); // kind of type?
                         break;
                     }
                 default:
@@ -445,6 +442,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         break;
                     }
             }
+
+            db2File.ClosePacket(false);
         }
 
         [HasSniffData]
@@ -616,7 +615,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]
         public static void HandleNpcTextUpdate(Packet packet)
         {
-            var npcText = new NpcText();
+            var npcText = new NpcTextMop();
 
             var entry = packet.ReadEntry("Entry");
             if (entry.Value) // Can be masked
@@ -630,10 +629,17 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             var pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
             npcText.Probabilities = new float[8];
+            npcText.BroadcastTextId = new uint[8];
             for (var i = 0; i < 8; ++i)
                 npcText.Probabilities[i] = pkt.ReadSingle("Probability", i);
             for (var i = 0; i < 8; ++i)
-                pkt.ReadInt32("Broadcast Text Id", i);
+                npcText.BroadcastTextId[i] = pkt.ReadUInt32("Broadcast Text Id", i);
+
+            pkt.ClosePacket(false);
+
+            packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
+
+            Storage.NpcTextsMop.Add((uint)entry.Key, npcText, packet.TimeSpan);
         }
     }
 }

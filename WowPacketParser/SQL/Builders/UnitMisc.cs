@@ -1,5 +1,7 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using WowPacketParser.Enums;
@@ -26,6 +28,14 @@ namespace WowPacketParser.SQL.Builders
             foreach (var unit in units)
             {
                 var npc = unit.Value;
+
+                if (Settings.AreaFilters.Length > 0)
+                    if (!(npc.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                        continue;
+
+                if (Settings.MapFilters.Length > 0)
+                    if (!(npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                        continue;
 
                 var row = new QueryBuilder.SQLInsertRow();
                 row.AddValue("entry", unit.Key.GetEntry());
@@ -76,6 +86,14 @@ namespace WowPacketParser.SQL.Builders
             var models = new StoreDictionary<uint, ModelData>();
             foreach (var npc in units.Select(unit => unit.Value))
             {
+                if (Settings.AreaFilters.Length > 0)
+                    if (!(npc.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                        continue;
+
+                if (Settings.MapFilters.Length > 0)
+                    if (!(npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                        continue;
+
                 uint modelId;
                 if (npc.Model.HasValue)
                     modelId = npc.Model.Value;
@@ -185,6 +203,14 @@ namespace WowPacketParser.SQL.Builders
                 var equip = new CreatureEquipment();
                 var npc = unit.Value;
                 var entry = unit.Key.GetEntry();
+
+                if (Settings.AreaFilters.Length > 0)
+                    if (!(npc.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                        continue;
+
+                if (Settings.MapFilters.Length > 0)
+                    if (!(npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                        continue;
 
                 if (npc.Equipment == null || npc.Equipment.Length != 3)
                     continue;
@@ -370,7 +396,9 @@ namespace WowPacketParser.SQL.Builders
 
                     foreach (var gossip in Storage.Gossips)
                     {
-                        if (gossip.Value.Item1.GossipOptions == null) continue;
+                        if (gossip.Value.Item1.GossipOptions == null)
+                            continue;
+
                         foreach (var gossipOption in gossip.Value.Item1.GossipOptions)
                         {
                             var query = //         0     1       2         3         4        5         6
@@ -378,6 +406,7 @@ namespace WowPacketParser.SQL.Builders
                                     "SELECT menu_id,id,option_icon,box_coded,box_money,box_text,option_text " +
                                     "FROM {2}.gossip_menu_option WHERE menu_id={0} AND id={1};", gossip.Key.Item1,
                                     gossipOption.Index, Settings.TDBDatabase);
+
                             using (var reader = SQLConnector.ExecuteQuery(query))
                             {
                                 if (reader.HasRows) // possible update
@@ -593,7 +622,6 @@ namespace WowPacketParser.SQL.Builders
                     MinLevel = levels[unit.Key.GetEntry()].Item1,
                     MaxLevel = levels[unit.Key.GetEntry()].Item2,
                     Faction = npc.Faction.GetValueOrDefault(35),
-                    Faction2 = npc.Faction.GetValueOrDefault(35),
                     NpcFlag = (uint) npc.NpcFlags.GetValueOrDefault(NPCFlags.None),
                     SpeedRun = npc.Movement.RunSpeed,
                     SpeedWalk = npc.Movement.WalkSpeed,
@@ -696,6 +724,30 @@ namespace WowPacketParser.SQL.Builders
                 {
                     var row = new QueryBuilder.SQLInsertRow();
 
+                    var query = new StringBuilder(string.Format("SELECT Id FROM {1}.broadcast_text WHERE MaleText='{0}' OR FemaleText='{0}';", MySqlHelper.DoubleQuoteString(textValue.Item1.Text), Settings.TDBDatabase));
+
+                    string broadcastTextId = "";
+                    if (Settings.DevMode)
+                    {
+                        using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
+                        {
+                            if (reader != null)
+                                while (reader.Read())
+                                {
+                                    var values = new object[1];
+                                    var count = reader.GetValues(values);
+                                    if (count != 1)
+                                        break; // error in query
+
+                                    if (!String.IsNullOrWhiteSpace(broadcastTextId))
+                                        broadcastTextId += " - " + Convert.ToInt32(values[0]);
+                                    else
+                                        broadcastTextId += Convert.ToInt32(values[0]);
+                                }
+                        }
+
+                    }
+
                     row.AddValue("entry", text.Key);
                     row.AddValue("groupid", "x", false, true);
                     row.AddValue("id", "x", false, true);
@@ -706,6 +758,8 @@ namespace WowPacketParser.SQL.Builders
                     row.AddValue("emote", textValue.Item1.Emote);
                     row.AddValue("duration", 0);
                     row.AddValue("sound", textValue.Item1.Sound);
+                    if (Settings.DevMode)
+                        row.AddValue("BroadcastTextID", broadcastTextId);
                     row.AddValue("comment", textValue.Item1.Comment);
 
                     rows.Add(row);

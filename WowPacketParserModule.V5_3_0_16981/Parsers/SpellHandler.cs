@@ -533,7 +533,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var startSpell = new StartSpell { Spells = spells };
 
             WoWObject character;
-            if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
+            if (Storage.Objects.TryGetValue(CoreParsers.SessionHandler.LoginGuid, out character))
             {
                 var player = character as Player;
                 if (player != null && player.FirstLogin)

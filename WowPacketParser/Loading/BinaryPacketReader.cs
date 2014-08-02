@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -26,6 +27,7 @@ namespace WowPacketParser.Loading
 
         private DateTime _startTime;
         private uint _startTickCount;
+        private int _snifferId;
 
         public BinaryPacketReader(SniffType type, string fileName, Encoding encoding)
         {
@@ -58,7 +60,7 @@ namespace WowPacketParser.Loading
                 }
                 case PktVersion.V2_2:
                 {
-                    _reader.ReadByte();                         // sniffer id
+                    _snifferId = _reader.ReadByte();            // sniffer id
                     SetBuild(_reader.ReadUInt16());             // client build
                     _reader.ReadBytes(4);                       // client locale
                     _reader.ReadBytes(20);                      // packet key
@@ -67,7 +69,7 @@ namespace WowPacketParser.Loading
                 }
                 case PktVersion.V3_0:
                 {
-                    var snifferId = _reader.ReadByte();         // sniffer id
+                    _snifferId = _reader.ReadByte();            // sniffer id
                     SetBuild(_reader.ReadUInt32());             // client build
                     _reader.ReadBytes(4);                       // client locale
                     _reader.ReadBytes(40);                      // session key
@@ -75,7 +77,7 @@ namespace WowPacketParser.Loading
                     var preAdditionalPos = _reader.BaseStream.Position;
                     _reader.ReadBytes(additionalLength);
                     var postAdditionalPos = _reader.BaseStream.Position;
-                    if (snifferId == 10)                        // xyla
+                    if (_snifferId == 10)                       // xyla
                     {
                         _reader.BaseStream.Position = preAdditionalPos;
                         _startTime = Utilities.GetDateTimeFromUnixTime(_reader.ReadUInt32());   // start time
@@ -86,7 +88,7 @@ namespace WowPacketParser.Loading
                 }
                 case PktVersion.V3_1:
                 {
-                    _reader.ReadByte();                         // sniffer id
+                    _snifferId = _reader.ReadByte();            // sniffer id
                     SetBuild(_reader.ReadUInt32());             // client build
                     _reader.ReadBytes(4);                       // client locale
                     _reader.ReadBytes(40);                      // session key
@@ -123,6 +125,7 @@ namespace WowPacketParser.Loading
             Direction direction;
             byte[] data;
             int cIndex = 0;
+            IPEndPoint endPoint = null; // Only used in PKT3.1 by TC's PacketLogger
 
             if (_sniffType == SniffType.Pkt)
             {
@@ -152,7 +155,21 @@ namespace WowPacketParser.Loading
                     case PktVersion.V3_0:
                     case PktVersion.V3_1:
                     {
-                        direction = (_reader.ReadUInt32() == 0x47534d53) ? Direction.ServerToClient : Direction.ClientToServer;
+                        switch (_reader.ReadUInt32())
+                        {
+                            case 0x47534d53:
+                                direction = Direction.ServerToClient;
+                                break;
+                            case 0x47534d43:
+                                direction = Direction.ClientToServer;
+                                break;
+                            case 0x4e425f53:
+                                direction = Direction.BNServerToClient;
+                                break;
+                            default:
+                                direction = Direction.BNClientToServer;
+                                break;
+                        }
 
                         if (_pktVersion == PktVersion.V3_0)
                         {
@@ -170,7 +187,27 @@ namespace WowPacketParser.Loading
 
                         int additionalSize = _reader.ReadInt32();
                         length = _reader.ReadInt32();
-                        _reader.ReadBytes(additionalSize);
+                        if (additionalSize >= 20 && _snifferId == 'T' && _pktVersion == PktVersion.V3_1)
+                        {
+                            // TC's PacketLogger - extract socket UUID
+                            // (16 bytes address and 4 bytes of port)
+                            var realIpBytes = _reader.ReadBytes(16);
+                            var port = _reader.ReadInt32();
+
+                            var firstPartIpBytes = new byte[4];
+                            var secondPartIpBytes = new byte[12];
+
+                            Array.Copy(realIpBytes, 0, firstPartIpBytes, 0, 4);
+                            Array.Copy(realIpBytes, 4, secondPartIpBytes, 0, 12);
+
+                            endPoint = new IPEndPoint(new IPAddress(Array.TrueForAll(secondPartIpBytes, b => b == 0) ?
+                                firstPartIpBytes : realIpBytes), port);
+
+                            _reader.ReadBytes(additionalSize - 20);
+                        }
+                        else
+                            _reader.ReadBytes(additionalSize);
+
                         opcode = _reader.ReadInt32();
                         data = _reader.ReadBytes(length - 4);
                         break;
@@ -202,6 +239,7 @@ namespace WowPacketParser.Loading
 
             var packet = new Packet(data, opcode, time, direction, number, Path.GetFileName(fileName));
             packet.ConnectionIndex = cIndex;
+            packet.EndPoint = endPoint;
             return packet;
         }
 

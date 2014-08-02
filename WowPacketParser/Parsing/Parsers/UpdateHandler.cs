@@ -1804,16 +1804,16 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(goTransportGuid, 7);
 
-                moveInfo.TransportOffset.Y = packet.ReadSingle();
-                packet.ReadByte("GO Transport Seat", index);
-                moveInfo.TransportOffset.O = packet.ReadSingle();
                 moveInfo.TransportOffset.Z = packet.ReadSingle();
+                packet.ReadByte("GO Transport Seat", index);
+                moveInfo.TransportOffset.X = packet.ReadSingle();
+                moveInfo.TransportOffset.Y = packet.ReadSingle();
 
                 packet.ReadXORByte(goTransportGuid, 4);
                 packet.ReadXORByte(goTransportGuid, 5);
                 packet.ReadXORByte(goTransportGuid, 6);
 
-                moveInfo.TransportOffset.X = packet.ReadSingle();
+                moveInfo.TransportOffset.O = packet.ReadSingle();
                 packet.ReadInt32("GO Transport Time", index);
 
                 packet.ReadXORByte(goTransportGuid, 1);

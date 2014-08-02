@@ -1252,7 +1252,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_FAILED_PLAYER_CONDITION)]
         public static void HandleFailedPlayerCondition(Packet packet)
         {
-            packet.ReadInt32("Id"); // quest id? PlayerCondition.dbc id?
+            packet.ReadInt32("Id");
         }
 
         [Parser(Opcode.CMSG_SHOWING_CLOAK)]

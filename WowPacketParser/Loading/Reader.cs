@@ -51,7 +51,10 @@ namespace WowPacketParser.Loading
                     }
 
                     if (packetNum++ < Settings.FilterPacketNumLow)
+                    {
+                        packet.ClosePacket();
                         continue;
+                    }
 
                     // check for filters
                     var opcodeName = Opcodes.GetOpcodeName(packet.Opcode);
@@ -69,6 +72,8 @@ namespace WowPacketParser.Loading
                         if (Settings.FilterPacketsNum > 0 && packets.Count == Settings.FilterPacketsNum)
                             break;
                     }
+                    else
+                        packet.ClosePacket();
 
                     if (Settings.FilterPacketNumHigh > 0 && packetNum > Settings.FilterPacketNumHigh)
                         break;

@@ -31,6 +31,7 @@ namespace WowPacketParser.Tests.Misc
             "|-------------------------------------------------|---------------------------------|" + Environment.NewLine;
 
             Assert.AreEqual(expected, actual);
+            packet.ClosePacket();
         }
 
         [Test]

@@ -62,6 +62,10 @@ namespace WowPacketParser.Tests.Misc
             stats.AddByStatus(packet2.Status);
             stats.AddByStatus(packet3.Status);
 
+            packet1.ClosePacket();
+            packet2.ClosePacket();
+            packet3.ClosePacket();
+
             Assert.AreEqual(1, stats.SucessPacketCount);
             Assert.AreEqual(0, stats.WithErrorsPacketCount);
             Assert.AreEqual(1, stats.NotParsedPacketCount);
