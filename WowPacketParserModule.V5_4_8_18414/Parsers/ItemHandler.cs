@@ -72,7 +72,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             if (packet.Direction == Direction.ClientToServer)
             {
-                var counter = packet.ReadBits("Count", 25);
+                var counter = packet.ReadBits("Count", 23);
 
                 var guid = new byte[counter][];
 
@@ -416,7 +416,60 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_ITEM_PUSH_RESULT)]
         public static void HandleItemPushResult(Packet packet)
         {
-            packet.ReadToEnd();
+            var playerGuid = new byte[8];
+            var itemGuid = new byte[8];
+
+            itemGuid[2] = packet.ReadBit(); // 50
+            playerGuid[4] = packet.ReadBit(); // 84
+            itemGuid[5] = packet.ReadBit(); // 53
+            packet.ReadBit("Display"); // 56
+            playerGuid[1] = packet.ReadBit(); // 81
+            packet.ReadBit("rcvFrom"); // 28
+            itemGuid[4] = packet.ReadBit(); // 52
+            playerGuid[6] = packet.ReadBit(); // 86
+            playerGuid[5] = packet.ReadBit(); // 85
+            playerGuid[7] = packet.ReadBit(); // 87
+            playerGuid[0] = packet.ReadBit(); // 80
+            itemGuid[0] = packet.ReadBit(); // 48
+            itemGuid[7] = packet.ReadBit(); // 55
+            playerGuid[2] = packet.ReadBit(); // 82
+            itemGuid[6] = packet.ReadBit(); // 54
+            packet.ReadBit("Bonus"); // 57
+            playerGuid[3] = packet.ReadBit(); // 83
+            itemGuid[1] = packet.ReadBit(); // 49
+            packet.ReadBit("Created"); // 58
+            itemGuid[3] = packet.ReadBit(); // 51
+
+            packet.ReadXORByte(playerGuid, 1); // 81
+            packet.ReadXORByte(itemGuid, 1); // 49
+            packet.ReadInt32("unk64"); // 64
+            packet.ReadXORByte(itemGuid, 0); // 48
+            packet.ReadXORByte(playerGuid, 5); // 85
+            packet.ReadXORByte(playerGuid, 2); // 82
+            packet.ReadInt32("Suffix Factor"); // 36
+            packet.ReadXORByte(itemGuid, 7); // 55
+            packet.ReadInt32("unk60"); // 60
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry"); // 72
+            packet.ReadInt32("Random Property ID"); // 68
+            packet.ReadXORByte(itemGuid, 6); // 54
+            packet.ReadInt32("unk24"); // 24
+            packet.ReadInt32("Count in inventory"); // 40
+            packet.ReadXORByte(itemGuid, 2); // 50
+            packet.ReadXORByte(playerGuid, 0); // 80
+            packet.ReadUInt32("Count"); // 16
+            packet.ReadXORByte(playerGuid, 7); // 87
+            packet.ReadXORByte(itemGuid, 5); // 53
+            packet.ReadXORByte(playerGuid, 4); // 84
+            packet.ReadInt32("Item Slot"); // 32
+            packet.ReadByte("Slot"); // 29
+            packet.ReadXORByte(playerGuid, 3); // 83
+            packet.ReadXORByte(playerGuid, 6); // 86
+            packet.ReadInt32("unk20"); // 20
+            packet.ReadXORByte(itemGuid, 3); // 51
+            packet.ReadXORByte(itemGuid, 4); // 52
+
+            packet.WriteGuid("playerGuid", playerGuid);
+            packet.WriteGuid("itemGuid", itemGuid);
         }
 
         [Parser(Opcode.SMSG_ITEM_TIME_UPDATE)]

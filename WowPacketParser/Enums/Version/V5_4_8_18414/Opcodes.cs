@@ -27,7 +27,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_AUTOEQUIP_ITEM,                           0x025F}, //--
             {Opcode.CMSG_AUTOSTORE_BAG_ITEM,                       0x067C}, //--
             {Opcode.CMSG_AUTOSTORE_BANK_ITEM,                      0x02CF}, //++
-            {Opcode.CMSG_AUTOSTORE_LOOT_ITEM,                      0x0354}, //+-
+            {Opcode.CMSG_AUTOSTORE_LOOT_ITEM,                      0x0354}, //++
             {Opcode.CMSG_AUTO_DECLINE_GUILD_INVITES,               0x06CB}, //--
             {Opcode.CMSG_BANKER_ACTIVATE,                          0x02E9}, //-+
             {Opcode.CMSG_BATTLEFIELD_LEAVE,                        0x0257}, //+-
@@ -124,7 +124,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_LOOT,                                     0x1CE2}, //--
             {Opcode.CMSG_LOOT_METHOD,                              0x0DE1}, //--
             {Opcode.CMSG_LOOT_MONEY,                               0x02F6}, //+-
-            {Opcode.CMSG_LOOT_RELEASE,                             0x0840}, //--
+            {Opcode.CMSG_LOOT_RELEASE,                             0x0840}, //++
             {Opcode.CMSG_MAIL_CREATE_TEXT_ITEM,                    0x1270}, //--
             {Opcode.CMSG_MAIL_DELETE,                              0x14E2}, //+-
             {Opcode.CMSG_MAIL_MARK_AS_READ,                        0x0241}, //--
@@ -433,7 +433,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_INITIALIZE_FACTIONS,                      0x0AAA}, //++
             {Opcode.SMSG_INSTANCE_RESET,                           0x160F}, //--
             {Opcode.SMSG_INVENTORY_CHANGE_FAILURE,                 0x0C1E}, //--
-            {Opcode.SMSG_ITEM_PUSH_RESULT,                         0x0E0A}, //--
+            {Opcode.SMSG_ITEM_PUSH_RESULT,                         0x0E0A}, //++
             {Opcode.SMSG_ITEM_TIME_UPDATE,                         0x18C1}, //--
             {Opcode.SMSG_LEARNED_SPELL,                            0x129A}, //++
             {Opcode.SMSG_LEVELUP_INFO,                             0x1961}, //--
@@ -447,7 +447,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_LOOT_CLEAR_MONEY,                         0x1632}, //--
             {Opcode.SMSG_LOOT_MONEY_NOTIFY,                        0x14C0}, //--
             {Opcode.SMSG_LOOT_RELEASE_RESPONSE,                    0x123F}, //--
-            {Opcode.SMSG_LOOT_REMOVED,                             0x0C3E}, //--
+            {Opcode.SMSG_LOOT_REMOVED,                             0x0C3E}, //++
             {Opcode.SMSG_LOOT_RESPONSE,                            0x128A}, //--
             {Opcode.SMSG_MAIL_LIST_RESULT,                         0x1C0B}, //--
             {Opcode.SMSG_MESSAGECHAT,                              0x1A9A}, //++

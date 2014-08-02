@@ -45,7 +45,9 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_LOOT_RELEASE)]
         public static void HandleLootRelease(Packet packet)
         {
-            packet.ReadToEnd();
+            var guid = packet.StartBitStream(7, 4, 2, 3, 0, 5, 6, 1);
+            packet.ParseBitStream(guid, 0, 6, 4, 2, 5, 3, 7, 1);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_LOOT_ROLL)]
@@ -112,7 +114,46 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_LOOT_REMOVED)]
         public static void HandleLootRemoved(Packet packet)
         {
-            packet.ReadToEnd();
+            var guid = new byte[8];
+            var lootGuid = new byte[8];
+
+            guid[7] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            lootGuid[0] = packet.ReadBit();
+            lootGuid[1] = packet.ReadBit();
+            lootGuid[2] = packet.ReadBit();
+            lootGuid[7] = packet.ReadBit();
+            lootGuid[6] = packet.ReadBit();
+            lootGuid[5] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            lootGuid[3] = packet.ReadBit();
+            lootGuid[4] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+
+            packet.ReadXORByte(lootGuid, 1);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(lootGuid, 7);
+            packet.ReadXORByte(lootGuid, 0);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(lootGuid, 5);
+            packet.ReadXORByte(lootGuid, 3);
+            packet.ReadXORByte(lootGuid, 2);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadByte("LootSlot");
+            packet.ReadXORByte(lootGuid, 6);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(lootGuid, 4);
+
+            packet.WriteGuid("Guid", guid);
+            packet.WriteGuid("LootGuid", lootGuid);
         }
 
         [Parser(Opcode.SMSG_LOOT_RESPONSE)]
