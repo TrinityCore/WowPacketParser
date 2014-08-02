@@ -3,10 +3,12 @@ using System.IO;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using WowPacketParserModule.V5_4_7_18019.Enums;
 
-namespace WowPacketParser.Parsing.Parsers
+namespace WowPacketParserModule.V5_4_7_18019.Parsers
 {
     public static class CombatLogHandler
     {

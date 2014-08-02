@@ -200,7 +200,6 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 
                 packet.ReadToEnd();
             }
-
         }
 
         [Parser(Opcode.SMSG_LEARNED_SPELL)]

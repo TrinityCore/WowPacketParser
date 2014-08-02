@@ -1,6 +1,6 @@
 using System;
 
-namespace WowPacketParser.Enums
+namespace WowPacketParserModule.V5_4_7_18019.Enums
 {
     [Flags]
     enum SpellHitType
