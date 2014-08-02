@@ -4,7 +4,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
-namespace WowPacketParserModule.V5_4_7_18019.Parsers
+namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class TaxiHandler
     {

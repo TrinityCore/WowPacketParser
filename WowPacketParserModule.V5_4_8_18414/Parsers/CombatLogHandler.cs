@@ -8,7 +8,7 @@ using WowPacketParser.Store.Objects;
 using WowPacketParser.Parsing;
 using SpellHitInfo = WowPacketParser.Enums.SpellHitInfo;
 
-namespace WowPacketParser.V5_4_8_18414.Parsers
+namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class CombatLogHandler
     {

@@ -5,7 +5,6 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using WowPacketParserModule.V5_4_8_18414.Enums;
-using WowPacketParser.V5_4_8_18414.Parsers;
 
 namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
