@@ -325,14 +325,14 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.MSG_MOVE_START_PITCH_UP,                       0x00D8}, //+-
             {Opcode.MSG_MOVE_START_STRAFE_LEFT,                    0x01F8}, //++
             {Opcode.MSG_MOVE_START_STRAFE_RIGHT,                   0x1058}, //++
-            {Opcode.MSG_MOVE_START_SWIM,                           0x1858}, //--
+            {Opcode.MSG_MOVE_START_SWIM,                           0x1858}, //+-
             {Opcode.MSG_MOVE_START_TURN_LEFT,                      0x01D0}, //++
-            {Opcode.MSG_MOVE_START_TURN_RIGHT,                     0x107B}, //--
+            {Opcode.MSG_MOVE_START_TURN_RIGHT,                     0x107B}, //+-
             {Opcode.MSG_MOVE_STOP,                                 0x08F1}, //++
-            {Opcode.MSG_MOVE_STOP_ASCEND,                          0x115A}, //--
-            {Opcode.MSG_MOVE_STOP_PITCH,                           0x007A}, //--
+            {Opcode.MSG_MOVE_STOP_ASCEND,                          0x115A}, //+-
+            {Opcode.MSG_MOVE_STOP_PITCH,                           0x007A}, //+-
             {Opcode.MSG_MOVE_STOP_STRAFE,                          0x0171}, //++
-            {Opcode.MSG_MOVE_STOP_SWIM,                            0x0950}, //--
+            {Opcode.MSG_MOVE_STOP_SWIM,                            0x0950}, //+-
             {Opcode.MSG_MOVE_STOP_TURN,                            0x1170}, //++
             {Opcode.MSG_MOVE_WORLDPORT_ACK,                        0x1FAD}, //++
             {Opcode.MSG_SET_RAID_DIFFICULTY,                       0x0591}, //--
