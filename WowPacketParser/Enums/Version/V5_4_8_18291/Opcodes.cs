@@ -153,6 +153,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_PAGE_TEXT_QUERY, 0x1022},
             {Opcode.CMSG_PETITION_BUY, 0x12D9},
             {Opcode.CMSG_PET_ACTION, 0x025B},
+            {Opcode.CMSG_PET_CAST_SPELL, 0x044D},
             {Opcode.CMSG_PETITION_DECLINE, 0x1279},
             {Opcode.CMSG_PETITION_RENAME, 0x1F9A},
             {Opcode.CMSG_PETITION_QUERY, 0x0255},
