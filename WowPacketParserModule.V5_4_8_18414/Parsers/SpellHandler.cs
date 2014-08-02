@@ -27,13 +27,31 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
             else
             {
-                packet.WriteLine("              : SMSG_???");
-                packet.ReadToEnd();
+                packet.WriteLine("              : SMSG_UNK_1861");
+                MiscellaneousHandler.HandleUnk1861(packet);
             }
         }
 
+        [Parser(Opcode.CMSG_CANCEL_CAST)]
+        public static void HandleCancelCast(Packet packet)
+        {
+            var hasCounter = !packet.ReadBit("!HasCounter"); // 20
+            var hasSpellID = !packet.ReadBit("!HasSpellID"); // 16
+
+            if (hasSpellID) // 16
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID"); // 16
+
+            if (hasCounter) // 20
+                packet.ReadByte("Counter"); // 20
+        }
+
+        [Parser(Opcode.CMSG_CANCEL_MOUNT_AURA)]
+        public static void HandleCancelMountAura(Packet packet)
+        {
+        }
+
         [Parser(Opcode.CMSG_CAST_SPELL)]
-        public static void HandleSpellCast(Packet packet)
+        public static void HandleCastSpell(Packet packet)
         {
             if (packet.Direction == Direction.ClientToServer)
             {
@@ -220,7 +238,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
                         packet.ReadUInt32("Transport Time"); // 324
 
-                        packet.WriteLine("Transport GUID: {0}", new Guid(BitConverter.ToUInt64(movementTransportGuid, 0)));
+                        packet.WriteGuid("Transport GUID", movementTransportGuid);
                     }
 
                     packet.ReadXORByte(movementGuid, 5); // 261
@@ -279,7 +297,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadXORByte(itemTargetGuid, 6); // 54
                 packet.ReadXORByte(itemTargetGuid, 0); // 48
 
-                packet.WriteLine("Item Target GUID: {0}", new Guid(BitConverter.ToUInt64(itemTargetGuid, 0)));
+                packet.WriteGuid("Item Target GUID", itemTargetGuid);
 
                 if (hasDestLocation) // 112
                 {
@@ -295,7 +313,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     packet.ReadXORByte(destTransportGuid, 5); // 93
                     packet.ReadXORByte(destTransportGuid, 6); // 94
 
-                    packet.WriteLine("Destination Transport GUID: {0}", new Guid(BitConverter.ToUInt64(destTransportGuid, 0)));
+                    packet.WriteGuid("Destination Transport GUID", destTransportGuid);
                 }
 
                 packet.ReadXORByte(targetGuid, 3); // 43
@@ -307,7 +325,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadXORByte(targetGuid, 1); // 41
                 packet.ReadXORByte(targetGuid, 5); // 45
 
-                packet.WriteLine("Target GUID: {0}", new Guid(BitConverter.ToUInt64(targetGuid, 0)));
+                packet.WriteGuid("Target GUID", targetGuid);
 
                 if (hasSrcLocation) // 80
                 {
@@ -323,7 +341,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     packet.ReadXORByte(srcTransportGuid, 4); // 60
                     packet.ReadSingle("Position Z"); // 72
 
-                    packet.WriteLine("Source Transport GUID: {0}", new Guid(BitConverter.ToUInt64(srcTransportGuid, 0)));
+                    packet.WriteGuid("Source Transport GUID", srcTransportGuid);
                 }
 
                 if (hasTargetString) // 120
@@ -354,7 +372,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_UNLEARN_SKILL)]
         public static void HandleUnlearnSkill(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadInt32("SkillID");
         }
 
         [Parser(Opcode.SMSG_AURA_UPDATE)]
@@ -423,10 +441,24 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_CAST_FAILED)]
+        public static void HandleCastFailed(Packet packet)
+        {
+            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32("unk28");
+            packet.ReadByte("unk32");
+            var unk16 = packet.ReadBit("-unk16");
+            var unk24 = packet.ReadBit("-unk24");
+            if (!unk16)
+                packet.ReadInt32("unk16");
+            if (!unk24)
+                packet.ReadInt32("unk24");
+        }
+
         [Parser(Opcode.SMSG_INITIAL_SPELLS)]
         public static void HandleInitialSpells(Packet packet)
         {
-            packet.ReadBit("Unk 1bit");
+            packet.ReadBit("Unk16");
             var count = packet.ReadBits("Count", 22);
 
             for (int i = 0; i < count; i++)
@@ -447,7 +479,9 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_REMOVED_SPELL)]
         public static void HandleRemovedSpell(Packet packet)
         {
-            packet.ReadToEnd();
+            var count = packet.ReadBits("Count", 22);
+            for (var i = 0; i < count; i++)
+                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
         }
 
         [Parser(Opcode.SMSG_SEND_UNLEARN_SPELLS)]
@@ -461,7 +495,13 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_SPELL_CATEGORY_COOLDOWN)]
         public static void HandleSpellCategoryCooldown(Packet packet)
         {
-            packet.ReadToEnd();
+            var count = packet.ReadBits("Count", 23);
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadInt32("Category Cooldown"); // 24
+                packet.ReadInt32("Cooldown"); // 20
+            }
         }
 
         [Parser(Opcode.SMSG_SPELL_COOLDOWN)]
@@ -796,7 +836,11 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.WriteGuid("Guid48", guid48);
                 packet.WriteGuid("Guid56", guid56);
             }
-            else MovementHandler.HandleMoveStartBackWard(packet);
+            else
+            {
+                packet.WriteLine("              : MSG_MOVE_START_BACKWARD");
+                MovementHandler.HandleMoveStartBackWard(packet);
+            }
         }
 
         [Parser(Opcode.SMSG_SPELL_START)]
@@ -1055,25 +1099,9 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
             else
             {
-                packet.WriteLine("              : CMSG_???");
-                packet.ReadToEnd();
+                packet.WriteLine("              : MSG_MOVE_ROOT");
+                MovementHandler.HandleMoveRoot(packet);
             }
-        }
-
-        [HasSniffData]
-        [Parser(Opcode.CMSG_CANCEL_CAST)]
-        [Parser(Opcode.CMSG_CANCEL_MOUNT_AURA)]
-        public static void HandleCmsgNull(Packet packet)
-        {
-            packet.ReadToEnd();
-        }
-
-        [Parser(Opcode.SMSG_CAST_FAILED)]
-        [Parser(Opcode.SMSG_SPELL_FAILED_OTHER)]
-        [Parser(Opcode.SMSG_SPELL_FAILURE)]
-        public static void HandleSpell(Packet packet)
-        {
-            packet.ReadToEnd();
         }
     }
 }

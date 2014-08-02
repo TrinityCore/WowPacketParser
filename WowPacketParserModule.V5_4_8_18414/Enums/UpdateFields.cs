@@ -157,7 +157,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Enums
         CONTAINER_END                                            = ItemField.ITEM_END + 0x49
     }
 
-    public enum UnitField
+    public enum UnitField548
     {
         UNIT_FIELD_CHARM                                         = ObjectField.OBJECT_END + 0x00, // Size: 2, Flags: UF_FLAG_PUBLIC
         UNIT_FIELD_CHARM2,

@@ -119,21 +119,29 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_AUCTION_HELLO)]
         public static void HandleAuctionHelloResponse(Packet packet)
         {
-            var GUID = new byte[8];
-            GUID[6] = packet.ReadBit();
-            GUID[7] = packet.ReadBit();
-            GUID[3] = packet.ReadBit();
-            var inUse = packet.ReadBit("inUse");
-            GUID[4] = packet.ReadBit();
-            GUID[2] = packet.ReadBit();
-            GUID[5] = packet.ReadBit();
-            GUID[0] = packet.ReadBit();
-            GUID[1] = packet.ReadBit();
+            if (packet.Direction == Direction.ServerToClient)
+            {
+                var GUID = new byte[8];
+                GUID[6] = packet.ReadBit();
+                GUID[7] = packet.ReadBit();
+                GUID[3] = packet.ReadBit();
+                var inUse = packet.ReadBit("inUse");
+                GUID[4] = packet.ReadBit();
+                GUID[2] = packet.ReadBit();
+                GUID[5] = packet.ReadBit();
+                GUID[0] = packet.ReadBit();
+                GUID[1] = packet.ReadBit();
 
-            packet.ReadXORByte(GUID, 3);
-            var AHID = packet.ReadUInt32("Entry: ");
-            packet.ParseBitStream(GUID, 4, 2, 7, 1, 0, 6, 5);
-            packet.WriteGuid("GUID", GUID);
+                packet.ReadXORByte(GUID, 3);
+                var AHID = packet.ReadUInt32("Entry");
+                packet.ParseBitStream(GUID, 4, 2, 7, 1, 0, 6, 5);
+                packet.WriteGuid("GUID", GUID);
+            }
+            else
+            {
+                packet.WriteLine("              : CMSG_UNK_10A7");
+                MiscellaneousHandler.HandleUnk10A7(packet);
+            }
         }
 
         [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]

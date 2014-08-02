@@ -23,8 +23,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
             else
             {
-                packet.WriteLine("              : SMSG_???");
-                packet.ReadToEnd();
+                packet.WriteLine("              : SMSG_UNK_02A7");
+                MiscellaneousHandler.HandleUnk02A7(packet);
             }
         }
 
