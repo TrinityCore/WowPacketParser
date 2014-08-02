@@ -20,6 +20,16 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadBit("Value");
         }
 
+        [Parser(Opcode.SMSG_AI_REACTION)]
+        public static void HandleSAIReaction(Packet packet)
+        {
+            var guid = packet.StartBitStream(5, 7, 0, 4, 6, 2, 3, 1);
+            packet.ParseBitStream(guid, 4, 6, 5);
+            packet.ReadEnum<AIReaction>("Reaction", TypeCode.Int32);
+            packet.ParseBitStream(guid, 7, 1, 2, 0, 3);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_UPDATE_COMBO_POINTS)]
         public static void HandleUpdateComboPoints(Packet packet)
         {
@@ -30,7 +40,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_AI_REACTION)]
         [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]
         [Parser(Opcode.SMSG_ATTACKSTART)]
         [Parser(Opcode.SMSG_ATTACKSTOP)]

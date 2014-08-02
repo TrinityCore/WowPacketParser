@@ -342,7 +342,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_ACTION_BUTTONS,                           0x081A}, //++
             {Opcode.SMSG_ACTIVATETAXIREPLY,                        0x1043}, //++
             {Opcode.SMSG_ADDON_INFO,                               0x160A}, //--
-            {Opcode.SMSG_AI_REACTION,                              0x06AF}, //--
+            {Opcode.SMSG_AI_REACTION,                              0x06AF}, //++
             {Opcode.SMSG_ATTACKERSTATEUPDATE,                      0x06AA}, //--
             {Opcode.SMSG_ATTACKSTART,                              0x1A9E}, //--
             {Opcode.SMSG_ATTACKSTOP,                               0x12AF}, //--
