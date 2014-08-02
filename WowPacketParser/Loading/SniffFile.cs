@@ -234,7 +234,10 @@ namespace WowPacketParser.Loading
                     // Update statistics
                     _stats.AddByStatus(packet.Status);
                     if (packet.Status == ParsedStatus.NotParsed)
-                        pc[packet.Opcode]++;
+                        if ((packet.Opcode > 65535) || (packet.Opcode < 0))
+                            Trace.WriteLine(string.Format("Error opcode > max {0}", packet.Opcode));
+                        else
+                            pc[packet.Opcode]++;
 
                     // get packet header if necessary
                     if (Settings.LogPacketErrors)
