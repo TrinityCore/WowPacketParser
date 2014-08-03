@@ -5,7 +5,7 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
-namespace WowPacketParserModule.V5_4_1_17539.Parsers
+namespace WowPacketParserModule.V5_4_1_17538.Parsers
 {
     public static class GameObjectHandler
     {

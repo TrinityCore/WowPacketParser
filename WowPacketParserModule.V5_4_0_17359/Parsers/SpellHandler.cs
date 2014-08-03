@@ -9,7 +9,7 @@ using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using Guid = WowPacketParser.Misc.Guid;
 
-namespace WowPacketParser.V5_4_0_17359.Parsers
+namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {
     public static class SpellHandler
     {

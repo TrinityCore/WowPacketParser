@@ -5,7 +5,6 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
-using SpellHandler = WowPacketParser.V5_4_0_17359.Parsers.SpellHandler;
 
 namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {

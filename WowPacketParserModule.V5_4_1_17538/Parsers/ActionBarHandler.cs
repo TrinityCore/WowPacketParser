@@ -8,7 +8,7 @@ using WowPacketParser.Store.Objects;
 using CoreObjects = WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
-namespace WowPacketParserModule.V5_4_1_17358.Parsers
+namespace WowPacketParserModule.V5_4_1_17538.Parsers
 {
     public static class ActionBarHandler
     {

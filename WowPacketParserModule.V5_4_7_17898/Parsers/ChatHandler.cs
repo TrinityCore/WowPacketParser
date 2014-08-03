@@ -5,7 +5,7 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using Guid = WowPacketParser.Misc.Guid;
-using ChatMessageType540 = WowPacketParserModule.V5_4_0_17359.Enums.ChatMessageType;
+using ChatMessageType540 = WowPacketParserModule.V5_4_7_17898.Enums.ChatMessageType;
 
 namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
