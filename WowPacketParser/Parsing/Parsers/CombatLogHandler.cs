@@ -371,7 +371,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Caster GUID", index);
             packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", index);
             packet.ReadEnum<PowerType>("Power type", TypeCode.UInt32, index);
-            packet.ReadUInt32("Amount", index);
+            packet.ReadInt32("Amount", index);
         }
 
         private static void ReadSpellMissLog(ref Packet packet, int index = -1)

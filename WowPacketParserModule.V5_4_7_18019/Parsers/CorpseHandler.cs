@@ -20,7 +20,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.ReadPackedGuid("Corpse GUID");
         }
 
-        [Parser(Opcode.SMSG_CORPSE_QUERY)]
+        [Parser(Opcode.SMSG_CORPSE_QUERY_RESPONSE)]
         public static void HandleCorpseQuery(Packet packet)
         {
             if (packet.Direction == Direction.ServerToClient)

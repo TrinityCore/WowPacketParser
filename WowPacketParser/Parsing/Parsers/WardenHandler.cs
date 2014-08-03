@@ -7,7 +7,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class WardenHandler
     {
-        [Parser(Opcode.SMSG_WARDEN_DATA, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_WARDEN_DATA)]
         public static void HandleServerWardenData(Packet packet)
         {
             var opcode = packet.ReadEnum<WardenServerOpcode>("Warden Server Opcode", TypeCode.Byte);
@@ -80,7 +80,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_WARDEN_DATA, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_WARDEN_DATA)]
         public static void HandleClientWardenData(Packet packet)
         {
             var opcode = packet.ReadEnum<WardenClientOpcode>("Warden Client Opcode", TypeCode.Byte);

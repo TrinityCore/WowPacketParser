@@ -860,7 +860,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_READ_ITEM_FAILED, 0x00C9},
             {Opcode.SMSG_READ_ITEM_OK, 0x08CD},
             {Opcode.SMSG_REALM_SPLIT, 0x05CC},
-            {Opcode.SMSG_REALM_NAME_QUERY_RESPONSE, 0x0D81},
+            {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x0D81},
             {Opcode.SMSG_RECEIVED_MAIL, 0x02A1},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x082B},
             {Opcode.SMSG_REFER_A_FRIEND_EXPIRED, 0x0F0D},

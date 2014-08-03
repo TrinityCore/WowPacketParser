@@ -22,7 +22,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Standstate");
         }
 
-        [Parser(Opcode.CMSG_CHAR_CREATE, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_CHAR_CREATE)]
         public static void HandleClientCharCreate(Packet packet)
         {
             packet.ReadCString("Name");
@@ -889,7 +889,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleCharEnum510(Packet packet)
         {
             var unkCounter = packet.ReadBits("Unk Counter", 23);
@@ -1252,7 +1252,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_FAILED_PLAYER_CONDITION)]
         public static void HandleFailedPlayerCondition(Packet packet)
         {
-            packet.ReadInt32("Id"); // quest id? PlayerCondition.dbc id?
+            packet.ReadInt32("Id");
         }
 
         [Parser(Opcode.CMSG_SHOWING_CLOAK)]

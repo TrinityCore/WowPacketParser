@@ -2,7 +2,7 @@ using WowPacketParser.Misc;
 
 namespace WowPacketParser.Enums.Version.V5_4_8_18414
 {
-    public static class Opcodes_5_4_8
+    public static class Opcodes_5_4_8a
     {
         public static BiDictionary<Opcode, int> Opcodes()
         {
@@ -45,9 +45,9 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_BATTLE_PET_SET_FLAGS,                     0x17AC}, //+-
             {Opcode.CMSG_BATTLE_PET_SUMMON_COMPANION,              0x1896}, //+-
             {Opcode.CMSG_BINDER_ACTIVATE,                          0x1248}, //-+
-            {Opcode.CMSG_BLACKMARKET_BID,                          0x12C8}, //--
-            {Opcode.CMSG_BLACKMARKET_HELLO,                        0x075A}, //--
-            {Opcode.CMSG_BLACKMARKET_REQUEST_ITEMS,                0x127A}, //--
+            {Opcode.CMSG_BLACK_MARKET_BID,                         0x12C8}, //--
+            {Opcode.CMSG_BLACK_MARKET_HELLO,                       0x075A}, //--
+            {Opcode.CMSG_BLACK_MARKET_REQUEST_ITEMS,               0x127A}, //--
             {Opcode.CMSG_BUYBACK_ITEM,                             0x0661}, //+-
             {Opcode.CMSG_BUY_BANK_SLOT,                            0x12F2}, //-+
             {Opcode.CMSG_BUY_ITEM,                                 0x02E2}, //--
@@ -392,7 +392,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_CONTACT_LIST,                             0x1F22}, //--
             {Opcode.SMSG_CORPSE_MAP_POSITION_QUERY_RESPONSE,       0x1A3A}, //--
             {Opcode.SMSG_CORPSE_NOT_IN_INSTANCE,                   0x089E}, //--
-            {Opcode.SMSG_CORPSE_QUERY,                             0x0E0B}, //--
+            {Opcode.SMSG_CORPSE_QUERY_RESPONSE,                    0x0E0B}, //--
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY,                     0x022A}, //++
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE,                  0x048B}, //--
             {Opcode.SMSG_DB_REPLY,                                 0x103B}, //++
@@ -511,7 +511,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_RAID_READY_CHECK_CONFIRM,                 0x02AF}, //--
             {Opcode.SMSG_RANDOM_ROLL,                              0x141A}, //--
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME,                      0x169F}, //--
-            {Opcode.SMSG_REALM_NAME_QUERY_RESPONSE,                0x063E}, //--
+            {Opcode.SMSG_REALM_QUERY_RESPONSE,                0x063E}, //--
             {Opcode.SMSG_RECEIVED_MAIL,                            0x182B}, //--
             {Opcode.SMSG_REFORGE_RESULT,                           0x141E}, //--
             {Opcode.SMSG_REMOVED_SPELL,                            0x14C3}, //+-

@@ -615,6 +615,8 @@
             this.clientBuildComboBox.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.clientBuildComboBox.Items.AddRange(new object[] {
             "None",
+            "V5_4_8_18414",
+            "V5_4_8_18291",
             "V5_4_7_18019",
             "V5_4_7_17956",
             "V5_4_7_17930",
@@ -698,7 +700,8 @@
             "V2_1_0_6692",
             "V2_0_6_6337",
             "V2_0_3_6299",
-            "V2_0_1_6180"});
+            "V2_0_1_6180",
+            "V1_12_1_5875"});
             this.clientBuildComboBox.Location = new System.Drawing.Point(82, 3);
             this.clientBuildComboBox.Name = "clientBuildComboBox";
             this.clientBuildComboBox.Size = new System.Drawing.Size(128, 21);

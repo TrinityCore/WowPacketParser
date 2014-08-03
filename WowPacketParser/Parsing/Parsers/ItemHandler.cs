@@ -319,7 +319,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Use guild money");
         }
 
-        [Parser(Opcode.CMSG_SELL_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_SELL_ITEM)]
         public static void HandleSellItem(Packet packet)
         {
             packet.ReadGuid("Vendor GUID");
@@ -339,7 +339,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<SellResult>("Sell Result", TypeCode.Byte);
         }
 
-        [Parser(Opcode.CMSG_BUY_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_BUY_ITEM)]
         public static void HandleBuyItem(Packet packet)
         {
             packet.ReadGuid("Vendor GUID");
@@ -395,7 +395,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_AUTOSTORE_BANK_ITEM)]
-        [Parser(Opcode.CMSG_AUTOEQUIP_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_AUTOEQUIP_ITEM)]
         [Parser(Opcode.CMSG_AUTOBANK_ITEM)]
         [Parser(Opcode.CMSG_OPEN_ITEM)]
         [Parser(Opcode.CMSG_READ_ITEM)]
@@ -413,7 +413,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Count");
         }
 
-        [Parser(Opcode.CMSG_SWAP_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_SWAP_ITEM)]
         public static void HandleSwapItem(Packet packet)
         {
             packet.ReadSByte("Bag");
@@ -481,10 +481,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             item.Quality = packet.ReadEnum<ItemQuality>("Quality", TypeCode.Int32);
 
-            item.Flags = packet.ReadEnum<ItemProtoFlags>("Flags", TypeCode.UInt32);
+            item.Flags1 = packet.ReadEnum<ItemProtoFlags>("Flags 1", TypeCode.UInt32);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
-                item.ExtraFlags = packet.ReadEnum<ItemFlagExtra>("Extra Flags", TypeCode.Int32);
+                item.Flags2 = packet.ReadEnum<ItemFlagExtra>("Flags 2", TypeCode.Int32);
 
             item.BuyPrice = packet.ReadUInt32("Buy Price");
 
@@ -640,17 +640,30 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.ItemTemplates.Add((uint) entry.Key, item, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleItemRequestHotFix(Packet packet)
+        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleItemRequestHotfix434(Packet packet)
         {
-            var count = packet.ReadUInt32("Count");
             packet.ReadUInt32("Type");
+            var count = packet.ReadBits("Count", 23);
+            var guidBytes = new byte[count][];
+            for (var i = 0; i < count; ++i)
+                guidBytes[i] = packet.StartBitStream(0, 4, 7, 2, 5, 3, 6, 1);
 
             for (var i = 0; i < count; ++i)
             {
+                packet.ReadXORByte(guidBytes[i], 5);
+                packet.ReadXORByte(guidBytes[i], 6);
+                packet.ReadXORByte(guidBytes[i], 7);
+                packet.ReadXORByte(guidBytes[i], 0);
+                packet.ReadXORByte(guidBytes[i], 1);
+                packet.ReadXORByte(guidBytes[i], 3);
+                packet.ReadXORByte(guidBytes[i], 4);
+
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
-                packet.ReadUInt32("Unk UInt32 1", i);
-                packet.ReadUInt32("Unk UInt32 2", i);
+
+                packet.ReadXORByte(guidBytes[i], 2);
+
+                packet.WriteGuid("GUID", guidBytes[i], i);
             }
         }
 
@@ -671,33 +684,17 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_4_7_17898)]
-        public static void HandleItemRequestHotfix434(Packet packet)
+        [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        public static void HandleItemRequestHotFix(Packet packet)
         {
+            var count = packet.ReadUInt32("Count");
             packet.ReadUInt32("Type");
-
-            var count = packet.ReadBits("Count", 23);
-
-            var guidBytes = new byte[count][];
-
-            for (var i = 0; i < count; ++i)
-                guidBytes[i] = packet.StartBitStream(0, 4, 7, 2, 5, 3, 6, 1);
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadXORByte(guidBytes[i], 5);
-                packet.ReadXORByte(guidBytes[i], 6);
-                packet.ReadXORByte(guidBytes[i], 7);
-                packet.ReadXORByte(guidBytes[i], 0);
-                packet.ReadXORByte(guidBytes[i], 1);
-                packet.ReadXORByte(guidBytes[i], 3);
-                packet.ReadXORByte(guidBytes[i], 4);
-
                 packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
-
-                packet.ReadXORByte(guidBytes[i], 2);
-
-                packet.WriteGuid("GUID", guidBytes[i], i);
+                packet.ReadUInt32("Unk UInt32 1", i);
+                packet.ReadUInt32("Unk UInt32 2", i);
             }
         }
 
@@ -877,8 +874,8 @@ namespace WowPacketParser.Parsing.Parsers
                 var item = Storage.ItemTemplates.ContainsKey((uint)itemId2) ? Storage.ItemTemplates[(uint)itemId2].Item1 : new ItemTemplate();
 
                 item.Quality = packet.ReadEnum<ItemQuality>("Quality", TypeCode.Int32);
-                item.Flags = packet.ReadEnum<ItemProtoFlags>("Flags", TypeCode.UInt32);
-                item.ExtraFlags = packet.ReadEnum<ItemFlagExtra>("Extra Flags", TypeCode.Int32);
+                item.Flags1 = packet.ReadEnum<ItemProtoFlags>("Flags 1", TypeCode.UInt32);
+                item.Flags2 = packet.ReadEnum<ItemFlagExtra>("Flags 3", TypeCode.Int32);
                 item.Unk430_1 = packet.ReadSingle("Unk430_1");
                 item.Unk430_2 = packet.ReadSingle("Unk430_2");
                 item.BuyCount = packet.ReadUInt32("Buy count");
@@ -1007,11 +1004,12 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleDBReply434(Packet packet)
         {
             var id = packet.ReadInt32("Entry");
-            var type = packet.ReadUInt32("Type");
+
+            var type = packet.ReadEnum<DB2Hash>("Hotfix DB2 File", TypeCode.UInt32);
             packet.ReadTime("Hotfix date");
             var size = packet.ReadUInt32("Size");
             if (size == 0)
@@ -1024,7 +1022,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             switch (type)
             {
-                case 0x50238EC2:    // Item
+                case DB2Hash.Item:
                 {
                     var item = Storage.ItemTemplates.ContainsKey(itemId) ? Storage.ItemTemplates[itemId].Item1 : new ItemTemplate();
 
@@ -1040,14 +1038,14 @@ namespace WowPacketParser.Parsing.Parsers
                     Storage.ItemTemplates.Add(itemId, item, packet.TimeSpan);
                     break;
                 }
-                case 0x919BE54E:    // Item-sparse
+                case DB2Hash.Item_sparse:
                 {
                     var item = Storage.ItemTemplates.ContainsKey(itemId) ? Storage.ItemTemplates[itemId].Item1 : new ItemTemplate();
 
                     packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
                     item.Quality = packet.ReadEnum<ItemQuality>("Quality", TypeCode.Int32);
-                    item.Flags = packet.ReadEnum<ItemProtoFlags>("Flags", TypeCode.UInt32);
-                    item.ExtraFlags = packet.ReadEnum<ItemFlagExtra>("Extra Flags", TypeCode.Int32);
+                    item.Flags1 = packet.ReadEnum<ItemProtoFlags>("Flags 1", TypeCode.UInt32);
+                    item.Flags2 = packet.ReadEnum<ItemFlagExtra>("Flags 2", TypeCode.Int32);
                     item.Unk430_1 = packet.ReadSingle("Unk430_1");
                     item.Unk430_2 = packet.ReadSingle("Unk430_2");
                     item.BuyCount = packet.ReadUInt32("Buy count");
@@ -1168,7 +1166,7 @@ namespace WowPacketParser.Parsing.Parsers
                     Storage.ObjectNames.Add(itemId, new ObjectName { ObjectType = ObjectType.Item, Name = item.Name }, packet.TimeSpan);
                     break;
                 }
-                case 0x6D8A2694: // KeyChain
+                case DB2Hash.KeyChain:
                 {
                     packet.ReadUInt32("Key Chain Id");
                     packet.WriteLine("Key: {0}", Utilities.ByteArrayToHexString(packet.ReadBytes(32)));
@@ -1212,6 +1210,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(2,6,3,4,1,0,7,5);
             packet.ParseBitStream(guid,2,3,6,4,1,0,7,5);
             packet.WriteGuid("Reforger Guid", guid);
+
         }
 
         [Parser(Opcode.SMSG_REFORGE_RESULT, ClientVersionBuild.V4_3_4_15595)]

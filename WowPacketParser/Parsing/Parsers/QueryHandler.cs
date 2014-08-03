@@ -17,7 +17,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Daily Quest Reset");
         }
 
-        [Parser(Opcode.CMSG_NAME_QUERY, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_NAME_QUERY)]
         public static void HandleNameQuery(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -81,14 +81,14 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.WriteLine("Entry does not match calculated GUID entry");
         }
 
-        [Parser(Opcode.CMSG_CREATURE_QUERY, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_CREATURE_QUERY)]
         public static void HandleCreatureQuery(Packet packet)
         {
             ReadQueryHeader(ref packet);
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_CREATURE_QUERY_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_CREATURE_QUERY_RESPONSE)]
         public static void HandleCreatureQueryResponse(Packet packet)
         {
             var entry = packet.ReadEntry("Entry");
@@ -97,11 +97,18 @@ namespace WowPacketParser.Parsing.Parsers
 
             var creature = new UnitTemplate();
 
-            var nameCount = ClientVersion.AddedInVersion(ClientVersionBuild.V4_1_0_13914) ? 8 : 4; // Might be earlier or later
-            var name = new string[nameCount];
+            var name = new string[4];
             for (var i = 0; i < name.Length; i++)
                 name[i] = packet.ReadCString("Name", i);
             creature.Name = name[0];
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_1_0_13914))
+            {
+                var femaleName = new string[4];
+                for (var i = 0; i < femaleName.Length; i++)
+                    femaleName[i] = packet.ReadCString("Female Name", i);
+                creature.femaleName = femaleName[0];
+            }
 
             creature.SubName = packet.ReadCString("Sub Name");
 
@@ -191,7 +198,7 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_NPC_TEXT_QUERY, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
         public static void HandleNpcTextQuery(Packet packet)
         {
             ReadQueryHeader(ref packet);

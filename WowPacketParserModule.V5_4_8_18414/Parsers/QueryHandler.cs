@@ -48,7 +48,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
-        [Parser(Opcode.SMSG_CORPSE_QUERY)]
+        [Parser(Opcode.SMSG_CORPSE_QUERY_RESPONSE)]
         public static void HandleCorpseQuery(Packet packet)
         {
             packet.ReadToEnd();
@@ -266,7 +266,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadInt32("Daily Quest Reset");
         }
 
-        [Parser(Opcode.SMSG_REALM_NAME_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE)]
         public static void HandleQueryRealmNameResponse(Packet packet)
         {
             packet.ReadToEnd();

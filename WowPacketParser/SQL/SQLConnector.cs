@@ -61,9 +61,9 @@ namespace WowPacketParser.SQL
             catch (Exception e)
             {
                 // Something wrong happened, disabling everything MySQL/DB related
-                Enabled = false;
+                //Enabled = false;
                 Trace.WriteLine(e.Message + " at query \"" + input + "\"");
-                Disconnect();
+                //Disconnect();
             }
 
             return null;

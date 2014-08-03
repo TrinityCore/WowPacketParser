@@ -39,6 +39,7 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x0950},
             {Opcode.SMSG_SPELL_START, 0x08FC},
             {Opcode.SMSG_SPELL_GO, 0x0D42},
+            {Opcode.SMSG_SET_PHASE_SHIFT, 0x0A93},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x08AE},
             {Opcode.SMSG_UPDATE_OBJECT, 0x08F7},
             // {Opcode.SMSG_MULTIPLE_PACKETS, 0x0826},

@@ -220,7 +220,8 @@ namespace WowPacketParser.Misc
                 if (attrs.Length <= 0)
                     continue;
 
-                list.Add(Tuple.Create(field, (TK)attrs[0]));
+                foreach (var attr in attrs)
+                    list.Add(Tuple.Create(field, (TK)attr));
             }
 
             return list;

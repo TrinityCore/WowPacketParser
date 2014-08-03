@@ -176,7 +176,6 @@ namespace WowPacketParser.Parsing.Parsers
             var passwordLength = packet.ReadBits(8);
             packet.ReadWoWString("Channel Name", channelLength);
             packet.ReadWoWString("Channel Pass", passwordLength);
-            packet.ReadToEnd();
         }
 
         [Parser(Opcode.CMSG_LEAVE_CHANNEL)]

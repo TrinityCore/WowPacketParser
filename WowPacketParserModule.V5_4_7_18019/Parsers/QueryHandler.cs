@@ -188,7 +188,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             //Storage.NpcTexts.Add((uint)entry.Key, npcText, packet.TimeSpan);
         }
 
-        [Parser(Opcode.SMSG_REALM_NAME_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE)]
         public static void HandleRealmQueryResponse(Packet packet)
         {
 

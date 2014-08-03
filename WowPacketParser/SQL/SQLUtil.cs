@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using WowPacketParser.Enums;
@@ -41,9 +42,7 @@ namespace WowPacketParser.SQL
         /// <returns>Modified string</returns>
         public static string EscapeString(string str)
         {
-            str = str.Replace("'", "''");
-            str = str.Replace("\"", "\\\"");
-            return str;
+            return MySqlHelper.DoubleQuoteString(str);
         }
 
         /// <summary>
@@ -202,12 +201,12 @@ namespace WowPacketParser.SQL
                         continue;
 
                     var lastField = fields[fields.Count - 1];
-                    if (lastField.Item2.Name == "WDBVerified")
+                    if (lastField.Item2.Name == "VerifiedBuild")
                     {
-                        var wdbvSniff = (int)lastField.Item1.GetValue(elem1.Value.Item1);
-                        var wdbvDB = (int)lastField.Item1.GetValue(dict2[elem1.Key].Item1);
+                        var buildvSniff = (int)lastField.Item1.GetValue(elem1.Value.Item1);
+                        var buildvDB = (int)lastField.Item1.GetValue(dict2[elem1.Key].Item1);
 
-                        if (wdbvDB > wdbvSniff) // skip update if DB already has a WDBVerified higher than this one
+                        if (buildvDB > buildvSniff) // skip update if DB already has a VerifiedBuild higher than this one
                             continue;
                     }
 
@@ -217,7 +216,7 @@ namespace WowPacketParser.SQL
                 {
                     var row = new QueryBuilder.SQLInsertRow();
                     row.AddValue(primaryKeyName, elem1.Key);
-                    row.Comment = null/*StoreGetters.GetName(storeType, Convert.ToInt32(elem1.Key), false)*/; // hackfix to prevent Int32 overflow errors
+                    row.Comment = StoreGetters.GetName(storeType, Convert.ToInt32(elem1.Key), false);
 
                     foreach (var field in fields)
                     {
@@ -324,12 +323,12 @@ namespace WowPacketParser.SQL
                         continue;
 
                     var lastField = fields[fields.Count - 1];
-                    if (lastField.Item2.Name == "WDBVerified")
+                    if (lastField.Item2.Name == "VerifiedBuild")
                     {
-                        var wdbvSniff = (int)lastField.Item1.GetValue(elem1.Value.Item1);
-                        var wdbvDB = (int)lastField.Item1.GetValue(dict2[elem1.Key].Item1);
+                        var buildvSniff = (int)lastField.Item1.GetValue(elem1.Value.Item1);
+                        var buildvDB = (int)lastField.Item1.GetValue(dict2[elem1.Key].Item1);
 
-                        if (wdbvDB > wdbvSniff) // skip update if DB already has a WDBVerified higher than this one
+                        if (buildvDB > buildvSniff) // skip update if DB already has a VerifiedBuild higher than this one
                             continue;
                     }
 

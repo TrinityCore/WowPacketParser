@@ -19,6 +19,12 @@ namespace WowPacketParser.Store
 
         /* Key: Entry */
 
+        // DB2
+        public static readonly StoreDictionary<uint, CreatureDifficulty> CreatureDifficultys = new StoreDictionary<uint, CreatureDifficulty>(new List<SQLOutput> { SQLOutput.creature_template });
+        public static readonly StoreDictionary<uint, GameObjectTemplateDB2> GameObjectTemplateDB2s = new StoreDictionary<uint, GameObjectTemplateDB2>(new List<SQLOutput> { SQLOutput.gameobject_template });
+        public static readonly StoreDictionary<uint, GameObjectTemplatePositionDB2> GameObjectTemplatePositionDB2s = new StoreDictionary<uint, GameObjectTemplatePositionDB2>(new List<SQLOutput> { SQLOutput.gameobject_db2_position });
+        public static readonly StoreDictionary<uint, BroadcastText> BroadcastTexts = new StoreDictionary<uint, BroadcastText>(new List<SQLOutput> { SQLOutput.broadcast_text });
+
         // Templates
         public static readonly StoreDictionary<uint, GameObjectTemplate> GameObjectTemplates = new StoreDictionary<uint, GameObjectTemplate>(new List<SQLOutput> { SQLOutput.gameobject_template });
         public static readonly StoreDictionary<uint, ItemTemplate> ItemTemplates = new StoreDictionary<uint, ItemTemplate>(new List<SQLOutput> { SQLOutput.item_template });
@@ -32,6 +38,7 @@ namespace WowPacketParser.Store
         // Page & npc text
         public static readonly StoreDictionary<uint, PageText> PageTexts = new StoreDictionary<uint, PageText>(new List<SQLOutput> { SQLOutput.page_text });
         public static readonly StoreDictionary<uint, NpcText> NpcTexts = new StoreDictionary<uint, NpcText>(new List<SQLOutput> { SQLOutput.npc_text });
+        public static readonly StoreDictionary<uint, NpcTextMop> NpcTextsMop = new StoreDictionary<uint, NpcTextMop>(new List<SQLOutput> { SQLOutput.npc_text });
 
         // Creature text (says, yells, etc.)
         public static readonly StoreMulti<uint, CreatureText> CreatureTexts = new StoreMulti<uint, CreatureText>(new List<SQLOutput> { SQLOutput.creature_text });
@@ -66,6 +73,9 @@ namespace WowPacketParser.Store
         // Names
         public static readonly StoreDictionary<uint, ObjectName> ObjectNames = new StoreDictionary<uint, ObjectName>(new List<SQLOutput> { SQLOutput.ObjectNames });
 
+        // Defense Message
+        public static readonly StoreMulti<uint, DefenseMessage> DefenseMessages = new StoreMulti<uint, DefenseMessage>(new List<SQLOutput> { SQLOutput.defense_message });
+
         public static void ClearContainers()
         {
             SniffData.Clear();
@@ -76,6 +86,7 @@ namespace WowPacketParser.Store
             ItemTemplates.Clear();
             QuestTemplates.Clear();
             UnitTemplates.Clear();
+            CreatureDifficultys.Clear();
 
             NpcTrainers.Clear();
             NpcVendors.Clear();

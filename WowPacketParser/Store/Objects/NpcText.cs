@@ -161,7 +161,76 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("em7_", 6, true)] public uint[] em7_x;
         // ReSharper restore InconsistentNaming
 
-        [DBFieldName("WDBVerified")]
-        public int WDBVerified;
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild;
+    }
+
+    [DBTableName("npc_text")]
+    public class NpcTextMop
+    {
+        public float[] Probabilities;
+
+        public uint[] BroadcastTextId;
+
+        public void ConvertToDBStruct()
+        {
+            // Seriously...
+
+            prob0 = Probabilities[0];
+            prob1 = Probabilities[1];
+            prob2 = Probabilities[2];
+            prob3 = Probabilities[3];
+            prob4 = Probabilities[4];
+            prob5 = Probabilities[5];
+            prob6 = Probabilities[6];
+            prob7 = Probabilities[7];
+
+            broadcastTextId0 = BroadcastTextId[0];
+            broadcastTextId1 = BroadcastTextId[1];
+            broadcastTextId2 = BroadcastTextId[2];
+            broadcastTextId3 = BroadcastTextId[3];
+            broadcastTextId4 = BroadcastTextId[4];
+            broadcastTextId5 = BroadcastTextId[5];
+            broadcastTextId6 = BroadcastTextId[6];
+            broadcastTextId7 = BroadcastTextId[7];
+        }
+
+        // ReSharper disable InconsistentNaming
+        [DBFieldName("ProbabilityText0")]
+        public float prob0;
+        [DBFieldName("BroadcastTextId0")]
+        public uint broadcastTextId0;
+        [DBFieldName("ProbabilityText1")]
+        public float prob1;
+        [DBFieldName("BroadcastTextId1")]
+        public uint broadcastTextId1;
+        [DBFieldName("ProbabilityText2")]
+        public float prob2;
+        [DBFieldName("BroadcastTextId2")]
+        public uint broadcastTextId2;
+        [DBFieldName("ProbabilityText3")]
+        public float prob3;
+        [DBFieldName("BroadcastTextId3")]
+        public uint broadcastTextId3;
+        [DBFieldName("ProbabilityText4")]
+        public float prob4;
+        [DBFieldName("BroadcastTextId4")]
+        public uint broadcastTextId4;
+        [DBFieldName("ProbabilityText5")]
+        public float prob5;
+        [DBFieldName("BroadcastTextId5")]
+        public uint broadcastTextId5;
+        [DBFieldName("ProbabilityText6")]
+        public float prob6;
+        [DBFieldName("BroadcastTextId6")]
+        public uint broadcastTextId6;
+        [DBFieldName("ProbabilityText7")]
+        public float prob7;
+        [DBFieldName("BroadcastTextId7")]
+        public uint broadcastTextId7;
+        // ReSharper restore InconsistentNaming
+
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild;
     }
 }

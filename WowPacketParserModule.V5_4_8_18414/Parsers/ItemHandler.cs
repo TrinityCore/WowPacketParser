@@ -4,7 +4,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using WowPacketParserModule.V5_4_8_18414.Enums;
+//using WowPacketParserModule.V5_4_8_18414.Enums;
 
 namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
@@ -145,7 +145,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_REQUEST_HOTFIX)]
         public static void HandleItemRequestHotfix(Packet packet)
         {
-            packet.ReadEnum<DB2Hash>("Type", TypeCode.UInt32);
+            packet.ReadEnum<WowPacketParser.Enums.DB2Hash>("Type", TypeCode.UInt32);
 
             var count = packet.ReadBits("Count", 21);
 
@@ -251,8 +251,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
                     packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
                     item.Quality = packet.ReadEnum<ItemQuality>("Quality", TypeCode.Int32);
-                    item.Flags = packet.ReadEnum<ItemProtoFlags>("Flags", TypeCode.UInt32);
-                    item.ExtraFlags = packet.ReadEnum<ItemFlagExtra>("Extra Flags", TypeCode.Int32);
+                    item.Flags1 = packet.ReadEnum<ItemProtoFlags>("Flags", TypeCode.UInt32);
+                    item.Flags2 = packet.ReadEnum<ItemFlagExtra>("Extra Flags", TypeCode.Int32);
                     item.Unk430_1 = packet.ReadSingle("Unk430_1");
                     item.Unk430_2 = packet.ReadSingle("Unk430_2");
                     packet.ReadSingle("unk");

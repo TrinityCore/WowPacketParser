@@ -72,7 +72,7 @@ namespace WowPacketParser.Parsing.Parsers
              * */
         }
 
-        [Parser(Opcode.CMSG_TRAINER_BUY_SPELL, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_TRAINER_BUY_SPELL, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleTrainerBuySpell(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -149,6 +149,12 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadGuid("GUID");
 
             var itemCount = packet.ReadByte("Item Count");
+
+            if (itemCount == 0)
+            {
+                packet.ReadByte("Unk 1");
+                return;
+            }
 
             npcVendor.VendorItems = new List<VendorItem>(itemCount);
             for (var i = 0; i < itemCount; i++)
@@ -298,21 +304,21 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.NpcVendors.Add(guid.GetEntry(), npcVendor, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_GOSSIP_HELLO, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_GOSSIP_HELLO)]
         [Parser(Opcode.CMSG_TRAINER_LIST)]
-        [Parser(Opcode.CMSG_LIST_INVENTORY, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_LIST_INVENTORY)]
         [Parser(Opcode.MSG_TABARDVENDOR_ACTIVATE)]
         [Parser(Opcode.CMSG_BANKER_ACTIVATE)]
         [Parser(Opcode.CMSG_SPIRIT_HEALER_ACTIVATE)]
         [Parser(Opcode.CMSG_BINDER_ACTIVATE)]
         [Parser(Opcode.SMSG_BINDER_CONFIRM)]
-        [Parser(Opcode.SMSG_SHOW_BANK, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_SHOW_BANK)]
         public static void HandleNpcHello(Packet packet)
         {
             packet.ReadGuid("GUID");
         }
 
-        [Parser(Opcode.CMSG_GOSSIP_SELECT_OPTION, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_GOSSIP_SELECT_OPTION)]
         public static void HandleNpcGossipSelectOption(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -326,7 +332,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_GOSSIP_MESSAGE, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
         public static void HandleNpcGossip(Packet packet)
         {
             var gossip = new Gossip();
@@ -364,7 +370,19 @@ namespace WowPacketParser.Parsing.Parsers
 
                 gossip.GossipOptions.Add(gossipOption);
             }
-            Storage.Gossips.Add(Tuple.Create(menuId, textId), gossip, packet.TimeSpan);
+
+            if (Storage.Gossips.ContainsKey(Tuple.Create(menuId, textId)))
+            {
+                var oldGossipOptions = Storage.Gossips[Tuple.Create(menuId, textId)];
+                if (oldGossipOptions != null)
+                {
+                    foreach (var gossipOptions in gossip.GossipOptions)
+                        oldGossipOptions.Item1.GossipOptions.Add(gossipOptions);
+                }
+            }
+            else
+                Storage.Gossips.Add(Tuple.Create(menuId, textId), gossip, packet.TimeSpan);
+
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
 
             var questgossips = packet.ReadUInt32("Amount of Quest gossips");

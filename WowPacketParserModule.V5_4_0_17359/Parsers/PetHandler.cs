@@ -1,0 +1,82 @@
+using System;
+using System.Globalization;
+using System.Linq;
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
+using WowPacketParser.Parsing;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
+using Guid = WowPacketParser.Misc.Guid;
+
+namespace WowPacketParserModule.V5_4_0_17359.Parsers
+{
+    public static class PetHandler
+    {
+        [Parser(Opcode.CMSG_PET_NAME_QUERY)]
+        public static void HandlePetNameQuery(Packet packet)
+        {
+            var guid = new byte[8];
+            var number = new byte[8];
+
+            guid[5] = packet.ReadBit();
+            number[3] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            packet.StartBitStream(number, 5, 7);
+            packet.StartBitStream(guid, 2, 4);
+            number[2] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            number[1] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            number[6] = packet.ReadBit();
+            packet.StartBitStream(guid, 1, 0);
+            packet.StartBitStream(number, 4, 0);
+            packet.ResetBitReader();
+
+            packet.ReadXORByte(number, 5);
+            packet.ReadXORBytes(guid, 4, 3);
+            packet.ReadXORBytes(number, 7, 4);
+            packet.ReadXORBytes(guid, 5, 2, 0, 6);
+            packet.ReadXORBytes(number, 2, 0, 6);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(number, 3);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(number, 1);
+
+            var GUID = new Guid(BitConverter.ToUInt64(guid, 0));
+            var Number = BitConverter.ToUInt64(number, 0);
+            packet.WriteGuid("Guid", guid);
+            packet.WriteLine("Pet Number: {0}", Number);
+
+            // Store temporary name (will be replaced in SMSG_PET_NAME_QUERY_RESPONSE)
+            StoreGetters.AddName(GUID, Number.ToString(CultureInfo.InvariantCulture));
+        }
+
+        [Parser(Opcode.SMSG_PET_NAME_QUERY_RESPONSE)]
+        public static void HandlePetNameQueryResponse(Packet packet)
+        {
+            var number = packet.ReadUInt64("Pet number");
+            var hasData = packet.ReadBit();
+            if (!hasData)
+                return;
+
+            const int maxDeclinedNameCases = 5;
+            var declinedNameLen = new int[maxDeclinedNameCases];
+            for (var i = 0; i < maxDeclinedNameCases; ++i)
+                declinedNameLen[i] = (int)packet.ReadBits(7);
+
+            packet.ReadBit("Declined");
+            var len = packet.ReadBits(8);
+
+            for (var i = 0; i < maxDeclinedNameCases; ++i)
+                if (declinedNameLen[i] != 0)
+                    packet.ReadWoWString("Declined name", declinedNameLen[i], i);
+
+            packet.ReadTime("Time");
+            var petName = packet.ReadWoWString("Pet name", len);
+
+            var guidArray = (from pair in StoreGetters.NameDict where Equals(pair.Value, number) select pair.Key).ToList();
+            foreach (var guid in guidArray)
+                StoreGetters.NameDict[guid] = petName;
+        }
+    }
+}

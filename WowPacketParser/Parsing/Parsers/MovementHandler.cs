@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -14,6 +15,9 @@ namespace WowPacketParser.Parsing.Parsers
         public static uint CurrentMapId;
 
         public static int CurrentPhaseMask = 1;
+
+        [ThreadStatic]
+        public static HashSet<ushort> ActivePhases = new HashSet<ushort>();
 
         public static MovementInfo ReadMovementInfo(ref Packet packet, Guid guid, int index = -1)
         {
@@ -259,17 +263,12 @@ namespace WowPacketParser.Parsing.Parsers
                 var newpos = packet.ReadVector3("Waypoint Endpoint");
 
                 var mid = new Vector3();
-                mid.X = (pos.X + newpos.X) * 0.5f;
-                mid.Y = (pos.Y + newpos.Y) * 0.5f;
-                mid.Z = (pos.Z + newpos.Z) * 0.5f;
+                mid = (pos + newpos) * 0.5f;
 
                 for (var i = 1; i < waypoints; i++)
                 {
                     var vec = packet.ReadPackedVector3();
-                    vec.X += mid.X;
-                    vec.Y += mid.Y;
-                    vec.Z += mid.Z;
-
+                    vec = mid - vec;
                     packet.WriteLine("[" + i + "]" + " Waypoint: " + vec);
                 }
             }
@@ -397,7 +396,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         [HasSniffData]
         [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
-        [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
         public static void HandleEnterWorld(Packet packet)
         {
             CurrentMapId = (uint) packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
@@ -418,7 +417,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleNewWorld510(Packet packet)
         {
             CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
@@ -430,7 +429,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
         }
 
-        [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]
         public static void HandleLoginSetTimeSpeed(Packet packet)
         {
             packet.ReadPackedTime("Game Time");
@@ -1371,7 +1370,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.MSG_MOVE_SET_COLLISION_HEIGHT)]
         [Parser(Opcode.SMSG_MOVE_SET_COLLISION_HGT)]
-        [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HEIGHT_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HGT_ACK)]
         public static void HandleCollisionMovements(Packet packet)
         {
             var guid = packet.ReadPackedGuid("Guid");
@@ -1379,7 +1378,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Opcode != Opcodes.GetOpcode(Opcode.MSG_MOVE_SET_COLLISION_HEIGHT))
                 packet.ReadInt32("Movement Counter");
 
-            if (packet.Opcode != Opcodes.GetOpcode(Opcode.SMSG_MOVE_SET_COLLISION_HEIGHT))
+            if (packet.Opcode != Opcodes.GetOpcode(Opcode.SMSG_MOVE_SET_COLLISION_HGT))
                 ReadMovementInfo(ref packet, guid);
 
             packet.ReadSingle("Collision Height");
@@ -1543,9 +1542,44 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_1_0_16309)]
+        public static void HandlePhaseShift505(Packet packet)
+        {
+            MovementHandler.ActivePhases.Clear();
+
+            var count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Inactive Terrain swap count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
+
+            packet.ReadUInt32("UInt32");
+
+            count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Active Terrain swap count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Active Terrain swap", i);
+
+            count = packet.ReadUInt32() / 2;
+            packet.WriteLine("Phases count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                MovementHandler.ActivePhases.Add(packet.ReadUInt16("Phase id", i)); // Phase.dbc
+
+            count = packet.ReadUInt32() / 2;
+            packet.WriteLine("WorldMapArea swap count: {0}", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt16("WorldMapArea swap", i);
+
+            var guid = packet.StartBitStream(3, 7, 1, 6, 0, 4, 5, 2);
+            packet.ParseBitStream(guid, 4, 3, 0, 6, 2, 7, 5, 1);
+
+            packet.WriteLine("GUID {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+        }
+
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V5_1_0_16309)]
         public static void HandlePhaseShift510(Packet packet)
         {
+            MovementHandler.ActivePhases.Clear();
+
             var guid = packet.StartBitStream(6, 4, 7, 2, 0, 1, 3, 5);
             packet.ReadXORByte(guid, 4);
 
@@ -1560,7 +1594,7 @@ namespace WowPacketParser.Parsing.Parsers
             count = packet.ReadUInt32() / 2;
             packet.WriteLine("Phases count: {0}", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadUInt16("Phase id", i); // Phase.dbc
+                MovementHandler.ActivePhases.Add(packet.ReadUInt16("Phase id", i)); // Phase.dbc
 
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 6);

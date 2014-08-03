@@ -11,7 +11,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LOG_DISCONNECT)]
         public static void HandleLogDisconnect(Packet packet)
         {
-            packet.ReadUInt32("Disconnect Reason");
+            packet.ReadUInt32("Unk");
             // 4 is inability for client to decrypt RSA
             // 3 is not receiving "WORLD OF WARCRAFT CONNECTION - SERVER TO CLIENT"
             // 11 is sent on receiving opcode 0x140 with some specific data
@@ -38,7 +38,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadInt32("Hotfix type", i); // Also time?
+                packet.ReadEnum<DB2Hash>("Hotfix DB2 File", TypeCode.UInt32, i);
                 packet.ReadTime("Hotfix date", i);
                 packet.ReadInt32("Hotfixed entry", i);
             }
@@ -168,12 +168,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
-        [Parser(Opcode.CMSG_SET_SELECTION, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_SET_SELECTION, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleSetSelection510(Packet packet)
         {
             var guid = packet.StartBitStream(0, 1, 2, 4, 7, 3, 6, 5);
             packet.ParseBitStream(guid, 4, 1, 5, 2, 6, 7, 0, 3);
-
             packet.WriteGuid("Guid", guid);
         }
 
@@ -363,20 +362,20 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Split Date");
         }
 
-        [Parser(Opcode.CMSG_PING, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_PING)]
         public static void HandleClientPing(Packet packet)
         {
             packet.ReadInt32("Ping");
             packet.ReadInt32("Ping Count");
         }
 
-        [Parser(Opcode.SMSG_PONG, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_PONG)]
         public static void HandleServerPong(Packet packet)
         {
             packet.ReadInt32("Ping");
         }
 
-        [Parser(Opcode.SMSG_CLIENTCACHE_VERSION, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_CLIENTCACHE_VERSION)]
         public static void HandleClientCacheVersion(Packet packet)
         {
             packet.ReadInt32("Version");
@@ -443,9 +442,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_AREATRIGGER)]
         public static void HandleClientAreaTrigger(Packet packet)
         {
-            packet.ReadInt32("Area Trigger Id");
+            var entry = packet.ReadEntry("Area Trigger Id");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
                 packet.ReadByte("Unk Byte");
+
+            packet.AddSniffData(StoreNameType.AreaTrigger, entry.Key, "AREATRIGGER");
         }
 
         [Parser(Opcode.SMSG_PRE_RESURRECT)]
@@ -599,7 +600,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_TIME_SYNC_RESP, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_TIME_SYNC_RESP)]
         public static void HandleTimeSyncResp(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // no idea when this was added exactly
@@ -614,14 +615,14 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GAMETIME_SET, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_GAMETIME_SET)]
         public static void HandleGametimeSet(Packet packet)
         {
             packet.ReadUInt32("Unk time");
             packet.ReadUInt32("Unk int32");
         }
 
-        [Parser(Opcode.SMSG_GAMETIME_UPDATE, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_GAMETIME_UPDATE)]
         public static void HandleGametimeUpdate(Packet packet)
         {
             packet.ReadUInt32("Unk time"); // Time online?
@@ -734,7 +735,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleClientEnterWorld434(Packet packet)
         {
             var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");

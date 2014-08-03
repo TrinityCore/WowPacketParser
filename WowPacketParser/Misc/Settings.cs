@@ -13,6 +13,7 @@ namespace WowPacketParser.Misc
         public static readonly string[] Filters = GetStringList("Filters", new string[0]);
         public static readonly string[] IgnoreFilters = GetStringList("IgnoreFilters", new string[0]);
         public static readonly string[] IgnoreByEntryFilters = GetStringList("IgnoreByEntryFilters", new string[0]);
+        public static readonly string[] MapFilters = GetStringList("MapFilters", new string[0]);
         public static readonly string[] AreaFilters = GetStringList("AreaFilters", new string[0]);
         public static readonly int FilterPacketNumLow = GetInt32("FilterPacketNumLow", 0);
         public static readonly int FilterPacketNumHigh = GetInt32("FilterPacketNumHigh", 0);
@@ -26,6 +27,7 @@ namespace WowPacketParser.Misc
         public static readonly bool LogPacketErrors = GetBoolean("LogPacketErrors", false);
         public static readonly bool DebugReads = GetBoolean("DebugReads", false);
         public static readonly bool ParsingLog = GetBoolean("ParsingLog", false);
+        public static readonly bool DevMode = GetBoolean("DevMode", false);
 
         public static readonly bool SSHEnabled = GetBoolean("SSHEnabled", false);
         public static readonly string SSHHost = GetString("SSHHost", "localhost");

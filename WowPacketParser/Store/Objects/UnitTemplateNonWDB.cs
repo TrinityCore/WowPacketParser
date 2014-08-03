@@ -8,8 +8,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("gossip_menu_id")] public uint GossipMenuId;
         [DBFieldName("minlevel")] public uint MinLevel;
         [DBFieldName("maxlevel")] public uint MaxLevel;
-        [DBFieldName("faction_A")] public uint Faction;
-        [DBFieldName("faction_H")] public uint Faction2;
+        [DBFieldName("faction")] public uint Faction;
         [DBFieldName("npcflag")] public uint NpcFlag;
         [DBFieldName("speed_walk")] public float SpeedWalk;
         [DBFieldName("speed_run")] public float SpeedRun;

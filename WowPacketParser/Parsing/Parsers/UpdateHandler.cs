@@ -136,7 +136,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static Dictionary<int, UpdateField> ReadValuesUpdateBlock(ref Packet packet, ObjectType type, int index, bool isCreating)
         {
-            var maskSize = packet.ReadByte("mask size");
+            var maskSize = packet.ReadByte();
 
             var updateMask = new int[maskSize];
             for (var i = 0; i < maskSize; i++)
@@ -146,7 +146,6 @@ namespace WowPacketParser.Parsing.Parsers
             var dict = new Dictionary<int, UpdateField>();
 
             int objectEnd = UpdateFields.GetUpdateField(ObjectField.OBJECT_END);
-            packet.WriteLine("mask count: " + mask.Count);
             for (var i = 0; i < mask.Count; ++i)
             {
                 if (!mask[i])
@@ -224,12 +223,10 @@ namespace WowPacketParser.Parsing.Parsers
                 dict.Add(i, blockVal);
             }
 
-            packet.WriteLine("Pos: " + packet.Position);
-
             // Dynamic fields - NYI
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_4_16016))
             {
-                maskSize = packet.ReadByte("dyn mask size2");
+                maskSize = packet.ReadByte();
                 updateMask = new int[maskSize];
                 for (var i = 0; i < maskSize; i++)
                     updateMask[i] = packet.ReadInt32();
@@ -268,6 +265,7 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                 }
             }
+
             return dict;
         }
 
@@ -1806,16 +1804,16 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(goTransportGuid, 7);
 
-                moveInfo.TransportOffset.Y = packet.ReadSingle();
-                packet.ReadByte("GO Transport Seat", index);
-                moveInfo.TransportOffset.O = packet.ReadSingle();
                 moveInfo.TransportOffset.Z = packet.ReadSingle();
+                packet.ReadByte("GO Transport Seat", index);
+                moveInfo.TransportOffset.X = packet.ReadSingle();
+                moveInfo.TransportOffset.Y = packet.ReadSingle();
 
                 packet.ReadXORByte(goTransportGuid, 4);
                 packet.ReadXORByte(goTransportGuid, 5);
                 packet.ReadXORByte(goTransportGuid, 6);
 
-                moveInfo.TransportOffset.X = packet.ReadSingle();
+                moveInfo.TransportOffset.O = packet.ReadSingle();
                 packet.ReadInt32("GO Transport Time", index);
 
                 packet.ReadXORByte(goTransportGuid, 1);
@@ -2581,7 +2579,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_DESTROY_OBJECT, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_DESTROY_OBJECT)]
         public static void HandleDestroyObject(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -2595,16 +2593,14 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(6, 7, 4, 0, 1, 5, 3, 2);
             packet.ParseBitStream(guid, 6, 7, 2, 3, 1, 4, 0, 5);
-
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleObjectUpdateFailed510(Packet packet)
         {
             var guid = packet.StartBitStream(5, 3, 0, 6, 1, 4, 2, 7);
             packet.ParseBitStream(guid, 2, 3, 7, 4, 5, 1, 0, 6);
-
             packet.WriteGuid("Guid", guid);
         }
     }

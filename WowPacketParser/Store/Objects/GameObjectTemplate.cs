@@ -24,8 +24,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("unk1")]
         public string UnkString;
 
-        [DBFieldName("data", ClientVersionBuild.V4_0_1_13164, 32, true)]
         [DBFieldName("data", ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1_13164, 24, true)]
+        [DBFieldName("data", ClientVersionBuild.V4_0_1_13164, 32, true)]
         public int[] Data;
 
         [DBFieldName("size")]
@@ -37,7 +37,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("unkInt32", ClientVersionBuild.V4_0_1_13164)]
         public int UnknownInt;
 
-        [DBFieldName("WDBVerified")]
-        public int WDBVerified;
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild;
     }
 }

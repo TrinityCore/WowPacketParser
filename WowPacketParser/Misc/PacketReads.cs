@@ -172,7 +172,7 @@ namespace WowPacketParser.Misc
             return ReadBytes(length);
         }
 
-        private static string GetIndexString(params int[] values)
+        public static string GetIndexString(params int[] values)
         {
             var indexes = string.Empty;
 

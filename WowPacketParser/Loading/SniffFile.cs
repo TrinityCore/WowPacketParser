@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -217,49 +218,75 @@ namespace WowPacketParser.Loading
             Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Assumed version {2}",
                     _logPrefix, packetCount, ClientVersion.VersionString));
 
-            using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(_outFileName, true) : null))
+            var writers = new Dictionary<IPEndPoint, StreamWriter>();
+            var i = 1;
+
+            var text = Settings.DumpFormatWithText();
+
+            _stats.SetStartTime(DateTime.Now);
+            foreach (var packet in _packets)
             {
-                var i = 1;
-                if (Settings.DumpFormatWithText())
+                var ep = packet.EndPoint ?? new IPEndPoint(0, 0);
+
+                StreamWriter writer = null;
+                var writeHeader = false;
+
+                if (text && !writers.TryGetValue(ep, out writer))
+                {
+                    writeHeader = true;
+
+                    writer = packet.EndPoint == null ?
+                        new StreamWriter(_outFileName) :
+                        new StreamWriter(_fileName + "_" + packet.EndPoint.GetHashCode() + ".txt");
+
+                    writers.Add(ep, writer);
+                }
+
+                if (writeHeader)
                     writer.WriteLine(GetHeader());
 
-                _stats.SetStartTime(DateTime.Now);
-                foreach (var packet in _packets)
-                {
-                    ShowPercentProgress("Processing...", i++, packetCount);
+                ShowPercentProgress("Processing...", i++, packetCount);
 
-                    // Parse the packet, adding text to Writer and stuff to the stores
+                // Parse the packet, adding text to Writer and stuff to the stores
+                if (packet.Direction == Direction.BNClientToServer || packet.Direction == Direction.BNServerToClient)
+                    Handler.ParseBattlenet(packet);
+                else
                     Handler.Parse(packet);
 
-                    // Update statistics
-                    _stats.AddByStatus(packet.Status);
-                    if (packet.Status == ParsedStatus.NotParsed)
-                        if ((packet.Opcode > 65535) || (packet.Opcode < 0))
-                            Trace.WriteLine(string.Format("Error opcode > max {0}", packet.Opcode));
-                        else
-                            pc[packet.Opcode]++;
+                // Update statistics
+                _stats.AddByStatus(packet.Status);
+                if (packet.Status == ParsedStatus.NotParsed)
+                    if ((packet.Opcode > 65535) || (packet.Opcode < 0))
+                        Trace.WriteLine(string.Format("Error opcode > max {0}", packet.Opcode));
+                    else
+                        pc[packet.Opcode]++;
 
-                    // get packet header if necessary
-                    if (Settings.LogPacketErrors)
-                    {
-                        if (packet.Status == ParsedStatus.WithErrors)
-                            _withErrorHeaders.AddLast(packet.GetHeader());
-                        else if (packet.Status == ParsedStatus.NotParsed)
-                            _skippedHeaders.AddLast(packet.GetHeader());
-                    }
-
-                    if (Settings.DumpFormatWithText())
-                    {
-                        // Write to file
-                        writer.WriteLine(packet.Writer);
-                        writer.Flush();
-                    }
-
-                    // Close Writer, Stream - Dispose
-                    packet.ClosePacket();
+                // get packet header if necessary
+                if (Settings.LogPacketErrors)
+                {
+                    if (packet.Status == ParsedStatus.WithErrors)
+                        _withErrorHeaders.AddLast(packet.GetHeader());
+                    else if (packet.Status == ParsedStatus.NotParsed)
+                        _skippedHeaders.AddLast(packet.GetHeader());
                 }
-                _stats.SetEndTime(DateTime.Now);
+
+                if (writer != null)
+                {
+                    // Write to file
+                    writer.WriteLine(packet.Writer);
+                    writer.Flush();
+                }
+
+                // Close Writer, Stream - Dispose
+                packet.ClosePacket();
             }
+
+            foreach (var streamWriter in writers)
+            {
+                streamWriter.Value.Dispose();
+            }
+
+            _stats.SetEndTime(DateTime.Now);
 
             _packets.Clear();
             _packets = null;
@@ -267,9 +294,9 @@ namespace WowPacketParser.Loading
             Trace.WriteLine(string.Format("{0}: {1}", _logPrefix, _stats));
 
             Trace.WriteLine("Packet(s) not decoded:");
-            for (var i = 0; i < 65536; ++i)
-                if (pc[i] > 0)
-                    Trace.WriteLine(string.Format("{0}: {1}", i, pc[i]));
+            for (var k = 0; k < 65536; ++k)
+                if (pc[k] > 0)
+                    Trace.WriteLine(string.Format("{0}: {1}", k, pc[k]));
         }
 
         private static int _lastPercent;
