@@ -197,7 +197,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Rank");
         }
 
-        [Parser(Opcode.CMSG_LEARN_TALENT)] // 5.1.0
+        [Parser(Opcode.CMSG_LEARN_TALENTS)] // 5.1.0
         public static void HandleLearnTalents(Packet packet)
         {
             var talentCount = packet.ReadBits("Learned Talent Count", 25);
