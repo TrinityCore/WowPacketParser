@@ -70,6 +70,26 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
+        [Parser(Opcode.CMSG_SET_PLAYER_DECLINED_NAMES)]
+        public static void HandleSetPlayerDeclinedNames(Packet packet)
+        {
+            if (packet.Direction == Direction.ClientToServer)
+            {
+                var guid = packet.StartBitStream(0, 2, 1, 7, 5, 6, 4, 3);
+                var len = new uint[5];
+                for (var i = 0; i < 5; i++)
+                    len[i] = packet.ReadBits(7);
+                for (var i = 0; i < 5; i++)
+                    packet.ReadWoWString("str", len[i]);
+                packet.ParseBitStream(guid, 0, 7, 3, 6, 4, 2, 1, 5);
+                packet.WriteGuid("Guid", guid);
+            }
+            else
+            {
+                packet.WriteLine("              : SMSG_UNK_09E2");
+            }
+        }
+
         [Parser(Opcode.CMSG_SHOWING_CLOAK)]
         [Parser(Opcode.CMSG_SHOWING_HELM)]
         public static void HandleShowingCloakAndHelm(Packet packet)
@@ -362,6 +382,16 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
 
             packet.ReadXORByte(guid, 6);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_SET_PLAYER_DECLINED_NAMES_RESULT)]
+        public static void HandleSetPlayerDeclinedNamesResult(Packet packet)
+        {
+            var unk16 = !packet.ReadBit("!unk16");
+            var guid = packet.StartBitStream(2, 0, 3, 1, 4, 6, 5, 7);
+            packet.ParseBitStream(guid, 2, 7, 1, 0, 4, 3, 6, 5);
+            packet.ReadInt32("unk24");
             packet.WriteGuid("Guid", guid);
         }
 

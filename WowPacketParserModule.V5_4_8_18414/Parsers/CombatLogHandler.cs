@@ -51,7 +51,15 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_SPELLHEALLOG)]
         public static void HandleSpellHealLog(Packet packet)
         {
-            packet.ReadToEnd();
+            if (packet.Direction == Direction.ServerToClient)
+            {
+                packet.ReadToEnd();
+            }
+            else
+            {
+                packet.WriteLine("              : CMSG_UNK_09FB");
+                MovementHandler.HandleUnk09FB(packet);
+            }
         }
 
         [Parser(Opcode.SMSG_SPELLLOGEXECUTE)]
