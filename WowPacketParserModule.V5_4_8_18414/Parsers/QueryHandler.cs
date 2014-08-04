@@ -18,6 +18,39 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadUInt32("Entry");
         }
 
+        [Parser(Opcode.CMSG_DB_QUERY_BULK)]
+        public static void HandleDBQueryBulk(Packet packet)
+        {
+            packet.ReadEnum<DB2Hash>("DB2 File", TypeCode.Int32);
+            var count = packet.ReadBits(21);
+
+            var guids = new byte[count][];
+            for (var i = 0; i < count; ++i)
+            {
+                guids[i] = new byte[8];
+                packet.StartBitStream(guids[i], 6, 3, 0, 1, 4, 5, 7, 2);
+            }
+
+            packet.ResetBitReader();
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadXORByte(guids[i], 1);
+
+                packet.ReadInt32("Entry", i);
+
+                packet.ReadXORByte(guids[i], 0);
+                packet.ReadXORByte(guids[i], 5);
+                packet.ReadXORByte(guids[i], 6);
+                packet.ReadXORByte(guids[i], 4);
+                packet.ReadXORByte(guids[i], 7);
+                packet.ReadXORByte(guids[i], 2);
+                packet.ReadXORByte(guids[i], 3);
+
+                packet.WriteGuid("Guid", guids[i], i);
+            }
+        }
+
         [Parser(Opcode.CMSG_NAME_QUERY)]
         public static void HandleNameQuery(Packet packet)
         {
@@ -40,6 +73,19 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
             if (byte28)
                 packet.ReadInt32("int24");
+        }
+
+        [Parser(Opcode.CMSG_PAGE_TEXT_QUERY)]
+        public static void HandlePageTextQuery(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.ReadInt32("Entry");
+
+            packet.StartBitStream(guid, 1, 5, 2, 3, 6, 4, 0, 7);
+            packet.ParseBitStream(guid, 6, 4, 0, 3, 7, 5, 2, 1);
+
+            packet.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.SMSG_CORPSE_MAP_POSITION_QUERY_RESPONSE)]
@@ -257,6 +303,29 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             //packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
 
             //Storage.NpcTexts.Add((uint)entry.Key, npcText, packet.TimeSpan);
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE)]
+        public static void HandlePageTextResponse(Packet packet)
+        {
+            var pageText = new PageText();
+
+            var hasData = packet.ReadBit();
+            if (!hasData)
+                return; // nothing to do
+
+            var textLen = packet.ReadBits(12);
+
+            pageText.NextPageId = packet.ReadUInt32("Next Page");
+            packet.ReadUInt32("Entry");
+
+            pageText.Text = packet.ReadWoWString("Page Text", textLen);
+
+            var entry = packet.ReadUInt32("Entry");
+
+            packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
+            Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_QUERY_TIME_RESPONSE)]

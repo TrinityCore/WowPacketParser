@@ -222,7 +222,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V5_4_8_18291:
                 case ClientVersionBuild.V5_4_8_18414:
                 {
-                    return "V5_4_8_18291";
+                    return "V5_4_8_18414";
                 }
                 default:
                 {

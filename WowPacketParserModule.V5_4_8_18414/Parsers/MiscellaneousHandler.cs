@@ -82,6 +82,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadByte("byte24");
         }
 
+        [Parser(Opcode.CMSG_NEUTRALPLAYERFACTIONSELECTRESULT)]
+        public static void HandleFactionSelect(Packet packet)
+        {
+            packet.ReadUInt32("Option");
+        }
+
         [Parser(Opcode.CMSG_OPENING_CINEMATIC)]
         public static void HandleOpeningCinematic(Packet packet)
         {
@@ -98,19 +104,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY)]
         public static void HandleQuestgiverStatusMultipleQuery(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-                packet.ReadToEnd();
-            }
-            else
-            {
-                packet.WriteLine("              : SMSG_SPLINE_MOVE_SET_RUN_SPEED");
-                var guid = packet.StartBitStream(3, 0, 1, 4, 7, 5, 6, 2);
-                packet.ParseBitStream(guid, 4);
-                packet.ReadSingle("Speed"); // 24
-                packet.ParseBitStream(guid, 1, 5, 3, 7, 6, 2, 0);
-                packet.WriteGuid("Guid", guid);
-            }
+            packet.ReadToEnd();
         }
 
         [Parser(Opcode.CMSG_RAID_READY_CHECK_CONFIRM)]
@@ -163,16 +157,10 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
-        [Parser(Opcode.CMSG_SET_DUNGEON_DIFFICULTY)]
-        public static void HandleSetDungeonDifficulty(Packet packet)
-        {
-            packet.ReadToEnd();
-        }
-
         [Parser(Opcode.CMSG_SET_PVP)]
         public static void HandleSetPVP(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadBoolean("PvP");
         }
 
         [Parser(Opcode.CMSG_SET_SELECTION)]
@@ -234,16 +222,50 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadUInt32("Unk Uint32");
         }
 
-        [Parser(Opcode.CMSG_UNK_0068)] // sub_669815
-        public static void HandleUnk0068(Packet packet)
+        [Parser(Opcode.CMSG_WHO)]
+        public static void HandleWhoRequest(Packet packet)
         {
-            packet.ReadInt32("unk16");
-            packet.ReadInt32("unk20");
-            var len = packet.ReadInt32("Len");
-            var pkt = packet.Inflate(len, 4096);
-            packet.WriteLine(pkt.ReadCString());
-            packet.ReadBits("unk24", 3);
-            packet.ResetBitReader();
+            packet.ReadInt32("ClassMask");
+            packet.ReadInt32("RaceMask");
+            packet.ReadInt32("Max Level");
+            packet.ReadInt32("Min Level");
+
+
+            packet.ReadBit("bit2C4");
+            packet.ReadBit("bit2C6");
+            var bit2D4 = packet.ReadBit();
+            var bits1AB = packet.ReadBits(9);
+            packet.ReadBit("bit2C5");
+            var PlayerNameLen = packet.ReadBits(6);
+            var zones = packet.ReadBits(4);
+            var bits73 = packet.ReadBits(9);
+            var guildNameLen = packet.ReadBits(7);
+            var patterns = packet.ReadBits(3);
+
+            var bits2B8 = new uint[patterns];
+            for (var i = 0; i < patterns; ++i)
+                bits2B8[i] = packet.ReadBits(7);
+
+            for (var i = 0; i < patterns; ++i)
+                packet.ReadWoWString("Pattern", bits2B8[i], i);
+
+            packet.ReadWoWString("string1AB", bits1AB);
+
+            for (var i = 0; i < zones; ++i)
+                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
+
+            packet.ReadWoWString("Player Name", PlayerNameLen);
+
+            packet.ReadWoWString("string73", bits73);
+
+            packet.ReadWoWString("Guild Name", guildNameLen);
+
+            if (bit2D4)
+            {
+                packet.ReadInt32("Int2C8");
+                packet.ReadInt32("Int2D0");
+                packet.ReadInt32("Int2CC");
+            }
         }
 
         [Parser(Opcode.CMSG_UNK_006B)]
@@ -330,15 +352,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadInt32("unk");
         }
 
-        [Parser(Opcode.CMSG_UNK_1258)] // sub_68B545
-        public static void HandleUnk1258(Packet packet)
-        {
-            var guid = packet.StartBitStream(1, 0, 3, 2, 7, 4, 5, 6);
-            packet.ResetBitReader();
-            packet.ParseBitStream(guid, 3, 7, 5, 1, 0, 6, 4, 2);
-            packet.WriteGuid("Guid", guid);
-        }
-
         [Parser(Opcode.CMSG_UNK_15A9)]
         public static void HandleUnk15A9(Packet packet)
         {
@@ -365,12 +378,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleUnk19C2(Packet packet)
         {
             packet.ReadBit("unkb");
-        }
-
-        [Parser(Opcode.CMSG_UNK_1D8A)]
-        public static void HandleUnk1D8A(Packet packet)
-        {
-            packet.ReadBits("unk", 3);
         }
 
         [Parser(Opcode.CMSG_UNK_1DAE)]
@@ -549,6 +556,84 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadWoWString("Timezone Location2", Location2Lenght);
         }
 
+        [Parser(Opcode.SMSG_SET_VIGNETTE)]
+        public static void HandleSetVignette(Packet packet)
+        {
+            var count1 = packet.ReadBits("count1", 24);
+            packet.ReadBit("unk16");
+            var count2 = packet.ReadBits("count36", 24);
+            var guid2 = new byte[count2][];
+            for (var i = 0; i < count2; i++)
+            {
+                guid2[i] = new byte[8];
+                guid2[i] = packet.StartBitStream(4, 7, 3, 2, 6, 0, 5, 1);
+            }
+            var guid3 = new byte[count1][];
+            for (var i = 0; i < count1; i++)
+            {
+                guid3[i] = new byte[8];
+                guid3[i] = packet.StartBitStream(5, 4, 1, 7, 0, 6, 2, 3);
+            }
+            var count3 = packet.ReadBits("count3", 24);
+            var guid4 = new byte[count3][];
+            for (var i = 0; i < count3; i++)
+            {
+                guid4[i] = new byte[8];
+                guid4[i] = packet.StartBitStream(1, 4, 3, 6, 2, 0, 7, 5);
+            }
+            var count4 = packet.ReadBits("count4", 20);
+            var guid5 = new byte[count4][];
+            for (var i = 0; i < count4; i++)
+            {
+                guid5[i] = new byte[8];
+                guid5[i] = packet.StartBitStream(5, 3, 7, 4, 2, 0, 6, 1);
+            }
+            var count5 = packet.ReadBits("count5", 20);
+            var guid6 = new byte[count5][];
+            for (var i = 0; i < count5; i++)
+            {
+                guid6[i] = new byte[8];
+                guid6[i] = packet.StartBitStream(3, 5, 2, 6, 4, 0, 1, 7);
+            }
+            for (var i = 0; i < count5; i++)
+            {
+                packet.ParseBitStream(guid6[i], 5, 2);
+                packet.ReadSingle("unk72", i);
+                packet.ReadSingle("unk64", i);
+                packet.ParseBitStream(guid6[i], 1, 4, 6, 0);
+                packet.ReadInt32("unk136", i);
+                packet.ReadSingle("unk68", i);
+                packet.ParseBitStream(guid6[i], 3, 7);
+                packet.WriteGuid("Guid6", guid6[i], i);
+            }
+            for (var i = 0; i < count1; i++)
+            {
+                packet.ParseBitStream(guid3[i], 4, 0, 6, 7, 5, 3, 1, 2);
+                packet.WriteGuid("Guid3", guid3[i], i);
+            }
+            for (var i = 0; i < count4; i++)
+            {
+                packet.ParseBitStream(guid5[i], 2, 5);
+                packet.ReadSingle("unk104", i);
+                packet.ReadInt32("unk108", i);
+                packet.ReadSingle("unk100", i);
+                packet.ParseBitStream(guid5[i], 1);
+                packet.ReadSingle("unk96", i);
+                packet.ParseBitStream(guid5[i], 6, 7, 4, 3, 0);
+                packet.WriteGuid("Guid5", guid5[i], i);
+            }
+            for (var i = 0; i < count3; i++)
+            {
+                packet.ParseBitStream(guid4[i], 7, 1, 0, 6, 2, 3, 4, 5);
+                packet.WriteGuid("Guid4", guid4[i], i);
+            }
+            for (var i = 0; i < count2; i++)
+            {
+                packet.ParseBitStream(guid2[i], 6, 2, 5, 0, 3, 4, 1, 7);
+                packet.WriteGuid("Guid2", guid2[i], i);
+            }
+        }
+
         [Parser(Opcode.SMSG_START_MIRROR_TIMER)]
         public static void HandleStartMirrorTimer(Packet packet)
         {
@@ -581,6 +666,109 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadInt32("unk24");
             packet.ReadSingle("unk16");
             packet.ReadBit("unk20");
+        }
+
+        [Parser(Opcode.SMSG_WHO)]
+        public static void HandleWho(Packet packet)
+        {
+            var counter = (int)packet.ReadBits("List count", 6);
+
+            var accountId = new byte[counter][];
+            var playerGUID = new byte[counter][];
+            var guildGUID = new byte[counter][];
+
+            var guildNameLength = new uint[counter];
+            var playerNameLength = new uint[counter];
+            var bits14 = new uint[counter][];
+            var bitED = new bool[counter];
+            var bit214 = new bool[counter];
+
+            for (var i = 0; i < counter; ++i)
+            {
+                accountId[i] = new byte[8];
+                playerGUID[i] = new byte[8];
+                guildGUID[i] = new byte[8];
+
+                accountId[i][2] = packet.ReadBit();
+                playerGUID[i][2] = packet.ReadBit();
+                accountId[i][7] = packet.ReadBit();
+                guildGUID[i][5] = packet.ReadBit();
+                guildNameLength[i] = packet.ReadBits(7);
+                accountId[i][1] = packet.ReadBit();
+                accountId[i][5] = packet.ReadBit();
+                guildGUID[i][7] = packet.ReadBit();
+                playerGUID[i][5] = packet.ReadBit();
+                bitED[i] = packet.ReadBit();
+                guildGUID[i][1] = packet.ReadBit();
+                playerGUID[i][6] = packet.ReadBit();
+                guildGUID[i][2] = packet.ReadBit();
+                playerGUID[i][4] = packet.ReadBit();
+                guildGUID[i][0] = packet.ReadBit();
+                guildGUID[i][3] = packet.ReadBit();
+                accountId[i][6] = packet.ReadBit();
+                bit214[i] = packet.ReadBit();
+                playerGUID[i][1] = packet.ReadBit();
+                guildGUID[i][4] = packet.ReadBit();
+                accountId[i][0] = packet.ReadBit();
+
+                bits14[i] = new uint[5];
+                for (var j = 0; j < 5; ++j)
+                    bits14[i][j] = packet.ReadBits(7);
+
+                playerGUID[i][3] = packet.ReadBit();
+                guildGUID[i][6] = packet.ReadBit();
+                playerGUID[i][0] = packet.ReadBit();
+                accountId[i][4] = packet.ReadBit();
+                accountId[i][3] = packet.ReadBit();
+                playerGUID[i][7] = packet.ReadBit();
+                playerNameLength[i] = packet.ReadBits(6);
+            }
+
+            for (var i = 0; i < counter; ++i)
+            {
+                packet.ReadXORByte(playerGUID[i], 1);
+                packet.ReadInt32("RealmID", i);
+                packet.ReadXORByte(playerGUID[i], 7);
+                packet.ReadInt32("RealmID", i);
+                packet.ReadXORByte(playerGUID[i], 4);
+                packet.ReadWoWString("Player Name", playerNameLength[i], i);
+                packet.ReadXORByte(guildGUID[i], 1);
+                packet.ReadXORByte(playerGUID[i], 0);
+                packet.ReadXORByte(guildGUID[i], 2);
+                packet.ReadXORByte(guildGUID[i], 0);
+                packet.ReadXORByte(guildGUID[i], 4);
+                packet.ReadXORByte(playerGUID[i], 3);
+                packet.ReadXORByte(guildGUID[i], 6);
+                packet.ReadInt32("Unk1", i);
+                packet.ReadWoWString("Guild Name", guildNameLength[i], i);
+                packet.ReadXORByte(guildGUID[i], 3);
+                packet.ReadXORByte(accountId[i], 4);
+                packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
+                packet.ReadXORByte(accountId[i], 7);
+                packet.ReadXORByte(playerGUID[i], 6);
+                packet.ReadXORByte(playerGUID[i], 2);
+
+                for (var j = 0; j < 5; ++j)
+                    packet.ReadWoWString("String14", bits14[i][j]);
+
+                packet.ReadXORByte(accountId[i], 2);
+                packet.ReadXORByte(accountId[i], 3);
+                packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
+                packet.ReadXORByte(guildGUID[i], 7);
+                packet.ReadXORByte(accountId[i], 1);
+                packet.ReadXORByte(accountId[i], 5);
+                packet.ReadXORByte(accountId[i], 6);
+                packet.ReadXORByte(playerGUID[i], 5);
+                packet.ReadXORByte(accountId[i], 0);
+                packet.ReadEnum<Gender>("Gender", TypeCode.Byte, i);
+                packet.ReadXORByte(guildGUID[i], 5);
+                packet.ReadByte("Level", i);
+                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", i);
+
+                packet.WriteGuid("PlayerGUID", playerGUID[i], i);
+                packet.WriteGuid("GuildGUID", guildGUID[i], i);
+                packet.WriteLine("[{0}] Account: {1}", i, BitConverter.ToUInt64(accountId[i], 0));
+            }
         }
 
         [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
@@ -651,15 +839,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadInt32("unk52", i);
                 packet.ReadInt32("unk20", i);
             }
-        }
-
-        [Parser(Opcode.SMSG_UNK_0063)] // sub_C89A3D
-        public static void HandleUnk0063(Packet packet)
-        {
-            var guid = packet.StartBitStream(6, 4, 2, 7, 1, 3, 0, 5);
-            packet.ParseBitStream(guid, 2, 7, 5, 1, 4, 6, 0, 3);
-            packet.WriteGuid("Guid", guid);
-            packet.ReadSingle("unk");
         }
 
         [Parser(Opcode.SMSG_UNK_00A3)]
@@ -756,24 +935,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             var guid = packet.StartBitStream(1, 5, 2, 0, 3, 6, 4, 7);
             packet.ParseBitStream(guid, 2, 7, 1, 3, 5, 0, 4, 6);
             packet.WriteGuid("Guid", guid);
-        }
-
-        [Parser(Opcode.SMSG_UNK_023A)]
-        public static void HandleUnk023A(Packet packet)
-        {
-            var count = packet.ReadBits("count", 19);
-            var unk44 = new uint[count];
-            for (var i = 0; i < count; i++)
-                unk44[i] = packet.ReadBits("unk44", 8, i);
-            for (var i = 0; i < count; i++)
-            {
-                packet.ReadInt64("unk24", i);
-                packet.ReadInt32("unk54", i);
-                var unk88 = packet.ReadInt32("unk88", i);
-                packet.ReadWoWString("str", unk88, i);
-                packet.ReadInt32("unk72", i);
-            }
-            packet.ReadInt32("unk16");
         }
 
         [Parser(Opcode.SMSG_UNK_0250)] // sub_C95075
@@ -1081,204 +1242,11 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadByte("unk41");
         }
 
-        [Parser(Opcode.SMSG_UNK_0AAE)]
-        public static void HandleUnk0AAE(Packet packet)
-        {
-            packet.ReadBits("unk32", 3);
-            var guid = packet.StartBitStream(5, 1, 3, 7, 0, 4, 2, 6);
-            packet.ParseBitStream(guid, 3, 1, 5);
-            packet.ReadInt32("unk96");
-            var count = packet.ReadInt32("count");
-            var pkt = packet.Inflate(count, 4096);
-            packet.WriteLine(pkt.ReadCString());
-            packet.ParseBitStream(guid, 7, 4, 0, 6, 2);
-            packet.ReadInt32("unk112");
-            packet.WriteGuid("Guid", guid);
-        }
-
         [Parser(Opcode.SMSG_UNK_0C44)]
         public static void HandleUnk0C44(Packet packet)
         {
             packet.ReadInt32("unk1");
             packet.ReadInt32("unk2");
-        }
-
-        [Parser(Opcode.SMSG_UNK_0CBE)] // sub_714C42
-        public static void HandleUnk0CBE(Packet packet)
-        {
-            var count1 = packet.ReadBits("count1", 24);
-            packet.ReadBit("unk16");
-            var count2 = packet.ReadBits("count36", 24);
-            var guid2 = new byte[count2][];
-            for (var i = 0; i < count2; i++)
-            {
-                guid2[i] = new byte[8];
-                guid2[i] = packet.StartBitStream(4, 7, 3, 2, 6, 0, 5, 1);
-            }
-            var guid3 = new byte[count1][];
-            for (var i = 0; i < count1; i++)
-            {
-                guid3[i] = new byte[8];
-                guid3[i] = packet.StartBitStream(5, 4, 1, 7, 0, 6, 2, 3);
-            }
-            var count3 = packet.ReadBits("count3", 24);
-            var guid4 = new byte[count3][];
-            for (var i = 0; i < count3; i++)
-            {
-                guid4[i] = new byte[8];
-                guid4[i] = packet.StartBitStream(1, 4, 3, 6, 2, 0, 7, 5);
-            }
-            var count4 = packet.ReadBits("count4", 20);
-            var guid5 = new byte[count4][];
-            for (var i = 0; i < count4; i++)
-            {
-                guid5[i] = new byte[8];
-                guid5[i] = packet.StartBitStream(5, 3, 7, 4, 2, 0, 6, 1);
-            }
-            var count5 = packet.ReadBits("count5", 20);
-            var guid6 = new byte[count5][];
-            for (var i = 0; i < count5; i++)
-            {
-                guid6[i] = new byte[8];
-                guid6[i] = packet.StartBitStream(3, 5, 2, 6, 4, 0, 1, 7);
-            }
-            for (var i = 0; i < count5; i++)
-            {
-                packet.ParseBitStream(guid6[i], 5, 2);
-                packet.ReadSingle("unk72", i);
-                packet.ReadSingle("unk64", i);
-                packet.ParseBitStream(guid6[i], 1, 4, 6, 0);
-                packet.ReadInt32("unk136", i);
-                packet.ReadSingle("unk68", i);
-                packet.ParseBitStream(guid6[i], 3, 7);
-                packet.WriteGuid("Guid6", guid6[i], i);
-            }
-            for (var i = 0; i < count1; i++)
-            {
-                packet.ParseBitStream(guid3[i], 4, 0, 6, 7, 5, 3, 1, 2);
-                packet.WriteGuid("Guid3", guid3[i], i);
-            }
-            for (var i = 0; i < count4; i++)
-            {
-                packet.ParseBitStream(guid5[i], 2, 5);
-                packet.ReadSingle("unk104", i);
-                packet.ReadInt32("unk108", i);
-                packet.ReadSingle("unk100", i);
-                packet.ParseBitStream(guid5[i], 1);
-                packet.ReadSingle("unk96", i);
-                packet.ParseBitStream(guid5[i], 6, 7, 4, 3, 0);
-                packet.WriteGuid("Guid5", guid5[i], i);
-            }
-            for (var i = 0; i < count3; i++)
-            {
-                packet.ParseBitStream(guid4[i], 7, 1, 0, 6, 2, 3, 4, 5);
-                packet.WriteGuid("Guid4", guid4[i], i);
-            }
-            for (var i = 0; i < count2; i++)
-            {
-                packet.ParseBitStream(guid2[i], 6, 2, 5, 0, 3, 4, 1, 7);
-                packet.WriteGuid("Guid2", guid2[i], i);
-            }
-        }
-
-        [Parser(Opcode.SMSG_UNK_0CF2)]
-        public static void HandleUnk0CF2(Packet packet)
-        {
-            var guid = new byte[8];
-            var guid2 = new byte[8];
-
-
-            guid[7] = packet.ReadBit(); // 23
-            guid2[0] = packet.ReadBit(); // 80
-            guid2[7] = packet.ReadBit(); // 87
-            guid[1] = packet.ReadBit(); // 17
-
-            var count = packet.ReadBits("cnt", 21); // 64
-            // 12*4 = count == 0
-            guid[0] = packet.ReadBit(); // 16
-
-            var unk1 = new Int32[count];
-            var unk2 = new Int32[count];
-            var unk3 = new Int32[count];
-            var unk4 = new Int32[count];
-
-            var hasUnk1 = new bool[count];
-            var hasUnk2 = new bool[count];
-            var hasUnk3 = new bool[count];
-            var hasUnk4 = new bool[count];
-
-            var cnt36 = 0u;
-
-            for ( var i = 0; i < count; i++ )
-            {
-                hasUnk1[i] = !packet.ReadBit("not unk1", i); // ! 64*4+8
-                hasUnk3[i] = !packet.ReadBit("not unk3", i); // ! 64*4+16
-                packet.ReadBit("unk24", i); // 64+24
-                hasUnk4[i] = !packet.ReadBit("not unk4", i); // ! 64*4+20
-                hasUnk2[i] = !packet.ReadBit("not unk2", i); // ! 64*4+12
-            }
-            guid[5] = packet.ReadBit(); // 21
-            guid[3] = packet.ReadBit(); // 19
-            guid2[1] = packet.ReadBit(); // 81
-            guid[2] = packet.ReadBit(); // 18
-            guid2[6] = packet.ReadBit(); // 86
-            guid2[3] = packet.ReadBit(); // 83
-            guid2[4] = packet.ReadBit(); // 84
-            var unk52 = packet.ReadBit("unk52"); // 52
-            guid2[2] = packet.ReadBit(); // 82
-            guid[6] = packet.ReadBit(); // 22
-            guid2[5] = packet.ReadBit(); // 85
-
-            if (unk52)
-            {
-                cnt36 = packet.ReadBits("cnt36", 21);
-            }
-            guid[4] = packet.ReadBit(); // 20
-
-            for (var i = 0; i < count; i++)
-            {
-                if (hasUnk1[i])
-                    unk1[i] = packet.ReadInt32("unk1", i);
-                packet.ReadInt32("unk_4", i); // 4
-                packet.ReadInt32("unk_64", i); // 64*4
-                if (hasUnk4[i])
-                    unk4[i] = packet.ReadInt32("unk4", i);
-                if (hasUnk3[i])
-                    unk3[i] = packet.ReadInt32("unk3", i);
-                if (hasUnk2[i])
-                    unk2[i] = packet.ReadInt32("unk2", i);
-            }
-            packet.ReadXORByte(guid2, 5); // 85
-            packet.ReadXORByte(guid2, 3); // 83
-            packet.ReadXORByte(guid, 4); // 20
-            packet.ReadInt32("unk56");
-            packet.ReadXORByte(guid, 6); // 22
-            packet.ReadXORByte(guid2, 7); // 87
-            packet.ReadXORByte(guid2, 1); // 81
-            if (unk52)
-            {
-                for ( var i = 0; i < cnt36; i++ )
-                {
-                    packet.ReadInt32("unk44", i);
-                    packet.ReadInt32("unk48", i);
-                }
-                packet.ReadInt32("unk28");
-                packet.ReadInt32("unk24");
-                packet.ReadInt32("unk32");
-            }
-            packet.ReadXORByte(guid, 5); // 21
-            packet.ReadXORByte(guid2, 0); // 80
-            packet.ReadXORByte(guid, 1); // 17
-            packet.ReadXORByte(guid, 7); // 23
-            packet.ReadXORByte(guid2, 4); // 84
-            packet.ReadXORByte(guid, 3); // 19
-            packet.ReadXORByte(guid2, 2); // 82
-            packet.ReadXORByte(guid, 0); // 16
-            packet.ReadXORByte(guid, 2); // 18
-            packet.ReadXORByte(guid2, 6); // 86
-
-            packet.WriteGuid("Guid", guid);
-            packet.WriteGuid("Guid2", guid2);
         }
 
         [Parser(Opcode.SMSG_UNK_0D79)] // sub_C76759
@@ -1354,23 +1322,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_UNK_0E9B)]
-        public static void HandleUnk0E9B(Packet packet)
-        {
-            var guid = packet.StartBitStream(4, 6, 2, 3, 7, 1, 5, 0);
-            packet.ParseBitStream(guid, 3, 6, 2);
-            packet.ReadUInt32("Int72");
-            packet.ReadUInt32("Int76");
-            packet.ParseBitStream(guid, 5, 1);
-            packet.ReadInt32("Int28");
-            packet.ParseBitStream(guid, 4);
-            packet.ReadUInt32("Int24");
-            packet.ReadUInt32("Int80");
-            packet.ParseBitStream(guid, 7, 0);
-            packet.WriteGuid("Guid", guid);
-            packet.ReadUInt64("QW16");
-        }
-
         [Parser(Opcode.SMSG_UNK_0EAB)]
         public static void HandleUnk0EAB(Packet packet)
         {
@@ -1405,18 +1356,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_UNK_10F1)]
-        public static void HandleUnk10F1(Packet packet)
-        {
-            var count = packet.ReadBits("count", 21);
-            for (var i = 0; i < count; i++)
-            {
-                packet.ReadInt32("unk24", i);
-                packet.ReadByte("unk20", i);
-                packet.ReadInt32("unk28", i);
-            }
-        }
-
         [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER)]
         public static void HandleUnk10F2(Packet packet)
         {
@@ -1433,66 +1372,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     packet.ReadByte("Spell Mask bitpos", i, j);
                 }
             }
-        }
-
-        [Parser(Opcode.SMSG_UNK_10F9)]
-        public static void HandleUnk10F9(Packet packet)
-        {
-            var guid = new byte[8];
-            var guid2 = new byte[8];
-            var guid3 = new byte[8];
-
-            var unk68 = false;
-            var unk256 = false;
-            var unk224 = false;
-
-            guid[7] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            var unk72 = packet.ReadBit("unk72");
-            if (unk72)
-            {
-                guid2[6] = packet.ReadBit();
-                guid2[4] = packet.ReadBit();
-                guid2[0] = packet.ReadBit();
-                unk68 = !packet.ReadBit("!unk68");
-                guid2[3] = packet.ReadBit();
-                guid2[7] = packet.ReadBit();
-                guid2[5] = packet.ReadBit();
-                guid2[1] = packet.ReadBit();
-                guid2[2] = packet.ReadBit();
-                unk256 = !packet.ReadBit("!unk256");
-                unk224 = !packet.ReadBit("!unk224");
-                guid3 = packet.StartBitStream(4, 5, 1, 7, 0, 2, 3, 6);
-            }
-            guid[3] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            var unk32 = packet.ReadBit("unk32");
-            if (unk72)
-            {
-                packet.ParseBitStream(guid3, 4, 6, 1, 0, 7, 3, 2, 5);
-                packet.WriteGuid("Guid3", guid3);
-                if (unk68)
-                    packet.ReadByte("unk68");
-                packet.ParseBitStream(guid2, 4, 5, 1, 3);
-                if (unk256)
-                    packet.ReadInt32("unk256");
-                packet.ParseBitStream(guid2, 6, 7, 2, 0);
-                packet.WriteGuid("Guid2", guid2);
-            }
-            if (unk32)
-            {
-                packet.ReadInt32("unk112");
-                packet.ReadInt32("unk96");
-            }
-            packet.ParseBitStream(guid, 6, 7, 3, 1, 0);
-            packet.ReadInt32("unk160");
-            packet.ParseBitStream(guid, 5, 4, 2);
-            packet.ReadInt32("unk144");
-            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_UNK_11E3)]
@@ -1534,15 +1413,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_UNK_129A)]
-        public static void HandleUnk129A(Packet packet)
-        {
-            var count = packet.ReadBits("Count", 22);
-            packet.ReadBit("Byte16");
-            for (var i = 0; i < count; i++)
-                packet.ReadUInt32("Dword24", i);
-        }
-
         [Parser(Opcode.SMSG_UNK_129B)]
         public static void HandleUnk129B(Packet packet)
         {
@@ -1563,76 +1433,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadWoWString("str2042", len2);
             }
             packet.ReadInt32("unk");
-        }
-
-        [Parser(Opcode.SMSG_UNK_14AE)]
-        public static void HandleUnk14AE(Packet packet)
-        {
-            var guid = new byte[8];
-            var guid2 = new byte[8];
-
-            guid[3] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            guid2[3] = packet.ReadBit();
-            guid2[6] = packet.ReadBit();
-            guid2[1] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid2[2] = packet.ReadBit();
-            guid2[5] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            guid2[4] = packet.ReadBit();
-
-            var count32 = packet.ReadBits("cnt32", 21);
-            var guids = new byte[count32][];
-
-            for (var i = 0; i < count32; i++)
-            {
-                guids[i] = new byte[8];
-                guids[i][6] = packet.ReadBit();
-                guids[i][1] = packet.ReadBit();
-                guids[i][0] = packet.ReadBit();
-                guids[i][2] = packet.ReadBit();
-                guids[i][7] = packet.ReadBit();
-                guids[i][4] = packet.ReadBit();
-                guids[i][3] = packet.ReadBit();
-                guids[i][5] = packet.ReadBit();
-            }
-
-            guid2[7] = packet.ReadBit();
-            guid2[0] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-
-            packet.ReadXORByte(guid2, 4);
-
-            for (var i = 0; i < count32; i++)
-            {
-                packet.ParseBitStream(guids[i], 6);
-                packet.ReadInt32("unk8", i);
-                packet.ParseBitStream(guids[i], 4, 0, 3, 5, 2, 1, 7);
-
-                packet.WriteGuid("Guids", guids[i], i);
-            }
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid2, 5);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid2, 1);
-            packet.ReadXORByte(guid2, 0);
-            packet.ReadXORByte(guid2, 2);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid2, 7);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid2, 3);
-            packet.ReadXORByte(guid2, 6);
-            packet.ReadXORByte(guid, 5);
-
-            packet.WriteGuid("Guid", guid);
-            packet.WriteGuid("Guid2", guid2);
         }
 
         [Parser(Opcode.SMSG_UNK_1570)]
@@ -1738,77 +1538,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ParseBitStream(guid[i], 3, 5);
 
                 packet.WriteGuid("Guid", guid[i], i);
-            }
-        }
-
-        [Parser(Opcode.SMSG_UNK_180A)]
-        public static void HandleUnk180A(Packet packet)
-        {
-            var count = packet.ReadBits("count", 19);
-            var guid = new byte[count][];
-            var guid2 = new byte[count][];
-            var cnt = new uint[count];
-            for (var i = 0; i < count; i++)
-            {
-                guid[i] = new byte[8];
-                guid2[i] = new byte[8];
-
-                guid[i][3] = packet.ReadBit();
-                guid2[i][3] = packet.ReadBit();
-                guid2[i][6] = packet.ReadBit();
-                guid[i][0] = packet.ReadBit();
-                guid2[i][7] = packet.ReadBit();
-                guid[i][1] = packet.ReadBit();
-                guid[i][5] = packet.ReadBit();
-                guid2[i][2] = packet.ReadBit();
-                guid2[i][1] = packet.ReadBit();
-                guid[i][7] = packet.ReadBit();
-                guid2[i][4] = packet.ReadBit();
-                guid2[i][0] = packet.ReadBit();
-                guid[i][2] = packet.ReadBit();
-                guid2[i][5] = packet.ReadBit();
-                guid[i][4] = packet.ReadBit();
-                cnt[i] = packet.ReadBits("cnt", 4, i);
-                guid[i][6] = packet.ReadBit();
-            }
-            var cnt16 = packet.ReadBits("CNT16", 20);
-            var guid3 = new byte[cnt16][];
-            for (var i = 0; i < cnt16; i++)
-            {
-                guid3[i] = new byte[8];
-                guid3[i] = packet.StartBitStream(0, 7, 1, 5, 2, 4, 6, 3);
-            }
-            for (var i = 0; i < cnt16; i++)
-            {
-                packet.ReadInt32("unk20", i);
-                packet.ReadInt32("unk208", i);
-                packet.ParseBitStream(guid3[i], 5, 7);
-                packet.ReadInt32("unk212", i);
-                packet.ReadInt32("unksub", i);
-                packet.ParseBitStream(guid3[i], 0, 4, 1, 6, 2, 3);
-                packet.WriteGuid("guid3", guid3[i], i);
-            }
-            for (var i = 0; i < count; i++)
-            {
-                packet.ParseBitStream(guid[i], 7);
-                packet.ReadInt32("unk292", i);
-                packet.ParseBitStream(guid[i], 6);
-                packet.ParseBitStream(guid2[i], 1);
-                packet.ReadInt32("unk36", i);
-                packet.ParseBitStream(guid[i], 4);
-                packet.ParseBitStream(guid2[i], 0, 4, 6);
-                packet.ParseBitStream(guid[i], 1, 5);
-                packet.ParseBitStream(guid2[i], 7, 2);
-                packet.ParseBitStream(guid[i], 2, 0);
-                packet.ParseBitStream(guid2[i], 3);
-                packet.ReadInt32("unk236", i);
-                packet.ParseBitStream(guid[i], 3);
-                packet.ParseBitStream(guid2[i], 5);
-
-                packet.ReadInt32("unkSub", i);
-
-                packet.WriteGuid("Guid", guid[i], i);
-                packet.WriteGuid("Guid2", guid2[i], i);
             }
         }
 
@@ -1926,72 +1655,11 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadInt32("unk20");
         }
 
-        [Parser(Opcode.SMSG_UNK_189E)]
-        public static void HandleUnk189E(Packet packet)
-        {
-            var guid = new byte[8];
-            var guid2 = new byte[8];
-
-            guid[4] = packet.ReadBit();
-            guid2[2] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid2[4] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid2[3] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
-            guid2[6] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid2[1] = packet.ReadBit();
-            guid2[7] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            var unk40 = packet.ReadBits("unk40", 4);
-            guid2[5] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            guid2[0] = packet.ReadBit();
-
-            packet.ReadXORByte(guid2, 7);
-
-            packet.ReadInt32("unk80");
-            packet.ReadInt32("unk16");
-
-            packet.ReadXORByte(guid, 7);
-
-            packet.ReadInt32("unk76");
-
-            packet.ReadXORByte(guid2, 4);
-            packet.ReadXORByte(guid2, 3);
-            packet.ReadInt32("unk");
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid2, 1);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid2, 5);
-            packet.ReadXORByte(guid2, 2);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid2, 0);
-            packet.ReadXORByte(guid2, 6);
-
-            packet.WriteGuid("Guid", guid);
-            packet.WriteGuid("Guid2", guid2);
-        }
-
         [Parser(Opcode.SMSG_UNK_18BA)]
         public static void HandleUnk18BA(Packet packet)
         {
             packet.ReadInt32("unk20");
             packet.ReadBits("unk16", 2);
-        }
-
-        [Parser(Opcode.SMSG_UNK_180B)]
-        public static void HandleUnk180B(Packet packet)
-        {
-            var guid = packet.StartBitStream(6, 7, 4, 5, 2, 1, 0, 3);
-            packet.ParseBitStream(guid, 7, 0, 4, 3, 2, 1, 6, 5);
-            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_UNK_18C3)]
@@ -2038,51 +1706,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid2", guid2);
         }
 
-        [Parser(Opcode.SMSG_UNK_18E2)]
-        public static void HandleUnk18E2(Packet packet)
-        {
-            var count = packet.ReadBits("count", 19);
-            var guid = new byte[count][];
-            var guid2 = new byte[count][][];
-            var len68 = new uint[count];
-            var len580 = new uint[count];
-            for (var i = 0; i < count; i++)
-            {
-                guid[i] = new byte[8];
-
-                guid[i][4] = packet.ReadBit("unk", i);
-                guid2[i] = new byte[20][];
-                for (var j = 0; j < 19; j++)
-                {
-                    guid2[i][j] = new byte[8];
-                    guid2[i][j] = packet.StartBitStream(3, 5, 7, 2, 6, 0, 4, 1);
-                }
-                guid[i][5] = packet.ReadBit();
-                len580[i] = packet.ReadBits("unk580", 9, i);
-                guid[i][1] = packet.ReadBit();
-                guid[i][7] = packet.ReadBit();
-                len68[i] = packet.ReadBits("unk68", 8, i);
-                guid[i][3] = packet.ReadBit();
-                guid[i][2] = packet.ReadBit();
-                guid[i][6] = packet.ReadBit();
-                guid[i][0] = packet.ReadBit();
-            }
-            for (var i = 0; i < count; i++)
-            {
-                for (var j = 0; j < 19; j++)
-                {
-                    packet.ParseBitStream(guid2[i][j], 2, 3, 7, 1, 6, 5, 0, 4);
-                    packet.WriteGuid("Guid2", guid2[i][j], i, j);
-                }
-                packet.ParseBitStream(guid[i], 7);
-                packet.ReadInt32("unk52", i);
-                packet.ReadWoWString("str", len68[i], i);
-                packet.ParseBitStream(guid[i], 2, 6, 0, 3, 1, 5, 4);
-                packet.ReadWoWString("str2", len580[i], i);
-                packet.WriteGuid("Guid", guid[i], i);
-            }
-        }
-
         [Parser(Opcode.SMSG_UNK_1E12)]
         public static void HandleUnk1E12(Packet packet)
         {
@@ -2106,57 +1729,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_UNK_10A2)]
         public static void HandleUnk10A2(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-                packet.ReadInt32("unk");
-            }
-            else
-            {
-                packet.WriteLine("              : SMSG_UNK_10A2");
-                var guid = new byte[8];
-                var guid2 = new byte[8];
-
-                guid[4] = packet.ReadBit();
-                guid[0] = packet.ReadBit();
-                guid2[3] = packet.ReadBit();
-                guid[3] = packet.ReadBit();
-                guid2[2] = packet.ReadBit();
-                guid2[6] = packet.ReadBit();
-                guid2[7] = packet.ReadBit();
-                guid[1] = packet.ReadBit();
-                guid2[4] = packet.ReadBit();
-                guid[6] = packet.ReadBit();
-                guid[5] = packet.ReadBit();
-                guid2[0] = packet.ReadBit();
-                guid[2] = packet.ReadBit();
-                guid2[5] = packet.ReadBit();
-                guid2[1] = packet.ReadBit();
-                guid[7] = packet.ReadBit();
-
-                packet.ReadInt32("unk32");
-
-                packet.ReadXORByte(guid2, 4);
-                packet.ReadXORByte(guid2, 2);
-                packet.ReadXORByte(guid, 5);
-                packet.ReadXORByte(guid, 4);
-                packet.ReadXORByte(guid2, 6);
-                packet.ReadXORByte(guid, 1);
-                packet.ReadXORByte(guid2, 0);
-                packet.ReadXORByte(guid2, 1);
-                packet.ReadXORByte(guid, 6);
-                packet.ReadXORByte(guid, 2);
-                packet.ReadXORByte(guid2, 7);
-                packet.ReadXORByte(guid, 0);
-                packet.ReadXORByte(guid, 3);
-                packet.ReadXORByte(guid, 7);
-                packet.ReadXORByte(guid2, 3);
-                packet.ReadXORByte(guid2, 5);
-
-                packet.ReadInt32("unk36");
-
-                packet.WriteGuid("Guid", guid);
-                packet.WriteGuid("Guid2", guid2);
-            }
+            packet.ReadInt32("unk");
         }
 
         [Parser(Opcode.CMSG_UNK_0247)]

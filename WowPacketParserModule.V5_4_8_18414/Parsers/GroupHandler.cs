@@ -83,7 +83,11 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS)]
         public static void HandleRequestPartyMemberStats(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadByte("Flags");
+            var guid = new byte[8];
+            packet.StartBitStream(guid, 7, 4, 0, 1, 3, 6, 2, 5);
+            packet.ReadXORBytes(guid, 3, 6, 5, 2, 1, 4, 0, 7);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_SET_EVERYONE_IS_ASSISTANT)]

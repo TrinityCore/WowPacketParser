@@ -12,5 +12,11 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             packet.ReadToEnd();
         }
+
+        [Parser(Opcode.CMSG_DUEL_RESPONSE)]
+        public static void HandleClientDuelResponse(Packet packet)
+        {
+            packet.ReadToEnd();
+        }
     }
 }

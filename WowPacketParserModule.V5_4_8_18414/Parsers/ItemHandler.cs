@@ -118,6 +118,15 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadByte("Slot"); // 20
         }
 
+        [Parser(Opcode.CMSG_ITEM_REFUND_INFO)]
+        public static void HandleItemRefundInfo(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 0, 3, 2, 7, 4, 5, 6);
+            packet.ResetBitReader();
+            packet.ParseBitStream(guid, 3, 7, 5, 1, 0, 6, 4, 2);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.CMSG_OPEN_ITEM)]
         public static void HandleOpenItem(Packet packet)
         {
@@ -397,7 +406,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 }
 
                 // Cases need correction, the other DB2's need implementation etc.
-                default: packet.AsHex(); break;
+                default: packet.ReadToEnd(); break;
             }
 
             if (HashType == DB2Hash.Item || HashType == DB2Hash.Item_sparse) // Add item data.
@@ -410,6 +419,51 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleInventoryChangeFailure(Packet packet)
         {
             packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE)]
+        public static void HandleItemEnchantTimeUpdate(Packet packet)
+        {
+            var itemGUID = new byte[8];
+            var playerGUID = new byte[8];
+
+            itemGUID[4] = packet.ReadBit();
+            itemGUID[0] = packet.ReadBit();
+            playerGUID[3] = packet.ReadBit();
+            itemGUID[3] = packet.ReadBit();
+            playerGUID[2] = packet.ReadBit();
+            playerGUID[6] = packet.ReadBit();
+            playerGUID[7] = packet.ReadBit();
+            itemGUID[1] = packet.ReadBit();
+            playerGUID[4] = packet.ReadBit();
+            itemGUID[6] = packet.ReadBit();
+            itemGUID[5] = packet.ReadBit();
+            playerGUID[0] = packet.ReadBit();
+            itemGUID[2] = packet.ReadBit();
+            playerGUID[5] = packet.ReadBit();
+            playerGUID[1] = packet.ReadBit();
+            itemGUID[7] = packet.ReadBit();
+            packet.ReadInt32("Slot");
+            packet.ReadXORByte(playerGUID, 4);
+            packet.ReadXORByte(playerGUID, 2);
+            packet.ReadXORByte(itemGUID, 5);
+            packet.ReadXORByte(itemGUID, 4);
+            packet.ReadXORByte(playerGUID, 6);
+            packet.ReadXORByte(itemGUID, 1);
+            packet.ReadXORByte(playerGUID, 0);
+            packet.ReadXORByte(playerGUID, 1);
+            packet.ReadXORByte(itemGUID, 6);
+            packet.ReadXORByte(itemGUID, 2);
+            packet.ReadXORByte(playerGUID, 7);
+            packet.ReadXORByte(itemGUID, 0);
+            packet.ReadXORByte(itemGUID, 3);
+            packet.ReadXORByte(itemGUID, 7);
+            packet.ReadXORByte(playerGUID, 3);
+            packet.ReadXORByte(playerGUID, 5);
+            packet.ReadInt32("Duration");
+
+            packet.WriteGuid("Player GUID", playerGUID);
+            packet.WriteGuid("Item GUID", itemGUID);
         }
 
         [Parser(Opcode.SMSG_ITEM_PUSH_RESULT)]

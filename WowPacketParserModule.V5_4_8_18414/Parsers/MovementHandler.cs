@@ -3412,6 +3412,28 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_FLIGHT_SPLINE_SYNC)]
+        public static void HandleFlightSplineSync(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 6, 4, 2, 7, 1, 3, 0, 5);
+            packet.ParseBitStream(guid, 2, 7, 5, 1, 4, 6, 0, 3);
+            packet.ReadSingle("Duration modifier");
+
+            packet.WriteGuid("Guid2", guid);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED)]
+        public static void HandleSplineSetRunSpeed(Packet packet)
+        {
+            var guid = packet.StartBitStream(3, 0, 1, 4, 7, 5, 6, 2);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadSingle("Speed");
+            packet.ReadXORBytes(guid, 1, 5, 3, 7, 6, 2, 0);
+            packet.WriteGuid("GUID", guid);
+        }
+
         [Parser(Opcode.CMSG_UNK_00F2)]
         public static void HandleUnk00F2(Packet packet)
         {

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -52,7 +52,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Enums\ChatMessageType.cs" />
-    <Compile Include="Enums\DB2Hash.cs" />
     <Compile Include="Enums\MovementFlag.cs" />
     <Compile Include="Enums\MovementFlagExtra.cs" />
     <Compile Include="Enums\TradeStatus.cs" />
@@ -64,6 +63,7 @@
     <Compile Include="Parsers\AchievementHandler.cs" />
     <Compile Include="Parsers\ActionBarHandler.cs" />
     <Compile Include="Parsers\AddonHandler.cs" />
+    <Compile Include="Parsers\ArenaHandler.cs" />
     <Compile Include="Parsers\BattlegroundHandler.cs" />
     <Compile Include="Parsers\BattlePetHandlers.cs" />
     <Compile Include="Parsers\BlackMarketHandler.cs" />
@@ -75,6 +75,7 @@
     <Compile Include="Parsers\ContactHandler.cs" />
     <Compile Include="Parsers\CorpseHandler.cs" />
     <Compile Include="Parsers\DuelHandler.cs" />
+    <Compile Include="Parsers\EquipmentSetHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
     <Compile Include="Parsers\GroupHandler.cs" />
     <Compile Include="Parsers\GuildHandler.cs" />

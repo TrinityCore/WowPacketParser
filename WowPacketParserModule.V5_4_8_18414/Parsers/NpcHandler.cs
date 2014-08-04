@@ -90,18 +90,10 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
         public static void HandleNpcTextQuery(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-                packet.ReadUInt32("Text Id");
-                var guid = packet.StartBitStream(4, 5, 1, 7, 0, 2, 6, 3);
-                packet.ParseBitStream(guid, 4, 0, 2, 5, 1, 7, 3, 6);
-                packet.WriteGuid("NPC Guid", guid);
-            }
-            else
-            {
-                packet.WriteLine("              : SMSG_UNK_0287");
-                packet.ReadToEnd();
-            }
+            packet.ReadUInt32("Text Id");
+            var guid = packet.StartBitStream(4, 5, 1, 7, 0, 2, 6, 3);
+            packet.ParseBitStream(guid, 4, 0, 2, 5, 1, 7, 3, 6);
+            packet.WriteGuid("NPC Guid", guid);
         }
 
         [Parser(Opcode.CMSG_TRAINER_BUY_SPELL)]
@@ -161,6 +153,66 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             var Text = packet.ReadCString("Text: ");
         }
 
+        [Parser(Opcode.SMSG_HIGHEST_THREAT_UPDATE)]
+        public static void HandleHighestThreatlistUpdate(Packet packet)
+        {
+            var guid = new byte[8];
+            var newHighestGUID = new byte[8];
+
+            guid[3] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            newHighestGUID[3] = packet.ReadBit();
+            newHighestGUID[6] = packet.ReadBit();
+            newHighestGUID[1] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            newHighestGUID[2] = packet.ReadBit();
+            newHighestGUID[5] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            newHighestGUID[4] = packet.ReadBit();
+
+            var count32 = packet.ReadBits("cnt32", 21);
+            var guids = new byte[count32][];
+
+            for (var i = 0; i < count32; i++)
+                guids[i] = packet.StartBitStream(6, 1, 0, 2, 7, 4, 3, 5);
+
+            newHighestGUID[7] = packet.ReadBit();
+            newHighestGUID[0] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+
+            packet.ReadXORByte(newHighestGUID, 4);
+
+            for (var i = 0; i < count32; i++)
+            {
+                packet.ParseBitStream(guids[i], 6);
+                packet.ReadInt32("Threat", i); // 8
+                packet.ParseBitStream(guids[i], 4, 0, 3, 5, 2, 1, 7);
+
+                packet.WriteGuid("Hostile", guids[i], i);
+            }
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(newHighestGUID, 5);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(newHighestGUID, 1);
+            packet.ReadXORByte(newHighestGUID, 0);
+            packet.ReadXORByte(newHighestGUID, 2);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(newHighestGUID, 7);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(newHighestGUID, 3);
+            packet.ReadXORByte(newHighestGUID, 6);
+            packet.ReadXORByte(guid, 5);
+
+            packet.WriteGuid("Guid", guid);
+            packet.WriteGuid("New Highest", newHighestGUID);
+        }
+
         [Parser(Opcode.SMSG_LIST_INVENTORY)]
         public static void HandleVendorInventoryList(Packet packet)
         {
@@ -173,6 +225,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             var GUID = packet.StartBitStream(2, 4, 3, 6, 5, 1, 7, 0);
             packet.ParseBitStream(GUID, 7, 0, 5, 3, 6, 1, 4, 2);
             packet.WriteGuid("GUID", GUID);
+        }
+
+        [Parser(Opcode.SMSG_THREAT_CLEAR)]
+        public static void HandleClearThreatlist(Packet packet)
+        {
+            var guid = packet.StartBitStream(6, 7, 4, 5, 2, 1, 0, 3);
+            packet.ParseBitStream(guid, 7, 0, 4, 3, 2, 1, 6, 5);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_TRAINER_LIST)]
