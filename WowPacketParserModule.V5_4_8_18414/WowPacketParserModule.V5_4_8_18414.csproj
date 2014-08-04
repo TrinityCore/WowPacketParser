@@ -54,6 +54,7 @@
     <Compile Include="Enums\ChatMessageType.cs" />
     <Compile Include="Enums\MovementFlag.cs" />
     <Compile Include="Enums\MovementFlagExtra.cs" />
+    <Compile Include="Enums\PlayerMovementInfo.cs" />
     <Compile Include="Enums\TradeStatus.cs" />
     <Compile Include="Enums\MapDifficulty.cs" />
     <Compile Include="Enums\UpdateFields.cs" />

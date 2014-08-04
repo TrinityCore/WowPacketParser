@@ -75,6 +75,9 @@ namespace WowPacketParser.Misc
         MSEUnkTime,
         MSEPitch,
         MSESplineElevation,
+        MSEbit148,
+        MSEbit149,
+        MSEbit172,
 
         MSECount,
         MSECounter,

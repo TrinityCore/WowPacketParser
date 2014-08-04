@@ -80,6 +80,19 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Opponent GUID", guid2);
         }
 
+        [Parser(Opcode.SMSG_DUEL_WINNER)]
+        public static void HandleDuelWinner(Packet packet)
+        {
+            packet.ReadBit("Abnormal finish");
+            var unk24 = packet.ReadBits("unk24", 6);
+            var unk73 = packet.ReadBits("unk73", 6);
+
+            packet.ReadInt32("unk20");
+            packet.ReadWoWString("str1", unk24);
+            packet.ReadInt32("unk16");
+            packet.ReadWoWString("str2", unk73);
+        }
+
         [Parser(Opcode.SMSG_UPDATE_COMBO_POINTS)]
         public static void HandleUpdateComboPoints(Packet packet)
         {
