@@ -280,7 +280,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleUnk0087(Packet packet)
         {
             var val = packet.ReadBit("unkb");
-            if (val != 0)
+            if (!val)
                 packet.ReadInt32("unk");
         }
 
@@ -433,6 +433,44 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadInt32("unk24");
                 packet.ReadInt32("unk28");
             }
+        }
+
+        [Parser(Opcode.SMSG_GMRESPONSE_RECEIVED)]
+        public static void HandleSGMResponseReceived(Packet packet)
+        {
+            var count = packet.ReadBits("count", 20);
+            var guid = new byte[count][];
+            var unk2085 = new bool[count];
+            var unk1045 = new bool[count];
+            var unk1048 = new bool[count];
+            var unk1061 = new uint[count];
+            var unk17 = new uint[count];
+            for (var i = 0; i < count; i++)
+            {
+                guid[i] = new byte[8];
+                unk17[i] = packet.ReadBits("unk17*4", 11, i);
+                unk2085[i] = !packet.ReadBit("!unk2085*4", i);
+                unk1061[i] = packet.ReadBits("unk1061*4", 10, i);
+                unk1045[i] = !packet.ReadBit("!unk1045*4", i);
+                unk1048[i] = !packet.ReadBit("!unk1048*4", i);
+                guid[i] = packet.StartBitStream(5, 0, 1, 2, 4, 7, 6, 3);
+            }
+            for (var i = 0; i < count; i++)
+            {
+                packet.ParseBitStream(guid[i], 7, 0, 5, 4, 3, 6, 2, 1);
+                packet.ReadInt32("unk36", i);
+                packet.ReadWoWString("Ticket", unk17[i], i);
+                packet.ReadInt32("unk52", i);
+                if (unk2085[i])
+                    packet.ReadInt32("unk2085*4", i);
+                packet.ReadInt32("unk20", i);
+                if (unk1045[i])
+                    packet.ReadInt32("unk1045*4", i);
+                packet.ReadWoWString("Response", unk1061[i], i);
+                packet.WriteGuid("Guid", guid[i], i);
+            }
+            packet.ReadInt32("unk32");
+            packet.ReadInt32("unk36");
         }
 
         [Parser(Opcode.SMSG_GOSSIP_COMPLETE)]

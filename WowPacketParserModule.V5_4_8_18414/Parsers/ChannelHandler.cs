@@ -149,54 +149,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_JOIN_CHANNEL)]
         public static void HandleJoinChannel(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-                packet.ReadInt32("Channel Id");
-                packet.ReadBit("Joined by zone update");
-                var len1 = packet.ReadBits("len1", 7);
-                var len2 = packet.ReadBits("len2", 7);
-                packet.ReadBit("Has Voice");
-                packet.ResetBitReader();
-                packet.ReadWoWString("Channel Name", len1);
-                packet.ReadWoWString("Channel Pass", len2);
-            }
-            else
-            {
-                packet.WriteLine("              : SMSG_GMRESPONSE_RECEIVED");
-                var count = packet.ReadBits("count", 20);
-                var guid = new byte[count][];
-                var unk2085 = new bool[count];
-                var unk1045 = new bool[count];
-                var unk1048 = new bool[count];
-                var unk1061 = new uint[count];
-                var unk17 = new uint[count];
-                for (var i = 0; i < count; i++)
-                {
-                    guid[i] = new byte[8];
-                    unk17[i] = packet.ReadBits("unk17*4", 11, i);
-                    unk2085[i] = !packet.ReadBit("!unk2085*4", i);
-                    unk1061[i] = packet.ReadBits("unk1061*4", 10, i);
-                    unk1045[i] = !packet.ReadBit("!unk1045*4", i);
-                    unk1048[i] = !packet.ReadBit("!unk1048*4", i);
-                    guid[i] = packet.StartBitStream(5, 0, 1, 2, 4, 7, 6, 3);
-                }
-                for (var i = 0; i < count; i++)
-                {
-                    packet.ParseBitStream(guid[i], 7, 0, 5, 4, 3, 6, 2, 1);
-                    packet.ReadInt32("unk36", i);
-                    packet.ReadWoWString("Ticket", unk17[i], i);
-                    packet.ReadInt32("unk52", i);
-                    if (unk2085[i])
-                        packet.ReadInt32("unk2085*4", i);
-                    packet.ReadInt32("unk20", i);
-                    if (unk1045[i])
-                        packet.ReadInt32("unk1045*4", i);
-                    packet.ReadWoWString("Response", unk1061[i], i);
-                    packet.WriteGuid("Guid", guid[i], i);
-                }
-                packet.ReadInt32("unk32");
-                packet.ReadInt32("unk36");
-            }
+            packet.ReadInt32("Channel Id");
+            packet.ReadBit("Joined by zone update");
+            var len1 = packet.ReadBits("len1", 7);
+            var len2 = packet.ReadBits("len2", 7);
+            packet.ReadBit("Has Voice");
+            packet.ResetBitReader();
+            packet.ReadWoWString("Channel Name", len1);
+            packet.ReadWoWString("Channel Pass", len2);
         }
 
         [Parser(Opcode.CMSG_LEAVE_CHANNEL)]

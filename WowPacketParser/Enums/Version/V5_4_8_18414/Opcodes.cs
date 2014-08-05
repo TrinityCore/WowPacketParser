@@ -250,7 +250,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE,              0x15AB}, //+-
             {Opcode.CMSG_UNK_0002,                                 0x0002 | 0x10000}, //++
             {Opcode.CMSG_UNK_006B,                                 0x006B}, //++
-            {Opcode.CMSG_UNK_0087,                                 0x0087}, //+-
+            {Opcode.CMSG_UNK_0087,                                 0x0087}, //++
             {Opcode.CMSG_UNK_00A7,                                 0x00A7}, //+-
             {Opcode.CMSG_UNK_00F2,                                 0x00F2}, //++
             {Opcode.CMSG_UNK_0247,                                 0x0247}, //+-
@@ -440,7 +440,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_FRIEND_STATUS,                            0x0532}, //--
             {Opcode.SMSG_GAME_STORE_INGAME_BUY_FAILED,             0x023A}, //++
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE,                0x06BF}, //--
-            {Opcode.SMSG_GMRESPONSE_RECEIVED,                      0x148E}, //++
+            {Opcode.SMSG_GMRESPONSE_RECEIVED,                      0x148E | 0x20000}, //++
             {Opcode.SMSG_GOSSIP_COMPLETE,                          0x034E}, //--
             {Opcode.SMSG_GOSSIP_MESSAGE,                           0x0244}, //--
             {Opcode.SMSG_GOSSIP_POI,                               0x0785}, //-- +

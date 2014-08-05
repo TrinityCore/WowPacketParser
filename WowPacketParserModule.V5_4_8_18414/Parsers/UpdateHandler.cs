@@ -25,37 +25,29 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_DESTROY_OBJECT)]
         public static void HandleDestroyObject(Packet packet)
         {
-            if (packet.Direction == Direction.ServerToClient)
-            {
-                var guid = new byte[8];
+            var guid = new byte[8];
 
-                guid[3] = packet.ReadBit();
-                guid[2] = packet.ReadBit();
-                guid[4] = packet.ReadBit();
-                guid[1] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
 
-                packet.ReadBit("Despawn Animation");
+            packet.ReadBit("Despawn Animation");
 
-                guid[7] = packet.ReadBit();
-                guid[0] = packet.ReadBit();
-                guid[6] = packet.ReadBit();
-                guid[5] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
 
-                packet.ParseBitStream(guid, 0, 4, 7, 2, 6, 3, 1, 5);
+            packet.ParseBitStream(guid, 0, 4, 7, 2, 6, 3, 1, 5);
 
-                packet.WriteGuid("Object Guid", guid);
-            }
-            else
-            {
-                packet.WriteLine("              : CMSG_PVP_LOG_DATA");
-            }
+            packet.WriteGuid("Object Guid", guid);
         }
 
         [HasSniffData] // in ReadCreateObjectBlock
         [Parser(Opcode.SMSG_UPDATE_OBJECT)]
         public static void HandleUpdateObject(Packet packet)
         {
-            packet.WriteLine("pos: " + packet.Position);
             uint map = packet.ReadUInt16("Map");
             var count = packet.ReadUInt32("Count");
             //var type = packet.ReadByte();
@@ -63,6 +55,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
             for (var i = 0; i < count; i++)
             {
+                packet.WriteLine("StartPosFor: " + packet.Position);
                 var type = packet.ReadByte();
                 var typeString = ((UpdateTypeCataclysm)type).ToString();
 
@@ -106,10 +99,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         private static void ReadCreateObjectBlock(ref Packet packet, Guid guid, uint map, int index)
         {
             var objType = packet.ReadEnum<ObjectType>("Object Type", TypeCode.Byte, index);
-            packet.WriteLine("Pos: " + packet.Position);
             packet.ResetBitReader();
             var moves = ReadMovementUpdateBlock548(ref packet, guid, index);
-            packet.WriteLine("Pos: " + packet.Position);
             packet.ResetBitReader();
             var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(ref packet, objType, index, true);
 
@@ -197,7 +188,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             var hasLiving = packet.ReadBit("Has Living", index); // 368+-
             var hasUnk2 = packet.ReadBit("hasUnk2", index); // 810+
             var hasUnk3 = packet.ReadBit("hasUnk3", index); // 2-
-            var unkLoopCounter = packet.ReadBits("Unknown array size", 22, index); // 1068+
+            var transportFrames = packet.ReadBits("Unknown array size", 22, index); // 1068+
             var hasVehicle = packet.ReadBit("Has Vehicle Data", index); // 488+
             var hasUnk4 = packet.ReadBit("hasUnk4", index); // 1044+
             var hasUnk5 = packet.ReadBit("hasUnk5", index); // 1
@@ -206,15 +197,13 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             var hasUnk7 = packet.ReadBit("hasUnk7", index); // 3
             var hasUpdateFlagSelf = packet.ReadBit("Has Update Flag Self", index); // 680-
             var hasTarget = packet.ReadBit("Has Target", index); // 464+
-            var hasUnk8 = packet.ReadBit("hasUnk8", index); // 1032+
+            var hasSceneObjectData = packet.ReadBit("hasSceneObjectData", index); // 1032+
             var hasUnk9 = packet.ReadBit("hasUnk9", index); // 1064+
             var hasUnk10 = packet.ReadBit("hasUnk10", index); // 0
             var hasUnk11 = packet.ReadBit("hasUnk11", index); // 668+
             var hasGOPosition = packet.ReadBit("Has goTransport Position", index); // 424+
             var hasUnk12 = packet.ReadBit("hasUnk12", index); // 681-
             var hasStationaryPosition = packet.ReadBit("Has Stationary Position", index); // 448
-
-            packet.WriteLine("pos448: " + packet.Position);
 
             //42bits
             if (hasLiving) // 368
@@ -300,8 +289,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
             //107bits
 
-            packet.WriteLine("Pos20: " + packet.Position);
-
             var guid856 = new byte[2][];
 
             var guid840 = new byte[8];
@@ -332,7 +319,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             var unk828 = false;
             var unk832 = false;
             var unk833 = false;
-            if (hasUnk8) // 1032
+            if (hasSceneObjectData) // 1032
             {
                 for (var i = 0; i < 2; i++)
                 {
@@ -374,7 +361,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                         guid880[i][j][1] = packet.ReadBit();
                         guid880[i][j][6] = packet.ReadBit();
                         unk284[i][j] = packet.ReadBits("unk284", 7, index, i, j);
-                        unk616[i][j] = packet.ReadBits("unk616", 21, index, i, j);
+                        unk616[i][j] = packet.ReadBits("count616", 21, index, i, j);
                         //sub_70fb9c
                         unk4096[i][j] = new bool[unk616[i][j]];
                         unk4112[i][j] = new bool[unk616[i][j]];
@@ -382,44 +369,44 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
                         for (var k = 0; k < unk616[i][j]; k++)
                         {
-                            unk4096[i][j][k] = !packet.ReadBit("unk4096", index, i, j, k);
-                            unk4112[i][j][k] = !packet.ReadBit("unk4112", index, i, j, k);
-                            unk4128[i][j][k] = !packet.ReadBit("unk4128(10-b)", index, i, j, k);
+                            unk4096[i][j][k] = !packet.ReadBit("!unk4096", index, i, j, k);
+                            unk4112[i][j][k] = !packet.ReadBit("!unk4112", index, i, j, k);
+                            unk4128[i][j][k] = !packet.ReadBit("!unk4128(10-b)", index, i, j, k);
                         }
                         guid880[i][j][2] = packet.ReadBit();
-                        unk552[i][j] = packet.ReadBits("unk552", index, 20, i, j);
+                        unk552[i][j] = packet.ReadBits("count552", 20, index, i, j);
                         unk577[i][j] = new bool[unk552[i][j]];
                         for (var k = 0; k < unk552[i][j]; k++)
                         {
-                            unk577[i][j][k] = packet.ReadBit("unk577(10-b)", index, i, j, k);
+                            unk577[i][j][k] = !packet.ReadBit("!unk577(10-b)", index, i, j, k);
                         }
                     }
                     guid856[i][4] = packet.ReadBit();
                     unk872[i] = !packet.ReadBit("!unk872", index, i);
                     guid856[i][0] = packet.ReadBit();
                 }
-                unk832 = packet.ReadBit("unk832", index);
+                unk832 = !packet.ReadBit("!unk832", index);
 
                 for (var i = 0; i < 3; i++)
                 {
-                    count952[i] = packet.ReadBits(21);
-                    count936[i] = packet.ReadBits(21);
+                    count952[i] = packet.ReadBits("count952", 21, index, i);
+                    count936[i] = packet.ReadBits("count936", 21, index, i);
                     unk32[i] = new byte[count936[i]];
                     unk48[i] = new uint[count936[i]];
                     unk64[i] = new uint[count936[i]];
                     for (var j = 0; j < count936[i]; j++)
                     {
                         unk32[i][j] = packet.ReadBit("unk32", index, i, j) ? (byte)9 : (byte)10;
-                        unk48[i][j] = packet.ReadBit("unk48", index, i, j);
+                        unk48[i][j] = packet.ReadBit("!unk48", index, i, j) ? 0u : 1u;
                         unk64[i][j] = packet.ReadBit("!unk64", index, i, j) ? 0u : 1u;
                     }
                 }
 
-                unk828 = packet.ReadBit("!unk828", index);
+                unk828 = !packet.ReadBit("!unk828", index);
                 packet.ReadBit("unk848", index);
                 unk816 = !packet.ReadBit("!unk816*2", index);
-                unk824 = packet.ReadBit("!unk824", index);
-                var unk844 = packet.ReadBit("!unk844", index) ? 0u : 1u;
+                unk824 = !packet.ReadBit("!unk824", index);
+                packet.ReadBit("!unk840*4", index);
 
                 guid840 = packet.StartBitStream(6, 2, 4, 5, 1, 0, 3, 7);
 
@@ -509,25 +496,25 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
 
             // Reading data
-            for (var i = 0u; i < unkLoopCounter; i++) // 1068*4
+            for (var i = 0u; i < transportFrames; i++) // 1068*4
                 packet.ReadUInt32("Unk UInt32", index, (int)i); // 1072*4
 
             packet.ResetBitReader(); //???
 
-            if (hasUnk8) // 1032
+            if (hasSceneObjectData) // 1032
             {
                 for (var i = 0; i < 3; i++)
                 {
                     for (var j = 0; j < count936[i]; j++)
                     {
                         packet.ReadInt32("unk934*4", index, i, j);
+                        if (unk32[i][j] != 9)
+                            packet.ReadInt32("unk32", index, i, j);
+                        if (unk64[i][j] > 0)
+                            packet.ReadByte("unk64", index, i, j);
+                        packet.ReadInt32("unk940*4", index, i, j);
                         if (unk48[i][j] > 0)
                             packet.ReadInt32("unk48", index, i, j);
-                        if (unk32[i][j] != 9)
-                            packet.ReadByte("unk32", index, i, j);
-                        packet.ReadInt32("unk940*4", index, i, j);
-                        if (unk64[i][j] > 0)
-                            packet.ReadInt32("unk64", index, i, j);
                     }
                     for (var j = 0; j < count952[i]; j++)
                     {
@@ -566,7 +553,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                             packet.ReadByte("unk4032", index, i, j, k);
 
                             if (unk577[i][j][k])
-                                packet.ReadBit("unk577(10-b)", index, i, j, k);
+                                packet.ReadByte("unk577(10-b)", index, i, j, k);
                         }
                         packet.ReadInt32("unk3664", index, i, j);
                         packet.ReadInt32("unk3648", index, i, j);
@@ -622,8 +609,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 if (unk832)
                     packet.ReadByte("unk832", index);
             }
-
-            packet.WriteLine("Pos01: " + packet.Position);
 
             if (hasLiving) // 368
             {
