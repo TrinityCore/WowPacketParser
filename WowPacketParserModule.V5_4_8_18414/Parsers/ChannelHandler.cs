@@ -47,10 +47,10 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
-        [Parser(Opcode.SMSG_CHANNEL_NOTIFY)]
+        /*[Parser(Opcode.SMSG_CHANNEL_NOTIFY)]
         public static void HandleChannelNotify(Packet packet)
         {
-            /*var type = packet.ReadEnum<ChatNotificationType>("Notification Type", TypeCode.Byte);
+            var type = packet.ReadEnum<ChatNotificationType>("Notification Type", TypeCode.Byte);
 
             if (type == ChatNotificationType.InvalidName) // hack, because of some silly reason this type
                 packet.ReadBytes(3);                      // has 3 null bytes before the invalid channel name
@@ -132,9 +132,9 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 case ChatNotificationType.NotInArea:
                 case ChatNotificationType.NotInLfg:
                     break;
-            }*/
+            }
             packet.ReadToEnd();
-        }
+        }*/
 
         [Parser(Opcode.CMSG_CHANNEL_BAN)]
         public static void HandleChannelBan(Packet packet)

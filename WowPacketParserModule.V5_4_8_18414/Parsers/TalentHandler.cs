@@ -14,18 +14,10 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_LEARN_TALENT)]
         public static void HandleLearnTalent(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-                var talentCount = packet.ReadBits("Talent Count", 23);
+            var talentCount = packet.ReadBits("Talent Count", 23);
 
-                for (int i = 0; i < talentCount; i++)
-                    packet.ReadUInt16("Talent Id", i);
-            }
-            else
-            {
-                packet.WriteLine("              : SMSG_UNK_02A7");
-                MiscellaneousHandler.HandleUnk02A7(packet);
-            }
+            for (int i = 0; i < talentCount; i++)
+                packet.ReadUInt16("Talent Id", i);
         }
 
         [Parser(Opcode.CMSG_SET_PRIMARY_TALENT_TREE)]

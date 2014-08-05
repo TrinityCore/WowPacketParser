@@ -46,15 +46,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_MESSAGECHAT_OFFICER)]
         public static void HandleClientChatMessageOfficer(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-                packet.ReadToEnd();
-            }
-            else
-            {
-                packet.WriteLine("              : SMSG_UNK_???");
-                packet.ReadToEnd();
-            }
+            packet.ReadToEnd();
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT_PARTY)]
@@ -67,106 +59,38 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_MESSAGECHAT_RAID)]
         public static void HandleClientChatMessageRaid(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-                packet.ReadToEnd();
-            }
-            else
-            {
-                packet.WriteLine("              : SMSG_UNK_???");
-                packet.ReadToEnd();
-            }
+            packet.ReadToEnd();
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT_RAID_WARNING)]
         public static void HandleClientChatMessageRaidWarning(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-                packet.ReadToEnd();
-            }
-            else
-            {
-                packet.WriteLine("              : SMSG_UNK_???");
-                packet.ReadToEnd();
-            }
+            packet.ReadToEnd();
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT_SAY)]
         public static void HandleClientChatMessageSay(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-            {
                 packet.ReadEnum<Language>("Language", TypeCode.Int32);
                 packet.ReadWoWString("Message", packet.ReadBits(8));
-            }
-            else
-            {
-                packet.WriteLine("              : SMSG_PARTY_MEMBER_STATS");
-                var guid = new byte[8];
-                guid[0] = packet.ReadBit();
-                guid[5] = packet.ReadBit();
-
-                var byte28 = packet.ReadBit("byte28");
-
-                guid[1] = packet.ReadBit();
-                guid[4] = packet.ReadBit();
-
-                var byte29 = packet.ReadBit("byte29");
-
-                guid[6] = packet.ReadBit();
-                guid[2] = packet.ReadBit();
-                guid[7] = packet.ReadBit();
-                guid[3] = packet.ReadBit();
-                packet.ParseBitStream(guid, 3, 2, 6, 7, 5);
-
-                var int24 = packet.ReadInt32("int24");
-
-                packet.ParseBitStream(guid, 1, 4, 0);
-                packet.WriteGuid("Guid", guid);
-
-                var count = packet.ReadInt32("count");
-                for (var i = 0; i < count; i++)
-                {
-                    packet.ReadByte("byte", i);
-                }
-                packet.ReadWoWString("str", count);
-            }
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT_WHISPER)]
         public static void HandleClientChatMessageWhisper(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-                packet.ReadEnum<ChatMessageType>("Type", TypeCode.UInt32);
-                var msgLen = packet.ReadBits(8);
-                var recvName = packet.ReadBits(9);
+            packet.ReadEnum<ChatMessageType>("Type", TypeCode.UInt32);
+            var msgLen = packet.ReadBits(8);
+            var recvName = packet.ReadBits(9);
 
-                packet.ReadWoWString("Message", msgLen);
-                packet.ReadWoWString("Receivers Name", recvName);
-            }
-            else
-            {
-                packet.WriteLine("              : SMSG_UNK_123E"); // sub_7334E3
-                packet.ReadToEnd();
-            }
+            packet.ReadWoWString("Message", msgLen);
+            packet.ReadWoWString("Receivers Name", recvName);
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT_YELL)]
         public static void HandleClientChatMessageYell(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-                packet.ReadEnum<Language>("Language", TypeCode.Int32);
-                packet.ReadWoWString("Message", packet.ReadBits(8));
-            }
-            else
-            {
-                packet.WriteLine("              : SMSG_UNK_04AA"); // sub_6B9D5D
-                packet.ReadSingle("unk1");
-                packet.ReadInt32("unk2");
-            }
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            packet.ReadWoWString("Message", packet.ReadBits(8));
         }
 
         [Parser(Opcode.SMSG_CHAT_PLAYER_NOT_FOUND)]
@@ -295,12 +219,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             var length = packet.ReadBits(12);
             packet.ReadWoWString("Message", length);
-        }
-
-        [Parser(Opcode.SMSG_TEXT_EMOTE)]
-        public static void HandleServerTextEmote(Packet packet)
-        {
-            packet.ReadToEnd();
         }
 
         [Parser(Opcode.SMSG_ZONE_UNDER_ATTACK)]

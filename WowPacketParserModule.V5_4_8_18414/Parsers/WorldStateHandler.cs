@@ -40,15 +40,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE)]
         public static void HandleUpdateUITimer(Packet packet)
         {
-            if (packet.Direction == Direction.ServerToClient)
-            {
-                packet.ReadTime("Time");
-            }
-            else
-            {
-                packet.WriteLine("              : CMSG_UNK_0027");
-                packet.ReadInt32();
-            }
+            packet.ReadTime("Time");
         }
     }
 }

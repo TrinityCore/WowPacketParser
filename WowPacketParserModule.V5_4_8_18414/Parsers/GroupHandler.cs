@@ -158,8 +158,40 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         }
 
         [Parser(Opcode.SMSG_PARTY_MEMBER_STATS)]
-        [Parser(Opcode.SMSG_PARTY_MEMBER_STATS_FULL)]
         public static void HandlePartyMemberStats(Packet packet)
+        {
+            var guid = new byte[8];
+            guid[0] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+
+            var byte28 = packet.ReadBit("byte28");
+
+            guid[1] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+
+            var byte29 = packet.ReadBit("byte29");
+
+            guid[6] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            packet.ParseBitStream(guid, 3, 2, 6, 7, 5);
+
+            var int24 = packet.ReadInt32("int24");
+
+            packet.ParseBitStream(guid, 1, 4, 0);
+            packet.WriteGuid("Guid", guid);
+
+            var count = packet.ReadInt32("count");
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadByte("byte", i);
+            }
+            packet.ReadWoWString("str", count);
+        }
+
+        [Parser(Opcode.SMSG_PARTY_MEMBER_STATS_FULL)]
+        public static void HandlePartyMemberStatsFull(Packet packet)
         {
             packet.ReadToEnd();
         }

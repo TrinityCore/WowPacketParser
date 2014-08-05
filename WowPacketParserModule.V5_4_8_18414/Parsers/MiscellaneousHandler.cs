@@ -117,15 +117,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
         public static void HandleRandomRoll(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-                packet.ReadToEnd();
-            }
-            else
-            {
-                packet.WriteLine("              : SMSG_???");
-                packet.ReadToEnd();
-            }
+            packet.ReadToEnd();
         }
 
         [Parser(Opcode.CMSG_REALM_SPLIT)]
@@ -204,16 +196,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_TIME_SYNC_RESP)]
         public static void HandleTimeSyncResp(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-                packet.ReadUInt32("MCounter");
-                packet.ReadUInt32("Client Ticks");
-            }
-            else
-            {
-                packet.WriteLine("              : SMSG_SPELL_CATEGORY_COOLDOWN");
-                SpellHandler.HandleSpellCategoryCooldown(packet);
-            }
+            packet.ReadUInt32("MCounter");
+            packet.ReadUInt32("Client Ticks");
         }
 
         [Parser(Opcode.CMSG_TIME_SYNC_RESP_FAILED)]
@@ -355,17 +339,9 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_UNK_15A9)]
         public static void HandleUnk15A9(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-                packet.ReadBit("unk16");
-                packet.ReadBit("unk17");
-                packet.ResetBitReader();
-            }
-            else
-            {
-                packet.WriteLine("              : SMSG_UNK_15A9");
-                packet.ReadToEnd();
-            }
+            packet.ReadBit("unk16");
+            packet.ReadBit("unk17");
+            packet.ResetBitReader();
         }
 
         [Parser(Opcode.CMSG_UNK_1841)]
@@ -503,17 +479,9 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_PLAYED_TIME)]
         public static void HandlePlayedTime(Packet packet)
         {
-            if (packet.Direction == Direction.ServerToClient)
-            {
-                packet.ReadInt32("unk16");
-                packet.ReadInt32("unk20");
-                packet.ReadBit("unk24");
-            }
-            else
-            {
-                packet.WriteLine("              : CMSG_UNK_11E2");
-                packet.ReadToEnd();
-            }
+            packet.ReadInt32("unk16");
+            packet.ReadInt32("unk20");
+            packet.ReadBit("unk24");
         }
 
         [Parser(Opcode.SMSG_PLAYERBOUND)]
@@ -555,26 +523,18 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER)]
         public static void HandleSetPctSpellModifier(Packet packet)
         {
-            if (packet.Direction == Direction.ServerToClient)
+            var count = packet.ReadBits("count", 22);
+            var cnt = new uint[count];
+            for (var i = 0; i < count; i++)
+                cnt[i] = packet.ReadBits("cnt", 21, i);
+            for (var i = 0; i < count; i++)
             {
-                var count = packet.ReadBits("count", 22);
-                var cnt = new uint[count];
-                for (var i = 0; i < count; i++)
-                    cnt[i] = packet.ReadBits("cnt", 21, i);
-                for (var i = 0; i < count; i++)
+                for (var j = 0; j < cnt[i]; j++)
                 {
-                    for (var j = 0; j < cnt[i]; j++)
-                    {
-                        packet.ReadSingle("Amount", i, j);
-                        packet.ReadByte("Spell Mask bitpos", i, j);
-                    }
-                    packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte, i);
+                    packet.ReadSingle("Amount", i, j);
+                    packet.ReadByte("Spell Mask bitpos", i, j);
                 }
-            }
-            else
-            {
-                packet.WriteLine("              : CMSG_UNK_???");
-                packet.ReadToEnd();
+                packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte, i);
             }
         }
 
@@ -812,33 +772,26 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
         public static void HandleWorldServerInfo(Packet packet)
         {
-            if (packet.Direction == Direction.ServerToClient)
-            {
-                var unk52 = packet.ReadBit("unk52");
-                var unk40 = packet.ReadBit("unk40");
-                var unk20 = packet.ReadBit("unk20");
-                var unk28 = packet.ReadBit("unk28");
+            var unk52 = packet.ReadBit("unk52");
+            var unk40 = packet.ReadBit("unk40");
+            var unk20 = packet.ReadBit("unk20");
+            var unk28 = packet.ReadBit("unk28");
 
-                if (unk40)
-                    packet.ReadInt32("unk36");
+            if (unk40)
+                packet.ReadInt32("unk36");
 
-                packet.ReadByte("unk32");
-                packet.ReadTime("Time");
-                packet.ReadInt32("unk224");
+            packet.ReadByte("unk32");
+            packet.ReadTime("Time");
+            packet.ReadInt32("unk224");
 
-                if (unk20)
-                    packet.ReadInt32("unk64");
+            if (unk20)
+                packet.ReadInt32("unk64");
 
-                if (unk52)
-                    packet.ReadInt32("unk192");
+            if (unk52)
+                packet.ReadInt32("unk192");
 
-                if (unk28)
-                    packet.ReadInt32("unk96");
-            }
-            else
-            {
-                packet.WriteLine("              : CMSG_NULL_0082");
-            }
+            if (unk28)
+                packet.ReadInt32("unk96");
         }
 
         [Parser(Opcode.SMSG_UNK_001F)]
@@ -1026,18 +979,10 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_UNK_042A)] // pair CMSG_NULL_06E4
         public static void HandleUnk042A(Packet packet)
         {
-            if (packet.Direction == Direction.ServerToClient)
-            {
-                var count = packet.ReadBits("count", 22);
-                packet.ReadBit("unk");
-                for (var i = 0; i < count; i++)
-                    packet.ReadInt32("unk6", i);
-            }
-            else
-            {
-                packet.WriteLine("              : CMSG_LEAVE_CHANNEL");
-                packet.ReadToEnd();
-            }
+            var count = packet.ReadBits("count", 22);
+            packet.ReadBit("unk");
+            for (var i = 0; i < count; i++)
+                packet.ReadInt32("unk6", i);
         }
 
         [Parser(Opcode.SMSG_UNK_043F)]
@@ -1234,12 +1179,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadSingle("unk16");
         }
 
-        [Parser(Opcode.SMSG_UNK_0987)]
-        public static void HandleUnk0987(Packet packet)
-        {
-            packet.ReadToEnd();
-        }
-
         [Parser(Opcode.SMSG_UNK_0A03)]
         public static void HandleUnk0A03(Packet packet)
         {
@@ -1287,95 +1226,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadInt32("unk2");
         }
 
-        [Parser(Opcode.SMSG_UNK_0D79)] // sub_C76759
-        public static void HandleUnk0D79(Packet packet)
-        {
-            if (packet.Direction == Direction.ServerToClient)
-            {
-                var guid = new byte[8];
-                var guid2 = new byte[8];
-
-                guid[7] = packet.ReadBit(); // 63
-                guid[3] = packet.ReadBit(); // 59
-                guid2[1] = packet.ReadBit(); // 65
-                guid[4] = packet.ReadBit(); // 60
-                guid[2] = packet.ReadBit(); // 58
-                guid2[3] = packet.ReadBit(); // 67
-                guid[5] = packet.ReadBit(); // 61
-                var unk44 = packet.ReadBit(); // 44
-                guid2[7] = packet.ReadBit(); // 71
-                guid2[0] = packet.ReadBit(); // 64
-                guid2[2] = packet.ReadBit(); // 66
-
-                var count28 = 0u;
-                if (unk44)
-                    count28 = packet.ReadBits("count28", 21);
-                guid2[4] = packet.ReadBit(); // 68
-                guid2[6] = packet.ReadBit(); // 70
-                guid[6] = packet.ReadBit(); // 62
-                guid[1] = packet.ReadBit(); // 57
-                guid[0] = packet.ReadBit(); // 56
-                guid2[5] = packet.ReadBit(); // 69
-
-                packet.ReadXORByte(guid, 0); // 56
-                packet.ReadXORByte(guid2, 5); // 69
-                packet.ReadXORByte(guid, 6); // 62
-
-                if (unk44)
-                {
-                    packet.ReadInt32("unk20");
-                    for (var i = 0; i < count28; i++)
-                    {
-                        packet.ReadInt32("unk32", i);
-                        packet.ReadInt32("unk36", i);
-                    }
-                    packet.ReadInt32("unk24");
-                    packet.ReadInt32("unk16");
-                }
-                packet.ReadXORByte(guid2, 6); // 70
-                packet.ReadXORByte(guid, 2); // 58
-                packet.ReadXORByte(guid2, 0); // 64
-                packet.ReadXORByte(guid, 1); // 57
-                packet.ReadInt32("unk48");
-                packet.ReadXORByte(guid, 4); // 60
-                packet.ReadXORByte(guid2, 1); // 65
-                packet.ReadXORByte(guid2, 7); // 71
-                packet.ReadXORByte(guid, 5); // 61
-                packet.ReadXORByte(guid2, 2); // 66
-                packet.ReadXORByte(guid2, 3); // 67
-                packet.ReadXORByte(guid, 7); // 63
-                packet.ReadXORByte(guid2, 4); // 68
-                packet.ReadXORByte(guid, 3); // 59
-
-                packet.ReadInt32("unk72"); // 72
-                packet.ReadInt32("unk52"); // 52
-
-                packet.WriteGuid("Guid", guid);
-                packet.WriteGuid("Guid2", guid2);
-            }
-            else
-            {
-                packet.WriteLine("              : CMSG_GUILD_DEL_RANK");
-                packet.ReadToEnd();
-            }
-        }
-
         [Parser(Opcode.SMSG_UNK_0EAB)]
         public static void HandleUnk0EAB(Packet packet)
         {
-            if (packet.Direction == Direction.ServerToClient)
-            {
-                packet.ReadInt32("unk24");
-                packet.ReadSingle("unk32");
-                packet.ReadSingle("unk28");
-                packet.ReadInt32("unk16");
-                packet.ReadSingle("unk");
-            }
-            else
-            {
-                packet.WriteLine("              : CMSG_MESSAGECHAT_AFK");
-                packet.ReadToEnd();
-            }
+            packet.ReadInt32("unk24");
+            packet.ReadSingle("unk32");
+            packet.ReadSingle("unk28");
+            packet.ReadInt32("unk16");
+            packet.ReadSingle("unk");
         }
 
         [Parser(Opcode.SMSG_UNK_102E)]
@@ -1508,16 +1366,11 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_UNK_15E2)]
         public static void HandleUnk15E2(Packet packet)
         {
-            if (packet.Direction == Direction.ServerToClient)
-            {
-                var guid = packet.StartBitStream(2, 7, 6, 0, 5, 1, 3, 4);
-                packet.ParseBitStream(guid, 7, 4, 6, 1);
-                packet.ReadInt32("unk24");
-                packet.ParseBitStream(guid, 2, 3, 5, 0);
-                packet.WriteGuid("Guid", guid);
-            }
-            else
-                packet.WriteLine("              : CMSG_NULL_15E2");
+            var guid = packet.StartBitStream(2, 7, 6, 0, 5, 1, 3, 4);
+            packet.ParseBitStream(guid, 7, 4, 6, 1);
+            packet.ReadInt32("unk24");
+            packet.ParseBitStream(guid, 2, 3, 5, 0);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_UNK_1613)]
@@ -1798,89 +1651,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_GET_TIMEZONE_INFORMATION)]
         [Parser(Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE)]
         [Parser(Opcode.MSG_MOVE_WORLDPORT_ACK)]  //0
-        [Parser(Opcode.CMSG_NULL_0023)]
-        [Parser(Opcode.CMSG_NULL_0060)]
-        [Parser(Opcode.CMSG_NULL_0141)]
-        [Parser(Opcode.CMSG_NULL_01C0)]
-        [Parser(Opcode.CMSG_NULL_029F)]
-        [Parser(Opcode.CMSG_NULL_02D6)]
-        [Parser(Opcode.CMSG_NULL_02DA)]
-        [Parser(Opcode.CMSG_NULL_032D)]
-        [Parser(Opcode.CMSG_NULL_033D)]
-        [Parser(Opcode.CMSG_NULL_0365)]
-        [Parser(Opcode.CMSG_NULL_0374)]
-        [Parser(Opcode.CMSG_NULL_03C4)]
-        [Parser(Opcode.CMSG_NULL_0558)]
-        [Parser(Opcode.CMSG_NULL_05E1)]
-        [Parser(Opcode.CMSG_NULL_0640)]
-        [Parser(Opcode.CMSG_NULL_0644)]
-        [Parser(Opcode.CMSG_NULL_06D4)]
-        [Parser(Opcode.CMSG_NULL_06E4)]
-        [Parser(Opcode.CMSG_NULL_06F5)]
-        [Parser(Opcode.CMSG_NULL_077B)]
-        [Parser(Opcode.CMSG_NULL_0813)]
-        [Parser(Opcode.CMSG_NULL_0826)]
-        [Parser(Opcode.CMSG_NULL_0A22)]
-        [Parser(Opcode.CMSG_NULL_0A23)]
-        [Parser(Opcode.CMSG_NULL_0A82)]
-        [Parser(Opcode.CMSG_NULL_0A87)]
-        [Parser(Opcode.CMSG_NULL_0C62)]
-        [Parser(Opcode.CMSG_NULL_0DE0)]
-        [Parser(Opcode.CMSG_NULL_1124)]
-        [Parser(Opcode.CMSG_NULL_1203)]
-        [Parser(Opcode.CMSG_NULL_1207)]
-        [Parser(Opcode.CMSG_NULL_1272)]
-        [Parser(Opcode.CMSG_NULL_135B)]
-        [Parser(Opcode.CMSG_NULL_1452)]
-        [Parser(Opcode.CMSG_NULL_147B)]
-        [Parser(Opcode.CMSG_NULL_14DB)]
-        [Parser(Opcode.CMSG_NULL_14E0)]
-        [Parser(Opcode.CMSG_NULL_15A8)]
-        [Parser(Opcode.CMSG_NULL_18A2)]
-        [Parser(Opcode.CMSG_NULL_1A23)]
-        [Parser(Opcode.CMSG_NULL_1A87)]
-        [Parser(Opcode.CMSG_NULL_1C45)]
-        [Parser(Opcode.CMSG_NULL_1C5A)]
-        [Parser(Opcode.CMSG_NULL_1CE3)]
-        [Parser(Opcode.CMSG_NULL_1D61)]
-        [Parser(Opcode.CMSG_NULL_1DC3)]
-        [Parser(Opcode.CMSG_NULL_1F34)]
-        [Parser(Opcode.CMSG_NULL_1F89)]
-        [Parser(Opcode.CMSG_NULL_1F8E)]
-        [Parser(Opcode.CMSG_NULL_1F9E)]
-        [Parser(Opcode.CMSG_NULL_1FBE)]
         public static void HandleCNullMisc(Packet packet)
         {
-            if (packet.Direction == Direction.ServerToClient)
-            {
-                packet.WriteLine("              : SMSG_???");
-                packet.ReadToEnd();
-            }
-            else
-            {
-                //packet.ReadToEnd();
-            }
-        }
-
-        [Parser(Opcode.SMSG_NULL_04BB)]
-        [Parser(Opcode.SMSG_NULL_0C59)]
-        [Parser(Opcode.SMSG_NULL_0C9A)]
-        [Parser(Opcode.SMSG_NULL_0E2B)]
-        [Parser(Opcode.SMSG_NULL_0E8B)]
-        [Parser(Opcode.SMSG_NULL_0FE1)]
-        [Parser(Opcode.SMSG_NULL_141B)]
-        [Parser(Opcode.SMSG_NULL_1A2A)]
-        public static void HandleSNullMisc(Packet packet)
-        {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-                packet.WriteLine("              : CMSG_???");
-                packet.ReadToEnd();
-            }
-            else
-            {
-                //packet.ReadToEnd();
-            }
         }
     }
 }

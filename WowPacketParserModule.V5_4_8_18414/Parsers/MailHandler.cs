@@ -65,25 +65,25 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         }
 
         [Parser(Opcode.SMSG_MAIL_LIST_RESULT)]
-        public static void HandleMailListResult(Packet packet)
+        public static void HandleSMailListResult(Packet packet)
         {
             packet.ReadToEnd();
         }
 
         [Parser(Opcode.SMSG_RECEIVED_MAIL)]
-        public static void HandleReceivedMail(Packet packet)
+        public static void HandleSReceivedMail(Packet packet)
         {
             packet.ReadToEnd();
         }
 
         [Parser(Opcode.SMSG_SEND_MAIL_RESULT)]
-        public static void HandleSendMailResult(Packet packet)
+        public static void HandleSSendMailResult(Packet packet)
         {
             packet.ReadToEnd();
         }
 
         [Parser(Opcode.SMSG_SHOW_MAILBOX)]
-        public static void HandleShowMailbox(Packet packet)
+        public static void HandleSShowMailbox(Packet packet)
         {
             packet.ReadToEnd();
         }

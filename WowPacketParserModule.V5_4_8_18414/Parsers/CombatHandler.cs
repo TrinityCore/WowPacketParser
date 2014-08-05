@@ -109,15 +109,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_CANCEL_COMBAT)]
         public static void HandleAttackerStateUpdate(Packet packet)
         {
-            if (packet.Direction == Direction.ServerToClient)
-            {
-                packet.ReadToEnd();
-            }
-            else
-            {
-                packet.WriteLine("              : CMSG_???");
-                packet.ReadToEnd();
-            }
+            packet.ReadToEnd();
         }
     }
 }

@@ -73,21 +73,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_SET_PLAYER_DECLINED_NAMES)]
         public static void HandleSetPlayerDeclinedNames(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-                var guid = packet.StartBitStream(0, 2, 1, 7, 5, 6, 4, 3);
-                var len = new uint[5];
-                for (var i = 0; i < 5; i++)
-                    len[i] = packet.ReadBits(7);
-                for (var i = 0; i < 5; i++)
-                    packet.ReadWoWString("str", len[i]);
-                packet.ParseBitStream(guid, 0, 7, 3, 6, 4, 2, 1, 5);
-                packet.WriteGuid("Guid", guid);
-            }
-            else
-            {
-                packet.WriteLine("              : SMSG_UNK_09E2");
-            }
+            var guid = packet.StartBitStream(0, 2, 1, 7, 5, 6, 4, 3);
+            var len = new uint[5];
+            for (var i = 0; i < 5; i++)
+                len[i] = packet.ReadBits(7);
+            for (var i = 0; i < 5; i++)
+                packet.ReadWoWString("str", len[i]);
+            packet.ParseBitStream(guid, 0, 7, 3, 6, 4, 2, 1, 5);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_SHOWING_CLOAK)]
@@ -267,8 +260,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadVector3("Position");
         }
 
-        [Parser(Opcode.SMSG_EMOTE)]
-        public static void HandleSEmote(Packet packet)
+        [Parser(Opcode.SMSG_TEXT_EMOTE)]
+        public static void HandleSTextEmote(Packet packet)
         {
             var guid = new byte[8];
             var guid2 = new byte[8];

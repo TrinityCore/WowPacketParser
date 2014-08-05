@@ -395,70 +395,49 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandlePetSpells(Packet packet)
         {
             var guid = new byte[8];
-
             guid[7] = packet.ReadBit();
             guid[4] = packet.ReadBit();
-            var bits44 = (int)packet.ReadBits(21);
-            var bits28 = (int)packet.ReadBits(22);
+            var count68 = packet.ReadBits("unk68", 21);
+            var count40 = packet.ReadBits("unk40", 22);
             guid[2] = packet.ReadBit();
-            var bits10 = (int)packet.ReadBits(20);
+            var count16 = packet.ReadBits("unk16", 20);
             guid[5] = packet.ReadBit();
             guid[3] = packet.ReadBit();
             guid[6] = packet.ReadBit();
             guid[0] = packet.ReadBit();
             guid[1] = packet.ReadBit();
 
-            const int maxCreatureSpells = 10;
-            var spells = new List<uint>(maxCreatureSpells);
-            for (var i = 0; i < maxCreatureSpells; i++) // Read pet/vehicle spell ids
+            for (var i = 0; i < 10; i++)
             {
-                var spell16 = packet.ReadUInt16();
-                var spell8 = packet.ReadByte();
-                var spellId = spell16 + (spell8 << 16);
-                var slot = packet.ReadByte();
-
-                var s = new StringBuilder("[");
-                s.Append(i).Append("] ").Append("Spell/Action: ");
-                if (spellId <= 4)
-                    s.Append(spellId);
-                else
-                    s.Append(StoreGetters.GetName(StoreNameType.Spell, spellId));
-                s.Append(" slot: ").Append(slot);
-                packet.WriteLine(s.ToString());
+                packet.ReadInt32("unk84", i);
             }
-
-            for (var i = 0; i < bits10; ++i)
+            for (var i = 0; i < count16; i++)
             {
-                packet.ReadInt32("Int14", i);
-                packet.ReadInt32("Int14", i);
-                packet.ReadInt16("Int14", i);
-                packet.ReadInt32("Int14", i);
+                packet.ReadInt32("unk28", i);
+                packet.ReadInt32("unk20", i);
+                packet.ReadInt16("unk32", i);
+                packet.ReadInt32("unk24", i);
             }
-
             packet.ReadXORByte(guid, 2);
-            for (var i = 0; i < bits28; ++i)
-                packet.ReadInt32("IntED", i);
-
+            for (var i = 0; i < count40; i++)
+                packet.ReadInt32("unk44", i);
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 3);
-            packet.ReadInt16("Family");
-
-            for (var i = 0; i < bits44; ++i)
+            packet.ReadInt16("unk66");
+            for (var i = 0; i < count68; i++)
             {
-                packet.ReadInt32("Int48", i);
-                packet.ReadByte("Byte48", i);
-                packet.ReadInt32("Int48", i);
+                packet.ReadInt32("unk76", i);
+                packet.ReadByte("unk80", i);
+                packet.ReadInt32("unk72", i);
             }
-
-            packet.ReadInt16("Int40");
+            packet.ReadInt16("unk64");
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 6);
-            packet.ReadInt32("Int24");
+            packet.ReadInt32("unk36");
             packet.ReadXORByte(guid, 5);
-            packet.ReadInt32("Int20");
-
+            packet.ReadInt32("unk32");
             packet.WriteGuid("Guid", guid);
         }
     }

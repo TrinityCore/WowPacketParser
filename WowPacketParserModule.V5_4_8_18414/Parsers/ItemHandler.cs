@@ -69,29 +69,21 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_AUTOSTORE_LOOT_ITEM)]
         public static void HandleAutoStoreLootItem(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
+            var counter = packet.ReadBits("Count", 23);
+
+            var guid = new byte[counter][];
+
+            for (var i = 0; i < counter; i++)
+                guid[i] = packet.StartBitStream(2, 7, 0, 6, 5, 3, 1, 4);
+
+            packet.ResetBitReader();
+
+            for (var i = 0; i < counter; i++)
             {
-                var counter = packet.ReadBits("Count", 23);
+                packet.ParseBitStream(guid[i], 0, 4, 1, 7, 6, 5, 3, 2);
+                packet.ReadByte("Slot", i);
 
-                var guid = new byte[counter][];
-
-                for (var i = 0; i < counter; i++)
-                    guid[i] = packet.StartBitStream(2, 7, 0, 6, 5, 3, 1, 4);
-
-                packet.ResetBitReader();
-
-                for (var i = 0; i < counter; i++)
-                {
-                    packet.ParseBitStream(guid[i], 0, 4, 1, 7, 6, 5, 3, 2);
-                    packet.ReadByte("Slot", i);
-
-                    packet.WriteGuid("Lootee GUID", guid[i], i);
-                }
-            }
-            else
-            {
-                packet.WriteLine("              : SMSG_???");
-                packet.ReadToEnd();
+                packet.WriteGuid("Lootee GUID", guid[i], i);
             }
         }
 
@@ -546,17 +538,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_SET_PROFICIENCY)]
         public static void HandleSetProficiency(Packet packet)
         {
-
-            if (packet.Direction == Direction.ServerToClient)
-            {
-                packet.ReadEnum<UnknownFlags>("Mask", TypeCode.UInt32);
-                packet.ReadEnum<ItemClass>("Class", TypeCode.Byte);
-            }
-            else
-            {
-                packet.WriteLine("              : CMSG_VOID_STORAGE_TRANSFER");
-                VoidStorageHandler.HandleVoidStorageTransfer(packet);
-            }
+            packet.ReadEnum<UnknownFlags>("Mask", TypeCode.UInt32);
+            packet.ReadEnum<ItemClass>("Class", TypeCode.Byte);
         }
     }
 }

@@ -32,14 +32,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_LOOT_MONEY)]
         public static void HandleLootMoney(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-            }
-            else
-            {
-                packet.WriteLine("              : SMSG_???");
-                packet.ReadToEnd();
-            }
         }
 
         [Parser(Opcode.CMSG_LOOT_RELEASE)]

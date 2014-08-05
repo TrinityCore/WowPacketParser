@@ -74,15 +74,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_GUILD_DEMOTE)]
         public static void HandleGuildDemote(Packet packet)
         {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-                packet.ReadToEnd();
-            }
-            else
-            {
-                packet.WriteLine("              : SMSG_???");
-                packet.ReadToEnd();
-            }
+            packet.ReadToEnd();
         }
 
         [Parser(Opcode.CMSG_GUILD_DISBAND)]
