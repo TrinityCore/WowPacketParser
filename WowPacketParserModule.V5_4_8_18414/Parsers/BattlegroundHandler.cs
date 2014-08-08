@@ -198,7 +198,36 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_LIST)]
         public static void HandleBattlefieldListServer(Packet packet)
         {
-            packet.ReadToEnd();
+            var guid = new byte[8];
+
+            packet.ReadInt32("winnerConquest"); // 28
+            packet.ReadInt32("loserHonor"); // 36
+            packet.ReadByte("Min Level"); // 46
+            packet.ReadInt32("winnerConquest"); // 24
+            packet.ReadInt32("winnerHonor"); // 72
+            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType"); // 32
+            packet.ReadInt32("winnerHonor"); // 40
+            packet.ReadByte("Max Level"); // 47
+            packet.ReadInt32("loserHonor"); // 48
+
+            guid[0] = packet.ReadBit();
+            var unk45 = packet.ReadBit("unk45"); // 45
+            guid[4] = packet.ReadBit();
+            var unk68 = packet.ReadBit("unk68"); // 68
+            guid[2] = packet.ReadBit();
+            var unk76 = packet.ReadBit("unk76"); // 76
+            guid[7] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            var unk44 = packet.ReadBit("unk44"); // 44
+            guid[3] = packet.ReadBit();
+
+            var count52 = packet.ReadBits("count52", 22); // 52
+            packet.ParseBitStream(guid, 7, 3, 4, 0, 5, 6, 1, 2);
+            for (var i = 0; i < count52; i++)
+                packet.ReadInt32("unk64", i);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING)]
