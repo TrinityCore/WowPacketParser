@@ -79,6 +79,8 @@ namespace WowPacketParser.Misc
         MSEbit149,
         MSEbit172,
 
+        MSEExtraFloat,
+
         MSECount,
         MSECounter,
 
