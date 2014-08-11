@@ -21,7 +21,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("size")]
         public float Size;
 
-        [DBFieldName("VerifiedBuild")]
+        [DBFieldName("WDBVerified")]
         public int VerifiedBuild;
     }
 
@@ -52,7 +52,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("rotation3")]
         public float rotationW;
 
-        [DBFieldName("VerifiedBuild")]
+        [DBFieldName("WDBVerified")]
         public int VerifiedBuild;
     }
 }

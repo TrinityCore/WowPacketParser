@@ -9,7 +9,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("name")]
         public string Name;
 
-        [DBFieldName("femaleName")]
+        [DBFieldName("femaleName", ClientVersionBuild.Zero, ClientVersionBuild.V3_1_0_9767)]
         public string femaleName;
 
         [DBFieldName("subname")]
@@ -63,7 +63,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("exp_unk", ClientVersionBuild.V4_0_1_13164)]
         public ClientType Expansion;
 
-        [DBFieldName("VerifiedBuild")]
+        [DBFieldName("WDBVerified")]
         public int VerifiedBuild;
     }
 }

@@ -11,7 +11,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("BroadcastText")]
         public string broadcastText;
 
-        [DBFieldName("VerifiedBuild")]
+        [DBFieldName("WDBVerified")]
         public int VerifiedBuild;
     }
 }

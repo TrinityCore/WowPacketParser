@@ -161,7 +161,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("em7_", 6, true)] public uint[] em7_x;
         // ReSharper restore InconsistentNaming
 
-        [DBFieldName("VerifiedBuild")]
+        [DBFieldName("WDBVerified")]
         public int VerifiedBuild;
     }
 
@@ -230,7 +230,7 @@ namespace WowPacketParser.Store.Objects
         public uint broadcastTextId7;
         // ReSharper restore InconsistentNaming
 
-        [DBFieldName("VerifiedBuild")]
+        [DBFieldName("WDBVerified")]
         public int VerifiedBuild;
     }
 }

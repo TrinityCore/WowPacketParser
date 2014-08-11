@@ -201,7 +201,7 @@ namespace WowPacketParser.SQL
                         continue;
 
                     var lastField = fields[fields.Count - 1];
-                    if (lastField.Item2.Name == "VerifiedBuild")
+                    if (lastField.Item2.Name == "WDBVerified")
                     {
                         var buildvSniff = (int)lastField.Item1.GetValue(elem1.Value.Item1);
                         var buildvDB = (int)lastField.Item1.GetValue(dict2[elem1.Key].Item1);
@@ -323,7 +323,7 @@ namespace WowPacketParser.SQL
                         continue;
 
                     var lastField = fields[fields.Count - 1];
-                    if (lastField.Item2.Name == "VerifiedBuild")
+                    if (lastField.Item2.Name == "WDBVerified")
                     {
                         var buildvSniff = (int)lastField.Item1.GetValue(elem1.Value.Item1);
                         var buildvDB = (int)lastField.Item1.GetValue(dict2[elem1.Key].Item1);

@@ -192,7 +192,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("SoundTurnIn", ClientVersionBuild.V4_0_1_13164)]
         public uint SoundTurnIn;
 
-        [DBFieldName("VerifiedBuild")]
+        [DBFieldName("WDBVerified")]
         public int VerifiedBuild;
     }
 }

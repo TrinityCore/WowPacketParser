@@ -37,7 +37,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("unkInt32", ClientVersionBuild.V4_0_1_13164)]
         public int UnknownInt;
 
-        [DBFieldName("VerifiedBuild")]
+        [DBFieldName("WDBVerified")]
         public int VerifiedBuild;
     }
 }

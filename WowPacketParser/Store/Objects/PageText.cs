@@ -11,7 +11,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("next_page")]
         public uint NextPageId;
 
-        [DBFieldName("VerifiedBuild")]
+        [DBFieldName("WDBVerified")]
         public int VerifiedBuild;
     }
 }
