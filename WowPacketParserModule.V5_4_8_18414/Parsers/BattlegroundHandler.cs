@@ -84,7 +84,13 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_BATTLEFIELD_PORT)]
         public static void HandleBattlefieldPort(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadBoolean("Action");
+            packet.ReadInt32("Slot");
+            packet.ReadInt32("Id");
+            packet.ReadTime("Time");
+            var guid = packet.StartBitStream(6, 4, 2, 5, 0, 1, 7, 3);
+            packet.ParseBitStream(guid, 2, 5, 3, 0, 7, 4, 6, 1);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_BATTLEGROUND_PORT_AND_LEAVE)]
@@ -287,25 +293,178 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS)]
         public static void HandleBattlefieldStatusServer(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadTime("unk32");
+            packet.ReadInt32("unk24");
+            packet.ReadInt32("Slot");
+            var guid = packet.StartBitStream(2, 0, 4, 5, 3, 7, 1, 6);
+            packet.ParseBitStream(guid, 3, 5, 6, 4, 2, 0, 1, 7);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_ACTIVE)]
         public static void HandleBattlefieldStatusActive(Packet packet)
         {
-            packet.ReadToEnd();
+            var guid = new byte[8];
+            var guid2 = new byte[8];
+
+            guid[0] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            var unk29 = packet.ReadBit("unk29"); // 29
+            guid[6] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            var unk28 = packet.ReadBit("unk28"); // 28
+            guid2[6] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            var unk72 = packet.ReadBit("unk72"); // 72
+
+            packet.ParseBitStream(guid, 3);
+            packet.ReadTime("unk192"); // 192
+            packet.ReadInt32("unk80"); // 80
+            packet.ParseBitStream(guid2, 7, 5);
+            packet.ParseBitStream(guid, 1);
+            packet.ParseBitStream(guid2, 6);
+            packet.ReadInt32("unk96"); // 96
+            packet.ReadByte("Max Lvl"); // 65
+            packet.ParseBitStream(guid2, 1, 2);
+            packet.ReadInt32("unk176"); // 176
+            packet.ParseBitStream(guid, 4);
+            packet.ReadByte("unk64");
+            packet.ParseBitStream(guid, 6);
+            packet.ReadInt32("Map"); // 16
+            packet.ParseBitStream(guid, 0, 5, 7);
+            packet.ParseBitStream(guid2, 4);
+            packet.ReadInt32("unk272"); // 272
+            packet.ParseBitStream(guid, 2);
+            packet.ReadByte("unk66"); // 66
+            packet.ReadInt32("unk160"); // 160
+            packet.ParseBitStream(guid2, 3, 0);
+
+            packet.WriteGuid("Guid", guid);
+            packet.WriteGuid("Guid2", guid2);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_FAILED)]
         public static void HandleBattlefieldStatusFailed(Packet packet)
         {
-            packet.ReadToEnd();
+            var guid = new byte[8];
+            var guid2 = new byte[8];
+            var guid3 = new byte[8];
+
+            packet.ReadInt32("unk40"); // 40
+            packet.ReadInt32("unk32"); // 32
+            packet.ReadInt32("unk36"); // 36
+            packet.ReadInt32("unk48"); // 48
+
+            guid3[7] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid3[5] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid3[4] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid3[0] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid3[2] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid3[3] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid3[1] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid3[6] = packet.ReadBit();
+
+            packet.ParseBitStream(guid3, 1, 2, 7);
+            packet.ParseBitStream(guid, 6, 0);
+            packet.ParseBitStream(guid2, 5, 0);
+            packet.ParseBitStream(guid, 1, 7);
+            packet.ParseBitStream(guid2, 6);
+            packet.ParseBitStream(guid3, 0);
+            packet.ParseBitStream(guid, 5);
+            packet.ParseBitStream(guid3, 6);
+            packet.ParseBitStream(guid2, 1);
+            packet.ParseBitStream(guid, 2);
+            packet.ParseBitStream(guid2, 7, 2, 3);
+            packet.ParseBitStream(guid3, 5);
+            packet.ParseBitStream(guid2, 4);
+            packet.ParseBitStream(guid3, 3);
+            packet.ParseBitStream(guid, 3);
+            packet.ParseBitStream(guid3, 4);
+            packet.ParseBitStream(guid, 4);
+
+            packet.WriteGuid("Guid", guid);
+            packet.WriteGuid("Guid2", guid2);
+            packet.WriteGuid("Guid3", guid3);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_NEEDCONFIRMATION)]
         public static void HandleBattlefieldStatusNeedConfirmation(Packet packet)
         {
-            packet.ReadToEnd();
+            var guid = new byte[8];
+            var guid2 = new byte[8];
+
+            guid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            var unk16 = 3 - packet.ReadBit("3 - unk16"); // 16
+            guid2[0] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            var unk64 = packet.ReadBit("unk64"); // 64
+            guid[2] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+
+            packet.ParseBitStream(guid, 1);
+            packet.ParseBitStream(guid2, 1);
+            packet.ParseBitStream(guid, 2);
+            packet.ReadByte("unk58"); // 58
+            packet.ReadInt32("unk144"); // 144
+            if (unk16 != 2)
+                packet.ReadByte("unk16"); // 16
+            packet.ReadInt32("unk240"); // 240
+            packet.ParseBitStream(guid2, 6, 7);
+            packet.ReadTime("unk160"); // 160
+            packet.ParseBitStream(guid, 7);
+            packet.ReadByte("Max Lvl"); // 57
+            packet.ParseBitStream(guid, 4);
+            packet.ParseBitStream(guid2, 2, 4);
+            packet.ReadInt32("unk304"); // 304
+            packet.ReadByte("unk56"); // 56
+            packet.ParseBitStream(guid, 3);
+            packet.ParseBitStream(guid2, 0);
+            packet.ParseBitStream(guid, 5, 6);
+            packet.ReadInt32("unk128"); // 128
+            packet.ParseBitStream(guid2, 3);
+            packet.ParseBitStream(guid, 0);
+            packet.ParseBitStream(guid2, 5);
+            packet.ReadInt32("Map"); // 288
+
+            packet.WriteGuid("Guid", guid);
+            packet.WriteGuid("Guid2", guid2);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_WAITFORGROUPS)]
@@ -317,7 +476,55 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED)]
         public static void HandleRGroupJoinedBattleground(Packet packet)
         {
-            packet.ReadToEnd();
+            var guid = new byte[8];
+            var guid2 = new byte[8];
+
+            guid2[1] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            var unk72 = packet.ReadBit("unk72"); // 72
+            var unk80 = packet.ReadBit("unk80"); // 80
+            var unk17 = packet.ReadBit("unk17"); // 17
+            guid[6] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            var unk16 = packet.ReadBit("unk16"); // 16
+            guid2[3] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+
+            packet.ParseBitStream(guid2, 4);
+            packet.ParseBitStream(guid, 6);
+            packet.ReadInt32("unk160"); // 160
+            packet.ParseBitStream(guid2, 5);
+            packet.ReadInt32("unk80"); // 80
+            packet.ParseBitStream(guid2, 3);
+            packet.ParseBitStream(guid, 3, 4, 0);
+            packet.ReadByte("unk64"); // 64
+            packet.ParseBitStream(guid2, 0);
+            packet.ReadTime("unk192"); // 192
+            packet.ReadByte("unk66"); // 66
+            packet.ParseBitStream(guid2, 1);
+            packet.ReadInt32("unk96"); // 96
+            packet.ParseBitStream(guid2, 7);
+            packet.ReadInt32("Slot"); // 176
+            packet.ParseBitStream(guid, 2);
+            packet.ParseBitStream(guid2, 6);
+            packet.ReadByte("Max Lvl"); // 65
+            packet.ParseBitStream(guid2, 2);
+            packet.ParseBitStream(guid, 5, 1);
+            packet.ReadInt32("unk252"); // 252
+            packet.ParseBitStream(guid, 7);
+
+            packet.WriteGuid("Guid", guid);
+            packet.WriteGuid("Guid2", guid2);
         }
 
         [Parser(Opcode.SMSG_BATTLEGROUND_EXIT_QUEUE)]

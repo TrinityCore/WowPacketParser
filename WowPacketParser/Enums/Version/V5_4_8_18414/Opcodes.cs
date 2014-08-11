@@ -37,7 +37,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_INVITE_RESPONSE,    0x0A97 | 0x10000}, //--
             {Opcode.CMSG_BATTLEFIELD_PORT,                         0x1379 | 0x10000}, //--
             {Opcode.CMSG_BATTLEMASTER_JOIN,                        0x0769 | 0x10000}, //--
-            {Opcode.CMSG_BATTLEMASTER_JOIN_ARENA,                  0x02D2 | 0x10000}, //+-
+            {Opcode.CMSG_BATTLEMASTER_JOIN_ARENA,                  0x02D2 | 0x10000}, //++
             {Opcode.CMSG_BATTLE_PET_DELETE_PET,                    0x18B6 | 0x10000}, //+-
             {Opcode.CMSG_BATTLE_PET_MODIFY_NAME,                   0x1887 | 0x10000}, //+-
             {Opcode.CMSG_BATTLE_PET_NAME_QUERY,                    0x1CE0 | 0x10000}, //+-
@@ -391,11 +391,11 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_BATTLEFIELD_LIST,                         0x160E | 0x20000}, //++
             {Opcode.SMSG_BATTLEFIELD_MGR_EJECTED,                  0x18C2 | 0x20000}, //--
             {Opcode.SMSG_BATTLEFIELD_MGR_ENTERED,                  0x081B | 0x20000}, //--
-            {Opcode.SMSG_BATTLEFIELD_STATUS,                       0x0433 | 0x20000}, //--
-            {Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED,                0x122E | 0x20000}, //--
-            {Opcode.SMSG_BATTLEFIELD_STATUS_ACTIVE,                0x1AAF | 0x20000}, //--
-            {Opcode.SMSG_BATTLEFIELD_STATUS_NEEDCONFIRMATION,      0x1EAF | 0x20000}, //--
-            {Opcode.SMSG_BATTLEFIELD_STATUS_FAILED,                0x1140 | 0x20000}, //--
+            {Opcode.SMSG_BATTLEFIELD_STATUS,                       0x0433 | 0x20000}, //++
+            {Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED,                0x122E | 0x20000}, //++
+            {Opcode.SMSG_BATTLEFIELD_STATUS_ACTIVE,                0x1AAF | 0x20000}, //++
+            {Opcode.SMSG_BATTLEFIELD_STATUS_NEEDCONFIRMATION,      0x1EAF | 0x20000}, //++
+            {Opcode.SMSG_BATTLEFIELD_STATUS_FAILED,                0x1140 | 0x20000}, //+-
             {Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED,               0x1E2F | 0x20000}, //--
             {Opcode.SMSG_BATTLEGROUND_PLAYER_LEFT,                 0x0206 | 0x20000}, //+-
             {Opcode.SMSG_BATTLE_PET_DELETED,                       0x18AB | 0x20000}, //+-
