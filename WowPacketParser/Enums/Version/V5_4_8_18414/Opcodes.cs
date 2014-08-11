@@ -64,6 +64,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_CHAR_RENAME,                              0x0963 | 0x10000}, //--
             {Opcode.CMSG_CHAT_IGNORED,                             0x048A | 0x10000}, //--
             {Opcode.CMSG_CONTACT_LIST,                             0x0BB4 | 0x10000}, //--
+            {Opcode.CMSG_CORPSE_MAP_POSITION_QUERY,                0x0150 | 0x10000}, //--
             {Opcode.CMSG_CREATURE_QUERY,                           0x0842 | 0x10000}, //+-
             {Opcode.CMSG_DEL_FRIEND,                               0x1103 | 0x10000}, //--
             {Opcode.CMSG_DEL_IGNORE,                               0x0737 | 0x10000}, //-+
