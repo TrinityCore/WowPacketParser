@@ -490,10 +490,52 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             ReadPlayerMovementInfo(ref packet, info.MovementForceWalkSpeedChangeAck);
         }
 
+        [Parser(Opcode.CMSG_UNK_11DB)]
+        public static void HandleCUnk11DB(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.CUnk11DB);
+        }
+
+        [Parser(Opcode.SMSG_UNK_0047)]
+        public static void HandleUnk0047(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.Unk0047);
+        }
+
+        [Parser(Opcode.SMSG_UNK_00E1)]
+        public static void HandleUnk00E1(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.Unk00E1);
+        }
+
+        [Parser(Opcode.SMSG_UNK_01E2)]
+        public static void HandleUnk01E2(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.Unk01E2);
+        }
+
         [Parser(Opcode.SMSG_UNK_023B)]
         public static void HandleUnk023B(Packet packet)
         {
             ReadPlayerMovementInfo(ref packet, info.Unk023B);
+        }
+
+        [Parser(Opcode.SMSG_UNK_08A3)]
+        public static void HandleUnk08A3(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.Unk08A3);
+        }
+
+        [Parser(Opcode.SMSG_UNK_158E)]
+        public static void HandleSUnk158E(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.Unk158E);
+        }
+
+        [Parser(Opcode.SMSG_UNK_1812)]
+        public static void HandleSUnk1812(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.Unk1812);
         }
 
         [Parser(Opcode.MSG_MOVE_HEARTBEAT)]
