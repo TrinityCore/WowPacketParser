@@ -81,7 +81,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_GET_TIMEZONE_INFORMATION,                 0x00E0 | 0x10000}, //++
             {Opcode.CMSG_GOSSIP_HELLO,                             0x12F3 | 0x10000}, //-+
             {Opcode.CMSG_GOSSIP_SELECT_OPTION,                     0x0748 | 0x10000}, //++
-            {Opcode.CMSG_GROUP_DISBAND,                            0x1798 | 0x10000}, //--
+            {Opcode.CMSG_GROUP_DISBAND,                            0x1798 | 0x10000}, //++
             {Opcode.CMSG_GROUP_INVITE,                             0x072D | 0x10000}, //--
             {Opcode.CMSG_GROUP_INVITE_RESPONSE,                    0x0D61 | 0x10000}, //--
             {Opcode.CMSG_GROUP_RAID_CONVERT,                       0x032C | 0x10000}, //--

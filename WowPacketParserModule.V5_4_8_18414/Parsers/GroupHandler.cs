@@ -32,6 +32,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
+        [Parser(Opcode.CMSG_GROUP_DISBAND)]
+        public static void HandleCGroupDisband(Packet packet)
+        {
+            packet.ReadByte("UnkByte");
+        }
+
         [Parser(Opcode.CMSG_GROUP_INVITE)]
         public static void HandleCGroupInvite(Packet packet)
         {
@@ -220,7 +226,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
-        [Parser(Opcode.CMSG_GROUP_DISBAND)]
         [Parser(Opcode.SMSG_GROUP_DESTROYED)]
         [Parser(Opcode.SMSG_GROUP_UNINVITE)]
         [Parser(Opcode.CMSG_GROUP_DECLINE)]
