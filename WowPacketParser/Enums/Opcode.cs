@@ -900,6 +900,7 @@ namespace WowPacketParser.Enums
         CMSG_UNK_09F0,
         CMSG_UNK_09FB,
         CMSG_UNK_0CF0,
+        CMSG_UNK_1052,
         CMSG_UNK_10A2,
         CMSG_UNK_10A7,
         CMSG_UNK_10F2,
