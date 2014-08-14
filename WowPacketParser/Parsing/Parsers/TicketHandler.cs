@@ -96,19 +96,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GMTICKET_DELETETICKET)]
         public static void HandleCreateUpdateGMTicket(Packet packet)
         {
-            var ticketResponse = packet.ReadEnum<GMTicketResponse>("TicketResponse", TypeCode.Int32);
-            switch (ticketResponse)
-            {
-                case GMTicketResponse.Failure:
-                    packet.WriteLine("Action failed");
-                    break;
-                case GMTicketResponse.Success:
-                    packet.WriteLine("Action succeeded");
-                    break;
-                case GMTicketResponse.Deleted:
-                    packet.WriteLine("Ticket deleted");
-                    break;
-            }
+            packet.ReadEnum<GMTicketResponse>("TicketResponse", TypeCode.Int32);
         }
 
         [Parser(Opcode.CMSG_GMTICKET_UPDATETEXT)]

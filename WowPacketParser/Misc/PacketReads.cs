@@ -439,9 +439,7 @@ namespace WowPacketParser.Misc
             return val;
         }
 
-        /// <summary>
-        /// Bitstream
-        /// </summary>
+#region BitStream
 
         private byte _bitpos = 8;
         private byte _curbitval;
@@ -559,11 +557,11 @@ namespace WowPacketParser.Misc
                     stream[value] ^= ReadByte();
         }
 
-        public string WriteGuid(byte[] stream)
+#endregion
+
+        public string WriteGuid(byte[] stream, params int[] values)
         {
-            var val = new Guid(BitConverter.ToUInt64(stream, 0));
-            WriteLine("Guid: {0}", val);
-            return val.ToString();
+            return WriteGuid("Guid", stream, values);
         }
 
         public string WriteGuid(string name, byte[] stream, params int[] values)
