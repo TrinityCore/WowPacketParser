@@ -85,23 +85,25 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.8.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MySql.Data.6.8.3\lib\net40\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="PowerCollections, Version=1.0.2141.24679, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\XAct.Wintellect.PowerCollections.0.0.1\lib\net20\PowerCollections.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="MySql.Data, Version=6.2.2.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d">
-      <HintPath>Dependencies\MySql.Data.dll</HintPath>
-    </Reference>
     <Reference Include="System.Configuration" />
-    <Reference Include="SharpSSH, Version=2.0.0.25137, Culture=neutral, PublicKeyToken=null">
-      <HintPath>Dependencies\SharpSSH.dll</HintPath>
-    </Reference>
-    <Reference Include="Ionic.Zlib">
-      <HintPath>Dependencies\Ionic.Zlib.dll</HintPath>
-    </Reference>
-    <Reference Include="PowerCollections">
-      <HintPath>Dependencies\PowerCollections.dll</HintPath>
+    <Reference Include="Tamir.SharpSSH">
+      <HintPath>..\packages\Tamir.SharpSSH.1.1.1.13\lib\Tamir.SharpSSH.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -490,6 +492,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
