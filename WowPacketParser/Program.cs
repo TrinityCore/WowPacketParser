@@ -7,8 +7,8 @@ using System.Threading;
 using WowPacketParser.Enums;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
-using WowPacketParser.SQL;
 using WowPacketParser.Parsing.Parsers;
+using WowPacketParser.SQL;
 
 namespace WowPacketParser
 {

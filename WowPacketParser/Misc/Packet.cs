@@ -3,11 +3,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
 using System.Text;
+using Ionic.Zlib;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
+using WowPacketParser.Parsing.Parsers;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using WowPacketParser.Parsing.Parsers;
-using Ionic.Zlib;
 
 namespace WowPacketParser.Misc
 {
@@ -223,7 +224,7 @@ namespace WowPacketParser.Misc
         public string GetHeader(bool isMultiple = false)
         {
             return string.Format("{0}: {1} (0x{2}) Length: {3} ConnIdx: {4} EP: {5} Time: {6} Number: {7}{8}",
-                Direction, Enums.Version.Opcodes.GetOpcodeName(Opcode, Direction), Opcode.ToString("X4"),
+                Direction, Opcodes.GetOpcodeName(Opcode, Direction), Opcode.ToString("X4"),
                 Length, ConnectionIndex, EndPoint, Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
                 Number, isMultiple ? " (part of another packet)" : "");
         }

@@ -2,7 +2,6 @@ using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using SpellHitInfo = WowPacketParser.Enums.SpellHitInfo;
 
 namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {

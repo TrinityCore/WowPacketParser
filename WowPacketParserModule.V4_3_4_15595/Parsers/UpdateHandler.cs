@@ -7,7 +7,6 @@ using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using Guid = WowPacketParser.Misc.Guid;
-using MovementFlag = WowPacketParserModule.V4_3_4_15595.Enums.MovementFlag;
 
 namespace WowPacketParserModule.V4_3_4_15595.Parsers
 {
@@ -165,7 +164,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 guid2[3] = packet.ReadBit();
                 guid2[2] = packet.ReadBit();
                 if (hasMovementFlags)
-                    moveInfo.Flags = (WowPacketParser.Enums.MovementFlag)packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
+                    moveInfo.Flags = (MovementFlag)packet.ReadEnum<Enums.MovementFlag>("Movement Flags", 30, index);
 
                 packet.ReadBit("Has MovementInfo spline", index);
                 hasPitch = !packet.ReadBit("Lacks pitch", index);

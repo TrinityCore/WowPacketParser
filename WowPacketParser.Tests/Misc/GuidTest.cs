@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using WowPacketParser.Enums;
-using Guid = WowPacketParser.Misc.Guid;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.Tests.Misc
 {

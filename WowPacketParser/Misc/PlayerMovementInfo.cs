@@ -1,6 +1,3 @@
-using System;
-using WowPacketParser.Enums;
-
 namespace WowPacketParser.Misc
 {
     public enum MovementStatusElements

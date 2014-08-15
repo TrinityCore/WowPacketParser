@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Store.Objects
@@ -160,7 +161,7 @@ namespace WowPacketParser.Store.Objects
             }
 
             UpdateField uf;
-            if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(updateField), out uf))
+            if (dict.TryGetValue(UpdateFields.GetUpdateField(updateField), out uf))
             {
                 if (isInt)
                     return (TK)(object)uf.UInt32Value;
@@ -215,13 +216,13 @@ namespace WowPacketParser.Store.Objects
             if (isInt)
             {
                 for (var i = 0; i < count; i++)
-                    if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(firstUpdateField) + i, out uf))
+                    if (dict.TryGetValue(UpdateFields.GetUpdateField(firstUpdateField) + i, out uf))
                         result[i] = (TK)(object)uf.UInt32Value;
             }
             else
             {
                 for (var i = 0; i < count; i++)
-                    if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(firstUpdateField) + i, out uf))
+                    if (dict.TryGetValue(UpdateFields.GetUpdateField(firstUpdateField) + i, out uf))
                         result[i] = (TK)(object)uf.SingleValue;
             }
 
@@ -245,7 +246,7 @@ namespace WowPacketParser.Store.Objects
             try
             {
                 UpdateField uf;
-                if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(updateField), out uf))
+                if (dict.TryGetValue(UpdateFields.GetUpdateField(updateField), out uf))
                     return (TK)Enum.Parse(typeof(TK).GetGenericArguments()[0], uf.UInt32Value.ToString(CultureInfo.InvariantCulture));
             }
             catch (OverflowException) // Data wrongly parsed can result in very wtfy values

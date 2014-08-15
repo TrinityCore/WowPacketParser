@@ -9,8 +9,8 @@ using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.SQL;
 using WowPacketParser.Saving;
+using WowPacketParser.SQL;
 using WowPacketParser.Store;
 
 namespace WowPacketParser.Loading

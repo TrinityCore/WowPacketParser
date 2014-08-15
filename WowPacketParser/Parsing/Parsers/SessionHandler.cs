@@ -1,10 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
+using Ionic.Zlib;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using Guid=WowPacketParser.Misc.Guid;
-using Ionic.Zlib;
-using System.Collections.Generic;
+using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {

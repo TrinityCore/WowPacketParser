@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+using System.IO;
 using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc
@@ -73,7 +74,7 @@ namespace WowPacketParser.Misc
             // load different config file
             if (configFile != null)
             {
-                string configPath = System.IO.Path.Combine(Environment.CurrentDirectory, configFile);
+                string configPath = Path.Combine(Environment.CurrentDirectory, configFile);
 
                 try
                 {

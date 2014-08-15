@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using NUnit.Framework;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using System;
 
 namespace WowPacketParser.Tests.Misc
 {
