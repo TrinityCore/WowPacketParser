@@ -63,7 +63,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(counter, 3);
             packet.ReadXORByte(counter, 1);
 
-            packet.WriteLine("Counter: {0}", BitConverter.ToInt64(counter, 0));
+            packet.AddValue("Counter", BitConverter.ToInt64(counter, 0));
             packet.WriteGuid("Guid", guid);
         }
 
@@ -157,8 +157,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadXORByte(counter[i], 6);
                 packet.ReadXORByte(guid2[i], 0);
 
-                packet.WriteLine("[{0}] Criteria Flags: {1}", i, flags[i]);
-                packet.WriteLine("[{0}] Criteria Counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
+                packet.AddValue("Criteria Flags", flags[i], i);
+                packet.AddValue("Criteria Counter", BitConverter.ToUInt64(counter[i], 0), i);
                 packet.WriteGuid("Criteria GUID", guid2[i], i);
             }
 

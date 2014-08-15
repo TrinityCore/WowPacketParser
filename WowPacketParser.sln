@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParser", "WowPacketParser\WowPacketParser.csproj", "{0BF6F270-0B6F-4705-8E1A-F57DB76DB407}"
 EndProject
@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V5_4_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V5_4_2_17658", "WowPacketParserModule.V5_4_2_17658\WowPacketParserModule.V5_4_2_17658.csproj", "{611E8ABD-9581-4CDC-A98E-FDDD743B7908}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V5_4_7_17658", "WowPacketParserModule.V5_4_7_17898\WowPacketParserModule.V5_4_7_17898.csproj", "{763DC013-0757-4786-A841-934000D0A2B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V5_4_7_17898", "WowPacketParserModule.V5_4_7_17898\WowPacketParserModule.V5_4_7_17898.csproj", "{763DC013-0757-4786-A841-934000D0A2B6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V5_4_8_18291", "WowPacketParserModule.V5_4_8_18291\WowPacketParserModule.V5_4_8_18291.csproj", "{B53A76DC-BA47-4364-AE96-6BEA96E3DF0F}"
 EndProject

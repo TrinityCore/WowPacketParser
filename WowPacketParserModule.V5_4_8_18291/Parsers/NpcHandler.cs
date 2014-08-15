@@ -101,7 +101,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32, i);//528
                 packet.ReadInt32("Level", i);//8
                 packet.ReadUInt32("Icon", i);//4
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID", i); //528
+                packet.ReadEntry<UInt32>(StoreNameType.Quest, "Quest ID", i); //528
                 packet.ReadEnum<QuestFlags2>("Flags 2", TypeCode.UInt32, i);//532
             }
 
@@ -341,7 +341,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 var trainerSpell = new TrainerSpell();
                 trainerSpell.RequiredLevel = packet.ReadByte("Required Level", i);
                 trainerSpell.Cost = packet.ReadUInt32("Cost", i);
-                trainerSpell.Spell = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+                trainerSpell.Spell = (uint)packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
                 for (var j = 0; j < 3; ++j)
                     packet.ReadInt32("Int818", i, j);
                 trainerSpell.RequiredSkill = packet.ReadUInt32("Required Skill", i);
@@ -424,7 +424,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             {
                 var vendorItem = new VendorItem();
 
-                packet.WriteLine("[{0}] unkBit: {1}", i, unkBit[i]);
+                packet.AddValue("unkBit", unkBit[i], i);
 
                 packet.ReadInt32("Max Durability", i);   // +16
                 packet.ReadInt32("Price", i);   // +20
@@ -433,7 +433,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.ReadInt32("Display ID", i);    // +12
                 var buyCount = packet.ReadUInt32("Buy Count", i);    // +28
 
-                vendorItem.ItemId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);   // +8
+                vendorItem.ItemId = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Item ID", i);   // +8
 
                 if (hasExtendedCost[i])
                     vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);    // +36

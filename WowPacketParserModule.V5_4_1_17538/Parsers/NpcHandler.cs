@@ -49,7 +49,7 @@ namespace WowPacketParserModule.V5_4_1_17358.Parsers
                 packet.ReadUInt32("Icon", i);
                 packet.ReadInt32("Level", i);
                 packet.ReadWoWString("Title", titleLen[i], i);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Quest, "Quest ID", i);
                 packet.ReadEnum<QuestFlags2>("Flags 2", TypeCode.UInt32, i);
             }
 
@@ -224,7 +224,7 @@ namespace WowPacketParserModule.V5_4_1_17358.Parsers
             {
                 var vendorItem = new VendorItem();
 
-                vendorItem.ItemId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
+                vendorItem.ItemId = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Item ID", i);
 
                 if (hasCondition[i])
                     packet.ReadInt32("Condition ID", i);
@@ -278,7 +278,7 @@ namespace WowPacketParserModule.V5_4_1_17358.Parsers
             for (var i = 0; i < count; ++i)
             {
                 var trainerSpell = new TrainerSpell();
-                trainerSpell.Spell = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+                trainerSpell.Spell = (uint)packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
 
                 for (var j = 0; j < 3; ++j)
                     packet.ReadInt32("Int818", i, j);

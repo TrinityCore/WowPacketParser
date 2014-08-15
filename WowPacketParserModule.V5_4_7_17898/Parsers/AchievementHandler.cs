@@ -54,8 +54,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(counter, 4);
             packet.ReadXORByte(counter, 6);
 
-            packet.WriteLine("Account: {0}", BitConverter.ToUInt64(accountId, 0));
-            packet.WriteLine("Counter: {0}", BitConverter.ToInt64(counter, 0));
+            packet.AddValue("Account", BitConverter.ToUInt64(accountId, 0));
+            packet.AddValue("Counter", BitConverter.ToInt64(counter, 0));
         }
 
         [Parser(Opcode.SMSG_CRITERIA_UPDATE_PLAYER)]
@@ -172,8 +172,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                 packet.WriteGuid("Guid2", guid2[i], i);
 
-                packet.WriteLine("[{0}] Criteria Flags: {1}", i, flags[i]);
-                packet.WriteLine("[{0}] Criteria Counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
+                packet.AddValue("Criteria Flags", flags[i], i);
+                packet.AddValue("Criteria Counter", BitConverter.ToUInt64(counter[i], 0), i);
                 packet.WriteGuid("Criteria GUID", guid2[i], i);
             }
         }
@@ -236,9 +236,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadUInt32("Timer 2", i);
                 packet.ReadXORByte(counter[i], 6);
 
-                packet.WriteLine("[{0}] Criteria Flags: {1}", i, flags[i]);
-                packet.WriteLine("[{0}] Criteria Counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
-                packet.WriteLine("[{0}] Account: {1}", i, BitConverter.ToUInt64(accountId[i], 0));
+                packet.AddValue("Criteria Flags", flags[i], i);
+                packet.AddValue("Criteria Counter", BitConverter.ToUInt64(counter[i], 0), i);
+                packet.AddValue("Account", i, BitConverter.ToUInt64(accountId[i], 0), i);
             }
         }
 
@@ -358,8 +358,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadXORByte(counter[i], 6);
                 packet.ReadXORByte(counter[i], 3);
 
-                packet.WriteLine("[{0}] Criteria Flags: {1}", i, flags[i]);
-                packet.WriteLine("[{0}] Criteria Counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
+                packet.AddValue("Criteria Flags", flags[i], i);
+                packet.AddValue("Criteria Counter", BitConverter.ToUInt64(counter[i], 0), i);
                 packet.WriteGuid("Criteria GUID", guid2[i], i);
             }
 

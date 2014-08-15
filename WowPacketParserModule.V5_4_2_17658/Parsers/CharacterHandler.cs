@@ -86,7 +86,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
                 packet.ReadEnum<Gender>("Gender", TypeCode.Byte, c); //v4+60
                 packet.ReadInt32("Pet Display ID", c); //v4+108
-                var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
+                var zone = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", c);
                 packet.ReadXORByte(charGuids[c], 6);
                 packet.ReadByte("Hair Color", c); // v4+64
                 packet.ReadByte("Facial Hair", c); // v4+65
@@ -96,7 +96,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadXORByte(guildGuids[c], 4);
 
                 packet.ReadByte("Skin", c); // v4+63
-                var mapId = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id", c); //v4+72
+                var mapId = packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id", c); //v4+72
                 packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
                 var y = packet.ReadSingle("Position Y", c); // v4+80
 
@@ -118,10 +118,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
                 if (firstLogins[c])
                 {
-                    var startPos = new StartPosition();
-                    startPos.Map = mapId;
-                    startPos.Position = new Vector3(x, y, z);
-                    startPos.Zone = zone;
+                    var startPos = new StartPosition {Map = mapId, Position = new Vector3(x, y, z), Zone = (int) zone};
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
@@ -195,7 +192,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                packet.WriteLine("[{0}] Flags {1}", i, flags[i]); // 20h
+                packet.AddValue("Flags", flags[i], i); // 20h
                 packet.ReadUInt32("Currency count", i);
 
                 if (hasWeekCap[i]) // 14h

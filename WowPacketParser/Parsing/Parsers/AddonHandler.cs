@@ -56,7 +56,7 @@ namespace WowPacketParser.Parsing.Parsers
             // This packet requires _addonCount from CMSG_AUTH_SESSION to be parsed.
             if (_addonCount == -1)
             {
-                packet.WriteLine("CMSG_AUTH_SESSION was not received - cannot successfully parse this packet.");
+                packet.AddValue("Error", "CMSG_AUTH_SESSION was not received - cannot successfully parse this packet.");
                 packet.ReadToEnd();
                 return;
             }
@@ -72,10 +72,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var usePublicKey = packet.ReadBoolean("Use Public Key", i);
 
                     if (usePublicKey)
-                    {
-                        var pubKey = packet.ReadBytes(256);
-                        packet.WriteLine("[{0}] Name MD5: {1}", i, Utilities.ByteArrayToHexString(pubKey));
-                    }
+                        packet.ReadBytes("Name MD5", 256);
 
                     packet.ReadInt32("Unk Int32", i);
                 }
@@ -91,13 +88,8 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var i = 0; i < bannedCount; i++)
                 {
                     packet.ReadInt32("ID", i);
-
-                    var unkStr2 = packet.ReadBytes(16);
-                    packet.WriteLine("[{0}] Name MD5: {1}", i, Utilities.ByteArrayToHexString(unkStr2));
-
-                    var unkStr3 = packet.ReadBytes(16);
-                    packet.WriteLine("[{0}] Version MD5: {1}", i, Utilities.ByteArrayToHexString(unkStr3));
-
+                    packet.ReadBytes("Name MD5", 16);
+                    packet.ReadBytes("Version MD5", 16);
                     packet.ReadTime("Time", i);
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3a_11723))

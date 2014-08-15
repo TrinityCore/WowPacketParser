@@ -101,7 +101,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             for (var i = 0; i < questgossips; ++i)
             {
                 packet.ReadEnum<QuestFlags2>("Flags 2", TypeCode.UInt32, i);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Quest, "Quest ID", i);
                 packet.ReadInt32("Level", i);
                 packet.ReadUInt32("Icon", i);
                 packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32, i);
@@ -249,7 +249,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             {
                 var trainerSpell = new TrainerSpell();
                 packet.ReadEnum<TrainerSpellState>("State", TypeCode.Byte, i);
-                trainerSpell.Spell = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+                trainerSpell.Spell = (uint)packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
                 trainerSpell.RequiredSkill = packet.ReadUInt32("Required Skill", i);
                 trainerSpell.Cost = packet.ReadUInt32("Cost", i);
                 for (var j = 0; j < 3; ++j)
@@ -293,7 +293,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var guid = new byte[8];
 
             packet.ReadInt32("Unknown Int32"); // same unk exists in SMSG_TRAINER_LIST
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
 
             packet.StartBitStream(guid, 6, 2, 0, 7, 5, 3, 1, 4);
             packet.ParseBitStream(guid, 6, 0, 5, 1, 7, 4, 2, 3);
@@ -351,7 +351,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
 
                 packet.ReadInt32("Price", i);
-                vendorItem.ItemId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
+                vendorItem.ItemId = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Item ID", i);
                 vendorItem.Slot = packet.ReadUInt32("Item Position", i);
 
                 if (hasCondition[i])

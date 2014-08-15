@@ -340,7 +340,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     var value = packet.ReadUInt32();
                     var id = packet.ReadUInt32();
 
-                    packet.WriteLine("[{0}][{1}] Profession: Id {2} - Value {3} - Rank {4}", i, j, id, value, rank);
+                    packet.AddValue("Profession", string.Format("Id {0} - Value {1} - Rank {2}", id, value, rank), i, j);
                 }
                 packet.ReadXORByte(guid[i], 0);
                 packet.ReadInt32("Member Rank", i);
@@ -430,7 +430,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                 count[i] = packet.ReadBits(24);
                 if (count[i] != 0)
-                    packet.WriteLine("[{0]] Count: {0}", i, count[i]);
+                    packet.AddValue("Count", count[i], i);
 
                 guidIn[i] = new byte[count[i]][];
                 for (var j = 0; j < count[i]; ++j)
@@ -507,7 +507,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadUInt64("Price", i);
                 packet.ReadEnum<ReputationRank>("Faction Standing", TypeCode.UInt32, i);
                 packet.ReadEnum<RaceMask>("Race mask", TypeCode.UInt32, i);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Id", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Id", i);
                 packet.ReadUInt32("Unk UInt32", i);
             }
         }

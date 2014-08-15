@@ -97,15 +97,15 @@ namespace WowPacketParser.Misc
         {
             try
             {
-                if (!SessionHandler.z_streams.ContainsKey(index))
-                    SessionHandler.z_streams[index] = new ZlibCodec(CompressionMode.Decompress);
-                SessionHandler.z_streams[index].InputBuffer = arr;
-                SessionHandler.z_streams[index].NextIn = 0;
-                SessionHandler.z_streams[index].AvailableBytesIn = arr.Length;
-                SessionHandler.z_streams[index].OutputBuffer = newarr;
-                SessionHandler.z_streams[index].NextOut = 0;
-                SessionHandler.z_streams[index].AvailableBytesOut = inflatedSize;
-                SessionHandler.z_streams[index].Inflate(FlushType.Sync);
+                if (!SessionHandler.ZStreams.ContainsKey(index))
+                    SessionHandler.ZStreams[index] = new ZlibCodec(CompressionMode.Decompress);
+                SessionHandler.ZStreams[index].InputBuffer = arr;
+                SessionHandler.ZStreams[index].NextIn = 0;
+                SessionHandler.ZStreams[index].AvailableBytesIn = arr.Length;
+                SessionHandler.ZStreams[index].OutputBuffer = newarr;
+                SessionHandler.ZStreams[index].NextOut = 0;
+                SessionHandler.ZStreams[index].AvailableBytesOut = inflatedSize;
+                SessionHandler.ZStreams[index].Inflate(FlushType.Sync);
                 return true;
             }
             catch (ZlibException)
@@ -191,13 +191,15 @@ namespace WowPacketParser.Misc
                     inflater.SetInput(arr, 0, arr.Length);
                     inflater.Inflate(newarr, 0, inflatedSize);
                 }*/
-                ZlibCodec stream = new ZlibCodec(CompressionMode.Decompress);
-                stream.InputBuffer = arr;
-                stream.NextIn = 0;
-                stream.AvailableBytesIn = arr.Length;
-                stream.OutputBuffer = newarr;
-                stream.NextOut = 0;
-                stream.AvailableBytesOut = inflatedSize;
+                var stream = new ZlibCodec(CompressionMode.Decompress)
+                {
+                    InputBuffer = arr,
+                    NextIn = 0,
+                    AvailableBytesIn = arr.Length,
+                    OutputBuffer = newarr,
+                    NextOut = 0,
+                    AvailableBytesOut = inflatedSize
+                };
                 stream.Inflate(FlushType.None);
                 stream.Inflate(FlushType.Finish);
                 stream.EndInflate();
@@ -307,14 +309,18 @@ namespace WowPacketParser.Misc
             {
                 if (Settings.DumpFormatWithText())
                     Writer.Clear();
-
                 Writer = null;
             }
 
-            if (BaseStream != null)
-                BaseStream.Close();
+            BaseStream.Close();
 
             Dispose(true);
+        }
+
+        public T AddValue<T>(string name, T obj, params object[] indexes)
+        {
+            WriteLine("{0}{1}: {2}", GetIndexString(indexes), name, obj);
+            return obj;
         }
     }
 }

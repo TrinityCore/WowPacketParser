@@ -75,7 +75,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     Type = 0 // removed in MoP
                 };
 
-                packet.WriteLine("Action " + i + ": " + action.Id);
+                packet.AddValue("Action " + i, action.Id);
                 startAction.Actions.Add(action);
             }
 

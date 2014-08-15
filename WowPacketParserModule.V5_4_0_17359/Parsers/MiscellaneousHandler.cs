@@ -22,7 +22,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.CMSG_LOAD_SCREEN)]
         public static void HandleClientEnterWorld(Packet packet)
         {
-            var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
+            var mapId = packet.ReadEntry<UInt32>(StoreNameType.Map, "Map");
             packet.ReadBit("Loading");
         }
 
@@ -64,8 +64,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             pos.O = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
             pos.X = packet.ReadSingle();
-            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
-            packet.WriteLine("Position: {0}", pos);
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            packet.AddValue("Position", pos);
 
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
@@ -386,7 +386,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             packet.ReadByte("Byte20");
             packet.ReadInt32("Int1C");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
 
             var bit10 = !packet.ReadBit();
             var bit14 = !packet.ReadBit();
@@ -555,7 +555,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 3);
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
             packet.ReadXORByte(guid, 5);
 
             packet.WriteGuid("Guid", guid);
@@ -666,7 +666,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(guid3, 5);
             packet.ReadXORByte(guid3, 6);
             packet.ReadXORByte(guid3, 4);
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
             packet.ReadXORByte(guid3, 7);
             packet.ReadXORByte(guid3, 1);
             packet.ReadXORByte(guid3, 3);
@@ -699,7 +699,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 5);
             packet.ReadByte("Byte1C");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 0);
@@ -886,7 +886,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadXORByte(guid1, 1);
                 packet.ReadXORByte(guid1, 6);
 
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+                packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
 
                 packet.ReadXORByte(guid1, 4);
                 packet.ReadXORByte(guid1, 5);
@@ -923,7 +923,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.ReadXORByte(guid1, 6);
             packet.ReadXORByte(guid1, 5);
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
             packet.ReadXORByte(guid1, 0);
             packet.ReadXORByte(guid1, 1);
             packet.ReadXORByte(guid1, 3);
@@ -1121,7 +1121,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.WriteLine("ServerToClient: SMSG_QUESTGIVER_QUEST_COMPLETE");
 
                 packet.ReadInt32("Reward XP");
-                packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID");
+                packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID");
                 packet.ReadInt32("Money");
                 packet.ReadInt32("Int1C");
                 packet.ReadInt32("Int24");
@@ -1455,7 +1455,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadBit("bit10");
             guid[1] = packet.ReadBit();
             packet.ParseBitStream(guid, 5, 2, 6, 3, 1, 0, 4, 7);
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
 
             packet.WriteGuid("GUID", guid);
         }
@@ -1562,7 +1562,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadInt32("Int2C");
             }
 
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
             packet.ReadInt32("Int24");
             packet.ReadXORByte(guid2, 0);
             packet.ReadXORByte(guid2, 2);
@@ -1791,7 +1791,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.StartBitStream(guid, 5, 1, 4, 2, 3, 0, 6, 7);
             packet.ParseBitStream(guid, 5, 2, 0, 6, 3, 1, 4, 7);
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
 
             packet.WriteGuid("Guid", guid);
         }
@@ -2211,7 +2211,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadByte("Byte14", i);
                 packet.ReadInt32("Realm Id", i);
                 packet.ReadXORByte(guid[i], 7);
-                packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area Id");
+                packet.ReadEntry<Int32>(StoreNameType.Area, "Area Id");
                 packet.ReadXORByte(guid[i], 0);
                 packet.ReadInt32("Int14", i);
                 packet.ReadSingle("Float14", i);
@@ -2238,7 +2238,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadXORByte(guid[i], 5);
                 packet.ReadWoWString("String14", bits0[i], i);
                 packet.ReadInt64("IntED", i);
-                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
+                packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
                 packet.ReadByte("Level", i);
                 packet.WriteGuid("Guid", guid[i], i);
             }

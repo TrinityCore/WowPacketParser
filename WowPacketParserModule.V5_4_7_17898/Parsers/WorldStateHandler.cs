@@ -12,9 +12,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_INIT_WORLD_STATES)]
         public static void HandleInitWorldStates(Packet packet)
         {
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
-            CoreParsers.WorldStateHandler.CurrentAreaId = packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area Id");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
+            CoreParsers.WorldStateHandler.CurrentAreaId = packet.ReadEntry<Int32>(StoreNameType.Area, "Area Id");
 
             var numFields = packet.ReadBits("Field Count", 21);
 
@@ -22,7 +22,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             {
                 var val = packet.ReadInt32();
                 var field = packet.ReadInt32();
-                packet.WriteLine("[{0}] - Field: {1} - Value: {2}", i, field, val);
+                packet.AddValue("Field", field + " - Value: " + val, i);
             }
         }
 
@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadBit("bit18");
             var val = packet.ReadInt32();
             var field = packet.ReadInt32();
-            packet.WriteLine("Field: {0} - Value: {1}", field, val);
+            packet.AddValue("Field", field + " - Value: " + val);
         }
     }
 }

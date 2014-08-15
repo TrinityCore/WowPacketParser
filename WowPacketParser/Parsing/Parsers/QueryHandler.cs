@@ -78,7 +78,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_CREATURE_QUERY) || packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_GAMEOBJECT_QUERY))
                 if (guid.HasEntry() && (entry != guid.GetEntry()))
-                    packet.WriteLine("Entry does not match calculated GUID entry");
+                    packet.AddValue("Error", "Entry does not match calculated GUID entry");
         }
 
         [Parser(Opcode.CMSG_CREATURE_QUERY)]
@@ -155,7 +155,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
                 for (var i = 0; i < qItemCount; i++)
-                    creature.QuestItems[i] = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item", i);
+                    creature.QuestItems[i] = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Quest Item", i);
 
                 creature.MovementId = packet.ReadUInt32("Movement ID");
             }

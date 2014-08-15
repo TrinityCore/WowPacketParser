@@ -9,7 +9,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class BattlenetHandler
     {
-        private static List<string> ModulesWaitingForData = new List<string>(16);
+        private static readonly List<string> ModulesWaitingForData = new List<string>(16);
 
         [BattlenetParser(BattlenetOpcode.ClientInformationRequest, BattlenetChannel.Auth, Direction.BNClientToServer)]
         [BattlenetParser(BattlenetOpcode.ClientInformationRequestOld, BattlenetChannel.Auth, Direction.BNClientToServer)]
@@ -40,14 +40,13 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadString("Type", 4, i);
                 packet.ReadFourCC("Region", i);
-                var id = Utilities.ByteArrayToHexString(packet.ReadBytes(32));
-                packet.Stream.WriteLine(string.Format("[{0}] ModuleId: {1}", i, id));
+                var id = Utilities.ByteArrayToHexString(packet.ReadBytes("ModuleId", 32, i));
                 var dataSize = packet.Read<int>("Data size", 10, i);
                 var data = packet.ReadBytes(dataSize);
 
                 var result = module.HandleData(id, data, i);
                 if (!result.HasValue)
-                    packet.Stream.WriteLine(string.Format("[{0}] Data: {1}", i, Utilities.ByteArrayToHexString(data)));
+                    packet.Stream.AddValue("Data", data, i);
                 else if (!result.Value)
                     ModulesWaitingForData.Add(id);
             }
@@ -63,7 +62,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var dataSize = packet.Read<int>("Data size", 10, i);
                 var data = packet.ReadBytes(dataSize);
                 if (!module.HandleData(ModulesWaitingForData[i], data, i).HasValue)
-                    packet.Stream.WriteLine(string.Format("[{0}] Data: {1}", i, Utilities.ByteArrayToHexString(data)));
+                    packet.Stream.AddValue("Data", data, i);
             }
 
             ModulesWaitingForData.Clear();
@@ -77,26 +76,22 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 if (packet.Read<bool>(1)) // has module
                 {
-                    var type = packet.ReadString(4);
-                    var region = packet.ReadFourCC();
-                    var id = Utilities.ByteArrayToHexString(packet.ReadBytes(32));
-                    var dataSize = packet.Read<int>(10);
+                    packet.ReadString("Type", 4);
+                    packet.ReadFourCC("Region");
+                    var id = Utilities.ByteArrayToHexString(packet.ReadBytes("ModuleId", 32));
+                    var dataSize = packet.Read<int>("Data size", 10);
                     var data = packet.ReadBytes(dataSize);
                     var module = new BattlenetModuleHandler(packet);
 
-                    packet.Stream.WriteLine(string.Format("Type: {0}", type));
-                    packet.Stream.WriteLine(string.Format("Region: {0}", region));
-                    packet.Stream.WriteLine(string.Format("ModuleId: {0}", id));
-                    packet.Stream.WriteLine(string.Format("Data size: {0}", dataSize));
                     if (!module.HandleData(id, data).HasValue)
-                        packet.Stream.WriteLine(string.Format("Data: {0}", Utilities.ByteArrayToHexString(data)));
+                        packet.Stream.AddValue("Data", data);
                 }
 
                 var errorType = packet.Read<byte>(2);
                 if (errorType == 1)
                 {
-                    packet.Stream.WriteLine(string.Format("Result: {0}", packet.Read<ushort>(16)));
-                    packet.Stream.WriteLine(string.Format("Unk: {0}", packet.Read<uint>(32)));
+                    packet.Read<ushort>("Result", 16);
+                    packet.Read<uint>("Unk", 32);
                 }
             }
             else
@@ -105,21 +100,17 @@ namespace WowPacketParser.Parsing.Parsers
                 var module = new BattlenetModuleHandler(packet);
                 for (var i = 0; i < modules; ++i)
                 {
-                    var type = packet.ReadString(4);
-                    var region = packet.ReadFourCC();
-                    var id = Utilities.ByteArrayToHexString(packet.ReadBytes(32));
-                    var dataSize = packet.Read<int>(10);
+                    packet.ReadString("Type", 4);
+                    packet.ReadFourCC("Region");
+                    var id = Utilities.ByteArrayToHexString(packet.ReadBytes("ModuleId", 32));
+                    var dataSize = packet.Read<int>("Data size", 10);
                     var data = packet.ReadBytes(dataSize);
 
-                    packet.Stream.WriteLine(string.Format("[{0}] Type: {1}", i, type));
-                    packet.Stream.WriteLine(string.Format("[{0}] Region: {1}", i, region));
-                    packet.Stream.WriteLine(string.Format("[{0}] ModuleId: {1}", i, id));
-                    packet.Stream.WriteLine(string.Format("[{0}] Data size: {1}", i, dataSize));
                     if (!module.HandleData(id, data, i).HasValue)
-                        packet.Stream.WriteLine(string.Format("[{0}] Data: {1}", i, Utilities.ByteArrayToHexString(data)));
+                        packet.Stream.AddValue("Data", data, i);
                 }
 
-                packet.Stream.WriteLine(string.Format("Ping timeout: {0}", packet.Read<uint>(32) + int.MinValue));
+                packet.Stream.AddValue("Ping timeout", packet.Read<uint>(32) + int.MinValue);
 
                 var hasOptionalData = packet.Read<bool>(1);
                 if (hasOptionalData)
@@ -146,7 +137,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.Read<ulong>("Unk64", 64);
                 packet.Read<uint>("Unk32", 32);
                 if (packet.Read<bool>("Unk1", 1))
-                    packet.Stream.WriteLine(string.Format("Data: {0}", Utilities.ByteArrayToHexString(packet.ReadBytes(packet.Read<int>(10)))));
+                    packet.ReadBytes("Data", packet.Read<int>(10));
             }
         }
 
@@ -189,7 +180,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Population");
             packet.Read<byte>("Lock", 8);
             packet.Read<uint>("Unk", 19);
-            packet.Stream.WriteLine(string.Format("Type: {0}", packet.Read<uint>(32) + int.MinValue));
+            packet.Stream.AddValue("Type", packet.Read<uint>(32) + int.MinValue);
             packet.ReadString("Name", packet.Read<int>(10));
             if (packet.Read<bool>("Has version", 1))
             {
@@ -201,8 +192,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                 Array.Reverse(port);
 
-                packet.Stream.WriteLine("IP address: {0}", new IPAddress(ip));
-                packet.Stream.WriteLine("Port: {0}", BitConverter.ToUInt16(port, 0));
+                packet.Stream.AddValue("IP address", new IPAddress(ip));
+                packet.Stream.AddValue("Port", BitConverter.ToUInt16(port, 0));
             }
 
             packet.Read<byte>("Flags", 8);
@@ -216,7 +207,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleJoinRequest(BattlenetPacket packet)
         {
             packet.Read<uint>("Client seed", 32);
-            var len = packet.Read<uint>("Checksum?", 20);
+            packet.Read<uint>("Checksum?", 20);
             packet.Read<byte>("Region", 8);
             packet.Read<short>("Unk2", 12);
             packet.Read<byte>("Battlegroup", 8);
@@ -241,8 +232,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                 Array.Reverse(port);
 
-                packet.Stream.WriteLine("[{0}] IP address: {1}", i, new IPAddress(ip));
-                packet.Stream.WriteLine("[{0}] Port: {1}", i, BitConverter.ToUInt16(port, 0));
+                packet.Stream.AddValue("IP address", new IPAddress(ip), i);
+                packet.Stream.AddValue("Port", BitConverter.ToUInt16(port, 0), i);
             }
 
             count = packet.Read<uint>("IPv6 count", 5);
@@ -253,8 +244,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                 Array.Reverse(port);
 
-                packet.Stream.WriteLine("[{0}] IP address: {1}", i, new IPAddress(ip));
-                packet.Stream.WriteLine("[{0}] Port: {1}", i, BitConverter.ToUInt16(port, 0));
+                packet.Stream.AddValue("IP address", new IPAddress(ip), i);
+                packet.Stream.AddValue("Port", BitConverter.ToUInt16(port, 0), i);
             }
         }
     }

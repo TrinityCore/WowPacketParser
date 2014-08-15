@@ -21,7 +21,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadInt32("Event Time");
             packet.ReadInt32("Invite Count");
             packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Byte);
-            packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
+            packet.ReadEntry<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
             packet.ReadInt32("Max Invites");
 
             var bits496 = packet.ReadBits(8);

@@ -35,10 +35,10 @@ namespace WowPacketParser.Parsing.Parsers
                     continue;
 
                 action.Id = (uint)(packed & 0x00FFFFFF);
-                packet.WriteLine("Action " + i + ": " + action.Id);
+                packet.AddValue("Action", action.Id, i);
 
                 action.Type = (ActionButtonType)((packed & 0xFF000000) >> 24);
-                packet.WriteLine("Type " + i + ": " + action.Type);
+                packet.AddValue("Type", action.Type, i);
 
                 startAction.Actions.Add(action);
             }
@@ -118,7 +118,7 @@ namespace WowPacketParser.Parsing.Parsers
                     Type = 0 // removed in MoP
                 };
 
-                packet.WriteLine("Action " + i + ": " + action.Id);
+                packet.AddValue("Action", action.Id, i);
                 startAction.Actions.Add(action);
             }
 

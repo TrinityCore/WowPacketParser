@@ -34,31 +34,38 @@ namespace WowPacketParser.Misc
                 Stream.Number);
         }
 
-        public T Read<T>(string name, int bits, params int[] values)
+        public T Read<T>(string name, int bits, params object[] indexes)
         {
             var value = Read<T>(bits);
-            Stream.WriteLine("{0}{1}: {2}", Packet.GetIndexString(values), name, value);
+            Stream.AddValue(name, value, indexes);
             return value;
         }
 
-        public string ReadString(string name, int length, params int[] values)
+        public string ReadString(string name, int length, params object[] indexes)
         {
             var value = ReadString(length);
-            Stream.WriteLine("{0}{1}: {2}", Packet.GetIndexString(values), name, value);
+            Stream.AddValue(name, value, indexes);
             return value;
         }
 
-        public string ReadFourCC(string name, params int[] values)
+        public string ReadFourCC(string name, params object[] indexes)
         {
             var value = ReadFourCC();
-            Stream.WriteLine("{0}{1}: {2}", Packet.GetIndexString(values), name, value);
+            Stream.AddValue(name, value, indexes);
             return value;
         }
 
-        public float ReadSingle(string name, params int[] values)
+        public float ReadSingle(string name, params object[] indexes)
         {
             var value = ReadSingle();
-            Stream.WriteLine("{0}{1}: {2}", Packet.GetIndexString(values), name, value);
+            Stream.AddValue(name, value, indexes);
+            return value;
+        }
+
+        public byte[] ReadBytes(string name, int length, params object[] indexes)
+        {
+            var value = ReadBytes(length);
+            Stream.AddValue(name, value, indexes);
             return value;
         }
 

@@ -77,9 +77,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.StartBitStream(SenderGUID, 2, 7, 0, 3, 4, 6, 1, 5);
 
-            var bubble = packet.ReadBit(); // 0 Show in chat log, 1 for showing only in bubble
-            if (bubble)
-                packet.WriteLine("Show only in bubble");
+            packet.ReadBit("Show only in bubble"); // 0 Show in chat log, 1 for showing only in bubble
             var hasAchi = !packet.ReadBit();
             var hasReceiver = !packet.ReadBit();
             var hasSender = !packet.ReadBit();
@@ -242,7 +240,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         public static void HandleDefenseMessage(Packet packet)
         {
             var len = packet.ReadBits(12);
-            packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
+            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
             packet.ReadWoWString("Message", len);
         }
     }

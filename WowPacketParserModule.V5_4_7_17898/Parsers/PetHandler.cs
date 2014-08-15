@@ -55,7 +55,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var GUID = new Guid(BitConverter.ToUInt64(number, 0));
             var Number = BitConverter.ToUInt64(number, 0);
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Pet Number: {0}", Number);
+            packet.AddValue("Pet Number", Number);
 
             // Store temporary name (will be replaced in SMSG_PET_NAME_QUERY_RESPONSE)
             StoreGetters.AddName(GUID, Number.ToString(CultureInfo.InvariantCulture));

@@ -26,7 +26,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GMTICKET_CREATE)]
         public static void HandleGMTicketCreate(Packet packet)
         {
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
             packet.ReadVector3("Position");
             packet.ReadCString("Text");
             packet.ReadUInt32("Need Response");
@@ -34,7 +34,7 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadInt32("Count");
 
             for (int i = 0; i < count; i++)
-                packet.WriteLine("[" + i + "] Sent: " + (packet.Time - packet.ReadTime()).ToFormattedString());
+                packet.AddValue("Sent", (packet.Time - packet.ReadTime()).ToFormattedString(), i);
 
             if (count == 0)
                 packet.ReadInt32("Unk Int32");
@@ -42,7 +42,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var decompCount = packet.ReadInt32();
                 var pkt = packet.Inflate(decompCount);
-                pkt.WriteLine(packet.ReadCString());
+                packet.ReadCString("String");
                 pkt.ClosePacket(false);
             }
         }
@@ -147,7 +147,7 @@ namespace WowPacketParser.Parsing.Parsers
             pos.X = packet.ReadSingle();
             packet.ReadInt32("Map ID");
             pos.O = packet.ReadSingle();
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_SUBMIT_COMPLAIN)]
@@ -205,7 +205,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32 2");  // ##
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
     }
 }

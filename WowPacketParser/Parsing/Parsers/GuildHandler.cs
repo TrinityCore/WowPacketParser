@@ -237,7 +237,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Level", i);
                 packet.ReadByte("Class", i);
                 packet.ReadByte("Unk", i);
-                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id", i);
 
                 if (!online)
                     packet.ReadUInt32("Last Online", i);
@@ -258,7 +258,7 @@ namespace WowPacketParser.Parsing.Parsers
                 chars[i] = packet.ReadBit() ? '1' : '0';
             var bits = new string(chars);
 
-            packet.WriteLine("Unk bits: {0}", bits);
+            packet.AddValue("Unk bits", bits);
 
             for (var i = 0; i < size; ++i)
                 packet.ReadCString("Public Note", i);
@@ -272,7 +272,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<GuildMemberFlag>("Member Flags", TypeCode.Byte, i);
 
             for (var i = 0; i < size; ++i)
-                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id", i);
 
             for (var i = 0; i < size; ++i)
                 packet.ReadUInt32("Member Achievement Points", i);
@@ -313,7 +313,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var value = packet.ReadUInt32();
                     var id = packet.ReadUInt32();
                     var rank = packet.ReadUInt32();
-                    packet.WriteLine("[{0}][{1}] Profession: Id {2} - Value {3} - Rank {4}", i, j, id, value, rank);
+                    packet.AddValue("Profession", string.Format("Id {0} - Value {1} - Rank {2}", id, value, rank), i, j);
                 }
 
             for (var i = 0; i < size; ++i)
@@ -374,13 +374,13 @@ namespace WowPacketParser.Parsing.Parsers
                     var rank = packet.ReadUInt32();
                     var value = packet.ReadUInt32();
                     var id = packet.ReadUInt32();
-                    packet.WriteLine("[{0}][{1}] Profession: Id {2} - Value {3} - Rank {4}", i, j, id, value, rank);
+                    packet.AddValue("Profession", string.Format("Id {0} - Value {1} - Rank {2}", id, value, rank), i, j);
                 }
 
                 packet.ReadXORByte(guid[i], 2);
 
                 packet.ReadEnum<GuildMemberFlag>("Member Flags", TypeCode.Byte, i);
-                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id", i);
                 packet.ReadUInt64("Total activity", i);
 
                 packet.ReadXORByte(guid[i], 7);
@@ -791,7 +791,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteGuid("GUID", guid[i], i);
             }
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
             packet.ReadUInt32("Skill ID");
         }
 
@@ -1153,7 +1153,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < slots; i++)
             {
                 packet.ReadByte("Slot Id", i);
-                var entry = packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item Entry", i);
+                var entry = packet.ReadEntry<Int32>(StoreNameType.Item, "Item Entry", i);
                 if (entry > 0)
                 {
                     packet.ReadEnum<UnknownFlags>("Unk mask", TypeCode.UInt32, i);
@@ -1221,7 +1221,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Stack Count", i);
                 packet.ReadUInt32("Slot Id", i);
                 packet.ReadEnum<UnknownFlags>("Unk mask", TypeCode.UInt32, i);
-                packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item Entry", i);
+                packet.ReadEntry<Int32>(StoreNameType.Item, "Item Entry", i);
                 packet.ReadInt32("Random Item Property Id", i);
                 packet.ReadUInt32("Spell Charges", i);
                 packet.ReadUInt32("Item Suffix Factor", i);
@@ -1239,10 +1239,10 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadByte("Dest Tab Id");
                 packet.ReadByte("Dest Slot Id");
-                packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Dest Item Entry");
+                packet.ReadEntry<Int32>(StoreNameType.Item, "Dest Item Entry");
                 packet.ReadByte("Tab Id");
                 packet.ReadByte("Slot Id");
-                packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item Entry");
+                packet.ReadEntry<Int32>(StoreNameType.Item, "Item Entry");
                 packet.ReadByte("Unk Byte 1");
                 packet.ReadUInt32("Amount");
             }
@@ -1250,7 +1250,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadByte("Tab Id");
                 packet.ReadByte("Slot Id");
-                packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item Entry");
+                packet.ReadEntry<Int32>(StoreNameType.Item, "Item Entry");
                 var autostore = packet.ReadBoolean("Autostore");
                 if (autostore)
                 {
@@ -1454,9 +1454,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (int i = 0; i < size; ++i)
             {
-                count[i] = packet.ReadBits(26);
-                if (count[i] != 0)
-                    packet.WriteLine("[{0]] Count: {0}", i, count[i]);
+                count[i] = packet.ReadBits("Count", 26);
 
                 guidOut[i] = new byte[8];
                 guidOut[i][7] = packet.ReadBit(); // 55
@@ -1476,7 +1474,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (int i = 0; i < size; ++i)
             {
-                for (int j = 0; i < count[i]; ++j)
+                for (int j = 0; j < count[i]; ++j)
                 {
                     packet.ParseBitStream(guidIn[i][j], 0, 1, 4, 7, 5, 6, 3, 2);
                     packet.WriteGuid("Guid", guidIn[i][j], i, j);
@@ -1534,7 +1532,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<ReputationRank>("Faction Standing", TypeCode.UInt32, i);
 
             for (var i = 0; i < size; ++i)
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Id", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Id", i);
         }
 
         [Parser(Opcode.SMSG_GUILD_REWARDS_LIST, ClientVersionBuild.V4_3_4_15595)]
@@ -1546,7 +1544,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadEnum<ReputationRank>("Faction Standing", TypeCode.UInt32, i);
                 packet.ReadEnum<RaceMask>("Race mask", TypeCode.UInt32, i);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Id", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Id", i);
                 packet.ReadUInt64("Price", i);
                 packet.ReadUInt32("Unk UInt32", i);
                 packet.ReadUInt32("Achievement Id", i);
@@ -1730,8 +1728,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guid1[i], 6);
                 packet.ReadXORByte(guid1[i], 1);
 
-                packet.WriteLine("[{0}] GUID1: {1}", i, new Guid(BitConverter.ToUInt64(guid1[i], 0)));
-                packet.WriteLine("[{0}] GUID2: {1}", i, new Guid(BitConverter.ToUInt64(guid2[i], 0)));
+                packet.WriteGuid("GUID1", guid1[i], i);
+                packet.WriteGuid("GUID2", guid2[i], i);
             }
         }
 
@@ -2122,7 +2120,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var rank = packet.ReadUInt32();
                     var id = packet.ReadUInt32();
                     var value = packet.ReadUInt32();
-                    packet.WriteLine("[{0}][{1}] Profession: Id {2} - Value {3} - Rank {4}", i, j, id, value, rank);
+                    packet.AddValue("Profession", string.Format("Id {0} - Value {1} - Rank {2}", id, value, rank), i, j);
                 }
 
                 packet.ReadXORByte(guids[i], 0);
@@ -2146,11 +2144,11 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guids[i], 3);
 
                 packet.ReadByte("unk Byte 356", i); // 0
-                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id", i);
                 packet.ReadWoWString("Character Name", strlen[i][2], i);
                 packet.ReadInt32("unk Int32 44", i);
-                packet.WriteLine("Can SoR: {0}", param[i][0], i);
-                packet.WriteLine("Has Authenticator: {0}", param[i][1], i);
+                packet.AddValue("Can SoR", param[i][0], i);
+                packet.AddValue("Has Authenticator", param[i][1], i);
 
                 packet.WriteGuid("Player Guid", guids[i], i);
             }
@@ -2437,7 +2435,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guid[i], 0);
 
                 packet.WriteGuid("Criteria GUID", guid[i], i);
-                packet.WriteLine("[{0}] Criteria counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
+                packet.AddValue("Criteria counter", BitConverter.ToUInt64(counter[i], 0), i);
             }
         }
 

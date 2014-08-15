@@ -106,7 +106,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadWoWString("Title", titleLen[i], i);
                 packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32, i);
                 packet.ReadInt32("Level", i);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Quest, "Quest ID", i);
             }
 
             var gossip = new Gossip();
@@ -310,7 +310,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadInt32("Item Upgrade ID", i);
                 packet.ReadInt32("Price", i);
                 packet.ReadInt32("Display ID", i);
-                vendorItem.ItemId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
+                vendorItem.ItemId = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Item ID", i);
                 vendorItem.Slot = packet.ReadUInt32("Item Position", i);
 
                 if (hasExtendedCost[i])

@@ -54,8 +54,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(accountId, 0);
             packet.ReadXORByte(accountId, 6);
 
-            packet.WriteLine("Account: {0}", BitConverter.ToUInt64(accountId, 0));
-            packet.WriteLine("Counter: {0}", BitConverter.ToInt64(counter, 0));
+            packet.AddValue("Account", BitConverter.ToUInt64(accountId, 0));
+            packet.AddValue("Counter", BitConverter.ToInt64(counter, 0));
         }
 
         [Parser(Opcode.SMSG_CRITERIA_UPDATE_PLAYER)]
@@ -168,8 +168,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
                 packet.WriteGuid("Guid2", guid2[i], i);
 
-                packet.WriteLine("[{0}] Criteria Flags: {1}", i, flags[i]);
-                packet.WriteLine("[{0}] Criteria Counter: {1}", i, BitConverter.ToUInt64(guid2[i], 0)); // guid and counter is switched, was lazy to remake it
+                packet.AddValue("Criteria Flags", flags[i], i);
+                packet.AddValue("Criteria Counter", BitConverter.ToUInt64(guid2[i], 0), i); // guid and counter is switched, was lazy to remake it
                 packet.WriteGuid("Criteria GUID", counter[i], i);
             }
         }

@@ -153,7 +153,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var state = packet.ReadEnum<VictimStates>("VictimState", TypeCode.Byte);
             packet.ReadInt32("Unk Attacker State 0");
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Melee Spell ID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Melee Spell ID");
 
             var block = 0;
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))

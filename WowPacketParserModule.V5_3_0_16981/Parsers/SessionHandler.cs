@@ -67,8 +67,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadBit("Unk bit");
             var size = (int)packet.ReadBits(11);
             packet.ResetBitReader();
-            packet.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(size)));
-            packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
+            packet.ReadBytesString("Account name", size);
+            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
 
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]

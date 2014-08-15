@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var data = pkt.ReadWoWString(decompCount);
             pkt.ClosePacket();
 
-            packet.WriteLine("Account Data {0}", data);
+            packet.AddValue("Account Data", data);
             packet.ReadEnum<AccountDataType>("Data Type", 3);
         }
 
@@ -47,7 +47,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var pkt = packet.Inflate(compCount, decompCount, false);
             var data = pkt.ReadWoWString(decompCount);
             pkt.ClosePacket();
-            packet.WriteLine("Account Data {0}", data);
+            packet.AddValue("Account Data", data);
 
             packet.ReadTime("Login Time");
             guid[7] = packet.ReadBit();

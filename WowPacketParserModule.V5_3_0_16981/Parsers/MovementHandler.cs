@@ -13,8 +13,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         {
             packet.ReadSingle("Position Z");
             packet.ReadSingle("Position Y");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
             packet.ReadSingle("Position X");
         }
 
@@ -110,7 +110,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
                 transPos.Z = packet.ReadSingle();
                 packet.WriteGuid("Transport Guid", transportGUID);
-                packet.WriteLine("Transport Position {0}", transPos);
+                packet.AddValue("Transport Position", transPos);
             }
 
             if (hasOrientation)
@@ -138,7 +138,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadInt32("time(isAlive)");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
@@ -304,12 +304,12 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 vec.X = mid.X - vec.X;
                 vec.Y = mid.Y - vec.Y;
                 vec.Z = mid.Z - vec.Z;
-                packet.WriteLine("[{0}] Waypoint: {1}", i, vec);
+                packet.AddValue("Waypoint", vec, i);
             }
 
             packet.WriteGuid("Owner GUID", ownerGUID);
             packet.WriteGuid("GUID2", guid2);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_PLAYER_MOVE)]
@@ -386,7 +386,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadXORBytes(transportGUID, 5);
 
                 packet.WriteGuid("Transport Guid", transportGUID);
-                packet.WriteLine("Transport Position {0}", transPos);
+                packet.AddValue("Transport Position", transPos);
             }
             packet.ReadXORByte(guid, 6);
 
@@ -432,7 +432,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 pos.O = packet.ReadSingle();
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
@@ -444,7 +444,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadXORBytes(guid, 5, 3, 0);
 
             var count = packet.ReadUInt32() / 2;
-            packet.WriteLine("WorldMapArea swap count: {0}", count);
+            packet.AddValue("WorldMapArea swap count", count);
             for (var i = 0; i < count; ++i)
                 packet.ReadUInt16("WorldMapArea swap", i);
 
@@ -452,20 +452,20 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadXORByte(guid, 4);
 
             count = packet.ReadUInt32() / 2;
-            packet.WriteLine("Inactive Terrain swap count: {0}", count);
+            packet.AddValue("Inactive Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
+                packet.ReadEntry<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
 
             count = packet.ReadUInt32() / 2;
-            packet.WriteLine("Phases count: {0}", count);
+            packet.AddValue("Phases count", count);
             for (var i = 0; i < count; ++i)
                 CoreParsers.MovementHandler.ActivePhases.Add(packet.ReadUInt16("Phase id", i)); // Phase.dbc
 
             packet.ReadXORByte(guid, 7);
             count = packet.ReadUInt32() / 2;
-            packet.WriteLine("Active Terrain swap count: {0}", count);
+            packet.AddValue("Active Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Active Terrain swap", i);
+                packet.ReadEntry<Int16>(StoreNameType.Map, "Active Terrain swap", i);
 
             packet.ReadXORBytes(guid, 6, 2, 1);
             packet.WriteGuid("GUID", guid);

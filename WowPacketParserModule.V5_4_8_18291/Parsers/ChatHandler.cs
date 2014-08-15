@@ -121,9 +121,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             var hasSender = !packet.ReadBit();
 
-            var bubble = packet.ReadBit(); // 0 Show in chat log, 1 for showing only in bubble
-            if (bubble)
-                packet.WriteLine("Show only in bubble");
+            packet.ReadBit("Show only in bubble"); // 0 Show in chat log, 1 for showing only in bubble
 
             var senderNameLen = 0u;
             if (hasSender)
@@ -219,7 +217,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         {
             var message = new DefenseMessage();
 
-            uint zoneId = (uint)packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id");
+            uint zoneId = (uint)packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id");
             var length = packet.ReadBits("Message Length", 12);
             message.text = packet.ReadWoWString("Message", length);
 

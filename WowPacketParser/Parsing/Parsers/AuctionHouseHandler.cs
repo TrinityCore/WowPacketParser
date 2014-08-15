@@ -133,7 +133,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Bidder GUID");
             packet.ReadValue("Bid", _auctionSize);
             packet.ReadValue("Diff", _auctionSize);
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry");
+            packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry");
             packet.ReadUInt32("Unk UInt32 1");
         }
 
@@ -144,7 +144,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadValue("Bid", _auctionSize);
             packet.ReadValue("Diff", _auctionSize);
             packet.ReadGuid("Bidder GUID");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry");
+            packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry");
             packet.ReadUInt32("Unk UInt32 4");
             packet.ReadSingle("Unk float 5");
         }
@@ -172,7 +172,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadUInt32("Auction Id", i);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", i);
 
                 int enchantmentCount = ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005) ? 10 : ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) ? 9 : ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 7 : 6;
                 for (var j = 0; j < enchantmentCount; ++j)
@@ -205,7 +205,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleAuctionRemovedNotification(Packet packet)
         {
             packet.ReadInt32("Auction ID");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry");
+            packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry");
             packet.ReadInt32("Item Random Property ID");
         }
 

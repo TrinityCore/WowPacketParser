@@ -18,7 +18,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadUInt32("Resist");
             packet.ReadEnum<AttackerStateFlags>("Attacker State Flags", TypeCode.Int32);
             packet.ReadUInt32("Blocked");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
             packet.ReadInt32("Overkill");
             packet.ReadUInt32("Absorb");
             packet.ReadByte("SchoolMask");
@@ -196,7 +196,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.ReadXORByte(guid2, 3);
             packet.ReadXORByte(guid1, 4);
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
             packet.ReadXORByte(guid2, 1);
             packet.ReadInt32("Overheal");
             packet.WriteGuid("GUID1", guid1);
@@ -304,7 +304,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(casterGUID, 0);
             packet.ReadXORByte(casterGUID, 5);
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
 
             packet.ReadXORByte(casterGUID, 1);
             packet.ReadXORByte(targetGUID, 7);
@@ -432,7 +432,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var state = packet.ReadEnum<VictimStates>("VictimState", TypeCode.Byte);
             packet.ReadInt32("Unk Attacker State 0");
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Melee Spell ID ");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Melee Spell ID ");
 
             var block = 0;
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
@@ -561,7 +561,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(targetGUID, 6);
             packet.ReadXORByte(casterGUID, 7);
             packet.ReadXORByte(casterGUID, 6);
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
             packet.ReadXORByte(casterGUID, 3);
             packet.ReadEnum<PowerType>("Power Type", TypeCode.UInt32);
             packet.ReadXORByte(targetGUID, 7);

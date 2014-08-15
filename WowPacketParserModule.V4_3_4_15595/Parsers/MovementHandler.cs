@@ -94,10 +94,12 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             {
                 var newpos = packet.ReadVector3("Waypoint Endpoint");
 
-                var mid = new Vector3();
-                mid.X = (pos.X + newpos.X) * 0.5f;
-                mid.Y = (pos.Y + newpos.Y) * 0.5f;
-                mid.Z = (pos.Z + newpos.Z) * 0.5f;
+                var mid = new Vector3
+                {
+                    X = (pos.X + newpos.X)*0.5f,
+                    Y = (pos.Y + newpos.Y)*0.5f,
+                    Z = (pos.Z + newpos.Z)*0.5f
+                };
 
                 if (waypoints != 1)
                 {
@@ -105,7 +107,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     vec.X += mid.X;
                     vec.Y += mid.Y;
                     vec.Z += mid.Z;
-                    packet.WriteLine("[0] Waypoint: " + vec);
+                    packet.AddValue("Waypoint", vec, 0);
 
                     if (waypoints > 2)
                     {
@@ -116,7 +118,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                             vec.Y += mid.Y;
                             vec.Z += mid.Z;
 
-                            packet.WriteLine("[" + i + "]" + " Waypoint: " + vec);
+                            packet.AddValue("Waypoint", vec, i);
                         }
                     }
                 }
@@ -130,7 +132,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadSingle("X");
             packet.ReadSingle("Orientation");
             packet.ReadSingle("Y");
-            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
             packet.ReadSingle("Z"); // seriously...
 
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
@@ -229,7 +231,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 6);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasO)
@@ -255,7 +257,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadUInt32("Timestamp");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_SET_PITCH)]
@@ -343,7 +345,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 tpos.X = packet.ReadSingle();
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -369,7 +371,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 pos.O = packet.ReadSingle();
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_SET_FACING)]
@@ -456,7 +458,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 7);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -482,7 +484,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Pitch");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_TELEPORT)]
@@ -534,7 +536,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid, 6);
             pos.Y = packet.ReadSingle();
 
-            packet.WriteLine("Destination: {0}", pos);
+            packet.AddValue("Destination", pos);
             packet.WriteGuid("Guid", guid);
         }
 
@@ -622,7 +624,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 6);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasTime)
@@ -648,7 +650,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_MOVE_CHNG_TRANSPORT)]
@@ -735,7 +737,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     packet.ReadUInt32("Transport Time 2");
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -762,7 +764,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadUInt32("Timestamp");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_START_ASCEND)]
@@ -850,7 +852,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 tpos.X = packet.ReadSingle();
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -876,7 +878,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Spline elevation");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_START_DESCEND)]
@@ -967,7 +969,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 0);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -992,7 +994,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Spline elevation");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_STOP_ASCEND)]
@@ -1072,7 +1074,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 tpos.Z = packet.ReadSingle();
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -1098,7 +1100,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 pos.O = packet.ReadSingle();
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_START_PITCH_DOWN)]
@@ -1185,7 +1187,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 tpos.O = packet.ReadSingle();
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -1211,7 +1213,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadUInt32("Timestamp");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_START_PITCH_UP)]
@@ -1299,7 +1301,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 4);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -1326,7 +1328,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadUInt32("Timestamp");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_STOP_PITCH)]
@@ -1431,7 +1433,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 7);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasSplineElev)
@@ -1442,7 +1444,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Pitch");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_START_SWIM)]
@@ -1532,7 +1534,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSByte("Transport Seat");
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -1556,7 +1558,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Spline elevation");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_STOP_SWIM)]
@@ -1643,7 +1645,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 tpos.O = packet.ReadSingle();
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -1670,7 +1672,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Spline elevation");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED)]
@@ -1767,7 +1769,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 2);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -1793,7 +1795,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 pos.O = packet.ReadSingle();
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_JUMP)]
@@ -1881,7 +1883,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 5);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasPitch)
@@ -1908,7 +1910,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 pos.O = packet.ReadSingle();
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_START_STRAFE_LEFT)]
@@ -2008,7 +2010,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 tpos.X = packet.ReadSingle();
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasTime)
@@ -2021,7 +2023,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Spline elevation");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_START_STRAFE_RIGHT)]
@@ -2108,7 +2110,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 3);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasPitch)
@@ -2135,7 +2137,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Spline elevation");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_STOP_STRAFE)]
@@ -2222,7 +2224,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 7);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -2248,7 +2250,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadUInt32("Timestamp");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_START_BACKWARD)]
@@ -2335,7 +2337,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 3);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasPitch)
@@ -2362,7 +2364,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Spline elevation");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_START_TURN_LEFT)]
@@ -2461,7 +2463,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 7);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasTime)
@@ -2474,7 +2476,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Spline elevation");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_START_TURN_RIGHT)]
@@ -2560,7 +2562,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     packet.ReadUInt32("Transport Time 2");
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -2586,7 +2588,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadUInt32("Timestamp");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_STOP_TURN)]
@@ -2676,7 +2678,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 6);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -2700,7 +2702,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 pos.O = packet.ReadSingle();
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_SET_ACTIVE_MOVER)]
@@ -2722,7 +2724,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid, 4);
 
             var count = packet.ReadUInt32() / 2;
-            packet.WriteLine("WorldMapArea swap count: {0}", count);
+            packet.AddValue("WorldMapArea swap count", count);
             for (var i = 0; i < count; ++i)
                 packet.ReadUInt16("WorldMapArea swap", i);
 
@@ -2734,12 +2736,12 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid, 6);
 
             count = packet.ReadUInt32() / 2;
-            packet.WriteLine("Inactive Terrain swap count: {0}", count);
+            packet.AddValue("Inactive Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
+                packet.ReadEntry<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
 
             count = packet.ReadUInt32() / 2;
-            packet.WriteLine("Phases count: {0}", count);
+            packet.AddValue("Phases count", count);
             for (var i = 0; i < count; ++i)
                 CoreParsers.MovementHandler.ActivePhases.Add(packet.ReadUInt16("Phase id", i)); // Phase.dbc
 
@@ -2747,12 +2749,12 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid, 0);
 
             count = packet.ReadUInt32() / 2;
-            packet.WriteLine("Active Terrain swap count: {0}", count);
+            packet.AddValue("Active Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Active Terrain swap", i);
+                packet.ReadEntry<Int16>(StoreNameType.Map, "Active Terrain swap", i);
 
             packet.ReadXORByte(guid, 5);
-            packet.WriteLine("GUID {0}", new Guid(BitConverter.ToUInt64(guid, 0)));
+            packet.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
@@ -2763,14 +2765,14 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             var hasTransport = packet.ReadBit();
             if (hasTransport)
             {
-                packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Transport Map ID");
+                packet.ReadEntry<Int32>(StoreNameType.Map, "Transport Map ID");
                 packet.ReadInt32("Transport Entry");
             }
 
             if (customLoadScreenSpell)
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+                packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
         }
 
         [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED)]
@@ -2926,7 +2928,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     packet.ReadUInt32("Transport Time 2");
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasSplineElev)
@@ -2939,7 +2941,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadUInt32("Timestamp");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_PLAYER_MOVE)]
@@ -3038,7 +3040,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadUInt32("Transport Time");
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             packet.ReadXORByte(guid, 4);
@@ -3058,7 +3060,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
             packet.ReadXORByte(guid, 1);
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_MOVE_SET_COLLISION_HEIGHT)]
@@ -3167,7 +3169,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 6);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -3191,7 +3193,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 pos.O = packet.ReadSingle();
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_SET_WALK_MODE)]
@@ -3279,7 +3281,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 1);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -3305,7 +3307,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 pos.O = packet.ReadSingle();
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_MOVE_SET_CAN_FLY)]
@@ -3392,7 +3394,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     packet.ReadUInt32("Transport Time 3");
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasSplineElev)
@@ -3419,7 +3421,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 pos.O = packet.ReadSingle();
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_DISMISS_CONTROLLED_VEHICLE)]
@@ -3509,7 +3511,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 2);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -3534,7 +3536,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Pitch");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_MOVE_SPLINE_DONE)]
@@ -3643,7 +3645,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 4);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasTime)
@@ -3652,7 +3654,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Spline elevation");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_MOVE_SET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY_ACK)]
@@ -3754,7 +3756,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     packet.ReadUInt32("Transport Time 3");
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasPitch)
@@ -3767,7 +3769,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Spline elevation");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_MOVE_UPDATE_SWIM_SPEED)]
@@ -3852,7 +3854,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 5);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             pos.X = packet.ReadSingle();
@@ -3898,7 +3900,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Pitch");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_UPDATE_RUN_SPEED)]
@@ -3989,7 +3991,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 tpos.Z = packet.ReadSingle();
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasTime)
@@ -4030,7 +4032,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_UPDATE_FLIGHT_SPEED)]
@@ -4128,7 +4130,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 tpos.X = packet.ReadSingle();
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -4160,7 +4162,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid, 3);
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_MOVE_UPDATE_COLLISION_HEIGHT)]
@@ -4250,7 +4252,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSByte("Transport Seat");
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasPitch)
@@ -4290,7 +4292,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid, 1);
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.MSG_MOVE_UPDATE_TELEPORT)]
@@ -4380,7 +4382,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 tpos.X = packet.ReadSingle();
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             packet.ReadXORByte(guid, 6);
@@ -4421,7 +4423,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid, 0);
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_SWIM_BACK_SPEED)]
@@ -4753,7 +4755,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 4);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -4780,7 +4782,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 pos.O = packet.ReadSingle();
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HEIGHT_ACK)]
@@ -4871,7 +4873,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 tpos.Z = packet.ReadSingle();
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -4897,7 +4899,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Pitch");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_MOVE_FORCE_FLIGHT_SPEED_CHANGE_ACK)]
@@ -4987,7 +4989,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 tpos.Y = packet.ReadSingle();
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasTime)
@@ -5014,7 +5016,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 pos.O = packet.ReadSingle();
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_MOVE_SET_CAN_FLY_ACK)]
@@ -5102,7 +5104,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 4);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -5129,7 +5131,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Spline elevation");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_MOVE_FORCE_SWIM_SPEED_CHANGE_ACK)]
@@ -5218,7 +5220,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 4);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -5245,7 +5247,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadUInt32("Timestamp");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_MOVE_FORCE_WALK_SPEED_CHANGE_ACK)]
@@ -5348,7 +5350,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     packet.ReadUInt32("Transport Time 2");
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasSplineElev)
@@ -5361,7 +5363,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Pitch");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_MOVE_FORCE_RUN_BACK_SPEED_CHANGE_ACK)]
@@ -5465,7 +5467,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 7);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasTime)
@@ -5478,7 +5480,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Pitch");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_MOVE_UPDATE_RUN_BACK_SPEED)]
@@ -5564,7 +5566,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 tpos.O = packet.ReadSingle();
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             packet.ReadXORByte(guid, 4);
@@ -5610,7 +5612,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             pos.Z = packet.ReadSingle();
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_MOVE_UPDATE_WALK_SPEED)]
@@ -5698,7 +5700,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 3);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasSplineElevation)
@@ -5739,7 +5741,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadSingle("Speed");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_FORCE_MOVE_ROOT_ACK)]
@@ -5827,7 +5829,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSByte("Transport Seat");
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasTime)
@@ -5855,7 +5857,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Pitch");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_FORCE_MOVE_UNROOT_ACK)]
@@ -5944,7 +5946,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 7);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -5970,7 +5972,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Pitch");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_MOVE_FALL_RESET)]
@@ -6058,7 +6060,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 1);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -6085,7 +6087,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Pitch");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_MOVE_FEATHER_FALL_ACK)]
@@ -6173,7 +6175,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 3);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasTime)
@@ -6201,7 +6203,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Pitch");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK)]
@@ -6289,7 +6291,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     packet.ReadUInt32("Transport Time 3");
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -6315,7 +6317,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Pitch");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_MOVE_GRAVITY_ENABLE_ACK)]
@@ -6418,7 +6420,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 tpos.Y = packet.ReadSingle();
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasSplineElev)
@@ -6431,7 +6433,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadUInt32("Timestamp");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_MOVE_HOVER_ACK)]
@@ -6539,7 +6541,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 6);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasSplineElev)
@@ -6548,7 +6550,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Pitch");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_MOVE_KNOCK_BACK_ACK)]
@@ -6653,7 +6655,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSByte("Transport Seat");
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasPitch)
@@ -6664,7 +6666,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 pos.O = packet.ReadSingle();
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_MOVE_NOT_ACTIVE_MOVER)]
@@ -6765,7 +6767,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadUInt32("Transport Time");
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasTime)
@@ -6778,7 +6780,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 pos.O = packet.ReadSingle();
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.CMSG_MOVE_WATER_WALK_ACK)]
@@ -6867,7 +6869,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadXORByte(transportGuid, 4);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasSplineElev)
@@ -6894,7 +6896,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadSingle("Pitch");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_MOVE_GRAVITY_DISABLE)]
@@ -7261,7 +7263,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     packet.ReadUInt32("Transport Time 2");
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasPitch)
@@ -7284,7 +7286,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid, 5);
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
     }
 }

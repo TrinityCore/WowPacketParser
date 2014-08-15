@@ -73,7 +73,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             sha[11] = packet.ReadByte();
             sha[7] = packet.ReadByte();
 
-            packet.WriteLine("SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
+            packet.AddValue("SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
 
 
@@ -81,8 +81,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         public static void HandleRedirectClient(Packet packet)
         {
             packet.ReadUInt64("Unk Long");
-            var hash = packet.ReadBytes(0x100);
-            packet.WriteLine("RSA Hash: {0}", Utilities.ByteArrayToHexString(hash));
+            packet.ReadBytes("RSA Hash", 0x100);
             packet.ReadByte("Unk Byte");
             packet.ReadUInt32("Token");
         }
@@ -273,8 +272,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var size = (int)packet.ReadBits(11);
             packet.ReadBit("Unk bit");
             packet.ResetBitReader();
-            packet.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(size)));
-            packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
+            packet.ReadBytesString("Account name", size);
+            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
     }
 }

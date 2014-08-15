@@ -115,7 +115,7 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
             packet.ReadXORByte(casterGUID, 2);
             packet.ReadXORByte(targetGUID, 5);
             packet.ReadUInt32("Absorb"); // correct?
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
             packet.ReadXORByte(targetGUID, 2);
             packet.ReadInt32("Overkill");
             packet.ReadXORByte(targetGUID, 3);
@@ -296,7 +296,7 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
             packet.ReadXORByte(casterGUID, 6);
             packet.ReadXORByte(targetGUID, 4);
             packet.ReadXORByte(targetGUID, 0);
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
             if (hasPowerData)
             {
                 packet.ReadInt32("Int38");
@@ -364,7 +364,7 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
             packet.ReadXORByte(guid4, 0);
             packet.ReadXORByte(guid4, 4);
             packet.ReadInt32("Overheal");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
             if (bit5C)
                 packet.ReadSingle("Float58");
             if (hasPowerData)

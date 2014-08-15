@@ -120,7 +120,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Comment");
         }
 
-        public static void ReadLfgRewardBlock(ref Packet packet, int index)
+        public static void ReadLfgRewardBlock(ref Packet packet, object index)
         {
             packet.ReadBoolean("First Completion", index);
 
@@ -156,7 +156,7 @@ namespace WowPacketParser.Parsing.Parsers
                         var unk4 = packet.ReadByte("Call to Arms Item Count", index, i);
                         for (var j = 0; j < unk4; ++j)
                         {
-                            packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Call to Arms Item Or Currency Id", index, i, j);
+                            packet.ReadEntry<Int32>(StoreNameType.Item, "Call to Arms Item Or Currency Id", index, i, j);
                             packet.ReadInt32("Call to Arms Item Display ID", index, i, j);
                             packet.ReadInt32("Call to Arms Item Stack Count", index, i, j);
                             packet.ReadBoolean("Call to Arms Is Currency", index, i, j);
@@ -177,7 +177,7 @@ namespace WowPacketParser.Parsing.Parsers
             var numFields = packet.ReadByte("Reward Item Count", index);
             for (var i = 0; i < numFields; i++)
             {
-                packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Item Or Currency Id", index, i);
+                packet.ReadEntry<Int32>(StoreNameType.Item, "Reward Item Or Currency Id", index, i);
                 packet.ReadInt32("Reward Item Display ID", index, i);
                 packet.ReadInt32("Reward Item Stack Count", index, i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
@@ -205,7 +205,7 @@ namespace WowPacketParser.Parsing.Parsers
             var numFields = packet.ReadByte("Reward Item Count");
             for (var i = 0; i < numFields; i++)
             {
-                packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Reward Item Or Currency Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Item, "Reward Item Or Currency Id", i);
                 packet.ReadInt32("Reward Item Display ID", i);
                 packet.ReadInt32("Reward Item Stack Count", i);
                 packet.ReadBoolean("Is Currency", i);
@@ -349,8 +349,8 @@ namespace WowPacketParser.Parsing.Parsers
                 var bits = new Bit[5];
                 for (var j = 0; j < 5; ++j)
                     bits[j] = packet.ReadBit();
-                packet.WriteLine("[{0}] Bits: In Dungeon?: {1}, Same Group?: {2}, Accept: {3}, Answer: {4}, Self: {5}",
-                    i, bits[0], bits[1], bits[2], bits[3], bits[4]); // 0 and 1 could be swapped
+                packet.AddValue("Bits", string.Format("In Dungeon?: {0}, Same Group?: {1}, Accept: {2}, Answer: {3}, Self: {4}",
+                    bits[0], bits[1], bits[2], bits[3], bits[4]), i); // 0 and 1 could be swapped
             }
 
             guid2[5] = packet.ReadBit();
@@ -612,7 +612,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleUpdateLfgList(Packet packet)
         {
             packet.ReadEnum<LfgType>("LFG Type", TypeCode.Int32);
-            packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
+            packet.ReadEntry<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
 
             var unkBool = packet.ReadBoolean("Unknown bool 1");
 
@@ -697,7 +697,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadEnum<LfgRoleFlag>("Role", TypeCode.Byte, i);
 
                 if (flags2.HasAnyFlag(LfgUpdateFlag.Area))
-                    packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area ID", i);
+                    packet.ReadEntry<Int32>(StoreNameType.Area, "Area ID", i);
 
                 if (flags2.HasAnyFlag(LfgUpdateFlag.Unknown7))
                     packet.ReadBoolean("Unknown byte", i);

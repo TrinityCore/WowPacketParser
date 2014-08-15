@@ -19,7 +19,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var message = new DefenseMessage();
 
-            uint zoneId = (uint)packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id");
+            uint zoneId = (uint)packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id");
             packet.ReadInt32("Message Length");
             message.text = packet.ReadCString("Message");
 

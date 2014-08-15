@@ -34,10 +34,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             for (var i = 0; i < bits20; i++)
             {
                 if (usePublicKey[i])
-                {
-                    var pubKey = packet.ReadBytes(256);
-                    packet.WriteLine("[{0}] Name MD5: {1}", i, Utilities.ByteArrayToHexString(pubKey));
-                }
+                    packet.ReadBytes("Name MD5", 256, i);
 
                 if (bit1[i])
                 {

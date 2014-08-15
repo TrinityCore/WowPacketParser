@@ -92,7 +92,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32, i);
                 packet.ReadUInt32("Icon", i);
                 packet.ReadWoWString("Title", titleLen[i], i);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Quest, "Quest ID", i);
                 packet.ReadEnum<QuestFlags2>("Flags 2", TypeCode.UInt32, i);
             }
 
@@ -277,7 +277,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
 
                 packet.ReadInt32("Item Upgrade ID", i);
-                vendorItem.ItemId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
+                vendorItem.ItemId = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Item ID", i);
 
                 if (hasCondition[i])
                     packet.ReadInt32("Condition ID", i);
@@ -332,7 +332,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
                 packet.ReadEnum<TrainerSpellState>("State", TypeCode.Byte, i);
                 trainerSpell.RequiredSkill = packet.ReadUInt32("Required Skill", i);
-                trainerSpell.Spell = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+                trainerSpell.Spell = (uint)packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
                 trainerSpell.Cost = packet.ReadUInt32("Cost", i);
                 trainerSpell.RequiredLevel = packet.ReadByte("Required Level", i);
                 trainerSpell.RequiredSkillLevel = packet.ReadUInt32("Required Skill Level", i);

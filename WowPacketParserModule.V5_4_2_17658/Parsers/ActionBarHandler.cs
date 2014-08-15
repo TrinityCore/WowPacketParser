@@ -75,7 +75,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     Type = 0 // removed in MoP
                 };
 
-                packet.WriteLine("Action " + i + ": " + action.Id);
+                packet.AddValue("Action " + i, action.Id);
                 startAction.Actions.Add(action);
             }
 
@@ -94,7 +94,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadByte("Slot Id");
             var actionId = packet.StartBitStream(3, 5, 2, 1, 0, 6, 4, 7);
             packet.ParseBitStream(actionId, 4, 0, 7, 2, 1, 3, 6, 5);
-            packet.WriteLine("Action Id: {0}", BitConverter.ToUInt32(actionId, 0));
+            packet.AddValue("Action Id", BitConverter.ToUInt32(actionId, 0));
         }
     }
 }

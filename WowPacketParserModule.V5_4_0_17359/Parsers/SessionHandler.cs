@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -77,8 +76,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var size = (int)packet.ReadBits(11);
             packet.ReadBit("Unk bit");
             packet.ResetBitReader();
-            packet.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(size)));
-            packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
+            packet.ReadBytesString("Account name", size);
+            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
 
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
@@ -204,8 +203,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadUInt64("Unk Long");
             packet.ReadByte("Unk Byte");
             packet.ReadUInt32("Token");
-            var hash = packet.ReadBytes(0x100);
-            packet.WriteLine("RSA Hash: {0}", Utilities.ByteArrayToHexString(hash));
+            packet.ReadBytes("RSA Hash", 0x100);
         }
 
         [Parser(Opcode.CMSG_REDIRECT_AUTH_PROOF)]
@@ -234,7 +232,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             sha[15] = packet.ReadByte();
             sha[17] = packet.ReadByte();
             sha[16] = packet.ReadByte();
-            packet.WriteLine("SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
+            packet.AddValue("SHA-1 Hash", sha);
         }
     }
 }

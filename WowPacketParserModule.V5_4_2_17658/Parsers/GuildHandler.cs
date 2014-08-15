@@ -176,7 +176,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     var rank = packet.ReadUInt32();
                     var id = packet.ReadUInt32();
 
-                    packet.WriteLine("[{0}][{1}] Profession: Id {2} - Value {3} - Rank {4}", i, j, id, value, rank);
+                    packet.AddValue("Profession", string.Format("Id {0} - Value {1} - Rank {2}", id, value, rank), i, j);
                 }
 
                 var name = packet.ReadWoWString("Name", nameLength[i], i);

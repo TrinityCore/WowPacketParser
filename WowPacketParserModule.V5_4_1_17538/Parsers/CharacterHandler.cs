@@ -96,10 +96,10 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                 packet.ReadByte("Face", c); // v4+62
                 packet.ReadXORByte(guildGuids[c], 0);
                 packet.ReadByte("List Order", c); //v4+57
-                var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
+                var zone = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", c);
                 packet.ReadXORByte(guildGuids[c], 7);
                 packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
-                var mapId = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id", c); //v4+72
+                var mapId = packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id", c); //v4+72
                 var race = packet.ReadEnum<Race>("Race", TypeCode.Byte, c); //v4+58
                 var z = packet.ReadSingle("Position Z", c); //v4+84
                 packet.ReadXORByte(guildGuids[c], 1);
@@ -134,10 +134,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
                 if (firstLogins[c])
                 {
-                    var startPos = new StartPosition();
-                    startPos.Map = mapId;
-                    startPos.Position = new Vector3(x, y, z);
-                    startPos.Zone = zone;
+                    var startPos = new StartPosition {Map = mapId, Position = new Vector3(x, y, z), Zone = (int) zone};
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }

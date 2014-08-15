@@ -205,7 +205,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadWoWString("string73", bits73);
 
             for (var i = 0; i < zones; ++i)
-                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
+                packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
 
             packet.ReadWoWString("Guild Name", guildNameLen);
             packet.ReadWoWString("string1AB", bits1AB);
@@ -313,7 +313,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadXORByte(playerGUID[i], 1);
                 packet.ReadXORByte(accountId[i], 1);
 
-                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id", i);
 
                 packet.ReadXORByte(guildGUID[i], 7);
                 packet.ReadXORByte(guildGUID[i], 6);
@@ -327,7 +327,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                 packet.WriteGuid("PlayerGUID", playerGUID[i], i);
                 packet.WriteGuid("GuildGUID", guildGUID[i], i);
-                packet.WriteLine("[{0}] Account: {1}", i, BitConverter.ToUInt64(accountId[i], 0));
+                packet.AddValue("Account", BitConverter.ToUInt64(accountId[i], 0), i);
             }
         }
 

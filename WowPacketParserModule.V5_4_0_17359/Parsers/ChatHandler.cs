@@ -14,7 +14,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_DEFENSE_MESSAGE)]
         public static void HandleDefenseMessage(Packet packet)
         {
-            packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
+            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
             var len = packet.ReadBits(12);
             packet.ReadWoWString("Message", len);
         }

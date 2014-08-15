@@ -13,7 +13,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (onlineCheck && status == ContactStatus.Offline)
                 return;
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area");
+            packet.ReadEntry<Int32>(StoreNameType.Area, "Area");
             packet.ReadInt32("Level");
             packet.ReadEnum<Class>("Class", TypeCode.Int32);
         }
