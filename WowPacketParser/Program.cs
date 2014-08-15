@@ -71,7 +71,9 @@ namespace WowPacketParser
 
             SQLConnector.Disconnect();
             SSHTunnel.Disconnect();
-            Logger.WriteErrors();
+
+            if (Settings.LogErrors)
+                Logger.WriteErrors();
 
             EndPrompt();
         }
