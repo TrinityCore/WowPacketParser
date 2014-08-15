@@ -854,7 +854,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_1_0a_16357)]
         public static void HandleQuestgiverDetails510(Packet packet)
         {
             packet.ReadGuid("GUID");
