@@ -18,6 +18,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
+        [Parser(Opcode.CMSG_CHANNEL_ROSTER_INFO)]
+        public static void HandleChannelrosterInfo(Packet packet)
+        {
+            packet.ReadWoWString("Channel", packet.ReadBits(7));
+        }
+
         [Parser(Opcode.CMSG_CHANNEL_LIST)]
         [Parser(Opcode.CMSG_CHANNEL_OWNER)]
         [Parser(Opcode.CMSG_CHANNEL_ANNOUNCEMENTS)]

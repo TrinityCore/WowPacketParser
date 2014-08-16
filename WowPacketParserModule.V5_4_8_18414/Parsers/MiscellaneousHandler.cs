@@ -53,7 +53,9 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_INSPECT)]
         public static void HandleInspect(Packet packet)
         {
-            packet.ReadToEnd();
+            var guid = packet.StartBitStream(0, 3, 7, 2, 5, 1, 4, 6);
+            packet.ParseBitStream(guid, 3, 5, 2, 4, 1, 6, 0, 7);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_LOAD_SCREEN)]
