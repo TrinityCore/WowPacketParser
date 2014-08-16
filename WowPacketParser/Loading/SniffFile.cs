@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -169,6 +168,13 @@ namespace WowPacketParser.Loading
                     SplitBinaryDump();
                     break;
                 }
+                case DumpFormatType.PktSessionSplit:
+                {
+                    if (!ReadPackets())
+                        return;
+                    SessionSplitBinaryDump();
+                    break;
+                }
                 default:
                 {
                     Trace.WriteLine(string.Format("{0}: Dump format is none, nothing will be processed.", _logPrefix));
@@ -217,70 +223,47 @@ namespace WowPacketParser.Loading
             Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Assumed version {2}",
                     _logPrefix, packetCount, ClientVersion.VersionString));
 
-            var writers = new Dictionary<IPEndPoint, StreamWriter>();
-            var i = 1;
-
-            var text = Settings.DumpFormatWithText();
-
-            _stats.SetStartTime(DateTime.Now);
-            foreach (var packet in _packets)
+            using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(_outFileName, true) : null))
             {
-                var ep = packet.EndPoint ?? new IPEndPoint(0, 0);
-
-                StreamWriter writer = null;
-                var writeHeader = false;
-
-                if (text && !writers.TryGetValue(ep, out writer))
-                {
-                    writeHeader = true;
-
-                    writer = packet.EndPoint == null ?
-                        new StreamWriter(_outFileName) :
-                        new StreamWriter(_fileName + "_" + packet.EndPoint.GetHashCode() + ".txt");
-
-                    writers.Add(ep, writer);
-                }
-
-                if (writeHeader)
+                var i = 1;
+                if (writer != null)
                     writer.WriteLine(GetHeader());
 
-                ShowPercentProgress("Processing...", i++, packetCount);
-
-                // Parse the packet, adding text to Writer and stuff to the stores
-                if (packet.Direction == Direction.BNClientToServer || packet.Direction == Direction.BNServerToClient)
-                    Handler.ParseBattlenet(packet);
-                else
-                    Handler.Parse(packet);
-
-                // Update statistics
-                _stats.AddByStatus(packet.Status);
-
-                // get packet header if necessary
-                if (Settings.LogPacketErrors)
+                _stats.SetStartTime(DateTime.Now);
+                foreach (var packet in _packets)
                 {
-                    if (packet.Status == ParsedStatus.WithErrors)
-                        _withErrorHeaders.AddLast(packet.GetHeader());
-                    else if (packet.Status == ParsedStatus.NotParsed)
-                        _skippedHeaders.AddLast(packet.GetHeader());
+                    ShowPercentProgress("Processing...", i++, packetCount);
+
+                    // Parse the packet, adding text to Writer and stuff to the stores
+                    if (packet.Direction == Direction.BNClientToServer || packet.Direction == Direction.BNServerToClient)
+                        Handler.ParseBattlenet(packet);
+                    else
+                        Handler.Parse(packet);
+
+                    // Update statistics
+                    _stats.AddByStatus(packet.Status);
+
+                    // get packet header if necessary
+                    if (Settings.LogPacketErrors)
+                    {
+                        if (packet.Status == ParsedStatus.WithErrors)
+                            _withErrorHeaders.AddLast(packet.GetHeader());
+                        else if (packet.Status == ParsedStatus.NotParsed)
+                            _skippedHeaders.AddLast(packet.GetHeader());
+                    }
+
+                    if (writer != null)
+                    {
+                        // Write to file
+                        writer.WriteLine(packet.Writer);
+                        writer.Flush();
+                    }
+
+                    // Close Writer, Stream - Dispose
+                    packet.ClosePacket();
                 }
-
-                if (writer != null)
-                {
-                    // Write to file
-                    writer.WriteLine(packet.Writer);
-                    writer.Flush();
-                }
-
-                // Close Writer, Stream - Dispose
-                packet.ClosePacket();
+                _stats.SetEndTime(DateTime.Now);
             }
-
-            foreach (var streamWriter in writers)
-            {
-                streamWriter.Value.Dispose();
-            }
-
-            _stats.SetEndTime(DateTime.Now);
 
             _packets.Clear();
             _packets = null;
@@ -309,6 +292,22 @@ namespace WowPacketParser.Loading
             try
             {
                 SplitBinaryPacketWriter.Write(_packets, Encoding.ASCII);
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.GetType());
+                Trace.WriteLine(ex.Message);
+                Trace.WriteLine(ex.StackTrace);
+            }
+        }
+
+        private void SessionSplitBinaryDump()
+        {
+            Trace.WriteLine(string.Format("{0}: Splitting {1} packets to multiple files...", _logPrefix, _packets.Count));
+
+            try
+            {
+                SplitSessionBinaryPacketWriter.Write(_packets, Encoding.ASCII);
             }
             catch (Exception ex)
             {
