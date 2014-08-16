@@ -721,14 +721,12 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_18C3,                                 0x18C3 | 0x20000}, //++
             {Opcode.SMSG_UNK_1960,                                 0x1960 | 0x20000}, //++
             {Opcode.SMSG_UNK_1961,                                 0x1961 | 0x20000}, //++
-            {Opcode.SMSG_UNK_19C0,                                 0x19C0 | 0x20000}, //++
             {Opcode.SMSG_UNK_1A1F,                                 0x1A1F | 0x20000}, //++
             {Opcode.SMSG_UNK_1A2B,                                 0x1A2B | 0x20000}, //++ pair CMSG 1272
             {Opcode.SMSG_UNK_1E12,                                 0x1E12 | 0x20000}, //++
             {Opcode.SMSG_UNK_1E1B,                                 0x1E1B | 0x20000}, //++ levelup 90
             {Opcode.SMSG_UNK_1E3E,                                 0x1E3E | 0x20000}, //++
             {Opcode.SMSG_UNK_1E9B,                                 0x1E9B | 0x20000}, //++
-            {Opcode.SMSG_UNK_1F9A,                                 0x1F9A | 0x20000}, //++
             {Opcode.SMSG_NULL_04BB,                                0x04BB | 0x20000}, //++
             {Opcode.SMSG_NULL_0C59,                                0x0C59 | 0x20000}, //++
             {Opcode.SMSG_NULL_0C9A,                                0x0C9A | 0x20000}, //++
