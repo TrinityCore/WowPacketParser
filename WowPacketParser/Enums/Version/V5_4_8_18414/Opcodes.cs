@@ -179,6 +179,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_PVP_LOG_DATA,                             0x14C2 | 0x10000}, //-+
             {Opcode.CMSG_QUERY_GUILD_REWARDS,                      0x06C4 | 0x10000}, //+-
             {Opcode.CMSG_QUERY_GUILD_XP,                           0x05F8 | 0x10000}, //--
+            {Opcode.CMSG_QUERY_INSPECT_ACHIEVEMENTS,               0x0373 | 0x10000}, //++
             {Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST,                  0x06D1 | 0x10000}, //--
             {Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD,                 0x07CB | 0x10000}, //--
             {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST,                0x0659 | 0x10000}, //--
@@ -571,6 +572,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_REFORGE_RESULT,                           0x141E | 0x20000}, //--
             {Opcode.SMSG_REMOVED_SPELL,                            0x14C3 | 0x20000}, //+-
             {Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE,             0x08AA | 0x20000}, //--
+            {Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS,             0x009E | 0x20000}, //++ pair 0373
             {Opcode.SMSG_SELL_ITEM,                                0x048E | 0x20000}, //--
             {Opcode.SMSG_SEND_MAIL_RESULT,                         0x1A9B | 0x20000}, //--
             {Opcode.SMSG_SEND_UNLEARN_SPELLS,                      0x10F1 | 0x20000}, //++

@@ -7,6 +7,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class AchievementHandler
     {
+        [Parser(Opcode.CMSG_QUERY_INSPECT_ACHIEVEMENTS)]
+        public static void HandleQueryInspectAchievemens(Packet packet)
+        {
+            var guid = packet.StartBitStream(2, 7, 1, 5, 4, 0, 3, 6);
+            packet.ParseBitStream(guid, 7, 2, 0, 4, 1, 5, 6, 3);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_ACHIEVEMENT_EARNED)]
         public static void HandleAchievementEarned(Packet packet)
         {
@@ -246,6 +254,89 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
             packet.ReadUInt64("Counter"); // 16
             packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS)]
+        public static void HandleRespondInspectAchievemens(Packet packet)
+        {
+            var guid = new byte[8];
+            guid[3] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            var achievements = packet.ReadBits("Achievements", 20);
+            var criterias = packet.ReadBits("Criterias", 19);
+            var guid8 = new byte[criterias][];
+            var guid16 = new byte[criterias][];
+            var flags = new uint[criterias];
+            for (var i = 0; i < criterias; i++)
+            {
+                guid8[i] = new byte[8];
+                guid16[i] = new byte[8];
+                guid16[i][1] = packet.ReadBit();
+                guid16[i][4] = packet.ReadBit();
+                guid16[i][5] = packet.ReadBit();
+                guid8[i][7] = packet.ReadBit();
+                guid8[i][4] = packet.ReadBit();
+                guid8[i][3] = packet.ReadBit();
+                guid16[i][7] = packet.ReadBit();
+                guid16[i][0] = packet.ReadBit();
+                guid16[i][6] = packet.ReadBit();
+                flags[i] = packet.ReadBits(4);
+                guid16[i][2] = packet.ReadBit();
+                guid8[i][5] = packet.ReadBit();
+                guid8[i][6] = packet.ReadBit();
+                guid8[i][0] = packet.ReadBit();
+                guid8[i][2] = packet.ReadBit();
+                guid8[i][1] = packet.ReadBit();
+                guid16[i][3] = packet.ReadBit();
+            }
+            guid[5] = packet.ReadBit();
+            var guid60 = new byte[achievements][];
+            for (var i = 0; i < achievements; i++)
+                guid60[i] = packet.StartBitStream(0, 2, 5, 4, 3, 6, 1, 7);
+
+            guid[4] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+
+            packet.ParseBitStream(guid, 5);
+            for (var i = 0; i < achievements; i++)
+            {
+                packet.ParseBitStream(guid60[i], 1, 0);
+                packet.ReadPackedTime("Time", i);
+                packet.ReadInt32("RealmID", i); // 68
+                packet.ReadInt32("Achievement ID", i); // 20
+                packet.ParseBitStream(guid60[i], 7, 4, 6, 2, 3, 5);
+                packet.ReadInt32("RealmID", i); // 72
+                packet.WriteGuid("Player Guid", guid60[i], i);
+            }
+
+            for (var i = 0; i < criterias; i++)
+            {
+                packet.ParseBitStream(guid8[i], 4);
+                packet.ReadInt32("Criteria Timer1", i); // 96
+                packet.ParseBitStream(guid8[i], 1);
+                packet.ParseBitStream(guid16[i], 1);
+                packet.ParseBitStream(guid8[i], 7);
+                packet.ReadInt32("Criteria ID", i); // 36
+                packet.ParseBitStream(guid16[i], 3);
+                packet.ParseBitStream(guid8[i], 3, 5, 2);
+                packet.ParseBitStream(guid16[i], 4);
+                packet.ParseBitStream(guid8[i], 0);
+                packet.ParseBitStream(guid16[i], 0);
+                packet.ReadInt32("Criteria Timer2", i); // 100
+                packet.ParseBitStream(guid16[i], 7);
+                packet.ReadPackedTime("Criteria Time", i);
+                packet.ParseBitStream(guid8[i], 6);
+                packet.ParseBitStream(guid16[i], 2, 6, 5);
+
+                packet.WriteLine("[{0}] Criteria Flags: {1}", i, flags[i]);
+                packet.WriteLine("[{0}] Criteria Counter: {1}", i, BitConverter.ToUInt64(guid8[i], 0));
+                packet.WriteGuid("Criteria GUID", guid16[i], i);
+            }
+            packet.ParseBitStream(guid, 0, 3, 6, 2, 7, 4, 1);
+            packet.WriteGuid("Target", guid);
         }
     }
 }
