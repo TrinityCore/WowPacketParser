@@ -421,10 +421,10 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_CHANNEL_NOTIFY,                           0x0F06 | 0x20000}, //--
             {Opcode.SMSG_CHANNEL_START,                            0x10F9 | 0x20000}, //++
             {Opcode.SMSG_CHANNEL_UPDATE,                           0x11D9 | 0x20000}, //+-
-            {Opcode.SMSG_CHAR_CREATE,                              0x1CAA | 0x20000}, //--
+            {Opcode.SMSG_CHAR_CREATE,                              0x1CAA | 0x20000}, //++
             {Opcode.SMSG_CHAR_DELETE,                              0x0C9F | 0x20000}, //--
             {Opcode.SMSG_CHAR_ENUM,                                0x11C3 | 0x20000}, //++
-            {Opcode.SMSG_CHAT_PLAYER_NOT_FOUND,                    0x1082 | 0x20000}, //--
+            {Opcode.SMSG_CHAT_PLAYER_NOT_FOUND,                    0x1082 | 0x20000}, //++
             {Opcode.SMSG_CLIENTCACHE_VERSION,                      0x002A | 0x20000}, //++
             {Opcode.SMSG_CONTACT_LIST,                             0x1F22 | 0x20000}, //--
             {Opcode.SMSG_CORPSE_MAP_POSITION_QUERY_RESPONSE,       0x1A3A | 0x20000}, //--

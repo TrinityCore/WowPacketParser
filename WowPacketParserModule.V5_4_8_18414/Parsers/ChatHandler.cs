@@ -96,8 +96,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_CHAT_PLAYER_NOT_FOUND)]
         public static void HandleChatPlayerNotFound(Packet packet)
         {
-            var len = packet.ReadBits(9);
-            packet.ReadWoWString("Name", len);
+            packet.ReadWoWString("Name", packet.ReadBits(9));
         }
 
         [Parser(Opcode.SMSG_MESSAGECHAT)] // sub_70A096

@@ -122,7 +122,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_CHAR_CREATE)]
         public static void HandleCharCreate(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadEnum<ResponseCode>("Response", TypeCode.Byte);
         }
 
         [Parser(Opcode.SMSG_CHAR_DELETE)]
