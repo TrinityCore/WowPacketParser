@@ -383,7 +383,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GM_MESSAGECHAT)] // Similar to SMSG_MESSAGECHAT
         public static void HandleGMMessageChat(Packet packet)
         {
-            packet.ReadEnum<ChatMessageType>("Type", TypeCode.Byte);
+            var type = packet.ReadEnum<ChatMessageType>("Type", TypeCode.Byte);
             packet.ReadEnum<Language>("Language", TypeCode.Int32);
             packet.ReadGuid("GUID 1");
             packet.ReadInt32("Constant time");
@@ -393,6 +393,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Message Length");
             packet.ReadCString("Message");
             packet.ReadEnum<ChatTag>("Chat Tag", ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309) ? TypeCode.Int16 : TypeCode.Byte);
+            if (type == ChatMessageType.Achievement || type == ChatMessageType.GuildAchievement)
+                packet.ReadInt32("Achievement ID");
         }
 
         [Parser(Opcode.SMSG_CHAT_RESTRICTED)]

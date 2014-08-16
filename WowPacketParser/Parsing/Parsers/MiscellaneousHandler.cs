@@ -1062,16 +1062,10 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_NOTIFICATION)]
+        [Parser(Opcode.SMSG_NOTIFICATION_2)]
         public static void HandleNotification(Packet packet)
         {
-            var length = packet.ReadBits(13);
-            packet.ReadWoWString("Message", length);
-        }
-
-        [Parser(Opcode.SMSG_NOTIFICATION_2)]
-        public static void HandleNotification2(Packet packet)
-        {
-            packet.ReadCString("Message");
+            packet.ReadCString("Notification");
         }
 
         [Parser(Opcode.CMSG_TIME_SYNC_RESP_FAILED)]
