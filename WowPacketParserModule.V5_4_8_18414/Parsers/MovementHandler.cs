@@ -496,6 +496,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             ReadPlayerMovementInfo(ref packet, info.MovementForceWalkSpeedChangeAck);
         }
 
+        [Parser(Opcode.CMSG_UNK_01F1)]
+        public static void HandleCUnk01F1(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.CUnk01F1); // 679E4F
+        }
+
         [Parser(Opcode.CMSG_UNK_09FB)]
         public static void HandleCUnk09FB(Packet packet)
         {
@@ -3843,10 +3849,10 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteLine("Position: {0}", pos);
         }
 
-        [Parser(Opcode.CMSG_UNK_10F2)]
-        public static void HandleUnk10F2(Packet packet)
+        [Parser(Opcode.CMSG_MOVE_WATER_WALK_ACK)]
+        public static void HandleWaterWalkAck(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, info.Unk10F2);
+            ReadPlayerMovementInfo(ref packet, info.MovementWaterWalkAck);
         }
 
         [Parser(Opcode.CMSG_UNK_11D9)]
@@ -4134,6 +4140,15 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ParseBitStream(guid, 4, 5, 7);
             packet.ReadInt32("Count");
             packet.ParseBitStream(guid, 6, 2, 3, 1, 0);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_WATER_WALK)]
+        public static void HandleSMoveWaterWalk(Packet packet)
+        {
+            var guid = packet.StartBitStream(2, 0, 4, 5, 3, 7, 1, 6);
+            packet.ParseBitStream(guid, 4, 7, 0, 1, 6, 2, 3, 5);
+            packet.ReadInt32("MCounter");
             packet.WriteGuid("Guid", guid);
         }
 

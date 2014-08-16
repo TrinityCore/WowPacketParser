@@ -254,6 +254,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_VOID_STORAGE_UNLOCK,                      0x0444 | 0x10000}, //--
             {Opcode.CMSG_VOID_SWAP_ITEM,                           0x0655 | 0x10000}, //--
             {Opcode.CMSG_WARDEN_DATA,                              0x1816 | 0x10000}, //+-
+            {Opcode.CMSG_MOVE_WATER_WALK_ACK,                      0x10F2 | 0x10000}, //++
             {Opcode.CMSG_WHO,                                      0x18A3 | 0x10000}, //--
             {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE,              0x15AB | 0x10000}, //+-
             {Opcode.CMSG_UNK_0002,                                 0x0002 | 0x10000}, //++
@@ -261,6 +262,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_UNK_0087,                                 0x0087 | 0x10000}, //++
             {Opcode.CMSG_UNK_00A7,                                 0x00A7 | 0x10000}, //+-
             {Opcode.CMSG_UNK_00F2,                                 0x00F2 | 0x10000}, //++
+            {Opcode.CMSG_UNK_01F1,                                 0x01F1 | 0x10000}, //++
             {Opcode.CMSG_UNK_0247,                                 0x0247 | 0x10000}, //+-
             {Opcode.CMSG_UNK_0264,                                 0x0264 | 0x10000}, //+-
             {Opcode.CMSG_UNK_0265,                                 0x0265 | 0x10000}, //+-
@@ -278,7 +280,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_UNK_1052,                                 0x1052 | 0x10000}, //++
             {Opcode.CMSG_UNK_10A2,                                 0x10A2 | 0x10000}, //+-
             {Opcode.CMSG_UNK_10A7,                                 0x10A7 | 0x10000}, //+-
-            {Opcode.CMSG_UNK_10F2,                                 0x10F2 | 0x10000}, //++
             {Opcode.CMSG_UNK_115B,                                 0x115B | 0x10000}, //++
             {Opcode.CMSG_UNK_11D8,                                 0x11D8 | 0x10000}, //++
             {Opcode.CMSG_UNK_11D9,                                 0x11D9 | 0x10000}, //+-
@@ -523,6 +524,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_MOVE_SET_WALK_SPEED,                      0x0469 | 0x20000}, //++
             {Opcode.SMSG_MOVE_TELEPORT,                            0x0B39 | 0x20000}, //++
             {Opcode.SMSG_MOVE_UNROOT,                              0x1FAE | 0x20000}, //++
+            {Opcode.SMSG_MOVE_WATER_WALK,                          0x1F9A | 0x20000}, //++
             {Opcode.SMSG_MOVE_UNSET_CAN_FLY,                       0x0162 | 0x20000}, //++
             {Opcode.SMSG_NAME_QUERY_RESPONSE,                      0x169B | 0x20000}, //++
             {Opcode.SMSG_NEW_WORLD,                                0x1C3B | 0x20000}, //++
