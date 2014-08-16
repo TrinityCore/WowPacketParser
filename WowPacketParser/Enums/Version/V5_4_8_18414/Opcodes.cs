@@ -17,6 +17,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_ACTIVATETAXIEXPRESS,                      0x06FB | 0x10000}, //--
             {Opcode.CMSG_ADD_FRIEND,                               0x09A6 | 0x10000}, //--
             {Opcode.CMSG_ADD_IGNORE,                               0x0D20 | 0x10000}, //-+
+            {Opcode.CMSG_ADDON_REGISTERED_PREFIXES,                0x040E | 0x10000}, //++
             {Opcode.CMSG_ALTER_APPEARANCE,                         0x07F0 | 0x10000}, //+-
             {Opcode.CMSG_AREATRIGGER,                              0x1C44 | 0x10000}, //++
             {Opcode.CMSG_ATTACKSTOP,                               0x0345 | 0x10000}, //++
@@ -64,7 +65,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_CHAR_RENAME,                              0x0963 | 0x10000}, //--
             {Opcode.CMSG_CHAT_IGNORED,                             0x048A | 0x10000}, //--
             {Opcode.CMSG_CONTACT_LIST,                             0x0BB4 | 0x10000}, //--
-            {Opcode.CMSG_CORPSE_MAP_POSITION_QUERY,                0x0150 | 0x10000}, //--
+            //{Opcode.CMSG_CORPSE_MAP_POSITION_QUERY,                0x0150 | 0x10000}, //--
             {Opcode.CMSG_CREATURE_QUERY,                           0x0842 | 0x10000}, //+-
             {Opcode.CMSG_DEL_FRIEND,                               0x1103 | 0x10000}, //--
             {Opcode.CMSG_DEL_IGNORE,                               0x0737 | 0x10000}, //-+
@@ -135,6 +136,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_MAIL_RETURN_TO_SENDER,                    0x1FA8 | 0x10000}, //--
             {Opcode.CMSG_MAIL_TAKE_ITEM,                           0x1371 | 0x10000}, //--
             {Opcode.CMSG_MAIL_TAKE_MONEY,                          0x06FA | 0x10000}, //--
+            {Opcode.CMSG_MESSAGECHAT_ADDON_WHISPER,                0x0EBB | 0x10000}, //++
             {Opcode.CMSG_MESSAGECHAT_AFK,                          0x0EAB | 0x10000}, //--
             {Opcode.CMSG_MESSAGECHAT_CHANNEL,                      0x00BB | 0x10000}, //--
             {Opcode.CMSG_MESSAGECHAT_DND,                          0x002E | 0x10000}, //--
@@ -246,6 +248,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_TRANSMOGRIFY_ITEMS,                       0x06D7 | 0x10000}, //--
             {Opcode.CMSG_TURN_IN_PETITION,                         0x0673 | 0x10000}, //--
             {Opcode.CMSG_UNLEARN_SKILL,                            0x0268 | 0x10000}, //++
+            {Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES,            0x029F | 0x10000}, //++
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA,                      0x0068 | 0x10000}, //++
             {Opcode.CMSG_USE_ITEM,                                 0x1CC1 | 0x10000}, //--
             {Opcode.CMSG_VIOLENCE_LEVEL,                           0x0040 | 0x10000}, //+-
@@ -299,7 +302,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_NULL_0141,                                0x0141 | 0x10000}, //+-
             {Opcode.CMSG_NULL_01C0,                                0x01C0 | 0x10000}, //+-
             {Opcode.CMSG_NULL_0276,                                0x0276 | 0x10000}, //+-
-            {Opcode.CMSG_NULL_029F,                                0x029F | 0x10000}, //+-
             {Opcode.CMSG_NULL_02D6,                                0x02D6 | 0x10000}, //+-
             {Opcode.CMSG_NULL_02DA,                                0x02DA | 0x10000}, //+-
             {Opcode.CMSG_NULL_032D,                                0x032D | 0x10000}, //+-
