@@ -496,6 +496,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadUInt32("Ping");
         }
 
+        [Parser(Opcode.SMSG_PRE_RESURRECT)]
+        public static void HandlePreResurrect(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 7, 5, 2, 6, 0, 3, 4);
+            packet.ParseBitStream(guid, 5, 1, 7, 0, 6, 4, 2, 3);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_RAID_READY_CHECK)]
         [Parser(Opcode.SMSG_RAID_READY_CHECK_COMPLETED)]
         [Parser(Opcode.SMSG_RAID_READY_CHECK_CONFIRM)]

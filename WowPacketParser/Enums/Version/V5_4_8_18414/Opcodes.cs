@@ -546,6 +546,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_PLAYERBOUND,                              0x1B60 | 0x20000}, //--
             {Opcode.SMSG_PONG,                                     0x1969 | 0x20000}, //--
             {Opcode.SMSG_POWER_UPDATE,                             0x109F | 0x20000}, //++
+            {Opcode.SMSG_PRE_RESURRECT,                            0x19C0 | 0x20000}, //++
             {Opcode.SMSG_PVP_LOG_DATA,                             0x1E8F | 0x20000}, //--
             {Opcode.SMSG_QUERY_TIME_RESPONSE,                      0x100F | 0x20000}, //++
             {Opcode.SMSG_QUESTGIVER_OFFER_REWARD,                  0x074F | 0x20000}, //--
