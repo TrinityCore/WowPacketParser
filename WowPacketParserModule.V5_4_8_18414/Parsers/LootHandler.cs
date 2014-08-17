@@ -70,7 +70,9 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_LOOT_CLEAR_MONEY)]
         public static void HandleLootClearMoney(Packet packet)
         {
-            packet.ReadToEnd();
+            var guid = packet.StartBitStream(6, 0, 4, 1, 3, 5, 2, 7);
+            packet.ParseBitStream(guid, 0, 4, 2, 7, 1, 5, 3, 6);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_LOOT_CONTENTS)]
@@ -94,7 +96,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_LOOT_MONEY_NOTIFY)]
         public static void HandleLootMoneyNotify(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadBit("!Share"); // Controls the text displayed in chat. 0 is "Your share is..." and 1 is "You loot..."
+            packet.ReadInt32("Money");
         }
 
         [Parser(Opcode.SMSG_LOOT_RELEASE_RESPONSE)]

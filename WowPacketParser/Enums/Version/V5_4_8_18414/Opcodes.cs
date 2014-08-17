@@ -507,12 +507,12 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_LOGIN_VERIFY_WORLD,                       0x1C0F | 0x20000}, //--
             {Opcode.SMSG_LOGOUT_CANCEL_ACK,                        0x0AAF | 0x20000}, //++
             {Opcode.SMSG_LOGOUT_COMPLETE,                          0x142F | 0x20000}, //+-
-            {Opcode.SMSG_LOGOUT_RESPONSE,                          0x008F | 0x20000}, //+-
-            {Opcode.SMSG_LOOT_CLEAR_MONEY,                         0x1632 | 0x20000}, //--
-            {Opcode.SMSG_LOOT_MONEY_NOTIFY,                        0x14C0 | 0x20000}, //--
+            {Opcode.SMSG_LOGOUT_RESPONSE,                          0x008F | 0x20000}, //++
+            {Opcode.SMSG_LOOT_CLEAR_MONEY,                         0x1632 | 0x20000}, //++
+            {Opcode.SMSG_LOOT_MONEY_NOTIFY,                        0x14C0 | 0x20000}, //++
             {Opcode.SMSG_LOOT_RELEASE_RESPONSE,                    0x123F | 0x20000}, //--
             {Opcode.SMSG_LOOT_REMOVED,                             0x0C3E | 0x20000}, //++
-            {Opcode.SMSG_LOOT_RESPONSE,                            0x128A | 0x20000}, //--
+            {Opcode.SMSG_LOOT_RESPONSE,                            0x128A | 0x20000}, //++
             {Opcode.SMSG_MAIL_LIST_RESULT,                         0x1C0B | 0x20000}, //--
             {Opcode.SMSG_MESSAGECHAT,                              0x1A9A | 0x20000}, //++
             {Opcode.SMSG_MINIMAP_PING,                             0x168F | 0x20000}, //--
