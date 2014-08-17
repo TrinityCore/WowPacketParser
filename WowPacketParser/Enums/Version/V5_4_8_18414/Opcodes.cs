@@ -298,6 +298,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_UNK_1841,                                 0x1841 | 0x10000}, //+-
             {Opcode.CMSG_UNK_1886,                                 0x1886 | 0x10000}, //++
             {Opcode.CMSG_UNK_19C2,                                 0x19C2 | 0x10000}, //+-
+            {Opcode.CMSG_UNK_19C3,                                 0x19C3 | 0x10000}, //++
             {Opcode.CMSG_UNK_1D36,                                 0x1D36 | 0x10000}, //++
             {Opcode.CMSG_UNK_1DAE,                                 0x1DAE | 0x10000}, //++
             {Opcode.CMSG_NULL_0023,                                0x0023 | 0x10000}, //+-
@@ -434,7 +435,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_CONTACT_LIST,                             0x1F22 | 0x20000}, //--
             {Opcode.SMSG_CORPSE_MAP_POSITION_QUERY_RESPONSE,       0x1A3A | 0x20000}, //--
             {Opcode.SMSG_CORPSE_NOT_IN_INSTANCE,                   0x089E | 0x20000}, //--
-            {Opcode.SMSG_CORPSE_QUERY_RESPONSE,                    0x0E0B | 0x20000}, //--
+            {Opcode.SMSG_CORPSE_QUERY_RESPONSE,                    0x0E0B | 0x20000}, //++
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY,                     0x022A | 0x20000}, //++
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE,                  0x048B | 0x20000}, //--
             {Opcode.SMSG_CRITERIA_UPDATE_ACCOUNT,                  0x189E | 0x20000}, //++
@@ -666,7 +667,9 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_023B,                                 0x023B | 0x20000}, //++ SMSG_SPLINE_MOVE_SET_???_SPEED
             {Opcode.SMSG_UNK_0250,                                 0x0250 | 0x20000}, //++
             {Opcode.SMSG_UNK_02A7,                                 0x02A7 | 0x20000}, //+-
+            {Opcode.SMSG_UNK_0354,                                 0x0354 | 0x20000}, //++
             {Opcode.SMSG_UNK_036D,                                 0x036D | 0x20000}, //++
+            {Opcode.SMSG_UNK_041F,                                 0x041F | 0x20000}, //++ pair 19C3
             {Opcode.SMSG_UNK_042A,                                 0x042A | 0x20000}, //++
             {Opcode.SMSG_UNK_043F,                                 0x043F | 0x20000}, //++
             {Opcode.SMSG_UNK_04AA,                                 0x04AA | 0x20000}, //+-
