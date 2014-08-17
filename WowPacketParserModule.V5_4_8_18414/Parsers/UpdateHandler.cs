@@ -10,7 +10,6 @@ using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using Guid = WowPacketParser.Misc.Guid;
 using UpdateFields = WowPacketParser.Enums.Version.UpdateFields;
-using WowPacketParserModule.V5_4_8_18414.Enums;
 
 namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
@@ -250,7 +249,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 hasFallData = packet.ReadBit("has fall data", index); // 132+
 
                 if (hasMovementFlags) // 16*4
-                    moveInfo.Flags = (WowPacketParser.Enums.MovementFlag)packet.ReadEnum<MovementFlag548>("Movement Flags", 30, index);
+                    moveInfo.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
 
                 hasFloat3 = !packet.ReadBit("skip float3", index); // 136+ if (skipFloat3) dword ptr [esi+88h] = 0 else dword ptr [esi+88h] = ds:dword_D26EA8
                 moveInfo.HasSplineData = packet.ReadBit("has Spline", index); // 344+

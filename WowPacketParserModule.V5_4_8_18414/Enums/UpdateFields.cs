@@ -157,7 +157,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Enums
         CONTAINER_END                                            = ItemField.ITEM_END + 0x49
     }
 
-    public enum UnitField548
+    public enum UnitField
     {
         UNIT_FIELD_CHARM                                         = ObjectField.OBJECT_END + 0x00, // Size: 2, Flags: UF_FLAG_PUBLIC
         UNIT_FIELD_CHARM2,
@@ -316,414 +316,113 @@ namespace WowPacketParserModule.V5_4_8_18414.Enums
 
     public enum PlayerField
     {
-        PLAYER_AMMO_ID,
-        PLAYER_BLOCK_PERCENTAGE,
-        PLAYER_BYTES,
-        PLAYER_BYTES_2,
-        PLAYER_BYTES_3,
-        PLAYER_CHARACTER_POINTS,
-        PLAYER_CHARACTER_POINTS1,
-        PLAYER_CHARACTER_POINTS2,
-        PLAYER_CHOSEN_TITLE,
-        PLAYER_CRIT_PERCENTAGE,
-        PLAYER_DODGE_PERCENTAGE,
-        PLAYER_DUEL_ARBITER,
-        PLAYER_DUEL_TEAM,
-        PLAYER_END,
-        PLAYER_EXPERTISE,
-        PLAYER_EXPLORED_ZONES_1,
-        PLAYER_FAKE_INEBRIATION,
-        PLAYER_FARSIGHT,
-        PLAYER_FIELD_ARENA_CURRENCY,
-        PLAYER_FIELD_ARENA_TEAM_INFO_1_1,
-        PLAYER_FIELD_BANKBAG_SLOT_1,
-        PLAYER_FIELD_BANK_SLOT_1,
-        PLAYER_FIELD_BATTLEGROUND_RATING,
-        PLAYER_FIELD_BUYBACK_PRICE_1,
-        PLAYER_FIELD_BUYBACK_PRICE_10,
-        PLAYER_FIELD_BUYBACK_PRICE_11,
-        PLAYER_FIELD_BUYBACK_PRICE_12,
-        PLAYER_FIELD_BUYBACK_PRICE_2,
-        PLAYER_FIELD_BUYBACK_PRICE_3,
-        PLAYER_FIELD_BUYBACK_PRICE_4,
-        PLAYER_FIELD_BUYBACK_PRICE_5,
-        PLAYER_FIELD_BUYBACK_PRICE_6,
-        PLAYER_FIELD_BUYBACK_PRICE_7,
-        PLAYER_FIELD_BUYBACK_PRICE_8,
-        PLAYER_FIELD_BUYBACK_PRICE_9,
-        PLAYER_FIELD_BUYBACK_TIMESTAMP_1,
-        PLAYER_FIELD_BUYBACK_TIMESTAMP_10,
-        PLAYER_FIELD_BUYBACK_TIMESTAMP_11,
-        PLAYER_FIELD_BUYBACK_TIMESTAMP_12,
-        PLAYER_FIELD_BUYBACK_TIMESTAMP_2,
-        PLAYER_FIELD_BUYBACK_TIMESTAMP_3,
-        PLAYER_FIELD_BUYBACK_TIMESTAMP_4,
-        PLAYER_FIELD_BUYBACK_TIMESTAMP_5,
-        PLAYER_FIELD_BUYBACK_TIMESTAMP_6,
-        PLAYER_FIELD_BUYBACK_TIMESTAMP_7,
-        PLAYER_FIELD_BUYBACK_TIMESTAMP_8,
-        PLAYER_FIELD_BUYBACK_TIMESTAMP_9,
-        PLAYER_FIELD_BYTES,
-        PLAYER_FIELD_BYTES2,
-        PLAYER_FIELD_COINAGE,
-        PLAYER_FIELD_COMBAT_RATING_1,
-        PLAYER_FIELD_CURRENCYTOKEN_SLOT_1,
-        PLAYER_FIELD_DAILY_QUESTS_1,
-        PLAYER_FIELD_GLYPHS_1,
-        PLAYER_FIELD_GLYPHS_2,
-        PLAYER_FIELD_GLYPHS_3,
-        PLAYER_FIELD_GLYPHS_4,
-        PLAYER_FIELD_GLYPHS_5,
-        PLAYER_FIELD_GLYPHS_6,
-        PLAYER_FIELD_GLYPH_SLOTS_1,
-        PLAYER_FIELD_GLYPH_SLOTS_2,
-        PLAYER_FIELD_GLYPH_SLOTS_3,
-        PLAYER_FIELD_GLYPH_SLOTS_4,
-        PLAYER_FIELD_GLYPH_SLOTS_5,
-        PLAYER_FIELD_GLYPH_SLOTS_6,
-        PLAYER_FIELD_HOME_REALM_TIME_OFFSET,
-        PLAYER_FIELD_HONOR_CURRENCY,
-        PLAYER_FIELD_INV_SLOT_FIXME1,
-        PLAYER_FIELD_INV_SLOT_FIXME10,
-        PLAYER_FIELD_INV_SLOT_FIXME11,
-        PLAYER_FIELD_INV_SLOT_FIXME12,
-        PLAYER_FIELD_INV_SLOT_FIXME13,
-        PLAYER_FIELD_INV_SLOT_FIXME14,
-        PLAYER_FIELD_INV_SLOT_FIXME15,
-        PLAYER_FIELD_INV_SLOT_FIXME16,
-        PLAYER_FIELD_INV_SLOT_FIXME17,
-        PLAYER_FIELD_INV_SLOT_FIXME18,
-        PLAYER_FIELD_INV_SLOT_FIXME19,
-        PLAYER_FIELD_INV_SLOT_FIXME2,
-        PLAYER_FIELD_INV_SLOT_FIXME20,
-        PLAYER_FIELD_INV_SLOT_FIXME21,
-        PLAYER_FIELD_INV_SLOT_FIXME22,
-        PLAYER_FIELD_INV_SLOT_FIXME3,
-        PLAYER_FIELD_INV_SLOT_FIXME4,
-        PLAYER_FIELD_INV_SLOT_FIXME5,
-        PLAYER_FIELD_INV_SLOT_FIXME6,
-        PLAYER_FIELD_INV_SLOT_FIXME7,
-        PLAYER_FIELD_INV_SLOT_FIXME8,
-        PLAYER_FIELD_INV_SLOT_FIXME9,
-        PLAYER_FIELD_INV_SLOT_HEAD,
-        PLAYER_FIELD_KEYRING_SLOT_1,
-        PLAYER_FIELD_KILLS,
-        PLAYER_FIELD_KNOWN_CURRENCIES,
-        PLAYER_FIELD_KNOWN_TITLES,
-        PLAYER_FIELD_KNOWN_TITLES1,
-        PLAYER_FIELD_KNOWN_TITLES2,
-        PLAYER_FIELD_LIFETIME_HONORABLE_KILLS,
-        PLAYER_FIELD_MAX_LEVEL,
-        PLAYER_FIELD_MOD_DAMAGE_DONE_NEG,
-        PLAYER_FIELD_MOD_DAMAGE_DONE_PCT,
-        PLAYER_FIELD_MOD_DAMAGE_DONE_PCT1,
-        PLAYER_FIELD_MOD_DAMAGE_DONE_PCT2,
-        PLAYER_FIELD_MOD_DAMAGE_DONE_PCT3,
-        PLAYER_FIELD_MOD_DAMAGE_DONE_PCT4,
-        PLAYER_FIELD_MOD_DAMAGE_DONE_PCT5,
-        PLAYER_FIELD_MOD_DAMAGE_DONE_PCT6,
-        PLAYER_FIELD_MOD_DAMAGE_DONE_PCT7,
-        PLAYER_FIELD_MOD_DAMAGE_DONE_POS,
-        PLAYER_FIELD_MOD_HASTE,
-        PLAYER_FIELD_MOD_HASTE_REGEN,
-        PLAYER_FIELD_MOD_HEALING_DONE_PCT,
-        PLAYER_FIELD_MOD_HEALING_DONE_POS,
-        PLAYER_FIELD_MOD_HEALING_PCT,
-        PLAYER_FIELD_MOD_PET_HASTE,
-        PLAYER_FIELD_MOD_RANGED_HASTE,
-        PLAYER_FIELD_MOD_SPELL_POWER_PCT,
-        PLAYER_FIELD_MOD_TARGET_PHYSICAL_RESISTANCE,
-        PLAYER_FIELD_MOD_TARGET_RESISTANCE,
-        PLAYER_FIELD_PACK_SLOT_1,
-        PLAYER_FIELD_PADDING,
-        PLAYER_FIELD_PAD_0,
-        PLAYER_FIELD_PVP_MEDALS,
-        PLAYER_FIELD_RESEARCHING_1,
-        PLAYER_FIELD_RESERACH_SITE_1,
-        PLAYER_FIELD_TODAY_CONTRIBUTION,
-        PLAYER_FIELD_UI_HIT_MODIFIER,
-        PLAYER_FIELD_UI_SPELL_HIT_MODIFIER,
-        PLAYER_FIELD_VENDORBUYBACK_SLOT_1,
-        PLAYER_FIELD_WATCHED_FACTION_INDEX,
-        PLAYER_FIELD_WEAPON_DMG_MULTIPLIERS,
-        PLAYER_FIELD_YESTERDAY_CONTRIBUTION,
-        PLAYER_FLAGS,
-        PLAYER_GLYPHS_ENABLED,
-        PLAYER_GUILDDELETE_DATE,
-        PLAYER_GUILDID,
-        PLAYER_GUILDLEVEL,
-        PLAYER_GUILDRANK,
-        PLAYER_GUILD_TIMESTAMP,
-        PLAYER_MASTERY,
-        PLAYER_NEXT_LEVEL_XP,
-        PLAYER_NO_REAGENT_COST_1,
-        PLAYER_OFFHAND_CRIT_PERCENTAGE,
-        PLAYER_OFFHAND_EXPERTISE,
-        PLAYER_PARRY_PERCENTAGE,
-        PLAYER_PET_SPELL_POWER,
-        PLAYER_PROFESSION_SKILL_LINE_1,
-        PLAYER_QUEST_LOG_10_1,
-        PLAYER_QUEST_LOG_10_2,
-        PLAYER_QUEST_LOG_10_3,
-        PLAYER_QUEST_LOG_10_5,
-        PLAYER_QUEST_LOG_11_1,
-        PLAYER_QUEST_LOG_11_2,
-        PLAYER_QUEST_LOG_11_3,
-        PLAYER_QUEST_LOG_11_5,
-        PLAYER_QUEST_LOG_12_1,
-        PLAYER_QUEST_LOG_12_2,
-        PLAYER_QUEST_LOG_12_3,
-        PLAYER_QUEST_LOG_12_5,
-        PLAYER_QUEST_LOG_13_1,
-        PLAYER_QUEST_LOG_13_2,
-        PLAYER_QUEST_LOG_13_3,
-        PLAYER_QUEST_LOG_13_5,
-        PLAYER_QUEST_LOG_14_1,
-        PLAYER_QUEST_LOG_14_2,
-        PLAYER_QUEST_LOG_14_3,
-        PLAYER_QUEST_LOG_14_5,
-        PLAYER_QUEST_LOG_15_1,
-        PLAYER_QUEST_LOG_15_2,
-        PLAYER_QUEST_LOG_15_3,
-        PLAYER_QUEST_LOG_15_5,
-        PLAYER_QUEST_LOG_16_1,
-        PLAYER_QUEST_LOG_16_2,
-        PLAYER_QUEST_LOG_16_3,
-        PLAYER_QUEST_LOG_16_5,
-        PLAYER_QUEST_LOG_17_1,
-        PLAYER_QUEST_LOG_17_2,
-        PLAYER_QUEST_LOG_17_3,
-        PLAYER_QUEST_LOG_17_5,
-        PLAYER_QUEST_LOG_18_1,
-        PLAYER_QUEST_LOG_18_2,
-        PLAYER_QUEST_LOG_18_3,
-        PLAYER_QUEST_LOG_18_5,
-        PLAYER_QUEST_LOG_19_1,
-        PLAYER_QUEST_LOG_19_2,
-        PLAYER_QUEST_LOG_19_3,
-        PLAYER_QUEST_LOG_19_5,
-        PLAYER_QUEST_LOG_1_1,
-        PLAYER_QUEST_LOG_1_2,
-        PLAYER_QUEST_LOG_1_3,
-        PLAYER_QUEST_LOG_1_4,
-        PLAYER_QUEST_LOG_1_5,
-        PLAYER_QUEST_LOG_20_1,
-        PLAYER_QUEST_LOG_20_2,
-        PLAYER_QUEST_LOG_20_3,
-        PLAYER_QUEST_LOG_20_5,
-        PLAYER_QUEST_LOG_21_1,
-        PLAYER_QUEST_LOG_21_2,
-        PLAYER_QUEST_LOG_21_3,
-        PLAYER_QUEST_LOG_21_5,
-        PLAYER_QUEST_LOG_22_1,
-        PLAYER_QUEST_LOG_22_2,
-        PLAYER_QUEST_LOG_22_3,
-        PLAYER_QUEST_LOG_22_5,
-        PLAYER_QUEST_LOG_23_1,
-        PLAYER_QUEST_LOG_23_2,
-        PLAYER_QUEST_LOG_23_3,
-        PLAYER_QUEST_LOG_23_5,
-        PLAYER_QUEST_LOG_24_1,
-        PLAYER_QUEST_LOG_24_2,
-        PLAYER_QUEST_LOG_24_3,
-        PLAYER_QUEST_LOG_24_5,
-        PLAYER_QUEST_LOG_25_1,
-        PLAYER_QUEST_LOG_25_2,
-        PLAYER_QUEST_LOG_25_3,
-        PLAYER_QUEST_LOG_25_5,
-        PLAYER_QUEST_LOG_26_1,
-        PLAYER_QUEST_LOG_26_2,
-        PLAYER_QUEST_LOG_26_3,
-        PLAYER_QUEST_LOG_26_5,
-        PLAYER_QUEST_LOG_27_1,
-        PLAYER_QUEST_LOG_27_2,
-        PLAYER_QUEST_LOG_27_3,
-        PLAYER_QUEST_LOG_27_5,
-        PLAYER_QUEST_LOG_28_1,
-        PLAYER_QUEST_LOG_28_2,
-        PLAYER_QUEST_LOG_28_3,
-        PLAYER_QUEST_LOG_28_5,
-        PLAYER_QUEST_LOG_29_1,
-        PLAYER_QUEST_LOG_29_2,
-        PLAYER_QUEST_LOG_29_3,
-        PLAYER_QUEST_LOG_29_5,
-        PLAYER_QUEST_LOG_2_1,
-        PLAYER_QUEST_LOG_2_2,
-        PLAYER_QUEST_LOG_2_3,
-        PLAYER_QUEST_LOG_2_5,
-        PLAYER_QUEST_LOG_30_1,
-        PLAYER_QUEST_LOG_30_2,
-        PLAYER_QUEST_LOG_30_3,
-        PLAYER_QUEST_LOG_30_5,
-        PLAYER_QUEST_LOG_31_1,
-        PLAYER_QUEST_LOG_31_2,
-        PLAYER_QUEST_LOG_31_3,
-        PLAYER_QUEST_LOG_31_5,
-        PLAYER_QUEST_LOG_32_1,
-        PLAYER_QUEST_LOG_32_2,
-        PLAYER_QUEST_LOG_32_3,
-        PLAYER_QUEST_LOG_32_5,
-        PLAYER_QUEST_LOG_33_1,
-        PLAYER_QUEST_LOG_33_2,
-        PLAYER_QUEST_LOG_33_3,
-        PLAYER_QUEST_LOG_33_5,
-        PLAYER_QUEST_LOG_34_1,
-        PLAYER_QUEST_LOG_34_2,
-        PLAYER_QUEST_LOG_34_3,
-        PLAYER_QUEST_LOG_34_5,
-        PLAYER_QUEST_LOG_35_1,
-        PLAYER_QUEST_LOG_35_2,
-        PLAYER_QUEST_LOG_35_3,
-        PLAYER_QUEST_LOG_35_5,
-        PLAYER_QUEST_LOG_36_1,
-        PLAYER_QUEST_LOG_36_2,
-        PLAYER_QUEST_LOG_36_3,
-        PLAYER_QUEST_LOG_36_5,
-        PLAYER_QUEST_LOG_37_1,
-        PLAYER_QUEST_LOG_37_2,
-        PLAYER_QUEST_LOG_37_3,
-        PLAYER_QUEST_LOG_37_5,
-        PLAYER_QUEST_LOG_38_1,
-        PLAYER_QUEST_LOG_38_2,
-        PLAYER_QUEST_LOG_38_3,
-        PLAYER_QUEST_LOG_38_5,
-        PLAYER_QUEST_LOG_39_1,
-        PLAYER_QUEST_LOG_39_2,
-        PLAYER_QUEST_LOG_39_3,
-        PLAYER_QUEST_LOG_39_5,
-        PLAYER_QUEST_LOG_3_1,
-        PLAYER_QUEST_LOG_3_2,
-        PLAYER_QUEST_LOG_3_3,
-        PLAYER_QUEST_LOG_3_5,
-        PLAYER_QUEST_LOG_40_1,
-        PLAYER_QUEST_LOG_40_2,
-        PLAYER_QUEST_LOG_40_3,
-        PLAYER_QUEST_LOG_40_5,
-        PLAYER_QUEST_LOG_41_1,
-        PLAYER_QUEST_LOG_41_2,
-        PLAYER_QUEST_LOG_41_3,
-        PLAYER_QUEST_LOG_41_5,
-        PLAYER_QUEST_LOG_42_1,
-        PLAYER_QUEST_LOG_42_2,
-        PLAYER_QUEST_LOG_42_3,
-        PLAYER_QUEST_LOG_42_5,
-        PLAYER_QUEST_LOG_43_1,
-        PLAYER_QUEST_LOG_43_2,
-        PLAYER_QUEST_LOG_43_3,
-        PLAYER_QUEST_LOG_43_5,
-        PLAYER_QUEST_LOG_44_1,
-        PLAYER_QUEST_LOG_44_2,
-        PLAYER_QUEST_LOG_44_3,
-        PLAYER_QUEST_LOG_44_5,
-        PLAYER_QUEST_LOG_45_1,
-        PLAYER_QUEST_LOG_45_2,
-        PLAYER_QUEST_LOG_45_3,
-        PLAYER_QUEST_LOG_45_5,
-        PLAYER_QUEST_LOG_46_1,
-        PLAYER_QUEST_LOG_46_2,
-        PLAYER_QUEST_LOG_46_3,
-        PLAYER_QUEST_LOG_46_5,
-        PLAYER_QUEST_LOG_47_1,
-        PLAYER_QUEST_LOG_47_2,
-        PLAYER_QUEST_LOG_47_3,
-        PLAYER_QUEST_LOG_47_5,
-        PLAYER_QUEST_LOG_48_1,
-        PLAYER_QUEST_LOG_48_2,
-        PLAYER_QUEST_LOG_48_3,
-        PLAYER_QUEST_LOG_48_5,
-        PLAYER_QUEST_LOG_49_1,
-        PLAYER_QUEST_LOG_49_2,
-        PLAYER_QUEST_LOG_49_3,
-        PLAYER_QUEST_LOG_49_5,
-        PLAYER_QUEST_LOG_4_1,
-        PLAYER_QUEST_LOG_4_2,
-        PLAYER_QUEST_LOG_4_3,
-        PLAYER_QUEST_LOG_4_5,
-        PLAYER_QUEST_LOG_50_1,
-        PLAYER_QUEST_LOG_50_2,
-        PLAYER_QUEST_LOG_50_3,
-        PLAYER_QUEST_LOG_50_5,
-        PLAYER_QUEST_LOG_5_1,
-        PLAYER_QUEST_LOG_5_2,
-        PLAYER_QUEST_LOG_5_3,
-        PLAYER_QUEST_LOG_5_5,
-        PLAYER_QUEST_LOG_6_1,
-        PLAYER_QUEST_LOG_6_2,
-        PLAYER_QUEST_LOG_6_3,
-        PLAYER_QUEST_LOG_6_5,
-        PLAYER_QUEST_LOG_7_1,
-        PLAYER_QUEST_LOG_7_2,
-        PLAYER_QUEST_LOG_7_3,
-        PLAYER_QUEST_LOG_7_5,
-        PLAYER_QUEST_LOG_8_1,
-        PLAYER_QUEST_LOG_8_2,
-        PLAYER_QUEST_LOG_8_3,
-        PLAYER_QUEST_LOG_8_5,
-        PLAYER_QUEST_LOG_9_1,
-        PLAYER_QUEST_LOG_9_2,
-        PLAYER_QUEST_LOG_9_3,
-        PLAYER_QUEST_LOG_9_5,
-        PLAYER_RANGED_CRIT_PERCENTAGE,
-        PLAYER_REST_STATE_EXPERIENCE,
-        PLAYER_RUNE_REGEN_1,
-        PLAYER_RUNE_REGEN_2,
-        PLAYER_RUNE_REGEN_3,
-        PLAYER_RUNE_REGEN_4,
-        PLAYER_SELF_RES_SPELL,
-        PLAYER_SHIELD_BLOCK,
-        PLAYER_SHIELD_BLOCK_CRIT_PERCENTAGE,
-        PLAYER_SKILL_INFO_1_1,
-        PLAYER_SPELL_CRIT_PERCENTAGE1,
-        PLAYER_SPELL_CRIT_PERCENTAGE2,
-        PLAYER_SPELL_CRIT_PERCENTAGE3,
-        PLAYER_SPELL_CRIT_PERCENTAGE4,
-        PLAYER_SPELL_CRIT_PERCENTAGE5,
-        PLAYER_SPELL_CRIT_PERCENTAGE6,
-        PLAYER_SPELL_CRIT_PERCENTAGE7,
-        PLAYER_TRACK_CREATURES,
-        PLAYER_TRACK_RESOURCES,
-        PLAYER_VISIBLE_ITEM_10_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_10_ENTRYID,
-        PLAYER_VISIBLE_ITEM_11_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_11_ENTRYID,
-        PLAYER_VISIBLE_ITEM_12_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_12_ENTRYID,
-        PLAYER_VISIBLE_ITEM_13_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_13_ENTRYID,
-        PLAYER_VISIBLE_ITEM_14_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_14_ENTRYID,
-        PLAYER_VISIBLE_ITEM_15_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_15_ENTRYID,
-        PLAYER_VISIBLE_ITEM_16_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_16_ENTRYID,
-        PLAYER_VISIBLE_ITEM_17_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_17_ENTRYID,
-        PLAYER_VISIBLE_ITEM_18_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_18_ENTRYID,
-        PLAYER_VISIBLE_ITEM_19_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_19_ENTRYID,
-        PLAYER_VISIBLE_ITEM_1_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_1_ENTRYID,
-        PLAYER_VISIBLE_ITEM_2_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_2_ENTRYID,
-        PLAYER_VISIBLE_ITEM_3_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_3_ENTRYID,
-        PLAYER_VISIBLE_ITEM_4_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_4_ENTRYID,
-        PLAYER_VISIBLE_ITEM_5_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_5_ENTRYID,
-        PLAYER_VISIBLE_ITEM_6_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_6_ENTRYID,
-        PLAYER_VISIBLE_ITEM_7_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_7_ENTRYID,
-        PLAYER_VISIBLE_ITEM_8_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_8_ENTRYID,
-        PLAYER_VISIBLE_ITEM_9_ENCHANTMENT,
-        PLAYER_VISIBLE_ITEM_9_ENTRYID,
-        PLAYER_XP,
-        PLAYER__FIELD_KNOWN_TITLES,
-        PLAYER__FIELD_KNOWN_TITLES1,
-        PLAYER__FIELD_KNOWN_TITLES2,
+        PLAYER_FIELD_DUEL_ARBITER                                = UnitField.UNIT_END + 0x000, // Size: 2, Flags: UF_FLAG_PUBLIC
+        PLAYER_FIELD_DUEL_ARBITER2,
+        PLAYER_FIELD_PLAYER_FLAGS                                = UnitField.UNIT_END + 0x002, // Size: 1, Flags: UF_FLAG_PUBLIC
+        PLAYER_FIELD_GUILD_RANK_ID                               = UnitField.UNIT_END + 0x003, // Size: 1, Flags: UF_FLAG_PUBLIC
+        PLAYER_FIELD_GUILD_DELETE_DATE                           = UnitField.UNIT_END + 0x004, // Size: 1, Flags: UF_FLAG_PUBLIC
+        PLAYER_FIELD_GUILD_LEVEL                                 = UnitField.UNIT_END + 0x005, // Size: 1, Flags: UF_FLAG_PUBLIC
+        PLAYER_FIELD_HAIR_COLOR_ID                               = UnitField.UNIT_END + 0x006, // Size: 1, Flags: UF_FLAG_PUBLIC
+        PLAYER_FIELD_REST_STATE                                  = UnitField.UNIT_END + 0x007, // Size: 1, Flags: UF_FLAG_PUBLIC
+        PLAYER_FIELD_ARENA_FACTION                               = UnitField.UNIT_END + 0x008, // Size: 1, Flags: UF_FLAG_PUBLIC
+        PLAYER_FIELD_DUEL_TEAM                                   = UnitField.UNIT_END + 0x009, // Size: 1, Flags: UF_FLAG_PUBLIC
+        PLAYER_FIELD_GUILD_TIME_STAMP                            = UnitField.UNIT_END + 0x00A, // Size: 1, Flags: UF_FLAG_PUBLIC
+        PLAYER_FIELD_QUEST_LOG                                   = UnitField.UNIT_END + 0x00B, // Size: 750, Flags: UF_FLAG_PARTY
+        PLAYER_FIELD_VISIBLE_ITEMS                               = UnitField.UNIT_END + 0x2F9, // Size: 19, Flags: UF_FLAG_PUBLIC
+        PLAYER_FIELD_VISIBLE_ITEM_NCHANTMENTS                    = UnitField.UNIT_END + 0x30D, // Size: 19, Flags: UF_FLAG_PARTY
+        PLAYER_FIELD_PLAYER_TITLE                                = UnitField.UNIT_END + 0x31F, // Size: 1, Flags: UF_FLAG_PUBLIC
+        PLAYER_FIELD_FAKE_INEBRIATION                            = UnitField.UNIT_END + 0x320, // Size: 1, Flags: UF_FLAG_PUBLIC
+        PLAYER_FIELD_VIRTUAL_PLAYER_REALM                        = UnitField.UNIT_END + 0x321, // Size: 1, Flags: UF_FLAG_PUBLIC
+        PLAYER_FIELD_CURRENT_SPEC_ID                             = UnitField.UNIT_END + 0x322, // Size: 1, Flags: UF_FLAG_PUBLIC
+        PLAYER_FIELD_TAXI_MOUNT_ANIM_KIT_ID                      = UnitField.UNIT_END + 0x323, // Size: 1, Flags: UF_FLAG_PUBLIC
+        PLAYER_FIELD_CURRENT_BATTLE_PET_BREED_QUALITY            = UnitField.UNIT_END + 0x324, // Size: 1, Flags: UF_FLAG_PUBLIC
+        PLAYER_FIELD_INV_SLOTS                                   = UnitField.UNIT_END + 0x325, // Size: 46, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_PACK_SLOTS                                  = UnitField.UNIT_END + 0x353, // Size: 32, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_BANK_SLOTS                                  = UnitField.UNIT_END + 0x373, // Size: 56, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_BANKBAG_SLOTS                               = UnitField.UNIT_END + 0x3AB, // Size: 14  Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_VENDORBUYBACK_SLOTS                         = UnitField.UNIT_END + 0x3B9, // Size: 24, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_FARSIGHT_OBJECT                             = UnitField.UNIT_END + 0x3D1, // Size: 2, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_FARSIGHT_OBJECT2,
+        PLAYER_FIELD_KNOWN_TITLES                                = UnitField.UNIT_END + 0x3D3, // Size: 10, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_COINAGE                                     = UnitField.UNIT_END + 0x3DD, // Size: 2, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_COINAGE2,
+        PLAYER_FIELD_XP                                          = UnitField.UNIT_END + 0x3DF, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_NEXT_LEVEL_XP                               = UnitField.UNIT_END + 0x3E0, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_SKILL_LINEIDS                               = UnitField.UNIT_END + 0x03E1, // Size: 64, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_SKILL_STEPS                                 = UnitField.UNIT_END + 0x0421, // Size: 64, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_SKILL_RANKS                                 = UnitField.UNIT_END + 0x0461, // Size: 64, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_SKILL_STARTING_RANKS                        = UnitField.UNIT_END + 0x04A1, // Size: 64, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_SKILL_MAX_RANKS                             = UnitField.UNIT_END + 0x04E1, // Size: 64, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_SKILL_MODIFIERS                             = UnitField.UNIT_END + 0x0521, // Size: 64, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_SKILL_TALENTS                               = UnitField.UNIT_END + 0x056F, // Size: 64, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_CHARACTER_POINTS                            = UnitField.UNIT_END + 0x5A1, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_MAX_TALENT_TIERS                            = UnitField.UNIT_END + 0x5A2, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_TRACK_CREATURE_MASK                         = UnitField.UNIT_END + 0x5A3, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_TRACK_RESOURCE_MASK                         = UnitField.UNIT_END + 0x5A4, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_MAINHAND_EXPERTISE                          = UnitField.UNIT_END + 0x5A5, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_OFFHAND_EXPERTISE                           = UnitField.UNIT_END + 0x5A6, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_RANGED_EXPERTISE                            = UnitField.UNIT_END + 0x5A7, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_COMBAT_RATING_EXPERTISE                     = UnitField.UNIT_END + 0x5A8, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_BLOCK_PERCENTAGE                            = UnitField.UNIT_END + 0x5A9, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_DODGE_PERCENTAGE                            = UnitField.UNIT_END + 0x5AA, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_PARRY_PERCENTAGE                            = UnitField.UNIT_END + 0x5AB, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_CRIT_PERCENTAGE                             = UnitField.UNIT_END + 0x5AC, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_RANGED_CRIT_PERCENTAGE                      = UnitField.UNIT_END + 0x5AD, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_OFFHAND_CRIT_PERCENTAGE                     = UnitField.UNIT_END + 0x5AE, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_SPELL_CRIT_PERCENTAGE                       = UnitField.UNIT_END + 0x5AF, // Size: 7, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_SHIELD_BLOCK                                = UnitField.UNIT_END + 0x5B6, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_SHIELD_BLOCK_CRIT_PERCENTAGE                = UnitField.UNIT_END + 0x5B7, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_MASTERY                                     = UnitField.UNIT_END + 0x5B8, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_PVP_POWER_DAMAGE                            = UnitField.UNIT_END + 0x5B9, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_PVP_POWER_HEALING                           = UnitField.UNIT_END + 0x5BA, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_EXPLORED_ZONES                              = UnitField.UNIT_END + 0x5BB, // Size: 200, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_REST_STATE_BONUS_POOL                       = UnitField.UNIT_END + 0x683, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_MOD_DAMAGE_DONE_POS                         = UnitField.UNIT_END + 0x684, // Size: 7, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_MOD_DAMAGE_DONE_NEG                         = UnitField.UNIT_END + 0x68B, // Size: 7, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_MOD_DAMAGE_DONE_PERCENT                     = UnitField.UNIT_END + 0x692, // Size: 7, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_MOD_HEALING_DONE_POS                        = UnitField.UNIT_END + 0x699, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_MOD_HEALING_PERCENT                         = UnitField.UNIT_END + 0x69A, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_MOD_HEALING_DONE_PERCENT                    = UnitField.UNIT_END + 0x69B, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_MOD_PERIODIC_HEALING_DONE_PERCENT           = UnitField.UNIT_END + 0x69C, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_WEAPON_DMG_MULTIPLIERS                      = UnitField.UNIT_END + 0x69D, // Size: 3, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_MOD_SPELL_POWER_PERCENT                     = UnitField.UNIT_END + 0x6A0, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_MOD_RESILIENCE_PERCENT                      = UnitField.UNIT_END + 0x6A1, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_OVERRIDE_SPELL_POWER_BY_APPERCENT           = UnitField.UNIT_END + 0x6A2, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_OVERRIDE_APBY_SPELL_POWER_PERCENT           = UnitField.UNIT_END + 0x6A3, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_MOD_TARGET_RESISTANCE                       = UnitField.UNIT_END + 0x6A4, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_MOD_TARGET_PHYSICAL_RESISTANCE              = UnitField.UNIT_END + 0x6A5, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_LIFETIME_MAX_RANK                           = UnitField.UNIT_END + 0x6A6, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_SELF_RES_SPELL                              = UnitField.UNIT_END + 0x6A7, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_PVP_MEDALS                                  = UnitField.UNIT_END + 0x6A8, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_BUYBACK_PRICE                               = UnitField.UNIT_END + 0x6A9, // Size: 12, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_BUYBACK_TIMESTAMP                           = UnitField.UNIT_END + 0x6B5, // Size: 12, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_YESTERDAY_HONORABLE_KILLS                   = UnitField.UNIT_END + 0x6C1, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_LIFETIME_HONORABLE_KILLS                    = UnitField.UNIT_END + 0x6C2, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_WATCHED_FACTION_INDEX                       = UnitField.UNIT_END + 0x6C3, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_COMBAT_RATINGS                              = UnitField.UNIT_END + 0x6C4, // Size: 27, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_PVP_INFO                                    = UnitField.UNIT_END + 0x6DF, // Size: 24, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_MAX_LEVEL                                   = UnitField.UNIT_END + 0x6F7, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_RUNE_REGEN                                  = UnitField.UNIT_END + 0x6F8, // Size: 4, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_NO_REAGENT_COST_MASK                        = UnitField.UNIT_END + 0x6FC, // Size: 4, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_GLYPH_SLOTS                                 = UnitField.UNIT_END + 0x700, // Size: 6, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_GLYPHS                                      = UnitField.UNIT_END + 0x706, // Size: 6, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_GLYPH_SLOTS_ENABLED                         = UnitField.UNIT_END + 0x70C, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_PET_SPELL_POWER                             = UnitField.UNIT_END + 0x70D, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_RESEARCHING                                 = UnitField.UNIT_END + 0x70E, // Size: 8, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_PROFESSION_SKILL_LINE                       = UnitField.UNIT_END + 0x716, // Size: 2, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_PROFESSION_SKILL_LINE2,
+        PLAYER_FIELD_UI_HIT_MODIFIER                             = UnitField.UNIT_END + 0x718, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_UI_SPELL_HIT_MODIFIER                       = UnitField.UNIT_END + 0x719, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_HOME_REALM_TIME_OFFSET                      = UnitField.UNIT_END + 0x71A, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_MOD_PET_HASTE                               = UnitField.UNIT_END + 0x71B, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_SUMMONED_BATTLE_PET_GUID                    = UnitField.UNIT_END + 0x71C, // Size: 2, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_SUMMONED_BATTLE_PET_GUID2,
+        PLAYER_FIELD_OVERRIDE_SPELLS_ID                          = UnitField.UNIT_END + 0x71E, // Size: 1, Flags: UF_FLAG_PRIVATE, UF_FLAG_URGENT_SELF_ONLY
+        PLAYER_FIELD_LFG_BONUS_FACTION_ID                        = UnitField.UNIT_END + 0x71F, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_LOOT_SPEC_ID                                = UnitField.UNIT_END + 0x720, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_FIELD_OVERRIDE_ZONE_PVPTYPE                       = UnitField.UNIT_END + 0x721, // Size: 1, Flags: UF_FLAG_PRIVATE, UF_FLAG_URGENT_SELF_ONLY
+        PLAYER_FIELD_ITEM_LEVEL_DELTA                            = UnitField.UNIT_END + 0x722, // Size: 1, Flags: UF_FLAG_PRIVATE
+        PLAYER_END                                               = UnitField.UNIT_END + 0x723
     }
 
     public enum GameObjectField

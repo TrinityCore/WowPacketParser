@@ -3,7 +3,7 @@ using System;
 namespace WowPacketParserModule.V5_4_8_18414.Enums
 {
     [Flags]
-    public enum MovementFlagExtra548 : ushort
+    public enum MovementFlagExtra : ushort
     {
         NONE                     = 0x00000000,
         NO_STRAFE                = 0x00000001,

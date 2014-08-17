@@ -3,7 +3,7 @@ using System;
 namespace WowPacketParserModule.V5_4_8_18414.Enums
 {
     [Flags]
-    public enum MovementFlag548 : uint
+    public enum MovementFlag : uint
     {
         NONE                  = 0x00000000,
         FORWARD               = 0x00000001,
