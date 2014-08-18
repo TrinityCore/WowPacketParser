@@ -489,6 +489,7 @@
     <Compile Include="Store\Objects\Unit.cs" />
     <Compile Include="Store\Objects\UnitTemplate.cs" />
     <Compile Include="Store\Objects\UnitTemplateNonWDB.cs" />
+    <Compile Include="Store\Objects\VehicleTemplateAccessory.cs" />
     <Compile Include="Store\Objects\VendorItem.cs" />
     <Compile Include="Store\Objects\WoWObject.cs" />
     <Compile Include="Store\Storage.cs" />

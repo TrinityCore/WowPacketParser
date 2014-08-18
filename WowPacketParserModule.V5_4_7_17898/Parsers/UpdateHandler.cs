@@ -508,13 +508,23 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     packet.ReadXORByte(transportGuid, 2);
                     moveInfo.TransportOffset.Z = packet.ReadSingle();
                     moveInfo.TransportOffset.Y = packet.ReadSingle();
-                    packet.ReadSByte("Transport Seat", index);
+                    var seat = packet.ReadSByte("Transport Seat", index);
                     packet.ReadXORByte(transportGuid, 1);
                     packet.ReadXORByte(transportGuid, 0);
                     packet.ReadXORByte(transportGuid, 5);
+
                     moveInfo.TransportGuid = new Guid(BitConverter.ToUInt64(transportGuid, 0));
                     packet.AddValue("Transport GUID", moveInfo.TransportGuid, index);
                     packet.AddValue("Transport Position", moveInfo.TransportOffset, index);
+
+                    if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
+                        guid.HasEntry() && guid.GetHighType() == HighGuidType.Unit)
+                    {
+                        var vehicleAccessory = new VehicleTemplateAccessory();
+                        vehicleAccessory.accessoryEntry = guid.GetEntry();
+                        vehicleAccessory.seatId = seat;
+                        Storage.VehicleTemplateAccessorys.Add(moveInfo.TransportGuid.GetEntry(), vehicleAccessory, packet.TimeSpan);
+                    }
                 }
 
                 moveInfo.Position.X = packet.ReadSingle();

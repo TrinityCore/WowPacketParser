@@ -76,6 +76,9 @@ namespace WowPacketParser.Store
         // Defense Message
         public static readonly StoreMulti<uint, DefenseMessage> DefenseMessages = new StoreMulti<uint, DefenseMessage>(new List<SQLOutput> { SQLOutput.defense_message });
 
+        // Vehicle Template Accessory
+        public static readonly StoreMulti<uint, VehicleTemplateAccessory> VehicleTemplateAccessorys = new StoreMulti<uint, VehicleTemplateAccessory>(new List<SQLOutput> { SQLOutput.vehicle_template_accessory });
+
         public static void ClearContainers()
         {
             SniffData.Clear();
@@ -123,6 +126,8 @@ namespace WowPacketParser.Store
             ObjectNames.Clear();
 
             DefenseMessages.Clear();
+
+            VehicleTemplateAccessorys.Clear();
         }
     }
 }

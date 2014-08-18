@@ -727,7 +727,7 @@ namespace WowPacketParser.SQL.Builders
                     var query = new StringBuilder(string.Format("SELECT Id FROM {1}.broadcast_text WHERE MaleText='{0}' OR FemaleText='{0}';", MySqlHelper.DoubleQuoteString(textValue.Item1.Text), Settings.TDBDatabase));
 
                     string broadcastTextId = "";
-                    if (Settings.DevMode)
+                    if (Settings.DevMode && !String.IsNullOrEmpty(textValue.Item1.Text))
                     {
                         using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
                         {
@@ -761,6 +761,44 @@ namespace WowPacketParser.SQL.Builders
                     if (Settings.DevMode)
                         row.AddValue("BroadcastTextID", broadcastTextId);
                     row.AddValue("comment", textValue.Item1.Comment);
+
+                    rows.Add(row);
+                }
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
+        }
+
+        public static string VehicleAccessory()
+        {
+            if (Storage.VehicleTemplateAccessorys.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.vehicle_template_accessory))
+                return string.Empty;
+
+            const string tableName = "vehicle_template_accessory";
+
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var accessorys in Storage.VehicleTemplateAccessorys)
+            {
+                foreach (var accessorysValue in accessorys.Value)
+                {
+                    var row = new QueryBuilder.SQLInsertRow();
+
+                    if (accessorysValue.Item1.seatId < 0 || accessorysValue.Item1.seatId > 7)
+                        continue;
+
+                    row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)accessorys.Key, false) + " - ";
+                    row.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)accessorysValue.Item1.accessoryEntry, false);
+
+                    row.AddValue("entry", accessorys.Key);
+                    row.AddValue("accessory_entry", accessorysValue.Item1.accessoryEntry);
+                    row.AddValue("seat_id", accessorysValue.Item1.seatId);
+                    row.AddValue("minion", "x", false, true);
+                    row.AddValue("description", row.Comment);
+                    row.AddValue("summontype", "x", false, true);
+                    row.AddValue("summontimer", "x", false, true);
 
                     rows.Add(row);
                 }
