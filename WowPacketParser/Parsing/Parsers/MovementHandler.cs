@@ -5,6 +5,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -185,10 +186,20 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MONSTER_MOVE_TRANSPORT))
             {
-                packet.ReadPackedGuid("Transport GUID");
+                var TransportGuid = packet.ReadPackedGuid("Transport GUID");
 
+                var seat = -1;
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
-                    packet.ReadByte("Transport Seat");
+                    seat = packet.ReadByte("Transport Seat");
+
+                if (TransportGuid.HasEntry() && TransportGuid.GetHighType() == HighGuidType.Vehicle &&
+                    guid.HasEntry() && guid.GetHighType() == HighGuidType.Unit)
+                {
+                    var vehicleAccessory = new VehicleTemplateAccessory();
+                    vehicleAccessory.accessoryEntry = guid.GetEntry();
+                    vehicleAccessory.seatId = seat;
+                    Storage.VehicleTemplateAccessorys.Add(TransportGuid.GetEntry(), vehicleAccessory, packet.TimeSpan);
+                }
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
