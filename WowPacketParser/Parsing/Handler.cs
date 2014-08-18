@@ -6,6 +6,8 @@ using System.Reflection;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Parsing
 {
@@ -173,8 +175,9 @@ namespace WowPacketParser.Parsing
                 if (Settings.DumpFormat != DumpFormatType.SniffDataOnly)
                 {
                     // added before for this type
-                    var data = status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode) : status.ToString();
-                    packet.AddSniffData(StoreNameType.Opcode, packet.Opcode, data);
+                    var data = status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode, packet.Direction) : status.ToString();
+                    data = packet.Direction == Direction.ClientToServer ? "C>S " + data : "S>C " + data;
+                    packet.AddSniffData(StoreNameType.Opcode, Settings.AllPackets ? (packet.Number+1) : packet.Opcode, data);
                 }
             }
         }
