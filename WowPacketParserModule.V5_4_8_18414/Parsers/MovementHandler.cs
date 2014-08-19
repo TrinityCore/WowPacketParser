@@ -534,16 +534,16 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             ReadPlayerMovementInfo(ref packet, info.CUnk09FB);
         }
 
-        [Parser(Opcode.CMSG_UNK_1052)]
-        public static void HandleCUnk1052(Packet packet)
+        [Parser(Opcode.CMSG_MOVE_SET_CAN_FLY_ACK)]
+        public static void HandleMoveSetCanFlyAck(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, info.CUnk1052);
+            ReadPlayerMovementInfo(ref packet, info.MovementSetCanFlyAck);
         }
 
-        [Parser(Opcode.CMSG_UNK_11DB)]
-        public static void HandleCUnk11DB(Packet packet)
+        [Parser(Opcode.CMSG_MOVE_SET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY_ACK)]
+        public static void HandleMoveSetCanTransitionBetweenSwimAndFlyAck(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, info.CUnk11DB);
+            ReadPlayerMovementInfo(ref packet, info.MovementSetCanTransitionBetweenSwimAndFlyAck);
         }
 
         [Parser(Opcode.SMSG_PLAYER_MOVE)]
@@ -552,28 +552,52 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             ReadPlayerMovementInfo(ref packet, info.PlayerMove);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_GRAVITY_DISABLE)]
-        public static void HandleSplineMoveGravityDisable(Packet packet)
+        [Parser(Opcode.SMSG_MOVE_GRAVITY_DISABLE)]
+        public static void HandleMoveGravityDisable(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, info.MovementSplineMoveGravityDisable);
+            ReadPlayerMovementInfo(ref packet, info.MovementGravityDisable);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_GRAVITY_ENABLE)]
-        public static void HandleSplineMoveGravityEnable(Packet packet)
+        [Parser(Opcode.SMSG_MOVE_GRAVITY_ENABLE)]
+        public static void HandleMoveGravityEnable(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, info.MovementSplineMoveGravityEnable);
+            ReadPlayerMovementInfo(ref packet, info.MovementGravityEnable);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_ROOT)]
-        public static void HandleSplineMoveRoot(Packet packet)
+        [Parser(Opcode.SMSG_MOVE_ROOT)]
+        public static void HandleMoveRoot(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, info.MovementSplineMoveRoot);
+            ReadPlayerMovementInfo(ref packet, info.MovementRoot);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_UNROOT)]
-        public static void HandleSplineMoveUnroot(Packet packet)
+        [Parser(Opcode.SMSG_MOVE_SET_CAN_FLY)]
+        public static void HandleSetCanFly(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, info.MovementSplineMoveUnroot);
+            ReadPlayerMovementInfo(ref packet, info.MovementSetCanFly);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_SET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY)]
+        public static void HandleMoveSetCanTransitionBetweenSwimAndFly(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementSetCanTransitionBetweenSwimAndFly);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_UNROOT)]
+        public static void HandleMoveUnroot(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementUnroot);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_UNSET_CAN_FLY)]
+        public static void HandleUnSetCanFly(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementUnSetCanFly);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_UNSET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY)]
+        public static void HandleMoveUnSetCanTransitionBetweenSwimAndFly(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementUnSetCanTransitionBetweenSwimAndFly);
         }
 
         [Parser(Opcode.SMSG_UNK_0047)]
@@ -3796,16 +3820,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_MOVE_SET_CAN_FLY)]
-        public static void HandleSetCanFly(Packet packet)
-        {
-            var guid = packet.StartBitStream(6, 1, 4, 0, 3, 7, 5, 2);
-            packet.ParseBitStream(guid, 4, 2);
-            packet.ReadInt32("MCounter");
-            packet.ParseBitStream(guid, 6, 3, 1, 0, 7, 5);
-            packet.WriteGuid("Guid", guid);
-        }
-
         [Parser(Opcode.SMSG_MOVE_SET_FLIGHT_SPEED)] // sub_C8A820
         public static void HandleMoveSetFlightSpeed(Packet packet)
         {
@@ -3908,16 +3922,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ParseBitStream(guid, 0, 6, 1);
             pos.O = packet.ReadSingle();
             packet.WriteLine("Pos: {0}", pos);
-            packet.WriteGuid("Guid", guid);
-        }
-
-        [Parser(Opcode.SMSG_MOVE_UNSET_CAN_FLY)]
-        public static void HandleUnSetCanFly(Packet packet)
-        {
-            var guid = packet.StartBitStream(6, 5, 0, 4, 3, 7, 2, 1);
-            packet.ParseBitStream(guid, 4, 5, 7);
-            packet.ReadInt32("Count");
-            packet.ParseBitStream(guid, 6, 2, 3, 1, 0);
             packet.WriteGuid("Guid", guid);
         }
 

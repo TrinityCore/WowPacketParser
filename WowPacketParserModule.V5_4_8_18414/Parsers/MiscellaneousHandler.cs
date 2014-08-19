@@ -1139,16 +1139,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_UNK_0868)]
-        public static void HandleUnk0868(Packet packet)
-        {
-            var guid = packet.StartBitStream(0, 4, 1, 6, 7, 2, 5, 3);
-            packet.ParseBitStream(guid, 7, 6, 0, 1, 2, 4);
-            packet.ReadInt32("Count");
-            packet.ParseBitStream(guid, 5, 3);
-            packet.WriteGuid("Guid", guid);
-        }
-
         [Parser(Opcode.SMSG_UNK_089B)]
         public static void HandleUnk089B(Packet packet)
         {
@@ -1189,20 +1179,11 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadSingle("unk16");
         }
 
-        [Parser(Opcode.SMSG_UNK_0A03)]
-        public static void HandleUnk0A03(Packet packet)
-        {
-            packet.ReadInt32("Count");
-            var guid = packet.StartBitStream(4, 3, 7, 6, 5, 1, 0, 2);
-            packet.ParseBitStream(guid, 4, 7, 1, 2, 6, 0, 3, 5);
-            packet.WriteGuid("Guid", guid);
-        }
-
         [Parser(Opcode.SMSG_UNK_0A0B)]
         public static void HandleUnk0A0B(Packet packet)
         {
             for (var i = 0; i < 256; i++)
-                packet.ReadBit("Byte16", i);
+                packet.ReadBitVisible("Byte16", i);
         }
 
         [Parser(Opcode.SMSG_UNK_0A3F)]
@@ -1300,23 +1281,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadBit("Bit in Byte16");
             packet.ReadBit("Bit in Byte18");
             packet.ReadBit("Bit in Byte17");
-        }
-
-        [Parser(Opcode.SMSG_UNK_1227)]
-        public static void HandleUnk1227(Packet packet)
-        {
-            var count = packet.ReadBits("count", 24);
-            var guid = new byte[count][];
-            for (var i = 0; i < count; i++)
-            {
-                guid[i] = new byte[8];
-                guid[i] = packet.StartBitStream(1, 6, 0, 4, 5, 7, 2, 3);
-            }
-            for (var i = 0; i < count; i++)
-            {
-                packet.ParseBitStream(guid[i], 5, 2, 3, 0, 6, 1, 4, 7);
-                packet.WriteGuid("Guid", guid[i], i);
-            }
         }
 
         [Parser(Opcode.SMSG_UNK_129B)]

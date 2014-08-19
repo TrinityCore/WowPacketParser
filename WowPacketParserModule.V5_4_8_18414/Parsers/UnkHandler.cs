@@ -22,6 +22,15 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.CMSG_UNK_0882)]
+        public static void HandleUnk0882(Packet packet)
+        {
+            packet.ReadInt32("RealmID");
+            var guid = packet.StartBitStream(0, 2, 5, 1, 6, 4, 3, 7);
+            packet.ParseBitStream(guid, 7, 3, 1, 5, 4, 0, 2, 6);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.CMSG_UNK_1886)]
         public static void HandleUnk1886(Packet packet)
         {
@@ -72,6 +81,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleSUnk0354(Packet packet)
         {
             packet.ReadInt32("Unk");
+        }
+
+        [Parser(Opcode.SMSG_UNK_0364)]
+        public static void HandleSUnk0364(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 22);
+            for (var i = 0; i < count; i++)
+                packet.ReadInt32Visible("Unk20", i);
         }
 
         [Parser(Opcode.SMSG_UNK_041F)]
@@ -236,6 +253,16 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_UNK_080A)]
+        public static void HandleSUnk080A(Packet packet)
+        {
+            packet.ReadBit("unk16");
+            packet.ReadBit("unk18");
+            packet.ReadBit("unk17");
+            packet.ReadBit("unk20");
+            packet.ReadBit("unk19");
+        }
+
         [Parser(Opcode.SMSG_UNK_086A)]
         public static void HandleSUnk086A(Packet packet)
         {
@@ -323,6 +350,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             packet.ReadInt32("Int20");
             packet.ReadInt32("Int16");
+        }
+
+        [Parser(Opcode.SMSG_UNK_0E3A)]
+        public static void HandleSUnk0E3A(Packet packet)
+        {
+            var guid = packet.StartBitStream(6, 3, 0, 7, 1, 2, 5, 4);
+            packet.ParseBitStream(guid, 3, 6, 7, 5, 1, 4, 2, 0);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_UNK_0EBA)]
@@ -598,6 +633,19 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadInt32("unk44", i);
         }
 
+        [Parser(Opcode.SMSG_UNK_1A1E)]
+        public static void HandleSUnk1A1E(Packet packet)
+        {
+            packet.ReadInt32("unk24");
+            packet.ReadInt16("unk28");
+            packet.ReadInt16("unk30");
+            packet.ReadByte("unk32");
+
+            var guid = packet.StartBitStream(2, 1, 6, 4, 5, 3, 7, 0);
+            packet.ParseBitStream(guid, 1, 3, 6, 7, 2, 4, 5, 0);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_UNK_1A1F)]
         public static void HandleSUnk1A1F(Packet packet)
         {
@@ -773,6 +821,18 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ParseBitStream(guid2, 3, 2);
             packet.WriteGuid("Guid", guid);
             packet.WriteGuid("Guid2", guid2);
+        }
+
+        [Parser(Opcode.SMSG_UNK_1E2E)]
+        public static void HandleSUnk1E2E(Packet packet)
+        {
+            var guid = packet.StartBitStream(2, 1, 0, 4, 7, 3, 6, 5);
+            packet.ParseBitStream(guid, 4, 1);
+            packet.ReadInt32("unk24");
+            packet.ParseBitStream(guid, 3, 6, 7, 5, 0);
+            packet.ReadInt32("unk28");
+            packet.ParseBitStream(guid, 2);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_UNK_1E3E)]
