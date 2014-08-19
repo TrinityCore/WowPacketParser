@@ -385,6 +385,23 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             StoreGetters.AddName(PetGuid, PetNumber);
         }
 
+        [Parser(Opcode.SMSG_PET_GUIDS)]
+        public static void HandlePetGuids(Packet packet)
+        {
+            var count = packet.ReadBits("count", 24);
+            var guid = new byte[count][];
+            for (var i = 0; i < count; i++)
+            {
+                guid[i] = new byte[8];
+                guid[i] = packet.StartBitStream(1, 6, 0, 4, 5, 7, 2, 3);
+            }
+            for (var i = 0; i < count; i++)
+            {
+                packet.ParseBitStream(guid[i], 5, 2, 3, 0, 6, 1, 4, 7);
+                packet.WriteGuid("Guid", guid[i], i);
+            }
+        }
+
         [Parser(Opcode.SMSG_PET_NAME_QUERY_RESPONSE)]
         public static void HandlePetNameQueryResponse(Packet packet)
         {
