@@ -56,7 +56,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             var guid = new byte[8];
             guid[4] = packet.ReadBit();
-            var byte20 = packet.ReadBit("has byte20");
+            var hasRealmID = packet.ReadBit("hasRealmID"); // 20
             guid[6] = packet.ReadBit();
             guid[0] = packet.ReadBit();
             guid[7] = packet.ReadBit();
@@ -68,8 +68,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ParseBitStream(guid, 7, 5, 1, 2, 6, 3, 0, 4);
             packet.WriteGuid("Guid", guid);
 
-            if (byte20)
-                packet.ReadInt32("int16");
+            if (hasRealmID)
+                packet.ReadInt32("RealmID"); // 20
 
             if (byte28)
                 packet.ReadInt32("int24");
@@ -228,10 +228,10 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             var guid = packet.StartBitStream(3, 6, 7, 2, 5, 4, 0, 1);
             packet.ParseBitStream(guid, 5, 4, 7, 6, 1, 2);
 
-            var nameData = !packet.ReadBoolean("not nameData");
+            var nameData = !packet.ReadBoolean("!nameData");
             if (nameData)
             {
-                packet.ReadInt32("unk108");
+                packet.ReadInt32("RealmID"); // 108
                 packet.ReadInt32("unk36");
                 packet.ReadEnum<Class>("Class", TypeCode.Byte);
                 packet.ReadEnum<Race>("Race", TypeCode.Byte);
@@ -300,7 +300,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadXORByte(guid3, 5);
             packet.ReadXORByte(guid2, 0);
 
-            packet.WriteGuid("Guid2", guid2);
+            packet.WriteLine("Account: {0}", BitConverter.ToUInt64(guid2, 0));
             packet.WriteGuid("Guid3", guid3);
 
             var objectName = new ObjectName

@@ -176,7 +176,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             {
                 for (uint i = 0; i < count; i++)
                 {
-                    packet.ReadUInt32("Unk stuff"); //+24
+                    packet.ReadUInt32("RealmID"); //+24
                     packet.ReadWoWString("Realm name ?", count_1[i, 0]);
                     packet.ReadWoWString("Realm name ?", count_1[i, 1]);
                     //v18+=520

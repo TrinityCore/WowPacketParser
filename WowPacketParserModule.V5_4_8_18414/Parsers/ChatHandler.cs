@@ -119,7 +119,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadBit("unk5273*4");
             var has1494 = !packet.ReadBit("!unk1494h"); // dword ptr [esi+1494h] = ("has unk1494h") ? 0 : ds:dword_D26EA8
             var chatTag = !packet.ReadBit("!chatTag"); // 5264*2
-            var unk56 = !packet.ReadBit("!unk56*4");
+            var hasRealmID1 = !packet.ReadBit("!hasRealmID1"); // 56
 
             var guid4 = packet.StartBitStream(0, 1, 5, 4, 3, 2, 6, 7);
 
@@ -153,7 +153,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             if (hasPrefix)
                 PrefixLen = packet.ReadBits("PrefixLen", 5); // 2114*4
 
-            var unk60 = !packet.ReadBit("!unk60*4");
+            var hasRealmID2 = !packet.ReadBit("!hasRealmID2"); // 60
 
             var ReceiverLen = 0u;
             if (hasReceiverName)
@@ -197,8 +197,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             if (hasLanguage)
                 packet.ReadByte("Language");
 
-            if (unk60)
-                packet.ReadInt32("unk60");
+            if (hasRealmID2)
+                packet.ReadInt32("RealmID2"); // 60
 
             if (hasMessage)
                 text.Text = packet.ReadWoWString("Message", MessageLen);
@@ -209,8 +209,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             if (hasSenderName)
                 text.Comment = packet.ReadWoWString("Sender", SenderLen);
 
-            if (unk56)
-                packet.ReadInt32("unk56");
+            if (hasRealmID1)
+                packet.ReadInt32("RealmID1"); // 56
 
             if (entry != 0)
                 Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);

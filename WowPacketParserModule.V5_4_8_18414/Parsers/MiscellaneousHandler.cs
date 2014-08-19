@@ -1220,11 +1220,11 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadByte("unk40");
             if (hasData)
             {
-                packet.ReadInt32("unk16");
+                packet.ReadInt32Visible("unk16");
             }
             for (var i = 0; i < count; i++)
             {
-                packet.ReadByte("unkb28", i);
+                packet.ReadByteVisible("unkb28", i);
             }
             packet.ReadByte("unk41");
         }
@@ -1399,8 +1399,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadInt32("unk176", i);
                 packet.ReadByte("unk261", i);
                 packet.ReadInt32("unk160", i);
-                packet.ReadWoWString("str", cnt[i], i);
-                packet.ReadInt32("unk128", i);
+                packet.ReadWoWString("PetName", cnt[i], i);
+                packet.ReadInt32("PetNumber", i);
                 packet.ReadInt32("unk112", i);
             }
             packet.ParseBitStream(guid, 3, 5, 7, 2, 0, 4, 1, 6);

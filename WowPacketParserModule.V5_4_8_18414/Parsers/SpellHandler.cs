@@ -383,17 +383,17 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             var unk200 = new byte[count];
             for (var i = 0 ; i < count; i++)
             {
-                unk200[i] = packet.ReadBit("unk200", i);
+                unk200[i] = packet.ReadBitVisible("unk200", i);
                 if (unk200[i] > 0)
                 {
                     unk336[i] = packet.ReadBits("unk336", 22, i);
-                    unk144[i] = packet.ReadBit("unk144", i);
+                    unk144[i] = packet.ReadBitVisible("unk144", i);
                     if (unk144[i] > 0)
                         guid2[i] = packet.StartBitStream(3, 4, 6, 1, 5, 2, 0, 7);
 
                     unk400[i] = packet.ReadBits("unk400", 22, i);
-                    unk164[i] = packet.ReadBit("unk164", i);
-                    unk156[i] = packet.ReadBit("unk156", i);
+                    unk164[i] = packet.ReadBitVisible("unk164", i);
+                    unk156[i] = packet.ReadBitVisible("unk156", i);
                 }
             }
             for (var i = 0; i < count; i++)
@@ -405,17 +405,17 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                         packet.ParseBitStream(guid2[i], 3, 2, 1, 6, 4, 0, 5, 7);
                         packet.WriteGuid("Guid2", guid2[i], i);
                     }
-                    packet.ReadByte("unk124", i);
+                    packet.ReadByteVisible("unk124", i);
                     packet.ReadInt16("unk152", i);
-                    packet.ReadInt32("unk144", i);
+                    packet.ReadInt32Visible("unk144", i);
                     if (unk156[i] > 0)
                         packet.ReadInt32("unk272", i);
                     if (unk164[i] > 0)
                         packet.ReadInt32("unk304", i);
                     for (var j = 0; j < unk400[i]; j++)
                         packet.ReadSingle("unk416", i, j);
-                    packet.ReadByte("unk134", i);
-                    packet.ReadInt32("unk176", i);
+                    packet.ReadByteVisible("unk134", i);
+                    packet.ReadInt32Visible("unk176", i);
                     for (var j = 0; j < unk336[i]; j++)
                         packet.ReadSingle("unk352", i, j);
                 }

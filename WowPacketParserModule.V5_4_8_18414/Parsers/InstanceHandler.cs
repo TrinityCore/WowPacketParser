@@ -22,32 +22,32 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             var len = new uint[count];
             for (var i = 0; i < count; i++)
             {
-                packet.ReadBit("unk166", i);
-                packet.ReadBit("unk136", i);
-                packet.ReadBit("unk140", i);
-                packet.ReadBit("unk161", i);
-                packet.ReadBit("unk159", i);
-                packet.ReadBit("unk156", i);
-                packet.ReadBit("unk164", i);
-                packet.ReadBit("unk158", i);
-                packet.ReadBit("unk134", i);
-                packet.ReadBit("unk142", i);
-                packet.ReadBit("unk163", i);
-                packet.ReadBit("unk145", i);
+                packet.ReadBitVisible("unk166", i);
+                packet.ReadBitVisible("unk136", i);
+                packet.ReadBitVisible("unk140", i);
+                packet.ReadBitVisible("unk161", i);
+                packet.ReadBitVisible("unk159", i);
+                packet.ReadBitVisible("unk156", i);
+                packet.ReadBitVisible("unk164", i);
+                packet.ReadBitVisible("unk158", i);
+                packet.ReadBitVisible("unk134", i);
+                packet.ReadBitVisible("unk142", i);
+                packet.ReadBitVisible("unk163", i);
+                packet.ReadBitVisible("unk145", i);
                 len[i] = packet.ReadBits("len", 7, i);
-                packet.ReadBit("unk135", i);
-                packet.ReadBit("unk167", i);
-                packet.ReadBit("unk139", i);
-                packet.ReadBit("unk144", i);
-                packet.ReadBit("unk162", i);
-                packet.ReadBit("unk157", i);
-                packet.ReadBit("unk141", i);
-                packet.ReadBit("unk143", i);
-                packet.ReadBit("unk165", i);
-                packet.ReadBit("unk160", i);
-                packet.ReadBit("unk168", i);
-                packet.ReadBit("unk137", i);
-                packet.ReadBit("unk138", i);
+                packet.ReadBitVisible("unk135", i);
+                packet.ReadBitVisible("unk167", i);
+                packet.ReadBitVisible("unk139", i);
+                packet.ReadBitVisible("unk144", i);
+                packet.ReadBitVisible("unk162", i);
+                packet.ReadBitVisible("unk157", i);
+                packet.ReadBitVisible("unk141", i);
+                packet.ReadBitVisible("unk143", i);
+                packet.ReadBitVisible("unk165", i);
+                packet.ReadBitVisible("unk160", i);
+                packet.ReadBitVisible("unk168", i);
+                packet.ReadBitVisible("unk137", i);
+                packet.ReadBitVisible("unk138", i);
             }
             for (var i = 0; i < count; i++)
             {
@@ -79,32 +79,32 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                packet.ReadBit("unk165", i);
-                packet.ReadBit("unk159", i);
-                packet.ReadBit("unk157", i);
-                packet.ReadBit("unk161", i);
-                packet.ReadBit("unk164", i);
-                packet.ReadBit("unk141", i);
-                packet.ReadBit("unk142", i);
-                packet.ReadBit("unk134", i);
-                packet.ReadBit("unk140", i);
+                packet.ReadBitVisible("unk165", i);
+                packet.ReadBitVisible("unk159", i);
+                packet.ReadBitVisible("unk157", i);
+                packet.ReadBitVisible("unk161", i);
+                packet.ReadBitVisible("unk164", i);
+                packet.ReadBitVisible("unk141", i);
+                packet.ReadBitVisible("unk142", i);
+                packet.ReadBitVisible("unk134", i);
+                packet.ReadBitVisible("unk140", i);
                 len[i] = packet.ReadBits("len", 7, i);
-                packet.ReadBit("unk135", i);
-                packet.ReadBit("unk138", i);
-                packet.ReadBit("unk145", i);
-                packet.ReadBit("unk167", i);
-                packet.ReadBit("unk156", i);
-                packet.ReadBit("unk136", i);
-                packet.ReadBit("unk144", i);
-                packet.ReadBit("unk143", i);
-                packet.ReadBit("unk166", i);
-                packet.ReadBit("unk137", i);
-                packet.ReadBit("unk139", i);
-                packet.ReadBit("unk163", i);
-                packet.ReadBit("unk168", i);
-                packet.ReadBit("unk160", i);
-                packet.ReadBit("unk162", i);
-                packet.ReadBit("unk158", i);
+                packet.ReadBitVisible("unk135", i);
+                packet.ReadBitVisible("unk138", i);
+                packet.ReadBitVisible("unk145", i);
+                packet.ReadBitVisible("unk167", i);
+                packet.ReadBitVisible("unk156", i);
+                packet.ReadBitVisible("unk136", i);
+                packet.ReadBitVisible("unk144", i);
+                packet.ReadBitVisible("unk143", i);
+                packet.ReadBitVisible("unk166", i);
+                packet.ReadBitVisible("unk137", i);
+                packet.ReadBitVisible("unk139", i);
+                packet.ReadBitVisible("unk163", i);
+                packet.ReadBitVisible("unk168", i);
+                packet.ReadBitVisible("unk160", i);
+                packet.ReadBitVisible("unk162", i);
+                packet.ReadBitVisible("unk158", i);
             }
             for (var i = 0; i < count; i++)
             {

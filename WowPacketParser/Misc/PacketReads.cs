@@ -192,6 +192,14 @@ namespace WowPacketParser.Misc
             return val;
         }
 
+        public byte ReadByteVisible(string name, params int[] values)
+        {
+            byte val = ReadByte();
+            if (val > 0)
+            WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (Settings.DebugReads ? " (0x" + val.ToString("X2") + ")" : String.Empty));
+            return val;
+        }
+
         public sbyte ReadSByte(string name, params int[] values)
         {
             sbyte val = ReadSByte();
@@ -259,11 +267,26 @@ namespace WowPacketParser.Misc
             WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (Settings.DebugReads ? " (0x" + val.ToString("X8") + ")" : String.Empty));
             return val;
         }
+        public int ReadInt32Visible(string name, params int[] values)
+        {
+            int val = ReadInt32();
+            if (val != 0)
+                WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (Settings.DebugReads ? " (0x" + val.ToString("X8") + ")" : String.Empty));
+            return val;
+        }
 
         public uint ReadUInt32(string name, params int[] values)
         {
             uint val = ReadUInt32();
             WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (Settings.DebugReads ? " (0x" + val.ToString("X8") + ")" : String.Empty));
+            return val;
+        }
+
+        public uint ReadUInt32Visible(string name, params int[] values)
+        {
+            uint val = ReadUInt32();
+            if (val > 0)
+                WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (Settings.DebugReads ? " (0x" + val.ToString("X8") + ")" : String.Empty));
             return val;
         }
 
@@ -450,6 +473,14 @@ namespace WowPacketParser.Misc
         {
             var bit = ReadBit();
             WriteLine("{0}{1}: {2}", GetIndexString(values), name, bit ? "1" : "0");
+            return bit;
+        }
+
+        public Bit ReadBitVisible(string name, params int[] values)
+        {
+            var bit = ReadBit();
+            if (bit)
+                WriteLine("{0}{1}: {2}", GetIndexString(values), name, bit ? "1" : "0");
             return bit;
         }
 

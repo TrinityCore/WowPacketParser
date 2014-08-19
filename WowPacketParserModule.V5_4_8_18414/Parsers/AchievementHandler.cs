@@ -111,8 +111,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ParseBitStream(guid2[i], 5);
                 packet.ParseBitStream(guid[i], 3, 0);
                 packet.ReadInt32("Criteria ID", i); // 20
-                packet.WriteGuid("Guid", guid[i], i);
-                packet.WriteGuid("Guid2", guid2[i], i);
+                packet.WriteLine("[{0}] Counter: {1}", i, BitConverter.ToUInt64(guid[i], 0));
+                packet.WriteLine("[{0}] Account: {1}", i, BitConverter.ToUInt64(guid2[i], 0));
             }
         }
 
@@ -128,23 +128,23 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 guid[i] = new byte[8];
                 counter[i] = new byte[8];
 
-                guid[i][3] = packet.ReadBit();
                 counter[i][3] = packet.ReadBit();
-                counter[i][6] = packet.ReadBit();
-                guid[i][0] = packet.ReadBit();
-                counter[i][7] = packet.ReadBit();
-                guid[i][1] = packet.ReadBit();
-                guid[i][5] = packet.ReadBit();
-                counter[i][2] = packet.ReadBit();
-                counter[i][1] = packet.ReadBit();
-                guid[i][7] = packet.ReadBit();
-                counter[i][4] = packet.ReadBit();
-                counter[i][0] = packet.ReadBit();
-                guid[i][2] = packet.ReadBit();
-                counter[i][5] = packet.ReadBit();
-                guid[i][4] = packet.ReadBit();
-                flags[i] = packet.ReadBits(4);
+                guid[i][3] = packet.ReadBit();
                 guid[i][6] = packet.ReadBit();
+                counter[i][0] = packet.ReadBit();
+                guid[i][7] = packet.ReadBit();
+                counter[i][1] = packet.ReadBit();
+                counter[i][5] = packet.ReadBit();
+                guid[i][2] = packet.ReadBit();
+                guid[i][1] = packet.ReadBit();
+                counter[i][7] = packet.ReadBit();
+                guid[i][4] = packet.ReadBit();
+                guid[i][0] = packet.ReadBit();
+                counter[i][2] = packet.ReadBit();
+                guid[i][5] = packet.ReadBit();
+                counter[i][4] = packet.ReadBit();
+                flags[i] = packet.ReadBits(4);
+                counter[i][6] = packet.ReadBit();
             }
             var cnt16 = packet.ReadBits("Achievement count", 20); // 16
             var guid3 = new byte[cnt16][];
@@ -156,29 +156,29 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             for (var i = 0; i < cnt16; i++)
             {
                 packet.ReadInt32("Achievement Id", i); // 20
-                packet.ReadInt32("Realm Id", i); // 208
+                packet.ReadInt32("RealmID", i); // 208
                 packet.ParseBitStream(guid3[i], 5, 7);
-                packet.ReadInt32("unk212", i); // 212
+                packet.ReadInt32("RealmID", i); // 212
                 packet.ReadPackedTime("Time", i);
                 packet.ParseBitStream(guid3[i], 0, 4, 1, 6, 2, 3);
                 packet.WriteGuid("guid3", guid3[i], i);
             }
             for (var i = 0; i < count; i++)
             {
-                packet.ParseBitStream(guid[i], 7);
-                packet.ReadInt32("Timer 1", i); // 292
-                packet.ParseBitStream(guid[i], 6);
-                packet.ParseBitStream(counter[i], 1);
+                packet.ParseBitStream(counter[i], 7);
+                packet.ReadTime("Timer 1", i); // 292
+                packet.ParseBitStream(counter[i], 6);
+                packet.ParseBitStream(guid[i], 1);
                 packet.ReadInt32("Criteria ID", i); // 36
-                packet.ParseBitStream(guid[i], 4);
-                packet.ParseBitStream(counter[i], 0, 4, 6);
-                packet.ParseBitStream(guid[i], 1, 5);
-                packet.ParseBitStream(counter[i], 7, 2);
-                packet.ParseBitStream(guid[i], 2, 0);
-                packet.ParseBitStream(counter[i], 3);
-                packet.ReadInt32("Timer 2", i); // 236
+                packet.ParseBitStream(counter[i], 4);
+                packet.ParseBitStream(guid[i], 0, 4, 6);
+                packet.ParseBitStream(counter[i], 1, 5);
+                packet.ParseBitStream(guid[i], 7, 2);
+                packet.ParseBitStream(counter[i], 2, 0);
                 packet.ParseBitStream(guid[i], 3);
-                packet.ParseBitStream(counter[i], 5);
+                packet.ReadTime("Timer 2", i); // 236
+                packet.ParseBitStream(counter[i], 3);
+                packet.ParseBitStream(guid[i], 5);
                 packet.ReadPackedTime("Time", i);
 
                 packet.WriteGuid("Guid", guid[i], i);
@@ -214,10 +214,10 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             accountId[0] = packet.ReadBit();
 
             packet.ReadXORByte(accountId, 7);
-            packet.ReadUInt32("Timer 2"); // 80
+            packet.ReadTime("Timer 2"); // 80
             packet.ReadInt32("Criteria ID"); // 16
             packet.ReadXORByte(counter, 7);
-            packet.ReadUInt32("Timer 1"); // 76
+            packet.ReadTime("Timer 1"); // 76
             packet.ReadXORByte(accountId, 4);
             packet.ReadXORByte(accountId, 3);
             packet.ReadPackedTime("Time");
@@ -248,8 +248,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ParseBitStream(guid, 5, 1);
             packet.ReadPackedTime("Time"); // 28
             packet.ParseBitStream(guid, 4);
-            packet.ReadUInt32("Timer 1"); // 24
-            packet.ReadUInt32("Timer 2"); // 80
+            packet.ReadTime("Timer 1"); // 24
+            packet.ReadTime("Timer 2"); // 80
             packet.ParseBitStream(guid, 7, 0);
             packet.WriteGuid("Guid", guid);
             packet.ReadUInt64("Counter"); // 16
@@ -315,7 +315,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             for (var i = 0; i < criterias; i++)
             {
                 packet.ParseBitStream(guid8[i], 4);
-                packet.ReadInt32("Criteria Timer1", i); // 96
+                packet.ReadTime("Criteria Timer1", i); // 96
                 packet.ParseBitStream(guid8[i], 1);
                 packet.ParseBitStream(guid16[i], 1);
                 packet.ParseBitStream(guid8[i], 7);
@@ -325,7 +325,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ParseBitStream(guid16[i], 4);
                 packet.ParseBitStream(guid8[i], 0);
                 packet.ParseBitStream(guid16[i], 0);
-                packet.ReadInt32("Criteria Timer2", i); // 100
+                packet.ReadTime("Criteria Timer2", i); // 100
                 packet.ParseBitStream(guid16[i], 7);
                 packet.ReadPackedTime("Criteria Time", i);
                 packet.ParseBitStream(guid8[i], 6);
