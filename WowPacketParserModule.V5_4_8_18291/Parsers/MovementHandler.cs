@@ -465,33 +465,33 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ParseBitStream(guid, 4, 3, 2);
 
             var count = packet.ReadUInt32() / 2;
-            packet.AddValue("Inactive Terrain swap count", count);
+            packet.AddValue("Phases count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
+                packet.ReadInt16("Phase id", i); // if + Phase.dbc, if - duno atm
 
             packet.ParseBitStream(guid, 0, 6);
 
             count = packet.ReadUInt32() / 2;
-            packet.AddValue("Active Terrain swap count", count);
+            packet.AddValue("Inactive Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Active Terrain swap", i);
+                packet.ReadEntry<Int16>(StoreNameType.Map, "Inactive Terrain swap", i); // Map.dbc, all possible terrainswaps
 
             packet.ParseBitStream(guid, 1, 7);
 
             count = packet.ReadUInt32() / 2;
             packet.AddValue("WorldMapArea swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadUInt16("WorldMapArea swap", i);
+                packet.ReadUInt16("WorldMapArea swap", i); // WorldMapArea.dbc
 
             count = packet.ReadUInt32() / 2;
-            packet.AddValue("Phases count", count);
+            packet.AddValue("Active Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                CoreParsers.MovementHandler.ActivePhases.Add(packet.ReadUInt16("Phase id", i)); // Phase.dbc
+                packet.ReadEntry<Int16>(StoreNameType.Map, "Active Terrain swap", i); // Map.dbc, all active terrainswaps 
 
             packet.ParseBitStream(guid, 5);
             packet.WriteGuid("GUID", guid);
 
-            packet.ReadUInt32("UInt32 1");
+            packet.ReadUInt32("Flags:");
         }
 
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
