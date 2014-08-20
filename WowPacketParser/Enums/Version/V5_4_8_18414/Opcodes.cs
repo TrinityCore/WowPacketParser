@@ -205,7 +205,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_RAID_READY_CHECK_CONFIRM,                 0x158B | 0x10000}, //--
             {Opcode.CMSG_RANDOM_ROLL,                              0x08A3 | 0x10000}, //--
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME,                      0x0B1C | 0x10000}, //--
-            {Opcode.CMSG_READ_ITEM,                                0x0D00 | 0x10000}, //--
+            {Opcode.CMSG_READ_ITEM,                                0x0D00 | 0x10000}, //++
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES,             0x031C | 0x10000}, //++
             {Opcode.CMSG_REALM_NAME_QUERY,                         0x1A16 | 0x10000}, //--
             {Opcode.CMSG_REALM_SPLIT,                              0x18B2 | 0x10000}, //++
@@ -585,6 +585,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_RAID_READY_CHECK_CONFIRM,                 0x02AF | 0x20000}, //--
             {Opcode.SMSG_RANDOM_ROLL,                              0x141A | 0x20000}, //--
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME,                      0x169F | 0x20000}, //--
+            {Opcode.SMSG_READ_ITEM_OK,                             0x0305 | 0x20000}, //++
             {Opcode.SMSG_REALM_QUERY_RESPONSE,                     0x063E | 0x20000}, //--
             {Opcode.SMSG_RECEIVED_MAIL,                            0x182B | 0x20000}, //--
             {Opcode.SMSG_REDIRECT_CLIENT,                          0x1149 | 0x20000}, //--

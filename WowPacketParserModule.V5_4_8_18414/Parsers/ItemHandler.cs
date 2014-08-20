@@ -128,7 +128,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_READ_ITEM)]
         public static void HandleReadItem(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadByte("Bag");
+            packet.ReadByte("Slot");
         }
 
         [Parser(Opcode.CMSG_REFORGE_ITEM)]
@@ -521,6 +522,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleItemTimeUpdate(Packet packet)
         {
             packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_READ_ITEM_OK)]
+        public static void HandleReadItemOK(Packet packet)
+        {
+            packet.ReadGuid("Item GUID");
         }
 
         [Parser(Opcode.SMSG_REFORGE_RESULT)]
