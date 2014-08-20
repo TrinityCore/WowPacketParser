@@ -351,6 +351,15 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
         }
 
+        [Parser(Opcode.SMSG_UNK_0E1B)]
+        public static void HandleSUnk0E1B(Packet packet)
+        {
+            packet.ReadInt32("Int28");
+            packet.ReadInt32("Int16");
+            packet.ReadInt32("Int20");
+            packet.ReadInt32("Int24");
+        }
+
         [Parser(Opcode.SMSG_UNK_0E2A)]
         public static void HandleSUnk0E2A(Packet packet)
         {

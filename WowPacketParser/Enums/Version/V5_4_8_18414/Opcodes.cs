@@ -708,6 +708,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_0C44,                                 0x0C44 | 0x20000}, //+-
             {Opcode.SMSG_UNK_0CAE,                                 0x0CAE | 0x20000}, //++
             {Opcode.SMSG_UNK_0D51,                                 0x0D51 | 0x20000}, //++
+            {Opcode.SMSG_UNK_0E1B,                                 0x0E1B | 0x20000}, //++
             {Opcode.SMSG_UNK_0E2A,                                 0x0E2A | 0x20000}, //++
             {Opcode.SMSG_UNK_0E3A,                                 0x0E3A | 0x20000}, //++
             {Opcode.SMSG_UNK_0EAB,                                 0x0EAB | 0x20000}, //++
