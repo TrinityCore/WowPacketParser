@@ -14,6 +14,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadBit("unk");
         }
 
+        [Parser(Opcode.CMSG_UNK_0123)]
+        public static void HandleUnk0123(Packet packet)
+        {
+            packet.ReadGuid("Item");
+        }
+
         [Parser(Opcode.CMSG_UNK_02E1)]
         public static void HandleUnk02E1(Packet packet)
         {
@@ -398,7 +404,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             var guid = packet.StartBitStream(4, 7, 1, 5, 6, 0, 2, 3);
             packet.ParseBitStream(guid, 5, 7);
-            packet.ReadInt32("Mcounter"); // 24
+            packet.ReadInt32("Unk"); // 24
             packet.ParseBitStream(guid, 3, 1, 2, 4, 6, 0);
             packet.WriteGuid("Guid", guid);
         }
@@ -679,6 +685,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadInt32("unk28");
             packet.ParseBitStream(guid, 2, 0);
             packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_UNK_1C33)]
+        public static void HandleSUnk1C33(Packet packet)
+        {
+            packet.ReadInt32("CriteriaID");
         }
 
         [Parser(Opcode.SMSG_UNK_1E1B)]

@@ -528,6 +528,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             ReadPlayerMovementInfo(ref packet, info.CUnk01F1); // 679E4F
         }
 
+        [Parser(Opcode.CMSG_MOVE_FEATHER_FALL_ACK)]
+        public static void HandleMoveFeatherFallAck(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementFeatherFallAck);
+        }
+
         [Parser(Opcode.CMSG_UNK_09FB)]
         public static void HandleCUnk09FB(Packet packet)
         {
@@ -552,6 +558,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             ReadPlayerMovementInfo(ref packet, info.PlayerMove);
         }
 
+        [Parser(Opcode.SMSG_MOVE_FEATHER_FALL)]
+        public static void HandleMoveFeatherFall(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementFeatherFall);
+        }
+
         [Parser(Opcode.SMSG_MOVE_GRAVITY_DISABLE)]
         public static void HandleMoveGravityDisable(Packet packet)
         {
@@ -562,6 +574,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleMoveGravityEnable(Packet packet)
         {
             ReadPlayerMovementInfo(ref packet, info.MovementGravityEnable);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_NORMAL_FALL)]
+        public static void HandleMoveNormalFall(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementNormalFall);
         }
 
         [Parser(Opcode.SMSG_MOVE_ROOT)]
