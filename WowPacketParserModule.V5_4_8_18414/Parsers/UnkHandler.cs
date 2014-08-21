@@ -367,6 +367,37 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
         }
 
+        [Parser(Opcode.SMSG_UNK_0D52)]
+        public static void HandleSUnk0D52(Packet packet)
+        {
+            var guid = new byte[8];
+            guid[6] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+
+            var count = packet.ReadBits("count", 24);
+            var guid32 = new byte[count][];
+            for (var i = 0; i < count; i++)
+                guid32[i] = packet.StartBitStream(4, 7, 1, 3, 0, 5, 2, 6);
+
+            guid[3] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ParseBitStream(guid32[i], 2, 6, 1, 0, 5, 7, 4, 3);
+                packet.WriteGuid("Guid32", guid32[i]);
+            }
+
+            packet.ParseBitStream(guid, 4, 0, 5, 6);
+            packet.ReadInt32("Spell");
+            packet.ParseBitStream(guid, 1, 7, 3, 2);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_UNK_0E1B)]
         public static void HandleSUnk0E1B(Packet packet)
         {
