@@ -33,6 +33,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("sound")]
         public uint Sound;
 
+        [DBFieldName("BroadcastTextID")]
+        public string BroadcastTextID;
+
         [DBFieldName("comment")]
         public string Comment;
     }
