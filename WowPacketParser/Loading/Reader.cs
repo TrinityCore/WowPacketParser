@@ -106,7 +106,7 @@ namespace WowPacketParser.Loading
                     if (packet == null)
                         continue;
 
-                    if (packetNum == 0)
+                    if (packetNum++ == 0)
                     {
                         // determine build version based on date of first packet if not specified otherwise
                         if (ClientVersion.IsUndefined())
