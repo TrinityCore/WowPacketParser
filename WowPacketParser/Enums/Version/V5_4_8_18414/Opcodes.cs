@@ -505,6 +505,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_ITEM_PUSH_RESULT,                         0x0E0A | 0x20000}, //++
             {Opcode.SMSG_ITEM_TIME_UPDATE,                         0x18C1 | 0x20000}, //--
             {Opcode.SMSG_LEARNED_SPELL,                            0x129A | 0x20000}, //++
+            {Opcode.SMSG_LFG_PLAYER_INFO,                          0x1861 | 0x20000}, //++
             {Opcode.SMSG_LIST_INVENTORY,                           0x1AAE | 0x20000}, //--
             {Opcode.SMSG_LOAD_CUF_PROFILES,                        0x0E32 | 0x20000}, //++
             {Opcode.SMSG_LOG_XPGAIN,                               0x1E9A | 0x20000}, //--
@@ -739,7 +740,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_169E,                                 0x169E | 0x20000}, //++ pair CMSG 02E1
             {Opcode.SMSG_UNK_16BF,                                 0x16BF | 0x20000}, //++
             {Opcode.SMSG_UNK_1812,                                 0x1812 | 0x20000}, //++
-            {Opcode.SMSG_UNK_1861,                                 0x1861 | 0x20000}, //++
             {Opcode.SMSG_UNK_188F,                                 0x188F | 0x20000}, //++
             {Opcode.SMSG_UNK_18BA,                                 0x18BA | 0x20000}, //++
             {Opcode.SMSG_UNK_18C3,                                 0x18C3 | 0x20000}, //++
