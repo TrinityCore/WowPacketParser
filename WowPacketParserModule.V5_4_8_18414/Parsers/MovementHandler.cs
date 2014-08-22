@@ -358,6 +358,16 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.CMSG_SET_ACTIVE_MOVER)]
+        public static void HandleSetAsctiveMover(Packet packet)
+        {
+            packet.ReadBit("unk");
+            var guid = packet.StartBitStream(3, 0, 2, 1, 5, 4, 7, 6);
+            packet.ResetBitReader();
+            packet.ParseBitStream(guid, 3, 4, 5, 2, 7, 0, 1, 6);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.MSG_MOVE_FALL_LAND)]
         public static void HandleMoveFallLand(Packet packet)
         {

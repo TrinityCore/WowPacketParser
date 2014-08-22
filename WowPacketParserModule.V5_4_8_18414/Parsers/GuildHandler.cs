@@ -334,7 +334,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadInt32("unk152");
                 packet.ParseBitStream(guid2, 2, 7);
                 packet.ReadInt32("unk156");
-                packet.ReadInt32("unk32");
+                packet.ReadInt32("RealmID"); // 32
                 for (var i = 0; i < count; i++)
                 {
                     packet.ReadInt32("unk144", i);

@@ -190,6 +190,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_QUERY_GUILD_REWARDS,                      0x06C4 | 0x10000}, //+-
             {Opcode.CMSG_QUERY_GUILD_XP,                           0x05F8 | 0x10000}, //--
             {Opcode.CMSG_QUERY_INSPECT_ACHIEVEMENTS,               0x0373 | 0x10000}, //++
+            {Opcode.CMSG_QUERY_TIME,                               0x0640 | 0x10000}, //++
             {Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST,                  0x06D1 | 0x10000}, //--
             {Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD,                 0x07CB | 0x10000}, //--
             {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST,                0x0659 | 0x10000}, //--
@@ -227,6 +228,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_SEND_MAIL,                                0x1DBA | 0x10000}, //--
             {Opcode.CMSG_SET_ACTIONBAR_TOGGLES,                    0x0672 | 0x10000}, //++
             {Opcode.CMSG_SET_ACTION_BUTTON,                        0x1F8C | 0x10000}, //++
+            {Opcode.CMSG_SET_ACTIVE_MOVER,                         0x09F0 | 0x10000}, //++
             {Opcode.CMSG_SET_CONTACT_NOTES,                        0x0937 | 0x10000}, //--
             {Opcode.CMSG_SET_DUNGEON_DIFFICULTY,                   0x1A36 | 0x10000}, //--
             {Opcode.CMSG_SET_PLAYER_DECLINED_NAMES,                0x09E2 | 0x10000}, //++
@@ -287,7 +289,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_UNK_0882,                                 0x0882 | 0x10000}, //++
             {Opcode.CMSG_UNK_08C0,                                 0x08C0 | 0x10000}, //+-
             {Opcode.CMSG_UNK_09DB,                                 0x09DB | 0x10000}, //++
-            {Opcode.CMSG_UNK_09F0,                                 0x09F0 | 0x10000}, //++
             {Opcode.CMSG_UNK_09FB,                                 0x09FB | 0x10000}, //--
             {Opcode.CMSG_UNK_0CF0,                                 0x0CF0 | 0x10000}, //++
             {Opcode.CMSG_UNK_10A2,                                 0x10A2 | 0x10000}, //+-
@@ -319,7 +320,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_NULL_03C4,                                0x03C4 | 0x10000}, //+-
             {Opcode.CMSG_NULL_0558,                                0x0558 | 0x10000}, //+-
             {Opcode.CMSG_NULL_05E1,                                0x05E1 | 0x10000}, //+-
-            {Opcode.CMSG_NULL_0640,                                0x0640 | 0x10000}, //+-
             {Opcode.CMSG_NULL_0644,                                0x0644 | 0x10000}, //+-
             {Opcode.CMSG_NULL_06D4,                                0x06D4 | 0x10000}, //+-
             {Opcode.CMSG_NULL_06E4,                                0x06E4 | 0x10000}, //+-
@@ -436,7 +436,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_CHAT_PLAYER_NOT_FOUND,                    0x1082 | 0x20000}, //++
             {Opcode.SMSG_CLIENTCACHE_VERSION,                      0x002A | 0x20000}, //++
             {Opcode.SMSG_CONTACT_LIST,                             0x1F22 | 0x20000}, //--
-            {Opcode.SMSG_CORPSE_MAP_POSITION_QUERY_RESPONSE,       0x1A3A | 0x20000}, //--
+            {Opcode.SMSG_CORPSE_MAP_POSITION_QUERY_RESPONSE,       0x1A3A | 0x20000}, //+-
             {Opcode.SMSG_CORPSE_NOT_IN_INSTANCE,                   0x089E | 0x20000}, //--
             {Opcode.SMSG_CORPSE_QUERY_RESPONSE,                    0x0E0B | 0x20000}, //++
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY,                     0x022A | 0x20000}, //++
@@ -587,7 +587,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_RANDOM_ROLL,                              0x141A | 0x20000}, //--
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME,                      0x169F | 0x20000}, //--
             {Opcode.SMSG_READ_ITEM_OK,                             0x0305 | 0x20000}, //++
-            {Opcode.SMSG_REALM_QUERY_RESPONSE,                     0x063E | 0x20000}, //--
+            {Opcode.SMSG_REALM_QUERY_RESPONSE,                     0x063E | 0x20000}, //++
             {Opcode.SMSG_RECEIVED_MAIL,                            0x182B | 0x20000}, //--
             {Opcode.SMSG_REDIRECT_CLIENT,                          0x1149 | 0x20000}, //--
             {Opcode.SMSG_REFORGE_RESULT,                           0x141E | 0x20000}, //--
@@ -748,6 +748,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_1A1E,                                 0x1A1E | 0x20000}, //++ pair CMSG 0882
             {Opcode.SMSG_UNK_1A1F,                                 0x1A1F | 0x20000}, //++
             {Opcode.SMSG_UNK_1A2B,                                 0x1A2B | 0x20000}, //++ pair CMSG 1272
+            {Opcode.SMSG_UNK_1C0E,                                 0x1C0E | 0x20000}, //++
             {Opcode.SMSG_UNK_1C33,                                 0x1C33 | 0x20000}, //++ maybe SMSG_CRITERIA_DELETED
             {Opcode.SMSG_UNK_1E12,                                 0x1E12 | 0x20000}, //++
             {Opcode.SMSG_UNK_1E1B,                                 0x1E1B | 0x20000}, //++ levelup 90

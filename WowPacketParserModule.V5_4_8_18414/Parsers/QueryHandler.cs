@@ -91,7 +91,10 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_CORPSE_MAP_POSITION_QUERY_RESPONSE)]
         public static void HandleCorpseMapPositionQueryResponce(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadSingle("Y");
+            packet.ReadSingle("X");
+            packet.ReadSingle("O");
+            packet.ReadSingle("Z");
         }
 
         [Parser(Opcode.SMSG_CORPSE_QUERY_RESPONSE)]
@@ -366,7 +369,16 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE)]
         public static void HandleQueryRealmNameResponse(Packet packet)
         {
-            packet.ReadToEnd();
+            var hasData = !packet.ReadBoolean("!HasData");
+            packet.ReadInt32("RealmID");
+            if (hasData)
+            {
+                var len278 = packet.ReadBits(8);
+                packet.ReadBit("unk21");
+                var len88 = packet.ReadBits(8);
+                packet.ReadWoWString("RealmName", len88);
+                packet.ReadWoWString("RealmName2", len278);
+            }
         }
     }
 }
