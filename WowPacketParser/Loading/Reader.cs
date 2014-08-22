@@ -53,17 +53,11 @@ namespace WowPacketParser.Loading
                 if (packet == null)
                     return false; // continue
 
-                if (_packetNum == 0)
+                if (_packetNum++ == 0)
                 {
                     // determine build version based on date of first packet if not specified otherwise
                     if (ClientVersion.IsUndefined())
                         ClientVersion.SetVersion(packet.Time);
-                }
-
-                if (_packetNum++ < Settings.FilterPacketNumLow)
-                {
-                    packet.ClosePacket();
-                    return false; // continue
                 }
 
                 // check for filters
@@ -80,17 +74,12 @@ namespace WowPacketParser.Loading
                 {
                     if (Settings.FilterPacketsNum > 0 && _count++ == Settings.FilterPacketsNum)
                         return true; // break
-                    return false;
-                }
-                else
-                {
-                    packet.ClosePacket();
-                    packet = null;
-                    return false;
+                    return false; // continue
                 }
 
-                if (Settings.FilterPacketNumHigh > 0 && _packetNum > Settings.FilterPacketNumHigh)
-                    return true; // break
+                packet.ClosePacket();
+                packet = null;
+                return false;
             }
             catch (Exception ex)
             {
@@ -124,12 +113,6 @@ namespace WowPacketParser.Loading
                             ClientVersion.SetVersion(packet.Time);
                     }
 
-                    if (packetNum++ < Settings.FilterPacketNumLow)
-                    {
-                        packet.ClosePacket();
-                        continue;
-                    }
-
                     // check for filters
                     var opcodeName = Opcodes.GetOpcodeName(packet.Opcode);
 
@@ -148,9 +131,6 @@ namespace WowPacketParser.Loading
                     }
                     else
                         packet.ClosePacket();
-
-                    if (Settings.FilterPacketNumHigh > 0 && packetNum > Settings.FilterPacketNumHigh)
-                        break;
                 }
             }
             catch (Exception ex)

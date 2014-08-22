@@ -182,8 +182,7 @@ namespace WowPacketParser.Loading
                     if (packets.Count == 0)
                         return;
 
-                    if (Settings.FilterPacketNumLow == 0 && Settings.FilterPacketNumHigh == 0 &&
-                        Settings.FilterPacketsNum < 0)
+                    if (Settings.FilterPacketsNum < 0)
                     {
                         int packetsPerSplit = Math.Abs(Settings.FilterPacketsNum);
                         int totalPackets = packets.Count;
