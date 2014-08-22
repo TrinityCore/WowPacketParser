@@ -842,8 +842,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         public static void HandleSplineSetFlightSpeed(Packet packet)
         {
             packet.ReadSingle("Speed");
-            var guid = packet.StartBitStream(7, 4, 0, 1, 3, 6, 5, 2);
-            packet.ParseBitStream(guid, 0, 5, 4, 7, 3, 2, 1, 6);
+            var guid = packet.StartBitStream(1, 4, 7, 3, 2, 6, 5, 0);
+            packet.ParseBitStream(guid, 5, 1, 0, 6, 2, 4, 7, 3);
             packet.WriteGuid("Guid", guid);
         }
 
@@ -880,8 +880,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED)]
         public static void HandleSplineSetWalkSpeed(Packet packet)
         {
-            var guid = packet.StartBitStream(1, 4, 7, 3, 2, 6, 5, 0);
-            packet.ParseBitStream(guid, 5, 1, 0, 6, 2, 4, 7, 3);
+            var guid = packet.StartBitStream(4, 1, 7, 6, 3, 2, 5, 0);
+            packet.ParseBitStream(guid, 2, 3, 1, 0, 6, 5, 4, 7);
             packet.ReadSingle("Speed");
             packet.WriteGuid("GUID", guid);
         }
