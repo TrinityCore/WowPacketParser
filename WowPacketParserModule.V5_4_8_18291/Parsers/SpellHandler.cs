@@ -911,9 +911,8 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             }
 
             packet.ParseBitStream(guid, 2, 6, 7, 1, 3, 4, 0, 5);
-            packet.WriteGuid("Guid", guid);
+            var GUID = packet.WriteGuid("Guid", guid);
 
-            var GUID = new Guid(BitConverter.ToUInt64(guid, 0));
             if (Storage.Objects.ContainsKey(GUID))
             {
                 var unit = Storage.Objects[GUID].Item1 as Unit;
@@ -926,8 +925,6 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
 
                     if (unit.Auras == null)
                         unit.Auras = auras;
-                    else if (unit.AddedAuras == null)
-                        unit.AddedAuras = new List<List<Aura>> { auras };
                     else
                         unit.AddedAuras.Add(auras);
                 }

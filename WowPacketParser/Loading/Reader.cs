@@ -8,9 +8,18 @@ using WowPacketParser.Misc;
 
 namespace WowPacketParser.Loading
 {
-    public static class Reader
+    public class Reader
     {
-        public static IPacketReader GetPacketReader(string fileName)
+        public string FileName { get; private set; }
+        public IPacketReader PacketReader { get; private set; }
+
+        public Reader(string fileName)
+        {
+            FileName = fileName;
+            PacketReader = GetPacketReader(fileName);
+        }
+
+        private static IPacketReader GetPacketReader(string fileName)
         {
             var extension = Path.GetExtension(fileName);
             if (extension == null)
@@ -31,6 +40,68 @@ namespace WowPacketParser.Loading
             }
 
             return reader;
+        }
+
+        private int _packetNum;
+        private int _count;
+
+        public bool TryRead(out Packet packet)
+        {
+            try
+            {
+                packet = PacketReader.Read(_packetNum, FileName);
+                if (packet == null)
+                    return false; // continue
+
+                if (_packetNum == 0)
+                {
+                    // determine build version based on date of first packet if not specified otherwise
+                    if (ClientVersion.IsUndefined())
+                        ClientVersion.SetVersion(packet.Time);
+                }
+
+                if (_packetNum++ < Settings.FilterPacketNumLow)
+                {
+                    packet.ClosePacket();
+                    return false; // continue
+                }
+
+                // check for filters
+                var opcodeName = Opcodes.GetOpcodeName(packet.Opcode);
+
+                var add = true;
+                if (Settings.Filters.Length > 0)
+                    add = opcodeName.MatchesFilters(Settings.Filters);
+                // check for ignore filters
+                if (add && Settings.IgnoreFilters.Length > 0)
+                    add = !opcodeName.MatchesFilters(Settings.IgnoreFilters);
+
+                if (add)
+                {
+                    if (Settings.FilterPacketsNum > 0 && _count++ == Settings.FilterPacketsNum)
+                        return true; // break
+                    return false;
+                }
+                else
+                {
+                    packet.ClosePacket();
+                    packet = null;
+                    return false;
+                }
+
+                if (Settings.FilterPacketNumHigh > 0 && _packetNum > Settings.FilterPacketNumHigh)
+                    return true; // break
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Data);
+                Trace.WriteLine(ex.GetType());
+                Trace.WriteLine(ex.Message);
+                Trace.WriteLine(ex.StackTrace);
+            }
+
+            packet = null;
+            return false;
         }
 
         public static void Read(string fileName, Action<Tuple<Packet, long, long>> action)

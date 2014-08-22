@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using WowPacketParser.Enums;
@@ -11,7 +12,7 @@ namespace WowPacketParser.Store.Objects
     {
         public List<Aura> Auras;
 
-        public List<List<Aura>> AddedAuras;
+        public BlockingCollection<List<Aura>> AddedAuras = new BlockingCollection<List<Aura>>();
 
         public override bool IsTemporarySpawn()
         {

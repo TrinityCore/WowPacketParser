@@ -86,6 +86,8 @@ namespace WowPacketParser
             if (Settings.LogErrors)
                 Logger.WriteErrors();
 
+            Trace.Listeners.Remove("ConsoleMirror");
+
             EndPrompt();
         }
 

@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -84,27 +85,42 @@ namespace WowPacketParser.Loading
 
                     _stats.SetStartTime(DateTime.Now);
 
+                    int threadCount = Settings.Threads;
+                    if (threadCount == 0)
+                        threadCount = Environment.ProcessorCount;
+
+                    ThreadPool.SetMinThreads(threadCount + 2, 4);
+
                     using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(_outFileName, true) : null))
                     {
-                        if (writer != null)
-                            writer.WriteLine(GetHeader());
                         bool first = true;
 
-                        Reader.Read(_fileName, p =>
+                        var reader = new Reader(_fileName);
+
+                        var pwp = new ParallelWorkProcessor<Packet>(() => // read
                         {
-                            var packet = p.Item1;
-                            var currSize = p.Item2;
-                            var totalSize = p.Item3;
+                            if (!reader.PacketReader.CanRead())
+                                return Tuple.Create<Packet, bool>(null, true);
+
+                            Packet packet;
+                            var b = reader.TryRead(out packet);
 
                             if (first)
                             {
-                                Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Assumed version {2}",
-                                    _logPrefix, Utilities.BytesToString(totalSize), ClientVersion.VersionString));
+                                Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Detected version {2}",
+                                    _logPrefix, Utilities.BytesToString(reader.PacketReader.GetTotalSize()), ClientVersion.VersionString));
+
+// ReSharper disable AccessToDisposedClosure
+                                if (writer != null)
+                                    writer.WriteLine(GetHeader());
+// ReSharper restore AccessToDisposedClosure
+
                                 first = false;
                             }
 
-                            ShowPercentProgress("Processing...", currSize, totalSize);
-
+                            return Tuple.Create(packet, b);
+                        }, packet => // parse
+                        {
                             // Parse the packet, adding text to Writer and stuff to the stores
                             if (packet.Direction == Direction.BNClientToServer ||
                                 packet.Direction == Direction.BNServerToClient)
@@ -114,6 +130,11 @@ namespace WowPacketParser.Loading
 
                             // Update statistics
                             _stats.AddByStatus(packet.Status);
+                            return packet;
+                        },
+                        packet => // write
+                        {
+                            ShowPercentProgress("Processing...", reader.PacketReader.GetCurrentSize(), reader.PacketReader.GetTotalSize());
 
                             // get packet header if necessary
                             if (Settings.LogPacketErrors)
@@ -124,16 +145,20 @@ namespace WowPacketParser.Loading
                                     _skippedHeaders.AddLast(packet.GetHeader());
                             }
 
+// ReSharper disable AccessToDisposedClosure
                             if (writer != null)
                             {
                                 // Write to file
                                 writer.WriteLine(packet.Writer);
                                 writer.Flush();
                             }
+// ReSharper restore AccessToDisposedClosure
 
                             // Close Writer, Stream - Dispose
                             packet.ClosePacket();
-                        });
+                        }, threadCount);
+
+                        pwp.WaitForFinished(Timeout.Infinite);
 
                         _stats.SetEndTime(DateTime.Now);
                     }

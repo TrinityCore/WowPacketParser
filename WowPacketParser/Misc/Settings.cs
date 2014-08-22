@@ -29,6 +29,7 @@ namespace WowPacketParser.Misc
         public static readonly bool DebugReads = GetBoolean("DebugReads", false);
         public static readonly bool ParsingLog = GetBoolean("ParsingLog", false);
         public static readonly bool DevMode = GetBoolean("DevMode", false);
+        public static readonly int Threads = GetInt32("Threads", 8);
 
         public static readonly bool SSHEnabled = GetBoolean("SSHEnabled", false);
         public static readonly string SSHHost = GetString("SSHHost", "localhost");

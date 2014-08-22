@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.SQL;
@@ -8,7 +8,7 @@ namespace WowPacketParser.Misc
 {
     public static class StoreGetters
     {
-        public static readonly Dictionary<Guid, string> NameDict = new Dictionary<Guid, string>();
+        public static readonly ConcurrentDictionary<Guid, string> NameDict = new ConcurrentDictionary<Guid, string>();
 
         public static string GetName(StoreNameType type, int entry, bool withEntry = true)
         {
@@ -38,10 +38,7 @@ namespace WowPacketParser.Misc
 
         public static void AddName(Guid guid, string name)
         {
-            if (NameDict.ContainsKey(guid))
-                return;
-
-            NameDict.Add(guid, name);
+            NameDict.TryAdd(guid, name);
         }
 
         public static string GetName(Guid guid)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Wintellect.PowerCollections;
@@ -28,29 +29,27 @@ namespace WowPacketParser.Store
 
     public class StoreDictionary<T, TK> : Store, IEnumerable<KeyValuePair<T, Tuple<TK, TimeSpan?>>>
     {
-        private readonly Dictionary<T, Tuple<TK, TimeSpan?>> _dictionary;
+        private readonly ConcurrentDictionary<T, Tuple<TK, TimeSpan?>> _dictionary;
 
         public StoreDictionary()
         {
             Types = new List<SQLOutput>();
             Enabled = true;
-            _dictionary = new Dictionary<T, Tuple<TK, TimeSpan?>>();
+            _dictionary = new ConcurrentDictionary<T, Tuple<TK, TimeSpan?>>();
         }
 
         public StoreDictionary(List<SQLOutput> types)
         {
             Types = types;
             Enabled = ProcessFlags();
-            _dictionary = Enabled ? new Dictionary<T, Tuple<TK, TimeSpan?>>() : null;
+            _dictionary = Enabled ? new ConcurrentDictionary<T, Tuple<TK, TimeSpan?>>() : null;
         }
 
         public StoreDictionary(Dictionary<T, TK> dict)
         {
-            _dictionary = new Dictionary<T, Tuple<TK, TimeSpan?>>();
-
-            foreach (var pair in dict)
-                _dictionary.Add(pair.Key, new Tuple<TK, TimeSpan?>(pair.Value, null));
-
+            _dictionary =
+                new ConcurrentDictionary<T, Tuple<TK, TimeSpan?>>(dict.ToDictionary(pair => pair.Key,
+                    pair => new Tuple<TK, TimeSpan?>(pair.Value, null)));
             Types = new List<SQLOutput>();
             Enabled = true;
         }
@@ -63,12 +62,13 @@ namespace WowPacketParser.Store
             if (_dictionary.ContainsKey(key))
                 return;
 
-            _dictionary.Add(key, new Tuple<TK, TimeSpan?>(value, time));
+            while (!_dictionary.TryAdd(key, new Tuple<TK, TimeSpan?>(value, time))) { }
         }
 
         public bool Remove(T key)
         {
-            return !Enabled || _dictionary.Remove(key);
+            Tuple<TK, TimeSpan?> t;
+            return !Enabled || _dictionary.TryRemove(key, out t);
         }
 
         public bool ContainsKey(T key)
@@ -232,13 +232,13 @@ namespace WowPacketParser.Store
 
     public class StoreBag<T> : Store, IEnumerable<Tuple<T, TimeSpan?>>
     {
-        private readonly Bag<Tuple<T, TimeSpan?>> _bag;
+        private readonly ConcurrentBag<Tuple<T, TimeSpan?>> _bag;
 
         public StoreBag(List<SQLOutput> types)
         {
             Types = types;
             Enabled = ProcessFlags();
-            _bag = Enabled ? new Bag<Tuple<T, TimeSpan?>>() : null;
+            _bag = Enabled ? new ConcurrentBag<Tuple<T, TimeSpan?>>() : null;
         }
 
         public void Add(T item, TimeSpan? time)
@@ -250,7 +250,13 @@ namespace WowPacketParser.Store
         public override void Clear()
         {
             if (Enabled)
-                _bag.Clear();
+            {
+                while (_bag.Count > 0)
+                {
+                    Tuple<T, TimeSpan?> t;
+                    _bag.TryTake(out t);
+                }
+            }
         }
 
         public override bool IsEmpty()

@@ -132,8 +132,6 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
                     if (unit.Auras == null)
                         unit.Auras = auras;
-                    else if (unit.AddedAuras == null)
-                        unit.AddedAuras = new List<List<Aura>> { auras };
                     else
                         unit.AddedAuras.Add(auras);
                 }
@@ -148,7 +146,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             for (var i = 0; i < counter; ++i)
                 packet.ReadBits("unk value0", 2, i);
 
-            var HasCastCount = !packet.ReadBit();
+            var hasCastCount = !packet.ReadBit();
             packet.ReadBit("Fake bit? Has TargetGUID"); // TargetGUID
             var hasbit1C = !packet.ReadBit();
             var hasMovment = packet.ReadBit();
@@ -226,7 +224,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             if (hasbit78)
                 packet.ReadWoWString("String", (int)len78);
 
-            if (HasCastCount)
+            if (hasCastCount)
                 packet.ReadByte("Cast Count");
 
             if (hasbit18)

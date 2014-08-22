@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.IO;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -17,8 +17,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static int CurrentPhaseMask = 1;
 
-        [ThreadStatic]
-        public static readonly HashSet<ushort> ActivePhases = new HashSet<ushort>();
+        public static readonly ConcurrentBag<ushort> ActivePhases = new ConcurrentBag<ushort>();
 
         public static MovementInfo ReadMovementInfo(ref Packet packet, Guid guid, object index = null)
         {
@@ -186,19 +185,19 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MONSTER_MOVE_TRANSPORT))
             {
-                var TransportGuid = packet.ReadPackedGuid("Transport GUID");
+                var transportGuid = packet.ReadPackedGuid("Transport GUID");
 
                 var seat = -1;
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
                     seat = packet.ReadByte("Transport Seat");
 
-                if (TransportGuid.HasEntry() && TransportGuid.GetHighType() == HighGuidType.Vehicle &&
+                if (transportGuid.HasEntry() && transportGuid.GetHighType() == HighGuidType.Vehicle &&
                     guid.HasEntry() && guid.GetHighType() == HighGuidType.Unit)
                 {
                     var vehicleAccessory = new VehicleTemplateAccessory();
                     vehicleAccessory.accessoryEntry = guid.GetEntry();
                     vehicleAccessory.seatId = seat;
-                    Storage.VehicleTemplateAccessorys.Add(TransportGuid.GetEntry(), vehicleAccessory, packet.TimeSpan);
+                    Storage.VehicleTemplateAccessorys.Add(transportGuid.GetEntry(), vehicleAccessory, packet.TimeSpan);
                 }
             }
 

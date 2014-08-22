@@ -38,7 +38,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -362,6 +362,7 @@
     <Compile Include="Misc\BiDictionary.cs" />
     <Compile Include="Misc\Bit.cs" />
     <Compile Include="Misc\ClientVersion.cs" />
+    <Compile Include="Misc\ConcurrentPriorityQueue.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Misc\Filters.cs" />
     <Compile Include="Misc\Guid.cs" />
@@ -370,6 +371,7 @@
     <Compile Include="Misc\MovementInfo.cs" />
     <Compile Include="Misc\Packet.cs" />
     <Compile Include="Misc\PacketReads.cs" />
+    <Compile Include="Misc\ParallelWorkProcessor.cs" />
     <Compile Include="Misc\PlayerMovementInfo.cs" />
     <Compile Include="Loading\SniffFile.cs" />
     <Compile Include="Misc\Statistics.cs" />

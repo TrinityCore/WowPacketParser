@@ -232,8 +232,6 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
 
                     if (unit.Auras == null)
                         unit.Auras = auras;
-                    else if (unit.AddedAuras == null)
-                        unit.AddedAuras = new List<List<Aura>> { auras };
                     else
                         unit.AddedAuras.Add(auras);
                 }
