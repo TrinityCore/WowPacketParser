@@ -52,27 +52,17 @@ namespace WowPacketParser.Loading
                     if (packets.Count == 0)
                         return;
 
-                    // CSV format:
-                    // - sniff file name
-                    // - time of first packet
-                    // - time of last packet
-                    // - sniff duration (seconds)
-                    // - packet count
-                    // - total packets size (bytes)
-                    // - average packet size (bytes)
-                    // - smaller packet size (bytes)
-                    // - larger packet size (bytes)
-
+                    // CSV format
                     Trace.WriteLine(String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
-                        _fileName,
-                        packets.First.Value.Time,
-                        packets.Last.Value.Time,
-                        (packets.Last.Value.Time - packets.First.Value.Time).TotalSeconds,
-                        packets.Count,
-                        packets.AsParallel().Sum(packet => packet.Length),
-                        packets.AsParallel().Average(packet => packet.Length),
-                        packets.AsParallel().Min(packet => packet.Length),
-                        packets.AsParallel().Max(packet => packet.Length)));
+                        _fileName,                                                         // - sniff file name
+                        packets.First.Value.Time,                                          // - time of first packet
+                        packets.Last.Value.Time,                                           // - time of last packet
+                        (packets.Last.Value.Time - packets.First.Value.Time).TotalSeconds, // - sniff duration (seconds)
+                        packets.Count,                                                     // - packet count
+                        packets.AsParallel().Sum(packet => packet.Length),                 // - total packets size (bytes)
+                        packets.AsParallel().Average(packet => packet.Length),             // - average packet size (bytes)
+                        packets.AsParallel().Min(packet => packet.Length),                 // - smaller packet size (bytes)
+                        packets.AsParallel().Max(packet => packet.Length)));               // - larger packet size (bytes)
 
                     break;
                 }
@@ -275,49 +265,19 @@ namespace WowPacketParser.Loading
         private void SplitBinaryDump(ICollection<Packet> packets)
         {
             Trace.WriteLine(string.Format("{0}: Splitting {1} packets to multiple files...", _logPrefix, packets.Count));
-
-            try
-            {
-                SplitBinaryPacketWriter.Write(packets, Encoding.ASCII);
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.GetType());
-                Trace.WriteLine(ex.Message);
-                Trace.WriteLine(ex.StackTrace);
-            }
+            SplitBinaryPacketWriter.Write(packets, Encoding.ASCII);
         }
 
         private void SessionSplitBinaryDump(ICollection<Packet> packets)
         {
             Trace.WriteLine(string.Format("{0}: Splitting {1} packets to multiple files...", _logPrefix, packets.Count));
-
-            try
-            {
-                SplitSessionBinaryPacketWriter.Write(packets, Encoding.ASCII);
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.GetType());
-                Trace.WriteLine(ex.Message);
-                Trace.WriteLine(ex.StackTrace);
-            }
+            SplitSessionBinaryPacketWriter.Write(packets, Encoding.ASCII);
         }
 
         private void BinaryDump(string fileName, ICollection<Packet> packets)
         {
             Trace.WriteLine(string.Format("{0}: Copying {1} packets to .pkt format...", _logPrefix, packets.Count));
-
-            try
-            {
-                BinaryPacketWriter.Write(SniffType.Pkt, fileName, Encoding.ASCII, packets);
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.GetType());
-                Trace.WriteLine(ex.Message);
-                Trace.WriteLine(ex.StackTrace);
-            }
+            BinaryPacketWriter.Write(SniffType.Pkt, fileName, Encoding.ASCII, packets);
         }
 
         private void WriteSQLs()

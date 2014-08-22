@@ -112,7 +112,7 @@ namespace WowPacketParser.SQL.Builders
                     Gender = npc.Gender.GetValueOrDefault(Gender.Male)
                 };
 
-                models.Add(modelId, model, null);
+                models.Add(modelId, model);
             }
 
             var entries = models.Keys();

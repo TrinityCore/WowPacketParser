@@ -63,7 +63,18 @@ namespace WowPacketParser
             {
                 SessionHandler.ZStreams.Clear();
                 ClientVersion.SetVersion(Settings.ClientBuild);
-                new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count)).ProcessFile();
+                var sf = new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count));
+                
+                try
+                {
+                    sf.ProcessFile();
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine(ex.GetType());
+                    Trace.WriteLine(ex.Message);
+                    Trace.WriteLine(ex.StackTrace);
+                }
             }
 
             if (!String.IsNullOrWhiteSpace(Settings.SQLFileName))
