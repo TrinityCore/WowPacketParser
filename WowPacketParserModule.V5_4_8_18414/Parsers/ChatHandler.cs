@@ -65,7 +65,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_MESSAGECHAT_RAID_WARNING)]
         public static void HandleClientChatMessageRaidWarning(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            packet.ReadWoWString("Message", packet.ReadBits(8));
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT_SAY)]

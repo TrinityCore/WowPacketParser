@@ -122,10 +122,11 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
         }
 
+        [Parser(Opcode.MSG_SET_RAID_DIFFICULTY)]
         [Parser(Opcode.SMSG_SET_DUNGEON_DIFFICULTY)]
         public static void HandleSetDungeonDifficulty(Packet packet)
         {
-            packet.ReadInt32("Difficulty");
+            packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
         }
 
         [Parser(Opcode.CMSG_RESET_INSTANCES)]
@@ -134,7 +135,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
         }
 
-        [Parser(Opcode.MSG_SET_RAID_DIFFICULTY)]
         [Parser(Opcode.SMSG_INSTANCE_RESET)]
         [Parser(Opcode.SMSG_UPDATE_LAST_INSTANCE)]
         public static void HandleServerSetDifficulty(Packet packet)
