@@ -163,6 +163,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_MOVE_GRAVITY_ENABLE_ACK,                  0x11D8 | 0x10000}, //++
             {Opcode.CMSG_MOVE_SET_CAN_FLY_ACK,                     0x1052 | 0x10000}, //++
             {Opcode.CMSG_MOVE_SET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY_ACK, 0x11DB | 0x10000}, //++
+            {Opcode.CMSG_MOVE_SPLINE_DONE,                         0x11D9 | 0x10000}, //++
             {Opcode.CMSG_MOVE_TELEPORT_ACK,                        0x0078 | 0x10000}, //-+
             {Opcode.CMSG_MOVE_TIME_SKIPPED,                        0x0150 | 0x10000}, //++
             {Opcode.CMSG_NAME_QUERY,                               0x0328 | 0x10000}, //-+
@@ -294,7 +295,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_UNK_10A2,                                 0x10A2 | 0x10000}, //+-
             {Opcode.CMSG_UNK_10A7,                                 0x10A7 | 0x10000}, //+-
             {Opcode.CMSG_UNK_115B,                                 0x115B | 0x10000}, //++
-            {Opcode.CMSG_UNK_11D9,                                 0x11D9 | 0x10000}, //+-
+            {Opcode.CMSG_UNK_12B3,                                 0x12B3 | 0x10000}, //++
             {Opcode.CMSG_UNK_1446,                                 0x1446 | 0x10000}, //+-
             {Opcode.CMSG_UNK_144D,                                 0x144D | 0x10000}, //+-
             {Opcode.CMSG_UNK_14E3,                                 0x14E3 | 0x10000}, //+-

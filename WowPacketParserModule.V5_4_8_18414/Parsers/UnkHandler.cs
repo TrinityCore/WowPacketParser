@@ -29,6 +29,13 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.CMSG_UNK_12B3)]
+        public static void HandleUnk12B3(Packet packet)
+        {
+            // Str: DUNGEONS\TEXTURES\EFFECTS\BLUE_REFLECT..tga - (null)
+            packet.ReadWoWString("Str", packet.ReadBits(9));
+        }
+
         [Parser(Opcode.CMSG_UNK_1886)]
         public static void HandleUnk1886(Packet packet)
         {
