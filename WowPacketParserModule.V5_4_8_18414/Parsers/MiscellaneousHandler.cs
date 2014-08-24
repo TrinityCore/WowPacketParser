@@ -130,7 +130,9 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_RECLAIM_CORPSE)]
         public static void HandleClientReclaimCorpse(Packet packet)
         {
-            packet.ReadToEnd();
+            var guid = packet.StartBitStream(1, 5, 7, 2, 6, 3, 0, 4);
+            packet.ParseBitStream(guid, 2, 5, 4, 6, 1, 0, 7, 3);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_REPOP_REQUEST)]

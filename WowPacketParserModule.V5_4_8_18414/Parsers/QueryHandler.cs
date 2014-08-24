@@ -173,11 +173,11 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             creature.Type = packet.ReadEnum<CreatureType>("Type", TypeCode.Int32);
 			
             creature.Modifier2 = packet.ReadSingle("Modifier Health");
-			
-            creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2");
-			
+
             creature.TypeFlags = packet.ReadEnum<CreatureTypeFlag>("Type Flags", TypeCode.UInt32);
 			
+            creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2");
+
             creature.Rank = packet.ReadEnum<CreatureRank>("Rank", TypeCode.Int32);
             creature.MovementId = packet.ReadUInt32("Movement Id");
 

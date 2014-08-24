@@ -1147,5 +1147,13 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
             packet.WriteGuid("Guid2", guid2);
         }
+
+        [Parser(Opcode.SMSG_SPIRIT_HEALER_CONFIRM)]
+        public static void HandleSpiritHealerConfirm(Packet packet)
+        {
+            var guid = packet.StartBitStream(6, 5, 7, 1, 4, 2, 3, 0);
+            packet.ParseBitStream(guid, 0, 4, 2, 3, 7, 6, 5, 1);
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

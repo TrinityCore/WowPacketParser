@@ -1131,6 +1131,28 @@ namespace WowPacketParserModule.V5_4_8_18414.Misc
             MovementStatusElements.MSEEnd
         };
 
+        public MovementStatusElements[] MovementLandWalk = // 086A
+        {
+            MovementStatusElements.MSEHasGuidByte0,
+            MovementStatusElements.MSEHasGuidByte7,
+            MovementStatusElements.MSEHasGuidByte3,
+            MovementStatusElements.MSEHasGuidByte1,
+            MovementStatusElements.MSEHasGuidByte6,
+            MovementStatusElements.MSEHasGuidByte5,
+            MovementStatusElements.MSEHasGuidByte2,
+            MovementStatusElements.MSEHasGuidByte4,
+            MovementStatusElements.MSEGuidByte7,
+            MovementStatusElements.MSEGuidByte6,
+            MovementStatusElements.MSEGuidByte4,
+            MovementStatusElements.MSEGuidByte3,
+            MovementStatusElements.MSEGuidByte2,
+            MovementStatusElements.MSEGuidByte0,
+            MovementStatusElements.MSEGuidByte1,
+            MovementStatusElements.MSECount,
+            MovementStatusElements.MSEGuidByte5,
+            MovementStatusElements.MSEEnd,
+        };
+
         public MovementStatusElements[] MovementNormalFall = // 08E0
         {
             MovementStatusElements.MSEHasGuidByte3,

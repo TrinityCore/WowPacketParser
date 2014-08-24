@@ -96,6 +96,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("NPC Guid", guid);
         }
 
+        [Parser(Opcode.CMSG_SPIRIT_HEALER_ACTIVATE)]
+        public static void HandleSpiritHealerActivate(Packet packet)
+        {
+            var guid = packet.StartBitStream(2, 7, 6, 0, 5, 4, 1, 3);
+            packet.ParseBitStream(guid, 1, 5, 6, 3, 2, 0, 7, 4);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.CMSG_TRAINER_BUY_SPELL)]
         public static void HandleTrainerBuySpell(Packet packet)
         {
@@ -128,10 +136,106 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("GUID", GUID);
         }
 
+        [HasSniffData]
         [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
         public static void HandleNpcGossip(Packet packet)
         {
-            packet.ReadToEnd();
+            var gossip = new Gossip();
+
+            var guid = new byte[8];
+
+            uint[] titleLen;
+            uint[] BoxTextLen;
+            uint[] OptionTextLen;
+
+            var questgossips = packet.ReadBits(19);
+
+            titleLen = new uint[questgossips];
+            for (var i = 0; i < questgossips; ++i)
+            {
+                packet.ReadBit("Change Icon", i);
+                titleLen[i] = packet.ReadBits(9);
+            }
+
+            guid[5] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+
+            var AmountOfOptions = packet.ReadBits(20);
+
+            guid[6] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+
+            BoxTextLen = new uint[AmountOfOptions];
+            OptionTextLen = new uint[AmountOfOptions];
+            for (var i = 0; i < AmountOfOptions; ++i)
+            {
+                BoxTextLen[i] = packet.ReadBits(12);
+                OptionTextLen[i] = packet.ReadBits(12);
+            }
+
+            guid[3] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+
+            for (var i = 0; i < questgossips; ++i)
+            {
+                packet.ReadWoWString("Title", titleLen[i], i);
+                packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32, i);//528
+                packet.ReadInt32("Level", i);//8
+                packet.ReadUInt32("Icon", i);//4
+                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID", i); //528
+                packet.ReadEnum<QuestFlags2>("Flags 2", TypeCode.UInt32, i);//532
+            }
+
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 0);
+
+            gossip.GossipOptions = new List<GossipOption>((int)AmountOfOptions);
+            for (var i = 0; i < AmountOfOptions; ++i)
+            {
+                var gossipOption = new GossipOption
+                {
+                    RequiredMoney = packet.ReadUInt32("Required money", i),//3012
+                    BoxText = packet.ReadWoWString("Box Text", BoxTextLen[i], i),//12
+                    Index = packet.ReadUInt32("Index", i),//0
+                    Box = packet.ReadBoolean("Box", i),
+                    OptionText = packet.ReadWoWString("Text", OptionTextLen[i], i),
+                    OptionIcon = packet.ReadEnum<GossipOptionIcon>("Icon", TypeCode.Byte, i),//4
+                };
+
+                gossip.GossipOptions.Add(gossipOption);
+            }
+
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 3);
+            var menuId = packet.ReadUInt32("Menu Id");
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadUInt32("Friendship Faction");
+            packet.ReadXORByte(guid, 7);
+            var textId = packet.ReadUInt32("Text Id");
+
+            packet.WriteGuid("Guid", guid);
+
+            var GUID = new Guid(BitConverter.ToUInt64(guid, 0));
+            gossip.ObjectType = GUID.GetObjectType();
+            gossip.ObjectEntry = GUID.GetEntry();
+
+            if (Storage.Gossips.ContainsKey(Tuple.Create(menuId, textId)))
+            {
+                var oldGossipOptions = Storage.Gossips[Tuple.Create(menuId, textId)];
+                if (oldGossipOptions != null)
+                {
+                    foreach (var gossipOptions in gossip.GossipOptions)
+                        oldGossipOptions.Item1.GossipOptions.Add(gossipOptions);
+                }
+            }
+            else
+                Storage.Gossips.Add(Tuple.Create(menuId, textId), gossip, packet.TimeSpan);
+
+            packet.AddSniffData(StoreNameType.Gossip, (int)menuId, GUID.GetEntry().ToString(CultureInfo.InvariantCulture));
         }
 
         [Parser(Opcode.SMSG_GOSSIP_POI)]

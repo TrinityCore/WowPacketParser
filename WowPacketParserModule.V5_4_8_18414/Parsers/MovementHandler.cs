@@ -592,6 +592,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             ReadPlayerMovementInfo(ref packet, info.MovementGravityEnable);
         }
 
+        [Parser(Opcode.SMSG_MOVE_LAND_WALK)]
+        public static void HandleMoveLandWalk(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.MovementLandWalk);
+        }
+
         [Parser(Opcode.SMSG_MOVE_NORMAL_FALL)]
         public static void HandleMoveNormalFall(Packet packet)
         {

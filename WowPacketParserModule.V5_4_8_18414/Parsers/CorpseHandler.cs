@@ -7,6 +7,9 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class CorpseHandler
     {
-        // Add handlers here.
+        [Parser(Opcode.CMSG_CORPSE_QUERY)]
+        public static void HandleCorpseQuery(Packet packet)
+        {
+        }
     }
 }
