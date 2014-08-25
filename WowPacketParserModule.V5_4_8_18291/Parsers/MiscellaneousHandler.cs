@@ -13,8 +13,10 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.CMSG_LOAD_SCREEN)]
         public static void HandleClientEnterWorld(Packet packet)
         {
-            var mapId = packet.ReadEntry<UInt32>(StoreNameType.Map, "Map");
+            var mapId = packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
             packet.ReadBit("Loading");
+
+            packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
         }
 
         [Parser(Opcode.CMSG_AREATRIGGER)]
