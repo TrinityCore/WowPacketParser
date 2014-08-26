@@ -611,7 +611,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_TIME_SYNC_RESP)]
         public static void HandleTimeSyncResp(Packet packet)
         {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // no idea when this was added exactly
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) && ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_4_15595)) // no idea when this was added exactly
             {
                 packet.ReadUInt32("Ticks");
                 packet.ReadUInt32("Counter");
