@@ -183,5 +183,12 @@ namespace WowPacketParser.Misc
         {
             return DumpFormat != DumpFormatType.SqlOnly && DumpFormat != DumpFormatType.SniffDataOnly;
         }
+
+        public static bool DumpFormatWithSQL()
+        {
+            return DumpFormat == DumpFormatType.SniffDataOnly ||
+                   DumpFormat == DumpFormatType.SqlOnly ||
+                   DumpFormat == DumpFormatType.Text;
+        }
     }
 }
