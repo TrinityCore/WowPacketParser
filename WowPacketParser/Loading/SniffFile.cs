@@ -241,10 +241,10 @@ namespace WowPacketParser.Loading
             }
         }
 
-        private string GetHeader()
+        public static string GetHeader(string fileName)
         {
             return "# TrinityCore - WowPacketParser" + Environment.NewLine +
-                   "# File name: " + Path.GetFileName(_fileName) + Environment.NewLine +
+                   "# File name: " + Path.GetFileName(fileName) + Environment.NewLine +
                    "# Detected build: " + ClientVersion.Build + Environment.NewLine +
                    "# Parsing date: " + DateTime.Now.ToString(CultureInfo.InvariantCulture) +
                    Environment.NewLine;
@@ -315,7 +315,7 @@ namespace WowPacketParser.Loading
 
             if (String.IsNullOrWhiteSpace(Settings.SQLFileName))
             {
-                Builder.DumpSQL(string.Format("{0}: Dumping sql", _logPrefix), sqlFileName, GetHeader());
+                Builder.DumpSQL(string.Format("{0}: Dumping sql", _logPrefix), sqlFileName, GetHeader(_fileName));
                 Storage.ClearContainers();
             }
         }
@@ -329,7 +329,7 @@ namespace WowPacketParser.Loading
 
             using (var file = new StreamWriter(fileName))
             {
-                file.WriteLine(GetHeader());
+                file.WriteLine(GetHeader(_fileName));
 
                 if (_withErrorHeaders.Count != 0)
                 {

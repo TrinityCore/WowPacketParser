@@ -68,7 +68,7 @@ namespace WowPacketParser
             }
 
             if (!String.IsNullOrWhiteSpace(Settings.SQLFileName) && Settings.DumpFormatWithSQL())
-                Builder.DumpSQL("Dumping global sql", Settings.SQLFileName, "# multiple files\n");
+                Builder.DumpSQL("Dumping global sql", Settings.SQLFileName, SniffFile.GetHeader("<multi>"));
 
             SQLConnector.Disconnect();
             SSHTunnel.Disconnect();
