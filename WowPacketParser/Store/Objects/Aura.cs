@@ -1,5 +1,5 @@
 ﻿using System;
-using Guid = WowPacketParser.Misc.Guid;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.Store.Objects
 {
@@ -15,7 +15,7 @@ namespace WowPacketParser.Store.Objects
 
         public uint Charges;
 
-        public Guid CasterGuid;
+        public WowGuid CasterGuid;
 
         public int MaxDuration;
 

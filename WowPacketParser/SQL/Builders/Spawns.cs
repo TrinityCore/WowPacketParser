@@ -6,13 +6,12 @@ using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.SQL.Builders
 {
     public static class Spawns
     {
-        private static bool GetTransportMap(WoWObject @object, Dictionary<Guid, GameObject> gameobjects, out int mapId)
+        private static bool GetTransportMap(WoWObject @object, Dictionary<WowGuid, GameObject> gameobjects, out int mapId)
         {
             mapId = -1;
 
@@ -36,7 +35,7 @@ namespace WowPacketParser.SQL.Builders
             return true;
         }
 
-        public static string Creature(Dictionary<Guid, Unit> units, Dictionary<Guid, GameObject> gameObjects)
+        public static string Creature(Dictionary<WowGuid, Unit> units, Dictionary<WowGuid, GameObject> gameObjects)
         {
             if (units.Count == 0)
                 return string.Empty;
@@ -152,7 +151,7 @@ namespace WowPacketParser.SQL.Builders
             return result.ToString();
         }
 
-        public static string GameObject(Dictionary<Guid, GameObject> gameObjects)
+        public static string GameObject(Dictionary<WowGuid, GameObject> gameObjects)
         {
             if (gameObjects.Count == 0)
                 return string.Empty;

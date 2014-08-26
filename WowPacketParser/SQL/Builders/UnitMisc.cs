@@ -8,13 +8,12 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.SQL.Builders
 {
     public static class UnitMisc
     {
-        public static string Addon(Dictionary<Guid, Unit> units)
+        public static string Addon(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return string.Empty;
@@ -74,7 +73,7 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
-        public static string ModelData(Dictionary<Guid, Unit> units)
+        public static string ModelData(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return string.Empty;
@@ -189,7 +188,7 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
-        public static string CreatureEquip(Dictionary<Guid, Unit> units)
+        public static string CreatureEquip(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return string.Empty;
@@ -242,7 +241,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(equips, equipsDb, StoreNameType.Unit);
         }
 
-        public static string CreatureMovement(Dictionary<Guid, Unit> units)
+        public static string CreatureMovement(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return string.Empty;
@@ -582,7 +581,7 @@ namespace WowPacketParser.SQL.Builders
         }
 
         //                      entry, <minlevel, maxlevel>
-        public static Dictionary<uint, Tuple<uint, uint>> GetLevels(Dictionary<Guid, Unit> units)
+        public static Dictionary<uint, Tuple<uint, uint>> GetLevels(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return null;
@@ -604,7 +603,7 @@ namespace WowPacketParser.SQL.Builders
         }
 
         // Non-WDB data but nevertheless data that should be saved to creature_template
-        public static string NpcTemplateNonWDB(Dictionary<Guid, Unit> units)
+        public static string NpcTemplateNonWDB(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return string.Empty;

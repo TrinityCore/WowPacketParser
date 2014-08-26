@@ -6,7 +6,6 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.V5_4_7_17898.Parsers
 {
@@ -69,7 +68,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                     {
                         packet.ParseBitStream(casterGUID[i], 2, 5, 6, 7, 0, 1, 4, 3);
                         packet.WriteGuid("Caster GUID", casterGUID[i], i);
-                        aura.CasterGuid = new Guid(BitConverter.ToUInt64(casterGUID[i], 0));
+                        aura.CasterGuid = new WowGuid(BitConverter.ToUInt64(casterGUID[i], 0));
                     }
 
                     for (var j = 0; j < bits48[i]; ++j)

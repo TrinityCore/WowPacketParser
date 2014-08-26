@@ -4,7 +4,6 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
@@ -121,7 +120,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadXORByte(guildGuids[c], 6);
                 packet.ReadXORByte(charGuids[c], 4);
 
-                var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
+                var playerGuid = new WowGuid(BitConverter.ToUInt64(charGuids[c], 0));
 
                 packet.AddValue("Position", pos, c);
                 packet.WriteGuid("Character GUID", charGuids[c], c);

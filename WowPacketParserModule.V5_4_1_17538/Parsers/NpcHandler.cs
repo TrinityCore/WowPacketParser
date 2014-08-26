@@ -6,7 +6,6 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_4_1_17538.Parsers
 {
@@ -248,7 +247,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
             packet.WriteGuid("Guid", guid);
 
-            var vendorGUID = new Guid(BitConverter.ToUInt64(guid, 0));
+            var vendorGUID = new WowGuid(BitConverter.ToUInt64(guid, 0));
             Storage.NpcVendors.Add(vendorGUID.GetEntry(), npcVendor, packet.TimeSpan);
         }
 

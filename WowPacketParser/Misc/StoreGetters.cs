@@ -8,7 +8,7 @@ namespace WowPacketParser.Misc
 {
     public static class StoreGetters
     {
-        public static readonly ConcurrentDictionary<Guid, string> NameDict = new ConcurrentDictionary<Guid, string>();
+        public static readonly ConcurrentDictionary<WowGuid, string> NameDict = new ConcurrentDictionary<WowGuid, string>();
 
         public static string GetName(StoreNameType type, int entry, bool withEntry = true)
         {
@@ -36,12 +36,12 @@ namespace WowPacketParser.Misc
             return entry.ToString(CultureInfo.InvariantCulture);
         }
 
-        public static void AddName(Guid guid, string name)
+        public static void AddName(WowGuid guid, string name)
         {
             NameDict.TryAdd(guid, name);
         }
 
-        public static string GetName(Guid guid)
+        public static string GetName(WowGuid guid)
         {
             string name;
 

@@ -6,7 +6,6 @@ using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -19,7 +18,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static readonly ConcurrentBag<ushort> ActivePhases = new ConcurrentBag<ushort>();
 
-        public static MovementInfo ReadMovementInfo(ref Packet packet, Guid guid, object index = null)
+        public static MovementInfo ReadMovementInfo(ref Packet packet, WowGuid guid, object index = null)
         {
             if (ClientVersion.Build == ClientVersionBuild.V4_2_0_14333)
                 return ReadMovementInfo420(ref packet, index);
@@ -27,7 +26,7 @@ namespace WowPacketParser.Parsing.Parsers
             return ReadMovementInfoGen(ref packet, guid, index);
         }
 
-        private static MovementInfo ReadMovementInfoGen(ref Packet packet, Guid guid, object index)
+        private static MovementInfo ReadMovementInfoGen(ref Packet packet, WowGuid guid, object index)
         {
             var info = new MovementInfo();
             info.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", TypeCode.Int32, index);
@@ -1260,12 +1259,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_DISMISS_CONTROLLED_VEHICLE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleMovementMessages(Packet packet)
         {
-            Guid guid;
+            WowGuid guid;
             if ((ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ||
                 packet.Direction == Direction.ServerToClient) && ClientVersion.Build != ClientVersionBuild.V4_2_2_14545)
                 guid = packet.ReadPackedGuid("GUID");
             else
-                guid = new Guid();
+                guid = new WowGuid();
 
             ReadMovementInfo(ref packet, guid);
 

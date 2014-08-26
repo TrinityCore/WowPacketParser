@@ -3,13 +3,13 @@ using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc
 {
-    public struct Guid
+    public struct WowGuid
     {
         public readonly ulong Full;
 
-        public static Guid Empty;
+        public static WowGuid Empty;
 
-        public Guid(ulong id)
+        public WowGuid(ulong id)
             : this()
         {
             Full = id;
@@ -95,22 +95,22 @@ namespace WowPacketParser.Misc
             }
         }
 
-        public static bool operator ==(Guid first, Guid other)
+        public static bool operator ==(WowGuid first, WowGuid other)
         {
             return first.Full == other.Full;
         }
 
-        public static bool operator !=(Guid first, Guid other)
+        public static bool operator !=(WowGuid first, WowGuid other)
         {
             return !(first == other);
         }
 
         public override bool Equals(object obj)
         {
-            return obj != null && obj is Guid && Equals((Guid)obj);
+            return obj != null && obj is WowGuid && Equals((WowGuid)obj);
         }
 
-        public bool Equals(Guid other)
+        public bool Equals(WowGuid other)
         {
             return other.Full == Full;
         }

@@ -4,13 +4,12 @@ using System.Text;
 using Ionic.Zlib;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
     public static class SessionHandler
     {
-        public static Guid LoginGuid;
+        public static WowGuid LoginGuid;
         public static Dictionary<int, ZlibCodec> ZStreams = new Dictionary<int, ZlibCodec>();
 
         [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1a_13205)]
@@ -409,7 +408,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(0, 4, 7, 1, 3, 2, 5, 6);
             packet.ParseBitStream(guid, 5, 0, 3, 4, 7, 2, 6, 1);
             packet.WriteGuid("Guid", guid);
-            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+            LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
         }
 
         [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_3_15354)]
@@ -419,7 +418,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 4, 1, 7, 2, 6, 5, 3, 0);
 
             packet.WriteGuid("Guid", guid);
-            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+            LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
         }
 
         [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]
@@ -428,7 +427,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(6, 7, 4, 5, 0, 1, 3, 2);
             packet.ParseBitStream(guid, 1, 4, 7, 2, 3, 6, 0, 5);
             packet.WriteGuid("Guid", guid);
-            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+            LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
         }
 
         [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V5_1_0_16309)]
@@ -438,7 +437,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 6, 4, 3, 5, 0, 2, 7, 1);
             packet.WriteGuid("Guid", guid);
             packet.ReadSingle("Unk Float");
-            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+            LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
         }
 
         [Parser(Opcode.SMSG_CHARACTER_LOGIN_FAILED)]
@@ -461,7 +460,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
         public static void HandleLogoutComplete(Packet packet)
         {
-            LoginGuid = new Guid(0);
+            LoginGuid = new WowGuid(0);
         }
 
         [Parser(Opcode.CMSG_CONNECT_TO_FAILED)]

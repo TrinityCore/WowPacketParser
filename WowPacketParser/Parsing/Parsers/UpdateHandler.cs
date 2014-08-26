@@ -6,7 +6,6 @@ using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -74,7 +73,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        private static void ReadCreateObjectBlock(ref Packet packet, Guid guid, uint map, object index)
+        private static void ReadCreateObjectBlock(ref Packet packet, WowGuid guid, uint map, object index)
         {
             var objType = packet.ReadEnum<ObjectType>("Object Type", TypeCode.Byte, index);
             var moves = ReadMovementUpdateBlock(ref packet, guid, index);
@@ -111,7 +110,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.AddSniffData(Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");
         }
 
-        public static void ProcessExistingObject(ref WoWObject obj, WoWObject newObj, Guid guid)
+        public static void ProcessExistingObject(ref WoWObject obj, WoWObject newObj, WowGuid guid)
         {
             obj.PhaseMask |= newObj.PhaseMask;
             if (guid.GetHighType() == HighGuidType.Unit) // skip if not an unit
@@ -269,7 +268,7 @@ namespace WowPacketParser.Parsing.Parsers
             return dict;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock510(ref Packet packet, Guid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock510(ref Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
 
@@ -748,7 +747,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(goTransportGuid, 5);
                 moveInfo.TransportOffset.O = packet.ReadSingle();
 
-                moveInfo.TransportGuid = new Guid(BitConverter.ToUInt64(goTransportGuid, 0));
+                moveInfo.TransportGuid = new WowGuid(BitConverter.ToUInt64(goTransportGuid, 0));
                 packet.AddValue("GO Transport GUID", moveInfo.TransportGuid, index);
                 packet.AddValue("GO Transport Position", moveInfo.TransportOffset, index);
             }
@@ -787,7 +786,7 @@ namespace WowPacketParser.Parsing.Parsers
             return moveInfo;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock504(ref Packet packet, Guid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock504(ref Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
 
@@ -1093,7 +1092,7 @@ namespace WowPacketParser.Parsing.Parsers
                     if (hasTransportTime2)
                         packet.ReadUInt32("Transport Time 2", index);
 
-                    moveInfo.TransportGuid = new Guid(BitConverter.ToUInt64(transportGuid, 0));
+                    moveInfo.TransportGuid = new WowGuid(BitConverter.ToUInt64(transportGuid, 0));
                     packet.AddValue("Transport GUID",  moveInfo.TransportGuid, index);
                     packet.AddValue("Transport Position", moveInfo.TransportOffset, index);
 
@@ -1231,7 +1230,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(goTransportGuid, 4);
                 moveInfo.TransportOffset.Y = packet.ReadSingle();
 
-                moveInfo.TransportGuid = new Guid(BitConverter.ToUInt64(goTransportGuid, 0));
+                moveInfo.TransportGuid = new WowGuid(BitConverter.ToUInt64(goTransportGuid, 0));
                 packet.AddValue("GO Transport GUID", moveInfo.TransportGuid, index);
                 packet.AddValue("GO Transport Position", moveInfo.TransportOffset, index);
             }
@@ -1279,7 +1278,7 @@ namespace WowPacketParser.Parsing.Parsers
             return moveInfo;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock433(ref Packet packet, Guid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock433(ref Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
 
@@ -1512,7 +1511,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadXORByte(transportGuid, 0);
 
                     moveInfo.TransportOffset.Y = packet.ReadSingle();
-                    moveInfo.TransportGuid = new Guid(BitConverter.ToUInt64(transportGuid, 0));
+                    moveInfo.TransportGuid = new WowGuid(BitConverter.ToUInt64(transportGuid, 0));
                     packet.AddValue("Transport GUID", moveInfo.TransportGuid, index);
                     packet.AddValue("Transport Position", moveInfo.TransportOffset, index);
                     var seat = packet.ReadByte("Transport Seat", index);
@@ -1666,7 +1665,7 @@ namespace WowPacketParser.Parsing.Parsers
             return moveInfo;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock432(ref Packet packet, Guid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock432(ref Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
 
@@ -1938,7 +1937,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadXORByte(transportGuid, 5);
                     packet.ReadXORByte(transportGuid, 2);
 
-                    moveInfo.TransportGuid = new Guid(BitConverter.ToUInt64(transportGuid, 0));
+                    moveInfo.TransportGuid = new WowGuid(BitConverter.ToUInt64(transportGuid, 0));
                     packet.AddValue("Transport GUID", moveInfo.TransportGuid, index);
                     packet.AddValue("Transport Position", moveInfo.TransportOffset, index);
 
@@ -2058,7 +2057,7 @@ namespace WowPacketParser.Parsing.Parsers
             return moveInfo;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock430(ref Packet packet, Guid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock430(ref Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
             bool hasAttackingTarget = packet.ReadBit("Has Attacking Target", index);
@@ -2335,7 +2334,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Transport Time", index);
                     packet.ReadXORByte(transportGuid, 0);
 
-                    moveInfo.TransportGuid = new Guid(BitConverter.ToUInt64(transportGuid, 0));
+                    moveInfo.TransportGuid = new WowGuid(BitConverter.ToUInt64(transportGuid, 0));
                     packet.AddValue("Transport GUID", moveInfo.TransportGuid, index);
                     packet.AddValue("Transport Position", moveInfo.TransportOffset, index);
 
@@ -2431,7 +2430,7 @@ namespace WowPacketParser.Parsing.Parsers
             return moveInfo;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock(ref Packet packet, Guid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock(ref Packet packet, WowGuid guid, object index)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
                 return ReadMovementUpdateBlock510(ref packet, guid, index);

@@ -4,7 +4,6 @@ using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -26,7 +25,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_NAME_QUERY_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
-            Guid guid;
+            WowGuid guid;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
                 guid = packet.ReadPackedGuid("GUID");

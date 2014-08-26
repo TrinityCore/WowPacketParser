@@ -6,7 +6,6 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.SQL.Builders
 {
@@ -156,7 +155,7 @@ namespace WowPacketParser.SQL.Builders
         }
 
         // Non-WDB data but nevertheless data that should be saved to gameobject_template
-        public static string GameobjectTemplateNonWDB(Dictionary<Guid, GameObject> gameobjects)
+        public static string GameobjectTemplateNonWDB(Dictionary<WowGuid, GameObject> gameobjects)
         {
             if (gameobjects.Count == 0)
                 return string.Empty;

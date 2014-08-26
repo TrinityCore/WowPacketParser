@@ -5,7 +5,6 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using ChatMessageType540 = WowPacketParserModule.V5_4_0_17359.Enums.ChatMessageType;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_4_1_17538.Parsers
 {
@@ -117,7 +116,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             packet.WriteGuid("GroupGUID", GroupGUID);
 
             uint entry = 0;
-            var guid = new Guid(BitConverter.ToUInt64(SenderGUID, 0));
+            var guid = new WowGuid(BitConverter.ToUInt64(SenderGUID, 0));
             if (guid.GetObjectType() == ObjectType.Unit)
                 entry = guid.GetEntry();
 

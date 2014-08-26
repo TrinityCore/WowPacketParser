@@ -365,7 +365,7 @@
     <Compile Include="Misc\ConcurrentPriorityQueue.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Misc\Filters.cs" />
-    <Compile Include="Misc\Guid.cs" />
+    <Compile Include="Misc\WowGuid.cs" />
     <Compile Include="Misc\LfgEntry.cs" />
     <Compile Include="Misc\Logger.cs" />
     <Compile Include="Misc\MovementInfo.cs" />

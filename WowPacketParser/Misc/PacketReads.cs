@@ -10,17 +10,17 @@ namespace WowPacketParser.Misc
 {
     public sealed partial class Packet
     {
-        public Guid ReadGuid()
+        public WowGuid ReadGuid()
         {
-            var guid = new Guid(ReadUInt64());
+            var guid = new WowGuid(ReadUInt64());
             if (WriteToFile)
                 WriteToFile = Filters.CheckFilter(guid);
             return guid;
         }
 
-        public Guid ReadPackedGuid()
+        public WowGuid ReadPackedGuid()
         {
-            var guid = new Guid(ReadPackedUInt64());
+            var guid = new WowGuid(ReadPackedUInt64());
 
             if (guid.Full != 0 && WriteToFile)
                 WriteToFile = Filters.CheckFilter(guid);
@@ -290,7 +290,7 @@ namespace WowPacketParser.Misc
             return val;
         }
 
-        public Guid ReadGuid(string name, params object[] indexes)
+        public WowGuid ReadGuid(string name, params object[] indexes)
         {
             return AddValue(name, ReadGuid(), indexes);
         }
@@ -317,7 +317,7 @@ namespace WowPacketParser.Misc
             return val;
         }
 
-        public Guid ReadPackedGuid(string name, params object[] indexes)
+        public WowGuid ReadPackedGuid(string name, params object[] indexes)
         {
             return AddValue(name, ReadPackedGuid(), indexes);
         }
@@ -568,14 +568,14 @@ namespace WowPacketParser.Misc
 
 #endregion
 
-        public Guid WriteGuid(byte[] stream, params object[] indexes)
+        public WowGuid WriteGuid(byte[] stream, params object[] indexes)
         {
             return WriteGuid("Guid", stream, indexes);
         }
 
-        public Guid WriteGuid(string name, byte[] stream, params object[] indexes)
+        public WowGuid WriteGuid(string name, byte[] stream, params object[] indexes)
         {
-            return AddValue(name, new Guid(BitConverter.ToUInt64(stream, 0)), indexes);
+            return AddValue(name, new WowGuid(BitConverter.ToUInt64(stream, 0)), indexes);
         }
     }
 }

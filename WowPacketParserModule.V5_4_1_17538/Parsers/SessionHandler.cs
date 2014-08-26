@@ -3,7 +3,6 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_4_1_17538.Parsers
 {
@@ -16,7 +15,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             packet.ReadSingle("Unk Float");
             var guid = packet.StartBitStream(6, 7, 1, 5, 2, 4, 3, 0);
             packet.ParseBitStream(guid, 7, 6, 0, 1, 4, 3, 2, 5);
-            CoreParsers.SessionHandler.LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+            CoreParsers.SessionHandler.LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
             packet.WriteGuid("Guid", guid);
         }
 
