@@ -19,7 +19,7 @@ namespace WowPacketParser.Misc
         public static readonly int FilterPacketsNum = GetInt32("FilterPacketsNum", 0);
         public static readonly ClientVersionBuild ClientBuild = GetEnum("ClientBuild", ClientVersionBuild.Zero);
         public static readonly DumpFormatType DumpFormat = GetEnum("DumpFormat", DumpFormatType.Text);
-        public static readonly int SQLOutputFlag = GetSQLOutputFlag();
+        public static readonly UInt64 SQLOutputFlag = GetSQLOutputFlag();
         public static readonly string SQLFileName = GetString("SQLFileName", string.Empty);
         public static readonly bool ShowEndPrompt = GetBoolean("ShowEndPrompt", false);
         public static readonly bool LogErrors = GetBoolean("LogErrors", false);
@@ -163,17 +163,17 @@ namespace WowPacketParser.Misc
             return (T)aux;
         }
 
-        private static int GetSQLOutputFlag()
+        private static UInt64 GetSQLOutputFlag()
         {
             var names = Enum.GetNames(typeof(SQLOutput));
             var values = Enum.GetValues(typeof(SQLOutput));
 
-            var result = 0;
+            var result = 0ul;
 
             for (var i = 0; i < names.Length; ++i)
             {
                 if (GetBoolean(names[i], false))
-                    result += (1 << (int)values.GetValue(i));
+                    result += (1ul << (int)values.GetValue(i));
             }
 
             return result;

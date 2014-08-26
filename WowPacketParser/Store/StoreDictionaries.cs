@@ -11,7 +11,7 @@ namespace WowPacketParser.Store
 {
     public abstract class Store
     {
-        public static int SQLEnabledFlags { protected get; set; }
+        public static UInt64 SQLEnabledFlags { protected get; set; }
         public List<SQLOutput> Types { get; protected set; }
 
         protected bool ProcessFlags()
