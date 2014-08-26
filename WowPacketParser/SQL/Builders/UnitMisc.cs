@@ -279,6 +279,11 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows, ignore: true, withDelete: false).Build();
         }
 
+        //public static string CreatureXP(Dictionary<Guid, Unit> units)
+        //{
+        //    
+        //}
+
         public static string Loot()
         {
             if (Storage.Loots.IsEmpty())

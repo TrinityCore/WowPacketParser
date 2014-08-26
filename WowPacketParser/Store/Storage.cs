@@ -79,6 +79,9 @@ namespace WowPacketParser.Store
         // Vehicle Template Accessory
         public static readonly StoreMulti<uint, VehicleTemplateAccessory> VehicleTemplateAccessorys = new StoreMulti<uint, VehicleTemplateAccessory>(new List<SQLOutput> { SQLOutput.vehicle_template_accessory });
 
+        // Weather updates
+        public static readonly StoreBag<WeatherUpdate> WeatherUpdates = new StoreBag<WeatherUpdate>(new List<SQLOutput> { SQLOutput.weather_updates });
+
         public static void ClearContainers()
         {
             SniffData.Clear();
@@ -128,6 +131,8 @@ namespace WowPacketParser.Store
             DefenseMessages.Clear();
 
             VehicleTemplateAccessorys.Clear();
+
+            WeatherUpdates.Clear();
         }
     }
 }

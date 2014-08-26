@@ -249,5 +249,37 @@ namespace WowPacketParser.SQL.Builders
 
             return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
         }
+
+        public static string WeatherUpdates()
+        {
+            if (Storage.WeatherUpdates.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.weather_updates))
+                return string.Empty;
+
+            const string tableName = "weather_updates";
+
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var weatherUpdate in Storage.WeatherUpdates)
+            {
+                var row = new QueryBuilder.SQLInsertRow();
+
+                var weather = weatherUpdate.Item1;
+
+                row.AddValue("map_id", weather.MapId);
+                row.AddValue("zone_id", weather.ZoneId);
+                row.AddValue("weather_state", (int)weather.State);
+                row.AddValue("timestamp", weatherUpdate.Item2.HasValue ? weatherUpdate.Item2.Value.ToFormattedString() : "null");
+                row.AddValue("grade", weather.Grade);
+                row.AddValue("unk", weather.Unk);
+
+                row.Comment = StoreGetters.GetName(StoreNameType.Map, (int)weather.MapId, false) +
+                    weather.State + " " + weather.Grade;
+                rows.Add(row);
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows, ignore: true, withDelete: false).Build();
+        }
     }
 }

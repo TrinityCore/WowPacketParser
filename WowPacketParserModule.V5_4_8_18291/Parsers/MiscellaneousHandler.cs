@@ -3,6 +3,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_4_8_18291.Parsers
@@ -196,9 +197,18 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_WEATHER)]
         public static void HandleWeatherStatus(Packet packet)
         {
-            packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
-            packet.ReadSingle("Grade");
-            packet.ReadBit("Unk Bit"); // Type
+            var state = packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
+            var grade = packet.ReadSingle("Grade");
+            var unk = packet.ReadBit("Unk Bit"); // Type
+
+            Storage.WeatherUpdates.Add(new WeatherUpdate
+            {
+                MapId = CoreParsers.MovementHandler.CurrentMapId,
+                ZoneId = 0, // fixme
+                State = state,
+                Grade = grade,
+                Unk = unk
+            }, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
