@@ -275,7 +275,7 @@ namespace WowPacketParser.SQL.Builders
                 row.AddValue("unk", weather.Unk);
 
                 row.Comment = StoreGetters.GetName(StoreNameType.Map, (int)weather.MapId, false) +
-                    weather.State + " " + weather.Grade;
+                    " - " + weather.State + " - " + weather.Grade;
                 rows.Add(row);
             }
 

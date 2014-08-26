@@ -3,6 +3,7 @@ namespace WowPacketParser.Enums
     public enum WeatherState
     {
         Fine = 0,
+        Fog = 1,
         LightRain = 3,
         MediumRain = 4,
         HeavyRain = 5,
@@ -13,6 +14,7 @@ namespace WowPacketParser.Enums
         MediumSandstorm = 41,
         HeavySandstorm = 42,
         Thunder = 86,
-        BlackRain = 90
+        BlackRain = 90,
+        BlackSnow = 106
     }
 }

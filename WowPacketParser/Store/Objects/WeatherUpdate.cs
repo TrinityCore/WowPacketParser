@@ -19,6 +19,6 @@ namespace WowPacketParser.Store.Objects
         public float Grade;
 
         [DBFieldName("unk")]
-        public bool Unk;
+        public byte Unk;
     }
 }

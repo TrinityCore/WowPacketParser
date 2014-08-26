@@ -430,7 +430,7 @@ namespace WowPacketParser.Parsing.Parsers
                 ZoneId = 0, // fixme
                 State = state,
                 Grade = grade,
-                Unk = unk != 0
+                Unk = unk
             }, packet.TimeSpan);
         }
 
