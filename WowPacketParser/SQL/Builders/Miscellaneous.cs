@@ -188,7 +188,7 @@ namespace WowPacketParser.SQL.Builders
                 template.Flags &= ~GameObjectFlag.Damaged;
                 template.Flags &= ~GameObjectFlag.Destroyed;
 
-                templates.Add(goT.Key.GetEntry(), template, null);
+                templates.Add(goT.Key.GetEntry(), template);
             }
 
             var templatesDb = SQLDatabase.GetDict<uint, GameObjectTemplateNonWDB>(templates.Keys());

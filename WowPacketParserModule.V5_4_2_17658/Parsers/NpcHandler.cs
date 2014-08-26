@@ -258,7 +258,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 6);
 
-            npcVendor.VendorItems = new List<VendorItem>((int)itemCount);
+            npcVendor.VendorItems = new List<VendorItem>(itemCount);
             for (int i = 0; i < itemCount; ++i)
             {
                 var vendorItem = new VendorItem();

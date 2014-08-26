@@ -785,15 +785,15 @@ namespace WowPacketParser.SQL.Builders
                 {
                     var row = new QueryBuilder.SQLInsertRow();
 
-                    if (accessorysValue.Item1.seatId < 0 || accessorysValue.Item1.seatId > 7)
+                    if (accessorysValue.Item1.SeatId < 0 || accessorysValue.Item1.SeatId > 7)
                         continue;
 
                     row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)accessorys.Key, false) + " - ";
-                    row.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)accessorysValue.Item1.accessoryEntry, false);
+                    row.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)accessorysValue.Item1.AccessoryEntry, false);
 
                     row.AddValue("entry", accessorys.Key);
-                    row.AddValue("accessory_entry", accessorysValue.Item1.accessoryEntry);
-                    row.AddValue("seat_id", accessorysValue.Item1.seatId);
+                    row.AddValue("accessory_entry", accessorysValue.Item1.AccessoryEntry);
+                    row.AddValue("seat_id", accessorysValue.Item1.SeatId);
                     row.AddValue("minion", "x", false, true);
                     row.AddValue("description", row.Comment);
                     row.AddValue("summontype", "x", false, true);

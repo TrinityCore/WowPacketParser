@@ -5,11 +5,10 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("vehicle_template_accessory")]
     public class VehicleTemplateAccessory
     {
-        
         [DBFieldName("accessory_entry")]
-        public uint accessoryEntry;
+        public uint AccessoryEntry;
 
         [DBFieldName("seat_id")]
-        public int seatId;
+        public int SeatId;
     }
 }

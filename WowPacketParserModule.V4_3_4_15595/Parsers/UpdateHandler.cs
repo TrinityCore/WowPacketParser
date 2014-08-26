@@ -382,8 +382,8 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                         guid.HasEntry() && guid.GetHighType() == HighGuidType.Unit)
                     {
                         var vehicleAccessory = new VehicleTemplateAccessory();
-                        vehicleAccessory.accessoryEntry = guid.GetEntry();
-                        vehicleAccessory.seatId = seat;
+                        vehicleAccessory.AccessoryEntry = guid.GetEntry();
+                        vehicleAccessory.SeatId = seat;
                         Storage.VehicleTemplateAccessorys.Add(moveInfo.TransportGuid.GetEntry(), vehicleAccessory, packet.TimeSpan);
                     }
                 }
