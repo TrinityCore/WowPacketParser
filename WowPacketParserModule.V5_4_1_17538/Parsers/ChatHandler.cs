@@ -74,17 +74,18 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             if (bit148C)
                 bits148C = packet.ReadBits(9);
 
-            var prefixLen = 0u;
+            // TODO: missing sender name
+
             if (hasPrefix)
             {
-                prefixLen = packet.ReadBits(5);
+                var prefixLen = packet.ReadBits(5);
                 packet.ReadWoWString("Addon Message Prefix", prefixLen);
             }
 
             packet.ParseBitStream(groupGUIDBytes, 4, 2, 7, 3, 6, 1, 5, 0);
 
             if (hasReceiver)
-                packet.ReadWoWString("Receiver Name", receiverLen);
+                text.ReceiverName = packet.ReadWoWString("Receiver Name", receiverLen);
 
             packet.ParseBitStream(receiverGUIDBytes, 7, 4, 1, 3, 0, 6, 5, 2);
             packet.ParseBitStream(guildGUIDBytes, 5, 7, 3, 0, 4, 6, 1, 2);

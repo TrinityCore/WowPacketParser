@@ -145,7 +145,7 @@ namespace WowPacketParser.Parsing.Parsers
                 case ChatMessageType.BattleNet:
                 {
                     packet.ReadInt32("Name Length");
-                    packet.ReadCString("Name");
+                    text.SenderName = packet.ReadCString("Name");
                     text.ReceiverGUID = packet.ReadGuid("Receiver GUID");
                     switch (text.ReceiverGUID.GetHighType())
                     {
@@ -154,7 +154,7 @@ namespace WowPacketParser.Parsing.Parsers
                         case HighGuidType.GameObject:
                         case HighGuidType.Transport:
                             packet.ReadInt32("Receiver Name Length");
-                            packet.ReadCString("Receiver Name");
+                            text.ReceiverName = packet.ReadCString("Receiver Name");
                             break;
                     }
                     break;

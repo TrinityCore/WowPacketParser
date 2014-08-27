@@ -101,7 +101,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             }
 
             if (hasSender)
-                packet.ReadWoWString("Sender Name", senderName);
+                text.SenderName = packet.ReadWoWString("Sender Name", senderName);
 
             packet.ParseBitStream(groupGUIDBytes, 6, 7, 1, 2, 4, 3, 0, 5);
 
@@ -120,7 +120,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ParseBitStream(guildGUIDBytes, 1, 0, 3, 7, 6, 5, 2, 4);
 
             if (hasReceiver)
-                packet.ReadWoWString("Receiver Name", receiverLen);
+                text.ReceiverName = packet.ReadWoWString("Receiver Name", receiverLen);
 
             if (hasAchi)
                 packet.ReadInt32("Achievement");

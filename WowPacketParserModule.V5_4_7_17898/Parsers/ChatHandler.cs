@@ -146,13 +146,13 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadInt32("Achievement");
 
             if (hasReceiver)
-                packet.ReadWoWString("Receiver Name", receiverLen);
+                text.ReceiverName = packet.ReadWoWString("Receiver Name", receiverLen);
 
             if (hasText)
                 text.Text = packet.ReadWoWString("Text", textLen);
 
             if (hasSender)
-                packet.ReadWoWString("Sender Name", senderNameLen);
+                text.SenderName = packet.ReadWoWString("Sender Name", senderNameLen);
 
             if (hasLang)
                 text.Language = packet.ReadEnum<Language>("Language", TypeCode.Byte);

@@ -184,9 +184,9 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             if (hasText)
                 text.Text = packet.ReadWoWString("Text", textLen);
             if (hasReceiver)
-                packet.ReadWoWString("Receiver Name", receiverLen);
+                text.ReceiverName = packet.ReadWoWString("Receiver Name", receiverLen);
             if (hasSender)
-                packet.ReadWoWString("Sender Name", senderNameLen);
+                text.SenderName = packet.ReadWoWString("Sender Name", senderNameLen);
             if (hasRealmId1)
                 packet.ReadInt32("Realm Id");
 

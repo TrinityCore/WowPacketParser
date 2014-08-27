@@ -26,7 +26,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             packet.StartBitStream(groupGUIDBytes, 1, 0, 6, 7, 3, 4, 2, 5);
 
-            var bit43D = !packet.ReadBit();
+            var hasReceiver = !packet.ReadBit();
             var hasRealmId = !packet.ReadBit();
 
             packet.ReadBit(); // fake bit
@@ -74,12 +74,12 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             packet.StartBitStream(receiverGUIDBytes, 1, 5, 4, 6, 3, 2, 7, 0);
 
-            var bits43D = 0u;
-            if (bit43D)
-                bits43D = packet.ReadBits(11);
+            var receiverNameLen = 0u;
+            if (hasReceiver)
+                receiverNameLen = packet.ReadBits(11);
 
-            if (bit43D)
-                packet.ReadWoWString("String43D", bits43D);
+            if (hasReceiver)
+                text.ReceiverName = packet.ReadWoWString("Receiver Name", receiverNameLen);
 
             if (hasRealmId)
                 packet.ReadInt32("Realm Id");
@@ -105,7 +105,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadSingle("Float1490");
 
             if (hasSender)
-                packet.ReadWoWString("Sender Name", senderNameLen);
+                text.SenderName = packet.ReadWoWString("Sender Name", senderNameLen);
 
             if (hasText)
                 text.Text = packet.ReadWoWString("Text", textLen);

@@ -41,6 +41,8 @@ namespace WowPacketParser.Store.Objects
         public string Comment;
 
         public WowGuid SenderGUID;
+        public string SenderName;
         public WowGuid ReceiverGUID;
+        public string ReceiverName;
     }
 }

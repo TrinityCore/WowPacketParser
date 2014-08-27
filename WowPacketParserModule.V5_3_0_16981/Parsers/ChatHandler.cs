@@ -83,7 +83,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadInt32("Achievement");
 
             if (hasReceiver)
-                packet.ReadWoWString("Receiver Name", receiverLen);
+                text.ReceiverName = packet.ReadWoWString("Receiver Name", receiverLen);
 
             text.Type = (ChatMessageType)packet.ReadEnum<ChatMessageType530>("Chat type", TypeCode.Byte);
             if (hasText)
@@ -99,7 +99,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadWoWString("Channel Name", channelLen);
 
             if (hasSender)
-                packet.ReadWoWString("Sender Name", senderName);
+                text.SenderName = packet.ReadWoWString("Sender Name", senderName);
 
             if (hasLang)
                 text.Language = packet.ReadEnum<Language>("Language", TypeCode.Byte);

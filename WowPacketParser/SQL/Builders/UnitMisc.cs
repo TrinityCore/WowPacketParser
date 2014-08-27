@@ -652,7 +652,7 @@ namespace WowPacketParser.SQL.Builders
                 template.UnitFlag &= ~(uint)UnitFlags.Silenced;
                 template.UnitFlag &= ~(uint)UnitFlags.PossessedByPlayer;
 
-                templates.Add(unit.Key.GetEntry(), template, null);
+                templates.Add(unit.Key.GetEntry(), template);
             }
 
             var templatesDb = SQLDatabase.GetDict<uint, UnitTemplateNonWDB>(templates.Keys());
@@ -721,7 +721,12 @@ namespace WowPacketParser.SQL.Builders
                         if (textValue.Item1.SenderGUID.GetObjectType() == ObjectType.Player)
                             from = "Player";
                         else
-                            from = StoreGetters.GetName(StoreNameType.Unit, (int)textValue.Item1.SenderGUID.GetEntry(), false);
+                        {
+                            if (!string.IsNullOrEmpty(textValue.Item1.SenderName))
+                                from = textValue.Item1.SenderName;
+                            else
+                                from = StoreGetters.GetName(StoreNameType.Unit, (int)textValue.Item1.SenderGUID.GetEntry(), false);
+                        }
                     }
 
                     if (textValue.Item1.ReceiverGUID != 0)
@@ -729,7 +734,13 @@ namespace WowPacketParser.SQL.Builders
                         if (textValue.Item1.ReceiverGUID.GetObjectType() == ObjectType.Player)
                             to = "Player";
                         else
-                            to = StoreGetters.GetName(StoreNameType.Unit, (int)textValue.Item1.ReceiverGUID.GetEntry(), false);
+                        {
+                            if (!string.IsNullOrEmpty(textValue.Item1.ReceiverName))
+                                to = textValue.Item1.ReceiverName;
+                            else
+                                to = StoreGetters.GetName(StoreNameType.Unit, (int)textValue.Item1.ReceiverGUID.GetEntry(), false);
+                        }
+                            
                     }
 
                     Trace.Assert(text.Key == textValue.Item1.SenderGUID.GetEntry() ||
