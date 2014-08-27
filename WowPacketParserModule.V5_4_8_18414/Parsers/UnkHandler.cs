@@ -731,8 +731,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_UNK_1C33)]
-        public static void HandleSUnk1C33(Packet packet)
+        [Parser(Opcode.SMSG_CRITERIA_DELETED)]
+        public static void HandleCriteriaDeleted(Packet packet)
         {
             packet.ReadInt32("CriteriaID");
         }

@@ -444,6 +444,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_CORPSE_QUERY_RESPONSE,                    0x0E0B | 0x20000}, //++
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY,                     0x022A | 0x20000}, //++
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE,                  0x048B | 0x20000}, //--
+            {Opcode.SMSG_CRITERIA_DELETED,                         0x1C33 | 0x20000}, //++
             {Opcode.SMSG_CRITERIA_UPDATE_ACCOUNT,                  0x189E | 0x20000}, //++
             {Opcode.SMSG_CRITERIA_UPDATE_PLAYER,                   0x0E9B | 0x20000}, //++
             {Opcode.SMSG_DB_REPLY,                                 0x103B | 0x20000}, //++
@@ -754,7 +755,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_1A1F,                                 0x1A1F | 0x20000}, //++
             {Opcode.SMSG_UNK_1A2B,                                 0x1A2B | 0x20000}, //++ pair CMSG 1272
             {Opcode.SMSG_UNK_1C0E,                                 0x1C0E | 0x20000}, //++
-            {Opcode.SMSG_UNK_1C33,                                 0x1C33 | 0x20000}, //++ maybe SMSG_CRITERIA_DELETED
             {Opcode.SMSG_UNK_1E12,                                 0x1E12 | 0x20000}, //++
             {Opcode.SMSG_UNK_1E1B,                                 0x1E1B | 0x20000}, //++ levelup 90
             {Opcode.SMSG_UNK_1E2E,                                 0x1E2E | 0x20000}, //++
