@@ -486,7 +486,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Active Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Active Terrain swap", i); // Map.dbc, all active terrainswaps 
+                packet.ReadEntry<Int16>(StoreNameType.Map, "Active Terrain swap", i); // Map.dbc, all active terrainswaps
 
             packet.ParseBitStream(guid, 5);
             packet.WriteGuid("GUID", guid);

@@ -645,7 +645,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             }
 
             if (bit810)
-                packet.ReadBytes("Bytes", (int)bits2AA);                
+                packet.ReadBytes("Bytes", (int)bits2AA);
 
             if (bit476)
                 packet.ReadUInt32("unk472");

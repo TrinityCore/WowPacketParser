@@ -280,7 +280,7 @@ namespace WowPacketParser.SQL.Builders
 
         //public static string CreatureXP(Dictionary<Guid, Unit> units)
         //{
-        //    
+        //
         //}
 
         public static string Loot()

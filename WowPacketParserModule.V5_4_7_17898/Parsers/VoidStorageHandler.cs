@@ -171,7 +171,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guid[i], 1);
                 packet.ReadXORByte(id1[i], 4);
                 packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", i); //16
-            
+
                 packet.WriteGuid("Item Id 1", id1[i], i);
                 packet.WriteGuid("Item Player Creator Guid", guid[i], i);
             }

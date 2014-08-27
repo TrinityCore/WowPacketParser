@@ -461,7 +461,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadUInt32("unk");                                      // unknown
             packet.ReadUInt32("RewardChoiceItemId[4]");
 
-            packet.ReadUInt32("Ender NPC or GO Entry");// ender NPC or GO entry                              
+            packet.ReadUInt32("Ender NPC or GO Entry");// ender NPC or GO entry
 
             packet.ReadUInt32("RewardItemId[2]");
             packet.ReadUInt32("RewardChoiceItemCount[0]");

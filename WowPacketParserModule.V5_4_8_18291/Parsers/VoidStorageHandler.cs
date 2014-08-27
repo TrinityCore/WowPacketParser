@@ -191,7 +191,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.ParseBitStream(itemsId[i], 0, 4, 1, 2, 6, 3, 7, 5);
                 packet.WriteGuid("Item Id", itemsId[i], i);
             }
-            
+
             packet.ReadXORByte(npcGuid, 1);
             packet.ReadXORByte(npcGuid, 7);
             packet.ReadXORByte(npcGuid, 4);

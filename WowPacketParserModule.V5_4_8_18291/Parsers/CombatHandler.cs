@@ -261,7 +261,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         {
             var guid1 = new byte[8];
             var guid2 = new byte[8];
-            
+
             guid1[5] = packet.ReadBit();
             guid2[4] = packet.ReadBit();
             guid2[2] = packet.ReadBit();

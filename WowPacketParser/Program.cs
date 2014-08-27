@@ -54,7 +54,7 @@ namespace WowPacketParser
                 SessionHandler.ZStreams.Clear();
                 ClientVersion.SetVersion(Settings.ClientBuild);
                 var sf = new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count));
-                
+
                 try
                 {
                     sf.ProcessFile();
