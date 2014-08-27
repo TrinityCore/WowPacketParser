@@ -11,8 +11,9 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
-        //                                                                    /checked in code
-        //                                                                     /checked with sniff
+        //                                                                              /checked in code
+        //                                                                               /checked with sniff
+            {Opcode.CMSG_ACCEPT_LEVEL_GRANT,                       0x02FB | 0x10000}, //--
             {Opcode.CMSG_ACCEPT_TRADE,                             0x144D | 0x10000}, //+-
             {Opcode.CMSG_ACTIVATETAXI,                             0x03C9 | 0x10000}, //++
             {Opcode.CMSG_ACTIVATETAXIEXPRESS,                      0x06FB | 0x10000}, //++
@@ -24,6 +25,12 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_ATTACKSTOP,                               0x0345 | 0x10000}, //++
             {Opcode.CMSG_ATTACKSWING,                              0x02E7 | 0x10000}, //--
             {Opcode.CMSG_AUCTION_HELLO,                            0x0379 | 0x10000}, //-+
+            {Opcode.CMSG_AUCTION_LIST_BIDDER_ITEMS,                0x12D0 | 0x10000}, //--
+            {Opcode.CMSG_AUCTION_LIST_ITEMS,                       0x02EA | 0x10000}, //--
+            {Opcode.CMSG_AUCTION_LIST_OWNER_ITEMS,                 0x0361 | 0x10000}, //--
+            {Opcode.CMSG_AUCTION_PLACE_BID,                        0x03C8 | 0x10000}, //--
+            {Opcode.CMSG_AUCTION_REMOVE_ITEM,                      0x0259 | 0x10000}, //--
+            {Opcode.CMSG_AUCTION_SELL_ITEM,                        0x02EB | 0x10000}, //--
             {Opcode.CMSG_AUTH_SESSION,                             0x00B2 | 0x10000}, //+-
             {Opcode.CMSG_AUTOBANK_ITEM,                            0x066D | 0x10000}, //++
             {Opcode.CMSG_AUTOEQUIP_ITEM,                           0x025F | 0x10000}, //--
@@ -301,7 +308,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_UNK_115B,                                 0x115B | 0x10000}, //++
             {Opcode.CMSG_UNK_12B3,                                 0x12B3 | 0x10000}, //++
             {Opcode.CMSG_UNK_1446,                                 0x1446 | 0x10000}, //+-
-            {Opcode.CMSG_UNK_144D,                                 0x144D | 0x10000}, //+-
             {Opcode.CMSG_UNK_14E3,                                 0x14E3 | 0x10000}, //+-
             {Opcode.CMSG_UNK_15A9,                                 0x15A9 | 0x10000}, //++
             {Opcode.CMSG_UNK_1841,                                 0x1841 | 0x10000}, //+-
@@ -389,6 +395,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.MSG_VERIFY_CONNECTIVITY,                       0x4F57}, //--
 
             {Opcode.SMSG_ACCOUNT_DATA_TIMES,                       0x162B | 0x20000}, //++
+            {Opcode.SMSG_ACHIEVEMENT_DELETED,                      0x1A2F | 0x20000}, //--
             {Opcode.SMSG_ACHIEVEMENT_EARNED,                       0x080B | 0x20000}, //--
             {Opcode.SMSG_ACTION_BUTTONS,                           0x081A | 0x20000}, //++
             {Opcode.SMSG_ACTIVATETAXIREPLY,                        0x1043 | 0x20000}, //++ ??
