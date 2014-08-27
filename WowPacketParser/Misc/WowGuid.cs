@@ -105,6 +105,11 @@ namespace WowPacketParser.Misc
             return !(first == other);
         }
 
+        public static implicit operator ulong(WowGuid guid)
+        {
+            return guid.Full;
+        }
+
         public override bool Equals(object obj)
         {
             return obj != null && obj is WowGuid && Equals((WowGuid)obj);

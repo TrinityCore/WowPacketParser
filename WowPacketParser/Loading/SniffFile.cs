@@ -112,7 +112,7 @@ namespace WowPacketParser.Loading
 
 // ReSharper disable AccessToDisposedClosure
                                 if (writer != null)
-                                    writer.WriteLine(GetHeader());
+                                    writer.WriteLine(GetHeader(_fileName));
 // ReSharper restore AccessToDisposedClosure
 
                                 first = false;

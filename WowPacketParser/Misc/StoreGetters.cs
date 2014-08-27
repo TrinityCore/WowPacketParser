@@ -12,14 +12,16 @@ namespace WowPacketParser.Misc
 
         public static string GetName(StoreNameType type, int entry, bool withEntry = true)
         {
+            var entryStr = entry.ToString(CultureInfo.InvariantCulture);
+
             if (!SQLConnector.Enabled)
-                return entry.ToString(CultureInfo.InvariantCulture);
+                return entryStr;
 
             if (type != StoreNameType.Map && entry == 0)
                 return "0"; // map can be 0
 
             if (!SQLDatabase.NameStores.ContainsKey(type))
-                return entry.ToString(CultureInfo.InvariantCulture);
+                return entryStr;
 
             string name;
             if (!SQLDatabase.NameStores[type].TryGetValue(entry, out name))
@@ -33,7 +35,7 @@ namespace WowPacketParser.Misc
                 return name;
             }
 
-            return entry.ToString(CultureInfo.InvariantCulture);
+            return entryStr;
         }
 
         public static void AddName(WowGuid guid, string name)

@@ -1,4 +1,5 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -38,5 +39,8 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("comment")]
         public string Comment;
+
+        public WowGuid SenderGUID;
+        public WowGuid ReceiverGUID;
     }
 }

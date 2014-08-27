@@ -14,19 +14,19 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         public static void HandleServerChatMessage(Packet packet)
         {
             var text = new CreatureText();
-            var GroupGUID = new byte[8];
-            var GuildGUID = new byte[8];
-            var ReceiverGUID = new byte[8];
-            var SenderGUID = new byte[8];
+            var groupGUIDBytes = new byte[8];
+            var guildGUIDBytes = new byte[8];
+            var receiverGUIDBytes = new byte[8];
+            var senderGUIDBytes = new byte[8];
 
             var bit1316 = !packet.ReadBit();
             packet.ReadBit("bit5269");
             packet.ReadBit(); // fake bit
             var hasSender = !packet.ReadBit();
-            packet.StartBitStream(GroupGUID, 6, 1, 7, 5, 4, 3, 2, 0);
+            packet.StartBitStream(groupGUIDBytes, 6, 1, 7, 5, 4, 3, 2, 0);
             packet.ReadBit(); // fake bit
             var hasChannel = !packet.ReadBit();
-            packet.StartBitStream(ReceiverGUID, 1, 5, 7, 4, 2, 0, 6, 3);
+            packet.StartBitStream(receiverGUIDBytes, 1, 5, 7, 4, 2, 0, 6, 3);
             packet.ReadBit("bit5268");
             var hasReceiver = !packet.ReadBit();
 
@@ -35,7 +35,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 receiverLen = (int)packet.ReadBits(11);
 
             packet.ReadBit(); // fake bit
-            packet.StartBitStream(GuildGUID, 0, 6, 1, 5, 7, 3, 4, 2);
+            packet.StartBitStream(guildGUIDBytes, 0, 6, 1, 5, 7, 3, 4, 2);
             var hasText = !packet.ReadBit();
             var hasPrefix = !packet.ReadBit();
 
@@ -50,7 +50,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var hasConstTime = !packet.ReadBit();
             var hasAchi = !packet.ReadBit();
             packet.ReadBit(); // fake bit
-            packet.StartBitStream(SenderGUID, 5, 4, 1, 0, 6, 2, 7, 3);
+            packet.StartBitStream(senderGUIDBytes, 5, 4, 1, 0, 6, 2, 7, 3);
 
             int channelLen = 0;
             if (hasChannel)
@@ -68,20 +68,16 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             if (hasPrefix)
                 packet.ReadWoWString("Addon Message Prefix", prefixLen);
 
-            packet.ParseBitStream(GuildGUID, 3, 1, 5, 4, 6, 2, 0, 7);
-            packet.ParseBitStream(ReceiverGUID, 7, 4, 2, 3, 1, 5, 6, 0);
-            packet.ParseBitStream(SenderGUID, 5, 0, 7, 4, 3, 2, 1, 6);
-            packet.ParseBitStream(GroupGUID, 3, 5, 2, 6, 4, 0, 1, 7);
+            packet.ParseBitStream(guildGUIDBytes, 3, 1, 5, 4, 6, 2, 0, 7);
+            packet.ParseBitStream(receiverGUIDBytes, 7, 4, 2, 3, 1, 5, 6, 0);
+            packet.ParseBitStream(senderGUIDBytes, 5, 0, 7, 4, 3, 2, 1, 6);
+            packet.ParseBitStream(groupGUIDBytes, 3, 5, 2, 6, 4, 0, 1, 7);
 
-            packet.WriteGuid("SenderGUID", SenderGUID);
-            packet.WriteGuid("ReceiverGUID", ReceiverGUID);
-            packet.WriteGuid("GroupGUID", GroupGUID);
-            packet.WriteGuid("GuildGUID", GuildGUID);
+            text.SenderGUID = packet.WriteGuid("SenderGUID", senderGUIDBytes);
+            text.ReceiverGUID = packet.WriteGuid("ReceiverGUID", receiverGUIDBytes);
+            packet.WriteGuid("GroupGUID", groupGUIDBytes);
+            packet.WriteGuid("GuildGUID", guildGUIDBytes);
 
-            uint entry = 0;
-            var guid = new WowGuid(BitConverter.ToUInt64(SenderGUID, 0));
-            if (guid.GetObjectType() == ObjectType.Unit)
-                entry = guid.GetEntry();
 
             if (hasAchi)
                 packet.ReadInt32("Achievement");
@@ -103,15 +99,16 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadWoWString("Channel Name", channelLen);
 
             if (hasSender)
-            {
-                if (entry != 0)
-                    text.Comment = packet.ReadWoWString("Sender Name", senderName);
-                else
-                    packet.ReadWoWString("Sender Name", senderName);
-            }
+                packet.ReadWoWString("Sender Name", senderName);
 
             if (hasLang)
                 text.Language = packet.ReadEnum<Language>("Language", TypeCode.Byte);
+
+            uint entry = 0;
+            if (text.SenderGUID.GetObjectType() == ObjectType.Unit)
+                entry = text.SenderGUID.GetEntry();
+            else if (text.ReceiverGUID.GetObjectType() == ObjectType.Unit)
+                entry = text.ReceiverGUID.GetEntry();
 
             if (entry != 0)
                 Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);

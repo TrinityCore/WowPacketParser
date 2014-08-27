@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -711,6 +712,35 @@ namespace WowPacketParser.SQL.Builders
                         if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
                             textValue.Item1.Sound = sound.Item1;
                     }
+
+                    // Set comment
+
+                    string from = null, to = null;
+                    if (textValue.Item1.SenderGUID != 0)
+                    {
+                        if (textValue.Item1.SenderGUID.GetObjectType() == ObjectType.Player)
+                            from = "Player";
+                        else
+                            from = StoreGetters.GetName(StoreNameType.Unit, (int)textValue.Item1.SenderGUID.GetEntry(), false);
+                    }
+
+                    if (textValue.Item1.ReceiverGUID != 0)
+                    {
+                        if (textValue.Item1.ReceiverGUID.GetObjectType() == ObjectType.Player)
+                            to = "Player";
+                        else
+                            to = StoreGetters.GetName(StoreNameType.Unit, (int)textValue.Item1.ReceiverGUID.GetEntry(), false);
+                    }
+
+                    Trace.Assert(text.Key == textValue.Item1.SenderGUID.GetEntry() ||
+                        text.Key == textValue.Item1.ReceiverGUID.GetEntry());
+
+                    if (from != null && to != null)
+                        textValue.Item1.Comment = from + " to " + to;
+                    else if (from != null)
+                        textValue.Item1.Comment = from;
+                    else
+                        Trace.Assert(false);
                 }
             }
 

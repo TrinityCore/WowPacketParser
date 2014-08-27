@@ -80,11 +80,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             text.Type = packet.ReadEnum<ChatMessageType>("Type", TypeCode.Byte);
             text.Language = packet.ReadEnum<Language>("Language", TypeCode.Int32);
-            var guid = packet.ReadGuid("GUID");
-
-            uint entry = 0;
-            if (guid.GetObjectType() == ObjectType.Unit)
-                entry = guid.GetEntry();
+            text.SenderGUID = packet.ReadGuid("GUID");
 
             packet.ReadInt32("Constant time");
 
@@ -149,17 +145,16 @@ namespace WowPacketParser.Parsing.Parsers
                 case ChatMessageType.BattleNet:
                 {
                     packet.ReadInt32("Name Length");
-                    text.Comment = packet.ReadCString("Name");
-
-                    var target = packet.ReadGuid("Receiver GUID");
-                    switch (target.GetHighType())
+                    packet.ReadCString("Name");
+                    text.ReceiverGUID = packet.ReadGuid("Receiver GUID");
+                    switch (text.ReceiverGUID.GetHighType())
                     {
                         case HighGuidType.Unit:
                         case HighGuidType.Vehicle:
                         case HighGuidType.GameObject:
                         case HighGuidType.Transport:
                             packet.ReadInt32("Receiver Name Length");
-                            text.Comment += " to " + packet.ReadCString("Receiver Name");
+                            packet.ReadCString("Receiver Name");
                             break;
                     }
                     break;
@@ -184,6 +179,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (text.Type == ChatMessageType.Achievement || text.Type == ChatMessageType.GuildAchievement)
                 packet.ReadInt32("Achievement ID");
+
+            uint entry = 0;
+            if (text.SenderGUID.GetObjectType() == ObjectType.Unit)
+                entry = text.SenderGUID.GetEntry();
+            else if (text.ReceiverGUID.GetObjectType() == ObjectType.Unit)
+                entry = text.ReceiverGUID.GetEntry();
 
             if (entry != 0)
                 Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
