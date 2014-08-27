@@ -13,6 +13,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
         {
         //                                                                    /checked in code
         //                                                                     /checked with sniff
+            {Opcode.CMSG_ACCEPT_TRADE,                             0x144D | 0x10000}, //+-
             {Opcode.CMSG_ACTIVATETAXI,                             0x03C9 | 0x10000}, //++
             {Opcode.CMSG_ACTIVATETAXIEXPRESS,                      0x06FB | 0x10000}, //++
             {Opcode.CMSG_ADD_FRIEND,                               0x09A6 | 0x10000}, //--

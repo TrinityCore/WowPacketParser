@@ -8,6 +8,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class TradeHandler
     {
+        [Parser(Opcode.CMSG_ACCEPT_TRADE)]
+        public static void HandleAcceptTrade(Packet packet)
+        {
+            packet.ReadUInt32("Unk UInt32 - Trade Window Is Showing?");
+        }
+
         [Parser(Opcode.SMSG_GAME_STORE_INGAME_BUY_FAILED)]
         public static void HandleGameStoreIngameBuyFailed(Packet packet)
         {

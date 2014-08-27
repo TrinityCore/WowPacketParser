@@ -1487,7 +1487,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_UNK_0656)]
         [Parser(Opcode.CMSG_UNK_08C0)]
         [Parser(Opcode.CMSG_UNK_1446)]
-        [Parser(Opcode.CMSG_UNK_144D)]
         public static void HandleUnk1446(Packet packet)
         {
             packet.ReadInt32("unk");
