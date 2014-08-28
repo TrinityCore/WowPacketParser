@@ -814,16 +814,15 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_PVP_LOG_DATA, ClientVersionBuild.V4_3_4_15595)] // 4.3.4
+        [Parser(Opcode.SMSG_PVP_LOG_DATA, ClientVersionBuild.V4_3_4_15595)]
         public static void HandlePvPLogData434(Packet packet)
         {
-            // FIXME, lots of unks
-            var arenaStrings = packet.ReadBit("Has Arena Strings");
-            var arena = packet.ReadBit("Arena");
+            var arena = packet.ReadBit("IS Arena");
+            var rated = packet.ReadBit("Is Rated");
             var name1Length = 0u;
             var name2Length = 0u;
 
-            if (arenaStrings)
+            if (arena)
             {
                 name1Length = packet.ReadBits(8);
                 name2Length = packet.ReadBits(8);
@@ -833,25 +832,25 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guids = new byte[count][];
             var valuesCount = new uint[count];
-            var unkBits2 = new bool[count];
-            var unkBits3 = new bool[count];
-            var unkBits4 = new bool[count];
-            var unkBits5 = new bool[count];
-            var unkBits6 = new bool[count];
+            var hasBgRatings = new bool[count]; // 2
+            var hasBgScores = new bool[count]; // 3
+            var hasPremadeMMR = new bool[count]; // 4
+            var hasRatingChange = new bool[count]; // 5
+            var hasMmrChange = new bool[count]; // 5
 
             for (int i = 0; i < count; ++i)
             {
                 guids[i] = new byte[8];
 
-                packet.ReadBit("Unk Bit 1", i); // 13 true in wsg and arena
-                unkBits2[i] = packet.ReadBit("Unk Bit 2", i); // 40
+                packet.ReadBit(); // Unused
+                hasBgRatings[i] = packet.ReadBit("Has BG Rating", i);
 
                 guids[i][2] = packet.ReadBit();
 
-                unkBits3[i] = packet.ReadBit("Unk Bit 3", i); // 16
-                unkBits4[i] = packet.ReadBit("Unk Bit 4", i); // 56
-                unkBits5[i] = packet.ReadBit("Unk Bit 5", i); // 48
-                unkBits6[i] = packet.ReadBit("Unk Bit 6", i); // 64
+                hasBgScores[i] = packet.ReadBit("Has BG Scores", i);
+                hasPremadeMMR[i] = packet.ReadBit("Has premade MMR data", i);
+                hasRatingChange[i] = packet.ReadBit("Has Rating change", i);
+                hasMmrChange[i] = packet.ReadBit("Has MMR Change", i);
 
                 guids[i][3] = packet.ReadBit();
                 guids[i][0] = packet.ReadBit();
@@ -859,7 +858,7 @@ namespace WowPacketParser.Parsing.Parsers
                 guids[i][1] = packet.ReadBit();
                 guids[i][6] = packet.ReadBit();
 
-                packet.ReadBit("Reversed team", i); // 12
+                packet.ReadBit("Is " + (arena ? "Gold" : "Alliance") + " team member", i); // 12
 
                 guids[i][7] = packet.ReadBit();
 
@@ -872,12 +871,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (arena)
             {
-                packet.ReadInt32("Unk Int32 1"); // 62, [1] Points Lost
-                packet.ReadInt32("Unk Int32 2"); // 58, [1] Points Gained
-                packet.ReadInt32("Unk Int32 3"); // 60, [1] Matchmaker Rating         (wrong order)
-                packet.ReadInt32("Unk Int32 4"); // 63, [0] Points Lost
-                packet.ReadInt32("Unk Int32 5"); // 59, [0] Points Gained
-                packet.ReadInt32("Unk Int32 6"); // 61, [0] Matchmaker Rating
+                packet.ReadInt32("[0] Arena MMR");
+                packet.ReadInt32("[0] Arena Points Lost");
+                packet.ReadInt32("[0] Arena Points Won");
+                packet.ReadInt32("[1] Arena MMR");
+                packet.ReadInt32("[1] Arena Points Lost");
+                packet.ReadInt32("[1] Arena Points Won");
             }
 
             for (int i = 0; i < count; ++i)
@@ -896,21 +895,21 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadInt32("Killing Blows", i);
 
-                if (unkBits5[i])
+                if (hasRatingChange[i])
                     packet.ReadInt32("Rating Change", i);
 
                 packet.ReadXORByte(guids[i], 5);
 
-                if (unkBits6[i])
-                    packet.ReadInt32("Unk Int32 14", i);
+                if (hasMmrChange[i])
+                    packet.ReadInt32("MMR Change", i);
 
-                if (unkBits2[i])
-                    packet.ReadInt32("Unk Int32 15", i);
+                if (hasBgScores[i])
+                    packet.ReadInt32("Battleground rating", i);
 
                 packet.ReadXORByte(guids[i], 1);
                 packet.ReadXORByte(guids[i], 6);
 
-                packet.ReadInt32("Unk Int32 16", i);
+                packet.ReadInt32("Talent tree", i);
 
                 for (int j = 0; j < valuesCount[i]; ++j)
                     packet.ReadUInt32("Value", i, j);
@@ -918,8 +917,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guids[i], 0);
                 packet.ReadXORByte(guids[i], 3);
 
-                if (unkBits4[i])
-                    packet.ReadInt32("Unk Int32 17", i);
+                if (hasPremadeMMR[i])
+                    packet.ReadInt32("Premade MMR", i);
 
                 packet.ReadXORByte(guids[i], 7);
                 packet.ReadXORByte(guids[i], 2);
@@ -933,12 +932,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadWoWString("Team 1 Name", name2Length);
             }
 
-            packet.ReadByte("Unk Byte 1"); // Team Size
+            packet.ReadByte((arena ? "Gold" : "Alliance") : " team size");
 
             if (finished)
                 packet.ReadByte("Winner");
 
-            packet.ReadByte("Unk Byte 2"); // Team size
+            packet.ReadByte((arena ? "Green" : "Horde") : " team size");
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGE, ClientVersionBuild.V4_3_4_15595)]
@@ -1682,7 +1681,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guid3, 2);
 
-            packet.ReadTime("Time");
+            packet.ReadTime("Join Time");
 
             packet.ReadXORByte(guid3, 5);
 
