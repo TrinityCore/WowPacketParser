@@ -45,10 +45,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("modelid", 4)]
         public uint[] DisplayIds;
 
-        [DBFieldName("Health_mod")]
+        [DBFieldName("HealthModifier")]
         public float Modifier1;
 
-        [DBFieldName("Mana_mod")]
+        [DBFieldName("ManaModifier")]
         public float Modifier2;
 
         [DBFieldName("RacialLeader")]
