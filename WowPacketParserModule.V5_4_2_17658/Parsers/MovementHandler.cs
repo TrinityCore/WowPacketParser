@@ -920,5 +920,17 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             packet.WriteGuid("GUID", guid);
         }
+
+        [Parser(Opcode.SMSG_CLIENT_CONTROL_UPDATE)]
+        public static void HandleClientControlUpdate(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 0, 2, 4, 6, 5, 3, 1, 7);
+            packet.ReadBit("AllowMove");
+            packet.ParseBitStream(guid, 5, 2, 6, 4, 7, 0, 3, 1);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

@@ -98,6 +98,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_LOGOUT_COMPLETE, 0x0C6D},
             {Opcode.SMSG_LOGOUT_RESPONSE, 0x104A},
             {Opcode.SMSG_CANCEL_AUTO_REPEAT, 0x0A76},
+            {Opcode.SMSG_CLIENT_CONTROL_UPDATE, 0x0F88},
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0x085A},
             {Opcode.SMSG_CRITERIA_UPDATE_ACCOUNT, 0x0A64},
             {Opcode.SMSG_CRITERIA_UPDATE_PLAYER, 0x0C0D},
