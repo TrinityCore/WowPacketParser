@@ -18,7 +18,6 @@ namespace WowPacketParser.Loading
     public class SniffFile
     {
         private readonly string _fileName;
-        private readonly string _outFileName;
         private readonly Statistics _stats;
         private readonly DumpFormatType _dumpFormat;
         private readonly string _logPrefix;
@@ -34,8 +33,6 @@ namespace WowPacketParser.Loading
             _stats = new Statistics();
             _fileName = fileName;
             _dumpFormat = dumpFormat;
-
-            _outFileName = Path.ChangeExtension(fileName, null) + "_parsed.txt";
 
             if (number == null)
                 _logPrefix = string.Format("[{0}]", Path.GetFileName(fileName));
@@ -71,17 +68,19 @@ namespace WowPacketParser.Loading
                 case DumpFormatType.SqlOnly:
                 case DumpFormatType.Text:
                 {
-                    if (Utilities.FileIsInUse(_outFileName) && Settings.DumpFormat != DumpFormatType.SqlOnly)
+                    var outFileName = Path.ChangeExtension(_fileName, null) + "_parsed.txt";
+
+                    if (Utilities.FileIsInUse(outFileName) && Settings.DumpFormat != DumpFormatType.SqlOnly)
                     {
                         // If our dump format requires a .txt to be created,
                         // check if we can write to that .txt before starting parsing
-                        Trace.WriteLine(string.Format("Save file {0} is in use, parsing will not be done.", _outFileName));
+                        Trace.WriteLine(string.Format("Save file {0} is in use, parsing will not be done.", outFileName));
                         return;
                     }
 
                     Store.Store.SQLEnabledFlags = Settings.SQLOutputFlag;
 
-                    File.Delete(_outFileName);
+                    File.Delete(outFileName);
 
                     _stats.SetStartTime(DateTime.Now);
 
@@ -91,7 +90,7 @@ namespace WowPacketParser.Loading
 
                     ThreadPool.SetMinThreads(threadCount + 2, 4);
 
-                    using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(_outFileName, true) : null))
+                    using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(outFileName, true) : null))
                     {
                         bool first = true;
 
@@ -163,7 +162,7 @@ namespace WowPacketParser.Loading
                         _stats.SetEndTime(DateTime.Now);
                     }
 
-                    Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", _logPrefix, _outFileName));
+                    Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", _logPrefix, outFileName));
                     Trace.WriteLine(string.Format("{0}: {1}", _logPrefix, _stats));
 
                     if (Settings.SQLOutputFlag != 0)

@@ -869,7 +869,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var finished = packet.ReadBit("Finished");
 
-            if (arena)
+            if (rated)
             {
                 packet.ReadInt32("[0] Arena MMR");
                 packet.ReadInt32("[0] Arena Points Lost");
@@ -884,7 +884,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Healing done", i);
                 packet.ReadInt32("Damage done", i);
 
-                if (unkBits3[i])
+                if (hasBgScores[i])
                 {
                     packet.ReadInt32("Bonus Honor", i);
                     packet.ReadInt32("Deaths", i);
@@ -926,7 +926,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.WriteGuid("Player GUID", guids[i], i);
             }
 
-            if (arenaStrings)
+            if (arena)
             {
                 packet.ReadWoWString("Team 2 Name", name1Length);
                 packet.ReadWoWString("Team 1 Name", name2Length);
