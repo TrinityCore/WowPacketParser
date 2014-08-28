@@ -2,8 +2,6 @@ using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
@@ -154,7 +152,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             {
                 for (var j = 0; j < bits4[i]; ++j)
                 {
-                    packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+                    packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
                     packet.ReadInt32("Int10", i, j);
                     packet.ReadInt32("Int16", i, j);
                     packet.ReadInt32("World Effect ID", i, j);

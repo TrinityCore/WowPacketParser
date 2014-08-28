@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {
@@ -67,36 +65,33 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
         public static void HandleNpcGossip(Packet packet)
         {
-            var guid = new byte[8];
-            uint[] titleLen;
-            uint[] OptionTextLen;
-            uint[] BoxTextLen;
+            var guidBytes = new byte[8];
 
             var menuId = packet.ReadUInt32("Menu Id");
             packet.ReadUInt32("Friendship Faction");
             var textId = packet.ReadUInt32("Text Id");
-            packet.StartBitStream(guid, 0, 1);
-            var AmountOfOptions = packet.ReadBits("Amount of Options", 20);
-            packet.StartBitStream(guid, 6, 7);
+            packet.StartBitStream(guidBytes, 0, 1);
+            var amountOfOptions = packet.ReadBits("Amount of Options", 20);
+            packet.StartBitStream(guidBytes, 6, 7);
 
-            OptionTextLen = new uint[AmountOfOptions];
-            BoxTextLen = new uint[AmountOfOptions];
-            for (var i = 0; i < AmountOfOptions; ++i)
+            var optionTextLen = new uint[amountOfOptions];
+            var boxTextLen = new uint[amountOfOptions];
+            for (var i = 0; i < amountOfOptions; ++i)
             {
-                OptionTextLen[i] = packet.ReadBits(12);
-                BoxTextLen[i] = packet.ReadBits(12);
+                optionTextLen[i] = packet.ReadBits(12);
+                boxTextLen[i] = packet.ReadBits(12);
             }
-            packet.StartBitStream(guid, 4, 3, 2);
+            packet.StartBitStream(guidBytes, 4, 3, 2);
 
             var questgossips = packet.ReadBits("Amount of Quest gossips", 19);
 
-            titleLen = new uint[questgossips];
+            var titleLen = new uint[questgossips];
             for (var i = 0; i < questgossips; ++i)
             {
                 titleLen[i] = packet.ReadBits(9);
                 packet.ReadBit("Change Icon", i);
             }
-            guid[5] = packet.ReadBit();
+            guidBytes[5] = packet.ReadBit();
             packet.ResetBitReader();
 
             for (var i = 0; i < questgossips; i++)
@@ -106,33 +101,36 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadWoWString("Title", titleLen[i], i);
                 packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32, i);
                 packet.ReadInt32("Level", i);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Quest, "Quest ID", i);
             }
 
             var gossip = new Gossip();
 
-            gossip.GossipOptions = new List<GossipOption>((int)AmountOfOptions);
-            for (var i = 0; i < AmountOfOptions; ++i)
+            gossip.GossipOptions = new List<GossipOption>((int)amountOfOptions);
+            for (var i = 0; i < amountOfOptions; ++i)
             {
                 var gossipOption = new GossipOption
                 {
                     RequiredMoney = packet.ReadUInt32("Required money", i),
                     Index = packet.ReadUInt32("Index", i),
-                    BoxText = packet.ReadWoWString("Box Text", BoxTextLen[i], i),
+                    BoxText = packet.ReadWoWString("Box Text", boxTextLen[i], i),
                     Box = packet.ReadBoolean("Box", i),
-                    OptionText = packet.ReadWoWString("Text", OptionTextLen[i], i),
+                    OptionText = packet.ReadWoWString("Text", optionTextLen[i], i),
                     OptionIcon = packet.ReadEnum<GossipOptionIcon>("Icon", TypeCode.Byte, i),
                 };
 
                 gossip.GossipOptions.Add(gossipOption);
             }
 
-            packet.ParseBitStream(guid, 3, 4, 7, 2, 1, 6, 0, 5);
-            packet.WriteGuid("GUID", guid);
+            packet.ParseBitStream(guidBytes, 3, 4, 7, 2, 1, 6, 0, 5);
+            var guid = packet.WriteGuid("GUID", guidBytes);
 
-            var GUID = new Guid(BitConverter.ToUInt64(guid, 0));
-            gossip.ObjectType = GUID.GetObjectType();
-            gossip.ObjectEntry = GUID.GetEntry();
+            gossip.ObjectType = guid.GetObjectType();
+            gossip.ObjectEntry = guid.GetEntry();
+
+            if (guid.GetObjectType() == ObjectType.Unit)
+                if (Storage.Objects.ContainsKey(guid))
+                    ((Unit)Storage.Objects[guid].Item1).GossipId = menuId;
 
             if (Storage.Gossips.ContainsKey(Tuple.Create(menuId, textId)))
             {
@@ -146,7 +144,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             else
                 Storage.Gossips.Add(Tuple.Create(menuId, textId), gossip, packet.TimeSpan);
 
-            packet.AddSniffData(StoreNameType.Gossip, (int)menuId, GUID.GetEntry().ToString(CultureInfo.InvariantCulture));
+            packet.AddSniffData(StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
         }
 
         [Parser(Opcode.SMSG_GOSSIP_POI)]
@@ -310,7 +308,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadInt32("Item Upgrade ID", i);
                 packet.ReadInt32("Price", i);
                 packet.ReadInt32("Display ID", i);
-                vendorItem.ItemId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
+                vendorItem.ItemId = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Item ID", i);
                 vendorItem.Slot = packet.ReadUInt32("Item Position", i);
 
                 if (hasExtendedCost[i])
@@ -335,7 +333,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.WriteGuid("Guid", guid);
 
-            var vendorGUID = new Guid(BitConverter.ToUInt64(guid, 0));
+            var vendorGUID = new WowGuid(BitConverter.ToUInt64(guid, 0));
             Storage.NpcVendors.Add(vendorGUID.GetEntry(), npcVendor, packet.TimeSpan);
         }
 

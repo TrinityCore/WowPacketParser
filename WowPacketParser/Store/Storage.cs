@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Store
 {
@@ -15,7 +15,7 @@ namespace WowPacketParser.Store
         /* Key: Guid */
 
         // Units, GameObjects, Players, Items
-        public static readonly StoreDictionary<Guid, WoWObject> Objects = new StoreDictionary<Guid, WoWObject>(new List<SQLOutput>());
+        public static readonly StoreDictionary<WowGuid, WoWObject> Objects = new StoreDictionary<WowGuid, WoWObject>(new List<SQLOutput>());
 
         /* Key: Entry */
 
@@ -47,7 +47,7 @@ namespace WowPacketParser.Store
         public static readonly StoreDictionary<uint, GossipPOI> GossipPOIs = new StoreDictionary<uint, GossipPOI>(new List<SQLOutput> { SQLOutput.points_of_interest });
 
         // "Helper" stores, do not match a specific table
-        public static readonly StoreMulti<Guid, EmoteType> Emotes = new StoreMulti<Guid, EmoteType>(new List<SQLOutput> { SQLOutput.creature_text });
+        public static readonly StoreMulti<WowGuid, EmoteType> Emotes = new StoreMulti<WowGuid, EmoteType>(new List<SQLOutput> { SQLOutput.creature_text });
         public static readonly StoreBag<uint> Sounds = new StoreBag<uint>(new List<SQLOutput> { SQLOutput.creature_text });
         public static readonly StoreDictionary<uint, SpellsX> SpellsX = new StoreDictionary<uint, SpellsX>(new List<SQLOutput> { SQLOutput.creature_template }); // `creature_template`.`spellsX`
         public static readonly StoreDictionary<uint, QuestOffer> QuestOffers = new StoreDictionary<uint, QuestOffer>(new List<SQLOutput> { SQLOutput.quest_template });
@@ -76,31 +76,45 @@ namespace WowPacketParser.Store
         // Defense Message
         public static readonly StoreMulti<uint, DefenseMessage> DefenseMessages = new StoreMulti<uint, DefenseMessage>(new List<SQLOutput> { SQLOutput.defense_message });
 
+        // Vehicle Template Accessory
+        public static readonly StoreMulti<uint, VehicleTemplateAccessory> VehicleTemplateAccessorys = new StoreMulti<uint, VehicleTemplateAccessory>(new List<SQLOutput> { SQLOutput.vehicle_template_accessory });
+
+        // Weather updates
+        public static readonly StoreBag<WeatherUpdate> WeatherUpdates = new StoreBag<WeatherUpdate>(new List<SQLOutput> { SQLOutput.weather_updates });
+
         public static void ClearContainers()
         {
             SniffData.Clear();
 
             Objects.Clear();
 
+            CreatureDifficultys.Clear();
+            GameObjectTemplateDB2s.Clear();
+            GameObjectTemplatePositionDB2s.Clear();
+            BroadcastTexts.Clear();
+
             GameObjectTemplates.Clear();
             ItemTemplates.Clear();
             QuestTemplates.Clear();
             UnitTemplates.Clear();
-            CreatureDifficultys.Clear();
 
             NpcTrainers.Clear();
             NpcVendors.Clear();
 
             PageTexts.Clear();
             NpcTexts.Clear();
+            NpcTextsMop.Clear();
 
             CreatureTexts.Clear();
+
+            GossipPOIs.Clear();
 
             Emotes.Clear();
             Sounds.Clear();
             SpellsX.Clear();
             QuestOffers.Clear();
             QuestRewards.Clear();
+            GossipSelects.Clear();
 
             StartActions.Clear();
             StartSpells.Clear();
@@ -113,6 +127,12 @@ namespace WowPacketParser.Store
             QuestPOIs.Clear();
 
             ObjectNames.Clear();
+
+            DefenseMessages.Clear();
+
+            VehicleTemplateAccessorys.Clear();
+
+            WeatherUpdates.Clear();
         }
     }
 }

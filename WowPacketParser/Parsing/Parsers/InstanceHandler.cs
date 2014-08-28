@@ -133,7 +133,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_RESET_FAILED_NOTIFY)]
         public static void HandleResetFailedNotify(Packet packet)
         {
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
         }
 
         [Parser(Opcode.MSG_RAID_TARGET_UPDATE)]
@@ -163,7 +163,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleRaidInstanceMessage(Packet packet)
         {
             var type = packet.ReadEnum<RaidInstanceResetWarning>("Warning Type", TypeCode.Int32);
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
             packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
             packet.ReadInt32("Reset time");
             if (type == RaidInstanceResetWarning.Welcome)
@@ -176,7 +176,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_SET_SAVED_INSTANCE_EXTEND)]
         public static void HandleSetSavedInstanceExtend(Packet packet)
         {
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
             packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
             packet.ReadBoolean("Extended");
         }
@@ -191,7 +191,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_INSTANCE_RESET)]
         public static void HandleUpdateInstanceReset(Packet packet)
         {
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
         }
 
         [Parser(Opcode.CMSG_INSTANCE_LOCK_WARNING_RESPONSE)]
@@ -218,7 +218,7 @@ namespace WowPacketParser.Parsing.Parsers
             var counter = packet.ReadInt32("Counter");
             for (var i = 0; i < counter; ++i)
             {
-                packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID", i);
+                packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID", i);
                 packet.ReadEnum<MapDifficulty>("Map Difficulty", TypeCode.UInt32, i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                     packet.ReadUInt32("Heroic", i);

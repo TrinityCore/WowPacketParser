@@ -6,7 +6,7 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using WowPacketParserModule.V5_4_8_18414.Enums;
-using Guid = WowPacketParser.Misc.Guid;
+using Guid = WowPacketParser.Misc.WowGuid;
 
 namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
@@ -116,7 +116,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadXORByte(guid, 5);
             pos.Z = packet.ReadSingle();
             packet.ReadXORByte(guid, 1);
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 4);
             pos.X = packet.ReadSingle();
@@ -124,7 +124,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 0);
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Corpse Map ID");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Corpse Map ID");
             pos.Y = packet.ReadSingle();
 
             packet.WriteLine("Position: {0}", pos);
@@ -205,7 +205,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 			
             creature.QuestItems = new uint[qItemCount];
             for (var i = 0; i < qItemCount; i++)
-                creature.QuestItems[i] = (uint)packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Quest Item", i);			
+                creature.QuestItems[i] = (uint)packet.ReadEntry<UInt32>(StoreNameType.Item, "Quest Item", i);			
 			
             creature.KillCredits[1] = packet.ReadUInt32("Kill Credit 2");
 

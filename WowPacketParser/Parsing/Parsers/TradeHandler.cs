@@ -162,12 +162,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk Slot 1");
             packet.ReadUInt32("Unk Slot 2");
             packet.ReadUInt32("Gold");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
 
             while (packet.CanRead())
             {
                 var slot = packet.ReadByte("Slot Index");
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", slot);
+                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", slot);
                 packet.ReadUInt32("Item Display ID", slot);
                 packet.ReadUInt32("Item Count", slot);
                 packet.ReadUInt32("Item Wrapped", slot);
@@ -203,7 +203,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk1", i);
                 packet.ReadGuid("Item Creator GUID", i);
                 packet.ReadUInt32("Item Perm Enchantment Id", i);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", i);
                 packet.ReadUInt32("Item Enchantment Id", i, 0);
                 packet.ReadUInt32("Item Durability", i);
                 packet.ReadUInt32("Unk2", i);
@@ -339,7 +339,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Trade Id");
             packet.ReadInt32("Unk Int32 2");
             packet.ReadInt64("Gold");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
             packet.ReadInt32("Unk Slot 1");
             packet.ReadInt32("Unk Int32 5");
             packet.ReadBoolean("Trader");
@@ -421,7 +421,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guids1[i], 1);
                 packet.ReadXORByte(guids1[i], 7);
                 packet.ReadXORByte(guids1[i], 4);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", i);
                 packet.ReadXORByte(guids1[i], 0);
                 packet.ReadUInt32("Item Count", i);
                 packet.ReadXORByte(guids1[i], 5);

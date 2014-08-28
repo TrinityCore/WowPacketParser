@@ -2,6 +2,8 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers
@@ -14,7 +16,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadByte("Slot Id");
             var actionId = packet.StartBitStream(0, 4, 7, 2, 5, 3, 1, 6);
             packet.ParseBitStream(actionId, 7, 3, 0, 2, 1, 4, 5, 6);
-            packet.WriteLine("Action Id: {0}", BitConverter.ToUInt32(actionId, 0));
+            packet.AddValue("Action Id", BitConverter.ToUInt32(actionId, 0));
         }
 
         [Parser(Opcode.CMSG_SET_SELECTION)]
@@ -74,9 +76,18 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.SMSG_WEATHER)]
         public static void HandleWeatherStatus(Packet packet)
         {
-            packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
-            packet.ReadSingle("Grade");
-            packet.ReadBit("Unk bit");
+            var state = packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
+            var grade = packet.ReadSingle("Grade");
+            var unk = packet.ReadBit("Unk bit");
+
+            Storage.WeatherUpdates.Add(new WeatherUpdate
+            {
+                MapId = CoreParsers.MovementHandler.CurrentMapId,
+                ZoneId = 0, // fixme
+                State = state,
+                Grade = grade,
+                Unk = unk
+            }, packet.TimeSpan);
         }
 
         [HasSniffData]
@@ -88,8 +99,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             pos.Y = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
             pos.X = packet.ReadSingle();
-            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
-            packet.WriteLine("Position: {0}", pos);
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            packet.AddValue("Position", pos);
 
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }

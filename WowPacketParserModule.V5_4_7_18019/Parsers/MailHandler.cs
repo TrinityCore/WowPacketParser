@@ -130,13 +130,13 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
                         packet.ReadGuid("Player GUID", i);
                         break;
                     case MailType.Creature:
-                        packet.ReadEntryWithName<Int32>(StoreNameType.Unit, "Entry", i);
+                        packet.ReadEntry<Int32>(StoreNameType.Unit, "Entry", i);
                         break;
                     case MailType.GameObject:
-                        packet.ReadEntryWithName<Int32>(StoreNameType.GameObject, "Entry", i);
+                        packet.ReadEntry<Int32>(StoreNameType.GameObject, "Entry", i);
                         break;
                     case MailType.Item:
-                        packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Entry", i);
+                        packet.ReadEntry<Int32>(StoreNameType.Item, "Entry", i);
                         break;
                     case (MailType)1:
                     case MailType.Auction:
@@ -171,7 +171,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
                 {
                     packet.ReadByte("Item Index", i, j);
                     packet.ReadUInt32("Item GuidLow", i, j);
-                    packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Id", i, j);
+                    packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Id", i, j);
 
                     int enchantmentCount = 6;
                     if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))

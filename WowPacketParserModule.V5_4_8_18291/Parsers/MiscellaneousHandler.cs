@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
@@ -17,8 +14,10 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.CMSG_LOAD_SCREEN)]
         public static void HandleClientEnterWorld(Packet packet)
         {
-            var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
+            var mapId = packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
             packet.ReadBit("Loading");
+
+            packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
         }
 
         [Parser(Opcode.CMSG_AREATRIGGER)]
@@ -133,11 +132,11 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.ReadEnum<Gender>("Gender", TypeCode.Byte, i);
                 packet.ReadXORByte(guildGUID[i], 5);
                 packet.ReadByte("Level", i);
-                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id", i);
 
                 packet.WriteGuid("PlayerGUID", playerGUID[i], i);
                 packet.WriteGuid("GuildGUID", guildGUID[i], i);
-                packet.WriteLine("[{0}] Account: {1}", i, BitConverter.ToUInt64(accountId[i], 0));
+                packet.AddValue("Account", BitConverter.ToUInt64(accountId[i], 0), i);
             }
         }
 
@@ -179,7 +178,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadWoWString("string1AB", bits1AB);
 
             for (var i = 0; i < zones; ++i)
-                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
+                packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
 
             packet.ReadWoWString("Player Name", PlayerNameLen);
 
@@ -198,9 +197,18 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_WEATHER)]
         public static void HandleWeatherStatus(Packet packet)
         {
-            packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
-            packet.ReadSingle("Grade");
-            packet.ReadBit("Unk Bit"); // Type
+            var state = packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
+            var grade = packet.ReadSingle("Grade");
+            var unk = packet.ReadBit("Unk Bit"); // Type
+
+            Storage.WeatherUpdates.Add(new WeatherUpdate
+            {
+                MapId = CoreParsers.MovementHandler.CurrentMapId,
+                ZoneId = 0, // fixme
+                State = state,
+                Grade = grade,
+                Unk = unk
+            }, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]

@@ -188,7 +188,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid2, 1);
             packet.ReadXORByte(playerGUID, 7);
             packet.ReadByte("Slot");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+            packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry");
             packet.ReadInt32("Int40");
             packet.ReadXORByte(playerGUID, 0);
             packet.ReadXORByte(playerGUID, 4);

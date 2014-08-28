@@ -29,7 +29,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 if (status == 0) // required any flag
                     continue;
 
-                packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area");
+                packet.ReadEntry<Int32>(StoreNameType.Area, "Area");
                 packet.ReadInt32("Level");
                 packet.ReadEnum<Class>("Class", TypeCode.Int32);
             }

@@ -8,6 +8,7 @@
         PktSplit,
         SqlOnly,
         SniffDataOnly,
-        StatisticsPreParse
+        StatisticsPreParse,
+        PktSessionSplit
     }
 }

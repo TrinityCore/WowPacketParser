@@ -29,13 +29,13 @@ namespace WowPacketParser.Parsing.Parsers
             if (usedDestSlot)
             {
                 packet.ParseBitStream(itemId2, 4, 6, 5, 2, 3, 1, 7, 0);
-                packet.WriteLine("Item Id 2: {0}", BitConverter.ToUInt64(itemId2, 0));
+                packet.WriteGuid("Item Id 2", itemId2);
             }
 
             if (usedSrcSlot)
             {
                 packet.ParseBitStream(itemId1, 6, 3, 5, 0, 1, 2, 4, 7);
-                packet.WriteLine("Item Id 1: {0}", BitConverter.ToUInt64(itemId1, 0));
+                packet.WriteGuid("Item Id 1", itemId1);
             }
 
             if (usedSrcSlot)
@@ -102,11 +102,11 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guid[i], 5);
                 packet.ReadXORByte(guid[i], 7);
 
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", i);
 
                 packet.ReadXORByte(id[i], 7);
 
-                packet.WriteLine("[{1}] Item Id: {0}", BitConverter.ToUInt64(id[i], 0), i);
+                packet.WriteGuid("Item Id", id[i], i);
                 packet.WriteGuid("Item Player Creator Guid", guid[i], i);
             }
         }
@@ -149,7 +149,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (int i = 0; i < count2; ++i)
             {
                 packet.ParseBitStream(id2[i], 3, 1, 0, 2, 7, 5, 6, 4);
-                packet.WriteLine("[{1}] Item Id 2: {0}", BitConverter.ToUInt64(id2[i], 0), i);
+                packet.WriteGuid("Item Id 2", id2[i], i);
             }
 
             for (int i = 0; i < count1; ++i)
@@ -170,7 +170,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guid[i], 5);
                 packet.ReadXORByte(guid[i], 7);
 
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", i);
 
                 packet.ReadXORByte(id1[i], 1);
 
@@ -181,7 +181,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadInt32("Item Random Property ID", i);
 
-                packet.WriteLine("[{1}] Item Id 1: {0}", BitConverter.ToUInt64(id1[i], 0), i);
+                packet.WriteGuid("Item Id 1", id1[i], i);
                 packet.WriteGuid("Item Player Creator Guid", guid[i], i);
             }
         }
@@ -233,7 +233,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (int i = 0; i < count2; ++i)
             {
                 packet.ParseBitStream(itemsId[i], 3, 1, 0, 6, 2, 7, 5, 4);
-                packet.WriteLine("[{1}] Item Id: {0}", BitConverter.ToUInt64(itemsId[i], 0), i);
+                packet.WriteGuid("Item Id:", itemsId[i], i);
             }
 
             packet.ReadXORByte(npcGuid, 1);
@@ -289,7 +289,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(itemId, 7);
 
             packet.WriteGuid("NPC Guid", guid);
-            packet.WriteLine("Item Id: {0}", BitConverter.ToUInt64(itemId, 0));
+            packet.WriteGuid("Item Id", itemId);
         }
 
         [Parser(Opcode.CMSG_VOID_STORAGE_QUERY)] // 4.3.4

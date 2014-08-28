@@ -2,8 +2,6 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V5_4_1_17538.Parsers
 {
@@ -108,7 +106,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
                 packet.ReadXORByte(guildGUID[i], 6);
 
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", i);
 
                 packet.ReadXORByte(accountId[i], 0);
 
@@ -146,7 +144,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
                 packet.WriteGuid("PlayerGUID", playerGUID[i], i);
                 packet.WriteGuid("GuildGUID", guildGUID[i], i);
-                packet.WriteLine("[{0}] Account: {1}", i, BitConverter.ToUInt64(accountId[i], 0));
+                packet.AddValue("Account", BitConverter.ToUInt64(accountId[i], 0), i);
             }
         }
 

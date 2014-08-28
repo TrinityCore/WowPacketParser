@@ -156,7 +156,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<VictimStates>("VictimState", TypeCode.Byte);
             packet.ReadInt32("Unk Attacker State 0");
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Melee Spell ID ");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Melee Spell ID ");
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
                 packet.ReadInt32("Block Amount");
@@ -217,7 +217,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<VictimStates>("VictimState", victimStateTypeCode);
             packet.ReadInt32("Unk Attacker State 0");
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Melee Spell ID ");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Melee Spell ID ");
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_3_9183) ||
                 hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))

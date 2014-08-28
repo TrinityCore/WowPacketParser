@@ -61,10 +61,10 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_LOAD_SCREEN)]
         public static void HandleClientEnterWorld(Packet packet)
         {
-            var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map Id");
+            var mapId = packet.ReadEntry<UInt32>(StoreNameType.Map, "Map Id");
             packet.ReadBit("Loading");
             CoreParsers.MovementHandler.CurrentMapId = (uint)mapId;
-            packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
+            packet.AddSniffData(StoreNameType.Map, (int)mapId, "LOAD_SCREEN");
         }
 
         [Parser(Opcode.CMSG_LOG_DISCONNECT)]
@@ -240,7 +240,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadWoWString("string1AB", bits1AB);
 
             for (var i = 0; i < zones; ++i)
-                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
+                packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
 
             packet.ReadWoWString("Player Name", PlayerNameLen);
 
@@ -763,7 +763,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadEnum<Gender>("Gender", TypeCode.Byte, i);
                 packet.ReadXORByte(guildGUID[i], 5);
                 packet.ReadByte("Level", i);
-                packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id", i);
 
                 packet.WriteGuid("PlayerGUID", playerGUID[i], i);
                 packet.WriteGuid("GuildGUID", guildGUID[i], i);

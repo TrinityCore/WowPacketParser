@@ -4,7 +4,6 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
@@ -64,7 +63,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
                 packet.ReadXORByte(guildGuids[c], 0);
                 packet.ReadInt32("Pet Level", c);
-                var mapId = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id", c);
+                var mapId = packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id", c);
                 packet.ReadXORByte(guildGuids[c], 7);
                 packet.ReadEnum<CustomizationFlag>("CustomizationFlag", TypeCode.UInt32, c);
                 packet.ReadXORByte(guildGuids[c], 4);
@@ -88,7 +87,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 }
 
                 var z = packet.ReadSingle("Position Z", c);
-                var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
+                var zone = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", c);
                 packet.ReadByte("Facial Hair", c);
                 var clss = packet.ReadEnum<Class>("Class", TypeCode.Byte, c);
                 packet.ReadXORByte(guildGuids[c], 5);
@@ -98,17 +97,14 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadXORByte(charGuids[c], 0);
                 packet.ReadByte("Hair Color", c);
 
-                var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
+                var playerGuid = new WowGuid(BitConverter.ToUInt64(charGuids[c], 0));
 
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);
 
                 if (firstLogins[c])
                 {
-                    var startPos = new StartPosition();
-                    startPos.Map = mapId;
-                    startPos.Position = new Vector3(x, y, z);
-                    startPos.Zone = zone;
+                    var startPos = new StartPosition {Map = mapId, Position = new Vector3(x, y, z), Zone = (int) zone};
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
@@ -169,7 +165,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadXORByte(playerGuid, 5);
             packet.ReadXORByte(playerGuid, 6);
 
-            var guid = new Guid(BitConverter.ToUInt64(playerGuid, 0));
+            var guid = new WowGuid(BitConverter.ToUInt64(playerGuid, 0));
             packet.WriteGuid("GUID", playerGuid);
         }
 

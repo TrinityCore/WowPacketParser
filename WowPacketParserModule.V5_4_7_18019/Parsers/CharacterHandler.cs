@@ -5,7 +5,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
+using Guid = WowPacketParser.Misc.WowGuid;
 
 namespace WowPacketParserModule.V5_4_7_18019.Parsers
 {
@@ -117,7 +117,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
                 packet.ReadXORByte(charGuids[c], 6);
 
                 packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
-                var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
+                var zone = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", c);
 
                 packet.ReadXORByte(guildGuids[c], 3);
 
@@ -182,7 +182,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
                     var startPos = new StartPosition();
                     startPos.Map = mapId;
                     startPos.Position = new Vector3(x, y, z);
-                    startPos.Zone = zone;
+                    startPos.Zone = (int)zone;
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, Class), startPos, packet.TimeSpan);
                 }

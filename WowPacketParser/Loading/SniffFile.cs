@@ -4,13 +4,13 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
+using System.Threading;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.SQL;
 using WowPacketParser.Saving;
+using WowPacketParser.SQL;
 using WowPacketParser.Store;
 
 namespace WowPacketParser.Loading
@@ -20,7 +20,6 @@ namespace WowPacketParser.Loading
         private readonly string _fileName;
         private readonly string _outFileName;
         private readonly Statistics _stats;
-        private LinkedList<Packet> _packets;
         private readonly DumpFormatType _dumpFormat;
         private readonly string _logPrefix;
 
@@ -33,7 +32,6 @@ namespace WowPacketParser.Loading
                 throw new ArgumentException("fileName cannot be null, empty or whitespace.", "fileName");
 
             _stats = new Statistics();
-            _packets = null;
             _fileName = fileName;
             _dumpFormat = dumpFormat;
 
@@ -51,49 +49,25 @@ namespace WowPacketParser.Loading
             {
                 case DumpFormatType.StatisticsPreParse:
                 {
-                    if (!ReadPackets())
+                    var packets = (LinkedList<Packet>)ReadPackets();
+                    if (packets.Count == 0)
                         return;
 
-                    if (_packets.Count == 0)
-                        return;
-
-                    // CSV format:
-                    // - sniff file name
-                    // - time of first packet
-                    // - time of last packet
-                    // - sniff duration (seconds)
-                    // - packet count
-                    // - total packets size (bytes)
-                    // - average packet size (bytes)
-                    // - smaller packet size (bytes)
-                    // - larger packet size (bytes)
-
+                    // CSV format
                     Trace.WriteLine(String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
-                        _fileName,
-                        _packets.First.Value.Time,
-                        _packets.Last.Value.Time,
-                        (_packets.Last.Value.Time - _packets.First.Value.Time).TotalSeconds,
-                        _packets.Count,
-                        _packets.AsParallel().Sum(packet => packet.Length),
-                        _packets.AsParallel().Average(packet => packet.Length),
-                        _packets.AsParallel().Min(packet => packet.Length),
-                        _packets.AsParallel().Max(packet => packet.Length)));
+                        _fileName,                                                         // - sniff file name
+                        packets.First.Value.Time,                                          // - time of first packet
+                        packets.Last.Value.Time,                                           // - time of last packet
+                        (packets.Last.Value.Time - packets.First.Value.Time).TotalSeconds, // - sniff duration (seconds)
+                        packets.Count,                                                     // - packet count
+                        packets.AsParallel().Sum(packet => packet.Length),                 // - total packets size (bytes)
+                        packets.AsParallel().Average(packet => packet.Length),             // - average packet size (bytes)
+                        packets.AsParallel().Min(packet => packet.Length),                 // - smaller packet size (bytes)
+                        packets.AsParallel().Max(packet => packet.Length)));               // - larger packet size (bytes)
 
                     break;
                 }
                 case DumpFormatType.SniffDataOnly:
-                {
-                    if (!ReadPackets())
-                        return;
-
-                    ParsePackets();
-
-                    WriteSQLs();
-
-                    GC.Collect();
-
-                    break;
-                }
                 case DumpFormatType.SqlOnly:
                 case DumpFormatType.Text:
                 {
@@ -107,10 +81,90 @@ namespace WowPacketParser.Loading
 
                     Store.Store.SQLEnabledFlags = Settings.SQLOutputFlag;
 
-                    if (!ReadPackets())
-                        return;
+                    File.Delete(_outFileName);
 
-                    ParsePackets();
+                    _stats.SetStartTime(DateTime.Now);
+
+                    int threadCount = Settings.Threads;
+                    if (threadCount == 0)
+                        threadCount = Environment.ProcessorCount;
+
+                    ThreadPool.SetMinThreads(threadCount + 2, 4);
+
+                    using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(_outFileName, true) : null))
+                    {
+                        bool first = true;
+
+                        var reader = new Reader(_fileName);
+
+                        var pwp = new ParallelWorkProcessor<Packet>(() => // read
+                        {
+                            if (!reader.PacketReader.CanRead())
+                                return Tuple.Create<Packet, bool>(null, true);
+
+                            Packet packet;
+                            var b = reader.TryRead(out packet);
+
+                            if (first)
+                            {
+                                Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Detected version {2}",
+                                    _logPrefix, Utilities.BytesToString(reader.PacketReader.GetTotalSize()), ClientVersion.VersionString));
+
+// ReSharper disable AccessToDisposedClosure
+                                if (writer != null)
+                                    writer.WriteLine(GetHeader(_fileName));
+// ReSharper restore AccessToDisposedClosure
+
+                                first = false;
+                            }
+
+                            return Tuple.Create(packet, b);
+                        }, packet => // parse
+                        {
+                            // Parse the packet, adding text to Writer and stuff to the stores
+                            if (packet.Direction == Direction.BNClientToServer ||
+                                packet.Direction == Direction.BNServerToClient)
+                                Handler.ParseBattlenet(packet);
+                            else
+                                Handler.Parse(packet);
+
+                            // Update statistics
+                            _stats.AddByStatus(packet.Status);
+                            return packet;
+                        },
+                        packet => // write
+                        {
+                            ShowPercentProgress("Processing...", reader.PacketReader.GetCurrentSize(), reader.PacketReader.GetTotalSize());
+
+                            // get packet header if necessary
+                            if (Settings.LogPacketErrors)
+                            {
+                                if (packet.Status == ParsedStatus.WithErrors)
+                                    _withErrorHeaders.AddLast(packet.GetHeader());
+                                else if (packet.Status == ParsedStatus.NotParsed)
+                                    _skippedHeaders.AddLast(packet.GetHeader());
+                            }
+
+// ReSharper disable AccessToDisposedClosure
+                            if (writer != null)
+                            {
+                                // Write to file
+                                writer.WriteLine(packet.Writer);
+                                writer.Flush();
+                            }
+// ReSharper restore AccessToDisposedClosure
+
+                            // Close Writer, Stream - Dispose
+                            packet.ClosePacket();
+                        }, threadCount);
+
+                        pwp.WaitForFinished(Timeout.Infinite);
+
+                        _stats.SetEndTime(DateTime.Now);
+                    }
+
+                    Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", _logPrefix, _outFileName));
+                    Trace.WriteLine(string.Format("{0}: {1}", _logPrefix, _stats));
 
                     if (Settings.SQLOutputFlag != 0)
                         WriteSQLs();
@@ -124,16 +178,16 @@ namespace WowPacketParser.Loading
                 }
                 case DumpFormatType.Pkt:
                 {
-                    if (!ReadPackets())
+                    var packets = (LinkedList<Packet>)ReadPackets();
+                    if (packets.Count == 0)
                         return;
 
-                    if (Settings.FilterPacketNumLow == 0 && Settings.FilterPacketNumHigh == 0 &&
-                        Settings.FilterPacketsNum < 0)
+                    if (Settings.FilterPacketsNum < 0)
                     {
                         int packetsPerSplit = Math.Abs(Settings.FilterPacketsNum);
-                        int totalPackets = _packets.Count;
+                        int totalPackets = packets.Count;
 
-                        int numberOfSplits = totalPackets / packetsPerSplit;
+                        int numberOfSplits = totalPackets/packetsPerSplit;
 
                         for (int i = 0; i < numberOfSplits; ++i)
                         {
@@ -143,11 +197,11 @@ namespace WowPacketParser.Loading
 
                             for (int j = 0; j < packetsPerSplit; ++j)
                             {
-                                if (_packets.Count == 0)
+                                if (packets.Count == 0)
                                     break;
 
-                                packetsPart.AddLast(_packets.First.Value);
-                                _packets.RemoveFirst();
+                                packetsPart.AddLast(packets.First.Value);
+                                packets.RemoveFirst();
                             }
 
                             BinaryDump(fileNamePart, packetsPart);
@@ -156,17 +210,27 @@ namespace WowPacketParser.Loading
                     else
                     {
                         var fileNameExcerpt = Path.ChangeExtension(_fileName, null) + "_excerpt.pkt";
-                        BinaryDump(fileNameExcerpt, _packets);
+                        BinaryDump(fileNameExcerpt, packets);
                     }
 
                     break;
                 }
-
                 case DumpFormatType.PktSplit:
                 {
-                    if (!ReadPackets())
+                    var packets = ReadPackets();
+                    if (packets.Count == 0)
                         return;
-                    SplitBinaryDump();
+
+                    SplitBinaryDump(packets);
+                    break;
+                }
+                case DumpFormatType.PktSessionSplit:
+                {
+                    var packets = ReadPackets();
+                    if (packets.Count == 0)
+                        return;
+
+                    SessionSplitBinaryDump(packets);
                     break;
                 }
                 default:
@@ -177,172 +241,67 @@ namespace WowPacketParser.Loading
             }
         }
 
-        private bool ReadPackets()
-        {
-            Trace.WriteLine(string.Format("{0}: Reading packets...", _logPrefix));
-            try
-            {
-                _packets = (LinkedList<Packet>) Reader.Read(_fileName);
-                return true;
-            }
-            catch (IOException ex)
-            {
-                Trace.WriteLine(ex.Message);
-                Trace.WriteLine("Skipped.");
-                return false;
-            }
-        }
-
-        private string GetHeader()
+        public static string GetHeader(string fileName)
         {
             return "# ChipLeo - WowPacketParser" + Environment.NewLine +
-                   "# File name: " + Path.GetFileName(_fileName) + Environment.NewLine +
+                   "# File name: " + Path.GetFileName(fileName) + Environment.NewLine +
                    "# Detected build: " + ClientVersion.Build + Environment.NewLine +
                    "# Parsing date: " + DateTime.Now.ToString(CultureInfo.InvariantCulture) +
                    Environment.NewLine;
         }
 
-        private void ParsePackets()
+        private static long _lastPercent;
+        static void ShowPercentProgress(string message, long curr, long total)
         {
-            var packetCount = _packets.Count;
-            var pc = new UInt32[65536];
-
-            File.Delete(_outFileName);
-
-            if (packetCount == 0)
-            {
-                Trace.WriteLine(string.Format("{0}: Skipped output, packet count is 0.", _logPrefix));
-                return;
-            }
-
-            Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Assumed version {2}",
-                    _logPrefix, packetCount, ClientVersion.VersionString));
-
-            var writers = new Dictionary<IPEndPoint, StreamWriter>();
-            var i = 1;
-
-            var text = Settings.DumpFormatWithText();
-
-            _stats.SetStartTime(DateTime.Now);
-            foreach (var packet in _packets)
-            {
-                var ep = packet.EndPoint ?? new IPEndPoint(0, 0);
-
-                StreamWriter writer = null;
-                var writeHeader = false;
-
-                if (text && !writers.TryGetValue(ep, out writer))
-                {
-                    writeHeader = true;
-
-                    writer = packet.EndPoint == null ?
-                        new StreamWriter(_outFileName) :
-                        new StreamWriter(_fileName + "_" + packet.EndPoint.GetHashCode() + ".txt");
-
-                    writers.Add(ep, writer);
-                }
-
-                if (writeHeader)
-                    writer.WriteLine(GetHeader());
-
-                ShowPercentProgress("Processing...", i++, packetCount);
-
-                // Parse the packet, adding text to Writer and stuff to the stores
-                if (packet.Direction == Direction.BNClientToServer || packet.Direction == Direction.BNServerToClient)
-                    Handler.ParseBattlenet(packet);
-                else
-                    Handler.Parse(packet);
-
-                // Update statistics
-                _stats.AddByStatus(packet.Status);
-                if (packet.Status == ParsedStatus.NotParsed)
-                    if ((packet.Opcode > 65535) || (packet.Opcode < 0))
-                        Trace.WriteLine(string.Format("Error opcode > max {0}", packet.Opcode));
-                    else
-                        pc[packet.Opcode]++;
-
-                // get packet header if necessary
-                if (Settings.LogPacketErrors)
-                {
-                    if (packet.Status == ParsedStatus.WithErrors)
-                        _withErrorHeaders.AddLast(packet.GetHeader());
-                    else if (packet.Status == ParsedStatus.NotParsed)
-                        _skippedHeaders.AddLast(packet.GetHeader());
-                }
-
-                if (writer != null)
-                {
-                    // Write to file
-                    writer.WriteLine(packet.Writer);
-                    writer.Flush();
-                }
-
-                // Close Writer, Stream - Dispose
-                packet.ClosePacket();
-            }
-
-            foreach (var streamWriter in writers)
-            {
-                streamWriter.Value.Dispose();
-            }
-
-            _stats.SetEndTime(DateTime.Now);
-
-            _packets.Clear();
-            _packets = null;
-            Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", _logPrefix, _outFileName));
-            Trace.WriteLine(string.Format("{0}: {1}", _logPrefix, _stats));
-
-            Trace.WriteLine("Packet(s) not decoded:");
-            for (var k = 0; k < 65536; ++k)
-                if (pc[k] > 0)
-                    Trace.WriteLine(string.Format("{0}: {1}", k, pc[k]));
-        }
-
-        private static int _lastPercent;
-        static void ShowPercentProgress(string message, int currElementIndex, int totalElementCount)
-        {
-            var percent = (100 * currElementIndex) / totalElementCount;
+            var percent = (100 * curr) / total;
             if (percent == _lastPercent)
                 return; // we only need to update if percentage changes otherwise we would be wasting precious resources
 
             _lastPercent = percent;
 
             Console.Write("\r{0} {1}% complete", message, percent);
-            if (currElementIndex == totalElementCount)
+            if (curr == total)
                 Console.WriteLine();
         }
 
-        private void SplitBinaryDump()
+        public ICollection<Packet> ReadPackets()
         {
-            Trace.WriteLine(string.Format("{0}: Splitting {1} packets to multiple files...", _logPrefix, _packets.Count));
+            ICollection<Packet> packets = new LinkedList<Packet>();
 
-            try
+            // stats.SetStartTime(DateTime.Now);
+
+            Reader.Read(_fileName, p =>
             {
-                SplitBinaryPacketWriter.Write(_packets, Encoding.ASCII);
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.GetType());
-                Trace.WriteLine(ex.Message);
-                Trace.WriteLine(ex.StackTrace);
-            }
+                var packet = p.Item1;
+                var currSize = p.Item2;
+                var totalSize = p.Item3;
+
+                ShowPercentProgress("Reading...", currSize, totalSize);
+                packets.Add(packet);
+            });
+
+            return packets;
+
+            // stats.SetEndTime(DateTime.Now);
+            // Trace.WriteLine(string.Format("{0}: {1}", _logPrefix, _stats));
+        }
+
+        private void SplitBinaryDump(ICollection<Packet> packets)
+        {
+            Trace.WriteLine(string.Format("{0}: Splitting {1} packets to multiple files...", _logPrefix, packets.Count));
+            SplitBinaryPacketWriter.Write(packets, Encoding.ASCII);
+        }
+
+        private void SessionSplitBinaryDump(ICollection<Packet> packets)
+        {
+            Trace.WriteLine(string.Format("{0}: Splitting {1} packets to multiple files...", _logPrefix, packets.Count));
+            SplitSessionBinaryPacketWriter.Write(packets, Encoding.ASCII);
         }
 
         private void BinaryDump(string fileName, ICollection<Packet> packets)
         {
             Trace.WriteLine(string.Format("{0}: Copying {1} packets to .pkt format...", _logPrefix, packets.Count));
-
-            try
-            {
-                BinaryPacketWriter.Write(SniffType.Pkt, fileName, Encoding.ASCII, packets);
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.GetType());
-                Trace.WriteLine(ex.Message);
-                Trace.WriteLine(ex.StackTrace);
-            }
+            BinaryPacketWriter.Write(SniffType.Pkt, fileName, Encoding.ASCII, packets);
         }
 
         private void WriteSQLs()
@@ -356,7 +315,7 @@ namespace WowPacketParser.Loading
 
             if (String.IsNullOrWhiteSpace(Settings.SQLFileName))
             {
-                Builder.DumpSQL(string.Format("{0}: Dumping sql", _logPrefix), sqlFileName, GetHeader());
+                Builder.DumpSQL(string.Format("{0}: Dumping sql", _logPrefix), sqlFileName, GetHeader(_fileName));
                 Storage.ClearContainers();
             }
         }
@@ -370,7 +329,7 @@ namespace WowPacketParser.Loading
 
             using (var file = new StreamWriter(fileName))
             {
-                file.WriteLine(GetHeader());
+                file.WriteLine(GetHeader(_fileName));
 
                 if (_withErrorHeaders.Count != 0)
                 {

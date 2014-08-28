@@ -4,7 +4,6 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
 using CoreObjects = WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
@@ -17,7 +16,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             const int buttonCount = 132;
 
-            var startAction = new StartAction { Actions = new List<CoreObjects.Action>(buttonCount) };
+            var startAction = new CoreObjects.StartAction { Actions = new List<CoreObjects.Action>(buttonCount) };
 
             var buttons = new byte[buttonCount][];
 
@@ -75,14 +74,14 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     Type = 0 // removed in MoP
                 };
 
-                packet.WriteLine("Action " + i + ": " + action.Id);
+                packet.AddValue("Action " + i, action.Id);
                 startAction.Actions.Add(action);
             }
 
-            WoWObject character;
+            CoreObjects.WoWObject character;
             if (Storage.Objects.TryGetValue(CoreParsers.SessionHandler.LoginGuid, out character))
             {
-                var player = character as Player;
+                var player = character as CoreObjects.Player;
                 if (player != null && player.FirstLogin)
                     Storage.StartActions.Add(new Tuple<Race, Class>(player.Race, player.Class), startAction, packet.TimeSpan);
             }
@@ -94,7 +93,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadByte("Slot Id");
             var actionId = packet.StartBitStream(4, 7, 6, 3, 2, 0, 5, 1);
             packet.ParseBitStream(actionId, 3, 6, 1, 5, 7, 4, 2, 0);
-            packet.WriteLine("Action Id: {0}", BitConverter.ToUInt32(actionId, 0));
+            packet.AddValue("Action Id", BitConverter.ToUInt32(actionId, 0));
         }
     }
 }

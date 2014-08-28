@@ -1,20 +1,20 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using MySql.Data.MySqlClient;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.SQL.Builders
 {
     public static class UnitMisc
     {
-        public static string Addon(Dictionary<Guid, Unit> units)
+        public static string Addon(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return string.Empty;
@@ -74,7 +74,7 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
-        public static string ModelData(Dictionary<Guid, Unit> units)
+        public static string ModelData(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return string.Empty;
@@ -112,7 +112,7 @@ namespace WowPacketParser.SQL.Builders
                     Gender = npc.Gender.GetValueOrDefault(Gender.Male)
                 };
 
-                models.Add(modelId, model, null);
+                models.Add(modelId, model);
             }
 
             var entries = models.Keys();
@@ -189,7 +189,7 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
-        public static string CreatureEquip(Dictionary<Guid, Unit> units)
+        public static string CreatureEquip(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return string.Empty;
@@ -242,7 +242,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(equips, equipsDb, StoreNameType.Unit);
         }
 
-        public static string CreatureMovement(Dictionary<Guid, Unit> units)
+        public static string CreatureMovement(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return string.Empty;
@@ -278,6 +278,11 @@ namespace WowPacketParser.SQL.Builders
 
             return new QueryBuilder.SQLInsert(tableName, rows, ignore: true, withDelete: false).Build();
         }
+
+        //public static string CreatureXP(Dictionary<Guid, Unit> units)
+        //{
+        //
+        //}
 
         public static string Loot()
         {
@@ -577,7 +582,7 @@ namespace WowPacketParser.SQL.Builders
         }
 
         //                      entry, <minlevel, maxlevel>
-        public static Dictionary<uint, Tuple<uint, uint>> GetLevels(Dictionary<Guid, Unit> units)
+        public static Dictionary<uint, Tuple<uint, uint>> GetLevels(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return null;
@@ -599,7 +604,7 @@ namespace WowPacketParser.SQL.Builders
         }
 
         // Non-WDB data but nevertheless data that should be saved to creature_template
-        public static string NpcTemplateNonWDB(Dictionary<Guid, Unit> units)
+        public static string NpcTemplateNonWDB(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return string.Empty;
@@ -647,7 +652,7 @@ namespace WowPacketParser.SQL.Builders
                 template.UnitFlag &= ~(uint)UnitFlags.Silenced;
                 template.UnitFlag &= ~(uint)UnitFlags.PossessedByPlayer;
 
-                templates.Add(unit.Key.GetEntry(), template, null);
+                templates.Add(unit.Key.GetEntry(), template);
             }
 
             var templatesDb = SQLDatabase.GetDict<uint, UnitTemplateNonWDB>(templates.Keys());
@@ -707,6 +712,46 @@ namespace WowPacketParser.SQL.Builders
                         if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
                             textValue.Item1.Sound = sound.Item1;
                     }
+
+                    // Set comment
+
+                    string from = null, to = null;
+                    if (textValue.Item1.SenderGUID != 0)
+                    {
+                        if (textValue.Item1.SenderGUID.GetObjectType() == ObjectType.Player)
+                            from = "Player";
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(textValue.Item1.SenderName))
+                                from = textValue.Item1.SenderName;
+                            else
+                                from = StoreGetters.GetName(StoreNameType.Unit, (int)textValue.Item1.SenderGUID.GetEntry(), false);
+                        }
+                    }
+
+                    if (textValue.Item1.ReceiverGUID != 0)
+                    {
+                        if (textValue.Item1.ReceiverGUID.GetObjectType() == ObjectType.Player)
+                            to = "Player";
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(textValue.Item1.ReceiverName))
+                                to = textValue.Item1.ReceiverName;
+                            else
+                                to = StoreGetters.GetName(StoreNameType.Unit, (int)textValue.Item1.ReceiverGUID.GetEntry(), false);
+                        }
+                            
+                    }
+
+                    Trace.Assert(text.Key == textValue.Item1.SenderGUID.GetEntry() ||
+                        text.Key == textValue.Item1.ReceiverGUID.GetEntry());
+
+                    if (from != null && to != null)
+                        textValue.Item1.Comment = from + " to " + to;
+                    else if (from != null)
+                        textValue.Item1.Comment = from;
+                    else
+                        Trace.Assert(false);
                 }
             }
 
@@ -726,8 +771,7 @@ namespace WowPacketParser.SQL.Builders
 
                     var query = new StringBuilder(string.Format("SELECT Id FROM {1}.broadcast_text WHERE MaleText='{0}' OR FemaleText='{0}';", MySqlHelper.DoubleQuoteString(textValue.Item1.Text), Settings.TDBDatabase));
 
-                    string broadcastTextId = "";
-                    if (Settings.DevMode)
+                    if (Settings.DevMode && !String.IsNullOrEmpty(textValue.Item1.Text))
                     {
                         using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
                         {
@@ -739,10 +783,10 @@ namespace WowPacketParser.SQL.Builders
                                     if (count != 1)
                                         break; // error in query
 
-                                    if (!String.IsNullOrWhiteSpace(broadcastTextId))
-                                        broadcastTextId += " - " + Convert.ToInt32(values[0]);
+                                    if (!String.IsNullOrWhiteSpace(textValue.Item1.BroadcastTextID))
+                                        textValue.Item1.BroadcastTextID += " - " + Convert.ToString(values[0]);
                                     else
-                                        broadcastTextId += Convert.ToInt32(values[0]);
+                                        textValue.Item1.BroadcastTextID = Convert.ToString(values[0]);
                                 }
                         }
 
@@ -759,8 +803,46 @@ namespace WowPacketParser.SQL.Builders
                     row.AddValue("duration", 0);
                     row.AddValue("sound", textValue.Item1.Sound);
                     if (Settings.DevMode)
-                        row.AddValue("BroadcastTextID", broadcastTextId);
+                        row.AddValue("BroadcastTextID", textValue.Item1.BroadcastTextID);
                     row.AddValue("comment", textValue.Item1.Comment);
+
+                    rows.Add(row);
+                }
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
+        }
+
+        public static string VehicleAccessory()
+        {
+            if (Storage.VehicleTemplateAccessorys.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.vehicle_template_accessory))
+                return string.Empty;
+
+            const string tableName = "vehicle_template_accessory";
+
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var accessorys in Storage.VehicleTemplateAccessorys)
+            {
+                foreach (var accessorysValue in accessorys.Value)
+                {
+                    var row = new QueryBuilder.SQLInsertRow();
+
+                    if (accessorysValue.Item1.SeatId < 0 || accessorysValue.Item1.SeatId > 7)
+                        continue;
+
+                    row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)accessorys.Key, false) + " - ";
+                    row.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)accessorysValue.Item1.AccessoryEntry, false);
+
+                    row.AddValue("entry", accessorys.Key);
+                    row.AddValue("accessory_entry", accessorysValue.Item1.AccessoryEntry);
+                    row.AddValue("seat_id", accessorysValue.Item1.SeatId);
+                    row.AddValue("minion", "x", false, true);
+                    row.AddValue("description", row.Comment);
+                    row.AddValue("summontype", "x", false, true);
+                    row.AddValue("summontimer", "x", false, true);
 
                     rows.Add(row);
                 }

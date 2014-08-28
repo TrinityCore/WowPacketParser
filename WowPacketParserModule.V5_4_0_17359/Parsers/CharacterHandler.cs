@@ -4,7 +4,6 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {
@@ -53,7 +52,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             for (int c = 0; c < count; ++c)
             {
                 packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
-                var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
+                var zone = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", c);
                 packet.ReadXORByte(charGuids[c], 0);
                 packet.ReadXORByte(guildGuids[c], 5);
                 packet.ReadXORByte(charGuids[c], 1);
@@ -96,7 +95,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadXORByte(guildGuids[c], 4);
                 packet.ReadEnum<CustomizationFlag>("CustomizationFlag", TypeCode.UInt32, c); //v4+100
                 packet.ReadEnum<Gender>("Gender", TypeCode.Byte, c); //v4+60
-                var mapId = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id", c); //v4+72
+                var mapId = packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id", c); //v4+72
 
                 for (var i = 0; i < count2; ++i)
                 {
@@ -104,17 +103,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     packet.ReadByte("unk2");
                 }
 
-                var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
+                var playerGuid = new WowGuid(BitConverter.ToUInt64(charGuids[c], 0));
 
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);
 
                 if (firstLogins[c])
                 {
-                    var startPos = new StartPosition();
-                    startPos.Map = mapId;
-                    startPos.Position = new Vector3(x, y, z);
-                    startPos.Zone = zone;
+                    var startPos = new StartPosition {Map = mapId, Position = new Vector3(x, y, z), Zone = (int) zone};
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
@@ -135,14 +131,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadInt32("Health");
 
             for (var i = 0; i < 5; i++)
-                packet.WriteLine("Stat " + (StatType)i + ": " + packet.ReadInt32());
+                packet.ReadInt32("Stat", (StatType)i);
 
             packet.ReadInt32("Talent Level"); // 0 - No Talent gain / 1 - Talent Point gain
 
             packet.ReadInt32("Level");
 
             for (var i = 0; i < 5; i++)
-                packet.WriteLine("Power " + (PowerType)i + ": " + packet.ReadInt32());
+                packet.ReadInt32("Power", (PowerType) i);
         }
 
         [Parser(Opcode.SMSG_UPDATE_CURRENCY_WEEK_LIMIT)]
@@ -174,7 +170,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                packet.WriteLine("[{0}] Flags {1}", i, flags[i]); // 20h
+                packet.AddValue("Flags", flags[i], i); // 20h
                 packet.ReadUInt32("Currency count", i);
 
                 if (hasSeasonTotal[i]) // 0Ch

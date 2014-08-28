@@ -26,12 +26,12 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         [Parser(Opcode.CMSG_LOAD_SCREEN)]
         public static void HandleClientEnterWorld(Packet packet)
         {
-            var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map Id");
+            var mapId = packet.ReadEntry<UInt32>(StoreNameType.Map, "Map Id");
             packet.ReadBit("Loading");
 
             CoreParsers.MovementHandler.CurrentMapId = (uint)mapId;
 
-            packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
+            packet.AddSniffData(StoreNameType.Map, (int)mapId, "LOAD_SCREEN");
         }
 
         [Parser(Opcode.CMSG_LOG_DISCONNECT)]

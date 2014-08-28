@@ -2,7 +2,6 @@ using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_4_2_17658.Parsers
 {
@@ -176,7 +175,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     var rank = packet.ReadUInt32();
                     var id = packet.ReadUInt32();
 
-                    packet.WriteLine("[{0}][{1}] Profession: Id {2} - Value {3} - Rank {4}", i, j, id, value, rank);
+                    packet.AddValue("Profession", string.Format("Id {0} - Value {1} - Rank {2}", id, value, rank), i, j);
                 }
 
                 var name = packet.ReadWoWString("Name", nameLength[i], i);
@@ -199,7 +198,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadXORByte(guid[i], 3);
                 packet.ReadInt32("Member Achievement Points", i);
                 packet.WriteGuid("Guid", guid[i], i);
-                StoreGetters.AddName(new Guid(BitConverter.ToUInt64(guid[i], 0)), name);
+                StoreGetters.AddName(new WowGuid(BitConverter.ToUInt64(guid[i], 0)), name);
             }
 
             packet.ReadPackedTime("Time");

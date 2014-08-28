@@ -125,13 +125,13 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         {
             packet.ReadPackedGuid("Target GUID", index);
             packet.ReadPackedGuid("Caster GUID", index); // Can be 0
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell", index); // Can be 0
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell", index); // Can be 0
             var debug = packet.ReadBoolean("Debug Output", index);
             var count = packet.ReadInt32("Count", index);
 
             for (int i = 0; i < count; i++)
             {
-                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell", index, i);
+                packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell", index, i);
                 packet.ReadByte("Unknown Byte/Bool", index, i);
             }
 
@@ -145,7 +145,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         private static void ReadSpellLogExecute(ref Packet packet, int index = -1)
         {
             packet.ReadPackedGuid("Caster GUID", index);
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", index);
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", index);
             var count = packet.ReadInt32("Count", index); // v47
 
             for (int i = 0; i < count; i++)
@@ -174,13 +174,13 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
                         case SpellEffect.InterruptCast:
                         {
                             packet.ReadPackedGuid("Target GUID", index, i, j);
-                            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Interrupted Spell ID", index, i, j);
+                            packet.ReadEntry<Int32>(StoreNameType.Spell, "Interrupted Spell ID", index, i, j);
                             break;
                         }
                         case SpellEffect.DurabilityDamage:
                         {
                             packet.ReadPackedGuid("Target GUID", index, i, j);
-                            packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item", index, i, j);
+                            packet.ReadEntry<Int32>(StoreNameType.Item, "Item", index, i, j);
                             packet.ReadInt32("Slot", index, i, j);
                             break;
                         }
@@ -193,7 +193,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
                         case SpellEffect.CreateRandomItem:
                         case SpellEffect.CreateItem2:
                         {
-                            packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Created Item", index, i, j);
+                            packet.ReadEntry<Int32>(StoreNameType.Item, "Created Item", index, i, j);
                             break;
                         }
                         case SpellEffect.Summon:
@@ -244,7 +244,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         {
             packet.ReadPackedGuid("Target GUID", index);
             packet.ReadPackedGuid("Caster GUID", index);
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", index);
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", index);
             var count = packet.ReadInt32("Count", index);
 
             for (var i = 0; i < count; i++)
@@ -308,7 +308,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         {
             packet.ReadPackedGuid("Target GUID", index);
             packet.ReadPackedGuid("Caster GUID", index);
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", index);
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID", index);
             packet.ReadUInt32("Damage", index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183))
@@ -355,7 +355,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         {
             packet.ReadPackedGuid("Target GUID", index);
             packet.ReadPackedGuid("Caster GUID", index);
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", index);
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID", index);
             packet.ReadUInt32("Damage", index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183))
@@ -377,14 +377,14 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         {
             packet.ReadPackedGuid("Target GUID", index);
             packet.ReadPackedGuid("Caster GUID", index);
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", index);
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID", index);
             packet.ReadEnum<PowerType>("Power type", TypeCode.UInt32, index);
             packet.ReadUInt32("Amount", index);
         }
 
         private static void ReadSpellMissLog(ref Packet packet, int index = -1)
         {
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", index);
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID", index);
             packet.ReadGuid("Caster GUID", index);
             var debug = packet.ReadBoolean("Debug output", index);
 
@@ -406,7 +406,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         {
             packet.ReadGuid("Victim");
             packet.ReadGuid("Caster");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell Id");
             packet.ReadInt32("Damage");
             packet.ReadInt32("Overkill");
             packet.ReadInt32("SpellSchoolMask");

@@ -117,7 +117,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadXORByte(transportGUID, 0);
 
                 packet.WriteGuid("Transport Guid", transportGUID);
-                packet.WriteLine("Transport Position {0}", transPos);
+                packet.AddValue("Transport Position", transPos);
             }
 
             packet.ReadXORByte(guid, 3);
@@ -157,7 +157,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadXORByte(guid, 4);
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_MONSTER_MOVE)]
@@ -264,7 +264,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     endpos = spot;
                 }
 
-                packet.WriteLine("[{0}] Spline Waypoint: {1}", i, spot);
+                packet.AddValue("Spline Waypoint", spot, i);
             }
 
             packet.ParseBitStream(guid2, 6, 7, 2, 5, 3, 4, 1, 0);
@@ -337,12 +337,12 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     Y = mid.Y - waypoints[i].Y,
                     Z = mid.Z - waypoints[i].Z,
                 };
-                packet.WriteLine("[{0}] Waypoint: {1}", i, vec);
+                packet.AddValue("Waypoint", vec, i);
             }
 
             packet.WriteGuid("Owner GUID", ownerGUID);
             packet.WriteGuid("GUID2", guid2);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
 
@@ -351,13 +351,13 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         {
             var pos = new Vector4();
 
-            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
             pos.X = packet.ReadSingle();
             pos.O = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
 
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
 
@@ -368,12 +368,12 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var pos = new Vector4();
 
             pos.Y = packet.ReadSingle();
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
             pos.X = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
             pos.O = packet.ReadSingle();
 
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_BINDPOINTUPDATE)]
@@ -381,14 +381,14 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         {
             var pos = new Vector3();
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area Id");
+            packet.ReadEntry<Int32>(StoreNameType.Area, "Area Id");
             pos.Z = packet.ReadSingle();
             pos.X = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
 
-            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map");
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
 
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]
@@ -408,16 +408,16 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var customLoadScreenSpell = packet.ReadBit();
             var hasTransport = packet.ReadBit();
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
 
             if (hasTransport)
             {
-                packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Transport Map ID");
+                packet.ReadEntry<Int32>(StoreNameType.Map, "Transport Map ID");
                 packet.ReadInt32("Transport Entry");
             }
 
             if (customLoadScreenSpell)
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+                packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
         }
 
         [Parser(Opcode.SMSG_MOVE_TELEPORT)]
@@ -474,7 +474,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 2);
 
-            packet.WriteLine("Destination: {0}", pos);
+            packet.AddValue("Destination", pos);
             packet.WriteGuid("Guid", guid);
         }
 
@@ -720,7 +720,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadSingle("Pitch");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_FLIGHT_SPLINE_SYNC)]
@@ -844,7 +844,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadXORByte(transportGuid, 6);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
@@ -876,7 +876,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadSingle("Pitch");
 
             packet.WriteGuid("Guid2", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
@@ -892,27 +892,27 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ParseBitStream(guid, 1);
 
             var count = packet.ReadUInt32() / 2;
-            packet.WriteLine("Inactive Terrain swap count: {0}", count);
+            packet.AddValue("Inactive Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
+                packet.ReadEntry<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
 
             count = packet.ReadUInt32() / 2;
-            packet.WriteLine("Active Terrain swap count: {0}", count);
+            packet.AddValue("Active Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntryWithName<Int16>(StoreNameType.Map, "Active Terrain swap", i);
+                packet.ReadEntry<Int16>(StoreNameType.Map, "Active Terrain swap", i);
 
             packet.ParseBitStream(guid, 3);
 
 
             count = packet.ReadUInt32() / 2;
-            packet.WriteLine("Phases count: {0}", count);
+            packet.AddValue("Phases count", count);
             for (var i = 0; i < count; ++i)
                 CoreParsers.MovementHandler.ActivePhases.Add(packet.ReadUInt16("Phase id", i)); // Phase.dbc
 
             packet.ParseBitStream(guid, 7, 0);
 
             count = packet.ReadUInt32() / 2;
-            packet.WriteLine("WorldMapArea swap count: {0}", count);
+            packet.AddValue("WorldMapArea swap count", count);
             for (var i = 0; i < count; ++i)
                 packet.ReadUInt16("WorldMapArea swap", i);
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+using System.IO;
 using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc
@@ -15,12 +16,10 @@ namespace WowPacketParser.Misc
         public static readonly string[] IgnoreByEntryFilters = GetStringList("IgnoreByEntryFilters", new string[0]);
         public static readonly string[] MapFilters = GetStringList("MapFilters", new string[0]);
         public static readonly string[] AreaFilters = GetStringList("AreaFilters", new string[0]);
-        public static readonly int FilterPacketNumLow = GetInt32("FilterPacketNumLow", 0);
-        public static readonly int FilterPacketNumHigh = GetInt32("FilterPacketNumHigh", 0);
         public static readonly int FilterPacketsNum = GetInt32("FilterPacketsNum", 0);
         public static readonly ClientVersionBuild ClientBuild = GetEnum("ClientBuild", ClientVersionBuild.Zero);
         public static readonly DumpFormatType DumpFormat = GetEnum("DumpFormat", DumpFormatType.Text);
-        public static readonly int SQLOutputFlag = GetSQLOutputFlag();
+        public static readonly UInt64 SQLOutputFlag = GetSQLOutputFlag();
         public static readonly string SQLFileName = GetString("SQLFileName", string.Empty);
         public static readonly bool ShowEndPrompt = GetBoolean("ShowEndPrompt", false);
         public static readonly bool LogErrors = GetBoolean("LogErrors", false);
@@ -29,6 +28,7 @@ namespace WowPacketParser.Misc
         public static readonly bool ParsingLog = GetBoolean("ParsingLog", false);
         public static readonly bool DevMode = GetBoolean("DevMode", false);
         public static readonly bool AllPackets = GetBoolean("AllPackets", false);
+        public static readonly int Threads = GetInt32("Threads", 8);
 
         public static readonly bool SSHEnabled = GetBoolean("SSHEnabled", false);
         public static readonly string SSHHost = GetString("SSHHost", "localhost");
@@ -74,7 +74,7 @@ namespace WowPacketParser.Misc
             // load different config file
             if (configFile != null)
             {
-                string configPath = System.IO.Path.Combine(Environment.CurrentDirectory, configFile);
+                string configPath = Path.Combine(Environment.CurrentDirectory, configFile);
 
                 try
                 {
@@ -164,17 +164,17 @@ namespace WowPacketParser.Misc
             return (T)aux;
         }
 
-        private static int GetSQLOutputFlag()
+        private static UInt64 GetSQLOutputFlag()
         {
             var names = Enum.GetNames(typeof(SQLOutput));
             var values = Enum.GetValues(typeof(SQLOutput));
 
-            var result = 0;
+            var result = 0ul;
 
             for (var i = 0; i < names.Length; ++i)
             {
                 if (GetBoolean(names[i], false))
-                    result += (1 << (int)values.GetValue(i));
+                    result += (1ul << (int)values.GetValue(i));
             }
 
             return result;
@@ -183,6 +183,13 @@ namespace WowPacketParser.Misc
         public static bool DumpFormatWithText()
         {
             return DumpFormat != DumpFormatType.SqlOnly && DumpFormat != DumpFormatType.SniffDataOnly;
+        }
+
+        public static bool DumpFormatWithSQL()
+        {
+            return DumpFormat == DumpFormatType.SniffDataOnly ||
+                   DumpFormat == DumpFormatType.SqlOnly ||
+                   DumpFormat == DumpFormatType.Text;
         }
     }
 }

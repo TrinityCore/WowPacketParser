@@ -86,7 +86,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadUInt32("Slot");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+            packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry");
             packet.ReadInt32("Random Property Id");
             packet.ReadInt32("Random Suffix");
         }
@@ -177,7 +177,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             {
                 var lootItem = new LootItem();
                 packet.ReadByte("Slot", i);
-                lootItem.ItemId = (uint) packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
+                lootItem.ItemId = (uint) packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry", i);
                 lootItem.Count = packet.ReadUInt32("Count", i);
                 packet.ReadUInt32("Display ID", i);
                 packet.ReadInt32("Random Suffix", i);
@@ -223,7 +223,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.ReadGuid("GUID");
             packet.ReadUInt32("Slot");
             packet.ReadGuid("Player GUID");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+            packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry");
             packet.ReadInt32("Random Property Id");
             packet.ReadInt32("Random Suffix");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
@@ -239,7 +239,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadUInt32("Slot");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+            packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry");
             packet.ReadInt32("Random Property Id");
             packet.ReadInt32("Random Suffix");
             packet.ReadGuid("Player GUID");
@@ -254,10 +254,10 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         public static void HandleStartLoot(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685)) // probably earlier
                 packet.ReadUInt32("Slot");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+            packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry");
             packet.ReadInt32("Random Suffix");
             packet.ReadInt32("Random Property Id");
             packet.ReadUInt32("Count");
@@ -272,7 +272,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadByte("Slot");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+            packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry");
             packet.ReadUInt32("Display ID");
             packet.ReadInt32("Unk UInt32 1");
             packet.ReadInt32("Unk UInt32 2"); // only seen 0
@@ -296,7 +296,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
                 packet.ReadUInt32("Display ID", i);
                 packet.ReadInt32("Random Suffix Factor", i);
                 packet.ReadInt32("Item Count", i);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", i);
                 packet.ReadInt32("Unk Int32", i); // possibly random property id or looted count
             }
         }

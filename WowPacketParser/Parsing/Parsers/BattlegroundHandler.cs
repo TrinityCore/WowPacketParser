@@ -18,7 +18,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBit("IsRated");
             packet.ReadUInt32("Time since started");
             packet.ReadUInt32("Queue slot");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
             packet.ReadGuid("BG Guid");
             packet.ReadUInt32("Time until closed");
             packet.ReadByte("Teamsize");
@@ -37,7 +37,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Queue slot");
             packet.ReadByte("Teamsize");
             packet.ReadUInt32("Expire Time");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
             packet.ReadByte("Max Level");
         }
 
@@ -119,7 +119,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BATTLEFIELD_LIST)]
         public static void HandleBattlefieldListClient(Packet packet)
         {
-            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
+            packet.ReadEntry<Int32>(StoreNameType.Battleground, "BGType");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 return;
@@ -134,7 +134,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Win Conquest Reward"); // Winner Conquest Reward or Random Winner Conquest Reward
             packet.ReadInt32("Random Win Conquest Reward"); // Winner Conquest Reward or Random Winner Conquest Reward
             packet.ReadInt32("Random Loss Conquest Reward"); // Loser Honor Reward or Random Loser Honor Reward
-            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BG type");
+            packet.ReadEntry<Int32>(StoreNameType.Battleground, "BG type");
             packet.ReadInt32("Loss Conquest Reward"); // Loser Honor Reward or Random Loser Honor Reward
             packet.ReadInt32("Win Conquest Reward"); // Winner Honor Reward or Random Winner Honor Reward
             packet.ReadInt32("Random Win Conquest Reward"); // Winner Honor Reward or Random Winner Honor Reward
@@ -201,7 +201,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guidBytes, 7);
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BG type");
+            packet.ReadEntry<Int32>(StoreNameType.Battleground, "BG type");
 
             packet.ReadXORByte(guidBytes, 1);
 
@@ -261,7 +261,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guidBytes, 2);
             packet.ReadXORByte(guidBytes, 4);
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
+            packet.ReadEntry<Int32>(StoreNameType.Battleground, "BGType");
             packet.ReadInt32("Random Winner Conquest Reward");
             packet.ReadInt32("Winner Conquest Reward");
 
@@ -290,7 +290,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Random Loser Honor Reward");
             packet.ReadInt32("Random Winner Conquest Reward");
             packet.ReadInt32("Winner Conquest Reward");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
+            packet.ReadEntry<Int32>(StoreNameType.Battleground, "BGType");
 
             var count = packet.ReadUInt32("BG Instance count");
             for (var i = 0; i < count; i++)
@@ -307,7 +307,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333))
                 packet.ReadBoolean("From UI");
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
+            packet.ReadEntry<Int32>(StoreNameType.Battleground, "BGType");
             packet.ReadByte("Min Level");
             packet.ReadByte("Max Level");
 
@@ -392,7 +392,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Time in queue");
                     break;
                 case BattlegroundStatus.WaitJoin:
-                    packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
+                    packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_5_12213))
                         packet.ReadGuid("GUID");
@@ -400,7 +400,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Time left");
                     break;
                 case BattlegroundStatus.InProgress:
-                    packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
+                    packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_5_12213))
                         packet.ReadGuid("GUID");
@@ -451,7 +451,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlemasterJoin(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
+            packet.ReadEntry<Int32>(StoreNameType.Battleground, "BGType");
             packet.ReadUInt32("Instance Id");
             packet.ReadBoolean("As group");
         }
@@ -506,14 +506,13 @@ namespace WowPacketParser.Parsing.Parsers
             var val = packet.ReadInt32();
             if (val < 1)
             {
-                var result = (BattlegroundError)val;
-                packet.WriteLine("Result: " + result);
+                var result = packet.AddValue("Result", (BattlegroundError)val);
                 if (result == BattlegroundError.JoinFailedAsGroup ||
                     result == BattlegroundError.CouldntJoinQueueInTime)
                     packet.ReadGuid("GUID");
             }
             else
-                packet.WriteLine("Result: Joined (BGType: " + StoreGetters.GetName(StoreNameType.Battleground, val) + ")");
+                packet.AddValue("Result", "Joined (BGType: " + StoreGetters.GetName(StoreNameType.Battleground, val) + ")");
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED, ClientVersionBuild.V4_3_4_15595)]
@@ -677,8 +676,6 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.WriteGuid("Guid", guidBytes);
             }
-
-            packet.WriteLine("BGError: {0}", bgError);
         }
 
         [Parser(Opcode.SMSG_JOINED_BATTLEGROUND_QUEUE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
@@ -979,7 +976,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldMgrInviteSend(Packet packet)
         {
             packet.ReadInt32("Battle Id");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
+            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
             packet.ReadTime("Invite lasts until");
         }
 
@@ -989,7 +986,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(5, 3, 7, 2, 6, 4, 1, 0);
 
             packet.ReadXORByte(guid, 6);
-            packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
+            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 4);
@@ -1094,7 +1091,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldMgrQueueRequestResponse(Packet packet)
         {
             packet.ReadInt32("Battle Id");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone ID");
+            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone ID");
             packet.ReadByte("Accepted");
             packet.ReadByte("Logging In");
             packet.ReadByte("Warmup");
@@ -1138,7 +1135,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 5);
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone ID");
+            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone ID");
 
             packet.WriteGuid("BG Guid", guid);
             packet.WriteGuid("guid2", guid2);
@@ -1611,7 +1608,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadTime("Time");
             packet.ReadUInt32("Queue Slot");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
+            packet.ReadEntry<Int32>(StoreNameType.Battleground, "BGType");
 
             var guid = packet.StartBitStream(0, 1, 5, 6, 7, 4, 3, 2);
             packet.ReadBit("Join");
@@ -1681,7 +1678,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid1, 4);
             packet.ReadXORByte(guid2, 2);
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Battleground, "BGType");
+            packet.ReadEntry<Int32>(StoreNameType.Battleground, "BGType");
 
             packet.ReadXORByte(guid3, 2);
 
@@ -1738,7 +1735,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Queue slot");
             packet.ReadByte("Max Level");
             packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
             packet.ReadByte("Min Level");
             packet.ReadUInt32("Elapsed Time");
 
@@ -1771,7 +1768,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadTime("Time");
             packet.ReadByte("Min Level");
             packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
             packet.ReadByte("Unk Byte");
 
             var guid1 = new byte[8];
@@ -1828,7 +1825,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Min Level");
             packet.ReadByte("Unk Byte");
             packet.ReadByte("Unk Byte");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
             packet.ReadTime("Time");
             packet.ReadByte("Unk Byte");
             var guid1 = new byte[8];

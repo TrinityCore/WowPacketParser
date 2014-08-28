@@ -82,7 +82,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadXORByte(targetGUID, 5); // 85
             packet.ReadXORByte(targetGUID, 3); // 83
             packet.ReadXORByte(casterGUID, 4); // 20
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID"); // 56
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID"); // 56
             packet.ReadXORByte(casterGUID, 6); // 22
             packet.ReadXORByte(targetGUID, 7); // 87
             packet.ReadXORByte(targetGUID, 1); // 81
@@ -169,7 +169,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 if (bit14[i])
                     packet.ReadInt32("Int20", i);
 
-                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell", i);
+                packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell", i);
 
                 if (bitC[i])
                     packet.ReadInt32("Int20", i);
@@ -186,7 +186,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadXORByte(casterGUID, 1);
             packet.ReadXORByte(casterGUID, 5);
             packet.ReadXORByte(targetGUID, 0);
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell");
             packet.ReadXORByte(targetGUID, 7);
             packet.ReadXORByte(targetGUID, 6);
             packet.ReadXORByte(targetGUID, 2);
@@ -255,7 +255,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadXORByte(guid2, 4); // 68
             packet.ReadXORByte(guid, 3); // 59
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID"); // 72
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID"); // 72
             packet.ReadEnum<PowerType>("Power Type", TypeCode.UInt32); // 52
 
             packet.WriteGuid("Guid", guid);
@@ -270,7 +270,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
             var bits24 = 0;
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
             packet.ReadInt32("Absorb");
             packet.ReadInt32("Damage");
             packet.ReadInt32("Overheal");
@@ -487,10 +487,10 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 var type = packet.ReadEnum<SpellEffect>("Spell Effect", TypeCode.Int32, i);
 
                 for (var j = 0; j < bits44[i]; ++j)
-                    packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Created Item", i, j);
+                    packet.ReadEntry<Int32>(StoreNameType.Item, "Created Item", i, j);
             }
 
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
             packet.ParseBitStream(guid, 5, 7, 1, 6, 2, 0, 4, 3);
 
             packet.WriteGuid("Guid", guid);
@@ -626,7 +626,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ParseBitStream(guid2, 7);
             packet.ReadInt32("unk72", index);
             packet.ParseBitStream(guid2, 1);
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", index);
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID", index);
 
             packet.WriteGuid("Caster", guid, index);
             packet.WriteGuid("Target", guid2, index);

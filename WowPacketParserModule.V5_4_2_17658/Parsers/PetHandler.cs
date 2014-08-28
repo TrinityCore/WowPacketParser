@@ -4,9 +4,6 @@ using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_4_2_17658.Parsers
 {
@@ -55,10 +52,10 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteGuid("Guid2", number);
             packet.WriteGuid("Guid3", guid);
 
-            var GUID = new Guid(BitConverter.ToUInt64(guid, 0));
+            var GUID = new WowGuid(BitConverter.ToUInt64(guid, 0));
             var Number = BitConverter.ToUInt64(number, 0);
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Pet Number: {0}", Number);
+            packet.AddValue("Pet Number", Number);
 
             // Store temporary name (will be replaced in SMSG_PET_NAME_QUERY_RESPONSE)
             StoreGetters.AddName(GUID, Number.ToString(CultureInfo.InvariantCulture));

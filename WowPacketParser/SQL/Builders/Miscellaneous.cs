@@ -1,14 +1,11 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Text;
+using MySql.Data.MySqlClient;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.SQL.Builders
 {
@@ -158,7 +155,7 @@ namespace WowPacketParser.SQL.Builders
         }
 
         // Non-WDB data but nevertheless data that should be saved to gameobject_template
-        public static string GameobjectTemplateNonWDB(Dictionary<Guid, GameObject> gameobjects)
+        public static string GameobjectTemplateNonWDB(Dictionary<WowGuid, GameObject> gameobjects)
         {
             if (gameobjects.Count == 0)
                 return string.Empty;
@@ -190,7 +187,7 @@ namespace WowPacketParser.SQL.Builders
                 template.Flags &= ~GameObjectFlag.Damaged;
                 template.Flags &= ~GameObjectFlag.Destroyed;
 
-                templates.Add(goT.Key.GetEntry(), template, null);
+                templates.Add(goT.Key.GetEntry(), template);
             }
 
             var templatesDb = SQLDatabase.GetDict<uint, GameObjectTemplateNonWDB>(templates.Keys());
@@ -250,6 +247,38 @@ namespace WowPacketParser.SQL.Builders
             }
 
             return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
+        }
+
+        public static string WeatherUpdates()
+        {
+            if (Storage.WeatherUpdates.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.weather_updates))
+                return string.Empty;
+
+            const string tableName = "weather_updates";
+
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var weatherUpdate in Storage.WeatherUpdates)
+            {
+                var row = new QueryBuilder.SQLInsertRow();
+
+                var weather = weatherUpdate.Item1;
+
+                row.AddValue("map_id", weather.MapId);
+                row.AddValue("zone_id", weather.ZoneId);
+                row.AddValue("weather_state", (int)weather.State);
+                row.AddValue("timestamp", weatherUpdate.Item2.HasValue ? weatherUpdate.Item2.Value.ToFormattedString() : "null");
+                row.AddValue("grade", weather.Grade);
+                row.AddValue("unk", weather.Unk);
+
+                row.Comment = StoreGetters.GetName(StoreNameType.Map, (int)weather.MapId, false) +
+                    " - " + weather.State + " - " + weather.Grade;
+                rows.Add(row);
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows, ignore: true, withDelete: false).Build();
         }
     }
 }

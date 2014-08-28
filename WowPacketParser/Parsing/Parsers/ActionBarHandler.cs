@@ -4,6 +4,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using Action = WowPacketParser.Store.Objects.Action;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -23,11 +24,11 @@ namespace WowPacketParser.Parsing.Parsers
 
             var buttonCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 144 : 132;
 
-            var startAction = new StartAction { Actions = new List<Store.Objects.Action>(buttonCount) };
+            var startAction = new StartAction { Actions = new List<Action>(buttonCount) };
 
             for (var i = 0; i < buttonCount; i++)
             {
-                var action = new Store.Objects.Action { Button = (uint)i };
+                var action = new Action { Button = (uint)i };
 
                 var packed = packet.ReadInt32();
 
@@ -35,10 +36,10 @@ namespace WowPacketParser.Parsing.Parsers
                     continue;
 
                 action.Id = (uint)(packed & 0x00FFFFFF);
-                packet.WriteLine("Action " + i + ": " + action.Id);
+                packet.AddValue("Action", action.Id, i);
 
                 action.Type = (ActionButtonType)((packed & 0xFF000000) >> 24);
-                packet.WriteLine("Type " + i + ": " + action.Type);
+                packet.AddValue("Type", action.Type, i);
 
                 startAction.Actions.Add(action);
             }
@@ -60,7 +61,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             const int buttonCount = 132;
 
-            var startAction = new StartAction { Actions = new List<Store.Objects.Action>(buttonCount) };
+            var startAction = new StartAction { Actions = new List<Action>(buttonCount) };
 
             var buttons = new byte[buttonCount][];
 
@@ -111,14 +112,14 @@ namespace WowPacketParser.Parsing.Parsers
                 if (actionId == 0)
                     continue;
 
-                var action = new Store.Objects.Action
+                var action = new Action
                 {
                     Button = (uint)i,
                     Id = (uint)actionId,
                     Type = 0 // removed in MoP
                 };
 
-                packet.WriteLine("Action " + i + ": " + action.Id);
+                packet.AddValue("Action", action.Id, i);
                 startAction.Actions.Add(action);
             }
 

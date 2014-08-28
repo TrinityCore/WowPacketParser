@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using Guid = WowPacketParser.Misc.Guid;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers
@@ -67,8 +65,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadBit("Unk bit");
             var size = (int)packet.ReadBits(11);
             packet.ResetBitReader();
-            packet.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(size)));
-            packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
+            packet.ReadBytesString("Account name", size);
+            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
 
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
@@ -149,14 +147,14 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadSingle("Unk Float");
             var guid = packet.StartBitStream(3, 4, 0, 6, 7, 1, 2, 5);
             packet.ParseBitStream(guid, 0, 3, 7, 6, 1, 2, 4, 5);
-            CoreParsers.SessionHandler.LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+            CoreParsers.SessionHandler.LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
             packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
         public static void HandleLogoutComplete(Packet packet)
         {
-            CoreParsers.SessionHandler.LoginGuid = new Guid(0);
+            CoreParsers.SessionHandler.LoginGuid = new WowGuid(0);
         }
     }
 }

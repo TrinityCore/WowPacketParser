@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
                 packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Int32, i);
                 packet.ReadPackedTime("Event Time", i);
                 packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32, i);
-                packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID", i);
+                packet.ReadEntry<Int32>(StoreNameType.LFGDungeon, "Dungeon ID", i);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                     packet.ReadGuid("Guild GUID", i);
@@ -47,7 +47,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 
             for (var i = 0; i < instanceResetCount; i++)
             {
-                packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID", i);
+                packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID", i);
                 packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32, i);
                 packet.ReadInt32("Time left", i);
                 packet.ReadGuid("Instance ID", i);
@@ -59,7 +59,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 
             for (var i = 0; i < raidResetCount; i++)
             {
-                packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID", i);
+                packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID", i);
                 packet.ReadInt32("Time left", i);
                 packet.ReadInt32("Unk Time", i);
             }
@@ -100,7 +100,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Byte);
             packet.ReadEnum<CalendarRepeatType>("Repeat Type", TypeCode.Byte);
             packet.ReadInt32("Max Invites");
-            packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
+            packet.ReadEntry<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
             packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
             packet.ReadPackedTime("Event Time");
             packet.ReadPackedTime("Unk PackedTime");
@@ -159,7 +159,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Byte);
             packet.ReadEnum<CalendarRepeatType>("Repeat Type", TypeCode.Byte);
             packet.ReadInt32("Max Invites");
-            packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
+            packet.ReadEntry<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
             packet.ReadPackedTime("Event Time");
             packet.ReadPackedTime("Unk PackedTime");
 
@@ -188,7 +188,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Byte);
             packet.ReadEnum<CalendarRepeatType>("Repeat Type", TypeCode.Byte);
             packet.ReadInt32("Max Invites");
-            packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
+            packet.ReadEntry<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
             packet.ReadPackedTime("Event Time");
             packet.ReadPackedTime("Unk PackedTime");
             packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
@@ -352,7 +352,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         public static void HandleRaidLockoutAdded(Packet packet)
         {
             packet.ReadPackedTime("Time");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
             packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
             packet.ReadInt32("Reset Time");
             packet.ReadGuid("Instance ID");
@@ -361,7 +361,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         [Parser(Opcode.SMSG_CALENDAR_RAID_LOCKOUT_REMOVED)]
         public static void HandleRaidLockoutRemoved(Packet packet)
         {
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
             packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
             packet.ReadInt32("Reset Time");
             packet.ReadGuid("Instance ID");
@@ -385,7 +385,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.ReadPackedTime("Time");
             packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
             packet.ReadEnum<CalendarEventType>("Type", TypeCode.Int32);
-            packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
+            packet.ReadEntry<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
             packet.ReadInt64("Invite ID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0a_15050))
             {
@@ -414,7 +414,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
             packet.ReadPackedTime("Time2");
             packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Byte);
-            packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
+            packet.ReadEntry<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
             packet.ReadCString("Title");
             packet.ReadCString("Description");
             packet.ReadEnum<CalendarRepeatType>("Repeat Type", TypeCode.Byte);

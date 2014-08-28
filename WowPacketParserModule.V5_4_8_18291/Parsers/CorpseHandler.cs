@@ -18,13 +18,13 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_DEATH_RELEASE_LOC)]
         public static void HandleDeathReleaseLoc(Packet packet)
         {
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
             var pos = new Vector3();
             pos.Y = packet.ReadSingle();
             pos.X = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
 
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_CORPSE_QUERY_RESPONSE)]
@@ -46,7 +46,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(guid, 5);
             pos.Z = packet.ReadSingle();
             packet.ReadXORByte(guid, 1);
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 4);
             pos.X = packet.ReadSingle();
@@ -54,10 +54,10 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 0);
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Corpse Map ID");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Corpse Map ID");
             pos.Y = packet.ReadSingle();
 
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
             packet.WriteGuid("Corpse Low GUID", guid);
         }
     }

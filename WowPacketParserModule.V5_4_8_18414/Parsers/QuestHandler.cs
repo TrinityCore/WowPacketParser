@@ -17,7 +17,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             var count = packet.ReadBits("Count", 22);
 
             for (var i = 0; i < count; i++)
-                packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID", i);
+                packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID", i);
         }
 
         [Parser(Opcode.CMSG_QUEST_QUERY)]
@@ -88,7 +88,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     packet.ReadInt32("Unk14*4", i, j);
                     packet.ReadInt32("Unk42*4", i, j);
 
-                    questPoi.Map = (uint)packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map Id", i, j);
+                    questPoi.Map = (uint)packet.ReadEntry<UInt32>(StoreNameType.Map, "Map Id", i, j);
                     packet.ReadInt32("Points Counter", i, j);
                     questPoi.WorldMapAreaId = packet.ReadUInt32("World Map Area", i, j);
                     packet.ReadInt32("Unk200", i, j);
@@ -98,7 +98,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
                     Storage.QuestPOIs.Add(new Tuple<uint, uint>((uint)0, (uint)idx), questPoi, packet.TimeSpan);
                 }
-                var questId = packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Quest ID", i);
+                var questId = packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID", i);
                 packet.ReadInt32("POI size", i);
             }
             packet.ReadInt32("count");
@@ -153,19 +153,19 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     {
                         case QuestRequirementType.Creature:
                         case QuestRequirementType.Unknown3:
-                            packet.ReadEntryWithName<Int32>(StoreNameType.Unit, "Required Creature ID", i);
+                            packet.ReadEntry<Int32>(StoreNameType.Unit, "Required Creature ID", i);
                             break;
                         case QuestRequirementType.Item:
-                            packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Required Item ID", i);
+                            packet.ReadEntry<Int32>(StoreNameType.Item, "Required Item ID", i);
                             break;
                         case QuestRequirementType.GameObject:
-                            packet.ReadEntryWithName<Int32>(StoreNameType.GameObject, "Required GameObject ID", i);
+                            packet.ReadEntry<Int32>(StoreNameType.GameObject, "Required GameObject ID", i);
                             break;
                         case QuestRequirementType.Currency:
                             packet.ReadUInt32("Required Currency ID", i);
                             break;
                         case QuestRequirementType.Spell:
-                            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Required Spell ID", i);
+                            packet.ReadEntry<Int32>(StoreNameType.Spell, "Required Spell ID", i);
                             break;
                         case QuestRequirementType.Faction:
                             packet.ReadUInt32("Required Faction ID", i);

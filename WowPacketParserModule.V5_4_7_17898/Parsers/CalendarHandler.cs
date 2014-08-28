@@ -1,14 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
-using Guid = WowPacketParser.Misc.Guid;
-using UpdateFields = WowPacketParser.Enums.Version.UpdateFields;
 
 namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
@@ -21,7 +15,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadInt32("Event Time");
             packet.ReadInt32("Invite Count");
             packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Byte);
-            packet.ReadEntryWithName<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
+            packet.ReadEntry<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
             packet.ReadInt32("Max Invites");
 
             var bits496 = packet.ReadBits(8);

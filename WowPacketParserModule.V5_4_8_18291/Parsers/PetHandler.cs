@@ -1,14 +1,10 @@
 using System;
-using System.Globalization;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
@@ -54,10 +50,10 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 7);
 
-            var GUID = new Guid(BitConverter.ToUInt64(number, 0));
+            var GUID = new WowGuid(BitConverter.ToUInt64(number, 0));
             var Number = BitConverter.ToUInt64(number, 0);
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Pet Number: {0}", Number);
+            packet.AddValue("Pet Number", Number);
 
             // Store temporary name (will be replaced in SMSG_PET_NAME_QUERY_RESPONSE)
             StoreGetters.AddName(GUID, Number.ToString(CultureInfo.InvariantCulture));
@@ -121,14 +117,10 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 var spellId = spell16 + (spell8 << 16);
                 var slot = packet.ReadByte();
 
-                var s = new StringBuilder("[");
-                s.Append(i).Append("] ").Append("Spell/Action: ");
                 if (spellId <= 4)
-                    s.Append(spellId);
+                    packet.AddValue("Action", spellId, i);
                 else
-                    s.Append(StoreGetters.GetName(StoreNameType.Spell, spellId));
-                s.Append(" slot: ").Append(slot);
-                packet.WriteLine(s.ToString());
+                    packet.AddValue("Spell", StoreGetters.GetName(StoreNameType.Spell, spellId), i);
             }
 
             for (var i = 0; i < bits10; ++i)
@@ -483,7 +475,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.ReadInt32("hasGlyphIndex");
 
             if (hasSpellId)
-                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+                packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
             packet.WriteGuid("PetGuid", petGuid);
         }
     }

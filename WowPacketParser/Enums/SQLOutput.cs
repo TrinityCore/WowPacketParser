@@ -33,6 +33,8 @@
         quest_template,
         SniffData,
         SniffDataOpcodes,
+        vehicle_template_accessory,
+        weather_updates
 // ReSharper restore InconsistentNaming
     }
 }

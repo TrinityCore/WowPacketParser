@@ -71,8 +71,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     packet.ReadInt32("Durability", i, j);
                     packet.ReadInt32("Count", i, j);
                     packet.ReadByte("Slot", i, j);
-                    packet.WriteLine("[{0}][{1}] bit84: {2}", i, j, bit84[i][j]);
-                    packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Id", i, j);
+                    packet.AddValue("bit84", bit84[i][j], i, j);
+                    packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Id", i, j);
                 }
 
                 packet.ReadWoWString("Body", bodyLength[i], i);

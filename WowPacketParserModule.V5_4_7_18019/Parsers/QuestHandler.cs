@@ -234,19 +234,19 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
                     {
                         case QuestRequirementType.Creature:
                         case QuestRequirementType.Unknown3:
-                            packet.ReadEntryWithName<Int32>(StoreNameType.Unit, "Required Creature ID", i);
+                            packet.ReadEntry<Int32>(StoreNameType.Unit, "Required Creature ID", i);
                             break;
                         case QuestRequirementType.Item:
-                            packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Required Item ID", i);
+                            packet.ReadEntry<Int32>(StoreNameType.Item, "Required Item ID", i);
                             break;
                         case QuestRequirementType.GameObject:
-                            packet.ReadEntryWithName<Int32>(StoreNameType.GameObject, "Required GameObject ID", i);
+                            packet.ReadEntry<Int32>(StoreNameType.GameObject, "Required GameObject ID", i);
                             break;
                         case QuestRequirementType.Currency:
                             packet.ReadUInt32("Required Currency ID", i);
                             break;
                         case QuestRequirementType.Spell:
-                            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Required Spell ID", i);
+                            packet.ReadEntry<Int32>(StoreNameType.Spell, "Required Spell ID", i);
                             break;
                         case QuestRequirementType.Faction:
                             packet.ReadUInt32("Required Faction ID", i);

@@ -48,7 +48,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 if (hasWaitTime[i])
                     packet.ReadInt32("Average wait time", i);
 
-                packet.WriteLine("[{0}] unk: {1}", i, BitConverter.ToUInt64(unk[i], 0));
+                packet.AddValue("unk", BitConverter.ToUInt64(unk[i], 0), i);
             }
         }
     }

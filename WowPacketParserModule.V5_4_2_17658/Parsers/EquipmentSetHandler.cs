@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -98,14 +97,14 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             {
                 packet.ParseBitStream(itemGuids[i], 1, 6, 4, 7, 0, 3, 5, 2);
                 packet.WriteGuid("ItemGUID", itemGuids[i], i);
-                packet.WriteLine("[{0}] Source bag: {1}", i, slotsInfo[i][0]);
-                packet.WriteLine("[{0}] Source slot: {1}", i, slotsInfo[i][1]);
+                packet.AddValue("Source bag", slotsInfo[i][0], i);
+                packet.AddValue("Source slot", slotsInfo[i][1], i);
             }
 
             for (var i = 0; i < someCount; ++i)
             {
                 packet.ParseBitStream(someThings[i], 0, 1);
-                packet.WriteLine("[{0}] Unk byte 1 {1}, Unk byte 2 {2}", i, someThings[0], someThings[1]);
+                packet.AddValue("Unk", "byte 1 " + someThings[0] + " byte 2" + someThings[0], i);
             }
         }
     }

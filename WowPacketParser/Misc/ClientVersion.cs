@@ -263,15 +263,15 @@ namespace WowPacketParser.Misc
             UpdateFields.ResetUFDictionaries();
             try
             {
-                var asm = Assembly.LoadFrom(string.Format(AppDomain.CurrentDomain.BaseDirectory + "/" + "WowPacketParserModule.{0}.dll", ClientVersion.VersionDefiningBuild));
-                Trace.WriteLine(string.Format("Loading module WowPacketParserModule.{0}.dll", ClientVersion.VersionDefiningBuild));
-                Handler.LoadHandlers(asm, ClientVersion.VersionDefiningBuild);
-                UpdateFields.LoadUFDictionaries(asm, ClientVersion.VersionDefiningBuild);
+                var asm = Assembly.LoadFrom(string.Format(AppDomain.CurrentDomain.BaseDirectory + "/" + "WowPacketParserModule.{0}.dll", VersionDefiningBuild));
+                Trace.WriteLine(string.Format("Loading module WowPacketParserModule.{0}.dll", VersionDefiningBuild));
+                Handler.LoadHandlers(asm, VersionDefiningBuild);
+                UpdateFields.LoadUFDictionaries(asm, VersionDefiningBuild);
             }
             catch (FileNotFoundException)
             {
                 // No dll found, try to load the data in the executable itself
-                UpdateFields.LoadUFDictionaries(Assembly.GetExecutingAssembly(), ClientVersion.Build);
+                UpdateFields.LoadUFDictionaries(Assembly.GetExecutingAssembly(), Build);
             }
         }
 

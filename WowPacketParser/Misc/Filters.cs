@@ -42,7 +42,7 @@ namespace WowPacketParser.Misc
             return result;
         }
 
-        public static bool CheckFilter(Guid guid)
+        public static bool CheckFilter(WowGuid guid)
         {
             var result = true;
 

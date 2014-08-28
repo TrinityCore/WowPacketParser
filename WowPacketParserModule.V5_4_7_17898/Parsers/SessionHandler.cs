@@ -1,9 +1,7 @@
 using System;
-using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using Guid = WowPacketParser.Misc.Guid;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_4_7_17898.Parsers
@@ -20,7 +18,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.StartBitStream(guid, 7, 6, 0, 4, 5, 2, 3, 1);
             packet.ParseBitStream(guid, 5, 0, 1, 6, 7, 2, 3, 4);
 
-            CoreParsers.SessionHandler.LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+            CoreParsers.SessionHandler.LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
             packet.WriteGuid("Guid", guid);
         }
 
@@ -73,7 +71,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             sha[11] = packet.ReadByte();
             sha[7] = packet.ReadByte();
 
-            packet.WriteLine("SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
+            packet.AddValue("SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
 
 
@@ -81,8 +79,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         public static void HandleRedirectClient(Packet packet)
         {
             packet.ReadUInt64("Unk Long");
-            var hash = packet.ReadBytes(0x100);
-            packet.WriteLine("RSA Hash: {0}", Utilities.ByteArrayToHexString(hash));
+            packet.ReadBytes("RSA Hash", 0x100);
             packet.ReadByte("Unk Byte");
             packet.ReadUInt32("Token");
         }
@@ -215,7 +212,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid", guid);
 
-            CoreParsers.SessionHandler.LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+            CoreParsers.SessionHandler.LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
         }
 
         [Parser(Opcode.CMSG_AUTH_SESSION)]
@@ -273,8 +270,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var size = (int)packet.ReadBits(11);
             packet.ReadBit("Unk bit");
             packet.ResetBitReader();
-            packet.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(size)));
-            packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
+            packet.ReadBytesString("Account name", size);
+            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
     }
 }

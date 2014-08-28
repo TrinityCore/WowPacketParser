@@ -2,7 +2,6 @@ using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {
@@ -11,21 +10,19 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_GUILD_QUERY_RESPONSE)]
         public static void HandleGuildQueryResponse(Packet packet)
         {
-            var Guild1 = new byte[8];
-            var Guild2 = new byte[8];
+            var guild1 = new byte[8];
+            var guild2 = new byte[8];
 
-            int nameLen = 0;
-            int rankCount = 0;
             int[] rankName = null;
 
-            packet.StartBitStream(Guild2, 6, 2, 0, 3, 4, 1, 5);
+            packet.StartBitStream(guild2, 6, 2, 0, 3, 4, 1, 5);
 
             var hasData = packet.ReadBit();
 
-            Guild1[0] = packet.ReadBit();
+            guild1[0] = packet.ReadBit();
 
-            nameLen = (int)packet.ReadBits(7);
-            rankCount = (int)packet.ReadBits(21);
+            var nameLen = (int)packet.ReadBits(7);
+            var rankCount = (int)packet.ReadBits(21);
 
             if (hasData)
             {
@@ -33,10 +30,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 for (var j = 0; j < rankCount; j++)
                     rankName[j] = (int)packet.ReadBits(7);
 
-                packet.StartBitStream(Guild1, 1, 2, 5, 3, 7, 4, 6);
+                packet.StartBitStream(guild1, 1, 2, 5, 3, 7, 4, 6);
             }
 
-            Guild2[7] = packet.ReadBit();
+            guild2[7] = packet.ReadBit();
 
             if (hasData)
             {
@@ -49,29 +46,29 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     packet.ReadInt32("Creation Order", j);
                 }
 
-                packet.ReadXORByte(Guild1, 1);
+                packet.ReadXORByte(guild1, 1);
                 packet.ReadInt32("Realm Id");
                 packet.ReadInt32("Emblem Color");
                 packet.ReadInt32("Emblem Background Color");
                 packet.ReadInt32("Emblem Border Style");
-                packet.ReadXORByte(Guild1, 0);
+                packet.ReadXORByte(guild1, 0);
                 packet.ReadInt32("Emblem Border Color");
-                packet.ReadXORByte(Guild1, 6);
+                packet.ReadXORByte(guild1, 6);
 
                 packet.ReadWoWString("Guild Name", nameLen);
 
-                packet.ReadXORByte(Guild1, 5);
-                packet.ReadXORByte(Guild1, 3);
-                packet.ReadXORByte(Guild1, 2);
-                packet.ReadXORByte(Guild1, 7);
-                packet.ReadXORByte(Guild1, 4);
+                packet.ReadXORByte(guild1, 5);
+                packet.ReadXORByte(guild1, 3);
+                packet.ReadXORByte(guild1, 2);
+                packet.ReadXORByte(guild1, 7);
+                packet.ReadXORByte(guild1, 4);
 
-                packet.WriteGuid("Guild1", Guild1);
+                packet.WriteGuid("Guild1", guild1);
             }
 
-            packet.ParseBitStream(Guild2, 4, 1, 0, 3, 5, 7, 6, 2);
+            packet.ParseBitStream(guild2, 4, 1, 0, 3, 5, 7, 6, 2);
 
-            packet.WriteGuid("Guild1", Guild2);
+            packet.WriteGuid("Guild1", guild2);
         }
 
         [Parser(Opcode.SMSG_GUILD_NEWS_TEXT)]
@@ -153,7 +150,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     var rank = packet.ReadUInt32();
                     var value = packet.ReadUInt32();
                     var id = packet.ReadUInt32();
-                    packet.WriteLine("[{0}][{1}] Profession: Id {2} - Value {3} - Rank {4}", i, j, id, value, rank);
+                    packet.AddValue("Profession", string.Format("Id {0} - Value {1} - Rank {2}", id, value, rank), i, j);
                 }
 
                 packet.ReadInt32("Guild Reputation", i);
@@ -178,7 +175,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
                 packet.ReadWoWString("Public note", publicLength[i], i);
                 packet.WriteGuid("Guid", guid[i], i);
-                StoreGetters.AddName(new Guid(BitConverter.ToUInt64(guid[i], 0)), name);
+                StoreGetters.AddName(new WowGuid(BitConverter.ToUInt64(guid[i], 0)), name);
             }
 
             packet.ReadWoWString("Guild Info", infoLength);

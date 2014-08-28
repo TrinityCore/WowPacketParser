@@ -1,4 +1,5 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -33,7 +34,15 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("sound")]
         public uint Sound;
 
+        [DBFieldName("BroadcastTextID")]
+        public string BroadcastTextID;
+
         [DBFieldName("comment")]
         public string Comment;
+
+        public WowGuid SenderGUID;
+        public string SenderName;
+        public WowGuid ReceiverGUID;
+        public string ReceiverName;
     }
 }

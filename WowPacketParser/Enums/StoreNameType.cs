@@ -23,6 +23,7 @@
         Phase,
         Player,
         Currency,
-        DefenseMessage
+        DefenseMessage,
+        VehicleTemplateAccessory
     }
 }

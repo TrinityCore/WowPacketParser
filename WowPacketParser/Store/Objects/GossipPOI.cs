@@ -1,4 +1,5 @@
 ﻿using WowPacketParser.Enums;
+
 //using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects

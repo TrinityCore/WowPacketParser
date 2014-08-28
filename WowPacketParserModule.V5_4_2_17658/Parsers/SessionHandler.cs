@@ -1,9 +1,7 @@
 using System;
-using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using Guid = WowPacketParser.Misc.Guid;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_4_2_17658.Parsers
@@ -20,7 +18,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.StartBitStream(guid, 7, 2, 5, 4, 3, 0, 6, 1);
             packet.ParseBitStream(guid, 7, 1, 5, 0, 3, 6, 2, 4);
 
-            CoreParsers.SessionHandler.LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+            CoreParsers.SessionHandler.LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
             packet.WriteGuid("Guid", guid);
         }
 
@@ -181,14 +179,13 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             sha[9] = packet.ReadByte();
             sha[7] = packet.ReadByte();
 
-            packet.WriteLine("SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
+            packet.AddValue("SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
 
         [Parser(Opcode.SMSG_REDIRECT_CLIENT)]
         public static void HandleRedirectClient(Packet packet)
         {
-            var hash = packet.ReadBytes(0x100);
-            packet.WriteLine("RSA Hash: {0}", Utilities.ByteArrayToHexString(hash));
+            packet.ReadBytes("RSA Hash", 0x100);
             packet.ReadByte("Unk Byte");
             packet.ReadUInt32("Token");
             packet.ReadUInt64("Unk Long");

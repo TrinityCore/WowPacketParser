@@ -5,7 +5,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
+using Guid = WowPacketParser.Misc.WowGuid;
 
 namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
@@ -219,7 +219,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadInt32("DW128", c);
                 packet.ReadXORByte(charGuids[c], 6); //6
                 packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c); //96
-                var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c); //68
+                var zone = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", c); //68
                 packet.ReadXORByte(guildGuids[c], 7); //95
                 var z = packet.ReadSingle("Position Z", c); //54h
 
@@ -233,7 +233,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     var startPos = new StartPosition();
                     startPos.Map = mapId;
                     startPos.Position = new Vector3(x, y, z);
-                    startPos.Zone = zone;
+                    startPos.Zone = (int)zone;
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, Class), startPos, packet.TimeSpan);
                 }
@@ -256,7 +256,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_DEATH_RELEASE_LOC)]
         public static void HandleDeathReleaseLoc(Packet packet)
         {
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
             packet.ReadVector3("Position");
         }
 

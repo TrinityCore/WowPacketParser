@@ -8,7 +8,7 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
-using Guid = WowPacketParser.Misc.Guid;
+using Guid = WowPacketParser.Misc.WowGuid;
 using UpdateFields = WowPacketParser.Enums.Version.UpdateFields;
 
 namespace WowPacketParserModule.V5_4_7_18019.Parsers

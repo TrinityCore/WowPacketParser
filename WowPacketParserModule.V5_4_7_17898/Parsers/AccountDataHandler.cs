@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -30,7 +29,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             pkt.ClosePacket();
 
             packet.ReadEnum<AccountDataType>("Data Type", 3);
-            packet.WriteLine("Account Data {0}", data);
+            packet.AddValue("Account Data", data);
         }
     }
 }

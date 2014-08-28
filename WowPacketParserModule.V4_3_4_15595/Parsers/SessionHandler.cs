@@ -1,10 +1,8 @@
 using System;
-using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V4_3_4_15595.Parsers
 {
@@ -66,8 +64,8 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
             packet.ReadBit("Unk bit");
             var size = (int)packet.ReadBits(12);
-            packet.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(size)));
-            packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
+            packet.ReadBytesString("Account name", size);
+            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
 
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
@@ -101,7 +99,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             var guid = packet.StartBitStream(2, 3, 0, 6, 4, 5, 1, 7);
             packet.ParseBitStream(guid, 2, 7, 0, 3, 5, 6, 1, 4);
             packet.WriteGuid("Guid", guid);
-            CoreParsers.SessionHandler.LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+            CoreParsers.SessionHandler.LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
         }
 
         [Parser(Opcode.SMSG_REDIRECT_CLIENT)]
@@ -109,8 +107,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         {
             packet.ReadUInt64("Unk Long");
             packet.ReadUInt32("Token");
-            var hash = packet.ReadBytes(0x100);
-            packet.WriteLine("RSA Hash: {0}", Utilities.ByteArrayToHexString(hash));
+            packet.ReadBytes("RSA Hash", 0x100);
             packet.ReadByte("Unk Byte"); // 1 == Connecting to world server
         }
 
@@ -140,7 +137,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             bytes[9] = packet.ReadByte();
             bytes[19] = packet.ReadByte();
             bytes[3] = packet.ReadByte();
-            packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(bytes));
+            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(bytes));
         }
     }
 }

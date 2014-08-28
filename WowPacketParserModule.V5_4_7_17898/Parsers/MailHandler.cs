@@ -120,9 +120,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                 for (var j = 0; j < itemCount[i]; ++j)
                 {
-                    packet.WriteLine("[{0}][{1}] bit84: {2}", i, j, bit84[i][j]);
+                    packet.AddValue("bit84", bit84[i][j], i, j);
                     packet.ReadInt32("IntED", i, j);
-                    packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Id", i, j);
+                    packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Id", i, j);
                     packet.ReadInt32("IntED", i, j);
                     packet.ReadInt32("Int14", i, j);
                     packet.ReadByte("ByteED", i, j);

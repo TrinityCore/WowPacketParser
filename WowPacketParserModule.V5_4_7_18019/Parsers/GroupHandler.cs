@@ -135,7 +135,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
                 packet.ReadInt16("Level");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.Zone))
-                packet.ReadEntryWithName<Int16>(StoreNameType.Zone, "Zone Id");
+                packet.ReadEntry<Int16>(StoreNameType.Zone, "Zone Id");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.Unk100))
                 packet.ReadInt16("Unk");
@@ -160,7 +160,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
                     if ((mask & (1ul << i)) == 0)
                         continue;
 
-                    packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id", i);
+                    packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell Id", i);
 
                     var aflags = packet.ReadEnum<AuraFlag>("Aura Flags", TypeCode.UInt16, i);
                     if (aflags.HasFlag(AuraFlag.Scalable))
@@ -203,7 +203,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
                     if ((mask & (1ul << i)) == 0)
                         continue;
 
-                    packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id", i);
+                    packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell Id", i);
 
                     var aflags = packet.ReadEnum<AuraFlag>("Aura Flags", TypeCode.UInt16, i);
                     if (aflags.HasFlag(AuraFlag.Scalable))
@@ -268,7 +268,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
                 packet.ReadInt16("Level");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.Zone))
-                packet.ReadEntryWithName<Int16>(StoreNameType.Zone, "Zone Id");
+                packet.ReadEntry<Int16>(StoreNameType.Zone, "Zone Id");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.Position))
             {
@@ -287,9 +287,9 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
                         continue;
 
                     if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                        packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id", i);
+                        packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell Id", i);
                     else
-                        packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Spell Id", i);
+                        packet.ReadEntry<UInt16>(StoreNameType.Spell, "Spell Id", i);
 
                     packet.ReadEnum<AuraFlag>("Aura Flags", TypeCode.Byte, i);
                 }
@@ -340,9 +340,9 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
                         continue;
 
                     if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                        packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id", i);
+                        packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell Id", i);
                     else
-                        packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Spell Id", i);
+                        packet.ReadEntry<UInt16>(StoreNameType.Spell, "Spell Id", i);
 
                     packet.ReadEnum<AuraFlag>("Aura Flags", TypeCode.Byte, i);
                 }

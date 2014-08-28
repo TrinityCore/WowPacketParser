@@ -7,7 +7,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
+using Guid = WowPacketParser.Misc.WowGuid;
 
 namespace WowPacketParserModule.V5_4_7_18019.Parsers
 {
@@ -78,7 +78,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         [Parser(Opcode.CMSG_TRAINER_BUY_SPELL)]
         public static void HandleTrainerBuySpell(Packet packet)
         {
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell Id");
             packet.ReadUInt32("Trainer Id");
 
             var guid = packet.StartBitStream(6, 2, 0, 7, 5, 3, 1, 4);
@@ -137,7 +137,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             for (var i = 0; i < QuestsCount; i++)
             {
                 packet.ReadEnum<QuestFlags2>("Quest Special Flags", TypeCode.UInt32, i);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest Id", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Quest, "Quest Id", i);
                 packet.ReadUInt32("Quest Level", i);
                 packet.ReadUInt32("Quest Icon", i);
                 packet.ReadEnum<QuestFlags>("Quest Flags", TypeCode.UInt32, i);
@@ -235,7 +235,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
                 if (hasExtendedCost[i])
                     vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
                 packet.ReadInt32("Price", i);
-                vendorItem.ItemId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Item ID", i);
+                vendorItem.ItemId = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Item ID", i);
                 vendorItem.Slot = packet.ReadUInt32("Item Position", i);
                 packet.ReadInt32("LeftInStock", i);
                 packet.ReadInt32("Unk2", i);
@@ -315,13 +315,13 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 
                 packet.ReadEnum<TrainerSpellState>("State", TypeCode.Byte, i);
 
-                trainerSpell.Spell = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+                trainerSpell.Spell = (uint)packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
 
                 trainerSpell.RequiredSkill = packet.ReadUInt32("Required Skill", i);
                 trainerSpell.Cost = packet.ReadUInt32("Cost", i);
-                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Chain Spell ID", i, 0);
-                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Chain Spell ID", i, 1);
-                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Chain Spell ID", i, 2);
+                packet.ReadEntry<Int32>(StoreNameType.Spell, "Chain Spell ID", i, 0);
+                packet.ReadEntry<Int32>(StoreNameType.Spell, "Chain Spell ID", i, 1);
+                packet.ReadEntry<Int32>(StoreNameType.Spell, "Chain Spell ID", i, 2);
                 trainerSpell.RequiredLevel = packet.ReadByte("Required Level", i);
                 trainerSpell.RequiredSkillLevel = packet.ReadUInt32("Required Skill Level", i);
 

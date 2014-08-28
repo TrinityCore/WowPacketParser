@@ -161,7 +161,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             for (var i = 0; i < count; i++)
             {
                 packet.ParseBitStream(guid[i], 1);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry", i);
                 packet.ParseBitStream(guid[i], 0, 5, 6, 4, 7, 2, 3);
                 packet.WriteGuid("GUID", guid[i], i);
             }
@@ -235,7 +235,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 {
                     var item = Storage.ItemTemplates.ContainsKey(itemId) ? Storage.ItemTemplates[itemId].Item1 : new ItemTemplate();
 
-                    packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+                    packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry");
                     item.Class = packet.ReadEnum<ItemClass>("Class", TypeCode.Int32);
                     item.SubClass = packet.ReadUInt32("Sub Class");
                     item.SoundOverrideSubclass = packet.ReadInt32("Sound Override Subclass");
@@ -251,7 +251,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 {
                     var item = Storage.ItemTemplates.ContainsKey(itemId) ? Storage.ItemTemplates[itemId].Item1 : new ItemTemplate();
 
-                    packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+                    packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry");
                     item.Quality = packet.ReadEnum<ItemQuality>("Quality", TypeCode.Int32);
                     item.Flags1 = packet.ReadEnum<ItemProtoFlags>("Flags", TypeCode.UInt32);
                     item.Flags2 = packet.ReadEnum<ItemFlagExtra>("Extra Flags", TypeCode.Int32);
@@ -268,7 +268,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     item.RequiredLevel = packet.ReadUInt32("Required Level");
                     item.RequiredSkillId = packet.ReadUInt32("Required Skill ID");
                     item.RequiredSkillLevel = packet.ReadUInt32("Required Skill Level");
-                    item.RequiredSpell = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Required Spell");
+                    item.RequiredSpell = (uint)packet.ReadEntry<Int32>(StoreNameType.Spell, "Required Spell");
                     item.RequiredHonorRank = packet.ReadUInt32("Required Honor Rank");
                     item.RequiredCityRank = packet.ReadUInt32("Required City Rank");
                     item.RequiredRepFaction = packet.ReadUInt32("Required Rep Faction");
@@ -303,7 +303,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
                     item.TriggeredSpellIds = new int[5];
                     for (var i = 0; i < 5; i++)
-                        item.TriggeredSpellIds[i] = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Triggered Spell ID", i);
+                        item.TriggeredSpellIds[i] = packet.ReadEntry<Int32>(StoreNameType.Spell, "Triggered Spell ID", i);
 
                     item.TriggeredSpellTypes = new ItemSpellTriggerType[5];
                     for (var i = 0; i < 5; i++)
@@ -340,14 +340,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                     item.PageText = packet.ReadUInt32("Page Text");
                     item.Language = packet.ReadEnum<Language>("Language", TypeCode.Int32);
                     item.PageMaterial = packet.ReadEnum<PageMaterial>("Page Material", TypeCode.Int32);
-                    item.StartQuestId = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Start Quest");
+                    item.StartQuestId = (uint)packet.ReadEntry<Int32>(StoreNameType.Quest, "Start Quest");
                     item.LockId = packet.ReadUInt32("Lock ID");
                     item.Material = packet.ReadEnum<Material>("Material", TypeCode.Int32);
                     item.SheathType = packet.ReadEnum<SheathType>("Sheath Type", TypeCode.Int32);
                     item.RandomPropery = packet.ReadInt32("Random Property");
                     item.RandomSuffix = packet.ReadUInt32("Random Suffix");
                     item.ItemSet = packet.ReadUInt32("Item Set");
-                    item.AreaId = (uint)packet.ReadEntryWithName<UInt32>(StoreNameType.Area, "Area");
+                    item.AreaId = (uint)packet.ReadEntry<UInt32>(StoreNameType.Area, "Area");
                     // In this single (?) case, map 0 means no map
                     var map = packet.ReadInt32();
                     item.MapId = map;
@@ -386,7 +386,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 {
                     var unit = Storage.UnitTemplates.ContainsKey(itemId) ? Storage.UnitTemplates[itemId].Item1 : new UnitTemplate();
 
-                    packet.ReadEntryWithName<UInt32>(StoreNameType.Unit, "Entry");
+                    packet.ReadEntry<UInt32>(StoreNameType.Unit, "Entry");
                     packet.ReadBytes(48);
                     packet.ReadInt16("NameLen");
                     unit.Name = packet.ReadCString("Name");
@@ -495,7 +495,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadInt32("Suffix Factor"); // 36
             packet.ReadXORByte(itemGuid, 7); // 55
             packet.ReadInt32("unk60"); // 60
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry"); // 72
+            packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry"); // 72
             packet.ReadInt32("Random Property ID"); // 68
             packet.ReadXORByte(itemGuid, 6); // 54
             packet.ReadInt32("unk24"); // 24

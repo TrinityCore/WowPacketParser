@@ -4,7 +4,6 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
@@ -87,16 +86,16 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             creature.QuestItems = new uint[qItemCount];
             for (var i = 0; i < qItemCount; ++i)
-                creature.QuestItems[i] = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item", i); //+72
+                creature.QuestItems[i] = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Quest Item", i); //+72
 
             creature.KillCredits[1] = packet.ReadUInt32(); //+28
             creature.Modifier2 = packet.ReadSingle("Modifier 2"); //+16
             creature.Family = packet.ReadEnum<CreatureFamily>("Family", TypeCode.Int32); //+13
 
             for (var i = 0; i < 4; ++i)
-                packet.WriteLine("[{0}] Display ID: {1}", i, creature.DisplayIds[i]);
+                packet.AddValue("Display ID", creature.DisplayIds[i], i);
             for (var i = 0; i < 2; ++i)
-                packet.WriteLine("[{0}] Kill Credit: {1}", i, creature.KillCredits[i]);
+                packet.AddValue("Kill Credit", creature.KillCredits[i], i);
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 
@@ -221,7 +220,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
                     db2File.ReadUInt32("Id");
                     var Id = db2File.ReadEntry("Creature Id");
-                    creatureDifficulty.faction = db2File.ReadUInt32("Faction Template Id");
+                    creatureDifficulty.Faction = db2File.ReadUInt32("Faction Template Id");
                     creatureDifficulty.Expansion = db2File.ReadInt32("Expansion");
                     creatureDifficulty.MinLevel = db2File.ReadInt32("Min Level");
                     creatureDifficulty.MaxLevel = db2File.ReadInt32("Max Level");
@@ -277,7 +276,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         ? Storage.ItemTemplates[entry].Item1
                         : new ItemTemplate();
 
-                    db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry");
+                    db2File.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry");
                     item.Class = db2File.ReadEnum<ItemClass>("Class", TypeCode.Int32);
                     item.SubClass = db2File.ReadUInt32("Sub Class");
                     item.SoundOverrideSubclass = db2File.ReadInt32("Sound Override Subclass");
@@ -320,7 +319,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 case DB2Hash.ItemCurrencyCost:
                 {
                     db2File.ReadUInt32("Id");
-                    db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry");
+                    db2File.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry");
                     break;
                 }
                 case DB2Hash.RulesetItemUpgrade:
@@ -328,7 +327,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     db2File.ReadUInt32("Id");
                     db2File.ReadUInt32("Item Upgrade Level");
                     db2File.ReadUInt32("Item Upgrade Id");
-                    db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry");
+                    db2File.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry");
                     break;
                 }
                 case DB2Hash.Item_sparse:
@@ -337,7 +336,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         ? Storage.ItemTemplates[entry].Item1
                         : new ItemTemplate();
 
-                    db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Sparse Entry");
+                    db2File.ReadEntry<UInt32>(StoreNameType.Item, "Item Sparse Entry");
                     item.Quality = db2File.ReadEnum<ItemQuality>("Quality", TypeCode.Int32);
                     item.Flags1 = db2File.ReadEnum<ItemProtoFlags>("Flags 1", TypeCode.UInt32);
                     item.Flags2 = db2File.ReadEnum<ItemFlagExtra>("Flags 2", TypeCode.Int32);
@@ -354,7 +353,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     item.RequiredLevel = db2File.ReadUInt32("Required Level");
                     item.RequiredSkillId = db2File.ReadUInt32("Required Skill ID");
                     item.RequiredSkillLevel = db2File.ReadUInt32("Required Skill Level");
-                    item.RequiredSpell = (uint) db2File.ReadEntryWithName<Int32>(StoreNameType.Spell, "Required Spell");
+                    item.RequiredSpell = (uint) db2File.ReadEntry<Int32>(StoreNameType.Spell, "Required Spell");
                     item.RequiredHonorRank = db2File.ReadUInt32("Required Honor Rank");
                     item.RequiredCityRank = db2File.ReadUInt32("Required City Rank");
                     item.RequiredRepFaction = db2File.ReadUInt32("Required Rep Faction");
@@ -389,7 +388,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
                     item.TriggeredSpellIds = new int[5];
                     for (var i = 0; i < 5; i++)
-                        item.TriggeredSpellIds[i] = db2File.ReadEntryWithName<Int32>(StoreNameType.Spell,
+                        item.TriggeredSpellIds[i] = db2File.ReadEntry<Int32>(StoreNameType.Spell,
                             "Triggered Spell ID", i);
 
                     item.TriggeredSpellTypes = new ItemSpellTriggerType[5];
@@ -429,19 +428,15 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     item.PageText = db2File.ReadUInt32("Page Text");
                     item.Language = db2File.ReadEnum<Language>("Language", TypeCode.Int32);
                     item.PageMaterial = db2File.ReadEnum<PageMaterial>("Page Material", TypeCode.Int32);
-                    item.StartQuestId = (uint) db2File.ReadEntryWithName<Int32>(StoreNameType.Quest, "Start Quest");
+                    item.StartQuestId = (uint) db2File.ReadEntry<Int32>(StoreNameType.Quest, "Start Quest");
                     item.LockId = db2File.ReadUInt32("Lock ID");
                     item.Material = db2File.ReadEnum<Material>("Material", TypeCode.Int32);
                     item.SheathType = db2File.ReadEnum<SheathType>("Sheath Type", TypeCode.Int32);
                     item.RandomPropery = db2File.ReadInt32("Random Property");
                     item.RandomSuffix = db2File.ReadUInt32("Random Suffix");
                     item.ItemSet = db2File.ReadUInt32("Item Set");
-                    item.AreaId = (uint) db2File.ReadEntryWithName<UInt32>(StoreNameType.Area, "Area");
-                    // In this single (?) case, map 0 means no map
-                    var map = db2File.ReadInt32();
-                    item.MapId = map;
-                    db2File.WriteLine("Map ID: " +
-                                      (map != 0 ? StoreGetters.GetName(StoreNameType.Map, map) : map + " (No map)"));
+                    item.AreaId = db2File.ReadEntry<UInt32>(StoreNameType.Area, "Area");
+                    item.MapId = db2File.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
                     item.BagFamily = db2File.ReadEnum<BagFamilyMask>("Bag Family", TypeCode.Int32);
                     item.TotemCategory = db2File.ReadEnum<TotemCategory>("Totem Category", TypeCode.Int32);
 
@@ -471,7 +466,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 case DB2Hash.KeyChain:
                 {
                     db2File.ReadUInt32("Key Chain Id");
-                    db2File.WriteLine("Key: {0}", Utilities.ByteArrayToHexString(db2File.ReadBytes(32)));
+                    db2File.ReadBytes("Key", 32);
                     break;
                 }
                 case DB2Hash.SceneScript: // lua ftw!
@@ -513,7 +508,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 }
                 default:
                 {
-                    db2File.WriteLine("Unknown DB2 file type: {0} (0x{0:x})", type);
+                    db2File.AddValue("Unknown DB2 file type", string.Format("{0} (0x{0:x})", type));
                     for (var i = 0;; ++i)
                     {
                         if (db2File.Length - 4 >= db2File.Position)
@@ -521,7 +516,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                             var blockVal = db2File.ReadUpdateField();
                             string key = "Block Value " + i;
                             string value = blockVal.UInt32Value + "/" + blockVal.SingleValue;
-                            packet.WriteLine(key + ": " + value);
+                            packet.AddValue(key, value);
                         }
                         else
                         {
@@ -530,7 +525,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                             {
                                 string key = "Byte Value " + i;
                                 var value = db2File.ReadByte();
-                                packet.WriteLine(key + ": " + value);
+                                packet.AddValue(key, value);
                             }
                             break;
                         }

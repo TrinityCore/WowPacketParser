@@ -20,7 +20,7 @@ namespace WowPacketParser.Loading
 // ReSharper restore InconsistentNaming
         }
 
-        private readonly BinaryReader _reader;
+        private BinaryReader _reader;
 
         private readonly SniffType _sniffType;
         private PktVersion _pktVersion;
@@ -41,7 +41,7 @@ namespace WowPacketParser.Loading
             var headerStart = _reader.ReadBytes(3);             // PKT
             if (Encoding.ASCII.GetString(headerStart) != "PKT")
             {
-                // pkt does not have a header
+                // file does not have a header
                 _reader.BaseStream.Position = 0;
                 return;
             }
@@ -237,10 +237,21 @@ namespace WowPacketParser.Loading
             if (opcode >= 1312 && (ClientVersion.Build <= ClientVersionBuild.V3_3_5a_12340 && ClientVersion.Build != ClientVersionBuild.Zero))
                 return null;
 
-            var packet = new Packet(data, opcode, time, direction, number, Path.GetFileName(fileName));
-            packet.ConnectionIndex = cIndex;
-            packet.EndPoint = endPoint;
-            return packet;
+            return new Packet(data, opcode, time, direction, number, Path.GetFileName(fileName))
+            {
+                ConnectionIndex = cIndex,
+                EndPoint = endPoint
+            };
+        }
+
+        public long GetTotalSize()
+        {
+            return _reader != null ? _reader.BaseStream.Length : 0;
+        }
+
+        public long GetCurrentSize()
+        {
+            return _reader != null ? _reader.BaseStream.Position : 0;
         }
 
         public void Dispose()
@@ -248,6 +259,7 @@ namespace WowPacketParser.Loading
             if (_reader == null) return;
             _reader.BaseStream.Dispose();
             _reader.Dispose();
+            _reader = null;
         }
     }
 }

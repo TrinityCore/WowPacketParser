@@ -63,7 +63,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             gameObject.QuestItems = new uint[packet.ReadByte("QuestItems Length")];
 
             for (var i = 0; i < gameObject.QuestItems.Length; i++)
-                gameObject.QuestItems[i] = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item", i);
+                gameObject.QuestItems[i] = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Quest Item", i);
 
             packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);
 

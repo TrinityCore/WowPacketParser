@@ -4,7 +4,6 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
@@ -66,7 +65,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadXORByte(charGuids[c], 6);
 
                 packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
-                var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
+                var zone = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", c);
 
                 packet.ReadXORByte(guildGuids[c], 3);
 
@@ -121,18 +120,15 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadXORByte(guildGuids[c], 6);
                 packet.ReadXORByte(charGuids[c], 4);
 
-                var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
+                var playerGuid = new WowGuid(BitConverter.ToUInt64(charGuids[c], 0));
 
-                packet.WriteLine("[{0}] Position: {1}", c, pos);
+                packet.AddValue("Position", pos, c);
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);
 
                 if (firstLogins[c])
                 {
-                    var startPos = new StartPosition();
-                    startPos.Map = mapId;
-                    startPos.Position = pos;
-                    startPos.Zone = zone;
+                    var startPos = new StartPosition {Map = mapId, Position = pos, Zone = (int) zone};
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, Class), startPos, packet.TimeSpan);
                 }
@@ -185,7 +181,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                packet.WriteLine("[{0}] Flags {1}", i, flags[i]); // 20h
+                packet.AddValue("Flags {1}", flags[i], i); // 20h
                 packet.ReadUInt32("Currency count", i);
                 packet.ReadUInt32("Currency id", i);
 

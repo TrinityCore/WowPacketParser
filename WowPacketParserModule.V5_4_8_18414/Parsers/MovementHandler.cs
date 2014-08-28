@@ -6,7 +6,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
-using Guid = WowPacketParser.Misc.Guid;
+using Guid = WowPacketParser.Misc.WowGuid;
 using UpdateFields = WowPacketParser.Enums.Version.UpdateFields;
 using MovementFlag = WowPacketParserModule.V5_4_8_18414.Enums.MovementFlag;
 using MovementFlagExtra = WowPacketParserModule.V5_4_8_18414.Enums.MovementFlagExtra;
@@ -3721,8 +3721,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleBindPointUpdate(Packet packet)
         {
             packet.ReadVector3("Position");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
         }
 
         [Parser(Opcode.SMSG_MOVE_SET_ACTIVE_MOVER)]

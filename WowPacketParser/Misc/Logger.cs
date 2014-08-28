@@ -49,9 +49,6 @@ namespace WowPacketParser.Misc
 
         public static void WriteErrors()
         {
-            if (!Settings.LogErrors)
-                return;
-
             Trace.WriteLine(Environment.NewLine);
             foreach (var pair in EnumLogs)
             {

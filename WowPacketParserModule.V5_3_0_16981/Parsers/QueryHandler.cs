@@ -1,11 +1,9 @@
 using System;
 using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
@@ -63,7 +61,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             creature.QuestItems = new uint[qItemCount];
             for (var i = 0; i < qItemCount; ++i)
-                creature.QuestItems[i] = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Item, "Quest Item", i);
+                creature.QuestItems[i] = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Quest Item", i);
 
             creature.Type = packet.ReadEnum<CreatureType>("Type", TypeCode.Int32);
             creature.KillCredits = new uint[2];
@@ -266,7 +264,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     {
                         var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
 
-                        db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry");
+                        db2File.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry");
                         item.Class = db2File.ReadEnum<ItemClass>("Class", TypeCode.Int32);
                         item.SubClass = db2File.ReadUInt32("Sub Class");
                         item.SoundOverrideSubclass = db2File.ReadInt32("Sound Override Subclass");
@@ -283,7 +281,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     {
                         var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
 
-                        db2File.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Sparse Entry");
+                        db2File.ReadEntry<UInt32>(StoreNameType.Item, "Item Sparse Entry");
                         item.Quality = db2File.ReadEnum<ItemQuality>("Quality", TypeCode.Int32);
                         item.Flags1 = db2File.ReadEnum<ItemProtoFlags>("Flags 1", TypeCode.UInt32);
                         item.Flags2 = db2File.ReadEnum<ItemFlagExtra>("Flags 2", TypeCode.Int32);
@@ -300,7 +298,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         item.RequiredLevel = db2File.ReadUInt32("Required Level");
                         item.RequiredSkillId = db2File.ReadUInt32("Required Skill ID");
                         item.RequiredSkillLevel = db2File.ReadUInt32("Required Skill Level");
-                        item.RequiredSpell = (uint)db2File.ReadEntryWithName<Int32>(StoreNameType.Spell, "Required Spell");
+                        item.RequiredSpell = (uint)db2File.ReadEntry<Int32>(StoreNameType.Spell, "Required Spell");
                         item.RequiredHonorRank = db2File.ReadUInt32("Required Honor Rank");
                         item.RequiredCityRank = db2File.ReadUInt32("Required City Rank");
                         item.RequiredRepFaction = db2File.ReadUInt32("Required Rep Faction");
@@ -335,7 +333,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
                         item.TriggeredSpellIds = new int[5];
                         for (var i = 0; i < 5; i++)
-                            item.TriggeredSpellIds[i] = db2File.ReadEntryWithName<Int32>(StoreNameType.Spell, "Triggered Spell ID", i);
+                            item.TriggeredSpellIds[i] = db2File.ReadEntry<Int32>(StoreNameType.Spell, "Triggered Spell ID", i);
 
                         item.TriggeredSpellTypes = new ItemSpellTriggerType[5];
                         for (var i = 0; i < 5; i++)
@@ -372,18 +370,16 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         item.PageText = db2File.ReadUInt32("Page Text");
                         item.Language = db2File.ReadEnum<Language>("Language", TypeCode.Int32);
                         item.PageMaterial = db2File.ReadEnum<PageMaterial>("Page Material", TypeCode.Int32);
-                        item.StartQuestId = (uint)db2File.ReadEntryWithName<Int32>(StoreNameType.Quest, "Start Quest");
+                        item.StartQuestId = (uint)db2File.ReadEntry<Int32>(StoreNameType.Quest, "Start Quest");
                         item.LockId = db2File.ReadUInt32("Lock ID");
                         item.Material = db2File.ReadEnum<Material>("Material", TypeCode.Int32);
                         item.SheathType = db2File.ReadEnum<SheathType>("Sheath Type", TypeCode.Int32);
                         item.RandomPropery = db2File.ReadInt32("Random Property");
                         item.RandomSuffix = db2File.ReadUInt32("Random Suffix");
                         item.ItemSet = db2File.ReadUInt32("Item Set");
-                        item.AreaId = (uint)db2File.ReadEntryWithName<UInt32>(StoreNameType.Area, "Area");
-                        // In this single (?) case, map 0 means no map
-                        var map = db2File.ReadInt32();
+                        item.AreaId = db2File.ReadEntry<UInt32>(StoreNameType.Area, "Area");
+                        var map = db2File.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
                         item.MapId = map;
-                        db2File.WriteLine("Map ID: " + (map != 0 ? StoreGetters.GetName(StoreNameType.Map, map) : map + " (No map)"));
                         item.BagFamily = db2File.ReadEnum<BagFamilyMask>("Bag Family", TypeCode.Int32);
                         item.TotemCategory = db2File.ReadEnum<TotemCategory>("Totem Category", TypeCode.Int32);
 
@@ -412,29 +408,27 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 case DB2Hash.KeyChain:
                     {
                         db2File.ReadUInt32("Key Chain Id");
-                        db2File.WriteLine("Key: {0}", Utilities.ByteArrayToHexString(db2File.ReadBytes(32)));
+                        db2File.ReadBytes("Key", 32);
                         break;
                     }
                 default:
                     {
-                        db2File.WriteLine("Unknown DB2 file type: {0} (0x{0:x})", type);
+                        db2File.AddValue("Unknown DB2 file type", string.Format(": {0} (0x{0:x})", type));
                         for (var i = 0; ; ++i)
                         {
                             if (db2File.Length - 4 >= db2File.Position)
                             {
                                 var blockVal = db2File.ReadUpdateField();
-                                string key = "Block Value " + i;
                                 string value = blockVal.UInt32Value + "/" + blockVal.SingleValue;
-                                packet.WriteLine(key + ": " + value);
+                                packet.AddValue("Block Value " + i, value);
                             }
                             else
                             {
                                 var left = db2File.Length - db2File.Position;
                                 for (var j = 0; j < left; ++j)
                                 {
-                                    string key = "Byte Value " + i;
                                     var value = db2File.ReadByte();
-                                    packet.WriteLine(key + ": " + value);
+                                    packet.AddValue("Byte Value " + i, value);
                                 }
                                 break;
                             }
@@ -480,15 +474,15 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             var quest = new QuestTemplate();
 
-            var QuestTurnTextWindow = (int)packet.ReadBits(10);
-            var Details = (int)packet.ReadBits(12);
-            var QuestGiverTextWindow = (int)packet.ReadBits(10);
+            var questTurnTextWindow = (int)packet.ReadBits(10);
+            var details = (int)packet.ReadBits(12);
+            var questGiverTextWindow = (int)packet.ReadBits(10);
             var len1658 = (int)packet.ReadBits(9);
-            var CompletedText = (int)packet.ReadBits(11);
+            var completedText = (int)packet.ReadBits(11);
             var len158 = (int)packet.ReadBits(12);
-            var QuestGiverTargetName = (int)packet.ReadBits(8);
-            var Title = (int)packet.ReadBits(9);
-            var QuestTurnTargetName = (int)packet.ReadBits(8);
+            var questGiverTargetName = (int)packet.ReadBits(8);
+            var title = (int)packet.ReadBits(9);
+            var questTurnTargetName = (int)packet.ReadBits(8);
             var count = (int)packet.ReadBits("Requirement Count", 19);
 
             var len2949_20 = new int[count];
@@ -516,9 +510,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             }
 
             packet.ReadWoWString("string158", len158);
-            quest.NextQuestIdChain = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Quest, "Next Chain Quest");
+            quest.NextQuestIdChain = (uint)packet.ReadEntry<Int32>(StoreNameType.Quest, "Next Chain Quest");
             packet.ReadInt32("int2971");
-            quest.RewardSpellCast = packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Reward Spell Cast");
+            quest.RewardSpellCast = packet.ReadEntry<Int32>(StoreNameType.Spell, "Reward Spell Cast");
             packet.ReadInt32("int2955");
             quest.RewardHonorMultiplier = packet.ReadSingle("Reward Honor Multiplier");
             packet.ReadInt32("int2970");
@@ -545,7 +539,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             quest.SuggestedPlayers = packet.ReadUInt32("Suggested Players");
             packet.ReadInt32("int2972");
             packet.ReadInt32("int2959");
-            quest.Title = packet.ReadWoWString("Title", Title);
+            quest.Title = packet.ReadWoWString("Title", title);
             packet.ReadInt32("int2965");
             packet.ReadInt32("int2978");
             quest.RewardSkillId = packet.ReadUInt32("RewSkillId");
@@ -560,20 +554,20 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadInt32("int2961");
             packet.ReadInt32("int15");
             packet.ReadInt32("int2967");
-            quest.CompletedText = packet.ReadWoWString("Completed Text", CompletedText);
+            quest.CompletedText = packet.ReadWoWString("Completed Text", completedText);
             packet.ReadInt32("int25");
             packet.ReadInt32("Quest Id");
             quest.PointY = packet.ReadSingle("Point Y");
             packet.ReadInt32("int2974");
             packet.ReadInt32("int2952");
-            quest.Details = packet.ReadWoWString("Details", Details);
+            quest.Details = packet.ReadWoWString("Details", details);
             quest.Level = packet.ReadInt32("Level");
             quest.PointMapId = packet.ReadUInt32("Point Map ID");
             packet.ReadWoWString("string1658", len1658);
             quest.PointX = packet.ReadSingle("Point X");
             packet.ReadInt32("int17");
             packet.ReadInt32("int2962");
-            quest.QuestGiverTextWindow = packet.ReadWoWString("QuestGiver Text Window", QuestGiverTextWindow);
+            quest.QuestGiverTextWindow = packet.ReadWoWString("QuestGiver Text Window", questGiverTextWindow);
             packet.ReadInt32("int2963");
             packet.ReadInt32("int2985");
             quest.Method = packet.ReadEnum<QuestMethod>("Method", TypeCode.Int32);
@@ -581,23 +575,23 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadInt32("int2953");
             packet.ReadInt32("int2983");
             packet.ReadInt32("int9");
-            quest.QuestGiverTargetName = packet.ReadWoWString("QuestGiver Target Name", QuestGiverTargetName);
+            quest.QuestGiverTargetName = packet.ReadWoWString("QuestGiver Target Name", questGiverTargetName);
             quest.ZoneOrSort = packet.ReadEnum<QuestSort>("Sort", TypeCode.Int32);
             packet.ReadInt32("int1788");
             quest.SoundTurnIn = packet.ReadUInt32("Sound TurnIn");
-            quest.SourceItemId = (uint) packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Source Item ID");
-            quest.QuestTurnTargetName = packet.ReadWoWString("QuestTurn Target Name", QuestTurnTargetName);
+            quest.SourceItemId = (uint) packet.ReadEntry<UInt32>(StoreNameType.Item, "Source Item ID");
+            quest.QuestTurnTargetName = packet.ReadWoWString("QuestTurn Target Name", questTurnTargetName);
             quest.QuestTurnInPortrait = packet.ReadUInt32("QuestTurnInPortrait");
             quest.Flags = packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32);
             packet.ReadInt32("int2954");
             packet.ReadInt32("int2958");
             quest.RewardMoneyMaxLevel = packet.ReadUInt32("Reward Money Max Level");
             packet.ReadInt32("int1787");
-            quest.QuestTurnTextWindow = packet.ReadWoWString("QuestTurn Text Window", QuestTurnTextWindow);
+            quest.QuestTurnTextWindow = packet.ReadWoWString("QuestTurn Text Window", questTurnTextWindow);
             packet.ReadInt32("int2977");
             packet.ReadInt32("int2980");
             packet.ReadInt32("int2975");
-            quest.RewardSpell = (uint)packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Reward Spell");
+            quest.RewardSpell = (uint)packet.ReadEntry<Int32>(StoreNameType.Spell, "Reward Spell");
             quest.RewardOrRequiredMoney = packet.ReadInt32("Reward Money");
             packet.ReadInt32("int2973");
             packet.ReadInt32("int2966");

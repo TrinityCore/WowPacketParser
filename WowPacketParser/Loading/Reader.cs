@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using WowPacketParser.Enums;
@@ -10,10 +8,18 @@ using WowPacketParser.Misc;
 
 namespace WowPacketParser.Loading
 {
-    public static class Reader
+    public class Reader
     {
-        [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "reader is disposed in the finally block.")]
-        public static IEnumerable<Packet> Read(string fileName)
+        public string FileName { get; private set; }
+        public IPacketReader PacketReader { get; private set; }
+
+        public Reader(string fileName)
+        {
+            FileName = fileName;
+            PacketReader = GetPacketReader(fileName);
+        }
+
+        private static IPacketReader GetPacketReader(string fileName)
         {
             var extension = Path.GetExtension(fileName);
             if (extension == null)
@@ -33,27 +39,78 @@ namespace WowPacketParser.Loading
                     throw new IOException(String.Format("Invalid file type {0}", extension.ToLower()));
             }
 
-            var packets = new LinkedList<Packet>();
+            return reader;
+        }
+
+        private int _packetNum;
+        private int _count;
+
+        public bool TryRead(out Packet packet)
+        {
             try
             {
-                var packetNum = 0;
+                packet = PacketReader.Read(_packetNum, FileName);
+                if (packet == null)
+                    return false; // continue
+
+                if (_packetNum++ == 0)
+                {
+                    // determine build version based on date of first packet if not specified otherwise
+                    if (ClientVersion.IsUndefined())
+                        ClientVersion.SetVersion(packet.Time);
+                }
+
+                // check for filters
+                var opcodeName = Opcodes.GetOpcodeName(packet.Opcode);
+
+                var add = true;
+                if (Settings.Filters.Length > 0)
+                    add = opcodeName.MatchesFilters(Settings.Filters);
+                // check for ignore filters
+                if (add && Settings.IgnoreFilters.Length > 0)
+                    add = !opcodeName.MatchesFilters(Settings.IgnoreFilters);
+
+                if (add)
+                {
+                    if (Settings.FilterPacketsNum > 0 && _count++ == Settings.FilterPacketsNum)
+                        return true; // break
+                    return false; // continue
+                }
+
+                packet.ClosePacket();
+                packet = null;
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Data);
+                Trace.WriteLine(ex.GetType());
+                Trace.WriteLine(ex.Message);
+                Trace.WriteLine(ex.StackTrace);
+            }
+
+            packet = null;
+            return false;
+        }
+
+        public static void Read(string fileName, Action<Tuple<Packet, long, long>> action)
+        {
+            var reader = GetPacketReader(fileName);
+
+            try
+            {
+                int packetNum = 0, count = 0;
                 while (reader.CanRead())
                 {
                     var packet = reader.Read(packetNum, fileName);
                     if (packet == null)
                         continue;
 
-                    if (packetNum == 0)
+                    if (packetNum++ == 0)
                     {
                         // determine build version based on date of first packet if not specified otherwise
                         if (ClientVersion.IsUndefined())
                             ClientVersion.SetVersion(packet.Time);
-                    }
-
-                    if (packetNum++ < Settings.FilterPacketNumLow)
-                    {
-                        packet.ClosePacket();
-                        continue;
                     }
 
                     // check for filters
@@ -68,15 +125,12 @@ namespace WowPacketParser.Loading
 
                     if (add)
                     {
-                        packets.AddLast(packet);
-                        if (Settings.FilterPacketsNum > 0 && packets.Count == Settings.FilterPacketsNum)
+                        action(Tuple.Create(packet, reader.GetCurrentSize(), reader.GetTotalSize()));
+                        if (Settings.FilterPacketsNum > 0 && count++ == Settings.FilterPacketsNum)
                             break;
                     }
                     else
                         packet.ClosePacket();
-
-                    if (Settings.FilterPacketNumHigh > 0 && packetNum > Settings.FilterPacketNumHigh)
-                        break;
                 }
             }
             catch (Exception ex)
@@ -90,8 +144,6 @@ namespace WowPacketParser.Loading
             {
                 reader.Dispose();
             }
-
-            return packets;
         }
     }
 }

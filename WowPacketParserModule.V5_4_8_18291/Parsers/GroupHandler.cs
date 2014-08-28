@@ -2,8 +2,6 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
@@ -321,7 +319,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 updateFlagPacket.ReadUInt16("Current Power");
 
             if (updateFlags.HasFlag(GroupUpdateFlag548.Zone)) // 0x40
-                updateFlagPacket.ReadEntryWithName<UInt16>(StoreNameType.Zone, "Zone Id");
+                updateFlagPacket.ReadEntry<UInt16>(StoreNameType.Zone, "Zone Id");
 
             if (updateFlags.HasFlag(GroupUpdateFlag548.MaxPower))// 0x80
                 updateFlagPacket.ReadUInt16("Max Power");
@@ -357,7 +355,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     if ((mask & (1ul << i)) == 0)
                         continue;
 
-                    updateFlagPacket.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id", i);
+                    updateFlagPacket.ReadEntry<UInt32>(StoreNameType.Spell, "Spell Id", i);
                     var flags = updateFlagPacket.ReadEnum<AuraFlagMoP>("Aura Flags", TypeCode.Byte, i);
                     var unk = updateFlagPacket.ReadUInt32("unk", i);
 
@@ -408,7 +406,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     if ((mask & (1ul << i)) == 0)
                         continue;
 
-                    updateFlagPacket.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id", i);
+                    updateFlagPacket.ReadEntry<UInt32>(StoreNameType.Spell, "Spell Id", i);
                     var flags = updateFlagPacket.ReadEnum<AuraFlagMoP>("Aura Flags", TypeCode.Byte, i);
                     updateFlagPacket.ReadUInt32("unk", i);
 

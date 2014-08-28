@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             if (usedDestSlot)
             {
                 packet.ParseBitStream(itemId2, 5, 1, 3, 4, 6, 0, 2, 7);
-                packet.WriteLine("Item Id 2: {0}", BitConverter.ToUInt64(itemId2, 0));
+                packet.WriteGuid("Item Id 2", itemId2);
             }
 
             if (usedDestSlot)
@@ -41,7 +41,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             if (usedSrcSlot)
             {
                 packet.ParseBitStream(itemId1, 3, 4, 5, 2, 1, 0, 6, 7);
-                packet.WriteLine("Item Id 1: {0}", BitConverter.ToUInt64(itemId1, 0));
+                packet.WriteGuid("Item Id 1", itemId1);
             }
 
             if (usedSrcSlot)
@@ -100,9 +100,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadXORByte(guid[i], 7);
                 packet.ReadXORByte(guid[i], 6);
                 packet.ReadXORByte(id[i], 0);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", i);
                 packet.ReadInt32("New Unk", i);
-                packet.WriteLine("[{1}] Item Id: {0}", BitConverter.ToUInt64(id[i], 0), i);
+                packet.WriteGuid("Item Id", id[i], i);
                 packet.WriteGuid("Item Player Creator Guid", guid[i], i);
             }
         }
@@ -171,17 +171,16 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadXORByte(guid[i], 5);
                 packet.ReadXORByte(guid[i], 1);
                 packet.ReadXORByte(id1[i], 4);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Item Entry", i); //16
+                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", i); //16
 
-
-                packet.WriteLine("[{1}] Item Id 1: {0}", BitConverter.ToUInt64(id1[i], 0), i);
+                packet.WriteGuid("Item Id 1", id1[i], i);
                 packet.WriteGuid("Item Player Creator Guid", guid[i], i);
             }
 
             for (int i = 0; i < count2; ++i)
             {
                 packet.ParseBitStream(id2[i], 0, 1, 5, 7, 3, 6, 4, 2);
-                packet.WriteLine("[{1}] Item Id 2: {0}", BitConverter.ToUInt64(id2[i], 0), i);
+                packet.WriteGuid("Item Id 2", id2[i], i);
             }
         }
         [Parser(Opcode.SMSG_VOID_STORAGE_FAILED)]
@@ -238,7 +237,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             for (int i = 0; i < count2; ++i)
             {
                 packet.ParseBitStream(itemsId[i], 4, 3, 0, 7, 2, 6, 5, 1);
-                packet.WriteLine("[{1}] Item Id: {0}", BitConverter.ToUInt64(itemsId[i], 0), i);
+                packet.WriteGuid("Item Id", itemsId[i], i);
             }
 
             packet.ReadXORByte(npcGuid, 3);
@@ -303,7 +302,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(itemId, 0);
 
             packet.WriteGuid("NPC Guid", guid);
-            packet.WriteLine("Item Id: {0}", BitConverter.ToUInt64(itemId, 0));
+            packet.WriteGuid("Item Id", itemId);
         }
     }
 }

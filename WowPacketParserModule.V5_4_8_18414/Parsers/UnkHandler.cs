@@ -361,7 +361,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             var count = packet.ReadBits("count", 22);
             for (var i = 0; i < count; i++)
-                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID", i);
+                packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
         }
 
         [Parser(Opcode.SMSG_UNK_0D52)]

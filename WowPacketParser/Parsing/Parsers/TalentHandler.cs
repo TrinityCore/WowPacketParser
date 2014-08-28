@@ -1,7 +1,7 @@
 using System;
-using WowPacketParser.Misc;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -23,7 +23,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadByte("Rank", i, j);
                 }
 
-                var glyphs = packet.ReadByte("Glyph count");
+                var glyphs = packet.ReadByte("Glyph count", i);
                 for (var j = 0; j < glyphs; ++j)
                     packet.ReadUInt16("Glyph", i, j);
             }
@@ -37,12 +37,11 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 if ((slotMask & 0x1) > 0)
                 {
-                    var name = "[" + (EquipmentSlotType)slot + "] ";
-                    packet.ReadEntryWithName<UInt32>(StoreNameType.Item, name + "Item Entry");
+                    packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", (EquipmentSlotType)slot);
                     var enchantMask = packet.ReadUInt16();
                     if (enchantMask > 0)
                     {
-                        var enchantName = name + "Item Enchantments: ";
+                        var enchantName = string.Empty;
                         while (enchantMask > 0)
                         {
                             if ((enchantMask & 0x1) > 0)
@@ -53,11 +52,11 @@ namespace WowPacketParser.Parsing.Parsers
                             }
                             enchantMask >>= 1;
                         }
-                        packet.WriteLine(enchantName);
+                        packet.AddValue("Item Enchantments", enchantName, (EquipmentSlotType)slot);
                     }
-                    packet.ReadUInt16(name + "Unk Uint16");
-                    packet.ReadPackedGuid(name + "Creator GUID");
-                    packet.ReadUInt32(name + "Unk Uint32");
+                    packet.ReadUInt16("Unk UInt16", (EquipmentSlotType)slot);
+                    packet.ReadPackedGuid("Creator GUID", (EquipmentSlotType)slot);
+                    packet.ReadUInt32("Unk UInt32", (EquipmentSlotType)slot);
                 }
                 ++slot;
                 slotMask >>= 1;

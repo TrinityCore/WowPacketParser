@@ -7,7 +7,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
+using Guid = WowPacketParser.Misc.WowGuid;
 
 namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
@@ -184,7 +184,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32, i);//528
                 packet.ReadInt32("Level", i);//8
                 packet.ReadUInt32("Icon", i);//4
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Quest, "Quest ID", i); //528
+                packet.ReadEntry<UInt32>(StoreNameType.Quest, "Quest ID", i); //528
                 packet.ReadEnum<QuestFlags2>("Flags 2", TypeCode.UInt32, i);//532
             }
 

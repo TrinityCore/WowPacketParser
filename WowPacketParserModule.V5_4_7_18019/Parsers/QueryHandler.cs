@@ -6,7 +6,7 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using WowPacketParserModule.V5_4_7_18019.Enums;
-using Guid = WowPacketParser.Misc.Guid;
+using Guid = WowPacketParser.Misc.WowGuid;
 
 namespace WowPacketParserModule.V5_4_7_18019.Parsers
 {
@@ -124,7 +124,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 
             creature.QuestItems = new uint[qItemCount];
             for (var i = 0; i < qItemCount; ++i)
-                creature.QuestItems[i] = (uint)packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Quest Item", i);
+                creature.QuestItems[i] = (uint)packet.ReadEntry<UInt32>(StoreNameType.Item, "Quest Item", i);
 
             creature.Type = packet.ReadEnum<CreatureType>("Type", TypeCode.Int32);
 

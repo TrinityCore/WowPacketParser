@@ -2,7 +2,6 @@ using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using SpellHitInfo = WowPacketParser.Enums.SpellHitInfo;
 
 namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
@@ -142,7 +141,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var state = packet.ReadEnum<VictimStates>("VictimState", TypeCode.Byte);
             packet.ReadInt32("Unk Attacker State 0");
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Melee Spell ID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Melee Spell ID");
 
             var block = 0;
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))

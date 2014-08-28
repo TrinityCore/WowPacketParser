@@ -12,7 +12,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("exp")]
         public int Expansion;
         [DBFieldName("faction")]
-        public uint faction;
+        public uint Faction;
 
         //[DBFieldName("Unk 1")] public uint unk1;
         //[DBFieldName("Unk 2")] public uint unk2;

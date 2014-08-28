@@ -1,13 +1,11 @@
 using System;
-using System.Text;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
@@ -71,10 +69,10 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     {
                         packet.ParseBitStream(casterGUID[i], 2, 7, 6, 1, 4, 0, 5, 3);
                         packet.WriteGuid("Caster GUID", casterGUID[i], i);
-                        aura.CasterGuid = new Guid(BitConverter.ToUInt64(casterGUID[i], 0));
+                        aura.CasterGuid = new WowGuid(BitConverter.ToUInt64(casterGUID[i], 0));
                     }
                     else
-                        aura.CasterGuid = new Guid();
+                        aura.CasterGuid = new WowGuid();
 
                     aura.Charges = packet.ReadByte("Charges", i);
 
@@ -120,7 +118,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ParseBitStream(guid, 0, 5, 7, 2, 1, 4, 3, 6);
             packet.WriteGuid("Guid", guid);
 
-            var GUID = new Guid(BitConverter.ToUInt64(guid, 0));
+            var GUID = new WowGuid(BitConverter.ToUInt64(guid, 0));
             if (Storage.Objects.ContainsKey(GUID))
             {
                 var unit = Storage.Objects[GUID].Item1 as Unit;
@@ -133,8 +131,6 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
                     if (unit.Auras == null)
                         unit.Auras = auras;
-                    else if (unit.AddedAuras == null)
-                        unit.AddedAuras = new List<List<Aura>> { auras };
                     else
                         unit.AddedAuras.Add(auras);
                 }
@@ -149,7 +145,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             for (var i = 0; i < counter; ++i)
                 packet.ReadBits("unk value0", 2, i);
 
-            var HasCastCount = !packet.ReadBit();
+            var hasCastCount = !packet.ReadBit();
             packet.ReadBit("Fake bit? Has TargetGUID"); // TargetGUID
             var hasbit1C = !packet.ReadBit();
             var hasMovment = packet.ReadBit();
@@ -202,7 +198,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 pos.Z = packet.ReadSingle();
                 pos.Y = packet.ReadSingle();
                 packet.WriteGuid("GUID3", GUID3);
-                packet.WriteLine("Position: {0}", pos);
+                packet.AddValue("Position", pos);
             }
 
             packet.ParseBitStream(TargetGUID, 2, 0, 5, 6, 7, 3, 4, 1);
@@ -218,7 +214,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 pos.Z = packet.ReadSingle();
                 packet.ReadXORBytes(GUID2, 2, 6, 4, 0);
                 packet.WriteGuid("GUID2", GUID2);
-                packet.WriteLine("Position: {0}", pos);
+                packet.AddValue("Position", pos);
             }
 
             packet.ParseBitStream(GUID0, 7, 2, 6, 4, 1, 0, 3, 5);
@@ -227,7 +223,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             if (hasbit78)
                 packet.ReadWoWString("String", (int)len78);
 
-            if (HasCastCount)
+            if (hasCastCount)
                 packet.ReadByte("Cast Count");
 
             if (hasbit18)
@@ -373,7 +369,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 pos.X = packet.ReadSingle();
                 packet.ReadXORBytes(DestinationTransportGUID, 6, 7, 4);
                 packet.WriteGuid("Destination Transport GUID", DestinationTransportGUID);
-                packet.WriteLine("Destination Position: {0}", pos);
+                packet.AddValue("Destination Position", pos);
             }
             packet.ParseBitStream(TargetGUID, 1, 0, 5, 2, 3, 4, 7, 6);
             packet.ReadXORByte(guid4, 3);
@@ -441,7 +437,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 pos.Y = packet.ReadSingle();
                 packet.ReadXORBytes(SourceTransportGUID, 7, 6);
                 packet.WriteGuid("Source Transport GUID", SourceTransportGUID);
-                packet.WriteLine("Source Position: {0}", pos);
+                packet.AddValue("Source Position", pos);
             }
 
             for (var i = 0; i < RuneCooldownCount; ++i)
@@ -457,7 +453,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadXORBytes(ExtraTargetsGUID[i], 1, 3, 6);
                 pos.Z = packet.ReadSingle();
                 packet.WriteGuid("Extra Target GUID", ExtraTargetsGUID[i], i);
-                packet.WriteLine("[{1}] Position: {0}", pos, i);
+                packet.AddValue("Position", pos, i);
             }
             packet.ReadXORByte(guid4, 2);
 
@@ -469,7 +465,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Int32);
             packet.ReadXORByte(guid3, 2);
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
             packet.ReadXORByte(guid4, 0);
             packet.ReadXORByte(guid3, 5);
 
@@ -526,7 +522,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var spells = new List<uint>((int)count);
             for (var i = 0; i < count; i++)
             {
-                var spellId = packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", i);
+                var spellId = packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID", i);
                 spells.Add((uint)spellId);
             }
 
@@ -665,7 +661,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 pos.Y = packet.ReadSingle();
                 packet.ReadXORBytes(SourceTransportGUID, 0, 1);
                 packet.WriteGuid("Source Transport GUID", SourceTransportGUID);
-                packet.WriteLine("Source Position: {0}", pos);
+                packet.AddValue("Source Position", pos);
             }
 
 
@@ -678,7 +674,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 pos.Y = packet.ReadSingle();
                 pos.Z = packet.ReadSingle();
                 packet.WriteGuid("GUID5", guid5[i], i);
-                packet.WriteLine("Position: {0}", pos);
+                packet.AddValue("Position", pos);
             }
 
             for (var i = 0; i < counter; ++i)
@@ -698,7 +694,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 pos.X = packet.ReadSingle();
                 packet.ReadXORByte(DestinationTransportGUID, 2);
                 packet.WriteGuid("Destination Transport GUID", DestinationTransportGUID);
-                packet.WriteLine("Destination Position: {0}", pos);
+                packet.AddValue("Destination Position", pos);
             }
             if (bit408)
                 packet.ReadSingle("float198");
@@ -751,8 +747,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             packet.ReadXORByte(guid10, 3);
 
-            var bytes = packet.ReadBytes(bits7);
-            packet.WriteLine("Bytes {0}", Utilities.ByteArrayToHexString(bytes));
+            packet.ReadBytes("Bytes", bits7);
 
             if (bit404)
                 packet.ReadUInt32("uint32 404");
@@ -784,7 +779,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             packet.ReadXORByte(guid11, 1);
             packet.ReadXORByte(guid10, 4);
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
 
             if (hasRuneStateBefore)
                 packet.ReadByte("Rune State Before");
@@ -820,7 +815,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         {
             var count = packet.ReadBits(22);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell ID", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID", i);
         }
     }
 }

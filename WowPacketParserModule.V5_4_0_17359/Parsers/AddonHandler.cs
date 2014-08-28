@@ -1,9 +1,6 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {
@@ -40,8 +37,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
                 if (usePublicKey[i])
                 {
-                    var pubKey = packet.ReadBytes(256);
-                    packet.WriteLine("[{0}] Name MD5: {1}", i, Utilities.ByteArrayToHexString(pubKey));
+                    packet.ReadBytes("Name MD5", 256, i);
                 }
 
                 if (bit1[i])

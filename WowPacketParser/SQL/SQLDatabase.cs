@@ -14,7 +14,7 @@ namespace WowPacketParser.SQL
         public static readonly Dictionary<StoreNameType, Dictionary<int, string>> NameStores =
             new Dictionary<StoreNameType, Dictionary<int, string>>();
 
-        private static readonly StoreNameType[] ObjectTypes = new[]
+        private static readonly StoreNameType[] ObjectTypes =
         {
             StoreNameType.Spell,
             StoreNameType.Map,
@@ -88,7 +88,7 @@ namespace WowPacketParser.SQL
             fieldNames.Append(primaryKeyName + ",");
             foreach (var field in fields)
             {
-                fieldNames.Append(field.Item2.ToString());
+                fieldNames.Append(field.Item2);
                 fieldNames.Append(",");
                 fieldCount += field.Item2.Count;
             }
@@ -214,7 +214,7 @@ namespace WowPacketParser.SQL
             fieldNames.Append(primaryKeyName2 + ",");
             foreach (var field in fields)
             {
-                fieldNames.Append(field.Item2.ToString());
+                fieldNames.Append(field.Item2);
                 fieldNames.Append(",");
                 fieldCount += field.Item2.Count;
             }
@@ -348,7 +348,7 @@ namespace WowPacketParser.SQL
             fieldNames.Append(primaryKeyName2 + ",");
             foreach (var field in fields)
             {
-                fieldNames.Append(field.Item2.ToString());
+                fieldNames.Append(field.Item2);
                 fieldNames.Append(",");
                 fieldCount += field.Item2.Count;
             }

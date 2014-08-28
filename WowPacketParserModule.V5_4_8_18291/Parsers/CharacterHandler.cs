@@ -2,9 +2,6 @@ using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
@@ -60,7 +57,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                packet.WriteLine("[{0}] Flags {1}", i, flags[i]); // +32
+                packet.AddValue("Flags", flags[i], i); // +32
 
                 if (hasSeasonTotal[i])
                     packet.ReadUInt32("Season total earned", i);    // +12

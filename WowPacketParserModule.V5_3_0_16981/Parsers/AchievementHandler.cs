@@ -45,7 +45,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadXORByte(guid2, 6);
             packet.ReadUInt32("Timer 2");
 
-            packet.WriteLine("Counter: {0}", BitConverter.ToInt64(counter, 0));
+            packet.AddValue("Counter", BitConverter.ToInt64(counter, 0));
             packet.WriteGuid("GUID2", guid2);
         }
     }
