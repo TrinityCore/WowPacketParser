@@ -817,7 +817,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PVP_LOG_DATA, ClientVersionBuild.V4_3_4_15595)]
         public static void HandlePvPLogData434(Packet packet)
         {
-            var arena = packet.ReadBit("IS Arena");
+            var arena = packet.ReadBit("Is Arena");
             var rated = packet.ReadBit("Is Rated");
             var name1Length = 0u;
             var name2Length = 0u;
@@ -932,12 +932,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadWoWString("Team 1 Name", name2Length);
             }
 
-            packet.ReadByte((arena ? "Gold" : "Alliance") : " team size");
+            packet.ReadByte((arena ? "Gold" : "Alliance") + " team size");
 
             if (finished)
                 packet.ReadByte("Winner");
 
-            packet.ReadByte((arena ? "Green" : "Horde") : " team size");
+            packet.ReadByte((arena ? "Green" : "Horde") + " team size");
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGE, ClientVersionBuild.V4_3_4_15595)]
