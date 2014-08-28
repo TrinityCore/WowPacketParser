@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using WowPacketParser.Enums;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing.Parsers;
@@ -36,8 +35,7 @@ namespace WowPacketParser
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             // Disable DB when we don't need its data (dumping to a binary file)
-            if (Settings.DumpFormat == DumpFormatType.None || Settings.DumpFormat == DumpFormatType.Pkt ||
-                Settings.DumpFormat == DumpFormatType.PktSplit || Settings.DumpFormat == DumpFormatType.SniffDataOnly)
+            if (!Settings.DumpFormatWithSQL())
             {
                 SQLConnector.Enabled = false;
                 SSHTunnel.Enabled = false;
@@ -53,17 +51,7 @@ namespace WowPacketParser
                 SessionHandler.ZStreams.Clear();
                 ClientVersion.SetVersion(Settings.ClientBuild);
                 var sf = new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count));
-
-                try
-                {
-                    sf.ProcessFile();
-                }
-                catch (Exception ex)
-                {
-                    Trace.WriteLine(ex.GetType());
-                    Trace.WriteLine(ex.Message);
-                    Trace.WriteLine(ex.StackTrace);
-                }
+                sf.ProcessFile();
             }
 
             if (!String.IsNullOrWhiteSpace(Settings.SQLFileName) && Settings.DumpFormatWithSQL())
