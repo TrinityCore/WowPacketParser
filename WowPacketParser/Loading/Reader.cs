@@ -5,7 +5,6 @@ using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
-using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Loading
 {
@@ -17,12 +16,12 @@ namespace WowPacketParser.Loading
         public Reader(string fileName, string originalFileName)
         {
             FileName = fileName;
-            PacketReader = GetPacketReader(originalFileName);
+            PacketReader = GetPacketReader(fileName, originalFileName);
         }
 
-        private static IPacketReader GetPacketReader(string fileName)
+        private static IPacketReader GetPacketReader(string fileName, string oriFileName)
         {
-            var extension = Path.GetExtension(fileName);
+            var extension = Path.GetExtension(oriFileName);
             if (extension == null)
                 throw new IOException("Invalid file type");
 
@@ -96,9 +95,9 @@ namespace WowPacketParser.Loading
             return false;
         }
 
-        public static void Read(string fileName, Action<Tuple<Packet, long, long>> action)
+        public static void Read(string fileName, string oriFileName, Action<Tuple<Packet, long, long>> action)
         {
-            var reader = GetPacketReader(fileName);
+            var reader = GetPacketReader(fileName, oriFileName);
 
             try
             {

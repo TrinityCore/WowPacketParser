@@ -10,6 +10,7 @@
         SniffDataOnly,
         StatisticsPreParse,
         PktSessionSplit,
-        CompressSniff
+        CompressSniff,
+        SniffVersionSplit
     }
 }

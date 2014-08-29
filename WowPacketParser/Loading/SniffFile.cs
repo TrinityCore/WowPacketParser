@@ -284,6 +284,36 @@ namespace WowPacketParser.Loading
                     Compress(fi);
                     break;
                 }
+                case DumpFormatType.SniffVersionSplit:
+                {
+                    var reader = new Reader(_fileName, _originalFileName);
+
+                    if (ClientVersion.IsUndefined() && reader.PacketReader.CanRead())
+                    {
+                        Packet packet;
+                        reader.TryRead(out packet);
+                        packet.ClosePacket();
+                    }
+
+                    reader.PacketReader.Dispose();
+
+                    string version = ClientVersion.IsUndefined() ? "unknown" : ClientVersion.VersionString;
+
+                    string realFileName = _originalFileName + (_fileName != _originalFileName ? ".gz" : "");
+
+                    string destPath = Path.Combine(Path.GetDirectoryName(realFileName), version,
+                        Path.GetFileName(realFileName));
+
+                    string destDir = Path.GetDirectoryName(destPath);
+                    if (!Directory.Exists(destDir))
+                        Directory.CreateDirectory(destDir);
+
+                    File.Move(realFileName, destPath);
+
+                    Trace.WriteLine("Moved " + realFileName + " to " + destPath);
+
+                    break;
+                }
                 default:
                 {
                     Trace.WriteLine(string.Format("{0}: Dump format is none, nothing will be processed.", _logPrefix));
@@ -323,7 +353,7 @@ namespace WowPacketParser.Loading
 
             // stats.SetStartTime(DateTime.Now);
 
-            Reader.Read(_fileName, p =>
+            Reader.Read(_fileName, _originalFileName, p =>
             {
                 var packet = p.Item1;
                 var currSize = p.Item2;
