@@ -28,16 +28,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int 32"); //error related
         }
 
-        [Parser(17958, ClientVersionBuild.V4_3_4_15595)] // 4.3.4
-        [Parser(18997)] // 4.3.4
-        [Parser(26389)] // 4.3.4
-        [Parser(3860)] // 4.3.4
-        public static void Handle18997(Packet packet)
-        {
-            packet.ReadPackedGuid("Guid");
-            packet.ReadInt16("AnimKit.dbc Id");
-        }
-
         [Parser(17205)] // 4.3.4
         public static void Handle17205(Packet packet)
         {

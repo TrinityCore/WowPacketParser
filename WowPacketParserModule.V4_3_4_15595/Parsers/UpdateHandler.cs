@@ -481,11 +481,11 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             if (hasAnimKits)
             {
                 if (hasAnimKit1)
-                    packet.ReadUInt16("Anim Kit 1", index);
+                    packet.ReadUInt16("AI Anim Kit Id", index);
                 if (hasAnimKit2)
-                    packet.ReadUInt16("Anim Kit 2", index);
+                    packet.ReadUInt16("Movement Anim Kit Id", index);
                 if (hasAnimKit3)
-                    packet.ReadUInt16("Anim Kit 3", index);
+                    packet.ReadUInt16("Melee Anim Kit Id", index);
             }
 
             if (transport)

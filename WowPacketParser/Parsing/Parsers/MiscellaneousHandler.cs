@@ -1091,6 +1091,16 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("Text", length);
         }
 
+        [Parser(Opcode.SMSG_PLAY_ONE_SHOT_ANIM_KIT)]
+        [Parser(Opcode.SMSG_SET_AI_ANIM_KIT)]
+        [Parser(Opcode.SMSG_SET_MELEE_ANIM_KIT)]
+        [Parser(Opcode.SMSG_SET_MOVEMENT_ANIM_KIT)]
+        public static void HandlePlayOneShotAnimKit(Packet packet)
+        {
+            packet.ReadPackedGuid("Guid");
+            packet.ReadUInt16("AnimKit.dbc Id");
+        }
+
         [Parser(Opcode.SMSG_MINIGAME_STATE)]
         [Parser(Opcode.CMSG_KEEP_ALIVE)]
         [Parser(Opcode.CMSG_TUTORIAL_RESET)]
