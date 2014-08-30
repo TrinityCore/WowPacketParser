@@ -351,7 +351,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED)]
         public static void HandleMoveTimeSkipped(Packet packet)
         {
-            packet.ReadInt32("unk24");
+            packet.ReadInt32("Time"); // 24
             var guid = packet.StartBitStream(5, 0, 7, 4, 1, 2, 6, 3);
             packet.ResetBitReader();
             packet.ParseBitStream(guid, 7, 2, 0, 6, 1, 5, 3, 4);

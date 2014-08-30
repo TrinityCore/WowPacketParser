@@ -12,7 +12,9 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_GET_MAIL_LIST)]
         public static void HandleGetMailList(Packet packet)
         {
-            packet.ReadToEnd();
+            var guid = packet.StartBitStream(6, 3, 7, 5, 4, 1, 2, 0);
+            packet.ParseBitStream(guid, 7, 1, 6, 5, 4, 2, 3, 0);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_MAIL_CREATE_TEXT_ITEM)]
